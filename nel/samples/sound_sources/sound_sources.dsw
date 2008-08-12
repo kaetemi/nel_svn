@@ -1,0 +1,164 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "3d"=..\..\src\3d.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "driver_dsound"=..\..\src\sound\driver\dsound\driver_dsound.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "driver_fmod"=..\..\src\sound\driver\fmod\driver_fmod.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sound_lowlevel
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "georges"=..\..\src\georges.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ligo"=..\..\src\ligo.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "misc"=..\..\src\misc.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "sound"=..\..\src\sound.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sound_lowlevel
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "sound_lowlevel"=..\..\src\sound\driver\sound_lowlevel.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "sound_sources"=.\sound_sources.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name driver_fmod
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sound
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name sound_lowlevel
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name georges
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name 3d
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ligo
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name driver_dsound
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

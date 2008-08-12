@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "s3tc_compressor_lib", "s3tc_compressor_lib.vcproj", "{319D10F5-C4E7-4FA9-B9B5-C00A81322843}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		DebugFast = DebugFast
+		Release = Release
+		ReleaseDebug = ReleaseDebug
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.Debug.ActiveCfg = Debug|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.Debug.Build.0 = Debug|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.DebugFast.ActiveCfg = DebugFast|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.DebugFast.Build.0 = DebugFast|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.Release.ActiveCfg = Release|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.Release.Build.0 = Release|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{319D10F5-C4E7-4FA9-B9B5-C00A81322843}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

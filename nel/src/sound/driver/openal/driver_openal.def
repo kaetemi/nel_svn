@@ -1,0 +1,2 @@
+EXPORTS NLSOUND_createISoundDriverInstance
+EXPORTS NLSOUND_interfaceVersion

@@ -1,0 +1,269 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "cpptest"="..\..\..\..\external\cpptest-1.0.2\win\VisualStudio6\cpptest\cpptest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "dyn_lib_test"=.\misc_ut\dyn_lib_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ligo"=..\..\src\ligo.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ligo_unit_test"=.\ligo_ut\ligo_unit_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ligo
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "memory"=..\..\src\memory.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "misc"=..\..\src\misc.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "misc_unit_test"=.\misc_ut\misc_unit_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name dyn_lib_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "nel_unit_test"=.\nel_unit_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc_unit_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net_unit_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ligo_unit_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "net"=..\..\src\net.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "net_module_lib_test"=.\net_ut\net_module_lib_test\net_module_lib_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "net_service_lib_test"=.\net_ut\net_service_lib_test\net_service_lib_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "net_unit_test"=.\net_ut\net_unit_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net_module_lib_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net_service_lib_test
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "shard_unifier_test"=..\..\..\ryzom\src_v2\test_modules\shard_unifier_test\shard_unifier_test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cpptest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name net
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name memory
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

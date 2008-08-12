@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nel_3dsmax_shared", "nel_3dsmax_shared.vcproj", "{E4157D5C-928B-47E4-8E62-66A486DA18A6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		DebugFast = DebugFast
+		Release = Release
+		ReleaseDebug = ReleaseDebug
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.Debug.ActiveCfg = Debug|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.Debug.Build.0 = Debug|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.DebugFast.ActiveCfg = DebugFast|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.DebugFast.Build.0 = DebugFast|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.Release.ActiveCfg = Release|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.Release.Build.0 = Release|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{E4157D5C-928B-47E4-8E62-66A486DA18A6}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
