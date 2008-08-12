@@ -25,10 +25,10 @@
 
 #include "stdopengl.h"
 #include "driver_opengl.h"
-#include "../../cube_map_builder.h"
-#include "../../texture_mem.h"
-#include "../../texture_bump.h"
-#include "../../material.h"
+#include "nel/3d/cube_map_builder.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/texture_bump.h"
+#include "nel/3d/material.h"
 
 
 

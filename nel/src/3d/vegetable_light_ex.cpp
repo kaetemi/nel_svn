@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "vegetable_light_ex.h"
-#include "point_light_named.h"
+#include "nel/3d/vegetable_light_ex.h"
+#include "nel/3d/point_light_named.h"
 
 
 namespace NL3D 

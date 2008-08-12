@@ -26,7 +26,7 @@
 #include "std3d.h"
 
 
-#include "texture_near.h"
+#include "nel/3d/texture_near.h"
 using namespace NLMISC;
 
 namespace NL3D 

@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "quad_grid_clip_manager.h"
-#include "scene.h"
-#include "transform_shape.h"
-#include "clip_trav.h"
+#include "nel/3d/quad_grid_clip_manager.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/clip_trav.h"
 #include "nel/misc/aabbox.h"
-#include "cluster.h"
+#include "nel/3d/cluster.h"
 #include "nel/misc/hierarchical_timer.h"
 
 

@@ -26,8 +26,8 @@
 #include "std3d.h"
 
 
-#include "ps_plane_basis_maker.h"
-#include "ps_register_plane_basis_attribs.h"
+#include "nel/3d/ps_plane_basis_maker.h"
+#include "nel/3d/ps_register_plane_basis_attribs.h"
 
 namespace NL3D 
 {

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "point_light_named.h"
+#include "nel/3d/point_light_named.h"
 
 
 namespace NL3D {

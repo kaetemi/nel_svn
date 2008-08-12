@@ -32,7 +32,7 @@
 #include "nel/misc/hierarchical_timer.h"
 
 #include "nel/ligo/primitive.h"
-#include "../3d/cluster.h"
+#include "nel/3d/cluster.h"
 
 #include "nel/sound/u_source.h"
 #include "clustered_sound.h"

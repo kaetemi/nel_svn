@@ -25,10 +25,10 @@
 #include "std3d.h"
 
 
-#include "ps_util.h"
-#include "ps_particle.h"
-#include "ps_particle2.h"
-#include "ps_mesh.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_particle2.h"
+#include "nel/3d/ps_mesh.h"
 
 
 namespace NL3D

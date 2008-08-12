@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "tess_block.h"
-#include "patch_rdr_pass.h"
-#include "landscape_face_vector_manager.h"
+#include "nel/3d/tess_block.h"
+#include "nel/3d/patch_rdr_pass.h"
+#include "nel/3d/landscape_face_vector_manager.h"
 
 
 namespace NL3D 

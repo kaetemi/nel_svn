@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "mesh_geom.h"
-#include "mesh_block_manager.h"
+#include "nel/3d/mesh_geom.h"
+#include "nel/3d/mesh_block_manager.h"
 
 
 namespace NL3D 

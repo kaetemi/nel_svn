@@ -24,15 +24,15 @@
 
 #include "std3d.h"
 
-#include "scene_group.h"
-#include "seg_remanence.h"
-#include "seg_remanence_shape.h"
-#include "vertex_buffer.h"
-#include "driver.h"
-#include "scene.h"
-#include "anim_detail_trav.h"
-#include "skeleton_model.h"
-#include "dru.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/seg_remanence.h"
+#include "nel/3d/seg_remanence_shape.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/anim_detail_trav.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/dru.h"
 
 
 

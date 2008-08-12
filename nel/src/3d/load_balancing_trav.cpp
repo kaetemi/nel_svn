@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "load_balancing_trav.h"
-#include "hrc_trav.h"
-#include "clip_trav.h"
+#include "nel/3d/load_balancing_trav.h"
+#include "nel/3d/hrc_trav.h"
+#include "nel/3d/clip_trav.h"
 #include "nel/misc/common.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "transform.h"
+#include "nel/3d/transform.h"
 
 
 using namespace std;

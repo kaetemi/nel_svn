@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "mrm_internal.h"
+#include "nel/3d/mrm_internal.h"
 #include "nel/misc/common.h"
 
 

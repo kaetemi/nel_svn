@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "tess_face_priority_list.h"
+#include "nel/3d/tess_face_priority_list.h"
 #include "nel/misc/debug.h"
 #include <cmath>
-#include "tessellation.h"
+#include "nel/3d/tessellation.h"
 #include "nel/misc/fast_floor.h"
 
 

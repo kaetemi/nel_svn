@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "material.h"
-#include "texture.h"
-#include "shader.h"
-#include "driver.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/shader.h"
+#include "nel/3d/driver.h"
 #include "nel/misc/stream.h"
 
 using namespace std;

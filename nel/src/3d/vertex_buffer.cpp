@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "vertex_buffer.h"
+#include "nel/3d/vertex_buffer.h"
 #include "nel/misc/vector.h"
 #include "nel/misc/fast_mem.h"
-#include "driver.h"
+#include "nel/3d/driver.h"
 using namespace NLMISC;
 
 

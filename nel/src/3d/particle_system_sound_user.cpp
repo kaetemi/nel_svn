@@ -28,7 +28,7 @@
 
 
 //#include "nel/3d/u_particle_system_sound.h" we don't include this to avoid a link with NLSOUND
-#include "particle_system.h"
+#include "nel/3d/particle_system.h"
 #include "nel/3d/u_ps_sound_interface.h"
 #include "nel/3d/u_ps_sound_impl.h"
 

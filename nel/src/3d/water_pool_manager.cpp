@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "water_pool_manager.h"
-#include "texture_blend.h"
-#include "water_shape.h"
+#include "nel/3d/water_pool_manager.h"
+#include "nel/3d/texture_blend.h"
+#include "nel/3d/water_shape.h"
 #include "nel/misc/command.h"
-#include "water_height_map.h"
+#include "nel/3d/water_height_map.h"
 
 
 

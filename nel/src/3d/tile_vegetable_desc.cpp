@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "tile_vegetable_desc.h"
+#include "nel/3d/tile_vegetable_desc.h"
 #include "nel/misc/common.h"
-#include "vegetable_manager.h"
+#include "nel/3d/vegetable_manager.h"
 
 
 using namespace NLMISC;

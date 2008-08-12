@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "mesh_base.h"
-#include "mesh_base_instance.h"
-#include "lod_character_texture.h"
-#include "visual_collision_mesh.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/lod_character_texture.h"
+#include "nel/3d/visual_collision_mesh.h"
 
 
 using namespace std;

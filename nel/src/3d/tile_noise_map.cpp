@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "tile_noise_map.h"
+#include "nel/3d/tile_noise_map.h"
 
 
 namespace NL3D 

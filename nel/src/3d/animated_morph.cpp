@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "animated_morph.h"
+#include "nel/3d/animated_morph.h"
 #include "nel/misc/common.h"
 
 using namespace NLMISC;

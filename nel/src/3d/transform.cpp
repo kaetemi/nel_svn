@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "transform.h"
-#include "skeleton_model.h"
-#include "scene.h"
-#include "scene_group.h"
-#include "root_model.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/root_model.h"
 #include "nel/3d/u_transform.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/misc/hierarchical_timer.h"

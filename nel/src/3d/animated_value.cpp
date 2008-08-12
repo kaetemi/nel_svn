@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "animated_value.h"
+#include "nel/3d/animated_value.h"
 
 
 namespace NL3D 

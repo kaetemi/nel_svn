@@ -25,14 +25,14 @@
 
 #include "std3d.h"
 
-#include "water_shape.h"
-#include "water_model.h"
-#include "vertex_buffer.h"
-#include "texture_bump.h"
-#include "texture_blend.h"
-#include "scene.h"
-#include "water_pool_manager.h"
-#include "water_height_map.h"
+#include "nel/3d/water_shape.h"
+#include "nel/3d/water_model.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/texture_bump.h"
+#include "nel/3d/texture_blend.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/water_pool_manager.h"
+#include "nel/3d/water_height_map.h"
 #include <memory>
 
 

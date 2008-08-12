@@ -26,16 +26,16 @@
 #include "std3d.h"
 
 
-#include "vegetable_manager.h"
-#include "driver.h"
-#include "texture_file.h"
+#include "nel/3d/vegetable_manager.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/texture_file.h"
 #include "nel/misc/fast_floor.h"
-#include "vegetable_quadrant.h"
-#include "dru.h"
-#include "radix_sort.h"
-#include "scene.h"
-#include "vegetable_blend_layer_model.h"
-#include "vegetable_light_ex.h"
+#include "nel/3d/vegetable_quadrant.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/radix_sort.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/vegetable_blend_layer_model.h"
+#include "nel/3d/vegetable_light_ex.h"
 #include "nel/misc/hierarchical_timer.h"
 
 #include <algorithm>

@@ -28,12 +28,12 @@
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 
-#include "nelu.h"
-#include "dru.h"
-#include "camera.h"
-#include "register_3d.h"
-#include "init_3d.h"
-#include "vertex_stream_manager.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/camera.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/init_3d.h"
+#include "nel/3d/vertex_stream_manager.h"
 #include "nel/misc/debug.h"
 using namespace std;
 using namespace NLMISC;

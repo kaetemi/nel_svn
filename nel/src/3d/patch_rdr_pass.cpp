@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "patch_rdr_pass.h"
-#include "index_buffer.h"
+#include "nel/3d/patch_rdr_pass.h"
+#include "nel/3d/index_buffer.h"
 
 
 namespace NL3D 

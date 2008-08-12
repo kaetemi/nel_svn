@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "text_context_user.h"
+#include "nel/3d/text_context_user.h"
 #include "nel/misc/hierarchical_timer.h"
 
 

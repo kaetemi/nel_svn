@@ -29,9 +29,9 @@
 #include <string>
 
 #include "nel/misc/types_nl.h"
-#include "driver.h"
-#include "shader.h"
-#include "vertex_buffer.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/shader.h"
+#include "nel/3d/vertex_buffer.h"
 #include "nel/misc/algo.h"
 
 //#include <cstdio>

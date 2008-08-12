@@ -26,10 +26,10 @@
 #include "std3d.h"
 
 #include "nel/3d/u_particle_system_instance.h"
-#include "particle_system.h"
-#include "particle_system_shape.h"
-#include "ps_emitter.h"
-#include "particle_system_model.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/particle_system_model.h"
 
 #define NL3D_MEM_PS_INSTANCE						NL_ALLOC_CONTEXT( 3dPS )
 

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "track.h"
+#include "nel/3d/track.h"
 
 #include "nel/misc/rgba.h"
 #include "nel/misc/hierarchical_timer.h"

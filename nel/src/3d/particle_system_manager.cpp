@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "particle_system_manager.h"
-#include "particle_system_model.h"
-#include "scene.h"
-#include "skeleton_model.h"
+#include "nel/3d/particle_system_manager.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/skeleton_model.h"
 
 
 namespace NL3D 

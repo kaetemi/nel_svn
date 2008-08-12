@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "landscape_profile.h"
+#include "nel/3d/landscape_profile.h"
 
 
 namespace NL3D 

@@ -24,7 +24,7 @@
  */
 
 #include "std3d.h"
-#include "raw_skinned.h"
+#include "nel/3d/raw_skinned.h"
 
 
 using namespace NLMISC;

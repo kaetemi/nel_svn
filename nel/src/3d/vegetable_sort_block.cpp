@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "vegetable_sort_block.h"
-#include "radix_sort.h"
+#include "nel/3d/vegetable_sort_block.h"
+#include "nel/3d/radix_sort.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/misc/hierarchical_timer.h"
 

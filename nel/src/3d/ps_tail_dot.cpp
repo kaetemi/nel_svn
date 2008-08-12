@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "ps_tail_dot.h"
-#include "ps_macro.h"
-#include "driver.h"
-#include "particle_system.h"
-#include "texture_mem.h"
+#include "nel/3d/ps_tail_dot.h"
+#include "nel/3d/ps_macro.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/texture_mem.h"
 #include "nel/misc/smart_ptr.h"
 
 #include <memory>

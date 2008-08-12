@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "ptr_set.h"
+#include "nel/3d/ptr_set.h"
 
 
 namespace NL3D

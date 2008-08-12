@@ -23,11 +23,11 @@
  */
 
 #include "std3d.h"
-#include "water_env_map.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "material.h"
-#include "driver.h"
+#include "nel/3d/water_env_map.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/driver.h"
 #include "nel/3d/u_water_env_map.h"
 #include "nel/misc/common.h"
 #include "nel/3d/viewport.h"

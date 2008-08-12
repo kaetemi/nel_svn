@@ -24,9 +24,9 @@
  */
 
 #include "std3d.h"
-#include "hls_color_texture.h"
+#include "nel/3d/hls_color_texture.h"
 #include "nel/misc/fast_floor.h"
-#include "fasthls_modifier.h"
+#include "nel/3d/fasthls_modifier.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/bitmap.h"
 #include "nel/misc/system_info.h"

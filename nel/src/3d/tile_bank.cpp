@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "tile_bank.h"
-#include "texture_file.h"
-#include "tile_noise_map.h"
+#include "nel/3d/tile_bank.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/tile_noise_map.h"
 
 #include "nel/misc/stream.h"
 #include "nel/misc/common.h"

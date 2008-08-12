@@ -27,10 +27,10 @@
 
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/polygon.h"
-#include "shadow_poly_receiver.h"
-#include "shadow_map.h"
-#include "driver.h"
-#include "camera_col.h"
+#include "nel/3d/shadow_poly_receiver.h"
+#include "nel/3d/shadow_map.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/camera_col.h"
 
 
 using	namespace std;

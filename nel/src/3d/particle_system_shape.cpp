@@ -25,22 +25,22 @@
 
 #include "std3d.h"
 
-#include "particle_system.h"
-#include "particle_system_shape.h"
-#include "particle_system_model.h"
-#include "scene.h"
-#include "driver.h"
-#include "skeleton_model.h"
-#include "texture_file.h"
-#include "ps_allocator.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/ps_allocator.h"
 #include "nel/misc/file.h"
 #include "nel/misc/mem_stream.h"
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/contiguous_block_allocator.h"
 
 // tmp
-#include "ps_face_look_at.h"
-#include "ps_force.h"
+#include "nel/3d/ps_face_look_at.h"
+#include "nel/3d/ps_force.h"
 
 namespace NL3D {
 

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "bone.h"
+#include "nel/3d/bone.h"
 #include "nel/3d/anim_ctrl.h"
 #include "nel/misc/hierarchical_timer.h"
 

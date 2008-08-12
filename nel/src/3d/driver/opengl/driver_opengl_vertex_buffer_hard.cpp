@@ -28,7 +28,7 @@
 #include "driver_opengl.h"
 #include "driver_opengl_vertex_buffer_hard.h"
 
-#include "../../vertex_buffer.h"
+#include "nel/3d/vertex_buffer.h"
 
 using	namespace std;
 using	namespace NLMISC;

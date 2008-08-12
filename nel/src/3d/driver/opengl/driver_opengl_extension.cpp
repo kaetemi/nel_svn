@@ -28,7 +28,7 @@
 
 #include "driver_opengl.h"
 #include "driver_opengl_extension.h"
-#include "../../material.h"
+#include "nel/3d/material.h"
 
 // ***************************************************************************
 #ifdef NL_OS_WINDOWS

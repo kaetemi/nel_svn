@@ -28,9 +28,9 @@
 #include "stdopengl.h"
 
 #include "driver_opengl.h"
-#include "../../index_buffer.h"
-#include "../../vertex_program.h"
-#include "../../vertex_program_parse.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/vertex_program.h"
+#include "nel/3d/vertex_program_parse.h"
 #include <algorithm>
 
 // tmp

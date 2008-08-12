@@ -27,11 +27,11 @@
 
 #include "nel/3d/u_visual_collision_entity.h"
 
-#include "visual_collision_entity.h"
-#include "landscape.h"
-#include "dru.h"
-#include "driver.h"
-#include "tile_bank.h"
+#include "nel/3d/visual_collision_entity.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/tile_bank.h"
 #include "nel/misc/hierarchical_timer.h"
 
 

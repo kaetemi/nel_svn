@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "landscape_face_vector_manager.h"
+#include "nel/3d/landscape_face_vector_manager.h"
 #include "nel/misc/debug.h"
 
 

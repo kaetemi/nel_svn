@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "play_list_manager.h"
+#include "nel/3d/play_list_manager.h"
 
 
 namespace NL3D 

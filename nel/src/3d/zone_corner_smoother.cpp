@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "zone_corner_smoother.h"
-#include "patchuv_locator.h"
+#include "nel/3d/zone_corner_smoother.h"
+#include "nel/3d/patchuv_locator.h"
 
 
 namespace NL3D {

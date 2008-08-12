@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "static_quad_grid.h"
+#include "nel/3d/static_quad_grid.h"
 
 
 namespace NL3D 

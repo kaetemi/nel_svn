@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "shadow_map.h"
-#include "texture_mem.h"
+#include "nel/3d/shadow_map.h"
+#include "nel/3d/texture_mem.h"
 #include "nel/misc/common.h"
-#include "driver.h"
-#include "shadow_map_manager.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/shadow_map_manager.h"
 
 
 using namespace std;

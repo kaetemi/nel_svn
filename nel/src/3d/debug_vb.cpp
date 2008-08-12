@@ -23,9 +23,9 @@
  */
 
 #include "std3d.h"
-#include "debug_vb.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/debug_vb.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 namespace NL3D
 {

@@ -26,11 +26,11 @@
 #include "std3d.h"
 
 #include "nel/3d/u_instance_material.h"
-#include "async_texture_block.h"
-#include "mesh_base_instance.h"
-#include "driver.h"
-#include "texture_mem.h"
-#include "texture_file.h"
+#include "nel/3d/async_texture_block.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/texture_file.h"
 
 #define NL3D_MEM_MATERIAL_INSTANCE						NL_ALLOC_CONTEXT( 3dMatI )
 

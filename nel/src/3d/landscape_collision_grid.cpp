@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "landscape_collision_grid.h"
+#include "nel/3d/landscape_collision_grid.h"
 #include <algorithm>
 
 

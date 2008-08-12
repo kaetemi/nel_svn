@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "instance_lighter.h"
-#include "mesh_multi_lod.h"
+#include "nel/3d/instance_lighter.h"
+#include "nel/3d/mesh_multi_lod.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"
-#include "visual_collision_manager.h"
-#include "visual_collision_entity.h"
-#include "ig_surface_light_build.h"
+#include "nel/3d/visual_collision_manager.h"
+#include "nel/3d/visual_collision_entity.h"
+#include "nel/3d/ig_surface_light_build.h"
 
 
 using namespace std;

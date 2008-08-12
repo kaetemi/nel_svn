@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "texture_mem.h"
+#include "nel/3d/texture_mem.h"
 #include "nel/misc/mem_stream.h"
 
 #include <memory>

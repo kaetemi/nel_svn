@@ -26,8 +26,8 @@
 
 #include "std3d.h"
 #include "nel/3d/u_shape.h"
-#include "mesh.h"
-#include "mesh_multi_lod.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_multi_lod.h"
 #include "nel/3d/u_visual_collision_mesh.h"
 
 

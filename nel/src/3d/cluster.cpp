@@ -25,14 +25,14 @@
 
 #include "std3d.h"
 
-#include "cluster.h"
-#include "portal.h"
+#include "nel/3d/cluster.h"
+#include "nel/3d/portal.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/string_mapper.h"
-#include "scene.h"
-#include "transform_shape.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/transform_shape.h"
 //#include "mesh_instance.h"
-#include "scene_group.h"
+#include "nel/3d/scene_group.h"
 
 using namespace NLMISC;
 using namespace std;

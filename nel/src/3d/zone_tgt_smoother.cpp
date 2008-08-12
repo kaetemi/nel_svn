@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "zone_tgt_smoother.h"
+#include "nel/3d/zone_tgt_smoother.h"
 #include "nel/misc/plane.h"
 using namespace std;
 using namespace NLMISC;

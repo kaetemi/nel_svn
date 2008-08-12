@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "texture_blend.h"
+#include "nel/3d/texture_blend.h"
 #include "nel/misc/common.h"
 
 namespace NL3D {

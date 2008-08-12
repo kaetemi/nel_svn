@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "event_mouse_listener.h"
+#include "nel/3d/event_mouse_listener.h"
 #include "nel/misc/event_server.h"
-#include "camera.h"
+#include "nel/3d/camera.h"
 #include "nel/misc/time_nl.h"
 #include "nel/misc/quat.h"
 

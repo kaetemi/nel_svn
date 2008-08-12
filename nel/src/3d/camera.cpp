@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "camera.h"
-#include "scene.h"
+#include "nel/3d/camera.h"
+#include "nel/3d/scene.h"
 
 
 namespace	NL3D

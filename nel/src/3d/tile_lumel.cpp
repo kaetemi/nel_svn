@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "tile_lumel.h"
+#include "nel/3d/tile_lumel.h"
 
 using namespace NLMISC;
 

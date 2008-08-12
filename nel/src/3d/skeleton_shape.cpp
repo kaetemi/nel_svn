@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "skeleton_shape.h"
-#include "skeleton_model.h"
-#include "scene.h"
+#include "nel/3d/skeleton_shape.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/scene.h"
 #include "nel/misc/bsphere.h"
 
 using namespace std;

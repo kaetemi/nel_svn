@@ -28,16 +28,16 @@
 #include "nel/misc/debug.h"
 #include "nel/misc/common.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "particle_system_model.h"
-#include "particle_system_shape.h"
-#include "particle_system.h"
-#include "scene.h"
-#include "anim_detail_trav.h"
-#include "clip_trav.h"
-#include "render_trav.h"
-#include "skeleton_model.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/anim_detail_trav.h"
+#include "nel/3d/clip_trav.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/skeleton_model.h"
 
-#include "cluster.h" // ask trap
+#include "nel/3d/cluster.h" // ask trap
 
 
 

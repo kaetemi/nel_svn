@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "texture_multi_file.h"
-#include "texture_file.h"
+#include "nel/3d/texture_multi_file.h"
+#include "nel/3d/texture_file.h"
 
 
 namespace NL3D 

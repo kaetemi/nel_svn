@@ -26,7 +26,7 @@
 #include "std3d.h"
 
 #include "nel/3d/u_camera.h"
-#include "camera.h"
+#include "nel/3d/camera.h"
 
 #define NL3D_MEM_CAMERA					NL_ALLOC_CONTEXT( 3dCam )
 

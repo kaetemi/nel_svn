@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "root_model.h"
-#include "scene.h"
+#include "nel/3d/root_model.h"
+#include "nel/3d/scene.h"
 
 
 namespace NL3D {

@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "coarse_mesh_manager.h"
-#include "mesh.h"
-#include "texture_file.h"
+#include "nel/3d/coarse_mesh_manager.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/texture_file.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "clip_trav.h"
+#include "nel/3d/clip_trav.h"
 #include "nel/misc/fast_mem.h"
 
 

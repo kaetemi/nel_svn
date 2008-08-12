@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "computed_string.h"
-#include "texture.h"
-#include "index_buffer.h"
-#include "material.h"
+#include "nel/3d/computed_string.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
 #include "nel/3d/frustum.h"
 
 #include "nel/misc/smart_ptr.h"

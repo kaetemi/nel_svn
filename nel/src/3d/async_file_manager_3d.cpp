@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "async_file_manager_3d.h"
-#include "shape.h"
-#include "mesh.h"
-#include "texture_file.h"
-#include "scene_group.h"
+#include "nel/3d/async_file_manager_3d.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/scene_group.h"
 
-#include "instance_group_user.h"
+#include "nel/3d/instance_group_user.h"
 
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"

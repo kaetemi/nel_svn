@@ -24,8 +24,8 @@
  */
 
 #include "std3d.h"
-#include "cloud_scape.h"
-#include "driver.h"
+#include "nel/3d/cloud_scape.h"
+#include "nel/3d/driver.h"
 #include "nel/3d/scissor.h"
 #include "nel/3d/viewport.h"
 

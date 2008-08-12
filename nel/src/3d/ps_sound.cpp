@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 #include "nel/misc/string_mapper.h"
-#include "ps_sound.h"
-#include "particle_system.h"
+#include "nel/3d/ps_sound.h"
+#include "nel/3d/particle_system.h"
 #include "nel/3d/u_ps_sound_interface.h"
-#include "ps_attrib_maker.h"
+#include "nel/3d/ps_attrib_maker.h"
 
 namespace NL3D 
 {

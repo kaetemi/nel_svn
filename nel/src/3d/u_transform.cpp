@@ -26,11 +26,11 @@
 #include "std3d.h"
 
 #include "nel/3d/u_transform.h"
-#include "transform.h"
-#include "instance_group_user.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/instance_group_user.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "scene_group.h"
-#include "scene.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/scene.h"
 
 H_AUTO_DECL( NL3D_Transform_Set_Cluster_System )
 

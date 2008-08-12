@@ -26,14 +26,14 @@
 #include "std3d.h"
 
 #include "nel/3d/u_instance.h"
-#include "transform_shape.h"
-#include "mesh_base.h"
-#include "driver_user.h"
-#include "mesh_multi_lod_instance.h"
-#include "seg_remanence.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/driver_user.h"
+#include "nel/3d/mesh_multi_lod_instance.h"
+#include "nel/3d/seg_remanence.h"
 #include "nel/misc/debug.h"
-#include "scene.h"
-#include "shape_bank.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/shape_bank.h"
 
 
 using	namespace NLMISC;

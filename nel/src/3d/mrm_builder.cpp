@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "mrm_builder.h"
-#include "mrm_parameters.h"
+#include "nel/3d/mrm_builder.h"
+#include "nel/3d/mrm_parameters.h"
 using namespace NLMISC;
 using namespace std;
 

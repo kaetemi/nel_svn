@@ -27,7 +27,7 @@
 #define NL_SOUND_ANIM_MARKER_H
 
 #include "nel/misc/string_mapper.h"
-#include "../../nel/src/3d/cluster.h"
+#include "../3d/cluster.h"
 #include "u_source.h"
 
 

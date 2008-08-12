@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "quad_effect.h"
+#include "nel/3d/quad_effect.h"
 #include <algorithm>
 #include <deque>
 

@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "mini_col.h"
+#include "nel/3d/mini_col.h"
 #include "nel/misc/aabbox.h"
-#include "quad_grid.h"
+#include "nel/3d/quad_grid.h"
 using namespace NLMISC;
 using namespace std;
 

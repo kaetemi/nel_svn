@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "ps_ribbon.h"
-#include "ps_macro.h"
-#include "particle_system.h"
-#include "driver.h"
-#include "ps_util.h"
-#include "texture_mem.h"
+#include "nel/3d/ps_ribbon.h"
+#include "nel/3d/ps_macro.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/texture_mem.h"
 #include "nel/misc/matrix.h"
 
 namespace NL3D 

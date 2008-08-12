@@ -26,9 +26,9 @@
 #include "std3d.h"
 #include "nel/misc/common.h"
 #include "nel/3d/target_anim_ctrl.h"
-#include "bone.h"
-#include "skeleton_model.h"
-#include "scene.h"
+#include "nel/3d/bone.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/scene.h"
 
 using namespace std;
 using namespace NLMISC;

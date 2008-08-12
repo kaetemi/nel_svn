@@ -27,7 +27,7 @@
 
 #include "nel/misc/debug.h"
 #include "nel/3d/u_point_light.h"
-#include "point_light_model.h"
+#include "nel/3d/point_light_model.h"
 
 #define NL3D_MEM_POINTLIGHT						NL_ALLOC_CONTEXT( 3dPtLgt )
 

@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "texture_far.h"
-#include "tile_far_bank.h"
-#include "patch.h"
-#include "tile_color.h"
-#include "zone.h"
-#include "landscape.h"
+#include "nel/3d/texture_far.h"
+#include "nel/3d/tile_far_bank.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/tile_color.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/landscape.h"
 #include "nel/misc/system_info.h"
 
 

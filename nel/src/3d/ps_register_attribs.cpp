@@ -25,12 +25,12 @@
 #include "std3d.h"
 
 
-#include "ps_util.h"
+#include "nel/3d/ps_util.h"
 
-#include "ps_register_int_attribs.h"
-#include "ps_register_float_attribs.h"
-#include "ps_register_color_attribs.h"
-#include "ps_register_plane_basis_attribs.h"
+#include "nel/3d/ps_register_int_attribs.h"
+#include "nel/3d/ps_register_float_attribs.h"
+#include "nel/3d/ps_register_color_attribs.h"
+#include "nel/3d/ps_register_plane_basis_attribs.h"
 
 
 

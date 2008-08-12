@@ -23,8 +23,8 @@
  * MA 02111-1307, USA.
  */
 
-#include "nel/misc/mutex.h"
 #include "stdmisc.h"
+#include "nel/misc/mutex.h"
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE

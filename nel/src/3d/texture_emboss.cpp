@@ -23,7 +23,7 @@
  */
 
 #include "std3d.h"
-#include "texture_emboss.h"
+#include "nel/3d/texture_emboss.h"
 
 namespace NL3D {
 

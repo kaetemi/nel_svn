@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "animation_set.h"
-#include "driver.h"
-#include "shape_bank.h"
+#include "nel/3d/animation_set.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/shape_bank.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"

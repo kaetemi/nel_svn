@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "channel_mixer.h"
-#include "track.h"
-#include "animatable.h"
-#include "skeleton_weight.h"
+#include "nel/3d/channel_mixer.h"
+#include "nel/3d/track.h"
+#include "nel/3d/animatable.h"
+#include "nel/3d/skeleton_weight.h"
 #include "nel/misc/debug.h"
 #include "nel/misc/common.h"
 #include "nel/misc/hierarchical_timer.h"

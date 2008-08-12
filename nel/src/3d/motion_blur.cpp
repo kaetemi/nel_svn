@@ -26,11 +26,11 @@
 #include "std3d.h"
 
 #include "nel/misc/common.h"
-#include "motion_blur.h"
-#include "driver.h"
-#include "texture.h"
-#include "texture_blank.h"
-#include "material.h"
+#include "nel/3d/motion_blur.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/texture_blank.h"
+#include "nel/3d/material.h"
 
 
 namespace NL3D {

@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "ps_int.h"
-#include "ps_register_int_attribs.h"
+#include "nel/3d/ps_int.h"
+#include "nel/3d/ps_register_int_attribs.h"
 
 
 namespace NL3D {

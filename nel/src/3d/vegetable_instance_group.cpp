@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "vegetable_instance_group.h"
+#include "nel/3d/vegetable_instance_group.h"
 
 
 namespace NL3D 

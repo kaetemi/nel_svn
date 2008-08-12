@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "async_texture_manager.h"
-#include "async_file_manager_3d.h"
-#include "mesh_base_instance.h"
-#include "driver.h"
+#include "nel/3d/async_texture_manager.h"
+#include "nel/3d/async_file_manager_3d.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/driver.h"
 
 
 using	namespace std;

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 //
-#include "packed_world.h"
+#include "nel/3d/packed_world.h"
 //
 #include "nel/misc/grid_traversal.h"
 

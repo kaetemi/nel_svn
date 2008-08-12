@@ -26,11 +26,11 @@
 
 #include "std3d.h"
 //
-#include "shape_info.h"
-#include "mesh.h"
-#include "mesh_geom.h"
-#include "mesh_mrm.h"
-#include "mesh_multi_lod.h"
+#include "nel/3d/shape_info.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_geom.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh_multi_lod.h"
 //
 #include "nel/misc/path.h"
 //

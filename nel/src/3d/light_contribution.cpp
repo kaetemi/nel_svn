@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "light_contribution.h"
+#include "nel/3d/light_contribution.h"
 
 
 namespace NL3D {

@@ -25,18 +25,18 @@
 
 #include "std3d.h"
 
-#include "ps_zone.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "material.h"
-#include "ps_util.h"
-#include "dru.h"
-#include "particle_system.h"
+#include "nel/3d/ps_zone.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/particle_system.h"
 #include "nel/misc/plane.h"
 
 // tmp
 
-#include "particle_system_model.h"
+#include "nel/3d/particle_system_model.h"
 
 #include <cmath>
 #include <limits>

@@ -23,7 +23,7 @@
  */
 
 #include "std3d.h"
-#include "ps_attrib_maker_template.h"
+#include "nel/3d/ps_attrib_maker_template.h"
 #include "nel/misc/system_info.h"
 
 

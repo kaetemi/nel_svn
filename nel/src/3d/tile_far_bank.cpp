@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "tile_far_bank.h"
+#include "nel/3d/tile_far_bank.h"
 
 using namespace NLMISC;
 

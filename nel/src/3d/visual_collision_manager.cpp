@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "visual_collision_manager.h"
-#include "visual_collision_entity.h"
-#include "landscape.h"
-#include "camera_col.h"
-#include "shadow_map.h"
-#include "light.h"
+#include "nel/3d/visual_collision_manager.h"
+#include "nel/3d/visual_collision_entity.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/camera_col.h"
+#include "nel/3d/shadow_map.h"
+#include "nel/3d/light.h"
 #include "nel/misc/common.h"
 
 

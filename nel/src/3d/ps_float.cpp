@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "ps_float.h"
-#include "ps_register_float_attribs.h"
+#include "nel/3d/ps_float.h"
+#include "nel/3d/ps_register_float_attribs.h"
 #include "nel/misc/fast_floor.h"
 
 namespace NL3D {

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "vegetable_quadrant.h"
+#include "nel/3d/vegetable_quadrant.h"
 #include "nel/misc/matrix.h"
 
 

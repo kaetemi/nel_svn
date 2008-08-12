@@ -24,8 +24,8 @@
  */
 
 #include "std3d.h"
-#include "lod_character_instance.h"
-#include "lod_character_manager.h"
+#include "nel/3d/lod_character_instance.h"
+#include "nel/3d/lod_character_manager.h"
 
 
 namespace NL3D 

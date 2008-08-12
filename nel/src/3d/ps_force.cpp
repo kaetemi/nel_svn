@@ -25,17 +25,17 @@
 
 #include "std3d.h"
 
-#include "ps_force.h"
-#include "driver.h"
-#include "index_buffer.h"
-#include "material.h"
-#include "vertex_buffer.h"
-#include "computed_string.h"
-#include "font_manager.h"
-#include "particle_system.h"
+#include "nel/3d/ps_force.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/computed_string.h"
+#include "nel/3d/font_manager.h"
+#include "nel/3d/particle_system.h"
 #include "nel/misc/common.h"
-#include "ps_util.h"
-#include "ps_misc.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_misc.h"
 
 namespace NL3D {
 

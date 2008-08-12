@@ -25,19 +25,17 @@
 
 #include "std3d.h"
 
-#include "deform_2d.h"
-
-
+#include "nel/3d/deform_2d.h"
 
 #include <vector>
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/smart_ptr.h"
-#include "heat_haze.h"
-#include "quad_effect.h"
-#include "texture_blank.h"
-#include "driver.h"
-#include "dru.h"
-#include "material.h"
+#include "nel/3d/heat_haze.h"
+#include "nel/3d/quad_effect.h"
+#include "nel/3d/texture_blank.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/material.h"
 
 namespace NL3D {
 

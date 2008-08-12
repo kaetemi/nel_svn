@@ -32,7 +32,7 @@
 #include "nel/misc/common.h"
 #include "nel/misc/path.h"
 
-#include "font_generator.h"
+#include "nel/3d/font_generator.h"
 
 using namespace std;
 

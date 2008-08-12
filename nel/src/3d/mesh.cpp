@@ -25,20 +25,20 @@
 
 #include "std3d.h"
 
-#include "mesh.h"
-#include "mesh_instance.h"
-#include "scene.h"
-#include "skeleton_model.h"
-#include "mesh_morpher.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/mesh_morpher.h"
 #include "nel/misc/bsphere.h"
-#include "stripifier.h"
+#include "nel/3d/stripifier.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "mesh_blender.h"
-#include "matrix_3x4.h"
-#include "render_trav.h"
-#include "visual_collision_mesh.h"
-#include "meshvp_wind_tree.h"
+#include "nel/3d/mesh_blender.h"
+#include "nel/3d/matrix_3x4.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/visual_collision_mesh.h"
+#include "nel/3d/meshvp_wind_tree.h"
 
 using namespace std;
 using namespace NLMISC;

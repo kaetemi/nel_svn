@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "texture_dlm.h"
+#include "nel/3d/texture_dlm.h"
 #include "nel/misc/common.h"
 #include "nel/misc/fast_mem.h"
 

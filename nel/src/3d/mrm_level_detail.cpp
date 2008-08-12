@@ -26,7 +26,7 @@
 
 #include "std3d.h"
 
-#include "mrm_level_detail.h"
+#include "nel/3d/mrm_level_detail.h"
 
 
 namespace NL3D 

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "bone.h"
+#include "nel/3d/bone.h"
 #include "nel/3d/u_bone.h"
 
 #define NL3D_MEM_BONES						NL_ALLOC_CONTEXT( 3dBones )

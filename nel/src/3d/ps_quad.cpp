@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "ps_quad.h"
-#include "ps_macro.h"
-#include "driver.h"
-#include "ps_attrib_maker.h"
-#include "texture_grouped.h"
-#include "particle_system.h"
-#include "ps_iterator.h"
+#include "nel/3d/ps_quad.h"
+#include "nel/3d/ps_macro.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/texture_grouped.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/ps_iterator.h"
 
 namespace NL3D 
 {

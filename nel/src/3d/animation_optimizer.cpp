@@ -25,14 +25,14 @@
 
 #include "std3d.h"
 
-#include "animation_optimizer.h"
+#include "nel/3d/animation_optimizer.h"
 #include "nel/misc/mem_stream.h"
 #include "nel/misc/vectord.h"
-#include "track.h"
-#include "track_keyframer.h"
-#include "animation.h"
-#include "track_sampled_quat.h"
-#include "track_sampled_vector.h"
+#include "nel/3d/track.h"
+#include "nel/3d/track_keyframer.h"
+#include "nel/3d/animation.h"
+#include "nel/3d/track_sampled_quat.h"
+#include "nel/3d/track_sampled_vector.h"
 
 
 using	namespace NLMISC;

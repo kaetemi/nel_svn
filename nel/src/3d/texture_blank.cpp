@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "texture_blank.h"
+#include "nel/3d/texture_blank.h"
 
 
 namespace NL3D {

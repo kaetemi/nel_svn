@@ -29,23 +29,23 @@
 #include "nel/misc/aabbox.h"
 #include "nel/misc/matrix.h"
 
-#include "ps_util.h"
-#include "particle_system.h"
-#include "driver.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "material.h"
-#include "nelu.h"
-#include "font_generator.h"
-#include "font_manager.h"
-#include "computed_string.h"
-#include "dru.h"
-#include "ps_located.h"
-#include "ps_sound.h"
-#include "ps_light.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/font_generator.h"
+#include "nel/3d/font_manager.h"
+#include "nel/3d/computed_string.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_sound.h"
+#include "nel/3d/ps_light.h"
 
 
-#include "particle_system_shape.h"
+#include "nel/3d/particle_system_shape.h"
 
 
 

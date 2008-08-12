@@ -26,9 +26,9 @@
 #include "std3d.h"
 
 
-#include "heat_haze.h"
-#include "scene.h"
-#include "deform_2d.h"
+#include "nel/3d/heat_haze.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/deform_2d.h"
 #include "nel/misc/vector_2f.h"
 
 namespace NL3D

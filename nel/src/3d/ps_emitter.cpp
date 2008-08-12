@@ -26,11 +26,11 @@
 #include "std3d.h"
 
 #include <cstdlib>
-#include "ps_emitter.h"
-#include "material.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/material.h"
 #include "nel/misc/line.h"
-#include "dru.h"
-#include "particle_system.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/particle_system.h"
 
 namespace NL3D {
 

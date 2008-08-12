@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "animatable.h"
-#include "channel_mixer.h"
+#include "nel/3d/animatable.h"
+#include "nel/3d/channel_mixer.h"
 
 
 namespace NL3D 

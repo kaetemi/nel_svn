@@ -26,28 +26,26 @@
 #include "std3d.h"
 
 
-#include "landscape.h"
-#include "landscape_model.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/landscape_model.h"
 #include "nel/misc/bsphere.h"
-#include "texture_file.h"
-#include "texture_far.h"
-#include "landscape_profile.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/texture_far.h"
+#include "nel/3d/landscape_profile.h"
 #include "nel/3d/height_map.h"
-#include "tile_noise_map.h"
-#include "vegetable_manager.h"
-#include "vegetable.h"
-#include "landscape_vegetable_block.h"
+#include "nel/3d/tile_noise_map.h"
+#include "nel/3d/vegetable_manager.h"
+#include "nel/3d/vegetable.h"
+#include "nel/3d/landscape_vegetable_block.h"
 #include "nel/misc/fast_floor.h"
-#include "tile_vegetable_desc.h"
-#include "texture_dlm.h"
-#include "patchdlm_context.h"
+#include "nel/3d/tile_vegetable_desc.h"
+#include "nel/3d/texture_dlm.h"
+#include "nel/3d/patchdlm_context.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "scene.h"
+#include "nel/3d/scene.h"
 
 
-#include "vertex_program.h"
-
-
+#include "nel/3d/vertex_program.h"
 
 using namespace NLMISC;
 using namespace std;

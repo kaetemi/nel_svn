@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "animated_lightmap.h"
-#include "scene.h"
+#include "nel/3d/animated_lightmap.h"
+#include "nel/3d/scene.h"
 #include "nel/misc/common.h"
 
 using namespace NLMISC;

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "light.h"
+#include "nel/3d/light.h"
 
 using namespace NLMISC;
 

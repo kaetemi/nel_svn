@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "shape_bank.h"
-#include "mesh_base.h"
+#include "nel/3d/shape_bank.h"
+#include "nel/3d/mesh_base.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"
 #include "nel/misc/rect.h"

@@ -25,11 +25,11 @@
 
 
 #include "std3d.h"
-#include "skeleton_spawn_script.h"
-#include "skeleton_model.h"
-#include "mesh_base_instance.h"
-#include "scene.h"
-#include "particle_system_model.h"
+#include "nel/3d/skeleton_spawn_script.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/particle_system_model.h"
 #include "nel/misc/common.h"
 #include "nel/misc/algo.h"
 

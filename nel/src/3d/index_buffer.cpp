@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "index_buffer.h"
-#include "driver.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/driver.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/fast_mem.h"
 

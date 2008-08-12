@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "point_light_model.h"
-#include "light_trav.h"
-#include "root_model.h"
-#include "skeleton_model.h"
-#include "scene.h"
+#include "nel/3d/point_light_model.h"
+#include "nel/3d/light_trav.h"
+#include "nel/3d/root_model.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/scene.h"
 
 
 using namespace NLMISC;

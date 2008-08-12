@@ -28,7 +28,7 @@
 #include <cstdio>
 #include <iostream>
 
-#include "zone_search.h"
+#include "nel/3d/zone_search.h"
 
 using namespace std;
 

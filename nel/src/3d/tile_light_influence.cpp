@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "tile_light_influence.h"
+#include "nel/3d/tile_light_influence.h"
 #include "nel/misc/debug.h"
 
 

@@ -26,7 +26,6 @@
 #ifndef NL_HLS_TEXTURE_MANAGER_H
 #define NL_HLS_TEXTURE_MANAGER_H
 
-#include "std3d.h"
 #include "nel/misc/types_nl.h"
 #include "hls_texture_bank.h"
 

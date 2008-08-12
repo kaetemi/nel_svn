@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "mesh_vertex_program.h"
+#include "nel/3d/mesh_vertex_program.h"
 
 
 namespace NL3D 

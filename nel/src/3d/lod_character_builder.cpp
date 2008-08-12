@@ -26,11 +26,11 @@
 #include "std3d.h"
 
 #include "nel/misc/debug.h"
-#include "lod_character_builder.h"
-#include "scene.h"
-#include "skeleton_shape.h"
-#include "mesh.h"
-#include "skeleton_model.h"
+#include "nel/3d/lod_character_builder.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/skeleton_shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/skeleton_model.h"
 
 
 using namespace std;

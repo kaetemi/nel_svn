@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "light_trav.h"
-#include "hrc_trav.h"
-#include "clip_trav.h"
-#include "root_model.h"
+#include "nel/3d/light_trav.h"
+#include "nel/3d/hrc_trav.h"
+#include "nel/3d/clip_trav.h"
+#include "nel/3d/root_model.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "point_light_model.h"
-#include "scene.h"
+#include "nel/3d/point_light_model.h"
+#include "nel/3d/scene.h"
 
 using namespace std;
 using namespace NLMISC;

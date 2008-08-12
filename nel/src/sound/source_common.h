@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/sound/u_source.h"
-#include "../3d/cluster.h"
+#include "nel/3d/cluster.h"
 #include "sound.h"
 
 

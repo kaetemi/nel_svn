@@ -27,25 +27,25 @@
 
 
 
-#include "particle_system.h"
-#include "ps_located.h"
-#include "driver.h"
-#include "vertex_buffer.h"
-#include "material.h"
-#include "index_buffer.h"
-#include "nelu.h"
-#include "ps_util.h"
-#include "ps_particle.h"
-#include "ps_emitter.h"
-#include "ps_sound.h"
-#include "particle_system_shape.h"
-#include "ps_located.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/ps_sound.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/ps_located.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/file.h"
 #include "nel/misc/stream.h"
 
 // tmp
-#include "particle_system_model.h"
+#include "nel/3d/particle_system_model.h"
 
 
 #ifdef NL_DEBUG

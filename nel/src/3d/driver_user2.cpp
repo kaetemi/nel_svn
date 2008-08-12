@@ -30,13 +30,13 @@
 // fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
 // ***************************************************************************
 
-#include "driver_user.h"
-#include "scene_user.h"
-#include "text_context_user.h"
+#include "nel/3d/driver_user.h"
+#include "nel/3d/scene_user.h"
+#include "nel/3d/text_context_user.h"
 #include "nel/3d/u_driver.h"
-#include "dru.h"
-#include "scene.h"
-#include "texture_user.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/texture_user.h"
 #include "nel/3d/u_camera.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"

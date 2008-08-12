@@ -28,12 +28,12 @@
 #include <string>
 //#include <sstream>
 
-#include "font_manager.h"
-#include "font_generator.h"
-#include "texture_font.h"
-#include "computed_string.h"
-#include "index_buffer.h"
-#include "material.h"
+#include "nel/3d/font_manager.h"
+#include "nel/3d/font_generator.h"
+#include "nel/3d/texture_font.h"
+#include "nel/3d/computed_string.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/debug.h"
 

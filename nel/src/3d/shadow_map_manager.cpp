@@ -24,15 +24,15 @@
  */
 
 #include "std3d.h"
-#include "shadow_map_manager.h"
+#include "nel/3d/shadow_map_manager.h"
 #include "nel/misc/aabbox.h"
-#include "driver.h"
-#include "scene.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/scene.h"
 #include "nel/3d/viewport.h"
 #include "nel/3d/scissor.h"
-#include "dru.h"
-#include "texture_mem.h"
-#include "visual_collision_manager.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/visual_collision_manager.h"
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/fast_floor.h"
 

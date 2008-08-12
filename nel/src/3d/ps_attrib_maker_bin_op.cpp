@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "ps_attrib_maker_bin_op.h"
+#include "nel/3d/ps_attrib_maker_bin_op.h"
 
 
 namespace NL3D

@@ -28,7 +28,7 @@
 #include "nel/misc/quat.h"
 #include "nel/misc/common.h"
 #include "nel/misc/algo.h"
-#include "track_sampled_common.h"
+#include "nel/3d/track_sampled_common.h"
 #include "nel/misc/vectord.h"
 
 using namespace NLMISC;

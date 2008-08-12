@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "ig_surface_light.h"
+#include "nel/3d/ig_surface_light.h"
 
 
 namespace NL3D 

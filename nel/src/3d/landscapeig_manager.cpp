@@ -26,9 +26,9 @@
 #include "std3d.h"
 
 #include "nel/3d/landscapeig_manager.h"
-#include "scene_user.h"
-#include "instance_group_user.h"
-#include "shape.h"
+#include "nel/3d/scene_user.h"
+#include "nel/3d/instance_group_user.h"
+#include "nel/3d/shape.h"
 #include "nel/misc/common.h"
 #include "nel/misc/debug.h"
 #include "nel/misc/path.h"

@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "lighting_manager.h"
-#include "point_light.h"
-#include "transform.h"
+#include "nel/3d/lighting_manager.h"
+#include "nel/3d/point_light.h"
+#include "nel/3d/transform.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/3d/logic_info.h"
 #include "nel/misc/aabbox.h"

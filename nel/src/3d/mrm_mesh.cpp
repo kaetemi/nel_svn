@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "mrm_mesh.h"
+#include "nel/3d/mrm_mesh.h"
 #include <algorithm>
 
 using namespace std;

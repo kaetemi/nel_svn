@@ -27,8 +27,8 @@
 
 #include "nel/misc/quat.h"
 #include "nel/misc/common.h"
-#include "track_sampled_quat.h"
-#include "track_sampled_quat_small_header.h"
+#include "nel/3d/track_sampled_quat.h"
+#include "nel/3d/track_sampled_quat_small_header.h"
 
 using namespace NLMISC;
 using namespace std;

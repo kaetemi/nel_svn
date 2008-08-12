@@ -30,8 +30,8 @@
 #include "stdopengl.h"
 
 #include "driver_opengl.h"
-#include "../../texture_cube.h"
-#include "../../texture_bloom.h"
+#include "nel/3d/texture_cube.h"
+#include "nel/3d/texture_bloom.h"
 #include "nel/misc/rect.h"
 #include "nel/misc/file.h" // temp
 

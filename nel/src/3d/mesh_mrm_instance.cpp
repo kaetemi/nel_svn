@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "mesh_mrm_instance.h"
-#include "mesh_mrm.h"
-#include "skeleton_model.h"
-#include "raw_skin.h"
-#include "shifted_triangle_cache.h"
+#include "nel/3d/mesh_mrm_instance.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/raw_skin.h"
+#include "nel/3d/shifted_triangle_cache.h"
 #include "nel/3d/u_scene.h"
-#include "scene.h"
+#include "nel/3d/scene.h"
 
 
 using namespace NLMISC;

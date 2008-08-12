@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "landscape_user.h"
+#include "nel/3d/landscape_user.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"
 #include "nel/misc/hierarchical_timer.h"

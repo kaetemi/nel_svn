@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "landscape_vegetable_block.h"
-#include "vegetable_manager.h"
-#include "vegetable_clip_block.h"
-#include "vegetable_instance_group.h"
-#include "patch.h"
-#include "bezier_patch.h"
+#include "nel/3d/landscape_vegetable_block.h"
+#include "nel/3d/vegetable_manager.h"
+#include "nel/3d/vegetable_clip_block.h"
+#include "nel/3d/vegetable_instance_group.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/bezier_patch.h"
 
 
 using namespace std;

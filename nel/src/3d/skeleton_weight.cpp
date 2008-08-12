@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "skeleton_weight.h"
+#include "nel/3d/skeleton_weight.h"
 #include "nel/misc/stream.h"
 
 

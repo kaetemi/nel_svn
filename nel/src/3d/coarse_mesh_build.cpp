@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "coarse_mesh_build.h"
+#include "nel/3d/coarse_mesh_build.h"
 
-#include "mesh.h"
+#include "nel/3d/mesh.h"
 
 using namespace NLMISC;
 

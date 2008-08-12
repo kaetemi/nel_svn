@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "meshvp_per_pixel_light.h"
-#include "mesh_base_instance.h"
-#include "driver.h"
-#include "scene.h"
-#include "render_trav.h"
-#include "render_trav.h"
-#include "vertex_program_parse.h"
+#include "nel/3d/meshvp_per_pixel_light.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/vertex_program_parse.h"
 
 
 

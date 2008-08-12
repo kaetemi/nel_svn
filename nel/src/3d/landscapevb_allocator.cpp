@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "landscapevb_allocator.h"
-#include "driver.h"
+#include "nel/3d/landscapevb_allocator.h"
+#include "nel/3d/driver.h"
 #include "nel/misc/fast_mem.h"
 
 

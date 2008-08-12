@@ -25,7 +25,7 @@
 
 
 #include "std3d.h"
-#include "fast_ptr_list.h"
+#include "nel/3d/fast_ptr_list.h"
 
 using namespace std;
 

@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "ps_particle_basic.h"
-#include "ps_macro.h"
-#include "driver.h"
-#include "texture_grouped.h"
-#include "texture_bump.h"
-#include "texture_mem.h"
-#include "particle_system.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/ps_macro.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/texture_grouped.h"
+#include "nel/3d/texture_bump.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/particle_system.h"
 
 
 

@@ -24,12 +24,12 @@
 
 
 #include "std3d.h"
-#include "ps_light.h"
-#include "point_light_model.h"
-#include "scene.h"
-#include "particle_system.h"
-#include "particle_system_model.h"
-#include "ps_util.h"
+#include "nel/3d/ps_light.h"
+#include "nel/3d/point_light_model.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/ps_util.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/vector.h"
 

@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "shape_bank_user.h"
-#include "driver_user.h"
+#include "nel/3d/shape_bank_user.h"
+#include "nel/3d/driver_user.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"
 #include "nel/misc/big_file.h"

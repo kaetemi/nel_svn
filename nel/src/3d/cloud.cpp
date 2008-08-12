@@ -24,13 +24,13 @@
  */
 
 #include "std3d.h"
-#include "material.h"
-#include "cloud.h"
-#include "cloud_scape.h"
-#include "noise_3d.h"
+#include "nel/3d/material.h"
+#include "nel/3d/cloud.h"
+#include "nel/3d/cloud_scape.h"
+#include "nel/3d/noise_3d.h"
 #include "nel/3d/scissor.h"
 #include "nel/3d/viewport.h"
-#include "driver.h"
+#include "nel/3d/driver.h"
 
 using namespace NLMISC;
 

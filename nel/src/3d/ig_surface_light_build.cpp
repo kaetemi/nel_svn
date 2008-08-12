@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "ig_surface_light_build.h"
-#include "scene_group.h"
+#include "nel/3d/ig_surface_light_build.h"
+#include "nel/3d/scene_group.h"
 
 
 using namespace NLMISC;

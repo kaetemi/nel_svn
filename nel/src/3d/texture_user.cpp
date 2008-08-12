@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "texture_user.h"
+#include "nel/3d/texture_user.h"
 
 
 namespace NL3D

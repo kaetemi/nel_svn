@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "track_sampled_quat_small_header.h"
+#include "nel/3d/track_sampled_quat_small_header.h"
 #include "nel/misc/algo.h"
 
 

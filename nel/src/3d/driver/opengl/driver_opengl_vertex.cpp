@@ -28,7 +28,7 @@
 #include "stdopengl.h"
 
 #include "driver_opengl.h"
-#include "../../index_buffer.h"
+#include "nel/3d/index_buffer.h"
 #include "driver_opengl_vertex_buffer_hard.h"
 
 

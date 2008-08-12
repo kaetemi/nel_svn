@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "lod_character_shape.h"
+#include "nel/3d/lod_character_shape.h"
 #include "nel/misc/vectord.h"
 #include "nel/misc/fast_floor.h"
-#include "lod_character_texture.h"
+#include "nel/3d/lod_character_texture.h"
 #include "nel/misc/triangle.h"
 #include "nel/misc/polygon.h"
 #include "nel/misc/hierarchical_timer.h"

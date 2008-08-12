@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "vegetable_shape.h"
+#include "nel/3d/vegetable_shape.h"
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 

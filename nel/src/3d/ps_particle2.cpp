@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "ps_particle2.h"
+#include "nel/3d/ps_particle2.h"
 
 namespace NL3D 
 {

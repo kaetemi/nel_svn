@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "vertex_stream_manager.h"
+#include "nel/3d/vertex_stream_manager.h"
 #include "nel/misc/hierarchical_timer.h"
 
 

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "mrm_parameters.h"
+#include "nel/3d/mrm_parameters.h"
 
 
 namespace NL3D

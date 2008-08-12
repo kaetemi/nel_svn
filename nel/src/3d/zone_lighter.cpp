@@ -27,16 +27,16 @@
 
 #define USE_JPEG
 
-#include "zone_lighter.h"
-#include "landscape.h"
-#include "patchuv_locator.h"
-#include "shape.h"
-#include "mesh.h"
-#include "mesh_multi_lod.h"
-#include "mesh_mrm.h"
-#include "transform_shape.h"
-#include "water_shape.h"
-#include "texture_file.h"
+#include "nel/3d/zone_lighter.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/patchuv_locator.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_multi_lod.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/water_shape.h"
+#include "nel/3d/texture_file.h"
 
 
 

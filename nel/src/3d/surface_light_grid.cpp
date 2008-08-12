@@ -25,13 +25,13 @@
 
 #include "std3d.h"
 
-#include "surface_light_grid.h"
+#include "nel/3d/surface_light_grid.h"
 #include "nel/misc/common.h"
-#include "ig_surface_light.h"
+#include "nel/3d/ig_surface_light.h"
 #include "nel/misc/fast_floor.h"
-#include "light_influence_interpolator.h"
-#include "point_light_named.h"
-#include "scene_group.h"
+#include "nel/3d/light_influence_interpolator.h"
+#include "nel/3d/point_light_named.h"
+#include "nel/3d/scene_group.h"
 
 
 using namespace NLMISC;

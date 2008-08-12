@@ -27,9 +27,9 @@
 
 #include "std3d.h"
 //
-#include "packed_zone.h"
-#include "driver.h"
-#include "material.h"
+#include "nel/3d/packed_zone.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/material.h"
 //
 #include "nel/misc/matrix.h"
 #include "nel/misc/polygon.h"

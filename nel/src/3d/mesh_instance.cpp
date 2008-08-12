@@ -25,11 +25,11 @@
 
 #include "std3d.h"
 
-#include "mesh_instance.h"
-#include "mesh.h"
-#include "skeleton_model.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/skeleton_model.h"
 #include "nel/3d/u_scene.h"
-#include "scene.h"
+#include "nel/3d/scene.h"
 #include <list>
 
 using namespace std;

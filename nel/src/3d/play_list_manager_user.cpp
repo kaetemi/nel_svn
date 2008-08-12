@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "play_list_manager_user.h"
+#include "nel/3d/play_list_manager_user.h"
 #include "nel/misc/hierarchical_timer.h"
 
 using namespace NLMISC;

@@ -26,7 +26,7 @@
 #include "std3d.h"
 
 #include "nel/3d/u_transformable.h"
-#include "transformable.h"
+#include "nel/3d/transformable.h"
 
 #define NL3D_MEM_TRANSFORMABLE						NL_ALLOC_CONTEXT( 3dTrabl )
 

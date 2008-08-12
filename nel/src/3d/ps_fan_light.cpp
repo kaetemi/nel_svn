@@ -25,12 +25,12 @@
 
 #include "std3d.h"
 
-#include "ps_fan_light.h"
-#include "ps_macro.h"
-#include "ps_attrib_maker.h"
-#include "ps_iterator.h"
-#include "particle_system.h"
-#include "driver.h"
+#include "nel/3d/ps_fan_light.h"
+#include "nel/3d/ps_macro.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_iterator.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/driver.h"
 
 
 

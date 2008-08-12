@@ -27,7 +27,7 @@
 
 #include <iostream>
 
-#include "zone_manager.h"
+#include "nel/3d/zone_manager.h"
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 

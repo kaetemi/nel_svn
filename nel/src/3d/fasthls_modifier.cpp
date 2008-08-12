@@ -25,7 +25,7 @@
 
 
 #include "std3d.h"
-#include "fasthls_modifier.h"
+#include "nel/3d/fasthls_modifier.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/misc/bitmap.h"
 #include "nel/misc/system_info.h"

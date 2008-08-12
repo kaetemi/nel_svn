@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "texture.h"
-#include "driver.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/driver.h"
 #include <vector>
 
 

@@ -28,8 +28,8 @@
 
 #include "nel/3d/u_material.h"
 #include "nel/3d/u_driver.h"
-#include "texture_user.h"
-#include "driver_user.h"
+#include "nel/3d/texture_user.h"
+#include "nel/3d/driver_user.h"
 
 #define NL3D_MEM_MATERIAL						NL_ALLOC_CONTEXT( 3dMat )
 

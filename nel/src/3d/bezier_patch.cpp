@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "bezier_patch.h"
+#include "nel/3d/bezier_patch.h"
 using namespace NLMISC;
 
 

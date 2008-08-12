@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "ps_color.h"
-#include "ps_register_color_attribs.h"
+#include "nel/3d/ps_color.h"
+#include "nel/3d/ps_register_color_attribs.h"
 
 
 namespace NL3D {

@@ -25,14 +25,14 @@
 
 #include "std3d.h"
 
-#include "patchdlm_context.h"
-#include "patch.h"
-#include "bezier_patch.h"
-#include "point_light.h"
-#include "texture_dlm.h"
+#include "nel/3d/patchdlm_context.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/bezier_patch.h"
+#include "nel/3d/point_light.h"
+#include "nel/3d/texture_dlm.h"
 #include "nel/misc/fast_floor.h"
-#include "tile_far_bank.h"
-#include "landscape.h"
+#include "nel/3d/tile_far_bank.h"
+#include "nel/3d/landscape.h"
 #include "nel/misc/system_info.h"
 #include "nel/misc/fast_mem.h"
 

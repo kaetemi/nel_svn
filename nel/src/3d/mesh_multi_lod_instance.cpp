@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "mesh_multi_lod_instance.h"
-#include "mesh_multi_lod.h"
-#include "coarse_mesh_manager.h"
-#include "scene.h"
+#include "nel/3d/mesh_multi_lod_instance.h"
+#include "nel/3d/mesh_multi_lod.h"
+#include "nel/3d/coarse_mesh_manager.h"
+#include "nel/3d/scene.h"
 
 #include "nel/misc/debug.h"
 

@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "water_height_map.h"
+#include "nel/3d/water_height_map.h"
 #include "nel/misc/common.h"
 #include "nel/misc/debug.h"
 #include "nel/misc/vector_2f.h"

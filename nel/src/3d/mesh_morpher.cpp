@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "mesh_morpher.h"
-#include "vertex_buffer.h"
-#include "raw_skin.h"
+#include "nel/3d/mesh_morpher.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/raw_skin.h"
 
 
 using namespace std;

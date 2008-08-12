@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "anim_detail_trav.h"
-#include "hrc_trav.h"
-#include "transform.h"
-#include "skeleton_model.h"
+#include "nel/3d/anim_detail_trav.h"
+#include "nel/3d/hrc_trav.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/skeleton_model.h"
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/debug.h"
 

@@ -26,17 +26,17 @@
 #include "std3d.h"
 
 
-#include "patch.h"
-#include "vegetable.h"
-#include "vegetable_manager.h"
-#include "landscape_vegetable_block.h"
-#include "landscape.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/vegetable.h"
+#include "nel/3d/vegetable_manager.h"
+#include "nel/3d/landscape_vegetable_block.h"
+#include "nel/3d/landscape.h"
 #include "nel/misc/vector.h"
 #include "nel/misc/common.h"
 #include "nel/misc/fast_floor.h"
-#include "tile_vegetable_desc.h"
-#include "vegetable_light_ex.h"
-#include "patchdlm_context.h"
+#include "nel/3d/tile_vegetable_desc.h"
+#include "nel/3d/vegetable_light_ex.h"
+#include "nel/3d/patchdlm_context.h"
 
 
 using namespace std;

@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "point_light.h"
-#include "light.h"
-#include "transform.h"
+#include "nel/3d/point_light.h"
+#include "nel/3d/light.h"
+#include "nel/3d/transform.h"
 #include "nel/misc/common.h"
 #include <algorithm>
 

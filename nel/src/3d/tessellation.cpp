@@ -26,13 +26,13 @@
 
 #include "std3d.h"
 
-#include "tessellation.h"
-#include "patch.h"
-#include "zone.h"
+#include "nel/3d/tessellation.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/zone.h"
 #include "nel/misc/common.h"
-#include "landscape_profile.h"
-#include "landscape.h"
-#include "patchdlm_context.h"
+#include "nel/3d/landscape_profile.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/patchdlm_context.h"
 using namespace NLMISC;
 using namespace std;
 

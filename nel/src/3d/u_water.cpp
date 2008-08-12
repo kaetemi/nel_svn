@@ -26,10 +26,10 @@
 #include "std3d.h"
 
 #include "nel/3d/u_water.h"
-#include "water_pool_manager.h"
-#include "water_height_map.h"
-#include "water_model.h"
-#include "driver_user.h"
+#include "nel/3d/water_pool_manager.h"
+#include "nel/3d/water_height_map.h"
+#include "nel/3d/water_model.h"
+#include "nel/3d/driver_user.h"
 
 #define NL3D_MEM_WATER						NL_ALLOC_CONTEXT( 3dWater )
 

@@ -25,10 +25,10 @@
 
 #include "std3d.h"
 
-#include "quad_grid_clip_cluster.h"
+#include "nel/3d/quad_grid_clip_cluster.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "transform_shape.h"
-#include "cluster.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/cluster.h"
 
 
 using namespace NLMISC;

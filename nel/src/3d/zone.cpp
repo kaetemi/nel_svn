@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "zone.h"
-#include "landscape.h"
-#include "zone_symmetrisation.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/zone_symmetrisation.h"
 #include "nel/misc/common.h"
 #include "nel/misc/hierarchical_timer.h"
 

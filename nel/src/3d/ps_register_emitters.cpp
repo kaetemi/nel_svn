@@ -25,8 +25,8 @@
 #include "std3d.h"
 
 
-#include "ps_util.h"
-#include "ps_emitter.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_emitter.h"
 
 
 

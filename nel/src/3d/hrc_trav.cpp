@@ -25,9 +25,9 @@
 
 #include "std3d.h"
 
-#include "hrc_trav.h"
+#include "nel/3d/hrc_trav.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "scene.h"
+#include "nel/3d/scene.h"
 
 using namespace std;
 using namespace NLMISC;

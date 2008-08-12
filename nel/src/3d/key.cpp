@@ -25,7 +25,7 @@
 
 #include "std3d.h"
 
-#include "key.h"
+#include "nel/3d/key.h"
 
 
 namespace NL3D 

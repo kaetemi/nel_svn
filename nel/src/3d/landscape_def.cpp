@@ -26,7 +26,7 @@
 #include "std3d.h"
 
 
-#include "landscape_def.h"
+#include "nel/3d/landscape_def.h"
 #include "nel/misc/common.h"
 
 

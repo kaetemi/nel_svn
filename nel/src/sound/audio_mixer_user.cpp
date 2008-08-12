@@ -42,7 +42,7 @@
 #include "nel/georges/load_form.h"
 #include "nel/georges/u_form.h"
 
-#include "../3d/scene_user.h"
+#include "nel/3d/scene_user.h"
 #include "driver/sound_driver.h"
 #include "driver/buffer.h"
 

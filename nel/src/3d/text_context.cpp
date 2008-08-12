@@ -25,8 +25,8 @@
 
 #include "std3d.h"
 
-#include "text_context.h"
-#include "font_generator.h"
+#include "nel/3d/text_context.h"
+#include "nel/3d/font_generator.h"
 
 namespace NL3D {
 

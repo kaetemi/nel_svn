@@ -31,24 +31,24 @@
 #include "nel/misc/aabbox.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/common.h"
-#include "ps_util.h"
-#include "particle_system.h"
-#include "ps_zone.h"
-#include "driver.h"
-#include "material.h"
-#include "dru.h"
-#include "ps_located.h"
-#include "ps_particle.h"
-#include "ps_force.h"
-#include "ps_emitter.h"
-#include "ps_misc.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/ps_zone.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/material.h"
+#include "nel/3d/dru.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_force.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/ps_misc.h"
 
 #include "nel/misc/line.h"
 #include "nel/misc/system_info.h"
 #include "nel/misc/common.h"
 
 //
-#include "particle_system_model.h"
+#include "nel/3d/particle_system_model.h"
 
 
 #ifdef NL_DEBUG
