@@ -58,7 +58,7 @@ std::string buildPrimPath(const IPrimitive *prim)
 void selectPrimByPath(IPrimitive *rootNode, const std::string &path, TPrimitiveSet &result)
 {
 	std::vector<std::string>	parts;
-	NLMISC::explode(path, ".", parts, false);
+	NLMISC::explode(path, std::string("."), parts, false);
 //	IPrimitive * tmpChild;
 
 	result.clear();

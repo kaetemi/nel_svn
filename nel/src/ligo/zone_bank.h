@@ -107,7 +107,7 @@ public:
 
 	// Debug stuff beg
 	// ---------------
-	void debugInit(const std::string &sPath); // \todo trap see with hulud how we initialize this structure
+	void debugInit(const std::string &sPath);
 	void debugSaveInit(CZoneBankElement &zbeTmp, const std::string &fileName);
 	// ---------------
 	// Debug stuff end

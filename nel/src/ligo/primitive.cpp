@@ -282,7 +282,7 @@ CPropertyStringArray::CPropertyStringArray (const std::vector<std::string> &stri
 
 // ***************************************************************************
 
-void CPrimPoint::serial (IStream &f)
+void CPrimPoint::serial (NLMISC::IStream &f)
 {
 	// serial base info
 	IPrimitive::serial(f);
@@ -291,7 +291,7 @@ void CPrimPoint::serial (IStream &f)
 }
 
 // ***************************************************************************
-void CPrimPath::serial (IStream &f)
+void CPrimPath::serial (NLMISC::IStream &f)
 {
 	IPrimitive::serial(f);
 	f.serialCont(VPoints);
@@ -970,14 +970,14 @@ float CPrimZone::getAreaOfAABox() const
 
 
 // ***************************************************************************
-void CPrimZone::serial (IStream &f)
+void CPrimZone::serial (NLMISC::IStream &f)
 {
 	IPrimitive::serial(f);
 	f.serialCont(VPoints);
 }
 
 // ***************************************************************************
-void CPrimRegion::serial (IStream &f)
+void CPrimRegion::serial (NLMISC::IStream &f)
 {
 	f.xmlPushBegin ("REGION");
 	
@@ -1243,8 +1243,8 @@ const	IPrimitive	*IPrimitive::getPrimitive	(const	std::string	&absoluteOrRelativ
 			continue;
 		}
 		
-		uint indexStr=path.find("/");
-		string	childName;
+		string::size_type indexStr=path.find("/");
+		string	          childName;
 		if (indexStr==string::npos)
 		{
 			childName=path;
@@ -2755,4 +2755,5 @@ void Register ()
 // ***************************************************************************
 
 } // namespace NLLIGO
+
 

@@ -33,6 +33,7 @@
 #include "nel/misc/file.h"
 #include "nel/misc/i_xml.h"
 #include "nel/misc/o_xml.h"
+#define NOMINMAX
 #include <windows.h>
 
 using namespace std;
