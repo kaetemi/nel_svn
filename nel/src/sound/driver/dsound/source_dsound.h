@@ -30,19 +30,11 @@
 #include "../sound_driver.h"
 #include "../buffer.h"
 
-//#include <windows.h>
 #include <dsound.h>
-#undef min
-#undef max
-
 
 namespace NLSOUND {
 
-
-
 class CBufferDSound;
-
-
 
 /**  Keep trace of following states of the DirectSound buffer:
  *   - the buffer is being filled with samples (filling),

@@ -29,7 +29,7 @@
 #include "listener_fmod.h"
 #include "sound_driver_fmod.h"
 
-#include "fmod.h"
+#include <fmod.h>
 
 
 using namespace NLMISC;

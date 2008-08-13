@@ -31,6 +31,7 @@
 #include "sound/driver/openal/source_al.h"
 #include "sound/driver/openal/buffer_al.h"
 #include <AL/al.h>
+#include <AL/alut.h>
 #include "../sound_driver.h"
 #ifdef NL_OS_WINDOWS
 # include <objbase.h> // needed before eax.h
@@ -52,7 +53,10 @@ namespace NLSOUND {
 
 // alGenBuffers, alGenSources
 //typedef ALAPI ALvoid ALAPIENTRY (*TGenFunctionAL) ( ALsizei, ALuint* );
-typedef ALvoid (*TGenFunctionAL) ( ALsizei, ALuint* );
+typedef void (*TGenFunctionAL) ( ALsizei, ALuint* );
+
+// alDeleteBuffers
+typedef void (*TDeleteFunctionAL) ( ALsizei, const ALuint* );
 
 // alIsBuffer, alIsSource
 //typedef ALAPI ALboolean ALAPIENTRY (*TTestFunctionAL) ( ALuint );
@@ -113,9 +117,12 @@ public:
 	/// Create a source
 	virtual	ISource			*createSource();
 
-	virtual bool			readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) { /* todo*/ return false; }
+	virtual bool			readWavBuffer( IBuffer *destbuffer, const std::string &name,
+										   uint8 *wavData, uint dataSize);
 
-	virtual bool			readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency) { /* todo */ return false; }
+	virtual bool			readRawBuffer( IBuffer *destbuffer, const std::string &name,
+	                                       uint8 *rawData, uint dataSize, TSampleFormat format,
+	                                       uint32 frequency);
 
 	virtual void	startBench() { /* todo */ }
 	virtual void	endBench() { /* todo */ }
@@ -126,7 +133,7 @@ public:
 	void					applyRolloffFactor( float f );
 
 	/// Temp
-	virtual bool			loadWavFile( IBuffer *destbuffer, const char *filename );
+	virtual bool			loadWavFile( IBuffer *destbuffer, const char *filename);
 
 	/// Commit all the changes made to 3D settings of listener and sources
 	virtual void			commit3DChanges() {}
@@ -135,7 +142,20 @@ public:
 	virtual void			writeProfile(std::string& out) {}
 
 	// Does not create a sound loader
-
+	
+	/// \name Music
+	// @{
+	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
+	virtual bool playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
+	virtual void stopMusic(uint channel, uint xFadeTime);
+	virtual void pauseMusic(uint channel);
+	virtual void resumeMusic(uint channel);
+	virtual bool getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize);
+	virtual bool isMusicEnded(uint channel);
+	virtual float getMusicLength(uint channel);
+	virtual void setMusicVolume(uint channel, float gain);
+	// @}
+	
 public:
 	
 	/// Destructor
@@ -169,7 +189,7 @@ protected:
 										std::vector<ALuint>& names, uint& index, uint allocrate );
 
 	/// Delete a buffer or a source
-	bool					deleteItem( ALuint name, TGenFunctionAL aldeletefunc, std::vector<ALuint>& names );
+	bool					deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, std::vector<ALuint>& names );
 	
 private:
 
@@ -191,6 +211,20 @@ private:
 	// Rolloff factor (not in the listener in OpenAL, but relative to the sources)
 	float					_RolloffFactor;
 
+	
+	/// \name Music
+	// @{
+
+	/// Number of music channels/sources available.
+	enum {NumMusicChannel = 2};
+
+	/// Music channels/sources
+	CSourceAL	*_MusicChannel[NumMusicChannel];
+
+	/// Update the music channels.
+	void updateMusic();
+
+	// @}
 };
 
 

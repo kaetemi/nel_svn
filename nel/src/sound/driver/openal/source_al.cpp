@@ -34,18 +34,13 @@ using namespace NLMISC;
 namespace NLSOUND {
 
 
-// Currently, the OpenAL headers are different between Windows and Linux versions !
-#ifdef NL_OS_UNIX
-#define alGetSourcei alGetSourceiv
-#define alGetSourcef alGetSourcefv
-#endif
-
-
 /*
  * Constructor
  */
-CSourceAL::CSourceAL( ALuint sourcename ) : ISource(), _SourceName(sourcename)
-{}
+CSourceAL::CSourceAL( ALuint sourcename ) :
+	ISource(), _Buffer(NULL), _SourceName(sourcename)
+{
+}
 
 
 /*
@@ -54,7 +49,9 @@ CSourceAL::CSourceAL( ALuint sourcename ) : ISource(), _SourceName(sourcename)
 CSourceAL::~CSourceAL()
 {
 	CSoundDriverAL *sdal = CSoundDriverAL::instance();
-	sdal->removeSource( this );
+	if (_Buffer != NULL)
+		sdal->removeBuffer(_Buffer);
+	sdal->removeSource(this);
 }
 
 
@@ -62,10 +59,8 @@ CSourceAL::~CSourceAL()
  * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
  * otherwise the source is considered as a 3D source.
  */
-void					CSourceAL::setStaticBuffer( IBuffer *buffer )
+void CSourceAL::setStaticBuffer( IBuffer *buffer )
 {
-	ISource::setStaticBuffer( buffer );
-
 	// Stop source
 	alSourceStop( _SourceName );
 	TestALError();
@@ -75,6 +70,7 @@ void					CSourceAL::setStaticBuffer( IBuffer *buffer )
 	{
 		alSourcei( _SourceName, AL_BUFFER, AL_NONE );
 		TestALError();
+		_Buffer = NULL;
 	}
 	else
 	{
@@ -84,14 +80,22 @@ void					CSourceAL::setStaticBuffer( IBuffer *buffer )
 
 		// Set relative mode if the buffer is stereo
 		setSourceRelativeMode( bufferAL->isStereo() );
+		
+		_Buffer = buffer;
 	}
+}
+
+
+IBuffer *CSourceAL::getStaticBuffer()
+{
+	return _Buffer;
 }
 
 
 /*
  * Set looping on/off for future playbacks (default: off)
  */
-void					CSourceAL::setLooping( bool l )
+void CSourceAL::setLooping( bool l )
 {
 	alSourcei( _SourceName, AL_LOOPING, l?AL_TRUE:AL_FALSE );
 	TestALError();
@@ -101,7 +105,7 @@ void					CSourceAL::setLooping( bool l )
 /*
  * Return the looping state
  */
-bool					CSourceAL::getLooping() const
+bool CSourceAL::getLooping() const
 {
 	ALint b;
 	alGetSourcei( _SourceName, AL_LOOPING, &b );
@@ -113,13 +117,13 @@ bool					CSourceAL::getLooping() const
 /*
  * Play the static buffer (or stream in and play)
  */
-bool		CSourceAL::play()
+bool CSourceAL::play()
 {
-/* TODO	if ( _Buffer != NULL )
+	if ( _Buffer != NULL )
 	{
 		// Static playing mode
 		alSourcePlay( _SourceName );
-		TestALError();
+		return alGetError() == AL_NO_ERROR;
 	}
 	else
 	{
@@ -127,18 +131,16 @@ bool		CSourceAL::play()
 		nlwarning( "AM: Cannot play null buffer; streaming not implemented" );
 		nlstop;
 	}
-*/
-	// TODO : return a correct value, depending on alSourcePlay result.
-	return true;
+	return false;
 }
 
 
 /*
  * Stop playing
  */
-void					CSourceAL::stop()
+void CSourceAL::stop()
 {
-/* TODO	if ( _Buffer != NULL )
+	if ( _Buffer != NULL )
 	{
 		// Static playing mode
 		alSourceStop( _SourceName );
@@ -150,16 +152,15 @@ void					CSourceAL::stop()
 		nlwarning( "AM: Cannot stop null buffer; streaming not implemented" );
 		//nlstop;
 	}
-*/
 }
 
 
 /*
  * Pause. Call play() to resume.
  */
-void					CSourceAL::pause()
+void CSourceAL::pause()
 {
-/* TODO	if ( _Buffer != NULL )
+	if ( _Buffer != NULL )
 	{
 		// Static playing mode
 		alSourcePause( _SourceName );
@@ -171,14 +172,13 @@ void					CSourceAL::pause()
 		nlwarning( "AM: Cannot pause null buffer; streaming not implemented" );
 		nlstop;
 	}
-*/
 }
 
 
 /*
  * Return the playing state
  */
-bool					CSourceAL::isPlaying() const
+bool CSourceAL::isPlaying() const
 {
 	ALint srcstate;
 	alGetSourcei( _SourceName, AL_SOURCE_STATE, &srcstate );
@@ -190,7 +190,7 @@ bool					CSourceAL::isPlaying() const
 /*
  * Return true if playing is finished or stop() has been called.
  */
-bool					CSourceAL::isStopped() const
+bool CSourceAL::isStopped() const
 {
 	ALint srcstate;
 	alGetSourcei( _SourceName, AL_SOURCE_STATE, &srcstate );
@@ -202,7 +202,7 @@ bool					CSourceAL::isStopped() const
 /*
  * Update the source (e.g. continue to stream the data in)
  */
-bool					CSourceAL::update()
+bool CSourceAL::update()
 {
 	// Streaming not implemented
 	return false;
@@ -214,7 +214,7 @@ bool					CSourceAL::update()
  * 3D mode -> 3D position
  * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
  */
-void					CSourceAL::setPos( const NLMISC::CVector& pos, bool deffered)
+void CSourceAL::setPos( const NLMISC::CVector& pos, bool deffered)
 {
 	_Pos = pos;
 	// Coordinate system: conversion from NeL to OpenAL/GL:
@@ -229,20 +229,13 @@ void					CSourceAL::setPos( const NLMISC::CVector& pos, bool deffered)
 const NLMISC::CVector &CSourceAL::getPos() const
 {
 	return _Pos;
-/*
-	ALfloat v[3];
-	alGetSourcefv( _SourceName, AL_POSITION, v );
-	TestALError();
-	// Coordsys conversion
-	pos.set( v[0], -v[2], v[1] );
-*/
 }
 
 
 /*
  * Set the velocity vector (3D mode only)
  */
-void					CSourceAL::setVelocity( const NLMISC::CVector& vel, bool deferred )
+void CSourceAL::setVelocity( const NLMISC::CVector& vel, bool deferred )
 {
 	// Coordsys conversion
 	alSource3f( _SourceName, AL_VELOCITY, vel.x, vel.z, -vel.y );
@@ -253,7 +246,7 @@ void					CSourceAL::setVelocity( const NLMISC::CVector& vel, bool deferred )
 /*
  * Get the velocity vector
  */
-void					CSourceAL::getVelocity( NLMISC::CVector& vel ) const
+void CSourceAL::getVelocity( NLMISC::CVector& vel ) const
 {
 	ALfloat v[3];
 	alGetSourcefv( _SourceName, AL_VELOCITY, v );
@@ -266,7 +259,7 @@ void					CSourceAL::getVelocity( NLMISC::CVector& vel ) const
 /*
  * Set the direction vector (3D mode only)
  */
-void					CSourceAL::setDirection( const NLMISC::CVector& dir )
+void CSourceAL::setDirection( const NLMISC::CVector& dir )
 {
 	// Coordsys conversion
 	alSource3f( _SourceName, AL_DIRECTION, dir.x, dir.z, -dir.y );
@@ -277,7 +270,7 @@ void					CSourceAL::setDirection( const NLMISC::CVector& dir )
 /*
  * Get the direction vector
  */
-void					CSourceAL::getDirection( NLMISC::CVector& dir ) const
+void CSourceAL::getDirection( NLMISC::CVector& dir ) const
 {
 	ALfloat v[3];
 	alGetSourcefv( _SourceName, AL_DIRECTION, v );
@@ -293,7 +286,7 @@ void					CSourceAL::getDirection( NLMISC::CVector& dir ) const
  * 1.0 -> no attenuation
  * values > 1 (amplification) not supported by most drivers
  */
-void					CSourceAL::setGain( float gain )
+void CSourceAL::setGain( float gain )
 {
 	clamp(gain, 0.0f, 1.0f);
 	alSourcef( _SourceName, AL_GAIN, gain );
@@ -304,7 +297,7 @@ void					CSourceAL::setGain( float gain )
 /*
  * Get the gain
  */
-float					CSourceAL::getGain() const
+float CSourceAL::getGain() const
 {
 	ALfloat gain;
 	alGetSourcef( _SourceName, AL_GAIN, &gain );
@@ -316,7 +309,7 @@ float					CSourceAL::getGain() const
 /* Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
  * of one octave. 0 is not a legal value.
  */
-void					CSourceAL::setPitch( float pitch )
+void CSourceAL::setPitch( float pitch )
 {
 	nlassert( (pitch > 0) && (pitch <= 1.0f ) );
 	alSourcef( _SourceName, AL_PITCH, pitch );
@@ -327,7 +320,7 @@ void					CSourceAL::setPitch( float pitch )
 /*
  * Get the pitch
  */
-float					CSourceAL::getPitch() const
+float CSourceAL::getPitch() const
 {
 	ALfloat pitch;
 	alGetSourcef( _SourceName, AL_PITCH, &pitch );
@@ -339,7 +332,7 @@ float					CSourceAL::getPitch() const
 /*
  * Set the source relative mode. If true, positions are interpreted relative to the listener position.
  */
-void					CSourceAL::setSourceRelativeMode( bool mode )
+void CSourceAL::setSourceRelativeMode( bool mode )
 {
 	alSourcei( _SourceName, AL_SOURCE_RELATIVE, mode?AL_TRUE:AL_FALSE );
 	TestALError();
@@ -349,7 +342,7 @@ void					CSourceAL::setSourceRelativeMode( bool mode )
 /*
  * Get the source relative mode (3D mode only)
  */
-bool					CSourceAL::getSourceRelativeMode() const
+bool CSourceAL::getSourceRelativeMode() const
 {
 	ALint b;
 	alGetSourcei( _SourceName, AL_SOURCE_RELATIVE, &b );
@@ -361,7 +354,7 @@ bool					CSourceAL::getSourceRelativeMode() const
 /*
  * Set the min and max distances (3D mode only)
  */
-void					CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool deferred )
+void CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool deferred )
 {
 	nlassert( (mindist >= 0.0f) && (maxdist >= 0.0f) );
 	alSourcef( _SourceName, AL_REFERENCE_DISTANCE, mindist );
@@ -373,7 +366,7 @@ void					CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool defer
 /*
  * Get the min and max distances
  */
-void					CSourceAL::getMinMaxDistances( float& mindist, float& maxdist ) const
+void CSourceAL::getMinMaxDistances( float& mindist, float& maxdist ) const
 {
 	alGetSourcef( _SourceName, AL_REFERENCE_DISTANCE, &mindist );
 	alGetSourcef( _SourceName, AL_MAX_DISTANCE, &maxdist );
@@ -384,7 +377,7 @@ void					CSourceAL::getMinMaxDistances( float& mindist, float& maxdist ) const
 /*
  * Set the cone angles (in radian) and gain (in [0 , 1]) (3D mode only)
  */
-void					CSourceAL::setCone( float innerAngle, float outerAngle, float outerGain )
+void CSourceAL::setCone( float innerAngle, float outerAngle, float outerGain )
 {
 	nlassert( (outerGain >= 0.0f) && (outerGain <= 1.0f ) );
 	alSourcef( _SourceName, AL_CONE_INNER_ANGLE, radToDeg(innerAngle) );
@@ -397,7 +390,7 @@ void					CSourceAL::setCone( float innerAngle, float outerAngle, float outerGain
 /*
  * Get the cone angles (in radian)
  */
-void					CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain ) const
+void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain ) const
 {
 	float ina, outa;
 	alGetSourcef( _SourceName, AL_CONE_INNER_ANGLE, &ina );
@@ -412,7 +405,7 @@ void					CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerG
 /*
  * Set any EAX source property if EAX available
  */
-void					CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
+void CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
 {
 #if EAX_AVAILABLE == 1
 	if ( EAXSetProp != NULL )

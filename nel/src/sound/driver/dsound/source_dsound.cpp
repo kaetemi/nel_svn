@@ -34,8 +34,6 @@
 
 #if EAX_AVAILABLE == 1
 #include <eax.h>
-#undef min
-#undef max
 #endif
 
 #include <algorithm>

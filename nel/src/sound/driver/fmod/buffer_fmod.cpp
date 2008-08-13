@@ -31,10 +31,9 @@
 #include "sound_driver_fmod.h"
 
 #ifdef NL_OS_WINDOWS
-#include <windows.h>
-#include <mmsystem.h>
-#undef min
-#undef max
+#	define NOMINMAX
+#	include <windows.h>
+#	include <mmsystem.h>
 #endif
 
 using namespace NLMISC;
@@ -117,7 +116,6 @@ float CBufferFMod::getDuration() const
 // ***************************************************************************
 bool CBufferFMod::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CBufferFMod);
 
 	if (_FModSample)
     {
@@ -425,7 +423,6 @@ bool CBufferFMod::readWavBuffer(const std::string &name, uint8 *wavData, uint da
 // ***************************************************************************
 bool CBufferFMod::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CBufferFMod);
 	// free any existing data
     if (_FModSample != NULL)
     {

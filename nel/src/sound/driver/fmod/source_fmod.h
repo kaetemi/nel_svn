@@ -31,13 +31,8 @@
 #include "../buffer.h"
 
 #ifdef NL_OS_WINDOWS
-//#include <windows.h>
 #include <dsound.h>
 #endif
-
-#undef min
-#undef max
-
 
 namespace NLSOUND {
 

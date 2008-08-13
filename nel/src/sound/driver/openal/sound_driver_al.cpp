@@ -28,6 +28,7 @@
 #include "buffer_al.h"
 #include "listener_al.h"
 #include "nel/misc/path.h"
+#include "nel/misc/dynloadlib.h"
 #include "../sound_driver.h"
 
 using namespace std;
@@ -48,10 +49,10 @@ EAXGet					EAXGetProp = NULL;
 
 // Currently, the OpenAL headers are different between Windows and Linux versions !
 // AL_INVALID_XXXX are part of the spec, though.
-#ifdef NL_OS_UNIX
+/*#ifdef NL_OS_UNIX
 #define AL_INVALID_ENUM AL_ILLEGAL_ENUM  
 #define AL_INVALID_OPERATION AL_ILLEGAL_COMMAND 
-#endif
+#endif*/
 
 
 #ifdef NL_DEBUG
@@ -80,23 +81,70 @@ void TestALError()
 
 #define ROLLOFF_FACTOR_DEFAULT 1.0f
 
+#ifndef NL_STATIC
+
+class CSoundDriverALNelLibrary : public NLMISC::INelLibrary { 
+	void onLibraryLoaded(bool firstTime) { } 
+	void onLibraryUnloaded(bool lastTime) { }  
+};
+NLMISC_DECL_PURE_LIB(CSoundDriverALNelLibrary)
+
+#endif /* #ifndef NL_STATIC */
+
 /*
  * Sound driver instance creation
  */
 #ifdef NL_OS_WINDOWS
+
+// ******************************************************************
 	
-__declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance(bool useEax)
+#ifdef NL_STATIC
+ISoundDriver* createISoundDriverInstance
+#else
+__declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
+#endif
+	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_ISoundDriver);
 	CSoundDriverAL *driver = new CSoundDriverAL();
 	driver->init();
 	return driver;
 }
 
-__declspec(dllexport) uint32 NLSOUND_interfaceVersion ()
+// ******************************************************************
+
+#ifdef NL_STATIC
+uint32 interfaceVersion()
+#else
+__declspec(dllexport) uint32 NLSOUND_interfaceVersion()
+#endif
 {
 	return ISoundDriver::InterfaceVersion;
 }
+
+// ******************************************************************
+
+#ifdef NL_STATIC
+void outputProfile
+#else
+__declspec(dllexport) void NLSOUND_outputProfile
+#endif
+	(string &out)
+{
+	CSoundDriverAL::instance()->writeProfile(out);
+}
+
+// ******************************************************************
+
+#ifdef NL_STATIC
+ISoundDriver::TDriver getDriverType()
+#else
+__declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
+#endif
+{
+	return ISoundDriver::DriverOpenAl;
+}
+
+// ******************************************************************
 
 #elif defined (NL_OS_UNIX)
 
@@ -104,7 +152,6 @@ extern "C"
 {
 ISoundDriver* NLSOUND_createISoundDriverInstance (bool useEax)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_ISoundDriver);
 	CSoundDriverAL *driver = new CSoundDriverAL();
 	driver->init();
 	return driver;
@@ -146,9 +193,9 @@ CSoundDriverAL::CSoundDriverAL() :
 CSoundDriverAL::~CSoundDriverAL()
 {
 	// Remove the allocated (but not exported) source and buffer names
-	alDeleteSources( compactAliveNames( _Sources, alIsSource ), &*_Sources.begin() );
-	alDeleteBuffers( compactAliveNames( _Buffers, alIsBuffer ), &*_Buffers.begin() );
-
+	alDeleteSources(compactAliveNames( _Sources, alIsSource ), &*_Sources.begin());
+	alDeleteBuffers(compactAliveNames( _Buffers, alIsBuffer ), &*_Buffers.begin());
+	
 	// OpenAL exit
 	alutExit();
 
@@ -159,13 +206,13 @@ CSoundDriverAL::~CSoundDriverAL()
 /*
  * Initialization
  */
-bool		CSoundDriverAL::init()
+bool CSoundDriverAL::init()
 {
 	// OpenAL initialization
 	alutInit( NULL, NULL );
 
 	// Display version information
-	const ALubyte *alversion, *alrenderer, *alvendor, *alext;
+	const ALchar *alversion, *alrenderer, *alvendor, *alext;
 	alversion = alGetString( AL_VERSION );
 	alrenderer = alGetString( AL_RENDERER );
 	alvendor = alGetString( AL_VENDOR );
@@ -176,11 +223,11 @@ bool		CSoundDriverAL::init()
 
 #if EAX_AVAILABLE == 1
     // Set EAX environment if EAX is available
-	if ( alIsExtensionPresent((ALubyte *)"EAX") == AL_TRUE ) // or EAX2.0
+	if ( alIsExtensionPresent((ALchar *)"EAX") == AL_TRUE ) // or EAX2.0
 	{
 		nlinfo( "Initializing EAX" );
-	    EAXSetProp = (EAXSet)alGetProcAddress((ALubyte*)"EAXSet");
-		EAXGetProp = (EAXGet)alGetProcAddress((ALubyte*)"EAXGet");
+	    EAXSetProp = (EAXSet)alGetProcAddress((ALchar*)"EAXSet");
+		EAXGetProp = (EAXGet)alGetProcAddress((ALchar*)"EAXGet");
 		if ( EAXSetProp != NULL )
 		{
 			unsigned long ulEAXVal;
@@ -212,11 +259,13 @@ bool		CSoundDriverAL::init()
 /*
  * Allocate nb new items
  */
-void		CSoundDriverAL::allocateNewItems( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc,
-											  vector<ALuint>& names, uint index, uint nb )
+void CSoundDriverAL::allocateNewItems(TGenFunctionAL algenfunc, TTestFunctionAL altestfunc,
+									  vector<ALuint>& names, uint index, uint nb )
 {
 	nlassert( index == names.size() );
 	names.resize( index + nb );
+	// FIXME assumption about inner workings of std::vector;
+	// &(names[...]) only works with "names.size() - nbalive == 1"
 	generateItems( algenfunc, altestfunc, nb, &(names[index]) );
 }
 
@@ -237,8 +286,9 @@ void ThrowGenException( TGenFunctionAL algenfunc )
 /*
  * Generate nb buffers/sources
  */
-void		CSoundDriverAL::generateItems( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc, uint nb, ALuint *array )
+void CSoundDriverAL::generateItems( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc, uint nb, ALuint *array )
 {
+	// array is actually a std::vector element address!
 	algenfunc( nb, array );
 
 	// Error handling
@@ -261,23 +311,22 @@ void		CSoundDriverAL::generateItems( TGenFunctionAL algenfunc, TTestFunctionAL a
 /*
  * Create a sound buffer
  */
-IBuffer			*CSoundDriverAL::createBuffer()
+IBuffer *CSoundDriverAL::createBuffer()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundDriverAL);
-	return new CBufferAL( createItem( alGenBuffers, alIsBuffer, _Buffers, _NbExpBuffers, BUFFER_ALLOC_RATE ) );
+	CBufferAL *buffer = new CBufferAL(createItem(alGenBuffers, alIsBuffer, _Buffers, _NbExpBuffers, BUFFER_ALLOC_RATE));
+	return buffer;
 }
 
 
 /*
  * Create a source
  */
-ISource			*CSoundDriverAL::createSource()
+ISource *CSoundDriverAL::createSource()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundDriverAL);
-	CSourceAL *sourceal = new CSourceAL( createItem( alGenSources, alIsSource, _Sources, _NbExpSources, SOURCE_ALLOC_RATE ) );
+	CSourceAL *sourceal = new CSourceAL(createItem(alGenSources, alIsSource, _Sources, _NbExpSources, SOURCE_ALLOC_RATE));
 	if ( _RolloffFactor != ROLLOFF_FACTOR_DEFAULT )
 	{
-		alSourcef( sourceal->sourceName(), AL_ROLLOFF_FACTOR, _RolloffFactor );
+		alSourcef(sourceal->sourceName(), AL_ROLLOFF_FACTOR, _RolloffFactor);
 	}
 	return sourceal;
 }
@@ -286,10 +335,9 @@ ISource			*CSoundDriverAL::createSource()
 /*
  * Create a sound buffer or a sound source
  */
-ALuint			CSoundDriverAL::createItem( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc,
-											vector<ALuint>& names, uint& index, uint allocrate )
+ALuint CSoundDriverAL::createItem(TGenFunctionAL algenfunc, TTestFunctionAL altestfunc,
+								  vector<ALuint>& names, uint& index, uint allocrate)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundDriverAL);
 	nlassert( index <= names.size() );
 	if ( index == names.size() )
 	{
@@ -298,14 +346,17 @@ ALuint			CSoundDriverAL::createItem( TGenFunctionAL algenfunc, TTestFunctionAL a
 		if ( nbalive == names.size() )
 		{
 			// Extend vector of names
+			// FIXME? assumption about inner workings of std::vector
 			allocateNewItems( algenfunc, altestfunc, names, index, allocrate );
 		}
 		else
 		{
 			// Take the room of the deleted names
-			nlassert( nbalive < names.size() );
+			nlassert(nbalive < names.size());
 			index = nbalive;
-			generateItems( algenfunc, altestfunc, names.size() - nbalive, &(names[nbalive]) );
+			// FIXME assumption about inner workings of std::vector;
+			// &(names[...]) only works with "names.size() - nbalive == 1"
+			generateItems(algenfunc, altestfunc, names.size() - nbalive, &(names[nbalive]));
 		}
 	}
 
@@ -320,7 +371,7 @@ ALuint			CSoundDriverAL::createItem( TGenFunctionAL algenfunc, TTestFunctionAL a
 /*
  * Remove names of deleted buffers and return the number of valid buffers
  */
-uint			CSoundDriverAL::compactAliveNames( vector<ALuint>& names, TTestFunctionAL altestfunc )
+uint CSoundDriverAL::compactAliveNames( vector<ALuint>& names, TTestFunctionAL altestfunc )
 {
 	vector<ALuint>::iterator iball, ibcompacted;
 	for ( iball=names.begin(), ibcompacted=names.begin(); iball!=names.end(); ++iball )
@@ -369,7 +420,7 @@ void			CSoundDriverAL::removeSource( ISource *source )
 /*
  * Delete a buffer or a source
  */
-bool			CSoundDriverAL::deleteItem( ALuint name, TGenFunctionAL aldeletefunc, vector<ALuint>& names )
+bool			CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, vector<ALuint>& names )
 {
 	vector<ALuint>::iterator ibn = find( names.begin(), names.end(), name );
 	if ( ibn == names.end() )
@@ -388,7 +439,6 @@ bool			CSoundDriverAL::deleteItem( ALuint name, TGenFunctionAL aldeletefunc, vec
  */
 IListener		*CSoundDriverAL::createListener()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundDriverAL);
 	nlassert( CListenerAL::instance() == NULL );
 	return new CListenerAL();
 }
@@ -428,37 +478,96 @@ TSampleFormat ALtoNLSoundFormat( ALenum alformat )
 /*
  * Temp
  */
-bool			CSoundDriverAL::loadWavFile( IBuffer *destbuffer, const char *filename )
+bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
 {
-// Currently, the OpenAL UT headers are different between Windows and Linux versions
-#ifdef NL_OS_WINDOWS
 	ALsizei size,freq;
 	ALenum format;
 	ALvoid *data;
 	ALboolean loop;
 	alutLoadWAVFile( const_cast<char*>(filename), &format, &data, &size, &freq, &loop ); // last arg in some al.h
-#else
-	ALsizei bits;
-	ALsizei size,freq;
-	ALsizei format;
-	ALvoid *data;
-	alutLoadWAV( const_cast<char*>(filename), &data, &format, &size, &bits, &freq ); 
-#endif
 	if ( data == NULL )
-	{
 		return false;
-	}
+	nldebug("  format after load = %x", (uint)format);
+	
 	destbuffer->setFormat( ALtoNLSoundFormat(format), freq );
 	destbuffer->fillBuffer( data, size );
 
 	string ext = CFile::getFilenameWithoutExtension(filename);
 // TODO	static_cast<CBufferAL*>(destbuffer)->setName(ext);
 
-#ifdef NL_OS_WINDOWS
 	alutUnloadWAV(format,data,size,freq); // Where is it on Linux ?!?
-#endif
 	return true;
 }
 
+/*
+ * loads a memory mapped .wav-file into the given buffer
+ */
+bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) {
+	ALenum format;
+	ALsizei size;
+	ALfloat frequency;
+	ALvoid *sampleData;
+	
+	// FIXME check for correct buffer name
+	sampleData = alutLoadMemoryFromFileImage ((ALvoid *)wavData, (ALsizei)dataSize,
+                                              &format, &size, &frequency);
+    destbuffer->setFormat(ALtoNLSoundFormat(format), (uint)frequency);
+    destbuffer->fillBuffer((void*)sampleData, (uint32)size);
+    free(sampleData);
+    return true;
+}
+
+bool CSoundDriverAL::readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+{
+	nlassert(destbuffer != NULL);
+	nlassert(rawData != NULL);
+	if (dataSize == 0) {// ???
+		nlwarning("CSoundDriverAL::readRawBuffer() -- dataSize == 0");
+		return true;
+	}
+	// FIXME check for correct buffer name
+	destbuffer->setFormat(format, (uint)frequency);
+	destbuffer->fillBuffer(rawData, dataSize);
+	return true;
+}
+
+bool CSoundDriverAL::playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop) {
+	return false;
+}
+
+bool CSoundDriverAL::playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop) {
+	return false;
+}
+
+void CSoundDriverAL::stopMusic(uint channel, uint xFadeTime) {
+}
+
+
+void CSoundDriverAL::pauseMusic(uint channel) {
+}
+
+
+void CSoundDriverAL::resumeMusic(uint channel) {
+}
+
+
+bool CSoundDriverAL::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize) {
+	result = CFile::getFilenameWithoutExtension (filename);
+	return true;
+}
+
+
+bool CSoundDriverAL::isMusicEnded(uint channel) {
+	return true;
+}
+
+
+float CSoundDriverAL::getMusicLength(uint channel) {
+	return 0.0f;
+}
+
+
+void CSoundDriverAL::setMusicVolume(uint channel, float gain) {
+}
 
 } // NLSOUND

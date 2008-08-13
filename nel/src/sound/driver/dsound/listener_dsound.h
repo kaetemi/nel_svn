@@ -28,17 +28,12 @@
 
 
 #include "../listener.h"
-//#include <windows.h>
 #include "../sound_driver.h"
 #include <dsound.h>
 
 #if EAX_AVAILABLE == 1
 #include <eax.h>
 #endif
-
-#undef min
-#undef max
-
 
 namespace NLSOUND {
 
