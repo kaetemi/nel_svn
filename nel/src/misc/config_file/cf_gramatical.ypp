@@ -5,7 +5,6 @@
 #ifdef NL_OS_WINDOWS
 #pragma warning (disable : 4786)
 #endif // NL_OS_WINDOWS
-
 #include "nel/misc/config_file.h"
 #include "nel/misc/common.h"
 #include "nel/misc/debug.h"
@@ -89,7 +88,7 @@ int yyerror (const char *);
 %token <Val> ADD_ASSIGN ASSIGN VARIABLE STRING SEMICOLON
 %token <Val> PLUS MINUS MULT DIVIDE
 %token <Val> RPAREN LPAREN RBRACE LBRACE
-%token <Val> COMMA INT REAL FILELINE
+%token <Val> COMMA INTEGER REAL FILELINE
 
 %type <Val> inst
 %type <Val> expression
@@ -108,15 +107,14 @@ instlist:	instlist inst { }
 		|	inst { }
 		;
 
-inst	:	FILELINE STRING INT
+inst	:	FILELINE STRING INTEGER
 			{
 				DEBUG_PRINTF("Forcing current file %s and line %u\n", $2.String, $3.Int-1);
 
 				if (cf_CurrentFile != NULL)
 					free(cf_CurrentFile);
 				// store the filename 
-				cf_CurrentFile = (char*)malloc(strlen($2.String)+1);
-				strcpy(cf_CurrentFile, $2.String);
+				cf_CurrentFile = strdup($2.String);
 				// store the current line minus 1 because the #fileline count for a line
 				cf_CurrentLine = $3.Int-1;
 			}
@@ -266,7 +264,7 @@ expr3:		expr4 { $$ = $1; }
 expr4:		PLUS expr4 { $$ = $2; }
 			| MINUS expr4 { cf_value v; v.Type=NLMISC::CConfigFile::CVar::T_INT; /* just to avoid a warning, I affect 'v' with a dummy value */ $$ = cf_op($2,v,OP_NEG); }
 			| LPAREN expression RPAREN { $$ = $2; }
-			| INT { $$ = yylval.Val; }
+			| INTEGER { $$ = yylval.Val; }
 			| REAL { $$ = yylval.Val; }
 			| STRING { $$ = yylval.Val; }
 			| variable { $$ = $1; }

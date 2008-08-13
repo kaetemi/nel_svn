@@ -27,10 +27,14 @@
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
 
-// Manualy added for complient with NL memory, must be added each time source are re-generated.
+/*
+ * START MANUAL ADDITION:
+ *   Manualy added for complient with NL memory, must be added each time source are re-generated.
+ */
 #include "nel/misc/types_nl.h"
+/* END MANUAL ADDITION */
 
-#include <stdio.h>
+#include <cstdio>
 
 
 /* cfront 1.2 defines "c_plusplus" instead of "__cplusplus" */
@@ -2355,7 +2359,7 @@ YY_RULE_SETUP
 					cflval.Val.Type = T_INT;
 					cflval.Val.Int = atoi (yytext);
 					DEBUG_PRINTF("lex: int '%s' '%d'\n", yytext, cflval.Val.Int);
-					return INT;
+					return INTEGER;
 				}
 			}
 	YY_BREAK
@@ -2368,7 +2372,7 @@ YY_RULE_SETUP
 					cflval.Val.Type = T_INT;
 					sscanf (yytext, "%x", &(cflval.Val.Int));
 					DEBUG_PRINTF("lex: hexa '%s' '0x%x' '%d'\n", yytext, cflval.Val.Int, cflval.Val.Int);
-					return INT;
+					return INTEGER;
 				}
 			}
 	YY_BREAK

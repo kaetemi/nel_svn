@@ -23,8 +23,6 @@
  * MA 02111-1307, USA.
  */
 
-//#include "../stdmisc.h"
-
 #include "nel/misc/config_file.h"
 
 #include <ctime>
@@ -60,9 +58,9 @@ namespace NLMISC
 {
 
 #ifndef NL_DONT_USE_EXTERNAL_CODE
-char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float", "Boolean" };
+const char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float", "Boolean" };
 #else
-char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float" };
+const char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float" };
 #endif // NL_DONT_USE_EXTERNAL_CODE
 
 int CConfigFile::CVar::asInt (int index) const
@@ -410,7 +408,7 @@ void CConfigFile::reparse (bool lookupPaths)
 		if (!CPath::lookup(fn, false).empty())
 		{
 			ucstring content;
-			CI18N::readTextFile(fn, content, false, true, true);
+			CI18N::readTextFile(fn, content, true, true, true);
 			string utf8 = content.toUtf8();
 
 			CMemStream stream;
@@ -790,7 +788,7 @@ void CConfigFile::setCallback (const string &VarName, void (*cb)(CConfigFile::CV
 		if (VarName == (*it).Name)
 		{
 			(*it).Callback = cb;
-			nlinfo ("CF: Setting callback to reload the variable '%s' in the file '%s' when modified externally", VarName.c_str(), getFilename().c_str());
+			//nldebug("CF: Setting callback to reload the variable '%s' in the file '%s' when modified externally", VarName.c_str(), getFilename().c_str());
 			return;
 		}
 	}
@@ -801,7 +799,7 @@ void CConfigFile::setCallback (const string &VarName, void (*cb)(CConfigFile::CV
 	Var.Type = CVar::T_UNKNOWN;
 	Var.Comp = false;
 	_Vars.push_back (Var);
-	nlinfo ("CF: Setting callback to reload the variable '%s' in the file '%s' when modified externally (currently unknown)", VarName.c_str(), getFilename().c_str());
+	//nldebug("CF: Setting callback to reload the variable '%s' in the file '%s' when modified externally (currently unknown)", VarName.c_str(), getFilename().c_str());
 }
 
 // ***************************************************************************

@@ -25,7 +25,7 @@
 #define	RBRACE	268
 #define	LBRACE	269
 #define	COMMA	270
-#define	INT	271
+#define	INTEGER	271
 #define	REAL	272
 #define	FILELINE	273
 
@@ -38,11 +38,12 @@
 #pragma warning (disable : 4786)
 #endif // NL_OS_WINDOWS
 
+
 #include "nel/misc/config_file.h"
 #include "nel/misc/common.h"
 #include "nel/misc/debug.h"
 
-#include <stdio.h>
+#include <cstdio>
 #include <vector>
 #include <string>
 
@@ -115,7 +116,7 @@ int yyerror (const char *);
 typedef union	{
 			cf_value Val;
 		} YYSTYPE;
-#include <stdio.h>
+#include <cstdio>
 
 #ifndef __cplusplus
 #ifndef __STDC__
@@ -196,7 +197,7 @@ static const short yyrline[] = { 0,
 
 static const char * const yytname[] = {   "$","error","$undefined.","ADD_ASSIGN",
 "ASSIGN","VARIABLE","STRING","SEMICOLON","PLUS","MINUS","MULT","DIVIDE","RPAREN",
-"LPAREN","RBRACE","LBRACE","COMMA","INT","REAL","FILELINE","ROOT","instlist",
+"LPAREN","RBRACE","LBRACE","COMMA","INTEGER","REAL","FILELINE","ROOT","instlist",
 "inst","expression","exprbrace","expr2","expr3","expr4","variable", NULL
 };
 #endif
@@ -824,8 +825,7 @@ case 5:
 				if (cf_CurrentFile != NULL)
 					free(cf_CurrentFile);
 				// store the filename 
-				cf_CurrentFile = (char*)malloc(strlen(yyvsp[-1].Val.String)+1);
-				strcpy(cf_CurrentFile, yyvsp[-1].Val.String);
+				cf_CurrentFile = strdup(yyvsp[-1].Val.String);
 				// store the current line minus 1 because the #fileline count for a line
 				cf_CurrentLine = yyvsp[0].Val.Int-1;
 			;

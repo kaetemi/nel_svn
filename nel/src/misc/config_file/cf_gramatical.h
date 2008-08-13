@@ -15,7 +15,7 @@ typedef union	{
 #define	RBRACE	268
 #define	LBRACE	269
 #define	COMMA	270
-#define	INT	271
+#define	INTEGER	271
 #define	REAL	272
 #define	FILELINE	273
 
