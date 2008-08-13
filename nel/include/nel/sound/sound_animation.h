@@ -51,7 +51,7 @@ public:
 		NoId = -1
 	};
 
-	CSoundAnimation(std::string& name, TSoundAnimId id) : _Name(name), _Id(id), _Dirty(false) {}
+	CSoundAnimation(std::string& name, TSoundAnimId id) : _Id(id), _Name(name), _Dirty(false) {}
 
 	virtual ~CSoundAnimation() {}
 

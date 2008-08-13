@@ -291,6 +291,9 @@ void CComplexSource::stop()
 	case CComplexSound::MODE_ALL_IN_ONE:
 		mixer->removeEvents(this);
 		break;
+	case CComplexSound::MODE_UNDEFINED:
+	default:
+		break;
 	}
 
 	CSourceCommon::stop();

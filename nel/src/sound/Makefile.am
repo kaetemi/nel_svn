@@ -8,8 +8,7 @@ SUBDIRS              = driver
 
 lib_LTLIBRARIES      = libnelsnd.la
 
-libnelsnd_la_SOURCES = \
-	async_file_manager_sound.cpp \
+libnelsnd_la_SOURCES = async_file_manager_sound.cpp \
 	async_file_manager_sound.h \
 	audio_mixer_user.cpp \
 	audio_mixer_user.h \

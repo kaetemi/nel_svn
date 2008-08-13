@@ -37,8 +37,6 @@
 #include "mixing_track.h"
 #include "sound.h"
 #include <vector>
-#include <hash_set>
-#include <hash_map>
 #include <list>
 #include <numeric>
 
@@ -76,11 +74,19 @@ const uint MAX_TRACKS = 32;
 template <class Pointer>
 struct THashPtr : public std::unary_function<const Pointer &, size_t>
 {
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
 	size_t operator () (const Pointer &ptr) const
 	{
-		std::hash_set<uint>::hasher	h;
+		//CHashSet<uint>::hasher	h;
 		// transtype the pointer into int then hash it
-		return h.operator()(uint(ptr));
+		//return h.operator()(uint(uintptr_t(ptr)));
+		return (size_t)(uintptr_t)ptr;
+	}
+	inline bool operator() (const Pointer &ptr1, const Pointer &ptr2) const
+	{
+		// delegate the work to someone else as well?
+		return (uintptr_t)ptr1 < (uintptr_t)ptr2;
 	}
 };
 
@@ -404,12 +410,12 @@ public:
 private:
 
 	// utility function for automatic sample bank loading.
-	bool CAudioMixerUser::tryToLoadSoundBank(const std::string &sampleName);
+	bool tryToLoadSoundBank(const std::string &sampleName);
 
 
-	typedef std::hash_set<CSourceCommon*, THashPtr<CSourceCommon*> >					TSourceContainer;
-	typedef std::hash_set<IMixerUpdate*, THashPtr<IMixerUpdate*> >						TMixerUpdateContainer;
-	typedef std::hash_map<IBuffer*, std::vector<class CSound*>, THashPtr<IBuffer*> >	TBufferToSourceContainer;
+	typedef CHashSet<CSourceCommon*, THashPtr<CSourceCommon*> >					TSourceContainer;
+	typedef CHashSet<IMixerUpdate*, THashPtr<IMixerUpdate*> >						TMixerUpdateContainer;
+	typedef CHashMap<IBuffer*, std::vector<class CSound*>, THashPtr<IBuffer*> >	TBufferToSourceContainer;
 //	typedef std::multimap<NLMISC::TTime, IMixerEvent*>									TTimedEventContainer;
 	typedef std::multimap<NLMISC::TTime, NLMISC::CDbgPtr<IMixerEvent> >					TTimedEventContainer;
 	typedef std::multimap<IMixerEvent*, TTimedEventContainer::iterator>					TEventContainer;
@@ -458,7 +464,7 @@ protected:
 	/// Fill a vector of position and mute flag for all playing sound source.
 	virtual void				getPlayingSoundsPos(bool virtualPos, std::vector<std::pair<bool, NLMISC::CVector> > &pos);
 
-	typedef std::hash_map<NLMISC::TStringId, CControledSources, NLMISC::CStringIdHasher>	TUserVarControlsContainer;
+	typedef CHashMap<NLMISC::TStringId, CControledSources, NLMISC::CStringIdHasher>	TUserVarControlsContainer;
 	/// Container for all user controler and currently controled playing source
 	TUserVarControlsContainer	_UserVarControls;
 

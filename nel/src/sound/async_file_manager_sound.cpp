@@ -42,7 +42,6 @@ NLMISC_SAFE_SINGLETON_IMPL(CAsyncFileManagerSound);
 
 /*CAsyncFileManagerSound &CAsyncFileManagerSound::getInstance()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CAsyncFileManagerSound);
 	if (_Singleton == NULL)
 	{
 		_Singleton = new CAsyncFileManagerSound();
@@ -63,7 +62,6 @@ void	CAsyncFileManagerSound::terminate()
 
 void	CAsyncFileManagerSound::loadWavFile(IBuffer *pdestBuffer, const std::string &filename)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CAsyncFileManagerSound);
 	CAsyncFileManager::getInstance().addLoadTask(new CLoadWavFile(pdestBuffer, filename));
 }
 
@@ -137,7 +135,7 @@ void CAsyncFileManagerSound::cancelSignal (bool *pSgn)
 
 // Load task.
 CAsyncFileManagerSound::CLoadWavFile::CLoadWavFile (IBuffer *pdestBuffer, const std::string &filename)
-:_Filename(filename), _pDestbuffer(pdestBuffer)
+: _pDestbuffer(pdestBuffer), _Filename(filename) 
 {
 	if (_Filename.empty())
 	{
@@ -151,7 +149,6 @@ CAsyncFileManagerSound::CLoadWavFile::CLoadWavFile (IBuffer *pdestBuffer, const 
 
 void CAsyncFileManagerSound::CLoadWavFile::run (void)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CAsyncFileManagerSound);
 	nldebug("Loading sample %s...", _Filename.c_str());
 //	nlSleep(500);
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();

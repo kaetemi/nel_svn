@@ -27,8 +27,6 @@
 
 #include <iomanip>
 
-#include "nel/memory/memory_manager.h"
-
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/progress_callback.h"
 #include "nel/misc/big_file.h"
@@ -106,25 +104,24 @@ const char *getPriorityStr( TSoundPriority p )
 
 UAudioMixer	*UAudioMixer::createAudioMixer()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 	return new CAudioMixerUser();
 }
 
 
 // ******************************************************************
 
-CAudioMixerUser::CAudioMixerUser() : _SoundDriver(NULL),
-									 _ListenPosition(CVector::Null),
-									 _NbTracks(0),
-									 _Leaving(false),
+CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
+									 _UseADPCM(true),
+									 _SoundDriver(NULL),
 									 _BackgroundSoundManager(0),
+									 _ClusteredSound(0),
+									 _ListenPosition(CVector::Null),
+									 _PackedSheetPath(""),
 									 _BackgroundMusicManager(0),
 									 _PlayingSources(0),
 									 _PlayingSourcesMuted(0),
-									 _ClusteredSound(0),
-									_PackedSheetPath(""),
-									_UseADPCM(true),
-									_AutoLoadSample(false)
+									 _NbTracks(0),
+									 _Leaving(false)
 {
 	if ( _Instance == NULL )
 	{
@@ -218,7 +215,6 @@ void CAudioMixerUser::initClusteredSound(NL3D::UScene *uscene, float minGain, fl
 
 void CAudioMixerUser::initClusteredSound(NL3D::CScene *scene, float minGain, float maxDistance, float portalInterpolate = 20.0f)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 	if (_ClusteredSound == 0)
 		_ClusteredSound = new CClusteredSound;
 
@@ -372,7 +368,6 @@ void CAudioMixerUser::setSamplePath(const std::string& path)
 
 void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressCallback *progressCallBack, bool autoLoadSample, TDriver driverType, bool forceSoftwareBuffer)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 	nldebug( "AM: Init..." );
 
 	_profile(( "AM: ---------------------------------------------------------------" ));
@@ -385,7 +380,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	try
 	{
 		// create the wanted driver
-		nlctassert(NumDrivers == ISoundDriver::NumDrivers);
+		nlctassert(NumDrivers == UAudioMixer::TDriver(ISoundDriver::NumDrivers));
 		_SoundDriver = ISoundDriver::createDriver(useEax, this, (ISoundDriver::TDriver)driverType, forceSoftwareBuffer);
 		if(_SoundDriver)
 		{
@@ -590,7 +585,6 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 
 void	CAudioMixerUser::buildSampleBankList()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 	uint i;
 	// regenerate the sample banks list
 	const std::string &sp = _SamplePath;
@@ -708,7 +702,7 @@ void	CAudioMixerUser::buildSampleBankList()
 				// NB : the next commented line replaced by the next two line.
 				//		The first generate an access violation at the 64th insert !
 				// bankFile.insert(bankFile.begin()+i, filename);
-				bankFile.insert(bankFile.begin()+i);
+				bankFile.insert(bankFile.begin()+i, NULL);
 				bankFile[i] = filename;
 			}
 		}
@@ -1583,7 +1577,7 @@ bool CAudioMixerUser::tryToLoadSoundBank(const std::string &sampleName)
 		// extract samplebank name
 		path = NLMISC::CFile::getPath(path);
 		vector<string> rep;
-		explode(path, "/", rep, true);
+		explode(path, string("/"), rep, true);
 
 		loadSampleBank(false, rep.back());
 
@@ -1601,7 +1595,6 @@ bool CAudioMixerUser::tryToLoadSoundBank(const std::string &sampleName)
 
 USource				*CAudioMixerUser::createSource( TSoundId id, bool spawn, TSpawnEndCallback cb, void *userParam, NL3D::CCluster *cluster, CSoundContext *context )
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 #if NL_PROFILE_MIXER
 	TTicks start = CTime::getPerformanceTime();
 #endif
@@ -1834,7 +1827,6 @@ void				CAudioMixerUser::loadEnvEffects( const char *filename )
 
 uint32			CAudioMixerUser::loadSampleBank(bool async, const std::string &name, std::vector<std::string> *notfoundfiles )
 {
-	NL_ALLOC_CONTEXT(NLSOUND_UAudioMixer);
 //	nlassert( filename != NULL );
 
 //	string path = _SamplePath;

@@ -54,7 +54,6 @@ CSampleBank::TVirtualBankCont		CSampleBank::_VirtualBanks;
 
 void				CSampleBank::init(NLGEORGES::UFormElm *mixerConfig)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSampleBank);
 	if (mixerConfig == 0)
 		return;
 

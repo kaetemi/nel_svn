@@ -32,7 +32,6 @@
 #include "nel/sound/u_source.h"
 #include "nel/georges/u_form_elm.h"
 #include <string>
-#include <hash_map>
 
 namespace NLSOUND {
 
@@ -44,7 +43,7 @@ class CSound;
 
 /// Sound names hash map
 //typedef std::hash_map<std::string, CSound*> TSoundMap;
-typedef std::hash_map<NLMISC::TStringId, CSound*, NLMISC::CStringIdHasher> TSoundMap;
+typedef CHashMap<NLMISC::TStringId, CSound*, NLMISC::CStringIdHasher> TSoundMap;
 
 /// Sound names set (for ambiant sounds)
 typedef std::set<CSound*> TSoundSet;

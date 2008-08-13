@@ -164,7 +164,6 @@ CSound	*CContextSound::getContextSound(CSoundContext &context)
 
 void CContextSound::init()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CContextSound);
 	uint	nbJoker = 0;
 	uint	contextArgIndex[SoundContextNbArgs];
 	bool	useRandom = false;

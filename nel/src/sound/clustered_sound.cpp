@@ -29,6 +29,7 @@
 #include "nel/georges/u_form.h"
 #include "nel/georges/u_form_elm.h"
 #include "nel/georges/load_form.h"
+//#include "nel/3d/std3d.h"
 #include "nel/3d/scene.h"
 #include "nel/3d/scene_user.h"
 #include "nel/3d/cluster.h"
@@ -41,21 +42,14 @@
 #endif
 #include "clustered_sound.h"
 
-#ifdef min
-#undef min
-#endif
-#ifdef max
-#undef max
-#endif
-
-
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+
 namespace NLSOUND
 {
 
-char *CClusteredSound::_EnvironmentNames[] =
+const char *CClusteredSound::_EnvironmentNames[] =
 {
     "GENERIC",
     "PADDEDCELL",
@@ -85,7 +79,7 @@ char *CClusteredSound::_EnvironmentNames[] =
     "PSYCHOTIC",
 	NULL
 };
-char *CClusteredSound::_MaterialNames[] = 
+const char *CClusteredSound::_MaterialNames[] = 
 {
 	"SINGLEWINDOW",
 	"DOUBLEWINDOW",
@@ -387,15 +381,8 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 	}
 	// check for source to stop
 	{
-#if _STLPORT_VERSION >= 0x450
 		TClusterSoundCont	oldSources;
 		oldSources.swap(_Sources);
-#else
-		// there is a bug in the swap methode in stlport 4.5, so fallback to a
-		// very less effective create by copy and clear.
-		TClusterSoundCont	oldSources(_Sources);
-		_Sources.clear();
-#endif
 
 		TClusterSoundCont::iterator first(newSources.begin()), last(newSources.end());
 		for (; first != last; ++first)

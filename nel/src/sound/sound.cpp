@@ -43,7 +43,6 @@ namespace NLSOUND {
 
 CSound *CSound::createSound(const std::string &filename, NLGEORGES::UFormElm& formRoot)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSound);
 	CSound *ret = NULL;
 	string	soundType;
 
@@ -103,12 +102,12 @@ CSound *CSound::createSound(const std::string &filename, NLGEORGES::UFormElm& fo
 CSound::CSound() : 
 	_Gain(1.0f), 
 	_Pitch(1.0f),
-	_MaxDist(1000000.0f),
 	_Priority(MidPri), 
-	_Looping(false),
 	_ConeInnerAngle(6.283185f), 
 	_ConeOuterAngle(6.283185f), 
 	_ConeOuterGain( 1.0f ),
+	_Looping(false),
+	_MaxDist(1000000.0f),
 	_UserVarControler(CStringMapper::emptyId())
 {
 }

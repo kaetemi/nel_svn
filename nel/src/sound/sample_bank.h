@@ -33,7 +33,6 @@
 #include "nel/sound/u_source.h"
 #include "audio_mixer_user.h"
 #include <string>
-#include <hash_map>
 
 namespace NLSOUND {
 
@@ -55,7 +54,7 @@ struct eqname
 
 /// Sample names hash map
 //typedef std::hash_map<std::string, IBuffer*> TSampleTable;
-typedef std::hash_map<NLMISC::TStringId, IBuffer*, NLMISC::CStringIdHasher> TSampleTable;
+typedef CHashMap<NLMISC::TStringId, IBuffer*, NLMISC::CStringIdHasher> TSampleTable;
 
 
 /**
@@ -137,7 +136,7 @@ private:
 	void onUpdate();
 
 //	typedef std::hash_map<std::string, CSampleBank*>				TSampleBankContainer;
-	typedef std::hash_map<NLMISC::TStringId, CSampleBank*, NLMISC::CStringIdHasher>			TSampleBankContainer;
+	typedef CHashMap<NLMISC::TStringId, CSampleBank*, NLMISC::CStringIdHasher>			TSampleBankContainer;
 
 	// The map off all loaded sample banks
 	static TSampleBankContainer			_Banks;
@@ -174,7 +173,7 @@ private:
 	};
 
 	/// List of virtual sample bank.
-	typedef std::hash_map<NLMISC::TStringId, std::vector<TFilteredBank>, NLMISC::CStringIdHasher>	TVirtualBankCont;
+	typedef CHashMap<NLMISC::TStringId, std::vector<TFilteredBank>, NLMISC::CStringIdHasher>	TVirtualBankCont;
 	static TVirtualBankCont		_VirtualBanks;
 
 };

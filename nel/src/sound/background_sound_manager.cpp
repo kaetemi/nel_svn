@@ -58,7 +58,7 @@ const float BACKGROUND_SOUND_ALTITUDE = 5.0f;
 
 
 CBackgroundSoundManager::CBackgroundSoundManager()
-: _LastPosition(0,0,0), _Playing(false), _DoFade(false)
+: _Playing(false), _DoFade(false), _LastPosition(0,0,0) 
 {
 	for (uint i=0; i<UAudioMixer::TBackgroundFlags::NB_BACKGROUND_FLAGS; ++i)
 	{
@@ -157,7 +157,7 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 	if (n == 2)
 	{
 		// no layer spec, default to layer A
-		uint32 pos1 = rawSoundName.find ("-");
+		string::size_type pos1 = rawSoundName.find ("-");
 		if(pos1 == string::npos)
 		{
 			nlwarning ("zone have the malformated name '%s' missing -name-", rawSoundName.c_str());
@@ -165,7 +165,7 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 		}
 		pos1++;
 
-		uint32 pos2 = rawSoundName.find ("-", pos1);
+		string::size_type pos2 = rawSoundName.find ("-", pos1);
 		if(pos2 == string::npos)
 		{
 			nlwarning ("zone have the malformated name '%s' missing -name-", rawSoundName.c_str());
@@ -177,8 +177,8 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 	else if (n == 3)
 	{
 		// layer spec !
-		uint32 pos1 = rawSoundName.find ("-");
-		uint32 pos2 = rawSoundName.find ("-", pos1+1);
+		string::size_type pos1 = rawSoundName.find ("-");
+		string::size_type pos2 = rawSoundName.find ("-", pos1+1);
 		if(pos1 == string::npos || pos2 == string::npos)
 		{
 			nlwarning ("zone have the malformated name '%s' missing -layerId- or -name-", rawSoundName.c_str());
@@ -186,7 +186,7 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 		}
 		pos1++;
 
-		uint32 pos3 = rawSoundName.find ("-", pos2+1);
+		string::size_type pos3 = rawSoundName.find ("-", pos2+1);
 		if(pos3 == string::npos)
 		{
 			nlwarning ("zone have the malformated name '%s' missing -name-", rawSoundName.c_str());
@@ -617,7 +617,6 @@ void CBackgroundSoundManager::addSampleBank(const std::vector<std::string> &bank
 
 void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig &config)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager);
 	uint32	PACKED_VERSION = 1;
 	// First, try to load from a .primitive file (contain everythink)
 	{
@@ -631,7 +630,6 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 
 		if(!path.empty() && file.open (path))
 		{
-			NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager4);
 			// first, try to load the binary version (if up to date)
 			{
 				uint32 version;
@@ -666,13 +664,11 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 
 			CIXml xml;
 			{
-				NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager0);
 				H_AUTO(BackgroundSoundMangerLoad_xml_init);
 				xml.init (file);
 			}
 
 			{
-				NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager1);
 				H_AUTO(BackgroundSoundMangerLoad_primitive_read);
 				primitives.read(xml.getRootNode(), fn.c_str(), config);
 			}
@@ -680,7 +676,6 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 			file.close ();
 
 			{
-				NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager2);
 				H_AUTO(BackgroundSoundMangerLoad_loadAudioFromPrimitive);
 				loadAudioFromPrimitives(*primitives.RootNode);
 			}
@@ -689,7 +684,6 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 			CAudioMixerUser *mixer = CAudioMixerUser::instance();
 			if (mixer->getPackedSheetUpdate())
 			{
-				NL_ALLOC_CONTEXT(NLSOUND_CBackgroundSoundManager3);
 				// need to update packed sheet, so write the binary primitive version
 				string filename = mixer->getPackedSheetPath()+"/"+continent+".background_primitive";
 				COFile file(filename);

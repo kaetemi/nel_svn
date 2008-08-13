@@ -86,9 +86,10 @@ public:
 	/// Driver Creation Choice
 	enum	TDriver
 	{
-		DriverAuto= 0,
+		DriverAuto = 0,
 		DriverFMod,
-			
+		DriverOpenAl,
+		DriverDSound,
 		NumDrivers
 	};
 	
@@ -96,7 +97,7 @@ public:
 	/** Structure that contain the background flags.*/
 	struct TBackgroundFlags
 	{
-		// speudo enum to build constante in class def :)
+		// pseudo enum to build constant in class def :)
 		enum 
 		{
 			/// Number of filter flags in the background.
@@ -136,11 +137,11 @@ public:
 	static UAudioMixer	*createAudioMixer();
 	/** Set the global path to the sample banks
 	 *	If you have specified some sample bank to load in the 
-	 *	mixer comfig file, you MUST set the sample path
+	 *	mixer config file, you MUST set the sample path
 	 *	BEFORE calling init.
 	 */
 	virtual void		setSamplePath(const std::string& path) = 0;
-	/** Set the global path to the packeck sheet files.
+	/** Set the global path to the packed sheet files.
 	 *	This must be set BEFORE calling init.
 	 *	Default is to store packed sheet in the current directory.
 	 */
@@ -152,14 +153,14 @@ public:
 	 *
 	 * You can ask for EAX support. If EAX support is requested, then the mixer will try to allocate
 	 * hardware accelerated audio tracks. 
-	 * If the total of available harware track is less than 10, then EAX is automaticaly 
+	 * If the total of available hardware track is less than 10, then EAX is automatically 
 	 * deactivated.
-	 * autoLoadSample is used for tools like george or object viewer where you don't bother to
-	 * specifie each sample bank to load, you just want to ear the sound.
+	 * autoLoadSample is used for tools like georges or object viewer where you don't bother to
+	 * specified each sample bank to load, you just want to ear the sound.
 	 *
 	 *	\param forceSoftware: to force the driver to load in software buffer, not hardware
 	 */
-	virtual void		init(uint maxTrack = 32, bool useEax = true, bool useADPCM = true, NLMISC::IProgressCallback *progressCallBack = NULL, bool autoLoadSample = false, TDriver driverType= DriverAuto, bool forceSoftware= false) = 0;
+	virtual void		init(uint maxTrack = 32, bool useEax = true, bool useADPCM = true, NLMISC::IProgressCallback *progressCallBack = NULL, bool autoLoadSample = false, TDriver driverType = DriverAuto, bool forceSoftware = false) = 0;
 
 	/** Initialisation of the clustered sound system.
 	  */
@@ -172,7 +173,7 @@ public:
 	 *	This value is used when the number free track available for playing drop
 	 *	under the low water mark value (see setLowWaterMark).
 	 *	The mixer count the number of playing source in each priority channel. 
-	 *	A priority channel can orverflow it's reserve value only if the low water
+	 *	A priority channel can overflow it's reserve value only if the low water
 	 *	mark is not reach.
 	 *	In other word, when the number of played source increase, you can control
 	 *	a 'smooth' cut in priority layer. The idea is to try to keep some free track
@@ -187,14 +188,14 @@ public:
 	 *	HighestPri source need to play.
 	 *	By default, the value is set to 0, witch mean no special treatment is done
 	 *	and the mixer will mute sound with no user control at all.
-	 *	Note also that the availability of a track is not guarantie if the sum of
-	 *	the priority reserve (see setPriorityReserve) is grater than the number od
-	 *	available tracks (witch is almos alwais the case). But this value will help
+	 *	Note also that the availability of a track is not guarantee if the sum of
+	 *	the priority reserve (see setPriorityReserve) is grater than the number of
+	 *	available tracks (witch is almost always the case). But this value will help
 	 *	the mixer make it's best.
 	 */
 	virtual void		setLowWaterMark(uint value) = 0;
 	/** Change The number of tracks in RealTime. If the number is lowered, random tracks are deleted.
-	 *	Any playing sources of such deleted track will be stoped
+	 *	Any playing sources of such deleted track will be stopped
 	 */
 	virtual	void		changeMaxTrack(uint maxTrack) = 0;
 	
@@ -212,14 +213,14 @@ public:
 	 *  If you specify a non null notfoundfiles vector, it is filled with the names of missing files if any.
 	 *	\param async If true, the sample are loaded in a background thread.
 	 *	\param filename Name of the directory that contains the samples to load.
-	 *	\param notfoundfiles An optionnal pointer to a vector that will be filled with the list of not found files.
+	 *	\param notfoundfiles An optional pointer to a vector that will be filled with the list of not found files.
 	 */
 	virtual uint32		loadSampleBank(bool async, const std::string &filename, std::vector<std::string> *notfoundfiles=NULL ) = 0;
 	/** Unload buffers. Return false if the bank can't be unloaded because an async loading is running.
 	*/
 	virtual bool		unloadSampleBank( const std::string &filename) = 0;
 	/** Reload all the sample bank.
-	 *	Thid method use provided for use in a sound editor or sound tool to update the list of available samples.
+	 *	This method use provided for use in a sound editor or sound tool to update the list of available samples.
 	 *	\param async If true, the samples are loaded in a background thread.
 	 */
 	virtual void		reloadSampleBanks(bool async) =0;
@@ -227,7 +228,7 @@ public:
 	 */
 	virtual uint32		getLoadedSampleSize() =0;
 
-	/** Return a list of loaded sample bank with theire size.
+	/** Return a list of loaded sample bank with their size.
 	*/
 	virtual void		getLoadedSampleBankInfo(std::vector<std::pair<std::string, uint> > &result) =0;
 	//@}
@@ -263,7 +264,7 @@ public:
 
 
 	//@{
-	//@name Statictic and utility methods
+	//@name Statistic and utility methods
 	/// Fill a vector with the names of all loaded sounds.
 	virtual void		getSoundNames( std::vector<NLMISC::TStringId> &names ) const = 0;
 	/// Return the number of mixing tracks (voices)
@@ -315,16 +316,16 @@ public:
 	//@}
 
 	//@{
-	//@name User controled variable
+	//@name User controlled variable
 	/** Set the value of a user variable.
 	 *	User variable are variable that can be used to control
-	 *	the gain or tranpose of all the instance (source) of a 
+	 *	the gain or transpose of all the instance (source) of a 
 	 *	given sound.
-	 *	This has been initialy design to control the gain of any
+	 *	This has been initially design to control the gain of any
 	 *	source playing some atmospheric sound (like rain) according
 	 *	to the intensity of the effect (ie small rain or big rain).
 	 *	Binding from user var to sound parameter is done in
-	 *	one or more george sheet .user_var_binding.
+	 *	one or more georges sheet .user_var_binding.
 	 */
 	virtual void		setUserVar(NLMISC::TStringId varName, float value) =0;
 	/// Return the current value of a user var.
@@ -346,7 +347,7 @@ public:
 	 *	NB: if an old music was played, it is first stop with stopMusic()
 	 *
 	 *	\param fileName a CPath::lookup is done (the file can be in a BNP)
-	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
+	 *	\param xFadeTime if not 0 the old music played is not stopped immediately but a cross-fade of xFadeTime (in ms) is made between the 2.
 	 *	\param async if false, the music is entirely loaded in memory. Interesting for instance for music played 
 	 *		during loading (to not overload HardDrive). NB: The File is loaded in memory, but decompressed by FMod in a thread
 	 *		Hence if the mp3 fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
@@ -354,7 +355,7 @@ public:
 	 */
 	virtual bool	playMusic(const std::string &fileName, uint xFadeTime= 0, bool async= true, bool loop=true) =0;
 	/** Stop the music previously loaded and played (the Memory is also freed)
-	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a fade out of xFadeTime (in ms) is made
+	 *	\param xFadeTime if not 0 the old music played is not stopped immediately but a fade out of xFadeTime (in ms) is made
 	 */
 	virtual void	stopMusic(uint xFadeTime= 0) =0;
 	/** Pause the music previously loaded and played (the Memory is not freed)
@@ -380,11 +381,11 @@ public:
 	/** enable or disable the background music system. disable it when you want to play your own mp3 for instance
 	 */
 	virtual void	enableBackgroundMusic(bool enable) =0;
-	/** set to false to avoid TimeBeforeCanReplay and MinimumPlaytime behaviour
+	/** set to false to avoid TimeBeforeCanReplay and MinimumPlaytime behavior
 	 */
 	virtual void	enableBackgroundMusicTimeConstraint(bool enable) =0;
 	/** Play some music in the event channel (at same time than general channel)
-	 *	NB: it is user responsability to lower/pause the geneic music channel if he don't want 2 music at same time
+	 *	NB: it is user responsibility to lower/pause the generic music channel if he don't want 2 music at same time
 	 */
 	virtual bool	playEventMusic(const std::string &fileName, uint xFadeTime= 0, bool async= true, bool loop=true) =0;
 	/** Stop any event music

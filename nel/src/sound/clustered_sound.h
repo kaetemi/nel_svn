@@ -30,7 +30,6 @@
 #include "nel/misc/string_mapper.h"
 #include <vector>
 #include <map>
-#include <hash_map>
 
 namespace NLMISC
 {
@@ -122,8 +121,7 @@ public:
 		/// Constructor. Init all default value.
 		CSoundTravContext(const NLMISC::CVector &listenerPos, 
 			bool filterUnvisibleChild, bool filterUnvisibleFather)
-			:	ListenerPos(listenerPos),
-				Gain(1.0f),
+			:	Gain(1.0f),
 				Occlusion(0),
 				OcclusionLFFactor(1.0f),
 				OcclusionRoomRatio(1.0f),
@@ -137,7 +135,8 @@ public:
 				Direction2(NLMISC::CVector::Null),
 				Direction(NLMISC::CVector::Null),
 				PreviousCluster(0),
-				PreviousVector(NLMISC::CVector::Null)
+				PreviousVector(NLMISC::CVector::Null),
+				ListenerPos(listenerPos)
 		{}
 
 		/// Assignment operator.
@@ -257,23 +256,23 @@ private:
 	/// The segment of all the audio path.
 	std::vector<std::pair<NLMISC::CVector, NLMISC::CVector> >	_AudioPath;
 
-	typedef std::hash_map<NLMISC::TStringId, CClusterSound, NLMISC::CStringIdHasher>	TClusterSoundCont;
+	typedef CHashMap<NLMISC::TStringId, CClusterSound, NLMISC::CStringIdHasher>	TClusterSoundCont;
 	/// The current cluster playing source indexed with sound group id
 	TClusterSoundCont		_Sources;
 
-	typedef std::hash_map<NLMISC::TStringId, NLMISC::TStringId, NLMISC::CStringIdHasher> TStringStringMap;
+	typedef CHashMap<NLMISC::TStringId, NLMISC::TStringId, NLMISC::CStringIdHasher> TStringStringMap;
 	/// The sound_group to sound assoc
 	TStringStringMap	_SoundGroupToSound;
 
-	typedef std::hash_map<NLMISC::TStringId, uint, NLMISC::CStringIdHasher>	TStringIntMap;
+	typedef CHashMap<NLMISC::TStringId, uint, NLMISC::CStringIdHasher>	TStringIntMap;
 	/// The mapping for env name Id to EAX environement number
 	TStringIntMap	_IdToEaxEnv;
 	/// The mapping for occlusion material name to material number
 	TStringIntMap	_IdToMaterial;
 	/// The environment name table for init.
-	static char								*_EnvironmentNames[];
+	static const char							*_EnvironmentNames[];
 	/// The material name table for init.
-	static char								*_MaterialNames[];
+	static const char							*_MaterialNames[];
 
 };
 
