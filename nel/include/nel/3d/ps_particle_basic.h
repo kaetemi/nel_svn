@@ -397,6 +397,7 @@ class CPSRotated2DParticle
 /// this class is an interface for particles that have unanimated textures
 struct CPSTexturedParticleNoAnim
 {
+		virtual ~CPSTexturedParticleNoAnim() {}
 		/// set the texture for this particle
 		virtual void						setTexture(CSmartPtr<ITexture> tex) = 0;
 		/// get the texture used for this particle
@@ -727,6 +728,8 @@ class CPSRotated3DPlaneParticle
 
 struct CPSHintParticleRotateTheSame
 {
+	virtual ~CPSHintParticleRotateTheSame() {}
+
 	/** Tells that all particles are turning in the same manner, and only have a rotationnal bias
 	 *  This is faster then other method. Any previous set scheme for 3d rotation is kept.
 	 *	\param: the number of rotation configuration we have. The more high it is, the slower it'll be
@@ -761,6 +764,8 @@ struct CPSHintParticleRotateTheSame
 /// base struct for particle that have a tail
 struct CPSTailParticle
 {
+	virtual ~CPSTailParticle() {}
+
 	/** (de)activate color fading
 	 * when its done, colors fades to black along the tail
 	 */
@@ -785,6 +790,8 @@ struct CPSTailParticle
 /// base struct for particles that can have a shape (e.g mesh...)
 struct CPSShapeParticle
 {
+	virtual ~CPSShapeParticle() {}
+
 	/// set a new shape
 	virtual void setShape(const std::string &shape) = 0;
 

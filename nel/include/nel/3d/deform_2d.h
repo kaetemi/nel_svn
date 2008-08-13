@@ -52,6 +52,7 @@ public:
 	/// an interface to compute the u,v perturbations at a given point (x and and y range from 0 to 1)
 	struct IPerturbUV
 	{
+		virtual ~IPerturbUV() {}
 		virtual void perturbUV(float x, float y, float &du, float &dv) const = 0 ;
 	};
 

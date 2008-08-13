@@ -57,6 +57,7 @@ template <class BaseClass>
 class IFactoryRegister
 {
 public:
+	virtual ~IFactoryRegister() {}
 	/// This method is called to create an instance of the factored object.
 	virtual BaseClass *createObject(const typename BaseClass::TCtorParam &ctorParam) = 0;
 };
@@ -264,8 +265,8 @@ public:
 //#define NLMISC_IMPLEMENT_FACTORY_INDIRECT(baseFactoryClass, keyType)	NLMISC::CFactoryIndirect<baseFactoryClass, keyType>	*NLMISC::CFactoryIndirect<baseFactoryClass, keyType>::_Instance = NULL
 
 #define NLMISC_GET_FACTORY_INDIRECT_REGISTRY(baseFactoryClass, keyType)	NLMISC::CFactoryIndirect<baseFactoryClass, keyType>::getInstance()
-#define NLMISC_REGISTER_OBJECT_INDIRECT(baseFactoryClass, specializedFactoryClass, keyType, keyValue)	NLMISC::CFactoryIndirectRegister<CFactoryIndirect<baseFactoryClass, keyType>, baseFactoryClass, specializedFactoryClass, keyType>	RegisterIndirect##specializedFactoryClass(keyValue)
-#define NLMISC_DECLARE_OBJECT_INDIRECT(baseFactoryClass, specializedFactoryClass, keyType)	extern NLMISC::CFactoryIndirectRegister<CFactoryIndirect<baseFactoryClass, keyType>, baseFactoryClass, specializedFactoryClass, keyType>	RegisterIndirect##specializedFactoryClass
+#define NLMISC_REGISTER_OBJECT_INDIRECT(baseFactoryClass, specializedFactoryClass, keyType, keyValue)	NLMISC::CFactoryIndirectRegister<NLMISC::CFactoryIndirect<baseFactoryClass, keyType>, baseFactoryClass, specializedFactoryClass, keyType>	RegisterIndirect##specializedFactoryClass(keyValue)
+#define NLMISC_DECLARE_OBJECT_INDIRECT(baseFactoryClass, specializedFactoryClass, keyType)	extern NLMISC::CFactoryIndirectRegister<NLMISC::CFactoryIndirect<baseFactoryClass, keyType>, baseFactoryClass, specializedFactoryClass, keyType>	RegisterIndirect##specializedFactoryClass
 
 #define NLMISC_GET_FACTORY_INDIRECT(specializedFactoryClass) RegisterIndirect##specializedFactoryClass.getFactory()
 

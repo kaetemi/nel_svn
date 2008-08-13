@@ -47,6 +47,8 @@ namespace NL3D
 class IAnimatedValue
 {
 public:
+	virtual ~IAnimatedValue() {}
+
 	/** 
 	  * The blend method. This method blend two the animated values and store the result
 	  * in the object. The two first args can be reference on the object itself.
@@ -230,7 +232,6 @@ template<class T>
 class CAnimatedValueNotBlendable : public IAnimatedValue
 {
 public:
-	virtual ~CAnimatedValueNotBlendable<T>() {}
 	/// A default blend method. Doesn't work for all type.
 	virtual void blend (const IAnimatedValue& value, float blendFactor)
 	{

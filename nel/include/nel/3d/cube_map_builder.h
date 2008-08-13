@@ -43,6 +43,7 @@ class CTextureCube;
   */
 struct ICubeMapFunctor
 {
+	virtual ~ICubeMapFunctor() {}
 	virtual NLMISC::CRGBA operator()(const NLMISC::CVector &v) = 0;
 };
 
