@@ -470,11 +470,9 @@ public:
 	// @{
 
 	/// Finds an A* path from a given global position to another.
-	/// \todo secure search to avoid crashes...
 	void							findAStarPath(const UGlobalPosition &begin, const UGlobalPosition &end, std::vector<CRetrieverInstance::CAStarNodeAccess> &path, uint32 forbidFlags) const;
 
 	/// Finds a path from a given global position to another
-	/// \todo include path width
 	void							findPath(const UGlobalPosition &begin, const UGlobalPosition &end, CGlobalPath &path, uint32 forbidFlags=0) const;
 
 	// @}

@@ -41,7 +41,7 @@ libnelpacs_la_SOURCES = chain.cpp                          \
                         move_primitive.h                   \
                         primitive_world_image.cpp          \
                         primitive_world_image.h            \
-                        primitive_block_pacs.cpp                \
+                        primitive_block_pacs.cpp           \
                         primitive_block.h                  \
                         retrievable_surface.cpp            \
                         retrievable_surface.h              \
@@ -49,11 +49,13 @@ libnelpacs_la_SOURCES = chain.cpp                          \
                         retriever_bank.h                   \
                         retriever_instance.cpp             \
                         retriever_instance.h               \
+			stdpacs.cpp			   \
                         surface_quad.cpp                   \
                         surface_quad.h                     \
                         vector_2s.cpp                      \
                         vector_2s.h                        \
-                        build_indoor.cpp
+                        build_indoor.cpp                   \
+                        build_indoor.h
 
 AM_CXXFLAGS           = -I$(top_srcdir)/src
 

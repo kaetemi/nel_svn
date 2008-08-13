@@ -48,7 +48,7 @@ float			NLPACS::Models[NumMaxCreatureModels][NumModelCharacteristics] =
 	{ 0.0f, 0.0f, -1.0f },
 };
 
-void	NLPACS::CRetrievableSurface::serial(IStream &f)
+void	NLPACS::CRetrievableSurface::serial(NLMISC::IStream &f)
 {
 	/*
 	Version 0:
@@ -94,7 +94,7 @@ void	NLPACS::CRetrievableSurface::serial(IStream &f)
 	}
 }
 
-void	NLPACS::CRetrievableSurface::TLoop::serial(IStream &f)
+void	NLPACS::CRetrievableSurface::TLoop::serial(NLMISC::IStream &f)
 { 
 	f.serialCont(*this); 
 	f.serial(Length); 

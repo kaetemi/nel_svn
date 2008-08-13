@@ -33,8 +33,6 @@
 
 #include "nel/misc/hierarchical_timer.h"
 
-#include "nel/memory/memory_manager.h"
-
 #include "global_retriever.h"
 #include "retriever_bank.h"
 
@@ -784,7 +782,6 @@ sint32	NLPACS::CGlobalRetriever::getLocalRetrieverId(const NLPACS::UGlobalPositi
 
 bool			NLPACS::CGlobalRetriever::buildInstance(const string &id, const NLMISC::CVectorD &position, sint32 &instanceId)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	sint32	retrieverId = getIdentifier(id);
 
@@ -1214,9 +1211,6 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 	bboxMoveGlobal.setCenter(bboxMoveGlobal.getCenter()+origin);
 	selectInstances(bboxMoveGlobal, cst);
 //	H_AFTER(PACS_GR_findCC_selectInstances);
-	// \todo yoyo: TODO_INTERIOR: add interiors meshes (static/dynamic houses etc...) to this list.
-	// -> done automatically with the select
-
 
 	// 2. Fill CollisionChains.
 	//===========
@@ -1259,7 +1253,6 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 		// Go! fill collision chains that this movement intersect.
 		localRetriever.testCollision(cst, bboxMoveLocal, transBase);
 		// if an interior, also test for external collisions
-		/// \todo yoyo/ben: TODO_INTERIOR: activate this and modify code below
 		if (retrieverInstance.getType() == CLocalRetriever::Interior)
 			retrieverInstance.testExteriorCollision(cst, bboxMoveLocal, transBase, localRetriever);
 
@@ -1291,7 +1284,6 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 			else
 			{
 				// we must find the surfaceIdent of the neighbor.
-				// \todo yoyo: TODO_INTERIOR: this work only for zone. Must work too for houses.
 
 				CRetrieverInstance::CLink	link;
 				// get the link to the next surface from the instance
@@ -1323,7 +1315,6 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 
 		// For all collision chains added, look if they are a copy of preceding collsion chain (same Left/Right). Then delete them.
 		//================
-		// \todo yoyo: TODO_OPTIMIZE: this is a N² complexity.
 //		H_BEFORE(PACS_GR_findCC_removeDouble);
 		for(j=firstCollisionChain; j<nCollisionChain; j++)
 		{
@@ -2425,7 +2416,6 @@ void	NLPACS::CGlobalRetriever::testRotCollisionWithCollisionChains(CCollisionSur
 
 NLPACS::UGlobalRetriever *NLPACS::UGlobalRetriever::createGlobalRetriever (const char *globalRetriever, const NLPACS::URetrieverBank *retrieverBank)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Cast
 //	nlassert (dynamic_cast<const NLPACS::CRetrieverBank*>(retrieverBank));

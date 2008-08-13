@@ -1119,8 +1119,6 @@ void	NLPACS::CLocalRetriever::retrievePosition(CVector estimated, CCollisionSurf
 			const vector<CVector2s>	&vertices = sub.getVertices();
 			uint					start = 0, stop = vertices.size()-1;
 
-			/// \todo trivial up/down check using bbox.
-
 			// then finds the smallest segment of the chain that includes the estimated position.
 			while (stop-start > 1)
 			{
@@ -1669,7 +1667,6 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 
 	_ChainQuad.selectEdges(a, b, cst);
 
-	/// \todo Ben use smart allocations here
 	vector<CIntersectionMarker>	intersections;
 
 	uint	i, j;
@@ -1918,7 +1915,6 @@ void	NLPACS::CLocalRetriever::testCollision(CCollisionSurfaceTemp &cst, const CA
 		uint16				chainId= oChain.getParentId();
 
 		// test if edge is interior and points to another instance
-		// \todo Ben: flag interior chains that points to doors to speed up the test
 		if (_Type == Interior && CChain::isBorderChainId(this->getChains()[chainId].getRight()))
 		{
 			// then look for a door that match this edge

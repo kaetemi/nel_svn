@@ -342,8 +342,6 @@ float		CEdgeCollide::testCircleMove(const CVector2f &start, const CVector2f &del
 			 return 1 (no collision), SB/SC won't be detected (because only SA/?? chains will be tested) and 
 			 so the cylinder will penetrate SB/SC...
 			 This case arise at best if chains SA/SB and chain SB/SC do an angle of 45deg
-
-			 \todo yoyo: this is a Hack.
 			*/
 			if(sensPos==sensSpeed && (-dist)<0.5*radius)
 			{

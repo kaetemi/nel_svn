@@ -38,7 +38,6 @@ using namespace NLMISC;
 
 NLPACS::URetrieverBank *NLPACS::URetrieverBank::createRetrieverBank (const char *retrieverBank, bool loadAll)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	CIFile	file;
 	if (file.open( CPath::lookup(retrieverBank) ))

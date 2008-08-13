@@ -224,7 +224,7 @@ public:
 						CMoveContainer &container, uint8 worldImage);
 
 	/// Add the primitive in the cell at the end of the list and don't sort
-	void CPrimitiveWorldImage::addMoveElementendOfList (CMoveCell& cell, uint16 x, uint16 y, CMovePrimitive *primitive,
+	void addMoveElementendOfList (CMoveCell& cell, uint16 x, uint16 y, CMovePrimitive *primitive,
 														CMoveContainer &container);
 
 	/// Update precalculated data

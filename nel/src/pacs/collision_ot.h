@@ -53,6 +53,8 @@ public:
 		clear ();
 	}
 
+	virtual ~CCollisionOT () { }
+
 	/// Clear the element
 	void			clear ()
 	{

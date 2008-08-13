@@ -46,6 +46,9 @@ class ICollisionCallback
 {
 public:
 
+	/// destructor
+	virtual ~ICollisionCallback () { }
+
 	/// Give a collision reaction
 	virtual	bool			reaction (CMovePrimitive& first, CMovePrimitive& second, const CCollisionDesc& desc)=0;
 

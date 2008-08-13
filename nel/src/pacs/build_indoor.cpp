@@ -121,8 +121,8 @@ void	floodFillSurfaces(CCollisionMeshBuild &cmb, vector<CInteriorSurface> &surfa
 		if (face.Surface == CCollisionFace::ExteriorSurface || face.InternalSurface != -1)
 			continue;
 
-		vector<uint>	stack;
-		stack.push_back(i);
+		vector<sint32>	stack;
+		stack.push_back(sint32(i));
 		face.InternalSurface = currentId;
 
 		surfaces.resize(surfaces.size()+1);
@@ -138,7 +138,7 @@ void	floodFillSurfaces(CCollisionMeshBuild &cmb, vector<CInteriorSurface> &surfa
 			surfaces.back().Faces.push_back(pop);
 			CCollisionFace	&popFace = cmb.Faces[pop];
 
-			uint	edge, neighb;
+			sint32	edge, neighb;
 			for (edge=0; edge<3; ++edge)
 			{
 				if ((neighb = popFace.Edge[edge]) != -1 && 
@@ -373,7 +373,6 @@ void	buildSurfaces(CCollisionMeshBuild &cmb, CLocalRetriever &lr)
 
 	uint	surf, bord;
 
-	/// \todo compute real surface center and quadtree
 	for (surf=0; surf<surfaces.size(); ++surf)
 	{
 		CSurfaceQuadTree	quad;
@@ -491,7 +490,6 @@ void	buildExteriorMesh(CCollisionMeshBuild &cmb, CExteriorMesh &em)
 			{
 				// if the next edge belongs to the border, then go on the same element
 				cmb.Faces[current].EdgeFlags[nextEdge] = true;
-				/// \todo get the real edge link
 				sint	link = (cmb.Faces[current].Visibility[nextEdge]) ? -1 : sint((numLink++));
 				edges.push_back(CExteriorMesh::CEdge(cmb.Vertices[cmb.Faces[current].V[pivot]], link));
 				nldebug("border: vertex=%d (%.2f,%.2f,%.2f) link=%d", cmb.Faces[current].V[pivot], cmb.Vertices[cmb.Faces[current].V[pivot]].x, cmb.Vertices[cmb.Faces[current].V[pivot]].y, cmb.Vertices[cmb.Faces[current].V[pivot]].z, link);

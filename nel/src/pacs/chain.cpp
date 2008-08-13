@@ -61,7 +61,7 @@ static inline bool	isEqual(const CVector &a, const CVector &b)
 
 // COrderedChain3f methods implementation
 
-void	NLPACS::COrderedChain3f::serial(IStream &f)
+void	NLPACS::COrderedChain3f::serial(NLMISC::IStream &f)
 {
 	/*
 	Version 0:
@@ -154,8 +154,8 @@ float	NLPACS::COrderedChain::distance(const CVector &position) const
 }
 
 
-// serialises the ordered chain
-void	NLPACS::COrderedChain::serial(IStream &f)
+// serializes the ordered chain
+void	NLPACS::COrderedChain::serial(NLMISC::IStream &f)
 {
 	/*
 	Version 0:
@@ -270,8 +270,8 @@ void	NLPACS::CChain::make(const vector<CVector> &vertices, sint32 left, sint32 r
 	}
 }
 
-// serialises the CChain
-void	NLPACS::CChain::serial(IStream &f)
+// serializes the CChain
+void	NLPACS::CChain::serial(NLMISC::IStream &f)
 {
 	/*
 	Version 0:

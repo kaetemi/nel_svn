@@ -222,8 +222,6 @@ void	NLPACS::CRetrieverInstance::link(CRetrieverInstance &neighbor,
 		chainTips.push_back(make_pair(retriever.getStartVector(borderChains[i]),
 									  retriever.getStopVector(borderChains[i])));
 
-	/// \todo Compute real position using _Orientation
-
 	CVector	translation = neighbor._Origin - _Origin;
 /*
 	for (i=0; i<nBorderChains.size(); ++i)

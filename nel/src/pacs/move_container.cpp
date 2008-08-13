@@ -177,7 +177,6 @@ void CMoveContainer::init (CGlobalRetriever* retriever, uint widthCellCount, uin
 
 void  CMoveContainer::evalCollision (double deltaTime, uint8 worldImage)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 	NLPACS_HAUTO_EVAL_COLLISION
 
 //	H_AUTO(PACS_MC_evalCollision);
@@ -287,7 +286,6 @@ void  CMoveContainer::evalCollision (double deltaTime, uint8 worldImage)
 
 bool CMoveContainer::testMove (UMovePrimitive* primitive, const CVectorD& speed, double deltaTime, uint8 worldImage, CVectorD *contactNormal)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 //	H_AUTO(PACS_MC_testMove);
 
@@ -1388,7 +1386,6 @@ void	UMoveContainer::deleteMoveContainer (UMoveContainer	*container)
 
 UMovePrimitive *CMoveContainer::addCollisionablePrimitive (uint8 firstWorldImage, uint8 numWorldImage, const UMovePrimitive *copyFrom)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Allocate primitive
 	CMovePrimitive *primitive=allocatePrimitive (firstWorldImage, numWorldImage);
@@ -1427,7 +1424,6 @@ UMovePrimitive *CMoveContainer::addCollisionablePrimitive (uint8 firstWorldImage
 
 UMovePrimitive *CMoveContainer::addNonCollisionablePrimitive (const UMovePrimitive *copyFrom)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Allocate primitive
 	CMovePrimitive *primitive=allocatePrimitive (0, 1);
@@ -1469,7 +1465,6 @@ UMovePrimitive *CMoveContainer::addNonCollisionablePrimitive (const UMovePrimiti
 
 void CMoveContainer::removePrimitive (UMovePrimitive* primitive)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// CMovePrimitive pointer
 	CMovePrimitive *prim=(CMovePrimitive*)primitive;
@@ -1678,7 +1673,6 @@ void CMoveContainer::reaction (const CCollisionOTInfo& first)
 
 void CMoveContainer::setAsStatic (uint8 worldImage)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Add this world image in the static set of world image
 	_StaticWorldImage.insert (worldImage);
@@ -1688,7 +1682,6 @@ void CMoveContainer::setAsStatic (uint8 worldImage)
 
 void CMoveContainer::duplicateWorldImage (uint8 source, uint8 dest)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Cell count
 	uint cellCount=_CellCountWidth*_CellCountHeight;
@@ -1752,7 +1745,6 @@ UMoveContainer *UMoveContainer::createMoveContainer (double xmin, double ymin, d
 		uint widthCellCount, uint heightCellCount, double primitiveMaxSize, uint8 numWorldImage, 
 		uint maxIteration, uint otSize)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Create a CMoveContainer
 	return new CMoveContainer (xmin, ymin, xmax, ymax, widthCellCount, heightCellCount, primitiveMaxSize, numWorldImage, maxIteration, otSize);
@@ -1763,7 +1755,6 @@ UMoveContainer *UMoveContainer::createMoveContainer (double xmin, double ymin, d
 UMoveContainer *UMoveContainer::createMoveContainer (UGlobalRetriever* retriever, uint widthCellCount, 
 	uint heightCellCount, double primitiveMaxSize, uint8 numWorldImage, uint maxIteration, uint otSize)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Cast
 	nlassert (dynamic_cast<CGlobalRetriever*>(retriever));
@@ -1797,7 +1788,6 @@ void UTriggerInfo::serial (NLMISC::IStream& stream)
 // ***************************************************************************
 void CMoveContainer::addCollisionnablePrimitiveBlock(UPrimitiveBlock *pb,uint8 firstWorldImage,uint8 numWorldImage,std::vector<UMovePrimitive*> *primitives,float orientation,const NLMISC::CVector &position, bool dontSnapToGround /* = false*/, const NLMISC::CVector &scale /* = NLMISC::CVector(1.0f, 1.0f, 1.0f)*/)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	CPrimitiveBlock *block = NLMISC::safe_cast<CPrimitiveBlock *>(pb);
 	// Reserve the pointer array
@@ -1876,7 +1866,6 @@ void CMoveContainer::addCollisionnablePrimitiveBlock(UPrimitiveBlock *pb,uint8 f
 
 bool CMoveContainer::loadCollisionablePrimitiveBlock (const char *filename, uint8 firstWorldImage, uint8 numWorldImage, std::vector<UMovePrimitive*> *primitives, float orientation, const NLMISC::CVector &position, bool dontSnapToGround /*= false*/)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// Check world image
 	if ( (uint)(firstWorldImage+numWorldImage) > _ChangedRoot.size() )
@@ -1927,7 +1916,6 @@ bool CMoveContainer::loadCollisionablePrimitiveBlock (const char *filename, uint
 // ***************************************************************************
 void CMoveContainer::getPrimitives(std::vector<const UMovePrimitive *> &dest) const
 {	
-	NL_ALLOC_CONTEXT( Pacs )
 
 	dest.resize(_PrimitiveSet.size());
 	std::copy(_PrimitiveSet.begin(), _PrimitiveSet.end(), dest.begin());
@@ -1949,7 +1937,6 @@ void UMoveContainer::getPACSCoordsFromMatrix(NLMISC::CVector &pos,float &angle,c
 // ***************************************************************************
 bool CMoveContainer::evalNCPrimitiveCollision (double deltaTime, UMovePrimitive *primitive, uint8 worldImage)
 {
-	NL_ALLOC_CONTEXT( Pacs )
 
 	// New test time
 	_TestTime++;
