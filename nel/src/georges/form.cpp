@@ -289,7 +289,7 @@ bool CForm::insertParent (uint before, const char *filename, CForm *parent)
 	if (parent->Elements.FormDfn == Elements.FormDfn)
 	{
 		// Set members
-		std::vector<CParent>::iterator ite = ParentList.insert (ParentList.begin() + before);
+		std::vector<CParent>::iterator ite = ParentList.insert (ParentList.begin() + before, CParent());
 		ite->Parent = parent;
 		ite->ParentFilename = filename;
 

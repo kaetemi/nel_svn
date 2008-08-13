@@ -671,7 +671,7 @@ bool CFormElm::arrayInsertNodeByName (const char *name, const CFormDfn **parentD
 			if (arrayIndex<array->Elements.size ())
 			{
 				// Insert the element
-				array->Elements.insert (array->Elements.begin() + arrayIndex);
+				array->Elements.insert (array->Elements.begin() + arrayIndex, CFormElmArray::CElement());
 
 				// Create a new element
 
