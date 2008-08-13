@@ -68,7 +68,17 @@
 #   ifndef _WIN32_WINNT
 #		define _WIN32_WINNT 0x0400
 #   endif
-#	if _MSC_VER >= 1400
+#   ifdef __SGI_STL_STLPORT
+#       define NL_COMP_STLPORT
+#   endif
+#	if _MSC_VER >= 1500
+#		define NL_COMP_VC9
+#		include <string> // This way we know about _HAS_TR1 :O
+#		if defined(_HAS_TR1) && (_HAS_TR1 + 0) // VC9 TR1 feature pack
+#			define NL_ISO_STDTR1_AVAILABLE
+#			define NL_ISO_STDTR1_HEADER(header) <header>
+#		endif
+#	elif _MSC_VER >= 1400
 #		define NL_COMP_VC8
 #		undef nl_time
 #		define nl_time _time32		// use the old 32 bit time function
@@ -128,6 +138,11 @@
 #else
 #define NL_ISO_SYNTAX 1
 #define NL_ISO_TEMPLATE_SPEC template <>
+
+// gcc 4.1+ provides std::tr1
+#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4) && (__GNUC_MINOR__ > 1))
+#	define NL_ISO_STDTR1_AVAILABLE
+#	define NL_ISO_STDTR1_HEADER(header) <tr1/header>
 #endif
 
 // Remove stupid Visual C++ warnings
@@ -150,15 +165,6 @@
 
 #include <string>
 #include <exception>
-
-// Check the STLPort presence
-
-#ifdef NL_OS_WINDOWS
-#	ifndef __SGI_STL_PORT
-#		error "You need STLPort to compile this project ( visit http://sourceforge.net/projects/stlport )"
-#	endif // __SGI_STL_PORT
-#endif // NL_OS_WINDOWS
-
 
 // Setup extern asm functions.
 
@@ -259,9 +265,25 @@ typedef	unsigned	int			uint;			// at least 32bits (depend of processor)
 
 #define	NL_I64 "I64"
 
+#ifndef NL_ISO_STDTR1_AVAILABLE
+#	include <hash_map>
+#	include <hash_set>
+#	if defined(NL_COMP_VC7) || defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9) // VC7 through 9
+#		define CHashMap stdext::hash_map
+#		define CHashSet stdext::hash_set
+#		define CHashMultiMap stdext::hash_multimap
+#	else // MSVC6
+#		define CHashMap ::std::hash_map
+#		define CHashSet ::std::hash_set
+#		define CHashMultiMap ::std::hash_multimap
+#	endif
+#endif // NL_ISO_STDTR1_AVAILABLE
+
 #elif defined (NL_OS_UNIX)
 
 #include <sys/types.h>
+#include <stdint.h>
+#include <climits>
 
 typedef	int8_t		sint8;
 typedef	u_int8_t	uint8;
@@ -275,11 +297,47 @@ typedef	unsigned long long int	uint64;
 typedef			int			sint;			// at least 32bits (depend of processor)
 typedef	unsigned	int			uint;			// at least 32bits (depend of processor)
 
-#define	NL_I64	\
-		"ll"
+#define	NL_I64 "ll"
+
+#if defined(NL_COMP_GCC) && !defined(NL_ISO_STDTR1_AVAILABLE) // GCC4
+#	include <ext/hash_map>
+#	include <ext/hash_set>
+#	define CHashMap ::__gnu_cxx::hash_map
+#	define CHashSet ::__gnu_cxx::hash_set
+#	define CHashMultiMap ::__gnu_cxx::hash_multimap
+
+namespace __gnu_cxx {
+
+template<> struct hash<std::string>
+{
+	size_t operator()(const std::string &s) const
+	{
+		return __stl_hash_string(s.c_str());
+	}
+};
+
+template<> struct hash<uint64>
+{
+	size_t operator()(const uint64 x) const
+	{
+		return x;
+	}
+};
+
+} // END NAMESPACE __GNU_CXX
+
+#endif // NL_COMP_GCC && !NL_ISO_STDTR1_AVAILABLE
 
 #endif // NL_OS_UNIX
 
+// use std::tr1 for CHash* classes, if available (gcc 4.1+ and VC9 with TR1 feature pack)
+#ifdef NL_ISO_STDTR1_AVAILABLE
+#	include NL_ISO_STDTR1_HEADER(unordered_map)
+#	include NL_ISO_STDTR1_HEADER(unordered_set)
+#	define CHashMap std::tr1::unordered_map
+#	define CHashSet std::tr1::unordered_set
+#	define CHashMultiMap std::tr1::unordered_multimap
+#endif
 
 /**
  * \typedef ucchar
@@ -290,7 +348,7 @@ typedef	uint16	ucchar;
 
 // To define a 64bits constant; ie: UINT64_CONSTANT(0x123456781234)
 #ifdef NL_OS_WINDOWS
-#  ifdef NL_COMP_VC8
+#  if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #    define INT64_CONSTANT(c)	(c##LL)
 #    define SINT64_CONSTANT(c)	(c##LL)
 #    define UINT64_CONSTANT(c)	(c##LL)
