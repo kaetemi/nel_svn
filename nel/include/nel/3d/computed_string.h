@@ -34,7 +34,7 @@
 #include "material.h"
 #include "nel/3d/u_text_context.h"
 #include <vector>
-
+#include <limits>
 
 
 
@@ -115,7 +115,7 @@ public:
 		if(i<_indexedColors.size())
 			return _indexedColors[i].Index;
 
-		return UINT_MAX;
+        return std::numeric_limits<uint>::max();
 	}
 
 	const CRGBA & getColor(uint i) const
