@@ -359,7 +359,7 @@ bool CDriverD3D::activeShader(CShader *shd)
 		if ( !shd->_DrvInfo )
 		{
 			// insert into driver list. (so it is deleted when driver is deleted).
-			ItShaderDrvInfoPtrList	it= _ShaderDrvInfos.insert(_ShaderDrvInfos.end());
+			ItShaderDrvInfoPtrList	it= _ShaderDrvInfos.insert(_ShaderDrvInfos.end(), NULL);
 			// create and set iterator, for future deletion.
 			shaderInfo = new CShaderDrvInfosD3D(this, it);
 			*it= shd->_DrvInfo = shaderInfo;
