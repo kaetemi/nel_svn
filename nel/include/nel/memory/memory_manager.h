@@ -30,12 +30,6 @@
 
 // CONFIGURATION
 #include "nel/memory/memory_config.h"
-// Debug : Sept 01 2006
-#if _STLPORT_VERSION >= 0x510
-	#include <stl/config/user_config.h>
-#else
-	#include <stl/_site_config.h>
-#endif // _STLPORT_VERSION
 
 /*	Doc:
 	----
