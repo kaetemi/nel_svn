@@ -187,7 +187,7 @@ void CLogicStateMachine::processLogic()
 // getMessagesToSend :
 // 
 //---------------------------------------------------
-void CLogicStateMachine::getMessagesToSend( CHashMultiMap<CEntityId,CMessage>& msgs )
+void CLogicStateMachine::getMessagesToSend( CHashMultiMap<CEntityId,CMessage,CEntityIdHashMapTraits>& msgs )
 {
 	map<std::string, CLogicState>::iterator itState;
 	for( itState = _States.begin(); itState != _States.end(); ++itState )
@@ -315,7 +315,7 @@ void CLogicStateMachine::modifyVariable( string varName, string modifOperator, s
 //---------------------------------------------------
 void CLogicStateMachine::displayVariables()
 {
-	CHashMultiMap<CEntityId,string> allVariables;
+	CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits> allVariables;
 	
 	// // get vars referenced in the states
 	map<string, CLogicState>::iterator itS;
@@ -330,12 +330,12 @@ void CLogicStateMachine::displayVariables()
 	unknown.setType( 0xfe );
 	unknown.setCreatorId( 0 );
 	unknown.setDynamicId( 0 );
-	pair<CHashMultiMap<CEntityId,string>::iterator,multimap<CEntityId,string>::iterator> itVarsRng = allVariables.equal_range(unknown);
-	CHashMultiMap<CEntityId,string>::iterator itVars;
+	pair<CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits>::iterator, CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits>::iterator> itVarsRng = allVariables.equal_range(unknown);
+	CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits>::iterator itVars;
 	
 	for( itVars = itVarsRng.first; itVars != itVarsRng.second; )
 	{
-		CHashMultiMap<CEntityId,string>::iterator itDel = itVars++;
+		CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits>::iterator itDel = itVars++;
 		unclaimedVariables.push_back( (*itDel).second );
 		allVariables.erase( itDel );
 	}
