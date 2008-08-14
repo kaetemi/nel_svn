@@ -31,17 +31,13 @@
 #include "nel/misc/hierarchical_timer.h"
 
 #ifdef NL_OS_WINDOWS
-
-# ifdef NL_COMP_VC8
-#	include <WinSock2.h>
-# endif
-#	include <windows.h>
+#	define SD_RECEIVE      0x00
+#	define SD_SEND         0x01
+#	define SD_BOTH         0x02
 #	define socklen_t int
 #	define ERROR_NUM WSAGetLastError()
 #	define ERROR_WOULDBLOCK WSAEWOULDBLOCK
-
 #elif defined NL_OS_UNIX
-
 #	include <unistd.h>
 #	include <sys/types.h>
 #	include <sys/time.h>
@@ -53,15 +49,12 @@
 #	include <netdb.h>
 #	include <fcntl.h>
 #	include <cerrno>
-
 #	define SOCKET_ERROR -1
 #	define INVALID_SOCKET -1
 #	define ERROR_NUM errno
 #	define ERROR_WOULDBLOCK EWOULDBLOCK
 #	define ERROR_MSG strerror(errno)
-
 typedef int SOCKET;
-
 #endif
 
 using namespace std;
