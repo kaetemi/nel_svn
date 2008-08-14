@@ -43,7 +43,7 @@ namespace NLMISC
 {
 
 typedef std::list<uint64> TFileAccessTimes;					// list of times at which a given file is opened for reading
-typedef std::hash_map<std::string,TFileAccessTimes> TFileAccessLog;	// map from file name to read access times
+typedef CHashMap<std::string,TFileAccessTimes> TFileAccessLog;	// map from file name to read access times
 typedef NLMISC::CSynchronized<TFileAccessLog> TSynchronizedFileAccessLog;
 
 static TSynchronizedFileAccessLog IFileAccessLog("IFileAccessLog");

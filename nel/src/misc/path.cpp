@@ -170,7 +170,6 @@ void CFileContainer::getFileList(const std::string &extension, std::vector<std::
 	}
 }
 
-#ifndef NL_DONT_USE_EXTERNAL_CODE
 void CPath::getFileListByName(const std::string &extension, const std::string &name, std::vector<std::string> &filenames)
 {
 	getInstance()->_FileContainer.getFileListByName(extension, name, filenames);
@@ -228,19 +227,6 @@ void CFileContainer::getFileListByName(const std::string &extension, const std::
 		}
 	}
 }
-#endif // NL_DONT_USE_EXTERNAL_CODE
-
-
-//CPath *CPath::getInstance ()
-//{
-//	if (_Instance == NULL)
-//	{
-//#undef new
-//		_Instance = new CPath;
-//#define new NL_NEW
-//	}
-//	return _Instance;
-//}
 
 void CPath::clearMap ()
 {
@@ -260,13 +246,11 @@ CFileContainer::CMCFileEntry *CFileContainer::MCfind (const std::string &filenam
 {
 	nlassert(_MemoryCompressed);
 	vector<CMCFileEntry>::iterator it;
-	#if _STLPORT_VERSION >= 0x510
-		CMCFileEntry temp_cmc_file;
-		temp_cmc_file.Name = (char*)filename.c_str();
-		it = lower_bound(_MCFiles.begin(), _MCFiles.end(), temp_cmc_file, CMCFileComp());
-	#else
-		it = lower_bound(_MCFiles.begin(), _MCFiles.end(), filename.c_str(), CMCFileComp());
-	#endif //_STLPORT_VERSION
+
+	CMCFileEntry temp_cmc_file;
+	temp_cmc_file.Name = (char*)filename.c_str();
+	it = lower_bound(_MCFiles.begin(), _MCFiles.end(), temp_cmc_file, CMCFileComp());
+
 	if (it != _MCFiles.end())
 	{
 		CMCFileComp FileComp;
@@ -1582,7 +1566,7 @@ void CFileContainer::removeBigFiles(const std::vector<std::string> &bnpFilenames
 {
 	NL_ALLOC_CONTEXT (MiPath);
 	nlassert(!isMemoryCompressed());
-	std::hash_set<TSStringId> bnpStrIds;
+	CHashSet<TSStringId> bnpStrIds;
 	TFiles::iterator fileIt, fileCurrIt;
 	for (uint k = 0; k < bnpFilenames.size(); ++k)
 	{

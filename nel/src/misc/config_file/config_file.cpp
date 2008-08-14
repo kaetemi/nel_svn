@@ -57,11 +57,7 @@ bool LoadRoot = false;
 namespace NLMISC
 {
 
-#ifndef NL_DONT_USE_EXTERNAL_CODE
 const char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float", "Boolean" };
-#else
-const char *CConfigFile::CVar::TypeName[] = { "Integer", "String", "Float" };
-#endif // NL_DONT_USE_EXTERNAL_CODE
 
 int CConfigFile::CVar::asInt (int index) const
 {
@@ -119,7 +115,6 @@ std::string CConfigFile::CVar::asString (int index) const
 	}
 }
 
-#ifndef NL_DONT_USE_EXTERNAL_CODE
 bool CConfigFile::CVar::asBool (int index) const
 {
 	switch (Type)
@@ -156,8 +151,6 @@ bool CConfigFile::CVar::asBool (int index) const
 		}
 	}
 }
-#endif // NL_DONT_USE_EXTERNAL_CODE
-
 
 void CConfigFile::CVar::setAsInt (int val, int index)
 {
