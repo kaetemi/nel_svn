@@ -170,7 +170,7 @@ public:
 	 *
 	 * \param msgs is the list used to store the messages to send
 	 */
-	void getMessagesToSend( CHashMultiMap<NLMISC::CEntityId,NLNET::CMessage>& msgs );
+	void getMessagesToSend( CHashMultiMap<NLMISC::CEntityId,NLNET::CMessage,NLMISC::CEntityIdHashMapTraits>& msgs );
 
 	/** 
 	 * Add a state to the state machine
