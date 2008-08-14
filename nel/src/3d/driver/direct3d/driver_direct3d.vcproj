@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\../../../../obj/DebugFast/driver_direct3d"
-			IntermediateDirectory=".\../../../../obj/DebugFast/driver_direct3d"
+			OutputDirectory="../../../../obj/DebugFast/driver_direct3d"
+			IntermediateDirectory="../../../../obj/DebugFast/driver_direct3d"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -53,16 +53,14 @@
 				PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;LIBXML_STATIC"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stddirect3d.h"
-				PrecompiledHeaderFile=".\../../../../obj/DebugFast/driver_direct3d/driver_direct3d.pch"
-				AssemblerListingLocation=".\../../../../obj/DebugFast/driver_direct3d/"
-				ObjectFile=".\../../../../obj/DebugFast/driver_direct3d/"
-				ProgramDataBaseFileName=".\../../../../obj/DebugFast/driver_direct3d/"
+				PrecompiledHeaderFile="../../../../obj/DebugFast/driver_direct3d/driver_direct3d.pch"
+				AssemblerListingLocation="../../../../obj/DebugFast/driver_direct3d/"
+				ObjectFile="../../../../obj/DebugFast/driver_direct3d/"
+				ProgramDataBaseFileName="../../../../obj/DebugFast/driver_direct3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -78,16 +76,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9.lib d3d9.lib dinput.lib dxguid.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="d3dx9.lib d3d9.lib dinput8.lib dxguid.lib"
 				OutputFile="../../../../lib/nel_drv_direct3d_win_df.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_direct3d.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/DebugFast/driver_direct3d/nel_drv_direct3d_win_df.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/DebugFast/driver_direct3d/nel_drv_direct3d_win_df.lib"
+				ProgramDatabaseFile="../../../../obj/DebugFast/driver_direct3d/nel_drv_direct3d_win_df.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/DebugFast/driver_direct3d/nel_drv_direct3d_win_df.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -114,8 +110,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../../../../obj/Debug/driver_direct3d"
-			IntermediateDirectory=".\../../../../obj/Debug/driver_direct3d"
+			OutputDirectory="../../../../obj/Debug/driver_direct3d"
+			IntermediateDirectory="../../../../obj/Debug/driver_direct3d"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -146,19 +142,17 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;LIBXML_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stddirect3d.h"
-				PrecompiledHeaderFile=".\../../../../obj/Debug/driver_direct3d/driver_direct3d.pch"
-				AssemblerListingLocation=".\../../../../obj/Debug/driver_direct3d/"
-				ObjectFile=".\../../../../obj/Debug/driver_direct3d/"
-				ProgramDataBaseFileName=".\../../../../obj/Debug/driver_direct3d/"
+				PrecompiledHeaderFile="../../../../obj/Debug/driver_direct3d/driver_direct3d.pch"
+				AssemblerListingLocation="../../../../obj/Debug/driver_direct3d/"
+				ObjectFile="../../../../obj/Debug/driver_direct3d/"
+				ProgramDataBaseFileName="../../../../obj/Debug/driver_direct3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -177,13 +171,11 @@
 				AdditionalDependencies="d3dx9.lib d3d9.lib dinput8.lib dxguid.lib"
 				OutputFile="../../../../lib/nel_drv_direct3d_win_d.dll"
 				LinkIncremental="2"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_direct3d.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/Debug/driver_direct3d/nel_drv_direct3d_win_d.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/Debug/driver_direct3d/nel_drv_direct3d_win_d.lib"
+				ProgramDatabaseFile="../../../../obj/Debug/driver_direct3d/nel_drv_direct3d_win_d.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/Debug/driver_direct3d/nel_drv_direct3d_win_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -210,12 +202,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../../../../obj/Release/driver_direct3d"
-			IntermediateDirectory=".\../../../../obj/Release/driver_direct3d"
+			OutputDirectory="../../../../obj/Release/driver_direct3d"
+			IntermediateDirectory="../../../../obj/Release/driver_direct3d"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -248,20 +241,18 @@
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="FINAL_VERSION;_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;_WINDLL;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="FINAL_VERSION;_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;LIBXML_STATIC;WIN32;NDEBUG;_WINDLL;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stddirect3d.h"
-				PrecompiledHeaderFile=".\../../../../obj/Release/driver_direct3d/driver_direct3d.pch"
-				AssemblerListingLocation=".\../../../../obj/Release/driver_direct3d/"
-				ObjectFile=".\../../../../obj/Release/driver_direct3d/"
-				ProgramDataBaseFileName=".\../../../../obj/Release/driver_direct3d/"
+				PrecompiledHeaderFile="../../../../obj/Release/driver_direct3d/driver_direct3d.pch"
+				AssemblerListingLocation="../../../../obj/Release/driver_direct3d/"
+				ObjectFile="../../../../obj/Release/driver_direct3d/"
+				ProgramDataBaseFileName="../../../../obj/Release/driver_direct3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -276,14 +267,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9.lib d3d9.lib dinput.lib dxguid.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="d3dx9.lib d3d9.lib dinput8.lib dxguid.lib"
 				OutputFile="../../../../lib/nel_drv_direct3d_win_r.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_direct3d.def"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/Release/driver_direct3d/nel_drv_direct3d_win_r.lib"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="../../../../obj/Release/driver_direct3d/nel_drv_direct3d_win_r.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -310,8 +301,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\../../../../obj/ReleaseDebug/driver_direct3d"
-			IntermediateDirectory=".\../../../../obj/ReleaseDebug/driver_direct3d"
+			OutputDirectory="../../../../obj/ReleaseDebug/driver_direct3d"
+			IntermediateDirectory="../../../../obj/ReleaseDebug/driver_direct3d"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -343,19 +334,17 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;_WINDLL;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;_WINDLL;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stddirect3d.h"
-				PrecompiledHeaderFile=".\../../../../obj/ReleaseDebug/driver_direct3d/driver_direct3d.pch"
-				AssemblerListingLocation=".\../../../../obj/ReleaseDebug/driver_direct3d/"
-				ObjectFile=".\../../../../obj/ReleaseDebug/driver_direct3d/"
-				ProgramDataBaseFileName=".\../../../../obj/ReleaseDebug/driver_direct3d/"
+				PrecompiledHeaderFile="../../../../obj/ReleaseDebug/driver_direct3d/driver_direct3d.pch"
+				AssemblerListingLocation="../../../../obj/ReleaseDebug/driver_direct3d/"
+				ObjectFile="../../../../obj/ReleaseDebug/driver_direct3d/"
+				ProgramDataBaseFileName="../../../../obj/ReleaseDebug/driver_direct3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -371,16 +360,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9.lib d3d9.lib dinput.lib dxguid.lib"
+				AdditionalDependencies="d3dx9.lib d3d9.lib dinput8.lib dxguid.lib"
 				OutputFile="../../../../lib/nel_drv_direct3d_win_rd.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_direct3d.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/ReleaseDebug/driver_direct3d/nel_drv_direct3d_win_rd.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/ReleaseDebug/driver_direct3d/nel_drv_direct3d_win_rd.lib"
+				ProgramDatabaseFile="../../../../obj/ReleaseDebug/driver_direct3d/nel_drv_direct3d_win_rd.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/ReleaseDebug/driver_direct3d/nel_drv_direct3d_win_rd.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -529,7 +516,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -611,7 +598,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -653,7 +640,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -695,7 +682,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -737,7 +724,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -779,7 +766,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -821,7 +808,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -863,7 +850,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -905,7 +892,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -947,7 +934,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -989,7 +976,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -1031,7 +1018,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -1078,7 +1065,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;__STL_DEBUG;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_WINDOWS;_USRDLL;driver_direct3d_EXPORTS;_DEBUG;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 					UsePrecompiledHeader="1"
 				/>

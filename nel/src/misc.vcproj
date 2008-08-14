@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../obj/Debug/misc"
-			IntermediateDirectory=".\../obj/Debug/misc"
+			OutputDirectory="../obj/Debug/misc"
+			IntermediateDirectory="../obj/Debug/misc"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="__STL_DEBUG;_LIB;LIBXML_STATIC;_DEBUG;WIN32"
+				PreprocessorDefinitions="_LIB;LIBXML_STATIC;_DEBUG;WIN32"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -51,18 +51,14 @@
 				RuntimeLibrary="1"
 				BufferSecurityCheck="true"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdmisc.h"
-				PrecompiledHeaderFile=".\../obj/Debug/misc/misc.pch"
-				AssemblerListingLocation=".\../obj/Debug/misc/"
-				ObjectFile=".\../obj/Debug/misc/"
-				ProgramDataBaseFileName=".\../obj/Debug/misc/"
-				BrowseInformation="0"
+				PrecompiledHeaderFile="../obj/Debug/misc/misc.pch"
+				AssemblerListingLocation="../obj/Debug/misc/"
+				ObjectFile="../obj/Debug/misc/"
+				ProgramDataBaseFileName="../obj/Debug/misc/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -78,7 +74,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nlmisc_d.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -98,8 +93,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\../obj/DebugFast/misc"
-			IntermediateDirectory=".\../obj/DebugFast/misc"
+			OutputDirectory="../obj/DebugFast/misc"
+			IntermediateDirectory="../obj/DebugFast/misc"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -127,17 +122,16 @@
 				AdditionalIncludeDirectories="..\include"
 				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;LIBXML_STATIC;_DEBUG;WIN32"
 				StringPooling="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdmisc.h"
-				PrecompiledHeaderFile=".\../obj/DebugFast/misc/misc.pch"
-				AssemblerListingLocation=".\../obj/DebugFast/misc/"
-				ObjectFile=".\../obj/DebugFast/misc/"
-				ProgramDataBaseFileName=".\../obj/DebugFast/misc/"
+				PrecompiledHeaderFile="../obj/DebugFast/misc/misc.pch"
+				AssemblerListingLocation="../obj/DebugFast/misc/"
+				ObjectFile="../obj/DebugFast/misc/"
+				ProgramDataBaseFileName="../obj/DebugFast/misc/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -154,7 +148,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nlmisc_df.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -174,8 +167,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\../obj/ReleaseDebug/misc"
-			IntermediateDirectory=".\../obj/ReleaseDebug/misc"
+			OutputDirectory="../obj/ReleaseDebug/misc"
+			IntermediateDirectory="../obj/ReleaseDebug/misc"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -201,19 +194,17 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="NL_RELEASE_DEBUG;_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="NL_RELEASE_DEBUG;_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdmisc.h"
-				PrecompiledHeaderFile=".\../obj/ReleaseDebug/misc/misc.pch"
-				AssemblerListingLocation=".\../obj/ReleaseDebug/misc/"
-				ObjectFile=".\../obj/ReleaseDebug/misc/"
-				ProgramDataBaseFileName=".\../obj/ReleaseDebug/misc/"
+				PrecompiledHeaderFile="../obj/ReleaseDebug/misc/misc.pch"
+				AssemblerListingLocation="../obj/ReleaseDebug/misc/"
+				ObjectFile="../obj/ReleaseDebug/misc/"
+				ProgramDataBaseFileName="../obj/ReleaseDebug/misc/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -230,7 +221,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nlmisc_rd.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -250,12 +240,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../obj/Release/misc"
-			IntermediateDirectory=".\../obj/Release/misc"
+			OutputDirectory="../obj/Release/misc"
+			IntermediateDirectory="../obj/Release/misc"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -280,22 +271,19 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="FINAL_VERSION;NL_RELEASE_DEBUG;_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="FINAL_VERSION;_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdmisc.h"
-				PrecompiledHeaderFile=".\../obj/Release/misc/misc.pch"
-				AssemblerListingLocation=".\../obj/Release/misc/"
-				ObjectFile=".\../obj/Release/misc/"
-				ProgramDataBaseFileName=".\../obj/Release/misc/"
+				PrecompiledHeaderFile="../obj/Release/misc/misc.pch"
+				AssemblerListingLocation="../obj/Release/misc/"
+				ObjectFile="../obj/Release/misc/"
+				ProgramDataBaseFileName="../obj/Release/misc/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -311,7 +299,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nlmisc_r.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

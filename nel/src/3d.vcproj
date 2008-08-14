@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\../obj/DebugFast/3d"
-			IntermediateDirectory=".\../obj/DebugFast/3d"
+			OutputDirectory="../obj/DebugFast/3d"
+			IntermediateDirectory="../obj/DebugFast/3d"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -48,16 +48,14 @@
 				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;LIBXML_STATIC"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
-				PrecompiledHeaderFile=".\../obj/DebugFast/3d/3d.pch"
-				AssemblerListingLocation=".\../obj/DebugFast/3d/"
-				ObjectFile=".\../obj/DebugFast/3d/"
-				ProgramDataBaseFileName=".\../obj/DebugFast/3d/"
+				PrecompiledHeaderFile="../obj/DebugFast/3d/3d.pch"
+				AssemblerListingLocation="../obj/DebugFast/3d/"
+				ObjectFile="../obj/DebugFast/3d/"
+				ProgramDataBaseFileName="../obj/DebugFast/3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -74,7 +72,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nl3d_df.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -94,12 +91,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../obj/Release/3d"
-			IntermediateDirectory=".\../obj/Release/3d"
+			OutputDirectory="../obj/Release/3d"
+			IntermediateDirectory="../obj/Release/3d"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -125,22 +123,19 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="FINAL_VERSION;_LIB;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="FINAL_VERSION;_LIB;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
-				PrecompiledHeaderFile=".\../obj/Release/3d/3d.pch"
-				AssemblerListingLocation=".\../obj/Release/3d/"
-				ObjectFile=".\../obj/Release/3d/"
-				ProgramDataBaseFileName=".\../obj/Release/3d/"
+				PrecompiledHeaderFile="../obj/Release/3d/3d.pch"
+				AssemblerListingLocation="../obj/Release/3d/"
+				ObjectFile="../obj/Release/3d/"
+				ProgramDataBaseFileName="../obj/Release/3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -156,7 +151,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nl3d_r.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -176,8 +170,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\../obj/ReleaseDebug/3d"
-			IntermediateDirectory=".\../obj/ReleaseDebug/3d"
+			OutputDirectory="../obj/ReleaseDebug/3d"
+			IntermediateDirectory="../obj/ReleaseDebug/3d"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -206,16 +200,14 @@
 				PreprocessorDefinitions="_LIB;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
-				PrecompiledHeaderFile=".\../obj/ReleaseDebug/3d/3d.pch"
-				AssemblerListingLocation=".\../obj/ReleaseDebug/3d/"
-				ObjectFile=".\../obj/ReleaseDebug/3d/"
-				ProgramDataBaseFileName=".\../obj/ReleaseDebug/3d/"
+				PrecompiledHeaderFile="../obj/ReleaseDebug/3d/3d.pch"
+				AssemblerListingLocation="../obj/ReleaseDebug/3d/"
+				ObjectFile="../obj/ReleaseDebug/3d/"
+				ProgramDataBaseFileName="../obj/ReleaseDebug/3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -232,7 +224,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nl3d_rd.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -252,8 +243,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../obj/Debug/3d"
-			IntermediateDirectory=".\../obj/Debug/3d"
+			OutputDirectory="../obj/Debug/3d"
+			IntermediateDirectory="../obj/Debug/3d"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -279,25 +270,19 @@
 				AdditionalOptions="/Zm200 "
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="__STL_DEBUG;_LIB;_DEBUG;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_LIB;_DEBUG;WIN32;LIBXML_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				SmallerTypeCheck="false"
 				RuntimeLibrary="1"
-				BufferSecurityCheck="true"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
-				PrecompiledHeaderFile=".\../obj/Debug/3d/3d.pch"
-				AssemblerListingLocation=".\../obj/Debug/3d/"
-				ObjectFile=".\../obj/Debug/3d/"
-				ProgramDataBaseFileName=".\../obj/Debug/3d/"
-				BrowseInformation="0"
+				PrecompiledHeaderFile="../obj/Debug/3d/3d.pch"
+				AssemblerListingLocation="../obj/Debug/3d/"
+				ObjectFile="../obj/Debug/3d/"
+				ProgramDataBaseFileName="../obj/Debug/3d/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -313,7 +298,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../lib/nl3d_d.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

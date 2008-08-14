@@ -16,8 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../../../obj/Debug/sound_lowlevel"
-			IntermediateDirectory=".\../../../obj/Debug/sound_lowlevel"
+			OutputDirectory="../../../obj/Debug/sound_lowlevel"
+			IntermediateDirectory="../../../obj/Debug/sound_lowlevel"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -42,17 +42,15 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="__STL_DEBUG;_DEBUG;_LIB;_AFXDLL;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_DEBUG;_LIB;WIN32;LIBXML_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../obj/Debug/sound_lowlevel/sound_lowlevel.pch"
-				AssemblerListingLocation=".\../../../obj/Debug/sound_lowlevel/"
-				ObjectFile=".\../../../obj/Debug/sound_lowlevel/"
-				ProgramDataBaseFileName=".\../../../obj/Debug/sound_lowlevel/"
+				PrecompiledHeaderFile="../../../obj/Debug/sound_lowlevel/sound_lowlevel.pch"
+				AssemblerListingLocation="../../../obj/Debug/sound_lowlevel/"
+				ObjectFile="../../../obj/Debug/sound_lowlevel/"
+				ProgramDataBaseFileName="../../../obj/Debug/sound_lowlevel/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -69,7 +67,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../../../lib/nlsound_lowlevel_d.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -89,8 +86,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\../../../obj/ReleaseDebug/sound_lowlevel"
-			IntermediateDirectory=".\../../../obj/ReleaseDebug/sound_lowlevel"
+			OutputDirectory="../../../obj/ReleaseDebug/sound_lowlevel"
+			IntermediateDirectory="../../../obj/ReleaseDebug/sound_lowlevel"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -116,17 +113,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="NL_RELEASE_DEBUG;_LIB;_AFXDLL;LIBXML_STATIC;WIN32;NDEBUG"
+				PreprocessorDefinitions="NL_RELEASE_DEBUG;_LIB;LIBXML_STATIC;WIN32;NDEBUG"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../obj/ReleaseDebug/sound_lowlevel/sound_lowlevel.pch"
-				AssemblerListingLocation=".\../../../obj/ReleaseDebug/sound_lowlevel/"
-				ObjectFile=".\../../../obj/ReleaseDebug/sound_lowlevel/"
-				ProgramDataBaseFileName=".\../../../obj/ReleaseDebug/sound_lowlevel/"
+				PrecompiledHeaderFile="../../../obj/ReleaseDebug/sound_lowlevel/sound_lowlevel.pch"
+				AssemblerListingLocation="../../../obj/ReleaseDebug/sound_lowlevel/"
+				ObjectFile="../../../obj/ReleaseDebug/sound_lowlevel/"
+				ProgramDataBaseFileName="../../../obj/ReleaseDebug/sound_lowlevel/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -143,7 +138,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../../../lib/nlsound_lowlevel_rd.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -163,8 +157,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\../../../obj/DebugFast/sound_lowlevel"
-			IntermediateDirectory=".\../../../obj/DebugFast/sound_lowlevel"
+			OutputDirectory="../../../obj/DebugFast/sound_lowlevel"
+			IntermediateDirectory="../../../obj/DebugFast/sound_lowlevel"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -190,17 +184,15 @@
 				Optimization="0"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="_DEBUG;NL_DEBUG_FAST;_LIB;_AFXDLL;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_DEBUG;NL_DEBUG_FAST;_LIB;WIN32;LIBXML_STATIC"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../obj/DebugFast/sound_lowlevel/sound_lowlevel.pch"
-				AssemblerListingLocation=".\../../../obj/DebugFast/sound_lowlevel/"
-				ObjectFile=".\../../../obj/DebugFast/sound_lowlevel/"
-				ProgramDataBaseFileName=".\../../../obj/DebugFast/sound_lowlevel/"
+				RuntimeLibrary="1"
+				PrecompiledHeaderFile="../../../obj/DebugFast/sound_lowlevel/sound_lowlevel.pch"
+				AssemblerListingLocation="../../../obj/DebugFast/sound_lowlevel/"
+				ObjectFile="../../../obj/DebugFast/sound_lowlevel/"
+				ProgramDataBaseFileName="../../../obj/DebugFast/sound_lowlevel/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -217,7 +209,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../../../lib/nlsound_lowlevel_df.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -237,12 +228,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../../../obj/Release/sound_lowlevel"
-			IntermediateDirectory=".\../../../obj/Release/sound_lowlevel"
+			OutputDirectory="../../../obj/Release/sound_lowlevel"
+			IntermediateDirectory="../../../obj/Release/sound_lowlevel"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -261,20 +253,21 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="NDEBUG;_LIB;_AFXDLL;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="NDEBUG;_LIB;WIN32;LIBXML_STATIC"
 				StringPooling="true"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../obj/Release/sound_lowlevel/sound_lowlevel.pch"
-				AssemblerListingLocation=".\../../../obj/Release/sound_lowlevel/"
-				ObjectFile=".\../../../obj/Release/sound_lowlevel/"
-				ProgramDataBaseFileName=".\../../../obj/Release/sound_lowlevel/"
+				RuntimeLibrary="0"
+				PrecompiledHeaderFile="../../../obj/Release/sound_lowlevel/sound_lowlevel.pch"
+				AssemblerListingLocation="../../../obj/Release/sound_lowlevel/"
+				ObjectFile="../../../obj/Release/sound_lowlevel/"
+				ProgramDataBaseFileName="../../../obj/Release/sound_lowlevel/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -290,7 +283,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="../../../lib/nlsound_lowlevel_r.lib"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

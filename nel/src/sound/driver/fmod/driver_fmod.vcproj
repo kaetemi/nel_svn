@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\../../../../obj/DebugFast/driver_fmod"
-			IntermediateDirectory=".\../../../../obj/DebugFast/driver_fmod"
+			OutputDirectory="../../../../obj/DebugFast/driver_fmod"
+			IntermediateDirectory="../../../../obj/DebugFast/driver_fmod"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -52,14 +52,12 @@
 				AdditionalIncludeDirectories="..\..\..\..\include"
 				PreprocessorDefinitions="_DEBUG;NL_DEBUG_FAST;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;LIBXML_STATIC"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../../obj/DebugFast/driver_fmod/driver_fmod.pch"
-				AssemblerListingLocation=".\../../../../obj/DebugFast/driver_fmod/"
-				ObjectFile=".\../../../../obj/DebugFast/driver_fmod/"
-				ProgramDataBaseFileName=".\../../../../obj/DebugFast/driver_fmod/"
+				RuntimeLibrary="1"
+				PrecompiledHeaderFile="../../../../obj/DebugFast/driver_fmod/driver_fmod.pch"
+				AssemblerListingLocation="../../../../obj/DebugFast/driver_fmod/"
+				ObjectFile="../../../../obj/DebugFast/driver_fmod/"
+				ProgramDataBaseFileName="../../../../obj/DebugFast/driver_fmod/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -75,16 +73,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fmodvc.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="fmodvc.lib"
 				OutputFile="../../../../lib/nel_drv_fmod_win_df.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_fmod.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/DebugFast/driver_fmod/nel_drv_fmod_win_df.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/DebugFast/driver_fmod/nel_drv_fmod_win_df.lib"
+				ProgramDatabaseFile="../../../../obj/DebugFast/driver_fmod/nel_drv_fmod_win_df.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/DebugFast/driver_fmod/nel_drv_fmod_win_df.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -111,8 +107,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\../../../../obj/ReleaseDebug/driver_fmod"
-			IntermediateDirectory=".\../../../../obj/ReleaseDebug/driver_fmod"
+			OutputDirectory="../../../../obj/ReleaseDebug/driver_fmod"
+			IntermediateDirectory="../../../../obj/ReleaseDebug/driver_fmod"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -146,15 +142,13 @@
 				AdditionalIncludeDirectories="..\..\..\..\include"
 				PreprocessorDefinitions="NL_RELEASE_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;NDEBUG;LIBXML_STATIC"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../../obj/ReleaseDebug/driver_fmod/driver_fmod.pch"
-				AssemblerListingLocation=".\../../../../obj/ReleaseDebug/driver_fmod/"
-				ObjectFile=".\../../../../obj/ReleaseDebug/driver_fmod/"
-				ProgramDataBaseFileName=".\../../../../obj/ReleaseDebug/driver_fmod/"
+				PrecompiledHeaderFile="../../../../obj/ReleaseDebug/driver_fmod/driver_fmod.pch"
+				AssemblerListingLocation="../../../../obj/ReleaseDebug/driver_fmod/"
+				ObjectFile="../../../../obj/ReleaseDebug/driver_fmod/"
+				ProgramDataBaseFileName="../../../../obj/ReleaseDebug/driver_fmod/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -173,13 +167,11 @@
 				AdditionalDependencies="fmodvc.lib"
 				OutputFile="../../../../lib/nel_drv_fmod_win_rd.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_fmod.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/ReleaseDebug/driver_fmod/nel_drv_fmod_win_rd.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/ReleaseDebug/driver_fmod/nel_drv_fmod_win_rd.lib"
+				ProgramDatabaseFile="../../../../obj/ReleaseDebug/driver_fmod/nel_drv_fmod_win_rd.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/ReleaseDebug/driver_fmod/nel_drv_fmod_win_rd.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -206,8 +198,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../../../../obj/Release/driver_fmod"
-			IntermediateDirectory=".\../../../../obj/Release/driver_fmod"
+			OutputDirectory="../../../../obj/Release/driver_fmod"
+			IntermediateDirectory="../../../../obj/Release/driver_fmod"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -236,20 +228,21 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="..\..\..\..\include"
 				PreprocessorDefinitions="NDEBUG;NLSOUND_PROFILE;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;LIBXML_STATIC"
 				StringPooling="true"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../../obj/Release/driver_fmod/driver_fmod.pch"
-				AssemblerListingLocation=".\../../../../obj/Release/driver_fmod/"
-				ObjectFile=".\../../../../obj/Release/driver_fmod/"
-				ProgramDataBaseFileName=".\../../../../obj/Release/driver_fmod/"
+				RuntimeLibrary="0"
+				PrecompiledHeaderFile="../../../../obj/Release/driver_fmod/driver_fmod.pch"
+				AssemblerListingLocation="../../../../obj/Release/driver_fmod/"
+				ObjectFile="../../../../obj/Release/driver_fmod/"
+				ProgramDataBaseFileName="../../../../obj/Release/driver_fmod/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -264,14 +257,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fmodvc.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="fmodvc.lib"
 				OutputFile="../../../../lib/nel_drv_fmod_win_r.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\driver_fmod.def"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/Release/driver_fmod/nel_drv_fmod_win_r.lib"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="../../../../obj/Release/driver_fmod/nel_drv_fmod_win_r.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -298,8 +291,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../../../../obj/Debug/driver_fmod"
-			IntermediateDirectory=".\../../../../obj/Debug/driver_fmod"
+			OutputDirectory="../../../../obj/Debug/driver_fmod"
+			IntermediateDirectory="../../../../obj/Debug/driver_fmod"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -330,17 +323,15 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;LIBXML_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\../../../../obj/Debug/driver_fmod/driver_fmod.pch"
-				AssemblerListingLocation=".\../../../../obj/Debug/driver_fmod/"
-				ObjectFile=".\../../../../obj/Debug/driver_fmod/"
-				ProgramDataBaseFileName=".\../../../../obj/Debug/driver_fmod/"
+				PrecompiledHeaderFile="../../../../obj/Debug/driver_fmod/driver_fmod.pch"
+				AssemblerListingLocation="../../../../obj/Debug/driver_fmod/"
+				ObjectFile="../../../../obj/Debug/driver_fmod/"
+				ProgramDataBaseFileName="../../../../obj/Debug/driver_fmod/"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -356,15 +347,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fmodvc.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="fmodvc.lib"
 				OutputFile="../../../../lib/nel_drv_fmod_win_d.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\driver_fmod.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\../../../../obj/Debug/driver_fmod/nel_drv_fmod_win_d.pdb"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\../../../../obj/Debug/driver_fmod/nel_drv_fmod_win_d.lib"
+				ProgramDatabaseFile="../../../../obj/Debug/driver_fmod/nel_drv_fmod_win_d.pdb"
+				SubSystem="2"
+				ImportLibrary="../../../../obj/Debug/driver_fmod/nel_drv_fmod_win_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -430,7 +420,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -512,7 +502,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -558,7 +548,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -604,7 +594,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -650,7 +640,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
@@ -696,7 +686,7 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
-					PreprocessorDefinitions="_DEBUG;__STL_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
+					PreprocessorDefinitions="_DEBUG;_WINDOWS;_USRDLL;DRIVER_FMOD_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
 				/>
 			</FileConfiguration>
