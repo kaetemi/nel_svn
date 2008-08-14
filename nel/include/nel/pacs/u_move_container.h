@@ -61,6 +61,11 @@ class UMoveContainer
 {
 public:
 
+	/**
+	  * destructor
+	  */
+	virtual ~UMoveContainer () { }
+
 	/// \name Manage primitives.
 
 	/**
