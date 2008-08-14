@@ -215,7 +215,7 @@ public:
 		}
 		else if (Mode == 4)	// display
 		{
-			typedef typename T::iterator __iterator;
+			typedef typename T::const_iterator __iterator;
 			std::string val;
 			for (__iterator it = value.begin (); it != value.end(); it++)
 			{
