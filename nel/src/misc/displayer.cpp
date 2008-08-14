@@ -55,7 +55,9 @@
 // these defines is for IsDebuggerPresent(). it'll not compile on windows 95
 // just comment this and the IsDebuggerPresent to compile on windows 95
 #	define _WIN32_WINDOWS	0x0410
-#	define WINVER			0x0400
+#	ifndef WINVER
+#		define WINVER		0x0400
+#	endif
 #	include <windows.h>
 #else
 #	define IsDebuggerPresent() false

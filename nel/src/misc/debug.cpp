@@ -39,7 +39,9 @@
 
 #ifdef NL_OS_WINDOWS
 #	define _WIN32_WINDOWS	0x0410
-#	define WINVER			0x0400
+#	ifndef WINVER
+#		define WINVER		0x0400
+#	endif
 #	include <windows.h>
 #	include <direct.h>
 #	include <imagehlp.h>
