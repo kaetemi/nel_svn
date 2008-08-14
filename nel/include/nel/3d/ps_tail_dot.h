@@ -157,7 +157,7 @@ private:
 				}
 			};
 
-			typedef std::hash_map<uint, CVBnPB> TVBMap;
+			typedef CHashMap<uint, CVBnPB> TVBMap;
 
 			static TVBMap					_VBMap;			  // index / vertex buffers with no color
 			static TVBMap					_FadedVBMap;	  // index / vertex buffers for constant color with fading

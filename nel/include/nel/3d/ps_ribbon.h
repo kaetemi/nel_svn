@@ -243,7 +243,7 @@ private:
 					VB.setName("CPSRibbon::CVBnPB::VB");
 				}
 			};
-			typedef std::hash_map<uint, CVBnPB> TVBMap;
+			typedef CHashMap<uint, CVBnPB> TVBMap;
 			//
 			static TVBMap _VBMaps[16];  // 4 bits defines the display mode : 
 			                            // - color / no color

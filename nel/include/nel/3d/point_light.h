@@ -70,7 +70,8 @@ class CPointLight
 {
 public:
 	/// The list of model this light influence.
-	typedef	NLMISC::CSTLBlockList<CTransform*>	TTransformList;
+	//typedef	NLMISC::CSTLBlockList<CTransform*>	TTransformList;
+	typedef	std::list<CTransform*>	TTransformList;
 	typedef	TTransformList::iterator			ItTransformList;
 
 	enum	TType 

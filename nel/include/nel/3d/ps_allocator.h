@@ -273,12 +273,12 @@ namespace NL3D
 	// To define a vector of type T, one must do : CPSVector<T>::V MyVector;
 	template <class T> struct CPSVector
 	{
-		typedef std::vector<T, CPSAllocator<T> > V;
+		typedef std::vector<T, std::allocator<T> > V;
 	};
 	// partial specialisation tips for multimap
 	template <class T, class U, class Pr = std::less<T> > struct CPSMultiMap
 	{
-		typedef std::multimap<T, U, Pr, CPSAllocator<T> > M;
+		typedef std::multimap<T, U, Pr, std::allocator<T> > M;
 	};
 
 
