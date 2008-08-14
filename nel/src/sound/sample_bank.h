@@ -54,7 +54,7 @@ struct eqname
 
 /// Sample names hash map
 //typedef std::hash_map<std::string, IBuffer*> TSampleTable;
-typedef CHashMap<NLMISC::TStringId, IBuffer*, NLMISC::CStringIdHasher> TSampleTable;
+typedef CHashMap<NLMISC::TStringId, IBuffer*, NLMISC::CStringIdHashMapTraits> TSampleTable;
 
 
 /**
@@ -136,7 +136,7 @@ private:
 	void onUpdate();
 
 //	typedef std::hash_map<std::string, CSampleBank*>				TSampleBankContainer;
-	typedef CHashMap<NLMISC::TStringId, CSampleBank*, NLMISC::CStringIdHasher>			TSampleBankContainer;
+	typedef CHashMap<NLMISC::TStringId, CSampleBank*, NLMISC::CStringIdHashMapTraits>			TSampleBankContainer;
 
 	// The map off all loaded sample banks
 	static TSampleBankContainer			_Banks;
@@ -173,7 +173,7 @@ private:
 	};
 
 	/// List of virtual sample bank.
-	typedef CHashMap<NLMISC::TStringId, std::vector<TFilteredBank>, NLMISC::CStringIdHasher>	TVirtualBankCont;
+	typedef CHashMap<NLMISC::TStringId, std::vector<TFilteredBank>, NLMISC::CStringIdHashMapTraits>	TVirtualBankCont;
 	static TVirtualBankCont		_VirtualBanks;
 
 };

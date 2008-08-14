@@ -43,7 +43,7 @@ class CSound;
 
 /// Sound names hash map
 //typedef std::hash_map<std::string, CSound*> TSoundMap;
-typedef CHashMap<NLMISC::TStringId, CSound*, NLMISC::CStringIdHasher> TSoundMap;
+typedef CHashMap<NLMISC::TStringId, CSound*, NLMISC::CStringIdHashMapTraits> TSoundMap;
 
 /// Sound names set (for ambiant sounds)
 typedef std::set<CSound*> TSoundSet;

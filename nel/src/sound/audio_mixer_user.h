@@ -464,7 +464,7 @@ protected:
 	/// Fill a vector of position and mute flag for all playing sound source.
 	virtual void				getPlayingSoundsPos(bool virtualPos, std::vector<std::pair<bool, NLMISC::CVector> > &pos);
 
-	typedef CHashMap<NLMISC::TStringId, CControledSources, NLMISC::CStringIdHasher>	TUserVarControlsContainer;
+	typedef CHashMap<NLMISC::TStringId, CControledSources, NLMISC::CStringIdHashMapTraits>	TUserVarControlsContainer;
 	/// Container for all user controler and currently controled playing source
 	TUserVarControlsContainer	_UserVarControls;
 

@@ -1115,7 +1115,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 		// Compute new source mixing in this layer
 		{
 			/// Status of all selected sound ordered by surface.
-			multimap<float, TSoundStatus>	status;
+			CHashMultiMap<float, TSoundStatus>	status;
 
 			// first loop to compute selected sound gain and position and order the result by surface..
 			{
@@ -1163,7 +1163,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 
 				float	maskFactor = 1.0f;
 
-				multimap<float, TSoundStatus>::iterator first(status.begin()), last(status.end());
+				CHashMultiMap<float, TSoundStatus>::iterator first(status.begin()), last(status.end());
 				for (; first != last; ++first)
 				{
 					TSoundStatus &ss = first->second;

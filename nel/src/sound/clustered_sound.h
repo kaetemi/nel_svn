@@ -256,15 +256,15 @@ private:
 	/// The segment of all the audio path.
 	std::vector<std::pair<NLMISC::CVector, NLMISC::CVector> >	_AudioPath;
 
-	typedef CHashMap<NLMISC::TStringId, CClusterSound, NLMISC::CStringIdHasher>	TClusterSoundCont;
+	typedef CHashMap<NLMISC::TStringId, CClusterSound, NLMISC::CStringIdHashMapTraits>	TClusterSoundCont;
 	/// The current cluster playing source indexed with sound group id
 	TClusterSoundCont		_Sources;
 
-	typedef CHashMap<NLMISC::TStringId, NLMISC::TStringId, NLMISC::CStringIdHasher> TStringStringMap;
+	typedef CHashMap<NLMISC::TStringId, NLMISC::TStringId, NLMISC::CStringIdHashMapTraits> TStringStringMap;
 	/// The sound_group to sound assoc
 	TStringStringMap	_SoundGroupToSound;
 
-	typedef CHashMap<NLMISC::TStringId, uint, NLMISC::CStringIdHasher>	TStringIntMap;
+	typedef CHashMap<NLMISC::TStringId, uint, NLMISC::CStringIdHashMapTraits>	TStringIntMap;
 	/// The mapping for env name Id to EAX environement number
 	TStringIntMap	_IdToEaxEnv;
 	/// The mapping for occlusion material name to material number

@@ -148,7 +148,7 @@ uint32 CComplexSound::getDuration()
 
 // ********************************************************
 
-CComplexSound::CComplexSound()
+CComplexSound::CComplexSound() :
 	_PatternMode(CComplexSound::MODE_UNDEFINED),
 	_TicksPerSeconds(1.0f),
 	_XFadeLenght(3000),		// default to 3000 sec.
