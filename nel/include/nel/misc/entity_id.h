@@ -570,7 +570,7 @@ public:
 /**
  * a generic hasher for entities
  */
-class CEidHash
+/*class CEidHash
 {
 public:
 	size_t	operator () ( const NLMISC::CEntityId & id ) const 
@@ -578,6 +578,24 @@ public:
 		uint64 hash64 = id.getUniqueId();
 		return size_t(hash64) ^ size_t( hash64 >> 32 );
 		return (uint32)id.getShortId(); 
+	}
+};*/
+
+// Traits for hash_map using CEntityId
+struct CEntityIdHashMapTraits
+{
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+	CEntityIdHashMapTraits() { }
+	size_t operator() (const NLMISC::CEntityId &id ) const
+	{
+		uint64 hash64 = id.getUniqueId();
+		return size_t(hash64) ^ size_t( hash64 >> 32 );
+		//return size_t(id.getShortId());
+	}
+	bool operator() (const NLMISC::CEntityId &id1, const NLMISC::CEntityId &id2) const
+	{
+		return id1.getShortId() < id2.getShortId();
 	}
 };
 
