@@ -575,7 +575,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					}
 					break;
 					case CVPOperand::Constant: 
-						nlassert(operand.Value.ConstantValue < _EVSNumConstant); // constant index too high
+						nlassert(operand.Value.ConstantValue < (sint)_EVSNumConstant); // constant index too high
 						srcValue[l] = _EVSConstantHandle + operand.Value.ConstantValue; 												
 						EVS_INFO(("Src = constant" + toString(operand.Value.ConstantValue)).c_str());
 					break;
