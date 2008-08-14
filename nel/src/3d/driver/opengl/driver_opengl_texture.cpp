@@ -140,12 +140,19 @@ bool CTextureDrvInfosGL::initFrameBufferObject(ITexture * tex)
 			case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
 				nlwarning("Unsupported framebuffer format\n");
 				break;
+#if GL_GLEXT_VERSION > 24
+			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+				nlwarning("Framebuffer incomplete attachment\n");
+				break;
+#endif
 			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
 				nlwarning("Framebuffer incomplete, missing attachment\n");
 				break;
+#if GL_GLEXT_VERSION < 39
 			case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT:
 				nlwarning("Framebuffer incomplete, duplicate attachment\n");
 				break;
+#endif
 			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
 				nlwarning("Framebuffer incomplete, attached images must have same dimensions\n");
 				break;
