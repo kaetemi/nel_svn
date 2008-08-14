@@ -1504,19 +1504,6 @@ typedef GLboolean (APIENTRY *NEL_PFNGLISPROGRAMARBPROC)(GLuint program);
 #ifndef GL_EXT_framebuffer_object
 #define GL_EXT_framebuffer_object 1
 
-typedef GLboolean (APIENTRY * NEL_PFNGLISRENDERBUFFEREXTPROC) (GLuint renderbuffer);
-typedef GLboolean (APIENTRY * NEL_PFNGLISFRAMEBUFFEREXTPROC) (GLuint framebuffer);
-typedef GLenum (APIENTRY * NEL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) (GLenum pname);
-typedef GLvoid (APIENTRY * NEL_PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint *framebuffers);
-typedef GLvoid (APIENTRY * NEL_PFNGLBINDFRAMEBUFFEREXTPROC) (GLenum target, GLuint framebuffer);
-typedef GLvoid (APIENTRY * NEL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-typedef GLvoid (APIENTRY * NEL_PFNGLGENRENDERBUFFERSEXTPROC) (GLsizei n, GLuint *renderbuffers);
-typedef GLvoid (APIENTRY * NEL_PFNGLBINDRENDERBUFFEREXTPROC) (GLenum target, GLuint renderbuffer);
-typedef GLvoid (APIENTRY * NEL_PFNGLRENDERBUFFERSTORAGEEXTPROC) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
-typedef GLvoid (APIENTRY * NEL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
-typedef GLvoid (APIENTRY * NEL_PFNGLDELETERENDERBUFFERSEXTPROC) (GLsizei n, const GLuint *renderbuffers);
-typedef GLvoid (APIENTRY * NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const GLuint *framebuffers);
-
 #define GL_FRAMEBUFFER_COMPLETE_EXT							0x8CD5
 #define GL_FRAMEBUFFER_UNSUPPORTED_EXT						0x8CDD
 #define GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT	0x8CD7
@@ -1532,6 +1519,19 @@ typedef GLvoid (APIENTRY * NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const
 #define GL_RENDERBUFFER_EXT									0x8D41
 
 #endif
+
+typedef GLboolean (APIENTRY * NEL_PFNGLISRENDERBUFFEREXTPROC) (GLuint renderbuffer);
+typedef GLboolean (APIENTRY * NEL_PFNGLISFRAMEBUFFEREXTPROC) (GLuint framebuffer);
+typedef GLenum (APIENTRY * NEL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) (GLenum pname);
+typedef GLvoid (APIENTRY * NEL_PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint *framebuffers);
+typedef GLvoid (APIENTRY * NEL_PFNGLBINDFRAMEBUFFEREXTPROC) (GLenum target, GLuint framebuffer);
+typedef GLvoid (APIENTRY * NEL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef GLvoid (APIENTRY * NEL_PFNGLGENRENDERBUFFERSEXTPROC) (GLsizei n, GLuint *renderbuffers);
+typedef GLvoid (APIENTRY * NEL_PFNGLBINDRENDERBUFFEREXTPROC) (GLenum target, GLuint renderbuffer);
+typedef GLvoid (APIENTRY * NEL_PFNGLRENDERBUFFERSTORAGEEXTPROC) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+typedef GLvoid (APIENTRY * NEL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+typedef GLvoid (APIENTRY * NEL_PFNGLDELETERENDERBUFFERSEXTPROC) (GLsizei n, const GLuint *renderbuffers);
+typedef GLvoid (APIENTRY * NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const GLuint *framebuffers);
 
 
 #ifndef GL_EXT_packed_depth_stencil
