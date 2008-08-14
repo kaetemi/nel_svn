@@ -40,7 +40,7 @@ class CEvent;
 
 /*===================================================================*/
 
-typedef std::multimap<CClassId, IEventListener*> mapListener;
+typedef CHashMultiMap<CClassId, IEventListener*> mapListener;
 
 
 /**

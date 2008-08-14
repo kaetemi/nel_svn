@@ -111,7 +111,7 @@ private:
 		std::string			TypeIdCheck;
 		IClassable*	(*Creator)();		
 	};
-	typedef std::hash_map<std::string, CClassNode> TClassMap;
+	typedef CHashMap<std::string, CClassNode> TClassMap;
 	static	TClassMap	*RegistredClasses;
 
 };

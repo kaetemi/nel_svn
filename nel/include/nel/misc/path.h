@@ -206,11 +206,9 @@ public:
 	 */
 	void getFileList(const std::string &extension, std::vector<std::string> &filenames);
 
-#ifndef NL_DONT_USE_EXTERNAL_CODE
 	/** Create a list of file having the requested string in the filename and the requested extention.
 	 */
 	void getFileListByName(const std::string &extension, const std::string &name, std::vector<std::string> &filenames);
-#endif
 
 	/** Make a path relative to another if possible, else doesn't change it.
 	 * \param basePath is the base path to be relative to.
@@ -307,20 +305,10 @@ private:
 			return 0;
 		}
 
-
-		// Debug : Sept 01 2006
-		#if _STLPORT_VERSION >= 0x510
-			bool operator()( const CMCFileEntry &fe, const CMCFileEntry &rhs )
-			{
-				return specialCompare( fe, rhs.Name ) < 0;
-			}
-		#else
-			bool operator()( const CMCFileEntry &fe, const char *rhs )
-			{
-				return specialCompare( fe, rhs ) < 0;
-			}
-		#endif //_STLPORT_VERSION
-
+		bool operator()( const CMCFileEntry &fe, const CMCFileEntry &rhs )
+		{
+			return specialCompare( fe, rhs.Name ) < 0;
+		}
 	};
 
 	/// first ext1, second ext2 (ext1 could remplace ext2)
@@ -500,11 +488,9 @@ public:
 	 */
 	static void getFileList(const std::string &extension, std::vector<std::string> &filenames);
 
-#ifndef NL_DONT_USE_EXTERNAL_CODE
 	/** Create a list of file having the requested string in the filename and the requested extention.
 	 */
 	static void getFileListByName(const std::string &extension, const std::string &name, std::vector<std::string> &filenames);
-#endif
 
 	/** Make a path relative to another if possible, else doesn't change it.
 	 * \param basePath is the base path to be relative to.

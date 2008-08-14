@@ -81,7 +81,7 @@ public:
 private:
 
 	// The map size -> EmptySpace.
-	typedef	std::multimap<uint, uint8*>		TEmptySpaceSizeMap;
+	typedef	CHashMultiMap<uint, uint8*>		TEmptySpaceSizeMap;
 	typedef	TEmptySpaceSizeMap::iterator	ItEmptySpaceSizeMap;
 
 

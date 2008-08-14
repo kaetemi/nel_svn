@@ -477,7 +477,7 @@ public:
 	template<class K, class T>
 	void			serialCont(std::map<K, T> &cont) 		{IStream::serialCont(cont);}
 	template<class K, class T>
-	void			serialCont(std::multimap<K, T> &cont) 	{IStream::serialCont(cont);}
+	void			serialCont(CHashMultiMap<K, T> &cont) 	{IStream::serialCont(cont);}
 	/// Specialisation of serialCont() for vector<uint8>
 	virtual void			serialCont(std::vector<uint8> &cont) {IStream::serialCont(cont);} 
 	/// Specialisation of serialCont() for vector<sint8>

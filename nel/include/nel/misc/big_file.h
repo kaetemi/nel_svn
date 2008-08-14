@@ -134,23 +134,12 @@ private:
 		uint32		Pos;
 	};
 
-	class CBNPFileComp
+	struct CBNPFileComp
 	{
-	public:
-
-		// Debug : Sept 01 2006
-		#if _STLPORT_VERSION >= 0x510
-			bool operator()(const BNPFile &f, const BNPFile &s )
-			{
-				return strcmp( f.Name, s.Name ) < 0;
-			}
-		#else
-			bool operator()(const BNPFile &f, const char *s)
-			{
-				return strcmp(f.Name,s) < 0;
-			}
-		#endif //_STLPORT_VERSION
-
+		bool operator()(const BNPFile &f, const BNPFile &s )
+		{
+			return strcmp( f.Name, s.Name ) < 0;
+		}
 	};
 
 	// A BNP structure

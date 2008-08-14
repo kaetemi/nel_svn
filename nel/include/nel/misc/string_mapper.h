@@ -43,19 +43,22 @@ namespace NLMISC
 //typedef uint TStringId;
 //#endif
 
-typedef	const std::string * TStringId;
+typedef	const std::string *TStringId;
 
-class CStringIdHasher
+// Traits for hash_map using CStringId
+struct CStringIdHashMapTraits
 {
-public:
-	CStringIdHasher()
-	{}
-	inline	size_t	operator	()(const NLMISC::TStringId &stringId)	const
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+	CStringIdHashMapTraits() { }
+	size_t operator() (const NLMISC::TStringId &stringId) const
 	{
 		return	(size_t)stringId;
 	}
-protected:
-private:
+	bool operator() (const NLMISC::TStringId &strId1, const NLMISC::TStringId &strId2) const
+	{
+		return (size_t)strId1 < (size_t)strId2;
+	}
 };
 
 /** A static class that map string to integer and vice-versa

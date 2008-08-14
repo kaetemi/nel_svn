@@ -235,15 +235,21 @@ private :
 
 
 /**
- * Class to be used as a hash function for a hash_map accessed by CSheetId
- * Ex: hash_map< CSheetId, CMyData, CHashBySheetId > _MyHashMap;
+ * Class to be used as a hash traits for a hash_map accessed by CSheetId
+ * Ex: hash_map< CSheetId, CMyData, CSheetIdHashMapTraits> _MyHashMap;
  */
-class CHashBySheetId
+class CSheetIdHashMapTraits
 {
 public:
-	uint32	operator() ( const CSheetId& sheetId ) const
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+	inline size_t operator() ( const CSheetId& sheetId ) const
 	{
 		return sheetId.asInt() >> 5;
+	}
+	bool operator() (const CSheetId &strId1, const CSheetId &strId2) const
+	{
+		return strId1.asInt() < strId2.asInt();
 	}
 };
 

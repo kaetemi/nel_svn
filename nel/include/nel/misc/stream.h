@@ -402,9 +402,9 @@ public:
 	template<class K, class T>
 	void			serialCont(std::map<K, T> &cont) 			{serialMap(cont);}
 	template<class K, class T, class H>
-	void			serialCont(std::hash_map<K, T, H> &cont) 			{serialMap(cont);}
+	void			serialCont(CHashMap<K, T, H> &cont) 			{serialMap(cont);}
 	template<class K, class T>
-	void			serialCont(std::multimap<K, T> &cont) 	{serialMultimap(cont);}
+	void			serialCont(CHashMultiMap<K, T> &cont) 	{serialMultimap(cont);}
 
 	/** \name standard STL containers serialisation.
 	 * Thse variants suppose contained type is a NeL smart pointer.
@@ -981,9 +981,9 @@ private:
 
 	// Ptr registry. We store 64 bit Id, to be compatible with futur 64+ bits pointers.
 	uint32								_NextSerialPtrId;
-	std::hash_map<uint64, void*, NLMISC::CHashFunctionUInt64>		_IdMap;
-	typedef std::hash_map<uint64, void*, CHashFunctionUInt64>::iterator	ItIdMap;
-	typedef std::hash_map<uint64, void*, CHashFunctionUInt64>::value_type	ValueIdMap;
+	CHashMap<uint64, void*>		_IdMap;
+	typedef CHashMap<uint64, void*>::iterator	ItIdMap;
+	typedef CHashMap<uint64, void*>::value_type	ValueIdMap;
 
 	// Ptr serialisation.
 	void			serialIStreamable(IStreamable* &ptr) ;

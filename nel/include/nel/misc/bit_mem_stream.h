@@ -571,7 +571,7 @@ public:
 	template<class K, class T>
 	void			serialCont(std::map<K, T> &cont) 		{CMemStream::serialCont(cont);}
 	template<class K, class T>
-	void			serialCont(std::multimap<K, T> &cont) 	{CMemStream::serialCont(cont);}
+	void			serialCont(CHashMultiMap<K, T> &cont) 	{CMemStream::serialCont(cont);}
 
 	/*template<class T0,class T1>
 	void			serial(T0 &a, T1 &b) 
