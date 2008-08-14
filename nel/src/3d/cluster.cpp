@@ -283,7 +283,7 @@ void CCluster::unlink (CPortal* portal)
 }
 
 // ***************************************************************************
-void CCluster::serial (IStream&f)
+void CCluster::serial (NLMISC::IStream&f)
 {
 	/* ***********************************************
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance

@@ -1888,14 +1888,14 @@ void	CMeshMRMGeom::save(NLMISC::IStream &f) throw(NLMISC::EStream)
 		sint32	absCurPos= f.getPos();
 
 		// come back to "relative lodOffset" absolute position in the stream. (temp stored in lodOffset[i]).
-		f.seek(lodOffsets[i], IStream::begin);
+		f.seek(lodOffsets[i], NLMISC::IStream::begin);
 
 		// write the relative position of the lod to the stream.
 		sint32	relCurPos= absCurPos - startPos;
 		f.serial(relCurPos);
 
 		// come back to absCurPos, to save the lod.
-		f.seek(absCurPos, IStream::begin);
+		f.seek(absCurPos, NLMISC::IStream::begin);
 
 		// And so now, save the lod.
 		// write the lod face data.
@@ -1996,7 +1996,7 @@ void	CMeshMRMGeom::loadNextLod(NLMISC::IStream &f)
 		return;
 
 	// Set pos to good lod.
-	f.seek(_LodInfos[_NbLodLoaded].LodOffset, IStream::begin);
+	f.seek(_LodInfos[_NbLodLoaded].LodOffset, NLMISC::IStream::begin);
 
 	// Serial this lod data.
 	// read the lod face data.

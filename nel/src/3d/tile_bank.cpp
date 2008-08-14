@@ -52,7 +52,7 @@ namespace	NL3D
 // ***************************************************************************
 const sint CTileLand::_Version=0;
 // ***************************************************************************
-void CTileLand::serial(IStream &f) throw(EStream)
+void CTileLand::serial(NLMISC::IStream &f) throw(EStream)
 {
 	(void)f.serialVersion(_Version);
 
@@ -96,7 +96,7 @@ CTileBank::CTileBank ()
 	_DisplacementMap[0].setEmpty ();
 }
 // ***************************************************************************
-void    CTileBank::serial(IStream &f) throw(EStream)
+void    CTileBank::serial(NLMISC::IStream &f) throw(EStream)
 {
 	f.serialCheck (std::string ("BANK"));
 
@@ -753,7 +753,7 @@ void	CTileBank::postfixTileVegetableDesc (const char *postfix)
 // ***************************************************************************
 const sint CTile::_Version=4;
 // ***************************************************************************
-void CTile::serial(IStream &f) throw(EStream)
+void CTile::serial(NLMISC::IStream &f) throw(EStream)
 {
 	sint streamver = f.serialVersion(_Version);
 
@@ -916,7 +916,7 @@ const std::string& CTileSet::getName () const
 	return _Name;
 }
 // ***************************************************************************
-void CTileSet::serial(IStream &f) throw(EStream)
+void CTileSet::serial(NLMISC::IStream &f) throw(EStream)
 {
 	sint streamver = f.serialVersion(_Version);
 
@@ -1595,7 +1595,7 @@ void CTileSet::loadTileVegetableDesc()
 // ***************************************************************************
 const sint CTileBorder::_Version=0;
 // ***************************************************************************
-void CTileBorder::serial(IStream &f) throw(EStream)
+void CTileBorder::serial(NLMISC::IStream &f) throw(EStream)
 {
 	(void)f.serialVersion(_Version);
 
@@ -1908,7 +1908,7 @@ CTileNoise& CTileNoise::operator= (const CTileNoise &src)
 	return *this;
 }
 // ***************************************************************************
-void CTileNoise::serial (IStream& f)
+void CTileNoise::serial (NLMISC::IStream& f)
 {
 	// Version
 	f.serialVersion (0);
