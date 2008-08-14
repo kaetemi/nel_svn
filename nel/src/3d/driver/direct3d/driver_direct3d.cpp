@@ -2666,7 +2666,7 @@ IDirect3DSurface9 * CDriverD3D::getSurfaceTexture(ITexture * text)
 	CTextureDrvInfosD3D* rdvInfosD3D = (NLMISC::safe_cast<CTextureDrvInfosD3D*>(text->TextureDrvShare->DrvTexture.getPtr()));
 	
 	IDirect3DTexture9 * texture = rdvInfosD3D->Texture2d;
-	nlassert(texture)
+	nlassert(texture);
 	
 	IDirect3DSurface9 * surface;
 	HRESULT hr = texture->GetSurfaceLevel(0, &surface);
