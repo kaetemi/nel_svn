@@ -36,9 +36,6 @@
 #endif
 #endif
 
-// Do not force MSVC library name
-#define _STLP_DONT_FORCE_MSVC_LIB_NAME
-
 #include <cassert>
 
 // Operating systems definition
@@ -49,7 +46,6 @@
 #  define NL_CPU_INTEL
 #  ifdef _DEBUG
 #    define NL_DEBUG
-#    define _STLP_USE_DEBUG_LIB		// we have to put this to include the stlport_debug.lib instead of stlport.lib
 #  else
 #    define NL_RELEASE
 #  endif

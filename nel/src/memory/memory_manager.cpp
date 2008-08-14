@@ -23,8 +23,6 @@
  * MA 02111-1307, USA.
  */
 
-// Include STLPort first
-//#include <stl/_site_config.h>
 #include "memory_common.h"
 #include "../../include/nel/memory/memory_manager.h"
 #include "heap_allocator.h"

@@ -68,9 +68,6 @@
 #   ifndef _WIN32_WINNT
 #		define _WIN32_WINNT 0x0400
 #   endif
-#   ifdef __SGI_STL_STLPORT
-#       define NL_COMP_STLPORT
-#   endif
 #	if _MSC_VER >= 1500
 #		define NL_COMP_VC9
 #		include <string> // This way we know about _HAS_TR1 :O
@@ -100,9 +97,6 @@
 #	endif
 #	ifdef _DEBUG
 #		define NL_DEBUG
-#		ifndef _STLP_USE_DEBUG_LIB
-#			define _STLP_USE_DEBUG_LIB		// we have to put this to include the stlport_debug.lib instead of stlport.lib
-#		endif
 #	else
 #		ifndef NL_RELEASE_DEBUG
 #			define NL_RELEASE
