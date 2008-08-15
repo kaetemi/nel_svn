@@ -347,6 +347,22 @@ inline ucstring operator+(const std::string &c, const ucstringbase &ucstr)
 namespace NLMISC
 {
 
+// Traits for hash_map using CEntityId
+struct CUCStringHashMapTraits
+{
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+	CUCStringHashMapTraits() { }
+	size_t operator() (const ucstring &id ) const
+	{
+		return id.size();
+	}
+	bool operator() (const ucstring &id1, const ucstring &id2) const
+	{
+		return id1.size() < id2.size();
+	}
+};
+
 /** Convert an unicode string in lower case.
  * Characters with accent are converted in a lowercase character with accent
  * \param a string or a char to transform to lower case
