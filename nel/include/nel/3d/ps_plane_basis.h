@@ -84,13 +84,18 @@ struct CPlaneBasis
 
 // for map insertion
 
-inline bool operator<(const CPlaneBasis &p1, const CPlaneBasis &p2)
+inline bool operator < (const CPlaneBasis &p1, const CPlaneBasis &p2)
 {
+/*
 	if (p1.X < p2.X) return true ;
 	else if (p1.X == p2.X) return false ;
 		else if (p1.Y < p2.Y) return true ;
 			else if (p1.X == p2.Y) return false ;
 				else return true ;
+*/
+
+	if (p1.X != p2.X) return p1.X < p2.X;
+	return p1.Y < p2.Y;
 }
 
 
