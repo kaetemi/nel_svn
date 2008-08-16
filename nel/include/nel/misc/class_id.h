@@ -63,6 +63,24 @@ public:
 
 };
 
+/**
+ * Class to be used as a hash traits for a hash_map accessed by CClassId
+ * Ex: hash_map< CClassId, CMyData, CClassIdHashMapTraits> _MyHashMap;
+ */
+class CClassIdHashMapTraits
+{
+public:
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+	inline size_t operator() ( const CClassId& classId ) const
+	{
+		return ((((uint64)classId >> 32)|0xFFFFFFFF) ^ (((uint64)classId|0xFFFFFFFF) & 0xFFFFFFFF));
+	}
+	bool operator() (const CClassId &classId1, const CClassId &classId2) const
+	{
+		return classId1 < classId2;
+	}
+};
 
 }
 

@@ -40,7 +40,7 @@ class CEvent;
 
 /*===================================================================*/
 
-typedef CHashMultiMap<CClassId, IEventListener*> mapListener;
+typedef CHashMultiMap<CClassId, IEventListener*, CClassIdHashMapTraits> mapListener;
 
 
 /**
