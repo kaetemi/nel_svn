@@ -50,10 +50,11 @@ int main(int argc, char* argv[])
 					"{\n", argv[1], sName, sName, sName);
 
 				unsigned int size=0;
+				int i;
 				while (1)
 				{
 					fprintf (pOut, "\t");
-					for (int i=0; i<8; i++)
+					for (i=0; i<8; i++)
 					{
 						int c=fgetc (pIn);
 						if (c==EOF)
