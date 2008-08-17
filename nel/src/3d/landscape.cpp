@@ -356,7 +356,7 @@ void			CLandscape::setTileNear (float tileNear)
 // ***************************************************************************
 void			CLandscape::setTileMaxSubdivision (uint tileDiv)
 {
-	nlassert(tileDiv>=0 && tileDiv<=4);
+	nlassert(tileDiv<=4);
 
 	if(tileDiv!=_TileMaxSubdivision)
 	{
@@ -2185,7 +2185,7 @@ void		CLandscape::releaseTileLightMap(uint tileLightMapId)
 	// Get the id local in the texture.
 	textNum= tileLightMapId / NbTileLightMapByTexture;
 	id= tileLightMapId % NbTileLightMapByTexture;
-	nlassert(textNum>=0 && textNum<_TextureNears.size());
+	nlassert(textNum<_TextureNears.size());
 
 	// Release the tile in this texture.
 	CPatchRdrPass	*nearRdrPass= _TextureNears[textNum];
@@ -2207,7 +2207,7 @@ void		CLandscape::refillTileLightMap(uint tileLightMapId, CRGBA  map[NL_TILE_LIG
 	// Get the id local in the texture.
 	textNum= tileLightMapId / NbTileLightMapByTexture;
 	id= tileLightMapId % NbTileLightMapByTexture;
-	nlassert(textNum>=0 && textNum<_TextureNears.size());
+	nlassert(textNum<_TextureNears.size());
 
 	// get a ptr on the texture.
 	CPatchRdrPass	*nearRdrPass= _TextureNears[textNum];
