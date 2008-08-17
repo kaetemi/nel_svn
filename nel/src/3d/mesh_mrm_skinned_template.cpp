@@ -96,7 +96,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *sr
 			*(CUV*)(destVertexPtr + NL3D_RAWSKIN_UV_OFF)= src->UV;
 		}
 #else
-		// ASM harcoded for 36
+		// ASM hard coded for 36
 		nlctassert(sizeof(CRawVertexNormalSkinned1)==36);
 
 		/*  116 cycles / loop typical
@@ -583,7 +583,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			*(CUV*)(destVertexPtr + NL3D_RAWSKIN_UV_OFF)= src->UV;
 		}
 #else
-		// ASM harcoded for 56
+		// ASM hard coded for 56
 		nlctassert(sizeof(CRawVertexNormalSkinned3)==56);
 		
 		

@@ -70,7 +70,7 @@ struct	CGlExtensions
 	sint	NbTextureStages;
 	bool	EXTTextureEnvCombine;
 
-	// Optionnal Extensions.	
+	// Optional Extensions.	
 	// NB: Fence extension is not here, because NVVertexArrayRange is false if GL_NV_fence is not here.
 	bool	NVVertexArrayRange;
 	uint	NVVertexArrayRangeMaxVertex;

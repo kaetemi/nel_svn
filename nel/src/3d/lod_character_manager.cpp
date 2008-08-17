@@ -261,7 +261,7 @@ bool			CLodCharacterManager::compile()
 // ***************************************************************************
 void			CLodCharacterManager::setMaxVertex(uint32 maxVertex)
 {
-	// we must not be beewteen beginRender() and endRender()
+	// we must not be between beginRender() and endRender()
 	nlassert(!isRendering());
 	_MaxNumVertices= maxVertex;
 }
@@ -269,7 +269,7 @@ void			CLodCharacterManager::setMaxVertex(uint32 maxVertex)
 // ***************************************************************************
 void			CLodCharacterManager::setVertexStreamNumVBHard(uint32 numVBHard)
 {
-	// we must not be beewteen beginRender() and endRender()
+	// we must not be between beginRender() and endRender()
 	nlassert(!isRendering());
 	_NumVBHard= numVBHard;
 }
@@ -279,7 +279,7 @@ void			CLodCharacterManager::beginRender(IDriver *driver, const CVector &manager
 {
 	H_AUTO( NL3D_CharacterLod_beginRender );
 
-	// we must not be beewteen beginRender() and endRender()
+	// we must not be between beginRender() and endRender()
 	nlassert(!isRendering());
 
 	// Reset render
@@ -367,7 +367,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 	H_AUTO ( NL3D_CharacterLod_AddRenderKey )
 
 	nlassert(_VertexStream.getDriver());
-	// we must be beewteen beginRender() and endRender()
+	// we must be between beginRender() and endRender()
 	nlassert(isRendering());
 
 
@@ -761,7 +761,7 @@ void			CLodCharacterManager::endRender()
 	
 	IDriver		*driver= _VertexStream.getDriver();
 	nlassert(driver);
-	// we must be beewteen beginRender() and endRender()
+	// we must be between beginRender() and endRender()
 	nlassert(isRendering());
 
 	// if something rendered

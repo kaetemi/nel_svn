@@ -103,7 +103,7 @@ void CComputedString::render2D (IDriver& driver,
 	// Computing hotspot translation vector
 	CVector hotspotVector = getHotSpotVector(hotspot);
 
-	// tansformation matrix initialized to identity
+	// transformation matrix initialized to identity
 	CMatrix matrix;
 	matrix.identity();
 		
@@ -297,7 +297,7 @@ void CComputedString::render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuf
 	{
 		uint	nNumQuadClipped= 0;
 
-		// the real number of vertices to comute (with selection)
+		// the real number of vertices to compute (with selection)
 		uint	numVerts= nNumQuadSrc*4;
 
 		// clip into VerticesClipped
@@ -532,7 +532,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 	{
 		uint	nNumQuadClipped= 0;
 
-		// the real number of vertices to comute (with selection)
+		// the real number of vertices to compute (with selection)
 		uint	numVerts= nNumQuadSrc*4;
 
 		// clip into VerticesClipped

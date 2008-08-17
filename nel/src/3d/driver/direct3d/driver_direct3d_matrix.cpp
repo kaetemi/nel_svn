@@ -152,7 +152,7 @@ CMatrix CDriverD3D::getFrustumMatrix()
 void CDriverD3D::setupViewMatrix(const CMatrix& mtx)
 {
 	H_AUTO_D3D(CDriverD3D_setupViewMatrix)
-	// Remeber the view matrix
+	// Remember the view matrix
 	_UserViewMtx= mtx;
 	_PZBCameraPos= CVector::Null;
 

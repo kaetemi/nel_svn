@@ -208,7 +208,7 @@ void	CLandscapeModel::clipAndRenderLandscape()
 	Landscape.setPZBModelPosition(renderTrav.CamPos);
 
 	/* setup the model matrix
-		ZBuffer Precion: set the modelMatrix to the current landscape PZBModelPosition.
+		ZBuffer Precision: set the modelMatrix to the current landscape PZBModelPosition.
 		NB: don't use renderTrav.CamPos directly because setPZBModelPosition() may modify the position
 	*/
 	_RenderWorldMatrix.identity();
