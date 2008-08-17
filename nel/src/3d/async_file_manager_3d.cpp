@@ -154,6 +154,8 @@ public:
 	CLoadTextureCancel (CTextureFile *ptextureFile)
 		: _TextureFile(ptextureFile)
 	{}
+	
+	virtual ~CLoadTextureCancel() {}
 
 private:	
 	CTextureFile	*_TextureFile;

@@ -37,6 +37,7 @@ namespace NL3D
 
 	struct CSinWave : public CDeform2d::IPerturbUV
 	{
+		virtual ~CSinWave() {}
 		float Phase;
 		virtual void perturbUV(float x, float y, float &du, float &dv) const
 		{
