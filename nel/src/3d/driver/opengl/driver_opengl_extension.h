@@ -42,14 +42,14 @@
 
 
 #include <GL/gl.h>
-#include <GL/glext.h>	// Please download it from http://oss.sgi.com/projects/ogl-sample/ABI/"
+#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
 
 #ifndef GL_GLEXT_VERSION
-#error "I need a newer <GL/glext.h>. Please download it from http://oss.sgi.com/projects/ogl-sample/ABI/"
+#error "I need a newer <GL/glext.h>. Please download it from http://www.opengl.org/registry/"
 #endif // GL_GLEXT_VERSION
 
 #if GL_GLEXT_VERSION < 7
-#error "I need a newer <GL/glext.h>. Please download it from http://oss.sgi.com/projects/ogl-sample/ABI/"
+#error "I need a newer <GL/glext.h>. Please download it from http://www.opengl.org/registry/"
 #endif // GL_GLEXT_VERSION < 7
 
 #include "driver_opengl_extension_def.h"

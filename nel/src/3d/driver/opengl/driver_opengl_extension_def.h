@@ -30,7 +30,7 @@
 #include "nel/misc/types_nl.h"
 
 #include <GL/gl.h>
-#include <GL/glext.h>	// Please download it from http://oss.sgi.com/projects/ogl-sample/ABI/"
+#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
 
 #ifdef __cplusplus
 extern "C" {
