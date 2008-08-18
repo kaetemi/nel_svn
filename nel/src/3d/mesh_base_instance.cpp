@@ -34,6 +34,7 @@
 #include "nel/3d/texture_file.h"
 #include "nel/3d/async_texture_manager.h"
 
+#include <limits>
 
 using namespace NLMISC;
 
@@ -409,7 +410,7 @@ void			CMeshBaseInstance::enableAsyncTextureMode(bool enable)
 					// Must setup the AsyncTextures
 					AsyncTextures[i].IsTextureFile[stage]= true;
 					AsyncTextures[i].TextureNames[stage]= text->getFileName();
-					AsyncTextures[i].TextIds[stage]= -1;
+					AsyncTextures[i].TextIds[stage]= std::numeric_limits<uint>::max();
 					// Now, must copy the textureFile, to Avoid writing in CMeshBase TextureFile descriptor !!!
 					CTextureFile *tf = new CTextureFile(*text);
 					// setup a dummy texture => Instance won't block rendering because texture not yet ready

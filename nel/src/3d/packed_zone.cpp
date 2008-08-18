@@ -37,6 +37,8 @@
 #include "nel/misc/grid_traversal.h"
 #include "nel/misc/bit_mem_stream.h"
 //
+#include <limits>
+//
 
 
 using namespace NLMISC;
@@ -321,7 +323,7 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 		CBitMemStream bits(false);
 		uint32 numValues = v.size();
 		bits.serial(numValues);
-		_LastTag = -1;
+		_LastTag = std::numeric_limits<uint32>::max();
 		_LastDeltas.clear();
 		for(uint k = 0; k < v.size(); ++k)			
 		{
@@ -1060,7 +1062,7 @@ CSmartPtr<CPackedZone16> CPackedZone32::buildPackedZone16()
 		dest->Tris[k].V2 = (uint16) Tris[k].V2;
 	}
 	dest->TriLists.resize(TriLists.size());
-	for(uint k = 0; k < (sint) TriLists.size(); ++k)
+	for(uint k = 0; k < TriLists.size(); ++k)
 	{
 		dest->TriLists[k] = (uint16) TriLists[k];
 	}
