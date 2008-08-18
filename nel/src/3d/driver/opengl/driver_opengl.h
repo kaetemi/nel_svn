@@ -38,13 +38,8 @@
 
 #ifdef NL_OS_WINDOWS
 #	define WIN32_LEAN_AND_MEAN
+#	define NOMINMAX
 #	include <windows.h>
-#	ifdef min
-#		undef min
-#	endif // min
-#	ifdef max
-#		undef max
-#	endif // max
 #else // NL_OS_UNIX
 #	define GLX_GLXEXT_PROTOTYPES
 #	include <GL/glx.h>
