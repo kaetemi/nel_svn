@@ -797,51 +797,6 @@ bool CSystemInfo::isNT()
 #endif
 }
 
-
-#ifdef NL_OS_UNIX
-
-// return the value of the colname in bytes from /proc/meminfo
-uint32 getSystemMemory (const string &colname)
-{
-    if (colname.empty())
-        return 0;
-
-    int fd = open("/proc/meminfo", O_RDONLY);
-    if (fd == -1)
-    {
-		nlwarning ("SI: Can't open /proc/meminfo: %s", strerror (errno));
-		return 0;
-    }
-    else
-    {
-        char buffer[4096+1];
-        uint32 len = read(fd, buffer, sizeof(buffer)-1);
-        close(fd);
-        buffer[len] = '\0';
-
-        vector<string> splitted;
-        explode(buffer,"\n", splitted, true);
-
-        for(uint32 i = 0; i < splitted.size(); i++)
-        {
-            vector<string> sline;
-            explode(splitted[i], " ", sline, true);
-            if(sline.size() == 3 && sline[0] == colname)
-            {
-                uint32 val = atoi(sline[1].c_str());
-                if(sline[2] == "kB")
-                    val *= 1024;
-                return val;
-            }
-        }
-    }
-	nlwarning ("SI: Can't find the colname '%s' in /proc/meminfo", colname.c_str());
-	return 0;
-}
-
-#endif // NL_OS_UNIX
-
-
 string CSystemInfo::availableHDSpace (const string &filename)
 {
 #ifdef NL_OS_UNIX
