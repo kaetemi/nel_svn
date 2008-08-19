@@ -161,7 +161,7 @@ protected:
 	
 
 	/// used to get a pointer on the right vb dependant on its type (cf. values of VBType)
-	static CVertexBuffer    * const CPSQuad::_VbTab[];
+	static CVertexBuffer    * const _VbTab[];
 	
 
 	// from CPSTexturedParticle / CPSMultiTexturedParticle  : gives us the opportunity to update wrap mode for quad particles

@@ -450,7 +450,6 @@ AC_CONFIG_FILES([Makefile                                  \
            include/nel/pacs/Makefile                       \
            include/nel/sound/Makefile                      \
            include/nel/georges/Makefile                    \
-           include/nel/cegui/Makefile                      \
            src/Makefile                                    \
            src/misc/Makefile                               \
            src/misc/nel-misc.pc                            \
@@ -468,52 +467,6 @@ AC_CONFIG_FILES([Makefile                                  \
            src/sound/driver/openal/Makefile                \
            src/georges/Makefile                            \
            src/ligo/Makefile                               \
-           src/cegui/Makefile                              \
-           tools/Makefile                                  \
-           tools/3d/Makefile                               \
-           tools/3d/build_coarse_mesh/Makefile             \
-           tools/3d/build_far_bank/Makefile                \
-           tools/3d/build_smallbank/Makefile               \
-           tools/3d/ig_lighter/Makefile                    \
-           tools/3d/ig_lighter_lib/Makefile                \
-           tools/3d/panoply_maker/Makefile                 \
-           tools/3d/zone_dependencies/Makefile             \
-           tools/3d/zone_ig_lighter/Makefile               \
-           tools/3d/zone_lib/Makefile                      \
-           tools/3d/zone_lighter/Makefile                  \
-           tools/3d/zone_welder/Makefile                   \
-           tools/misc/Makefile                             \
-           tools/misc/bnp_make/Makefile                    \
-           tools/misc/disp_sheet_id/Makefile               \
-           tools/misc/make_sheet_id/Makefile               \
-           tools/misc/xml_packer/Makefile                  \
-           tools/pacs/Makefile                             \
-           tools/pacs/build_ig_boxes/Makefile              \
-           tools/pacs/build_indoor_rbank/Makefile          \
-           tools/pacs/build_rbank/Makefile                 \
-           samples/Makefile                                \
-           samples/sound_sources/Makefile                  \
-           samples/pacs/Makefile                           \
-           samples/georges/Makefile                        \
-           samples/3d/Makefile                             \
-           samples/3d/font/Makefile                        \
-           samples/3d/cluster_viewer/Makefile              \
-           samples/3d/cluster_viewer/shapes/Makefile       \
-           samples/3d/cluster_viewer/groups/Makefile       \
-           samples/3d/cluster_viewer/fonts/Makefile        \
-           samples/3d/cegui/Makefile                       \
-	   samples/misc/Makefile                           \
-	   samples/misc/command/Makefile                   \
-	   samples/misc/configfile/Makefile                \
-	   samples/misc/debug/Makefile                     \
-	   samples/misc/i18n/Makefile                      \
-	   samples/misc/log/Makefile                       \
-	   samples/misc/strings/Makefile                   \
-	   samples/misc/types_check/Makefile               \
-	   samples/net/Makefile                            \
-	   samples/net/chat/Makefile                       \
-	   samples/net/udp/Makefile                        \
-	   samples/net/login_system/Makefile               \
            nel-config
 		
 ])

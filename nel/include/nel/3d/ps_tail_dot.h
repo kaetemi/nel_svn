@@ -29,8 +29,6 @@
 #include "ps_ribbon_base.h"
 #include "vertex_buffer.h"
 #include "index_buffer.h"
-#include <hash_map>
-
 
 namespace NL3D 
 {

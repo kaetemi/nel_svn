@@ -40,7 +40,6 @@
 
 #endif // NL_OS_UNIX
 
-
 #include <GL/gl.h>
 #include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
 
@@ -119,7 +118,6 @@ struct	CGlExtensions
 	// hint : is it a GeForce FX or above ?
 	bool	IsGeforceFXOrAbove;
 
-
 public:
 
 	/// \name Disable Hardware feature. False by default. setuped by IDriver
@@ -128,7 +126,6 @@ public:
 	bool				DisableHardwareVertexArrayAGP;
 	bool				DisableHardwareTextureShader;
 	// @}
-
 
 public:
 	CGlExtensions()
@@ -176,7 +173,6 @@ public:
 		IsATI9500OrAbove = false;
 	};
 };
-
 
 // ***************************************************************************
 
@@ -372,7 +368,7 @@ extern NEL_PFNGLDISABLEVARIANTCLIENTSTATEEXTPROC nglDisableVariantClientStateEXT
 extern NEL_PFNGLBINDLIGHTPARAMETEREXTPROC		 nglBindLightParameterEXT;
 extern NEL_PFNGLBINDMATERIALPARAMETEREXTPROC	 nglBindMaterialParameterEXT;
 extern NEL_PFNGLBINDTEXGENPARAMETEREXTPROC		 nglBindTexGenParameterEXT;
-extern NEL_PFNGLBINDTEXTUREUNITPARAMETEREXTPROC  nglBindTextureUnitParameterEXT;
+extern NEL_PFNGLBINDTEXTUREUNITPARAMETEREXTPROC nglBindTextureUnitParameterEXT;
 extern NEL_PFNGLBINDPARAMETEREXTPROC			 nglBindParameterEXT;
 extern NEL_PFNGLISVARIANTENABLEDEXTPROC			 nglIsVariantEnabledEXT;
 extern NEL_PFNGLGETVARIANTBOOLEANVEXTPROC		 nglGetVariantBooleanvEXT;
@@ -612,6 +608,8 @@ extern PFNWGLGETSWAPINTERVALEXTPROC	wglGetSwapIntervalEXT;
 // WGL_ARB_extensions_string
 extern PFNWGFGETEXTENSIONSSTRINGARB			wglGetExtensionsStringARB;
 
+#endif
+
 // GL_EXT_framebuffer_object
 extern NEL_PFNGLISRENDERBUFFEREXTPROC			nglIsRenderbufferEXT;
 extern NEL_PFNGLISFRAMEBUFFEREXTPROC			nglIsFramebufferEXT;
@@ -625,8 +623,6 @@ extern NEL_PFNGLRENDERBUFFERSTORAGEEXTPROC		nglRenderbufferStorageEXT;
 extern NEL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC	nglFramebufferRenderbufferEXT;
 extern NEL_PFNGLDELETERENDERBUFFERSEXTPROC		nglDeleteRenderbuffersEXT;
 extern NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC		nglDeleteFramebuffersEXT;
-
-#endif
 
 
 #endif // NL_OPENGL_EXTENSION_H

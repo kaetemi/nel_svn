@@ -27,10 +27,12 @@
 
 #include "stdopengl.h"
 #include "driver_opengl.h"
+#include "driver_opengl_extension.h"
 
 #ifdef NL_OS_WINDOWS
 
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 #include <windowsx.h>
 #include <string>
@@ -143,7 +145,7 @@ static void GlWndProc(CDriverGL *driver, HWND hWnd, UINT message, WPARAM wParam,
 	}
 	else if (message == WM_ACTIVATE)
 	{
-		WORD fActive = LOWORD(wParam); 
+		WORD fActive = LOWORD(wParam);
 		if (fActive == WA_INACTIVE)
 		{
 			driver->_WndActive = false;
@@ -218,7 +220,7 @@ GLenum CDriverGL::NLCubeFaceToGLCubeFace[6] =
 
 // ***************************************************************************
 CDriverGL::CDriverGL()
-{	
+{
 	H_AUTO_OGL(CDriverGL_CDriverGL)
 	_OffScreen = false;
 
@@ -232,7 +234,7 @@ CDriverGL::CDriverGL()
 #elif defined (NL_OS_UNIX) // NL_OS_WINDOWS
 
 	cursor = None;
-	
+
 #ifdef XF86VIDMODE
 	// zero the old screen mode
 	memset(&_OldScreenMode, 0, sizeof(_OldScreenMode));
@@ -262,7 +264,7 @@ CDriverGL::CDriverGL()
 	for(i=0;i<MaxLight;i++)
 		_LightDirty[i]= false;
 
-	
+
 
 	_CurrentGlNormalize= false;
 	_ForceNormalize= false;
@@ -297,7 +299,7 @@ CDriverGL::CDriverGL()
 
 
 	_UserTexMatEnabled = 0;
-	
+
 	// Ligtmap preca.
 	_LastVertexSetupIsLightMap= false;
 	for(i=0; i < IDRV_MAT_MAXTEXTURES; i++)
@@ -382,7 +384,7 @@ bool CDriverGL::init (uint windowIcon)
 		wc.hbrBackground	= WHITE_BRUSH;
 		wc.lpszClassName	= "NLClass";
 		wc.lpszMenuName		= NULL;
-		if ( !RegisterClass(&wc) ) 
+		if ( !RegisterClass(&wc) )
 		{
 			return false;
 		}
@@ -414,7 +416,7 @@ bool CDriverGL::init (uint windowIcon)
 bool CDriverGL::stretchRect(ITexture * srcText, NLMISC::CRect &srcRect, ITexture * destText, NLMISC::CRect &destRect)
 {
 	H_AUTO_OGL(CDriverGL_stretchRect)
-	
+
 	return false;
 }
 
@@ -435,7 +437,7 @@ bool CDriverGL::isTextureRectangle(ITexture * tex) const
 
 // ***************************************************************************
 
-bool CDriverGL::activeFrameBufferObject(ITexture * tex) 
+bool CDriverGL::activeFrameBufferObject(ITexture * tex)
 {
 	if(supportFrameBufferObject() && supportPackedDepthStencil())
 	{
@@ -535,8 +537,8 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show) throw(EBad
 		_WindowHeight = height;
 		AdjustWindowRectEx (&rc, GetWindowStyle (_hWnd), GetMenu (_hWnd) != NULL, GetWindowExStyle (_hWnd));
 		SetWindowPos (_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE );
-		
-		// Get the 
+
+		// Get the
 		HDC tempHDC = GetDC(tmpHWND);
 
 		_Depth=GetDeviceCaps(tempHDC,BITSPIXEL);
@@ -3397,12 +3399,12 @@ void CDriverGL::initFragmentShaders()
 			glGetError();
 			// Water shader for R200 : we just add the 2 bump map contributions (du, dv). We then use this contribution to perturbate the envmap
 			nglBindFragmentShaderATI(ATIWaterShaderHandleNoDiffuseMap);
-			nglBeginFragmentShaderATI();			
+			nglBeginFragmentShaderATI();
 			//
 			fetchPerturbedEnvMapR200();
 			nglColorFragmentOp1ATI(GL_MOV_ATI, GL_REG_0_ATI, GL_NONE, GL_NONE, GL_REG_2_ATI, GL_NONE, GL_NONE);
 			nglAlphaFragmentOp1ATI(GL_MOV_ATI, GL_REG_0_ATI, GL_NONE, GL_REG_2_ATI, GL_NONE, GL_NONE);
-			//			
+			//
 			nglEndFragmentShaderATI();
 			GLenum error = glGetError();
 		    nlassert(error == GL_NONE);
@@ -3428,7 +3430,7 @@ void CDriverGL::initFragmentShaders()
 		////////////
 		// CLOUDS //
 		////////////
-		ATICloudShaderHandle = nglGenFragmentShadersATI(1);		
+		ATICloudShaderHandle = nglGenFragmentShadersATI(1);
 		
 			
 		if (!ATICloudShaderHandle)

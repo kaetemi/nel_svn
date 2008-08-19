@@ -29,7 +29,7 @@
 namespace NL3D
 {
 
-/** Interface to an occlusion query object. 
+/** Interface to an occlusion query object.
   * An occlusion query allows to know wether some pixels passed the z-test for a set of primitives.
   * Common usages include visibility determination, lens flares / coronas rendering etc.
   *
@@ -37,12 +37,12 @@ namespace NL3D
   * \code
   * IOcclusionQuery *oq = drv->createOcclusionQuery();
   * oq->begin();
-  * // render some primitives... usually with color/z-buffer writes  disabled 
+  * // render some primitives... usually with color/z-buffer writes  disabled
   * oq->end();
   *
   * switch(oq->getOcclusionType())
   * {
-  *     case IOcclusionQuery::NotAvailable: 
+  *     case IOcclusionQuery::NotAvailable:
   *       // Defer test. One should ideally wait the next frame.
   *       // Note that polling the result in a wait loop isn't safe, unless the driver is flushed.
   *		break;
@@ -83,7 +83,7 @@ struct IOcclusionQuery
       * Should be called prior to primitive rendering
 	  */
 	virtual void begin() = 0;
-	// End occlusion test	  
+	// End occlusion test
 	virtual void end() = 0;
 	/** Get the result of the occlusion test
 	  * NB Do not call this between a begin()/end() pair for that query object (ok for other querries, though).

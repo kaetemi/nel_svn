@@ -31,7 +31,6 @@
 #include "index_buffer.h"
 
 #include <vector>
-#include <hash_map>
 
 
 namespace NL3D 

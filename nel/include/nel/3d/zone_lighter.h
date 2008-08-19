@@ -346,7 +346,7 @@ public:
 	static bool isLightableShape(IShape &shape);
 
 	// Progress callback
-	virtual void progress (const char *message, float progress) {};
+	virtual void progress (const char *message, float progress) {}
 
 	// Compute shadow attenuation
 	float attenuation (const CVector &pos, const CZoneLighter::CLightDesc &description);
@@ -614,9 +614,9 @@ private:
 	TWaterShapeQuadGrid							_WaterShapeQuadGrid;
 
 	/// Some constants
-	static const sint8 CZoneLighter::TriangleIndexes[10][2][3];
-	static const sint8 CZoneLighter::VertexThanCanBeSnappedOnABorder[8][4];
-	static const sint8 CZoneLighter::VertexThanCanBeSnappedOnACorner[3][2];
+	static const sint8 TriangleIndexes[10][2][3];
+	static const sint8 VertexThanCanBeSnappedOnABorder[8][4];
+	static const sint8 VertexThanCanBeSnappedOnACorner[3][2];
 };
 
 } // NL3D

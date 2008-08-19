@@ -659,7 +659,7 @@ private:
 	uint16		remapV2Flags (uint32 oldFlags, uint& weightCount);
 
 	// Reset the touch flags
-	void		resetTouchFlags() {_InternalFlags &= ~TouchedAll;}
+	void		resetTouchFlags() {_InternalFlags &= (uint16)(~TouchedAll);}
 
 	// Force non resident memory
 	void		restaureNonResidentMemory();
@@ -819,8 +819,8 @@ public:
 private:
 
 	// No copy operators available
-	void		operator=(const CVertexBufferReadWrite& other) {};
-	CVertexBufferReadWrite(const CVertexBufferReadWrite& other) {};
+	void		operator=(const CVertexBufferReadWrite& other) {}
+	CVertexBufferReadWrite(const CVertexBufferReadWrite& other) {}
 
 	CVertexBuffer		*_Parent;
 	uint				_First, _Last;
@@ -877,8 +877,8 @@ public:
 private:
 	
 	// No copy operators available
-	void		operator=(const CVertexBufferRead& other) {};
-	CVertexBufferRead(const CVertexBufferRead& other) {};
+	void		operator=(const CVertexBufferRead& other) {}
+	CVertexBufferRead(const CVertexBufferRead& other) {}
 
 	const CVertexBuffer		*_Parent;
 };

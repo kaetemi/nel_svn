@@ -1021,7 +1021,7 @@ private:
 
 	// get the current TLIColor given a TLI coordinate (in (0..OrderS/2+1, 0..OrderT/2+1) )
 	// NB: returned color is modulated by landscape material and precomputed diffuse factor
-	CRGBA		CPatch::getCurrentTLIColor(uint x, uint y) const;
+	CRGBA		getCurrentTLIColor(uint x, uint y) const;
 	// get the current TLIColors at the corners of the tile (according to pointLights current colors)
 	// corner order: 0,0; 1,0; 0,1; 1,1. NB: A undefined.
 	void		getCurrentTileTLIColors(uint ts, uint tt, NLMISC::CRGBA corners[4]);

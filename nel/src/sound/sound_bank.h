@@ -30,7 +30,6 @@
 #include "nel/misc/string_mapper.h"
 #include "audio_mixer_user.h"
 #include <string>
-#include <hash_map>
 
 namespace NLSOUND {
 
@@ -96,7 +95,7 @@ public:
 
 private:
 	/// Constructor
-	CSoundBank() : _Loaded(false) {};
+	CSoundBank() : _Loaded(false) {}
 
 
 	/// CSoundBank singleton instance.

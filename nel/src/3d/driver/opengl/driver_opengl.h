@@ -101,7 +101,6 @@ void displayGLError(GLenum error);
 
 #define UNSUPPORTED_INDEX_OFFSET_MSG "Unsupported by driver, check IDriver::supportIndexOffset."
 
-
 namespace NL3D {
 
 using NLMISC::CMatrix;
@@ -125,9 +124,9 @@ public:
 	TOcclusionType					OcclusionType;  // current type of occlusion
 	uint							VisibleCount;	// number of samples that passed the test
 	// From IOcclusionQuery
-	virtual void begin();	
-	virtual void end();	
-	virtual TOcclusionType getOcclusionType();	
+	virtual void begin();
+	virtual void end();
+	virtual TOcclusionType getOcclusionType();
 	virtual uint getVisibleCount();
 };
 
@@ -153,7 +152,7 @@ public:
 
 	// enum to use for this texture (GL_TEXTURE_2D, GL_TEXTURE_RECTANGLE_NV..)
 	GLenum					TextureMode;
-	
+
 	// FBO Id
 	GLuint					FBOId;
 
@@ -176,7 +175,7 @@ public:
 	// For Debug info. return the memory cost of this texture
 	virtual uint	getTextureMemoryUsed() const {return TextureMemory;}
 
-	bool					initFrameBufferObject(ITexture * tex); 
+	bool					initFrameBufferObject(ITexture * tex);
 	bool					activeFrameBufferObject(ITexture * tex);
 };
 
@@ -239,16 +238,16 @@ public:
 	// NB: ptrs are invalid if VertexFormat does not support the compoennt. must test VertexFormat, not the ptr.
 	void					*ValuePtr[CVertexBuffer::NumValue];
 
-	
+
 	enum TVBMode { TVBModeNone = 0, SysMem, HwNVIDIA, HwARB, HwATI }; // standard VBs, or Hard VBs using different extensions
 
 	// Kind of vb
 	TVBMode					VBMode;
 	// the handle of ATI or ARB vertex object
-	uint					VertexObjectId;	
+	uint					VertexObjectId;
 
 	CVertexBufferInfo()
-	{		
+	{
 		VBMode = TVBModeNone;
 	}
 
@@ -354,7 +353,7 @@ public:
 	/// setup the texture matrix for a given number of stages (starting from 0)
 	void      setupUserTextureMatrix(uint numStages, CMaterial& mat);
 
-	/// disable all texture matrix 
+	/// disable all texture matrix
 	void      disableUserTextureMatrix();
 
 	/// For objects with caustics, setup the first texture (which actually is the one from the material)
@@ -405,7 +404,7 @@ public:
 	virtual	bool			supportCloudRenderSinglePass() const;
 
 	virtual bool			supportIndexOffset() const { return false; /* feature only supported in D3D for now */ }
-	
+
 
 	virtual	bool			slowUnlockVertexBufferHard() const;
 
@@ -446,7 +445,7 @@ public:
 	virtual	uint32			profileSetupedModelMatrix() const;
 
 	void					enableUsedTextureMemorySum (bool enable);
-	
+
 	uint32					getUsedTextureMemory() const;
 
 	virtual	void			startProfileVBHardLock();
@@ -460,7 +459,7 @@ public:
 	virtual	void			endProfileIBLock(std::vector<std::string> &result);
 
 	virtual	void			profileIBAllocation(std::vector<std::string> &result);
-	
+
 	virtual bool			release();
 
 	virtual TMessageBoxId	systemMessageBox (const char* message, const char* title, TMessageBoxType type=okType, TMessageBoxIcon icon=noIcon);
@@ -496,7 +495,7 @@ public:
 	virtual void			setCapture (bool b);
 
 	virtual NLMISC::IMouseDevice			*enableLowLevelMouse(bool enable, bool exclusive);
-		
+
 	virtual NLMISC::IKeyboardDevice			*enableLowLevelKeyboard(bool enable);
 
 	virtual NLMISC::IInputDeviceManager		*getLowLevelInputDeviceManager();
@@ -515,18 +514,18 @@ public:
 
 	// copy the first texture in a second one of different dimensions
 	virtual bool			stretchRect(ITexture * srcText, NLMISC::CRect &srcRect, ITexture * destText, NLMISC::CRect &destRect);
-	
+
 	// return true if driver support Bloom effect.
 	virtual	bool			supportBloomEffect() const;
 
 	virtual bool			activeFrameBufferObject(ITexture * tex);
-	
+
 	virtual void			getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect);
-		
-	virtual bool			setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width, uint32 height, 
+
+	virtual bool			setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width, uint32 height,
 												uint32 mipmapLevel, uint32 cubeFace);
 
-	virtual bool			copyTargetToTexture (ITexture *tex, uint32 offsetx, uint32 offsety, uint32 x, uint32 y, 
+	virtual bool			copyTargetToTexture (ITexture *tex, uint32 offsetx, uint32 offsety, uint32 x, uint32 y,
 													uint32 width, uint32 height, uint32 mipmapLevel);
 
 	virtual bool			getRenderTargetSize (uint32 &width, uint32 &height);
@@ -545,7 +544,7 @@ public:
 	virtual void			setPerPixelLightingLight(CRGBA diffuse, CRGBA specular, float shininess);
 
 	virtual void			setLightMapDynamicLight (bool enable, const CLight& light);
-	
+
 	virtual void			setAmbientColor (CRGBA color);
 
 	/// \name Fog support.
@@ -572,7 +571,7 @@ public:
 
 	/// \name EMBM support
 	// @{
-		virtual bool supportEMBM() const;		
+		virtual bool supportEMBM() const;
 		virtual bool isEMBMSupportedAtStage(uint stage) const;
 		virtual void setEMBMMatrix(const uint stage, const float mat[4]);
 	// @}
@@ -623,8 +622,8 @@ public:
 	virtual void endBench ();
 	virtual void displayBench (class NLMISC::CLog *log);
 
-	virtual bool			supportOcclusionQuery() const;	
-	virtual IOcclusionQuery *createOcclusionQuery();	
+	virtual bool			supportOcclusionQuery() const;
+	virtual IOcclusionQuery *createOcclusionQuery();
 	virtual void			deleteOcclusionQuery(IOcclusionQuery *oq);
 
 	// Test wether this device supports the frame buffer object mecanism
@@ -632,8 +631,8 @@ public:
 	virtual bool			supportFrameBufferObject() const;
 	virtual bool			supportPackedDepthStencil() const;
 
-	virtual uint64			getSwapBufferCounter() const { return _SwapBufferCounter; }	
-	
+	virtual uint64			getSwapBufferCounter() const { return _SwapBufferCounter; }
+
 	virtual void			setCullMode(TCullMode cullMode);
 	virtual	TCullMode       getCullMode() const;
 
@@ -1199,7 +1198,7 @@ private:
 
 	/// \name EXTVertexShader specifics.
 	// @{
-			// Variants offset used for : 
+			// Variants offset used for :
 			// Secondary color
 			// Fog Coords
 			// Skin Weight
@@ -1211,16 +1210,16 @@ private:
 			// Handle for standard gl arrays
 			GLuint _EVSPositionHandle;
 			GLuint _EVSNormalHandle;
-			GLuint _EVSColorHandle;			
+			GLuint _EVSColorHandle;
 			GLuint _EVSTexHandle[8];
 			// Handle of the first constant c[0]. In vertex program we have 96 constant c[0] .. c[95]
 			GLuint _EVSConstantHandle;
 			// number of constant
 			static const uint _EVSNumConstant;
-			// 
+			//
 			bool   setupEXTVertexShader(const CVPParser::TProgram &program, GLuint id, uint variants[EVSNumVariants], uint16 &usedInputRegisters);
 			bool   setupARBVertexProgram (const CVPParser::TProgram &parsedProgram, GLuint id, bool &specularWritten);
-			//			
+			//
 	// @}
 
 	// init EMBM settings (set each stage to modify the next)
@@ -1243,7 +1242,7 @@ private:
 			GLuint ATICloudShaderHandle; // cloud support for R200 and more
 
 			GLuint ARBWaterShader[4]; // water support on R300, NV30 & the like
-			
+
 
 			void   initFragmentShaders();
 			void   deleteFragmentShaders();
@@ -1273,7 +1272,7 @@ private:
 	uint32					_TextureTargetHeight;
 	bool					_TextureTargetUpload;
 	uint					_TextureTargetCubeFace;
-	// @}	
+	// @}
 	// misc
 public:
 	static GLenum NLCubeFaceToGLCubeFace[6];
@@ -1287,7 +1286,7 @@ protected:
 	uint64					_SwapBufferCounter;
 public:
 	void incrementResetCounter() { ++_ResetCounter; }
-	bool isWndActive() const { return _WndActive; }	
+	bool isWndActive() const { return _WndActive; }
 	const IVertexBufferHardGL	*getCurrentVertexBufferHard() const { return _CurrentVertexBufferHard; }	
 	// For debug : dump list of mapped buffers
 	#ifdef NL_DEBUG
@@ -1298,7 +1297,7 @@ public:
 	void checkTextureOn() const;
 private:
 	/** Bind a texture at stage 0 for the good texture mode(2d or cube)
-	  * Parameters / part of the texture are ready to be changed in the gl after that	  
+	  * Parameters / part of the texture are ready to be changed in the gl after that
 	  * _CurrentTexture & _CurrentTextureInfoGL are not modified !
 	  */
 	inline void bindTextureWithMode(ITexture &tex);
@@ -1308,7 +1307,6 @@ private:
 	inline void setupTextureBasicParameters(ITexture &tex);
 
 };
-
 
 // ***************************************************************************
 class CVertexProgamDrvInfosGL : public IVertexProgramDrvInfos
@@ -1320,11 +1318,11 @@ public:
 	// ARB_vertex_program specific -> must know if specular part is written
 	bool					SpecularWritten;
 
-	/**  EXTVertexShader specific 
+	/**  EXTVertexShader specific
 	  *  handle of allocated variants
 	  */
 	GLuint					Variants[CDriverGL::EVSNumVariants];
-	/** EXTVertexShader specific 
+	/** EXTVertexShader specific
 	  * Used input registers.
 	  * This allow to activate only the gl arrays that are needed by a given shader.
 	  */

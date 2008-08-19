@@ -32,7 +32,6 @@
 #include "vertex_buffer.h"
 #include "index_buffer.h"
 #include "nel/misc/vector.h"
-#include <hash_map>
 
 
 namespace NL3D 

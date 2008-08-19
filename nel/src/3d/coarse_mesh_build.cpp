@@ -31,7 +31,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -75,7 +75,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 	// ***************************************************************************
 
 	// 1. scan each bitmap: calc the area of the bitmap and it its name in the maps sorted by area
-	typedef CHashMultiMap<uint, CBitmapDesc*> MapAreaBitmap;
+	typedef std::multimap<uint, CBitmapDesc*> MapAreaBitmap;
 	MapAreaBitmap mapArea;
 	uint mesh;
 	for (mesh=0; mesh<coarseMeshes.size(); mesh++)
@@ -233,7 +233,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 	// ***************************************************************************
 
 	// 3. Place each texture in the bitmap in uncreasing order
-	typedef CHashMultiMap<sint, CInsertedBitmap> mapInsertedBitmap;
+	typedef std::multimap<sint, CInsertedBitmap> mapInsertedBitmap;
 	
 	// For each texture
 	MapAreaBitmap::iterator ite=mapArea.end();
@@ -430,7 +430,7 @@ void CCoarseMeshBuild::expand (CBitmap& bitmap)
 void CCoarseMeshBuild::remapCoordinates (const std::vector<CCoarseMeshDesc>& coarseMeshes, const MapBitmapDesc& desc, uint outputBitmapCount)
 {
 	// 1. scan each bitmap: calc the area of the bitmap and it its name in the maps sorted by area
-	typedef CHashMultiMap<float, CBitmapDesc> MapAreaBitmap;
+	typedef std::multimap<float, CBitmapDesc> MapAreaBitmap;
 	MapAreaBitmap mapArea;
 	uint mesh;
 	for (mesh=0; mesh<coarseMeshes.size(); mesh++)
