@@ -13,8 +13,8 @@
 # *and* AC_SUBST(LIBTOOL_VERSION)
 
 AC_PREREQ(2.57)
-AC_INIT([nel],[0.4.0],[nel-all@nevrax.org])
-AM_INIT_AUTOMAKE
+AC_INIT([nel],[0.5.0],[nel-all@nevrax.org])
+AM_INIT_AUTOMAKE([tar-ustar])
 
 AC_CONFIG_SRCDIR(include/nel/misc/types_nl.h)
 AM_CONFIG_HEADER(include/nelconfig.h)
@@ -24,18 +24,18 @@ AC_SUBST(LIBTOOL_VERSION, [0:4:0])
 # Checks for programs.
 AC_CANONICAL_HOST
 AC_PROG_CXX
-AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_YACC
+AC_PROG_LEX
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_YACC
 AC_PROG_LIBTOOL
 AM_PROG_LIBTOOL
-AM_PROG_LEX
 AM_SANITY_CHECK
 
-AM_PATH_CCACHE
+AC_SYS_LARGEFILE
+
 AM_MAINTAINER_MODE
 
 
@@ -44,6 +44,7 @@ AH_TEMPLATE([NEL_DEFAULT_DISPLAYER],[Define to 1 if you want log on standard out
 AH_TEMPLATE([NEL_LOG_IN_FILE],[Define to 1 if you want a debug log.log file in the current directory])
 AH_TEMPLATE([HAVE_X86],[Define to 1 if you are on a INTEL compatible processor])
 AH_TEMPLATE([HAVE_X86_64],[Define to 1 if you are on AMD opteron 64bits processor])
+AH_TEMPLATE([NL_USE_GTK], [Define to 1 if you want GTK support])
 
 # Get host type info
 if test "$host_cpu" = "i386" -o "$host_cpu" = "i486" -o "$host_cpu" = "i586" \
@@ -59,8 +60,7 @@ fi
 
 # The following hack should ensure that configure doesnt add optimizing
 # or debugging flags to CFLAGS or CXXFLAGS
-CFLAGS="$CFLAGS -ftemplate-depth-24"
-CXXFLAGS="$CXXFLAGS -ftemplate-depth-24"
+CXXFLAGS="$CXXFLAGS -ftemplate-depth-24 -fno-stack-protector"
 
 
 # ====================================================================
@@ -80,7 +80,7 @@ AC_ARG_ENABLE([net],
               [],
               [enable_net=yes])
 
-if test $enable_net = "no"
+if test "$enable_net" = "no"
 then
    AC_MSG_RESULT([disable NeL Network])
 else
@@ -94,7 +94,7 @@ AC_ARG_ENABLE([3d],
               [],
               [enable_3d=yes])
 
-if test $enable_3d = "no"
+if test "$enable_3d" = "no"
 then
    AC_MSG_RESULT([disable NeL 3D])
 else
@@ -108,7 +108,7 @@ AC_ARG_ENABLE([pacs],
               [],
               [enable_pacs=yes])
 
-if test $enable_pacs = "no"
+if test "$enable_pacs" = "no"
 then
    AC_MSG_RESULT([disable NeL PACS])
 else
@@ -122,7 +122,7 @@ AC_ARG_ENABLE([georges],
               [],
               [enable_georges=yes])
 
-if test $enable_georges = "no"
+if test "$enable_georges" = "no"
 then
    AC_MSG_RESULT([disable NeL Georges])
 else
@@ -136,26 +136,13 @@ AC_ARG_ENABLE([ligo],
               [],
               [enable_ligo=yes])
 
-if test $enable_ligo = "no"
+if test "$enable_ligo" = "no"
 then
    AC_MSG_RESULT([disable NeL Ligo])
 else
    NEL_SUBDIRS="$NEL_SUBDIRS ligo"
 fi
 
-# Memory library
-AC_ARG_ENABLE([memory],
-              AC_HELP_STRING([--disable-memory],
-                             [disable compilation and install of NeL Memory]),
-              [],
-              [enable_memory=yes])
-
-if test $enable_memory = "no"
-then
-   AC_MSG_RESULT([disable NeL Memory])
-else
-   NEL_SUBDIRS="$NEL_SUBDIRS memory"
-fi
 
 # NeL libraries that are disabled by default
 
@@ -166,10 +153,40 @@ AC_ARG_ENABLE([sound],
               [],
               [enable_sound=no])
 
-if test $enable_sound = "yes"
+if test "$enable_sound" = "yes"
 then
    AC_MSG_RESULT([enable NeL Sound])
    NEL_SUBDIRS="$NEL_SUBDIRS sound"
+fi
+
+# Enable/disable samples compilation.
+AC_ARG_ENABLE([samples],
+	AC_HELP_STRING([--disable-samples],
+			[disable sample code]),
+		[],
+		[enable_samples="yes"])
+
+if test "$enable_samples" = "no"
+then
+	AC_MSG_RESULT([disable sample code.])
+	SAMPLE_SUBDIR=""
+else
+	SAMPLE_SUBDIR="samples"
+fi
+
+# Enable/disable samples compilation.
+AC_ARG_ENABLE([tools],
+	AC_HELP_STRING([--disable-tools],
+			[disable tools code]),
+		[],
+		[enable_tools="yes"])
+
+if test "$enable_tools" = "no"
+then
+	AC_MSG_RESULT([disable tools code.])
+	TOOLS_SUBDIR=""
+else
+	TOOLS_SUBDIR="tools"
 fi
 
 AC_SUBST([enable_net])
@@ -178,10 +195,11 @@ AC_SUBST([enable_pacs])
 AC_SUBST([enable_sound])
 AC_SUBST([enable_georges])
 AC_SUBST([enable_ligo])
-AC_SUBST([enable_memory])
+
 
 AC_SUBST([NEL_SUBDIRS])
-
+AC_SUBST([SAMPLE_SUBDIR])
+AC_SUBST([TOOLS_SUBDIR])
 
 # ====================================================================
 # Checks for programs.
@@ -224,7 +242,7 @@ fi
 AC_C_BIGENDIAN
 
 # Supress GCC "multi-character character constant" warnings.
-if test "X$CC" = "Xgcc";
+if test "$ac_cv_cxx_compiler_gnu" = "yes";
 then
     if test "$with_debug" = "yes"
     then
@@ -238,12 +256,9 @@ then
 fi
 
 # Add some common define
-if test "X$CC" = "Xgcc";
+if test "$ac_cv_cxx_compiler_gnu" = "yes";
 then
-    CFLAGS="$CFLAGS -D_REENTRANT -Wall -ansi -W -Wpointer-arith -Wsign-compare -Wno-deprecated-declarations -Wno-multichar -Wno-long-long -Wno-unused"
     CXXFLAGS="$CXXFLAGS -D_REENTRANT -Wall -ansi -W -Wpointer-arith -Wsign-compare -Wno-deprecated-declarations -Wno-multichar -Wno-long-long -Wno-unused"
-#    CFLAGS="$CFLAGS -D_REENTRANT -Wno-multichar -Wno-long-long"
-#    CXXFLAGS="$CXXFLAGS -D_REENTRANT -Wno-multichar -Wno-long-long"
 fi
 
 
@@ -272,6 +287,8 @@ AC_HEADER_TIME
 AC_STRUCT_TM
 AC_C_VOLATILE
 AC_CHECK_TYPES([ptrdiff_t])
+AC_CHECK_TYPES([size_t])
+AC_CHECK_TYPES([uintptr_t])
 
 
 # ====================================================================
@@ -332,15 +349,34 @@ LIBS="$LIBS $XML_LIBS"
 # Use C++ compiler as a default for the compilation tests.
 AC_LANG([C++])
 
-
-# ====================================================================
-# STLPort
-
-AM_PATH_STLPORT
-
-
 # ====================================================================
 # Checks for libraries.
+# ====================================================================
+
+# ====================================================================
+# GTK 2.0+
+
+AC_ARG_WITH([gtk],
+            AC_HELP_STRING([--with-gtk],
+                           [add GTK dependent code like GTK displayer]),
+            [],
+            [with_gtk=no])
+
+if test "$with_gtk" = "yes"
+then
+  AC_LANG([C])
+
+  AM_PATH_GTK_2_0([2.0.0],
+    CXXFLAGS="$CXXFLAGS $GTK_CFLAGS"
+    LIBS="$LIBS $GTK_LIBS"
+    AC_DEFINE(NL_USE_GTK, [], [Undef if you don't want to use anything GTK based like the GTK Displayer]
+)
+  )
+
+  AC_LANG([C++])
+
+  AC_SUBST([with_gtk])
+fi
 # ====================================================================
 
 # ====================================================================
@@ -362,10 +398,31 @@ AM_PATH_XF86VIDMODE
 
 
 # ====================================================================
-# FMOD
+# FMOD, OpenAL
+ 
+if test "$enable_sound" = "yes"
+then
+  AM_PATH_FMOD("no")
+  AM_PATH_OPENAL("no")
+  if test "$have_fmod" = "no" -a "$have_openal" = "no"
+  then
+    AC_MSG_ERROR([Either FMod or OpenAL must be installed to use sound.])
+  fi
+  if test "$have_fmod" = "yes"
+  then
+    SOUND_SUBDIRS="fmod"
+  else
+    SOUND_SUBDIRS=""
+  fi
+  if test "$have_openal" = "yes"
+  then
+    SOUND_SUBDIRS="$SOUND_SUBDIRS openal"
 
-AM_PATH_FMOD($enable_sound)
-
+    XIPH_PATH_OGG([], AC_MSG_ERROR([Driver OpenAL Requires libogg!]))
+    XIPH_PATH_VORBIS([], AC_MSG_ERROR([Driver OpenAL Requires libvorbis!]))
+  fi
+  AC_SUBST([SOUND_SUBDIRS])
+fi
 
 # ====================================================================
 # Arrange for the include directory to be in the search path even when
@@ -383,7 +440,7 @@ CXXFLAGS="$CXXFLAGS -I\${top_srcdir}/include -DHAVE_NELCONFIG_H"
 # Output files to generate.
 # ====================================================================
 
-AC_CONFIG_FILES([Makefile                                        \
+AC_CONFIG_FILES([Makefile                                  \
            include/Makefile                                \
            include/nel/Makefile                            \
            include/nel/ligo/Makefile                       \
@@ -392,22 +449,26 @@ AC_CONFIG_FILES([Makefile                                        \
            include/nel/3d/Makefile                         \
            include/nel/pacs/Makefile                       \
            include/nel/sound/Makefile                      \
-           include/nel/memory/Makefile                     \
            include/nel/georges/Makefile                    \
+           include/nel/cegui/Makefile                      \
            src/Makefile                                    \
            src/misc/Makefile                               \
+           src/misc/nel-misc.pc                            \
            src/misc/config_file/Makefile                   \
            src/net/Makefile                                \
-           src/memory/Makefile                             \
            src/3d/Makefile                                 \
+           src/3d/nel-3d.pc                                \
            src/3d/driver/Makefile                          \
            src/3d/driver/opengl/Makefile                   \
+           src/3d/driver/opengl/nel-driverogl.pc           \
            src/pacs/Makefile                               \
            src/sound/Makefile                              \
            src/sound/driver/Makefile                       \
            src/sound/driver/fmod/Makefile                  \
+           src/sound/driver/openal/Makefile                \
            src/georges/Makefile                            \
            src/ligo/Makefile                               \
+           src/cegui/Makefile                              \
            tools/Makefile                                  \
            tools/3d/Makefile                               \
            tools/3d/build_coarse_mesh/Makefile             \
@@ -421,6 +482,15 @@ AC_CONFIG_FILES([Makefile                                        \
            tools/3d/zone_lib/Makefile                      \
            tools/3d/zone_lighter/Makefile                  \
            tools/3d/zone_welder/Makefile                   \
+           tools/misc/Makefile                             \
+           tools/misc/bnp_make/Makefile                    \
+           tools/misc/disp_sheet_id/Makefile               \
+           tools/misc/make_sheet_id/Makefile               \
+           tools/misc/xml_packer/Makefile                  \
+           tools/pacs/Makefile                             \
+           tools/pacs/build_ig_boxes/Makefile              \
+           tools/pacs/build_indoor_rbank/Makefile          \
+           tools/pacs/build_rbank/Makefile                 \
            samples/Makefile                                \
            samples/sound_sources/Makefile                  \
            samples/pacs/Makefile                           \
@@ -428,10 +498,32 @@ AC_CONFIG_FILES([Makefile                                        \
            samples/3d/Makefile                             \
            samples/3d/font/Makefile                        \
            samples/3d/cluster_viewer/Makefile              \
+           samples/3d/cluster_viewer/shapes/Makefile       \
+           samples/3d/cluster_viewer/groups/Makefile       \
+           samples/3d/cluster_viewer/fonts/Makefile        \
+           samples/3d/cegui/Makefile                       \
+	   samples/misc/Makefile                           \
+	   samples/misc/command/Makefile                   \
+	   samples/misc/configfile/Makefile                \
+	   samples/misc/debug/Makefile                     \
+	   samples/misc/i18n/Makefile                      \
+	   samples/misc/log/Makefile                       \
+	   samples/misc/strings/Makefile                   \
+	   samples/misc/types_check/Makefile               \
 	   samples/net/Makefile                            \
 	   samples/net/chat/Makefile                       \
-           nel-config                                      \
+	   samples/net/udp/Makefile                        \
+	   samples/net/login_system/Makefile               \
+           nel-config
+		
 ])
 AC_OUTPUT
 
+#	   samples/net/class_transport/Makefile            \
+#           tools/nel_unit_test/Makefile                    \
+#           tools/nel_unit_test/misc_ut/Makefile            \
+#           tools/nel_unit_test/ligo_ut/Makefile            \
+#           tools/nel_unit_test/net_ut/Makefile             \
+#           tools/nel_unit_test/net_ut/net_service_lib_test/Makefile \
+#           tools/nel_unit_test/net_ut/net_module_lib_test/Makefile  \
 # End of configure.in

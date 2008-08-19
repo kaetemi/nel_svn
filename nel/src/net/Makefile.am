@@ -36,6 +36,7 @@ libnelnet_la_SOURCES = buf_client.cpp                      \
                        email.cpp                           \
                        admin.cpp                           \
 		       stdin_monitor_thread.cpp		   \
+		       stdin_monitor_thread.h		   \
                        module.cpp                          \
                        module_common.cpp                   \
                        module_gateway.cpp                  \
@@ -44,7 +45,8 @@ libnelnet_la_SOURCES = buf_client.cpp                      \
 					   module_socket.cpp                   \
 					   module_gateway_transport.cpp		   \
 					   module_l5_transport.cpp			\
-					   module_local_gateway.cpp
+					   module_local_gateway.cpp \
+					   stdnet.cpp
 
 noinst_HEADERS	     = stdnet.h
 

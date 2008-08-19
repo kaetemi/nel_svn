@@ -53,6 +53,7 @@ libnelmisc_la_SOURCES = \
 	game_device.cpp \
 	game_device_events.cpp \
 	geom_ext.cpp \
+	grid_traversal.cpp \
 	gtk_displayer.cpp \
 	heap_memory.cpp \
 	hierarchical_timer.cpp \
@@ -97,7 +98,6 @@ libnelmisc_la_SOURCES = \
 	string_common.cpp \
 	string_id_array.cpp \
 	string_mapper.cpp \
-	string_stream.cpp \
 	system_info.cpp \
 	task_manager.cpp \
 	tds.cpp \
@@ -120,7 +120,9 @@ libnelmisc_la_SOURCES = \
 	dynloadlib.cpp \
 	sstring.cpp \
 	co_task.cpp \
-	xml_pack.cpp
+	xml_pack.cpp \
+	inter_window_msg_queue.cpp \
+	win32_util.cpp
 
 
 noinst_HEADERS        = di_game_device.h \
@@ -132,6 +134,9 @@ noinst_HEADERS        = di_game_device.h \
 libnelmisc_la_LIBADD  = config_file/libconfig.la -lc -lpthread -lrt -ldl
 
 libnelmisc_la_LDFLAGS = -version-info @LIBTOOL_VERSION@
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = nel-misc.pc
 
 # End of Makefile.am
 

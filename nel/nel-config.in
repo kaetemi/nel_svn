@@ -12,14 +12,15 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 
-lib_dir=@libdir@
-include_dir=@includedir@
+lib_dir="@libdir@"
+include_dir="@includedir@"
 
+enable_ligo=@enable_ligo@
+enable_georges=@enable_georges@
 enable_net=@enable_net@
 enable_3d=@enable_3d@
 enable_pacs=@enable_pacs@
 enable_sound=@enable_sound@
-enable_ai=@enable_ai@
 
 usage()
 {
@@ -33,11 +34,12 @@ Options:
    [--libtool]
    [--ldflags]
    [--cflags]
+   [--without-ligo]
+   [--without-georges]
    [--without-network]
    [--without-3d]
    [--without-pacs]
    [--without-sound]
-   [--without-ai]
 EOF
     exit $1
 }
@@ -86,6 +88,12 @@ do
         --libtool)
             echo_libtool=yes
             ;;
+        --without-ligo)
+            without_ligo=yes
+            ;;
+        --without-georges)
+            without_georges=yes
+            ;;
         --without-net|--without-network)
             without_net=yes
             ;;
@@ -94,9 +102,6 @@ do
             ;;
         --without-pacs)
             without_pacs=yes
-            ;;
-        --without-ai)
-            without_ai=yes
             ;;
         --without-snd|--without-sound)
             without_sound=yes
@@ -128,7 +133,7 @@ fi
 
 if test "$echo_cflags" = "yes"
 then
-    cflags="-I$include_dir/"
+    cflags="-I$include_dir"
     echo $cflags
 fi
 
@@ -141,37 +146,44 @@ fi
 if test "$echo_libs" = "yes"
 then
     lib_misc="-lnelmisc"
+    lib_ligo="-lnelligo"
+    lib_georges="-lnelgeorges"
     lib_net="-lnelnet"
     lib_3d="-lnel3d"
     lib_pacs="-lnelpacs"
-    lib_sound="-lnelsnd"
+    lib_sound="-lnelsound -lnelsnd_lowlevel"
     lib_ai="-lnelai"
 
     libs="$lib_misc"
 
-    if test "$without_net" != "yes" -a "$enable_net" = "yes"
+    if test "$without_ligo" != "yes" -a '(' "$enable_ligo" = "yes" -o "$enable_ligo" = "ON" ')'
+    then
+        libs="$libs $lib_ligo"
+    fi
+
+    if test "$without_georges" != "yes" -a '(' "$enable_georges" = "yes" -o "$enable_georges" = "ON" ')'
+    then
+        libs="$libs $lib_georges"
+    fi
+
+    if test "$without_net" != "yes" -a '(' "$enable_net" = "yes" -o "$enable_net" = "ON" ')'
     then
         libs="$libs $lib_net"
     fi
 
-    if test "$without_3d" != "yes" -a "$enable_3d" = "yes"
+    if test "$without_3d" != "yes" -a '(' "$enable_3d" = "yes" -o "$enable_3d" = "ON" ')'
     then
         libs="$libs $lib_3d"
     fi
 
-    if test "$without_pacs" != "yes" -a "$enable_pacs" = "yes"
+    if test "$without_pacs" != "yes" -a '(' "$enable_pacs" = "yes" -o "$enable_pacs" = "ON" ')'
     then
         libs="$libs $lib_pacs"
     fi
 
-    if test "$without_sound" != "yes" -a "$enable_sound" = "yes"
+    if test "$without_sound" != "yes" -a '(' "$enable_sound" = "yes" -o "$enable_sound" = "ON" ')'
     then
         libs="$libs $lib_sound"
-    fi
-
-    if test "$without_ai" != "yes" -a "$enable_ai" = "yes"
-    then
-        libs="$libs $lib_ai"
     fi
 
     echo -L@libdir@ $libs
@@ -180,13 +192,24 @@ fi
 if test "$echo_libtool" = "yes"
 then
     libtool_misc="$lib_dir/libnelmisc.la"
+    libtool_ligo="$lib_dir/libnelligo.la"
+    libtool_georges="$lib_dir/libnelgeorges.la"
     libtool_net="$lib_dir/libnelnet.la"
     libtool_3d="$lib_dir/libnel3d.la"
     libtool_pacs="$lib_dir/libnelpacs.la"
     libtool_sound="$lib_dir/libnelsnd.la"
-    libtool_ai="$lib_dir/libnelai.la"
 
     libtool="$libtool_misc"
+
+    if test "$without_ligo" != "yes"
+    then
+        libtool="$libtool $libtool_ligo"
+    fi
+
+    if test "$without_georges" != "yes"
+    then
+        libtool="$libtool $libtool_georges"
+    fi
 
     if test "$without_net" != "yes"
     then
@@ -206,11 +229,6 @@ then
     if test "$without_sound" != "yes"
     then
         libtool="$libtool $libtool_sound"
-    fi
-
-    if test "$without_ai" != "yes"
-    then
-        libtool="$libtool $libtool_ai"
     fi
 
     echo $libtool

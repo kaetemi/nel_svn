@@ -4,14 +4,11 @@
 
 MAINTAINERCLEANFILES = Makefile.in
 
-DIST_SUBDIRS      = net 3d pacs sound misc georges ligo memory
+DIST_SUBDIRS      = net 3d pacs sound misc georges ligo
 
 SUBDIRS              = @NEL_SUBDIRS@
 
 includedir           = ${prefix}/include/nel
-
-#include_HEADERS      = $(wildcard *.h)
-
 
 # End of Makefile.am
 

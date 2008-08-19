@@ -43,6 +43,8 @@ libnel3d_la_SOURCES  = \
 	async_texture_manager.h \
 	bezier_patch.cpp \
 	bezier_patch.h \
+	bloom_effect.cpp \
+	bloom_effect.h \
 	bone.cpp \
 	bone.h \
 	bsp_tree.h \
@@ -232,9 +234,12 @@ libnel3d_la_SOURCES  = \
 	nelu.h \
 	noise_3d.cpp \
 	noise_3d.h \
+	occlusion_query.h \
 	ordering_table.h \
 	packed_zone.cpp \
 	packed_zone.h \
+	packed_world.cpp \
+	packed_world.h \
 	particle_system.cpp \
 	particle_system.h \
 	particle_system_manager.cpp \
@@ -345,6 +350,7 @@ libnel3d_la_SOURCES  = \
 	ps_ribbon_look_at.h \
 	ps_shockwave.cpp \
 	ps_shockwave.h \
+	ps_spawn_info.h \
 	ps_sound.cpp \
 	ps_sound.h \
 	ps_tail_dot.cpp \
@@ -443,6 +449,8 @@ libnel3d_la_SOURCES  = \
 	texture.h \
 	texture_blank.cpp \
 	texture_blank.h \
+	texture_bloom.cpp \
+	texture_bloom.h \
 	texture_blend.cpp \
 	texture_blend.h \
 	texture_bump.cpp \
@@ -602,5 +610,8 @@ AM_CXXFLAGS          = -I$(top_srcdir)/src @FREETYPE_CFLAGS@
 libnel3d_la_LIBADD   = @FREETYPE_LIBS@ -lc -ldl -lpthread
 
 libnel3d_la_LDFLAGS  = -version-info @LIBTOOL_VERSION@
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = nel-3d.pc
 
 # End of Makefile.am
