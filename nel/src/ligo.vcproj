@@ -270,7 +270,7 @@
 				AdditionalIncludeDirectories="..\include"
 				PreprocessorDefinitions="_LIB;_DEBUG;NL_DEBUG_FAST;WIN32;LIBXML_STATIC"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\../obj/DebugFast/ligo/ligo.pch"
 				AssemblerListingLocation=".\../obj/DebugFast/ligo/"
