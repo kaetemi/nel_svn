@@ -498,6 +498,8 @@ namespace NLNET
 			: _Gateway(params.Gateway)
 		{
 		}
+		
+		virtual ~CGatewaySecurity() {} // TODO virtual destructor
 
 		/** the gateway send a command to the security module */
 		virtual void onCommand(const TParsedCommandLine &command)	{}

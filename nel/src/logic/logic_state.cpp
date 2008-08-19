@@ -293,9 +293,9 @@ void CLogicState::trySendEventMessages()
 // getMessagesToSend :
 // 
 //---------------------------------------------------
-void CLogicState::getMessagesToSend( CHashMultiMap<CEntityId,CMessage,CEntityIdHashMapTraits>& msgs )
+void CLogicState::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 {
-	CHashMultiMap<CEntityId,CMessage,CEntityIdHashMapTraits>::iterator itMsg;
+	multimap<CEntityId,CMessage>::iterator itMsg;
 	for( itMsg = _MessagesToSend.begin(); itMsg != _MessagesToSend.end(); ++itMsg )
 	{
 		msgs.insert( *itMsg );
@@ -312,7 +312,7 @@ void CLogicState::getMessagesToSend( CHashMultiMap<CEntityId,CMessage,CEntityIdH
 // fillVarMap :
 // 
 //---------------------------------------------------
-void CLogicState::fillVarMap( CHashMultiMap<CEntityId,string,CEntityIdHashMapTraits>& stateMachineVariables )
+void CLogicState::fillVarMap( multimap<CEntityId,string >& stateMachineVariables )
 {
 	// events
 	vector<CLogicEvent>::iterator itEvt;

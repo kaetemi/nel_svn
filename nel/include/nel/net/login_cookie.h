@@ -89,7 +89,7 @@ public:
 		else
 			_Valid = 1;
 
-		nlinfo ("LC: setFromString %s -> %s, isValid: %d", str.c_str (), toString().c_str (), _Valid);
+		//nlinfo ("LC: setFromString %s -> %s, isValid: %d", str.c_str (), toString().c_str (), _Valid);
 	}
 
 	std::string toString () const

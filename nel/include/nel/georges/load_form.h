@@ -851,21 +851,6 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 
 // ***************************************************************************
 /** This function is used to load values from georges sheet in a quick way.
- * \param sheetFilter a string to filter the sheet (ie: ".item")
- * \param packedFilename the name of the file that this function will generate (extension must be "packed_sheets")
- * \param container the map that will be filled by this function
- */
-template <class T>
-void loadForm (const std::string &sheetFilter, const std::string &packedFilename, std::map<std::string, T> &container, bool updatePackedSheet=true, bool errorIfPackedSheetNotGood=true)
-{
-	std::vector<std::string> vs;
-	vs.push_back(sheetFilter);
-	loadForm(vs, packedFilename, container, updatePackedSheet, errorIfPackedSheetNotGood);
-}
-
-
-// ***************************************************************************
-/** This function is used to load values from georges sheet in a quick way.
  * \param sheetFilter a vector of string to filter the sheet in the case you need more than one filter
  * \param packedFilename the name of the file that this function will generate (extension must be "packed_sheets")
  * \param container the map that will be filled by this function
@@ -1213,6 +1198,20 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 
 	// housekeeping
 	sheetNames.clear ();
+}
+
+// ***************************************************************************
+/** This function is used to load values from georges sheet in a quick way.
+ * \param sheetFilter a string to filter the sheet (ie: ".item")
+ * \param packedFilename the name of the file that this function will generate (extension must be "packed_sheets")
+ * \param container the map that will be filled by this function
+ */
+template <class T>
+void loadForm (const std::string &sheetFilter, const std::string &packedFilename, std::map<std::string, T> &container, bool updatePackedSheet=true, bool errorIfPackedSheetNotGood=true)
+{
+	std::vector<std::string> vs;
+	vs.push_back(sheetFilter);
+	loadForm(vs, packedFilename, container, updatePackedSheet, errorIfPackedSheetNotGood);
 }
 
 // ***************************************************************************

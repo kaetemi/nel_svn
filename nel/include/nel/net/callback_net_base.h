@@ -59,7 +59,7 @@ typedef void (*TMsgCallback) (CMessage &msgin, TSockId from, CCallbackNetBase &n
 typedef struct
 {
 	/// Key C string. It is a message type name, or "C" for connection or "D" for disconnection
-	char			*Key;
+	const char		*Key;
 	/// The callback function
 	TMsgCallback	Callback;
 
@@ -122,7 +122,7 @@ public:
 	void	setPreDispatchCallback(TMsgCallback predispatchCallback) { _PreDispatchCallback = predispatchCallback;}
 
 	/// Sets callback for disconnections (or NULL to disable callback)
-	void	setDisconnectionCallback (TNetCallback cb, void *arg) { checkThreadId ();  _DisconnectionCallback = cb; _DisconnectionCbArg = arg; }
+	void	setDisconnectionCallback (TNetCallback cb, void *arg) { _DisconnectionCallback = cb; _DisconnectionCbArg = arg; }
 
 	/// returns the sockid of a connection. On a server, this function returns the parameter. On a client, it returns the connection.
 	virtual TSockId	getSockId (TSockId hostid = InvalidSockId) = 0;
@@ -135,7 +135,7 @@ public:
 	void	authorizeOnly (const char *callbackName, TSockId hostid = InvalidSockId);
 
 	/// Returns true if this is a CCallbackServer
-	bool	isAServer () const { checkThreadId (); return _IsAServer; }
+	bool	isAServer () const { return _IsAServer; }
 
 	/// This function is implemented in the client and server class
 	virtual bool	dataAvailable () = 0;
@@ -219,11 +219,6 @@ private:
 	friend void cbnbMessageRecvAssociations (CMessage &msgin, TSockId from, CCallbackNetBase &netbase);
 
 	friend void cbnbNewDisconnection (TSockId from, void *data);
-
-protected:
-	/// \todo ace: debug feature that we should remove one day nefore releasing the game
-	uint	_ThreadId;
-	void	checkThreadId () const;
 };
 
 

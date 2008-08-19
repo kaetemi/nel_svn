@@ -30,6 +30,7 @@
 #include "nel/misc/command.h"
 
 #include <vector>
+#include <string>
 
 #include "nel/misc/time_nl.h"
 #include "callback_client.h"
@@ -41,7 +42,7 @@ namespace NLNET {
 /** This class encapsulate the serviceId format. */
 class TServiceId
 {
-	/// Service are identied by a 16 bits integer
+	/// Service are identified by a 16 bits integer
 	uint16	_ServiceId;
 public:
 	typedef uint16	size_type;
@@ -199,7 +200,7 @@ typedef void (*TUnifiedMsgCallback) (CMessage &msgin, const std::string &service
 struct TUnifiedCallbackItem
 {
 	/// Key C string. It is a message type name, or "C" for connection or "D" for disconnection
-	char				*Key;
+	const char			*Key;
 	/// The callback function
 	TUnifiedMsgCallback	Callback;
 
@@ -444,7 +445,7 @@ private:
 	/// A map of service ids, referred by a service name
 	struct TNameMappedConnection : public CHashMultiMap<std::string, TServiceId> {};
 
-	/// A map of callbacks, refered by message name
+	/// A map of callbacks, referred by message name
 	typedef std::map<std::string, TUnifiedMsgCallback>			TMsgMappedCallback;
 
 	/// A callback and its user data
@@ -607,10 +608,10 @@ private:
 				}
 			}
 			// find the default network
-			uint j;
+			std::vector<std::string>::size_type j;
 			for (j = 0; j < defaultNetwork.size (); j++)
 			{
-				uint32 pos = defaultNetwork[j].find(ServiceName);
+				std::string::size_type pos = defaultNetwork[j].find(ServiceName);
 				if (pos != std::string::npos && pos == 0 && ServiceName.size() == defaultNetwork[j].size ()-1)
 				{
 					uint8 nid = defaultNetwork[j][defaultNetwork[j].size ()-1] - '0';

@@ -171,7 +171,7 @@ void CVarPath::decode ()
 	for (uint i = 0; i < dest.size(); ++i)
 	{
 		string srv, var;
-		uint pos;
+		string::size_type pos;
 		
 		if ((pos = dest[i].find ('.')) != string::npos)
 		{

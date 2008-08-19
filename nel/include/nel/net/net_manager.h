@@ -30,8 +30,11 @@
 ********************* THIS CLASS IS DEPRECATED ****************************
 **************************************************************************/
 
-
-#pragma message(NL_LOC_WRN "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature")
+#ifdef NL_OS_WINDOWS
+#	pragma message(NL_LOC_WRN "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature")
+#else // NL_OS_UNIX
+#	warning "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature"
+#endif
 
 #ifndef NL_NET_MANAGER_H
 #define NL_NET_MANAGER_H
@@ -43,6 +46,8 @@
 #include <vector>
 
 #include "nel/misc/time_nl.h"
+#include "nel/misc/string_id_array.h"
+
 #include "callback_net_base.h"
 #include "naming_client.h"
 
@@ -125,7 +130,7 @@ public:
 	static void	addGroup (const std::string &groupName, const std::string &serviceName);
 
 	/// Adds a callback array to a specific service connection. You can add callback only *after* adding the server, the client or the group
-	static void	addCallbackArray (const std::string &serviceName, const TCallbackItem *callbackarray, sint arraysize);
+	static void	addCallbackArray (const std::string &serviceName, const TCallbackItem *callbackarray, NLMISC::CStringIdArray::TStringId arraysize);
 
 	/** Call it evenly. the parameter select the timeout value in milliseconds for each update. You are absolutely certain that this
 	 * function will not be returns before this amount of time you set.

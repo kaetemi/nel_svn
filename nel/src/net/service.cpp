@@ -35,9 +35,8 @@
 // these defines is for IsDebuggerPresent(). it'll not compile on windows 95
 // just comment this and the IsDebuggerPresent to compile on windows 95
 #	define _WIN32_WINDOWS	0x0410
-#	ifndef WINVER
-#		define WINVER		0x0400
-#	endif
+#	define WINVER			0x0400
+#	define NOMINMAX
 #	include <windows.h>
 #	include <direct.h>
 #elif defined NL_OS_UNIX
@@ -69,8 +68,6 @@
 #include "nel/net/admin.h"
 #include "nel/net/module_manager.h"
 #include "nel/net/transport_class.h"
-
-#include "nel/memory/memory_manager.h"
 
 #include "stdin_monitor_thread.h"
 
@@ -200,7 +197,7 @@ static void sigHandler(int Sig)
 		{
 			if (getThreadId () != SignalisedThread)
 			{
-				nldebug ("SERVICE: Secondary thread received the signal (%s, %d), ignoring it", SignalName[i],Sig);
+				nldebug ("SERVICE: Not the main thread (%u, %u) received the signal (%s, %d), ignore it", getThreadId (), SignalisedThread, SignalName[i],Sig);
 				return;
 			}
 			else
@@ -213,7 +210,7 @@ static void sigHandler(int Sig)
 				  if (IService::getInstance()->haveLongArg("nobreak"))
 				    {
 				      // ignore ctrl-c
-				      nlinfo("Ignoring ctrl-c");
+				      nlinfo("SERVICE: Ignoring ctrl-c");
 				      return;
 				    }
 				case SIGABRT :
@@ -247,7 +244,7 @@ static void initSignal()
 	SignalisedThread = getThreadId ();
 #ifdef NL_DEBUG
 	// in debug mode, we only trap the SIGINT signal (for ctrl-c handling)
-	signal(Signal[3], sigHandler);
+	//signal(Signal[3], sigHandler);
 	//nldebug("Signal : %s (%d) trapped", SignalName[3], Signal[3]);
 #else
 	// in release, redirect all signals
@@ -340,7 +337,7 @@ void IService::anticipateShardId( uint32 shardId )
 void IService::setShardId( uint32 shardId )
 {
 	if ( ! ((_ShardId == DEFAULT_SHARD_ID) || (shardId == _ShardId)) )
-		nlwarning( "The shardId from the WS (%u) is different from the anticipated shardId (%u)", shardId, _ShardId );
+		nlwarning( "SERVICE: The shardId from the WS (%u) is different from the anticipated shardId (%u)", shardId, _ShardId );
 	_ShardId = shardId;
 }
 
@@ -486,7 +483,7 @@ void IService::setArgs (const char *args)
 	_Args.push_back ("<ProgramName>");
 
 	string sargs (args);
-	uint32 pos1 = 0, pos2 = 0;
+	string::size_type pos1 = 0, pos2 = 0;
 
 	do
 	{
@@ -512,7 +509,7 @@ void IService::setArgs (const char *args)
 		}
 
 		// Compute the size of the string to extract
-		int length = (pos2 != string::npos) ? pos2-pos1 : string::npos;
+		string::difference_type length = (pos2 != string::npos) ? pos2-pos1 : string::npos;
 
 		string tmp = sargs.substr (pos1, length);
 		_Args.push_back (tmp);
@@ -599,7 +596,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 	try
 	{
-		nlinfo("Just in case");
+		createDebug();
 		// init the module manager
 		IModuleManager::getInstance();
 		//
@@ -636,7 +633,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		ListeningPort = servicePort;
 
 		setReportEmailFunction ((void*)sendEmail);
-		setDefaultEmailParams ("gw.nevrax.com", "", "cado@nevrax.com");
+		// setDefaultEmailParams ("gw.nevrax.com", "", "cado@nevrax.com");
 
 
 		//
@@ -673,7 +670,15 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		
 		// setup variable with config file variable
 		IVariable::init (ConfigFile);
-
+		
+		if (ConfigFile.exists("DefaultEmailSMTP") && ConfigFile.exists("DefaultEmailTo"))
+			NLNET::setDefaultEmailParams(
+				ConfigFile.getVar("DefaultEmailSMTP").asString(),
+				ConfigFile.exists("DefaultEmailFrom")
+				? ConfigFile.getVar("DefaultEmailFrom").asString()
+				: "service@opennel.org",
+				ConfigFile.getVar("DefaultEmailTo").asString());
+		
 		//
 		// Set the shard Id
 		//
@@ -961,14 +966,14 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		if (varAliasName != NULL)
 		{
 			_AliasName = varAliasName->asString();
-			nlinfo("Setting alias name to: '%s'",_AliasName.c_str());
+			nlinfo("SERVICE: Setting alias name to: '%s'",_AliasName.c_str());
 		}
 
 		// set the aes aliasname if is present in the command line
 		if (haveArg('N'))
 		{
 			_AliasName = getArg('N');
-			nlinfo("Setting alias name to: '%s'",_AliasName.c_str());
+			nlinfo("SERVICE: Setting alias name to: '%s'",_AliasName.c_str());
 		}
 
 		// Load the recording state from the config file
@@ -1092,6 +1097,8 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 				CInetAddress loc(LSAddr);
 				try
 				{
+					// todo: check if app not closed by user, or you get stuck here
+
 					if ( CUnifiedNetwork::getInstance()->init (&loc, _RecordingState, _ShortName, ListeningPort, _SId) )
 					{
 						ok = true;
@@ -1248,7 +1255,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 		_Initialized = true;
 
-		nlinfo ("SERVICE: Service initialised, executing StartCommands");
+		nlinfo ("SERVICE: Service initialized, executing StartCommands");
 
 		//
 		// Call the user command from the config file if any
@@ -1471,7 +1478,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 						string dispName = displayedVariables[i].first;
 						string varName = dispName;
-						uint32 pos = dispName.find("|");
+						string::size_type pos = dispName.find("|");
 						if (pos != string::npos)
 						{
 							varName = displayedVariables[i].first.substr(pos+1);
@@ -1609,18 +1616,12 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		delete timeoutThread;
 	}
 
-#ifdef NL_RELEASE
-#endif
-
 	CHTimer::display();
 	CHTimer::displayByExecutionPath ();
 	CHTimer::displayHierarchical(&CommandLog, true, 64);
 	CHTimer::displayHierarchicalByExecutionPathSorted (&CommandLog, CHTimer::TotalTime, true, 64);
 
 	nlinfo ("SERVICE: Service ends");
-
-	string name = getServiceLongName () + ".memory_report";
-	NLMEMORY::StatisticsReport (name.c_str(), false);
 
 	return ExitSignalAsked?100+ExitSignalAsked:getExitStatus ();
 }

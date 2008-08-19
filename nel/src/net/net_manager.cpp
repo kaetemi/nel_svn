@@ -23,26 +23,23 @@
  * MA 02111-1307, USA.
  */
 
-
-
+#include "stdnet.h"
 
 /**************************************************************************
 ********************* THIS CLASS IS DEPRECATED ****************************
 **************************************************************************/
-
-#pragma message(NL_LOC_WRN "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature")
-
-#include "stdnet.h"
+#ifdef NL_OS_WINDOWS
+#	pragma message(NL_LOC_WRN "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature")
+#else // NL_OS_UNIX
+#	warning "You are using a deprecated feature of NeL, consider rewriting your code with replacement feature"
+#endif
 
 #include "nel/misc/time_nl.h"
 
 #include "nel/net/naming_client.h"
-
 #include "nel/net/callback_client.h"
 #include "nel/net/callback_server.h"
-
 #include "nel/net/naming_client.h"
-
 #include "nel/net/net_manager.h"
 
 using namespace std;
@@ -79,8 +76,6 @@ static void nmNewDisconnection (TSockId from, void *arg)
 	// call the client callback if necessary
 	if (basest->DisconnectionCallback != NULL)
 		basest->DisconnectionCallback (basest->Name, from, basest->DisconnectionCbArg);
-
-	/// \todo ace: when a group is disconnected, we have to handle the problem
 }
 
 
@@ -121,7 +116,7 @@ void CNetManager::createConnection(CBaseStruct &Base, const CInetAddress &Addr, 
 
 void RegistrationBroadcast (const std::string &name, TServiceId sid, const vector<CInetAddress> &addr)
 {
-	nldebug("HNETL4: RegistrationBroadcast() of service %s-%hu", name.c_str (), (uint16)sid);
+	nldebug("HNETL4: RegistrationBroadcast() of service %s-%hu", name.c_str (), (uint16)sid.get());
 
 	// find if this new service is interesting
 	for (CNetManager::ItBaseMap itbm = CNetManager::_BaseMap.begin (); itbm != CNetManager::_BaseMap.end (); itbm++)
@@ -154,7 +149,7 @@ void RegistrationBroadcast (const std::string &name, TServiceId sid, const vecto
 
 static void UnregistrationBroadcast (const std::string &name, TServiceId sid, const vector<CInetAddress> &addr)
 {
-	nldebug("HNETL4: UnregistrationBroadcast() of service %s-%hu", name.c_str (), (uint16)sid);
+	nldebug("HNETL4: UnregistrationBroadcast() of service %s-%hu", name.c_str (), (uint16)sid.get());
 }
 
 void CNetManager::init (const CInetAddress *addr, CCallbackNetBase::TRecordingState rec )
@@ -191,7 +186,7 @@ void CNetManager::release ()
 
 void CNetManager::addServer (const std::string &serviceName, uint16 servicePort, bool external)
 {
-	TServiceId sid = 0;
+	TServiceId sid;
 	addServer (serviceName, servicePort, sid, external);
 }
 
@@ -231,7 +226,7 @@ void CNetManager::addServer (const std::string &serviceName, uint16 servicePort,
 		for (uint i = 0; i < addr.size(); i++)
 			addr[i].setPort(servicePort);
 
-		if (sid == 0)
+		if (sid.get() == 0)
 		{
 			CNamingClient::registerService (serviceName, addr, sid);
 		}
@@ -322,7 +317,7 @@ void CNetManager::addGroup (const std::string &groupName, const std::string &ser
 }
 
 
-void CNetManager::addCallbackArray (const std::string &serviceName, const TCallbackItem *callbackarray, NLMISC::CStringIdArray::TStringId arraysize)
+void CNetManager::addCallbackArray (const std::string &serviceName, const TCallbackItem *callbackarray, CStringIdArray::TStringId arraysize)
 {
 	nldebug ("HNETL4: addingCallabckArray() for service '%s'", serviceName.c_str ());
 	ItBaseMap itbm = find (serviceName);
@@ -372,7 +367,6 @@ void CNetManager::update (TTime timeout)
 		{
 			for (uint32 i = 0; i < (*itbm).second.NetBase.size(); i++)
 			{
-				/// \todo ace: update() only when connected () but cado must fix the problem before because if we don't update when we are not connected, we don't receive the disconnection
 				// we get and treat all messages in this connection
 				(*itbm).second.NetBase[i]->update (0);
 				if ((*itbm).second.NetBase[i]->connected())

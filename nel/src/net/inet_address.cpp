@@ -31,23 +31,19 @@
 #include "nel/net/sock.h"
 #include "nel/net/net_log.h"
 
+
 #ifdef NL_OS_WINDOWS
-
-#include <windows.h>
-
+#	include <winsock2.h>
+#	include <ws2tcpip.h>
 #elif defined NL_OS_UNIX
-
-#include <unistd.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netdb.h>
-
-#define WSAGetLastError() 0
-#define SOCKET_ERROR -1
-
+#	include <unistd.h>
+#	include <sys/socket.h>
+#	include <arpa/inet.h>
+#	include <netinet/in.h>
+#	include <netdb.h>
+#	define WSAGetLastError() 0
+#	define SOCKET_ERROR -1
 #endif
-
 
 using namespace std;
 using namespace NLMISC;
@@ -73,21 +69,28 @@ CInetAddress::CInetAddress()
 /*
  * Constructor with ip address, port=0
  */
-CInetAddress::CInetAddress( const in_addr *ip )
+CInetAddress::CInetAddress( const in_addr *ip, const char *hostname )
 {
 	init();
 	_SockAddr->sin_port = 0;
 	memcpy( &_SockAddr->sin_addr, ip, sizeof(in_addr) );
 
 	// get the host name to be displayed
-	hostent *phostent = gethostbyaddr( (char*)&ip->s_addr, 4,  AF_INET );
-	if ( phostent == NULL )
+	if(hostname)
 	{
-		_HostName = ipAddress();
+		_HostName = hostname;
 	}
 	else
 	{
-		_HostName = string( phostent->h_name );
+		hostent *phostent = gethostbyaddr( (char*)&ip->s_addr, 4,  AF_INET );
+		if ( phostent == NULL )
+		{
+			_HostName = ipAddress();
+		}
+		else
+		{
+			_HostName = string( phostent->h_name );
+		}
 	}
 	_Valid = true;
 }
@@ -180,7 +183,7 @@ bool operator<( const CInetAddress& a1, const CInetAddress& a2 )
  */
 void CInetAddress::init()
 {
-	CSock::initNetwork(); /// \todo cado: handle exception (because init() is called within a constructor)
+	CSock::initNetwork();
 	
 	_Valid = false;
 
@@ -204,7 +207,7 @@ CInetAddress::~CInetAddress()
  */
 void CInetAddress::setNameAndPort( const std::string& hostNameAndPort )
 {
-	uint32 pos = hostNameAndPort.find_first_of (':');
+	string::size_type pos = hostNameAndPort.find_first_of (':');
 	if (pos != string::npos)
 	{
 		setPort( atoi(hostNameAndPort.substr(pos + 1).c_str()) );
@@ -489,7 +492,7 @@ std::vector<CInetAddress> CInetAddress::localAddresses()
 		if (phostent->h_addr_list[i] == 0)
 			break;
 
-		vect.push_back( CInetAddress( (const in_addr*)(phostent->h_addr_list[i]) ) );
+		vect.push_back( CInetAddress( (const in_addr*)(phostent->h_addr_list[i]), localhost ) );
 		i++;
 	}
 	while (true);

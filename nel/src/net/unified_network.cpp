@@ -43,9 +43,6 @@ using namespace NLMISC;
 
 namespace NLNET {
 
-CLog test(CLog::LOG_INFO);
-CFileDisplayer fd;
-
 static uint ThreadCreator = 0;
 
 static const uint64 AppIdDeadConnection = 0xDEAD;
@@ -74,9 +71,6 @@ CVariablePtr<uint32> DefaultMaxSentBlockSize("nel", "DefaultMaxSentBlockSize", "
 #define AUTOCHECK_DISPLAY nlwarning
 //#define AUTOCHECK_DISPLAY CUnifiedNetwork::getInstance()->displayInternalTables (), nlerror
 
-// Small log to help debugging unified network connection events (TODO: remove)
-static string allstuffs;
-
 const TServiceId	TServiceId::InvalidId = TServiceId(uint16(~0));
 
 //
@@ -88,15 +82,10 @@ void	uNetRegistrationBroadcast(const string &name, TServiceId sid, const vector<
 {
 	nldebug ("HNETL5: + naming %s-%u '%s'", name.c_str(), sid.get(), vectorCInetAddressToString(addr).c_str ());
 
-	allstuffs += "+naming "+name+"-"+toString(sid.get())+"\n";
-	test.displayNL ("+naming %s-%u", name.c_str (), sid.get());
-
 	CUnifiedNetwork *uni= CUnifiedNetwork::getInstance();
 
 	if (uni->_SId == sid)
 	{
-		allstuffs += "itsme!!!\n";
-		test.displayNL ("itsme!!!");
 		// it's me! don't add me!!!
 		return;
 	}
@@ -115,7 +104,6 @@ void	uNetRegistrationBroadcast(const string &name, TServiceId sid, const vector<
 	if (!uni->_IdCnx[sid.get()].ExtAddress.empty ()) 
 		AUTOCHECK_DISPLAY ("HNETL5: %s-%u already inserted in the table with '%s'", name.c_str(), sid.get(), vectorCInetAddressToString (uni->_IdCnx[sid.get()].ExtAddress).c_str ());
 
-
 	// set the list of external addresses
 
 	nlassert (!addr.empty());
@@ -131,9 +119,6 @@ void	uNetUnregistrationBroadcast(const string &name, TServiceId sid, const vecto
 {
 	nldebug ("HNETL5: - naming %s-%u '%s'", name.c_str(), sid.get(), vectorCInetAddressToString (addr).c_str ());
 
-	allstuffs += "-naming "+name+"-"+toString(sid.get())+"\n";
-	test.displayNL ("-naming %s-%hu", name.c_str (), sid.get());
-
 	// get the service connection
 	CUnifiedNetwork *uni = CUnifiedNetwork::getInstance();
 
@@ -143,22 +128,6 @@ void	uNetUnregistrationBroadcast(const string &name, TServiceId sid, const vecto
 	// call the user callback
 
 	uni->callServiceDownCallback(uc->ServiceName, uc->ServiceId);
-
-	/*
-	CUnifiedNetwork::TNameMappedCallback::iterator	it2 = uni->_DownCallbacks.find(uc->ServiceName);
-
-	if (it2 != uni->_DownCallbacks.end())
-	{
-		// call it
-		TUnifiedNetCallback	cb = (*it2).second.first;
-		cb(uc->ServiceName, uc->ServiceId, (*it2).second.second);
-	}
-
-	for (uint c = 0; c < uni->_DownUniCallback.size (); c++)
-	{
-		if (uni->_DownUniCallback[c].first != NULL)
-			uni->_DownUniCallback[c].first(uc->ServiceName, uc->ServiceId, uni->_DownUniCallback[c].second);
-	}*/
 
 	if(!uc->Connections.empty ())
 	{
@@ -212,7 +181,6 @@ void	uncbDisconnection(TSockId from, void *arg)
 	if(from->appId () == AppIdDeadConnection)
 	{
 		nlinfo ("HNETL5: - connec '%s'", from->asString().c_str());
-		test.displayNL ("-connect dead connection");
 	}
 	else
 	{
@@ -222,13 +190,10 @@ void	uncbDisconnection(TSockId from, void *arg)
 		if (uc == 0)
 		{
 			nlinfo ("HNETL5: - connec '%s' sid %hu", from->asString().c_str(), sid.get());
-			test.displayNL ("-connect '%s' %hu", from->asString ().c_str (), sid.get());
 		}
 		else
 		{
 			nlinfo ("HNETL5: - connec '%s' %s-%hu", from->asString().c_str(), uc->ServiceName.c_str (), sid.get());
-			allstuffs += "-connect "+uc->ServiceName+"-"+toString(sid.get())+"\n";
-			test.displayNL ("-connect %s-%hu", uc->ServiceName.c_str (), uc->ServiceId.get());
 
 			if (uc->IsExternal)
 			{
@@ -239,25 +204,9 @@ void	uncbDisconnection(TSockId from, void *arg)
 					// call the user callback
 					uni->callServiceDownCallback(uc->ServiceName, uc->ServiceId);
 					
-					/*CUnifiedNetwork::TNameMappedCallback::iterator	it2 = uni->_DownCallbacks.find(uc->ServiceName);
-
-					if (it2 != uni->_DownCallbacks.end())
-					{
-						// call it
-						TUnifiedNetCallback	cb = (*it2).second.first;
-						cb(uc->ServiceName, uc->ServiceId, (*it2).second.second);
-					}
-
-					for (uint c = 0; c < uni->_DownUniCallback.size (); c++)
-					{
-						if (uni->_DownUniCallback[c].first != NULL)
-							uni->_DownUniCallback[c].first(uc->ServiceName, uc->ServiceId, uni->_DownUniCallback[c].second);
-					}*/
-
 					uni->removeNamedCnx (uc->ServiceName, uc->ServiceId);
 
 					uni->_ConnectionToReset.push_back(uc->ServiceId);
-//					uc->reset ();
 				}
 				else
 				{
@@ -302,7 +251,7 @@ void	uncbDisconnection(TSockId from, void *arg)
 }
 
 //
-// Callback from identication services
+// Callback from identification services
 //
 
 void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
@@ -311,7 +260,7 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 	TServiceId	inSid;
 
 	if (from->appId () != AppIdDeadConnection)
-		AUTOCHECK_DISPLAY ("HNETL5: received a connec ident from an unknown connection 0x%"NL_I64"X", from->appId ());
+		AUTOCHECK_DISPLAY ("HNETL5: received a connect ident from an unknown connection 0x%"NL_I64"X", from->appId ());
 
 	// recover the service name and id
 	msgin.serial(inSName);
@@ -321,11 +270,8 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 	bool isExternal;
 	msgin.serial (isExternal);
 
-	nlinfo ("HNETL5: + connec ident '%s' %s-%hu pos %hu ext %d", from->asString().c_str(), inSName.c_str(), inSid.get(), (uint16)pos, (uint8)isExternal);
+	nlinfo ("HNETL5: + connect ident '%s' %s-%hu pos %hu ext %d", from->asString().c_str(), inSName.c_str(), inSid.get(), (uint16)pos, (uint8)isExternal);
 	
-	allstuffs += "+rconnect "+inSName+"-"+toString(inSid.get())+" pos "+toString((uint16)pos)+"\n";
-	test.displayNL ("+rconnect %s-%hu pos %hu", inSName.c_str (), inSid.get(), (uint16)pos);
-
 	if(isExternal)
 	{
 		nlassert (pos == 0);
@@ -337,7 +283,7 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 		{
 			inSid = CUnifiedNetwork::getInstance ()->_ExtSId;
 			CUnifiedNetwork::getInstance ()->_ExtSId.set(CUnifiedNetwork::getInstance ()->_ExtSId.get()+1);
-			// the following was an nlwarning but this is in fact desired behaviour and not an error so we have changed to nlinfo
+			// the following was an nlwarning but this is in fact desired behavior and not an error so we have changed to nlinfo
 			nlinfo ("HNETL5: Received a connection from a service with a SId 0, we give him the SId %d", inSid.get());
 		}
 		else
@@ -390,18 +336,6 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 		uni->_IdCnx[inSid.get()].setupNetworkAssociation (uni->_NetworkAssociations, uni->_DefaultNetwork);
 	}
 
-
-	// todo ace temp to savoir comment c est possible ce cas la
-	if (uni->_IdCnx[inSid.get()].Connections.size() == 3)
-	{
-		CUnifiedNetwork::CUnifiedConnection *uc = &uni->_IdCnx[inSid.get()];
-		nlstop;
-		nlinfo ("HNETL5: ext addr %s", vectorCInetAddressToString (uc->ExtAddress).c_str ());
-		for(uint i = 0; i < uc->Connections.size(); i++)
-			nlinfo ("HNETL5: cnx %s", uc->Connections[i].HostId->asString ().c_str ());
-		nlinfo ("HNETL5: %s", allstuffs.c_str ());
-	}
-
 	// send the callback to the user with the first connection
 	if (FirstConnection)
 	{
@@ -409,24 +343,6 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 		uni->addNamedCnx (inSName, inSid);
 
 		uni->callServiceUpCallback (inSName, inSid);
-/*
-		// now we warn the user
-		CUnifiedNetwork::TNameMappedCallback::iterator	it = uni->_UpCallbacks.find(inSName);
-		if (it != uni->_UpCallbacks.end())
-		{
-			// call it
-			for (list<TCallbackArgItem> it2 = (*it).second.begin(); it2 != (*it).second.end(); it2++)
-			{
-				TUnifiedNetCallback	cb = (*it2).first;
-				if (cb) cb(inSName, inSid, (*it2).second);
-			}
-		}
-
-		for (uint c = 0; c < uni->_UpUniCallback.size (); c++)
-		{
-			if (uni->_UpUniCallback[c].first != NULL)
-				uni->_UpUniCallback[c].first (inSName, inSid, uni->_UpUniCallback[c].second);
-		}*/
 	}
 }
 
@@ -508,7 +424,6 @@ TCallbackItem	unServerCbArray[] =
 };
 
 
-
 //
 // Alive check thread
 //
@@ -527,7 +442,7 @@ public:
 
 	struct CCheckAddress
 	{
-		CCheckAddress() : NeedCheck(false), AddressValid(false), ConnectionId(0xDEAD)	{ }
+		CCheckAddress() : ConnectionId(0xDEAD), NeedCheck(false), AddressValid(false) { }
 		CInetAddress	Address;
 		std::string		ServiceName;
 		TServiceId		ServiceId;
@@ -623,8 +538,6 @@ bool	CUnifiedNetwork::init(const CInetAddress *addr, CCallbackNetBase::TRecordin
 {
 	// the commands can now be invoked
 	registerCommandsHandler();
-
-	//DebugLog->addNegativeFilter ("HNETL5");
 
 	if (_Initialised)
 	{
@@ -727,11 +640,6 @@ bool	CUnifiedNetwork::init(const CInetAddress *addr, CCallbackNetBase::TRecordin
 		nlinfo ("HNETL5: Server '%s' added, registered and listen to port %hu", _Name.c_str (), _ServerPort);
 	}
 
-	string fn = _Name+"_"+toString(_SId.get())+".log";
-	fd.setParam (fn);
-	test.addDisplayer (&fd);
-	test.displayNL ("**************INIT***************");
-
 	AliveThread = IThread::create(new CAliveCheck(), 1024*4);
 	AliveThread->start();
 
@@ -784,20 +692,17 @@ void	CUnifiedNetwork::release(bool mustFlushSendQueues, const std::vector<std::s
 	{
 		CAliveCheck::Thread->ExitRequired = true;
 		AliveThread->wait();
-//		while (CAliveCheck::Thread->ExitRequired)
-//			nlSleep(100);
 		delete CAliveCheck::Thread;
 		delete AliveThread;
 	}
 
 	if (ThreadCreator != NLMISC::getThreadId()) nlwarning ("HNETL5: Multithread access but this class is not thread safe thread creator = %u thread used = %u", ThreadCreator, NLMISC::getThreadId());
 
-
 	// Ensure all outgoing data are sent before disconnecting, if requested
 	if ( mustFlushSendQueues )
 	{
 		nlinfo( "HNETL5: Flushing sending queues..." );
-		float totalBytes;
+		float totalBytes = 0;
 		uint bytesRemaining, i=0;
 		while ( (bytesRemaining = tryFlushAllQueues( namesOfOnlyServiceToFlushSending )) != 0 )
 		{
@@ -878,9 +783,6 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 	}
 
 	nlinfo("HNETL5: addService %s-%hu '%s'", name.c_str(), sid.get(), vectorCInetAddressToString(addr).c_str());
-
-	allstuffs += "addService "+name+"-"+toString(sid.get())+"\n";
-	test.displayNL ("+service %s-%hu", name.c_str (), sid.get());
 
 	if (external && addr.size () != 1)
 	{
@@ -969,17 +871,11 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 		{
 			cbc->connect(addr[i]);
 			connectSuccess = true;
-			
-			allstuffs += "+lconnect "+name+"-"+toString(sid.get())+"\n";
-			test.displayNL ("+lconnect %s-%hu", name.c_str (), sid.get());
 		}
 		catch (ESocketConnectionFailed &e)
 		{
 			nlwarning ("HNETL5: can't connect to %s (sid %u) now (%s) '%s'", name.c_str(), sid.get(), e.what (), addr[i].asString ().c_str());
 			connectSuccess = false;
-
-			allstuffs += "+lconnect failed "+name+"-"+toString(sid.get())+"\n";
-			test.displayNL ("+lconnect failed %s-%hu", name.c_str (), sid.get());
 		}
 
 		if (!connectSuccess && !autoRetry)
@@ -990,8 +886,6 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 		else
 		{
 			uc->Connections[i] = CUnifiedNetwork::CUnifiedConnection::TConnection(cbc);
-
-//			nlinfo ("HNETL5: %s", allstuffs.c_str ());
 		}
 
 		if (connectSuccess && sendId)
@@ -1003,7 +897,7 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 			if (uc->IsExternal)
 			{
 				// in the case that the service is external, we can't send our sid because the external service can
-				// have other connectin with the same sid (for example, LS can have 2 WS with same sid => sid = 0 and leave
+				// have other connection with the same sid (for example, LS can have 2 WS with same sid => sid = 0 and leave
 				// the other side to find a good number
 				ssid.set(0);
 			}
@@ -1039,28 +933,7 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 		addNamedCnx (name, sid);
 
 		callServiceUpCallback (name, sid); // global callback ("*") will be called even for external service
-		
-/*		
-		// call the connection callback associated to this service
-		TNameMappedCallback::iterator	itcb = _UpCallbacks.find(name);
-		if (itcb != _UpCallbacks.end())
-		{
-			for (list<TCallbackArgItem> it2 = (*itcb).second.begin(); it2 != (*itcb).second.end(); it2++)
-			{				
-				TUnifiedNetCallback	cb = (*it2).first;
-				if (cb) cb(name, sid, (*it2).second);
-			}
-		}
-
-		if (!external)
-		{
-			for (uint i = 0; i < _UpUniCallback.size (); i++)
-			{
-				if (_UpUniCallback[i].first != NULL)
-					_UpUniCallback[i].first (name, sid, _UpUniCallback[i].second);
-			}
-		}
-*/	}
+	}
 
 	nldebug ("HNETL5: addService was successful");
 }
@@ -1340,24 +1213,6 @@ void CUnifiedNetwork::autoReconnect( CUnifiedConnection &uc, uint connectionInde
 
 		// call the user callback
 		callServiceUpCallback (uc.ServiceName, uc.ServiceId);
-		/*
-		CUnifiedNetwork::TNameMappedCallback::iterator	it = _UpCallbacks.find(uc.ServiceName);
-		if (it != _UpCallbacks.end())
-		{
-			// call it
-			for (list<TCallbackArgItem> it2 = (*it).second.begin(); it2 != (*it).second.end(); it2++)
-			{
-				TUnifiedNetCallback	cb = (*it2).first;
-				if (cb) cb(uc.ServiceName, uc.ServiceId, (*it2).second);
-			}
-		}
-
-		for (uint c = 0; c < _UpUniCallback.size (); c++)
-		{
-			if (_UpUniCallback[c].first != NULL)
-				_UpUniCallback[c].first (uc.ServiceName, uc.ServiceId, _UpUniCallback[c].second);
-		}
-		*/
 	}
 	catch (ESocketConnectionFailed &e)
 	{
@@ -1380,42 +1235,8 @@ void CUnifiedNetwork::sleepUntilDataAvailable( TTime msecMax )
 		msecMax = 999;
 
 	// Prepare for select()
-	//SOCKET descmax = 0;
 	fd_set readers;
 	FD_ZERO( &readers );
-	/*
-	// Code that would select on one pipe per CCallbackNetBase object. Not needed because we don't check
-	// which socket state changed.
-	if ( _CbServer )
-	{
-		// Include the main server queue in the check list
-		int pipeDesc = _CbServer->dataAvailablePipeReadHandle();
-		FD_SET(	pipeDesc, &readers );
-		if ( pipeDesc > descmax )
-			descmax = pipeDesc;
-	}
-	for ( uint k = 0; k!=_UsedConnection.size(); ++k )
-	{
-		// Include all client queues in the check list
-		CUnifiedConnection &uc = _IdCnx[_UsedConnection[k]];
-		nlassert (uc.State == CUnifiedNetwork::CUnifiedConnection::Ready);
-		for (uint j = 0; j < uc.Connections.size (); j++)
-		{
-			if (!uc.Connections[j].valid())
-				continue;
-
-			if (uc.Connections[j].IsServerConnection)
-				continue;
-
-			if (uc.Connections[j].CbNetBase->connected ())
-			{
-				int pipeDesc = uc.Connections[j].CbNetBase->dataAvailablePipeReadHandle();
-				FD_SET( pipeDesc, &readers );
-				if ( pipeDesc > descmax )
-					descmax = pipeDesc;
-			}
-		}
-	}*/
 	FD_SET( _MainDataAvailablePipe[PipeRead], &readers );
 	SOCKET descmax = _MainDataAvailablePipe[PipeRead] + 1;
 
@@ -1538,7 +1359,6 @@ uint	CUnifiedNetwork::send(const string &serviceName, const CMessage &msgout, bo
 				continue;
 			}
 
-			//nldebug ("HNETL5: send message to %s using nid %d cnx %d / %s", serviceName.c_str (), nid, connectionId, connectionId<_IdCnx[sid].ExtAddress.size ()?_IdCnx[sid].ExtAddress[connectionId].asString().c_str():"???");
 			_IdCnx[sid.get()].Connections[connectionId].CbNetBase->send (msgout, _IdCnx[sid.get()].Connections[connectionId].HostId);
 		}
 	}
@@ -1806,12 +1626,6 @@ uint64 CUnifiedNetwork::getBytesSent ()
 					sent += _IdCnx[it->get()].Connections[j].CbNetBase->getBytesSent();
 	}
 
-/*	for (i=0; i<_IdCnx.size(); ++i)
-		if (_IdCnx[i].State == CUnifiedNetwork::CUnifiedConnection::Ready)
-			for (j=0; j<_IdCnx[i].Connections.size (); ++j)
-				if(_IdCnx[i].Connections[j].valid () && !_IdCnx[i].Connections[j].IsServerConnection)
-					sent += _IdCnx[i].Connections[j].CbNetBase->getBytesSent();
-*/
 	if(_CbServer)
 		sent += _CbServer->getBytesSent();
 	return sent;
@@ -1830,12 +1644,6 @@ uint64 CUnifiedNetwork::getBytesReceived ()
 					received += _IdCnx[it->get()].Connections[j].CbNetBase->getBytesReceived();
 	}
 	
-/*	for (i=0; i<_IdCnx.size(); ++i)
-		if (_IdCnx[i].State == CUnifiedNetwork::CUnifiedConnection::Ready)
-			for (j=0; j<_IdCnx[i].Connections.size (); ++j)
-				if(_IdCnx[i].Connections[j].valid () && !_IdCnx[i].Connections[j].IsServerConnection)
-					received += _IdCnx[i].Connections[j].CbNetBase->getBytesReceived();
-*/
 	if (_CbServer)
 		received += _CbServer->getBytesReceived();
 	return received;
@@ -1854,12 +1662,6 @@ uint64 CUnifiedNetwork::getSendQueueSize ()
 					sent += _IdCnx[it->get()].Connections[j].CbNetBase->getSendQueueSize();
 	}
 
-/*	for (i=0; i<_IdCnx.size(); ++i)
-		if (_IdCnx[i].State == CUnifiedNetwork::CUnifiedConnection::Ready)
-			for (j=0; j<_IdCnx[i].Connections.size (); ++j)
-				if(_IdCnx[i].Connections[j].valid () && !_IdCnx[i].Connections[j].IsServerConnection)
-					sent += _IdCnx[i].Connections[j].CbNetBase->getSendQueueSize();
-*/
 	if (_CbServer)
 		sent += _CbServer->getSendQueueSize();
 	return sent;
@@ -1878,12 +1680,6 @@ uint64 CUnifiedNetwork::getReceiveQueueSize ()
 					received += _IdCnx[it->get()].Connections[j].CbNetBase->getReceiveQueueSize();
 	}
 
-/*	for (i=0; i<_IdCnx.size(); ++i)
-		if (_IdCnx[i].State == CUnifiedNetwork::CUnifiedConnection::Ready)
-			for (j=0; j<_IdCnx[i].Connections.size (); ++j)
-				if(_IdCnx[i].Connections[j].valid () && !_IdCnx[i].Connections[j].IsServerConnection)
-					received += _IdCnx[i].Connections[j].CbNetBase->getReceiveQueueSize();
-*/
 	if (_CbServer)
 		received += _CbServer->getReceiveQueueSize();
 	return received;
@@ -2036,15 +1832,6 @@ std::string			CUnifiedNetwork::getServiceUnifiedName(TServiceId sid)
 //CUnifiedNetwork	*CUnifiedNetwork::_Instance = NULL;
 NLMISC_SAFE_SINGLETON_IMPL(CUnifiedNetwork);
 
-
-/*CUnifiedNetwork	*CUnifiedNetwork::getInstance ()
-{
-	if (_Instance == NULL)
-		_Instance = new CUnifiedNetwork();
-
-	return _Instance;
-}
-*/
 bool CUnifiedNetwork::isUsed ()
 {
 	return (_Instance != NULL);
@@ -2189,49 +1976,6 @@ void CUnifiedNetwork::displayInternalTables (NLMISC::CLog *log)
 	{
 		if(_IdCnx[i].State != CUnifiedNetwork::CUnifiedConnection::NotUsed)
 		{
-/*			log->displayNL ("> %s-%hu %s %s %s (%d extaddr %d cnx) tcbc %d", _IdCnx[i].ServiceName.c_str (), _IdCnx[i].ServiceId, _IdCnx[i].IsExternal?"ext":"int", _IdCnx[i].AutoRetry?"autoretry":"noautoretry", _IdCnx[i].SendId?"sendid":"nosendid", _IdCnx[i].ExtAddress.size (), _IdCnx[i].Connections.size (), _IdCnx[i].TotalCallbackCalled);
-			uint maxc = _IdCnx[i].Connections.size ();
-			if(_IdCnx[i].Connections.size () <= _IdCnx[i].ExtAddress.size ())
-				maxc = _IdCnx[i].ExtAddress.size ();
-
-			for (j = 0; j < maxc; j++)
-			{
-				string base;
-				if(j < _IdCnx[i].ExtAddress.size ())
-				{
-					base += _IdCnx[i].ExtAddress[j].asString ();
-				}
-				else
-				{
-					base += "notvalid";
-				}
-
-				string ext;
-				if(j < _IdCnx[i].Connections.size () && _IdCnx[i].Connections[j].valid())
-				{
-					if(_IdCnx[i].Connections[j].IsServerConnection)
-					{
-						ext += "server ";
-					}
-					else
-					{
-						ext += "client ";
-					}
-					ext += _IdCnx[i].Connections[j].CbNetBase->getSockId (_IdCnx[i].Connections[j].HostId)->asString ();
-					ext += " appid:" + toString(_IdCnx[i].Connections[j].getAppId());
-					if (_IdCnx[i].Connections[j].CbNetBase->connected ())
-						ext += " connected";
-					else
-						ext += " notconnected";
-				}
-				else
-				{
-					ext += "notvalid";
-				}
-
-				log->displayNL ("     - %s %s", base.c_str (), ext.c_str ());
-			}*/
-
 			_IdCnx[i].display (false, log);
 			for (j = 0; j < _IdCnx[i].NetworkConnectionAssociations.size (); j++)
 			{
@@ -2288,12 +2032,8 @@ void CUnifiedNetwork::addNamedCnx (const std::string &name, TServiceId sid)
 		}
 	}
 
-
 	// insert the name in the map to be able to send message with the name
 	_NamedCnx.insert(make_pair(name, sid));
-
-	allstuffs += "+name "+name+"-"+toString(sid.get())+"\n";
-	test.displayNL ("+name %s-%hu", name.c_str (), sid.get());
 }
 
 void CUnifiedNetwork::removeNamedCnx (const std::string &name, TServiceId sid)
@@ -2323,9 +2063,6 @@ void CUnifiedNetwork::removeNamedCnx (const std::string &name, TServiceId sid)
 
 	// remove service for map
 	_NamedCnx.erase(it);
-
-	allstuffs += "-name "+name+"-"+toString(sid.get())+"\n";
-	test.displayNL ("-name %s-%hu", name.c_str (), sid.get());
 }
 
 void CUnifiedNetwork::addNetworkAssociation (const string &networkName, uint8 nid)
@@ -2451,12 +2188,6 @@ void CUnifiedNetwork::CUnifiedConnection::display (bool full, CLog *log)
 }
 
 
-
-//
-//
-//
-
-
 //
 // Commands
 //
@@ -2555,7 +2286,7 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, SentBytes, "total of bytes sent by t
 NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another service (ex: msgin 128 REGISTER u32 10 b 1 f 1.5)", "<ServiceName>|<ServiceId> <MessageName> [<ParamType> <Param>]*")
 {
 	if(args.size() < 2) return false;
-	
+
 	if (!CUnifiedNetwork::isUsed ())
 	{
 		log.displayNL("Can't do that because the service doesn't use CUnifiedNetwork");
@@ -2565,13 +2296,13 @@ NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another s
 	TServiceId serviceId = TServiceId(atoi (args[0].c_str()));
 	string serviceName = args[0].c_str();
 	string messageName = args[1].c_str();
-	
+
 	if (serviceId.get() > 255)
 	{
 		log.displayNL ("Service Id %d must be between [1;255]", serviceId.get());
 		return false;
 	}
-	
+
 	if ((args.size()-2) % 2 != 0)
 	{
 		log.displayNL ("The number of parameter must be a multiple of 2");
@@ -2579,18 +2310,14 @@ NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another s
 	}
 
 	CMessage msg (messageName);
-//	msg.clear ();
 
 	if (!createMessage (msg, args, log))
 		return false;
 
-
 	msg.invert ();
 
-
-
 	TUnifiedMsgCallback cb = CUnifiedNetwork::getInstance()->findCallback (messageName);
-	
+
 	if (cb == NULL)
 	{
 		log.displayNL ("Callback for message '%s' is not found", messageName.c_str());
@@ -2599,8 +2326,7 @@ NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another s
 	{
 		cb (msg, serviceName, serviceId);
 	}
-	
-		
+
 	return true;
 }
 

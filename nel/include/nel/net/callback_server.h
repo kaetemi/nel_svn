@@ -52,7 +52,7 @@ public:
 	void	send (const CMessage &buffer, TSockId hostid, bool log = true);
 
 	/// Force to send all data pending in the send queue. See comment in CCallbackNetBase.
-	bool	flush (TSockId destid, uint *nbBytesRemaining=NULL) { checkThreadId (); nlassert( destid != InvalidSockId ); return CBufServer::flush(destid, nbBytesRemaining); }
+	bool	flush (TSockId destid, uint *nbBytesRemaining=NULL) { nlassert( destid != InvalidSockId ); return CBufServer::flush(destid, nbBytesRemaining); }
 
 	/** Updates the network (call this method evenly).
 	 * More info about timeout and mintime in the code of CCallbackNetBase::baseUpdate().
@@ -63,13 +63,13 @@ public:
 	void	update (sint32 timeout=0);
 
 	/// Sets callback for incoming connections (or NULL to disable callback)
-	void	setConnectionCallback (TNetCallback cb, void *arg) { checkThreadId (); _ConnectionCallback = cb; _ConnectionCbArg = arg; }
+	void	setConnectionCallback (TNetCallback cb, void *arg) { _ConnectionCallback = cb; _ConnectionCbArg = arg; }
 
 	/// Sets callback for disconnections (or NULL to disable callback)
-	void	setDisconnectionCallback (TNetCallback cb, void *arg) { checkThreadId (); CCallbackNetBase::setDisconnectionCallback (cb, arg); }
+	void	setDisconnectionCallback (TNetCallback cb, void *arg) { CCallbackNetBase::setDisconnectionCallback (cb, arg); }
 
 	/// Returns true if the connection is still connected. on server, we always "connected"
-	bool	connected () const { checkThreadId (); return true; } 
+	bool	connected () const { return true; } 
 
 	/** Disconnect a connection
 	 * Set hostid to InvalidSockId to disconnect all connections.
@@ -79,7 +79,7 @@ public:
 	void	disconnect (TSockId hostid);
 
 	/// Returns the address of the specified host
-	const CInetAddress& hostAddress (TSockId hostid) { nlassert(hostid!=InvalidSockId); checkThreadId(); return CBufServer::hostAddress (hostid); }
+	const CInetAddress& hostAddress (TSockId hostid) { nlassert(hostid!=InvalidSockId); return CBufServer::hostAddress (hostid); }
 
 	/// Returns the sockid (cf. CCallbackClient)
 	virtual TSockId	getSockId (TSockId hostid = InvalidSockId);

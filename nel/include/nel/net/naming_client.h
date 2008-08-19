@@ -227,15 +227,8 @@ private:
 		RegisteredServicesMutex.leave ();
 	}
 
-
 	friend void cbRegisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netbase);
 	friend void cbUnregisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netbase);
-
-
-protected:
-	/// \todo ace: debug feature that we should remove one day before releasing the game
-	static uint	_ThreadId;
-	static void	checkThreadId ();
 };
 
 

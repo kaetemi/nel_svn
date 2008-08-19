@@ -31,13 +31,17 @@
 #include "nel/misc/hierarchical_timer.h"
 
 #ifdef NL_OS_WINDOWS
-#	define SD_RECEIVE      0x00
-#	define SD_SEND         0x01
-#	define SD_BOTH         0x02
+# if defined(NL_COMP_VC7) || defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
+#	include <winsock2.h>
+# endif
+#	define NOMINMAX
+#	include <windows.h>
 #	define socklen_t int
 #	define ERROR_NUM WSAGetLastError()
 #	define ERROR_WOULDBLOCK WSAEWOULDBLOCK
+
 #elif defined NL_OS_UNIX
+
 #	include <unistd.h>
 #	include <sys/types.h>
 #	include <sys/time.h>
@@ -49,12 +53,15 @@
 #	include <netdb.h>
 #	include <fcntl.h>
 #	include <cerrno>
+
 #	define SOCKET_ERROR -1
 #	define INVALID_SOCKET -1
 #	define ERROR_NUM errno
 #	define ERROR_WOULDBLOCK EWOULDBLOCK
 #	define ERROR_MSG strerror(errno)
+
 typedef int SOCKET;
+
 #endif
 
 using namespace std;
@@ -456,10 +463,10 @@ CSock::TSockResult CSock::send( const uint8 *buffer, uint32& len, bool throw_exc
 		{
 			H_AUTO(L0SendWouldBlock);
 			len = 0;
-			nlSleep(10);
+			//nlSleep(10);
 			if (!_Blocking)
 			{
-				nldebug("SendWouldBlock - %s / %s Entering snooze mode",_LocalAddr.asString().c_str(),_RemoteAddr.asString().c_str());
+				//nldebug("SendWouldBlock - %s / %s Entering snooze mode",_LocalAddr.asString().c_str(),_RemoteAddr.asString().c_str());
 				_Blocking= true;
 			}
 			return Ok;
@@ -478,7 +485,7 @@ CSock::TSockResult CSock::send( const uint8 *buffer, uint32& len, bool throw_exc
 	
 	if (_Blocking)
 	{
-		nldebug("SendWouldBlock - %s / %s Leaving snooze mode",_LocalAddr.asString().c_str(),_RemoteAddr.asString().c_str());
+		//nldebug("SendWouldBlock - %s / %s Leaving snooze mode",_LocalAddr.asString().c_str(),_RemoteAddr.asString().c_str());
 		_Blocking= false;
 	}
 	return Ok;

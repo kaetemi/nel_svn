@@ -39,7 +39,8 @@ namespace NLGEORGES
 class UFormElm
 {
 public:
-
+	// dtor
+	virtual ~UFormElm() {};
 
 	// ** Common methods
 

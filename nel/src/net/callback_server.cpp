@@ -91,7 +91,6 @@ CCallbackServer::CCallbackServer( TRecordingState rec, const string& recfilename
  */
 void CCallbackServer::send (const CMessage &buffer, TSockId hostid, bool log)
 {
-	checkThreadId ();
 	nlassert (connected ());
 	nlassert (buffer.length() != 0);
 	nlassert (buffer.typeIsSet());
@@ -127,10 +126,6 @@ void CCallbackServer::send (const CMessage &buffer, TSockId hostid, bool log)
 			_MR_Recorder.recordNext( _MR_UpdateCounter, Sending, hostid, const_cast<CMessage&>(buffer) );
 		}
 	}
-	else
-	{	
-		/// \todo cado: check that the next sending is the same
-	}
 #endif
 }
 
@@ -144,7 +139,6 @@ void CCallbackServer::update2 ( sint32 timeout, sint32 mintime )
 {
 	H_AUTO(L3UpdateServer);
 
-	checkThreadId ();
 	nlassert (connected ());
 
 //	LNETL3_DEBUG ("LNETL3S: Client: update()");
@@ -172,7 +166,6 @@ void CCallbackServer::update ( sint32 timeout )
 {
 	H_AUTO(L3UpdateServer);
 
-	checkThreadId ();
 	nlassert (connected ());
 
 //	LNETL3_DEBUG ("LNETL3S: Client: update()");
@@ -198,7 +191,6 @@ void CCallbackServer::update ( sint32 timeout )
  */
 void CCallbackServer::receive (CMessage &buffer, TSockId *hostid)
 {
-	checkThreadId ();
 	nlassert (connected ());
 
 #ifdef USE_MESSAGE_RECORDER
@@ -239,8 +231,6 @@ void CCallbackServer::receive (CMessage &buffer, TSockId *hostid)
  */
 void CCallbackServer::disconnect( TSockId hostid )
 {
-	checkThreadId ();
-
 #ifdef USE_MESSAGE_RECORDER
 	if ( _MR_RecordingState != Replay )
 	{
@@ -262,7 +252,6 @@ void CCallbackServer::disconnect( TSockId hostid )
 TSockId CCallbackServer::getSockId (TSockId hostid)
 {
 	nlassert (hostid != InvalidSockId);	// invalid hostid
-	checkThreadId ();
 	nlassert (connected ());
 	nlassert (hostid != NULL);
 	return hostid;
@@ -276,8 +265,6 @@ TSockId CCallbackServer::getSockId (TSockId hostid)
  */
 bool CCallbackServer::dataAvailable ()
 {
-	checkThreadId ();
-
 #ifdef USE_MESSAGE_RECORDER
 	if ( _MR_RecordingState != Replay )
 	{
@@ -394,10 +381,6 @@ void CCallbackServer::noticeConnection( TSockId hostid )
 			addrmsg.serial( const_cast<CInetAddress&>(hostAddress(hostid)) );
 			_MR_Recorder.recordNext( _MR_UpdateCounter, Accepting, hostid, addrmsg );
 		}
-	}
-	else
-	{
-		/// \todo cado: connection stats
 	}
 }
 

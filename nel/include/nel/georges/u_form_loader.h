@@ -46,6 +46,7 @@ class UFormDfn;
 class UFormLoader
 {
 public:
+	virtual ~UFormLoader() {};
 
 	/** Load a form, use NMISC::CPath to find the file.
 	  * 

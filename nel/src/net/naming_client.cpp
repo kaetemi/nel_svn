@@ -55,13 +55,14 @@ CNamingClient::TRegServices CNamingClient::_RegisteredServices;
 static TBroadcastCallback _RegistrationBroadcastCallback = NULL;
 static TBroadcastCallback _UnregistrationBroadcastCallback = NULL;
 
-uint	CNamingClient::_ThreadId = 0xFFFFFFFF;
-
 TServiceId CNamingClient::_MySId(0);
-
 
 std::list<CNamingClient::CServiceEntry>	CNamingClient::RegisteredServices;
 NLMISC::CMutex CNamingClient::RegisteredServicesMutex("CNamingClient::RegisteredServicesMutex");
+
+//
+//
+//
 
 void CNamingClient::setRegistrationBroadcastCallback (TBroadcastCallback cb)
 {
@@ -241,7 +242,6 @@ static TCallbackItem NamingClientCallbackArray[] =
 void CNamingClient::connect( const CInetAddress &addr, CCallbackNetBase::TRecordingState rec, const vector<CInetAddress> &addresses )
 {
 	nlassert (_Connection == NULL || _Connection != NULL && !_Connection->connected ());
-	_ThreadId = getThreadId ();
 
 	if (_Connection == NULL)
 	{
@@ -268,8 +268,6 @@ void CNamingClient::connect( const CInetAddress &addr, CCallbackNetBase::TRecord
 
 void CNamingClient::disconnect ()
 {
-	checkThreadId ();
-	
 	if (_Connection != NULL)
 	{
 		if (_Connection->connected ())
@@ -303,7 +301,6 @@ string CNamingClient::info ()
 
 bool CNamingClient::registerService (const std::string &name, const std::vector<CInetAddress> &addr, TServiceId &sid)
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	CMessage msgout ("RG");
@@ -341,7 +338,6 @@ bool CNamingClient::registerService (const std::string &name, const std::vector<
 
 bool CNamingClient::registerServiceWithSId (const std::string &name, const std::vector<CInetAddress> &addr, TServiceId sid)
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	CMessage msgout ("RG");
@@ -374,7 +370,6 @@ bool CNamingClient::registerServiceWithSId (const std::string &name, const std::
 
 void CNamingClient::resendRegisteration (const std::string &name, const std::vector<CInetAddress> &addr, TServiceId sid)
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	CMessage msgout ("RRG");
@@ -386,7 +381,6 @@ void CNamingClient::resendRegisteration (const std::string &name, const std::vec
 
 void CNamingClient::unregisterService (TServiceId sid)
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	CMessage msgout ("UNI");
@@ -399,7 +393,6 @@ void CNamingClient::unregisterService (TServiceId sid)
 
 void CNamingClient::unregisterAllServices ()
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	while (!_RegisteredServices.empty())
@@ -412,7 +405,6 @@ void CNamingClient::unregisterAllServices ()
 
 uint16 CNamingClient::queryServicePort ()
 {
-	checkThreadId ();
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	CMessage msgout ("QP");
@@ -463,7 +455,6 @@ bool CNamingClient::lookup (TServiceId sid, CInetAddress &addr)
 	return true;
 }
 
-/// \todo ace: now the lookupAlternate doesn't say to the naming service that this addr is bad so the NS can't remove it from his list. find a solution
 bool CNamingClient::lookupAlternate (const std::string &name, CInetAddress &addr)
 {
 	nlassert (_Connection != NULL && _Connection->connected ());
@@ -537,20 +528,10 @@ bool CNamingClient::lookupAndConnect (const std::string &name, CCallbackClient &
 
 void CNamingClient::update ()
 {
-	checkThreadId ();
 	// get message for naming service (new registration for example)
 	if (_Connection != NULL && _Connection->connected ())
 		_Connection->update ();
 }
-
-void CNamingClient::checkThreadId ()
-{
-	if (getThreadId () != _ThreadId)
-	{
-		nlerror ("You try to access to the CNamingClient with 2 differents thread (%d and %d)", _ThreadId, getThreadId());
-	}
-}
-
 
 //
 // Commands

@@ -33,6 +33,7 @@
 #include <ctime>
 
 #ifdef NL_OS_WINDOWS
+#	define NOMINMAX
 #   include <windows.h>
 #endif
 
@@ -409,7 +410,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 			string cmd = varpath.Destination[j].first;
 
 			// replace = with space to execute the command
-			uint eqpos = cmd.find("=");
+			string::size_type eqpos = cmd.find("=");
 			if (eqpos != string::npos)
 			{
 				cmd[eqpos] = ' ';
@@ -496,7 +497,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 				else
 				{
 					// replace = with space to execute the command
-					uint eqpos = cmd.find("=");
+					string::size_type eqpos = cmd.find("=");
 					if (eqpos != string::npos)
 					{
 						cmd[eqpos] = ' ';
@@ -516,7 +517,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 					{
 						const string &str = strs[k];
 
-						uint32 pos = str.find(" ");
+						string::size_type pos = str.find(" ");
 						if(pos == string::npos)
 							continue;
 						
@@ -593,7 +594,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 // Alarms functions
 //
 
-void sendAdminEmail (char *format, ...)
+void sendAdminEmail (const char *format, ...)
 {
 	char *text;
 	NLMISC_CONVERT_VARGS (text, format, 4096);

@@ -157,7 +157,7 @@ void CMessageRecorder::recordNext( sint64 updatecounter, TNetworkEvent event, TS
 		_File << "* ";
 		_File <<  len; // if we put the expression directly, it makes an access violation ! Weird.
 		_File << " ";
-		_File << (char*)stream.buffer() << endl; /// \todo cado: Does a silent Access Violation
+		_File << (char*)stream.buffer() << endl;
 	}
 }
 

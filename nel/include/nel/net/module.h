@@ -44,6 +44,7 @@ namespace NLNET
 	class IInterceptorRegistrar
 	{
 	public:
+		virtual ~IInterceptorRegistrar() {};
 		virtual void registerInterceptor(IModuleInterceptable *interceptor) =0;
 		virtual void unregisterInterceptor(IModuleInterceptable *interceptor) =0;
 	};

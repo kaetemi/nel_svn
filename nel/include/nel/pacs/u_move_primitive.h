@@ -55,7 +55,8 @@ public:
 
 	/// Type of the collision mask.
 	typedef uint32 TCollisionMask;
-	typedef uint64 TUserData;
+        typedef uint64 TUserData;
+	//typedef uintptr_t TUserData;
 
 	/// Primitive mode
 	enum TType
@@ -128,6 +129,8 @@ public:
 	  * User data.
 	  */
 	TUserData		UserData;
+
+	virtual ~UMovePrimitive() {};
 
 	/// \name Setup the primitive static parts.
 

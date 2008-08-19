@@ -151,11 +151,11 @@ void cbWSChooseShard (CMessage &msgin, const std::string &serviceName, TServiceI
 		}
 		else if (pu.Cookie.getUserId() == cookie.getUserId())
 		{
-			// we already have a cooky for this user, remove the old one
+			// we already have a cookie for this user, remove the old one
 			pendingToRemove.push_back(it);
 		}
 	}
-	// remove any useless cooky
+	// remove any useless cookie
 	while (!pendingToRemove.empty())
 	{
 		PendingUsers.erase(pendingToRemove.back());
@@ -227,7 +227,7 @@ static TUnifiedCallbackItem WSCallbackArray[] =
 void cbShardValidation (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 {
 	//
-	// S13: receive "SV" message from client
+	// S13: receive "SV" message from the client
 	//
 
 	// the client send me a cookie
@@ -250,11 +250,11 @@ void cbShardValidation (CMessage &msgin, TSockId from, CCallbackNetBase &netbase
 	CMessage msgout2 ("SV");
 	msgout2.serial (reason);
 	netbase.send (msgout2, from);
-	
+
 	if (!reason.empty())
 	{
 		nlwarning ("LS: User (%s) is not in the pending user list (cookie:%s)", netbase.hostAddress(from).asString().c_str(), cookie.toString().c_str());
-		// deconnect him
+		// disconnect him
 		netbase.disconnect (from);
 	}
 	else

@@ -128,10 +128,10 @@ public:
 	bool isPrimitiveLinked (const NLLIGO::IPrimitive &primitive);
 
 	// Return the next primitive linked to 'primitive', or NULL
-	const NLLIGO::IPrimitive *CLigoConfig::getLinkedPrimitive (const NLLIGO::IPrimitive &primitive) const;
+	const NLLIGO::IPrimitive *getLinkedPrimitive (const NLLIGO::IPrimitive &primitive) const;
 
 	// Return the previous primitive linked to 'primitive', or NULL
-	const NLLIGO::IPrimitive *CLigoConfig::getPreviousLinkedPrimitive (const NLLIGO::IPrimitive &primitive) const;
+	const NLLIGO::IPrimitive *getPreviousLinkedPrimitive (const NLLIGO::IPrimitive &primitive) const;
 
 	// Is the primitive deletable ?
 	bool isPrimitiveDeletable (const NLLIGO::IPrimitive &primitive);

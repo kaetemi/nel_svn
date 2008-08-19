@@ -141,7 +141,7 @@ public:
 	/// send the transport class to a specified service using the service name
 	void send (const std::string &serviceName);
 
-	/** The name of the transport class. Must be uniq for each class.
+	/** The name of the transport class. Must be unique for each class.
 	 */
 	void className (const std::string &name);
 
@@ -215,7 +215,7 @@ public:
 		}
 		else if (Mode == 4)	// display
 		{
-			typedef typename T::const_iterator __iterator;
+			typedef typename T::iterator __iterator;
 			std::string val;
 			for (__iterator it = value.begin (); it != value.end(); it++)
 			{

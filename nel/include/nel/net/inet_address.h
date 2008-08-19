@@ -56,7 +56,6 @@ struct ESocket;
 /**
  * Internet address (IP + port).
  * The structure sockaddr_in is internally in network byte order
- * \todo cado: Test big/little endian transfers to check if byte ordering is ok.
  * \author Olivier Cado
  * \author Nevrax France
  * \date 2000
@@ -151,7 +150,7 @@ public:
 protected:
 
 	/// Constructor with ip address, port=0
-	CInetAddress( const in_addr *ip );
+	CInetAddress( const in_addr *ip, const char *hostname = 0);
 
 private:
 

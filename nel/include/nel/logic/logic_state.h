@@ -46,7 +46,6 @@ class CLogicStateMachine;
 /// map destination names to destination sid
 typedef std::map<std::string, NLMISC::CEntityId> TSIdMap;
 
-
 /**
  * CLogicState
  *
@@ -74,7 +73,7 @@ public:
 	CLogicStateMachine * _LogicStateMachine;
 
 	/// messages to send by the service
-	CHashMultiMap<NLMISC::CEntityId, NLNET::CMessage, NLMISC::CEntityIdHashMapTraits> _MessagesToSend;
+	std::multimap<NLMISC::CEntityId, NLNET::CMessage> _MessagesToSend;
 	
 public:
 
@@ -128,7 +127,7 @@ public:
 	 *
 	  * \param msgs is the map associating all the message to send with their destination id
 	 */
-	void getMessagesToSend( CHashMultiMap<NLMISC::CEntityId,NLNET::CMessage,NLMISC::CEntityIdHashMapTraits>& msgs );
+	void getMessagesToSend( std::multimap<NLMISC::CEntityId,NLNET::CMessage>& msgs );
 
 	/**
 	 * send the entry messages
@@ -154,7 +153,7 @@ public:
 	 * Fill a map associating all the referenced var in the state with the id of service managing them
 	 * (debug purpose)
 	 */
-	void fillVarMap( CHashMultiMap<NLMISC::CEntityId,std::string,NLMISC::CEntityIdHashMapTraits>& stateMachineVariables );
+	void fillVarMap( std::multimap<NLMISC::CEntityId,std::string >& stateMachineVariables );
 
 	/**
 	 * serial

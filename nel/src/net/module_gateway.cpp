@@ -891,7 +891,7 @@ namespace NLNET
 			H_AUTO(CModuleGetaway_onReceiveModuleUpdate);
 			while (uint32(msgin.getPos()) != msgin.length())
 			{
-				CGatewayRoute::TPendingEventType type;
+				CGatewayRoute::TPendingEventType type = CGatewayRoute::pet_disclose_module;
 //				msgin.serialShortEnum(type);
 				nlRead(msgin, serialShortEnum, type);
 

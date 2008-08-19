@@ -29,9 +29,11 @@
 #include "nel/net/net_log.h"
 
 #ifdef NL_OS_WINDOWS
-#	define SD_RECEIVE      0x00
-#	define SD_SEND         0x01
-#	define SD_BOTH         0x02
+#	if defined(NL_COMP_VC7) || defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
+#		include <winsock2.h>
+#	endif
+#	define NOMINMAX
+#	include <windows.h>
 #	define socklen_t int
 #	define ERROR_NUM WSAGetLastError()
 #elif defined NL_OS_UNIX
@@ -106,7 +108,7 @@ void CTcpSock::disconnect()
 {
 	LNETL0_DEBUG( "LNETL0: Socket %d disconnecting from %s...", _Sock, _RemoteAddr.asString().c_str() );
 
-	// This shutdown resets the connection immediatly (not a graceful closure)
+	// This shutdown resets the connection immediately (not a graceful closure)
 #ifdef NL_OS_WINDOWS
 	::shutdown( _Sock, SD_BOTH );
 #elif defined NL_OS_UNIX

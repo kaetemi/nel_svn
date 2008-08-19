@@ -72,7 +72,7 @@ public:
 	 * event has reached the front of the receive queue, just before calling the disconnection callback
 	 * if there is one)
 	 */
-	virtual bool	connected () const { checkThreadId (); return CBufClient::connected (); } 
+	virtual bool	connected () const { return CBufClient::connected (); } 
 
 	virtual const CInetAddress&	hostAddress( TSockId hostid ) { return remoteAddress(); }
 
@@ -83,7 +83,7 @@ public:
 	void	disconnect (TSockId hostid = InvalidSockId);
 
 	/// Sets callback for disconnections (or NULL to disable callback)
-	void	setDisconnectionCallback (TNetCallback cb, void *arg) { checkThreadId (); CCallbackNetBase::setDisconnectionCallback (cb, arg); }
+	void	setDisconnectionCallback (TNetCallback cb, void *arg) { CCallbackNetBase::setDisconnectionCallback (cb, arg); }
 
 	/// Returns the sockid
 	virtual TSockId	getSockId (TSockId hostid = InvalidSockId);

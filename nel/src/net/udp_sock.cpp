@@ -29,8 +29,13 @@
 #include "nel/net/net_log.h"
 
 #ifdef NL_OS_WINDOWS
+#	if defined(NL_COMP_VC7) || defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
+#		include <winsock2.h>
+#	endif
+#	define NOMINMAX
+#	include <windows.h>
 #	define socklen_t int
-#	define SO_MAX_MSG_SIZE   0x2003      /* maximum message size */
+#	define ERROR_NUM WSAGetLastError()
 #elif defined NL_OS_UNIX
 #	include <unistd.h>
 #	include <sys/types.h>

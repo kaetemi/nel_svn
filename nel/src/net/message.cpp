@@ -200,13 +200,6 @@ void CMessage::setType (const std::string &name, TMessageType type)
 		bool msgmode = _StringMode;
 		_StringMode = false;
 
-		// debug features, we number all packet to be sure that they are all sent and received
-		// \todo remove this debug feature when ok
-		// this value will be fill after in the callback function
-		uint32 zeroValue = 123;
-		serial (zeroValue);
-
-
 		TFormat format;
 		format.LongFormat = FormatLong;
 		format.StringMode = msgmode;
@@ -257,15 +250,8 @@ void CMessage::readType ()
 {
 	nlassert (isReading ());
 
-	// debug features, we number all packet to be sure that they are all sent and received
-	// \todo remove this debug feature when ok
-
 	// we remove the message from the message
 	resetSubMessageInternals();
-	const uint HeaderSize = 4;
-	seek (HeaderSize, begin);
-//		uint32 zeroValue;
-//		serial (zeroValue);
 
 	// Force binary mode for header
 	_StringMode = false;
@@ -291,9 +277,6 @@ void CMessage::readType ()
 std::string CMessage::readTypeAtCurrentPos() const
 {
 	nlassert( isReading() );
-
-	const uint HeaderSize = 4;
-	seek( HeaderSize, current );
 
 	bool sm = _StringMode;
 	_StringMode = false;
