@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 #include <set>
-#include <hash_set>
 #include <algorithm>
 //#include <sstream>
 #include <exception>

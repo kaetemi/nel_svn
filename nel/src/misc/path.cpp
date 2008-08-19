@@ -27,7 +27,6 @@
 #include "stdmisc.h"
 
 #include <fstream>
-#include <hash_set>
 
 #include "nel/misc/big_file.h"
 #include "nel/misc/path.h"
