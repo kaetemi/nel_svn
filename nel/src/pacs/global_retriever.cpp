@@ -880,7 +880,7 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 	// open and close lists
 	// TODO: Use a smart allocator to avoid huge alloc/free and memory fragmentation
 	// open is a priority queue (implemented as a stl multimap)
-	CHashMultiMap<float, CRetrieverInstance::CAStarNodeAccess>	open;
+	multimap<float, CRetrieverInstance::CAStarNodeAccess>	open;
 	// close is a simple stl vector
 	vector<CRetrieverInstance::CAStarNodeAccess>			close;
 
@@ -922,7 +922,7 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 			return;
 		}
 
-		CHashMultiMap<float, CRetrieverInstance::CAStarNodeAccess>::iterator	it;
+		multimap<float, CRetrieverInstance::CAStarNodeAccess>::iterator	it;
 
 		it = open.begin();
 		node = it->second;
@@ -1047,7 +1047,7 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 			if (closeIt != close.end() && nextInfo.F < nextF)
 				continue;
 			
-			CHashMultiMap<float, CRetrieverInstance::CAStarNodeAccess>::iterator	openIt;
+			multimap<float, CRetrieverInstance::CAStarNodeAccess>::iterator	openIt;
 			for (openIt=open.begin(); openIt!=open.end() && openIt->second!=nextNode; ++openIt)
 				;
 

@@ -403,7 +403,7 @@ public:
 	template<class K, class T, class H>
 	void			serialCont(CHashMap<K, T, H> &cont) 			{serialMap(cont);}
 	template<class K, class T>
-	void			serialCont(CHashMultiMap<K, T> &cont) 	{serialMultimap(cont);}
+	void			serialCont(std::multimap<K, T> &cont) 	{serialMultimap(cont);}
 
 	/** \name standard STL containers serialisation.
 	 * Thse variants suppose contained type is a NeL smart pointer.

@@ -136,8 +136,8 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 	}
 
 	// *** Build the edge set
-	CHashMultiMap<uint, uint>	edgePair;
-	CHashMultiMap<uint, uint>	edgePairReverse;
+	multimap<uint, uint>	edgePair;
+	multimap<uint, uint>	edgePairReverse;
 
 	// Index count
 	uint edgeCount = indexes.size();
@@ -238,7 +238,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 
 	// Build the linked segments
 	list<list<uint> >	segmentList;
-	CHashMultiMap<uint, uint>::iterator currentVert = edgePair.begin();
+	multimap<uint, uint>::iterator currentVert = edgePair.begin();
 
 	// For each remaining segment
 	while (currentVert != edgePair.end())

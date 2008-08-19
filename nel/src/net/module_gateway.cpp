@@ -274,7 +274,7 @@ namespace NLNET
 			TStringId		ModuleClassId;
 		};
 
-		typedef CHashMultiMap<TStringId, TKnownModuleInfo>	TKnownModuleInfos;
+		typedef multimap<TStringId, TKnownModuleInfo>	TKnownModuleInfos;
 		/** List of known foreign module info.
 		 */
 		TKnownModuleInfos	_KnownModules;
