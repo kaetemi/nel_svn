@@ -65,7 +65,7 @@ public:
 
 /**
  * Class to be used as a hash traits for a hash_map accessed by CClassId
- * Ex: hash_map< CClassId, CMyData, CClassIdHashMapTraits> _MyHashMap;
+ * Ex: CHashMap< CClassId, CMyData, CClassIdHashMapTraits> _MyHashMap;
  */
 class CClassIdHashMapTraits
 {

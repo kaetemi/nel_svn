@@ -37,7 +37,6 @@
 #include	<list>
 #include	<set>
 #include	<map>
-#include	<hash_map>
 
 namespace	NLMISC
 {

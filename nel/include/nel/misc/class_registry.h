@@ -31,8 +31,6 @@
 #include	<typeinfo>
 #include	<string>
 #include	<set>
-#include	<hash_map>
-
 
 namespace	NLMISC
 {
