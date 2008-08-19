@@ -199,6 +199,37 @@ public:
 		}
 	}
 	
+	template <class T> void propertyVector (const std::string &name, TProp type, std::vector<T> &value)
+	{
+		if (Mode == 2)			// write
+		{
+			// send only if needed
+			// todo manage unknown prop
+			TempMessage.serialCont (value);
+		}
+		else if (Mode == 3)	// register
+		{
+			// add a new prop to the current class
+			nlassert (TempRegisteredClass.Instance != NULL);
+			TempRegisteredClass.Instance->Prop.push_back (new CRegisteredPropCont<std::vector<T> > (name, type, &value));
+		}
+		else if (Mode == 4)	// display
+		{
+			typedef typename std::vector<T>::iterator __iterator;
+			std::string val;
+			for (__iterator it = value.begin (); it != value.end(); it++)
+			{
+				val += NLMISC::toString (T(*it));
+				val += " ";
+			}
+			NETTC_DEBUG ("NETTC:   prop %s %d: %d elements ( %s)", name.c_str(), type, value.size(), val.c_str());
+		}
+		else
+		{
+			nlstop;
+		}
+	}
+
 	template <class T> void propertyCont (const std::string &name, TProp type, T &value)
 	{
 		if (Mode == 2)			// write
