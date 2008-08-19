@@ -29,7 +29,6 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/command.h"
 
-#include <hash_map>
 #include <vector>
 
 #include "nel/misc/time_nl.h"
