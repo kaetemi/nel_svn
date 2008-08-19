@@ -49,15 +49,7 @@ public:
 
 	ucstring (const std::string &str) : ucstringbase ()
 	{
-		// We need to convert the char into 8bits unsigned int before promotion to 16 bits
-		// otherwise, as char are signed on some compiler (MSCV for ex), the sign bit is extended to 16 bits.
-		resize(str.size());
-		std::string::const_iterator first(str.begin()), last(str.end());
-		iterator dest(begin());
-		for (;first != last; ++first, ++dest)
-		{
-			*dest = uint8(*first);
-		}
+		rawCopy(str);
 	}
 
 	~ucstring () {}
@@ -72,7 +64,7 @@ public:
 	ucstring &operator= (const char *str)
 	{
 		resize (strlen (str));
-		for (sint i = 0; i < (sint) strlen (str); i++)
+		for (uint i = 0; i < strlen (str); i++)
 		{
 			operator[](i) = uint8(str[i]);
 		}
@@ -82,7 +74,7 @@ public:
 	ucstring &operator= (const std::string &str)
 	{
 		resize (str.size ());
-		for (sint i = 0; i < (sint) str.size (); i++)
+		for (uint i = 0; i < str.size (); i++)
 		{
 			operator[](i) = uint8(str[i]);
 		}
@@ -109,7 +101,7 @@ public:
 
 	ucstring &operator+= (const char *str)
 	{
-		uint s = size();
+		size_t s = size();
 		resize (s + strlen(str));
 		for (uint i = 0; i < strlen(str); i++)
 		{
@@ -120,7 +112,7 @@ public:
 
 	ucstring &operator+= (const std::string &str)
 	{
-		uint s = size();
+		size_t s = size();
 		resize (s + str.size());
 		for (uint i = 0; i < str.size(); i++)
 		{
@@ -146,7 +138,7 @@ public:
 	void toString (std::string &str) const
 	{
 		str.resize (size ());
-		for (sint i = 0; i < (sint) str.size (); i++)
+		for (uint i = 0; i < str.size (); i++)
 		{
 			if (operator[](i) > 255)
 				str[i] = '?';
@@ -251,7 +243,9 @@ public:
 			}
 			else if ((code & 0x80) == 0x80)
 			{
-				nlwarning ("UCS: Invalid UTF-8 character");
+				// If it's not a valid UTF8 string, just copy the line without utf8 conversion
+				rawCopy(stringUtf8);
+				return;
 			}
 			else
 			{
@@ -265,7 +259,8 @@ public:
 				{
 					if (first == last)
 					{
-						nlwarning ("UCS: Invalid UTF-8 character");
+						// If it's not a valid UTF8 string, just copy the line without utf8 conversion
+						rawCopy(stringUtf8);
 						return;
 					}
 
@@ -274,9 +269,9 @@ public:
 
 					if ((ch & 0xC0) != 0x80)
 					{
-						nlwarning ("UCS: Invalid UTF-8 character");
-						code = '?';
-						break;
+						// If it's not a valid UTF8 string, just copy the line without utf8 conversion
+						rawCopy(stringUtf8);
+						return;
 					}
 
 					code <<= 6;
@@ -293,6 +288,21 @@ public:
 		ret.fromUtf8(stringUtf8);
 
 		return ret;
+	}
+
+private:
+
+	void rawCopy(const std::string &str)
+	{
+		// We need to convert the char into 8bits unsigned int before promotion to 16 bits
+		// otherwise, as char are signed on some compiler (MSCV for ex), the sign bit is extended to 16 bits.
+		resize(str.size());
+		std::string::const_iterator first(str.begin()), last(str.end());
+		iterator dest(begin());
+		for (;first != last; ++first, ++dest)
+		{
+			*dest = uint8(*first);
+		}
 	}
 };
 

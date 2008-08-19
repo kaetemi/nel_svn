@@ -49,7 +49,7 @@
 #endif // HAVE_NELCONFIG_H
 
 #ifdef FINAL_VERSION
-	// If the FINAL_VERSION is defined externaly, check that the value is 0 or 1
+	// If the FINAL_VERSION is defined externally, check that the value is 0 or 1
 #	if FINAL_VERSION != 1 && FINAL_VERSION != 0
 #		error "Bad value for FINAL_VERSION, it must be 0 or 1"
 #	endif
@@ -102,14 +102,28 @@
 #			define NL_RELEASE
 #		endif
 #	endif
+	// define NOMINMAX to be sure that windows includes will not define min max macros, but instead, use the stl template
+#	define NOMINMAX
 #else
+#	ifdef __APPLE__
+#		define NL_OS_MAC
+#		ifdef __BIG_ENDIAN__
+#			define NL_BIG_ENDIAN
+#		elif defined(__LITTLE_ENDIAN__)
+#			define NL_LITTLE_ENDIAN
+#		else
+#			error "Cannot detect the endianness of this Mac"
+#		endif
+#	else
+#		ifdef WORDS_BIGENDIAN
+#			define NL_BIG_ENDIAN
+#		else
+#			define NL_LITTLE_ENDIAN
+#		endif
+#	endif
+// these define are set the linux and mac os
 #	define NL_OS_UNIX
 #	define NL_COMP_GCC
-#	ifdef WORDS_BIGENDIAN
-#		define NL_BIG_ENDIAN
-#	else
-#		define NL_LITTLE_ENDIAN
-#	endif
 #endif
 
 // Mode checks: NL_DEBUG and NL_DEBUG_FAST are allowed at the same time, but not with any release mode
@@ -151,10 +165,10 @@
 #	pragma warning (disable : 4996)			// 'vsnprintf': This function or variable may be unsafe. Consider using vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 
 // Debug : Sept 01 2006
-#	ifdef NL_COMP_VC8
-#		pragma warning (disable : 4005)			// don't warn on redefenitions caused by xp platform sdk
+#	if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
+#		pragma warning (disable : 4005)			// don't warn on redefinitions caused by xp platform sdk
 #		pragma warning (disable : 4996)			// don't warn for deprecated function (sprintf, sscanf in VS8)
-#	endif // NL_COMP_VC8 
+#	endif // NL_COMP_VC8 || NL_COMP_VC9 
 #endif // NL_OS_WINDOWS
 
 
@@ -229,17 +243,17 @@
 
 /**
  * \typedef uint
- * An unsigned integer, at least 32 bits (used only for interal loops or speedy purpose, processor dependant)
+ * An unsigned integer, at least 32 bits (used only for internal loops or speedy purpose, processor dependent)
  **/
 
 /**
  * \typedef sint
- * An signed integer at least 32 bits (used only for interal loops or speedy purpose, processor dependant)
+ * An signed integer at least 32 bits (used only for internal loops or speedy purpose, processor dependent)
  */
 
 /**
  * \def NL_I64
- * Used to display a int64 in a platform independant way with printf like functions.
+ * Used to display a int64 in a platform independent way with printf like functions.
  \code
  sint64 myint64 = SINT64_CONSTANT(0x123456781234);
  printf("This is a 64 bits int: %"NL_I64"u", myint64);
@@ -291,7 +305,7 @@ typedef	u_int32_t	uint32;
 typedef	long long int		sint64;
 typedef	unsigned long long int	uint64;
 
-typedef			int			sint;			// at least 32bits (depend of processor)
+typedef				int			sint;			// at least 32bits (depend of processor)
 typedef	unsigned	int			uint;			// at least 32bits (depend of processor)
 
 #define	NL_I64 "ll"
@@ -338,7 +352,7 @@ template<> struct hash<uint64>
 
 /**
  * \typedef ucchar
- * An unicode character (16 bits)
+ * An Unicode character (16 bits)
  */
 typedef	uint16	ucchar;
 
@@ -360,19 +374,7 @@ typedef	uint16	ucchar;
 #  define UINT64_CONSTANT(c)	(c##ULL)
 #endif
 
-#if (_MSC_VER >= 1200) && (_MSC_VER < 1400) && (WINVER < 0x0500)
-//Using VC7 and later lib, need this to compile on VC6
-extern "C" long _ftol( double ); //defined by VC6 C libs
-extern "C" long _ftol2( double dblSource );
-#endif
-
-// Fake "for" to be conform with ANSI "for scope" on Windows compiler older than Visual Studio 8
-// On Visual Studio 8, the for is conform with ANSI, no need to define this macro in this case
-#if defined(NL_OS_WINDOWS) && !defined(NL_EXTENDED_FOR_SCOPE) && !defined(NL_COMP_VC8)
-#  define for if(false) {} else for
-#endif
-
-// Define a macro to write template function according to compiler weaknes
+// Define a macro to write template function according to compiler weakness
 #ifdef NL_COMP_NEED_PARAM_ON_METHOD
  #define NL_TMPL_PARAM_ON_METHOD_1(p1)	<p1>
  #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	<p1, p2>
@@ -381,10 +383,9 @@ extern "C" long _ftol2( double dblSource );
  #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	
 #endif
 
-
 /**
- * Force the use of NeL memory manager
- */
+* Force the use of NeL memory manager
+*/
 #include "../memory/memory_manager.h"
 
 #endif // NL_TYPES_H

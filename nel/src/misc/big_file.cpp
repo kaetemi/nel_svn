@@ -287,11 +287,6 @@ void CBigFile::remove (const std::string &sBigFileName)
 	{
 		map<string, BNP>::iterator it = _BNPs.find (sBigFileName);
 		BNP &rbnp = it->second;
-		/* \todo yoyo: THERE is a MAJOR drawback here: Only the FILE * of the current (surely main) thread
-			is closed. other FILE* in other threads are still opened. This is not a big issue (system close the FILE* 
-			at the end of the process) and this is important so AsyncLoading of a currentTask can end up correclty 
-			(without an intermediate fclose()).
-		*/
 		// Get a ThreadSafe handle on the file
 		CHandleFile		&handle= _ThreadFileArray.get(rbnp.ThreadFileId);
 		// close it if needed
@@ -300,8 +295,6 @@ void CBigFile::remove (const std::string &sBigFileName)
 			fclose (handle.File);
 			handle.File= NULL;
 		}
-		/* \todo trap : can make the CPath crash. CPath must be informed that the files in bigfiles have been removed
-			this is because CPath use memory of CBigFile if it runs in memoryCompressed mode */
 		delete [] rbnp.FileNames;
 		_BNPs.erase (it);
 	}
@@ -344,7 +337,7 @@ void CBigFile::removeAll ()
 bool CBigFile::getFileInternal (const std::string &sFileName, BNP *&zeBnp, BNPFile *&zeBnpFile)
 {
 	string zeFileName, zeBigFileName, lwrFileName = toLower(sFileName);
-	uint32 i, nPos = sFileName.find ('@');
+	string::size_type i, nPos = sFileName.find ('@');
 	if (nPos == string::npos)
 	{
 		return false;
@@ -372,7 +365,7 @@ bool CBigFile::getFileInternal (const std::string &sFileName, BNP *&zeBnp, BNPFi
 	BNPFile temp_bnp_file;
 	temp_bnp_file.Name = (char*)zeFileName.c_str();
 	itNBPFile = lower_bound(rbnp.Files.begin(), rbnp.Files.end(), temp_bnp_file, CBNPFileComp());
-
+	
 	if (itNBPFile != rbnp.Files.end())
 	{
 		if (strcmp(itNBPFile->Name, zeFileName.c_str()) != 0)

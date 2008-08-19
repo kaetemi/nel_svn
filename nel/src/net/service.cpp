@@ -1557,7 +1557,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		//
 
 		std::vector<std::string> namesOfOnlyServiceToFlushSendingV;
-		explode( NamesOfOnlyServiceToFlushSending, ":", namesOfOnlyServiceToFlushSendingV, true );
+		explode( NamesOfOnlyServiceToFlushSending.get(), string(":"), namesOfOnlyServiceToFlushSendingV, true );
 		CUnifiedNetwork::getInstance()->release (FlushSendingQueuesOnExit.get(), namesOfOnlyServiceToFlushSendingV);
 
 		// warn the module layer that the application is about to close

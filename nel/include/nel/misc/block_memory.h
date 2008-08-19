@@ -120,10 +120,7 @@ public:
 		
 		// construct the allocated element.
 		if( __ctor_dtor__ )
-#undef new
 			new (ret) T;
-#define new NL_NEW
-
 
 		// some simple Check.
 #ifdef NL_DEBUG

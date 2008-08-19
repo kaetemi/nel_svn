@@ -1,11 +1,6 @@
 /** \file stream_inline.h
  * This File Declares inline for stream.h CRegistry and CBaseStream 
  *
- * \todo yoyo: passer les serial en virtual, et optimiser l'ecriture en NeedSwap. => implementer les 
- * serial virtual dans les classes dérivées. => pour optimiser, fodra pitet virer setInOut(), utile pour CMessage
- * Pkoi? : pour optimiser la lecture/ecriture (plus de if du tout). Plus rapide pour olivier de faire des copies
- * de messages (brut) que de se taper un if dans le CMessage.
- *
  * $Id: stream_inline.h,v 1.30 2005/08/19 15:30:04 cado Exp $
  */
 
@@ -289,7 +284,7 @@ inline	void		IStream::serial(std::string &b)
 	}
 	else
 	{
-		len= b.size();
+		len= uint32(b.size());
 		if (len>1000000)
 			throw NLMISC::EInvalidDataStream( "IStream: Trying to write a string of %u bytes", len );
 		serial(len);
@@ -322,7 +317,7 @@ inline	void		IStream::serial(ucstring &b)
 	}
 	else
 	{
-		len= b.size();
+		len= uint32(b.size());
 		if (len>1000000)
 			throw NLMISC::EInvalidDataStream( "IStream: Trying to write an ucstring of %u bytes", len );
 		serial(len);

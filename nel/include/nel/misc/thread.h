@@ -157,6 +157,7 @@ struct EThread : public Exception
 class IProcess
 {
 public:
+	virtual ~IProcess() {};
 
 	/** 
 	  * Return a pointer on the current process.

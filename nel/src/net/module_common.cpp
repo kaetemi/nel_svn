@@ -194,7 +194,7 @@ namespace NLNET
 	const TParsedCommandLine *TParsedCommandLine::getParam(const std::string &name) const
 	{
 		vector<string>	parts;
-		NLMISC::explode(name, ".", parts);
+		NLMISC::explode(name, string("."), parts);
 
 		return _getParam(parts.begin(), parts.end());
 	}
@@ -202,7 +202,7 @@ namespace NLNET
 	void TParsedCommandLine::setParam(const std::string &name, const std::string &value)
 	{
 		vector<string>	parts;
-		NLMISC::explode(name, ".", parts);
+		NLMISC::explode(name, string("."), parts);
 
 		if (name.size() > 0)
 		{

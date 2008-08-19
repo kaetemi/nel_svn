@@ -31,11 +31,10 @@
 #include <vector>
 
 #ifdef NL_OS_WINDOWS
-#include <windows.h>
-#undef max
-#undef min
+#	define NOMINMAX
+#	include <windows.h>
 #else
-#include <dlfcn.h>
+#	include <dlfcn.h>
 #endif
 
 namespace NLMISC 
@@ -248,7 +247,7 @@ public:
 
 #define NLMISC_DECL_PURE_LIB(className)			\
 	className	_PureLibraryEntryInstance;	\
-	NL_LIB_EXPORT_SYMBOL( NLMISC_PURE_LIB_ENTRY_POINT, INelLibrary, &_PureLibraryEntryInstance)
+	NL_LIB_EXPORT_SYMBOL( NLMISC_PURE_LIB_ENTRY_POINT, NLMISC::INelLibrary, &_PureLibraryEntryInstance)
 
 } // NLMISC
 

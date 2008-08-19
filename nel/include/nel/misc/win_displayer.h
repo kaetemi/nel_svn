@@ -31,9 +31,8 @@
 #ifdef NL_OS_WINDOWS
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+#define NOMINMAX
 #include <windows.h>
-#undef min
-#undef max
 
 #include "displayer.h"
 #include "reader_writer.h"

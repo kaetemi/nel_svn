@@ -49,6 +49,10 @@ using namespace std;
 #define PNG_COLOR_TYPE_GA  PNG_COLOR_TYPE_GRAY_ALPHA
 #define PNG_INFO_tRNS 0x0010
 
+#define PNG_INTERLACE_NONE        0 /* Non-interlaced image */
+#define PNG_COMPRESSION_TYPE_BASE 0 /* Deflate method 8, 32K window */
+#define PNG_FILTER_TYPE_BASE      0 /* Single row per-byte filtering */
+
 typedef struct png_info_struct
 {
    /* the following are necessary for every PNG file */
@@ -73,6 +77,15 @@ struct png_struct
    void *read_data_fn;   /* function for reading input data */
    void *io_ptr;          /* ptr to application struct for I/O functions */
 };
+
+typedef struct png_color_8_struct
+{
+   uint8 red;   /* for use in red green blue files */
+   uint8 green;
+   uint8 blue;
+   uint8 gray;  /* for use in grayscale files */
+   uint8 alpha; /* for alpha channel files */
+} png_color_8;
 
 namespace NLMISC
 {
@@ -396,7 +409,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 
 
-	//set the read functiun
+	//set the read function
 	png_set_read_fn(png_ptr, (void*)&f, readPNGData);
 
 
@@ -598,6 +611,294 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 }
 
 /*-------------------------------------------------------------------*\
+							writePNG
+\*-------------------------------------------------------------------*/
+bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
+{
+	if(f.isReading()) return false;
+
+	if (d==0)
+	{
+		switch (PixelFormat)
+		{
+		case RGBA:
+			d = 32;
+			break;
+		case Luminance:
+			d = 8;
+			break;
+		case Alpha:
+			d = 8;
+			break;
+		default:
+			;
+		}
+	}
+
+	if (d!=24 && d!=32) return false;
+	if ((PixelFormat != RGBA)&&(PixelFormat != Alpha)&&(PixelFormat != Luminance)) return false;
+	if ((PixelFormat == Alpha) && (d != 8)) return false;
+	if ((PixelFormat == Luminance) && (d != 8)) return false;
+
+	png_struct *png_ptr = NULL;
+	png_info *info_ptr = NULL;
+
+	CLibrary fctLoader("libpng13.dll", false, false);
+
+	///////////////////////////
+
+	BOOL (* png_create_write_struct) (const char *user_png_ver, 
+											void *error_ptr,
+											void *error_fn, 
+											void *warn_fn)		
+	=NULL;
+	*(FARPROC*)&png_create_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_write_struct"));
+	if(!png_create_write_struct)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_create_write_struct'");
+		return 0;
+	}
+
+	///////////////////////////
+		
+	BOOL (* png_create_info_struct)(png_struct *png_ptr)=NULL;
+	*(FARPROC*)&png_create_info_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_info_struct"));
+	if(!png_create_info_struct)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_create_info_struct'");
+		return 0;
+	}
+
+	///////////////////////////
+	
+	BOOL (* png_destroy_write_struct) (png_struct **png_ptr_ptr, 
+											png_info **info_ptr_ptr)
+	=NULL;
+	*(FARPROC*)&png_destroy_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_destroy_write_struct"));
+	if(!png_destroy_write_struct)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_destroy_write_struct'");
+		return 0;
+	}
+
+	///////////////////////////
+	
+	BOOL (* png_write_info) (png_struct *png_ptr, 
+							 png_info *info_ptr)
+	=NULL;
+	*(FARPROC*)&png_write_info=(FARPROC)fctLoader.getSymbolAddress(string("png_write_info"));
+	if(!png_write_info)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_write_info'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_set_write_fn) ( png_struct *png_ptr,
+								void *io_ptr, 
+								void *write_data_fn,
+								void *output_flush_fn)
+	=NULL;
+	*(FARPROC*)&png_set_write_fn=(FARPROC)fctLoader.getSymbolAddress(string("png_set_write_fn"));
+	if(!png_set_write_fn)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_set_write_fn'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_set_IHDR)    (  png_struct *png_ptr,
+								png_info *info_ptr, 
+								uint32 width, 
+								uint32 height,
+								int bit_depth, 
+								int color_type, 
+								int interlace_method,
+								int compression_method, 
+								int filter_method)
+	=NULL;
+	
+	*(FARPROC*)&png_set_IHDR=(FARPROC)fctLoader.getSymbolAddress(string("png_set_IHDR"));
+	if(!png_set_IHDR)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_set_IHDR'");
+		return 0;
+	}
+
+	///////////////////////////
+	
+
+	BOOL (* png_write_end)   (  png_struct *png_ptr,
+								png_info *info_ptr)
+	=NULL;
+	*(FARPROC*)&png_write_end=(FARPROC)fctLoader.getSymbolAddress(string("png_write_end"));
+	if(!png_write_end)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_write_end'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_set_sBIT)   (  png_struct *png_ptr,
+								png_info *info_ptr,
+								png_color_8 *sig_bit)
+	=NULL;
+	*(FARPROC*)&png_set_sBIT=(FARPROC)fctLoader.getSymbolAddress(string("png_set_sBIT"));
+	if(!png_set_sBIT)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_set_sBIT'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_set_shift)   (  png_struct *png_ptr,
+								png_color_8 *sig_bit)
+	=NULL;
+	*(FARPROC*)&png_set_shift=(FARPROC)fctLoader.getSymbolAddress(string("png_set_shift"));
+	if(!png_set_shift)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_set_shift'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_set_packing) (  png_struct *png_ptr)
+	=NULL;
+	*(FARPROC*)&png_set_packing=(FARPROC)fctLoader.getSymbolAddress(string("png_set_packing"));
+	if(!png_set_packing)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_set_packing'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	BOOL (* png_write_rows) (  png_struct *png_ptr,
+								uint8 **row,
+								uint32 num_rows)
+	=NULL;
+	*(FARPROC*)&png_write_rows=(FARPROC)fctLoader.getSymbolAddress(string("png_write_rows"));
+	if(!png_write_rows)
+	{
+		nlwarning("CBitmap::writePNG : can't find function 'png_write_rows'");
+		return 0;
+	}
+
+	///////////////////////////
+
+	png_ptr = (png_struct*)png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, setPNGError, setPNGWarning);
+
+	if (!png_ptr)
+	{
+		nlwarning("CBitmap::writePNG : Couldn't save PNG image.");
+		return false;
+	}
+
+	info_ptr = (png_info_struct*)png_create_info_struct(png_ptr);
+
+	if (info_ptr == NULL)
+	{
+		png_destroy_write_struct( &png_ptr, (png_info**)NULL );
+		nlwarning("CBitmap::writePNG : Couldn't save PNG image.");
+		return false;
+	}
+
+	if (setjmp(png_ptr->jmpbuf))
+	{
+		png_destroy_write_struct( &png_ptr, (png_info**)NULL );
+		nlwarning("CBitmap::writePNG : Couldn't save PNG image.");
+		return false;
+	}
+
+	//set the write functiun
+	png_set_write_fn(png_ptr, (void*)&f, writePNGData, NULL);
+
+	const int iColorType = (d == 32) ? PNG_COLOR_TYPE_RGBA:PNG_COLOR_TYPE_RGB; // only RGBA and RGB color type is implemented
+	const int iBitDepth = 8; // we don't have to implement 16bits formats because NeL only uses 8bits
+
+	png_set_IHDR(png_ptr, info_ptr, _Width, _Height, iBitDepth, iColorType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
+	int iElements;
+	png_color_8 sig_bit;
+
+	if (iColorType & PNG_COLOR_MASK_COLOR)
+	{
+		sig_bit.red = sig_bit.green = sig_bit.blue = (uint8)iBitDepth;
+		iElements = 3;
+	}
+	else // grey
+	{
+		sig_bit.gray = (uint8)iBitDepth;
+		iElements = 1;
+	}
+
+	if (iColorType & PNG_COLOR_MASK_ALPHA)
+	{
+		sig_bit.alpha = (uint8)iBitDepth;
+		++iElements;
+	}
+
+	png_set_sBIT( png_ptr, info_ptr, &sig_bit );
+	png_write_info( png_ptr, info_ptr );
+	png_set_shift( png_ptr, &sig_bit );
+	png_set_packing( png_ptr );
+
+	uint8 *scanline = NULL;
+
+	int iHeight = _Height;
+	int iWidth = _Width;
+
+	if ((PixelFormat == Alpha)||(PixelFormat == Luminance))
+	{
+		scanline = new uint8[iWidth];
+	}
+	else
+	{
+		scanline = new uint8[iWidth*4];
+	}
+
+	if(!scanline)
+	{
+		png_destroy_write_struct( &png_ptr, (png_info**)NULL );
+		nlwarning("CBitmap::writePNG : Couldn't save PNG image.");
+		return false;
+	}
+
+	sint32 y, j, i;
+
+	for(y=0; y<(sint32)iHeight; ++y)
+	{
+		uint32 k=0;
+
+		for(i=0; i<iWidth*4; i+=4)
+		{
+			for(j=0; j<(sint32)d/8; ++j)
+			{
+				scanline[k++] = _Data[0][y*iWidth*4 + i + j];
+			}
+		}
+
+		png_write_rows(png_ptr, (uint8**)&scanline, 1);
+	}
+
+	delete [] scanline;
+
+	png_write_end(png_ptr, info_ptr);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+
+	return true;
+}
+
+#ifdef NL_OS_WINDOWS
+#pragma managed(pop)
+#endif
+
+/*-------------------------------------------------------------------*\
 								readPNGData		
 \*-------------------------------------------------------------------*/
 
@@ -605,6 +906,33 @@ void readPNGData(png_struct *png_ptr, char *data, uint length)
 {
 	((IStream*) png_ptr->io_ptr)->serialBuffer((uint8*)data,length);
 
+}
+
+/*-------------------------------------------------------------------*\
+								writePNGData		
+\*-------------------------------------------------------------------*/
+
+void writePNGData(png_struct *png_ptr, char *data, uint length)
+{
+	((IStream*) png_ptr->io_ptr)->serialBuffer((uint8*)data,length);
+
+}
+
+void setPNGWarning(png_struct *png_ptr, const char* message)
+{
+	nlwarning(message);
+}
+
+// from pngerror.c
+// so that the libpng doesn't send anything on stderr
+void setPNGError(png_struct *png_ptr, const char* message)
+{
+	setPNGWarning(NULL, message);
+
+    // we're not using libpng built-in jump buffer (see comment before
+    // wxPNGInfoStruct above) so we have to return ourselves, otherwise libpng
+    // would just abort
+	longjmp(png_ptr->jmpbuf, 1);
 }
 
 }//namespace

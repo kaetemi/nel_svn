@@ -456,6 +456,8 @@ public:
 	void			serialContPolyPtr(std::set<T> &cont) 			{serialSTLContPolyPtr(cont);}
 	template<class T>
 	void			serialContPolyPtr(std::multiset<T> &cont) 	{serialSTLContPolyPtr(cont);}
+	template<class K, class T>
+	void			serialContPolyPtr(std::map<K, T> &cont) 	{serialMapPolyPtr(cont);}
 
 
 	/** 
@@ -946,7 +948,7 @@ protected:
 	virtual uint			getDbgStreamSize() const {return 0;}
 
 	/**
-	 * Elementarly check at least n bytes can be serialised from this stream (or throw EStreamOverflow)
+	 * Elementarily check at least n bytes can be serialized from this stream (or throw EStreamOverflow)
 	 */
 	void				checkStreamSize(uint numBytes) const
 	{
@@ -978,20 +980,20 @@ private:
 	static	bool	_ThrowOnOlder;
 	static	bool	_ThrowOnNewer;
 
-	// Ptr registry. We store 64 bit Id, to be compatible with futur 64+ bits pointers.
+	// Ptr registry. We store 64 bit Id, to be compatible with future 64+ bits pointers.
 	uint32								_NextSerialPtrId;
 	CHashMap<uint64, void*>		_IdMap;
 	typedef CHashMap<uint64, void*>::iterator	ItIdMap;
 	typedef CHashMap<uint64, void*>::value_type	ValueIdMap;
 
-	// Ptr serialisation.
+	// Ptr serialization.
 	void			serialIStreamable(IStreamable* &ptr) ;
 
 
 
 private:
 	/**
-	 * standard STL containers serialisation. Don't work with map<> and multimap<>.
+	 * standard STL containers serialization. Don't work with map<> and multimap<>.
 	 * Support up to sint32 length containers. serialize just len  element of the container.
 	 */
 	template<class T>
@@ -1292,6 +1294,60 @@ private:
 		}
 	}
 
+	/**
+	 * Map serialisation. PolyPtr version
+	 * Support up to sint32 length containers. serialize just len  element of the container.
+	 */
+	template<class T>
+	void			serialMapContLenPolyPtr(T &cont, sint32 len) 
+	{
+		typedef typename T::key_type __key_type;
+		typedef typename T::data_type __data_type;
+		typedef typename T::iterator __iterator;
+
+		if(isReading())
+		{
+			// check stream holds enough bytes (avoid STL to crash on resize)
+			checkStreamSize(len);
+			// Close the node header
+			xmlPushEnd ();
+			
+			for(sint i=0;i<len;i++)
+			{
+				__key_type k;
+
+				xmlPush ("KEY");
+				serial ( k );
+				xmlPop ();
+
+				xmlPush ("ELM");
+				__data_type	v=NULL;
+				v.serialPolyPtr(*this);
+				cont[k] = v;
+				xmlPop ();
+			}
+		}
+		else
+		{
+			__iterator		it= cont.begin();
+
+			// Close the node header
+			xmlPushEnd ();
+
+			for(sint i=0;i<len;i++, it++)
+			{
+				xmlPush ("KEY");
+				serial( const_cast<__key_type&>((*it).first) );
+				xmlPop ();
+
+				xmlPush ("ELM");
+				__data_type	v= const_cast<__data_type&>(it->second);
+				v.serialPolyPtr(*this);
+				xmlPop ();
+			}
+		}
+	}
+
 
 	/**
 	 * standard STL containers serialisation. Don't work with map<> and multimap<>. PolyPtr version
@@ -1354,6 +1410,36 @@ private:
 		xmlPushEnd ();
 
 		serialSTLContLenPolyPtr(cont, len);
+
+		// Close the node
+		xmlPop ();
+	}
+
+	/**
+	 * special version for serializing a map. PolyPtr version
+	 * Support up to sint32 length containers.
+	 */
+	template<class K, class T>
+	void			serialMapPolyPtr(std::map<K, T> &cont) 
+	{
+		// Open a node header
+		xmlPushBegin ("MAP");
+		// Attrib size
+		xmlSetAttrib ("size");
+
+		sint32	len=0;
+		if(isReading())
+		{
+			serial(len);
+			cont.clear();
+		}
+		else
+		{
+			len= cont.size();
+			serial(len);
+		}
+
+		serialMapContLenPolyPtr(cont, len);
 
 		// Close the node
 		xmlPop ();

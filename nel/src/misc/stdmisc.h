@@ -1,23 +1,21 @@
 
 #include "nel/misc/types_nl.h"
 
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-
-#include <string>
-#include <vector>
-#include <list>
 #include <map>
 #include <set>
-#include <algorithm>
-//#include <sstream>
-#include <exception>
-#include <utility>
+#include <list>
+#include <cmath>
 #include <deque>
+#include <cstdio>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <utility>
+#include <algorithm>
+#include <exception>
 
-#include "nel/misc/mem_displayer.h"
-#include "nel/misc/common.h"
 #include "nel/misc/debug.h"
-#include "nel/misc/system_info.h"
+#include "nel/misc/common.h"
 #include "nel/misc/fast_mem.h"
+#include "nel/misc/system_info.h"
+#include "nel/misc/mem_displayer.h"

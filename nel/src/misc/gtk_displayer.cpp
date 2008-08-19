@@ -28,6 +28,8 @@
 #ifdef NL_USE_GTK
 
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
+//#include <gobject/gobject.h>
 #include <gdk/gdkkeysyms.h>
 
 #ifdef NL_OS_WINDOWS
@@ -61,7 +63,8 @@ static vector<string> CommandHistory;
 static uint32 CommandHistoryPos = 0;
 static CLog *Log = 0;
 	
-static GtkWidget *RootWindow = NULL, *OutputText = NULL, *InputText = NULL, *hrootbox = NULL;
+static GtkWidget *RootWindow = NULL, *OutputText = NULL, *InputText = NULL;
+static GtkWidget *hrootbox = NULL, *scrolled_win2 = NULL;
 
 //
 // Functions
@@ -97,7 +100,7 @@ gint ButtonClicked(GtkWidget *Widget, gpointer *Data)
 				nlassert (!access.value()[i].Value.empty());
 				nlassert (access.value()[i].Value[0] == '@');
 				
-				int pos = access.value()[i].Value.find ("|");
+				string::size_type pos = access.value()[i].Value.find ("|");
 				if (pos != string::npos)
 				{
 					str = access.value()[i].Value.substr(pos+1);
@@ -130,7 +133,7 @@ void CGtkDisplayer::updateLabels ()
 					n = access.value()[i].Value;
 				else
 				{
-					int pos = access.value()[i].Value.find ('|');
+					string::size_type pos = access.value()[i].Value.find ('|');
 					if (pos != string::npos)
 					{
 						n = access.value()[i].Value.substr (1, pos - 1);
@@ -149,8 +152,9 @@ void CGtkDisplayer::updateLabels ()
 						access.value()[i].Hwnd = gtk_button_new_with_label (n.c_str());
 						nlassert (access.value()[i].Hwnd != NULL);
 						gtk_signal_connect (GTK_OBJECT (access.value()[i].Hwnd), "clicked", GTK_SIGNAL_FUNC (ButtonClicked), (gpointer) this);
-						gtk_label_set_justify (GTK_LABEL (access.value()[i].Hwnd), GTK_JUSTIFY_LEFT);
-						gtk_label_set_line_wrap (GTK_LABEL (access.value()[i].Hwnd), FALSE);
+						GtkLabel *label = GTK_LABEL(gtk_bin_get_child(GTK_BIN(access.value()[i].Hwnd)));
+						gtk_label_set_justify (label, GTK_JUSTIFY_LEFT);
+						gtk_label_set_line_wrap (label, FALSE);
 						gtk_widget_show (GTK_WIDGET (access.value()[i].Hwnd));
 						gtk_box_pack_start (GTK_BOX (hrootbox), GTK_WIDGET (access.value()[i].Hwnd), TRUE, TRUE, 0);
 					}
@@ -186,11 +190,25 @@ gint KeyIn(GtkWidget *Widget, GdkEventKey *Event, gpointer *Data)
 {
 	switch (Event->keyval)
 	{
-	case GDK_Escape : gtk_entry_set_text (GTK_ENTRY(Widget), ""); break;
-	case GDK_Up : if (CommandHistoryPos > 0) { CommandHistoryPos--; gtk_entry_set_text (GTK_ENTRY(Widget), CommandHistory[CommandHistoryPos].c_str()); } break;
-	case GDK_Down : if (CommandHistoryPos + 1 < CommandHistory.size()) { CommandHistoryPos++; gtk_entry_set_text (GTK_ENTRY(Widget), CommandHistory[CommandHistoryPos].c_str()); } break;
-	case GDK_KP_Enter : gtk_signal_emit_by_name(GTK_OBJECT(Widget),"activate"); return FALSE; break;
-	default : return FALSE;
+	case GDK_Escape :
+		gtk_entry_set_text (GTK_ENTRY(Widget), "");
+		break;
+	case GDK_Up :
+		if (CommandHistoryPos > 0) {
+			CommandHistoryPos--;
+			gtk_entry_set_text (GTK_ENTRY(Widget), CommandHistory[CommandHistoryPos].c_str());
+		}
+		break;
+	case GDK_Down :
+		if (CommandHistoryPos + 1 < CommandHistory.size()) {
+			CommandHistoryPos++;
+			gtk_entry_set_text (GTK_ENTRY(Widget), CommandHistory[CommandHistoryPos].c_str());
+		}
+		break;
+	case GDK_KP_Enter :
+		gtk_signal_emit_by_name(GTK_OBJECT(Widget),"activate");
+	default :
+		return FALSE;
 	}
 	gtk_signal_emit_stop_by_name(GTK_OBJECT(Widget),"key_press_event");
 	return TRUE;
@@ -256,6 +274,7 @@ void CGtkDisplayer::setTitleBar (const string &titleBar)
 #endif
 	wn += "Nel Service Console (compiled " __DATE__ " " __TIME__ " in " + mode + " mode)";
 
+	nlassert (RootWindow != NULL);
 	gtk_window_set_title (GTK_WINDOW (RootWindow), wn.c_str());
 }
 
@@ -267,7 +286,7 @@ void CGtkDisplayer::open (std::string titleBar, bool iconified, sint x, sint y, 
 		w = 700;
 	if (h == -1)
 		h = 300;
-	if (hs = -1)
+	if (hs == -1)
 		hs = 10000;
 
 	gtk_init (NULL, NULL);
@@ -296,16 +315,25 @@ void CGtkDisplayer::open (std::string titleBar, bool iconified, sint x, sint y, 
 	gtk_box_pack_start (GTK_BOX (hrootbox), button, FALSE, FALSE, 0);
 */
 	// Output text
-	GtkWidget *scrolled_win2 = gtk_scrolled_window_new (NULL, NULL);
+	scrolled_win2 = gtk_scrolled_window_new (NULL, NULL);
 	nlassert (scrolled_win2 != NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win2), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_widget_show (scrolled_win2);
 	gtk_container_add (GTK_CONTAINER (vrootbox), scrolled_win2);
 
-	OutputText = gtk_text_new (NULL, NULL);
+	OutputText = gtk_text_view_new();
 	nlassert (OutputText != NULL);
+
+	PangoFontDescription *fontDesc = pango_font_description_from_string("Monospace 10");
+  	gtk_widget_modify_font(OutputText, fontDesc);
+  	pango_font_description_free(fontDesc);
+	
+	GtkTextBuffer *textBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
+	GtkTextIter endIter;
+	gtk_text_buffer_get_end_iter(textBuffer, &endIter);
+	gtk_text_buffer_create_mark(textBuffer, "endmark", &endIter, false);
 	gtk_signal_connect(GTK_OBJECT(OutputText),"key_press_event",GTK_SIGNAL_FUNC(KeyOut),NULL);
-	gtk_text_set_editable (GTK_TEXT (OutputText), FALSE);
+	gtk_text_view_set_editable (GTK_TEXT_VIEW(OutputText), FALSE);
 	gtk_container_add (GTK_CONTAINER (scrolled_win2), OutputText);
 
 	// Input text
@@ -330,11 +358,13 @@ void CGtkDisplayer::open (std::string titleBar, bool iconified, sint x, sint y, 
 
 void CGtkDisplayer::clear ()
 {
-	int n;
-
-	gtk_text_set_point(GTK_TEXT(OutputText),0);
-	n = gtk_text_get_length(GTK_TEXT(OutputText));
-	gtk_text_forward_delete(GTK_TEXT(OutputText),n);
+	GtkTextBuffer *buffer;
+	GtkTextIter    start, end;
+	
+	// who is taking care of the iterators?
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
+	gtk_text_buffer_get_bounds(buffer, &start, &end);
+	gtk_text_buffer_delete(buffer, &start, &end);
 }
 
 gint updateInterf (gpointer data)
@@ -350,32 +380,44 @@ gint updateInterf (gpointer data)
 	//
 	// Display the bufferized string
 	//
+	GtkAdjustment *Adj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrolled_win2));
+	bool Bottom = (Adj->value >= Adj->upper - Adj->page_size - Adj->step_increment);
+	bool textChanged = false;
 
-	GtkAdjustment *Adj = (GTK_TEXT(OutputText))->vadj;
-	bool Bottom = (Adj->value >= Adj->upper - Adj->page_size);
-
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
+	GtkTextIter    end_iter;
+	gtk_text_buffer_get_end_iter(buffer, &end_iter);
+	
 	std::list<std::pair<uint32, std::string> >::iterator it;
 	{
 		CSynchronized<std::list<std::pair<uint32, std::string> > >::CAccessor access (&disp->_Buffer);
 
 		for (it = access.value().begin(); it != access.value().end(); it++)
 		{
-			gtk_text_freeze (GTK_TEXT (OutputText));
-			gtk_text_insert (GTK_TEXT (OutputText), NULL, NULL, NULL, (*it).second.c_str(), -1);
-			gtk_text_thaw (GTK_TEXT (OutputText));
+			uint32 col = (*it).first;
+			GtkTextTag *tag = NULL;
+			if ((col>>24) == 0) {
+				GdkColor color;
+				color.red = (col >> 8) & 0xFF00;
+				color.green = col & 0xFF00;
+				color.blue = (col << 8) & 0xFF00;
+				tag = gtk_text_buffer_create_tag(buffer, NULL, "foreground-gdk", &color, "foreground-set", TRUE, NULL);
+			}
+			gtk_text_buffer_insert_with_tags(buffer, &end_iter, (*it).second.c_str(), -1, tag, NULL);
+			textChanged = true;
 		}
 
 		access.value().clear ();
 	}
 
-	if (Bottom)
+	if (Bottom && textChanged)
 	{
-		gtk_adjustment_set_value(Adj,Adj->upper-Adj->page_size);
+		GtkTextMark *mark = gtk_text_buffer_get_mark(buffer, "endmark");
+		gtk_text_view_scroll_to_mark(GTK_TEXT_VIEW(OutputText), mark, 0.0, true, 0.0, 1.0);
 	}
 
 	return TRUE;
 }
-
 
 void CGtkDisplayer::display_main ()
 {

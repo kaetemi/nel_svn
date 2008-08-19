@@ -79,9 +79,9 @@ void CRGBA::set(uint8 r, uint8 g, uint8 b, uint8 a)
 void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint numColors, uint srcStride, uint destStride, uint dup)
 {
 	if (numColors == 0) return;
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	if (!CSystemInfo::hasMMX())
-	#endif
+#endif
 	{   // unoptimized version
 		if (dup == 1)
 		{
@@ -132,7 +132,7 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 			}
 		}
 	}
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
 	{	
 		/// well, this could be further optimized when stride is 4 (2 at once)
@@ -233,14 +233,15 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 			}
 		}
 	}
-	#endif
+#endif
 }
+
 // ***************************************************************************
 void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint numColors, uint srcStride, uint destStride, uint dup)
 {
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	if (!CSystemInfo::hasMMX())
-	#endif
+#endif
 	{   // unoptimized version
 		if (dup == 1)
 		{
@@ -291,7 +292,7 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 			}
 		}
 	}
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
 	{	
 		uint64 blank = 0;
@@ -407,15 +408,15 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 			}
 		}
 	}
-	#endif
+#endif
 }
 // ***************************************************************************
 void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint numColors, uint srcStride, uint destStride, uint dup)
 {
 	if (numColors == 0) return;
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	if (!CSystemInfo::hasMMX())
-	#endif
+#endif
 	{   // unoptimized version
 		if (dup == 1)
 		{
@@ -466,7 +467,7 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 			}
 		}
 	}
-	#if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
+#if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
 	{	
 		/// well, this could be further optimized when stride is 4 (2 at once)
@@ -567,7 +568,7 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 			}
 		}
 	}
-	#endif
+#endif
 }
 
 // ***************************************************************************

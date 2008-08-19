@@ -1,7 +1,7 @@
 /** \file aabbox.h
  * TODO: File description
  *
- * $Id: aabbox.h,v 1.14 2005/02/22 10:14:12 besson Exp $
+ * $Id: aabbox.h,v 1.14 2005-02-22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -31,17 +31,17 @@
 #include "plane.h"
 #include "common.h"
 #include "stream.h"
+#include "bsphere.h"
 
 
 namespace NLMISC
 {
 
 class CMatrix;
-class CBSphere;
 
 // ***************************************************************************
 /**
- * An Axis Aligned Bouding Box.
+ * An Axis Aligned Bounding Box.
  * Note: Center/HalfSize set to private, to have same manipulation for CAABBox and CAABBoxExt.
  * \author Lionel Berenguier
  * \author Nevrax France

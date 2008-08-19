@@ -28,25 +28,16 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <malloc.h>
 #include "nel/misc/common.h"
+#include "nel/misc/ucstring.h"
 
 #include "nel/misc/report.h"
 
 #ifdef NL_OS_WINDOWS
-
-#include <windows.h>
-#include <windowsx.h>
-#include <winuser.h>
-
-#ifdef min
-#	undef min
-#endif // min
-
-#ifdef max
-#	undef max
-#endif // max
-
+#	define NOMINMAX
+#	include <windows.h>
+#	include <windowsx.h>
+#	include <winuser.h>
 #endif // NL_OS_WINDOWS
 
 using namespace std;
@@ -113,20 +104,26 @@ static void sendEmail()
 		{
 			// EnableWindow(sendReport, FALSE);
 			// MessageBox (dialog, "The email was successfully sent", "email", MB_OK);
+#ifndef NL_NO_DEBUG_FILES
 			FILE *file = fopen ("report_sent", "wb");
 			fclose (file);
+#endif
 		}
 		else
 		{
+#ifndef NL_NO_DEBUG_FILES
 			FILE *file = fopen ("report_failed", "wb");
 			fclose (file);
+#endif
 			// MessageBox (dialog, "Failed to send the email", "email", MB_OK | MB_ICONERROR);
 		}
 	}
 	else
 	{
+#ifndef NL_NO_DEBUG_FILES
 		FILE *file = fopen ("report_refused", "wb");
 		fclose (file);
+#endif
 	}
 }
 
@@ -206,7 +203,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	static bool AlreadyRegister = false;
 	if(!AlreadyRegister)
 	{
-		WNDCLASS wc;
+		WNDCLASSW wc;
 		memset (&wc,0,sizeof(wc));
 		wc.style			= CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc		= (WNDPROC)WndProc;
@@ -216,17 +213,17 @@ TReportResult report (const std::string &title, const std::string &header, const
 		wc.hIcon			= NULL;
 		wc.hCursor			= LoadCursor(NULL,IDC_ARROW);
 		wc.hbrBackground	= (HBRUSH)COLOR_WINDOW;
-		wc.lpszClassName	= "NLReportWindow";
+		wc.lpszClassName	= L"NLReportWindow";
 		wc.lpszMenuName		= NULL;
-		if (!RegisterClass(&wc)) return ReportError;
+		if (!RegisterClassW(&wc)) return ReportError;
 		AlreadyRegister = true;
 	}
 
-	string formatedTitle = title.empty() ? "NeL report" : title;
+	ucstring formatedTitle = title.empty() ? ucstring("NeL report") : ucstring(title);
 
 
 	// create the window
-	dialog = CreateWindow ("NLReportWindow", formatedTitle.c_str(), WS_DLGFRAME | WS_CAPTION /*| WS_THICKFRAME*/, CW_USEDEFAULT, CW_USEDEFAULT, 456, 400,  NULL, NULL, GetModuleHandle(NULL), NULL);
+	dialog = CreateWindowW (L"NLReportWindow", (LPCWSTR)formatedTitle.c_str(), WS_DLGFRAME | WS_CAPTION /*| WS_THICKFRAME*/, CW_USEDEFAULT, CW_USEDEFAULT, 456, 400,  NULL, NULL, GetModuleHandle(NULL), NULL);
 
 	// create the font
 	HFONT font = CreateFont (-12, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
@@ -235,7 +232,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	AttachedFile = attachedFile;
 
 	// create the edit control
-	HWND edit = CreateWindow ("EDIT", NULL, WS_BORDER | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | ES_READONLY | ES_LEFT | ES_MULTILINE, 7, 70, 429, 212, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	HWND edit = CreateWindowW (L"EDIT", NULL, WS_BORDER | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | ES_READONLY | ES_LEFT | ES_MULTILINE, 7, 70, 429, 212, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (edit, WM_SETFONT, (LONG) font, TRUE);
 
 	// set the edit text limit to lot of :)
@@ -249,7 +246,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	if (enableCheckIgnore)
 	{
 		// create the combo box control
-		checkIgnore = CreateWindow ("BUTTON", "Don't display this report again", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CHECKBOX, 7, 290, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+		checkIgnore = CreateWindowW (L"BUTTON", L"Don't display this report again", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CHECKBOX, 7, 290, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 		SendMessage (checkIgnore, WM_SETFONT, (LONG) font, TRUE);
 
 		if(ignoreNextTime)
@@ -259,28 +256,28 @@ TReportResult report (const std::string &title, const std::string &header, const
 	}
 
 	// create the debug button control
-	debug = CreateWindow ("BUTTON", "Debug", WS_CHILD | WS_VISIBLE, 7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	debug = CreateWindowW (L"BUTTON", L"Debug", WS_CHILD | WS_VISIBLE, 7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (debug, WM_SETFONT, (LONG) font, TRUE);
 
 	if (debugButton == 0)
 		EnableWindow(debug, FALSE);
 
 	// create the ignore button control
-	ignore = CreateWindow ("BUTTON", "Ignore", WS_CHILD | WS_VISIBLE, 75+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	ignore = CreateWindowW (L"BUTTON", L"Ignore", WS_CHILD | WS_VISIBLE, 75+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (ignore, WM_SETFONT, (LONG) font, TRUE);
 
 	if (ignoreButton == 0)
 		EnableWindow(ignore, FALSE);
 
 	// create the quit button control
-	quit = CreateWindow ("BUTTON", "Quit", WS_CHILD | WS_VISIBLE, 75+75+7+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	quit = CreateWindowW (L"BUTTON", L"Quit", WS_CHILD | WS_VISIBLE, 75+75+7+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (quit, WM_SETFONT, (LONG) font, TRUE);
 
 	if (quitButton == 0)
 		EnableWindow(quit, FALSE);
 
 	// create the debug button control
-	sendReport = CreateWindow ("BUTTON", "Don't send the report", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 7, 315+32, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	sendReport = CreateWindowW (L"BUTTON", L"Don't send the report", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 7, 315+32, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (sendReport, WM_SETFONT, (LONG) font, TRUE);
 
 	string formatedHeader;
@@ -302,9 +299,10 @@ TReportResult report (const std::string &title, const std::string &header, const
 	else
 		EnableWindow(sendReport, FALSE);
 
+	ucstring uc = ucstring::makeFromUtf8(formatedHeader);
 
 	// create the label control
-	HWND label = CreateWindow ("STATIC", formatedHeader.c_str(), WS_CHILD | WS_VISIBLE /*| SS_WHITERECT*/, 7, 7, 429, 51, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	HWND label = CreateWindowW (L"STATIC", (LPCWSTR)uc.c_str(), WS_CHILD | WS_VISIBLE /*| SS_WHITERECT*/, 7, 7, 429, 51, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
 	SendMessage (label, WM_SETFONT, (LONG) font, TRUE);
 
 
@@ -326,10 +324,10 @@ TReportResult report (const std::string &title, const std::string &header, const
 	while(!NeedExit)
 	{
 		MSG	msg;
-		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			DispatchMessageW(&msg);
 		}
 		nlSleep (1);
 	}

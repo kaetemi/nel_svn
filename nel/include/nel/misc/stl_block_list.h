@@ -45,7 +45,6 @@ namespace NLMISC {
  * \author Nevrax France
  * \date 2001
  */
-/*
 template <class T>
 class CSTLBlockList : public std::list<T, CSTLBlockAllocator<T> >
 {
@@ -74,8 +73,9 @@ public:
 	std::list<T, CSTLBlockAllocator<T> >(first,last,CSTLBlockAllocator<T>(bm))
 	{
 	}
+
 };
-*/
+
 
 
 } // NLMISC

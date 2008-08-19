@@ -38,8 +38,6 @@ class CFixedSizeAllocator;
   * One possible use is with a family of class for which new and delete have been redefined at the top of the hierarchy  
   * (which the NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR macro does)
   *
-  * \todo thread safety
-  * 
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2004
@@ -61,12 +59,12 @@ public:
 	void free(void *);
 	// get the number of allocated objects
 	uint getNumAllocatedBlocks() const;
-	#ifdef NL_DEBUG
+#	ifdef NL_DEBUG
 		// for debug, useful to catch memory leaks
 		void dumpUnreleasedBlocks();
 		// set a break for the given allocation
 		void setBreakForAllocID(bool enabled, uint id);
-	#endif
+#	endif
 	// for convenience, a default allocator is available
 	static CObjectArenaAllocator &getDefaultAllocator();	
 
@@ -74,40 +72,24 @@ private:
 	std::vector<CFixedSizeAllocator *> _ObjectSizeToAllocator;
 	uint							 _MaxAllocSize;
 	uint							 _Granularity;
-	#ifdef NL_DEBUG
+#	ifdef NL_DEBUG
 		uint							 _AllocID;	
 		std::map<void *, uint>			 _MemBlockToAllocID;
 		bool							 _WantBreakOnAlloc;
 		uint							 _BreakAllocID;
-	#endif
+#	endif
 	static CObjectArenaAllocator		 *_DefaultAllocator;
 };
 
 // Macro that redefines the new & delete operator of a class so that the default arena object allocator is used.
 // This should be used inside the definition of the class.
-// All derived class will use the same allocator, so this definition can be used only at the top of the hierachy of class for
+// All derived class will use the same allocator, so this definition can be used only at the top of the hierarchy of class for
 // which it is of interest.
 //
-// NB : if you are using NL_MEMORY, you will encounter a compilation error because of redefinition of the new operator.
-//      to solve this, do as follow :
-//
-// #if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-//	   #undef new
-// #endif
 // NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR // for fast alloc
-// #if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-//	   #define new NL_NEW
-// #endif	
-#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#define NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR \
-		void *operator new(size_t size, const char *filename, int line) { return NLMISC::CObjectArenaAllocator::getDefaultAllocator().alloc((uint) size); }\
-		void operator delete(void *block, const char *filename, int line) { NLMISC::CObjectArenaAllocator::getDefaultAllocator().free(block); }            \
-		void operator delete(void *block) { NLMISC::CObjectArenaAllocator::getDefaultAllocator().free(block); }
-#else	
-	#define NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR \
+#	define NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR \
 		void *operator new(size_t size) { return NLMISC::CObjectArenaAllocator::getDefaultAllocator().alloc((uint) size); }\
 		void operator delete(void *block) { NLMISC::CObjectArenaAllocator::getDefaultAllocator().free(block); }
-#endif	
 
 }
 

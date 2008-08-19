@@ -204,7 +204,7 @@ void		splitUCString(const ucstring &ucstr, const ucstring &separator, std::vecto
 template<class T, class U>
 bool		strFindReplace(T &str, const T &strFind, const U &strReplace)
 {
-	uint	pos= str.find(strFind);
+	typename T::size_type pos= str.find(strFind);
 	if(pos != T::npos)
 	{
 		str.replace(pos, strFind.size(), T(strReplace) );

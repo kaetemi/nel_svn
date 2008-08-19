@@ -506,6 +506,16 @@ public:
 	bool writeTGA(NLMISC::IStream &f, uint32 d=0, bool upsideDown = false);
 
 	/** 
+	 * Write a PNG (24 or 32 bits) from the object pixels buffer.
+	 * If the current pixel format is not rgba then the method does nothing
+	 * If the pixel format is Alpha then we save in 8 bpp
+	 * \param f IStream (must be a reading stream)
+	 * \param d depth : 8 or 16 or 24 or 32 (0 for automatic)
+	 * \return true if succeed, false else
+	 */	
+	bool writePNG(NLMISC::IStream &f, uint32 d=0);
+
+	/** 
 	 * Write a JPG from the object pixels buffer.
 	 * If the current pixel format is not rgba then the method does nothing
 	 * If the pixel format is Alpha then we save in 8 bpp
@@ -634,6 +644,9 @@ public:
 
 #ifdef NL_OS_WINDOWS
 void readPNGData(png_struct *png_ptr,char *data, uint length );
+void writePNGData(png_struct *png_ptr,char *data, uint length );
+void setPNGWarning(png_struct *png_ptr, const char* message);
+void setPNGError(png_struct *png_ptr, const char* message);
 #endif
 
 

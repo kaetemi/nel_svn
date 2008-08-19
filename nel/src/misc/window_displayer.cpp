@@ -152,7 +152,7 @@ void CWindowDisplayer::doDisplay (const NLMISC::CLog::TDisplayInfo &args, const 
 #ifdef NL_OS_WINDOWS
 		str += NLMISC::toString("%4x", args.ThreadId);
 #else
-		str += NLMISC::toString("%4u", args.ThreadId);
+		str += NLMISC::toString("%08x", args.ThreadId);
 #endif
 		needSpace = true;
 	}

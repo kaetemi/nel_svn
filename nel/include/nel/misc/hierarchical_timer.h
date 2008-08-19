@@ -28,12 +28,11 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "types_nl.h"
 #include "time_nl.h"
 #include "debug.h"
-
-#include <algorithm>
 
 #ifndef NL_RELEASE
 #	define ALLOW_TIMING_MEASURES
@@ -41,52 +40,57 @@
 
 
 #ifdef ALLOW_TIMING_MEASURES
-	// Several macros to use
-#	define H_TIME(__name,__inst) \
-	{ \
-		static NLMISC::CHTimer	nl_h_timer(#__name); \
-		nl_h_timer.before(); \
-		__inst \
-		nl_h_timer.after(); \
-	}
-	//
-#	define H_BEFORE(__name)	static NLMISC::CHTimer	__name##_timer(#__name); __name##_timer.before();
-#	define H_AFTER(__name)		__name##_timer.after();
-	//
+
+// You should need only this macro, bench the local scope
 #	define H_AUTO(__name)		static NLMISC::CHTimer	__name##_timer(#__name); NLMISC::CAutoTimer	__name##_auto(&__name##_timer);
-	// display the timer info after each loop call
+
+// Same as H_AUTO but you don't have to give a name, it uses the function/line
+#	define H_AUTO2				static std::string __str_##__LINE__(NLMISC::toString("%s:%d", __FUNCTION__, __LINE__)); static NLMISC::CHTimer __timer_##__LINE__(__str_##__LINE__.c_str()); NLMISC::CAutoTimer __auto_##__LINE__(&__timer_##__LINE__);
+
+// If you want to bench a specific part of the code
+#	define H_BEFORE(__name)		static NLMISC::CHTimer	__name##_timer(#__name); __name##_timer.before();
+#	define H_AFTER(__name)		__name##_timer.after();
+
+// Display the timer info after each loop call
 #	define H_AUTO_INST(__name)	static NLMISC::CHTimer	__name##_timer(#__name); NLMISC::CAutoTimerInst	__name##_auto(&__name##_timer);
 
-/** H_AUTO splited in 2. The declaration of the static timer, and a CAutoTimer instance.
- *	Useful to group same timer bench in different functions for example
- */
-#	define H_AUTO_DECL(__name)		static NLMISC::CHTimer	__name##_timer(#__name); 
-#	define H_AUTO_USE(__name)		NLMISC::CAutoTimer	__name##_auto(&__name##_timer);
+// H_AUTO split in 2. The declaration of the static timer, and a CAutoTimer instance.
+// Useful to group same timer bench in different functions for example
+#	define H_AUTO_DECL(__name)	static NLMISC::CHTimer	__name##_timer(#__name); 
+#	define H_AUTO_USE(__name)	NLMISC::CAutoTimer	__name##_auto(&__name##_timer);
+
+//
+#	define H_TIME(__name,__inst) \
+	{ \
+	static NLMISC::CHTimer	nl_h_timer(#__name); \
+	nl_h_timer.before(); \
+	__inst \
+	nl_h_timer.after(); \
+	}
 
 #else
-	// void macros
+// void macros
 #	define H_TIME(__name,__inst) __inst
 #	define H_BEFORE(__name)
 #	define H_AFTER(__name)	
 #	define H_AUTO(__name)	
+#	define H_AUTO2
 #	define H_AUTO_INST(__name)
 #	define H_AUTO_DECL(__name)
 #	define H_AUTO_USE(__name)
 #endif
 
-
 namespace NLMISC
 {
 
-
 #ifdef NL_OS_WINDOWS
-// Vicual C++ warning : ebp maybe modified
+// Visual C++ warning : ebp maybe modified
 #	pragma warning(disable:4731)
 #endif
 
 
 /**  A simple clock to measure ticks.
-  *  \warning On intel platform, processor cycles are counted, on other platforms, CTime::getPerformanceTime is used instead.
+  *  \warning On Intel platform, processor cycles are counted, on other platforms, CTime::getPerformanceTime is used instead.
   *  
   * \sa CStopWatch
   * \author Nicolas Vizerie
@@ -98,43 +102,42 @@ class CSimpleClock
 public:	
 	CSimpleClock() : _NumTicks(0)
 	{
-#		ifdef NL_DEBUG
+#ifdef NL_DEBUG
 			_Started = false;
-#		endif
+#endif
 	}
 	// start measure
 	void start()
 	{
-#		ifdef  NL_DEBUG
+#ifdef NL_DEBUG
 			nlassert(!_Started);
 			_Started = true;
-#		endif
-#		ifdef NL_CPU_INTEL
+#endif
+#ifdef NL_CPU_INTEL
 		_StartTick = rdtsc();
-#		else
+#else
 		_StartTick = CTime::getPerformanceTime();
-#		endif
+#endif
 	}
 	// end measure
 	void stop()
 	{
-#		ifdef  NL_DEBUG
+#ifdef  NL_DEBUG
 			nlassert(_Started);
 			_Started = false;
-#		endif
-#		ifdef NL_CPU_INTEL
+#endif
+#ifdef NL_CPU_INTEL
 		_NumTicks = rdtsc() - _StartTick;
-#		else
+#else
 		_NumTicks = CTime::getPerformanceTime() - _StartTick;
-#		endif
-		
+#endif
 	}	
 	// get measure
 	uint64	getNumTicks() const
 	{
-		#ifdef NL_DEBUG
-			nlassert(!_Started);
-		#endif
+#ifdef NL_DEBUG
+		nlassert(!_Started);
+#endif
 		nlassert(_NumTicks != 0);
 		return _NumTicks;
 	}	
@@ -150,15 +153,12 @@ public:
 private:
 	uint64  _StartTick;
 	uint64	_NumTicks;
-#	ifdef  NL_DEBUG
-		bool	_Started;
-#	endif
+#ifdef  NL_DEBUG
+	bool	_Started;
+#endif
 	static bool		_InitDone;
 	static uint64	_StartStopNumTicks;	
 };
-
-
-
 
 
 /**
@@ -203,27 +203,27 @@ public:
 	CHTimer() : _Name(NULL), _Parent(NULL), _IsRoot(false) {}
 	CHTimer(const char *name, bool isRoot = false) : _Name(name), _Parent(NULL), _IsRoot(isRoot) {}
 	/// Starts a measuring session
-	void		before()
+	void			before()
 	{
 		if (_Benching)
 			doBefore();
 	}
 	// Ends a measuring session
-	void		after()
+	void			after()
 	{
 		if (_Benching)
 			doAfter(false);
 	}
-	void		after(bool displayAfter)
+	void			after(bool displayAfter)
 	{
 		if (_Benching)
 			doAfter(displayAfter);
 	}
 	// Get this node name
-	const char	   *getName() const { return _Name; }
+	const char		*getName() const { return _Name; }
 	void			setName(const char *name) { _Name = name; }
 	/** Starts a bench session
-	  * \param wantStandardDeviation When true, benchs will report the standard deviation of values. This require more memory, however, because each samples must be kept.
+	  * \param wantStandardDeviation When true, benchmarks will report the standard deviation of values. This require more memory, however, because each samples must be kept.
 	  * \param quick if true, quick compute the frequency of the processor
 	  */
 	static void		startBench(bool wantStandardDeviation = false, bool quick = false, bool reset = true);
@@ -261,19 +261,19 @@ public:
 	  */
 	static void		displayHierarchicalByExecutionPath(CLog *log= InfoLog, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2);
 
-	/** Hierarchical display, sorting is done in branchs
+	/** Hierarchical display, sorting is done in branches
 	  * \param displayEx	 true to display more detailed infos.
 	  * \param labelNumChar  
 	  */
 	static void		displayHierarchicalByExecutionPathSorted(CLog *log= InfoLog, TSortCriterion criterion = TotalTime, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2);
 
-	/** Hierarchical display, sorting is done in branchs
+	/** Hierarchical display, sorting is done in branches
 	  * \param displayEx	 true to display more detailed infos.
 	  * \param labelNumChar  
 	  */
 	static void		displaySummary(CLog *log= InfoLog, TSortCriterion criterion = TotalTime, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2, uint maxDepth = 3);
 
-	/// Clears stats, and reinits all timer structure
+	/// Clears stats, and re initializes all timer structure
 	static void		clear();
 
 	/// Clears SessionMax current stats (only current value)
@@ -311,7 +311,7 @@ private:
 		uint64					SessionCurrent;
 		uint64					SessionMax;
 		//
-		uint64					SonsPreambule; // preambule time for the sons		
+		uint64					SonsPreambule; // preamble time for the sons		
 		CSimpleClock			Clock;         // a clock to do the measures at this node
 		// ctor 
 	  CNode(CHTimer	*owner = NULL, CNode	*parent = NULL) : Parent(parent), Owner(owner)
@@ -407,7 +407,6 @@ private:
 		CNode *Node;
 	};	
 
-
 	/** A statistics sorter, based on some criterion.
 	  * It works on pointers on CStats objects
 	  */
@@ -430,7 +429,7 @@ private:
 		CNode				*Node;
 		// The current child to process.
 		uint				CurrentChild;
-		// The childs, sorted by specific criterion.
+		// The childes, sorted by specific criterion.
 		std::vector<CNode*>	Children;
 		// The depth of the entry
 		uint				Depth;
@@ -458,7 +457,7 @@ private:
 		
 private:
 	// walk the tree to current execution node, creating it if necessary
-	void	walkTreeToCurrent();
+	void			walkTreeToCurrent();
 private:
 	// node name
 	const  char						*_Name;
@@ -475,8 +474,8 @@ private:
 	static CNode					*_CurrNode;	
 	// the root timer
 	static CHTimer					 _RootTimer;
-	/** This clock is used to measure the preambule of methods such as CHTimer::before()
-	  * This is static, but the Hierarchical Timer doesn't support multithreading anyway..
+	/** This clock is used to measure the preamble of methods such as CHTimer::before()
+	  * This is static, but the Hierarchical Timer doesn't support multi threading anyway..
       */
 	static CSimpleClock				_PreambuleClock;
 	//
@@ -493,8 +492,6 @@ private:
 	static sint64					_AfterStopEstimateTime;
 	static bool						_AfterStopEstimateTimeDone;
 };
-
-
 
 /**
  * An automatic measuring timer. Encapsulates calls to CHTimer, and avoids missuses of before() and after().
@@ -515,7 +512,7 @@ private:
 class CAutoTimer
 {
 private:
-	CHTimer		*_HTimer;
+	CHTimer *_HTimer;
 public:
 	CAutoTimer(CHTimer *timer) : _HTimer(timer) { _HTimer->before(); }
 	~CAutoTimer() { _HTimer->after(); }
@@ -528,7 +525,7 @@ public:
 class CAutoTimerInst
 {
 private:
-	CHTimer		*_HTimer;
+	CHTimer *_HTimer;
 public:
 	CAutoTimerInst(CHTimer *timer) : _HTimer(timer) { _HTimer->before(); }
 	~CAutoTimerInst() { _HTimer->after(true); }
@@ -540,4 +537,3 @@ public:
 #endif // NL_HIERARCHICAL_TIMER_H
 
 /* End of hierarchical_timer.h */
-

@@ -46,73 +46,71 @@ public:
 	static std::string getOS ();
 	static std::string getProc ();
 
-	/** Gives an evalutation of the processor frequency, in hertz
+	/** Gives an evaluation of the processor frequency, in hertz
 	  * \param quick true to do quick frequency evaluation
-	  * \warning Supports only intel architectures for now. Returns 0 if not implemented.
+	  * \warning Supports only Intel architectures for now. Returns 0 if not implemented.
 	  */
 	static uint64 getProcessorFrequency (bool quick = false);
 
-	/** test wether the cpuid instruction is supported
-	  * (always false on non intel architectures)
+	/** Tests whether the CPUID instruction is supported
+	  * (always false on non Intel architectures)
 	  */
 	static bool hasCPUID ();
 
-	/** helps to know wether the processor features mmx instruction set 
+	/** Helps to know whether the processor features MMX instruction set 
 	  * This is initialized at started, so its fast
 	  * (always false on non 0x86 architecture ...)
 	  */	  
 	static bool hasMMX () {return _HaveMMX;}
 
-	/** helps to know wether the processor has streaming SIMD instructions (the OS must supports it)
+	/** Helps to know whether the processor has streaming SIMD instructions (the OS must supports it)
 	  * This is initialized at started, so its fast
 	  * (always false on non 0x86 architecture ...)
 	  */
 	static bool hasSSE () {return _HaveSSE;}
 
-	/** get the CPUID (if available). Usefull for debug info
-	 */
+	/** Gets the CPUID (if available). Useful for debug info
+	  */
 	static uint32 getCPUID();
 
 	/** true if the Processor has HyperThreading
-	 */
+	  */
 	static bool hasHyperThreading();
 	
 	/** true if running under NT
-	 */
+	  */
 	static bool isNT();
 
-	/* returns the space left on the hard drive that contains the filename
-	 */
+	/** Returns the space left on the hard drive that contains the filename
+	  */
 	static std::string availableHDSpace (const std::string &filename);
 
-	/** returns all the physical memory available on this computer
+	/** Returns all the physical memory available on the computer (in bytes)
 	  */
-	static uint32 availablePhysicalMemory ();
+	static uint64 availablePhysicalMemory ();
 
-	/** returns all the physical memory on this computer
+	/** Returns the physical memory on the computer (in bytes)
 	  */
-	static uint32 totalPhysicalMemory ();
+	static uint64 totalPhysicalMemory ();
 
-	/* Return the amount of allocated system memory */
-	static uint32 getAllocatedSystemMemory ();
-
-	/** returns all the virtual memory used by this process
+	/** Returns the amount of allocated system memory (in bytes)
 	  */
-	static uint32 virtualMemory ();
+	static uint64 getAllocatedSystemMemory ();
 
-	/** Return the main video card name and the video driver version
+	/** Returns all the virtual memory used by this process (in bytes)
+	  */
+	static uint64 virtualMemory ();
+
+	/** Returns the main video card name and the video driver version
 	  */
 	static bool getVideoInfo (std::string &deviceName, uint64 &driverVersion);
 
 private:
 	static bool _HaveMMX;
 	static bool _HaveSSE;
-	
 };
 
-
 } // NLMISC
-
 
 #endif // NL_SYSTEM_INFO_H
 

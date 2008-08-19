@@ -147,7 +147,7 @@ public:
 	CMemStream( bool inputStream=false, bool stringmode=false, uint32 defaultcapacity=0 ) :
 		NLMISC::IStream( inputStream ), _StringMode( stringmode )
 	{
-		_DefaultCapacity = std::max( defaultcapacity, (uint32)16 ); // prevent from no allocation
+		_DefaultCapacity = std::max( (uint32)defaultcapacity, (uint32)16 ); // prevent from no allocation
 		_Buffer.getBufferWrite().resize (_DefaultCapacity);
 		_Buffer.Pos = 0;
 	}
@@ -973,31 +973,8 @@ inline	void	CMemStream::serialHex(uint32 &b)
 	}
 }
 
-
-
 }
 
 #endif // NL_MEM_STREAM_H
 
 /* End of mem_stream.h */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -31,6 +31,7 @@
 #include <cctype>
 #include <cstdio>
 #include <cmath>
+#include <cstring>
 #include <string>
 #include <vector>
 #include <cfloat>
@@ -40,6 +41,7 @@
 
 #ifdef NL_OS_WINDOWS
 #	include <process.h>
+#	include <intrin.h>
 #else
 #	include <cmath>
 #	include <unistd.h>
@@ -53,17 +55,17 @@
 namespace	NLMISC
 {
 
-
-/** Read the time stamp counter. Supports only intel architectures for now  
+/** Read the time stamp counter. Supports only Intel architectures for now  
   */ 
 #ifdef NL_CPU_INTEL
 
 inline uint64 rdtsc()
 {
 	uint64 ticks;
-#	ifndef NL_OS_WINDOWS		
+#	ifndef NL_OS_WINDOWS
 		__asm__ volatile(".byte 0x0f, 0x31" : "=a" (ticks.low), "=d" (ticks.high));				
-#	else 		
+#	else
+		// We should use the intrinsic code now. ticks = uint64(__rdtsc());
 		__asm	rdtsc
 		__asm	mov		DWORD PTR [ticks], eax
 		__asm	mov		DWORD PTR [ticks + 4], edx		
@@ -150,9 +152,7 @@ template<class T>	inline T maxof(const T& a,  const T& b,  const T& c,  const T&
 template<class T>	inline void contReset (T& a)
 {
 	a.~T();
-#undef new
 	new (&a) T;
-#define new NL_NEW
 }
 
 /** Return the value maximized to the next power of 2 of v.
@@ -197,7 +197,7 @@ inline double	isValidDouble (double v)
 #ifdef NL_OS_WINDOWS
 	return _finite(v) && !_isnan(v);
 #else
-	return !isnan(v) && !isinf(v);
+	return !std::isnan(v) && !std::isinf(v);
 #endif
 }
 
@@ -216,8 +216,27 @@ void		toLower ( char *str );
 std::string	toUpper ( const std::string &str);
 void		toUpper ( char *str);
 
-// Remove all the characters <= 32 (tab, space, new line, return, vertical tab etc..) at the begning and at the end of a string
-std::string trim (const std::string &str);
+// Remove all the characters <= 32 (tab, space, new line, return, vertical tab etc..) at the beginning and at the end of a string
+template <class T> T trim (const T &str)
+{
+	typename T::size_type start = 0;
+	const typename T::size_type size = str.size();
+	while (start < size && str[start] <= 32)
+		start++;
+	typename T::size_type end = size;
+	while (end > start && str[end-1] <= 32)
+		end--;
+	return str.substr (start, end-start);
+}
+
+// remove spaces at the end of the string
+template <class T> T trimRightWhiteSpaces (const T &str)
+{
+	typename T::size_type end = str.size();
+	while (end > 0 && str[end-1] == ' ')
+		end--;
+	return str.substr (0, end);
+}
 
 //////////////////////////////////////////////////////////////////////////
 // ****  DEPRECATED *****: PLEASE DON'T USE THESE METHODS BUT FUNCTIONS ABOVE toLower() and toUpper()
@@ -298,7 +317,7 @@ void itoaInt64 (sint64 number, char *str, sint64 base = 10);
 
 /// Convert a number in bytes into a string that is easily readable by an human, for example 105123 -> "102kb"
 std::string bytesToHumanReadable (const std::string &bytes);
-std::string bytesToHumanReadable (uint32 bytes);
+std::string bytesToHumanReadable (uint64 bytes);
 
 /// Convert a human readable into a bytes,  for example "102kb" -> 105123
 uint32 humanReadableToBytes (const std::string &str);
@@ -371,12 +390,33 @@ inline std::string toString (const sint8 &t)
 #endif // NL_OS_UNIX
 */
 
-/** Explode a string into a vector of string with *sep* as separator. If sep can be more than 1 char, in this case,
+/** Explode a string (or ucstring) into a vector of string with *sep* as separator. If sep can be more than 1 char, in this case,
  * we find the entire sep to separator (it s not a set of possible separator)
  *
  * \param skipEmpty if true, we don't put in the res vector empty string
  */
-void explode (const std::string &src, const std::string &sep, std::vector<std::string> &res, bool skipEmpty = false);
+template <class T> void explode (const T &src, const T &sep, std::vector<T> &res, bool skipEmpty = false)
+{
+	std::string::size_type oldpos = 0, pos;
+
+	res.clear ();
+
+	do
+	{
+		pos = src.find (sep, oldpos);
+		T s;
+		if(pos == std::string::npos)
+			s = src.substr (oldpos);
+		else
+			s = src.substr (oldpos, (pos-oldpos));
+
+		if (!skipEmpty || !s.empty())
+			res.push_back (s);
+
+		oldpos = pos+sep.size();
+	}
+	while(pos != std::string::npos);
+}
 
 
 /* All the code above is used to add our types (uint8, ...) in the stringstream (used by the toString() function).

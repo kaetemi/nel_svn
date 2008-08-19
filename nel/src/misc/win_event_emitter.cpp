@@ -31,6 +31,7 @@
 #include "nel/misc/event_server.h"
 
 #ifdef NL_OS_WINDOWS
+#define NOMINMAX
 #include <windows.h>
 #include <windowsx.h>
 
@@ -49,10 +50,10 @@ namespace NLMISC {
 void CWinEventEmitter::submitEvents(CEventServer & server, bool allWindows)
 {
 	MSG	msg;
-	while ( PeekMessage(&msg,allWindows?NULL:(HWND)_HWnd,0,0,PM_REMOVE) )
+	while ( PeekMessageW(&msg,allWindows?NULL:(HWND)_HWnd,0,0,PM_REMOVE) )
 	{
 		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		DispatchMessageW(&msg);
 	}
 
 	// Dispatch sent messages
@@ -110,10 +111,18 @@ TMouseButton CWinEventEmitter::getButtons() const
 }
 
 
-void CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, uint32 lParam, CEventServer *server)
+bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, uint32 lParam, CEventServer *server)
 {
 	if (!server)
 		server=&_InternalServer;
+
+	/// Process IME messages
+	/*if ( _IMEEventsEnabled && (ImmIsUIMessage( ImmGetDefaultIMEWnd((HWND)_HWnd), msg, wParam, lParam) == TRUE) )
+	{
+		server->postEvent( new CEventIME(msg, wParam, lParam, this) );
+		return true; // trap message (however DefWindowProc will still be called in some instances by the event listener)
+	}*/
+
 	switch (msg)
 	{
 	case WM_KEYDOWN:
@@ -154,10 +163,17 @@ void CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 	case WM_CHAR:
 		if (_KeyboardEventsEnabled)
 		{
-			if (wParam < KeyCount)
-				server->postEvent (new CEventChar ((ucchar)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), this));
+			//if (wParam < KeyCount)
+			//nlinfo("WM_CHAR with %u", wParam);
+			server->postEvent (new CEventChar ((ucchar)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), this));
 		}
 		break;
+	/*case WM_IME_CHAR:
+		if (_KeyboardEventsEnabled && _IMEEventsEnabled)
+		{
+			server->postEvent (new CEventChar ((ucchar)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), this));
+		}
+		break;*/
 	case WM_ACTIVATE:
 		if (WA_INACTIVE==LOWORD(wParam))
 			server->postEvent (new CEventActivate (false, this));
@@ -282,7 +298,21 @@ void CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 			server->postEvent (new CEventMouseWheel (fX, fY, button, (short) HIWORD(wParam)>=0, this));
 			break;
 		}
+	case WM_IME_SETCONTEXT:
+	case WM_IME_STARTCOMPOSITION:
+	case WM_IME_COMPOSITION:
+	case WM_IME_ENDCOMPOSITION:
+	case WM_IME_NOTIFY:
+	//case WM_INPUTLANGCHANGEREQUEST:
+	case WM_INPUTLANGCHANGE:
+		if ( _IMEEventsEnabled )
+		{
+			server->postEvent( new CEventIME( msg, wParam, lParam, this ) );
+			return true; // trap message
+		}
+		break;
 	}
+	return false;
 }
 
 //==========================================================

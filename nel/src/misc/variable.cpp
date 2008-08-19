@@ -68,12 +68,12 @@ void CCommandRegistry::initVariables(NLMISC::CConfigFile &configFile)
 				if (cvar != 0)
 				{
 					string val = cvar->asString();
-					nlinfo ("VAR: Setting variable '%s' with value '%s' from config file '%s'", var->_CommandName.c_str(), val.c_str(), configFile.getFilename().c_str());
+					//nldebug("VAR: Setting variable '%s' with value '%s' from config file '%s'", var->_CommandName.c_str(), val.c_str(), configFile.getFilename().c_str());
 					var->fromString(val, true);
 				}
 				else
 				{
-					nldebug ("VAR: No variable '%s' in config file '%s'", var->_CommandName.c_str(), configFile.getFilename().c_str());
+					//nldebug("VAR: No variable '%s' in config file '%s'", var->_CommandName.c_str(), configFile.getFilename().c_str());
 				}
 			}
 		}

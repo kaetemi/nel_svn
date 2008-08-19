@@ -83,7 +83,7 @@ private:
 class CPProcess : public IProcess
 {
 public:
-
+	virtual ~CPProcess() {}
 	virtual uint64 getCPUMask();
 	virtual bool setCPUMask(uint64 mask);
 	

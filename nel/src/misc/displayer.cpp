@@ -55,9 +55,8 @@
 // these defines is for IsDebuggerPresent(). it'll not compile on windows 95
 // just comment this and the IsDebuggerPresent to compile on windows 95
 #	define _WIN32_WINDOWS	0x0410
-#	ifndef WINVER
-#		define WINVER		0x0400
-#	endif
+#	define WINVER			0x0400
+#	define NOMINMAX
 #	include <windows.h>
 #else
 #	define IsDebuggerPresent() false
@@ -168,7 +167,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 #ifdef NL_OS_WINDOWS
 		str += NLMISC::toString("%5x", args.ThreadId);
 #else
-		str += NLMISC::toString("%d", args.ThreadId);
+		str += NLMISC::toString("%08x", args.ThreadId);
 #endif
 		needSpace = true;
 	}
@@ -286,7 +285,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			// WARNING: READ THIS !!!!!!!!!!!!!!!! ///////////////////////////
 			// If at the release time, it freezes here, it's a microsoft bug:
 			// http://support.microsoft.com/support/kb/articles/q173/2/60.asp
-			OutputDebugString(str2.c_str());
+			OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(str2).c_str());
 		}
 		else
 		{
@@ -299,7 +298,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			sint count = 0;	
 			uint n = strlen(message);
 			std::string s(&str2.c_str()[0], (str2.size() - n));
-			OutputDebugString(s.c_str());
+			OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
 			
 			while(true)
 			{												
@@ -307,15 +306,15 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 				if((n - count) < maxOutString )
 				{
 					s = std::string(&message[count], (n - count));
-					OutputDebugString(s.c_str());
-					OutputDebugString("\n");
+					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
+					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8("\n").c_str());
 					break;
 				}	
 				else
 				{
 					s = std::string(&message[count] , count + maxOutString);
-					OutputDebugString(s.c_str());
-					OutputDebugString("\n\t\t\t");
+					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
+					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8("\n\t\t\t").c_str());
 					count += maxOutString;
 				}
 			}
@@ -329,13 +328,13 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			if (pos+1000 < args.CallstackAndLog.size ())
 			{
 				splited = args.CallstackAndLog.substr (pos, 1000);
-				OutputDebugString(splited.c_str());
+				OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(splited).c_str());
 				pos += 1000;
 			}
 			else
 			{
 				splited = args.CallstackAndLog.substr (pos);
-				OutputDebugString(splited.c_str());
+				OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(splited).c_str());
 				break;
 			}
 		}
@@ -378,12 +377,12 @@ void CFileDisplayer::setParam (const std::string &filename, bool eraseLastLog)
 
 	if (eraseLastLog)
 	{
-		ofstream ofs (filename.c_str(), ios::out | ios::trunc);
+/*		ofstream ofs (filename.c_str(), ios::out | ios::trunc);
 		if (!ofs.is_open())
 		{
 			// can't do nlwarning or infinite recurs
 			printf ("CFileDisplayer::setParam(): Can't open and clear the log file '%s'\n", filename.c_str());
-		}
+		}*/
 
 		// Erase all the derived log files
 		int i = 0;

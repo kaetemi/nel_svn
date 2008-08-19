@@ -677,8 +677,6 @@ void CIXml::serial(ucstring &b)
 {
 	nlassert( isReading() );
 
-	/// \todo hulud: handle ucstring to utf-8.
-
 	if (_BinaryStream)
 	{
 		_BinaryStream->serial(b);

@@ -98,7 +98,7 @@ bool CWordsDictionary::init( const string& configFileName )
 			for ( uint i=0; i!=v->size(); ++i )
 				additionalFiles.push_back( v->asString( i ) );
 			v = cf.getVarPtr( "AdditionalFileColumnTitles" );
-			if ( v->size() != (sint)additionalFiles.size() )
+			if ( v->size() != additionalFiles.size() )
 			{
 				nlwarning( "AdditionalFiles and AdditionalFileColumnTitles have different size, ignoring second one" );
 				additionalFileColumnTitles.resize( v->size(), DefaultColTitle );
@@ -155,7 +155,7 @@ bool CWordsDictionary::init( const string& configFileName )
 			// Load Unicode Excel words file
 			STRING_MANAGER::TWorksheet worksheet;
 			STRING_MANAGER::loadExcelSheet( filename, worksheet );
-			uint ck, cw;
+			uint ck, cw = 0;
 			if ( worksheet.findId( ck ) && worksheet.findCol( ucstring(colTitle), cw ) ) // => 
 			{
 				for ( std::vector<STRING_MANAGER::TWorksheet::TRow>::iterator ip = worksheet.begin(); ip!=worksheet.end(); ++ip )

@@ -69,6 +69,9 @@ namespace NLMISC
 			return *Instance;
 		}
 
+		/// shorter version of getInstance()
+		static T &instance() { return getInstance(); }
+
 		static void releaseInstance()
 		{
 			if(Instance)

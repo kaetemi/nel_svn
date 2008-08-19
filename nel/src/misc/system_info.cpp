@@ -26,14 +26,16 @@
 #include "stdmisc.h"
 
 #ifdef NL_OS_WINDOWS
-	#include <windows.h>
-	#include <tchar.h>
+#	define NOMINMAX
+#	include <windows.h>
+#	include <tchar.h>
 #else
-	#include <sys/types.h>
-	#include <sys/stat.h>
-	#include <fcntl.h>
-	#include <unistd.h>
-	#include <cerrno>
+#	include <sys/types.h>
+#	include <sys/stat.h>
+#	include <sys/sysctl.h>
+#	include <fcntl.h>
+#	include <unistd.h>
+#	include <cerrno>
 #endif // NL_OS_WINDOWS
 
 #include "nel/misc/system_info.h"
@@ -44,6 +46,129 @@ using namespace std;
 
 namespace NLMISC {
 
+#ifdef NL_OS_UNIX
+	static string getCpuInfo(const string &colname)
+	{
+		if (colname.empty())
+			return "";
+
+		int fd = open("/proc/cpuinfo", O_RDONLY);
+		if (fd == -1)
+		{
+			nlwarning ("SI: Can't open /proc/cpuinfo: %s", strerror (errno));
+			return "";
+		}
+		else
+		{
+			char buffer[4096+1];
+			uint32 len = read(fd, buffer, sizeof(buffer)-1);
+			close(fd);
+			buffer[len] = '\0';
+
+			vector<string> splitted;
+			explode(string(buffer), string("\n"), splitted, true);
+
+			for(uint32 i = 0; i < splitted.size(); i++)
+			{
+				vector<string> sline;
+				explode(splitted[i], string(":"), sline, true);
+				if(sline.size() == 2 && trim(sline[0]) == colname)
+				{
+					return trim(sline[1]);
+				}
+			}
+		}
+		nlwarning ("SI: Can't find the colname '%s' in /proc/cpuinfo", colname.c_str());
+		return "";
+	}
+
+	// return the value of the colname in bytes from /proc/meminfo
+	static uint64 getSystemMemory (const string &colname)
+	{
+		if (colname.empty())
+			return 0;
+
+		int fd = open("/proc/meminfo", O_RDONLY);
+		if (fd == -1)
+		{
+			nlwarning ("SI: Can't open /proc/meminfo: %s", strerror (errno));
+			return 0;
+		}
+		else
+		{
+			char buffer[4096+1];
+			uint32 len = read(fd, buffer, sizeof(buffer)-1);
+			close(fd);
+			buffer[len] = '\0';
+
+			vector<string> splitted;
+			explode(string(buffer), string("\n"), splitted, true);
+
+			for(uint32 i = 0; i < splitted.size(); i++)
+			{
+				vector<string> sline;
+				explode(splitted[i], string(" "), sline, true);
+				if(sline.size() == 3 && sline[0] == colname)
+				{
+					uint64 val = atoiInt64(sline[1].c_str());
+					if(sline[2] == "kB") val *= 1024;
+					return val;
+				}
+			}
+		}
+		nlwarning ("SI: Can't find the colname '%s' in /proc/meminfo", colname.c_str());
+		return 0;
+	}
+#endif // NL_OS_UNIX
+
+#ifdef NL_OS_MAC
+static sint32 getsysctlnum(const string &name)
+{
+	sint32 value = 0;
+	size_t len = sizeof(value);
+	if(sysctlbyname(name.c_str(), &value, &len, NULL, 0) != 0)
+	{
+		nlwarning("SI: Can't get '%s' from sysctl: %s", name.c_str(), strerror (errno));
+	}
+	return value;
+}
+
+static sint64 getsysctlnum64(const string &name)
+{
+	sint64 value = 0;
+	size_t len = sizeof(value);
+	if(sysctlbyname(name.c_str(), &value, &len, NULL, 0) != 0)
+	{
+		nlwarning("SI: Can't get '%s' from sysctl: %s", name.c_str(), strerror (errno));
+	}
+	return value;
+}
+
+static string getsysctlstr(const string &name)
+{
+	string value("Unknown");
+	size_t len;
+	char *p;
+	if(sysctlbyname(name.c_str(), NULL, &len, NULL, 0) == 0)
+	{
+		p = (char*)malloc(len);
+		if(sysctlbyname(name.c_str(), p, &len, NULL, 0) == 0)
+		{
+			value = p;
+		}
+		else
+		{
+			nlwarning("SI: Can't get '%s' from sysctl: %s", name.c_str(), strerror (errno));
+		}
+		free(p);
+	}
+	else
+	{
+		nlwarning("SI: Can't get '%s' from sysctl: %s", name.c_str(), strerror (errno));
+	}
+	return value;
+}
+#endif // NL_OS_MAC
 
 string CSystemInfo::getOS()
 {
@@ -74,6 +199,9 @@ string CSystemInfo::getOS()
 	case VER_PLATFORM_WIN32_NT:
 
 		// Test for the specific product family.
+		if ( osvi.dwMajorVersion == 6 )
+			OSString = "Microsoft Windows Vista ";
+
 		if ( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2 )
 			OSString = "Microsoft Windows Server 2003 family ";
 
@@ -143,11 +271,11 @@ string CSystemInfo::getOS()
 			DWORD dwBufLen=BUFSIZE;
 			LONG lRet;
 
-			lRet = RegOpenKeyEx( HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ProductOptions", 0, KEY_QUERY_VALUE, &hKey );
+			lRet = RegOpenKeyExA( HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ProductOptions", 0, KEY_QUERY_VALUE, &hKey );
 			if( lRet != ERROR_SUCCESS )
 				return OSString + " Can't RegOpenKeyEx";
 
-			lRet = RegQueryValueEx( hKey, "ProductType", NULL, NULL, (LPBYTE) szProductType, &dwBufLen);
+			lRet = RegQueryValueExA( hKey, "ProductType", NULL, NULL, (LPBYTE) szProductType, &dwBufLen);
 			if( (lRet != ERROR_SUCCESS) || (dwBufLen > BUFSIZE) )
 				return OSString + " Can't ReQueryValueEx";
 
@@ -163,13 +291,13 @@ string CSystemInfo::getOS()
 
 		// Display service pack (if any) and build number.
 
-		if( osvi.dwMajorVersion == 4 && lstrcmpi( osvi.szCSDVersion, "Service Pack 6" ) == 0 )
+		if( osvi.dwMajorVersion == 4 && lstrcmpi( osvi.szCSDVersion, _T("Service Pack 6") ) == 0 )
 		{
 			HKEY hKey;
 			LONG lRet;
 
 			// Test for SP6 versus SP6a.
-			lRet = RegOpenKeyEx( HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Hotfix\\Q246009", 0, KEY_QUERY_VALUE, &hKey );
+			lRet = RegOpenKeyExA( HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Hotfix\\Q246009", 0, KEY_QUERY_VALUE, &hKey );
 			if( lRet == ERROR_SUCCESS )
 				OSString += toString("Service Pack 6a (Build %d) ", osvi.dwBuildNumber & 0xFFFF );
 			else // Windows NT 4.0 prior to SP6a
@@ -217,6 +345,10 @@ string CSystemInfo::getOS()
 
 	OSString += toString( "(%d.%d %d)", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.dwBuildNumber & 0xFFFF);
 
+#elif defined NL_OS_MAC
+
+	OSString = getsysctlstr("kern.version");
+
 #elif defined NL_OS_UNIX
 	
 	int fd = open("/proc/version", O_RDONLY);
@@ -240,135 +372,6 @@ string CSystemInfo::getOS()
 	
 	return OSString;
 }
-
-
-#if 0 // old getOS() function
-
-string /*CSystemInfo::*/_oldgetOS()
-{
-	string OSString = "Unknown";
-#ifdef NL_OS_WINDOWS
-	char ver[1024];
-
-	OSVERSIONINFOEX osvi;
-	BOOL bOsVersionInfoEx;
-
-	// Try calling GetVersionEx using the OSVERSIONINFOEX structure,
-	// which is supported on Windows 2000.
-	//
-	// If that fails, try using the OSVERSIONINFO structure.
-
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-
-	if( !(bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi)) )
-	{
-		// If OSVERSIONINFOEX doesn't work, try OSVERSIONINFO.
-		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) ) 
-			return "Windows Unknown";
-	}
-
-	switch (osvi.dwPlatformId)
-	{
-	case VER_PLATFORM_WIN32_NT:
-		// Test for the product.
-
-		if (osvi.dwMajorVersion <= 4)
-			OSString = "Microsoft Windows NT ";
-		else if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
-			OSString = "Microsoft Windows 2000 ";
-		else if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
-		{
-			OSString = "Microsoft Windows XP ";
-		}
-		else if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
-			OSString = "Microsoft Windows Server 2003 family ";
-		
-		// Test for workstation versus server.
-/* can't access to product type
-		if( bOsVersionInfoEx )
-		{
-			if ( osvi.wProductType == VER_NT_WORKSTATION )
-			OSString += "Professional ";
-
-			if ( osvi.wProductType == VER_NT_SERVER )
-			OSString += "Server ";
-		}
-		else
-*/		{
-			HKEY hKey;
-			char szProductType[80];
-			DWORD dwBufLen;
-
-			RegOpenKeyEx( HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ProductOptions", 0, KEY_QUERY_VALUE, &hKey );
-			RegQueryValueEx( hKey, "ProductType", NULL, NULL, (LPBYTE) szProductType, &dwBufLen);
-			RegCloseKey( hKey );
-			if ( lstrcmpi( "WINNT", szProductType) == 0 )
-				OSString += "Workstation ";
-			if ( lstrcmpi( "SERVERNT", szProductType) == 0 )
-				OSString += "Server ";
-		}
-
-		// Display version, service pack (if any), and build number.
-		smprintf(ver, 1024, "version %d.%d '%s' (Build %d)", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.szCSDVersion, osvi.dwBuildNumber & 0xFFFF);
-		OSString += ver;
-		break;
-
-	case VER_PLATFORM_WIN32_WINDOWS:
-
-		if(osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
-		{
-			OSString = "Microsoft Windows 95 ";
-			if(osvi.szCSDVersion[0] == 'B' || osvi.szCSDVersion[0] == 'C')
-				OSString += "OSR2 ";
-		}
-		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
-		{
-			OSString = "Microsoft Windows 98 ";
-			if(osvi.szCSDVersion[0] == 'A')
-				OSString += "SE ";
-		}
-		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
-			OSString = "Microsoft Windows Me ";
-		else
-			OSString = "Microsoft Unknown dwMajorVersion="+toString((int)osvi.dwMajorVersion)+" dwMinorVersion="+toString((int)osvi.dwMinorVersion);
-
-
-		// Display version, service pack (if any), and build number.
-		smprintf(ver, 1024, "version %d.%d %s (Build %d)", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.szCSDVersion, osvi.dwBuildNumber & 0xFFFF);
-		OSString += ver;
-		break;
-
-	case VER_PLATFORM_WIN32s:
-		OSString = "Microsoft Win32s";
-		break;
-	}
-
-#elif defined NL_OS_UNIX
-
-	int fd = open("/proc/version", O_RDONLY);
-	if (fd == -1)
-	{
-		nlwarning ("SI: Can't get OS from /proc/version: %s", strerror (errno));
-	}
-	else
-	{
-		char buffer[4096+1];
-		int len = read(fd, buffer, sizeof(buffer)-1);
-		close(fd);
-		
-		// remove the \n and set \0
-		buffer[len-1] = '\0';
-		
-		OSString = buffer;
-	}
-	
-#endif	// NL_OS_UNIX
-
-	return OSString;
-}
-#endif // old getOS() function
 
 string CSystemInfo::getProc ()
 {
@@ -381,7 +384,7 @@ string CSystemInfo::getProc ()
 	DWORD valueSize;
 	HKEY hKey;
 
-	result = ::RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey);
+	result = ::RegOpenKeyExA (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey);
 	if (result == ERROR_SUCCESS)
 	{
 		// get processor name
@@ -414,12 +417,15 @@ string CSystemInfo::getProc ()
 
 		ProcString += " / ";
 		
-		// get processor frequence
+		// get processor frequency
 		result = ::RegQueryValueEx (hKey, _T("~MHz"), NULL, NULL, (LPBYTE)value, &valueSize);
 		if (result == ERROR_SUCCESS)
 		{
-			ProcString += itoa (*(int *)value, value, 10);
-			ProcString += "MHz";
+			uint32 freq = *(int *)value;
+			// discard the low value (not enough significant)
+			freq /= 10;
+			freq *= 10;
+			ProcString += toString("%uMHz", freq);
 		}
 		else
 			ProcString += "UnknownFreq";
@@ -435,7 +441,7 @@ string CSystemInfo::getProc ()
 		string	tmp= string("Hardware\\Description\\System\\CentralProcessor\\") + toString(i);
 
 		// try to open the key
-		result = ::RegOpenKeyEx (HKEY_LOCAL_MACHINE, tmp.c_str(), 0, KEY_QUERY_VALUE, &hKey);
+		result = ::RegOpenKeyExA (HKEY_LOCAL_MACHINE, tmp.c_str(), 0, KEY_QUERY_VALUE, &hKey);
 		// Make sure to close the reg key
 		RegCloseKey (hKey);
 
@@ -447,12 +453,38 @@ string CSystemInfo::getProc ()
 	ProcString += " / ";
 	ProcString += toString(numProc) + " Processors found";
 
+#elif defined NL_OS_MAC
+
+	ProcString = getsysctlstr("machdep.cpu.brand_string");
+	ProcString += " / ";
+	ProcString += getsysctlstr("hw.machine");
+	ProcString += " Family " + toString(getsysctlnum("machdep.cpu.family"));
+	ProcString += " Model " + toString(getsysctlnum("machdep.cpu.model"));
+	ProcString += " Stepping " + toString(getsysctlnum("machdep.cpu.stepping"));
+	ProcString += " / ";
+	ProcString += getsysctlstr("machdep.cpu.vendor");
+	ProcString += " / ";
+	ProcString += toString(getsysctlnum64("hw.cpufrequency")/1000000)+"MHz";
+	ProcString += " / ";
+	ProcString += toString(getsysctlnum("hw.ncpu")) + " Processors found";
+
 #elif defined NL_OS_UNIX
 
+	ProcString = getCpuInfo("model name");
+	ProcString += " / ?";
+	ProcString += " Family " + getCpuInfo("cpu family");
+	ProcString += " Model " + getCpuInfo("model");
+	ProcString += " Stepping " + getCpuInfo("stepping");
+	ProcString += " / ";
+	ProcString += getCpuInfo("vendor_id");
+	ProcString += " / ";
+	ProcString += getCpuInfo("cpu MHz")+"MHz";
+	ProcString += " / ";
+	ProcString += "? Processors found";
 
 #endif
 
-	// Remove begining spaces
+	// Remove beginning spaces
 	ProcString = ProcString.substr (ProcString.find_first_not_of (" "));
 
 	return ProcString;
@@ -473,7 +505,7 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 		const uint numSamples = 5;
 		const uint numLoops   = 50000000;
 		
-		volatile uint k; // prevent optimisation for the loop
+		volatile uint k; // prevent optimization for the loop
 		for(uint l = 0; l < numSamples; ++l)
 		{	
 			TTicks startTick = NLMISC::CTime::getPerformanceTime();
@@ -515,10 +547,11 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 
 static bool DetectMMX()
 {		
-	#ifdef NL_OS_WINDOWS		
+	#ifdef NL_CPU_INTEL	
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
 		uint32 result = 0;
+		#ifdef NL_OS_WINDOWS
 		__asm
 		{
 			 mov  eax,1
@@ -528,23 +561,36 @@ static bool DetectMMX()
 			 mov result, 1	
 			noMMX:
 		}
+		#elif NL_OS_UNIX
+			__asm__ __volatile__ (
+				"movl   $1, %%eax;"
+				"cpuid;"
+				"movl   $0, %0;"
+				"testl  $0x800000, %%edx;"
+				"je     NoMMX;"
+				"movl   $1, %0;"
+              		"NoMMX:;"
+				:"=b"(result)
+			);
+		#endif // NL_OS_UNIX
 
 		return result == 1;
  
 		// printf("mmx detected\n");
 
-	#else
+	#else // NL_CPU_INTEL
 		return false;
-	#endif
+	#endif // NL_CPU_INTEL
 }
 
 
 static bool DetectSSE()
 {	
-	#ifdef NL_OS_WINDOWS
+	#ifdef NL_CPU_INTEL
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
 		uint32 result = 0;
+		#ifdef NL_OS_WINDOWS
 		__asm
 		{			
 			mov eax, 1   // request for feature flags
@@ -554,17 +600,32 @@ static bool DetectSSE()
 			mov result, 1  // sse detected
 		noSSE:
 		}
-
+		#elif NL_OS_UNIX // NL_OS_WINDOWS
+			__asm__ __volatile__ (
+				"movl   $1, %%eax;"
+				"cpuid;"
+				"movl   $0, %0;"
+				"test   $0x002000000, %%edx;"
+				"je     NoSSE;"
+				"mov    $1, %0;"
+        		"NoSSE:;"
+				:"=b"(result)
+			);
+		#endif // NL_OS_UNIX
 
 		if (result)
 		{
 			// check OS support for SSE
 			try 
 			{
+				#ifdef NL_OS_WINDOWS
 				__asm
 				{
 					xorps xmm0, xmm0  // Streaming SIMD Extension
 				}
+				#elif NL_OS_UNIX
+					__asm__ __volatile__ ("xorps %xmm0, %xmm0;");
+				#endif // NL_OS_UNIX
 			}
 			catch(...)
 			{
@@ -579,9 +640,9 @@ static bool DetectSSE()
 		{
 			return false;
 		}
-	#else
+	#else // NL_CPU_INTEL
 		return false;
-	#endif
+	#endif // NL_CPU_INTEL
 }
 
 bool CSystemInfo::_HaveMMX = DetectMMX ();
@@ -589,8 +650,9 @@ bool CSystemInfo::_HaveSSE = DetectSSE ();
 
 bool CSystemInfo::hasCPUID ()
 {
-	#ifdef NL_OS_WINDOWS
+	#ifdef NL_CPU_INTEL
 		 uint32 result;
+		#ifdef NL_OS_WINDOWS
 		 __asm
 		 {
 			 pushad
@@ -618,32 +680,78 @@ bool CSystemInfo::hasCPUID ()
 			 mov result, 0
 			CPUIDPresent:
 		 }
-		 return result == 1;
+		#elif NL_OS_UNIX // NL_OS_WINDOWS
+			__asm__ __volatile__ (
+				/* Save Register */
+				"pushl  %%ebp;"
+				"pushl  %%ebx;"
+				"pushl  %%edx;"
+				
+				/* Check if this CPU supports cpuid */
+				"pushf;"
+				"pushf;"
+				"popl   %%eax;"
+				"movl   %%eax, %%ebx;"
+				"xorl   $(1 << 21), %%eax;"	// CPUID bit
+				"pushl  %%eax;"
+				"popf;"
+				"pushf;"
+				"popl   %%eax;"
+				"popf;"                  	// Restore flags
+				"xorl   %%ebx, %%eax;"
+				"jz     NoCPUID;"
+				"movl   $1, %0;"
+				"jmp    CPUID;"
+			  	
+			"NoCPUID:;"
+				"movl   $0, %0;" 
+              		"CPUID:;"
+				"popl   %%edx;"
+				"popl   %%ebx;"
+				"popl   %%ebp;"
+			
+				:"=a"(result)
+                	); 
+		#endif // NL_OS_UNIX
+		return result == 1;
 	#else
-		 return false;
+		return false;
 	#endif
 }
 
 
 uint32 CSystemInfo::getCPUID()
 {
-#ifdef NL_OS_WINDOWS
+#ifdef NL_CPU_INTEL
 	if(hasCPUID())
 	{
 		uint32 result = 0;
+		#ifdef NL_OS_WINDOWS
 		__asm
 		{
 			mov  eax,1
 			cpuid
 			mov result, edx
 		}
+		#elif NL_OS_UNIX // NL_OS_WINDOWS
+			__asm__ __volatile__ (
+				"movl   $0, %0;"
+				"movl   $1, %%eax;"
+				"cpuid;"
+				:"=d"(result)
+			);
+		#endif // NL_OS_UNIX
 		return result;
 	}
 	else
-#endif
+#endif // NL_CPU_INTEL
 		return 0;
 }
 
+/*
+ *	Note: Not used in NeL probably in Ryzom closed source. Not translated in AT&T asm, I don't understand the aim of this method
+ *	      Returns true if the CPU has HT,  even if it is disabled. Maybe shoud count how many (virtual) core there is.
+ */
 bool CSystemInfo::hasHyperThreading()
 {
 #ifdef NL_OS_WINDOWS
@@ -758,13 +866,13 @@ string CSystemInfo::availableHDSpace (const string &filename)
         buffer[len] = '\0';
 
         vector<string> splitted;
-        explode(buffer,"\n", splitted, true);
+        explode(string(buffer), string("\n"), splitted, true);
 
         if(splitted.size() < 2)
             return "NoInfo";
 
         vector<string> sline;
-        explode(splitted[1]," ", sline, true);
+        explode(splitted[1], string(" "), sline, true);
 
         if(sline.size() < 5)
             return splitted[1];
@@ -777,40 +885,31 @@ string CSystemInfo::availableHDSpace (const string &filename)
 #endif
 }
 
-
-uint32 CSystemInfo::availablePhysicalMemory ()
+uint64 CSystemInfo::availablePhysicalMemory ()
 {
 #ifdef NL_OS_WINDOWS
-
 	MEMORYSTATUS ms;
 	GlobalMemoryStatus (&ms);
-	return ms.dwAvailPhys;
-
+	return uint64(ms.dwAvailPhys);
+#elif defined NL_OS_MAC
+	return uint64(getsysctlnum64("hw.usermem"));
 #elif defined NL_OS_UNIX
-
 	return getSystemMemory("MemFree:")+getSystemMemory("Buffers:")+getSystemMemory("Cached:");
-
-#else
-
-	return 0;
-
 #endif
+	return 0;
 }
 
-uint32 CSystemInfo::totalPhysicalMemory ()
+uint64 CSystemInfo::totalPhysicalMemory ()
 {
 #ifdef NL_OS_WINDOWS
-
 	MEMORYSTATUS ms;
 	GlobalMemoryStatus (&ms);
-	return ms.dwTotalPhys;
-
+	return uint64(ms.dwTotalPhys);
+#elif defined NL_OS_MAC
+	return uint64(getsysctlnum64("hw.physmem"));
 #elif defined NL_OS_UNIX
-
 	return getSystemMemory("MemTotal:");
-	
 #endif
-
 	return 0;
 }
 
@@ -829,9 +928,9 @@ static inline char *skipToken(const char *p)
 }
 #endif
 
-uint32 CSystemInfo::getAllocatedSystemMemory ()
+uint64 CSystemInfo::getAllocatedSystemMemory ()
 {
-	uint systemMemory = 0;
+	uint64 systemMemory = 0;
 #ifdef NL_OS_WINDOWS
 	// Get system memory informations
 	HANDLE hHeap[100];
@@ -952,7 +1051,7 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 	/* Get the device name with EnumDisplayDevices (doesn't work under win95).
 	 * Look for driver information for this device in the registry
 	 *
-	 * Follow the recommandations in the news group comp.os.ms-windows.programmer.nt.kernel-mode : "Get Video Driver ... Need Version"
+	 * Follow the recommendations in the news group comp.os.ms-windows.programmer.nt.kernel-mode : "Get Video Driver ... Need Version"
 	 */
 
 	bool debug = false;
@@ -1062,12 +1161,12 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 
 					// * Read the registry 
 					HKEY baseKey;
-					if (RegOpenKeyEx(keyRoot, keyPath.c_str(), 0, KEY_READ, &baseKey) == ERROR_SUCCESS)
+					if (RegOpenKeyExA(keyRoot, keyPath.c_str(), 0, KEY_READ, &baseKey) == ERROR_SUCCESS)
 					{
 						DWORD valueType;
 						char value[512];
 						DWORD size = 512;
-						if (RegQueryValueEx(baseKey, keyName.c_str(), NULL, &valueType, (unsigned char *)value, &size) == ERROR_SUCCESS)
+						if (RegQueryValueExA(baseKey, keyName.c_str(), NULL, &valueType, (unsigned char *)value, &size) == ERROR_SUCCESS)
 						{
 							// Null ?
 							if (value[0] != 0)
@@ -1077,10 +1176,10 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 								{
 									// In Windows'XP we got service name -> not real driver name, so
 									string xpKey = string ("System\\CurrentControlSet\\Services\\")+value;
-									if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, xpKey.c_str(), 0, KEY_READ, &baseKey) == ERROR_SUCCESS)
+									if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, xpKey.c_str(), 0, KEY_READ, &baseKey) == ERROR_SUCCESS)
 									{
 										size = 512;
-										if (RegQueryValueEx(baseKey, "ImagePath", NULL, &valueType, (unsigned char *)value, &size) == ERROR_SUCCESS)
+										if (RegQueryValueExA(baseKey, "ImagePath", NULL, &valueType, (unsigned char *)value, &size) == ERROR_SUCCESS)
 										{
 											if (value[0] != 0)
 											{
@@ -1097,7 +1196,7 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 								}
 
 								// Version dll link
-								HMODULE hmVersion = LoadLibrary ("version");
+								HMODULE hmVersion = LoadLibrary (_T("version"));
 								if (hmVersion)
 								{
 									BOOL (WINAPI* _GetFileVersionInfo)(LPTSTR, DWORD, DWORD, LPVOID) = NULL;
@@ -1112,11 +1211,11 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 										string driverName = value;
 										if (atleastNT4)
 										{
-											nlverify (GetWindowsDirectory(value, 512) != 0);
+											nlverify (GetWindowsDirectoryA(value, 512) != 0);
 										}
 										else
 										{
-											nlverify (GetSystemDirectory(value, 512) != 0);
+											nlverify (GetSystemDirectoryA(value, 512) != 0);
 										}
 										driverName = string (value) + "\\" + driverName;
 
@@ -1176,16 +1275,13 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 	return false;
 }
 
-uint32 CSystemInfo::virtualMemory ()
+uint64 CSystemInfo::virtualMemory ()
 {
 #ifdef NL_OS_WINDOWS
-
 	MEMORYSTATUS ms;
 	GlobalMemoryStatus (&ms);
-	return ms.dwTotalVirtual - ms.dwAvailVirtual;
-
+	return uint64(ms.dwTotalVirtual - ms.dwAvailVirtual);
 #endif
-
 	return 0;
 }
 

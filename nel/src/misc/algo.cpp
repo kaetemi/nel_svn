@@ -82,7 +82,7 @@ bool		testWildCard(const char *strIn, const char *wildCard)
 
 				// in strIn, search all the occurence of token. For each solution, recurs test.
 				string	sCopy= strIn;
-				uint	pos= sCopy.find(token, 0);
+				string::size_type pos= sCopy.find(token, 0);
 				while(pos!=string::npos)
 				{
 					// do a testWildCard test on the remaining string/wildCard
@@ -121,8 +121,8 @@ bool		testWildCard(const char *strIn, const char *wildCard)
 // ***************************************************************************
 void		splitString(const std::string &str, const std::string &separator, std::vector<std::string> &retList)
 {
-	uint	pos=0;
-	uint	newPos=0;
+	string::size_type pos=0;
+	string::size_type newPos=0;
 	retList.clear();
 	while( (newPos= str.find(separator,pos)) != string::npos)
 	{
@@ -133,7 +133,7 @@ void		splitString(const std::string &str, const std::string &separator, std::vec
 		pos= newPos+separator.size();
 	}
 	// copy the last substr
-	if( pos<(uint)str.size() )
+	if( pos<str.size() )
 		retList.push_back(str.substr(pos, str.size()-pos));
 }
 
@@ -141,8 +141,8 @@ void		splitString(const std::string &str, const std::string &separator, std::vec
 // ***************************************************************************
 void		splitUCString(const ucstring &ucstr, const ucstring &separator, std::vector<ucstring> &retList)
 {
-	uint	pos=0;
-	uint	newPos=0;
+	string::size_type pos=0;
+	string::size_type newPos=0;
 	retList.clear();
 	while( (newPos= ucstr.find(separator,pos)) != ucstring::npos)
 	{
@@ -153,7 +153,7 @@ void		splitUCString(const ucstring &ucstr, const ucstring &separator, std::vecto
 		pos= newPos+separator.size();
 	}
 	// copy the last substr
-	if( pos<(uint)ucstr.size() )
+	if( pos<ucstr.size() )
 		retList.push_back(ucstr.substr(pos, ucstr.size()-pos));
 }
 

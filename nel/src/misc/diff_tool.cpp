@@ -246,7 +246,7 @@ ucstring prepareStringFile(const vector<TStringInfo> &strings, bool removeDiffCo
 		const TStringInfo &si = *first;
 		string comment = si.Comments.toString();
 		vector<string>	lines;
-		explode(comment, "\n", lines, true);
+		explode(comment, string("\n"), lines, true);
 
 		uint i;
 		for (i=0; i<lines.size(); ++i)
@@ -545,7 +545,7 @@ ucstring preparePhraseFile(const vector<TPhrase> &phrases, bool removeDiffCommen
 		{
 			string comment = p.Comments.toString();
 			vector<string>	lines;
-			explode(comment, "\n", lines, true);
+			explode(comment, string("\n"), lines, true);
 
 			uint i;
 			for (i=0; i<lines.size(); ++i)

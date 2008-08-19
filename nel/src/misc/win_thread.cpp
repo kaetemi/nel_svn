@@ -29,9 +29,9 @@
 
 #include "nel/misc/win_thread.h"
 #include "nel/misc/path.h"
+#define NOMINMAX
 #include <windows.h>
 
-// Debug : Sept 01 2006
 #include <typeinfo>
 
 namespace NLMISC {
@@ -191,7 +191,7 @@ void CWinThread::start ()
 //	ThreadHandle = (void *) ::CreateThread (NULL, _StackSize, ProxyFunc, this, 0, (DWORD *)&ThreadId);
 	ThreadHandle = (void *) ::CreateThread (NULL, 0, ProxyFunc, this, 0, (DWORD *)&ThreadId);
 //	nldebug("NLMISC: thread %x started for runnable '%x'", typeid( Runnable ).name());
-	OutputDebugString(toString(NL_LOC_MSG " NLMISC: thread %x started for runnable '%s'\n", ThreadId, typeid( *Runnable ).name()).c_str());
+//	OutputDebugString(toString(NL_LOC_MSG " NLMISC: thread %x started for runnable '%s'\n", ThreadId, typeid( *Runnable ).name()).c_str());
 	SetThreadPriorityBoost (ThreadHandle, TRUE); // FALSE == Enable Priority Boost
 	if (ThreadHandle == NULL)
 	{

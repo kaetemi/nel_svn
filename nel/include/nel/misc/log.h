@@ -45,8 +45,6 @@ class IDisplayer;
  * See the nldebug/nlinfo... macros in debug.h.
  *
  * \ref log_howto
- * \todo cado: display() and displayRaw() should save the string and send it only when displayRawNL()
- * (or a flush()-style method) is called.
  * \author Vianney Lecroart, Olivier Cado
  * \author Nevrax France
  * \date 2001

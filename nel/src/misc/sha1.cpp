@@ -126,7 +126,9 @@ typedef struct SHA1Context
 
 
 // Because the code does some tricky stuff, VC>6 would cry at runtime
-#pragma runtime_checks( "", off )
+#ifdef _MFC_VER
+	#pragma runtime_checks( "", off )
+#endif
 
 
 //
@@ -231,8 +233,9 @@ CHashKey getSHA1(const string &filename)
 	return hk;
 }
 
-
-
+#ifdef _MFC_VER
+	#pragma runtime_checks( "", off )
+#endif
 
 /*
  *  Define the SHA1 circular left shift macro
@@ -591,5 +594,6 @@ void SHA1PadMessage(SHA1Context *context)
     SHA1ProcessMessageBlock(context);
 }
 
-
-#pragma runtime_checks( "", restore )
+#ifdef _MFC_VER
+	#pragma runtime_checks( "", restore )
+#endif

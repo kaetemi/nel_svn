@@ -296,7 +296,7 @@ public:
 		return _Value;
 	}
 
-	std::string getStat () const
+	std::string getStat (bool light = false) const
 	{
 		CSString str;
 		str << _CommandName << "=" << _Value << " Min=" << _Min;
@@ -315,20 +315,24 @@ public:
 		}
 		if (_Mean.getNumFrame()>0)
 		{
-			str << " RecentMean=" << _Mean.getSmoothValue() << " RecentValues=";
-			// output the oldest part of the buffer first
-			for (uint i=_Mean.getCurrentFrame(); i<_Mean.getNumFrame(); ++i)
+			str << " RecentMean=" << _Mean.getSmoothValue();
+			if(!light)
 			{
-				str << _Mean.getLastFrames()[i];
-				if (i < _Mean.getNumFrame()-1 || _Mean.getCurrentFrame() != 0)
-					str << ",";
-			}
-			// then output the newest part
-			for (uint i = 0; i < _Mean.getCurrentFrame(); i++)
-			{
-				str << _Mean.getLastFrames()[i];
-				if (i < _Mean.getCurrentFrame()-1)
-					str << ",";
+				str << " RecentValues=";
+				// output the oldest part of the buffer first
+				for (uint i=_Mean.getCurrentFrame(); i<_Mean.getNumFrame(); ++i)
+				{
+					str << _Mean.getLastFrames()[i];
+					if (i < _Mean.getNumFrame()-1 || _Mean.getCurrentFrame() != 0)
+						str << ",";
+				}
+				// then output the newest part
+				for (uint i = 0; i < _Mean.getCurrentFrame(); i++)
+				{
+					str << _Mean.getLastFrames()[i];
+					if (i < _Mean.getCurrentFrame()-1)
+						str << ",";
+				}
 			}
 		}
 		return str;
@@ -499,6 +503,7 @@ private:
 class IVariableChangedCallback
 {
 public:
+	virtual ~IVariableChangedCallback() {};
 	virtual void onVariableChanged(NLMISC::IVariable& var) = 0;
 };
 

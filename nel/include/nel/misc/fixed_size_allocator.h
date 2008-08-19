@@ -40,8 +40,6 @@ namespace NLMISC
   *
   * NB : number of blocks per chunks must be at least 3
   * 
-  * \todo thread safety
-  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2004

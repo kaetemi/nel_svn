@@ -24,12 +24,12 @@
  */
 
 #include "stdmisc.h"
-#include "nel/misc/mutex.h"
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif // _GNU_SOURCE
 
+#include "nel/misc/mutex.h"
 #include "nel/misc/time_nl.h"
 
 #ifdef MUTEX_DEBUG
@@ -56,9 +56,8 @@ using namespace std;
 // these defines are for IsDebuggerPresent(). It'll not compile on windows 95
 // just comment this and the IsDebuggerPresent to compile on windows 95
 #define _WIN32_WINDOWS	0x0410
-#ifndef WINVER
-	#define WINVER		0x0400
-#endif
+#define WINVER			0x0400
+#define NOMINMAX
 #include <windows.h>
 
 
@@ -333,10 +332,10 @@ namespace NLMISC {
 
 CUnfairMutex::CUnfairMutex()
 {
-	pthread_mutexattr_t attr;
+    pthread_mutexattr_t attr;
 	pthread_mutexattr_init( &attr );
 	// Fast mutex. Note: on Windows all mutexes are recursive
-	pthread_mutexattr_setkind_np( &attr, PTHREAD_MUTEX_RECURSIVE_NP ); //PTHREAD_MUTEX_ERRORCHECK_NP );//PTHREAD_MUTEX_ADAPTIVE_NP );
+	pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
 	pthread_mutex_init( &mutex, &attr );
 	pthread_mutexattr_destroy( &attr );
 }
@@ -350,7 +349,7 @@ CUnfairMutex::CUnfairMutex(const std::string &name)
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init( &attr );
 	// Fast mutex. Note: on Windows all mutexes are recursive
-	pthread_mutexattr_setkind_np( &attr, PTHREAD_MUTEX_RECURSIVE_NP ); //PTHREAD_MUTEX_ERRORCHECK_NP );//PTHREAD_MUTEX_ADAPTIVE_NP );
+	pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
 	pthread_mutex_init( &mutex, &attr );
 	pthread_mutexattr_destroy( &attr );
 }

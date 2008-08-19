@@ -442,7 +442,6 @@ CVector		CMatrix::getK() const
 // ======================================================================================================
 void		CMatrix::get(float m44[16]) const
 {
-	// \todo yoyo: TODO_OPTIMIZE_it.
 	testExpandRot();
 	testExpandProj();
 	memcpy(m44, M, 16*sizeof(float));
@@ -893,7 +892,7 @@ void		CMatrix::setMulMatrix(const CMatrix &m1, const CMatrix &m2)
 	//=================
 	if( StateBit & MAT_PROJ )
 	{
-		// optimise nothing... (projection matrix are rare).
+		// optimize nothing... (projection matrix are rare).
 		m1.testExpandRot();
 		m1.testExpandProj();
 		m2.testExpandRot();
@@ -1041,7 +1040,7 @@ bool	CMatrix::slowInvert44(CMatrix &ret) const
 	{
 		for(j=0;j<=3;j++)
 		{
-			sint	l1,l2,l3;
+			sint	l1=0,l2=0,l3=0;
 			sint	c1,c2,c3;
 			getCofactIndex(i,l1,l2,l3);
 			getCofactIndex(j,c1,c2,c3);
@@ -1093,7 +1092,6 @@ CMatrix		CMatrix::inverted() const
 
 	CMatrix	ret;
 
-	// \todo yoyo: TODO_OPTIMIZE it...
 	testExpandRot();
 	testExpandProj();
 
@@ -1182,7 +1180,6 @@ bool		CMatrix::normalize(TRotOrder ro)
 	tj= getJ();
 	tk= getK();
 
-	// \todo yoyo: TODO_OPTIMIZE it...
 	testExpandRot();
 
 	// Normalize with help of ro
@@ -1299,7 +1296,6 @@ CVectorH	CMatrix::operator*(const CVectorH& v) const
 
 	CVectorH ret;
 
-	// \todo yoyo: TODO_OPTIMIZE it...
 	testExpandRot();
 	testExpandProj();
 
@@ -1314,10 +1310,8 @@ CVectorH	CMatrix::operator*(const CVectorH& v) const
 // ======================================================================================================
 CPlane		operator*(const CPlane &p, const CMatrix &m)
 {
-	// \todo yoyo: TODO_OPTIMIZE it...
 	m.testExpandRot();
 	m.testExpandProj();
-
 
 	CPlane	ret;
 

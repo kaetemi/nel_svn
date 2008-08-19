@@ -209,10 +209,7 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 {
 	if (!quiet)
 	{
-		ucstring temp;
-		temp.fromUtf8(commandWithArgs);
-		string disp = temp.toString();
-		log.displayNL ("Executing command : '%s'", disp.c_str());
+		log.displayNL ("Executing command : '%s'", commandWithArgs.c_str());
 	}
 
 	// true to indicate that '"', ';' and '\' are special character sequence control
@@ -435,10 +432,10 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 {
 	// Take out the string before the last separator and remember it as a prefix
 	string objectName;
-	uint32 lastseppos = commandName.find_last_of( " " );
+	string::size_type lastseppos = commandName.find_last_of( " " );
 	{
 		// eventually use the last dot as separator
-		uint32 lastDot = commandName.find_last_of( "." );
+		string::size_type lastDot = commandName.find_last_of( "." );
 		if (lastDot != string::npos 
 			&& (lastseppos == string::npos || lastDot > lastseppos))
 		{
@@ -542,7 +539,7 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 	{
 		// Stop loop when a name size is i or names[i] are different
 		string commonstr = commandName;
-		uint i = commandName.size();
+		size_t i = commandName.size();
 		while ( true )
 		{
 			char letter = 0;

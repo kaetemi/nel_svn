@@ -100,7 +100,7 @@ CSheetId::CSheetId( const string& sheetName )
 		std::string stack;
 		NLMISC::getCallStack(stack);
 		std::vector<std::string> contexts;
-		NLMISC::explode(stack, "\n", contexts);
+		NLMISC::explode(stack, string("\n"), contexts);
 		nldebug("Dumping callstack :");
 		for (uint i=0; i<contexts.size(); ++i)
 			nldebug("  %3u : %s", i, contexts[i].c_str());

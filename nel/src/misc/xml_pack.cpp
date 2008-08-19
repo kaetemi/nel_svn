@@ -214,7 +214,7 @@ namespace NLMISC
 		// split the name appart from the '@@' separator to get the pack file name 
 		// and subfile name
 		vector<string>	parts;
-		explode(sFileName, "@@", parts, true);
+		explode(sFileName, string("@@"), parts, true);
 		if (parts.size() != 2)
 		{
 			nlwarning("CXMLPack::getFile : Can't extract pack and filename from '%s', found %u part instead of 2 when spliting apart from '@@'",

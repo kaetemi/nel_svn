@@ -27,11 +27,12 @@
 #include "nel/misc/shared_memory.h"
 
 #ifdef NL_OS_WINDOWS
-#include <windows.h>
+#	define NOMINMAX
+#	include <windows.h>
 #else
-# include <sys/types.h>
-# include <sys/ipc.h>
-# include <sys/shm.h>
+#	include <sys/types.h>
+#	include <sys/ipc.h>
+#	include <sys/shm.h>
 #endif
 
 using namespace std;

@@ -1,8 +1,6 @@
 /** \file bitmap.cpp
  * Class managing bitmaps
  *
- * \todo yoyo: readDDS and decompressDXTC* must work in BigEndifan and LittleEndian.
- *
  * $Id: bitmap.cpp,v 1.66 2006/09/14 16:56:08 cado Exp $
  */
 
@@ -101,17 +99,17 @@ void MakeWhite(CBitmap &bitmaps)
 #endif // NEL_ALL_BITMAP_WHITE
 
 /*-------------------------------------------------------------------*\
-								load		
+								load
 \*-------------------------------------------------------------------*/
-uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip) 
+uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 {
 	/* ***********************************************
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
-	nlassert(f.isReading()); 
-	
+
+	nlassert(f.isReading());
+
 	// testing if DDS
 	uint32 fileType = 0;;
 	f.serial(fileType);
@@ -125,7 +123,7 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 		return readDDS(f, mipMapSkip);
 #endif // NEL_ALL_BITMAP_WHITE
 	}
-	else if (fileType == PNG) 
+	else if (fileType == PNG)
 	{
 #ifdef NL_OS_WINDOWS
 		return readPNG(f);
@@ -136,7 +134,7 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 	}
 
 	// assuming it's TGA
-	else 
+	else
 	{
 		NLMISC::IStream::TSeekOrigin origin= f.begin;
 		if(!f.seek (0, origin))
@@ -144,7 +142,7 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 			throw ESeekFailed();
 		}
 
-		// Reading header, 
+		// Reading header,
 		// To make sure that the bitmap is TGA, we check imageType and imageDepth.
 		uint8	lengthID;
 		uint8	cMapType;
@@ -158,7 +156,7 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 		uint16	height;
 		uint8	imageDepth;
 		uint8	desc;
-		
+
 		f.serial(lengthID);
 		f.serial(cMapType);
 		f.serial(imageType);
@@ -185,18 +183,18 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 #else // NEL_ALL_BITMAP_WHITE
 		return readTGA(f);
 #endif // NEL_ALL_BITMAP_WHITE
-		
-	}	
+
+	}
 	return 0;
 }
 
 
 /*-------------------------------------------------------------------*\
-								makeDummy		
+								makeDummy
 \*-------------------------------------------------------------------*/
 void	CBitmap::makeDummy()
 {
-	static	const uint8	bitmap[1024]= {  
+	static	const uint8	bitmap[1024]= {
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
@@ -229,18 +227,18 @@ void	CBitmap::makeDummy()
 		0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}; 
+	};
 
 	makeDummyFromBitField(bitmap);
 }
 
 
 /*-------------------------------------------------------------------*\
-								makeDummy		
+								makeDummy
 \*-------------------------------------------------------------------*/
 void	CBitmap::makeNonPowerOf2Dummy()
 {
-	static	const uint8	bitmap[1024]= {  
+	static	const uint8	bitmap[1024]= {
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,
@@ -273,8 +271,8 @@ void	CBitmap::makeNonPowerOf2Dummy()
 		0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}; 
-	
+	};
+
 	makeDummyFromBitField(bitmap);
 }
 
@@ -292,7 +290,7 @@ void	CBitmap::makeDummyFromBitField(const uint8	bitmap[1024])
 	for(sint m=1;m<MAX_MIPMAP;m++)
 		_Data[m].clear();
 	NLMISC::CRGBA	*pix= (NLMISC::CRGBA*)(_Data[0].getPtr());
-	
+
 	for(sint i=0;i<(sint)(_Width*_Height);i++)
 	{
 		if(bitmap[i])
@@ -306,7 +304,7 @@ void	CBitmap::makeDummyFromBitField(const uint8	bitmap[1024])
 
 
 /*-------------------------------------------------------------------*\
-								readDDS		
+								readDDS
 \*-------------------------------------------------------------------*/
 uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 {
@@ -314,15 +312,14 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	//------------------ Reading Header ------------------------
 
 	//-------------- reading entire header
-	
+
 	uint32 size = 0;
 	f.serial(size); // size in Bytes of header(without "DDS")
-	 uint32 * _DDSSurfaceDesc = new uint32[size]; 
-	 std::auto_ptr<uint32> _DDSSurfaceDescAuto(_DDSSurfaceDesc);
+	 uint32 * _DDSSurfaceDesc = new uint32[size];
 	_DDSSurfaceDesc[0]= size;
 
 #ifdef NL_LITTLE_ENDIAN
@@ -333,16 +330,18 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 		f.serial(_DDSSurfaceDesc[i+1]);
 	}
 #endif
-	
+
 	// flags determines which members of the header structure contain valid data
 	uint32 flags = _DDSSurfaceDesc[1];
 
 	//verify if file have linearsize set
-	if(!(flags & DDSD_LINEARSIZE)) 
+	if(!(flags & DDSD_LINEARSIZE))
     {
-		throw EDDSBadHeader();
+		nlwarning("A DDS doesn't have the flag DDSD_LINEARSIZE");
+		//delete [] _DDSSurfaceDesc;
+		//throw EDDSBadHeader();
 	}
-	
+
 	//-------------- extracting and testing useful info
 
 	_Height = _DDSSurfaceDesc[2];
@@ -363,16 +362,37 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 		PixelFormat=DXTC5;
 		break;
 	}
-	
+
 	flags = _DDSSurfaceDesc[19]; //PixelFormat flags
-	
+
+/*	ace: I changed this code because it's not a way to detect if DXTC1 has a alpha channel or not
+		There's no easy way to detect if the DXTC1 has an alpha channel or not, so, for now, we'll suppose
+		that all DXTC1 has alpha channel per default.
+
+		"There is no flag unfortunately, you need to read each block of DXT1 data, check if one of the colors
+		contains alpha, and check if that color is used in the data.
+		It's not that hard to write, but it IS a pain that it's the only way that I've found to check for alpha."
+		http://www.gamedev.net/community/forums/topic.asp?topic_id=177475
+
+		UPDATE: worst... on linux/opengl, it generates random alpha values
+		if we use alpha dxtc1 by default. So I only to that for windows
+		and leave the old test on linux
+*/
+#ifdef NL_OS_WINDOWS
+	if(PixelFormat==DXTC1) //AlphaBitDepth
+	{
+		PixelFormat = DXTC1Alpha;
+	}
+#else
 	if(PixelFormat==DXTC1 && _DDSSurfaceDesc[21]>0) //AlphaBitDepth
 	{
 		PixelFormat = DXTC1Alpha;
 	}
-	
+#endif
+
 	if(PixelFormat!= DXTC1 && PixelFormat!= DXTC1Alpha && PixelFormat!= DXTC3 && PixelFormat!= DXTC5)
 	{
+		delete [] _DDSSurfaceDesc;
 		throw EDDSBadHeader();
 	}
 
@@ -380,10 +400,10 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 	uint	minSizeLevel= min(_Width, _Height);
 	minSizeLevel= getPowerOf2(minSizeLevel);
 
-	//------------- manage mipMapSkip 
+	//------------- manage mipMapSkip
 	if(_MipMapCount>1 && mipMapSkip>0 && minSizeLevel>2)
 	{
-		// Keep at least the level where width and height are at leat 4.
+		// Keep at least the level where width and height are at least 4.
 		mipMapSkip= min(mipMapSkip, minSizeLevel-2);
 		// skip any mipmap
 		uint	seekSize= 0;
@@ -394,7 +414,7 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 			uint32 htmp= (_Height+3)&(~3);
 			wtmp= max(wtmp, uint32(4));
 			htmp= max(htmp, uint32(4));
-			
+
 			uint32 mipMapSz;
 			if(PixelFormat==DXTC1 || PixelFormat==DXTC1Alpha)
 				mipMapSz = wtmp*htmp/2;
@@ -415,6 +435,7 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 		{
 			if(!f.seek(seekSize, IStream::current))
 			{
+				delete [] _DDSSurfaceDesc;
 				throw ESeekFailed();
 			}
 		}
@@ -434,7 +455,7 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 		uint32 htmp= (h+3)&(~3);
 		wtmp= max(wtmp, uint32(4));
 		htmp= max(htmp, uint32(4));
-		
+
 		uint32 mipMapSz;
 		if(PixelFormat==DXTC1 || PixelFormat==DXTC1Alpha)
 			mipMapSz = wtmp*htmp/2;
@@ -456,7 +477,7 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 
 
 	//------------- reading mipmap levels from pixData
-	
+
 	uint32 pixIndex= 0;
 
 	for(m= 0; m<_MipMapCount; m++)
@@ -467,6 +488,8 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 	}
 
 	//------------- End
+
+	delete [] _DDSSurfaceDesc;
 
 	switch(PixelFormat)
 	{
@@ -490,7 +513,7 @@ bool CBitmap::convertToDXTC5()
 {
 	/* Yoyo: RGB encoding for DXTC1 and DXTC5/3 are actually different!!
 		DXTC3/5 don't rely on sign of color0>color1 to setup special encoding (ie use a special compression for Black)
-		Since this can arise if the src is DXTC1 , we can't simply compress it into DXTC5 without doing a 
+		Since this can arise if the src is DXTC1 , we can't simply compress it into DXTC5 without doing a
 		heavy compression...
 		(the inverse is false: DXTC5 to DXTC1 is possible, with maybe swap color0/color1 and bits).
 	*/
@@ -538,7 +561,7 @@ bool CBitmap::luminanceToRGBA()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-	
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -566,7 +589,7 @@ bool CBitmap::alphaToRGBA()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-	
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -595,7 +618,7 @@ bool CBitmap::alphaLuminanceToRGBA()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-	
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -626,7 +649,7 @@ bool CBitmap::rgbaToAlphaLuminance()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-	
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -638,7 +661,7 @@ bool CBitmap::rgbaToAlphaLuminance()
 			dataTmp[dstId++]= (_Data[m][i]*77 + _Data[m][i+1]*150 + _Data[m][i+2]*28)/255;
 			dataTmp[dstId++]= _Data[m][i+3];
 		}
-		NLMISC::contReset(_Data[m]); 
+		NLMISC::contReset(_Data[m]);
 		_Data[m].resize(0);
 		_Data[m] = dataTmp;
 	}
@@ -655,7 +678,7 @@ bool CBitmap::luminanceToAlphaLuminance()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -683,7 +706,7 @@ bool CBitmap::alphaToAlphaLuminance()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -711,7 +734,7 @@ bool CBitmap::rgbaToLuminance()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -722,7 +745,7 @@ bool CBitmap::rgbaToLuminance()
 		{
 			dataTmp[dstId++]= (_Data[m][i]*77 + _Data[m][i+1]*150 + _Data[m][i+2]*28)/255;
 		}
-		NLMISC::contReset(_Data[m]); 
+		NLMISC::contReset(_Data[m]);
 		_Data[m].resize(0);
 		_Data[m] = dataTmp;
 	}
@@ -738,7 +761,7 @@ bool CBitmap::rgbaToLuminance()
 bool CBitmap::alphaToLuminance()
 {
 	if(_Width*_Height == 0)  return false;
-		
+
 	PixelFormat = Luminance;
 	return true;
 }
@@ -753,7 +776,7 @@ bool CBitmap::alphaLuminanceToLuminance()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -767,7 +790,7 @@ bool CBitmap::alphaLuminanceToLuminance()
 			dataTmp[dstId++]= 0;
 			dataTmp[dstId++]= _Data[m][i];
 		}
-		NLMISC::contReset(_Data[m]); 
+		NLMISC::contReset(_Data[m]);
 		_Data[m].resize(0);
 		_Data[m] = dataTmp;
 	}
@@ -784,7 +807,7 @@ bool CBitmap::rgbaToAlpha()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -795,7 +818,7 @@ bool CBitmap::rgbaToAlpha()
 		{
 			dataTmp[dstId++]= _Data[m][i+3];
 		}
-		NLMISC::contReset(_Data[m]); 
+		NLMISC::contReset(_Data[m]);
 		_Data[m].resize(0);
 		_Data[m] = dataTmp;
 	}
@@ -812,7 +835,7 @@ bool CBitmap::luminanceToAlpha()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -838,7 +861,7 @@ bool CBitmap::alphaLuminanceToAlpha()
 	uint32 i;
 
 	if(_Width*_Height == 0)  return false;
-		
+
 	for(uint8 m= 0; m<_MipMapCount; m++)
 	{
 		CObjectVector<uint8> dataTmp;
@@ -849,7 +872,7 @@ bool CBitmap::alphaLuminanceToAlpha()
 		{
 			dataTmp[dstId++]= _Data[m][i+1];
 		}
-		NLMISC::contReset(_Data[m]); 
+		NLMISC::contReset(_Data[m]);
 		_Data[m].resize(0);
 		_Data[m] = dataTmp;
 	}
@@ -966,11 +989,11 @@ bool CBitmap::convertToRGBA()
 			break;
 
 		case DXTC3 :
-			return decompressDXT3();	
+			return decompressDXT3();
 			break;
 
 		case DXTC5 :
-			return decompressDXT5();		
+			return decompressDXT5();
 			break;
 
 		case Luminance :
@@ -1008,7 +1031,7 @@ bool CBitmap::convertToType(CBitmap::TType type)
 			break;
 
 		case DXTC5 :
-			return convertToDXTC5();		
+			return convertToDXTC5();
 			break;
 
 		case Luminance :
@@ -1026,7 +1049,7 @@ bool CBitmap::convertToType(CBitmap::TType type)
 		default:
 			break;
 	}
-	
+
 	return false;
 }
 
@@ -1041,7 +1064,7 @@ bool CBitmap::decompressDXT1(bool alpha)
 	uint32 i,j,k;
 	NLMISC::CRGBA	c[4];
 	CObjectVector<uint8> dataTmp[MAX_MIPMAP];
-	
+
 	uint32 width= _Width;
 	uint32 height= _Height;
 
@@ -1057,13 +1080,13 @@ bool CBitmap::decompressDXT1(bool alpha)
 		else
 			htmp = height;
 		uint32 mipMapSz = wtmp*htmp*4;
-		dataTmp[m].resize(mipMapSz); 
+		dataTmp[m].resize(mipMapSz);
 		if(dataTmp[m].size()<mipMapSz)
 		{
 			throw EAllocationFailure();
 		}
 		uint32 wBlockCount= wtmp/4;
-		
+
 
 
 		for(i=0; i < _Data[m].size(); i+=8)
@@ -1076,10 +1099,10 @@ bool CBitmap::decompressDXT1(bool alpha)
 			memcpy(&bits,&_Data[m][i+4],4);
 
 			uncompress(color0,c[0]);
-			uncompress(color1,c[1]);	
-			
+			uncompress(color1,c[1]);
+
 			if (alpha)
-			{			
+			{
 				c[0].A= 0;
 				c[1].A= 0;
 				c[2].A= 0;
@@ -1092,13 +1115,13 @@ bool CBitmap::decompressDXT1(bool alpha)
 				c[2].A= 255;
 				c[3].A= 255;
 			}
-			
+
 			if(color0>color1)
 			{
 				c[2].blendFromui(c[0],c[1],85);
 				if(alpha) c[2].A= 255;
 
-				c[3].blendFromui(c[0],c[1],171);	
+				c[3].blendFromui(c[0],c[1],171);
 				if(alpha) c[3].A= 255;
 			}
 			else
@@ -1110,7 +1133,7 @@ bool CBitmap::decompressDXT1(bool alpha)
 			}
 
 			// computing the 16 RGBA of the block
-			
+
 			uint32 blockNum= i/8; //(64 bits)
 			// <previous blocks in above lines> * 4 (rows) * _Width (columns) + 4pix*4rgba*<same line previous blocks>
 			uint32 pixelsCount= 4*(blockNum/wBlockCount)*wtmp*4 + 4*4*(blockNum%wBlockCount);
@@ -1166,7 +1189,7 @@ bool CBitmap::decompressDXT3()
 	uint32 i,j,k;
 	NLMISC::CRGBA	c[4];
 	CObjectVector<uint8> dataTmp[MAX_MIPMAP];
-	
+
 	uint32 width= _Width;
 	uint32 height= _Height;
 
@@ -1182,13 +1205,13 @@ bool CBitmap::decompressDXT3()
 		else
 			htmp = height;
 		uint32 mipMapSz = wtmp*htmp*4;
-		dataTmp[m].resize(mipMapSz); 
+		dataTmp[m].resize(mipMapSz);
 		if(dataTmp[m].size()<mipMapSz)
 		{
 			throw EAllocationFailure();
 		}
 		uint32 wBlockCount= wtmp/4;
-		
+
 
 		for(i=0; i < _Data[m].size(); i+=16)
 		{
@@ -1213,14 +1236,14 @@ bool CBitmap::decompressDXT3()
 			memcpy(&bits,&_Data[m][i+12],4);
 
 			uncompress(color0,c[0]);
-			uncompress(color1,c[1]);	
-						
+			uncompress(color1,c[1]);
+
 			// ignore color0>color1 for DXT3 and DXT5.
 			c[2].blendFromui(c[0],c[1],85);
-			c[3].blendFromui(c[0],c[1],171);	
+			c[3].blendFromui(c[0],c[1],171);
 
 			// computing the 16 RGBA of the block
-			
+
 			uint32 blockNum= i/16; //(128 bits)
 			// <previous blocks in above lines> * 4 (rows) * wtmp (columns) + 4pix*4rgba*<same line previous blocks>
 			uint32 pixelsCount= 4*(blockNum/wBlockCount)*wtmp*4 + 4*4*(blockNum%wBlockCount);
@@ -1276,7 +1299,7 @@ bool CBitmap::decompressDXT5()
 	uint32 i,j,k;
 	NLMISC::CRGBA	c[4];
 	CObjectVector<uint8> dataTmp[MAX_MIPMAP];
-	
+
 	uint32 width= _Width;
 	uint32 height= _Height;
 
@@ -1292,13 +1315,13 @@ bool CBitmap::decompressDXT5()
 		else
 			htmp = height;
 		uint32 mipMapSz = wtmp*htmp*4;
-		dataTmp[m].resize(mipMapSz); 
+		dataTmp[m].resize(mipMapSz);
 		if(dataTmp[m].size()<mipMapSz)
 		{
 			throw EAllocationFailure();
 		}
 		uint32 wBlockCount= wtmp/4;
-		
+
 
 
 		for(i=0; i < _Data[m].size(); i+=16)
@@ -1310,7 +1333,7 @@ bool CBitmap::decompressDXT5()
 			uint32 alpha[8];
 			alpha[0]= _Data[m][i+0];
 			alpha[1]= _Data[m][i+1];
-			
+
 			if(alpha[0]>alpha[1])
 			{
 				alpha[2]= blend(alpha[0], alpha[1], 219);
@@ -1333,7 +1356,7 @@ bool CBitmap::decompressDXT5()
 			uint8 codeAlpha[16];
 			for(j=0; j<16; j++)
 			{
-				codeAlpha[j] = (bitsAlpha & 7);
+				codeAlpha[j] = (uint8)bitsAlpha & 7;
 				bitsAlpha>>=3;
 			}
 
@@ -1346,14 +1369,14 @@ bool CBitmap::decompressDXT5()
 			memcpy(&bits,&_Data[m][i+12],4);
 
 			uncompress(color0,c[0]);
-			uncompress(color1,c[1]);	
-			
+			uncompress(color1,c[1]);
+
 			// ignore color0>color1 for DXT3 and DXT5.
 			c[2].blendFromui(c[0],c[1],85);
-			c[3].blendFromui(c[0],c[1],171);	
+			c[3].blendFromui(c[0],c[1],171);
 
 			// computing the 16 RGBA of the block
-			
+
 			uint32 blockNum= i/16; //(128 bits)
 
 			// <previous blocks in above lines> * 4 (rows) * wtmp (columns) + 4pix*<same line previous blocks>
@@ -1409,7 +1432,7 @@ bool CBitmap::decompressDXT5()
 /*-------------------------------------------------------------------*\
 							blend
 \*-------------------------------------------------------------------*/
-uint32 CBitmap::blend(uint32 &n0, uint32 &n1, uint32 coef0) 
+uint32 CBitmap::blend(uint32 &n0, uint32 &n1, uint32 coef0)
 {
 	int	a0 = coef0;
 	int	a1 = 256-a0;
@@ -1437,11 +1460,11 @@ inline void CBitmap::uncompress(uint16 color, NLMISC::CRGBA &r)
 uint32 CBitmap::getWidth(uint32 mipMap) const
 {
 	if(mipMap==0) return _Width;
-	
+
 	uint32 w = _Width;
 	uint32 h = _Height;
 	uint32 m = 0;
-	
+
 	do
 	{
 		m++;
@@ -1462,7 +1485,7 @@ uint32 CBitmap::getWidth(uint32 mipMap) const
 uint32 CBitmap::getHeight(uint32 mipMap) const
 {
 	if(mipMap==0) return _Height;
-	
+
 	uint32 w = _Width;
 	uint32 h = _Height;
 	uint32 m = 0;
@@ -1501,7 +1524,7 @@ void CBitmap::buildMipMaps()
 	if(_MipMapCount!=1) return;
 	if(!NLMISC::isPowerOf2(_Width)) return;
 	if(!NLMISC::isPowerOf2(_Height)) return;
-	
+
 	uint32 w = _Width;
 	uint32 h = _Height;
 
@@ -1515,8 +1538,7 @@ void CBitmap::buildMipMaps()
 		uint32	mulh= prech/h;
 
 		_Data[_MipMapCount].resize(w*h*4);
-		
-	
+
 		NLMISC::CRGBA *pRgba = (NLMISC::CRGBA*)&_Data[_MipMapCount][0];
 		NLMISC::CRGBA *pRgbaPrev = (NLMISC::CRGBA*)&_Data[_MipMapCount-1][0];
 		for(i=0; i<h; i++)
@@ -1568,13 +1590,13 @@ uint32 CBitmap::computeNeededMipMapCount() const
 	if(_MipMapCount == 0) return 0;
 	if(!NLMISC::isPowerOf2(_Width)) return 1;
 	if(!NLMISC::isPowerOf2(_Height)) return 1;
-	
+
 	uint32 mipMapCount = 1;
 	uint32 w = _Width;
 	uint32 h = _Height;
 
 	while(w>1 || h>1)
-	{		
+	{
 		w = (w+1)/2;
 		h = (h+1)/2;
 		++mipMapCount;
@@ -1592,7 +1614,7 @@ void CBitmap::releaseMipMaps()
 	_MipMapCount=1;
 	for(sint i=1;i<MAX_MIPMAP;i++)
 	{
-		NLMISC::contReset(_Data[i]); 
+		NLMISC::contReset(_Data[i]);
 	}
 }
 
@@ -1620,7 +1642,7 @@ void CBitmap::resample(sint32 nNewWidth, sint32 nNewHeight)
 		logResample("Resample: 25");
 		return;
 	}
-	
+
 	logResample("Resample: 30");
 	CObjectVector<uint8> pDestui;
 	pDestui.resize(nNewWidth*nNewHeight*4);
@@ -1716,7 +1738,7 @@ void CBitmap::reset(TType type)
 	}
 	_Width = _Height = 0;
 	_MipMapCount= 1;
-	
+
 	// Change pixel format
 	PixelFormat=type;
 }
@@ -1726,8 +1748,8 @@ void CBitmap::reset(TType type)
 /*-------------------------------------------------------------------*\
 							resamplePicture32
 \*-------------------------------------------------------------------*/
-void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest, 
-								 sint32 nSrcWidth, sint32 nSrcHeight, 
+void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest,
+								 sint32 nSrcWidth, sint32 nSrcHeight,
 								 sint32 nDestWidth, sint32 nDestHeight)
 {
 	logResample("RP32: 0 pSrc=%p pDest=%p, Src=%d x %d Dest=%d x %d", pSrc, pDest, nSrcWidth, nSrcHeight, nDestWidth, nDestHeight);
@@ -1735,7 +1757,7 @@ void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest
 		return;
 
 	// If we're reducing it by 2, call the fast resample
-	if (((nSrcHeight / 2) == nDestHeight) && ((nSrcHeight % 2) == 0) && 
+	if (((nSrcHeight / 2) == nDestHeight) && ((nSrcHeight % 2) == 0) &&
 		((nSrcWidth  / 2) == nDestWidth)  && ((nSrcWidth  % 2) == 0))
 	{
 		resamplePicture32Fast(pSrc, pDest, nSrcWidth, nSrcHeight, nDestWidth, nDestHeight);
@@ -1747,7 +1769,7 @@ void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest
 	bool bXEq=(nDestWidth==nSrcWidth);
 	bool bYEq=(nDestHeight==nSrcHeight);
 	std::vector<NLMISC::CRGBAF> pIterm (nDestWidth*nSrcHeight);
-	
+
 	if (bXMag)
 	{
 		float fXdelta=(float)(nSrcWidth)/(float)(nDestWidth);
@@ -1833,7 +1855,7 @@ void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest
 			pSrc+=nSrcWidth;
 		}
 	}
-				
+
 	if (bYMag)
 	{
 		double fYdelta=(double)(nSrcHeight)/(double)(nDestHeight);
@@ -1916,8 +1938,8 @@ void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest
 /*-------------------------------------------------------------------*\
 							resamplePicture32Fast
 \*-------------------------------------------------------------------*/
-void CBitmap::resamplePicture32Fast (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest, 
-									 sint32 nSrcWidth, sint32 nSrcHeight, 
+void CBitmap::resamplePicture32Fast (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest,
+									 sint32 nSrcWidth, sint32 nSrcHeight,
 									 sint32 nDestWidth, sint32 nDestHeight)
 {
 	// the image is divided by two : 1 pixel in dest = 4 pixels in src
@@ -1936,9 +1958,9 @@ void CBitmap::resamplePicture32Fast (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *p
 		for (x=0 ; x<nDestWidth ; x++)
 		{
 			twoX = 2*x;
-			pDest[x+y*nDestWidth].avg4( pSrc[twoX   + twoSrcWidthByY             ], 
-										pSrc[twoX   + twoSrcWidthByY + nSrcWidth ], 
-										pSrc[twoX+1 + twoSrcWidthByY             ], 
+			pDest[x+y*nDestWidth].avg4( pSrc[twoX   + twoSrcWidthByY             ],
+										pSrc[twoX   + twoSrcWidthByY + nSrcWidth ],
+										pSrc[twoX+1 + twoSrcWidthByY             ],
 										pSrc[twoX+1 + twoSrcWidthByY + nSrcWidth ]);
 		}
 	}
@@ -1955,7 +1977,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	if(!f.isReading()) return 0;
 
 	uint32			size;
@@ -1979,9 +2001,9 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 	uint8	imageDepth;
 	uint8	desc;
 
-	
+
 	// Determining whether file is in Original or New TGA format
-	
+
 	bool newTgaFormat;
 	uint32 extAreaOffset;
 	uint32 devDirectoryOffset;
@@ -2006,7 +2028,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 
 	// Reading TGA file header
 	f.seek (0, f.begin);
-		
+
 	f.serial(lengthID);
 	f.serial(cMapType);
 	f.serial(imageType);
@@ -2035,11 +2057,11 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 
 
 	// Reading TGA image data
-	
+
 	_Width = width;
 	_Height = height;
 	size = _Width * _Height * (imageDepth/8);
-	
+
 	switch(imageType)
 	{
 		// Uncompressed RGB or RGBA
@@ -2067,7 +2089,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 					{
 						mult = 2;
 					}
-					if(imageDepth==32)  
+					if(imageDepth==32)
 					{
 						mult = 4;
 					}
@@ -2086,9 +2108,9 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 						}
 					}
 				}
-				
+
 				k=0;
-				for(i=0; i<width; i++) 
+				for(i=0; i<width; i++)
 				{
 					if(upSideDown)
 					{
@@ -2139,7 +2161,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 							else
 								_Data[0][y*width*4 + 4*i + 3] = 255;
 						}
-					}	
+					}
 				}
 			}
 
@@ -2147,7 +2169,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 			delete []scanline;
 		};
 		break;
-		
+
 		// Uncompressed Grayscale bitmap
 		case 3:
 		{
@@ -2167,7 +2189,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 				f.serialBuffer (scanline, slsize);
 
 				k=0;
-				for(i=0; i<width; i++) 
+				for(i=0; i<width; i++)
 				{
 					if(upSideDown)
 						_Data[0][(height-y-1)*width + i] = scanline[k++];
@@ -2195,8 +2217,8 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 			while(readSize < imageSize)
 			{
 				f.serial(packet);
-				if((packet & 0x80) > 0) // packet RLE 
-				{ 
+				if((packet & 0x80) > 0) // packet RLE
+				{
 					for(i=0; i<imageDepth/8; i++)
 					{
 						f.serial(pixel[i]);
@@ -2213,8 +2235,8 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 						}
 					}
 				}
-				else	// packet Raw 
-				{ 
+				else	// packet Raw
+				{
 					for(i=0; i<((packet & 0x7F) + 1); i++)
 					{
 						for(j=0; j<imageDepth/8; j++)
@@ -2240,7 +2262,7 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 				readSize += (packet & 0x7F) + 1;
 			}
 			PixelFormat = RGBA;
-			
+
 			if (upSideDown) flipV();
 		};
 		break;
@@ -2258,16 +2280,16 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 			while(readSize < imageSize)
 			{
 				f.serial(packet);
-				if((packet & 0x80) > 0) // packet RLE 
-				{ 
+				if((packet & 0x80) > 0) // packet RLE
+				{
 					f.serial(pixel[0]);
 					for (i=0; i < (packet & 0x7F) + 1; i++)
 					{
 						_Data[0][dstId++]= pixel[0];
 					}
 				}
-				else	// packet Raw 
-				{ 
+				else	// packet Raw
+				{
 					for(i=0; i<((packet & 0x7F) + 1); i++)
 					{
 						f.serial(pixel[0]);
@@ -2308,6 +2330,8 @@ bool CBitmap::writeTGA( NLMISC::IStream &f, uint32 d, bool upsideDown)
 		case Alpha:
 			d = 8;
 			break;
+		default:
+			;
 		}
 	}
 	if(d!=24 && d!=32 && d!=16 && d!=8) return false;
@@ -2361,7 +2385,7 @@ bool CBitmap::writeTGA( NLMISC::IStream &f, uint32 d, bool upsideDown)
 
 	for(y=0; y<(sint32)height; y++)
 	{
-		
+
 		uint32 k=0;
 		if (PixelFormat == Alpha)
 		{
@@ -2397,7 +2421,7 @@ bool CBitmap::writeTGA( NLMISC::IStream &f, uint32 d, bool upsideDown)
 				}
 			}
 		}
-		
+
 		if(d==16)
 		{
 			for(x=0; x<(sint32)width; x++)
@@ -2435,16 +2459,16 @@ bool CBitmap::writeTGA( NLMISC::IStream &f, uint32 d, bool upsideDown)
 				a= scanline[x*4+3];
 				scanline[x*4+0] = b;
 				scanline[x*4+1] = g;
-				scanline[x*4+2] = r;				
+				scanline[x*4+2] = r;
 				scanline[x*4+3] = a;
 			}
 		}
-		
+
 		int finaleSize=width*d/8;
 		for(i=0; i<finaleSize; i++)
 		{
 			f.serial(scanline[i]);
-		}		
+		}
 	}
 	delete []scanline;
 	return true;
@@ -2554,7 +2578,7 @@ void CBitmap::blit(const CBitmap &src, sint srcX, sint srcY, sint srcWidth, sint
 	{
 		srcHeight = getHeight() - destY;
 		if (srcHeight <= 0) return;
-	}	
+	}
 	uint32 *srcPixels = (uint32 *) &src.getPixels()[0];
 	uint32 *srcPtr = &(srcPixels[srcX + srcY * src.getWidth()]);
 	uint32 *srcEndPtr = srcPtr + srcHeight * src.getWidth();
@@ -2566,13 +2590,13 @@ void CBitmap::blit(const CBitmap &src, sint srcX, sint srcY, sint srcWidth, sint
 		srcPtr += src.getWidth();
 		destPtr += getWidth();
 	}
-	
+
 }
 
 
 bool CBitmap::blit(const CBitmap *src, sint32 x, sint32 y)
 {
-	
+
 	nlassert(this->PixelFormat == src->PixelFormat);
 	if (this->PixelFormat != src->PixelFormat)
 	{
@@ -2586,7 +2610,7 @@ bool CBitmap::blit(const CBitmap *src, sint32 x, sint32 y)
 
 	// number of bits for a 4x4 pix block
 	const uint dxtcNumBits  =  PixelFormat == DXTC1 || PixelFormat == DXTC1Alpha ? 64 : 128;
-	
+
 
 	if (useDXTC)
 	{
@@ -2661,7 +2685,7 @@ bool CBitmap::blit(const CBitmap *src, sint32 x, sint32 y)
 		width >>= 2;
 		height >>= 2;
 	}
-	
+
 
 	// bytes per pixs is for either one pixel or 16 (a 4x4 block in DXTC)
 	const uint bytePerPixs = ( useDXTC ? dxtcNumBits : bitPerPixels[PixelFormat] ) >> 3 /* divide by 8 to get the number of bytes */;
@@ -2669,14 +2693,14 @@ bool CBitmap::blit(const CBitmap *src, sint32 x, sint32 y)
 
 	const uint destRealWidth = useDXTC ? (_Width >> 2) : _Width;
 	const uint srcRealWidth = useDXTC ? (src->_Width >> 2) : src->_Width;
-	
+
 
 	// size to go to the next line in the destination
 	const uint destStride = destRealWidth * bytePerPixs;
 
 	// size to go to the next line in the source
 	const uint srcStride = srcRealWidth * bytePerPixs;
-	
+
 	// length in bytes of a line to copy
 	const uint lineLength = width * bytePerPixs;
 
@@ -2692,7 +2716,7 @@ bool CBitmap::blit(const CBitmap *src, sint32 x, sint32 y)
 		srcPos += srcStride;
 	}
 
-	
+
 	return true;
 }
 
@@ -2752,7 +2776,7 @@ CRGBAF CBitmap::getColor (float x, float y) const
 	}
 
 	// Decimal part of (x,y)
-	x = x - (float)nX[0]; 
+	x = x - (float)nX[0];
 	y = y - (float)nY[0];
 
 	switch (this->PixelFormat)
@@ -2762,7 +2786,7 @@ CRGBAF CBitmap::getColor (float x, float y) const
 		case DXTC1Alpha:
 		case DXTC3:
 		case DXTC5:
-		{									
+		{
 			CRGBAF finalVal;
 			CRGBA val[4];
 
@@ -2791,13 +2815,13 @@ CRGBAF CBitmap::getColor (float x, float y) const
 			finalVal.A = getColorInterp (x, y, val[0].A, val[1].A, val[2].A, val[3].A);
 			finalVal /= 255.f;
 
-			return finalVal;			
+			return finalVal;
 		}
 		break;
 		case Alpha:
 		case Luminance:
 		{
-			
+
 			float finalVal;
 			float val[4];
 
@@ -2816,7 +2840,7 @@ CRGBAF CBitmap::getColor (float x, float y) const
 		default: break;
 	}
 
-	return CRGBAF (0.0f, 0.0f, 0.0f, 0.0f);	
+	return CRGBAF (0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 // wrap a value inside the given range (for positive value it is like a modulo)
@@ -2827,7 +2851,7 @@ static inline uint32 wrap(sint32 value, uint32 range)
 
 
 CRGBAF CBitmap::getColor(float x, float y, bool tileU, bool tileV) const
-{	
+{
 	sint32 nWidth = getWidth(0);
 	sint32 nHeight = getHeight(0);
 	if (nWidth == 0 || nHeight == 0) return CRGBAF(0, 0, 0, 0);
@@ -2835,36 +2859,36 @@ CRGBAF CBitmap::getColor(float x, float y, bool tileU, bool tileV) const
 	sint32 nX[4], nY[4];
 
 	if (!tileU)
-	{	
+	{
 		if (x < 0.0f) x = 0.0f;
-		if (x > 1.0f) x = 1.0f;		
-		x *= nWidth-1;		
-		nX[0] = ((sint32)floor(x));		
-		nX[1] = (nX[0] < (nWidth-1) ? nX[0]+1 : nX[0]);		
-		nX[2] = nX[0];		
-		nX[3] = nX[1];		
+		if (x > 1.0f) x = 1.0f;
+		x *= nWidth-1;
+		nX[0] = ((sint32)floor(x));
+		nX[1] = (nX[0] < (nWidth-1) ? nX[0]+1 : nX[0]);
+		nX[2] = nX[0];
+		nX[3] = nX[1];
 		uint32 i;
 		for (i = 0; i < 4; ++i)
 		{
-			nlassert (nX[i] >= 0);			
-			nlassert (nX[i] < nWidth);			
-		}		
+			nlassert (nX[i] >= 0);
+			nlassert (nX[i] < nWidth);
+		}
 	}
 	else
 	{
-		x *= nWidth;		
-		nX[0] = wrap((sint32)floorf(x), nWidth);		
-		nX[1] = wrap(nX[0] + 1, nWidth);		
-		nX[2] = nX[0];		
-		nX[3] = nX[1];		
+		x *= nWidth;
+		nX[0] = wrap((sint32)floorf(x), nWidth);
+		nX[1] = wrap(nX[0] + 1, nWidth);
+		nX[2] = nX[0];
+		nX[3] = nX[1];
 	}
 	//
 	if (!tileV)
-	{			
+	{
 		if (y < 0.0f) y = 0.0f;
-		if (y > 1.0f) y = 1.0f;		
-		y *= nHeight-1;		
-		nY[0] = ((sint32)floor(y));		
+		if (y > 1.0f) y = 1.0f;
+		y *= nHeight-1;
+		nY[0] = ((sint32)floor(y));
 		nY[1] = nY[0];
 		nY[2] = (nY[0] < (nHeight-1) ? nY[0]+1 : nY[0]);
 		nY[3] = nY[2];
@@ -2873,20 +2897,20 @@ CRGBAF CBitmap::getColor(float x, float y, bool tileU, bool tileV) const
 		{
 			nlassert (nY[i] >= 0 );
 			nlassert (nY[i] < nHeight);
-		}		
+		}
 	}
 	else
 	{
-		y *= nHeight;		
-		nY[0] = wrap((sint32)floorf(y), nHeight);		
-		nY[1] = nY[0];		
-		nY[2] = wrap(nY[0] + 1, nHeight);		
+		y *= nHeight;
+		nY[0] = wrap((sint32)floorf(y), nHeight);
+		nY[1] = nY[0];
+		nY[2] = wrap(nY[0] + 1, nHeight);
 		nY[3] = nY[2];
 	}
 	// Decimal part of (x,y)
-	x = x - (float)nX[0]; 
+	x = x - (float)nX[0];
 	y = y - (float)nY[0];
-	const CObjectVector<uint8> &rBitmap = getPixels(0);	
+	const CObjectVector<uint8> &rBitmap = getPixels(0);
 	switch (this->PixelFormat)
 	{
 		case RGBA:
@@ -2894,7 +2918,7 @@ CRGBAF CBitmap::getColor(float x, float y, bool tileU, bool tileV) const
 		case DXTC1Alpha:
 		case DXTC3:
 		case DXTC5:
-		{									
+		{
 			CRGBAF finalVal;
 			CRGBA val[4];
 
@@ -2923,13 +2947,13 @@ CRGBAF CBitmap::getColor(float x, float y, bool tileU, bool tileV) const
 			finalVal.A = getColorInterp (x, y, val[0].A, val[1].A, val[2].A, val[3].A);
 			finalVal /= 255.f;
 
-			return finalVal;			
+			return finalVal;
 		}
 		break;
 		case Alpha:
 		case Luminance:
 		{
-			
+
 			float finalVal;
 			float val[4];
 
@@ -2957,9 +2981,8 @@ void	CBitmap::loadSize(NLMISC::IStream &f, uint32 &retWidth, uint32 &retHeight)
 	retWidth= 0;
 	retHeight= 0;
 
+	nlassert(f.isReading());
 
-	nlassert(f.isReading()); 
-	
 	// testing if DDS
 	uint32 fileType = 0;
 	f.serial(fileType);
@@ -2968,37 +2991,40 @@ void	CBitmap::loadSize(NLMISC::IStream &f, uint32 &retWidth, uint32 &retHeight)
 		// read entire DDS header.
 		uint32 size = 0;
 		f.serial(size); // size in Bytes of header(without "DDS")
-		uint32 * _DDSSurfaceDesc = new uint32[size]; 
-		std::auto_ptr<uint32> _DDSSurfaceDescAuto(_DDSSurfaceDesc);
+		uint32 * _DDSSurfaceDesc = new uint32[size];
 		_DDSSurfaceDesc[0]= size;
 
 		for(uint i= 0; i<size/4 - 1; i++)
 		{
 			f.serial(_DDSSurfaceDesc[i+1]);
 		}
-		
+
 		// flags determines which members of the header structure contain valid data
 		uint32 flags = _DDSSurfaceDesc[1];
 
 		//verify if file have linearsize set
-		if(!(flags & DDSD_LINEARSIZE)) 
+		if(!(flags & DDSD_LINEARSIZE))
 		{
-			throw EDDSBadHeader();
+			nlwarning("A DDS doesn't have the flag DDSD_LINEARSIZE");
+			//delete [] _DDSSurfaceDesc;
+			//throw EDDSBadHeader();
 		}
-		
+
 		//-------------- extracting and testing useful info
 		retHeight  = _DDSSurfaceDesc[2];
 		retWidth = _DDSSurfaceDesc[3];
+
+		delete [] _DDSSurfaceDesc;
 	}
 	// assuming it's TGA
-	else 
+	else
 	{
 		if(!f.seek (0, NLMISC::IStream::begin))
 		{
 			throw ESeekFailed();
 		}
 
-		// Reading header, 
+		// Reading header,
 		// To make sure that the bitmap is TGA, we check imageType and imageDepth.
 		uint8	lengthID;
 		uint8	cMapType;
@@ -3012,7 +3038,7 @@ void	CBitmap::loadSize(NLMISC::IStream &f, uint32 &retWidth, uint32 &retHeight)
 		uint16	height;
 		uint8	imageDepth;
 		uint8	desc;
-		
+
 		f.serial(lengthID);
 		f.serial(cMapType);
 		f.serial(imageType);
@@ -3108,9 +3134,9 @@ void	CBitmap::flipHDXTCBlockAlpha3(uint8 *blockAlpha, uint32 w)
 #ifdef NL_LITTLE_ENDIAN
 	uint64	bits= *(uint64*)blockAlpha;
 #else
-	uint64	bits= (uint64)blockAlpha[0] + ((uint64)blockAlpha[1]<<8) + 
-		((uint64)blockAlpha[2]<<16) + ((uint64)blockAlpha[3]<<24) + 
-		((uint64)blockAlpha[4]<<32) + ((uint64)blockAlpha[5]<<40) + 
+	uint64	bits= (uint64)blockAlpha[0] + ((uint64)blockAlpha[1]<<8) +
+		((uint64)blockAlpha[2]<<16) + ((uint64)blockAlpha[3]<<24) +
+		((uint64)blockAlpha[4]<<32) + ((uint64)blockAlpha[5]<<40) +
 		((uint64)blockAlpha[6]<<48) + ((uint64)blockAlpha[7]<<56);
 #endif
 
@@ -3168,8 +3194,8 @@ void	CBitmap::flipVDXTCBlockAlpha3(uint8 *blockAlpha, uint32 h)
 void	CBitmap::flipHDXTCBlockAlpha5(uint8 *bitAlpha, uint32 w)
 {
 	// pack into bits. Little Indian in all cases
-	uint64	bits= (uint64)bitAlpha[0] + ((uint64)bitAlpha[1]<<8) + 
-		((uint64)bitAlpha[2]<<16) + ((uint64)bitAlpha[3]<<24) + 
+	uint64	bits= (uint64)bitAlpha[0] + ((uint64)bitAlpha[1]<<8) +
+		((uint64)bitAlpha[2]<<16) + ((uint64)bitAlpha[3]<<24) +
 		((uint64)bitAlpha[4]<<32) + ((uint64)bitAlpha[5]<<40);
 
 	// swap in X for each line
@@ -3201,8 +3227,8 @@ void	CBitmap::flipHDXTCBlockAlpha5(uint8 *bitAlpha, uint32 w)
 void	CBitmap::flipVDXTCBlockAlpha5(uint8 *bitAlpha, uint32 h)
 {
 	// pack into bits. Little Indian in all cases
-	uint64	bits= (uint64)bitAlpha[0] + ((uint64)bitAlpha[1]<<8) + 
-		((uint64)bitAlpha[2]<<16) + ((uint64)bitAlpha[3]<<24) + 
+	uint64	bits= (uint64)bitAlpha[0] + ((uint64)bitAlpha[1]<<8) +
+		((uint64)bitAlpha[2]<<16) + ((uint64)bitAlpha[3]<<24) +
 		((uint64)bitAlpha[4]<<32) + ((uint64)bitAlpha[5]<<40);
 
 	// swap in Y
@@ -3305,21 +3331,21 @@ void	CBitmap::flipDXTCMipMap(bool vertical, uint mm, uint type)
 			uint8	*block= (uint8*)src;
 
 			// flip color bits
-			if(vertical)	flipVDXTCBlockColor(block+offsetColorBits, height); 
-			else			flipHDXTCBlockColor(block+offsetColorBits, width); 
+			if(vertical)	flipVDXTCBlockColor(block+offsetColorBits, height);
+			else			flipHDXTCBlockColor(block+offsetColorBits, width);
 
 			// flip alpha bits if any
 			if(type==3)
 			{
 				// point to the alpha part (16*4 bits)
-				if(vertical)	flipVDXTCBlockAlpha3(block, height); 
-				else			flipHDXTCBlockAlpha3(block, width); 
+				if(vertical)	flipVDXTCBlockAlpha3(block, height);
+				else			flipHDXTCBlockAlpha3(block, width);
 			}
 			else if(type==5)
 			{
 				// point to the bit alpha part (16*3 bits)
-				if(vertical)	flipVDXTCBlockAlpha5(block+2, height); 
-				else			flipHDXTCBlockAlpha5(block+2, width); 
+				if(vertical)	flipVDXTCBlockAlpha5(block+2, height);
+				else			flipHDXTCBlockAlpha5(block+2, width);
 			}
 		}
 	}
@@ -3340,7 +3366,7 @@ void	CBitmap::flipDXTC(bool vertical)
 		type=5;
 	else
 		return;
-	
+
 	// correct width/height?
 	sint32 nWidth = getWidth(0);
 	sint32 nHeight = getHeight(0);
@@ -3526,7 +3552,7 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 			nBm0 = &Bm0;
 		}
 		else
-		{		
+		{
 			cp0 = Bm0;
 			cp0.convertToRGBA();
 			nBm0 = &cp0;
@@ -3569,10 +3595,10 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 	const uint8 *src0		= &(nBm0->_Data[0][0]);
 	const uint8 *src1		= &(nBm1->_Data[0][0]);
 	uint8 *dest				= &(this->_Data[0][0]);
-	
 
-	#ifdef NL_OS_WINDOWS				
-	if (CSystemInfo::hasMMX())	
+
+	#ifdef NL_OS_WINDOWS
+	if (CSystemInfo::hasMMX())
 	{
 		// On a P4 2GHz, with a 256x256 texture, I got the following results :
 		// without mmx : 5.2 ms
@@ -3589,7 +3615,7 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 		bf0[0] = bf0[1] = bf0[2] = bf0[3] = (1 << 6) * (factor);
 		bf1[0] = bf1[1] = bf1[2] = bf1[3] = (1 << 6) * (256 - factor);
 		__asm
-		{			
+		{
 			mov esi, src0
 			mov eax, src1
 			mov edi, dest
@@ -3597,32 +3623,32 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 			mov ecx, numPix
 			shr ecx, 1 // process pixels 2 by 2
 			movq mm1, blendFactor0
-			movq mm0, blendFactor1 
-				
+			movq mm0, blendFactor1
+
 		myLoop:
 			pxor mm6, mm6
 			lea  ebx, [ebx + 8] // points next location
-			pxor mm7, mm7			
+			pxor mm7, mm7
 			movq mm2, [esi + ebx]
-			movq mm3, [eax + ebx]			
-			// do blend 
+			movq mm3, [eax + ebx]
+			// do blend
 			punpckhbw mm7, mm2  // mm7 contains src0 color 0 in high bytes
 			punpckhbw mm6, mm3  // mm6 contains src1 color 0 in high bytes
 			psrl	  mm7, 1
-			pxor mm4, mm4       // mm4 = 0			
+			pxor mm4, mm4       // mm4 = 0
 			psrl	  mm6, 1
 			pmulhw mm7, mm0     // src0 = src0 * blendFactor
 			pxor mm5, mm5       // mm5 = 0
 			pmulhw mm6, mm1     // src1 = src1 * (1 - blendfactor)
 			punpcklbw mm4, mm2  // mm4 contains src0 color 1 in high bytes
-			paddusw mm6, mm7    // mm6 = src0[0] blended with src1[0]			
+			paddusw mm6, mm7    // mm6 = src0[0] blended with src1[0]
 			psrl      mm4, 1
 			psrlw     mm6, 5
-			punpcklbw mm5, mm3  // mm4 contains src1 color 1 in high bytes			
+			punpcklbw mm5, mm3  // mm4 contains src1 color 1 in high bytes
 			psrl      mm5, 1
 			pmulhw    mm4, mm0     // src0 = src0 * blendFactor
 			pmulhw    mm5, mm1     // src1 = src1 * (1 - blendfactor)
-			paddusw   mm4, mm5    // mm6 = src0[1] blended with src1[1]			
+			paddusw   mm4, mm5    // mm6 = src0[1] blended with src1[1]
 			psrlw     mm4, 5
 			// pack result
 			packuswb  mm4, mm6
@@ -3638,16 +3664,16 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 			src1 += 4 * numPix;
 			dest += 4 * numPix;
 			uint blendFact    = (uint) factor;
-			uint invblendFact = 256 - blendFact;			
+			uint invblendFact = 256 - blendFact;
 			*dest = (uint8) (((blendFact * *src1)		+ (invblendFact * *src0)) >> 8);
 			*(dest + 1) = (uint8) (((blendFact * *(src1 + 1)) + (invblendFact * *(src0 + 1))) >> 8);
 			*(dest + 2) = (uint8) (((blendFact * *(src1 + 2)) + (invblendFact * *(src0 + 2))) >> 8);
 			*(dest + 3)  = (uint8) (((blendFact * *(src1 + 3)) + (invblendFact * *(src0 + 3))) >> 8);
 		}
-	}	
-	else	
-	#endif //#ifdef NL_OS_WINDOWS	
-	{	
+	}
+	else
+	#endif //#ifdef NL_OS_WINDOWS
+	{
 		uint8 *endPix			= dest + (numPix << 2);
 		// no mmx version
 		uint blendFact    = (uint) factor;
@@ -3662,7 +3688,7 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 
 			src0 = src0 + 4;
 			src1 = src1 + 4;
-			dest = dest + 4;	
+			dest = dest + 4;
 		}
 		while (dest != endPix);
 	}
@@ -3690,11 +3716,11 @@ CRGBA CBitmap::getDXTCColorFromBlock(const uint8 *block, sint x, sint y)
 	uint	colIndex = (block[4 + (y & 3)] >> ((x & 3) << 1)) & 3;
 	CRGBA   result, c0, c1;
 	if (col0 > col1)
-	{	
+	{
 		switch(colIndex)
 		{
 			case 0:
-				uncompress(col0, result);				
+				uncompress(col0, result);
 			break;
 			case 1:
 				uncompress(col1, result);
@@ -3709,6 +3735,8 @@ CRGBA CBitmap::getDXTCColorFromBlock(const uint8 *block, sint x, sint y)
 				uncompress(col1, c1);
 				result.blendFromui(c0, c1, 171);
 			break;
+		default:
+			;
 		}
 		result.A = 255;
 	}
@@ -3731,10 +3759,10 @@ CRGBA CBitmap::getDXTCColorFromBlock(const uint8 *block, sint x, sint y)
 				result.A = 255;
 			break;
 			case 3:
-				result.set(0, 0, 0, 0);				
+				result.set(0, 0, 0, 0);
 			break;
 		}
-	}	
+	}
 	return result;
 }
 
@@ -3743,10 +3771,10 @@ CRGBA CBitmap::getDXTC1Texel(sint x, sint y, uint32 numMipMap) const
 {
 	uint w = getWidth(numMipMap);
 	uint h = getHeight(numMipMap);
-	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases	
+	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases
 	uint numRowBlocks   = std::max((w + 3) >> 2, 1u);
 	const uint8 *pix    = &getPixels(numMipMap)[0];
-	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 3) + ((x >> 2) << 3));	
+	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 3) + ((x >> 2) << 3));
 	return getDXTCColorFromBlock(block, x, y);
 }
 
@@ -3756,14 +3784,14 @@ CRGBA CBitmap::getDXTC3Texel(sint x, sint y, uint32 numMipMap) const
 {
 	uint w = getWidth(numMipMap);
 	uint h = getHeight(numMipMap);
-	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases	
+	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases
 	uint numRowBlocks   = std::max((w + 3) >> 2, 1u);
 	const uint8 *pix    = &getPixels(numMipMap)[0];
-	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 4) + ((x >> 2) << 4));	
+	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 4) + ((x >> 2) << 4));
 	CRGBA result = getDXTCColorFromBlock(block + 8, x, y);
 	// get alpha part
 	uint8 alphaByte = block[((y & 3) << 1) + ((x & 2) >> 1)];
-	result.A = (x & 1) ?  (alphaByte & 0xf0) : (alphaByte << 4);
+	result.A = (x & 1) ?  (alphaByte & 0xf0) : ((alphaByte & 0x0f) << 4);
 	return result;
 }
 
@@ -3772,15 +3800,15 @@ CRGBA CBitmap::getDXTC5Texel(sint x, sint y, uint32 numMipMap) const
 {
 	uint w = getWidth(numMipMap);
 	uint h = getHeight(numMipMap);
-	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases	
+	if (w == 0 || h == 0 || (uint) x >= w || (uint) y >= h) return CRGBA::Black; // include negative cases
 	uint numRowBlocks   = std::max((w + 3) >> 2, 1u);
 	const uint8 *pix    = &getPixels(numMipMap)[0];
-	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 4) + ((x >> 2) << 4));	
+	const uint8 *block  = pix + ((y >> 2) * (numRowBlocks << 4) + ((x >> 2) << 4));
 	CRGBA result = getDXTCColorFromBlock(block + 8, x, y);
 	// get alpha part
 	uint8 alpha0 = block[0];
 	uint8 alpha1 = block[1];
-	
+
 	uint alphaIndex;
 	uint tripletIndex = (x & 3) + ((y & 3) << 2);
 	if (tripletIndex < 8)
@@ -3820,20 +3848,20 @@ CRGBA CBitmap::getDXTC5Texel(sint x, sint y, uint32 numMipMap) const
 			case 7: result.A = 255; break;
 		}
 	}
-	return result;	
+	return result;
 }
 
 
 //-----------------------------------------------
 CRGBA CBitmap::getPixelColor(sint x, sint y, uint32 numMipMap /*=0*/) const
 {
-	
+
 	switch (PixelFormat)
 	{
-		case RGBA:	
-			return getRGBAPixel(x, y, numMipMap);		
+		case RGBA:
+			return getRGBAPixel(x, y, numMipMap);
 		case DXTC1:
-		case DXTC1Alpha: 
+		case DXTC1Alpha:
 			return getDXTC1Texel(x, y, numMipMap);
 		case DXTC3:
 			return getDXTC3Texel(x, y, numMipMap);
@@ -3894,8 +3922,8 @@ void CBitmap::unattachPixels(CObjectVector<uint8> *mipmapDestArray, uint maxMipM
 
 void CBitmap::getData(uint8*& extractData)
 {
-	
-	uint32 size;
+
+	uint32 size=0;
 	if(PixelFormat==RGBA)
 		size=_Width*_Height*4;
 	else if(PixelFormat==Alpha||PixelFormat==Luminance)
@@ -3904,23 +3932,23 @@ void CBitmap::getData(uint8*& extractData)
 	{
 		nlstop;
 	}
-	
+
 	for(uint32 pix=0;pix<size;pix++)
 		extractData[pix]=_Data[0][pix];
-	
+
 }
 
 void CBitmap::getDibData(uint8*& extractData)
 {
-	
-	uint32 lineSize,size;
+
+	uint32 lineSize=0,size;
 	uint8** buf;
 	buf=new uint8*[_Height];
 	if(PixelFormat==RGBA)
 	{
 		lineSize=_Width*4;
-		
-		
+
+
 	}
 	else if(PixelFormat==Alpha||PixelFormat==Luminance)
 	{
@@ -3930,21 +3958,21 @@ void CBitmap::getDibData(uint8*& extractData)
 	{
 		nlstop;
 	}
-	
+
 	for(sint32 i=_Height-1;i>=0;i--)
 	{
 		buf[_Height-1-i]=&_Data[0][i*lineSize];
 	}
-	
+
 	size=lineSize*_Height;
-	
+
 	for(uint32 line=0;line<_Height;line++)
 	{
 		for(uint32 pix=0;pix<lineSize;pix++)
 			extractData[line*lineSize+pix]=_Data[0][size-(line+1)*lineSize+pix];
 	}
 	delete []buf;
-	
+
 }
 
 } // NLMISC

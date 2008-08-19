@@ -105,6 +105,7 @@ class CWinProcess : public IProcess
 public:
 
 	CWinProcess (void *handle);
+	virtual ~CWinProcess() {} // TODO do something with _ProcessHandle?
 
 	virtual uint64 getCPUMask();
 	virtual bool setCPUMask(uint64 mask);

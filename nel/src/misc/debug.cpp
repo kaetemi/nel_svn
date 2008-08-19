@@ -39,11 +39,11 @@
 
 #ifdef NL_OS_WINDOWS
 #	define _WIN32_WINDOWS	0x0410
-#	ifndef WINVER
-#		define WINVER		0x0400
-#	endif
+#	define WINVER			0x0400
+#	define NOMINMAX
 #	include <windows.h>
 #	include <direct.h>
+#	include <tchar.h>
 #	include <imagehlp.h>
 #	pragma comment(lib, "imagehlp.lib")
 #	define getcwd(_a, _b) (_getcwd(_a,_b))
@@ -52,8 +52,10 @@
 #	include <cstdio>
 #	include <cstdlib>
 #	define IsDebuggerPresent() false
-#	include <execinfo.h>
-#	include <malloc.h>
+#   ifndef NL_OS_MAC
+#	    include <execinfo.h>
+#   endif
+//#	include <malloc.h>
 #	include <errno.h>
 #endif
 
@@ -61,7 +63,7 @@
 #include <iostream>
 
 using namespace std;
- 
+
 // If you don't want to add default displayer, put 0 instead of 1. In this case, you
 // have to manage yourself displayer (in final release for example, we have to put 0)
 // Alternatively, you can use --without-logging when using configure to set
@@ -84,15 +86,15 @@ using namespace std;
 // If true, debug system will trap crashs even if the appli is in debugger
 static const bool TrapCrashInDebugger = false;
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 //
 // Globals
 //
 
-bool DissableNLDebug= false;
-NLMISC::CVariablePtr<bool> _DissableNLDebug("nel","DissableNLDebug","Dissables generation and output of nldebug logs (no code associated with the log generation is executed)",&DissableNLDebug,true);
+bool DisableNLDebug= false;
+NLMISC::CVariablePtr<bool> _DisableNLDebug("nel","DisableNLDebug","Disables generation and output of nldebug logs (no code associated with the log generation is executed)",&DisableNLDebug,true);
 
 
 //bool DebugNeedAssert = false;
@@ -184,11 +186,10 @@ void nlFatalError (const char *format, ...)
 			NLMISC_BREAKPOINT;
 
 #ifndef NL_OS_WINDOWS
-	
+
 	//	exit(EXIT_FAILURE);
 	abort ();
 #endif
-
 }
 
 void nlError (const char *format, ...)
@@ -217,38 +218,35 @@ static void initDebug2 (bool logInFile)
 
 	// put the standard displayer everywhere
 
-	if (DebugLog==NULL)
-		return;
-
-  //#ifdef NL_DEBUG
-	DebugLog->addDisplayer (sd);
-	//#endif // NL_DEBUG
-	InfoLog->addDisplayer (sd);
-	WarningLog->addDisplayer (sd);
-	AssertLog->addDisplayer (sd);
-	ErrorLog->addDisplayer (sd);
+//#ifdef NL_DEBUG
+	INelContext::getInstance().getDebugLog()->addDisplayer (sd);
+//#endif // NL_DEBUG
+	INelContext::getInstance().getInfoLog()->addDisplayer (sd);
+	INelContext::getInstance().getWarningLog()->addDisplayer (sd);
+	INelContext::getInstance().getAssertLog()->addDisplayer (sd);
+	INelContext::getInstance().getErrorLog()->addDisplayer (sd);
 
 	// put the memory displayer everywhere
 
 	// use the memory displayer and bypass all filter (even for the debug mode)
-	DebugLog->addDisplayer (DefaultMemDisplayer, true);
-	InfoLog->addDisplayer (DefaultMemDisplayer, true);
-	WarningLog->addDisplayer (DefaultMemDisplayer, true);
-	AssertLog->addDisplayer (DefaultMemDisplayer, true);
-	ErrorLog->addDisplayer (DefaultMemDisplayer, true);
+	INelContext::getInstance().getDebugLog()->addDisplayer (DefaultMemDisplayer, true);
+	INelContext::getInstance().getInfoLog()->addDisplayer (DefaultMemDisplayer, true);
+	INelContext::getInstance().getWarningLog()->addDisplayer (DefaultMemDisplayer, true);
+	INelContext::getInstance().getAssertLog()->addDisplayer (DefaultMemDisplayer, true);
+	INelContext::getInstance().getErrorLog()->addDisplayer (DefaultMemDisplayer, true);
 
 	// put the file displayer only if wanted
 
 #if LOG_IN_FILE
 	if (logInFile)
 	{
-	  //#ifdef NL_DEBUG
-		DebugLog->addDisplayer (fd);
-		//#endif // NL_DEBUG
-		InfoLog->addDisplayer (fd);
-		WarningLog->addDisplayer (fd);
-		AssertLog->addDisplayer (fd);
-		ErrorLog->addDisplayer (fd);
+//#ifdef NL_DEBUG
+		INelContext::getInstance().getDebugLog()->addDisplayer (fd);
+//#endif // NL_DEBUG
+		INelContext::getInstance().getInfoLog()->addDisplayer (fd);
+		INelContext::getInstance().getWarningLog()->addDisplayer (fd);
+		INelContext::getInstance().getAssertLog()->addDisplayer (fd);
+		INelContext::getInstance().getErrorLog()->addDisplayer (fd);
 	}
 #endif // LOG_IN_FILE
 
@@ -256,8 +254,8 @@ static void initDebug2 (bool logInFile)
 
 	if (DefaultMsgBoxDisplayer)
 	{
-		AssertLog->addDisplayer (DefaultMsgBoxDisplayer);
-		ErrorLog->addDisplayer (DefaultMsgBoxDisplayer);
+		INelContext::getInstance().getAssertLog()->addDisplayer (DefaultMsgBoxDisplayer);
+		INelContext::getInstance().getErrorLog()->addDisplayer (DefaultMsgBoxDisplayer);
 	}
 
 #endif // DEFAULT_DISPLAYER
@@ -317,7 +315,7 @@ static DWORD __stdcall GetModuleBase(HANDLE hProcess, DWORD dwReturnAddress)
 		 cch = GetModuleFileNameA((HINSTANCE)memoryBasicInfo.AllocationBase,
 								 szFile, MAX_PATH);
 
-		if (cch && (lstrcmp(szFile, "DBFN")== 0))
+		if (cch && (lstrcmpA(szFile, "DBFN")== 0))
 		{
 			 if (!SymLoadModule(hProcess,
 				   NULL, "MN",
@@ -353,7 +351,7 @@ LPVOID __stdcall FunctionTableAccess (HANDLE hProcess, DWORD AddrBase)
 	AddrBase = 0x40291f;
 	DWORD addr = SymGetModuleBase (hProcess, AddrBase);
 	HRESULT hr = GetLastError ();
-	
+
 	IMAGEHLP_MODULE moduleInfo;
 	moduleInfo.SizeOfStruct = sizeof(IMAGEHLP_MODULE);
 	SymGetModuleInfo(hProcess, addr, &moduleInfo);
@@ -371,28 +369,28 @@ typedef struct _NEL_MINIDUMP_EXCEPTION_INFORMATION {  DWORD ThreadId;  PEXCEPTIO
 } NEL_MINIDUMP_EXCEPTION_INFORMATION, *PNEL_MINIDUMP_EXCEPTION_INFORMATION;
 typedef enum _NEL_MINIDUMP_TYPE
 {
-  MiniDumpNormal = 0x00000000, 
-  MiniDumpWithDataSegs = 0x00000001, 
-  MiniDumpWithFullMemory = 0x00000002, 
-  MiniDumpWithHandleData = 0x00000004, 
-  MiniDumpFilterMemory = 0x00000010, 
-  MiniDumpWithUnloaded = 0x00000020, 
-  MiniDumpWithIndirectlyReferencedMemory = 0x00000040, 
-  MiniDumpFilterModulePaths = 0x00000080, 
-  MiniDumpWithProcessThreadData = 0x00000100, 
-  MiniDumpWithPrivateReadWriteMemory = 0x00000200, 
-  MiniDumpWithoutOptionalData = 0x00000400, 
-  MiniDumpWithFullMemoryInfo = 0x00000800, 
-  MiniDumpWithThreadInfo = 0x00001000, 
+  MiniDumpNormal = 0x00000000,
+  MiniDumpWithDataSegs = 0x00000001,
+  MiniDumpWithFullMemory = 0x00000002,
+  MiniDumpWithHandleData = 0x00000004,
+  MiniDumpFilterMemory = 0x00000010,
+  MiniDumpWithUnloaded = 0x00000020,
+  MiniDumpWithIndirectlyReferencedMemory = 0x00000040,
+  MiniDumpFilterModulePaths = 0x00000080,
+  MiniDumpWithProcessThreadData = 0x00000100,
+  MiniDumpWithPrivateReadWriteMemory = 0x00000200,
+  MiniDumpWithoutOptionalData = 0x00000400,
+  MiniDumpWithFullMemoryInfo = 0x00000800,
+  MiniDumpWithThreadInfo = 0x00001000,
   MiniDumpWithCodeSegs = 0x00002000
 } NEL_MINIDUMP_TYPE;
 
 static void DumpMiniDump(PEXCEPTION_POINTERS excpInfo)
 {
-	HANDLE file = CreateFile (NL_CRASH_DUMP_FILE, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE file = CreateFileA (NL_CRASH_DUMP_FILE, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (file)
 	{
-		HMODULE hm = LoadLibrary ("dbghelp.dll");
+		HMODULE hm = LoadLibraryA ("dbghelp.dll");
 		if (hm)
 		{
 			BOOL (WINAPI* MiniDumpWriteDump)(
@@ -440,8 +438,8 @@ static void DumpMiniDump(PEXCEPTION_POINTERS excpInfo)
 
 class EDebug : public ETrapDebug
 {
-public:	
-	
+public:
+
 	EDebug() { _Reason = "Nothing about EDebug"; }
 
 	~EDebug () { }
@@ -529,7 +527,7 @@ public:
 			if(!shortExc.empty() || !longExc.empty())
 			{
 				char name[1024];
-				GetModuleFileName (NULL, name, 1023);
+				GetModuleFileNameA (NULL, name, 1023);
 				progname = CFile::getFilename(name);
 				progname += " ";
 			}
@@ -547,7 +545,7 @@ public:
 
 			if(!shortExc.empty() || !longExc.empty())
 			{
-				// yoyo: allow only to send the crash report once. Because users usually click ignore, 
+				// yoyo: allow only to send the crash report once. Because users usually click ignore,
 				// which create noise into list of bugs (once a player crash, it will surely continues to do it).
 				bool i = false;
 				report (progname+shortExc, "", subject, _Reason, true, 1, true, 1, !isCrashAlreadyReported(), i, NL_CRASH_DUMP_FILE);
@@ -562,47 +560,48 @@ public:
 	void addStackAndLogToReason (sint skipNFirst = 0)
 	{
 #ifdef NL_OS_WINDOWS
-//		// ace hack
-//		skipNFirst = 0;
-//		
-//		DWORD symOptions = SymGetOptions();
-//		symOptions |= SYMOPT_LOAD_LINES;
-//		symOptions &= ~SYMOPT_UNDNAME;
-//		SymSetOptions (symOptions);
-//		
-//		nlverify (SymInitialize(getProcessHandle(), NULL, FALSE) == TRUE);
-//
-//		STACKFRAME callStack;
-//		::ZeroMemory (&callStack, sizeof(callStack));
-//		callStack.AddrPC.Mode      = AddrModeFlat;
-//		callStack.AddrPC.Offset    = m_pexp->ContextRecord->Eip;
-//		callStack.AddrStack.Mode   = AddrModeFlat;
-//		callStack.AddrStack.Offset = m_pexp->ContextRecord->Esp;
-//		callStack.AddrFrame.Mode   = AddrModeFlat;
-//		callStack.AddrFrame.Offset = m_pexp->ContextRecord->Ebp;
-//
-//		_Reason += "\nCallstack:\n";
-//		_Reason += "-------------------------------\n";
-//		for (sint32 i = 0; ; i++)
-//		{
-//			SetLastError(0);
-//			BOOL res = StackWalk (IMAGE_FILE_MACHINE_I386, getProcessHandle(), GetCurrentThread(), &callStack,
-//				m_pexp->ContextRecord, NULL, FunctionTableAccess, GetModuleBase, NULL);
-//
-//			if (res == FALSE || callStack.AddrFrame.Offset == 0)
-//				break;
-//		
-//			string symInfo, srcInfo;
-//
-//			if (i >= skipNFirst)
-//			{
-//				srcInfo = getSourceInfo (callStack.AddrPC.Offset);
-//				symInfo = getFuncInfo (callStack.AddrPC.Offset, callStack.AddrFrame.Offset);
-//				_Reason += srcInfo + ": " + symInfo + "\n";
-//			}
-//		}
-//		SymCleanup(getProcessHandle());
-#else
+		// ace hack
+/*		skipNFirst = 0;
+
+		DWORD symOptions = SymGetOptions();
+		symOptions |= SYMOPT_LOAD_LINES;
+		symOptions &= ~SYMOPT_UNDNAME;
+		SymSetOptions (symOptions);
+
+		nlverify (SymInitialize(getProcessHandle(), NULL, FALSE) == TRUE);
+
+		STACKFRAME callStack;
+		::ZeroMemory (&callStack, sizeof(callStack));
+		callStack.AddrPC.Mode      = AddrModeFlat;
+		callStack.AddrPC.Offset    = m_pexp->ContextRecord->Eip;
+		callStack.AddrStack.Mode   = AddrModeFlat;
+		callStack.AddrStack.Offset = m_pexp->ContextRecord->Esp;
+		callStack.AddrFrame.Mode   = AddrModeFlat;
+		callStack.AddrFrame.Offset = m_pexp->ContextRecord->Ebp;
+
+		_Reason += "\nCallstack:\n";
+		_Reason += "-------------------------------\n";
+		for (sint32 i = 0; ; i++)
+		{
+			SetLastError(0);
+			BOOL res = StackWalk (IMAGE_FILE_MACHINE_I386, getProcessHandle(), GetCurrentThread(), &callStack,
+				m_pexp->ContextRecord, NULL, FunctionTableAccess, GetModuleBase, NULL);
+
+			if (res == FALSE || callStack.AddrFrame.Offset == 0)
+				break;
+
+			string symInfo, srcInfo;
+
+			if (i >= skipNFirst)
+			{
+				srcInfo = getSourceInfo (callStack.AddrPC.Offset);
+				symInfo = getFuncInfo (callStack.AddrPC.Offset, callStack.AddrFrame.Offset);
+				_Reason += srcInfo + ": " + symInfo + "\n";
+			}
+		}
+		SymCleanup(getProcessHandle());
+		*/
+#elif !defined(NL_OS_MAC)
 		// Make place for stack frames and function names
 		const uint MaxFrame=64;
 		void *trace[MaxFrame];
@@ -618,40 +617,40 @@ public:
 		// free the messages
 		free(messages);
 #endif
-		
-		_Reason += "-------------------------------\n";
-		_Reason += "\n";
-		if(DefaultMemDisplayer)
-		{
-			_Reason += "Log with no filter:\n";
-			_Reason += "-------------------------------\n";
-			DefaultMemDisplayer->write (_Reason);
-		}
-		else
-		{
-			_Reason += "No log\n";
-		}
-		_Reason += "-------------------------------\n";
+
+// 		_Reason += "-------------------------------\n";
+// 		_Reason += "\n";
+// 		if(DefaultMemDisplayer)
+// 		{
+// 			_Reason += "Log with no filter:\n";
+// 			_Reason += "-------------------------------\n";
+// 			DefaultMemDisplayer->write (_Reason);
+// 		}
+// 		else
+// 		{
+// 			_Reason += "No log\n";
+// 		}
+//		_Reason += "-------------------------------\n";
 
 		// add specific information about the application
-		if(CrashCallback)
-		{
-			_Reason += "User Crash Callback:\n";
-			_Reason += "-------------------------------\n";
-			static bool looping = false;
-			if(looping)
-			{
-				_Reason += "******* WARNING: crashed in the user crash callback *******\n";
-				looping = false;
-			}
-			else
-			{
-				looping = true;
-				_Reason += CrashCallback();
-				looping = false;
-			}
-			_Reason += "-------------------------------\n";
-		}
+// 		if(CrashCallback)
+// 		{
+// 			_Reason += "User Crash Callback:\n";
+// 			_Reason += "-------------------------------\n";
+// 			static bool looping = false;
+// 			if(looping)
+// 			{
+// 				_Reason += "******* WARNING: crashed in the user crash callback *******\n";
+// 				looping = false;
+// 			}
+// 			else
+// 			{
+// 				looping = true;
+// 				_Reason += CrashCallback();
+// 				looping = false;
+// 			}
+// 			_Reason += "-------------------------------\n";
+// 		}
 	}
 
 	string getSourceInfo (DWORD addr)
@@ -677,9 +676,9 @@ public:
 		bool ok = true;
 		DWORD displacement = 0 ;
 		DWORD resdisp;
-		
+
 		while (!SymGetLineFromAddr (getProcessHandle(), addr - displacement, (DWORD*)&resdisp, &line))
-		{        
+		{
 			if (100 == ++displacement)
 			{
 				ok = false;
@@ -692,8 +691,8 @@ public:
 		// "Debugging Applications" John Robbins
 		// I found the line, and the source line information is correct, so
 		// change the displacement if I had to search backward to find the source line.
-		if (displacement)    
-			resdisp = displacement;    
+		if (displacement)
+			resdisp = displacement;
 
 		if (ok)
 		{
@@ -719,7 +718,7 @@ public:
 		}
 
 //
-		
+
 		/*DWORD disp;
 		if (SymGetLineFromAddr (getProcessHandle(), addr, &disp, &line))
 		{
@@ -747,7 +746,7 @@ public:
 		str +=" DEBUG:"+toString("0x%08X", addr);
 
 //
-		
+
 		return str;
 	}
 
@@ -837,8 +836,6 @@ public:
 
 //		nlinfo ("not parsed '%s'", parse.c_str());
 
-/// \todo ace it sometimes crash because try to access invalid address because the stack is not good (i don t know why)
-
 		// if there s parameter, parse them
 		if(i!=string::npos)
 		{
@@ -857,7 +854,7 @@ public:
 
 					string displayType = type;
 					cleanType (type, displayType);
-					
+
 					char tmp[1024];
 					if(type == "void")
 					{
@@ -884,7 +881,7 @@ public:
 					{
 						if (!IsBadReadPtr(addr,sizeof(char*)) && *addr != NULL)
 						{
-							if (!IsBadStringPtr((char*)*addr,32))
+							if (!IsBadStringPtrA((char*)*addr,32))
 							{
 								uint pos = 0;
 								tmp[pos++] = '\"';
@@ -977,12 +974,16 @@ void force_exception_frame(...) {std::cout.flush();}
 
 static void exceptionTranslator(unsigned, EXCEPTION_POINTERS *pexp)
 {
+#ifndef NL_NO_DEBUG_FILES
 	FILE *file = fopen ("exception_catched", "wb");
 	fclose (file);
+#endif
 	if (pexp->ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT)
 	{
+#ifndef NL_NO_DEBUG_FILES
 		FILE *file2 = fopen ("breakpointed", "wb");
 		fclose (file2);
+#endif
 		return;
 	}
 #if FINAL_VERSION
@@ -1017,8 +1018,8 @@ void getCallStack(std::string &result, sint skipNFirst)
 #ifdef NL_OS_WINDOWS
 	try
 	{
-		WORKAROUND_VCPP_SYNCHRONOUS_EXCEPTION // force to install a exception frame		
-			
+		WORKAROUND_VCPP_SYNCHRONOUS_EXCEPTION // force to install a exception frame
+
 		DWORD array[1];
 		array[0] = skipNFirst;
 		RaiseException (0xACE0ACE, 0, 1, array);
@@ -1027,14 +1028,14 @@ void getCallStack(std::string &result, sint skipNFirst)
 	{
 		result += e.what();
 	}
-#else
-
+#elif !defined(NL_OS_MAC)
 	// Make place for stack frames and function names
 	const uint MaxFrame=64;
 	void *trace[MaxFrame];
 	char **messages = (char **)NULL;
 	int i, trace_size = 0;
 
+	// on mac, require at least os 10.5
 	trace_size = backtrace(trace, MaxFrame);
 	messages = backtrace_symbols(trace, trace_size);
 	result += "Dumping call stack :\n";
@@ -1048,12 +1049,12 @@ void getCallStack(std::string &result, sint skipNFirst)
 
 void getCallStackAndLog (string &result, sint skipNFirst)
 {
-	getCallStack(result, skipNFirst);
+	//getCallStack(result, skipNFirst);
 //#ifdef NL_OS_WINDOWS
 //	try
 //	{
-//		WORKAROUND_VCPP_SYNCHRONOUS_EXCEPTION // force to install a exception frame		
-//			
+//		WORKAROUND_VCPP_SYNCHRONOUS_EXCEPTION // force to install a exception frame
+//
 //		DWORD array[1];
 //		array[0] = skipNFirst;
 //		RaiseException (0xACE0ACE, 0, 1, array);
@@ -1121,10 +1122,9 @@ void changeLogDirectory(const std::string &dir)
 	fd->setParam(p);
 }
 
-void createDebug (const char *logPath, bool logInFile)
+void createDebug (const char *logPath, bool logInFile, bool eraseLastLog)
 {
-	NL_ALLOC_CONTEXT (_Debug)
-	
+
 //	static bool alreadyCreateSharedAmongThreads = false;
 //	if ( !alreadyCreateSharedAmongThreads )
 	if (!INelContext::getInstance().getAlreadyCreateSharedAmongThreads())
@@ -1140,12 +1140,12 @@ void createDebug (const char *logPath, bool logInFile)
 			// Use an environment variable to share the value among the EXE and its child DLLs
 			// (otherwise there would be one distinct bool by module, and the last
 			// _set_se_translator would overwrite the previous ones)
-			const char *SE_TRANSLATOR_IN_MAIN_MODULE = "NEL_SE_TRANS";
+			const TCHAR *SE_TRANSLATOR_IN_MAIN_MODULE = _T("NEL_SE_TRANS");
 			TCHAR envBuf [2];
 			if ( GetEnvironmentVariable( SE_TRANSLATOR_IN_MAIN_MODULE, envBuf, 2 ) == 0)
 			{
 				_set_se_translator(exceptionTranslator);
-				SetEnvironmentVariable( SE_TRANSLATOR_IN_MAIN_MODULE, "1" );
+				SetEnvironmentVariable( SE_TRANSLATOR_IN_MAIN_MODULE, _T("1") );
 			}
 		}
 #endif // NL_OS_WINDOWS
@@ -1184,12 +1184,12 @@ void createDebug (const char *logPath, bool logInFile)
 #if FINAL_VERSION
 			fd = new CFileDisplayer (fn, true, "DEFAULT_FD");
 #else // FINAL_VERSION
-			fd = new CFileDisplayer (fn, false, "DEFAULT_FD");
+			fd = new CFileDisplayer (fn, eraseLastLog, "DEFAULT_FD");
 #endif // FINAL_VERSION
 		}
 #endif // LOG_IN_FILE
 		DefaultMemDisplayer = new CMemDisplayer ("DEFAULT_MD");
-		
+
 		initDebug2(logInFile);
 
 		INelContext::getInstance().setAlreadyCreateSharedAmongThreads(true);
@@ -1273,7 +1273,7 @@ std::string CInstanceCounterManager::displayCounters() const
 						icddest._DeltaCounter += icd->_DeltaCounter;
 						icddest._InstanceCounter += icd->_InstanceCounter;
 					}
-					
+
 				}
 			}
 
@@ -1285,9 +1285,9 @@ std::string CInstanceCounterManager::displayCounters() const
 	for (; first != last; ++first)
 	{
 		TInstanceCounterData &icd = first->second;
-		ret += toString("  Class '%-20s', \t%10d instances, \t%10d delta\n", 
-			icd._ClassName, 
-			icd._InstanceCounter, 
+		ret += toString("  Class '%-20s', \t%10d instances, \t%10d delta\n",
+			icd._ClassName,
+			icd._InstanceCounter,
 			icd._InstanceCounter - icd._DeltaCounter);
 	}
 
@@ -1390,16 +1390,16 @@ std::string formatErrorMessage(int errorCode)
 {
 #ifdef NL_OS_WINDOWS
 	LPVOID lpMsgBuf;
-	FormatMessage( 
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-		FORMAT_MESSAGE_FROM_SYSTEM | 
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL,
 		errorCode,
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
 		(LPTSTR) &lpMsgBuf,
 		0,
-		NULL 
+		NULL
 	);
 
 	string ret = (char*)lpMsgBuf;
@@ -1429,7 +1429,7 @@ NLMISC_CATEGORISED_COMMAND(nel, displayInstanceCounter, "display the instance co
 	string list = CInstanceCounterManager::getInstance().displayCounters();
 
 	vector<string> lines;
-	explode(list, "\n", lines, false);
+	explode(list, string("\n"), lines);
 
 
 	for (uint i=0; i<lines.size(); ++i)
@@ -1464,7 +1464,7 @@ NLMISC_CATEGORISED_COMMAND(nel, displayMemlog, "displays the last N line of the 
 	if (DefaultMemDisplayer == NULL) return false;
 
 	deque<string>::const_iterator it;
-	
+
 	const deque<string> &str = DefaultMemDisplayer->lockStrings ();
 
 	if (nbLines >= str.size())

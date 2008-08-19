@@ -42,8 +42,6 @@ namespace NLMISC
   * Obviously, if the quantity of memory to be allocated can't be predicted (or if no max bytes can be forseen), then other allocators may
   * be best suited.
   *
-  * \todo thread safety
-  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2004

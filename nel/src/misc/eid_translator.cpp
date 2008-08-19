@@ -717,7 +717,7 @@ bool CEntityIdTranslator::isEntityOnline (const CEntityId &eid)
 std::string CEntityIdTranslator::getRegisterableString( const ucstring & entityName )
 {
 	string ret = toLower( entityName.toString() );
-	uint pos = ret.find( 0x20 );
+	string::size_type pos = ret.find( 0x20 );
 	while( pos != string::npos )
 	{
 		ret.erase( pos,1 );

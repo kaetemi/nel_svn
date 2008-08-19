@@ -50,8 +50,8 @@ namespace NLMISC
 /** Imposter class to wrap all global access to the nel context for backward compatibility
  *	Yoyo note: This was a template before, hence with inline. 
  *	We removed the inline because there was a hard compilation bug
- *	in plugin max under some compiler wich caused operator-> to crash.... (don't understand why grrrr)
- *	Btw the method is optimized like this (1 call instead of 3 (and one with virual)) because we added a local cache (_Log)
+ *	in plugin max under some compiler which caused operator-> to crash.... (don't understand why grrrr)
+ *	Btw the method is optimized like this (1 call instead of 3 (and one with virtual)) because we added a local cache (_Log)
  *	Thus it is much better like this.
  */
 class CImposterLog
@@ -68,27 +68,21 @@ public:
 	CLog &operator ()();
 };
 
+
 //
 // Externals
 //
 
 // NOTE: The following are all NULL until createDebug() has been called at least once
-//extern CLog *ErrorLog;
+// NOTE2: You must not use this class before the main() (not inside a static class ctor)
 extern CImposterLog		ErrorLog;
-//extern CLog *WarningLog;
 extern CImposterLog		WarningLog;
-//extern CLog *InfoLog;
 extern CImposterLog		InfoLog;
-//extern CLog *DebugLog;
 extern CImposterLog		DebugLog;
-//extern CLog *AssertLog;
 extern CImposterLog		AssertLog;
 
 extern CMemDisplayer *DefaultMemDisplayer;
 extern CMsgBoxDisplayer *DefaultMsgBoxDisplayer;
-
-
-
 
 
 //
@@ -96,7 +90,7 @@ extern CMsgBoxDisplayer *DefaultMsgBoxDisplayer;
 //
 
 // internal use only
-void createDebug (const char *logPath = NULL, bool logInFile = true);
+void createDebug (const char *logPath = NULL, bool logInFile = true, bool eraseLastLog = false);
 
 // call this if you want to change the dir of the log.log file
 void changeLogDirectory(const std::string &dir);
@@ -117,7 +111,7 @@ typedef std::string (*TCrashCallback)();
 // this function enables user application to add information in the log when a crash occurs
 void setCrashCallback(TCrashCallback crashCallback);
 
-// For Crash report window. allow to know if a crash has alredy raised in the application
+// For Crash report window. allow to know if a crash has already raised in the application
 bool	isCrashAlreadyReported();
 void	setCrashAlreadyReported(bool state);
 
@@ -157,6 +151,8 @@ void	setCrashAlreadyReported(bool state);
  *			can append using the NL_MACRO_TO_STR macro like in
  *			#define CLASS_NAME TheClassName
  *			#pragma message( NL_LOC_MGS "The class name is " NL_MACRO_TO_STR(CLASS_NAME))
+ *  Note 2 : To show a warning under GCC, use #warning "Your warning here", 
+ *           see nel/net/net_manager.h for an example on how to use these correctly.
  */
 #define NL_LOC_MSG __FILE__"("NL_MACRO_TO_STR(__LINE__)") : Message: "
 #define NL_LOC_WRN __FILE__"("NL_MACRO_TO_STR(__LINE__)") : Warning Msg: "
@@ -176,14 +172,14 @@ void	setCrashAlreadyReported(bool state);
  *\endcode
  */
 #ifdef NL_RELEASE
-#	ifdef NL_COMP_VC71
+#	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nldebug __noop
 #	else
 #		define nldebug 0&&
 #	endif
 #else // NL_RELEASE
-	extern bool DissableNLDebug;
-#	define nldebug if (NLMISC::DissableNLDebug) {} else (NLMISC::createDebug(), NLMISC::DebugLog->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::DebugLog)->displayNL
+	extern bool DisableNLDebug;
+#	define nldebug if (NLMISC::DisableNLDebug) {} else (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getDebugLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getDebugLog())->displayNL
 #endif // NL_RELEASE
 
 /**
@@ -191,13 +187,13 @@ void	setCrashAlreadyReported(bool state);
  * Same as nldebug but it will be display in debug and in release mode.
  */
 #ifdef NL_RELEASE
-#	ifdef NL_COMP_VC71
+#	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nlinfo __noop
 #	else
 #		define nlinfo 0&&
 #	endif
 #else // NL_RELEASE
-#	define nlinfo (NLMISC::createDebug(), NLMISC::InfoLog->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::InfoLog)->displayNL
+#	define nlinfo (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getInfoLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getInfoLog())->displayNL
 #endif // NL_RELEASE
 
 /**
@@ -219,13 +215,13 @@ void	setCrashAlreadyReported(bool state);
  */
 
 #ifdef NL_RELEASE
-#	ifdef NL_COMP_VC71
+#	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nlwarning __noop
 #	else
 #		define nlwarning 0&&
 #	endif
 #else // NL_RELEASE
-#	define nlwarning (NLMISC::createDebug(), NLMISC::WarningLog->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::WarningLog)->displayNL
+#	define nlwarning (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getWarningLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getWarningLog())->displayNL
 #endif // NL_RELEASE
 
 /**
@@ -244,7 +240,7 @@ void	setCrashAlreadyReported(bool state);
 	}
  *\endcode
  */
-#define nlerror (NLMISC::createDebug (), NLMISC::ErrorLog->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::nlFatalError)
+#define nlerror (NLMISC::createDebug (), NLMISC::INelContext::getInstance().getErrorLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::nlFatalError)
 
 
 /**
@@ -252,7 +248,7 @@ void	setCrashAlreadyReported(bool state);
  * Same as nlerror but it doesn't generate any exceptions. It's used only in very specific case, for example, when you
  * call a nlerror in a catch block (look the service.cpp)
  */
-#define nlerrornoex (NLMISC::createDebug (), NLMISC::ErrorLog->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::nlError)
+#define nlerrornoex (NLMISC::createDebug (), NLMISC::INelContext::getInstance().getErrorLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::nlError)
 
 
 /**
@@ -358,7 +354,7 @@ void	setCrashAlreadyReported(bool state);
 
 // removed because we always check assert (even in release mode) #if defined (NL_OS_WINDOWS) && defined (NL_DEBUG)
 #if defined (NL_OS_WINDOWS)
-#define NLMISC_BREAKPOINT _asm { int 3 }
+#define NLMISC_BREAKPOINT __debugbreak();
 #else
 #define NLMISC_BREAKPOINT abort()
 #endif
@@ -387,14 +383,14 @@ if(false)
 
 #ifdef NL_OS_UNIX
 
-// Linux set of asserts is reduced due tothat there is no message box displayer
+// Linux set of asserts is reduced due to that there is no message box displayer
 
 #define nlassert(exp) \
 { \
 	if (!(exp)) { \
 		NLMISC::createDebug (); \
-		NLMISC::AssertLog->setPosition (__LINE__, __FILE__, __FUNCTION__); \
-		NLMISC::AssertLog->displayNL ("\"%s\" ", #exp); \
+		NLMISC::INelContext::getInstance().getAssertLog()->setPosition (__LINE__, __FILE__, __FUNCTION__); \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayNL ("\"%s\" ", #exp); \
 		NLMISC_BREAKPOINT; \
 	} \
 }
@@ -405,9 +401,9 @@ if(false)
 { \
 	if (!(exp)) { \
 		NLMISC::createDebug (); \
-		NLMISC::AssertLog->setPosition (__LINE__, __FILE__, __FUNCTION__); \
-		NLMISC::AssertLog->displayNL ("\"%s\" ", #exp); \
-		NLMISC::AssertLog->displayRawNL str; \
+		NLMISC::INelContext::getInstance().getAssertLog()->setPosition (__LINE__, __FILE__, __FUNCTION__); \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayNL ("\"%s\" ", #exp); \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayRawNL str; \
 		NLMISC_BREAKPOINT; \
 	} \
 }
@@ -445,7 +441,7 @@ if(false)
 	bool _expResult_ = (exp) ? true : false; \
 	if (!ignoreNextTime && !_expResult_) { \
 		NLMISC::_assertex_stop_0(ignoreNextTime, __LINE__, __FILE__, __FUNCTION__, #exp); \
-		NLMISC::AssertLog->displayRawNL str; \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayRawNL str; \
 		if(NLMISC::_assertex_stop_1(ignoreNextTime)) \
 			NLMISC_BREAKPOINT; \
 	} \
@@ -480,7 +476,7 @@ if(false)
 	bool _expResult_ = (exp) ? true : false; \
 	if (!_expResult_ && !ignoreNextTime) { \
 		NLMISC::_assertex_stop_0(ignoreNextTime, __LINE__, __FILE__, __FUNCTION__, #exp); \
-		NLMISC::AssertLog->displayRawNL str; \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayRawNL str; \
 		if(NLMISC::_assertex_stop_1(ignoreNextTime)) \
 			NLMISC_BREAKPOINT; \
 	} \
@@ -517,7 +513,7 @@ if(false)
 	static bool ignoreNextTime = false; \
 	if (!ignoreNextTime) { \
 		NLMISC::_assertex_stop_0(ignoreNextTime, __LINE__, __FILE__, __FUNCTION__, NULL); \
-		NLMISC::AssertLog->displayRawNL str; \
+		NLMISC::INelContext::getInstance().getAssertLog()->displayRawNL str; \
 		if(NLMISC::_assertex_stop_1(ignoreNextTime)) \
 			NLMISC_BREAKPOINT; \
 	} \
@@ -808,7 +804,7 @@ private:
  *	and a macro in the implementation file.
  *	The macro only add a compiler minimum size for member
  *	struct of 0 octets (witch can be 0 or 1 octet, compiler
- *	dependend).
+ *	dependent).
  *	usage :
  *	
  *	In the header :

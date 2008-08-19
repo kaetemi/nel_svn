@@ -296,10 +296,10 @@ void	CHTimer::endBench()
 
 //=================================================================
 void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*= true*/, bool displayEx)
-{	
+{
 	CSimpleClock	benchClock;
 	benchClock.start();
-	if(!_BenchStartedOnce) // should have done at least one bench	
+	if(!_BenchStartedOnce) // should have done at least one bench
 	{
 		benchClock.stop();
 		_CurrNode->SonsPreambule += benchClock.getNumTicks();
@@ -309,18 +309,18 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 	log->displayRawNL("HTIMER: Bench cumuled results");
 	typedef std::map<CHTimer *, TNodeVect> TNodeMap;
 	TNodeMap nodeMap;
-	TNodeVect nodeLeft;	
+	TNodeVect nodeLeft;
 	nodeLeft.push_back(&_RootNode);
-	/// 1 ) walk the tree to build the node map (well, in a not very optimal way..)		  
+
+	/// 1 ) walk the tree to build the node map (well, in a not very optimal way..)
 	while (!nodeLeft.empty())
-	{	
+	{
 		CNode *currNode = nodeLeft.back();
 		nodeMap[currNode->Owner].push_back(currNode);
 		nodeLeft.pop_back();
 		nodeLeft.insert(nodeLeft.end(), currNode->Sons.begin(), currNode->Sons.end());
-
 	}
-	//	
+
 	// 2 ) build statistics	
 	typedef std::vector<CTimerStat> TTimerStatVect;
 	typedef std::vector<CTimerStat *> TTimerStatPtrVect;
@@ -335,6 +335,7 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 		stats[k].buildFromNodes(&(it->second[0]), it->second.size(), _MsPerTick);
 		++k;
 	}
+
 	// 3 ) sort statistics
 	if (criterion != NoSort)
 	{

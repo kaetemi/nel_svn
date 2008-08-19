@@ -42,25 +42,28 @@ namespace NLMISC
  */
 struct EFile : public EStream
 {
-public:
 	EFile () : EStream( "Unknown file error" ) {}
-	EFile (const std::string& filename) : EStream( "Unknown file error in '"+filename+"'" ) {}
-	EFile (const std::string& text, bool ) : EStream( text ) {}
+	EFile (const std::string& filename) : EStream( "Unknown file error in '"+filename+"'" ), Filename(filename) {}
+	EFile (const std::string& filename, const std::string& text, bool ) : EStream( text ), Filename(filename) {}
+
+	virtual ~EFile() throw() {}
+
+	std::string Filename;
 };
 
 struct EFileNotOpened : public EFile
 {
-	EFileNotOpened( const std::string& filename ) : EFile( "File '"+filename+"' not opened", true ) {}
+	EFileNotOpened( const std::string& filename ) : EFile( filename, "File '"+filename+"' not opened", true ) {}
 };
 
 struct EReadError : public EFile
 {
-	EReadError( const std::string& filename ) : EFile( "Read error in file '" +filename+"' (End of file?)", true ) {}
+	EReadError( const std::string& filename ) : EFile( filename, "Read error in file '" +filename+"' (End of file?)", true ) {}
 };
 
 struct EWriteError : public EFile
 {
-	EWriteError( const std::string& filename ) : EFile( "Write Error in file '" +filename+"'", true ) {}
+	EWriteError( const std::string& filename ) : EFile( filename, "Write Error in file '" +filename+"'", true ) {}
 };
 
 struct EDiskFullError : public EWriteError
@@ -70,7 +73,7 @@ struct EDiskFullError : public EWriteError
 
 struct ERenameError : public EFile
 {
-	ERenameError( const std::string& dest, const std::string& src ) : EFile( "Rename Error from the file '" +src+"' to the file '" +dest+"'", true ) {}
+	ERenameError( const std::string& dest, const std::string& src ) : EFile( dest, "Rename Error from the file '" +src+"' to the file '" +dest+"'", true ) {}
 };
 
 

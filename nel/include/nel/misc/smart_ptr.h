@@ -361,7 +361,7 @@ public:
 	}
 };
 
-#ifdef NL_COMP_VC8
+#if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 
 // This operator only purpose is to compare with NULL value
 template <class T>

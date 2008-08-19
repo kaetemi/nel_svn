@@ -81,7 +81,10 @@ INelContext::~INelContext()
 void	INelContext::contextReady()
 {
 	// Register the NeL Context
+	// This assert doesn't work for Linux due to ELF symbol relocation
+#ifdef NL_OS_WINDOWS
 	nlassert(*(_getInstance()) == NULL);
+#endif // NL_OS_WINDOWS
 	_NelContext = this;
 	*(_getInstance()) = this;
 

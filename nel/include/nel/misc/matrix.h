@@ -1,8 +1,6 @@
 /** \file matrix.h
  * 
- * \todo yoyo: Optimize.
- *
- * $Id: matrix.h,v 1.26 2005/07/22 12:37:57 legallo Exp $
+ * $Id: matrix.h,v 1.26 2005-07-22 12:37:57 legallo Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -40,7 +38,7 @@ class	CPlane;
 
 // ======================================================================================================
 /**
- * A 4*4 Homogenous Matrix.
+ * A 4*4 Homogeneous Matrix.
  * This is a column matrix, so operations like: \c v1=A*B*C*v0; applies C first , then B, then A to vector v0. \n
  * Since it is a column matrix, the first column is the I vector of the base, 2nd is J, 3th is K. \n
  * 4th column vector is T, the translation vector.
@@ -106,16 +104,16 @@ public:
 	/** Explicit setup the Rotation/Scale matrix (base).
 	 * Avoid it. It implies low compute since no check is done on base to see what type of matrix it is 
 	 * (identity, rotation, scale, uniform scale...)
-	 * \param i The I vector of the cartesian base.
-	 * \param j The J vector of the cartesian base.
-	 * \param k The K vector of the cartesian base.
+	 * \param i The I vector of the Cartesian base.
+	 * \param j The J vector of the Cartesian base.
+	 * \param k The K vector of the Cartesian base.
 	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale. 
 	 * If set to true and your rotation is not an orthonormal basis, unpredictable result are excepted.
 	 */
 	void		setRot(const CVector &i, const CVector &j, const CVector &k, bool hintNoScale=false);
 	/** Explicit setup the Rotation/Scale matrix (base).
 	 * Avoid it. It implies low compute since no check is done on m33 to see what type of matrix it is 
-	 * (identity, raotation, scale, uniform scale)
+	 * (identity, rotation, scale, uniform scale)
 	 * \param m33 the 3*3 column rotation matrix. (3x3 matrix stored in column-major order as 9 consecutive values)
 	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale. 
 	 * If set to true and your rotation is not an orthonormal basis, unpredictable result are excepted.
@@ -127,7 +125,7 @@ public:
 	 */
 	void		setRot(const CVector &v, TRotOrder ro);
 	/** Explicit setup the Rotation matrix (base) as a Quaternion rotation matrix.
-	 * \param quat a UNIT qauternion
+	 * \param quat a UNIT quaternion
 	 */
 	void		setRot(const CQuat &quat);
 	/** Explicit setup the Rotation/Scale matrix (base) with the rotation part of an other matrix.
@@ -170,8 +168,8 @@ public:
 	void		set(const float m44[16]);
 	/** Setup the (i, j) matrix coefficient
 	 *	\param coeff: coefficient value. 
-	 *	\param i : column indice.
-	 *	\param j : line indice.
+	 *	\param i : column index.
+	 *	\param j : line index.
 	 */
 	void		setCoefficient(float coeff, sint i, sint j)
 	{
@@ -199,9 +197,9 @@ public:
 	/// \name Gets.
 	//@{
 	/** Get the Rotation/Scale matrix (base).
-	 * \param i The matrix's I vector of the cartesian base.
-	 * \param j The matrix's J vector of the cartesian base.
-	 * \param k The matrix's K vector of the cartesian base.
+	 * \param i The matrix's I vector of the Cartesian base.
+	 * \param j The matrix's J vector of the Cartesian base.
+	 * \param k The matrix's K vector of the Cartesian base.
 	 */
 	void		getRot(CVector &i, CVector &j, CVector &k) const;
 	/** Get the Rotation/Scale matrix (base).
@@ -243,12 +241,6 @@ public:
 	 * \return the matrix's 4*4 column matrix (4x4 matrix stored in column-major order as 16 consecutive values)
 	 */
 	const float *get() const;
-	/** Get Euler angles (in radians).
-	 * \param ro the RotOrder which show how to get the euler.
-	 * \return one solution of Euler angle. A rotate() with this value and the RotOrder ro will give the same matrix.
-	 * \todo yoyo: implement it.
-	 */
-	//CVector		toEuler(TRotOrder ro) const;
 	//@}
 
 
@@ -269,7 +261,7 @@ public:
 	 * \param a angle (in radian).
 	 */
 	void		rotateZ(float a);
-	/** Apply a euler rotation.
+	/** Apply a Euler rotation.
 	 * \param v a vector of 3 angle (in radian), giving rotation around each axis (x,y,z)
 	 * \param ro the order of transformation applied. if ro==XYZ, then the transform is M=M*Rx*Ry*Rz
 	 */
@@ -309,7 +301,7 @@ public:
 	}
 	/** Matrix multiplication assuming no projection at all in m1/m2 and Hence this. Even Faster than setMulMatrix()
 	 *	Equivalent to *this= m1 * m2
-	 *	NB: Also always suppose m1 has a translation, for optim consideration
+	 *	NB: Also always suppose m1 has a translation, for optimization consideration
 	 *	\warning *this MUST NOT be the same as m1 or m2, else it doesn't work (not checked/nlasserted)
 	 */
 	void		setMulMatrixNoProj(const CMatrix &m1, const CMatrix &m2);
@@ -352,7 +344,7 @@ public:
 		return mulPoint(v);
 	}
 
-	/// Multiply with an homogenous vector
+	/// Multiply with an homogeneous vector
 	CVectorH	operator*(const CVectorH& v) const;
 	//@}
 
@@ -402,20 +394,21 @@ private:
 			case 1: l1=0; l2=2; l3=3; break;
 			case 2: l1=0; l2=1; l3=3; break;
 			case 3: l1=0; l2=1; l3=2; break;
+			default: l1=0; l2=0; l3=0; break;
 		}
 	}
 
 	// true if MAT_TRANS.
-	// trans part is true means the right 3x1 translation part matrix is revelant.
-	// Else it IS initialised to (0,0,0) (exception!!!)
+	// trans part is true means the right 3x1 translation part matrix is relevant.
+	// Else it IS initialized to (0,0,0) (exception!!!)
 	bool	hasTrans() const;
 	// true if MAT_ROT | MAT_SCALEUNI | MAT_SCALEANY.
-	// rot part is true means the 3x3 rot matrix AND Scale33 are revelant. 
-	// Else they are not initialised but are supposed to represent identity and Scale33==1.
+	// rot part is true means the 3x3 rot matrix AND Scale33 are relevant. 
+	// Else they are not initialized but are supposed to represent identity and Scale33==1.
 	bool	hasRot() const;
 	// true if MAT_PROJ.
-	// proj part is true means the bottom 1x4 projection part matrix is revelant.
-	// Else it is not initialised but is supposed to represent the line vector (0,0,0,1).
+	// proj part is true means the bottom 1x4 projection part matrix is relevant.
+	// Else it is not initialized but is supposed to represent the line vector (0,0,0,1).
 	bool	hasProj() const;
 	bool	hasAll() const;
 
@@ -426,9 +419,7 @@ private:
 	void	setScaleUni(float scale);
 };
 
-
 }
-
 
 #endif // NL_MATRIX_H
 

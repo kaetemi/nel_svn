@@ -75,8 +75,6 @@ struct CUnsensitiveStrLessPred
   * NB: by default this class behaves in a case unsensitive way. To change this, just change the 'Pred' template parameter 
   *     to std::less<std::string>
   *
-  * \TODO Use CTwinMap for implementation
-  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2003
