@@ -321,15 +321,15 @@ private:// Classes.
 		// ============================================================================================
 		void	clear()
 		{
-			// Deletons les element dans ce quad node.
+			// delete items in this quad node
 			CBaseNode	*p;
 			while( (p=RootNode.QuadNexts[ListIndex]) )
 			{
-				p->clear();	// On clear les links. => RootNode.QuadNexts[ListIndex] modifié implicitement.
-				delete p;	// On delete cet element!!
+				p->clear();	// clear the links. => RootNode.QuadNexts[ListIndex] is implicitly modified
+				delete p;	// delete this element
 			}
 
-			// Deletons les quad fils.
+			// delete quad children
 			for(uint i=0;i<4;i++)
 			{
 				if(Sons[i])
@@ -444,10 +444,10 @@ private:// Classes.
 		{
 			if(Level==0)
 			{
-				// Tous les elements qui sortent du quadtree sont forcément dans le noeud root.
+				// all out of quadtree items are in the root node
 				if(!includeBoxQuad(boxmin, boxmax))
 				{
-					// Il faut agrandir la BBox en Y du quadnode.
+					// expand Y-axe of quadnode BBox
 					if(BBoxNeverRescale)
 					{
 						BBoxMin.y= boxmin.y;
@@ -464,11 +464,11 @@ private:// Classes.
 				}
 			}
 
-			// Si au moins une partie de l'element n'est pas dans le noeud de ce quad, exit.
+			// If at least one part of the item is not in the node of this quad, exit.
 			if(!intersectBoxQuad(boxmin, boxmax))
 				return;
 
-			// Que l'on insere ici ou dans les fils, il faut agrandir la BBox en Y du quadnode.
+			// If we are inserting there or its children, we have to resize the Y-axe BBox of quadnode.
 			if(BBoxNeverRescale)
 			{
 				BBoxMin.y= boxmin.y;
@@ -481,18 +481,18 @@ private:// Classes.
 				BBoxMax.y= std::max(boxmax.y, BBoxMax.y);
 			}
 
-			// Si on est au bon, niveau, on a plus qu'à l'insérer dans ce node.
+			// If we are at the right level, we only have to insert it in this node.
 			if(wantdepth==Level)
 			{
 					addElement(newNode);
 			}
 			else
 			{
-				// Si le quad est une feuille, il faut le splitter (car on est pas encore arrivé au bon niveau).
+				// If the quad is a leaf, we need to split it (because we are not yet at the right level).
 				if(isLeaf())
 					split();
 
-				// Et on cherche à mettre l'élément dans un de ces noeuds.
+				// And we are looking to put the item in one of these nodes.
 				Sons[0]->insert(boxmin, boxmax, wantdepth, newNode);
 				Sons[1]->insert(boxmin, boxmax, wantdepth, newNode);
 				Sons[2]->insert(boxmin, boxmax, wantdepth, newNode);
@@ -536,7 +536,7 @@ private:// Classes.
 		void	select(CBaseNode &selroot, const NLMISC::CVector &bboxmin, const NLMISC::CVector &bboxmax)
 		{
 			// TODO:
-			// ya un bug avec le level0: en effet la bbox n'a pas été agrandie pour contenir les elements.
+			// there is a bug with level0: bbox is not expanded to contain items.
 			if(!intersectBox(bboxmin, bboxmax))
 				return;
 			selectLocalNodes(selroot);
@@ -552,7 +552,7 @@ private:// Classes.
 		void		select(CBaseNode &selroot, std::vector<NLMISC::CPlane> &BVolume)
 		{
 			// TODO:
-			// ya un bug avec le level0: en effet la bbox n'a pas été agrandie pour contenir les elements.
+			// there is a bug with level0: bbox is not expanded to contain items.
 			if(!intersectBox(BVolume))
 				return;
 			selectLocalNodes(selroot);
@@ -777,7 +777,7 @@ template<class T>	void		CQuadTree<T>::clearSelection()
 	CBaseNode	*p;
 	while(p=_Selection.Next)
 	{
-		// On retire ce noeud de la selection. Ce qui va modifier implicitement _Selection.Next.
+		// We are removing this node from selection, which will implicitly modify _Selection.Next.
 		if(p->Prev)	p->Prev->Next= p->Next;
 		if(p->Next)	p->Next->Prev= p->Prev;
 		p->Prev=p->Next=NULL;
