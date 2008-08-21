@@ -158,7 +158,6 @@ void CSoundAnimation::play(UAudioMixer* mixer, float lastTime, float curTime, NL
 
 void CSoundAnimation::load()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundAnimation);
 	CIFile file;
 
 	// Open the file

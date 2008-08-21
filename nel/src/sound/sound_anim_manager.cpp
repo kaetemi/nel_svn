@@ -119,7 +119,6 @@ TSoundAnimId CSoundAnimManager::loadAnimation(std::string& name)
 
 TSoundAnimId CSoundAnimManager::createAnimation(std::string& name)
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundAnimManager);
 	nlassert(!name.empty());
 
 	// create and insert animations

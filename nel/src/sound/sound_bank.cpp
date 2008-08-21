@@ -54,7 +54,6 @@ CSoundBank		*CSoundBank::_Instance;
 
 CSoundBank	*CSoundBank::instance()
 {
-	NL_ALLOC_CONTEXT(NLSOUND_CSoundBank);
 	if (_Instance == 0)
 		_Instance = new CSoundBank();
 	return _Instance;
@@ -193,7 +192,6 @@ public:
 	// load/save the values using the serial system (called by GEORGE::loadForm)
 	void serial (NLMISC::IStream &s)
 	{
-		NL_ALLOC_CONTEXT(NLSOUND_CSoundSerializer);
 		if (s.isReading())
 		{
 			// read the first item to find the type
