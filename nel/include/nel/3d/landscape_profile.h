@@ -27,7 +27,7 @@
 #define NL_LANDSCAPE_PROFILE_H
 
 #include "nel/misc/types_nl.h"
-#include "tessellation.h"
+#include "nel/3d/tessellation.h"
 
 
 // Yoyo: hide this if do not want to profile landscape.

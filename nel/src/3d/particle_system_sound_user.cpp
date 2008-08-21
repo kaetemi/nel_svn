@@ -32,14 +32,12 @@
 #include "nel/3d/u_ps_sound_interface.h"
 #include "nel/3d/u_ps_sound_impl.h"
 
-#define NL3D_MEM_PS_SOUND							NL_ALLOC_CONTEXT( 3dPSSnd )
 
 namespace NL3D 
 {
 
 void assignSoundServerToPS(UPSSoundServer *soundServer)	
 {
-	NL3D_MEM_PS_SOUND
 	CParticleSystem::registerSoundServer(soundServer);
 } // NL3D
 

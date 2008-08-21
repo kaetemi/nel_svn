@@ -29,9 +29,9 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/class_id.h"
 #include "nel/3d/animation_time.h"
-#include "shape.h"
-#include "texture.h"
-#include "track.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/track.h"
 
 
 

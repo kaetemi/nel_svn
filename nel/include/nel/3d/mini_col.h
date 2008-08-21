@@ -31,8 +31,8 @@
 #include "nel/misc/matrix.h"
 #include "nel/misc/plane.h"
 #include "nel/misc/triangle.h"
-#include "quad_grid.h"
-#include "landscape.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/landscape.h"
 #include <set>
 
 

@@ -30,7 +30,7 @@
 #include "nel/misc/debug.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/3d/animation_time.h"
-#include "animation_set.h"
+#include "nel/3d/animation_set.h"
 #include <map>
 #include <vector>
 

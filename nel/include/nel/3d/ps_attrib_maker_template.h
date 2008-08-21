@@ -27,8 +27,8 @@
 #define NL_PS_ATTRIB_MAKER_TEMPLATE_H
 
 #include "nel/misc/types_nl.h"
-#include "ps_attrib_maker_helper.h"
-#include "ps_plane_basis.h"
+#include "nel/3d/ps_attrib_maker_helper.h"
+#include "nel/3d/ps_plane_basis.h"
 #include "nel/misc/fast_floor.h"
 #include "nel/misc/rgba.h"
 #include "nel/misc/traits_nl.h"
@@ -75,6 +75,7 @@ inline CPlaneBasis PSValueBlend(const CPlaneBasis &t1, const CPlaneBasis &t2, fl
 /// Base struct for blending function (exact or sampled)
 template <typename T> struct CPSValueBlendFuncBase
 {
+	virtual ~CPSValueBlendFuncBase() {}
 	virtual void getValues(T &startValue, T &endValue) const = 0;
 	virtual void setValues(T startValue, T endValue) = 0;
 };

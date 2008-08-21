@@ -28,9 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/stream.h"
-#include "landscape_def.h"
-#include "vegetable.h"
-#include "vegetable_def.h"
+#include "nel/3d/landscape_def.h"
+#include "nel/3d/vegetable.h"
+#include "nel/3d/vegetable_def.h"
 #include <vector>
 
 namespace NL3D 

@@ -27,7 +27,7 @@
 
 #include "nel/misc/vector.h"
 #include "nel/3d/animation_time.h"
-#include "particle_system_process.h"
+#include "nel/3d/particle_system_process.h"
 
 namespace NL3D
 {

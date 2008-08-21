@@ -27,7 +27,7 @@
 #define NL_LAYERED_ORDERING_TABLE_H
 
 #include "nel/misc/types_nl.h"
-#include "ordering_table.h"
+#include "nel/3d/ordering_table.h"
 
 namespace NL3D {
 

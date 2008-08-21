@@ -31,7 +31,6 @@
 #include "nel/3d/texture_user.h"
 #include "nel/3d/driver_user.h"
 
-#define NL3D_MEM_MATERIAL						NL_ALLOC_CONTEXT( 3dMat )
 
 namespace NL3D
 {
@@ -40,7 +39,6 @@ namespace NL3D
 
 bool UMaterial::isSupportedByDriver(UDriver &drv, bool forceBaseCaps)
 {
-	NL3D_MEM_MATERIAL		
 	CMaterial *object = getObjectPtr();
 	return object->isSupportedByDriver(*(NLMISC::safe_cast<CDriverUser *>(&drv)->getDriver()), forceBaseCaps);
 }
@@ -88,7 +86,6 @@ void UMaterial::setTexture(UTexture* ptex)
 
 void UMaterial::setTexture(uint stage, UTexture* ptex) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	CTextureUser	*text= dynamic_cast<CTextureUser*>(ptex);
 	if (text != NULL)
@@ -113,7 +110,6 @@ bool UMaterial::texturePresent()
 
 bool UMaterial::texturePresent (uint stage) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->texturePresent (stage);
 }
@@ -122,7 +118,6 @@ bool UMaterial::texturePresent (uint stage)
 
 void UMaterial::selectTextureSet(uint id)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->selectTextureSet(id);
 }
@@ -131,7 +126,6 @@ void UMaterial::selectTextureSet(uint id)
 
 void UMaterial::setBlend(bool active) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setBlend(active);
 }
@@ -140,7 +134,6 @@ void UMaterial::setBlend(bool active)
 
 void UMaterial::setBlendFunc(TBlend src, TBlend dst) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setBlendFunc((CMaterial::TBlend)(uint32)src, (CMaterial::TBlend)(uint32)dst);
 }
@@ -149,7 +142,6 @@ void UMaterial::setBlendFunc(TBlend src, TBlend dst)
 
 void UMaterial::setSrcBlend(TBlend val) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setSrcBlend((CMaterial::TBlend)(uint32)val);
 }
@@ -158,7 +150,6 @@ void UMaterial::setSrcBlend(TBlend val)
 
 void UMaterial::setDstBlend(TBlend val) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setDstBlend((CMaterial::TBlend)(uint32)val);
 }
@@ -167,7 +158,6 @@ void UMaterial::setDstBlend(TBlend val)
 
 bool UMaterial::getBlend() const 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getBlend();
 }
@@ -176,7 +166,6 @@ bool UMaterial::getBlend() const
 
 UMaterial::TBlend UMaterial::getSrcBlend(void)  const 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::TBlend)(uint32)object->getSrcBlend();
 }
@@ -185,7 +174,6 @@ UMaterial::TBlend UMaterial::getSrcBlend(void)  const
 
 UMaterial::TBlend UMaterial::getDstBlend(void)  const 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::TBlend)(uint32)object->getDstBlend();
 }
@@ -194,7 +182,6 @@ UMaterial::TBlend UMaterial::getDstBlend(void)  const
 
 void UMaterial::texEnvOpRGB(uint stage, TTexOperator ope)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvOpRGB(stage, (CMaterial::TTexOperator)(uint32)ope);
 }
@@ -203,7 +190,6 @@ void UMaterial::texEnvOpRGB(uint stage, TTexOperator ope)
 
 void UMaterial::texEnvArg0RGB (uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg0RGB (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -212,7 +198,6 @@ void UMaterial::texEnvArg0RGB (uint stage, TTexSource src, TTexOperand oper)
 
 void UMaterial::texEnvArg1RGB (uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg1RGB (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -221,7 +206,6 @@ void UMaterial::texEnvArg1RGB (uint stage, TTexSource src, TTexOperand oper)
 
 void UMaterial::texEnvArg2RGB (uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg2RGB (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -230,7 +214,6 @@ void UMaterial::texEnvArg2RGB (uint stage, TTexSource src, TTexOperand oper)
 
 void UMaterial::texEnvOpAlpha(uint stage, TTexOperator ope)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvOpAlpha (stage, (CMaterial::TTexOperator)(uint32)ope);
 }
@@ -239,7 +222,6 @@ void UMaterial::texEnvOpAlpha(uint stage, TTexOperator ope)
 
 void UMaterial::texEnvArg0Alpha(uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg0Alpha (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -248,7 +230,6 @@ void UMaterial::texEnvArg0Alpha(uint stage, TTexSource src, TTexOperand oper)
 
 void UMaterial::texEnvArg1Alpha(uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg1Alpha (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -257,7 +238,6 @@ void UMaterial::texEnvArg1Alpha(uint stage, TTexSource src, TTexOperand oper)
 
 void UMaterial::texEnvArg2Alpha(uint stage, TTexSource src, TTexOperand oper)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->texEnvArg2Alpha (stage, (CMaterial::TTexSource)(uint32)src, (CMaterial::TTexOperand)(uint32)oper);
 }
@@ -266,7 +246,6 @@ void UMaterial::texEnvArg2Alpha(uint stage, TTexSource src, TTexOperand oper)
 
 void			UMaterial::setZFunc(ZFunc val) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setZFunc((CMaterial::ZFunc)(uint32) val);
 }
@@ -275,7 +254,6 @@ void			UMaterial::setZFunc(ZFunc val)
 
 void			UMaterial::setZWrite(bool active) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setZWrite(active);
 }
@@ -292,7 +270,6 @@ void			UMaterial::setZBias(float val)
 
 UMaterial::ZFunc			UMaterial::getZFunc(void)  const  
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::ZFunc)(uint32)object->getZFunc();
 }
@@ -301,7 +278,6 @@ UMaterial::ZFunc			UMaterial::getZFunc(void)  const
 
 bool			UMaterial::getZWrite(void)  const 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getZWrite();
 }
@@ -310,7 +286,6 @@ bool			UMaterial::getZWrite(void)  const
 
 float			UMaterial::getZBias(void)  const  
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getZBias();
 }
@@ -319,7 +294,6 @@ float			UMaterial::getZBias(void)  const
 
 void			UMaterial::setColor(CRGBA rgba) 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setColor(rgba);
 }
@@ -328,7 +302,6 @@ void			UMaterial::setColor(CRGBA rgba)
 
 CRGBA			UMaterial::getColor(void) const 
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getColor();
 }
@@ -337,7 +310,6 @@ CRGBA			UMaterial::getColor(void) const
 
 void			UMaterial::setDoubleSided(bool doubleSided)
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->setDoubleSided(doubleSided);
 }
@@ -346,7 +318,6 @@ void			UMaterial::setDoubleSided(bool doubleSided)
 
 bool			UMaterial::getDoubleSided() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getDoubleSided();
 }
@@ -355,7 +326,6 @@ bool			UMaterial::getDoubleSided() const
 
 void			UMaterial::initUnlit()
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	object->initUnlit();
 }
@@ -364,49 +334,42 @@ void			UMaterial::initUnlit()
 // ***************************************************************************
 bool			UMaterial::isLighted() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->isLighted();
 }
 // ***************************************************************************
 CRGBA			UMaterial::getEmissive() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getEmissive();
 }
 // ***************************************************************************
 CRGBA			UMaterial::getAmbient() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getAmbient();
 }
 // ***************************************************************************
 CRGBA			UMaterial::getDiffuse() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getDiffuse();
 }
 // ***************************************************************************
 uint8			UMaterial::getOpacity() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getOpacity();
 }
 // ***************************************************************************
 CRGBA			UMaterial::getSpecular() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getSpecular();
 }
 // ***************************************************************************
 float			UMaterial::getShininess() const
 {
-	NL3D_MEM_MATERIAL
 	CMaterial *object = getObjectPtr();
 	return object->getShininess();
 }

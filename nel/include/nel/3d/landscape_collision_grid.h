@@ -27,8 +27,8 @@
 #define NL_LANDSCAPE_COLLISION_GRID_H
 
 #include "nel/misc/types_nl.h"
-#include "patch.h"
-#include "visual_collision_manager.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/visual_collision_manager.h"
 #include <vector>
 
 

@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/vector.h"
-#include "matrix_3x4.h"
+#include "nel/3d/matrix_3x4.h"
 
 namespace NL3D 
 {

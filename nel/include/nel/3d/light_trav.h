@@ -26,9 +26,9 @@
 #ifndef NL_LIGHT_TRAV_H
 #define NL_LIGHT_TRAV_H
 
-#include "trav_scene.h"
-#include "lighting_manager.h"
-#include "fast_ptr_list.h"
+#include "nel/3d/trav_scene.h"
+#include "nel/3d/lighting_manager.h"
+#include "nel/3d/fast_ptr_list.h"
 
 
 namespace	NL3D

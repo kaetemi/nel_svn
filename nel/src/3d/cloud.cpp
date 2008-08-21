@@ -114,12 +114,14 @@ void CCloud::generate (CNoise3d &noise)
 	uint32 nOct;
 	CQuadUV qc;
 
-	// Setup the matrices view&model, viewport and frustum
-	setMode2D ();
+	//nldebug("calling CCloud::generate(...)");
 
 	// Active the render target
 	_Driver->setRenderTarget (_CloudTexTmp->Tex, 0, 0, _Width*_NbW, _Height*_NbH);
 	_Driver->setFrustum (0, (float)_CloudTexTmp->Tex->getWidth(), 0, (float)_CloudTexTmp->Tex->getHeight(), -1, 1, false);
+
+	// Setup the matrices view&model, viewport and frustum
+	setMode2D ();
 
 	// Clear background
 	CVertexBuffer &rVB = _CloudScape->_VertexBuffer;
@@ -198,9 +200,6 @@ void CCloud::light ()
 
 	uint32 i, j;
 
-	// Setup the matrices view&model, viewport and frustum
-	setMode2D ();
-
 	// Destination position for lighting accumulation buffer from (0, 0) size (_Width, _Height)
 	CVertexBuffer &rVB = _CloudScape->_VertexBuffer;
 	uint32 nVSize = rVB.getVertexSize ();
@@ -216,6 +215,9 @@ void CCloud::light ()
 
 	// Active the render target
 	_Driver->setRenderTarget (_CloudTexTmp->TexBuffer, 0, 0, _Width, _Height);
+
+	// Setup the matrices view&model, viewport and frustum
+	setMode2D ();
 
 	// Set the frustum and viewport on all the billboards to clear them
 	_Driver->setFrustum (0, 1, 0, 1, -1, 1, false);
@@ -340,7 +342,6 @@ void CCloud::reset (NL3D::CCamera *pViewer)
 		_TexOldBill->setReleasable (false);
 		_TexOldBill->setRenderTarget (true);
 	}
-	setMode2D ();
 
 	// Clear background
 	CVertexBuffer &rVB = _CloudScape->_VertexBuffer;
@@ -358,9 +359,11 @@ void CCloud::reset (NL3D::CCamera *pViewer)
 	_Driver->activeVertexBuffer (rVB);
 
 	_Driver->setRenderTarget (_TexBill, 0, 0, 4, 4);
+	setMode2D ();
 	_Driver->setFrustum (0, 4, 0, 4, -1, 1, false);
 	_Driver->renderRawQuads (_CloudScape->_MatClear, 0, 1);
 	_Driver->setRenderTarget (_TexOldBill, 0, 0, 4, 4);
+	setMode2D ();
 	_Driver->renderRawQuads (_CloudScape->_MatClear, 0, 1);
 	_Driver->setRenderTarget (NULL);
 

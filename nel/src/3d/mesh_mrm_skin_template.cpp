@@ -23,6 +23,8 @@
  * MA 02111-1307, USA.
  */
 
+#include "std3d.h"
+
 // ace: before including this, #define this define to use it
 //      the goal is to be able to compile every .cpp file with no
 //      special case (GNU/Linux needs)

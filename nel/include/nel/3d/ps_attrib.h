@@ -31,7 +31,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/stream.h"
 #include "nel/3d/animation_time.h"
-#include "ps_allocator.h"
+#include "nel/3d/ps_allocator.h"
 #include "nel/misc/vector.h"
 #include "nel/misc/rgba.h"
 #include "nel/misc/common.h"

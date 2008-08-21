@@ -27,7 +27,7 @@
 #define NL_ASYNC_TEXTURE_BLOCK_H
 
 #include "nel/misc/types_nl.h"
-#include "material.h"
+#include "nel/3d/material.h"
 
 
 namespace NL3D 
@@ -54,7 +54,7 @@ public:
 	{
 		for(uint i=0;i<IDRV_MAT_MAXTEXTURES;i++)
 		{
-			TextIds[i]= -1;
+			TextIds[i]= UINT_MAX; //-1;
 			IsTextureFile[i]= false;
 		}
 	}

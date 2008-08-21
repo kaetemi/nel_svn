@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/common.h"
-#include "driver.h"
+#include "nel/3d/driver.h"
 #include "nel/3d/viewport.h"
 #include "nel/misc/geom_ext.h"
 #include "nel/misc/line.h"

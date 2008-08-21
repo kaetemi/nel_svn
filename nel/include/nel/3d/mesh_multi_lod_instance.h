@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/class_id.h"
 
-#include "mesh_base_instance.h"
+#include "nel/3d/mesh_base_instance.h"
 
 
 namespace NL3D 

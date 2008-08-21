@@ -27,7 +27,7 @@
 #define NL_MESH_BLENDER_H
 
 #include "nel/misc/types_nl.h"
-#include "material.h"
+#include "nel/3d/material.h"
 
 
 namespace NL3D 

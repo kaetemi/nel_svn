@@ -35,7 +35,6 @@ namespace NL3D
 
 using NLMISC::CVector;
 
-#define NL3D_MEM_SCISSOR					NL_ALLOC_CONTEXT( 3dScssr )
 
 // ***************************************************************************
 /**
@@ -59,13 +58,11 @@ public:
 	/// Constructor. fullScreen.
 	CScissor()
 	{
-		NL3D_MEM_SCISSOR
 		initFullScreen();
 	}
 	/// Constructor.
 	CScissor(float x, float y, float width, float height)
 	{
-		NL3D_MEM_SCISSOR
 		X= x;
 		Y= y;
 		Width= width;
@@ -76,7 +73,6 @@ public:
 	/// init. simple copy.
 	void	init (float x, float y, float width, float height)
 	{
-		NL3D_MEM_SCISSOR
 		X= x;
 		Y= y;
 		Width= width;
@@ -87,7 +83,6 @@ public:
 	/// reset to FullScreen
 	void	initFullScreen()
 	{
-		NL3D_MEM_SCISSOR
 		X= 0;
 		Y= 0;
 		Width= 1;

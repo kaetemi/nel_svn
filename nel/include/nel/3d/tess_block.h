@@ -27,7 +27,7 @@
 #define NL_TESS_BLOCK_H
 
 #include "nel/misc/types_nl.h"
-#include "tessellation.h"
+#include "nel/3d/tessellation.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/bsphere.h"
 #include <list>

@@ -55,10 +55,7 @@ const	uint8	TileUvFmtNormal5= 4;
 
 
 // ***************************************************************************
-// \todo yoyo: may change this.
 const	float TileSize= 128;
-
-
 
 
 // ***************************************************************************
@@ -692,9 +689,9 @@ void		CTessFace::computeTileMaterial()
 		C must be created, but A and B may be created or copied from neighbor.
 	*/
 	CParamCoord	middle(PVLeft,PVRight);
-	sint ts= ((sint)middle.S * (sint)Patch->OrderS) / 0x8000;
-	sint tt= ((sint)middle.T * (sint)Patch->OrderT) / 0x8000;
-	TileId= tt*Patch->OrderS + ts;
+	uint16 ts= ((uint16)middle.S * (uint16)Patch->OrderS) / 0x8000;
+	uint16 tt= ((uint16)middle.T * (uint16)Patch->OrderT) / 0x8000;
+	TileId= (uint8)(tt*Patch->OrderS + ts);
 
 
 	// 1. Compute Tile Material.
@@ -714,8 +711,8 @@ void		CTessFace::computeTileMaterial()
 	{
 		sint	i;
 		TileMaterial= Patch->getLandscape()->newTileMaterial();
-		TileMaterial->TileS= ts;
-		TileMaterial->TileT= tt;
+		TileMaterial->TileS= uint8(ts);
+		TileMaterial->TileT= uint8(tt);
 
 		// Add this new material to the render list.
 		Patch->appendTileMaterialToRenderList(TileMaterial);

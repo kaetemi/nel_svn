@@ -27,7 +27,7 @@
 #define NL_LIGHTING_MANAGER_H
 
 #include "nel/misc/types_nl.h"
-#include "quad_grid.h"
+#include "nel/3d/quad_grid.h"
 #include "nel/misc/bsphere.h"
 #include "nel/3d/point_light_influence.h"
 #include <vector>

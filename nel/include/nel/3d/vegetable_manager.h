@@ -32,14 +32,14 @@
 #include "nel/misc/block_memory.h"
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/smart_ptr.h"
-#include "vegetable_clip_block.h"
-#include "vegetable_sort_block.h"
-#include "vegetable_instance_group.h"
-#include "vegetable_shape.h"
-#include "vegetablevb_allocator.h"
-#include "material.h"
-#include "driver.h"
-#include "vegetable_uv8.h"
+#include "nel/3d/vegetable_clip_block.h"
+#include "nel/3d/vegetable_sort_block.h"
+#include "nel/3d/vegetable_instance_group.h"
+#include "nel/3d/vegetable_shape.h"
+#include "nel/3d/vegetablevb_allocator.h"
+#include "nel/3d/material.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/vegetable_uv8.h"
 
 
 namespace NL3D 

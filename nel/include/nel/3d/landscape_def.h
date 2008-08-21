@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/bsphere.h"
-#include "landscapevb_info.h"
-#include "index_buffer.h"
+#include "nel/3d/landscapevb_info.h"
+#include "nel/3d/index_buffer.h"
 
 
 namespace NL3D 

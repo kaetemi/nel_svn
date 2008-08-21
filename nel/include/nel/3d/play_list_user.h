@@ -29,11 +29,10 @@
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_play_list.h"
 #include "nel/misc/smart_ptr.h"
-#include "animation_set.h"
-#include "channel_mixer.h"
-#include "animation_playlist.h"
+#include "nel/3d/animation_set.h"
+#include "nel/3d/channel_mixer.h"
+#include "nel/3d/animation_playlist.h"
 
-#define NL3D_MEM_PLAYLIST						NL_ALLOC_CONTEXT( 3dPL )
 
 namespace NL3D 
 {
@@ -62,7 +61,6 @@ public:
 	/// Constructor
 	CPlayListUser(NLMISC::CSmartPtr<CAnimationSet>		animationSet)
 	{
-		NL3D_MEM_PLAYLIST
 		nlassert(animationSet!=NULL);
 		_AnimationSet= animationSet;
 

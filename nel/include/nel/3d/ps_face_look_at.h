@@ -26,9 +26,9 @@
 #ifndef NL_PS_FACE_LOOK_AT_H
 #define NL_PS_FACE_LOOK_AT_H
 
-#include "ps_particle_basic.h"
-#include "ps_quad.h"
-#include "ps_iterator.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/ps_quad.h"
+#include "nel/3d/ps_iterator.h"
 
 namespace NL3D 
 {

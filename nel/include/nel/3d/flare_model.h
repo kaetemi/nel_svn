@@ -27,8 +27,8 @@
 #define NL_FLARE_MODEL_H
 
 #include "nel/misc/types_nl.h"
-#include "transform_shape.h"
-#include "vertex_buffer.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/vertex_buffer.h"
 
 
 namespace NL3D {

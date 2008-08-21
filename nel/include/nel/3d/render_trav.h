@@ -26,15 +26,15 @@
 #ifndef NL_RENDER_TRAV_H
 #define NL_RENDER_TRAV_H
 
-#include "trav_scene.h"
-#include "ordering_table.h"
-#include "layered_ordering_table.h"
+#include "nel/3d/trav_scene.h"
+#include "nel/3d/ordering_table.h"
+#include "nel/3d/layered_ordering_table.h"
 #include "nel/misc/rgba.h"
 #include "nel/3d/viewport.h"
-#include "light_contribution.h"
-#include "light.h"
-#include "mesh_block_manager.h"
-#include "shadow_map_manager.h"
+#include "nel/3d/light_contribution.h"
+#include "nel/3d/light.h"
+#include "nel/3d/mesh_block_manager.h"
+#include "nel/3d/shadow_map_manager.h"
 #include "nel/3d/u_scene.h"
 #include <vector>
 

@@ -27,7 +27,7 @@
 #define NL_ROOT_MODEL_H
 
 #include "nel/misc/types_nl.h"
-#include "transform.h"
+#include "nel/3d/transform.h"
 
 
 namespace NL3D {

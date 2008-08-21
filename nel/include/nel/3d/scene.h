@@ -27,21 +27,21 @@
 #define NL_SCENE_H
 
 
-#include "camera.h"
-#include "shape.h"
-#include "animated_lightmap.h"
-#include "play_list_manager.h"
-#include "quad_grid_clip_manager.h"
-#include "particle_system_manager.h"
-#include "animation_set.h"
+#include "nel/3d/camera.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/animated_lightmap.h"
+#include "nel/3d/play_list_manager.h"
+#include "nel/3d/quad_grid_clip_manager.h"
+#include "nel/3d/particle_system_manager.h"
+#include "nel/3d/animation_set.h"
 // The traversals
-#include "hrc_trav.h"
-#include "clip_trav.h"
-#include "anim_detail_trav.h"
-#include "load_balancing_trav.h"
-#include "light_trav.h"
-#include "render_trav.h"
-#include "flare_model.h"
+#include "nel/3d/hrc_trav.h"
+#include "nel/3d/clip_trav.h"
+#include "nel/3d/anim_detail_trav.h"
+#include "nel/3d/load_balancing_trav.h"
+#include "nel/3d/light_trav.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/flare_model.h"
 
 #include "nel/3d/viewport.h"
 #include "nel/3d/u_scene.h"
@@ -50,7 +50,7 @@
 #include "nel/misc/smart_ptr.h"
 
 // Debug : Sept 01 2006
-#include "skeleton_spawn_script.h"
+#include "nel/3d/skeleton_spawn_script.h"
 
 #include <map>
 #include <list>

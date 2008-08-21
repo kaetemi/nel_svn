@@ -263,7 +263,7 @@ static inline void BuildSlice(const NLMISC::CMatrix &mat, CVertexBuffer &vb, uin
 	{
 		// compute intersection point
 		NLMISC::CVector inter;
-		NLMISC::CVector tInter;		
+		NLMISC::CVector tInter = CVector::Null;		
 		if (fabsf(prev->Proj.y - next->Proj.y) > NormEpsilon)
 		{
 				float lambda = (next->Proj.y - ZEpsilon) / (next->Proj.y - prev->Proj.y);

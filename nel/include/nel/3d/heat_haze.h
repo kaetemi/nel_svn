@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
-#include "vertex_buffer.h"
+#include "nel/3d/vertex_buffer.h"
 
 namespace NL3D {
 

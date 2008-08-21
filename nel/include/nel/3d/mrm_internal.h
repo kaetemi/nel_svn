@@ -27,7 +27,7 @@
 #define NL_MRM_INTERNAL_H
 
 #include "nel/misc/types_nl.h"
-#include "mrm_mesh.h"
+#include "nel/3d/mrm_mesh.h"
 
 
 namespace NL3D

@@ -27,12 +27,12 @@
 #define NL_PS_FORCE_H
 
 #include "nel/misc/types_nl.h"
-#include "ps_located.h"
-#include "ps_util.h"
-#include "ps_attrib_maker.h"
-#include "ps_edit.h"
-#include "ps_direction.h"
-#include "particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_edit.h"
+#include "nel/3d/ps_direction.h"
+#include "nel/3d/particle_system.h"
 
 
 namespace NL3D {
@@ -496,6 +496,8 @@ public:
 	CPSFluidFrictionFunctor() : _K(1.f) 
 	{		
 	}
+	
+	virtual ~CPSFluidFrictionFunctor() {}
 
 	#ifdef NL_OS_WINDOWS
 		__forceinline
@@ -632,6 +634,8 @@ protected:
 
 struct CPSTurbulForceFunc
 {	
+	virtual ~CPSTurbulForceFunc() {}
+	
 	#ifdef NL_OS_WINDOWS
 		__forceinline
 	#endif

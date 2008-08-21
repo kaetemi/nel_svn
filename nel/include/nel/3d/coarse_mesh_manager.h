@@ -29,10 +29,10 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/rgba.h"
 
-#include "transform.h"
-#include "material.h"
-#include "index_buffer.h"
-#include "vertex_buffer.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/material.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/vertex_buffer.h"
 
 namespace NL3D 
 {

@@ -692,7 +692,6 @@ void	CParticleSystemModel::doAnimate()
 //////////////////////////////////////////////
 void	CParticleSystemModel::traverseRender()
 {
-	NL_ALLOC_CONTEXT( RdrPS )
 	MINI_TIMER(PSStatsTraverseRender)
 /*
 	if (!_OutOfFrustum)

@@ -48,6 +48,7 @@ namespace NL3D
 class UShapeBank
 {
 public:
+	virtual ~UShapeBank() {}
 
 	/**
 	  * Add a new ShapeCache. If already exist do nothing.

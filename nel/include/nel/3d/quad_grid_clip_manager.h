@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/plane.h"
-#include "quad_grid_clip_cluster.h"
+#include "nel/3d/quad_grid_clip_cluster.h"
 #include <vector>
-#include "fast_ptr_list.h"
-#include "transform.h"
+#include "nel/3d/fast_ptr_list.h"
+#include "nel/3d/transform.h"
 
 
 namespace NL3D 

@@ -74,23 +74,22 @@
 	
 
 // Define this to disable hardware vertex program (default is undefined)
-// #define NL_DISABLE_HARDWARE_VERTEX_PROGAM
+//#define NL_DISABLE_HARDWARE_VERTEX_PROGAM
 
 // Define this to disable hardware pixel shaders program (default is undefined)
-// #define NL_DISABLE_HARDWARE_PIXEL_SHADER
+//#define NL_DISABLE_HARDWARE_PIXEL_SHADER
 
 // Define this to disable hardware vertex array AGP (default is undefined)
-// #define NL_DISABLE_HARDWARE_VERTEX_ARRAY_AGP
+//#define NL_DISABLE_HARDWARE_VERTEX_ARRAY_AGP
 
 // Define this to force the texture stage count (default is undefined)
-// #define NL_FORCE_TEXTURE_STAGE_COUNT 2
+//#define NL_FORCE_TEXTURE_STAGE_COUNT 2
 
 // Define this to force the use of pixel shader in the normal shaders (default is undefined)
 //#define NL_FORCE_PIXEL_SHADER_USE_FOR_NORMAL_SHADERS
 
 // Define this to enable profiling by the NV Perf HUD tool (default is undefined)
 //#define NL_D3D_USE_NV_PERF_HUD
-
 
 // Define this to enable profiling of driver functions (default is undefined).
 //#define NL_PROFILE_DRIVER_D3D
@@ -102,8 +101,6 @@
 #else
 	#define H_AUTO_D3D(label)
 #endif
-
-
 
 class CFpuRestorer
 {
@@ -388,10 +385,8 @@ public:
 	virtual void apply(class CDriverD3D &drv) = 0;
 	virtual ~CStateRecord() {}
 	// use STL allocator for fast alloc. this works because objects are small ( < 128 bytes)
-	#undef new
-		void *operator new(size_t size) { return Allocator.allocate(size); }\
-		void operator delete(void *block) { Allocator.deallocate((uint8 *) block, 1); } // memory leaks to check here
-	#define new NL_NEW
+	void *operator new(size_t size) { return CStateRecord::Allocator.allocate(size); }
+	void operator delete(void *block) { CStateRecord::Allocator.deallocate((uint8 *) block, 1); }
 
 	static std::allocator<uint8> Allocator;
 };
@@ -750,8 +745,8 @@ public:
 	// ***************************************************************************
 
 	// Mode initialisation, requests
-	virtual bool			init (uint windowIcon = 0);
-	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show) throw(EBadDisplay);
+	virtual bool			init (uint windowIcon = 0, emptyProc exitFunc = 0);
+	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show, bool resizeable) throw(EBadDisplay);
 	virtual bool			release();
 	virtual bool			setMode(const GfxMode& mode);
 	virtual bool			getModes(std::vector<GfxMode> &modes);
@@ -769,6 +764,8 @@ public:
 	virtual void			getWindowSize (uint32 &width, uint32 &height);
 	virtual void			getWindowPos (uint32 &x, uint32 &y);
 	virtual uint8			getBitPerPixel ();
+	/// Set the title of the NeL window
+	virtual void			setWindowTitle(const std::string &title);
 
 	// Driver parameters
 	virtual void			disableHardwareVertexProgram();
@@ -777,6 +774,7 @@ public:
 	virtual void			disableHardwareTextureShader();
 	virtual void			forceDXTCCompression(bool dxtcComp);
 	virtual void			forceTextureResize(uint divisor);
+	virtual void			forceNativeFragmentPrograms(bool nativeOnly) {} // ignored
 
 	// Driver informations
 	virtual uint			getNumAdapter() const;
@@ -784,7 +782,7 @@ public:
 	virtual bool			setAdapter(uint adapter);
 	virtual uint32			getAvailableVertexAGPMemory ();
 	virtual uint32			getAvailableVertexVRAMMemory ();
-	virtual	sint			getNbTextureStages() const;
+	virtual	uint			getNbTextureStages() const;
 	virtual void			getNumPerStageConstant(uint &lightedMaterial, uint &unlightedMaterial) const;
 	virtual	bool			supportVertexBufferHard() const;
 	virtual bool			supportVolatileVertexBuffer() const;
@@ -834,7 +832,7 @@ public:
 	void					getDirect3DRect(NLMISC::CRect &rect, RECT & d3dRect);
 	
 	// todo hulud d3d buffers
-	virtual void			getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect) {};
+	virtual void			getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect);
 	virtual bool			setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width, uint32 height, uint32 mipmapLevel, uint32 cubeFace);
 	virtual bool			copyTargetToTexture (ITexture *tex, uint32 offsetx, uint32 offsety, uint32 x, uint32 y, uint32 width, 
 													uint32 height, uint32 mipmapLevel);
@@ -1025,7 +1023,7 @@ public:
 	bool					supportPixelShaders() const { return _PixelShader; }
 
 		// *** Inline info
-	sint			inlGetNumTextStages() const {return _NbNeLTextureStages;}
+	uint					inlGetNumTextStages() const { return _NbNeLTextureStages; }
 
 //private:
 public:
@@ -2059,6 +2057,8 @@ public:
 	HRESULT STDMETHODCALLTYPE SetVertexShaderConstantI(UINT StartRegister, CONST INT* pConstantData, UINT RegisterCount);
 private:
 
+	void findNearestFullscreenVideoMode();
+
 	// Windows
 	std::string				_WindowClass;
 	HWND					_HWnd;	
@@ -2133,7 +2133,7 @@ private:
 	bool					_EMBMSupported;
 	bool					_CubbedMipMapSupported;
 	bool					_IsGeforce;
-	sint					_NbNeLTextureStages;			// Number of texture stage for NeL (max IDRV_MAT_MAXTEXTURES)
+	uint					_NbNeLTextureStages;			// Number of texture stage for NeL (max IDRV_MAT_MAXTEXTURES)
 	uint					_MaxVerticesByVertexBufferHard;
 	uint					_MaxLight;
 	uint32					_PixelShaderVersion;
@@ -2381,7 +2381,6 @@ public:
 	// for debug only
 	static bool		_CacheTest[CacheTest_Count];
 
-	
 	static std::vector<uint16>  _QuadIndices; // tmp : quads indices -> to allow support of quads on devices that don't have 32 bit indices
 
 	// reset an index buffer and force it to be reallocated	
@@ -2392,6 +2391,8 @@ public:
 	#ifdef 	NL_DEBUG
 		std::set<CVBDrvInfosD3D *> _LockedBuffers;
 	#endif	
+
+	emptyProc ExitFunc;
 
 	bool beginScene()
 	{
@@ -2410,6 +2411,10 @@ public:
 	}
 
 	bool hasSceneBegun() const { return _SceneBegun; }	
+
+	// Clip the wanted rectangle with window. return true if rect is not NULL.
+	bool					clipRect(NLMISC::CRect &rect);
+
 };
 
 #define NL_D3DCOLOR_RGBA(rgba) (D3DCOLOR_ARGB(rgba.A,rgba.R,rgba.G,rgba.B))
@@ -2517,6 +2522,8 @@ void fillQuadIndexes (uint16 *indexes, uint first, uint last);
 
 } // NL3D
 
+#ifndef NL_STATIC
 extern HINSTANCE HInstDLL;
+#endif
 
 #endif // NL_DRIVER_DIRECT3D_H

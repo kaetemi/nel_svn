@@ -30,8 +30,8 @@
 #include "nel/misc/class_id.h"
 #include "nel/misc/mem_stream.h"
 #include "nel/misc/smart_ptr.h"
-#include "shape.h"
-#include "track.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/track.h"
 
 namespace NLMISC
 {

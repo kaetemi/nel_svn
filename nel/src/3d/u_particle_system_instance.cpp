@@ -31,7 +31,6 @@
 #include "nel/3d/ps_emitter.h"
 #include "nel/3d/particle_system_model.h"
 
-#define NL3D_MEM_PS_INSTANCE						NL_ALLOC_CONTEXT( 3dPS )
 
 namespace NL3D {
 
@@ -39,7 +38,6 @@ namespace NL3D {
 // ***************************************************************************
 bool		UParticleSystemInstance::isSystemPresent(void) const
 {
-	NL3D_MEM_PS_INSTANCE			
 	if (!_Object) return false; // the system is not even valid
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	return object->getPS() != NULL;
@@ -48,7 +46,6 @@ bool		UParticleSystemInstance::isSystemPresent(void) const
 // ***************************************************************************
 bool		UParticleSystemInstance::getSystemBBox(NLMISC::CAABBox &bbox)
 {
-	NL3D_MEM_PS_INSTANCE			
 	if (!_Object) return false;
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	if (!object->getPS()) return false;
@@ -60,7 +57,6 @@ bool		UParticleSystemInstance::getSystemBBox(NLMISC::CAABBox &bbox)
 // ***************************************************************************
 void UParticleSystemInstance::setUserColor(NLMISC::CRGBA userColor)
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->setUserColor(userColor);
 }
@@ -68,7 +64,6 @@ void UParticleSystemInstance::setUserColor(NLMISC::CRGBA userColor)
 // ***************************************************************************
 NLMISC::CRGBA UParticleSystemInstance::getUserColor() const
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	return object->getUserColor();
 }
@@ -76,7 +71,6 @@ NLMISC::CRGBA UParticleSystemInstance::getUserColor() const
 // ***************************************************************************
 void		UParticleSystemInstance::setUserParam(uint index, float value)
 {	
-	NL3D_MEM_PS_INSTANCE
 	if (index >= MaxPSUserParam)
 	{
 		nlwarning("invalid user param index");
@@ -92,7 +86,6 @@ void		UParticleSystemInstance::setUserParam(uint index, float value)
 // ***************************************************************************
 float		UParticleSystemInstance::getUserParam(uint index) const
 {
-	NL3D_MEM_PS_INSTANCE
 	if (index >= MaxPSUserParam)
 	{
 		nlwarning("invalid user param index");
@@ -107,7 +100,6 @@ float		UParticleSystemInstance::getUserParam(uint index) const
 // ***************************************************************************
 static inline uint32 IDToLittleEndian(uint32 input)
 {
-	NL3D_MEM_PS_INSTANCE			
 	#ifdef NL_LITTLE_ENDIAN
 		return input;
 	#else
@@ -121,7 +113,6 @@ static inline uint32 IDToLittleEndian(uint32 input)
 // ***************************************************************************
 bool	UParticleSystemInstance::emit(uint32 anId, uint quantity)
 {
-	NL3D_MEM_PS_INSTANCE			
 	const uint32 id = IDToLittleEndian(anId);
 	nlassert(isSystemPresent());
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
@@ -149,7 +140,6 @@ bool	UParticleSystemInstance::emit(uint32 anId, uint quantity)
 // ***************************************************************************
 bool UParticleSystemInstance::removeByID(uint32 anId)
 {
-	NL3D_MEM_PS_INSTANCE			
 	const uint32 id = IDToLittleEndian(anId);
 	if (!isSystemPresent()) return false;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
@@ -172,7 +162,6 @@ bool UParticleSystemInstance::removeByID(uint32 anId)
 // ***************************************************************************
 uint UParticleSystemInstance::getNumID() const
 {
-	NL3D_MEM_PS_INSTANCE			
 	if (!isSystemPresent()) return 0;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
 	return ps->getNumID();
@@ -181,7 +170,6 @@ uint UParticleSystemInstance::getNumID() const
 // ***************************************************************************
 uint32 UParticleSystemInstance::getID(uint index) const
 {
-	NL3D_MEM_PS_INSTANCE			
 	if (!isSystemPresent()) return 0;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
 	return ps->getID(index);
@@ -190,7 +178,6 @@ uint32 UParticleSystemInstance::getID(uint index) const
 // ***************************************************************************
 bool UParticleSystemInstance::getIDs(std::vector<uint32> &dest) const
 {
-	NL3D_MEM_PS_INSTANCE			
 	if (!isSystemPresent()) return false;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
 	ps->getIDs(dest);
@@ -200,7 +187,6 @@ bool UParticleSystemInstance::getIDs(std::vector<uint32> &dest) const
 // ***************************************************************************
 bool UParticleSystemInstance::setActive(uint32 anId, bool active)
 {
-	NL3D_MEM_PS_INSTANCE
 	const uint32 id = IDToLittleEndian(anId);
 	if (!isSystemPresent()) return false;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
@@ -217,21 +203,18 @@ bool UParticleSystemInstance::setActive(uint32 anId, bool active)
 // ***************************************************************************
 void UParticleSystemInstance::activateEmitters(bool active)
 {	
-	NL3D_MEM_PS_INSTANCE	
 	(NLMISC::safe_cast<CParticleSystemModel *>(_Object))->activateEmitters(active);
 }
 
 // ***************************************************************************
 bool UParticleSystemInstance::hasActiveEmitters() const
 {
-	NL3D_MEM_PS_INSTANCE	
 	return (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->hasActiveEmitters();
 }
 
 // ***************************************************************************
 bool UParticleSystemInstance::hasParticles() const
 {
-	NL3D_MEM_PS_INSTANCE
 	if (!isSystemPresent()) return false;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
 	return ps->hasParticles();
@@ -240,7 +223,6 @@ bool UParticleSystemInstance::hasParticles() const
 // ***************************************************************************
 bool UParticleSystemInstance::hasEmmiters() const
 {
-	NL3D_MEM_PS_INSTANCE
 	if (!isSystemPresent()) return false;
 	CParticleSystem *ps = (NLMISC::safe_cast<CParticleSystemModel *>(_Object))->getPS();
 	return ps->hasEmitters();
@@ -248,7 +230,6 @@ bool UParticleSystemInstance::hasEmmiters() const
 // ***************************************************************************
 bool UParticleSystemInstance::isShared() const
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	if(object->Shape)
 	{
@@ -260,7 +241,6 @@ bool UParticleSystemInstance::isShared() const
 // ***************************************************************************
 void UParticleSystemInstance::setGlobalUserParamValue(const std::string &name, float value)
 {
-	NL3D_MEM_PS_INSTANCE
 	if (name.empty())
 	{
 		nlwarning("invalid name");
@@ -272,7 +252,6 @@ void UParticleSystemInstance::setGlobalUserParamValue(const std::string &name, f
 // ***************************************************************************
 float UParticleSystemInstance::getGlobalUserParamValue(const std::string &name)
 {
-	NL3D_MEM_PS_INSTANCE
 	if (name.empty())
 	{
 		nlwarning("invalid name");
@@ -284,7 +263,6 @@ float UParticleSystemInstance::getGlobalUserParamValue(const std::string &name)
 // ***************************************************************************
 void UParticleSystemInstance::setGlobalVectorValue(const std::string &name,const NLMISC::CVector &v)
 {
-	NL3D_MEM_PS_INSTANCE
 	if (name.empty())
 	{
 		nlwarning("invalid name");
@@ -302,7 +280,6 @@ void UParticleSystemInstance::forceDisplayBBox(bool on)
 // ***************************************************************************
 NLMISC::CVector UParticleSystemInstance::getGlobalVectorValue(const std::string &name)
 {
-	NL3D_MEM_PS_INSTANCE
 	if (name.empty())
 	{
 		nlwarning("invalid name");
@@ -314,7 +291,6 @@ NLMISC::CVector UParticleSystemInstance::getGlobalVectorValue(const std::string 
 // ***************************************************************************
 void UParticleSystemInstance::bypassGlobalUserParamValue(uint userParamIndex, bool byPass /*=true*/)
 {
-	NL3D_MEM_PS_INSTANCE
 	if (userParamIndex >= MaxPSUserParam)
 	{
 		nlwarning("invalid user param index");
@@ -327,7 +303,6 @@ void UParticleSystemInstance::bypassGlobalUserParamValue(uint userParamIndex, bo
 // ***************************************************************************
 bool UParticleSystemInstance::isGlobalUserParamValueBypassed(uint userParamIndex) const
 {
-	NL3D_MEM_PS_INSTANCE
 	if (userParamIndex >= MaxPSUserParam)
 	{
 		nlwarning("invalid user param index");
@@ -340,7 +315,6 @@ bool UParticleSystemInstance::isGlobalUserParamValueBypassed(uint userParamIndex
 // ***************************************************************************
 void UParticleSystemInstance::setUserMatrix(const NLMISC::CMatrix &userMat)
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->setUserMatrix(userMat);
 }
@@ -348,7 +322,6 @@ void UParticleSystemInstance::setUserMatrix(const NLMISC::CMatrix &userMat)
 // ***************************************************************************
 void UParticleSystemInstance::forceSetUserMatrix(const NLMISC::CMatrix &userMat)
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->forceSetUserMatrix(userMat);	
 }
@@ -357,7 +330,6 @@ void UParticleSystemInstance::forceSetUserMatrix(const NLMISC::CMatrix &userMat)
 // ***************************************************************************
 void UParticleSystemInstance::forceInstanciate()
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->forceInstanciate();
 }
@@ -365,7 +337,6 @@ void UParticleSystemInstance::forceInstanciate()
 // ***************************************************************************
 void UParticleSystemInstance::setZBias(float value)
 {
-	NL3D_MEM_PS_INSTANCE
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->setZBias(value);
 }

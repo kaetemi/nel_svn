@@ -28,12 +28,11 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_play_list_manager.h"
-#include "play_list_manager.h"
-#include "play_list_user.h"
-#include "animation_set_user.h"
-#include "ptr_set.h"
+#include "nel/3d/play_list_manager.h"
+#include "nel/3d/play_list_user.h"
+#include "nel/3d/animation_set_user.h"
+#include "nel/3d/ptr_set.h"
 
-#define NL3D_MEM_PLAYLIST_MANAGER						NL_ALLOC_CONTEXT( 3dPLMng )
 
 namespace NL3D 
 {
@@ -58,7 +57,6 @@ public:
 	/// Constructor
 	CPlayListManagerUser()
 	{
-		NL3D_MEM_PLAYLIST_MANAGER
 	}
 
 

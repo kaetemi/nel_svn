@@ -27,8 +27,8 @@
 #define NL_BONE_H
 
 #include "nel/misc/types_nl.h"
-#include "transformable.h"
-#include "channel_mixer.h"
+#include "nel/3d/transformable.h"
+#include "nel/3d/channel_mixer.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/bsphere.h"
 

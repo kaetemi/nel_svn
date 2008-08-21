@@ -28,12 +28,12 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/uv.h"
-#include "mrm_mesh.h"
-#include "mrm_internal.h"
-#include "mrm_parameters.h"
-#include "mesh.h"
-#include "mesh_mrm.h"
-#include "mesh_mrm_skinned.h"
+#include "nel/3d/mrm_mesh.h"
+#include "nel/3d/mrm_internal.h"
+#include "nel/3d/mrm_parameters.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh_mrm_skinned.h"
 #include <map>
 
 

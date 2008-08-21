@@ -44,7 +44,7 @@ namespace NL3D
 {
 
 // ***************************************************************************
-const uint32 IDriver::InterfaceVersion = 0x59; // hulud
+const uint32 IDriver::InterfaceVersion = 0x61; // Spex
 
 // ***************************************************************************
 IDriver::IDriver() : _SyncTexDrvInfos( "IDriver::_SyncTexDrvInfos" )
@@ -143,14 +143,15 @@ bool		IDriver::release(void)
 
 
 // ***************************************************************************
-GfxMode::GfxMode(uint16 w, uint16 h, uint8 d, bool windowed, bool offscreen, uint frequency)
+GfxMode::GfxMode(uint16 w, uint16 h, uint8 d, bool windowed, bool offscreen, uint frequency, sint8 aa)
 {
-	Windowed= windowed;
-	Width= w;
-	Height= h;
-	Depth= d;
-	OffScreen= offscreen;
-	Frequency= frequency;
+	Windowed = windowed;
+	Width = w;
+	Height = h;
+	Depth = d;
+	OffScreen = offscreen;
+	Frequency = frequency;
+	AntiAlias = aa;
 }
 
 // ***************************************************************************

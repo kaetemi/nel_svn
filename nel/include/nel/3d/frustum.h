@@ -29,7 +29,6 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
 
-#define NL3D_MEM_FRUSTRUM						NL_ALLOC_CONTEXT( 3dFrtrm )
 
 namespace NL3D
 {
@@ -55,12 +54,10 @@ public:
 	/// Un-initialized frustum.
 	CFrustum() 
 	{
-		NL3D_MEM_FRUSTRUM
 	}
 	/// ctor.
 	CFrustum(float left, float right, float bottom, float top, float znear, float zfar, bool perspective= true)
 	{
-		NL3D_MEM_FRUSTRUM
 		init( left,  right,  bottom,  top,  znear,  zfar, perspective);
 	}
 

@@ -27,8 +27,8 @@
 #define NL_MESHVP_PER_PIXEL_LIGHT_H
 
 #include "nel/misc/types_nl.h"
-#include "mesh_vertex_program.h"
-#include "vertex_program.h"
+#include "nel/3d/mesh_vertex_program.h"
+#include "nel/3d/vertex_program.h"
 
 
 #include <memory>

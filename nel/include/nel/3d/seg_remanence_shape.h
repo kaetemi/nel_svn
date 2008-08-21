@@ -32,12 +32,12 @@
 #include "nel/misc/aabbox.h"
 
 
-#include "texture.h"
-#include "shape.h"
-#include "material.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "animated_material.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/material.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/animated_material.h"
 
 
 

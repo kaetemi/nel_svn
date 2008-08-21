@@ -30,7 +30,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
-#include "particle_system_process.h"
+#include "nel/3d/particle_system_process.h"
 
 namespace NL3D   {
 

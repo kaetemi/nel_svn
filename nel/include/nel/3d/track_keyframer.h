@@ -27,8 +27,8 @@
 #define NL_TRACK_KEYFRAMER_H
 
 #include "nel/misc/types_nl.h"
-#include "track.h"
-#include "key.h"
+#include "nel/3d/track.h"
+#include "nel/3d/key.h"
 #include <map>
 #include <memory>
 #include "nel/misc/matrix.h"

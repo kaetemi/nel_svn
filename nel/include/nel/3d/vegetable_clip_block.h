@@ -29,8 +29,8 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/bsphere.h"
-#include "tess_list.h"
-#include "vegetable_sort_block.h"
+#include "nel/3d/tess_list.h"
+#include "nel/3d/vegetable_sort_block.h"
 
 
 namespace NL3D 

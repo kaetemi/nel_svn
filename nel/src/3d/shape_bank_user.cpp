@@ -41,7 +41,6 @@ namespace NL3D
 
 void CShapeBankUser::addShapeCache(const std::string &shapeCacheName)
 {
-	NL3D_MEM_SHAPE_BANK
 	_ShapeBank.addShapeCache( shapeCacheName );
 }
 
@@ -49,7 +48,6 @@ void CShapeBankUser::addShapeCache(const std::string &shapeCacheName)
 
 void CShapeBankUser::removeShapeCache(const std::string &shapeCacheName)
 {
-	NL3D_MEM_SHAPE_BANK
 	_ShapeBank.removeShapeCache( shapeCacheName );
 }
 
@@ -57,7 +55,6 @@ void CShapeBankUser::removeShapeCache(const std::string &shapeCacheName)
 
 void CShapeBankUser::reset()
 {
-	NL3D_MEM_SHAPE_BANK
 	_ShapeBank.reset();
 }
 
@@ -65,7 +62,6 @@ void CShapeBankUser::reset()
 
 void CShapeBankUser::setShapeCacheSize(const std::string &shapeCacheName, sint32 maxSize)
 {
-	NL3D_MEM_SHAPE_BANK
 	_ShapeBank.setShapeCacheSize( shapeCacheName, maxSize );
 }
 
@@ -73,7 +69,6 @@ void CShapeBankUser::setShapeCacheSize(const std::string &shapeCacheName, sint32
 
 void CShapeBankUser::linkShapeToShapeCache(const std::string &shapeName, const std::string &shapeCacheName)
 {
-	NL3D_MEM_SHAPE_BANK
 	_ShapeBank.linkShapeToShapeCache( shapeName, shapeCacheName );
 }
 

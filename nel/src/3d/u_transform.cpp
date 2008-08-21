@@ -36,7 +36,6 @@ H_AUTO_DECL( NL3D_Transform_Set_Cluster_System )
 
 #define	NL3D_HAUTO_SET_CLUSTER_SYSTEM		H_AUTO_USE( NL3D_Transform_Set_Cluster_System )
 
-#define NL3D_MEM_TRANSFORM						NL_ALLOC_CONTEXT( 3dTrans )
 
 using namespace NLMISC;
 
@@ -187,7 +186,6 @@ bool			UTransform::canReceiveShadowMap() const
 // ***************************************************************************
 void			UTransform::parent(UTransform newFather)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	if (object->getForceClipRoot())
 	{
@@ -212,7 +210,6 @@ void			UTransform::parent(UTransform newFather)
 // ***************************************************************************
 void UTransform::hide()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->hide();
 }
@@ -221,7 +218,6 @@ void UTransform::hide()
 
 void UTransform::show()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->show();
 }
@@ -230,7 +226,6 @@ void UTransform::show()
 
 void UTransform::setUserClipping(bool enable)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setUserClipping(enable);
 }
@@ -239,7 +234,6 @@ void UTransform::setUserClipping(bool enable)
 
 bool UTransform::getUserClipping() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->getUserClipping();
 }
@@ -248,7 +242,6 @@ bool UTransform::getUserClipping() const
 
 void UTransform::heritVisibility()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->heritVisibility();
 }
@@ -257,7 +250,6 @@ void UTransform::heritVisibility()
 
 UTransform::TVisibility UTransform::getVisibility()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return (UTransform::TVisibility)(uint32)object->getVisibility();
 }
@@ -266,7 +258,6 @@ UTransform::TVisibility UTransform::getVisibility()
 
 void UTransform::setOrderingLayer(uint layer) 
 { 
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setOrderingLayer(layer); 
 }
@@ -275,7 +266,6 @@ void UTransform::setOrderingLayer(uint layer)
 
 uint UTransform::getOrderingLayer() const 
 { 
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->getOrderingLayer(); 
 }
@@ -284,7 +274,6 @@ uint UTransform::getOrderingLayer() const
 
 void UTransform::setUserLightable(bool enable) 
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setUserLightable(enable);
 }
@@ -293,7 +282,6 @@ void UTransform::setUserLightable(bool enable)
 
 bool UTransform::getUserLightable() const  
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return  object->getUserLightable();
 }
@@ -302,7 +290,6 @@ bool UTransform::getUserLightable() const
 
 void UTransform::setLogicInfo(ILogicInfo *logicInfo) 
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setLogicInfo(logicInfo);
 }
@@ -311,7 +298,6 @@ void UTransform::setLogicInfo(ILogicInfo *logicInfo)
 
 bool UTransform::getLastWorldVisState() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->isHrcVisible();
 }
@@ -320,7 +306,6 @@ bool UTransform::getLastWorldVisState() const
 
 bool UTransform::getLastClippedState() const 
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->isClipVisible();
 }
@@ -329,7 +314,6 @@ bool UTransform::getLastClippedState() const
 
 void UTransform::setTransparency(bool v)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setTransparency(v);
 }
@@ -338,7 +322,6 @@ void UTransform::setTransparency(bool v)
 
 void UTransform::setOpacity(bool v)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setOpacity(v);
 }
@@ -346,7 +329,6 @@ void UTransform::setOpacity(bool v)
 // ***************************************************************************
 void UTransform::setBypassLODOpacityFlag(bool bypass)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setBypassLODOpacityFlag(bypass);
 }
@@ -355,7 +337,6 @@ void UTransform::setBypassLODOpacityFlag(bool bypass)
 
 uint32 UTransform::isOpaque()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->isOpaque();
 }
@@ -364,7 +345,6 @@ uint32 UTransform::isOpaque()
 
 uint32 UTransform::isTransparent()
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->isTransparent();
 }
@@ -373,7 +353,6 @@ uint32 UTransform::isTransparent()
 
 void UTransform::setForceClipRoot(bool forceClipRoot)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setForceClipRoot(forceClipRoot);
 }
@@ -382,7 +361,6 @@ void UTransform::setForceClipRoot(bool forceClipRoot)
 
 bool UTransform::getForceClipRoot() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->getForceClipRoot();
 }
@@ -391,7 +369,6 @@ bool UTransform::getForceClipRoot() const
 
 void UTransform::setTransparencyPriority(uint8 priority)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setTransparencyPriority(priority);
 }
@@ -399,7 +376,6 @@ void UTransform::setTransparencyPriority(uint8 priority)
 // ***************************************************************************
 void UTransform::setShadowMapDirectionZThreshold(float zthre)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setShadowMapDirectionZThreshold(zthre);
 }
@@ -407,7 +383,6 @@ void UTransform::setShadowMapDirectionZThreshold(float zthre)
 // ***************************************************************************
 float UTransform::getShadowMapDirectionZThreshold() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->getShadowMapDirectionZThreshold();
 }
@@ -415,7 +390,6 @@ float UTransform::getShadowMapDirectionZThreshold() const
 // ***************************************************************************
 void UTransform::setShadowMapMaxDepth(float depth)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	object->setShadowMapMaxDepth(depth);
 }
@@ -423,7 +397,6 @@ void UTransform::setShadowMapMaxDepth(float depth)
 // ***************************************************************************
 float	UTransform::getShadowMapMaxDepth() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->getShadowMapMaxDepth();
 }
@@ -431,7 +404,6 @@ float	UTransform::getShadowMapMaxDepth() const
 // ***************************************************************************
 bool	UTransform::supportFastIntersect() const
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->supportFastIntersect();
 }
@@ -439,7 +411,6 @@ bool	UTransform::supportFastIntersect() const
 // ***************************************************************************
 bool	UTransform::fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVector &dir, float &dist2D, float &distZ, bool computeDist2D)
 {
-	NL3D_MEM_TRANSFORM
 	CTransform	*object = getObjectPtr();
 	return object->fastIntersect(p0, dir, dist2D, distZ, computeDist2D);
 }

@@ -27,9 +27,9 @@
 #define NL_LANDSCAPE_MODEL_H
 
 #include "nel/misc/types_nl.h"
-#include "transform.h"
-#include "render_trav.h"
-#include "landscape.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/render_trav.h"
+#include "nel/3d/landscape.h"
 
 
 namespace NL3D 

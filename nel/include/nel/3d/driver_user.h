@@ -31,20 +31,19 @@
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/3d/u_driver.h"
 #include "nel/3d/u_material.h"
-#include "event_mouse_listener.h"
-#include "driver.h"
-#include "register_3d.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "font_manager.h"
-#include "ptr_set.h"
-#include "shape_bank_user.h"
-#include "light_user.h"
-#include "vertex_stream_manager.h"
-#include "async_texture_manager.h"
-#include "lod_character_manager.h"
+#include "nel/3d/event_mouse_listener.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/font_manager.h"
+#include "nel/3d/ptr_set.h"
+#include "nel/3d/shape_bank_user.h"
+#include "nel/3d/light_user.h"
+#include "nel/3d/vertex_stream_manager.h"
+#include "nel/3d/async_texture_manager.h"
+#include "nel/3d/lod_character_manager.h"
 
-#define NL3D_MEM_DRIVER						NL_ALLOC_CONTEXT( 3dDrv )
 
 namespace NL3D 
 {
@@ -133,7 +132,7 @@ public:
 
 	/// \name Object
 	// @{
-	CDriverUser (uint windowIcon = 0, bool direct3d = false);
+	CDriverUser (uint windowIcon = 0, bool direct3d = false, emptyProc exitFunc = 0);
 	virtual	~CDriverUser();
 	// @}
 
@@ -147,12 +146,16 @@ public:
 	virtual void			disableHardwareTextureShader();
 
 	/// create the window.
-	virtual	bool			setDisplay(const CMode &mode, bool show);
+	virtual	bool			setDisplay(const CMode &mode, bool show, bool resizeable);
+	virtual	bool			setDisplay(void *wnd, const CMode &mode, bool show, bool resizeable);
 	virtual bool			setMode(const CMode& mode);
 	virtual bool			getModes(std::vector<CMode> &modes);
 	virtual bool			getCurrentScreenMode(CMode &mode);
 	virtual void			beginDialogMode();
 	virtual void			endDialogMode();
+
+	/// Set the title of the NeL window
+	virtual void			setWindowTitle(const std::string &title);
 
 	/// Release the window.
 	virtual	void			release();
@@ -392,7 +395,7 @@ public:
 	virtual uint32			getImplementationVersion () const;
 	virtual const char*		getDriverInformation ();
 	virtual const char*		getVideocardInformation ();
-	virtual	sint			getNbTextureStages();
+	virtual	uint			getNbTextureStages();
 	virtual void			getWindowSize (uint32 &width, uint32 &height);
 	virtual uint			getWindowWidth ();
 	virtual uint			getWindowHeight ();
@@ -451,6 +454,7 @@ public:
 	virtual TPolygonMode 	getPolygonMode ();
 	virtual void			forceDXTCCompression(bool dxtcComp);
 	virtual void			forceTextureResize(uint divisor);
+	virtual void			forceNativeFragmentPrograms(bool nativeOnly);
 	virtual bool			setMonitorColorProperties (const CMonitorColorProperties &properties);
 	// @}
 
@@ -459,7 +463,6 @@ public:
 	/// 
 	virtual	UShapeBank*		getShapeBank()
 	{
-		NL3D_MEM_DRIVER
 		return &_ShapeBank;
 	}
 	// @}
@@ -548,12 +551,10 @@ public:
 	// @{
 	IDriver		*getDriver()
 	{
-		NL3D_MEM_DRIVER
 		return _Driver;
 	}
 	void		restoreMatrixContext()
 	{
-		NL3D_MEM_DRIVER
 		setupMatrixContext();
 	}
 	// same as restoreMatrixContext(), but don't reset Viewport/Scissor

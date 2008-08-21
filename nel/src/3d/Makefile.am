@@ -43,6 +43,8 @@ libnel3d_la_SOURCES  = \
 	async_texture_manager.h \
 	bezier_patch.cpp \
 	bezier_patch.h \
+	bloom_effect.cpp \
+	bloom_effect.h \
 	bone.cpp \
 	bone.h \
 	bsp_tree.h \

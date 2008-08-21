@@ -1169,8 +1169,8 @@ static const char*	LightingVPFragmentSpecular_End=
 // ***************************************************************************
 static	void	strReplaceAll(string &strInOut, const string &tokenSrc, const string &tokenDst)
 {
-	uint32	pos;
-	sint	srcLen= tokenSrc.size();
+	string::size_type pos;
+	string::difference_type srcLen= tokenSrc.size();
 	while( (pos=strInOut.find(tokenSrc)) != string::npos)
 	{
 		strInOut.replace(pos, srcLen, tokenDst);
@@ -1331,6 +1331,7 @@ void CRenderTrav::debugWaterModelMemory(const char *tag, bool dumpList)
 }
 
 }
+
 
 
 

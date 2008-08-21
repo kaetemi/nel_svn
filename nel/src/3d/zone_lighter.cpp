@@ -51,15 +51,10 @@
 
 
 #ifdef NL_OS_WINDOWS
-#  define WIN32_LEAN_AND_MEAN
-#  include "windows.h"
-#  include "winbase.h"
-#  ifdef min
-#    undef min
-#  endif
-#  ifdef max
-#    undef max
-#  endif
+#	define WIN32_LEAN_AND_MEAN
+#	define NOMINMAX
+#	include <windows.h>
+#	include <winbase.h>
 #endif // NL_OS_WINDOWS
 
 using namespace NLMISC;

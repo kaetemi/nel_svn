@@ -28,9 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/debug.h"
-#include "driver.h"
-#include "landscape_def.h"
-#include "patch.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/landscape_def.h"
+#include "nel/3d/patch.h"
 #include <vector>
 
 

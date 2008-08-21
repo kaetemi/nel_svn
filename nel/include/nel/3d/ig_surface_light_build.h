@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector_2f.h"
-#include "surface_light_grid.h"
-#include "mesh.h"
+#include "nel/3d/surface_light_grid.h"
+#include "nel/3d/mesh.h"
 
 
 namespace NL3D 

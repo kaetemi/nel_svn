@@ -26,18 +26,18 @@
 #ifndef NL_TRANSFORM_H
 #define NL_TRANSFORM_H
 
-#include "hrc_trav.h"
-#include "track.h"
-#include "transformable.h"
-#include "animated_value.h"
-#include "channel_mixer.h"
+#include "nel/3d/hrc_trav.h"
+#include "nel/3d/track.h"
+#include "nel/3d/transformable.h"
+#include "nel/3d/animated_value.h"
+#include "nel/3d/channel_mixer.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/aabbox.h"
-#include "light_contribution.h"
-#include "lighting_manager.h"
+#include "nel/3d/light_contribution.h"
+#include "nel/3d/lighting_manager.h"
 #include "nel/misc/class_id.h"
-#include "fast_ptr_list.h"
+#include "nel/3d/fast_ptr_list.h"
 
 
 namespace	NLMISC

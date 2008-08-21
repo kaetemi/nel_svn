@@ -27,8 +27,8 @@
 #define NL_SKELETON_SHAPE_H
 
 #include "nel/misc/types_nl.h"
-#include "shape.h"
-#include "bone.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/bone.h"
 #include "nel/misc/aabbox.h"
 #include <vector>
 #include <map>

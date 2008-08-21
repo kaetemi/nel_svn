@@ -31,7 +31,7 @@
 #include "nel/misc/plane.h"
 #include "nel/misc/aabbox.h"
 
-#include "transform.h"
+#include "nel/3d/transform.h"
 
 #include <vector>
 

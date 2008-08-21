@@ -37,7 +37,6 @@
 #include "nel/3d/quad_grid_clip_cluster.h"
 #include "nel/3d/scene.h"
 
-#define NL3D_MEM_INSTANCE					NL_ALLOC_CONTEXT( 3dIns )
 
 using namespace NLMISC;
 
@@ -177,7 +176,6 @@ bool	CTransformShape::clip()
 // ***************************************************************************
 void	CTransformShape::traverseRender()
 {
-	NL_ALLOC_CONTEXT( RdrShap )
 	H_AUTO( NL3D_TrShape_Render );
 
 

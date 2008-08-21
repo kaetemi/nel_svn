@@ -31,13 +31,13 @@
 #include "nel/misc/triangle.h"
 #include "nel/misc/plane.h"
 #include "nel/misc/matrix.h"
-#include "scene_group.h"
-#include "landscape.h"
-#include "shape.h"
-#include "mesh.h"
-#include "mesh_mrm.h"
-#include "cube_grid.h"
-#include "ig_surface_light_build.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/cube_grid.h"
+#include "nel/3d/ig_surface_light_build.h"
 
 
 namespace NL3D 

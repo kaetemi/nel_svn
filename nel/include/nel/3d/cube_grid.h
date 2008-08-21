@@ -29,8 +29,8 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/triangle.h"
 #include "nel/misc/plane.h"
-#include "quad_grid.h"
-#include "static_quad_grid.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/static_quad_grid.h"
 
 
 namespace NL3D {

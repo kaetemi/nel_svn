@@ -28,8 +28,8 @@
 
 
 #include "nel/misc/types_nl.h"
-#include "texture_file.h"
-#include "hls_texture_manager.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/hls_texture_manager.h"
 #include <vector>
 #include "nel/misc/bitmap.h"
 

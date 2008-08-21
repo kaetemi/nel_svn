@@ -24,6 +24,7 @@ async_file_manager_3d.h \
 async_texture_block.h \
 async_texture_manager.h \
 bezier_patch.h \
+bloom_effect.h \
 bone.h \
 bsp_tree.h \
 camera_col.h \

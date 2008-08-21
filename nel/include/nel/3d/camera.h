@@ -27,7 +27,7 @@
 #define NL_CAMERA_H
 
 #include "nel/3d/frustum.h"
-#include "transform.h"
+#include "nel/3d/transform.h"
 
 
 namespace	NL3D

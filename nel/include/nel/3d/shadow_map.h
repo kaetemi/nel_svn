@@ -27,8 +27,8 @@
 #define NL_SHADOW_MAP_H
 
 #include "nel/misc/types_nl.h"
-#include "texture.h"
-#include "vertex_buffer.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/vertex_buffer.h"
 #include "nel/misc/aabbox.h"
 
 

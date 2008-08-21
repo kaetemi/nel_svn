@@ -151,7 +151,7 @@ void CTextContext::clear ()
 
 
 // ------------------------------------------------------------------------------------------------
-void CTextContext::setFontGenerator(const std::string fontFileName, const std::string fontExFileName)
+void CTextContext::setFontGenerator(const std::string &fontFileName, const std::string &fontExFileName)
 {
 	_FontGen = new NL3D::CFontGenerator(fontFileName, fontExFileName);
 }
@@ -159,7 +159,7 @@ void CTextContext::setFontGenerator(const std::string fontFileName, const std::s
 // ------------------------------------------------------------------------------------------------
 void CTextContext::setLetterColors(CLetterColors * letterColors, uint index)
 {
-	if(index>=0 && index<_CacheStrings.size())
+	if(/*index>=0 &&*/ index<_CacheStrings.size())
 	{
 		_CacheStrings[index].LetterColors.clear();
 		_CacheStrings[index].LetterColors = *letterColors;
@@ -169,7 +169,7 @@ void CTextContext::setLetterColors(CLetterColors * letterColors, uint index)
 // ------------------------------------------------------------------------------------------------
 bool CTextContext::isSameLetterColors(CLetterColors * letterColors, uint index)
 {
-	if(index>=0 && index<_CacheStrings.size())
+	if(/*index>=0 &&*/ index<_CacheStrings.size())
 	{
 		CLetterColors & strLetterColors = _CacheStrings[index].LetterColors;
 		return strLetterColors.isSameLetterColors(letterColors);

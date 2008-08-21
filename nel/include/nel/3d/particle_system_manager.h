@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/plane.h"
 #include "nel/3d/animation_time.h"
-#include "particle_system_process.h"
+#include "nel/3d/particle_system_process.h"
 
 
 #include <list>

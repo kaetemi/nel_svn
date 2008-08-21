@@ -27,8 +27,8 @@
 #define NL_ANIMATION_SET_H
 
 #include "nel/misc/types_nl.h"
-#include "animation.h"
-#include "skeleton_weight.h"
+#include "nel/3d/animation.h"
+#include "nel/3d/skeleton_weight.h"
 #include "nel/misc/smart_ptr.h"
 #include <map>
 #include <string>

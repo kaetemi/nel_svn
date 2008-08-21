@@ -28,9 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_light.h"
-#include "light.h"
+#include "nel/3d/light.h"
 
-#define NL3D_MEM_LIGHT						NL_ALLOC_CONTEXT( 3dLight )
 
 namespace NL3D 
 {
@@ -52,6 +51,7 @@ protected:
 	friend class	CDriverUser;
 
 public:
+	virtual ~CLightUser() {}
 
 	/// \name Quick setup.
 	//@{
@@ -60,7 +60,6 @@ public:
 	void setupDirectional (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& direction,
 							float constant=1, float linear=0, float quadratic=0)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setupDirectional (ambiant, diffuse, specular, direction, constant, linear, quadratic);
 	}
 	
@@ -68,7 +67,6 @@ public:
 	void setupPointLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position, 
 						const NLMISC::CVector& direction, float constant=1, float linear=0, float quadratic=0)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setupPointLight (ambiant, diffuse, specular, position, direction, constant, linear, quadratic);
 	}
 
@@ -76,7 +74,6 @@ public:
 	void setupSpotLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position, 
 						const NLMISC::CVector& direction, float exponent, float cutoff, float constant=1, float linear=0, float quadratic=0)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setupSpotLight (ambiant, diffuse, specular, position, direction, exponent, cutoff, constant, linear, quadratic);
 	}
 
@@ -88,7 +85,6 @@ public:
 	  */
 	void setupAttenuation (float farAttenuationBegin, float farAttenuationEnd)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setupAttenuation (farAttenuationBegin, farAttenuationEnd);
 	}
 
@@ -100,7 +96,6 @@ public:
 	  */
 	void setNoAttenuation ()
 	{
-		NL3D_MEM_LIGHT
 		_Light.setNoAttenuation ();
 	}
 
@@ -112,7 +107,6 @@ public:
 	  */
 	void setupSpotExponent (float hotSpotAngle)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setupSpotExponent (hotSpotAngle);
 	}
 
@@ -127,7 +121,6 @@ public:
 	  */
 	void setMode (ULight::TLightMode mode)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setMode ((CLight::TLightMode)(uint32)mode);
 	}
 	
@@ -136,7 +129,6 @@ public:
 	  */
 	void setAmbiant (const NLMISC::CRGBA& ambiant)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setAmbiant (ambiant);
 	}
 
@@ -145,7 +137,6 @@ public:
 	  */
 	void setDiffuse (const NLMISC::CRGBA& diffuse)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setDiffuse (diffuse);
 	}
 
@@ -154,7 +145,6 @@ public:
 	  */
 	void setSpecular (const NLMISC::CRGBA& specular)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setSpecular (specular);
 	}
 
@@ -163,7 +153,6 @@ public:
 	  */
 	void setPosition (const NLMISC::CVector& position)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setPosition (position);
 	}
 
@@ -172,7 +161,6 @@ public:
 	  */
 	void setDirection (const NLMISC::CVector& direction)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setDirection (direction);
 	}
 
@@ -181,7 +169,6 @@ public:
 	  */
 	void setExponent (float exponent)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setExponent (exponent);
 	}
 
@@ -190,7 +177,6 @@ public:
 	  */
 	void setCutoff (float cutoff)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setCutoff (cutoff);
 	}
 
@@ -203,7 +189,6 @@ public:
 	  */
 	void setConstantAttenuation (float constant)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setConstantAttenuation (constant);
 	}
 
@@ -216,7 +201,6 @@ public:
 	  */
 	void setLinearAttenuation (float linear)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setLinearAttenuation (linear);
 	}
 
@@ -229,7 +213,6 @@ public:
 	  */
 	void setQuadraticAttenuation (float quadratic)
 	{
-		NL3D_MEM_LIGHT
 		_Light.setQuadraticAttenuation (quadratic);
 	}
 
@@ -243,7 +226,6 @@ public:
 	  */
 	ULight::TLightMode getMode () const
 	{
-		NL3D_MEM_LIGHT
 		return (ULight::TLightMode)(uint32)_Light.getMode ();
 	}
 
@@ -252,7 +234,6 @@ public:
 	  */
 	NLMISC::CRGBA getAmbiant () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getAmbiant ();
 	}
 
@@ -261,7 +242,6 @@ public:
 	  */
 	NLMISC::CRGBA getDiffuse () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getDiffuse ();
 	}
 
@@ -270,7 +250,6 @@ public:
 	  */
 	NLMISC::CRGBA getSpecular () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getSpecular ();
 	}
 
@@ -279,7 +258,6 @@ public:
 	  */
 	NLMISC::CVector getPosition () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getPosition ();
 	}
 
@@ -288,7 +266,6 @@ public:
 	  */
 	NLMISC::CVector getDirection () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getDirection ();
 	}
 
@@ -297,7 +274,6 @@ public:
 	  */
 	float getExponent () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getExponent ();
 	}
 
@@ -306,7 +282,6 @@ public:
 	  */
 	float getCutoff () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getCutoff ();
 	}
 
@@ -319,7 +294,6 @@ public:
 	  */
 	float getConstantAttenuation () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getConstantAttenuation ();
 	}
 
@@ -332,7 +306,6 @@ public:
 	  */
 	float getLinearAttenuation () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getLinearAttenuation ();
 	}
 
@@ -345,7 +318,6 @@ public:
 	  */
 	float getQuadraticAttenuation () const
 	{
-		NL3D_MEM_LIGHT
 		return _Light.getQuadraticAttenuation ();
 	}
 

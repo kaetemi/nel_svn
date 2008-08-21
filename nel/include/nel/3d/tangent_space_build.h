@@ -29,7 +29,7 @@
 #define NL_TANGENT_SPACE_BUILD_H
 
 #include "nel/misc/types_nl.h"
-#include "mesh.h"
+#include "nel/3d/mesh.h"
 
 namespace NL3D
 {

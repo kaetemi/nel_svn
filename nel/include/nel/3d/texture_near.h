@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/common.h"
-#include "texture.h"
+#include "nel/3d/texture.h"
 
 
 // Size of a TileLightmap. Must be 10 now, because we have 2x2 tiles per Tilelightmap.

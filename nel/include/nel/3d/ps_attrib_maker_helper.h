@@ -26,10 +26,10 @@
 #ifndef NL_PS_ATTRIB_MAKER_HELPER_H
 #define NL_PS_ATTRIB_MAKER_HELPER_H
 
-#include "ps_attrib_maker.h"
+#include "nel/3d/ps_attrib_maker.h"
 
 #include "nel/misc/fast_floor.h" // inline assembly for fast float<->int conversions
-#include "ps_attrib_maker_iterators.h" // some iterators we use 
+#include "nel/3d/ps_attrib_maker_iterators.h" // some iterators we use 
 
 namespace NL3D 
 {
@@ -1415,7 +1415,6 @@ template <typename T> class CPSAttribMakerMemoryBase : public CPSAttribMaker<T>
 {
 public:	
 
-	/// \todo create a base class for CPSAttribMaker, that don't have the attributes not needed for this class
 	/// ctor (note : we don't use the nbCycle field ...)
 	CPSAttribMakerMemoryBase() : CPSAttribMaker<T>(1.f), _Scheme(NULL)
 	{

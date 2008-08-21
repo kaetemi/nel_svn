@@ -26,9 +26,9 @@
 #ifndef NL_PS_DOT_H
 #define NL_PS_DOT_H
 
-#include "ps_particle_basic.h"
-#include "vertex_buffer.h"
-#include "particle_system.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/particle_system.h"
 
 
 namespace NL3D {
@@ -48,7 +48,8 @@ public:
 	CPSDot() 
 	{ 
 		init(); 
-		if (CParticleSystem::getSerializeIdentifierFlag()); _Name = std::string("point");
+		CParticleSystem::getSerializeIdentifierFlag();
+		_Name = std::string("point");
 	}
 
 	NLMISC_DECLARE_CLASS(CPSDot);

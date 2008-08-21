@@ -34,7 +34,6 @@ namespace NL3D
 // ***************************************************************************
 void	CPrimitiveProfile::reset()
 {
-	NL3D_MEM_PRIMITIVE_PROFILE
 	NPoints= 0;
 	NLines= 0;
 	NTriangles= 0;

@@ -38,7 +38,7 @@ namespace NL3D
 
 class ITrack;
 class CChannelMixer;
-
+class IAnimatedValue;
 
 /**
  * An animatable object. 

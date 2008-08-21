@@ -27,8 +27,8 @@
 #define NL_MESH_BLOCK_MANAGER_H
 
 #include "nel/misc/types_nl.h"
-#include "mesh_geom.h"
-#include "vertex_buffer_heap.h"
+#include "nel/3d/mesh_geom.h"
+#include "nel/3d/vertex_buffer_heap.h"
 
 
 namespace NL3D 

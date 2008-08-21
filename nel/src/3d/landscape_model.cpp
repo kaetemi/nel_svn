@@ -35,8 +35,6 @@
 using namespace std;
 using namespace NLMISC;
 
-#define NL3D_MEM_LANDSCAPE					NL_ALLOC_CONTEXT( 3dLand )
-
 namespace NL3D 
 {
 
@@ -201,10 +199,8 @@ void	CLandscapeModel::clipAndRenderLandscape()
 	// Render
 	// ********
 
-	NL3D_MEM_LANDSCAPE
-
-	// Change the landscape cetner. All Geomorphed pos (in VertexBuffer only or during VertexProgram)
-	// substract this position.
+	// Change the landscape center. All Geomorphed pos (in VertexBuffer only or during VertexProgram)
+	// subtract this position.
 	Landscape.setPZBModelPosition(renderTrav.CamPos);
 
 	/* setup the model matrix
@@ -264,7 +260,6 @@ void	CLandscapeModel::clipAndRenderLandscape()
 // ***************************************************************************
 void	CLandscapeModel::traverseRender()
 {
-	NL_ALLOC_CONTEXT( RdrLand )
 	CRenderTrav		&renderTRav= getOwnerScene()->getRenderTrav();
 
 	// No-Op. But delay the clip and render to the end of Opaque Rendering. For VBLock optim

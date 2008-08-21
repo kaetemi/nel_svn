@@ -63,7 +63,7 @@ public:
 	  * MouseTranslateXYHotSpot:	MIDDLEMOUSE
 	  * MouseTranslateZHotSpot:		CTRL + MIDDLEMOUSE
 	  * 
-	  * (firstPerson) First person shoorter style is:
+	  * (firstPerson) First person shooter style is:
 	  * MouseRotateView:			MOUSE MOVE
 	  * KeyUp:						MOVE FORWARD
 	  * KeyDown:					MOVE BACKWARD
@@ -73,6 +73,8 @@ public:
 	  * PageDown:					MOVE DOWN
 	  */
 	enum TMouseMode { nelStyle, edit3d, firstPerson };
+
+	virtual ~U3dMouseListener() {};
 
 	/// \name Setup
 
@@ -90,14 +92,14 @@ public:
 	virtual void setFrustrum (const CFrustum& frustrum) =0;
 
 	/** 
-	  * Set the viewport in use in the window. By default, the viewport is fullwindow.
+	  * Set the viewport in use in the window. By default, the viewport is full window.
 	  * \param viewport is the viewport to use. All events outside the viewport are ignored.
 	  */
 	virtual void setViewport (const NL3D::CViewport& viewport) =0;
 
 	/** 
 	  * Set the current hot spot.
-	  * \param hotSpot is the target to use when the mouse move. It can be for exemple the center.
+	  * \param hotSpot is the target to use when the mouse move. It can be for example the center.
 	  * of the selected object. The hotspot is not modified by mouse events.
 	  * \see getViewMatrix()
 	  */
@@ -128,7 +130,7 @@ public:
 
 	/** 
 	  * Get the current hot spot.
-	  * \return the target used when the mouse move. It can be for exemple the center.
+	  * \return the target used when the mouse move. It can be for example the center.
 	  * of the selected object. The hotspot is not modified by mouse events.
 	  * \see getViewMatrix()
 	  */
@@ -139,9 +141,7 @@ public:
 
 };
 
-
 } // NL3D
-
 
 #endif // NL_U_3D_MOUSE_LISTENER_H
 

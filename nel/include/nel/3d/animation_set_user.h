@@ -34,9 +34,8 @@
 
 #include "nel/3d/u_animation_set.h"
 
-#include "animation_set.h"
+#include "nel/3d/animation_set.h"
 
-#define NL3D_MEM_ANIMATION_SET						NL_ALLOC_CONTEXT( 3dAnmSt )
 
 namespace NL3D 
 {
@@ -66,8 +65,6 @@ public:
 	/// Constructor
 	CAnimationSetUser(CDriverUser *owner)
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		nlassert(owner);
 		_Owner= owner;
 
@@ -80,8 +77,6 @@ public:
 	/// Constructor
 	CAnimationSetUser(CDriverUser *owner, NLMISC::IStream	&f)
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		nlassert(owner);
 		_Owner= owner;
 		
@@ -106,8 +101,6 @@ public:
 	  */
 	uint addAnimation (const char* fileName, const char* animName, bool displayMissingFileWarning  = true)
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		// Allocate an animation
 		std::auto_ptr<CAnimation> anim (new CAnimation);
 
@@ -145,8 +138,6 @@ public:
 	  */
 	virtual uint addSkeletonWeight (const char* fileName, const char* skelName)
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		// Allocate an animation
 		std::auto_ptr<CSkeletonWeight> skeletonWeight (new CSkeletonWeight);
 
@@ -173,8 +164,6 @@ public:
 	  */
 	virtual	uint getNumAnimation () const 
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		return _AnimationSet->getNumAnimation();
 	}
 
@@ -183,8 +172,6 @@ public:
 	  */
 	virtual	uint getAnimationIdByName (const std::string& name) const  
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		return _AnimationSet->getAnimationIdByName(name);
 	}
 
@@ -193,8 +180,6 @@ public:
 	  */
 	virtual	const std::string& getAnimationName (uint animationId) const 
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		if(animationId>=getNumAnimation())
 			nlerror("getAnimation*(): bad animation Id");
 		return _AnimationSet->getAnimationName(animationId);
@@ -217,8 +202,6 @@ public:
 	  */
 	virtual	uint getNumSkeletonWeight () const 
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		return _AnimationSet->getNumSkeletonWeight();
 	}
 
@@ -227,8 +210,6 @@ public:
 	  */
 	virtual	uint getSkeletonWeightIdByName (const std::string& name) const 
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		return _AnimationSet->getSkeletonWeightIdByName(name);
 	}
 
@@ -237,8 +218,6 @@ public:
 	  */
 	virtual	const std::string& getSkeletonWeightName (uint skeletonId) const 
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		if(skeletonId>=getNumSkeletonWeight())
 			nlerror("getSkeletonWeight*(): bad SkeletonWeight Id");
 		return _AnimationSet->getSkeletonWeightName(skeletonId);
@@ -252,8 +231,6 @@ public:
 
 	virtual	uint getChannelIdByName (const std::string& name) const
 	{
-		NL3D_MEM_ANIMATION_SET
-
 		return _AnimationSet->getChannelIdByName(name);
 	}
 

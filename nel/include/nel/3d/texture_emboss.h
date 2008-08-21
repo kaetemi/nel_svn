@@ -28,7 +28,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
 //
-#include "texture.h"
+#include "nel/3d/texture.h"
 
 namespace NL3D {
 

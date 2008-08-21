@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/heap_memory.h"
-#include "driver.h"
+#include "nel/3d/driver.h"
 
 
 namespace NL3D 

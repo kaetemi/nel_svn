@@ -30,7 +30,7 @@
 #include "nel/misc/stream.h"
 #include "nel/misc/smart_ptr.h"
 
-#include "material.h"
+#include "nel/3d/material.h"
 
 
 namespace NLMISC

@@ -32,7 +32,6 @@
 #include "nel/3d/texture_mem.h"
 #include "nel/3d/texture_file.h"
 
-#define NL3D_MEM_MATERIAL_INSTANCE						NL_ALLOC_CONTEXT( 3dMatI )
 
 namespace NL3D
 {
@@ -41,7 +40,6 @@ namespace NL3D
 // ***************************************************************************
 bool				UInstanceMaterial::isTextureFile(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::isTextureFile : invalid stage");
@@ -53,7 +51,6 @@ bool				UInstanceMaterial::isTextureFile(uint stage) const
 // ***************************************************************************
 std::string			UInstanceMaterial::getTextureFileName(uint stage) const
 {		
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::getTextureFileName : invalid stage");
@@ -77,7 +74,6 @@ std::string			UInstanceMaterial::getTextureFileName(uint stage) const
 // ***************************************************************************
 void				UInstanceMaterial::setTextureFileName(const std::string &fileName, uint stage)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::setTextureFileName : invalid stage");
@@ -115,7 +111,6 @@ void				UInstanceMaterial::setTextureFileName(const std::string &fileName, uint 
 // ***************************************************************************
 void UInstanceMaterial::emptyTexture(uint stage /*=0*/)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::emptyTexture : invalid stage");
@@ -145,7 +140,6 @@ void UInstanceMaterial::setTextureMem(uint stage, uint8 *data, uint32 length, bo
 // ***************************************************************************
 bool				UInstanceMaterial::isLighted() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->isLighted();
 }
 
@@ -157,7 +151,6 @@ void UInstanceMaterial::setLighting(bool active,
 									CRGBA specular /*=CRGBA(0,0,0)*/,
 									float shininess /*=10*/)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setLighting(active, emissive, ambient, diffuse, specular, shininess);
 }
 
@@ -165,7 +158,6 @@ void UInstanceMaterial::setLighting(bool active,
 
 bool				UInstanceMaterial::isUserColor() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getShader()==CMaterial::UserColor;
 }
 
@@ -173,7 +165,6 @@ bool				UInstanceMaterial::isUserColor() const
 
 void				UInstanceMaterial::setEmissive( CRGBA emissive )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setEmissive(emissive);
 }
 
@@ -181,7 +172,6 @@ void				UInstanceMaterial::setEmissive( CRGBA emissive )
 
 void				UInstanceMaterial::setAmbient( CRGBA ambient )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setAmbient( ambient);
 }
 
@@ -189,7 +179,6 @@ void				UInstanceMaterial::setAmbient( CRGBA ambient )
 
 void				UInstanceMaterial::setDiffuse( CRGBA diffuse )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setDiffuse( diffuse);
 }
 
@@ -197,7 +186,6 @@ void				UInstanceMaterial::setDiffuse( CRGBA diffuse )
 
 void				UInstanceMaterial::setOpacity( uint8	opa )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setOpacity( opa );
 }
 
@@ -205,7 +193,6 @@ void				UInstanceMaterial::setOpacity( uint8	opa )
 
 void				UInstanceMaterial::setSpecular( CRGBA specular )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setSpecular( specular);
 }
 
@@ -213,7 +200,6 @@ void				UInstanceMaterial::setSpecular( CRGBA specular )
 
 void				UInstanceMaterial::setShininess( float shininess )
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setShininess( shininess );
 }
 
@@ -221,7 +207,6 @@ void				UInstanceMaterial::setShininess( float shininess )
 
 CRGBA				UInstanceMaterial::getEmissive() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getEmissive();
 }
 
@@ -229,7 +214,6 @@ CRGBA				UInstanceMaterial::getEmissive() const
 
 CRGBA				UInstanceMaterial::getAmbient() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getAmbient();
 }
 
@@ -237,7 +221,6 @@ CRGBA				UInstanceMaterial::getAmbient() const
 
 CRGBA				UInstanceMaterial::getDiffuse() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getDiffuse();
 }
 
@@ -245,7 +228,6 @@ CRGBA				UInstanceMaterial::getDiffuse() const
 
 uint8				UInstanceMaterial::getOpacity() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getOpacity();
 }
 
@@ -253,7 +235,6 @@ uint8				UInstanceMaterial::getOpacity() const
 
 CRGBA				UInstanceMaterial::getSpecular() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getSpecular();
 }
 
@@ -261,7 +242,6 @@ CRGBA				UInstanceMaterial::getSpecular() const
 
 float				UInstanceMaterial::getShininess() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getShininess();
 }
 
@@ -269,7 +249,6 @@ float				UInstanceMaterial::getShininess() const
 
 void				UInstanceMaterial::setColor(CRGBA rgba) 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setColor(rgba) ;
 }
 
@@ -277,7 +256,6 @@ void				UInstanceMaterial::setColor(CRGBA rgba)
 
 CRGBA				UInstanceMaterial::getColor(void) const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getColor();
 }
 
@@ -285,7 +263,6 @@ CRGBA				UInstanceMaterial::getColor(void) const
 
 void				UInstanceMaterial::setUserColor(CRGBA userColor)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if(isUserColor())
 		_Object->setUserColor(userColor);
 }
@@ -294,7 +271,6 @@ void				UInstanceMaterial::setUserColor(CRGBA userColor)
 
 CRGBA				UInstanceMaterial::getUserColor() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if(isUserColor())
 		return _Object->getUserColor();
 	else
@@ -305,7 +281,6 @@ CRGBA				UInstanceMaterial::getUserColor() const
 
 void				UInstanceMaterial::setConstantColor(uint stage, NLMISC::CRGBA color)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::setConstantColor : invalid stage");
@@ -318,7 +293,6 @@ void				UInstanceMaterial::setConstantColor(uint stage, NLMISC::CRGBA color)
 
 NLMISC::CRGBA		UInstanceMaterial::getConstantColor(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::getConstantColor : invalid stage");
@@ -332,7 +306,6 @@ NLMISC::CRGBA		UInstanceMaterial::getConstantColor(uint stage) const
 
 sint				UInstanceMaterial::getLastTextureStage() const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	sint lastStage = -1;
 	for(uint k = 0; k < IDRV_MAT_MAXTEXTURES; ++k)
 	{
@@ -348,7 +321,6 @@ sint				UInstanceMaterial::getLastTextureStage() const
 
 void			UInstanceMaterial::setBlend(bool active) 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setBlend(active);
 }
 
@@ -356,7 +328,6 @@ void			UInstanceMaterial::setBlend(bool active)
 
 void			UInstanceMaterial::setBlendFunc(TBlend src, TBlend dst) 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setBlendFunc((CMaterial::TBlend)(uint32)src, (CMaterial::TBlend)(uint32)dst);
 }
 
@@ -364,7 +335,6 @@ void			UInstanceMaterial::setBlendFunc(TBlend src, TBlend dst)
 
 void			UInstanceMaterial::setSrcBlend(TBlend val) 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setSrcBlend((CMaterial::TBlend)(uint32)val);
 }
 
@@ -372,7 +342,6 @@ void			UInstanceMaterial::setSrcBlend(TBlend val)
 
 void			UInstanceMaterial::setDstBlend(TBlend val) 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setDstBlend((CMaterial::TBlend)(uint32)val);
 }
 
@@ -380,21 +349,18 @@ void			UInstanceMaterial::setDstBlend(TBlend val)
 
 void			UInstanceMaterial::setAlphaTestThreshold(float at)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setAlphaTestThreshold(at);
 }
 
 // ***************************************************************************
 float UInstanceMaterial::getAlphaTestThreshold() const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getAlphaTestThreshold();
 }
 
 // ***************************************************************************
 void UInstanceMaterial::setAlphaTest(bool active)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setAlphaTest(active);
 }
 
@@ -402,14 +368,12 @@ void UInstanceMaterial::setAlphaTest(bool active)
 
 void			UInstanceMaterial::setZWrite(bool active)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	_Object->setZWrite(active);
 }
 
 // ***************************************************************************
 void UInstanceMaterial::setZFunc(ZFunc val)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 		_Object->setZFunc((CMaterial::ZFunc) val);
 }
 
@@ -417,7 +381,6 @@ void UInstanceMaterial::setZFunc(ZFunc val)
 
 bool			UInstanceMaterial::getBlend() const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return _Object->getBlend();
 }
 
@@ -425,7 +388,6 @@ bool			UInstanceMaterial::getBlend() const
 
 UInstanceMaterial::TBlend			UInstanceMaterial::getSrcBlend(void)  const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return (UInstanceMaterial::TBlend)(uint32)_Object->getSrcBlend();
 }
 
@@ -433,7 +395,6 @@ UInstanceMaterial::TBlend			UInstanceMaterial::getSrcBlend(void)  const
 
 UInstanceMaterial::TBlend			UInstanceMaterial::getDstBlend(void)  const 
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	return (UInstanceMaterial::TBlend)(uint32)_Object->getDstBlend();
 }
 
@@ -441,7 +402,6 @@ UInstanceMaterial::TBlend			UInstanceMaterial::getDstBlend(void)  const
 
 void                    UInstanceMaterial::enableUserTexMat(uint stage, bool enabled)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterial::enableUserTexMat : stage %d is invalid", stage);
@@ -454,7 +414,6 @@ void                    UInstanceMaterial::enableUserTexMat(uint stage, bool ena
 
 bool                    UInstanceMaterial::isUserTexMatEnabled(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterial::enableUserTexMat : stage %d is invalid", stage);
@@ -467,7 +426,6 @@ bool                    UInstanceMaterial::isUserTexMatEnabled(uint stage) const
 
 void					UInstanceMaterial::setUserTexMat(uint stage, const NLMISC::CMatrix &m)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterial::enableUserTexMat : stage %d is invalid", stage);
@@ -484,7 +442,6 @@ void					UInstanceMaterial::setUserTexMat(uint stage, const NLMISC::CMatrix &m)
 
 const NLMISC::CMatrix  &UInstanceMaterial::getUserTexMat(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterial::enableUserTexMat : stage %d is invalid", stage);
@@ -502,7 +459,6 @@ const NLMISC::CMatrix  &UInstanceMaterial::getUserTexMat(uint stage) const
 
 void				UInstanceMaterial::setWrapS(uint stage, TWrapMode mode)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
 	{
 		nlwarning("UInstanceMaterial::setWrapS : stage %d is invalid or there's no texture", stage);
@@ -515,7 +471,6 @@ void				UInstanceMaterial::setWrapS(uint stage, TWrapMode mode)
 
 void				UInstanceMaterial::setWrapT(uint stage, TWrapMode mode)
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
 	{
 		nlwarning("UInstanceMaterial::setWrapT : stage %d is invalid or there's no texture", stage);
@@ -528,7 +483,6 @@ void				UInstanceMaterial::setWrapT(uint stage, TWrapMode mode)
 
 UInstanceMaterial::TWrapMode			UInstanceMaterial::getWrapS(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
 	{
 		nlwarning("UInstanceMaterial::getWrapS : stage %d is invalid or there's no texture", stage);
@@ -541,7 +495,6 @@ UInstanceMaterial::TWrapMode			UInstanceMaterial::getWrapS(uint stage) const
 
 UInstanceMaterial::TWrapMode			UInstanceMaterial::getWrapT(uint stage) const
 {
-	NL3D_MEM_MATERIAL_INSTANCE
 	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
 	{
 		nlwarning("UInstanceMaterial::getWrapT : stage %d is invalid or there's no texture", stage);

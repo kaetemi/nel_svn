@@ -59,10 +59,11 @@ class UWaterEnvMap;
 
 
 //****************************************************************************
-// usefull callback for createInstanceGroupAndAddToSceneAsync
+// useful callback for createInstanceGroupAndAddToSceneAsync
 class IAsyncLoadCallback
 {
 public:
+	virtual ~IAsyncLoadCallback() {}
 	/// Because the async loader set the pointer of the user after the whole loading (ig+shapes)
 	/// what is passed through this method is the value that will be affected
 	virtual void InstanceGroupCreated(UInstanceGroup *newVal) = 0;
@@ -72,15 +73,17 @@ public:
 class IWaterSurfaceAddedCallback
 {
 public:
-	// A water surface with the given height has been added. 	 
+	virtual ~IWaterSurfaceAddedCallback() {}
+	// A water surface with the given height has been added.
 	virtual void waterSurfaceAdded(const NLMISC::CPolygon2D &shape, const NLMISC::CMatrix &worldMatrix, bool splashEnabled, bool usesSceneWaterenvmap) = 0;
 	virtual void waterSurfaceRemoved(bool usesSceneWaterenvmap) = 0;
 };
 
-// callback to setup stencil buffer befor and after landscape render
+// callback to setup stencil buffer before and after landscape render
 class ILandscapePolyDrawingCallback
 {
 public:
+	virtual ~ILandscapePolyDrawingCallback() {}
 	virtual void beginPolyDrawing() = 0;
 	virtual void endPolyDrawing() = 0;
 };
@@ -110,7 +113,7 @@ protected:
 
 public:
 	enum TRenderPart
-	{ 
+	{
 		RenderNothing     = 0,
 		RenderOpaque	  = 0x01,
 		RenderTransparent = 0x02,
@@ -133,7 +136,7 @@ public:
 	/** Begin Part Rendering
 	 *	During beginPartRender()/endPartRender(), you can ask other scene to render their part, but you should
 	 *	avoid to create models or modify the scene (not fully tested)
-	 *  WARNING: assert-crash if beetween a beginPartRender()/endPartRender()
+	 *  WARNING: assert-crash if between a beginPartRender()/endPartRender()
 	 */
 	virtual	void			beginPartRender() =0;
 
@@ -193,7 +196,7 @@ public:
 	 */
 	//@{
 
-	/// Create a camera. Usefull for this scene only.
+	/// Create a camera. Useful for this scene only.
 	virtual	UCamera			createCamera()=0;
 	/// Delete a camera.
 	virtual	void			deleteCamera(UCamera &cam)=0;
@@ -267,7 +270,7 @@ public:
 	//virtual	void			deleteInstanceGroup(UInstanceGroup	*group) =0;
 
 
-	/// Create a dynamic PointLight. Usefull for this scene only.
+	/// Create a dynamic PointLight. Useful for this scene only.
 	virtual	UPointLight		createPointLight()=0;
 	/// Delete a dynamic PointLight.
 	virtual	void			deletePointLight(UPointLight &light)=0;
@@ -275,7 +278,7 @@ public:
 
 	//@}
 
-	/// \name Animation gestion.
+	/// \name Animation Mgt.
 	// @{
 	/// Create a new PlayListManager.
 	virtual	UPlayListManager	*createPlayListManager() =0;
@@ -293,7 +296,7 @@ public:
 	//@}
 
 
-	/// \name LoadBalancing mgt.
+	/// \name LoadBalancing Mgt.
 	//@{
 
 	/** The mode of polygon balancing. NB: this apply to All LoadBalancingGroups, but the "Default" group
@@ -339,7 +342,7 @@ public:
 
 	//@}
 
-	/// \name Coarse meshes mgt.
+	/// \name Coarse meshes Mgt.
 	//@{
 
 	/** Set the coarse meshes's common texture.
@@ -417,7 +420,7 @@ public:
 	//@}
 
 
-	/// \name transparent Layers mgt
+	/// \name transparent Layers Mgt
 	//@{
 		/** Set the order or rendering of layers containing transparent objects.
 		  * In real case, with direct order, we have:
@@ -430,7 +433,7 @@ public:
 	//@}
 
 
-	/// \name Weather mgt
+	/// \name Weather Mgt
 	//@{
 
 	/// Set the current windPower for all the scene. 0-1.
@@ -446,7 +449,7 @@ public:
 	//@}
 
 
-	/// \name CLod / Character Lod mgt
+	/// \name CLod / Character Lod Mgt
 	/** NB: for an historic reason, CLod interface is in UScene, BUT THERE IS ONLY ONE LOD MANAGER PER UDriver!
 	 */
 	//@{
@@ -454,10 +457,10 @@ public:
 	/// reset the manager.
 	virtual void				resetCLodManager() =0;
 
-	/** Load a Shape Bank. The ShapeMap is rebuilded. Hence slow call.
+	/** Load a Shape Bank. The ShapeMap is rebuilt. Hence slow call.
 	 *	NB: a vector of ShapeBank is maintained internally, hence, not so many shapeBank should be 
 	 *	created at same Time.
-	 *	trhow exception if failed to load the file
+	 *	throw exception if failed to load the file
 	 *	\param fileName is a .clodbank file, to be loaded. CPath::lookup is used.
 	 *	\return	id of the shape Bank.
 	 */
@@ -478,12 +481,12 @@ public:
 
 
 	/** \name Flare contexts
-	  * The flare objects are designed to work with a single scene, because they simulate 'retinian persistence' based on the visibility in the current scene.
+	  * The flare objects are designed to work with a single scene, because they simulate 'retinia persistence' based on the visibility in the current scene.
 	  * Several context allow to deals with a flare rendered from several points of views.
 	  * There's a limited number of contexts
 	  */
 	// @{
-		// Get thje max number of contexts
+		// Get the max number of contexts
 		virtual uint getNumFlareContexts() const = 0;
 		// Set the current context for flares. context must be < to MaxNumFlareContexts
 		virtual void	setFlareContext(uint context) = 0;
@@ -611,7 +614,7 @@ public:
 	virtual	void			setVisualCollisionManagerForShadow(UVisualCollisionManager *vcm) =0;
 	// @}
 
-	// set a callback to know when a water surface is instanciated
+	// set a callback to know when a water surface is instantiated
 	virtual void			setWaterCallback(IWaterSurfaceAddedCallback *wcb) = 0;
 	virtual IWaterSurfaceAddedCallback *getWaterCallback() const = 0;
 
@@ -620,8 +623,8 @@ public:
 	virtual ILandscapePolyDrawingCallback *getLandscapePolyDrawingCallback() const = 0;
 
 	/** Setup transparency sorting
-	  * \param maxPriority Defines the valid range for priority in the [0, n] interval. By default, there's no prioriy sorting (0 -> single priority, 255 -> 256 possible priorities)
-	  *                    Objects with highers priority are displayed before any other object with lower priority,
+	  * \param maxPriority Defines the valid range for priority in the [0, n] interval. By default, there's no priority sorting (0 -> single priority, 255 -> 256 possible priorities)
+	  *                    Objects with higher priority are displayed before any other object with lower priority,
 	  *                    whatever their distance is.
 	  * \param NbDistanceEntries Defines the granularity for distance sorting. A value of N with a view distance of D meters means 
 	  *                          that the sorting accuracy will be of D / N meters at worst (when visible objects occupy the whole distance range)
@@ -631,11 +634,11 @@ public:
 
 	/// \name Water envmaps
 	// @{
-	/** Set a water envmap to be used with water surfaces in that scene. Water envmap may be shared accross several scene.
+	/** Set a water envmap to be used with water surfaces in that scene. Water envmap may be shared across several scene.
 	  * The envmap should have been created from the same UDriver interface than the scene
 	  */
 	virtual void		  setWaterEnvMap(UWaterEnvMap *waterEnvMap) = 0;
-	// Get currenlty used water envmap for that scene.
+	// Get currently used water envmap for that scene.
 	virtual UWaterEnvMap *getWaterEnvMap() const = 0;
 	/** Update water envmaps. Water textures that need to be updated includes UWaterEnvMap textures & Day/Night textures (as defined in the water material).
 	  * Should be called at the beginning of the frame before anything is rendered.
@@ -644,10 +647,7 @@ public:
 	// @} 
 };
 
-
-
 } // NL3D
-
 
 #endif // NL_U_SCENE_H
 

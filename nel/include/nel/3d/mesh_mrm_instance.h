@@ -27,9 +27,9 @@
 #define NL_MESH_MRM_INSTANCE_H
 
 #include "nel/misc/types_nl.h"
-#include "mesh_base_instance.h"
-#include "material.h"
-#include "animated_material.h"
+#include "nel/3d/mesh_base_instance.h"
+#include "nel/3d/material.h"
+#include "nel/3d/animated_material.h"
 
 
 namespace NL3D

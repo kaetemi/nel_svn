@@ -30,8 +30,8 @@
 #undef NL_DONT_USE_EXTERNAL_CODE
 
 #ifndef NL_DONT_USE_EXTERNAL_CODE
-#	include <ft2build.h>
-#	include <freetype/freetype.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #else // NL_DONT_USE_EXTERNAL_CODE
 
 #endif // NL_DONT_USE_EXTERNAL_CODE

@@ -30,11 +30,11 @@
 #include "nel/misc/polygon.h"
 #include "nel/3d/u_water.h"
 //
-#include "transform_shape.h"
-#include "material.h"
-#include "vertex_buffer.h"
-#include "texture_emboss.h"
-#include "driver.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/material.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/texture_emboss.h"
+#include "nel/3d/driver.h"
 
 
 namespace MISC

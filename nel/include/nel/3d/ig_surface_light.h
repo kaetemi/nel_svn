@@ -27,7 +27,7 @@
 #define NL_IG_SURFACE_LIGHT_H
 
 #include "nel/misc/types_nl.h"
-#include "surface_light_grid.h"
+#include "nel/3d/surface_light_grid.h"
 
 
 namespace NL3D 

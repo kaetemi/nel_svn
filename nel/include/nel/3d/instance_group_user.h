@@ -28,9 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_instance_group.h"
-#include "scene_group.h"
+#include "nel/3d/scene_group.h"
 
-#define NL3D_MEM_IG						NL_ALLOC_CONTEXT( 3dIg )
 
 namespace NLMISC
 {
@@ -147,7 +146,6 @@ public:
 	// Debug purpose only.
 	CInstanceGroup	&getInternalIG() 
 	{
-		NL3D_MEM_IG
 		return _InstanceGroup;
 	}
 };

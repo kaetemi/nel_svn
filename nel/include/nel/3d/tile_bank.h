@@ -32,7 +32,7 @@
 #include <vector>
 #include <set>
 #include <string>
-#include "tile_vegetable_desc.h"
+#include "nel/3d/tile_vegetable_desc.h"
 
 
 namespace	NLMISC

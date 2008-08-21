@@ -29,7 +29,6 @@
 #include "nel/3d/u_point_light.h"
 #include "nel/3d/point_light_model.h"
 
-#define NL3D_MEM_POINTLIGHT						NL_ALLOC_CONTEXT( 3dPtLgt )
 
 using namespace NLMISC;
 
@@ -40,7 +39,6 @@ namespace NL3D
 
 void UPointLight::setAmbient (NLMISC::CRGBA ambient)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setAmbient(ambient);
 }
@@ -49,7 +47,6 @@ void UPointLight::setAmbient (NLMISC::CRGBA ambient)
 
 void UPointLight::setDiffuse (NLMISC::CRGBA diffuse)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setDiffuse (diffuse);
 }
@@ -58,7 +55,6 @@ void UPointLight::setDiffuse (NLMISC::CRGBA diffuse)
 
 void UPointLight::setSpecular (NLMISC::CRGBA specular)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setSpecular (specular);
 }
@@ -67,7 +63,6 @@ void UPointLight::setSpecular (NLMISC::CRGBA specular)
 
 void UPointLight::setColor (NLMISC::CRGBA color)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setColor (color);
 }
@@ -76,7 +71,6 @@ void UPointLight::setColor (NLMISC::CRGBA color)
 
 NLMISC::CRGBA UPointLight::getAmbient () const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getAmbient();
 }
@@ -85,7 +79,6 @@ NLMISC::CRGBA UPointLight::getAmbient () const
 
 NLMISC::CRGBA UPointLight::getDiffuse () const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getDiffuse ();
 }
@@ -94,7 +87,6 @@ NLMISC::CRGBA UPointLight::getDiffuse () const
 
 NLMISC::CRGBA UPointLight::getSpecular () const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpecular();
 }
@@ -103,7 +95,6 @@ NLMISC::CRGBA UPointLight::getSpecular () const
 
 void UPointLight::setupAttenuation(float attenuationBegin, float attenuationEnd)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setupAttenuation(attenuationBegin, attenuationEnd);
 }
@@ -112,7 +103,6 @@ void UPointLight::setupAttenuation(float attenuationBegin, float attenuationEnd)
 
 float UPointLight::getAttenuationBegin() const
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getAttenuationBegin();
 }
@@ -121,7 +111,6 @@ float UPointLight::getAttenuationBegin() const
 
 float UPointLight::getAttenuationEnd() const
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getAttenuationEnd();
 }
@@ -130,7 +119,6 @@ float UPointLight::getAttenuationEnd() const
 
 void UPointLight::enableSpotlight(bool enable) 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	if(enable)
 		object->PointLight.setType(CPointLight::SpotLight);
@@ -142,7 +130,6 @@ void UPointLight::enableSpotlight(bool enable)
 
 bool UPointLight::isSpotlight() const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getType() == CPointLight::SpotLight;
 }
@@ -151,7 +138,6 @@ bool UPointLight::isSpotlight() const
 
 void UPointLight::setupSpotAngle(float spotAngleBegin, float spotAngleEnd) 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setupSpotAngle(spotAngleBegin, spotAngleEnd);
 }
@@ -160,7 +146,6 @@ void UPointLight::setupSpotAngle(float spotAngleBegin, float spotAngleEnd)
 
 float UPointLight::getSpotAngleBegin() const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpotAngleBegin();
 }
@@ -169,7 +154,6 @@ float UPointLight::getSpotAngleBegin() const
 
 float UPointLight::getSpotAngleEnd() const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpotAngleEnd();
 }
@@ -178,7 +162,6 @@ float UPointLight::getSpotAngleEnd() const
 
 void UPointLight::setDeltaPosToSkeletonWhenOutOfFrustum(const CVector &deltaPos) 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->setDeltaPosToSkeletonWhenOutOfFrustum(deltaPos) ;
 }
@@ -187,7 +170,6 @@ void UPointLight::setDeltaPosToSkeletonWhenOutOfFrustum(const CVector &deltaPos)
 
 const CVector &UPointLight::getDeltaPosToSkeletonWhenOutOfFrustum() const 
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->getDeltaPosToSkeletonWhenOutOfFrustum() ;
 }
@@ -195,7 +177,6 @@ const CVector &UPointLight::getDeltaPosToSkeletonWhenOutOfFrustum() const
 // ***************************************************************************
 void			UPointLight::setInfluenceLightMap(bool enable)
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	object->setInfluenceLightMap(enable);
 }
@@ -203,7 +184,6 @@ void			UPointLight::setInfluenceLightMap(bool enable)
 // ***************************************************************************
 bool			UPointLight::getInfluenceLightMap() const
 {
-	NL3D_MEM_POINTLIGHT
 	CPointLightModel	*object = getObjectPtr();
 	return object->getInfluenceLightMap() ;
 }

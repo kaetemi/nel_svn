@@ -28,9 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
-#include "scene.h"
-#include "shape_bank.h"
-#include "dru.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/shape_bank.h"
+#include "nel/3d/dru.h"
 #include "nel/misc/event_server.h"
 #include "nel/misc/event_listener.h"
 #include "nel/misc/rgba.h"

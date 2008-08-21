@@ -29,9 +29,9 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/triangle.h"
 #include "nel/misc/vector_h.h"
-#include "quad_grid.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 
 namespace NL3D {

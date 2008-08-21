@@ -29,9 +29,9 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/quat.h"
-#include "animatable.h"
-#include "animated_value.h"
-#include "track.h"
+#include "nel/3d/animatable.h"
+#include "nel/3d/animated_value.h"
+#include "nel/3d/track.h"
 
 
 namespace NL3D

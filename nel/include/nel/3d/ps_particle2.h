@@ -27,7 +27,7 @@
 #define NL_PS_PARTICLE2_H
 
 /// For backward compativility
-#include "ps_ribbon_look_at.h"
+#include "nel/3d/ps_ribbon_look_at.h"
 
 #endif // NL_PS_PARTICLE2_H
 

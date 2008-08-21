@@ -42,14 +42,12 @@ namespace NL3D
 
 H_AUTO_DECL( NL3D_UI_Skeleton )
 
-#define NL3D_MEM_SKELETON						NL_ALLOC_CONTEXT( 3dSkel )
 #define	NL3D_HAUTO_UI_SKELETON						H_AUTO_USE( NL3D_UI_Skeleton )
 
 // ***************************************************************************
 
 uint		USkeleton::getNumBoneComputed() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -61,7 +59,6 @@ uint		USkeleton::getNumBoneComputed() const
 
 void		USkeleton::setInterpolationDistance(float dist)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -72,7 +69,6 @@ void		USkeleton::setInterpolationDistance(float dist)
 
 float		USkeleton::getInterpolationDistance() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -83,7 +79,6 @@ float		USkeleton::getInterpolationDistance() const
 
 void		USkeleton::setShapeDistMax(float distMax)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -97,7 +92,6 @@ void		USkeleton::setShapeDistMax(float distMax)
 
 float		USkeleton::getShapeDistMax() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -113,7 +107,6 @@ float		USkeleton::getShapeDistMax() const
 
 bool		USkeleton::bindSkin(UInstance mi)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	if(mi.empty())
@@ -136,7 +129,6 @@ bool		USkeleton::bindSkin(UInstance mi)
 
 void		USkeleton::stickObject(UTransform mi, uint boneId)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -150,7 +142,6 @@ void		USkeleton::stickObject(UTransform mi, uint boneId)
 
 void		USkeleton::stickObjectEx(UTransform mi, uint boneId, bool forceCLod)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -164,7 +155,6 @@ void		USkeleton::stickObjectEx(UTransform mi, uint boneId, bool forceCLod)
 
 void		USkeleton::detachSkeletonSon(UTransform mi)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -178,7 +168,6 @@ void		USkeleton::detachSkeletonSon(UTransform mi)
 
 uint		USkeleton::getNumBones() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->Bones.size();
@@ -188,7 +177,6 @@ uint		USkeleton::getNumBones() const
 
 UBone		USkeleton::getBone(uint boneId) const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -201,7 +189,6 @@ UBone		USkeleton::getBone(uint boneId) const
 
 sint		USkeleton::getBoneIdByName(const std::string &boneName) const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -212,7 +199,6 @@ sint		USkeleton::getBoneIdByName(const std::string &boneName) const
 
 bool		USkeleton::isBoneComputed(uint boneId) const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -223,7 +209,6 @@ bool		USkeleton::isBoneComputed(uint boneId) const
 
 bool USkeleton::forceComputeBone(uint boneId)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -234,7 +219,6 @@ bool USkeleton::forceComputeBone(uint boneId)
 
 void		USkeleton::setLodCharacterShape(sint shapeId)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setLodCharacterShape(shapeId);
@@ -244,7 +228,6 @@ void		USkeleton::setLodCharacterShape(sint shapeId)
 
 sint		USkeleton::getLodCharacterShape() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getLodCharacterShape();
@@ -254,7 +237,6 @@ sint		USkeleton::getLodCharacterShape() const
 
 void		USkeleton::enableLOD(bool isEnable)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->enableLOD(isEnable);
@@ -264,7 +246,6 @@ void		USkeleton::enableLOD(bool isEnable)
 
 void		USkeleton::setLodCharacterAnimId(uint animId)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setLodCharacterAnimId(animId);
@@ -274,7 +255,6 @@ void		USkeleton::setLodCharacterAnimId(uint animId)
 
 uint		USkeleton::getLodCharacterAnimId() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getLodCharacterAnimId();
@@ -284,7 +264,6 @@ uint		USkeleton::getLodCharacterAnimId() const
 
 void		USkeleton::setLodCharacterAnimTime(TGlobalAnimationTime time)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setLodCharacterAnimTime(time);
@@ -294,7 +273,6 @@ void		USkeleton::setLodCharacterAnimTime(TGlobalAnimationTime time)
 
 TGlobalAnimationTime	USkeleton::getLodCharacterAnimTime() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getLodCharacterAnimTime();
@@ -304,7 +282,6 @@ TGlobalAnimationTime	USkeleton::getLodCharacterAnimTime() const
 
 bool		USkeleton::isDisplayedAsLodCharacter() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->isDisplayedAsLodCharacter();
@@ -314,7 +291,6 @@ bool		USkeleton::isDisplayedAsLodCharacter() const
 
 void		USkeleton::setLodCharacterDistance(float dist)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setLodCharacterDistance(dist);
@@ -324,7 +300,6 @@ void		USkeleton::setLodCharacterDistance(float dist)
 
 float		USkeleton::getLodCharacterDistance() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getLodCharacterDistance();
@@ -334,7 +309,6 @@ float		USkeleton::getLodCharacterDistance() const
 
 void		USkeleton::setLodCharacterWrapMode(bool wrapMode)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setLodCharacterWrapMode(wrapMode);
@@ -344,7 +318,6 @@ void		USkeleton::setLodCharacterWrapMode(bool wrapMode)
 
 bool		USkeleton::getLodCharacterWrapMode() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getLodCharacterWrapMode();
@@ -354,7 +327,6 @@ bool		USkeleton::getLodCharacterWrapMode() const
 
 void		USkeleton::changeMRMDistanceSetup(float distanceFinest, float distanceMiddle, float distanceCoarsest)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->changeMRMDistanceSetup(distanceFinest, distanceMiddle, distanceCoarsest);
@@ -364,7 +336,6 @@ void		USkeleton::changeMRMDistanceSetup(float distanceFinest, float distanceMidd
 
 bool		USkeleton::computeRenderedBBox(NLMISC::CAABBox &bbox, bool computeInWorld)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->computeRenderedBBox(bbox, computeInWorld);
@@ -373,7 +344,6 @@ bool		USkeleton::computeRenderedBBox(NLMISC::CAABBox &bbox, bool computeInWorld)
 // ***************************************************************************
 bool		USkeleton::computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, bool computeInWorld)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->computeRenderedBBoxWithBoneSphere(bbox, computeInWorld);
@@ -383,7 +353,6 @@ bool		USkeleton::computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, bool c
 
 bool		USkeleton::computeCurrentBBox(NLMISC::CAABBox &bbox, UPlayList *playList, double playTime, bool forceCompute /* = false */, bool computeInWorld)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 
@@ -400,7 +369,6 @@ bool		USkeleton::computeCurrentBBox(NLMISC::CAABBox &bbox, UPlayList *playList, 
 
 void		USkeleton::computeLodTexture()
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -411,7 +379,6 @@ void		USkeleton::computeLodTexture()
 
 void		USkeleton::setBoneAnimCtrl(uint boneId, IAnimCtrl *ctrl)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -422,7 +389,6 @@ void		USkeleton::setBoneAnimCtrl(uint boneId, IAnimCtrl *ctrl)
 
 IAnimCtrl	*USkeleton::getBoneAnimCtrl(uint boneId) const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	CSkeletonModel	*object = getObjectPtr();
@@ -432,7 +398,6 @@ IAnimCtrl	*USkeleton::getBoneAnimCtrl(uint boneId) const
 // ***************************************************************************
 void					USkeleton::setSSSWOPos(const NLMISC::CVector &pos)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setSSSWOPos(pos);
@@ -441,7 +406,6 @@ void					USkeleton::setSSSWOPos(const NLMISC::CVector &pos)
 // ***************************************************************************
 const NLMISC::CVector	&USkeleton::getSSSWOPos() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getSSSWOPos();
@@ -450,7 +414,6 @@ const NLMISC::CVector	&USkeleton::getSSSWOPos() const
 // ***************************************************************************
 void					USkeleton::setSSSWODir(const NLMISC::CVector &dir)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	object->setSSSWODir(dir);
@@ -459,7 +422,6 @@ void					USkeleton::setSSSWODir(const NLMISC::CVector &dir)
 // ***************************************************************************
 const NLMISC::CVector	&USkeleton::getSSSWODir() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 	CSkeletonModel	*object = getObjectPtr();
 	return object->getSSSWODir();
@@ -468,7 +430,6 @@ const NLMISC::CVector	&USkeleton::getSSSWODir() const
 // ***************************************************************************
 const std::string		&USkeleton::getShapeName() const
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	static std::string emptyStr;
@@ -495,7 +456,6 @@ const std::string		&USkeleton::getShapeName() const
 // ***************************************************************************
 void USkeleton::getStickedObjects(std::vector<UTransform> &sticks)
 {
-	NL3D_MEM_SKELETON
 	NL3D_HAUTO_UI_SKELETON;
 
 	sticks.clear();

@@ -44,7 +44,6 @@ using namespace std;
 using namespace NLMISC;
 
 
-#define NL3D_MEM_CAMERA_COLLISION						NL_ALLOC_CONTEXT( 3dCmCol )
 
 
 namespace NL3D 
@@ -334,7 +333,6 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 		// Build RdrPass ids.
 		_MatrixBlocks[mb].RdrPass.resize (numMaxMaterial);
 
-		/// \todo yoyo: TODO_OPTIMIZE: it should be interesting to sort the materials, depending on their attributes. But must change next loop too...
 		for(i=0;i<(sint)_MatrixBlocks[mb].RdrPass.size(); i++)
 		{
 			_MatrixBlocks[mb].RdrPass[i].MaterialId= i;
@@ -1953,8 +1951,6 @@ void	CMeshGeom::computeSoftwarePointSkinning(CMatrix3x4 *matrixes, CVector *srcV
 {
 	CMatrix3x4		*pMat;
 
-	// \todo yoyo: TODO_OPTIMIZE: SSE verion...
-
 	// 0th matrix influence.
 	pMat= matrixes + srcPal->MatrixId[0];
 	pMat->mulSetPoint(*srcVec, srcWgt[0], *pDst);
@@ -1974,8 +1970,6 @@ void	CMeshGeom::computeSoftwarePointSkinning(CMatrix3x4 *matrixes, CVector *srcV
 void	CMeshGeom::computeSoftwareVectorSkinning(CMatrix3x4 *matrixes, CVector *srcVec, CPaletteSkin *srcPal, float *srcWgt, CVector *pDst)
 {
 	CMatrix3x4		*pMat;
-
-	// \todo yoyo: TODO_OPTIMIZE: SSE verion...
 
 	// 0th matrix influence.
 	pMat= matrixes + srcPal->MatrixId[0];
@@ -2748,7 +2742,6 @@ void	CMesh::compileRunTime()
 	if( (_CollisionMeshGeneration==AutoCameraCol && !_LightInfos.empty()) ||
 		_CollisionMeshGeneration==ForceCameraCol )
 	{
-		NL3D_MEM_CAMERA_COLLISION
 
 		vector<CVector>		vertices;
 		vector<uint32>		indices;

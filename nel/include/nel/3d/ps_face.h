@@ -26,7 +26,7 @@
 #ifndef NL_PS_FACE_H
 #define NL_PS_FACE_H
 
-#include "ps_quad.h"
+#include "nel/3d/ps_quad.h"
 //
 #include "nel/misc/traits_nl.h"
 

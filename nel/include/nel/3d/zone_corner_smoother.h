@@ -27,7 +27,7 @@
 #define NL_ZONE_CORNER_SMOOTHER_H
 
 #include "nel/misc/types_nl.h"
-#include "zone.h"
+#include "nel/3d/zone.h"
 #include <map>
 #include <vector>
 

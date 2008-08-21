@@ -27,10 +27,10 @@
 #define NL_PS_COLOR_H
 
 #include "nel/misc/types_nl.h"
-#include "ps_attrib_maker_template.h"
-#include "ps_attrib_maker_bin_op.h"
-#include "ps_attrib_maker_helper.h"
-#include "driver.h"
+#include "nel/3d/ps_attrib_maker_template.h"
+#include "nel/3d/ps_attrib_maker_bin_op.h"
+#include "nel/3d/ps_attrib_maker_helper.h"
+#include "nel/3d/driver.h"
 #include "nel/misc/rgba.h"
 #include "nel/3d/animation_time.h"
 

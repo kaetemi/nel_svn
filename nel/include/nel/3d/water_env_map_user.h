@@ -26,8 +26,8 @@
 #define NL_WATER_ENVMAP_USER
 
 #include "nel/3d/u_water_env_map.h"
-#include "water_env_map.h"
-#include "driver_user.h"
+#include "nel/3d/water_env_map.h"
+#include "nel/3d/driver_user.h"
 
 namespace NL3D
 {

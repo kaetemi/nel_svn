@@ -28,10 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_visual_collision_entity.h"
-#include "visual_collision_entity.h"
-#include "visual_collision_manager.h"
+#include "nel/3d/visual_collision_entity.h"
+#include "nel/3d/visual_collision_manager.h"
 
-#define NL3D_MEM_ENTITY_USER						NL_ALLOC_CONTEXT( 3dEnty )
 
 namespace NL3D 
 {
@@ -50,14 +49,12 @@ public:
 	/// Constructor. create entity.
 	CVisualCollisionEntityUser(CVisualCollisionManager *manager)
 	{
-		NL3D_MEM_ENTITY_USER
 		_Manager= manager;
 		_Entity= _Manager->createEntity();
 	}
 	/// dtor, delete the entity.
 	~CVisualCollisionEntityUser()
 	{
-		NL3D_MEM_ENTITY_USER
 		_Manager->deleteEntity(_Entity);
 	}
 

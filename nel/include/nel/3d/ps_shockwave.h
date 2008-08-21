@@ -26,9 +26,9 @@
 #ifndef NL_PS_SHOCKWAVE_H
 #define NL_PS_SHOCKWAVE_H
 
-#include "ps_particle_basic.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 namespace NL3D 
 {

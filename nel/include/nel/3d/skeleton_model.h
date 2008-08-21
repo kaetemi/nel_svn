@@ -28,11 +28,11 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/object_vector.h"
-#include "transform_shape.h"
-#include "bone.h"
-#include "mrm_level_detail.h"
-#include "lod_character_instance.h"
-#include "skeleton_spawn_script.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/bone.h"
+#include "nel/3d/mrm_level_detail.h"
+#include "nel/3d/lod_character_instance.h"
+#include "nel/3d/skeleton_spawn_script.h"
 
 namespace NLMISC
 {

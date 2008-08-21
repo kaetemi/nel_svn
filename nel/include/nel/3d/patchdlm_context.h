@@ -28,11 +28,11 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/object_vector.h"
-#include "tess_list.h"
+#include "nel/3d/tess_list.h"
 #include "nel/misc/bsphere.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/rgba.h"
-#include "landscape_def.h"
+#include "nel/3d/landscape_def.h"
 
 
 namespace NL3D 

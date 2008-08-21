@@ -29,10 +29,10 @@
 #include <string>
 #include <map>
 #include "nel/misc/types_nl.h"
-#include "zone.h"
+#include "nel/3d/zone.h"
 
-#include "async_file_manager_3d.h"
-#include "zone_search.h"
+#include "nel/3d/async_file_manager_3d.h"
+#include "nel/3d/zone_search.h"
 
 
 namespace NL3D

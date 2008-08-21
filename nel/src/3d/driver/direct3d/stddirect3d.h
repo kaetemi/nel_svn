@@ -27,9 +27,9 @@
 #include "nel/misc/types_nl.h"
 
 #ifdef NL_OS_WINDOWS
-	#define WIN32_LEAN_AND_MEAN
-	#define NOMINMAX
-	#include <windows.h>
+#	define WIN32_LEAN_AND_MEAN
+#	define NOMINMAX
+#	include <windows.h>
 #endif
 
 // System includes

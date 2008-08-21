@@ -27,7 +27,7 @@
 #define NL_TEXTURE_CUBE_H
 
 #include "nel/misc/types_nl.h"
-#include "texture.h"
+#include "nel/3d/texture.h"
 
 
 namespace NL3D

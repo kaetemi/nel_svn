@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/common.h"
-#include "texture.h"
-#include "landscape_def.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/landscape_def.h"
 
 
 #ifdef	NL_DLM_TILE_RES

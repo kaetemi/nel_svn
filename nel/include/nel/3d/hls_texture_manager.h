@@ -27,7 +27,7 @@
 #define NL_HLS_TEXTURE_MANAGER_H
 
 #include "nel/misc/types_nl.h"
-#include "hls_texture_bank.h"
+#include "nel/3d/hls_texture_bank.h"
 
 
 namespace NL3D 

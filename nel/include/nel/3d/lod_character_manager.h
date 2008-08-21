@@ -30,10 +30,10 @@
 #include "nel/misc/vector.h"
 #include "nel/misc/rgba.h"
 #include "nel/misc/object_vector.h"
-#include "vertex_buffer.h"
-#include "material.h"
-#include "texture_blank.h"
-#include "vertex_stream_manager.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture_blank.h"
+#include "nel/3d/vertex_stream_manager.h"
 
 
 namespace NLMISC

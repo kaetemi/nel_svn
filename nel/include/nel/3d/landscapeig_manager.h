@@ -31,7 +31,6 @@
 #include <map>
 #include <string>
 
-#define NL3D_MEM_LANDSCAPE_IG						NL_ALLOC_CONTEXT( 3dLdIg )
 
 namespace NLMISC
 {

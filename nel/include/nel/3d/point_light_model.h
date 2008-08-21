@@ -27,8 +27,8 @@
 #define NL_POINT_LIGHT_MODEL_H
 
 #include "nel/misc/types_nl.h"
-#include "transform.h"
-#include "fast_ptr_list.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/fast_ptr_list.h"
 
 
 namespace NL3D {

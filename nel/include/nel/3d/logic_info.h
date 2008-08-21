@@ -28,10 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/rgba.h"
-#include "point_light_influence.h"
+#include "nel/3d/point_light_influence.h"
 #include <vector>
 
-#define NL3D_MEM_LOGIC						NL_ALLOC_CONTEXT( 3dLogic )
 
 namespace NL3D 
 {

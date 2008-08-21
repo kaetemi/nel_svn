@@ -28,15 +28,15 @@
 
 // ------------------------------------------------------------------------------------------------
 
-#include "material.h"
-#include "texture.h"
-#include "texture_mem.h"
-#include "vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/vertex_buffer.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/geom_ext.h"
 #include "nel/misc/value_smoother.h"
-#include "cloud.h"
-#include "noise_3d.h"
+#include "nel/3d/cloud.h"
+#include "nel/3d/noise_3d.h"
 #include "nel/3d/u_cloud_scape.h"
 
 namespace NL3D

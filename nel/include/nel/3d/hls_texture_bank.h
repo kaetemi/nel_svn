@@ -27,7 +27,7 @@
 #define NL_HLS_TEXTURE_BANK_H
 
 #include "nel/misc/types_nl.h"
-#include "hls_color_texture.h"
+#include "nel/3d/hls_color_texture.h"
 
 
 namespace NLMISC

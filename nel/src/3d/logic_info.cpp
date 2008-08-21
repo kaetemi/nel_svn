@@ -33,11 +33,9 @@ namespace NL3D {
 
 ILogicInfo::ILogicInfo()
 {
-	NL3D_MEM_LOGIC
 }
 ILogicInfo::~ILogicInfo()
 {
-	NL3D_MEM_LOGIC
 }
 
 

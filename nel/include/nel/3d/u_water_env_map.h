@@ -44,7 +44,9 @@ struct IWaterEnvMapRender
       * All faces are rendered in order (rendering may be spread accross several frames, so it's up to the user to provide coherent datas for all faces)
 	  * The time parameter will be the same for all faces until the cube map is completed	  
 	  */
-	virtual void render(TFace face, TGlobalAnimationTime time, UDriver &drv) = 0;	
+	virtual void render(TFace face, TGlobalAnimationTime time, UDriver &drv) = 0;
+	
+	virtual ~IWaterEnvMapRender() {}
 };
 
 /** An environment map that can be rendered by user.
@@ -59,6 +61,8 @@ struct IWaterEnvMapRender
 class UWaterEnvMap
 {
 public:
+	virtual ~UWaterEnvMap() {};
+
 	/** Init the envmap
 	  * \param cubeMapSize Size of environment cube map 
 	  * \param projection2DSize Depending on the shader being used, the cube map may need to be projected in 2D before use
@@ -85,7 +89,7 @@ public:
   */
 class CWaterEnvMapRenderHelper : public IWaterEnvMapRender
 {
-public:	
+public:
 	// Should be defined by derivers. Render the scene at the given time. The same time will be given
 	// for each faces of the cubemap
 	virtual void doRender(const CMatrix &camMatrix, TGlobalAnimationTime time, UDriver &drv) = 0;
@@ -103,6 +107,7 @@ class CWaterEnvMapRenderFromUScene : public CWaterEnvMapRenderHelper
 public:
 	// ctor
 	CWaterEnvMapRenderFromUScene();
+	virtual ~CWaterEnvMapRenderFromUScene() {}
 	// Set the scene and camera to be used for render, and create a camera for that purpose      
 	void				  setScene(UScene *scene, UCamera cam);	
 	void				  setCamPos(const NLMISC::CVector &pos) { _CamPos = pos; }

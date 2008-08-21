@@ -26,7 +26,7 @@
 #ifndef NL_MESH_MORPHER_H
 #define NL_MESH_MORPHER_H
 
-#include "animated_morph.h"
+#include "nel/3d/animated_morph.h"
 #include "nel/misc/types_nl.h"
 #include "nel/misc/uv.h"
 #include "nel/misc/object_vector.h"

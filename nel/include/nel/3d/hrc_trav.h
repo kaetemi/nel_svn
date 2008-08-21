@@ -26,7 +26,7 @@
 #ifndef NL_HRC_TRAV_H
 #define NL_HRC_TRAV_H
 
-#include "trav_scene.h"
+#include "nel/3d/trav_scene.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/debug.h"
 

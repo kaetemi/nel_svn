@@ -29,10 +29,10 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/stream.h"
-#include "ps_located.h"
-#include "ps_plane_basis.h"
-#include "material.h"
-#include "ps_attrib_maker.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_plane_basis.h"
+#include "nel/3d/material.h"
+#include "nel/3d/ps_attrib_maker.h"
 
 namespace NL3D 
 {

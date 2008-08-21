@@ -62,8 +62,6 @@ namespace NL3D
 // ***************************************************************************
 UScene			*CDriverUser::createScene(bool bSmallScene) 
 {
-	NL3D_MEM_DRIVER
-
 	CSceneUser *pSU = new CSceneUser(this, bSmallScene);
 
 	// set the shape bank
@@ -80,7 +78,6 @@ UScene			*CDriverUser::createScene(bool bSmallScene)
 // ***************************************************************************
 void			CDriverUser::deleteScene(UScene	*scene) 
 {
-	NL3D_MEM_DRIVER
 
 	_Scenes.erase((CSceneUser*)scene, "deleteScene(): Bad scene ptr");
 }
@@ -88,28 +85,24 @@ void			CDriverUser::deleteScene(UScene	*scene)
 // ***************************************************************************
 UTextContext	*CDriverUser::createTextContext(const std::string fontFileName, const std::string fontExFileName) 
 {
-	NL3D_MEM_DRIVER
 
 	return _TextContexts.insert(new CTextContextUser(fontFileName, fontExFileName, this, &_FontManager));
 }
 // ***************************************************************************
 void			CDriverUser::deleteTextContext(UTextContext	*textContext) 
 {
-	NL3D_MEM_DRIVER
 
 	_TextContexts.erase((CTextContextUser*)textContext, "deleteTextContext: Bad TextContext");
 }
 // ***************************************************************************
 void			CDriverUser::setFontManagerMaxMemory(uint maxMem) 
 {
-	NL3D_MEM_DRIVER
 
 	_FontManager.setMaxMemory(maxMem);
 }
 // ***************************************************************************
 std::string		CDriverUser::getFontManagerCacheInformation() const
 {
-	NL3D_MEM_DRIVER
 
 	return _FontManager.getCacheInformation();
 }
@@ -117,7 +110,6 @@ std::string		CDriverUser::getFontManagerCacheInformation() const
 // ***************************************************************************
 UTextureFile	*CDriverUser::createTextureFile(const std::string &file) 
 {
-	NL3D_MEM_DRIVER
 
 	CTextureFileUser	*text= new CTextureFileUser(file);
 	_Textures.insert(text);
@@ -126,14 +118,12 @@ UTextureFile	*CDriverUser::createTextureFile(const std::string &file)
 // ***************************************************************************
 void			CDriverUser::deleteTextureFile(UTextureFile *textfile) 
 {
-	NL3D_MEM_DRIVER
 
 	_Textures.erase(dynamic_cast<CTextureFileUser*>(textfile), "deleteTextureFile: Bad textfile");
 }
 // ***************************************************************************
 UTextureMem		*CDriverUser::createTextureMem(uint width, uint height, CBitmap::TType texType)
 {
-	NL3D_MEM_DRIVER
 
 	CTextureMemUser	*pTx= new CTextureMemUser(width, height, texType);
 	_Textures.insert(pTx);
@@ -142,21 +132,18 @@ UTextureMem		*CDriverUser::createTextureMem(uint width, uint height, CBitmap::TT
 // ***************************************************************************
 void			CDriverUser::deleteTextureMem(UTextureMem *pTx) 
 {
-	NL3D_MEM_DRIVER
 
 	_Textures.erase(dynamic_cast<CTextureMemUser*>(pTx), "deleteTextureMem: Bad pTx");
 }
 // ***************************************************************************
 UMaterial		CDriverUser::createMaterial() 
 {
-	NL3D_MEM_DRIVER
 
 	return UMaterial(new CMaterial);
 }
 // ***************************************************************************
 void			CDriverUser::deleteMaterial(UMaterial &umat) 
 {
-	NL3D_MEM_DRIVER
 
 	delete umat.getObjectPtr();
 	umat.detach();
@@ -165,14 +152,12 @@ void			CDriverUser::deleteMaterial(UMaterial &umat)
 // ***************************************************************************
 UAnimationSet			*CDriverUser::createAnimationSet() 
 {
-	NL_ALLOC_CONTEXT( 3dAnmSt )
 	
 	return _AnimationSets.insert(new CAnimationSetUser(this));
 }
 // ***************************************************************************
 UAnimationSet			*CDriverUser::createAnimationSet(const std::string &animationSetFile) 
 {
-	NL_ALLOC_CONTEXT( 3dAnmSt )
 	H_AUTO( NL3D_Load_AnimationSet )
 	
 	NLMISC::CIFile	f;
@@ -184,7 +169,6 @@ UAnimationSet			*CDriverUser::createAnimationSet(const std::string &animationSet
 // ***************************************************************************
 void			CDriverUser::deleteAnimationSet(UAnimationSet *animationSet) 
 {
-	NL_ALLOC_CONTEXT( 3dAnmSt )
 	
 	_AnimationSets.erase((CAnimationSetUser*)animationSet, "deleteAnimationSet(): Bad AnimationSet ptr");
 }
@@ -201,7 +185,6 @@ void			CDriverUser::deleteAnimationSet(UAnimationSet *animationSet)
 // ***************************************************************************
 void			CDriverUser::profileRenderedPrimitives(CPrimitiveProfile &pIn, CPrimitiveProfile &pOut)
 {
-	NL3D_MEM_DRIVER
 
 	_Driver->profileRenderedPrimitives(pIn, pOut);
 }
@@ -210,7 +193,6 @@ void			CDriverUser::profileRenderedPrimitives(CPrimitiveProfile &pIn, CPrimitive
 // ***************************************************************************
 uint32			CDriverUser::profileAllocatedTextureMemory()
 {
-	NL3D_MEM_DRIVER
 
 	return _Driver->profileAllocatedTextureMemory();
 }
@@ -219,7 +201,6 @@ uint32			CDriverUser::profileAllocatedTextureMemory()
 // ***************************************************************************
 uint32			CDriverUser::profileSetupedMaterials() const
 {
-	NL3D_MEM_DRIVER
 
 	return _Driver->profileSetupedMaterials();
 }
@@ -228,7 +209,6 @@ uint32			CDriverUser::profileSetupedMaterials() const
 // ***************************************************************************
 uint32			CDriverUser::profileSetupedModelMatrix() const
 {
-	NL3D_MEM_DRIVER
 	return _Driver->profileSetupedModelMatrix();
 }
 
@@ -236,7 +216,6 @@ uint32			CDriverUser::profileSetupedModelMatrix() const
 // ***************************************************************************
 void			CDriverUser::enableUsedTextureMemorySum (bool enable)
 {
-	NL3D_MEM_DRIVER
 	_Driver->enableUsedTextureMemorySum (enable);
 }
 
@@ -244,7 +223,6 @@ void			CDriverUser::enableUsedTextureMemorySum (bool enable)
 // ***************************************************************************
 uint32			CDriverUser::getUsedTextureMemory () const
 {
-	NL3D_MEM_DRIVER
 	return _Driver->getUsedTextureMemory ();
 }
 

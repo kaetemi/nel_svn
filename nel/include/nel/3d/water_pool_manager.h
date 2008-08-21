@@ -30,7 +30,7 @@
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/stream.h"
 
-#include "water_shape.h"
+#include "nel/3d/water_shape.h"
 
 #include <map>
 #include <vector>

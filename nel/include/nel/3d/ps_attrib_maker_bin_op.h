@@ -27,8 +27,8 @@
 #define NL_PS_ATTRIB_MAKER_BIN_OP_H
 
 #include "nel/misc/types_nl.h"
-#include "ps_attrib_maker.h"
-#include "ps_plane_basis.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_plane_basis.h"
 #include "nel/misc/rgba.h"
 #include <memory>
 

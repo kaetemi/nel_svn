@@ -37,7 +37,6 @@ namespace NL3D
 // ***************************************************************************
 UPlayList	*CPlayListManagerUser::createPlayList(UAnimationSet	*animSet)
 {
-	NL3D_MEM_PLAYLIST_MANAGER
 	if(!animSet)
 		nlerror("createPlayList(): animSet==NULL");
 	
@@ -53,7 +52,6 @@ UPlayList	*CPlayListManagerUser::createPlayList(UAnimationSet	*animSet)
 // ***************************************************************************
 void		CPlayListManagerUser::deletePlayList(UPlayList *playList)
 {
-	NL3D_MEM_PLAYLIST_MANAGER
 	CPlayListUser	*pl= safe_cast<CPlayListUser*>(playList);
 
 	_PlayListManager.removePlaylist(&pl->_PlayList);
@@ -64,7 +62,6 @@ void		CPlayListManagerUser::deletePlayList(UPlayList *playList)
 // ***************************************************************************
 void		CPlayListManagerUser::animate(TGlobalAnimationTime	time)
 {
-	NL3D_MEM_PLAYLIST_MANAGER
 		H_AUTO( NL3D_Render_PlayListMgr_Animate );
 	
 	_PlayListManager.animate(time);
@@ -74,7 +71,6 @@ void		CPlayListManagerUser::animate(TGlobalAnimationTime	time)
 // ***************************************************************************
 void		CPlayListManagerUser::setup(TGlobalAnimationTime	time)
 {
-	NL3D_MEM_PLAYLIST_MANAGER
 	H_AUTO( NL3D_Render_PlayListMgr_Setup );
 	
 	_PlayListManager.setup(time);

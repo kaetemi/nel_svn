@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 
-#include "mesh.h"
-#include "mesh_base.h"
-#include "mesh_geom.h"
-#include "mrm_parameters.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/mesh_geom.h"
+#include "nel/3d/mrm_parameters.h"
 
 namespace NL3D 
 {

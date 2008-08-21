@@ -3,7 +3,6 @@
  *
  * $Id: driver_opengl_vertex_program.cpp,v 1.24 2005/02/22 10:19:22 besson Exp $
  *
- * \todo manage better the init/release system (if a throw occurs in the init, we must release correctly the driver)
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -40,12 +39,12 @@ using namespace std;
 using namespace NLMISC;
 
 //#define DEBUG_SETUP_EXT_VERTEX_SHADER
- 
+
 namespace NL3D
 {
 
 // ***************************************************************************
-CVertexProgamDrvInfosGL::CVertexProgamDrvInfosGL (CDriverGL *drv, ItVtxPrgDrvInfoPtrList it) : IVertexProgramDrvInfos (drv, it) 
+CVertexProgamDrvInfosGL::CVertexProgamDrvInfosGL (CDriverGL *drv, ItVtxPrgDrvInfoPtrList it) : IVertexProgramDrvInfos (drv, it)
 {
 	H_AUTO_OGL(CVertexProgamDrvInfosGL_CVertexProgamDrvInfosGL)
 	// Extension must exist
@@ -55,7 +54,7 @@ CVertexProgamDrvInfosGL::CVertexProgamDrvInfosGL (CDriverGL *drv, ItVtxPrgDrvInf
 		     );
 
 	if (drv->_Extensions.NVVertexProgram) // NVIDIA implemntation
-	{	
+	{
 		// Generate a program
 		nglGenProgramsNV (1, &ID);
 	}
@@ -72,7 +71,7 @@ CVertexProgamDrvInfosGL::CVertexProgamDrvInfosGL (CDriverGL *drv, ItVtxPrgDrvInf
 
 // ***************************************************************************
 bool CDriverGL::isVertexProgramSupported () const
-{	
+{
 	H_AUTO_OGL(CVertexProgamDrvInfosGL_isVertexProgramSupported)
 	return _Extensions.NVVertexProgram || _Extensions.EXTVertexShader || _Extensions.ARBVertexProgram;
 }
@@ -128,7 +127,7 @@ bool CDriverGL::activeNVVertexProgram (CVertexProgram *program)
 			*it = drvInfo = new CVertexProgamDrvInfosGL (this, it);
 
 			// Set the pointer
-			program->_DrvInfo=drvInfo;						
+			program->_DrvInfo=drvInfo;
 
 			// Compile the program
 			nglLoadProgramNV (GL_VERTEX_PROGRAM_NV, drvInfo->ID, program->getProgram().length(), (const GLubyte*)program->getProgram().c_str());
@@ -165,7 +164,7 @@ bool CDriverGL::activeNVVertexProgram (CVertexProgram *program)
 				}
 
 				// Show the error
-				nlinfo ("Vertex program syntax error line %d character %d\n", line, charC);
+				nlwarning("3D: Vertex program syntax error line %d character %d\n", line, charC);
 
 				// Disable vertex program
 				glDisable (GL_VERTEX_PROGRAM_NV);
@@ -203,7 +202,7 @@ bool CDriverGL::activeNVVertexProgram (CVertexProgram *program)
 
 
 // ***************************************************************************
-static 
+static
 inline GLenum convSwizzleToGLFormat(CVPSwizzle::EComp comp, bool negate)
 {
 	H_AUTO_OGL(convSwizzleToGLFormat)
@@ -239,7 +238,7 @@ inline GLenum convSwizzleToGLFormat(CVPSwizzle::EComp comp, bool negate)
 
 // ***************************************************************************
 /** Convert an output register to a EXTVertexShader register
-  */ 
+  */
 static GLuint convOutputRegisterToEXTVertexShader(CVPOperand::EOutputRegister r)
 {
 	H_AUTO_OGL(convOutputRegisterToEXTVertexShader)
@@ -275,12 +274,12 @@ static GLuint convOutputRegisterToEXTVertexShader(CVPOperand::EOutputRegister r)
 
 // ***************************************************************************
 /** Convert an input register to a vertex buffer flag
-  */ 
+  */
 static uint convInputRegisterToVBFlag(uint index)
 {
 	H_AUTO_OGL(convInputRegisterToVBFlag)
 	switch (index)
-	{	
+	{
 		case CVPOperand::IPosition:				return CVertexBuffer::PositionFlag;
 		case CVPOperand::IWeight:				return CVertexBuffer::WeightFlag;
 		case CVPOperand::INormal:				return CVertexBuffer::NormalFlag;
@@ -290,7 +289,7 @@ static uint convInputRegisterToVBFlag(uint index)
 		case CVPOperand::IPaletteSkin:			return CVertexBuffer::PaletteSkinFlag;
 		case CVPOperand::IEmpty: nlassert(0); break;
 		case CVPOperand::ITex0:
-		case CVPOperand::ITex1: 
+		case CVPOperand::ITex1:
 		case CVPOperand::ITex2:
 		case CVPOperand::ITex3:
 		case CVPOperand::ITex4:
@@ -324,7 +323,7 @@ static void doSwizzle(GLuint res, GLuint in, GLenum outX, GLenum outY, GLenum ou
 	nglSwizzleEXT(res, in, outX, outY, outZ, outW);
 #ifdef DEBUG_SETUP_EXT_VERTEX_SHADER
 	std::string swzStr = "Swizzle : ";
-	GLenum swz[] = { outX, outY, outZ, outW };		
+	GLenum swz[] = { outX, outY, outZ, outW };
 	for(uint k = 0; k < 4; ++k)
 	{
 		switch(swz[k])
@@ -373,18 +372,18 @@ static void doWriteMask(GLuint res, GLuint in, GLenum outX, GLenum outY, GLenum 
 	H_AUTO_OGL(doWriteMask)
 	nglWriteMaskEXT(res, in, outX, outY, outZ, outW);
 	#ifdef DEBUG_SETUP_EXT_VERTEX_SHADER
-	nlinfo("Write Mask : %c%c%c%c",
+	nlinfo("3D: Write Mask : %c%c%c%c",
 		   outX ? 'x' : '-',
 		   outY ? 'y' : '-',
 		   outZ ? 'z' : '-',
-		   outW ? 'w' : '-'		   
+		   outW ? 'w' : '-'
 		  );
 	#endif
 }
 
 // ***************************************************************************
 /** Setup a vertex shader from its parsed program
-  */ 
+  */
 bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint id, uint variants[EVSNumVariants], uint16 &usedInputRegisters)
 {
 	H_AUTO_OGL(CDriverGL_setupEXTVertexShader)
@@ -396,10 +395,10 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 	uint numIC = 0; // insert component
 	uint numWM = 0; // write maks
 
-	
-	#ifdef DEBUG_SETUP_EXT_VERTEX_SHADER
-		nlinfo("**********************************************************");
-	#endif	
+
+#ifdef DEBUG_SETUP_EXT_VERTEX_SHADER
+	nlinfo("3D: **********************************************************");
+#endif
 
 	// clear last error
 	GLenum glError = glGetError();
@@ -409,19 +408,19 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 	// allocate the symbols
 	nglBindVertexShaderEXT(id);
 	nglBeginVertexShaderEXT();
-	{	
-		
+	{
+
 		// Allocate register and variant
-		
+
 		// allocate registers
 		GLuint firstRegister = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_LOCAL_EXT, GL_FULL_RANGE_EXT, 12); // 12 register
 		GLuint firstTempRegister = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_LOCAL_EXT, GL_FULL_RANGE_EXT, 4); // 4  temp register used for swizzle & indexing
 		GLuint firstTempScalar = nglGenSymbolsEXT(GL_SCALAR_EXT, GL_LOCAL_EXT, GL_FULL_RANGE_EXT, 3); // 3  temp scalars used for EXPP & LOGG emulation
-		GLuint firstAddressRegister = nglGenSymbolsEXT(GL_SCALAR_EXT, GL_LOCAL_EXT, GL_FULL_RANGE_EXT, 1);		
+		GLuint firstAddressRegister = nglGenSymbolsEXT(GL_SCALAR_EXT, GL_LOCAL_EXT, GL_FULL_RANGE_EXT, 1);
 
-		// allocate needed variants				
-		if (CVPParser::isInputUsed(program, CVPOperand::ISecondaryColor)) 
-		{		
+		// allocate needed variants
+		if (CVPParser::isInputUsed(program, CVPOperand::ISecondaryColor))
+		{
 			variants[EVSSecondaryColorVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_NORMALIZED_RANGE_EXT, 1);variants[EVSSecondaryColorVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_NORMALIZED_RANGE_EXT, 1);
 			if (!variants[EVSSecondaryColorVariant])
 			{
@@ -433,8 +432,8 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			variants[EVSSecondaryColorVariant] = 0;
 		}
-		if (CVPParser::isInputUsed(program, CVPOperand::IFogCoord)) 
-		{		
+		if (CVPParser::isInputUsed(program, CVPOperand::IFogCoord))
+		{
 			variants[EVSFogCoordsVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_FULL_RANGE_EXT, 1);variants[EVSSecondaryColorVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_FULL_RANGE_EXT, 1);
 			if (!variants[EVSFogCoordsVariant])
 			{
@@ -446,8 +445,8 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			variants[EVSFogCoordsVariant] = 0;
 		}
-		if (CVPParser::isInputUsed(program, CVPOperand::IWeight)) 
-		{		
+		if (CVPParser::isInputUsed(program, CVPOperand::IWeight))
+		{
 			variants[EVSSkinWeightVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_FULL_RANGE_EXT, 1);variants[EVSSecondaryColorVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_NORMALIZED_RANGE_EXT, 1);
 			if (!variants[EVSSkinWeightVariant])
 			{
@@ -459,8 +458,8 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			variants[EVSSkinWeightVariant] = 0;
 		}
-		if (CVPParser::isInputUsed(program, CVPOperand::IPaletteSkin)) 
-		{		
+		if (CVPParser::isInputUsed(program, CVPOperand::IPaletteSkin))
+		{
 			variants[EVSPaletteSkinVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_FULL_RANGE_EXT, 1);variants[EVSSecondaryColorVariant] = nglGenSymbolsEXT(GL_VECTOR_EXT, GL_VARIANT_EXT, GL_FULL_RANGE_EXT, 1);
 			if (!variants[EVSPaletteSkinVariant])
 			{
@@ -472,7 +471,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			variants[EVSPaletteSkinVariant] = 0;
 		}
-		
+
 		// allocate one temporary register for fog before conversion
 		GLuint fogTemp = 0;
 		if (!_ATIFogRangeFixed)
@@ -493,7 +492,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		nglSetLocalConstantEXT( cteZero, GL_FLOAT, &zeroValue);
 
 
-		
+
 		if (firstRegister == 0)
 		{
 			nlwarning("Unable to allocate local registers for EXT_vertex_shader");
@@ -514,17 +513,17 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			nlwarning("Unable to allocate address register for EXT_vertex_shader");
 			return false;
 		}
-		
+
 		// Mask of output component that are being written
 		uint componentWritten[16];
 		std::fill(componentWritten, componentWritten + 16, 0);
-		
+
 		//
 		GLuint srcValue[3];
 		//
 		GLuint destValue;
 		GLuint maskedDestValue = 0;
-		
+
 
 		uint l;
 		// convert each instruction of the vertex program
@@ -538,7 +537,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 				const CVPOperand &operand = program[k].getSrc(l);
 				switch (operand.Type)
 				{
-					case CVPOperand::InputRegister: 
+					case CVPOperand::InputRegister:
 					{
 						switch(operand.Value.InputRegisterValue)
 						{
@@ -558,11 +557,11 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 							case  13:
 							case  14:
 							case  15:
-							{								
+							{
 								EVS_INFO(("Src = Tex" + toString(operand.Value.InputRegisterValue - 8)).c_str());
 								srcValue[l] = _EVSTexHandle[operand.Value.InputRegisterValue - 8];
 								if (srcValue[l] == 0)
-								{								
+								{
 									nlwarning("Trying to read an unaccessible texture coords for the device when using EXT_vertex_shader, shader loading failed.");
 									return false;
 								}
@@ -574,12 +573,12 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						}
 					}
 					break;
-					case CVPOperand::Constant: 
-						nlassert(operand.Value.ConstantValue < (sint)_EVSNumConstant); // constant index too high
-						srcValue[l] = _EVSConstantHandle + operand.Value.ConstantValue; 												
+					case CVPOperand::Constant:
+						nlassert(uint(operand.Value.ConstantValue) < _EVSNumConstant); // constant index too high
+						srcValue[l] = _EVSConstantHandle + operand.Value.ConstantValue;
 						EVS_INFO(("Src = constant" + toString(operand.Value.ConstantValue)).c_str());
 					break;
-					case CVPOperand::Variable: 
+					case CVPOperand::Variable:
 						srcValue[l] = firstRegister + operand.Value.VariableValue;
 						EVS_INFO(("Src = variable register" + toString(operand.Value.VariableValue)).c_str());
 					break;
@@ -602,24 +601,24 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 				if (!operand.Swizzle.isIdentity() || operand.Negate)
 				{
 					// if the instruction reads a scalar, no need for swizzle (except if negate is used)
-					if (!						
+					if (!
 						(
 						 (program[k].Opcode == CVPInstruction::RSQ
 						  || program[k].Opcode == CVPInstruction::RCP
 						  || program[k].Opcode == CVPInstruction::LOG
 						  || program[k].Opcode == CVPInstruction::EXPP
-					     ) 
-						 && 
+					     )
+						 &&
 						 !operand.Negate
 						)
 					)
-					{					
+					{
 						// need a temp register for swizzle and/or negate
 						doSwizzle(firstTempRegister + l, srcValue[l],
 									  convSwizzleToGLFormat(operand.Swizzle.Comp[0], operand.Negate),
 									  convSwizzleToGLFormat(operand.Swizzle.Comp[1], operand.Negate),
 									  convSwizzleToGLFormat(operand.Swizzle.Comp[2], operand.Negate),
-									  convSwizzleToGLFormat(operand.Swizzle.Comp[3], operand.Negate));						
+									  convSwizzleToGLFormat(operand.Swizzle.Comp[3], operand.Negate));
 						++numSwizzle;
 						srcValue[l] = firstTempRegister + l;
 						glError = glGetError();
@@ -632,17 +631,17 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			const CVPOperand &destOperand = program[k].Dest;
 			switch(destOperand.Type)
 			{
-				case CVPOperand::Variable: 
-					destValue = firstRegister + destOperand.Value.VariableValue; 
+				case CVPOperand::Variable:
+					destValue = firstRegister + destOperand.Value.VariableValue;
 				break;
 				case CVPOperand::OutputRegister:
 					if (_ATIFogRangeFixed || destOperand.Value.OutputRegisterValue != CVPOperand::OFogCoord)
-					{					
+					{
 						destValue = convOutputRegisterToEXTVertexShader(destOperand.Value.OutputRegisterValue);
 					}
 					else
-					{												
-						destValue = fogTemp;						
+					{
+						destValue = fogTemp;
 					}
 				break;
 				case CVPOperand::AddressRegister:
@@ -657,7 +656,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			CVPInstruction::EOpcode opcode = program[k].Opcode;
 			uint outputRegisterIndex = 0;
 			if (destOperand.Type != CVPOperand::AddressRegister)
-			{			
+			{
 				outputRegisterIndex = destOperand.Value.OutputRegisterValue;
 				nlassert(outputRegisterIndex < 16);
 			}
@@ -666,12 +665,12 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			// because they write their output component by components
 			bool outputWritten = false;
 
-			// test for write mask						
-			if (writeMask != 0x0f) 
-			{					
+			// test for write mask
+			if (writeMask != 0x0f)
+			{
 				/** Don't know why, but on some implementation of EXT_vertex_shader, can't write a single components to the fog coordinate..
-				 * So we force the mask to 0xf (only the x coordinate is used anyway).			  
-				 */			
+				 * So we force the mask to 0xf (only the x coordinate is used anyway).
+				 */
 				if (!(destOperand.Type == CVPOperand::OutputRegister && destOperand.Value.OutputRegisterValue == CVPOperand::OFogCoord))
 				{
 					// For instructions that write their output components by components, we don't need an intermediary register
@@ -682,10 +681,10 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						|| opcode == CVPInstruction::RCP
 					   )
 					{
-						outputWritten = true;	
+						outputWritten = true;
 					}
 					else
-					{					
+					{
 						maskedDestValue = destValue;
 						// use a temp register before masking
 						destValue = firstTempRegister;
@@ -700,15 +699,15 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			{
 				if (destOperand.Type == CVPOperand::OutputRegister)
 				{
-					componentWritten[outputRegisterIndex] = 0xf; // say all components have been written for that output				
+					componentWritten[outputRegisterIndex] = 0xf; // say all components have been written for that output
 				}
-			}			
-			
+			}
+
 			// generate opcode
 			switch (opcode)
 			{
 				case  CVPInstruction::ARL:
-				{					
+				{
 					nlassert(program[k].Src1.Swizzle.isScalar());
 					GLuint index = program[k].Src1.Swizzle.Comp[0];
 					nglExtractComponentEXT(firstAddressRegister, srcValue[0],  index);
@@ -717,24 +716,24 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 				}
 				break;
 				case  CVPInstruction::MOV:
-				{											
-					nglShaderOp1EXT(GL_OP_MOV_EXT, destValue, srcValue[0]);					
+				{
+					nglShaderOp1EXT(GL_OP_MOV_EXT, destValue, srcValue[0]);
 					EVS_INFO("GL_OP_MOV_EXT");
-					++numOp;					
+					++numOp;
 				}
 				break;
-				case  CVPInstruction::MUL: 
-					nglShaderOp2EXT(GL_OP_MUL_EXT, destValue, srcValue[0], srcValue[1]); 
+				case  CVPInstruction::MUL:
+					nglShaderOp2EXT(GL_OP_MUL_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_MUL_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::ADD: 
-					nglShaderOp2EXT(GL_OP_ADD_EXT, destValue, srcValue[0], srcValue[1]); 
+				case  CVPInstruction::ADD:
+					nglShaderOp2EXT(GL_OP_ADD_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_ADD_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::MAD: 
-					nglShaderOp3EXT(GL_OP_MADD_EXT, destValue, srcValue[0], srcValue[1], srcValue[2]); 
+				case  CVPInstruction::MAD:
+					nglShaderOp3EXT(GL_OP_MADD_EXT, destValue, srcValue[0], srcValue[1], srcValue[2]);
 					EVS_INFO("GL_OP_MADD_EXT");
 					++numOp;
 				break;
@@ -753,7 +752,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					for(uint l = 0; l < 4; ++l)
 					{
 						if (writeMask & (1 << l))
-						{						
+						{
 							nglInsertComponentEXT(destValue, firstTempScalar + 1, l);
 							EVS_INFO("Insert component");
 							nlassert(glGetError() == GL_NO_ERROR);
@@ -761,39 +760,39 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					}
 				}
 				break;
-				case  CVPInstruction::DP3: 
+				case  CVPInstruction::DP3:
 					nglShaderOp2EXT(GL_OP_DOT3_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_DOT3_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::DP4: 
-					nglShaderOp2EXT(GL_OP_DOT4_EXT, destValue, srcValue[0], srcValue[1]); 
+				case  CVPInstruction::DP4:
+					nglShaderOp2EXT(GL_OP_DOT4_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_DOT4_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::DST: 
+				case  CVPInstruction::DST:
 					doSwizzle(firstTempRegister, srcValue[0], GL_ONE_EXT, GL_Y_EXT, GL_Z_EXT, GL_ONE_EXT);
 					EVS_INFO("GL_OP_DOT4_EXT");
 					++numOp;
-					doSwizzle(firstTempRegister + 1, srcValue[1], GL_ONE_EXT, GL_Y_EXT, GL_ONE_EXT, GL_W_EXT);					
+					doSwizzle(firstTempRegister + 1, srcValue[1], GL_ONE_EXT, GL_Y_EXT, GL_ONE_EXT, GL_W_EXT);
 					++numSwizzle;
 					nglShaderOp2EXT(GL_OP_MUL_EXT, destValue, firstTempRegister, firstTempRegister + 1);
 					EVS_INFO("GL_OP_MUL_EXT");
 					++numOp;
-				break;					
+				break;
 				case  CVPInstruction::LIT:
 				{
-					uint writeMask = program[k].Dest.WriteMask;					
+					uint writeMask = program[k].Dest.WriteMask;
 					nglExtractComponentEXT(firstTempScalar, srcValue[0], 0); // extract X from the source
 					if (writeMask & 4)
-					{					
+					{
 						nglExtractComponentEXT(firstTempScalar + 1, srcValue[0], 1); // extract Y from the source
 						EVS_INFO("Extract component");
 						++numEC;
 						nglExtractComponentEXT(firstTempScalar + 2, srcValue[0], 3); // extract W from the source
 						EVS_INFO("Extract component");
 						++numEC;
-						// result = X > 0 ? Y^W : 0					
+						// result = X > 0 ? Y^W : 0
 						nglShaderOp2EXT(GL_OP_POWER_EXT, firstTempScalar + 2, firstTempScalar + 1, firstTempScalar + 2);
 						EVS_INFO("GL_OP_POWER_EXT");
 						++numOp;
@@ -808,7 +807,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						EVS_INFO("Insert component");
 						++numIC;
 					}
-					if (writeMask & 2) 
+					if (writeMask & 2)
 					{
 						// clamp N.L to [0, 1]
 						nglShaderOp3EXT(GL_OP_CLAMP_EXT, firstTempScalar, firstTempScalar, cteZero, cteOne);
@@ -819,40 +818,40 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						++numIC;
 					}
 					// set x and w to 1 if they are not masked
-					if (writeMask & (1 + 8)) 
-					{					
-						doSwizzle(destValue, destValue, 
+					if (writeMask & (1 + 8))
+					{
+						doSwizzle(destValue, destValue,
 									  (writeMask & 1) ? GL_ONE_EXT : GL_X_EXT,
 									  GL_Y_EXT,
 									  GL_Z_EXT,
-									  (writeMask & 8) ? GL_ONE_EXT : GL_W_EXT);						
+									  (writeMask & 8) ? GL_ONE_EXT : GL_W_EXT);
 						++numSwizzle;
-					}					
-						 
+					}
+
 				}
 				break;
-				case  CVPInstruction::MIN: 
+				case  CVPInstruction::MIN:
 					nglShaderOp2EXT(GL_OP_MIN_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_MIN_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::MAX: 
+				case  CVPInstruction::MAX:
 					nglShaderOp2EXT(GL_OP_MAX_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_MAX_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::SLT: 
+				case  CVPInstruction::SLT:
 					nglShaderOp2EXT(GL_OP_SET_LT_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_SET_LT_EXT");
 					++numOp;
 				break;
-				case  CVPInstruction::SGE: 
+				case  CVPInstruction::SGE:
 					nglShaderOp2EXT(GL_OP_SET_GE_EXT, destValue, srcValue[0], srcValue[1]);
 					EVS_INFO("GL_OP_SET_GE_EXT");
 					++numOp;
 				break;
 				case  CVPInstruction::EXPP:
-				{			
+				{
 					uint writeMask = program[k].Dest.WriteMask;
 					nlassert(program[k].Src1.Swizzle.isScalar());
 					GLuint compIndex = program[k].Src1.Swizzle.Comp[0];
@@ -860,16 +859,16 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					EVS_INFO("Extract component");
 					++numEC;
 					if (writeMask & 1)
-					{					
+					{
 						nglShaderOp1EXT(GL_OP_FLOOR_EXT, firstTempScalar, firstTempScalar + 2); // (int) W
 						EVS_INFO("GL_OP_FLOOR_EXT");
 						++numOp;
-						nglShaderOp1EXT(GL_OP_EXP_BASE_2_EXT, firstTempScalar, firstTempScalar); // 2 ^ (int) W		
+						nglShaderOp1EXT(GL_OP_EXP_BASE_2_EXT, firstTempScalar, firstTempScalar); // 2 ^ (int) W
 						EVS_INFO("GL_OP_EXP_BASE_2_EXT");
 						++numOp;
 					}
-					if (writeMask & 2) 
-					{					
+					if (writeMask & 2)
+					{
 						nglShaderOp1EXT(GL_OP_FRAC_EXT, firstTempScalar + 1, firstTempScalar + 2); // frac(W)
 						EVS_INFO("GL_OP_FRAC_EXT");
 						++numOp;
@@ -884,7 +883,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 				}
 				break;
 				case  CVPInstruction::LOG:
-				{					
+				{
 					uint writeMask = program[k].Dest.WriteMask;
 					nlassert(program[k].Src1.Swizzle.isScalar());
 					// extract the component we need
@@ -905,12 +904,12 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					for(uint l = 0; l < 4; ++l)
 					{
 						if (writeMask & (1 << l))
-						{						
+						{
 							nglInsertComponentEXT(destValue, firstTempScalar, l);
 							EVS_INFO("Insert component");
 							nlassert(glGetError() == GL_NO_ERROR);
 						}
-					}					
+					}
 				}
 				break;
 				case  CVPInstruction::RCP:
@@ -928,13 +927,13 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 					for(uint l = 0; l < 4; ++l)
 					{
 						if (writeMask & (1 << l))
-						{						
+						{
 							nglInsertComponentEXT(destValue, firstTempScalar + 1, l);
 							EVS_INFO("insert component");
 							++numIC;
 						}
 					}
-				}					
+				}
 				break;
                 default:
                     break;
@@ -943,10 +942,10 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			glError = glGetError();
 			nlassert(glError == GL_NO_ERROR);
 
-				
+
 			// apply write mask if any
 			if (writeMask != 0x0f)
-			{									
+			{
 				if ((destOperand.Type == CVPOperand::OutputRegister && destOperand.Value.OutputRegisterValue != CVPOperand::OFogCoord))
 				{
 					uint &outputMask = componentWritten[outputRegisterIndex];
@@ -955,7 +954,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						|| maskedDestValue == GL_OUTPUT_COLOR0_EXT
 						|| maskedDestValue == GL_OUTPUT_COLOR1_EXT
 					   )
-					{					
+					{
 						// test if this is the last time this output will be written
 						bool found = false;
 						// if this was the last write for this output, must set unfilled component
@@ -975,7 +974,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 						if (found)
 						{
 							if (!outputWritten)
-							{							
+							{
 								// write values
 								doWriteMask(maskedDestValue, destValue,
 												writeMask & 1 ? GL_TRUE : GL_FALSE,
@@ -1005,7 +1004,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 							{
 								uint prevMask = outputMask;
 								uint newMask  = writeMask | outputMask;
-								
+
 								// complete unused entries
 
 								// if primary color is output, then the default color is white
@@ -1018,7 +1017,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 												  newMask & 8 ? GL_W_EXT : GL_ONE_EXT);
 								}
 								else
-								{								
+								{
 									doSwizzle(firstTempRegister, destValue,
 												  newMask & 1 ? GL_X_EXT : GL_ZERO_EXT,
 												  newMask & 2 ? GL_Y_EXT : GL_ZERO_EXT,
@@ -1026,19 +1025,19 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 												  newMask & 8 ? GL_W_EXT : GL_ONE_EXT);
 								}
 								if (!outputWritten)
-								{							
+								{
 									++numWM;
 									    doWriteMask(maskedDestValue, firstTempRegister,
 													prevMask & 1 ? GL_FALSE : GL_TRUE,
 													prevMask & 2 ? GL_FALSE : GL_TRUE,
 													prevMask & 4 ? GL_FALSE : GL_TRUE,
 													prevMask & 8 ? GL_FALSE : GL_TRUE
-												  );									
+												  );
 									++numWM;
 								}
 								outputMask = 0xf;
 							}
-						}										
+						}
 					}
 					else
 					{
@@ -1052,7 +1051,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 							++numWM;
 						}
 					}
-					// complete the mask 
+					// complete the mask
 					outputMask |= writeMask;
 				}
 				else if (destOperand.Type != CVPOperand::OutputRegister)
@@ -1066,19 +1065,19 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 										writeMask & 8 ? GL_TRUE : GL_FALSE);
 						++numWM;
 					}
-				}				
+				}
 			}
 
 			glError = glGetError();
 			nlassert(glError == GL_NO_ERROR);
 		}
 
-		
 
-		// if color have not been written, write with default values		
+
+		// if color have not been written, write with default values
 		if (componentWritten[CVPOperand::OPrimaryColor] == 0)
 		{
-			// we specify vertex coord has input for swizzle, but we don't read any component.. 
+			// we specify vertex coord has input for swizzle, but we don't read any component..
 			doSwizzle(GL_OUTPUT_COLOR0_EXT, _EVSPositionHandle, GL_ZERO_EXT, GL_ZERO_EXT, GL_ZERO_EXT, GL_ONE_EXT);
 			EVS_INFO("Swizzle (Complete primary color)");
 			++numSwizzle;
@@ -1098,9 +1097,9 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			nlassert(componentWritten[CVPOperand::OSecondaryColor] == 0xf);
 		}
-		nlassert(componentWritten[CVPOperand::OHPosition] == 0xf); // should have written all component of position	
+		nlassert(componentWritten[CVPOperand::OHPosition] == 0xf); // should have written all component of position
 
-		glError = glGetError(); 
+		glError = glGetError();
 		nlassert(glError == GL_NO_ERROR);
 
 		// if fog has been written, perform conversion (if there's no ATI driver fix)
@@ -1108,10 +1107,10 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 		{
 			// Well this could be avoided, but we should make 2 cases for each vertex program.. :(
 			doSwizzle(firstTempRegister, _EVSConstantHandle + _EVSNumConstant, GL_X_EXT, GL_X_EXT, GL_X_EXT, GL_X_EXT);
-			doSwizzle(firstTempRegister + 1, _EVSConstantHandle + _EVSNumConstant, GL_Y_EXT, GL_Y_EXT, GL_Y_EXT, GL_Y_EXT);			
+			doSwizzle(firstTempRegister + 1, _EVSConstantHandle + _EVSNumConstant, GL_Y_EXT, GL_Y_EXT, GL_Y_EXT, GL_Y_EXT);
 			nglShaderOp3EXT(GL_OP_MADD_EXT, firstTempRegister + 2, fogTemp, firstTempRegister, firstTempRegister + 1);
 			EVS_INFO("Use MAD for fog conversion");
-			nglExtractComponentEXT(GL_OUTPUT_FOG_EXT, firstTempRegister + 2, 0);			
+			nglExtractComponentEXT(GL_OUTPUT_FOG_EXT, firstTempRegister + 2, 0);
 			EVS_INFO("Extract component to fog");
 		}
 
@@ -1129,11 +1128,11 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 	{
 		nlwarning("Failed to optimize a vertex program with the EXT_vertex_shader extension, this shader will be disabled");
 		return false;
-	}	
+	}
 
 	// see which input registers are used
 	usedInputRegisters = 0;
-	
+
 	uint k, l;
 	// convert each instruction of the vertex program
 	for(k = 0; k < program.size(); ++k)
@@ -1146,21 +1145,21 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 			{
 				usedInputRegisters |= convInputRegisterToVBFlag(op.Value.InputRegisterValue);
 			}
-		}		
+		}
 	}
 
 #ifdef DEBUG_SETUP_EXT_VERTEX_SHADER
-	nlinfo("========================");
-	nlinfo("num Opcode  = %d", numOp);
-	nlinfo("num Indexing = %d", numOpIndex);
-	nlinfo("num Swizzle = %d", numSwizzle);
-	nlinfo("num extract component = %d", numEC);
-	nlinfo("num insert component = %d", numIC);	
-	nlinfo("num write mask = %d", numWM);
+	nlinfo("3D: ========================");
+	nlinfo("3D: num Opcode  = %d", numOp);
+	nlinfo("3D: num Indexing = %d", numOpIndex);
+	nlinfo("3D: num Swizzle = %d", numSwizzle);
+	nlinfo("3D: num extract component = %d", numEC);
+	nlinfo("3D: num insert component = %d", numIC);
+	nlinfo("3D: num write mask = %d", numWM);
 #endif
 
 	return true;
-			
+
 }
 
 //=================================================================================================
@@ -1257,13 +1256,13 @@ static void ARBVertexProgramDumpOperand(const CVPOperand &op, bool destOperand, 
 	switch(op.Type)
 	{
 		case CVPOperand::Variable: out += "R" + NLMISC::toString(op.Value.VariableValue); break;
-		case CVPOperand::Constant: 
+		case CVPOperand::Constant:
 			out += "c[";
 			if (op.Indexed)
 			{
 				out += "A0.x + ";
 			}
-			out += NLMISC::toString(op.Value.ConstantValue) + "]"; 
+			out += NLMISC::toString(op.Value.ConstantValue) + "]";
 		break;
 		case CVPOperand::InputRegister: out += "vertex.attrib[" + NLMISC::toString((uint) op.Value.InputRegisterValue) + "]"; break;
 		case CVPOperand::OutputRegister:
@@ -1295,8 +1294,8 @@ static void ARBVertexProgramDumpInstr(const CVPInstruction &instr, std::string &
 {
 	H_AUTO_OGL(ARBVertexProgramDumpInstr)
 	nlassert(instr.Opcode < CVPInstruction::OpcodeCount);
-	// Special case for EXP with a scalar output argument (y component) -> translate to FRC		
-	out = ARBVertexProgramInstrToName[instr.Opcode];	
+	// Special case for EXP with a scalar output argument (y component) -> translate to FRC
+	out = ARBVertexProgramInstrToName[instr.Opcode];
 	uint nbOp = instr.getNumUsedSrc();
 	std::string destOperand;
 	ARBVertexProgramDumpOperand(instr.Dest, true, destOperand);
@@ -1309,7 +1308,7 @@ static void ARBVertexProgramDumpInstr(const CVPInstruction &instr, std::string &
 		out += srcOperand;
 	}
 	out +="; \n";
-	
+
 }
 
 
@@ -1324,7 +1323,7 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 	std::string code;
 	code = "!!ARBvp1.0\n";
 	// declare temporary registers
-	code += "TEMP ";	
+	code += "TEMP ";
 	const uint NUM_TEMPORARIES = 12;
 	for(uint k = 0; k < NUM_TEMPORARIES; ++k)
 	{
@@ -1347,7 +1346,7 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 			writtenSpecularComponents |= parsedProgram[k].Dest.WriteMask;
 		}
 	}
-	// tmp fix : write unwritten components of specular (seems that glDisable(GL_COLOR_SUM_ARB) does not work in a rare case for me ...)		
+	// tmp fix : write unwritten components of specular (seems that glDisable(GL_COLOR_SUM_ARB) does not work in a rare case for me ...)
 	if (writtenSpecularComponents != 0xf)
 	{
 		// add a new instruction to write 0 in unwritten components
@@ -1356,7 +1355,7 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 		sw.Comp[1] = CVPSwizzle::Y;
 		sw.Comp[2] = CVPSwizzle::Z;
 		sw.Comp[3] = CVPSwizzle::W;
-		
+
 		CVPInstruction vpi;
 		vpi.Opcode = CVPInstruction::ADD;
 		vpi.Dest.WriteMask = 0xf ^ writtenSpecularComponents;
@@ -1374,18 +1373,18 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 		vpi.Src2.Value.InputRegisterValue = CVPOperand::IPosition; // tmp -> chec
 		vpi.Src2.Indexed = false;
 		vpi.Src2.Negate = true;
-		vpi.Src2.Swizzle = sw;		
+		vpi.Src2.Swizzle = sw;
 		//
 		parsedProgram.push_back(vpi);
-	}		
+	}
 	specularWritten = (writtenSpecularComponents != 0);
-		
+
 	for(uint k = 0; k < parsedProgram.size(); ++k)
 	{
 		std::string instr;
 		ARBVertexProgramDumpInstr(parsedProgram[k], instr);
 		code += instr + "\r\n";
-	}			
+	}
 	code += "END\n";
 	//
 	/*
@@ -1417,7 +1416,7 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 			const char *lineStart = code.c_str();
 			for(uint k = 0; k < (uint) position; ++k)
 			{
-				if (code[k] == '\n') 
+				if (code[k] == '\n')
 				{
 					lineStart = code.c_str() + k;
 					++line;
@@ -1443,7 +1442,7 @@ bool CDriverGL::setupARBVertexProgram (const CVPParser::TProgram &inParsedProgra
 		nlassert(0);
 		return false;
 	}
-	return true;	
+	return true;
 }
 
 
@@ -1454,7 +1453,7 @@ bool CDriverGL::activeARBVertexProgram (CVertexProgram *program)
 	H_AUTO_OGL(CDriverGL_activeARBVertexProgram)
 	// Setup or unsetup ?
 	if (program)
-	{		
+	{
 		// Driver info
 		CVertexProgamDrvInfosGL *drvInfo;
 
@@ -1473,7 +1472,7 @@ bool CDriverGL::activeARBVertexProgram (CVertexProgram *program)
 					nlerror(errorOutput.c_str());
 				#endif
 				return false;
-			}			
+			}
 			// Insert into driver list. (so it is deleted when driver is deleted).
 			ItVtxPrgDrvInfoPtrList	it= _VtxPrgDrvInfos.insert(_VtxPrgDrvInfos.end(), NULL);
 
@@ -1488,7 +1487,7 @@ bool CDriverGL::activeARBVertexProgram (CVertexProgram *program)
 				program->_DrvInfo = NULL;
 				_VtxPrgDrvInfos.erase(it);
 				return false;
-			}			
+			}
 		}
 		else
 		{
@@ -1505,14 +1504,14 @@ bool CDriverGL::activeARBVertexProgram (CVertexProgram *program)
 		else
 		{
 			glDisable( GL_COLOR_SUM_ARB ); // no specular written
-		}		
+		}
 		_LastSetuppedVP = program;
 	}
 	else
-	{		
-		glDisable( GL_VERTEX_PROGRAM_ARB );		
+	{
+		glDisable( GL_VERTEX_PROGRAM_ARB );
 		glDisable( GL_COLOR_SUM_ARB );
-		_VertexProgramEnabled = false;		
+		_VertexProgramEnabled = false;
 	}
 	return true;
 }
@@ -1524,7 +1523,7 @@ bool CDriverGL::activeEXTVertexShader (CVertexProgram *program)
 	H_AUTO_OGL(CDriverGL_activeEXTVertexShader)
 	// Setup or unsetup ?
 	if (program)
-	{		
+	{
 		// Driver info
 		CVertexProgamDrvInfosGL *drvInfo;
 
@@ -1545,7 +1544,7 @@ bool CDriverGL::activeEXTVertexShader (CVertexProgram *program)
 				return false;
 			}
 
-			/* 
+			/*
 			FILE *f = fopen("c:\\test.txt", "wb");
 			if (f)
 			{
@@ -1584,11 +1583,11 @@ bool CDriverGL::activeEXTVertexShader (CVertexProgram *program)
 		_LastSetuppedVP = program;
 	}
 	else
-	{				
-		glDisable( GL_VERTEX_SHADER_EXT );				
-		_VertexProgramEnabled = false;		
+	{
+		glDisable( GL_VERTEX_SHADER_EXT );
+		_VertexProgramEnabled = false;
 	}
-	return true;	
+	return true;
 }
 
 // ***************************************************************************
@@ -1606,7 +1605,7 @@ bool CDriverGL::activeVertexProgram (CVertexProgram *program)
 	}
 	else if (_Extensions.EXTVertexShader)
 	{
-		return activeEXTVertexShader(program);		
+		return activeEXTVertexShader(program);
 	}
 
 	// Can't do anything
@@ -1633,7 +1632,7 @@ void CDriverGL::setConstant (uint index, float f0, float f1, float f2, float f3)
 	{
 		float datas[] = { f0, f1, f2, f3 };
 		nglSetInvariantEXT(_EVSConstantHandle + index, GL_FLOAT, datas);
-	}		 
+	}
 }
 
 
@@ -1669,7 +1668,7 @@ void CDriverGL::setConstant (uint index, const NLMISC::CVector& value)
 	if (_Extensions.NVVertexProgram)
 	{
 		// Setup constant
-		nglProgramParameter4fNV (GL_VERTEX_PROGRAM_NV, index, value.x, value.y, value.z, 0);	
+		nglProgramParameter4fNV (GL_VERTEX_PROGRAM_NV, index, value.x, value.y, value.z, 0);
 	}
 	else if (_Extensions.ARBVertexProgram)
 	{
@@ -1718,17 +1717,17 @@ void	CDriverGL::setConstant (uint index, uint num, const float *src)
 	else if (_Extensions.ARBVertexProgram)
 	{
 		for(uint k = 0; k < num; ++k)
-		{					
+		{
 			nglProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, index + k, src + 4 * k);
 		}
 	}
 	else if (_Extensions.EXTVertexShader)
 	{
 		for(uint k = 0; k < num; ++k)
-		{					
+		{
 			nglSetInvariantEXT(_EVSConstantHandle + index + k, GL_FLOAT, (void *) (src + 4 * k));
 		}
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -1743,14 +1742,14 @@ void	CDriverGL::setConstant (uint index, uint num, const double *src)
 	else if (_Extensions.ARBVertexProgram)
 	{
 		for(uint k = 0; k < num; ++k)
-		{					
+		{
 			nglProgramEnvParameter4dvARB(GL_VERTEX_PROGRAM_ARB, index + k, src + 4 * k);
 		}
 	}
 	else if (_Extensions.EXTVertexShader)
 	{
 		for(uint k = 0; k < num; ++k)
-		{					
+		{
 			nglSetInvariantEXT(_EVSConstantHandle + index + k, GL_DOUBLE, (void *) (src + 4 * k));
 		}
 	}
@@ -1796,8 +1795,8 @@ void CDriverGL::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver:
 	else
 	{
 		// First, ensure that the render setup is correctly setuped.
-		refreshRenderSetup();		
-		CMatrix mat;		
+		refreshRenderSetup();
+		CMatrix mat;
 		switch (matrix)
 		{
 			case IDriver::ModelView:
@@ -1810,19 +1809,19 @@ void CDriverGL::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver:
 				}
 			break;
 			case IDriver::ModelViewProjection:
-				refreshProjMatrixFromGL();				
+				refreshProjMatrixFromGL();
 				mat = _GLProjMat * _ModelViewMatrix;
 			break;
             default:
                 break;
 		}
-		
+
 		switch(transform)
 		{
 			case IDriver::Identity: break;
 			case IDriver::Inverse:
 				mat.invert();
-			break;		
+			break;
 			case IDriver::Transpose:
 				mat.transpose();
 			break;
@@ -1837,7 +1836,7 @@ void CDriverGL::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver:
 		float matDatas[16];
 		mat.get(matDatas);
 		if (_Extensions.ARBVertexProgram)
-		{		
+		{
 			nglProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, index, matDatas);
 			nglProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, index + 1, matDatas + 4);
 			nglProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, index + 2, matDatas + 8);
@@ -1850,7 +1849,7 @@ void CDriverGL::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver:
 			nglSetInvariantEXT(_EVSConstantHandle + index + 2, GL_FLOAT, matDatas + 8);
 			nglSetInvariantEXT(_EVSConstantHandle + index + 3, GL_FLOAT, matDatas + 12);
 		}
-	}			 
+	}
 }
 
 // ***************************************************************************

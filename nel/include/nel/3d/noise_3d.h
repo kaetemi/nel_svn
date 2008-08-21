@@ -28,10 +28,10 @@
 
 // ------------------------------------------------------------------------------------------------
 
-#include "material.h"
-#include "texture.h"
-#include "texture_mem.h"
-#include "vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/texture_mem.h"
+#include "nel/3d/vertex_buffer.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/geom_ext.h"
 

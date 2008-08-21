@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/point_light_influence.h"
-#include "patch.h"
-#include "landscape_collision_grid.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/landscape_collision_grid.h"
 
 
 namespace NL3D 

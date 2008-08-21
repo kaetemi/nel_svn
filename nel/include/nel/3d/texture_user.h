@@ -28,11 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_texture.h"
-#include "texture.h"
-#include "texture_file.h"
-#include "texture_mem.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/texture_mem.h"
 
-#define NL3D_MEM_TEXTURE						NL_ALLOC_CONTEXT( 3dTextu )
 
 namespace NL3D 
 {
@@ -65,7 +64,6 @@ public:
 	/// This ctpor takes a freshly created texture!! UTexture will owns this texture (via smartptr).
 	CTextureUser(ITexture	*text)
 	{
-		NL3D_MEM_TEXTURE
 		nlassert(text);
 		_Texture=text;
 
@@ -77,88 +75,72 @@ public:
 	}
 	virtual ~CTextureUser()
 	{
-		NL3D_MEM_TEXTURE
 		// texture auto deleted.
 	}
 	// @}
 
 	virtual	void			setWrapS(TWrapMode mode) 
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->setWrapS((ITexture::TWrapMode)(uint32)mode);
 	}
 	virtual	void			setWrapT(TWrapMode mode) 
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->setWrapT((ITexture::TWrapMode)(uint32)mode);
 	}
 	virtual	TWrapMode		getWrapS() const 
 	{
-		NL3D_MEM_TEXTURE
 		return (UTexture::TWrapMode)(uint32)_Texture->getWrapS();
 	}
 	virtual	TWrapMode		getWrapT() const 
 	{
-		NL3D_MEM_TEXTURE
 		return (UTexture::TWrapMode)(uint32)_Texture->getWrapT();
 	}
 	virtual	void			setUploadFormat(TUploadFormat pf) 
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->setUploadFormat((ITexture::TUploadFormat)(uint32)pf);
 	}
 	virtual	TUploadFormat	getUploadFormat() const 
 	{
-		NL3D_MEM_TEXTURE
 		return (UTexture::TUploadFormat)(uint32)_Texture->getUploadFormat();
 	}
 	virtual	void			setFilterMode(TMagFilter magf, TMinFilter minf) 
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->setFilterMode((ITexture::TMagFilter)(uint32)magf, (ITexture::TMinFilter)(uint32)minf);
 	}
 	virtual	TMagFilter		getMagFilter() const 
 	{
-		NL3D_MEM_TEXTURE
 		return (UTexture::TMagFilter)(uint32)_Texture->getMagFilter();
 	}
 	virtual	TMinFilter		getMinFilter() const 
 	{
-		NL3D_MEM_TEXTURE
 		return (UTexture::TMinFilter)(uint32)_Texture->getMinFilter();
 	}
 	virtual	bool			mipMapOff() const 
 	{
-		NL3D_MEM_TEXTURE
 		return _Texture->mipMapOff();
 	}
 	virtual	bool			mipMapOn() const 
 	{
-		NL3D_MEM_TEXTURE
 		return _Texture->mipMapOn();
 	}
 	virtual	NLMISC::CRGBA	getPixelColor(sint32 x, sint32 y) const
 	{
-		NL3D_MEM_TEXTURE
 		return _Texture->getPixelColor(x,y);
 	}
 	virtual	void setReleasable(bool bReleasable)
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->setReleasable(bReleasable);
 	}
 
 	/// Accessor for UMaterial imp.
 	ITexture*				getITexture() 
 	{
-		NL3D_MEM_TEXTURE
 		return _Texture;
 	}
 
 	// generate this texture datas
 	virtual CBitmap			*generateDatas()
 	{
-		NL3D_MEM_TEXTURE
 		if (_Texture->isTextureCube()) return NULL;
 		_Texture->generate();
 		return _Texture;
@@ -167,7 +149,6 @@ public:
 	// release this texture datas
 	virtual void			releaseDatas()
 	{
-		NL3D_MEM_TEXTURE
 		_Texture->release();
 	}
 };

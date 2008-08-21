@@ -30,7 +30,7 @@
 #include "nel/misc/noise_value.h"
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/matrix.h"
-#include "vegetable_uv8.h"
+#include "nel/3d/vegetable_uv8.h"
 
 
 namespace NL3D 

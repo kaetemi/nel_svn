@@ -25,7 +25,7 @@
 #define NL_TEXTURE_BLOOM_H
 
 #include "nel/misc/types_nl.h"
-#include "texture_blank.h"
+#include "nel/3d/texture_blank.h"
 
 
 namespace NL3D {

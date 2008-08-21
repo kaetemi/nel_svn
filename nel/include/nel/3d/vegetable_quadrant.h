@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
-#include "vegetable_def.h"
+#include "nel/3d/vegetable_def.h"
 
 
 namespace NL3D 

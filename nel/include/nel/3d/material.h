@@ -30,8 +30,8 @@
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/rgba.h"
 #include "nel/misc/matrix.h"
-#include "texture.h"
-#include "shader.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/shader.h"
 
 #include <memory>
 
@@ -515,7 +515,6 @@ public:
 	void					initLighted();
 	// @}
 
-	// \todo mb Clean this flag
 	bool					getStainedGlassWindow() { return _StainedGlassWindow; }
 	void					setStainedGlassWindow(bool val) { _StainedGlassWindow = val; }
 	
@@ -534,7 +533,6 @@ public:
 
 	/** test if material a driver supports rendering of that material
 	  * \param  forceBaseCaps When true, the driver is considered to have the most basic required caps (2 stages hardwares, no pixelShader, support for constant color blend & multiply-add texture operator), so that any fancy material will fail the test.
-	  * \todo allowing the user to specify the caps he wants to test against
 	  */
 	bool			isSupportedByDriver(IDriver &drv, bool forceBaseCaps) const;
 
@@ -695,7 +693,7 @@ private:
 	float					_Shininess;
 	float					_AlphaTestThreshold;
 	uint32					_Touched;
-	bool					_StainedGlassWindow; // \todo mb : clean this flag (add a CMaterialBuil class)
+	bool					_StainedGlassWindow;
 	// For each texture (8), the TexGen Mode.
 	uint16					_TexCoordGenMode;
 	struct	CUserTexMat

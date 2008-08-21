@@ -27,12 +27,12 @@
 #define NL_SHADOW_MAP_MANAGER_H
 
 #include "nel/misc/types_nl.h"
-#include "shadow_map.h"
+#include "nel/3d/shadow_map.h"
 #include "nel/misc/types_nl.h"
-#include "quad_grid.h"
-#include "vertex_buffer.h"
-#include "material.h"
-#include "texture.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture.h"
 
 
 namespace NL3D {

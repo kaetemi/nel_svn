@@ -72,8 +72,6 @@ uint32		CFontGenerator::_FontGeneratorCounterUID = 1;
 
 const char *CFontGenerator::getFT2Error(FT_Error fte)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	static char ukn[1024];
 
 	for (uint32 i = 0; ft_errors[i].err_code != 0 || ft_errors[i].err_msg != 0; i++)
@@ -92,8 +90,6 @@ const char *CFontGenerator::getFT2Error(FT_Error fte)
  */
 CFontGenerator::CFontGenerator (const std::string &fontFileName, const std::string &fontExFileName)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	_UID = _FontGeneratorCounterUID;
 	_FontGeneratorCounterUID++;
 	_FontFileName = fontFileName;
@@ -145,8 +141,6 @@ CFontGenerator::~CFontGenerator ()
 
 void CFontGenerator::getSizes (ucchar c, uint32 size, uint32 &width, uint32 &height)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	FT_Error error;
 
 	error = FT_Set_Pixel_Sizes (_Face, size, size);
@@ -178,8 +172,6 @@ void CFontGenerator::getSizes (ucchar c, uint32 size, uint32 &width, uint32 &hei
 
 uint8 *CFontGenerator::getBitmap (ucchar c, uint32 size, uint32 &width, uint32 &height, uint32 &pitch, sint32 &left, sint32 &top, sint32 &advx, uint32 &glyphIndex)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	FT_Error error;
 
 	error = FT_Set_Pixel_Sizes (_Face, size, size);
@@ -241,8 +233,6 @@ uint8 *CFontGenerator::getBitmap (ucchar c, uint32 size, uint32 &width, uint32 &
 
 void CFontGenerator::getKerning (ucchar left, ucchar right, sint32 &kernx)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	if (!FT_HAS_KERNING(_Face))
 	{
 		kernx = 0;
@@ -263,8 +253,6 @@ void CFontGenerator::getKerning (ucchar left, ucchar right, sint32 &kernx)
 
 uint32	 CFontGenerator::getCharIndex (ucchar c)
 {
-	NL_ALLOC_CONTEXT (FreeTyp);
-
 	uint32 ret = FT_Get_Char_Index(_Face, c);
 
 	if (ret == 0)
@@ -280,6 +268,7 @@ uint32	 CFontGenerator::getCharIndex (ucchar c)
 
 #else // NL_DONT_USE_EXTERNAL_CODE
 
+#define NOMINMAX
 #include <windows.h>
 
 using namespace NLMISC;

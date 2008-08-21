@@ -28,15 +28,15 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/class_registry.h"
-#include "ps_particle_basic.h"
-#include "ps_attrib.h"
-#include "ps_plane_basis.h"
-#include "vertex_buffer.h"
-#include "material.h"
-#include "index_buffer.h"
-#include "shape.h"
-#include "mesh.h"
-#include "particle_system.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/ps_attrib.h"
+#include "nel/3d/ps_plane_basis.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/particle_system.h"
 
 
 #include <string>

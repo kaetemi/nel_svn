@@ -27,12 +27,12 @@
 #define NL_MESH_BASE_H
 
 #include "nel/misc/types_nl.h"
-#include "shape.h"
-#include "driver.h"
-#include "material.h"
-#include "animated_material.h"
-#include "animated_morph.h"
-#include "ray_mesh.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/material.h"
+#include "nel/3d/animated_material.h"
+#include "nel/3d/animated_morph.h"
+#include "nel/3d/ray_mesh.h"
 #include <set>
 #include <vector>
 

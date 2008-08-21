@@ -45,7 +45,7 @@ void computeGradient(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbS
 	float alpha; 
 	
 	NLMISC::CRGBA *dest = &grad[0];
-	#ifdef NL_OS_WINDOWS	
+#ifdef NL_OS_WINDOWS	
 	float stepX127 = 127.f * step;
 	if (NLMISC::CSystemInfo::hasMMX())
 	{
@@ -86,7 +86,7 @@ void computeGradient(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbS
 		}	
 	}
 	else
-	#endif
+#endif
 	{	
 		// copy the tab performing linear interpolation between values given in parameter
 		for (uint32 k = 0; k  < (numValues - 1); ++k)

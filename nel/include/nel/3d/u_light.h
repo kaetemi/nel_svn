@@ -62,6 +62,8 @@ public:
 	 */
 	static	ULight	*createLight ();
 
+	virtual ~ULight() {}
+
 	/// \name Quick setup.
 	//@{
 

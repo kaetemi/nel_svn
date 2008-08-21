@@ -29,13 +29,13 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/plane.h"
 #include "nel/misc/contiguous_block_allocator.h"
-#include "transform_shape.h"
-#include "particle_system.h"
-#include "particle_system_manager.h"
-#include "clip_trav.h"
-#include "anim_detail_trav.h"
-#include "load_balancing_trav.h"
-#include "scene.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_manager.h"
+#include "nel/3d/clip_trav.h"
+#include "nel/3d/anim_detail_trav.h"
+#include "nel/3d/load_balancing_trav.h"
+#include "nel/3d/scene.h"
 
 // tmp
 #include "nel/misc/hierarchical_timer.h"
@@ -116,6 +116,7 @@ public:
 		/// interface for object that observe this model. They will be notified when it becomes invalid
 		struct IPSModelObserver
 		{
+			virtual ~IPSModelObserver() {}
 			/// called when a system has been invalidated
 			virtual void invalidPS(CParticleSystemModel *psm) = 0;
 		};

@@ -52,7 +52,6 @@ H_AUTO_DECL( NL3D_UI_Animation )
 
 CAnimation::CAnimation() : _BeginTimeTouched(true), _EndTimeTouched(true), _AnimLoopTouched(true)
 {	
-	NL3D_MEM_ANIMATION
 	_MinEndTime = -FLT_MAX;
 	_TrackSamplePack= NULL;
 	_AnimationSetOwner= NULL;
@@ -62,7 +61,6 @@ CAnimation::CAnimation() : _BeginTimeTouched(true), _EndTimeTouched(true), _Anim
 
 CAnimation::~CAnimation ()
 {
-	NL3D_MEM_ANIMATION
 	// Delete all the pointers in the array
 	for (uint i=0; i<_TrackVector.size(); i++)
 		// Delete
@@ -81,7 +79,6 @@ void CAnimation::addTrack (const std::string& name, ITrack* pChannel)
 	// must not already be HeaderOptimized
 	nlassert(_IdByChannelId.empty());
 	
-	NL3D_MEM_ANIMATION
 	// Add an entry in the map
 	_IdByName.insert (TMapStringUInt::value_type (name, (uint32)_TrackVector.size()));
 
@@ -100,7 +97,6 @@ void CAnimation::serial (NLMISC::IStream& f)
 	// cannot save if anim header compressed
 	nlassert(_IdByChannelId.empty());
 
-	NL3D_MEM_ANIMATION
 	// Serial a header
 	f.serialCheck ((uint32)'_LEN');
 	f.serialCheck ((uint32)'MINA');
@@ -137,7 +133,6 @@ void CAnimation::serial (NLMISC::IStream& f)
 // ***************************************************************************
 uint CAnimation::getIdTrackByName (const std::string& name) const
 {
-	NL3D_MEM_ANIMATION
 		
 	// if not be HeaderOptimized
 	if (_IdByChannelId.empty())
@@ -168,7 +163,6 @@ uint CAnimation::getIdTrackByName (const std::string& name) const
 // ***************************************************************************
 void CAnimation::getTrackNames (std::set<std::string>& setString) const
 {
-	NL3D_MEM_ANIMATION
 		
 	// if not be HeaderOptimized
 	if (_IdByChannelId.empty())
@@ -199,7 +193,6 @@ void CAnimation::getTrackNames (std::set<std::string>& setString) const
 // ***************************************************************************
 TAnimationTime CAnimation::getBeginTime () const
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	if (_BeginTimeTouched)
@@ -231,7 +224,6 @@ TAnimationTime CAnimation::getBeginTime () const
 
 TAnimationTime CAnimation::getEndTime () const
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	if (_EndTimeTouched)
@@ -266,7 +258,6 @@ TAnimationTime CAnimation::getEndTime () const
 // ***************************************************************************
 bool			CAnimation::allTrackLoop() const
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	if(_AnimLoopTouched)
@@ -296,7 +287,6 @@ bool			CAnimation::allTrackLoop() const
 
 UTrack* CAnimation::getTrackByName (const char* name)
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	// Get track id
@@ -315,7 +305,6 @@ UTrack* CAnimation::getTrackByName (const char* name)
 
 void CAnimation::releaseTrack (UTrack* track)
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	// Nothing to do
@@ -325,7 +314,6 @@ void CAnimation::releaseTrack (UTrack* track)
 
 void CAnimation::setMinEndTime (TAnimationTime minEndTime)
 {
-	NL3D_MEM_ANIMATION
 	_MinEndTime = minEndTime;
 }
 
@@ -333,7 +321,6 @@ void CAnimation::setMinEndTime (TAnimationTime minEndTime)
 
 UAnimation* UAnimation::createAnimation (const char* sPath)
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	// Allocate an animation
@@ -360,7 +347,6 @@ UAnimation* UAnimation::createAnimation (const char* sPath)
 
 void UAnimation::releaseAnimation (UAnimation* animation)
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 
 	// Cast the pointer
@@ -373,7 +359,6 @@ void UAnimation::releaseAnimation (UAnimation* animation)
 // ***************************************************************************
 void	CAnimation::applySampleDivisor(uint sampleDivisor)
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 	
 	for(uint i=0;i<_TrackVector.size();i++)
@@ -388,7 +373,6 @@ void	CAnimation::applySampleDivisor(uint sampleDivisor)
 // ***************************************************************************
 void	CAnimation::applyTrackQuatHeaderCompression()
 {
-	NL3D_MEM_ANIMATION
 	NL3D_HAUTO_UI_ANIMATION;
 	
 	// if the header compression has already been donne, no op

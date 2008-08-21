@@ -3,7 +3,6 @@
  *
  * $Id: driver_direct3d_texture.cpp,v 1.23 2006/07/12 14:37:22 boucher Exp $
  *
- * \todo manage better the init/release system (if a throw occurs in the init, we must release correctly the driver)
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -756,7 +755,6 @@ bool CDriverD3D::setupTextureEx (ITexture& tex, bool bUpload, bool &bAllUploaded
 		}
 		// b. Load part of the texture case.
 		//==================================
-		// \todo yoyo: TODO_DXTC
 		// Replace parts of a compressed image. Maybe don't work with the actual system of invalidateRect()...
 		else if (mustLoadPart && !d3dtext->SrcCompressed)
 		{
@@ -1031,7 +1029,7 @@ void CDriverD3D::swapTextureHandle(ITexture &tex0, ITexture &tex1)
 	setupTexture(tex1);
 
 	// avoid any problem, disable all textures
-	for(sint stage=0; stage<inlGetNumTextStages() ; stage++)
+	for(uint stage=0; stage<inlGetNumTextStages() ; stage++)
 	{
 		setTexture (stage, (LPDIRECT3DBASETEXTURE9)NULL);
 	}

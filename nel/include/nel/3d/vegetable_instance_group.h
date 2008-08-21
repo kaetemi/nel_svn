@@ -30,12 +30,12 @@
 #include "nel/misc/object_vector.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/rgba.h"
-#include "tess_list.h"
-#include "vegetable_instance_group.h"
-#include "vegetable_def.h"
-#include "vegetable_light_ex.h"
-#include "vegetable_uv8.h"
-#include "index_buffer.h"
+#include "nel/3d/tess_list.h"
+#include "nel/3d/vegetable_instance_group.h"
+#include "nel/3d/vegetable_def.h"
+#include "nel/3d/vegetable_light_ex.h"
+#include "nel/3d/vegetable_uv8.h"
+#include "nel/3d/index_buffer.h"
 #include <vector>
 
 

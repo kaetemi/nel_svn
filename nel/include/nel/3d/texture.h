@@ -115,13 +115,7 @@ public:
 class ITexture : public CBitmap, public NLMISC::CRefCount, public NLMISC::IStreamable
 {
 public:		
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-		#undef new
-	#endif
 	NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR // for fast alloc
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-		#define new NL_NEW
-	#endif	
 	// Those enums MUST be the same than in UTexture!!
 	enum	TWrapMode
 	{

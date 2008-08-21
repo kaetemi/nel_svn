@@ -27,9 +27,9 @@
 #define NL_SEG_REMANENCE_H
 
 #include "nel/misc/vector.h"
-#include "transform_shape.h"
-#include "transform.h"
-#include "animated_material.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/animated_material.h"
 
 #include <deque>
 

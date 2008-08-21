@@ -27,8 +27,8 @@
 
 #include "nel/misc/smart_ptr.h"
 //
-#include "texture_cube.h"
-#include "texture_blank.h"
+#include "nel/3d/texture_cube.h"
+#include "nel/3d/texture_blank.h"
 
 
 namespace NL3D

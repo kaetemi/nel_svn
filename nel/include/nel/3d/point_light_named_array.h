@@ -27,7 +27,7 @@
 #define NL_POINT_LIGHT_NAMED_ARRAY_H
 
 #include "nel/misc/types_nl.h"
-#include "point_light_named.h"
+#include "nel/3d/point_light_named.h"
 
 
 namespace NL3D {

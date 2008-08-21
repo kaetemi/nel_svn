@@ -26,8 +26,8 @@
 #define NL_PS_LIGHT_H
 
 
-#include "ps_located.h"
-#include "ps_attrib.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_attrib.h"
 
 namespace NL3D
 {

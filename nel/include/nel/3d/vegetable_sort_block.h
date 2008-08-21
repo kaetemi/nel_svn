@@ -29,9 +29,9 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
 #include "nel/misc/object_vector.h"
-#include "tess_list.h"
-#include "index_buffer.h"
-#include "vegetable_instance_group.h"
+#include "nel/3d/tess_list.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/vegetable_instance_group.h"
 
 
 namespace NL3D 

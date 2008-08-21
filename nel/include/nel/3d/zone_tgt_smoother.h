@@ -27,7 +27,7 @@
 #define NL_ZONE_TGT_SMOOTHER_H
 
 #include "nel/misc/types_nl.h"
-#include "zone.h"
+#include "nel/3d/zone.h"
 #include "nel/misc/common.h"
 #include <map>
 #include <list>

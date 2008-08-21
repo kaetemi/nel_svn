@@ -32,7 +32,7 @@
 #include "nel/misc/class_id.h"
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/polygon.h"
-#include "track.h"
+#include "nel/3d/track.h"
 #include "nel/3d/animation_time.h"
 
 
@@ -41,9 +41,9 @@
 
 
 
-#include "shape.h"
-#include "vertex_buffer.h"
-#include "driver.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/driver.h"
 
 #include <memory>
 

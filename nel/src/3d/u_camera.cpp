@@ -28,7 +28,6 @@
 #include "nel/3d/u_camera.h"
 #include "nel/3d/camera.h"
 
-#define NL3D_MEM_CAMERA					NL_ALLOC_CONTEXT( 3dCam )
 
 namespace NL3D 
 {
@@ -42,7 +41,6 @@ const float		UCamera::DefLzFar=1000.0f;
 
 void UCamera::setFrustum(const CFrustum &f)
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->setFrustum(f);
 }
@@ -51,7 +49,6 @@ void UCamera::setFrustum(const CFrustum &f)
 
 const CFrustum &UCamera::getFrustum() const 
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	return object->getFrustum();
 }
@@ -60,7 +57,6 @@ const CFrustum &UCamera::getFrustum() const
 
 void UCamera::setFrustum(float left, float right, float bottom, float top, float znear, float zfar, bool perspective)
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->setFrustum(left, right, bottom, top, znear, zfar, perspective);
 }
@@ -69,7 +65,6 @@ void UCamera::setFrustum(float left, float right, float bottom, float top, float
 
 void UCamera::setFrustum(float width, float height, float znear, float zfar, bool perspective)
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->setFrustum(width, height, znear, zfar, perspective);
 }
@@ -78,7 +73,6 @@ void UCamera::setFrustum(float width, float height, float znear, float zfar, boo
 
 void UCamera::getFrustum(float &left, float &right, float &bottom, float &top, float &znear, float &zfar) const 
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->getFrustum(left, right, bottom, top, znear, zfar);
 }
@@ -87,7 +81,6 @@ void UCamera::getFrustum(float &left, float &right, float &bottom, float &top, f
 
 bool UCamera::isOrtho() const 
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	return object->isOrtho();
 }
@@ -96,7 +89,6 @@ bool UCamera::isOrtho() const
 
 bool UCamera::isPerspective() const 
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	return object->isPerspective();
 }
@@ -105,7 +97,6 @@ bool UCamera::isPerspective() const
 
 void UCamera::setPerspective(float fov, float aspectRatio, float znear, float zfar) 
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->setPerspective(fov, aspectRatio, znear, zfar);
 }
@@ -114,7 +105,6 @@ void UCamera::setPerspective(float fov, float aspectRatio, float znear, float zf
 
 void UCamera::buildCameraPyramid(std::vector<NLMISC::CPlane>	&pyramid, bool useWorldMatrix)
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->buildCameraPyramid(pyramid, useWorldMatrix);
 }
@@ -122,7 +112,6 @@ void UCamera::buildCameraPyramid(std::vector<NLMISC::CPlane>	&pyramid, bool useW
 // ***************************************************************************
 void UCamera::buildCameraPyramidCorners(std::vector<NLMISC::CVector>	&pyramidCorners, bool useWorldMatrix)
 {
-	NL3D_MEM_CAMERA
 	CCamera	*object = getObjectPtr();
 	object->buildCameraPyramidCorners(pyramidCorners, useWorldMatrix);
 }

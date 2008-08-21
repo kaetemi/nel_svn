@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
-#include "index_buffer.h"
-#include "driver.h"
-#include "vertex_buffer.h"
-#include "material.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
 #include "nel/3d/u_text_context.h"
 #include <vector>
 #include <limits>

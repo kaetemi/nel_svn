@@ -27,8 +27,8 @@
 #define NL_MESHVP_WIND_TREE_H
 
 #include "nel/misc/types_nl.h"
-#include "mesh_vertex_program.h"
-#include "vertex_program.h"
+#include "nel/3d/mesh_vertex_program.h"
+#include "nel/3d/vertex_program.h"
 
 
 namespace NL3D {

@@ -26,12 +26,12 @@
 #ifndef NL_SHAPE_BANK_H
 #define NL_SHAPE_BANK_H
 
-#include "shape.h"
+#include "nel/3d/shape.h"
 #include "nel/misc/smart_ptr.h"
 #include <map>
 #include <list>
 
-#include "async_file_manager_3d.h"
+#include "nel/3d/async_file_manager_3d.h"
 
 namespace NLMISC
 {

@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/common.h"
-#include "mesh.h"
+#include "nel/3d/mesh.h"
 
 
 namespace NL3D 

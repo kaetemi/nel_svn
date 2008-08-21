@@ -27,9 +27,9 @@
 #define NL_QUAD_GRID_CLIP_CLUSTER_H
 
 #include "nel/misc/types_nl.h"
-#include "clip_trav.h"
+#include "nel/3d/clip_trav.h"
 #include "nel/misc/aabbox.h"
-#include "fast_ptr_list.h"
+#include "nel/3d/fast_ptr_list.h"
 
 
 namespace NL3D 

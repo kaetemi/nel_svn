@@ -42,8 +42,6 @@ class IStream;
 struct EStream;
 }
 
-#define NL3D_MEM_ANIMATION						NL_ALLOC_CONTEXT( 3dAnim )
-
 namespace NL3D 
 {
 
@@ -98,7 +96,6 @@ public:
 	  */
 	const ITrack* getTrack (uint trackId) const
 	{
-		NL3D_MEM_ANIMATION
 		// Get the trackId-th track pointer
 		return _TrackVector[trackId];
 	}
@@ -109,7 +106,6 @@ public:
 	  */
 	ITrack* getTrack (uint trackId)
 	{
-		NL3D_MEM_ANIMATION
 		// Get the trackId-th track pointer
 		return _TrackVector[trackId];
 	}

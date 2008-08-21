@@ -31,14 +31,14 @@
   */
 
 
-#include "ps_dot.h"
-#include "ps_face_look_at.h"
-#include "ps_fan_light.h"
-#include "ps_tail_dot.h"
-#include "ps_ribbon.h"
-#include "ps_ribbon_look_at.h"
-#include "ps_face.h"
-#include "ps_shockwave.h"
+#include "nel/3d/ps_dot.h"
+#include "nel/3d/ps_face_look_at.h"
+#include "nel/3d/ps_fan_light.h"
+#include "nel/3d/ps_tail_dot.h"
+#include "nel/3d/ps_ribbon.h"
+#include "nel/3d/ps_ribbon_look_at.h"
+#include "nel/3d/ps_face.h"
+#include "nel/3d/ps_shockwave.h"
 
 
 #endif // NL_PS_PARTICLE_H

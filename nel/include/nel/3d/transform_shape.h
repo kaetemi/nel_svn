@@ -28,11 +28,11 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/matrix.h"
-#include "transform.h"
-#include "shape.h"
-#include "load_balancing_trav.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/load_balancing_trav.h"
 #include <vector>
-#include "fast_ptr_list.h"
+#include "nel/3d/fast_ptr_list.h"
 
 
 namespace NL3D 

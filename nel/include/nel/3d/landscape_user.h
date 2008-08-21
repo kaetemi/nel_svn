@@ -28,11 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_landscape.h"
-#include "landscape_model.h"
-#include "zone_manager.h"
-#include "scene.h"
+#include "nel/3d/landscape_model.h"
+#include "nel/3d/zone_manager.h"
+#include "nel/3d/scene.h"
 
-#define NL3D_MEM_LANDSCAPE						NL_ALLOC_CONTEXT( 3dLand )
 
 namespace NL3D
 {
@@ -61,7 +60,6 @@ public:
 	// @{
 	CLandscapeUser(CScene *scene)
 	{
-		NL3D_MEM_LANDSCAPE
 		nlassert(scene);
 		_Scene= scene;
 		_Landscape= (CLandscapeModel*)_Scene->createModel(LandscapeModelId);
@@ -147,12 +145,10 @@ public:
 
 	virtual	void		show()
 	{
-		NL3D_MEM_LANDSCAPE
 		_Landscape->show();
 	}
 	virtual	void		hide()
 	{
-		NL3D_MEM_LANDSCAPE
 		_Landscape->hide();
 	}
 
@@ -223,7 +219,6 @@ public:
 	// @{
 	CLandscapeModel		*getLandscape()
 	{
-		NL3D_MEM_LANDSCAPE
 		return _Landscape;
 	}
 	// @}

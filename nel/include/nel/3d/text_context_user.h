@@ -28,10 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_text_context.h"
-#include "text_context.h"
-#include "driver_user.h"
+#include "nel/3d/text_context.h"
+#include "nel/3d/driver_user.h"
 
-#define NL3D_MEM_TEXT_CONTEXT						NL_ALLOC_CONTEXT( 3dTxtCx )
 
 namespace NL3D
 {
@@ -56,7 +55,6 @@ public:
 	/// Constructor
 	CTextContextUser(const std::string fontFileName, const std::string fontExFileName, CDriverUser *drv, CFontManager *fmg)
 	{
-		NL3D_MEM_TEXT_CONTEXT
 		nlassert(drv);
 		_DriverUser= drv;
 
@@ -69,7 +67,6 @@ public:
 	}
 	virtual ~CTextContextUser() 
 	{
-		NL3D_MEM_TEXT_CONTEXT
 	}
 
 

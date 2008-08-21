@@ -28,9 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/3d/u_shape_bank.h"
-#include "shape_bank.h"
+#include "nel/3d/shape_bank.h"
 
-#define NL3D_MEM_SHAPE_BANK					NL_ALLOC_CONTEXT( 3dShpBk )
 
 namespace NL3D 
 {
@@ -48,7 +47,6 @@ class CShapeBankUser : public UShapeBank
 public:
 	virtual ~CShapeBankUser() 
 	{
-		NL3D_MEM_SHAPE_BANK
 	}
 
 	virtual void addShapeCache(const std::string &shapeCacheName);

@@ -27,7 +27,7 @@
 #define NL_TRACK_SAMPLED_QUAT_SMALL_HEADER_H
 
 #include "nel/misc/types_nl.h"
-#include "track_sampled_quat.h"
+#include "nel/3d/track_sampled_quat.h"
 
 
 namespace NL3D 

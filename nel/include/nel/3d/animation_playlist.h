@@ -27,7 +27,7 @@
 #define NL_ANIMATION_PLAYLIST_H
 
 #include "nel/misc/types_nl.h"
-#include "channel_mixer.h"
+#include "nel/3d/channel_mixer.h"
 
 
 namespace NL3D 

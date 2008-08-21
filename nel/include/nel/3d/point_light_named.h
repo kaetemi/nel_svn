@@ -27,7 +27,7 @@
 #define NL_POINT_LIGHT_NAMED_H
 
 #include "nel/misc/types_nl.h"
-#include "point_light.h"
+#include "nel/3d/point_light.h"
 #include "nel/misc/stream.h"
 
 

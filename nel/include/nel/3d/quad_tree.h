@@ -620,23 +620,23 @@ public:
 	class CIterator : public const_iterator
 	{
 	public:
-		CIterator()			{_Ptr=NULL;}
+		CIterator()			{const_iterator::_Ptr=NULL;}
 		CIterator(CNode *p) : const_iterator(p) {}
 		T&	operator*() const
-			{return _Ptr->Value; }
+			{return const_iterator::_Ptr->Value; }
 		// Doesn't work...
 		/*T*	operator->() const
 			{return (&**this); }*/
 		CIterator& operator++()
-			{_Ptr = (CNode*)(_Ptr->Next); return (*this); }
+			{const_iterator::_Ptr = (CNode*)(const_iterator::_Ptr->Next); return (*this); }
 		CIterator operator++(int)
 			{CIterator tmp = *this; ++*this; return (tmp); }
 		CIterator& operator--()
-			{_Ptr = (CNode*)(_Ptr->Prev); return (*this); }
+			{const_iterator::_Ptr = (CNode*)(const_iterator::_Ptr->Prev); return (*this); }
 		CIterator operator--(int)
 			{CIterator tmp = *this; --*this; return (tmp); }
 		bool operator==(const const_iterator& x) const
-			{return (_Ptr == x._Ptr); }
+			{return (const_iterator::_Ptr == x._Ptr); }
 		bool operator!=(const const_iterator& x) const
 			{return (!(*this == x)); }
 	protected:
@@ -820,7 +820,7 @@ template<class T>	void		CQuadTree<T>::selectRay(const NLMISC::CVector& source, c
 	mat.identity ();
 
 	// Set a wrong matrix
-	NLMISC::CVector vTmp=dir^((fabs(vTmp*CVector(1,0,0))>0.f)?CVector(1,0,0):CVector(0,1,0));
+	NLMISC::CVector vTmp=dir^((fabs(vTmp*NLMISC::CVector(1,0,0))>0.f)?NLMISC::CVector(1,0,0):NLMISC::CVector(0,1,0));
 	mat.setRot (dir, vTmp, dir^vTmp);
 
 	// Normalize it Yoyo!
@@ -851,8 +851,8 @@ template<class T>	void		CQuadTree<T>::selectSegment(const NLMISC::CVector& sourc
 	mat.identity ();
 
 	// Set a wrong matrix
-	CVector dir=dest-source;
-	NLMISC::CVector vTmp=dir^((fabs(vTmp*CVector(1,0,0))>0.f)?CVector(1,0,0):CVector(0,1,0));
+	NLMISC::CVector dir=dest-source;
+	NLMISC::CVector vTmp=dir^((fabs(vTmp*NLMISC::CVector(1,0,0))>0.f)?NLMISC::CVector(1,0,0):NLMISC::CVector(0,1,0));
 	mat.setRot (dir, vTmp, dir^vTmp);
 
 	// Normalize it Yoyo!

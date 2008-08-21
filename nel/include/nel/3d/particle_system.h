@@ -34,11 +34,11 @@
 #include "nel/misc/object_arena_allocator.h"
 #include "nel/3d/animation_time.h"
 #include "nel/3d/animation_time.h"
-#include "animated_value.h"
-#include "particle_system_process.h"
-#include "ps_lod.h"
-#include "ps_attrib_maker.h"
-#include "ps_spawn_info.h"
+#include "nel/3d/animated_value.h"
+#include "nel/3d/particle_system_process.h"
+#include "nel/3d/ps_lod.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_spawn_info.h"
 
 #include <map>
 
@@ -80,13 +80,7 @@ const uint MaxPSUserParam = 4;
 class CParticleSystem : public NLMISC::CRefCount
 {
 public:
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	   #undef new
-	#endif
 	PS_FAST_OBJ_ALLOC
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-		   #define new NL_NEW
-	#endif	
 	// the pass that is applied on particles
 	enum TPass { Anim, SolidRender, BlendRender, ToolRender };
 public:

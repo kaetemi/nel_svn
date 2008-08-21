@@ -1029,10 +1029,6 @@ float		CSkeletonModel::computeDisplayLodCharacterPriority() const
 	if(_LodCharacterDistance>0 && _CLodInstance.ShapeId>=0)
 	{
 		CVector		globalPos;
-		/* \todo yoyo: bad test of visibility. If the skeleton is hidden but has a _AncestorSkeletonModel 
-			wich is visible, then it is supposed to be visible (in this test), but only for The CLod LoadBalancing 
-			(priority not 0). Not so important...
-		*/
 
 		// Get object position, test visibility;
 		// If has a skeleton ancestor, take his world position instead, because ours is invalid.
@@ -1083,7 +1079,6 @@ void		CSkeletonModel::setDisplayLodCharacterFlag(bool displayCLod)
 // ***************************************************************************
 void		CSkeletonModel::traverseRender()
 {
-	NL_ALLOC_CONTEXT( RdrSkel )
 	H_AUTO( NL3D_Skeleton_Render );
 
 	// render as CLod, or render Skins.

@@ -129,7 +129,6 @@ static inline void vbWrite(uint8 *&dest, float uCoord, float vCoord)
 //********************************************************************************************************************
 void	CFlareModel::traverseRender()
 {				
-	NL_ALLOC_CONTEXT( RdrFlar )
 	CRenderTrav			&renderTrav = getOwnerScene()->getRenderTrav();
 	if (renderTrav.isCurrentPassOpaque()) return;	
 	IDriver				*drv  = renderTrav.getDriver();

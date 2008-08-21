@@ -43,7 +43,6 @@ using namespace NLMISC;
 using namespace std;
 
 
-#define NL3D_MEM_CAMERA_COLLISION						NL_ALLOC_CONTEXT( 3dCmCol )
 
 
 namespace NL3D 
@@ -878,8 +877,6 @@ void	CMeshMultiLod::compileRunTime()
 	if( (_CollisionMeshGeneration==AutoCameraCol && !_LightInfos.empty()) ||
 		_CollisionMeshGeneration==ForceCameraCol )
 	{
-		NL3D_MEM_CAMERA_COLLISION
-
 		// try to retrieve the info from a CMeshGeom only
 		if(getNumSlotMesh())
 		{

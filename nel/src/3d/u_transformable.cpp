@@ -28,7 +28,6 @@
 #include "nel/3d/u_transformable.h"
 #include "nel/3d/transformable.h"
 
-#define NL3D_MEM_TRANSFORMABLE						NL_ALLOC_CONTEXT( 3dTrabl )
 
 namespace NL3D 
 {
@@ -37,7 +36,6 @@ namespace NL3D
 
 const char *UTransformable::getPosValueName ()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return ITransformable::getPosValueName ();
 }
 
@@ -45,7 +43,6 @@ const char *UTransformable::getPosValueName ()
 
 const char *UTransformable::getRotEulerValueName()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return ITransformable::getRotEulerValueName();
 }
 
@@ -53,7 +50,6 @@ const char *UTransformable::getRotEulerValueName()
 
 const char *UTransformable::getRotQuatValueName()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return ITransformable::getRotQuatValueName();
 }
 
@@ -61,7 +57,6 @@ const char *UTransformable::getRotQuatValueName()
 
 const char *UTransformable::getScaleValueName()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return ITransformable::getScaleValueName();
 }
 
@@ -69,7 +64,6 @@ const char *UTransformable::getScaleValueName()
 
 const char *UTransformable::getPivotValueName()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return ITransformable::getPivotValueName();
 }
 
@@ -77,7 +71,6 @@ const char *UTransformable::getPivotValueName()
 
 void UTransformable::setMatrix(const CMatrix &mat)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setMatrix(mat);
 }
 
@@ -85,7 +78,6 @@ void UTransformable::setMatrix(const CMatrix &mat)
 
 const CMatrix &UTransformable::getMatrix() const	
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getMatrix();
 }
 
@@ -93,7 +85,6 @@ const CMatrix &UTransformable::getMatrix() const
 
 void UTransformable::setTransformMode(TTransformMode mode, CMatrix::TRotOrder ro)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setTransformMode((ITransformable::TTransformMode)(uint)mode, ro);
 }
 
@@ -101,7 +92,6 @@ void UTransformable::setTransformMode(TTransformMode mode, CMatrix::TRotOrder ro
 
 void UTransformable::setPos(const CVector &pos)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setPos(pos);
 }
 
@@ -109,7 +99,6 @@ void UTransformable::setPos(const CVector &pos)
 
 void UTransformable::setRotEuler(const CVector &rot)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setRotEuler(rot);
 }
 
@@ -117,7 +106,6 @@ void UTransformable::setRotEuler(const CVector &rot)
 
 void UTransformable::setRotQuat(const CQuat &quat)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setRotQuat(quat);
 }
 
@@ -125,7 +113,6 @@ void UTransformable::setRotQuat(const CQuat &quat)
 
 void UTransformable::setRotQuat(const CVector &jdir)
 {
-	NL3D_MEM_TRANSFORMABLE
 	CMatrix	mat;
 	mat.setRot(CVector::I, jdir, CVector::K);
 	mat.normalize(CMatrix::YZX);
@@ -136,7 +123,6 @@ void UTransformable::setRotQuat(const CVector &jdir)
 
 void UTransformable::setRotQuat(const CVector &jdir, const CVector &vup)
 {
-	NL3D_MEM_TRANSFORMABLE
 	CMatrix	mat;
 	mat.setRot(CVector::I, jdir, vup);
 	mat.normalize(CMatrix::YZX);
@@ -154,7 +140,6 @@ void UTransformable::setScale(const CVector &scale)
 
 void UTransformable::setPivot(const CVector &pivot)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->setPivot(pivot);
 }
 
@@ -162,7 +147,6 @@ void UTransformable::setPivot(const CVector &pivot)
 
 UTransformable::TTransformMode UTransformable::getTransformMode()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return (TTransformMode)(uint)_Object->getTransformMode();
 }
 
@@ -170,7 +154,6 @@ UTransformable::TTransformMode UTransformable::getTransformMode()
 
 CMatrix::TRotOrder UTransformable::getRotOrder()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getRotOrder();
 }
 
@@ -178,7 +161,6 @@ CMatrix::TRotOrder UTransformable::getRotOrder()
 
 void UTransformable::getPos(CVector &pos)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->getPos(pos);
 }
 
@@ -186,7 +168,6 @@ void UTransformable::getPos(CVector &pos)
 
 void UTransformable::getRotEuler(CVector &rot)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->getRotEuler(rot);
 }
 
@@ -194,7 +175,6 @@ void UTransformable::getRotEuler(CVector &rot)
 
 void UTransformable::getRotQuat(CQuat &quat)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->getRotQuat(quat);
 }
 
@@ -202,7 +182,6 @@ void UTransformable::getRotQuat(CQuat &quat)
 
 void UTransformable::getScale(CVector &scale)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->getScale(scale);
 }
 
@@ -210,7 +189,6 @@ void UTransformable::getScale(CVector &scale)
 
 void UTransformable::getPivot(CVector &pivot)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->getPivot(pivot);
 }
 
@@ -219,7 +197,6 @@ void UTransformable::getPivot(CVector &pivot)
 
 CVector	UTransformable::getPos()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getPos();
 }
 
@@ -227,7 +204,6 @@ CVector	UTransformable::getPos()
 
 CVector	UTransformable::getRotEuler()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getRotEuler();
 }
 
@@ -235,7 +211,6 @@ CVector	UTransformable::getRotEuler()
 
 CQuat UTransformable::getRotQuat()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getRotQuat();
 }
 
@@ -243,7 +218,6 @@ CQuat UTransformable::getRotQuat()
 
 CVector	UTransformable::getScale()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getScale();
 }
 
@@ -251,7 +225,6 @@ CVector	UTransformable::getScale()
 
 CVector	UTransformable::getPivot()
 {
-	NL3D_MEM_TRANSFORMABLE
 	return _Object->getPivot();
 }
 
@@ -259,7 +232,6 @@ CVector	UTransformable::getPivot()
 
 void UTransformable::lookAt (const CVector& eye, const CVector& target, float roll)
 {
-	NL3D_MEM_TRANSFORMABLE
 	_Object->lookAt(eye, target, roll);
 }
 

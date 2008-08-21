@@ -2,7 +2,7 @@
 # $Id: Makefile.am,v 1.2 2002/02/18 12:56:32 lecroart Exp $
 #
 
-MAINTAINERCLEANFILES = Makefile.in
+MAINTAINERCLEANFILES	= Makefile.in
 
 EXTRA_DIST		= direct3d
 

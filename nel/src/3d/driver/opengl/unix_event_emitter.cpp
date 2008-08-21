@@ -1,40 +1,39 @@
 /** \file unix_event_emitter.cpp
- * TODO: File description
- *
- * $Id: unix_event_emitter.cpp,v 1.9 2004/11/15 10:24:56 lecroart Exp $
- */
+* TODO: File description
+*
+* $Id: unix_event_emitter.cpp,v 1.9 2004-11-15 10:24:56 lecroart Exp $
+*/
 
 /* Copyright, 2000 Nevrax Ltd.
- *
- * This file is part of NEVRAX NEL.
- * NEVRAX NEL is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+*
+* This file is part of NEVRAX NEL.
+* NEVRAX NEL is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
 
- * NEVRAX NEL is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
+* NEVRAX NEL is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* General Public License for more details.
 
- * You should have received a copy of the GNU General Public License
- * along with NEVRAX NEL; see the file COPYING. If not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111-1307, USA.
- */
+* You should have received a copy of the GNU General Public License
+* along with NEVRAX NEL; see the file COPYING. If not, write to the
+* Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+* MA 02111-1307, USA.
+*/
 
-#include "nel/misc/events.h"
-#include "unix_event_emitter.h"
+#include "stdopengl.h"
 
 #ifdef NL_OS_UNIX
 
-#include "nel/misc/debug.h"
-
 #include <X11/keysym.h>
-
-
 #include <GL/gl.h>
 #include <GL/glx.h>
+
+#include "nel/misc/debug.h"
+#include "nel/misc/events.h"
+#include "unix_event_emitter.h"
 
 namespace NLMISC {
 
@@ -44,42 +43,35 @@ CUnixEventEmitter::CUnixEventEmitter ()
 
 void CUnixEventEmitter::init (Display *dpy, Window win)
 {
-  _dpy = dpy;
-  _win = win;
+	_dpy = dpy;
+	_win = win;
 }
 
 void CUnixEventEmitter::submitEvents(CEventServer & server, bool allWindows)
 {
 	while (XPending(_dpy))
 	{
-	  XEvent	Event;
+		XEvent	Event;
 		XNextEvent(_dpy, &Event);
 		if(Event.xany.window==_win)
 		{
-		  //		  nlinfo("event: %d", Event.type);
-		  processMessage (Event, server);
+			// nlinfo("event: %d", Event.type);
+			processMessage (Event, server);
 		}
 	}
 }
 
-
 TMouseButton getMouseButton (uint32 state)
 {
 	TMouseButton button=noButton;
-	if (state&ControlMask)
-		(int&)button|=ctrlButton;
-	if (state&Button1Mask)
-		(int&)button|=leftButton;
-	if (state&Button3Mask)
-		(int&)button|=rightButton;
-	if (state&Button2Mask)
-		(int&)button|=middleButton;
-	if (state&ShiftMask)
-		(int&)button|=shiftButton;
+	if (state&ControlMask) (int&)button|=ctrlButton;
+	if (state&Button1Mask) (int&)button|=leftButton;
+	if (state&Button3Mask) (int&)button|=rightButton;
+	if (state&Button2Mask) (int&)button|=middleButton;
+	if (state&ShiftMask)   (int&)button|=shiftButton;
 	// TODO manage ALT key
 	//	if (GetAsyncKeyState(VK_MENU)&(1<<15))
 	//	(int&)button|=altButton;
- 
 	return button;
 }
 
@@ -144,7 +136,6 @@ TKey getKey (KeySym keysym)
 ///	case XK_Meta_R: return Key;
 ///	case XK_Alt_L: return Key;
 ///	case XK_Alt_R: return Key;
-
 	case XK_space: return KeySPACE;
 //	case XK_comma: return Key;
 //	case XK_minus: return Key;
@@ -191,7 +182,7 @@ TKey getKey (KeySym keysym)
 	case XK_x: return KeyX;
 	case XK_y: return KeyY;
 	case XK_z: return KeyZ;
-	default: nldebug ("0x%x %d", keysym, keysym);
+	default: nldebug ("0x%x %d '%c'", keysym, keysym, keysym);
 	}
 	return KeyNUMLOCK;
 }
@@ -201,128 +192,129 @@ TKey getKey (KeySym keysym)
 
 void CUnixEventEmitter::processMessage (XEvent &event, CEventServer &server)
 {
-	// switch d evenement
-  switch (event.type)
-    {
-    Case(ReparentNotify)
-    Case(UnmapNotify)
-    Case(VisibilityNotify)
-      break;
-    Case(ButtonPress)
-      {
-        //nlinfo("%d %d %d", event.xbutton.button, event.xbutton.x, event.xbutton.y);
- 	XWindowAttributes xwa;
- 	XGetWindowAttributes (_dpy, _win, &xwa);
- 	float fX = (float) event.xbutton.x / (float) xwa.width;
- 	float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
- 	TMouseButton button=getMouseButton(event.xbutton.state);
- 	switch(event.xbutton.button)
- 	  {
- 	  case Button1:
- 	    server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(leftButton|(button&~(leftButton|middleButton|rightButton))), this));
- 	    break;
- 	  case Button2:
- 	    server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(middleButton|(button&~(leftButton|middleButton|rightButton))), this));
- 	    break;
- 	  case Button3:
- 	    server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(rightButton|(button&~(leftButton|middleButton|rightButton))), this));
- 	    break;
- 	  case Button4:
- 	    server.postEvent(new CEventMouseWheel(fX, fY, button, true, this));
- 	    break;
- 	  case Button5:
- 	    server.postEvent(new CEventMouseWheel(fX, fY, button, false, this));
- 	    break;
- 	  }
- 	break;
-      }
-    Case(ButtonRelease)
-      {
-        //nlinfo("%d %d %d", event.xbutton.button, event.xbutton.x, event.xbutton.y);
-  	XWindowAttributes xwa;
-  	XGetWindowAttributes (_dpy, _win, &xwa);
-  	float fX = (float) event.xbutton.x / (float) xwa.width;
-  	float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
-  	switch(event.xbutton.button)
-  	  {
-  	  case Button1:
-  	    server.postEvent(new CEventMouseUp(fX, fY, leftButton, this));
-  	    break;
-  	  case Button2:
-  	    server.postEvent(new CEventMouseUp(fX, fY, middleButton, this));
-  	    break;
-  	  case Button3:
-  	    server.postEvent(new CEventMouseUp(fX, fY, rightButton, this));
-  	    break;
-  	  }
-  	break;
-      }
-    Case(MotionNotify)
-      {
-	XWindowAttributes xwa;
-	XGetWindowAttributes (_dpy, _win, &xwa);
-	float fX = (float) event.xbutton.x / (float) xwa.width;
-	float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
-	if ((fX == 0.5f) && (fY == 0.5f)) break;
-	TMouseButton button=getMouseButton (event.xbutton.state);
-	server.postEvent (new CEventMouseMove (fX, fY, button, this));
-	break;
-      }
-    Case(KeyPress)
-      {
-	char Text[1024];
-	KeySym k;
-	int c;
-	c = XLookupString(&event.xkey, Text, 1024-1, &k, NULL);
-     
-	TKey key = getKey (k);
-	// TODO manage the bool (first time pressed)
-	server.postEvent (new CEventKeyDown (key, noKeyButton, true, this));
+	switch (event.type)
+	{
+	Case(ReparentNotify)
+	Case(UnmapNotify)
+	Case(VisibilityNotify)
+		break;
+	Case(ButtonPress)
+	{
+		//nlinfo("%d %d %d", event.xbutton.button, event.xbutton.x, event.xbutton.y);
+		XWindowAttributes xwa;
+		XGetWindowAttributes (_dpy, _win, &xwa);
+		float fX = (float) event.xbutton.x / (float) xwa.width;
+		float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
+		TMouseButton button=getMouseButton(event.xbutton.state);
+		switch(event.xbutton.button)
+		{
+		case Button1:
+			server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(leftButton|(button&~(leftButton|middleButton|rightButton))), this));
+			break;
+		case Button2:
+			server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(middleButton|(button&~(leftButton|middleButton|rightButton))), this));
+			break;
+		case Button3:
+			server.postEvent(new CEventMouseDown(fX, fY, (TMouseButton)(rightButton|(button&~(leftButton|middleButton|rightButton))), this));
+			break;
+		case Button4:
+			server.postEvent(new CEventMouseWheel(fX, fY, button, true, this));
+			break;
+		case Button5:
+			server.postEvent(new CEventMouseWheel(fX, fY, button, false, this));
+			break;
+		}
+		break;
+	}
+	Case(ButtonRelease)
+	{
+		//nlinfo("%d %d %d", event.xbutton.button, event.xbutton.x, event.xbutton.y);
+		XWindowAttributes xwa;
+		XGetWindowAttributes (_dpy, _win, &xwa);
+		float fX = (float) event.xbutton.x / (float) xwa.width;
+		float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
+		switch(event.xbutton.button)
+		{
+		case Button1:
+			server.postEvent(new CEventMouseUp(fX, fY, leftButton, this));
+			break;
+		case Button2:
+			server.postEvent(new CEventMouseUp(fX, fY, middleButton, this));
+			break;
+		case Button3:
+			server.postEvent(new CEventMouseUp(fX, fY, rightButton, this));
+			break;
+		}
+		break;
+	}
+	Case(MotionNotify)
+	{
+		XWindowAttributes xwa;
+		XGetWindowAttributes (_dpy, _win, &xwa);
+		float fX = (float) event.xbutton.x / (float) xwa.width;
+		float fY = 1.0f - (float) event.xbutton.y / (float) xwa.height;
+		if ((fX == 0.5f) && (fY == 0.5f)) break;
+		TMouseButton button=getMouseButton (event.xbutton.state);
+		server.postEvent (new CEventMouseMove (fX, fY, button, this));
+		break;
+	}
+	Case(KeyPress)
+	{
+		char Text[1024];
+		KeySym k;
+		int c;
+		c = XLookupString(&event.xkey, Text, 1024-1, &k, NULL);
 
-	Text[c] = '\0';
-	if(c>0)
-	  {
-	    for (int i = 0; i < c; i++)
-		server.postEvent (new CEventChar (Text[i], noKeyButton, this));
-	  }
-	break;
-      }
-    Case (KeyRelease)
-      {
-	char Text[1024];
-	KeySym k;
-	int c;
-	c = XLookupString(&event.xkey, Text, 1024-1, &k, NULL);
-     
-	TKey key = getKey (k);
-	// TODO manage the bool (first time pressed)
-	server.postEvent (new CEventKeyUp (key, noKeyButton, this));
-	break;
-      }
-    Case(FocusIn)
-      return;
-    Case(FocusOut)
-      return;
-    Case(Expose)
-      break;
-    Case(MappingNotify)
-      XRefreshKeyboardMapping((XMappingEvent *)&event);
-    break;
-    Case(DestroyNotify)
-      break;
-    Case(ConfigureNotify)
-      /*      if (event.xconfigure.width==gmaxx && event.xconfigure.height==gmaxy) {
-	UpdateGWin();
-      } else {
-	XResizeWindow(display, gwindow, gmaxx, gmaxy);
-	}*/
-    break;
-  default:
-   nlinfo("UnknownEvent");
-    //    XtDispatchEvent(&event);
-    break;
-  }
-    }
+		TKey key = getKey (k);
+		// TODO manage the bool (first time pressed)
+		server.postEvent (new CEventKeyDown (key, noKeyButton, true, this));
+
+		Text[c] = '\0';
+		if(c>0)
+		{
+			for (int i = 0; i < c; i++)
+			{
+				server.postEvent (new CEventChar ((ucchar)(unsigned char)Text[i], noKeyButton, this));
+			}
+		}
+		break;
+	}
+	Case (KeyRelease)
+	{
+		char Text[1024];
+		KeySym k;
+		int c;
+		c = XLookupString(&event.xkey, Text, 1024-1, &k, NULL);
+
+		TKey key = getKey (k);
+		// TODO manage the bool (first time pressed)
+		server.postEvent (new CEventKeyUp (key, noKeyButton, this));
+		break;
+	}
+	Case(FocusIn)
+		return;
+	Case(FocusOut)
+		return;
+	Case(Expose)
+		break;
+	Case(MappingNotify)
+		XRefreshKeyboardMapping((XMappingEvent *)&event);
+		break;
+	Case(DestroyNotify)
+		break;
+	Case(ConfigureNotify)
+		/* if (event.xconfigure.width==gmaxx && event.xconfigure.height==gmaxy) {
+			UpdateGWin();
+		} else {
+			XResizeWindow(display, gwindow, gmaxx, gmaxy);
+		} */
+		break;
+	default:
+		nlinfo("UnknownEvent");
+		//    XtDispatchEvent(&event);
+		break;
+	}
+}
 
 } // NLMISC
 

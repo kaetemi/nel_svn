@@ -26,8 +26,8 @@
 #ifndef NL_TEXT_CONTEXT_H
 #define NL_TEXT_CONTEXT_H
 
-#include "font_manager.h"
-#include "computed_string.h"
+#include "nel/3d/font_manager.h"
+#include "nel/3d/computed_string.h"
 
 
 namespace NL3D {
@@ -71,7 +71,8 @@ public:
 	CFontManager	*getFontManager() const {return _FontManager;}
 
 	/// Must be called before any print
-	void setFontGenerator (const std::string fontFileName, const std::string fontExFileName = "");
+	void setFontGenerator (const std::string &fontFileName, const std::string &fontExFileName = "");
+
 	NL3D::CFontGenerator *getFontGenerator () { return _FontGen; }
 
 	/**

@@ -31,11 +31,11 @@
 #include "nel/misc/stream.h"
 #include "nel/misc/debug.h"
 #include "nel/misc/bit_set.h"
-#include "tessellation.h"
-#include "patch.h"
-#include "bezier_patch.h"
-#include "point_light_named.h"
-#include "point_light_named_array.h"
+#include "nel/3d/tessellation.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/bezier_patch.h"
+#include "nel/3d/point_light_named.h"
+#include "nel/3d/point_light_named_array.h"
 #include <cstdio>
 #include <vector>
 #include <map>

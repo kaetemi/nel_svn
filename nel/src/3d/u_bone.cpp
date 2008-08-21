@@ -28,28 +28,24 @@
 #include "nel/3d/bone.h"
 #include "nel/3d/u_bone.h"
 
-#define NL3D_MEM_BONES						NL_ALLOC_CONTEXT( 3dBones )
 
 namespace NL3D
 {
 
 const CMatrix	&UBone::getLastWorldMatrixComputed() const
 {
-	NL3D_MEM_BONES
 	CBone *object = getObjectPtr();
 	return object->getWorldMatrix();
 }
 
 void			UBone::setSkinScale(CVector &skinScale)
 {
-	NL3D_MEM_BONES
 	CBone *object = getObjectPtr();
 	object->setSkinScale(skinScale);
 }
 
 const CVector	&UBone::getSkinScale() const
 {
-	NL3D_MEM_BONES
 	CBone *object = getObjectPtr();
 	return object->getSkinScale();
 }

@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/stream.h"
-#include "ps_force.h"
-#include "ps_edit.h"
-#include "ps_attrib.h"
-#include "ps_plane_basis.h"
+#include "nel/3d/ps_force.h"
+#include "nel/3d/ps_edit.h"
+#include "nel/3d/ps_attrib.h"
+#include "nel/3d/ps_plane_basis.h"
 
 
 namespace NL3D {

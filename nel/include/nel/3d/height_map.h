@@ -30,7 +30,6 @@
 #include "nel/misc/bitmap.h"
 #include <vector>
 
-#define NL3D_MEM_HMAP						NL_ALLOC_CONTEXT( 3dHMap )
 
 namespace NL3D
 {
@@ -59,7 +58,6 @@ public:
 	/// Constructor
 	CHeightMap()
 	{
-		NL3D_MEM_HMAP
 		SizeX= SizeY= 160;
 		OriginX= OriginY= 0;
 		MaxZ= 100;

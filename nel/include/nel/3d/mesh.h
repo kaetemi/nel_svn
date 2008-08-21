@@ -27,20 +27,20 @@
 #define NL_MESH_H
 
 #include "nel/misc/types_nl.h"
-#include "shape.h"
-#include "driver.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/driver.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/uv.h"
 #include "nel/misc/bit_set.h"
-#include "vertex_buffer.h"
-#include "material.h"
-#include "index_buffer.h"
-#include "animated_material.h"
-#include "mesh_base.h"
-#include "mesh_geom.h"
-#include "mesh_morpher.h"
-#include "mesh_vertex_program.h"
-#include "shadow_skin.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/animated_material.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/mesh_geom.h"
+#include "nel/3d/mesh_morpher.h"
+#include "nel/3d/mesh_vertex_program.h"
+#include "nel/3d/shadow_skin.h"
 #include <set>
 #include <vector>
 

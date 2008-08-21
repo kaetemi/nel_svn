@@ -155,7 +155,6 @@ void	CVegetableBlendLayerModel::render(IDriver *driver)
 // ***************************************************************************
 void	CVegetableBlendLayerModel::traverseRender()
 {
-	NL_ALLOC_CONTEXT( RdrVege )
 	CRenderTrav		&rTrav= getOwnerScene()->getRenderTrav();
 	render(rTrav.getDriver());
 }

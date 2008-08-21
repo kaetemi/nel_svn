@@ -31,7 +31,7 @@
 // define it For Debug purpose only. Normal use is to hide this line
 //#define		NL3D_GLSTATE_DISABLE_CACHE
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -61,7 +61,7 @@ void			CDriverGLStates::init(bool supportTextureCubeMap, bool supportTextureRect
 	_VertexArrayEnabled= false;
 	_NormalArrayEnabled= false;
 	_WeightArrayEnabled= false;
-	_ColorArrayEnabled= false;	
+	_ColorArrayEnabled= false;
 	_SecondaryColorArrayEnabled= false;
 	uint	i;
 	for(i=0; i<sizeof(_TexCoordArrayEnabled)/sizeof(_TexCoordArrayEnabled[0]); i++)
@@ -102,8 +102,8 @@ void			CDriverGLStates::forceDefaults(uint nbStages)
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_LIGHTING);
 	glDepthMask(GL_TRUE);
-	
-		
+
+
 
 	// Func.
 	_CurBlendSrc= GL_SRC_ALPHA;
@@ -124,8 +124,8 @@ void			CDriverGLStates::forceDefaults(uint nbStages)
 	glStencilOp(_CurStencilOpFail, _CurStencilOpZFail, _CurStencilOpZPass);
 	glStencilMask(_CurStencilWriteMask);
 	glAlphaFunc(GL_GREATER, _CurAlphaTestThreshold);
-	
-		
+
+
 
 	// Materials.
 	uint32			packedOne= (CRGBA(255,255,255,255)).getPacked();
@@ -148,9 +148,9 @@ void			CDriverGLStates::forceDefaults(uint nbStages)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, one);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, zero);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, _CurShininess);
-	
-		
-	
+
+
+
 
 	// TexModes
 	uint stage;
@@ -170,7 +170,7 @@ void			CDriverGLStates::forceDefaults(uint nbStages)
 		glDisable( GL_TEXTURE_GEN_S );
 		glDisable( GL_TEXTURE_GEN_T );
 		glDisable( GL_TEXTURE_GEN_R );
-		glDisable( GL_TEXTURE_GEN_Q );		
+		glDisable( GL_TEXTURE_GEN_Q );
 	}
 
 	// ActiveTexture current texture to 0.
@@ -182,14 +182,14 @@ void			CDriverGLStates::forceDefaults(uint nbStages)
 	// Depth range
 	_DepthRangeNear = 0.f;
 	_DepthRangeFar = 1.f;
-	_ZBias = 0.f;	
+	_ZBias = 0.f;
 	glDepthRange (0, 1);
 
 	// Cull order
 	_CullMode = CCW;
 	glCullFace(GL_BACK);
-	
-		
+
+
 }
 
 
@@ -210,7 +210,7 @@ void			CDriverGLStates::enableBlend(uint enable)
 		if(_CurBlend)
 			glEnable(GL_BLEND);
 		else
-			glDisable(GL_BLEND);		
+			glDisable(GL_BLEND);
 	}
 }
 
@@ -230,7 +230,7 @@ void			CDriverGLStates::enableCullFace(uint enable)
 		if(_CurCullFace)
 			glEnable(GL_CULL_FACE);
 		else
-			glDisable(GL_CULL_FACE);	
+			glDisable(GL_CULL_FACE);
 	}
 }
 
@@ -255,7 +255,7 @@ void			CDriverGLStates::enableAlphaTest(uint enable)
 		else
 		{
 			glDisable(GL_ALPHA_TEST);
-		}		
+		}
 	}
 }
 
@@ -277,9 +277,9 @@ void			CDriverGLStates::enableLighting(uint enable)
 		if(_CurLighting)
 			glEnable(GL_LIGHTING);
 		else
-		{			
-			glDisable(GL_LIGHTING);			
-		}		
+		{
+			glDisable(GL_LIGHTING);
+		}
 	}
 }
 
@@ -341,7 +341,7 @@ void			CDriverGLStates::enableZWrite(uint enable)
 // ***************************************************************************
 void			CDriverGLStates::enableStencilTest(bool enable)
 {
-	H_AUTO_OGL(CDriverGLStates_enableStencilTest) 
+	H_AUTO_OGL(CDriverGLStates_enableStencilTest)
 	// If different from current setup, update.
 	bool	enabled= (enable!=0);
 #ifndef NL3D_GLSTATE_DISABLE_CACHE
@@ -354,7 +354,7 @@ void			CDriverGLStates::enableStencilTest(bool enable)
 		if(_CurStencilTest)
 			glEnable(GL_STENCIL_TEST);
 		else
-			glDisable(GL_STENCIL_TEST);	
+			glDisable(GL_STENCIL_TEST);
 	}
 }
 
@@ -372,7 +372,7 @@ void			CDriverGLStates::blendFunc(GLenum src, GLenum dst)
 		_CurBlendSrc= src;
 		_CurBlendDst= dst;
 		// Setup GLState.
-		glBlendFunc(_CurBlendSrc, _CurBlendDst);	
+		glBlendFunc(_CurBlendSrc, _CurBlendDst);
 	}
 }
 
@@ -388,7 +388,7 @@ void			CDriverGLStates::depthFunc(GLenum zcomp)
 		// new state.
 		_CurDepthFunc= zcomp;
 		// Setup GLState.
-		glDepthFunc(_CurDepthFunc);	
+		glDepthFunc(_CurDepthFunc);
 	}
 }
 
@@ -404,7 +404,7 @@ void			CDriverGLStates::alphaFunc(float threshold)
 		// new state
 		_CurAlphaTestThreshold= threshold;
 		// setup function.
-		glAlphaFunc(GL_GREATER, _CurAlphaTestThreshold);	
+		glAlphaFunc(GL_GREATER, _CurAlphaTestThreshold);
 	}
 }
 
@@ -456,7 +456,7 @@ void			CDriverGLStates::stencilMask(GLuint mask)
 	{
 		// new state
 		_CurStencilWriteMask = mask;
-		
+
 		// setup function.
 		glStencilMask(_CurStencilWriteMask);
 	}
@@ -472,7 +472,7 @@ void			CDriverGLStates::setEmissive(uint32 packedColor, const GLfloat color[4])
 #endif
 	{
 		_CurEmissive= packedColor;
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color);	
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color);
 	}
 }
 
@@ -485,7 +485,7 @@ void			CDriverGLStates::setAmbient(uint32 packedColor, const GLfloat color[4])
 #endif
 	{
 		_CurAmbient= packedColor;
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);		
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
 	}
 }
 
@@ -498,7 +498,7 @@ void			CDriverGLStates::setDiffuse(uint32 packedColor, const GLfloat color[4])
 #endif
 	{
 		_CurDiffuse= packedColor;
-		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);	
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
 	}
 }
 
@@ -511,7 +511,7 @@ void			CDriverGLStates::setSpecular(uint32 packedColor, const GLfloat color[4])
 #endif
 	{
 		_CurSpecular= packedColor;
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color);	
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color);
 	}
 }
 
@@ -524,14 +524,14 @@ void			CDriverGLStates::setShininess(float shin)
 #endif
 	{
 		_CurShininess= shin;
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shin);	
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shin);
 	}
 }
 
 
 // ***************************************************************************
 static void	convColor(CRGBA col, GLfloat glcol[4])
-{	
+{
 	H_AUTO_OGL(convColor)
 	static	const float	OO255= 1.0f/255;
 	glcol[0]= col.R*OO255;
@@ -567,7 +567,7 @@ void			CDriverGLStates::setVertexColorLighted(bool enable)
 			GLfloat	glColor[4];
 			convColor(diffCol, glColor);
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glColor);
-		}	
+		}
 	}
 }
 
@@ -587,7 +587,7 @@ void		CDriverGLStates::setZBias(float zbias)
 #ifndef NL3D_GLSTATE_DISABLE_CACHE
 	if (zbias != _ZBias)
 #endif
-	{		
+	{
 		_ZBias = zbias;
 		updateDepthRange();
 	}
@@ -616,7 +616,7 @@ void		CDriverGLStates::setTexGenMode (uint stage, GLint mode)
 #ifndef NL3D_GLSTATE_DISABLE_CACHE
 	if (mode != _TexGenMode[stage])
 #endif
-	{		
+	{
 		_TexGenMode[stage] = mode;
 
 		if(mode==0)
@@ -631,7 +631,7 @@ void		CDriverGLStates::setTexGenMode (uint stage, GLint mode)
 			glTexGeni( GL_S, GL_TEXTURE_GEN_MODE, mode);
 			glTexGeni( GL_T, GL_TEXTURE_GEN_MODE, mode);
 			glTexGeni( GL_R, GL_TEXTURE_GEN_MODE, mode);
-			/* Object or Eye Space ? => enable W generation. VERY IMPORTANT because 
+			/* Object or Eye Space ? => enable W generation. VERY IMPORTANT because
 				was a bug with VegetableRender and ShadowRender:
 					- Vegetable use the TexCoord1.w in his VertexProgram
 					- Shadow Render don't use any TexCoord in VB (since projected)
@@ -640,17 +640,17 @@ void		CDriverGLStates::setTexGenMode (uint stage, GLint mode)
 			if(mode==GL_OBJECT_LINEAR || mode==GL_EYE_LINEAR)
 			{
 				glTexGeni( GL_Q, GL_TEXTURE_GEN_MODE, mode);
-				glEnable( GL_TEXTURE_GEN_Q );							
+				glEnable( GL_TEXTURE_GEN_Q );
 			}
 			else
 			{
-				glDisable( GL_TEXTURE_GEN_Q );			
+				glDisable( GL_TEXTURE_GEN_Q );
 			}
 			// Enable All.
 			glEnable( GL_TEXTURE_GEN_S );
 			glEnable( GL_TEXTURE_GEN_T );
 			glEnable( GL_TEXTURE_GEN_R );
-		}		
+		}
 	}
 }
 
@@ -670,13 +670,13 @@ void			CDriverGLStates::resetTextureMode()
 	{
 		glDisable(GL_TEXTURE_RECTANGLE_NV);
 	}
-	_TextureMode[_CurrentActiveTextureARB]= TextureDisabled;	
+	_TextureMode[_CurrentActiveTextureARB]= TextureDisabled;
 }
 
 
 // ***************************************************************************
 void			CDriverGLStates::setTextureMode(TTextureMode texMode)
-{	
+{
 	H_AUTO_OGL(CDriverGLStates_setTextureMode)
 	TTextureMode	oldTexMode = _TextureMode[_CurrentActiveTextureARB];
 	if(oldTexMode != texMode)
@@ -719,7 +719,7 @@ void			CDriverGLStates::setTextureMode(TTextureMode texMode)
 
 		// new mode.
 		_TextureMode[_CurrentActiveTextureARB]= texMode;
-	}	
+	}
 }
 
 
@@ -730,20 +730,19 @@ void			CDriverGLStates::activeTextureARB(uint stage)
 	if( _CurrentActiveTextureARB != stage )
 	{
 		nglActiveTextureARB(GL_TEXTURE0_ARB+stage);
-		
-			
+
+
 		_CurrentActiveTextureARB= stage;
 	}
 }
 
 // ***************************************************************************
 void			CDriverGLStates::forceActiveTextureARB(uint stage)
-{	
+{
 	H_AUTO_OGL(CDriverGLStates_forceActiveTextureARB)
 	nglActiveTextureARB(GL_TEXTURE0_ARB+stage);
-	
-		
-	_CurrentActiveTextureARB= stage;	
+
+	_CurrentActiveTextureARB= stage;
 }
 
 
@@ -758,8 +757,8 @@ void			CDriverGLStates::enableVertexArray(bool enable)
 		else
 			glDisableClientState(GL_VERTEX_ARRAY);
 		_VertexArrayEnabled= enable;
-		
-			
+
+
 	}
 }
 // ***************************************************************************
@@ -773,8 +772,8 @@ void			CDriverGLStates::enableNormalArray(bool enable)
 		else
 			glDisableClientState(GL_NORMAL_ARRAY);
 		_NormalArrayEnabled= enable;
-		
-			
+
+
 	}
 }
 // ***************************************************************************
@@ -788,8 +787,8 @@ void			CDriverGLStates::enableWeightArray(bool enable)
 		else
 			glDisableClientState(GL_VERTEX_WEIGHTING_EXT);
 		_WeightArrayEnabled= enable;
-		
-			
+
+
 	}
 }
 // ***************************************************************************
@@ -803,8 +802,8 @@ void			CDriverGLStates::enableColorArray(bool enable)
 		else
 			glDisableClientState(GL_COLOR_ARRAY);
 		_ColorArrayEnabled= enable;
-		
-			
+
+
 	}
 }
 
@@ -819,16 +818,14 @@ void			CDriverGLStates::enableSecondaryColorArray(bool enable)
 			glEnableClientState(GL_SECONDARY_COLOR_ARRAY_EXT);
 		else
 			glDisableClientState(GL_SECONDARY_COLOR_ARRAY_EXT);
-		
-			
+
+
 		_SecondaryColorArrayEnabled= enable;
 		// If disable
 		if(!enable)
 		{
 			// GeForceFx Bug: Must reset Secondary color to 0 (if comes from a VP), else bugs
 			nglSecondaryColor3ubEXT(0,0,0);
-			
-				
 		}
 	}
 }
@@ -840,8 +837,6 @@ void			CDriverGLStates::clientActiveTextureARB(uint stage)
 	if( _CurrentClientActiveTextureARB != stage )
 	{
 		nglClientActiveTextureARB(GL_TEXTURE0_ARB+stage);
-		
-			
 		_CurrentClientActiveTextureARB= stage;
 	}
 }
@@ -856,8 +851,8 @@ void			CDriverGLStates::enableTexCoordArray(bool enable)
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		else
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		
-			
+
+
 		_TexCoordArrayEnabled[_CurrentClientActiveTextureARB]= enable;
 	}
 }
@@ -872,8 +867,8 @@ void			CDriverGLStates::enableVertexAttribArray(uint glIndex, bool enable)
 			glEnableClientState(glIndex+GL_VERTEX_ATTRIB_ARRAY0_NV);
 		else
 			glDisableClientState(glIndex+GL_VERTEX_ATTRIB_ARRAY0_NV);
-		
-			
+
+
 		_VertexAttribArrayEnabled[glIndex]= enable;
 	}
 }
@@ -889,9 +884,8 @@ void CDriverGLStates::enableVertexAttribArrayARB(uint glIndex,bool enable)
 		if(enable)
 			nglEnableVertexAttribArrayARB(glIndex);
 		else
-			nglDisableVertexAttribArrayARB(glIndex);			
-		
-			
+			nglDisableVertexAttribArrayARB(glIndex);
+
 		_VertexAttribArrayEnabled[glIndex]= enable;
 	}
 }
@@ -901,17 +895,17 @@ void CDriverGLStates::enableVertexAttribArrayForEXTVertexShader(uint glIndex, bo
 {
 	H_AUTO_OGL(CDriverGLStates_enableVertexAttribArrayForEXTVertexShader)
 	if(_VertexAttribArrayEnabled[glIndex] != enable)
-	{		
+	{
 		switch(glIndex)
 		{
-			case 0: // position 
+			case 0: // position
 				enableVertexArray(enable);
 			break;
 			case 1: // skin weight
 				if(enable)
 					nglEnableVariantClientStateEXT(variants[CDriverGL::EVSSkinWeightVariant]);
 				else
-					nglDisableVariantClientStateEXT(variants[CDriverGL::EVSSkinWeightVariant]);	
+					nglDisableVariantClientStateEXT(variants[CDriverGL::EVSSkinWeightVariant]);
 			break;
 			case 2: // normal
 				enableNormalArray(enable);
@@ -923,7 +917,7 @@ void CDriverGLStates::enableVertexAttribArrayForEXTVertexShader(uint glIndex, bo
 				if(enable)
 					nglEnableVariantClientStateEXT(variants[CDriverGL::EVSSecondaryColorVariant]);
 				else
-					nglDisableVariantClientStateEXT(variants[CDriverGL::EVSSecondaryColorVariant]);	
+					nglDisableVariantClientStateEXT(variants[CDriverGL::EVSSecondaryColorVariant]);
 			break;
 			case 5: // fog coordinate
 				if(enable)
@@ -954,11 +948,11 @@ void CDriverGLStates::enableVertexAttribArrayForEXTVertexShader(uint glIndex, bo
 			default:
 				nlstop; // invalid value
 			break;
-		}		
+		}
 		_VertexAttribArrayEnabled[glIndex]= enable;
-	}	
-	
-		
+	}
+
+
 }
 
 
@@ -980,8 +974,8 @@ void			CDriverGLStates::enableFog(uint enable)
 			glEnable(GL_FOG);
 		else
 			glDisable(GL_FOG);
-		
-			
+
+
 	}
 }
 
@@ -990,8 +984,6 @@ void CDriverGLStates::forceBindARBVertexBuffer(uint objectID)
 {
 	H_AUTO_OGL(CDriverGLStates_forceBindARBVertexBuffer)
 	nglBindBufferARB(GL_ARRAY_BUFFER_ARB, objectID);
-	
-		
 	_CurrARBVertexBuffer = objectID;
 }
 
@@ -1004,7 +996,7 @@ void CDriverGLStates::bindARBVertexBuffer(uint objectID)
 #endif
 	{
 		forceBindARBVertexBuffer(objectID);
-	} 
+	}
 }
 
 // ***************************************************************************

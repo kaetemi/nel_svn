@@ -31,7 +31,6 @@
 #include "nel/3d/water_model.h"
 #include "nel/3d/driver_user.h"
 
-#define NL3D_MEM_WATER						NL_ALLOC_CONTEXT( 3dWater )
 
 namespace NL3D 
 {
@@ -39,7 +38,6 @@ namespace NL3D
 //===========================================================================
 UWaterHeightMap &UWaterHeightMapManager::getWaterHeightMapFromID(uint32 ID)
 {
-	NL3D_MEM_WATER
 	nlassert(GetWaterPoolManager().hasPool(ID)); // unknown pool ID!
 	return  GetWaterPoolManager().getPoolByID(ID);
 }
@@ -48,7 +46,6 @@ UWaterHeightMap &UWaterHeightMapManager::getWaterHeightMapFromID(uint32 ID)
 //===========================================================================
 void	UWaterHeightMapManager::setBlendFactor(UDriver *drv, float value)
 {
-	NL3D_MEM_WATER
 	NLMISC::clamp(value, 0.f, 1.f);
 	GetWaterPoolManager().setBlendFactor(NLMISC::safe_cast<CDriverUser *>(drv)->getDriver(), value);
 }
@@ -62,7 +59,6 @@ void UWaterHeightMapManager::releaseBlendTextures()
 //===========================================================================
 uint32	UWaterInstance::getWaterHeightMapID() const
 {
-	NL3D_MEM_WATER
 	CWaterModel	*object = getObjectPtr();
 	return object ->getWaterHeightMapID();
 }
@@ -71,7 +67,6 @@ uint32	UWaterInstance::getWaterHeightMapID() const
 //===========================================================================
 float	UWaterInstance::getHeightFactor() const
 {
-	NL3D_MEM_WATER
 	CWaterModel	*object = getObjectPtr();
 	return object->getHeightFactor();
 }
@@ -79,7 +74,6 @@ float	UWaterInstance::getHeightFactor() const
 //===========================================================================
 float   UWaterInstance::getHeight(const NLMISC::CVector2f &pos)
 {
-	NL3D_MEM_WATER
 	CWaterModel	*object = getObjectPtr();
 	return object->getHeight(pos);
 }
@@ -87,7 +81,6 @@ float   UWaterInstance::getHeight(const NLMISC::CVector2f &pos)
 //===========================================================================
 float   UWaterInstance::getAttenuatedHeight(const NLMISC::CVector2f &pos, const NLMISC::CVector &viewer)
 {
-	NL3D_MEM_WATER
 	CWaterModel	*object = getObjectPtr();
 	return object->getAttenuatedHeight(pos, viewer);
 }

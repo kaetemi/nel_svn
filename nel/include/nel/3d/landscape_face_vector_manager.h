@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include <vector>
-#include "index_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 
 namespace NL3D {

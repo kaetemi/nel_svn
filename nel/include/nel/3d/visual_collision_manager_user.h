@@ -33,8 +33,6 @@
 #include "visual_collision_entity_user.h"
 #include "ptr_set.h"
 
-#define NL3D_MEM_VISUAL_COLLISION						NL_ALLOC_CONTEXT( 3dVsCol )
-#define NL3D_MEM_CAMERA_COLLISION						NL_ALLOC_CONTEXT( 3dCmCol )
 
 namespace NL3D {
 
@@ -52,49 +50,41 @@ public:
 	/// Constructor
 	CVisualCollisionManagerUser() 
 	{
-		NL3D_MEM_VISUAL_COLLISION
 	}
 
 
 	virtual void					setLandscape(ULandscape *landscape)
 	{
-		NL3D_MEM_VISUAL_COLLISION
 		_Manager.setLandscape(&(dynamic_cast<CLandscapeUser*>(landscape)->getLandscape()->Landscape));
 	}
 
 	virtual UVisualCollisionEntity	*createEntity()
 	{
-		NL3D_MEM_VISUAL_COLLISION
 		return _Entities.insert(new CVisualCollisionEntityUser(&_Manager));
 	}
 
 	virtual void					deleteEntity(UVisualCollisionEntity	*entity)
 	{
-		NL3D_MEM_VISUAL_COLLISION
 		_Entities.erase(dynamic_cast<CVisualCollisionEntityUser*>(entity));
 	}
 
 	virtual void					setSunContributionPower (float power, float maxThreshold)
 	{
-		NL3D_MEM_VISUAL_COLLISION
 		_Manager.setSunContributionPower (power, maxThreshold);
 	}
 
 	virtual void					setPlayerInside(bool state)
 	{
-		NL3D_MEM_CAMERA_COLLISION
-			_Manager.setPlayerInside(state);
+		_Manager.setPlayerInside(state);
 	}
 	
 	virtual float					getCameraCollision(const CVector &start, const CVector &end, float radius, bool cone)
 	{
-		NL3D_MEM_CAMERA_COLLISION
 		return _Manager.getCameraCollision (start, end, radius, cone);
 	}
 	
 	virtual bool					getRayCollision(const NLMISC::CVector &start, const NLMISC::CVector &end, bool landscapeOnly)
 	{
-		NL3D_MEM_CAMERA_COLLISION
 		return _Manager.getRayCollision (start, end, landscapeOnly);
 	}
 	
@@ -102,7 +92,6 @@ public:
 
 	virtual void					removeMeshCollision(uint id)
 	{
-		NL3D_MEM_CAMERA_COLLISION
 		_Manager.removeMeshCollision(id);
 	}
 	virtual	void					getMeshs(const NLMISC::CAABBox &aabbox, std::vector<CMeshInstanceColInfo> &dest);	

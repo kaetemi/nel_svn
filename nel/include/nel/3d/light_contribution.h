@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/rgba.h"
-#include "point_light.h"
+#include "nel/3d/point_light.h"
 
 
 namespace NL3D 

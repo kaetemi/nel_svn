@@ -28,7 +28,6 @@
 
 #include "nel/misc/types_nl.h"
 
-#define NL3D_MEM_PRIMITIVE_PROFILE						NL_ALLOC_CONTEXT( 3dPrmPf )
 
 namespace NL3D {
 
@@ -52,7 +51,6 @@ public:
 
 	CPrimitiveProfile()
 	{
-		NL3D_MEM_PRIMITIVE_PROFILE
 		reset();
 	}
 

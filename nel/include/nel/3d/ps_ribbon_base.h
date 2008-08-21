@@ -27,7 +27,7 @@
 #define NL_PS_RIBBON_BASE_H
 
 
-#include "ps_particle_basic.h"
+#include "nel/3d/ps_particle_basic.h"
 #include "nel/misc/object_vector.h"
 
 

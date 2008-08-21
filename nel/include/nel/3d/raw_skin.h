@@ -30,8 +30,8 @@
 #include "nel/misc/vector.h"
 #include "nel/misc/uv.h"
 #include "nel/misc/object_vector.h"
-#include "mesh.h"
-#include "mrm_mesh.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mrm_mesh.h"
 
 
 namespace NL3D 

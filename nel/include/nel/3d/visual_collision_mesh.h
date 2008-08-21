@@ -30,8 +30,8 @@
 #include "nel/misc/object_vector.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/aabbox.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 
 namespace NL3D 

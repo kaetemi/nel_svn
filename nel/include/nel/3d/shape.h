@@ -196,6 +196,8 @@ public:
 	 *  \param shape the pointer on the IShape derived object you want to serialize.
 	 */
 	CShapeStream (IShape* shape);
+	
+	virtual ~CShapeStream() {}
 
 	/** Set the pointer to the IShape object. Used to serial a shape in output.
 	 *  \param shape the pointer on the IShape derived object you want to serialize.

@@ -46,7 +46,6 @@ H_AUTO_DECL( NL3D_UI_PlayList )
 
 TAnimationTime CPlayListUser::getLocalTime (uint8 slot, TGlobalAnimationTime globalTime, const UAnimationSet& animSet) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	// Cast
@@ -63,7 +62,6 @@ TAnimationTime CPlayListUser::getLocalTime (uint8 slot, TGlobalAnimationTime glo
 
 float CPlayListUser::getLocalWeight (uint8 slot, TGlobalAnimationTime globalTime) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getLocalWeight (slot, globalTime);
@@ -73,7 +71,6 @@ float CPlayListUser::getLocalWeight (uint8 slot, TGlobalAnimationTime globalTime
 
 void	CPlayListUser::registerTransform(UTransform object, const char* prefix)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	CTransform	*obj= object.getObjectPtr();
@@ -84,7 +81,6 @@ void	CPlayListUser::registerTransform(UTransform object, const char* prefix)
 }
 void	CPlayListUser::resetAllChannels()
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_ChannelMixer.resetChannels();
@@ -94,7 +90,6 @@ void	CPlayListUser::resetAllChannels()
 
 void CPlayListUser::emptyPlayList ()
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.emptyPlayList ();
@@ -102,7 +97,6 @@ void CPlayListUser::emptyPlayList ()
 
 void CPlayListUser::setAnimation (uint8 slot, uint animation)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setAnimation (slot, animation);
@@ -110,7 +104,6 @@ void CPlayListUser::setAnimation (uint8 slot, uint animation)
 
 uint CPlayListUser::getAnimation (uint8 slot) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getAnimation (slot);
@@ -120,7 +113,6 @@ uint CPlayListUser::getAnimation (uint8 slot) const
 
 void CPlayListUser::setTimeOrigin (uint8 slot, TGlobalAnimationTime timeOrigin)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setTimeOrigin (slot, timeOrigin);
@@ -135,7 +127,6 @@ TGlobalAnimationTime CPlayListUser::getTimeOrigin (uint8 slot) const
 
 void CPlayListUser::setSpeedFactor (uint8 slot, float speedFactor)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setSpeedFactor (slot, speedFactor);
@@ -143,7 +134,6 @@ void CPlayListUser::setSpeedFactor (uint8 slot, float speedFactor)
 
 float CPlayListUser::getSpeedFactor (uint8 slot) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getSpeedFactor (slot);
@@ -151,7 +141,6 @@ float CPlayListUser::getSpeedFactor (uint8 slot) const
 
 void CPlayListUser::setWrapMode (uint8 slot, TWrapMode wrapMode)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setWrapMode (slot, (CAnimationPlaylist::TWrapMode)(uint)wrapMode);
@@ -159,7 +148,6 @@ void CPlayListUser::setWrapMode (uint8 slot, TWrapMode wrapMode)
 
 UPlayList::TWrapMode CPlayListUser::getWrapMode (uint8 slot) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return (UPlayList::TWrapMode)(uint)_PlayList.getWrapMode (slot);
@@ -169,7 +157,6 @@ UPlayList::TWrapMode CPlayListUser::getWrapMode (uint8 slot) const
 
 void CPlayListUser::setStartWeight (uint8 slot, float startWeight, TGlobalAnimationTime time)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setStartWeight (slot, startWeight, time);
@@ -177,7 +164,6 @@ void CPlayListUser::setStartWeight (uint8 slot, float startWeight, TGlobalAnimat
 
 float CPlayListUser::getStartWeight (uint8 slot, TGlobalAnimationTime& time) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getStartWeight(slot, time);
@@ -185,7 +171,6 @@ float CPlayListUser::getStartWeight (uint8 slot, TGlobalAnimationTime& time) con
 
 void CPlayListUser::setEndWeight (uint8 slot, float endWeight, TGlobalAnimationTime time)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setEndWeight (slot, endWeight, time);
@@ -193,7 +178,6 @@ void CPlayListUser::setEndWeight (uint8 slot, float endWeight, TGlobalAnimationT
 
 float CPlayListUser::getEndWeight (uint8 slot, TGlobalAnimationTime& time) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getEndWeight (slot, time);
@@ -201,7 +185,6 @@ float CPlayListUser::getEndWeight (uint8 slot, TGlobalAnimationTime& time) const
 
 void CPlayListUser::setWeightSmoothness (uint8 slot, float smoothness)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setWeightSmoothness (slot, smoothness);
@@ -209,7 +192,6 @@ void CPlayListUser::setWeightSmoothness (uint8 slot, float smoothness)
 
 float CPlayListUser::getWeightSmoothness (uint8 slot) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getWeightSmoothness (slot);
@@ -217,7 +199,6 @@ float CPlayListUser::getWeightSmoothness (uint8 slot) const
 
 void CPlayListUser::setWeight (uint8 slot, float weight)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setStartWeight (slot, weight, 0);
@@ -228,7 +209,6 @@ void CPlayListUser::setWeight (uint8 slot, float weight)
 
 void CPlayListUser::setSkeletonWeight (uint8 slot, uint skeletonId, bool inverted)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_PlayList.setSkeletonWeight (slot, skeletonId, inverted);
@@ -236,7 +216,6 @@ void CPlayListUser::setSkeletonWeight (uint8 slot, uint skeletonId, bool inverte
 
 uint CPlayListUser::getSkeletonWeight (uint8 slot, bool &inverted) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _PlayList.getSkeletonWeight (slot, inverted);
@@ -246,7 +225,6 @@ uint CPlayListUser::getSkeletonWeight (uint8 slot, bool &inverted) const
 
 void CPlayListUser::enableChannel (uint channelId, bool enable)
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	_ChannelMixer.enableChannel(channelId, enable);
@@ -254,7 +232,6 @@ void CPlayListUser::enableChannel (uint channelId, bool enable)
 
 bool CPlayListUser::isChannelEnabled (uint channelId) const
 {
-	NL3D_MEM_PLAYLIST
 	NL3D_HAUTO_UI_PLAY_LIST;
 
 	return _ChannelMixer.isChannelEnabled (channelId) ;
@@ -264,7 +241,6 @@ bool CPlayListUser::isChannelEnabled (uint channelId) const
 // ***************************************************************************
 void CPlayListUser::evalPlayList(double playTime)
 {
-	NL3D_MEM_PLAYLIST
 	_PlayList.setupMixer(_ChannelMixer, playTime);
 	_ChannelMixer.eval(false);
 }

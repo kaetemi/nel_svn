@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/object_arena_allocator.h"
-#include "ps_located.h"
-#include "ps_attrib.h"
-#include "vertex_buffer.h"
-#include "ps_spawn_info.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_attrib.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/ps_spawn_info.h"
 #include "nel/misc/stream.h"
 
 
@@ -106,13 +106,7 @@ public:
 	// duplicate this attribute maker
 	virtual CPSAttribMakerBase *clone() const = 0;
 	// fast alloc for attrib makers
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#undef new
-	#endif
-		PS_FAST_OBJ_ALLOC
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#define new NL_NEW
-	#endif
+	PS_FAST_OBJ_ALLOC
 };
 
 

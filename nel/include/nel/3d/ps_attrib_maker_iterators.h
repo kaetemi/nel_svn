@@ -26,8 +26,8 @@
 #ifndef NL_PS_ATTRIB_MAKER_ITERATORS_H
 #define NL_PS_ATTRIB_MAKER_ITERATORS_H
 
-#include "ps_attrib.h"
-#include "ps_iterator.h"
+#include "nel/3d/ps_attrib.h"
+#include "nel/3d/ps_iterator.h"
 
 
 

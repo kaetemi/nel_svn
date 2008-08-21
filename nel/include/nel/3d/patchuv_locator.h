@@ -27,7 +27,7 @@
 #define NL_PATCHUV_LOCATOR_H
 
 #include "nel/misc/types_nl.h"
-#include "patch.h"
+#include "nel/3d/patch.h"
 #include "nel/misc/vector_2f.h"
 
 

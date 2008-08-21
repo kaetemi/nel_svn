@@ -29,8 +29,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
-#include "animatable.h"
-#include "track.h"
+#include "nel/3d/animatable.h"
+#include "nel/3d/track.h"
 #include <map>
 
 

@@ -1,7 +1,7 @@
 /** \file unix_event_emitter.h
- * TODO: File description
+ * Manage event using X11
  *
- * $Id: unix_event_emitter.h,v 1.5 2004/11/15 10:24:56 lecroart Exp $
+ * $Id: unix_event_emitter.h,v 1.5 2004-11-15 10:24:56 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -30,7 +30,6 @@
 #include "nel/misc/event_emitter.h"
 
 #ifdef NL_OS_UNIX
-
 
 #include <GL/gl.h>
 #include <GL/glx.h>

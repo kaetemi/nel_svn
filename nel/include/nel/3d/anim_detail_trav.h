@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/plane.h"
-#include "trav_scene.h"
+#include "nel/3d/trav_scene.h"
 
 
 namespace NL3D

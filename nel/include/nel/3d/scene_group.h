@@ -30,13 +30,13 @@
 #include "nel/misc/vector.h"
 #include "nel/misc/quat.h"
 #include "nel/misc/smart_ptr.h"
-#include "portal.h"
-#include "cluster.h"
-#include "transform.h"
-#include "point_light_named.h"
-#include "point_light_named_array.h"
-#include "ig_surface_light.h"
-#include "clip_trav.h"
+#include "nel/3d/portal.h"
+#include "nel/3d/cluster.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/point_light_named.h"
+#include "nel/3d/point_light_named_array.h"
+#include "nel/3d/ig_surface_light.h"
+#include "nel/3d/clip_trav.h"
 
 #include <vector>
 
@@ -151,7 +151,7 @@ public:
 	/// A vector of instance.
 	typedef std::vector<CInstance> TInstanceArray;
 
-	/// \todo remove all of these methods. For the moment DO NOT USE THEM !!!
+	/// Remove all of these methods. For the moment DO NOT USE THEM !!!
 
 	/// Get number of instance in this group
 	uint					getNumInstance () const;

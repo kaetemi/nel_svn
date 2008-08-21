@@ -38,7 +38,6 @@ namespace NL3D
 // ***************************************************************************
 void			CHeightMap::resize(uint w, uint h)
 {
-	NL3D_MEM_HMAP
 	_Width= w;
 	_Height= h;
 	Heights.resize(w*h);
@@ -48,7 +47,6 @@ void			CHeightMap::resize(uint w, uint h)
 // ***************************************************************************
 void			CHeightMap::buildFromBitmap(const NLMISC::CBitmap &bitmap0)
 {
-	NL3D_MEM_HMAP
 	// copy bitmap.
 	CBitmap		bitmap= bitmap0;
 	// convert to luminance.
@@ -77,7 +75,6 @@ void			CHeightMap::buildFromBitmap(const NLMISC::CBitmap &bitmap0)
 // ***************************************************************************
 float			CHeightMap::getZ(uint x, uint y) const
 {
-	NL3D_MEM_HMAP
 	nlassert(x<_Width && y<_Height);
 	return Heights[y*_Width+x]*MaxZ/255;
 }

@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/object_vector.h"
 #include "nel/misc/quat.h"
-#include "track_sampled_common.h"
+#include "nel/3d/track_sampled_common.h"
 
 
 namespace NL3D {

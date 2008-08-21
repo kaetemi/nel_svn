@@ -30,7 +30,7 @@
 #include "nel/misc/debug.h"
 #include "nel/misc/vector_h.h"
 #include "nel/misc/vector.h"
-#include "mesh.h"
+#include "nel/3d/mesh.h"
 #include <vector>
 
 

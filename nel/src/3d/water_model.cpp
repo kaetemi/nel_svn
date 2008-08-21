@@ -71,7 +71,7 @@ void CWaterModel::setupVertexBuffer(CVertexBuffer &vb, uint numWantedVertices, I
 		vb.setName("Water");
 		vb.setPreferredMemory(CVertexBuffer::AGPPreferred, false);
 		if (drv->isWaterShaderSupported())
-		{		
+		{
 			vb.setVertexFormat(CVertexBuffer::PositionFlag);
 		}
 		else
@@ -193,19 +193,19 @@ float   CWaterModel::getAttenuatedHeight(const CVector2f &pos, const NLMISC::CVe
 //   3---2
 
 /*
-
 static float inline BilinFilter(float v0, float v1, float v2, float v3, float u, float v)
 {
 	float g = v * v3 + (1.f - v) * v0;
 	float h = v * v2 + (1.f - v) * v1;
 	return u * h + (1.f - u) * g;
 }
-
+*/
 
 
 //=======================================================================
 
 /// store a value in a water vertex buffer, and increment the pointer
+/*
 static void inline FillWaterVB(uint8 *&vbPointer, float x, float y, float z, float nx, float ny)
 {
 	* (float *) vbPointer = x;
@@ -215,10 +215,7 @@ static void inline FillWaterVB(uint8 *&vbPointer, float x, float y, float z, flo
 	*((float *) (vbPointer + 4 * sizeof(float))) = ny;
 	vbPointer += 5 * sizeof(float);
 }
-
- */
-
-
+*/
 
 //***************************************************************************************************************
 /*
@@ -337,19 +334,14 @@ static void SetupWaterVertex(  sint  qLeft,
 						4.5f * (timeRatio * gradCurrY + (1.f - timeRatio) * gradPrevY)
 					   );
 
-
-
 			//NLMISC::CVector2f *ptGrad  = whm.getGradPointer() + offset;
-		
 	}
 }
-
 */
 
 
-/*
-
 //*****************************************************************************************************
+/*
 static void DrawPoly2D(CVertexBuffer &vb, IDriver *drv, const NLMISC::CMatrix &mat, const NLMISC::CPolygon &p)
 {
 	uint k;
@@ -453,9 +445,6 @@ void	CWaterModel::traverseRender()
 	modelMat.setPos(NLMISC::CVector(obsPos.x, obsPos.y, zHeight));
 	drv->setupModelMatrix(modelMat);
 
-	
-
-
 	//==================//
 	// material setup   //
 	//==================//
@@ -466,8 +455,6 @@ void	CWaterModel::traverseRender()
 	
 	
 	drv->setupMaterial(CWaterModel::_WaterMat);
-
-	
 
 	sint numPass = drv->beginMaterialMultiPass();
 	nlassert(numPass == 1); // for now, we assume water is always rendered in a single pass !
@@ -490,9 +477,6 @@ void	CWaterModel::traverseRender()
 
 	if (_ClippedPoly.Vertices.size())
 	{
-		
-		
-
 		//======================================//
 		// Polygon projection on the near plane //
 		//======================================//
@@ -507,8 +491,6 @@ void	CWaterModel::traverseRender()
 		const float yFactor = numStepY * Near  / (renderTrav.Bottom - renderTrav.Top);
 		const float yOffset = numStepY * (-renderTrav.Top / (renderTrav.Bottom - renderTrav.Top)) - 0.5f * isAbove;
 
-		
-		
 		const NLMISC::CMatrix projMat =  matViewUp * getWorldMatrix();
 		uint k;		
 		for (k = 0; k < _ClippedPoly.Vertices.size(); ++k)
@@ -518,8 +500,6 @@ void	CWaterModel::traverseRender()
 			float invY = 1.f / t.y;
 			projPoly.Vertices[k].set(xFactor * t.x * invY + xOffset, yFactor * t.z * invY + yOffset);			
 		}
-
-
 
 		//=============================================//
 		// compute borders of poly at a low resolution //
@@ -586,9 +566,6 @@ void	CWaterModel::traverseRender()
 
 			qLeft += mapBorder;
 			qDown += mapBorder;
-
-		
-
 			
 			//==============================================//
 			// setup rays to be traced, and their increment //
@@ -601,8 +578,6 @@ void	CWaterModel::traverseRender()
 			NLMISC::CVector xStep = (renderTrav.Right - renderTrav.Left) * invNumStepX * camMatUp.getI();	   // xStep for the ray vector
 			NLMISC::CVector yStep = (renderTrav.Bottom - renderTrav.Top) * invNumStepY * camMatUp.getK();    // yStep for the ray vector
 			
-
-
 			//===============================================//
 			//				perform display                  //
 			//===============================================//
@@ -634,9 +609,6 @@ void	CWaterModel::traverseRender()
 
 				// distance from the viewer along the traced ray
 				float t;
-
-				
-
 
 				NLMISC::CPolygon2D::TRasterVect::const_iterator it = rasters.begin();
 				for (uint l = 0; l <= wqHeight; ++l)
@@ -847,7 +819,6 @@ void CWaterModel::setupMaterialNVertexShader(IDriver *drv, CWaterShape *shape, c
 		}
 	}
 
-
 	shape->envMapUpdate();
 
 	const uint alphaMapStage = 3;
@@ -871,18 +842,11 @@ void CWaterModel::setupMaterialNVertexShader(IDriver *drv, CWaterShape *shape, c
 	cst[16 - cstOffset].set(0.1f, 0.1f, 0.1f, 0.1f); // used to avoid imprecision when performing a RSQ to get distance from the origin
 	// cst[16 - cstOffset].set(0.0f, 0.0f, 0.0f, 0.0f); // used to avoid imprecision when performing a RSQ to get distance from the origin
 
-				
-
-
 	cst[5  - cstOffset].set(0.f, 0.f, 0.f, 0.f); // claping negative values to 0
 
 	// slope of attenuation of normal / height with distance		
 	const float invMaxDist = shape->_WaveHeightFactor / maxDist;
 	cst[6  - cstOffset].set(invMaxDist, shape->_WaveHeightFactor, 0, 0);		
-
-
-
-			
 
 	/// set matrix		
 	drv->setConstantMatrix(0, IDriver::ModelViewProjection, IDriver::Identity);
@@ -896,49 +860,39 @@ void CWaterModel::setupMaterialNVertexShader(IDriver *drv, CWaterShape *shape, c
 	cst[11  - cstOffset].set(fmodf(shape->_HeightMapScale[1].x * obsPos.x, 1.f) + fmodf(date * shape->_HeightMapSpeed[1].x, 1.f), fmodf(shape->_HeightMapScale[1].y * obsPos.y, 1.f) + fmodf(date * shape->_HeightMapSpeed[1].y, 1.f), 0.f, 1.f); // bump map 1 offset
 	cst[12  - cstOffset].set(shape->_HeightMapScale[1].x, shape->_HeightMapScale[1].y, 0, 0); // bump map 1 scale
 
-			
-	
-
 	cst[4  - cstOffset].set(1.f, 1.f, 1.f, 1.f); // use with min man, and to get the 1 constant		
 	cst[7  - cstOffset].set(0, 0, obsPos.z - zHeight, 1.f);
 	cst[8  - cstOffset].set(0.5f, 0.5f, 0.f, 1.f); // used to scale reflected ray into the envmap
-
-
-	
 
 	/// set all our constants in one call
 	drv->setConstant(4, sizeof(cst) / sizeof(cst[0]), (float *) &cst[0]);
 
 	shape->initVertexProgram();		
 	bool result;
-	/*
-	if (useBumpedVersion)
-	{
-		if (!useEMBM)
-		{			
-			result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump2Diffuse).get())
-											: drv->activeVertexProgram((shape->_VertexProgramBump2).get());
-		}
-		else
-		{
-			result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump1Diffuse).get())
-											: drv->activeVertexProgram((shape->_VertexProgramBump1).get());
-		}
-	}
-	else
-	{
-		result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramNoBumpDiffuse).get())
-									: drv->activeVertexProgram((shape->_VertexProgramNoBump).get());
-	}
-	*/
-	
-/*	
 
-	result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump2Diffuse).get())
-											: drv->activeVertexProgram((shape->_VertexProgramBump2).get());
-			
+	//if (useBumpedVersion)
+	//{
+	//	if (!useEMBM)
+	//	{			
+	//		result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump2Diffuse).get())
+	//										: drv->activeVertexProgram((shape->_VertexProgramBump2).get());
+	//	}
+	//	else
+	//	{
+	//		result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump1Diffuse).get())
+	//										: drv->activeVertexProgram((shape->_VertexProgramBump1).get());
+	//	}
+	//}
+	//else
+	//{
+	//	result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramNoBumpDiffuse).get())
+	//								: drv->activeVertexProgram((shape->_VertexProgramNoBump).get());
+	//}
+
+	//result = shape->getColorMap() ? drv->activeVertexProgram((shape->_VertexProgramBump2Diffuse).get())
+	//										: drv->activeVertexProgram((shape->_VertexProgramBump2).get());		
 	//
-	if (!result) nlwarning("no vertex program setupped");							
+	//if (!result) nlwarning("no vertex program setuped");
 }
 */
 
@@ -1671,7 +1625,6 @@ uint CWaterModel::fillVBHard(void *datas, uint startTri)
 //***************************************************************************************************************
 void	CWaterModel::traverseRender()
 {				
-	NL_ALLOC_CONTEXT( RdrWate )
 	H_AUTO( NL3D_Water_Render );	
 
 	CRenderTrav					&renderTrav		= getOwnerScene()->getRenderTrav();
@@ -1767,8 +1720,10 @@ struct CSimpleVertexInfo
 	NLMISC::CVector XFormPos;
 	NLMISC::CUV     UV;
 };
+*/
 
 //***********************************************************************************************************
+/*
 void CWaterModel::doSimpleRender(IDriver *drv)
 {
 	if (_ClippedPoly.Vertices.empty()) return;
@@ -1972,7 +1927,8 @@ void CWaterModel::doSimpleRender(IDriver *drv)
 	drv->setupMaterial(_SimpleWaterMat);
 	drv->activeIndexBuffer(indices);
 	drv->renderSimpleTriangles(0, numVerts - 2);	
-}*/
+}
+*/
 
 //***********************************************************************************************************
 void CWaterModel::updateDiffuseMapMatrix(bool force /* = false*/)
@@ -2074,54 +2030,4 @@ void	CWaveMakerModel::traverseAnimDetail()
 	}
 }
 
-
-
 } // NL3D
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

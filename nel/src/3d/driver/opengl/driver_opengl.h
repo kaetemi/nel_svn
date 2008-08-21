@@ -157,10 +157,12 @@ public:
 	GLuint					FBOId;
 
 	// depth stencil FBO id
-	GLuint					DepthStencilFBOId;
+	GLuint					DepthFBOId;
+	GLuint					StencilFBOId;
 
 	bool					InitFBO;
 	bool					AttachDepthStencil;
+	bool					UsePackedDepthStencil;
 
 	// The current wrap modes assigned to the texture.
 	ITexture::TWrapMode		WrapS;
@@ -294,18 +296,21 @@ public:
 
 	virtual	bool			isLost() const { return false; } // there's no notion of 'lost device" in OpenGL
 
-	virtual bool			init (uint windowIcon = 0);
+	virtual bool			init (uint windowIcon = 0, emptyProc exitFunc = 0);
 
 	virtual void			disableHardwareVertexProgram();
 	virtual void			disableHardwareVertexArrayAGP();
 	virtual void			disableHardwareTextureShader();
 
-	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show) throw(EBadDisplay);
+	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show, bool resizeable) throw(EBadDisplay);
 	virtual bool			setMode(const GfxMode& mode);
 	virtual bool			getModes(std::vector<GfxMode> &modes);
 	virtual bool			getCurrentScreenMode(GfxMode &mode);
 	virtual void			beginDialogMode();
 	virtual void			endDialogMode();
+
+	/// Set the title of the NeL window
+	virtual void			setWindowTitle(const std::string &title);
 
 	virtual void*			getDisplay()
 	{
@@ -323,7 +328,7 @@ public:
 
 	virtual bool			activate();
 
-	virtual	sint			getNbTextureStages() const;
+	virtual	uint			getNbTextureStages() const;
 
 	virtual bool			isTextureExist(const ITexture&tex);
 
@@ -346,6 +351,8 @@ public:
 	virtual void			forceDXTCCompression(bool dxtcComp);
 
 	virtual void			forceTextureResize(uint divisor);
+	
+	virtual void			forceNativeFragmentPrograms(bool nativeOnly);
 
 	/// Setup texture env functions. Used by setupMaterial
 	void				setTextureEnvFunction(uint stage, CMaterial& mat);
@@ -421,7 +428,7 @@ public:
 	virtual bool			renderLines(CMaterial& mat, uint32 firstIndex, uint32 nlines);
 	virtual bool			renderTriangles(CMaterial& Mat, uint32 firstIndex, uint32 ntris);
 	virtual bool			renderSimpleTriangles(uint32 firstTri, uint32 ntris);
-	virtual bool			renderRawPoints(CMaterial& Mat, uint32 startIndex, uint32 numPoints);		
+	virtual bool			renderRawPoints(CMaterial& Mat, uint32 startIndex, uint32 numPoints);
 	virtual bool			renderRawLines(CMaterial& Mat, uint32 startIndex, uint32 numLines);
 	virtual bool			renderRawTriangles(CMaterial& Mat, uint32 startIndex, uint32 numTris);
 	virtual bool			renderRawQuads(CMaterial& Mat, uint32 startIndex, uint32 numQuads);
@@ -660,8 +667,8 @@ private:
 
 #ifdef NL_OS_WINDOWS
 
-	friend static void GlWndProc(CDriverGL *driver, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	
+	friend static bool GlWndProc(CDriverGL *driver, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 	HWND						_hWnd;
 	sint32						_WindowWidth, _WindowHeight, _WindowX, _WindowY;
 	HDC							_hDC;
@@ -669,7 +676,7 @@ private:
     HGLRC						_hRC;
 	static uint					_Registered;
 	DEVMODE						_OldScreenMode;
-	NLMISC::CEventEmitterMulti	_EventEmitter; // this can contains a win emitter and eventually a direct input emitter	
+	NLMISC::CEventEmitterMulti	_EventEmitter; // this can contains a win emitter and eventually a direct input emitter
 	bool						_DestroyWindow;
 
 	// Off-screen rendering in Dib section
@@ -715,7 +722,7 @@ private:
 	// To know if the projection matrix has been changed
 	bool					_ProjMatDirty;
 
-	// Mirror the gl projection matrix when _ProjMatDirty = false 
+	// Mirror the gl projection matrix when _ProjMatDirty = false
 	NLMISC::CMatrix			_GLProjMat;
 
 	// Ored of _LightSetupDirty and _ModelViewMatrixDirty
@@ -755,6 +762,7 @@ private:
 	CViewport				_OldViewport;
 
 	bool					_RenderTargetFBO;
+	bool					_RenderTargetPackedDepthStencil;
 
 
 	// Num lights return by GL_MAX_LIGHTS
@@ -771,7 +779,7 @@ private:
 	// this is the backup of standard lighting (cause GL states may be modified by Lightmap Dynamic Lighting)
 	CLight						_UserLight0;
 	bool						_UserLightEnable[MaxLight];
-	
+
 	//\name description of the per pixel light
 	// @{
 		void checkForPerPixelLightingSupport();
@@ -782,15 +790,15 @@ private:
 		NLMISC::CRGBA				_PPLightSpecularColor;
 	// @}
 
-	
+
 
 	/// \name Prec settings, for optimisation.
 	// @{
 
 	// Special Texture environnements.
 	enum	CTexEnvSpecial {
-		TexEnvSpecialDisabled= 0, 
-		TexEnvSpecialLightMap, 
+		TexEnvSpecialDisabled= 0,
+		TexEnvSpecialLightMap,
 		TexEnvSpecialSpecularStage1,
 		TexEnvSpecialSpecularStage1NoText,
 		TexEnvSpecialPPLStage0,
@@ -833,7 +841,7 @@ private:
 
 	bool					_CurrentGlNormalize;
 
-private:	
+private:
 	// Get the proj matrix setupped in GL
 	void					refreshProjMatrixFromGL();
 
@@ -848,7 +856,7 @@ private:
 	void					activateTexEnvColor(uint stage, NLMISC::CRGBA col);
 	void					forceActivateTexEnvColor(uint stage, NLMISC::CRGBA col)
 	{
-		static	const float	OO255= 1.0f/255;	
+		static	const float	OO255= 1.0f/255;
 		_CurrentTexEnv[stage].ConstantColor= col;
 		// Setup the gl cte color.
 		_DriverGLStates.activeTextureARB(stage);
@@ -857,12 +865,12 @@ private:
 		glcol[1]= col.G*OO255;
 		glcol[2]= col.B*OO255;
 		glcol[3]= col.A*OO255;
-		glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, glcol);	
+		glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, glcol);
 	}
 	void					forceActivateTexEnvColor(uint stage, const CMaterial::CTexEnv  &env)
-	{	
+	{
 		H_AUTO_OGL(CDriverGL_forceActivateTexEnvColor)
-		forceActivateTexEnvColor(stage, env.ConstantColor);	
+		forceActivateTexEnvColor(stage, env.ConstantColor);
 	}
 
 
@@ -959,7 +967,7 @@ private:
 	void			setupWaterPass(uint pass);
 	void			endWaterMultiPass();
 	// @}
-		
+
 	/// \name Per pixel lighting
 	// @{
 	// per pixel lighting with specular
@@ -972,10 +980,10 @@ private:
 	void			setupPPLNoSpecPass(uint pass);
 	void			endPPLNoSpecMultiPass();
 
-	typedef NLMISC::CSmartPtr<CTextureCube> TSPTextureCube;	
-	typedef std::vector<TSPTextureCube> TTexCubeVect;	
+	typedef NLMISC::CSmartPtr<CTextureCube> TSPTextureCube;
+	typedef std::vector<TSPTextureCube> TTexCubeVect;
 	TTexCubeVect   _SpecularTextureCubes; // the cube maps used to compute the specular lighting.
-		
+
 
 	/// get (and if necessary, build) a cube map used for specular lighting. The range for exponent is limited, and only the best fit is used
 	CTextureCube   *getSpecularCubeMap(uint exp);
@@ -1042,7 +1050,7 @@ private:
 	void			setupLightMapDynamicLighting(bool enable);
 
 
-	/// \name VertexBufferHard 
+	/// \name VertexBufferHard
 	// @{
 	CPtrSet<IVertexBufferHardGL>	_VertexBufferHardSet;
 	friend class					CVertexArrayRangeNVidia;
@@ -1124,17 +1132,17 @@ private:
 	void			setConstant (uint index, float, float, float, float);
 	void			setConstant (uint index, double, double, double, double);
 	void			setConstant (uint indexStart, const NLMISC::CVector& value);
-	void			setConstant (uint indexStart, const NLMISC::CVectorD& value);	
-	void			setConstant (uint index, uint num, const float *src);	
+	void			setConstant (uint indexStart, const NLMISC::CVectorD& value);
+	void			setConstant (uint index, uint num, const float *src);
 	void			setConstant (uint index, uint num, const double *src);
-	void			setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver::TTransform transform);	
+	void			setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver::TTransform transform);
 	void			setConstantFog (uint index);
 	void			enableVertexProgramDoubleSidedColor(bool doubleSided);
 	bool		    supportVertexProgramDoubleSidedColor() const;
 
 	virtual	bool			supportMADOperator() const ;
-	
-	
+
+
 	// @}
 
 	/// \name Vertex program implementation
@@ -1169,6 +1177,8 @@ private:
 	bool							_ForceDXTCCompression;
 	/// Divisor for textureResize (power).
 	uint							_ForceTextureResizePower;
+	// enforcement of native fragment program check
+	bool							_ForceNativeFragmentPrograms;
 
 
 	// user texture matrix
@@ -1191,7 +1201,7 @@ private:
 	// @}
 
 	/// Same as getNbTextureStages(), but faster because inline, and not virtual!!
-	sint			inlGetNumTextStages() const {return _Extensions.NbTextureStages;}
+	uint			inlGetNumTextStages() const { return _Extensions.NbTextureStages; }
 
 
 	NLMISC::CRGBA					_CurrentBlendConstantColor;
@@ -1287,7 +1297,7 @@ protected:
 public:
 	void incrementResetCounter() { ++_ResetCounter; }
 	bool isWndActive() const { return _WndActive; }
-	const IVertexBufferHardGL	*getCurrentVertexBufferHard() const { return _CurrentVertexBufferHard; }	
+	const IVertexBufferHardGL	*getCurrentVertexBufferHard() const { return _CurrentVertexBufferHard; }
 	// For debug : dump list of mapped buffers
 	#ifdef NL_DEBUG
 		void dumpMappedBuffers();
@@ -1333,6 +1343,10 @@ public:
 	CVertexProgamDrvInfosGL (CDriverGL *drv, ItVtxPrgDrvInfoPtrList it);
 };
 
+#ifdef NL_OS_MAC
+	// Specific mac functions
+	extern bool getMacModes(std::vector<GfxMode> &modes);
+#endif
 
 } // NL3D
 

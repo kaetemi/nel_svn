@@ -27,8 +27,8 @@
 #define NL_PLAY_LIST_MANAGER_H
 
 #include "nel/misc/types_nl.h"
-#include "animation_playlist.h"
-#include "channel_mixer.h"
+#include "nel/3d/animation_playlist.h"
+#include "nel/3d/channel_mixer.h"
 #include <map>
 
 

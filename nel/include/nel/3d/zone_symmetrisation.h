@@ -27,8 +27,8 @@
 #define NL_ZONE_SYMMETRISATION_H
 
 #include "nel/misc/types_nl.h"
-#include "patchuv_locator.h"
-#include "patch.h"
+#include "nel/3d/patchuv_locator.h"
+#include "nel/3d/patch.h"
 
 
 namespace NL3D 

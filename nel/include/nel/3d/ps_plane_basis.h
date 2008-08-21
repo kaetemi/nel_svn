@@ -30,8 +30,8 @@
 #include "nel/misc/vector.h"
 #include "nel/misc/matrix.h"
 #include "nel/misc/traits_nl.h"
-#include "ps_util.h"
-#include "ps_attrib_maker_helper.h"
+#include "nel/3d/ps_util.h"
+#include "nel/3d/ps_attrib_maker_helper.h"
 
 
 namespace NL3D {
@@ -84,18 +84,13 @@ struct CPlaneBasis
 
 // for map insertion
 
-inline bool operator < (const CPlaneBasis &p1, const CPlaneBasis &p2)
+inline bool operator<(const CPlaneBasis &p1, const CPlaneBasis &p2)
 {
-/*
 	if (p1.X < p2.X) return true ;
 	else if (p1.X == p2.X) return false ;
 		else if (p1.Y < p2.Y) return true ;
 			else if (p1.X == p2.Y) return false ;
 				else return true ;
-*/
-
-	if (p1.X != p2.X) return p1.X < p2.X;
-	return p1.Y < p2.Y;
 }
 
 

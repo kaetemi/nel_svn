@@ -77,8 +77,6 @@ using namespace NLMISC;
 
 #define NL3D_SCENE_COARSE_MANAGER_TEXTURE	"nel_coarse_texture.tga"
 
-#define NL3D_MEM_INSTANCE					NL_ALLOC_CONTEXT( 3dIns )
-#define NL3D_MEM_MOT						NL_ALLOC_CONTEXT( 3dMot )
 
 // The manager is limited to a square of 3000m*3000m around the camera. Beyond, models are clipped individually (bad!!).
 const	float	NL3D_QuadGridClipManagerRadiusMax= 1500;
@@ -721,8 +719,6 @@ void CScene::setShapeBank(CShapeBank*pShapeBank)
 
 CTransformShape	*CScene::createInstance(const string &shapeName)
 {	
-	NL3D_MEM_INSTANCE
-
 	// We must attach a bank to the scene (a ShapeBank handle the shape caches and 
 	// the creation/deletion of the instances)
 	nlassert( _ShapeBank != NULL );

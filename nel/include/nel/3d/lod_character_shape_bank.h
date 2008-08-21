@@ -28,7 +28,7 @@
 
 #include "nel/misc/types_nl.h"
 
-#include "lod_character_shape.h"
+#include "nel/3d/lod_character_shape.h"
 
 namespace NL3D {
 

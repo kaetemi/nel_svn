@@ -28,9 +28,9 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
-#include "texture.h"
-#include "material.h"
-#include "texture_font.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/material.h"
+#include "nel/3d/texture_font.h"
 
 #include <map>
 #include <list>

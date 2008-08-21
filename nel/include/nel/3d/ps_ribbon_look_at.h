@@ -27,9 +27,9 @@
 #define NL_PS_PARTICLE_RIBBON_LOOK_AT_H
 
 
-#include "ps_ribbon_base.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/ps_ribbon_base.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 
 namespace NL3D 
 {
@@ -145,7 +145,6 @@ private:
 	//@{
 
 			/** a struct containing a vertex buffer and a primitive block
-			  * \todo: primitive blocks can be shared for several vbs...
 			  */
 			class CVBnPB
 			{

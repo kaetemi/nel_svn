@@ -30,7 +30,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -80,8 +80,9 @@ ITexture &ITexture::operator=(const ITexture &tex)
 	_WrapS= tex._WrapS;
 	_WrapT= tex._WrapT;
 	_MagFilter= tex._MagFilter;
-	_MinFilter= tex._MinFilter; 
+	_MinFilter= tex._MinFilter;
 	_RenderTarget= tex._RenderTarget;
+	_FilterOrWrapModeTouched = tex._FilterOrWrapModeTouched;
 	touch();
 	return *this;
 }
@@ -107,7 +108,7 @@ void		ITexture::setFilterMode(TMagFilter magf, TMinFilter minf)
 		_MagFilter= magf;
 		_FilterOrWrapModeTouched = true;
 	}
-	// If the MipMap mode has siwtched Off/On, then must recompute...
+	// If the MipMap mode has switched Off/On, then must recompute...
 	bool	precOff= mipMapOff();
 	if (_MinFilter != minf)
 	{

@@ -211,7 +211,7 @@ void			CNELU::screenshot()
 		CNELU::Driver->getBuffer(btm);
 		string filename = CFile::findNewFile ("screenshot.tga");
 		COFile fs(filename);
-		btm.writeTGA (fs,24,true);
+		btm.writeTGA (fs,24);
 		nlinfo("Screenshot '%s' saved", filename.c_str());
 	}
 }

@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/stream.h"
 #include "nel/3d/animation_time.h"
-#include "texture.h"
+#include "nel/3d/texture.h"
 
 
 namespace NLMISC

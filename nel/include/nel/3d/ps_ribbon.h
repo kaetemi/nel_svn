@@ -26,11 +26,11 @@
 #ifndef NL_PS_RIBBON_H
 #define NL_PS_RIBBON_H
 
-#include "ps_particle_basic.h"
-#include "ps_ribbon_base.h"
-#include "vertex_buffer.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/ps_ribbon_base.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
 #include "nel/misc/vector.h"
 
 
@@ -228,7 +228,6 @@ private:
 			/** a struct containing a vertex buffer and the matching primitive block
 			  * The number of slice is encoded in the upper word of the vb index (the int used to lookup in the map)
 			  * The number of vertices per slices is encoded in the lower word
-			  * \todo: primitive blocks can be shared for several vbs...
 			  */
 			class CVBnPB
 			{

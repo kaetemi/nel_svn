@@ -35,10 +35,10 @@ const uint32 DefaultMaxLocatedInstance = 1; // the default value for a located c
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
-#include "particle_system_process.h"
-#include "ps_attrib.h" // an attribute template container
-#include "ps_lod.h"
-#include "ps_spawn_info.h"		
+#include "nel/3d/particle_system_process.h"
+#include "nel/3d/ps_attrib.h" // an attribute template container
+#include "nel/3d/ps_lod.h"
+#include "nel/3d/ps_spawn_info.h"		
 #include "nel/misc/stream.h"
 //
 #include "nel/misc/object_arena_allocator.h"
@@ -106,13 +106,7 @@ struct CPSCollisionInfo
 class CPSLocated : public CParticleSystemProcess
 {
 public:
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#undef new
-	#endif
-		PS_FAST_OBJ_ALLOC
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#define new NL_NEW
-	#endif
+	PS_FAST_OBJ_ALLOC
 	/// Constructor
 	CPSLocated();
 
@@ -739,13 +733,7 @@ const uint32 PSSound = 5;
 class CPSLocatedBindable : public NLMISC::IStreamable
 {
 public:	
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#undef new
-	#endif
-		PS_FAST_OBJ_ALLOC
-	#if !defined (NL_USE_DEFAULT_MEMORY_MANAGER) && !defined (NL_NO_DEFINE_NEW)
-	#define new NL_NEW
-	#endif
+	PS_FAST_OBJ_ALLOC
 	///\name Object
 	//@{
 		/// ctor	

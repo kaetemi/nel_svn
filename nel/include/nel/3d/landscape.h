@@ -31,21 +31,21 @@
 #include "nel/misc/class_id.h"
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/triangle.h"
-#include "zone.h"
-#include "tile_bank.h"
-#include "patch_rdr_pass.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "material.h"
-#include "tile_far_bank.h"
-#include "texture_near.h"
-#include "quad_grid.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/tile_bank.h"
+#include "nel/3d/patch_rdr_pass.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/material.h"
+#include "nel/3d/tile_far_bank.h"
+#include "nel/3d/texture_near.h"
+#include "nel/3d/quad_grid.h"
 #include "nel/misc/block_memory.h"
-#include "landscapevb_allocator.h"
-#include "landscape_face_vector_manager.h"
-#include "tess_face_priority_list.h"
+#include "nel/3d/landscapevb_allocator.h"
+#include "nel/3d/landscape_face_vector_manager.h"
+#include "nel/3d/tess_face_priority_list.h"
 #include "nel/3d/point_light_influence.h"
-#include "shadow_poly_receiver.h"
+#include "nel/3d/shadow_poly_receiver.h"
 
 #include <map>
 
@@ -151,7 +151,7 @@ public:
 	/// Constructor
 	CLandscape();
 	/// Destructor. clear().
-	~CLandscape();
+	virtual ~CLandscape();
 
 
 	/// \name Init/Build.
@@ -214,7 +214,6 @@ public:
 	// invalidate all the tiles (force the tiles callbakc to be called again)
 	void invalidateAllTiles();	
 
-	// \todo yoyo: other landscape param setup (Transition etc...).
 	// Store it by landscape, and not only globally in CLandscapeGlobals statics.
 	// @}
 

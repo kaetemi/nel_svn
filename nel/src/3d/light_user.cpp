@@ -33,7 +33,6 @@ namespace NL3D
 
 ULight *ULight::createLight ()
 {
-	NL3D_MEM_LIGHT
 	// return the new light
 	return new CLightUser;
 }

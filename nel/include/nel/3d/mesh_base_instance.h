@@ -27,12 +27,12 @@
 #define NL_MESH_BASE_INSTANCE_H
 
 #include "nel/misc/types_nl.h"
-#include "transform_shape.h"
-#include "material.h"
-#include "animated_material.h"
-#include "animated_lightmap.h"
-#include "animated_morph.h"
-#include "async_texture_block.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/material.h"
+#include "nel/3d/animated_material.h"
+#include "nel/3d/animated_lightmap.h"
+#include "nel/3d/animated_morph.h"
+#include "nel/3d/async_texture_block.h"
 
 
 namespace NL3D

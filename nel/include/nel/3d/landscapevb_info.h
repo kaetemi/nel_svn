@@ -27,7 +27,7 @@
 #define NL_LANDSCAPEVB_INFO_H
 
 #include "nel/misc/types_nl.h"
-#include "vertex_buffer.h"
+#include "nel/3d/vertex_buffer.h"
 
 
 namespace NL3D 

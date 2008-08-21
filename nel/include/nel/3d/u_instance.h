@@ -68,7 +68,7 @@ public:
 	// @{
 	/// return number of materials this mesh instance use.
 	uint				getNumMaterials() const;
-	/// return a local access on a material, to change its values. (NB: overwrited, if animated).
+	/// return a local access on a material, to change its values. (NB: overwrite, if animated).
 	UInstanceMaterial	getMaterial(uint materialId);
 	/** Select textures of material among several sets (if available)
 	 *	NB: if success and if getAsyncTextureMode()==true, then setAsyncTextureDirty(true) is called
@@ -78,7 +78,7 @@ public:
 
 	/** Change MRM Distance setup. Only for mesh which support MRM. NB MeshMultiLod apply it only on Lod0 
 	 *	(if Lod0 is a MRM).
-	 *	NB: This apply to the shape direclty!! ie All instances using same shape will be affected
+	 *	NB: This apply to the shape directly!! ie All instances using same shape will be affected
 	 *	NB: no-op if distanceFinest<0, distanceMiddle<=distanceFinest or if distanceCoarsest<=distanceMiddle.
 	 *	\param distanceFinest The MRM has its max faces when dist<=distanceFinest.
 	 *	\param distanceMiddle The MRM has 50% of its faces at dist==distanceMiddle.
@@ -89,13 +89,13 @@ public:
 
 	/** Change Max Display distance. After this distance the shape won't be displayed.
 	 *	setting <0 means -1 and so means DistMax = infinite (default in meshs but multilod meshes).
-	 *	NB: This apply to the shape direclty!! ie All instances using same shape will be affected
+	 *	NB: This apply to the shape directly!! ie All instances using same shape will be affected
 	 *
 	 *	Note: If the instance is skinned/sticked to a skeleton, this setup is not taken into account. But you can
 	 *	call USkeleton::setShapeDistMax() to have same effect.
 	 *
 	 *	Note (complex): All instances of the same shape which are freezeHRC()-ed and are linked to the 
-	 *	QuadGridClipManager (ie not linked to a cluster) may not be updated corretcly. 
+	 *	QuadGridClipManager (ie not linked to a cluster) may not be updated correctly. 
 	 *	In other words, you should setup this value only at beginning of program, just after creating your 
 	 *	instance (more exactly before UScene::render()), and all instances of the same shape should be setuped 
 	 *	with same value (or don't call setShapeDistMax() for subsequent instances).
@@ -200,7 +200,7 @@ public:
 	bool					getDefaultRotQuat (CQuat &) const;
 	bool					getDefaultScale (CVector &) const;
 	/** Set a scale relative to the default exported matrix
-	 *	NB: really usefull for instance if you want to scale an instance relatively to the scale
+	 *	NB: really useful for instance if you want to scale an instance relatively to the scale
 	 *	exported from the artist (if he had not set a "reset XForm")
 	 *	NB: no op if the object is not a CMeshBaseInstance
 	 */
@@ -222,9 +222,7 @@ public:
 	class CTransformShape	*getObjectPtr() const {return (CTransformShape*)_Object;}
 };
 
-
 } // NL3D
-
 
 #endif // NL_U_INSTANCE_H
 

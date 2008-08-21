@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/string_mapper.h"
-#include "ps_located.h"
-#include "ps_attrib.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_attrib.h"
 
 
 

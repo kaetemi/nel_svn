@@ -29,7 +29,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
 
-#include "transform_shape.h"
+#include "nel/3d/transform_shape.h"
 
 namespace NL3D 
 {

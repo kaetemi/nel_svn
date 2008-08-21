@@ -28,10 +28,10 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/vector.h"
-#include "tess_list.h"
-#include "landscape_def.h"
-#include "vegetable_def.h"
-#include "tess_block.h"
+#include "nel/3d/tess_list.h"
+#include "nel/3d/landscape_def.h"
+#include "nel/3d/vegetable_def.h"
+#include "nel/3d/tess_block.h"
 
 
 namespace NL3D 

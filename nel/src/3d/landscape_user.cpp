@@ -47,7 +47,6 @@ H_AUTO_DECL( NL3D_Load_Landscape )
 // ***************************************************************************
 CLandscapeUser::~CLandscapeUser()
 {
-	NL3D_MEM_LANDSCAPE
 
 	// must ensure all loading is ended
 	removeAllZones();
@@ -61,7 +60,6 @@ CLandscapeUser::~CLandscapeUser()
 //****************************************************************************
 void	CLandscapeUser::setZonePath(const std::string &zonePath)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_ZoneManager.setZonePath(zonePath);
 }
@@ -69,14 +67,12 @@ void	CLandscapeUser::setZonePath(const std::string &zonePath)
 //****************************************************************************
 void CLandscapeUser::invalidateAllTiles()
 {
-	NL3D_MEM_LANDSCAPE
 	_Landscape->Landscape.invalidateAllTiles();
 }
 
 //****************************************************************************
 void	CLandscapeUser::loadBankFiles(const std::string &tileBankFile, const std::string &farBankFile)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	// Release all OLD tiles
@@ -164,7 +160,6 @@ void	CLandscapeUser::flushTiles (NLMISC::IProgressCallback &progress)
 
 void	CLandscapeUser::loadAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	zonesAdded.clear();
@@ -207,7 +202,6 @@ void	CLandscapeUser::loadAllZonesAround(const CVector &pos, float radius, std::v
 void	CLandscapeUser::refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, std::vector<std::string> &zonesRemoved, 
 											  NLMISC::IProgressCallback &progress, const std::vector<uint16> *validZoneIds)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	zonesAdded.clear();
@@ -243,7 +237,6 @@ void	CLandscapeUser::refreshAllZonesAround(const CVector &pos, float radius, std
 // ***************************************************************************
 void	CLandscapeUser::getAllZoneLoaded(std::vector<std::string>	&zoneLoaded) const
 {
-	NL3D_MEM_LANDSCAPE
 	// Build the list of zoneId.
 	std::vector<uint16>	zoneIds;
 	_Landscape->Landscape.getZoneList(zoneIds);
@@ -260,7 +253,6 @@ void	CLandscapeUser::getAllZoneLoaded(std::vector<std::string>	&zoneLoaded) cons
 //****************************************************************************
 void	CLandscapeUser::loadAllZonesAround(const CVector &pos, float radius)
 {
-	NL3D_MEM_LANDSCAPE
 	std::vector<std::string>	dummy;
 	loadAllZonesAround(pos, radius, dummy);
 }
@@ -269,7 +261,6 @@ void	CLandscapeUser::loadAllZonesAround(const CVector &pos, float radius)
 //****************************************************************************
 void	CLandscapeUser::refreshZonesAround(const CVector &pos, float radius)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	std::string	dummy1, dummy2;
@@ -278,7 +269,6 @@ void	CLandscapeUser::refreshZonesAround(const CVector &pos, float radius)
 //****************************************************************************
 void	CLandscapeUser::refreshZonesAround(const CVector &pos, float radius, std::string &zoneAdded, std::string &zoneRemoved, const std::vector<uint16> *validZoneIds)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	zoneRemoved= "";
@@ -329,7 +319,6 @@ void	CLandscapeUser::refreshZonesAround(const CVector &pos, float radius, std::s
 //****************************************************************************
 void CLandscapeUser::removeAllZones()
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 
 	// Ensure Async Loading is ended
@@ -372,7 +361,6 @@ void CLandscapeUser::removeAllZones()
 //****************************************************************************
 void	CLandscapeUser::setupStaticLight (const CRGBA &diffuse, const CRGBA &ambiant, float multiply)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setupStaticLight(diffuse, ambiant, multiply);
 }
@@ -382,42 +370,36 @@ void	CLandscapeUser::setupStaticLight (const CRGBA &diffuse, const CRGBA &ambian
 //****************************************************************************
 void	CLandscapeUser::setThreshold (float thre)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setThreshold(thre);
 }
 //****************************************************************************
 float	CLandscapeUser::getThreshold () const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getThreshold();
 }
 //****************************************************************************
 void	CLandscapeUser::setTileNear (float tileNear)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setTileNear(tileNear);
 }
 //****************************************************************************
 float	CLandscapeUser::getTileNear () const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getTileNear();
 }
 //****************************************************************************
 void	CLandscapeUser::setTileMaxSubdivision (uint tileDiv)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setTileMaxSubdivision(tileDiv);
 }
 //****************************************************************************
 uint	CLandscapeUser::getTileMaxSubdivision ()
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getTileMaxSubdivision();
 }
@@ -426,7 +408,6 @@ uint	CLandscapeUser::getTileMaxSubdivision ()
 //****************************************************************************
 std::string	CLandscapeUser::getZoneName(const CVector &pos)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _ZoneManager.getZoneName((uint)pos.x, (uint)(-pos.y), 0, 0).first;
 }
@@ -435,7 +416,6 @@ std::string	CLandscapeUser::getZoneName(const CVector &pos)
 //****************************************************************************
 CVector		CLandscapeUser::getHeightFieldDeltaZ(float x, float y) const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getHeightFieldDeltaZ(x,y);
 }
@@ -443,7 +423,6 @@ CVector		CLandscapeUser::getHeightFieldDeltaZ(float x, float y) const
 //****************************************************************************
 void		CLandscapeUser::setHeightField(const CHeightMap &hf)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setHeightField(hf);
 }
@@ -452,7 +431,6 @@ void		CLandscapeUser::setHeightField(const CHeightMap &hf)
 //****************************************************************************
 void		CLandscapeUser::enableVegetable(bool enable)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.enableVegetable(enable);
 }
@@ -460,7 +438,6 @@ void		CLandscapeUser::enableVegetable(bool enable)
 //****************************************************************************
 void		CLandscapeUser::loadVegetableTexture(const std::string &textureFileName)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LOAD_LANDSCAPE;
 	_Landscape->Landscape.loadVegetableTexture(textureFileName);
 }
@@ -468,7 +445,6 @@ void		CLandscapeUser::loadVegetableTexture(const std::string &textureFileName)
 //****************************************************************************
 void		CLandscapeUser::setupVegetableLighting(const CRGBA &ambient, const CRGBA &diffuse, const CVector &directionalLight)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setupVegetableLighting(ambient, diffuse, directionalLight);
 }
@@ -476,7 +452,6 @@ void		CLandscapeUser::setupVegetableLighting(const CRGBA &ambient, const CRGBA &
 //****************************************************************************
 void		CLandscapeUser::setVegetableWind(const CVector &windDir, float windFreq, float windPower, float windBendMin)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setVegetableWind(windDir, windFreq, windPower, windBendMin);
 }
@@ -484,7 +459,6 @@ void		CLandscapeUser::setVegetableWind(const CVector &windDir, float windFreq, f
 //****************************************************************************
 void		CLandscapeUser::setVegetableUpdateLightingFrequency(float freq)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setVegetableUpdateLightingFrequency(freq);
 }
@@ -493,7 +467,6 @@ void		CLandscapeUser::setVegetableUpdateLightingFrequency(float freq)
 //****************************************************************************
 void		CLandscapeUser::setUpdateLightingFrequency(float freq)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setUpdateLightingFrequency(freq);
 }
@@ -502,14 +475,12 @@ void		CLandscapeUser::setUpdateLightingFrequency(float freq)
 //****************************************************************************
 void		CLandscapeUser::enableAdditive (bool enable)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->enableAdditive(enable);
 }
 //****************************************************************************
 bool		CLandscapeUser::isAdditiveEnabled () const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->isAdditive ();
 }
@@ -517,14 +488,12 @@ bool		CLandscapeUser::isAdditiveEnabled () const
 //****************************************************************************
 void		CLandscapeUser::setPointLightDiffuseMaterial(CRGBA diffuse)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setPointLightDiffuseMaterial(diffuse);
 }
 //****************************************************************************
 CRGBA		CLandscapeUser::getPointLightDiffuseMaterial () const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getPointLightDiffuseMaterial();
 }
@@ -532,35 +501,30 @@ CRGBA		CLandscapeUser::getPointLightDiffuseMaterial () const
 //****************************************************************************
 void		CLandscapeUser::setDLMGlobalVegetableColor(CRGBA gvc)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setDLMGlobalVegetableColor(gvc);
 }
 //****************************************************************************
 CRGBA		CLandscapeUser::getDLMGlobalVegetableColor() const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getDLMGlobalVegetableColor();
 }
 //****************************************************************************
 void		CLandscapeUser::updateLightingAll()
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LANDSCAPE_UPDATE_LIGHTING_ALL;
 	_Landscape->Landscape.updateLightingAll();
 }
 //****************************************************************************
 void		CLandscapeUser::postfixTileFilename (const char *postfix)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LANDSCAPE_UPDATE_LIGHTING_ALL;
 	_Landscape->Landscape.TileBank.postfixTileFilename (postfix);
 }
 //****************************************************************************
 void		CLandscapeUser::postfixTileVegetableDesc (const char *postfix)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_LANDSCAPE_UPDATE_LIGHTING_ALL;
 	_Landscape->Landscape.TileBank.postfixTileVegetableDesc (postfix);
 }
@@ -605,7 +569,6 @@ const CVector	&CLandscapeUser::getRefineCenterUser() const
 // ***************************************************************************
 void CLandscapeUser::addTileCallback(ULandscapeTileCallback *cb)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.addTileCallback(cb);
 }
@@ -613,7 +576,6 @@ void CLandscapeUser::addTileCallback(ULandscapeTileCallback *cb)
 // ***************************************************************************
 void CLandscapeUser::removeTileCallback(ULandscapeTileCallback *cb)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.removeTileCallback(cb);
 }
@@ -621,7 +583,6 @@ void CLandscapeUser::removeTileCallback(ULandscapeTileCallback *cb)
 // ***************************************************************************
 bool CLandscapeUser::isTileCallback(ULandscapeTileCallback *cb)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.isTileCallback(cb);
 }
@@ -629,7 +590,6 @@ bool CLandscapeUser::isTileCallback(ULandscapeTileCallback *cb)
 // ***************************************************************************
 void CLandscapeUser::setZFunc(UMaterial::ZFunc val)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setZFunc((CMaterial::ZFunc)val);
 }
@@ -637,7 +597,6 @@ void CLandscapeUser::setZFunc(UMaterial::ZFunc val)
 // ***************************************************************************
 const CZone*	CLandscapeUser::getZone (sint zoneId) const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getZone(zoneId);
 }
@@ -645,7 +604,6 @@ const CZone*	CLandscapeUser::getZone (sint zoneId) const
 // ***************************************************************************
 void		CLandscapeUser::setVegetableDensity(float density)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	_Landscape->Landscape.setVegetableDensity(density);
 }
@@ -653,7 +611,6 @@ void		CLandscapeUser::setVegetableDensity(float density)
 // ***************************************************************************
 float		CLandscapeUser::getVegetableDensity() const
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getVegetableDensity();
 }
@@ -661,7 +618,6 @@ float		CLandscapeUser::getVegetableDensity() const
 // ***************************************************************************
 float CLandscapeUser::getRayCollision(const NLMISC::CVector &start, const NLMISC::CVector &end)
 {
-	NL3D_MEM_LANDSCAPE
 	NL3D_HAUTO_UI_LANDSCAPE;
 	return _Landscape->Landscape.getRayCollision(start, end);
 }

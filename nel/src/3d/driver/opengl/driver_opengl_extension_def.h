@@ -30,7 +30,7 @@
 #include "nel/misc/types_nl.h"
 
 #include <GL/gl.h>
-#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
+#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/"
 
 #ifdef __cplusplus
 extern "C" {
@@ -1544,7 +1544,14 @@ typedef GLvoid (APIENTRY * NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const
 
 #endif /* GL_EXT_packed_depth_stencil */
 
-
+#ifndef GL_ARB_depth_texture
+#define GL_ARB_depth_texture
+#define GL_DEPTH_COMPONENT16_ARB          0x81A5
+#define GL_DEPTH_COMPONENT24_ARB          0x81A6
+#define GL_DEPTH_COMPONENT32_ARB          0x81A7
+#define GL_TEXTURE_DEPTH_SIZE_ARB         0x884A
+#define GL_DEPTH_TEXTURE_MODE_ARB         0x884B
+#endif
 
 // GL_NV_occlusion_query
 //==================================

@@ -26,9 +26,9 @@
 #ifndef NL_CLIP_TRAV_H
 #define NL_CLIP_TRAV_H
 
-#include "trav_scene.h"
-#include "quad_grid.h"
-#include "transform.h"
+#include "nel/3d/trav_scene.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/transform.h"
 #include "nel/misc/vector.h"
 #include "nel/misc/plane.h"
 #include "nel/misc/matrix.h"

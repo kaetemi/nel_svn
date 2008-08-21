@@ -41,13 +41,11 @@ using	namespace NLMISC;
 namespace NL3D 
 {
 
-#define NL3D_MEM_INSTANCE						NL_ALLOC_CONTEXT( 3dIns )
 
 // ***************************************************************************
 
 void UInstance::getShapeAABBox(NLMISC::CAABBox &bbox) const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	object->getAABBox(bbox);
 }
@@ -55,21 +53,18 @@ void UInstance::getShapeAABBox(NLMISC::CAABBox &bbox) const
 // ***************************************************************************
 void UInstance::setBlendShapeFactor (const std::string &blendShapeName, float factor, bool dynamic)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	CMeshBaseInstance	*mi= dynamic_cast<CMeshBaseInstance*>(object);
 
 	if (mi)
 	{
 		mi->setBlendShapeFactor (blendShapeName, factor);
-		// \todo trap takes care of the dynamic flag
 	}
 }
 
 // ***************************************************************************
 void		UInstance::changeMRMDistanceSetup(float distanceFinest, float distanceMiddle, float distanceCoarsest)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	CMeshBaseInstance	*mi= dynamic_cast<CMeshBaseInstance*>(object);
 
@@ -84,7 +79,6 @@ void		UInstance::changeMRMDistanceSetup(float distanceFinest, float distanceMidd
 // ***************************************************************************
 void		UInstance::setShapeDistMax(float distMax)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->Shape)
 	{
@@ -95,7 +89,6 @@ void		UInstance::setShapeDistMax(float distMax)
 // ***************************************************************************
 float		UInstance::getShapeDistMax() const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->Shape)
 	{
@@ -109,7 +102,6 @@ float		UInstance::getShapeDistMax() const
 // ***************************************************************************
 void		UInstance::selectTextureSet(uint id)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	CMeshBaseInstance *mbi  = dynamic_cast<CMeshBaseInstance *>(object);
 	if (mbi)
@@ -120,7 +112,6 @@ void		UInstance::selectTextureSet(uint id)
 // ***************************************************************************
 void		UInstance::enableAsyncTextureMode(bool enable) 
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -131,7 +122,6 @@ void		UInstance::enableAsyncTextureMode(bool enable)
 // ***************************************************************************
 bool		UInstance::getAsyncTextureMode() const 
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -144,7 +134,6 @@ bool		UInstance::getAsyncTextureMode() const
 // ***************************************************************************
 void		UInstance::startAsyncTextureLoading() 
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -155,7 +144,6 @@ void		UInstance::startAsyncTextureLoading()
 // ***************************************************************************
 bool		UInstance::isAsyncTextureReady() 
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -168,7 +156,6 @@ bool		UInstance::isAsyncTextureReady()
 // ***************************************************************************
 void		UInstance::setAsyncTextureDistance(float dist)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -179,7 +166,6 @@ void		UInstance::setAsyncTextureDistance(float dist)
 // ***************************************************************************
 float		UInstance::getAsyncTextureDistance() const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -192,7 +178,6 @@ float		UInstance::getAsyncTextureDistance() const
 // ***************************************************************************
 void		UInstance::setAsyncTextureDirty(bool flag)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -203,7 +188,6 @@ void		UInstance::setAsyncTextureDirty(bool flag)
 // ***************************************************************************
 bool		UInstance::isAsyncTextureDirty() const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
 	{
@@ -278,7 +262,6 @@ uint UInstance::getNumMaterials() const
 
 UInstanceMaterial UInstance::getMaterial(uint materialId)
 {
-	NL3D_MEM_INSTANCE
 	CMeshBaseInstance	*mi= dynamic_cast<CMeshBaseInstance*>(_Object);
 	nlassertex (mi, ("Should be a CMeshBaseInstance object. Call getNumMaterials() first."));
 
@@ -290,7 +273,6 @@ UInstanceMaterial UInstance::getMaterial(uint materialId)
 
 bool UInstance::canStartStop() 
 { 
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	return object->canStartStop(); 
 }	
@@ -299,7 +281,6 @@ bool UInstance::canStartStop()
 
 void UInstance::start() 
 { 
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	object->start(); 
 }	
@@ -308,7 +289,6 @@ void UInstance::start()
 
 void UInstance::stop()  
 { 
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	object->stop(); 
 }	
@@ -317,7 +297,6 @@ void UInstance::stop()
 
 bool UInstance::isStarted() const 
 { 
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	return object->isStarted(); 
 }	
@@ -326,7 +305,6 @@ bool UInstance::isStarted() const
 
 float UInstance::getDistMax() const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	return object->getDistMax();
 }	
@@ -335,7 +313,6 @@ float UInstance::getDistMax() const
 
 void UInstance::setDistMax(float distMax)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	object->setDistMax(distMax);
 }
@@ -343,7 +320,6 @@ void UInstance::setDistMax(float distMax)
 // ***************************************************************************
 UShape		UInstance::getShape() const
 {
-	NL3D_MEM_INSTANCE
 		
 	CTransformShape	*object = getObjectPtr();
 	if(!object)
@@ -356,7 +332,6 @@ UShape		UInstance::getShape() const
 // ***************************************************************************
 const std::string &UInstance::getShapeName() const
 {
-	NL3D_MEM_INSTANCE
 
 	static std::string emptyStr;
 	
@@ -387,7 +362,6 @@ void	UInstance::cast(UTransform object)
 // ***************************************************************************
 bool	UInstance::getDefaultPos (CVector &pos) const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->isMeshBaseInstance())
 	{
@@ -402,7 +376,6 @@ bool	UInstance::getDefaultPos (CVector &pos) const
 // ***************************************************************************
 bool	UInstance::getDefaultRotQuat (CQuat &rotQuat) const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->isMeshBaseInstance())
 	{
@@ -417,7 +390,6 @@ bool	UInstance::getDefaultRotQuat (CQuat &rotQuat) const
 // ***************************************************************************
 bool	UInstance::getDefaultScale (CVector &scale) const
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->isMeshBaseInstance())
 	{
@@ -432,7 +404,6 @@ bool	UInstance::getDefaultScale (CVector &scale) const
 // ***************************************************************************
 void	UInstance::setRelativeScale (const CVector &rs)
 {
-	NL3D_MEM_INSTANCE
 	CTransformShape	*object = getObjectPtr();
 	if(object && object->isMeshBaseInstance())
 	{

@@ -37,11 +37,11 @@
 #include "nel/misc/mutex.h"
 
 #include "nel/3d/frustum.h"
-#include "zone.h"
-#include "quad_grid.h"
-#include "cube_grid.h"
-#include "patchuv_locator.h"
-#include "tile_light_influence.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/cube_grid.h"
+#include "nel/3d/patchuv_locator.h"
+#include "nel/3d/tile_light_influence.h"
 
 #include <list>
 

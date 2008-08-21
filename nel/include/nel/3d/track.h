@@ -32,7 +32,7 @@
 #include "nel/3d/animation_time.h"
 #include "nel/3d/u_track.h"
 
-#include "animated_value.h"
+#include "nel/3d/animated_value.h"
 
 
 namespace NL3D 

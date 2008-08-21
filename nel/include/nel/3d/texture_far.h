@@ -28,8 +28,8 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/rect.h"
-#include "texture.h"
-#include "tile_far_bank.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/tile_far_bank.h"
 
 /* NB: those Values work only if NL_MAX_TILES_BY_PATCH_EDGE is 16.
 	asserted in the cpp.

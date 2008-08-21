@@ -27,7 +27,7 @@
 #define NL_STATIC_QUAD_GRID_H
 
 #include "nel/misc/common.h"
-#include "quad_grid.h"
+#include "nel/3d/quad_grid.h"
 
 
 namespace NL3D 

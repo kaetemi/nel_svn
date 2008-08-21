@@ -35,12 +35,12 @@
 #include "nel/misc/stream.h"
 #include "nel/misc/uv.h"
 #include "nel/misc/hierarchical_timer.h"
-#include "texture.h"
-#include "shader.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "vertex_program.h"
-#include "material.h"
+#include "nel/3d/texture.h"
+#include "nel/3d/shader.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/index_buffer.h"
+#include "nel/3d/vertex_program.h"
+#include "nel/3d/material.h"
 #include "nel/misc/mutex.h"
 #include "nel/3d/primitive_profile.h"
 
@@ -81,26 +81,27 @@ struct IOcclusionQuery;
 
 //****************************************************************************
 /// A Graphic Mode descriptor.
-class GfxMode 
+struct GfxMode
 {
-public:
 	bool				OffScreen;
 	bool				Windowed;
 	uint16				Width;
 	uint16				Height;
 	uint8				Depth;
-	uint				Frequency;	// In hz. Used only in fullscreen, default is windows selection
+	uint				Frequency;	// In hz. Default is Windows selection
+	sint8				AntiAlias;	// -1 = no AA, 0 = max, 2 = 2x sample, 4 = 4x sample, ...
 
-						GfxMode(void) 
-						{ 
-							OffScreen=false;
-							Windowed=false;
-							Width=0;
-							Height=0;
-							Depth=0;
-							Frequency=0;
-						}
-						GfxMode(uint16 w, uint16 h, uint8 d, bool windowed= true, bool offscreen=false, uint frequency = 60);
+	GfxMode()
+	{
+		OffScreen=false;
+		Windowed=false;
+		Width = 0;
+		Height = 0;
+		Depth = 0;
+		Frequency = 0;
+		AntiAlias = -1;
+	}
+	GfxMode(uint16 w, uint16 h, uint8 d, bool windowed = true, bool offscreen = false, uint frequency = 0, sint8 aa = -1);
 };
 
 //****************************************************************************
@@ -120,7 +121,7 @@ typedef void (*emptyProc)(void);
 // 
 // * Driver implementation notes:
 // *
-// * Driver implementation must save monitor color parameters at initialization and restaure it at release.
+// * Driver implementation must save monitor color parameters at initialization and restore it at release.
 class IDriver : public NLMISC::CRefCount
 {
 public:
@@ -169,7 +170,7 @@ public:
 							IDriver(void);
 	virtual					~IDriver(void);
 
-	virtual bool			init (uint windowIcon = 0)=0;
+	virtual bool			init (uint windowIcon = 0, emptyProc exitFunc = 0)=0;
 	
 	// Test if the device is lost. Can only happen with D3D.
 	// The calling application may skip some part of its rendering when it is the case (this is not a requirement, but may save cpu for other applications)
@@ -187,10 +188,13 @@ public:
 
 	// first param is the associated window. 
 	// Must be a HWND for Windows (WIN32).
-	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show = true) throw(EBadDisplay)=0;
+	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show = true, bool resizeable = true) throw(EBadDisplay)=0;
 	// Must be called after a setDisplay that initialize the mode
 	virtual bool			setMode(const GfxMode& mode)=0;
 	virtual bool			getModes(std::vector<GfxMode> &modes)=0;
+
+	/// Set the title of the NeL window
+	virtual void			setWindowTitle(const std::string &title)=0;
 
 	/// return the current screen mode (if we are in windowed, return the screen mode behind the window)
 	virtual bool			getCurrentScreenMode(GfxMode &mode)=0;
@@ -199,7 +203,7 @@ public:
 	virtual void			beginDialogMode() =0;
 	virtual void			endDialogMode() =0;
 
-	// Return is the associated window information. (Implementation dependant)
+	// Return is the associated window information. (Implementation dependent)
 	// Must be a HWND for Windows (WIN32).
 	virtual void			*getDisplay() =0;
 
@@ -210,34 +214,34 @@ public:
 	  */
 	virtual bool			setMonitorColorProperties (const CMonitorColorProperties &properties) = 0;
 
-	// Return is the associated default window proc for the driver. (Implementation dependant)
+	// Return is the associated default window proc for the driver. (Implementation dependent)
 	// Must be a void GlWndProc(IDriver *driver, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) for Windows (WIN32).
-	virtual emptyProc		getWindowProc() =0;
+	virtual emptyProc		getWindowProc() = 0;
 
 	/// Before rendering via a driver in a thread, must activate() (per thread).
-	virtual bool			activate(void)=0;
+	virtual bool			activate(void) = 0;
 
-	/// Get the number of texture stage avaliable, for multitexturing (Normal material shaders). Valid only after setDisplay().
-	virtual	sint			getNbTextureStages() const =0;
+	/// Get the number of texture stage available, for multi texturing (Normal material shaders). Valid only after setDisplay().
+	virtual	uint			getNbTextureStages() const = 0;
 
 	/** is the texture is set up in the driver
 	 *	NB: this method is thread safe.
 	 */
 	virtual bool			isTextureExist(const ITexture&tex)=0;
 
-	virtual NLMISC::IEventEmitter*	getEventEmitter(void)=0;
+	virtual NLMISC::IEventEmitter*	getEventEmitter(void) = 0;
 
 	/* Clear the current target surface pixels. The function ignores the viewport settings but uses the scissor. */
-	virtual bool			clear2D(CRGBA rgba)=0;
+	virtual bool			clear2D(CRGBA rgba) = 0;
 
 	/* Clear the current target surface zbuffer. The function ignores the viewport settings but uses the scissor. */
-	virtual bool			clearZBuffer(float zval=1)=0;
+	virtual bool			clearZBuffer(float zval=1) = 0;
 
 	/* Clear the current target surface stencil buffer. The function ignores the viewport settings but uses the scissor. */
-	virtual bool			clearStencilBuffer(float stencilval=0)=0;
+	virtual bool			clearStencilBuffer(float stencilval=0) = 0;
 
 	/// Set the color mask filter through where the operation done will pass
-	virtual void			setColorMask (bool bRed, bool bGreen, bool bBlue, bool bAlpha)=0;
+	virtual void			setColorMask (bool bRed, bool bGreen, bool bBlue, bool bAlpha) = 0;
 
 	/** Set depth range. Depth range specify a linear mapping from device z coordinates (in the [-1, 1] range) to window coordinates (in the [0, 1] range)
 	  * This mapping occurs after clipping of primitives and division by w of vertices coordinates.
@@ -251,7 +255,7 @@ public:
 
 	/** setup a texture, generate and upload if needed. same as setupTextureEx(tex, true, dummy);
 	 */
-	virtual bool			setupTexture(ITexture& tex)=0;
+	virtual bool			setupTexture(ITexture& tex) = 0;
 
 	/** setup a texture in the driver.
 	 *	\param bUpload if true the texture is created and uploaded to VRAM, if false the texture is only created
@@ -265,14 +269,14 @@ public:
 	 *	NB: the texture must be at least touch()-ed for the recreate to work.
 	 */
 	virtual bool			setupTextureEx (ITexture& tex, bool bUpload, bool& bAllUploaded, 
-		bool bMustRecreateSharedTexture= false)=0;
+		bool bMustRecreateSharedTexture= false) = 0;
 
 	/** The texture must be created or uploadTexture do nothing.
 	 *  These function can be used to upload piece by piece a texture. Use it in conjunction with setupTextureEx(..., false);
 	 *  For compressed textures, the rect must aligned on pixel block. (a block of pixel size is 4x4 pixels).
 	 */
-	virtual bool			uploadTexture (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap)=0;
-	virtual bool			uploadTextureCube (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap, uint8 nNumFace)=0;
+	virtual bool			uploadTexture (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap) = 0;
+	virtual bool			uploadTextureCube (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap, uint8 nNumFace) = 0;
 
 	/**
 	  * Invalidate shared texture
@@ -296,8 +300,15 @@ public:
 	 *	NB: this is done only on TextureFile
 	 */
 	virtual void			forceTextureResize(uint divisor)=0;
+	
+	/** Sets enforcement of native fragment programs. This is by default enabled.
+	 * 
+	 * \param nativeOnly If set to false, fragment programs don't need to be native to stay loaded,
+	 * 	                 otherwise (aka if true) they will be purged.
+	 */
+	virtual void			forceNativeFragmentPrograms(bool nativeOnly) = 0;
 
-
+	
 	virtual bool			setupMaterial(CMaterial& mat)=0;
 	
 	/**
@@ -306,13 +317,13 @@ public:
 	virtual bool			activeShader(CShader *shd)=0;
 
 	/** Special for Faster Specular Setup. Call this between lot of primitives rendered with Specular Materials.
-	 *	Visual Errors may arise if you don't correclty call endSpecularBatch().
+	 *	Visual Errors may arise if you don't correctly call endSpecularBatch().
 	 */
 	virtual void			startSpecularBatch()=0;
 	virtual void			endSpecularBatch()=0;
 
 	/// \name Material multipass.
-	/**	NB: setupMaterial() must be called before thoses methods.
+	/**	NB: setupMaterial() must be called before those methods.
 	 *  NB: This is intended to be use with the rendering of simple primitives.
 	 *  NB: Other render calls performs the needed setup automatically
 	 */
@@ -362,7 +373,7 @@ public:
 
 
 	/** Force input normal to be normalized by the driver. default is false.
-	 * NB: driver force the normalisation himself if:
+	 * NB: driver force the normalization himself if:
 	 *		- current Model matrix has a scale.
 	 */
 	virtual	void			forceNormalize(bool normalize)=0;
@@ -423,8 +434,8 @@ public:
 	 *	NB: call it after setDisplay(). But setDisplay() by default call initVertexBufferHard(16Mo, 0);
 	 *	so this is not necessary.
 	 *	NB: If allocation fails, mem/=2, and retry, until mem < 500K.
-	 *	\param agpMem ammount of AGP Memory required. if 0, reseted.
-	 *	\param vramMem ammount of VRAM Memory required. if 0, reseted.
+	 *	\param agpMem amount of AGP Memory required. if 0, reseted.
+	 *	\param vramMem amount of VRAM Memory required. if 0, reseted.
 	 *	\return false if one the Buffer has not been allocated (at least at 500K).
 	 */
 	virtual	bool			initVertexBufferHard(uint agpMem, uint vramMem=0) =0;
@@ -477,7 +488,7 @@ public:
 	 * with this method.
 	 * Actually, it is like a straight drawTriangles() in OpenGL.
 	 * NB: nlassert() if ntris is 0!!!! this is unlike other render() call methods. For optimisation concern.
-	 * NB: this is usefull for landscape....
+	 * NB: this is useful for landscape....
 	 *  \param firstIndex is the first index in the index buffer to use as first triangle.
 	 *  \param ntris is the number of triangle to render.
 	 */
@@ -518,7 +529,7 @@ public:
 
 	/** render quads with previously setuped VertexBuffer / Matrixes.
 	 *  Quads are stored as a sequence in the vertex buffer.
-	 * There's a garanty for the orientation of its diagonal, which is drawn as follow :
+	 * There's a guaranty for the orientation of its diagonal, which is drawn as follow :
      *
 	 *  3----2
      *  |  / |
@@ -602,9 +613,9 @@ public:
 
 	/** If the driver support it, stop profile VBHard locks, and "print" result
 	 *	No-Op if already profiling
-	 *	NB: The results are the Locks in Chronogical time (since last swapBuffers).
-	 *	Since multiple frame are summed, an "*" is marked againts the VBHard name to show if it was not
-	 *	always this one (ptr test and not name test) in the chronogical order.
+	 *	NB: The results are the Locks in Chronological time (since last swapBuffers).
+	 *	Since multiple frame are summed, an "*" is marked against the VBHard name to show if it was not
+	 *	always this one (ptr test and not name test) in the chronological order.
 	 *	NB: if the driver does not support VBHard or VBHard profiling (like ATI VBHard), result is empty.
 	 *	NB: ???? string is displayed if the VBHard has no name or if was just deleted.
 	 */
@@ -705,7 +716,7 @@ public:
 		/** Enable / disable  low level mouse. This allow to take advantage of some options (speed of the mouse, automatic wrapping)
 		  * It returns a interface to these parameters when it is supported, or NULL otherwise
 		  * The interface pointer is valid as long as the low level mouse is enabled.
-		  * A call to disable the mouse returns NULL, and restore the default mouse behaviour
+		  * A call to disable the mouse returns NULL, and restore the default mouse behavior
 		  * NB : - In this mode the mouse cursor isn't drawn.
 	      *      - Calls to showCursor have no effects
 		  *      - Calls to setCapture have no effects
@@ -717,7 +728,7 @@ public:
 		  * gamepad with lots of buttons...
 		  * This returns a interface to some parameters when it is supported, or NULL otherwise.
 		  * The interface pointer is valid as long as the low level keyboard is enabled.
-		  * A call to disable the keyboard returns NULL, and restore the default keyboard behaviour		  
+		  * A call to disable the keyboard returns NULL, and restore the default keyboard behavior		  
 		  */
 		virtual NLMISC::IKeyboardDevice			*enableLowLevelKeyboard(bool enable) = 0;
 
@@ -730,7 +741,7 @@ public:
 		  */
 		virtual void			setCapture (bool b) = 0;
 
-		/** Check wether there is a low level device manager available, and get its interface. Return NULL if not available
+		/** Check whether there is a low level device manager available, and get its interface. Return NULL if not available
 		  * From this interface you can deal with mouse and keyboard as above, but you can also manage game device (joysticks, joypads ...)		  
 		  */
 		virtual NLMISC::IInputDeviceManager		*getLowLevelInputDeviceManager() = 0;
@@ -786,7 +797,7 @@ public:
 	  * The render target can be a texture (tex pointer) or the back buffer (tex = NULL).
 	  * The texture must have been right sized before the call.
 	  * This mark the texture as valid, but doesn't copy data to system memory.
-	  * This also mean that regenerating texture datas will erase what
+	  * This also mean that regenerating texture data will erase what
 	  * has been copied before in the device memory.
 	  * This doesn't work with compressed textures.
 	  * Ideally, the FrameBuffer should have the same format than the texture.
@@ -894,7 +905,7 @@ public:
 	/** 
 	  * Setup a light.
 	  *
-	  * You must call enableLight() to active the ligth.
+	  * You must call enableLight() to active the light.
 	  *
 	  * \param num is the number of the light to set.
 	  * \param light is a light to set in this slot.
@@ -905,7 +916,7 @@ public:
 	/** 
 	  * Enable / disable light.
 	  *
-	  * You must call setLight() if you active the ligth.
+	  * You must call setLight() if you active the light.
 	  *
 	  * \param num is the number of the light to enable / disable.
 	  * \param enable is true to enable the light, false to disable it.
@@ -914,9 +925,9 @@ public:
 	virtual void			enableLight (uint8 num, bool enable=true) = 0;
 
 	/** 
-	  * Set ambiant.
+	  * Set ambient.
 	  *
-	  * \param color is the new global ambiant color for the scene.
+	  * \param color is the new global ambient color for the scene.
 	  * \see setLight(), enableLight()
 	  */
 	virtual void			setAmbientColor (CRGBA color) = 0;
@@ -981,7 +992,7 @@ public:
 	  *
 	  * \param program is a pointer on a vertex program. Can be NULL to disable the current vertex program.
 	  *
-	  * \return true if setup/unsetup successed, false else.
+	  * \return true if setup/unsetup succeeded, false else.
 	  */
 	virtual bool			activeVertexProgram (CVertexProgram *program) =0;
 
@@ -1034,7 +1045,7 @@ public:
 	  * Activate VertexProgram 2Sided Color mode. In 2Sided mode, the BackFace (if material 2Sided enabled) read the 
 	  *	result from o[BFC0], and not o[COL0].
 	  *	default is false. you should reset to false after use.
-	  * NB: no-op if not supporte by driver
+	  * NB: no-op if not supported by driver
 	  */
 	virtual	void			enableVertexProgramDoubleSidedColor(bool doubleSided) =0;
 
@@ -1042,12 +1053,12 @@ public:
 
 	/// \name Texture addressing modes aka textures/pixels shaders
 	// @{
-		/// test wether the device supports some form of texture shader. (could be limited to DX6 EMBM for example)
+		/// test whether the device supports some form of texture shader. (could be limited to DX6 EMBM for example)
 		virtual bool supportTextureShaders() const = 0;
 		// Is the shader water supported ? If not, the driver caller should implement its own version
 		virtual bool isWaterShaderSupported() const = 0;
 		//
-		/// test wether a texture addressing mode is supported
+		/// test whether a texture addressing mode is supported
 		virtual bool isTextureAddrModeSupported(CMaterial::TTexAddressingMode mode) const = 0;
 		/** setup the 2D matrix for the OffsetTexture, OffsetTextureScale and OffsetTexture addressing mode
 		  * It should be stored as the following
@@ -1061,7 +1072,7 @@ public:
 	/** \name EMBM support. If texture shaders are present, this is not available, must use them instead.
 	  * EMBM is a color op of CMaterial.
 	  * NB : EMBM is the equivalent of the CMaterial::OffsetTexture addressing mode. However, it is both a texture
-	  * adressing mode and a color op.
+	  * addressing mode and a color op.
 	  * NB : EMBM may not be supported by all stages.
 	  *
 	  * if embm unit is at last last stage, it operates on texture at first stage
@@ -1073,7 +1084,7 @@ public:
 		virtual bool supportEMBM() const = 0;
 		// Test if EMBM is supported for the given stage
 		virtual bool isEMBMSupportedAtStage(uint stage) const = 0;
-		// set the matrix used for EMBM adressing :
+		// set the matrix used for EMBM addressing
 		virtual void setEMBMMatrix(const uint stage, const float mat[4]) = 0;
 	// @}
 
@@ -1124,7 +1135,7 @@ public:
 	 */
 	virtual void			swapTextureHandle(ITexture &tex0, ITexture &tex1) =0;
 
-	/** Advanced usage. Get the texture Handle. Usefull for texture sorting for instance
+	/** Advanced usage. Get the texture Handle.Useful for texture sorting for instance
 	 *	NB: if the texture is not setuped in the driver, 0 is returned.
 	 *	NB: if implementation does not support it, 0 may be returned. OpenGL ones return the Texture ID.
 	 *	NB: unlike isTextureExist(), this method is not thread safe.
@@ -1134,7 +1145,7 @@ public:
 	// see if the Multiply-Add Tex Env operator is supported (see CMaterial::Mad)
 	virtual	bool			supportMADOperator() const = 0;
 
-	// Adpater class
+	// Adapter class
 	class CAdapter
 	{
 	public:
@@ -1149,7 +1160,7 @@ public:
 		uint32				Revision;
 	};
 
-	// Get the number of hardware renderer available on the client plateform.
+	// Get the number of hardware renderer available on the client platform.
 	virtual uint			getNumAdapter() const=0;
 
 	// Get a hardware renderer description.
@@ -1189,7 +1200,7 @@ public:
 
 	/// \name Occlusion query mechanism
 	// @{
-	// Test wether this device supports the occlusion query mecanism
+	// Test whether this device supports the occlusion query mechanism
 	virtual bool			supportOcclusionQuery() const = 0;
 	/** Create an occlusion query object.
 	  * \return NULL is not enough resources or if not supported

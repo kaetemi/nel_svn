@@ -2,10 +2,6 @@
  * TODO: File description
  *
  * $Id: patch.h,v 1.39 2005/02/22 10:19:11 besson Exp $
- * \todo yoyo:
-		- "UV correction" infos.
-		- NOISE, or displacement map (ptr/index).
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -34,16 +30,16 @@
 #include "nel/misc/vector.h"
 #include "nel/misc/vector_2f.h"
 #include "nel/misc/rgba.h"
-#include "tessellation.h"
+#include "nel/3d/tessellation.h"
 #include "nel/misc/aabbox.h"
 #include "nel/misc/bsphere.h"
 #include "nel/misc/triangle.h"
 #include "nel/misc/geom_ext.h"
 #include "nel/misc/object_vector.h"
-#include "tile_element.h"
-#include "tile_color.h"
-#include "tess_block.h"
-#include "tile_light_influence.h"
+#include "nel/3d/tile_element.h"
+#include "nel/3d/tile_color.h"
+#include "nel/3d/tess_block.h"
+#include "nel/3d/tile_light_influence.h"
 #include "nel/3d/point_light_influence.h"
 
 
@@ -327,11 +323,6 @@ public:
 	CVector3s		Vertices[4];
 	CVector3s		Tangents[8];
 	CVector3s		Interiors[4];
-	/*
-		\todo yoyo: TODO_NOISE: - displacement map (ptr/index).
-		\todo yoyo: TODO_UVCORRECT: - "UV correction" infos.
-		
-	*/
 
 	// Lumel array compressed.
 	std::vector<uint8>			CompressedLumels;

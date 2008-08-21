@@ -38,7 +38,6 @@ namespace NL3D
 
 void			CFrustum::init(float left, float right, float bottom, float top, float znear, float zfar, bool perspective)
 {
-	NL3D_MEM_FRUSTRUM
 	Left= left;
 	Right= right;
 	Bottom=	bottom;
@@ -50,12 +49,10 @@ void			CFrustum::init(float left, float right, float bottom, float top, float zn
 
 void			CFrustum::init(float width, float height, float znear, float zfar, bool perspective)
 {
-	NL3D_MEM_FRUSTRUM
 	init(-width/2, width/2, -height/2, height/2, znear, zfar, perspective);
 }
 void			CFrustum::initPerspective(float fov, float aspectRatio, float znear, float zfar)
 {
-	NL3D_MEM_FRUSTRUM
 	float	w,h;
 	w= 2*znear*(float)tan(fov/2);
 	h= aspectRatio != 0.f ? w/aspectRatio : 0.f;
@@ -63,7 +60,6 @@ void			CFrustum::initPerspective(float fov, float aspectRatio, float znear, floa
 }
 void			CFrustum::getValues(float &left, float &right, float &bottom, float &top, float &znear, float &zfar) const
 {
-	NL3D_MEM_FRUSTRUM
 	left= Left;
 	right= Right;
 	bottom=	Bottom;
@@ -76,7 +72,6 @@ void			CFrustum::getValues(float &left, float &right, float &bottom, float &top,
 // ***************************************************************************
 CVector			CFrustum::project(const CVector &vec) const
 {
-	NL3D_MEM_FRUSTRUM
 	CVector		ret;
 	float		decalX, decalY;
 	float		w, h;
@@ -122,7 +117,6 @@ CVector			CFrustum::project(const CVector &vec) const
 // ***************************************************************************
 CVector			CFrustum::projectZ(const CVector &vec) const
 {
-	NL3D_MEM_FRUSTRUM
 		CVector		ret;
 	float		decalX, decalY;
 	float		w, h;
@@ -168,7 +162,6 @@ CVector			CFrustum::projectZ(const CVector &vec) const
 // ***************************************************************************
 CVector			CFrustum::unProject(const CVector &vec) const
 {
-	NL3D_MEM_FRUSTRUM
 	CVector		ret;
 	float		decalX, decalY;
 	float		w, h;
@@ -237,7 +230,6 @@ CVector			CFrustum::unProject(const CVector &vec) const
 // ***************************************************************************
 CVector			CFrustum::unProjectZ(const CVector &vec) const
 {
-	NL3D_MEM_FRUSTRUM
 	CVector		ret;
 	float		decalX, decalY;
 	float		w, h;
