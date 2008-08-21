@@ -118,7 +118,7 @@ const uint CDriverGL::_EVSNumConstant = 97;
 #	pragma comment(lib, "dinput8")
 #	pragma comment(lib, "dxguid")
 
-IDriver* createIDriverInstance ()
+IDriver* createGlDriverInstance ()
 {
 	return new CDriverGL;
 }
@@ -210,7 +210,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 
 #ifdef NL_STATIC
 
-IDriver* createIDriverInstance ()
+IDriver* createGlDriverInstance ()
 {
 	return new CDriverGL;
 }

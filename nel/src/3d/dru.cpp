@@ -56,7 +56,12 @@ typedef uint32 (*IDRV_VERSION_PROC)(void);
 const char *IDRV_VERSION_PROC_NAME = "NL3D_interfaceVersion";
 
 #ifdef NL_STATIC
-extern IDriver* createIDriverInstance ();
+extern IDriver* createGlDriverInstance ();
+
+#ifdef NL_OS_WINDOWS
+extern IDriver* createD3DDriverInstance ();
+#endif
+
 #endif
 
 // ***************************************************************************
@@ -64,7 +69,7 @@ IDriver		*CDRU::createGlDriver() throw (EDru)
 {
 #ifdef NL_STATIC
 
-	return createIDriverInstance ();
+	return createGlDriverInstance ();
 
 #else
 
@@ -155,7 +160,7 @@ IDriver		*CDRU::createD3DDriver() throw (EDru)
 {
 #ifdef NL_STATIC
 
-	return createIDriverInstance ();
+	return createD3DDriverInstance ();
 
 #else
 

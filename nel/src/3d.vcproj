@@ -116,19 +116,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm200 "
 				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="FINAL_VERSION;_LIB;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="FINAL_VERSION;_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;NL_STATIC"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
-				BufferSecurityCheck="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
 				PrecompiledHeaderFile="../obj/Release/3d/3d.pch"
@@ -136,6 +131,7 @@
 				ObjectFile="../obj/Release/3d/"
 				ProgramDataBaseFileName="../obj/Release/3d/"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -270,11 +266,10 @@
 				AdditionalOptions="/Zm200 "
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="_LIB;_DEBUG;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="WIN32;LIBXML_STATIC;NL_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std3d.h"
 				PrecompiledHeaderFile="../obj/Debug/3d/3d.pch"
@@ -282,7 +277,7 @@
 				ObjectFile="../obj/Debug/3d/"
 				ProgramDataBaseFileName="../obj/Debug/3d/"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -3133,7 +3128,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="3d\dru.h"
+				RelativePath="..\include\nel\3d\dru.h"
 				>
 			</File>
 			<File
@@ -11099,6 +11094,14 @@
 			<Filter
 				Name="2d"
 				>
+				<File
+					RelativePath=".\3d\bloom_effect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\include\nel\3d\bloom_effect.h"
+					>
+				</File>
 				<File
 					RelativePath="3d\deform_2d.cpp"
 					>

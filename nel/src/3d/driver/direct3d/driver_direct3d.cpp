@@ -111,7 +111,7 @@ const uint32		CDriverD3D::ReleaseVersion = 0xc; // nico
 #	pragma comment(lib, "dinput8")
 #	pragma comment(lib, "dxguid")
 
-IDriver* createIDriverInstance ()
+IDriver* createD3DDriverInstance ()
 {
 	return new CDriverD3D;
 }

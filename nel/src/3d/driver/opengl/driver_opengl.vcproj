@@ -112,10 +112,11 @@
 			Name="Release|Win32"
 			OutputDirectory="../../../../obj/Release/driver_opengl"
 			IntermediateDirectory="../../../../obj/Release/driver_opengl"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -141,17 +142,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="FINAL_VERSION;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;NL_RELEASE_DEBUG;LIBXML_STATIC;WIN32;NDEBUG;_WINDLL;ASSERT_THROW_EXCEPTION;$(NOINHERIT)"
+				PreprocessorDefinitions="NDEBUG;_LIB;FINAL_VERSION;_WINDOWS;DRIVER_OPENGL_EXPORTS;LIBXML_STATIC;WIN32;NDEBUG;NL_STATIC;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
-				BufferSecurityCheck="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdopengl.h"
 				PrecompiledHeaderFile="../../../../obj/Release/driver_opengl/driver_opengl.pch"
@@ -159,6 +156,7 @@
 				ObjectFile="../../../../obj/Release/driver_opengl/"
 				ProgramDataBaseFileName="../../../../obj/Release/driver_opengl/"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -172,22 +170,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="dinput8.lib dxguid.lib opengl32.lib"
-				OutputFile="../../../../lib/nel_drv_opengl_win_r.dll"
-				LinkIncremental="1"
-				ModuleDefinitionFile=".\driver_opengl.def"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="../../../../obj/Release/driver_opengl/nel_drv_opengl_win_r.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="../../../../lib/driver_opengl_r.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -197,9 +184,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -301,9 +285,9 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\../../../../obj/Debug/driver_opengl"
-			IntermediateDirectory=".\../../../../obj/Debug/driver_opengl"
-			ConfigurationType="2"
+			OutputDirectory="../../../../obj/Debug/driver_opengl"
+			IntermediateDirectory="../../../../obj/Debug/driver_opengl"
+			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -333,7 +317,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include"
-				PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="_WINDOWS;DRIVER_OPENGL_EXPORTS;_DEBUG;WIN32;LIBXML_STATIC;NL_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -358,22 +342,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="dinput8.lib dxguid.lib opengl32.lib"
-				OutputFile="../../../../lib/nel_drv_opengl_win_d.dll"
-				LinkIncremental="2"
-				ModuleDefinitionFile=".\driver_opengl.def"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="../../../../obj/Debug/driver_opengl/nel_drv_opengl_win_d.pdb"
-				SubSystem="2"
-				ImportLibrary="../../../../obj/Debug/driver_opengl/nel_drv_opengl_win_d.lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="../../../../lib/driver_opengl_d.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -383,9 +356,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -406,15 +376,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -496,7 +457,6 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -541,15 +501,6 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
 				Name="ReleaseDebug|Win32"
 				>
 				<Tool
@@ -580,15 +531,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -625,15 +567,6 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
 				Name="ReleaseDebug|Win32"
 				>
 				<Tool
@@ -664,15 +597,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -710,15 +634,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -760,7 +675,6 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -794,15 +708,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -840,15 +745,6 @@
 					Optimization="0"
 					PreprocessorDefinitions="_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;_DEBUG;NL_DEBUG_FAST;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -890,8 +786,6 @@
 				>
 				<Tool
 					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions="NDEBUG;_WINDOWS;_USRDLL;DRIVER_OPENGL_EXPORTS;WIN32;_MBCS;LIBXML_STATIC;$(NoInherit)"
 					UsePrecompiledHeader="1"
 				/>
 			</FileConfiguration>
