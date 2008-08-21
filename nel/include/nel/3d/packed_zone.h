@@ -96,8 +96,8 @@ public:
 
 /** A packed zone
   * Compact representation of a zone with fixed tesseletion
-  * for raytarcing tests.  
-  *  
+  * for raytarcing tests.
+  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2005
@@ -128,7 +128,7 @@ class CPackedZone16;
 
 class CPackedZone32 : public CPackedZoneBase
 {
-public:	
+public:
 	typedef uint32				TIndexType;
 	std::vector<CPackedVertex>  Verts;
 	std::vector<CPackedTri>		Tris;
@@ -166,8 +166,8 @@ private:
 
 private:
 	void    addTri(const NLMISC::CTriangle &tri, TVertexGrid &vertexGrid, TTriListGrid &triListGrid);
-	// alloc a packed vertex index, building a new vertex if necessary	
-	uint32  allocVertex(const NLMISC::CVector &src, TVertexGrid &vertexGrid);		
+	// alloc a packed vertex index, building a new vertex if necessary
+	uint32  allocVertex(const NLMISC::CVector &src, TVertexGrid &vertexGrid);
 	// add tris from an an instance
 	void    addInstance(const CShapeInfo &si, const NLMISC::CMatrix &matrix, TVertexGrid &vertexGrid, TTriListGrid &triListGrid);
 public:
@@ -180,7 +180,7 @@ class CPackedZone16 : public CPackedZoneBase
 {
 public:
 	typedef uint16				TIndexType;
-	friend class CPackedZone32;	
+	friend class CPackedZone32;
 	std::vector<CPackedVertex>  Verts;
 	std::vector<CPackedTri16>	Tris;
 	std::vector<uint16>			TriLists; // lists of tri for each grid cell, all lists are packed in a single vector. ~0 marks the end of a list

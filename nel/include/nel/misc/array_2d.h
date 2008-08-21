@@ -38,8 +38,8 @@ namespace NLMISC
   * Access is done using the () operator
   *
   * Example :
-  * 
-  * CArray2D<uint> myArray;  
+  *
+  * CArray2D<uint> myArray;
   * myArray.init(10, 10, 0); // fill with zero's
   * myArray(5, 5) = 1;
   *
@@ -49,7 +49,7 @@ namespace NLMISC
   */
 template <class T> class CArray2D
 {
-public:	
+public:
 	typedef typename std::vector<T> TArrayContainer;
 	typedef typename TArrayContainer::iterator iterator;
 	typedef typename TArrayContainer::const_iterator const_iterator;
@@ -64,14 +64,14 @@ public:
 	const_iterator end() const { return _Array.end(); }
 
 	bool isIn(sint x, sint y) const { return x >= 0 && y >= 0 && x < (sint) _Width && y < (sint) _Height; }
-	
+
 	// access element by column/row
 	T &operator()(uint x, uint y)
 	{
 		#ifdef NL_DEBUG
 			nlassert(x < _Width);
 			nlassert(y < _Height);
-		#endif		
+		#endif
 		return _Array[x + y * _Width];
 	}
 	// access element by column/row (const version)
@@ -80,8 +80,8 @@ public:
 		#ifdef NL_DEBUG
 			nlassert(x < _Width);
 			nlassert(y < _Height);
-		#endif		
-		return _Array[x + y * _Width];		
+		#endif
+		return _Array[x + y * _Width];
 	}
 	// Return width of array
 	uint getWidth() const { return _Width; }
@@ -115,8 +115,8 @@ public:
 	{
 		nlassert(row < _Height);
 		return _Array.begin() + (row + 1) * _Width;
-	}	
-	// get an iterator at the given position 
+	}
+	// get an iterator at the given position
 	iterator getIteratorAt(uint x, uint y)
 	{
 		#ifdef NL_DEBUG
@@ -143,8 +143,8 @@ public:
 	//
 	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 private:
-	TArrayContainer _Array;	
-	uint _Width;	
+	TArrayContainer _Array;
+	uint _Width;
 	uint _Height;
 private:
 	inline void checkRect(const NLMISC::CRect &r) const
@@ -167,7 +167,7 @@ void CArray2D<T>::clear()
 //*********************************************************************************
 template <class T>
 void CArray2D<T>::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
-{	
+{
 	f.serialCont(_Array);
 	uint32 width = _Width;
 	uint32 height = _Height;
@@ -181,21 +181,21 @@ void CArray2D<T>::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 template <class T>
 void CArray2D<T>::getUpdateRects(sint moveOffsetX, sint moveOffsetY, std::vector<NLMISC::CRect> &rectsToUpdate)
 {
-	rectsToUpdate.clear();	
+	rectsToUpdate.clear();
 	if (moveOffsetX < 0) // moved right ?
 	{
 		// the width to update
-		uint width = std::min((uint) moveOffsetX, _Width);	
+		uint width = std::min((uint) moveOffsetX, _Width);
 		// the the grid moved top or bottom, exclude this part
 		sint height = _Height - abs(moveOffsetY);
 		if (height > 0)
-		{				
+		{
 			// complete column on the right
 			rectsToUpdate.push_back(NLMISC::CRect((sint32) (_Width - width), (sint32) (std::max(- moveOffsetY, 0)), (uint32) width, (uint32) height));
 			#ifdef NL_DEBUG
 				checkRect(rectsToUpdate.back());
 			#endif
-		}		
+		}
 	}
 	else if (moveOffsetX > 0) // moved left ?
 	{
@@ -204,7 +204,7 @@ void CArray2D<T>::getUpdateRects(sint moveOffsetX, sint moveOffsetY, std::vector
 		// the the grid moved top or bottom.
 		sint height = _Height - abs(moveOffsetY);
 		if (height > 0)
-		{			
+		{
 			// complete column on the right
 			rectsToUpdate.push_back(NLMISC::CRect(0, (sint32) std::max(- moveOffsetY, 0), (uint32) width, (uint32) height));
 			#ifdef NL_DEBUG
@@ -215,7 +215,7 @@ void CArray2D<T>::getUpdateRects(sint moveOffsetX, sint moveOffsetY, std::vector
 	// update top or bottom part
 	if (moveOffsetY < 0)
 	{
-		sint height = std::min((uint) moveOffsetY, _Height);		
+		sint height = std::min((uint) moveOffsetY, _Height);
 		rectsToUpdate.push_back(NLMISC::CRect(0, _Height - height, _Width, height));
 		#ifdef NL_DEBUG
 			checkRect(rectsToUpdate.back());
@@ -224,12 +224,12 @@ void CArray2D<T>::getUpdateRects(sint moveOffsetX, sint moveOffsetY, std::vector
 	else
 	if (moveOffsetY > 0)
 	{
-		sint height = std::min((uint) (- moveOffsetY), _Height);		
+		sint height = std::min((uint) (- moveOffsetY), _Height);
 		rectsToUpdate.push_back(NLMISC::CRect(0, 0, _Width, height));
 		#ifdef NL_DEBUG
 			checkRect(rectsToUpdate.back());
 		#endif
-	}	
+	}
 }
 
 //*********************************************************************************
@@ -242,7 +242,7 @@ void CArray2D<T>::getDiscardRects(sint moveOffsetX, sint moveOffsetY,std::vector
 //*********************************************************************************
 template <class T>
 void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint width, sint height)
-{	
+{
 	if (srcX >= (sint) getWidth()) return;
 	if (srcY >= (sint) getHeight()) return;
 	if (dstX >= (sint) getWidth()) return;
@@ -269,7 +269,7 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 	}
 	if (dstX < 0)
 	{
-		width += dstX;		
+		width += dstX;
 		if (width < 0) return;
 		srcX -= dstX;
 		dstX = 0;
@@ -283,7 +283,7 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 	}
 	if (dstX + width > (sint) getWidth())
 	{
-		width =  getWidth() - dstX;		
+		width =  getWidth() - dstX;
 	}
 	if (dstY + height > (sint) getHeight())
 	{
@@ -299,7 +299,7 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 	{
 		const_iterator src = getIteratorAt(srcX, srcY);
 		iterator dst = getIteratorAt(dstX, dstY);
-		do 
+		do
 		{
 			if (CTraits<T>::SupportRawCopy)
 			{
@@ -312,7 +312,7 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 			}
 			src += _Width;
 			dst += _Width;
-		} 
+		}
 		while(--height);
 	}
 	else if (dstY > srcY)
@@ -320,7 +320,7 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 		// copy from top to bottom
 		const_iterator src = getIteratorAt(srcX, srcY + height - 1);
 		iterator dst = getIteratorAt(dstX, dstY + height - 1);
-		do 
+		do
 		{
 			if (CTraits<T>::SupportRawCopy)
 			{
@@ -328,18 +328,18 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 				::memcpy(&(*dst), &(*src), sizeof(T) * width);
 			}
 			else
-			{			
+			{
 				std::copy(src, src + width, dst);
 			}
 			src -= _Width;
 			dst -= _Width;
-		} 
+		}
 		while(--height);
 	}
 	else
 	{
 		const_iterator src = getIteratorAt(srcX, srcY);
-		iterator dst = getIteratorAt(dstX, dstY);		
+		iterator dst = getIteratorAt(dstX, dstY);
 		if (dstX < srcX)
 		{
 			do
@@ -350,13 +350,13 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 					::memmove(&(*dst), &(*src), sizeof(T) * width);
 				}
 				else
-				{				
+				{
 					std::reverse_copy(src, src + width, dst);
 				}
 				src += _Width;
 				dst += _Width;
-			} 
-			while(--height);	
+			}
+			while(--height);
 		}
 		else
 		{
@@ -370,10 +370,10 @@ void CArray2D<T>::moveSubArray(sint dstX, sint dstY, sint srcX, sint srcY, sint 
 				else
 				{
 					std::copy(src, src + width, dst);
-				}				
+				}
 				src += _Width;
 				dst += _Width;
-			} 
+			}
 			while(--height);
 		}
 	}
@@ -437,7 +437,7 @@ void CArray2D<T>::blit(const CArray2D<T> &src, sint srcX, sint srcY, sint srcWid
 	{
 		srcHeight = getHeight() - dstY;
 		if (srcHeight <= 0) return;
-	}	
+	}
 	const T *srcBase = (const T *) &src._Array[0];
 	const T *srcPtr = &(srcBase[srcX + srcY * src.getWidth()]);
 	const T *srcEndPtr = srcPtr + srcHeight * src.getWidth();
@@ -456,7 +456,7 @@ void CArray2D<T>::blit(const CArray2D<T> &src, sint srcX, sint srcY, sint srcWid
 		srcPtr += src.getWidth();
 		destPtr += getWidth();
 	}
-	
+
 }
 
 
@@ -466,29 +466,26 @@ template <class T>
 void CArray2D<T>::move(sint offsetX, sint offsetY)
 {
 	moveSubArray(offsetX, offsetY, 0, 0, _Width, _Height);
-}			
+}
 
 //*********************************************************************************
 template <class T>
 void CArray2D<T>::init(uint width, uint height)
-{	
-	_Array.resize(width * height);	
-	_Width = width;	
+{
+	_Array.resize(width * height);
+	_Width = width;
 	_Height = height;
 }
 
 //*********************************************************************************
 template <class T>
 void CArray2D<T>::init(uint width,uint height, const T &defaultValue)
-{	
-	_Array.resize(width * height, defaultValue);	
-	_Width = width;	
-	_Height = height;	
+{
+	_Array.resize(width * height, defaultValue);
+	_Width = width;
+	_Height = height;
 }
 
-
 } // NLMISC
-
-
 
 #endif
