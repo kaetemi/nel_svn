@@ -44,11 +44,11 @@ void CDriverD3D::showCursor (bool b)
 	H_AUTO_D3D(CDriverD3D_showCursor);
 	if (b)
 	{
-		while (ShowCursor(b) < 0) {};
+		while (ShowCursor(b) < 0) {}
 	}
 	else
 	{
-		while (ShowCursor(b) >= 0) {};
+		while (ShowCursor(b) >= 0) {}
 	}
 };
 
