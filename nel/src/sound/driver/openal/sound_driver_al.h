@@ -27,12 +27,11 @@
 #define NL_SOUND_DRIVER_AL_H
 
 #include "nel/misc/types_nl.h"
-#include "sound/driver/sound_driver.h"
-#include "sound/driver/openal/source_al.h"
-#include "sound/driver/openal/buffer_al.h"
+#include "../sound_driver.h"
+#include "source_al.h"
+#include "buffer_al.h"
 #include <AL/al.h>
 #include <AL/alut.h>
-#include "../sound_driver.h"
 #ifdef NL_OS_WINDOWS
 # include <objbase.h> // needed before eax.h
 # if defined EAX_AVAILABLE
