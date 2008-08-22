@@ -40,7 +40,7 @@ class IListener;
 class ISource;
 
 /** Configuration for compiling with or without EAX support.
- *	Set to 0 if you don't have EAX library or don't whant EAX support.
+ *	Set to 0 if you don't have EAX library or don't want EAX support.
  *	This definition impact on code generation for driver AND sound lib.
  * NO EAX on linux
  */
