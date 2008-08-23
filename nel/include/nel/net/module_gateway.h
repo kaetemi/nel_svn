@@ -499,7 +499,7 @@ namespace NLNET
 		{
 		}
 		
-		virtual ~CGatewaySecurity() {} // TODO virtual destructor
+		virtual ~CGatewaySecurity() { }
 
 		/** the gateway send a command to the security module */
 		virtual void onCommand(const TParsedCommandLine &command)	{}
