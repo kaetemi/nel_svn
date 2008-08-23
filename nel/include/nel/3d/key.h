@@ -1,7 +1,5 @@
 /** \file key.h
  * class CKey
- *
- * $Id: key.h,v 1.4 2005/01/17 16:39:42 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

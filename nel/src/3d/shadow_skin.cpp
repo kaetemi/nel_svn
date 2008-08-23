@@ -1,7 +1,5 @@
 /** \file shadow_skin.cpp
  * <File description>
- *
- * $Id: shadow_skin.cpp,v 1.1 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

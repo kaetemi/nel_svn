@@ -1,7 +1,5 @@
 /** \file stddirect3d.h
  * Direct 3d driver implementation
- *
- * $Id: stddirect3d.h,v 1.3 2005/01/31 13:52:39 lecroart Exp $
  */
 
 /* Copyright, 2003 Nevrax Ltd.

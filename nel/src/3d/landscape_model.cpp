@@ -1,7 +1,5 @@
 /** \file landscape_model.cpp
  * TODO: File description
- *
- * $Id: landscape_model.cpp,v 1.41 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

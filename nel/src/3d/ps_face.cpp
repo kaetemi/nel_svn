@@ -1,7 +1,5 @@
 /** \file ps_face.cpp
  * Face particles.
- *
- * $Id: ps_face.cpp,v 1.17 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

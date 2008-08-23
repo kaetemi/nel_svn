@@ -1,7 +1,5 @@
 /** \file rect.cpp
  * TODO: File description
- *
- * $Id: rect.cpp,v 1.5 2004/11/15 10:25:05 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

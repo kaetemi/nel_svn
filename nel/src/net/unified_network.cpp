@@ -1,7 +1,5 @@
 /** \file unified_network.cpp
  * Network engine, layer 5 with no multithread support
- *
- * $Id: unified_network.cpp,v 1.104 2007/06/18 08:52:44 boucher Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

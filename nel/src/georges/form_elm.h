@@ -1,7 +1,5 @@
 /** \file form_elm.h
  * Georges form element class
- *
- * $Id: form_elm.h,v 1.26 2005/02/22 10:19:22 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

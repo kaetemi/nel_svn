@@ -1,7 +1,5 @@
 /** \file music_sound.cpp
  * TODO: File description
- *
- * $Id: music_sound.cpp,v 1.2 2004/11/15 10:25:06 lecroart Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

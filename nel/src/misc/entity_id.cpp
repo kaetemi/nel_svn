@@ -1,7 +1,5 @@
 /** \file entity_id.cpp
  * TODO: File description
- *
- * $Id: entity_id.cpp,v 1.9 2004/11/15 10:25:04 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

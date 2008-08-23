@@ -1,7 +1,5 @@
 /** \file u_scene.h
  * TODO: File description
- *
- * $Id: u_scene.h,v 1.61 2005/07/22 12:45:23 legallo Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

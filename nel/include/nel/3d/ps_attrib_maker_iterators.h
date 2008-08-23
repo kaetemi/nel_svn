@@ -1,7 +1,5 @@
 /** \file ps_attrib_maker_iterators.h
  * Special iterators for the private use of ps_attrib_maker_helper
- *
- * $Id: ps_attrib_maker_iterators.h,v 1.4 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

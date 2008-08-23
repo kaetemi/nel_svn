@@ -1,7 +1,5 @@
 /** \file bsp_tree.h
  * Generic bsp tree.
- *
- * $Id: bsp_tree.h,v 1.1 2001/06/15 16:24:42 corvazier Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

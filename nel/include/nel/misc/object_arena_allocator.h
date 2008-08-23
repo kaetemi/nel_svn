@@ -1,6 +1,4 @@
 /** \file object_arena_allocator.h
- *
- * $Id: object_arena_allocator.h,v 1.8 2005/07/18 08:58:22 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

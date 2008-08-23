@@ -1,7 +1,5 @@
 /** \file ig_surface_light_build.cpp
  * TODO: File description
- *
- * $Id: ig_surface_light_build.cpp,v 1.6 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

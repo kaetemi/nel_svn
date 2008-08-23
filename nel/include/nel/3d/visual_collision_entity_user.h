@@ -1,7 +1,5 @@
 /** \file visual_collision_entity_user.h
  * UVisualCollisionEntity implementation.
- *
- * $Id: visual_collision_entity_user.h,v 1.12 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

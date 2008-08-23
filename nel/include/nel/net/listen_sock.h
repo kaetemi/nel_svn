@@ -1,7 +1,5 @@
 /** \file listen_sock.h
  * Network engine, layer 0, listening tcp socket
- *
- * $Id: listen_sock.h,v 1.2 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

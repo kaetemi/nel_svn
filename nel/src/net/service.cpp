@@ -1,8 +1,6 @@
 /** \file service.cpp
  * Base class for all network services
  *
- * $Id: service.cpp,v 1.247 2007/06/14 16:16:22 cado Exp $
- *
  * \todo ace: test the signal redirection on Unix
  */
 

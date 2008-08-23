@@ -1,7 +1,5 @@
 /** \file cluster.h
  * Definition of a cluster/portal visibility
- *
- * $Id: cluster.h,v 1.17 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

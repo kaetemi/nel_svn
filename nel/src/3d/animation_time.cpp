@@ -1,7 +1,5 @@
 /** \file animation_time.cpp
  * TODO: File description
- *
- * $Id: animation_time.cpp,v 1.5 2004/11/15 10:24:32 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

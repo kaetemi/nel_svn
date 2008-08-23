@@ -1,7 +1,5 @@
 /** \file o_xml.cpp
  * Output xml stream
- *
- * $Id: o_xml.cpp,v 1.14 2004/04/30 08:20:14 distrib Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

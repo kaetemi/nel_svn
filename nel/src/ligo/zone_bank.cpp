@@ -1,7 +1,5 @@
 /** \file zone_bank.cpp
  * Zone Bank
- *
- * $Id: zone_bank.cpp,v 1.5 2007/05/30 13:31:32 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

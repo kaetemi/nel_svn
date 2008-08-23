@@ -1,7 +1,5 @@
 /** \file exterior_mesh.cpp
  *
- *
- * $Id: exterior_mesh.cpp,v 1.8 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

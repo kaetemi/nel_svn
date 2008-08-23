@@ -1,7 +1,5 @@
 /** \file vertex_program.cpp
  * Vertex program definition
- *
- * $Id: vertex_program.cpp,v 1.4 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

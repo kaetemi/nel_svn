@@ -1,7 +1,5 @@
 /** \file ps_direction.h
  * TODO: File description
- *
- * $Id: ps_direction.h,v 1.4 2004/11/15 10:24:47 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

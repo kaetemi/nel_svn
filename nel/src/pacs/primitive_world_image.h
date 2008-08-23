@@ -1,7 +1,5 @@
 /** \file primitive_world_image.h
  * Data for the primitive duplicated for each world image it is linked
- *
- * $Id: primitive_world_image.h,v 1.11 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

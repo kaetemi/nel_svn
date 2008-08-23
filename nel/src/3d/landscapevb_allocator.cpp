@@ -1,7 +1,5 @@
 /** \file landscapevb_allocator.cpp
  * TODO: File description
- *
- * $Id: landscapevb_allocator.cpp,v 1.20 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

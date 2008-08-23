@@ -1,7 +1,5 @@
 /** \file primitive_block.h
  * Block of PACS primitive
- *
- * $Id: primitive_block.h,v 1.4 2003/10/10 07:13:41 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

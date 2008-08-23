@@ -1,7 +1,5 @@
 /** \file cloud.cpp
  * cloud implementation
- *
- * $Id: cloud.cpp,v 1.9 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

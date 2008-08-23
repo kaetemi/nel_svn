@@ -1,7 +1,5 @@
 /** \file build_indoor.cpp
  * 
- *
- * $Id: build_indoor.cpp,v 1.8 2007/06/01 14:10:34 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

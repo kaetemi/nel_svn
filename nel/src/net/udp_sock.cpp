@@ -1,7 +1,5 @@
 /** \file udp_sock.cpp
  * Network engine, layer 0, udp socket
- *
- * $Id: udp_sock.cpp,v 1.20 2007/06/18 08:47:44 distrib Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file log.h
  * Logging system providing multi displayer output and filtering processing
- *
- * $Id: log.h,v 1.38 2005/04/26 00:05:15 miller Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

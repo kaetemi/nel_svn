@@ -1,7 +1,5 @@
 /** \file fast_ptr_list.h
  * TODO: File description
- *
- * $Id: fast_ptr_list.h,v 1.4 2004/11/15 10:24:32 lecroart Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file track_sampled_quat_small_header.h
  * TODO: File description
- *
- * $Id: track_sampled_quat_small_header.h,v 1.3 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

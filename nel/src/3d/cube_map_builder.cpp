@@ -1,7 +1,5 @@
 /** \file cube_map_builder.cpp
  * a function that helps to build cube maps
- *
- * $Id: cube_map_builder.cpp,v 1.7 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

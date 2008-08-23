@@ -1,7 +1,5 @@
 /** \file buffer_al.cpp
  * OpenAL buffer
- *
- * $Id: buffer_al.cpp,v 1.8 2003/03/03 13:01:28 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

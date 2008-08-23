@@ -1,7 +1,5 @@
 /** \file water_model.h
  * A model for water
- *
- * $Id: water_model.h,v 1.18 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

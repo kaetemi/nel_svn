@@ -1,8 +1,6 @@
 /** \file driver_opengl_vertex_program.cpp
  * OpenGL driver implementation for vertex program manipulation.
  *
- * $Id: driver_opengl_vertex_program.cpp,v 1.24 2005/02/22 10:19:22 besson Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

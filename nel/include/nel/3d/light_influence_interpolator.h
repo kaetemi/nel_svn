@@ -1,7 +1,5 @@
 /** \file light_influence_interpolator.h
  * TODO: File description
- *
- * $Id: light_influence_interpolator.h,v 1.2 2004/11/15 10:24:40 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

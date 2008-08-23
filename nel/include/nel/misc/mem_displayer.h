@@ -1,7 +1,5 @@
 /** \file mem_displayer.h
  * TODO: File description
- *
- * $Id: mem_displayer.h,v 1.10 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file vegetable_sort_block.h
  * TODO: File description
- *
- * $Id: vegetable_sort_block.h,v 1.8 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

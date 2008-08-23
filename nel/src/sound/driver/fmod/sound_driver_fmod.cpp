@@ -1,7 +1,5 @@
 /** \file sound_driver_fmod.cpp
  * DirectSound driver
- *
- * $Id: sound_driver_fmod.cpp,v 1.10 2005/04/04 09:49:46 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

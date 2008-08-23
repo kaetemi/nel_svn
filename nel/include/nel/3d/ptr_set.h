@@ -1,7 +1,5 @@
 /** \file ptr_set.h
  * TODO: File description
- *
- * $Id: ptr_set.h,v 1.3 2004/11/15 10:24:47 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

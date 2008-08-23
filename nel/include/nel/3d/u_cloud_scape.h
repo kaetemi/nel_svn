@@ -1,7 +1,5 @@
 /** \file u_cloud_scape.h
  * User interface for cloud scape manipulation
- *
- * $Id: u_cloud_scape.h,v 1.1 2002/10/25 16:19:47 besson Exp $
  */
 
 /* Copyright, 2000, 2002 Nevrax Ltd.

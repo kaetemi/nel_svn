@@ -1,7 +1,5 @@
 /** \file debug.h
  * This file contains all features that help us to debug applications
- *
- * $Id: debug.h,v 1.92 2007/06/20 12:00:57 dailyserver Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

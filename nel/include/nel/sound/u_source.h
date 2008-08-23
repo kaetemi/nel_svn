@@ -1,7 +1,5 @@
 /** \file u_source.h
  * USource: Game interface for sound sources (stereo or 3D sound instances)
- *
- * $Id: u_source.h,v 1.17 2004/03/19 16:31:27 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

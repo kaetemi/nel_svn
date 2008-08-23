@@ -1,7 +1,5 @@
 /** \file hls_texture_bank.cpp
  * TODO: File description
- *
- * $Id: hls_texture_bank.cpp,v 1.4 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

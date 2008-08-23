@@ -1,7 +1,5 @@
 /** \file ligo_config.h
  * Ligo config file 
- *
- * $Id: ligo_config.h,v 1.10 2005/09/08 11:47:18 lancon Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

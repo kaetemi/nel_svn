@@ -1,7 +1,5 @@
 /** \file tess_list.h
  * TODO: File description
- *
- * $Id: tess_list.h,v 1.3 2004/11/15 10:24:49 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file landscape_user.cpp
  * TODO: File description
- *
- * $Id: landscape_user.cpp,v 1.50 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

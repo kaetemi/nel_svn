@@ -1,7 +1,5 @@
 /** \file nelu.h
  * TODO: File description
- *
- * $Id: nelu.h,v 1.11 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

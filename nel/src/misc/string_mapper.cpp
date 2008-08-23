@@ -4,8 +4,6 @@
  * If the same string is submited twice, the same id is returned.
  * The class can also (but not in an optimized manner) return the
  * string associated with an id.
- *
- * $Id: string_mapper.cpp,v 1.13 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

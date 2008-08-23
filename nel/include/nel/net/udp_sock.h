@@ -1,7 +1,5 @@
 /** \file udp_sock.h
  * Network engine, layer 0, udp socket
- *
- * $Id: udp_sock.h,v 1.8 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

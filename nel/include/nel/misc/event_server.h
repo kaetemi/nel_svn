@@ -1,7 +1,5 @@
 /** \file event_server.h
  * events server
- *
- * $Id: event_server.h,v 1.10 2006/05/31 12:03:13 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

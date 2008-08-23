@@ -1,7 +1,5 @@
 /** \file complex_source.h
  * CSourceUSer: implementation of USource
- *
- * $Id: complex_source.h,v 1.10 2004/11/15 10:25:06 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file ps_sound.h
  * TODO: File description
- *
- * $Id: ps_sound.h,v 1.14 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file ps_util.cpp
  * TODO: File description
- *
- * $Id: ps_util.cpp,v 1.47 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

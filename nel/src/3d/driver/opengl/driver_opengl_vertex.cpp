@@ -1,8 +1,6 @@
 /** \file driver_opengl_vertex.cpp
  * OpenGL driver implementation for vertex Buffer / render manipulation.
  *
- * $Id: driver_opengl_vertex.cpp,v 1.58 2007/03/09 09:49:30 boucher Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

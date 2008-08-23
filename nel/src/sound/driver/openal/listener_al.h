@@ -1,7 +1,5 @@
 /** \file listener_al.h
  * OpenAL sound listener
- *
- * $Id: listener_al.h,v 1.6 2002/11/25 14:11:41 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

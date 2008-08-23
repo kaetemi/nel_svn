@@ -1,7 +1,5 @@
 /** \file command.h
  * Management of runtime command line processing
- *
- * $Id: command.h,v 1.42 2007/07/27 15:18:29 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

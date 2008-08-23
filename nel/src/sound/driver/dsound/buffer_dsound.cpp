@@ -1,7 +1,5 @@
 /** \file buffer_dsound.cpp
  * DirectSound sound buffer
- *
- * $Id: buffer_dsound.cpp,v 1.12 2004/08/30 13:24:22 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

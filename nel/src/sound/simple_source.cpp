@@ -1,7 +1,5 @@
 /** \file simple_source.cpp
  * CSimpleSource: implementation of USource
- *
- * $Id: simple_source.cpp,v 1.9 2004/11/15 10:25:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

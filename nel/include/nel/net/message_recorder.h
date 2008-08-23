@@ -1,7 +1,5 @@
 /** \file message_recorder.h
  * Class CMessageRecorder (allows to record/replay message input/output)
- *
- * $Id: message_recorder.h,v 1.6 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

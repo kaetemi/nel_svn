@@ -1,7 +1,5 @@
 /** \file sound_driver_fmod.h
  * DirectSound sound source
- *
- * $Id: sound_driver_fmod.h,v 1.10 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

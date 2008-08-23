@@ -1,7 +1,5 @@
 /** \file geom_ext.cpp
  * Set of extension of triangles (triangle with uv, color, uvcolor etc...)
- *
- * $Id: geom_ext.cpp,v 1.4 2004/10/29 18:08:47 berenguier Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

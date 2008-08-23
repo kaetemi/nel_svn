@@ -1,7 +1,5 @@
 /** \file unix_event_emitter.cpp
 * TODO: File description
-*
-* $Id: unix_event_emitter.cpp,v 1.9 2004-11-15 10:24:56 lecroart Exp $
 */
 
 /* Copyright, 2000 Nevrax Ltd.

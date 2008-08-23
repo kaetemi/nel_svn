@@ -1,7 +1,5 @@
 /** \file time_nl.cpp
  * CTime class
- *
- * $Id: time_nl.cpp,v 1.23 2007/06/07 13:24:07 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file tds.cpp
  * Thread dependant storage class
- *
- * $Id: tds.cpp,v 1.5 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

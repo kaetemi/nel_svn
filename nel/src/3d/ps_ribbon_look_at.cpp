@@ -1,7 +1,5 @@
 /** \file ps_ribbon_look_at.cpp
  * Ribbons that faces the user.
- *
- * $Id: ps_ribbon_look_at.cpp,v 1.25 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

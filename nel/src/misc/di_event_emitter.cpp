@@ -1,7 +1,5 @@
 /** \file di_event_emitter.cpp
  * TODO: File description
- *
- * $Id: di_event_emitter.cpp,v 1.6 2004/11/15 10:25:03 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

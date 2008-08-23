@@ -1,7 +1,5 @@
 /** \file complex_sound.h
  *
- *
- * $Id: complex_sound.h,v 1.6 2004/03/19 16:31:28 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file raw_skinned.h
  * Packed struct used for faster Software skinning
- *
- * $Id: raw_skinned.h,v 1.3 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

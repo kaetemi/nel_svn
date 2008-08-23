@@ -1,7 +1,5 @@
 /** \file clip_trav.h
  * TODO: File description
- *
- * $Id: clip_trav.h,v 1.25 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

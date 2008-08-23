@@ -1,7 +1,5 @@
 /** \file ps_float.h
  * TODO: File description
- *
- * $Id: ps_float.h,v 1.19 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

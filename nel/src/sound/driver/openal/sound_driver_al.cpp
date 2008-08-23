@@ -1,7 +1,5 @@
 /** \file sound_driver_al.cpp
  * OpenAL sound driver
- *
- * $Id: sound_driver_al.cpp,v 1.16 2004/02/23 14:38:45 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

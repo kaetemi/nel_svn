@@ -1,6 +1,4 @@
 /** \file contiguous_block_allocator.h
- *
- * $Id: contiguous_block_allocator.h,v 1.4 2004/11/15 10:24:24 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

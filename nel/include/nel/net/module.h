@@ -1,7 +1,5 @@
 /** \file module.h
  * module interface
- *
- * $Id: module.h,v 1.15 2007/04/05 10:10:28 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

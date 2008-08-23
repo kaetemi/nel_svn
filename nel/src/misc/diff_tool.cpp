@@ -1,6 +1,4 @@
 /** \file diff_tool.cpp
- *
- * $Id: diff_tool.cpp,v 1.20 2007/08/08 18:01:40 distrib Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file render_trav.cpp
  * TODO: File description
- *
- * $Id: render_trav.cpp,v 1.68 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

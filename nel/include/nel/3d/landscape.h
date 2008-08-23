@@ -1,7 +1,5 @@
 /** \file landscape.h
  * TODO: File description
- *
- * $Id: landscape.h,v 1.64 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

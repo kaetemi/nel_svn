@@ -1,7 +1,5 @@
 /** \file 3d/zone_lighter.cpp
  * Class to light zones
- *
- * $Id: zone_lighter.cpp,v 1.42 2005/08/19 15:34:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file callback_client.h
  * Network engine, layer 3, client
- *
- * $Id: callback_client.h,v 1.21 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

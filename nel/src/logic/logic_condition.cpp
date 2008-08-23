@@ -1,7 +1,5 @@
 /** \file logic_condition.cpp
  * 
- *
- * $Id: logic_condition.cpp,v 1.3 2003/12/29 13:36:39 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

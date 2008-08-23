@@ -1,7 +1,5 @@
 /** \file source_dsound.cpp
  * DirectSound sound source
- *
- * $Id: source_dsound.cpp,v 1.29 2004/08/30 12:44:26 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

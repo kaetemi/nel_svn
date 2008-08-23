@@ -1,7 +1,5 @@
 /** \file u_material.h
  * User interface for material.
- *
- * $Id: u_material.h,v 1.9 2005/03/11 15:15:11 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

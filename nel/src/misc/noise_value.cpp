@@ -1,7 +1,5 @@
 /** \file noise_value.cpp
  * TODO: File description
- *
- * $Id: noise_value.cpp,v 1.2 2004/11/15 10:25:04 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

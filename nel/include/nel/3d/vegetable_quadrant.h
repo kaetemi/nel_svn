@@ -1,7 +1,5 @@
 /** \file vegetable_quadrant.h
  * TODO: File description
- *
- * $Id: vegetable_quadrant.h,v 1.3 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

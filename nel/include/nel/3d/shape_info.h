@@ -1,6 +1,5 @@
 /** \file shape_info.h
  *
- * $Id:
  */
 
 /* Copyright, 2000-2006 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file driver_user.cpp
  * TODO: File description
- *
- * $Id: driver_user.cpp,v 1.59 2007/04/24 13:24:10 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

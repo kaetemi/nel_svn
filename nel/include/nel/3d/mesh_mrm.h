@@ -1,7 +1,5 @@
 /** \file mesh_mrm.h
  * TODO: File description
- *
- * $Id: mesh_mrm.h,v 1.55 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

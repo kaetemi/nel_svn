@@ -1,7 +1,5 @@
 /** \file big_file.h
  * Big file management
- *
- * $Id: big_file.h,v 1.11 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2000, 2002 Nevrax Ltd.

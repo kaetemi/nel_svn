@@ -1,7 +1,5 @@
 /** \file logic_condition.h
  * 
- *
- * $Id: logic_condition.h,v 1.2 2002/06/20 12:17:49 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

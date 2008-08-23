@@ -1,7 +1,5 @@
 /** \file viewport.h
  * TODO: File description
- *
- * $Id: viewport.h,v 1.10 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

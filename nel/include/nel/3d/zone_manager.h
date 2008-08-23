@@ -1,7 +1,5 @@
 /** \file zone_manager.h
  * CZoneManager class
- *
- * $Id: zone_manager.h,v 1.16 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file fast_floor.h
  * TODO: File description
- *
- * $Id: fast_floor.h,v 1.7 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

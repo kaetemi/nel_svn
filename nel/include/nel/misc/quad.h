@@ -1,7 +1,5 @@
 /** \file quad.h
  * TODO: File description
- *
- * $Id: quad.h,v 1.5 2006/01/10 17:38:46 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

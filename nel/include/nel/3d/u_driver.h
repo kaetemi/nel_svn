@@ -1,7 +1,5 @@
 /** \file u_driver.h
  * TODO: File description
- *
- * $Id: u_driver.h,v 1.58 2006/12/06 17:21:01 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file aabbox.cpp
  * TODO: File description
- *
- * $Id: aabbox.cpp,v 1.13 2004/11/15 10:25:02 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

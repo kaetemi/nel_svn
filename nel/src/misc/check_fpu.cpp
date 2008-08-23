@@ -1,7 +1,5 @@
 /** \file check_fpu.cpp
  * Check FPU macro
- *
- * $Id: check_fpu.cpp,v 1.4 2007/04/27 10:25:31 saffray Exp $
  */
 
 /* Copyright, 2000, 2005 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file algo.cpp
  * TODO: File description
- *
- * $Id: algo.cpp,v 1.10 2005/06/16 17:14:37 coutelas Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

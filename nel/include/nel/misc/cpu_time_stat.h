@@ -1,7 +1,5 @@
 /** \file cpu_time_stat.h
  * Timing utilities (only support for unixes)
- *
- * $Id: cpu_time_stat.h,v 1.2 2005/08/09 19:02:13 boucher Exp $
  */
 
 /* Copyright, 2004 Nevrax Ltd.

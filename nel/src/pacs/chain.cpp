@@ -1,7 +1,5 @@
 /** \file chain.cpp
  *
- *
- * $Id: chain.cpp,v 1.23 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

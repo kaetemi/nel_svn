@@ -1,7 +1,5 @@
 /** \file vegetable_uv8.h
  * TODO: File description
- *
- * $Id: vegetable_uv8.h,v 1.2 2004/11/15 10:24:53 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

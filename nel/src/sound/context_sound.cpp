@@ -1,6 +1,4 @@
 /** \file context_sound.cpp
- *
- * $Id: context_sound.cpp,v 1.6 2004/06/11 12:29:51 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

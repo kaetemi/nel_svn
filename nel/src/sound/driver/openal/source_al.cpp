@@ -1,7 +1,5 @@
 /** \file source_al.cpp
  * OpenAL sound source
- *
- * $Id: source_al.cpp,v 1.17 2004/05/10 17:43:09 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

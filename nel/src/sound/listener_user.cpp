@@ -1,7 +1,5 @@
 /** \file listener_user.cpp
  * UListenerUser: implementation of UListener
- *
- * $Id: listener_user.cpp,v 1.5 2003/07/03 15:16:12 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

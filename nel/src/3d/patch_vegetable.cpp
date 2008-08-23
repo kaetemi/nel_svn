@@ -1,7 +1,5 @@
 /** \file patch_vegetable.cpp
  * CPatch implementation for vegetable management
- *
- * $Id: patch_vegetable.cpp,v 1.22 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

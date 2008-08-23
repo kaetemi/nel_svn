@@ -1,7 +1,5 @@
 /** \file vectord.cpp
  * CVectorD class
- *
- * $Id: vectord.cpp,v 1.5 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

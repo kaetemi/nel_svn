@@ -1,7 +1,5 @@
 /** \file audio_mixer_user.h
  * CAudioMixerUser: implementation of UAudioMixer
- *
- * $Id: audio_mixer_user.h,v 1.56 2004/12/13 17:50:44 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

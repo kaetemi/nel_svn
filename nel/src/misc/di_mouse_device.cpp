@@ -1,7 +1,5 @@
 /** \file di_mouse_device.cpp
  * TODO: File description
- *
- * $Id: di_mouse_device.cpp,v 1.12 2006/12/06 17:21:15 boucher Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

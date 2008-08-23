@@ -1,6 +1,4 @@
 /** \file reader_writer.h
- *
- * $Id: reader_writer.h,v 1.2 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

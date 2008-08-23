@@ -1,7 +1,5 @@
 /** \file zone_template.h
  * Ligo zone template definition
- *
- * $Id: zone_template.h,v 1.1 2002/02/14 11:16:43 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

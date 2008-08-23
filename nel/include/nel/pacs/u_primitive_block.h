@@ -1,6 +1,4 @@
 /** \file u_primitive_block.h
- *
- * $Id: u_primitive_block.h,v 1.3 2005/09/09 11:20:45 miller Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

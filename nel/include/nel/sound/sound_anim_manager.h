@@ -1,8 +1,6 @@
 /** \file sound_anim_manager.h
  * The sound animation manager handles all request to load, play, and
  * update sound animations.
- *
- * $Id: sound_anim_manager.h,v 1.13 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file trav_scene.h
  * TODO: File description
- *
- * $Id: trav_scene.h,v 1.4 2004/11/15 10:24:52 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

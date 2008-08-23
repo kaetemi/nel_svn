@@ -1,7 +1,5 @@
 /** \file layered_ordering_table.h
  * TODO: File description
- *
- * $Id: layered_ordering_table.h,v 1.7 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

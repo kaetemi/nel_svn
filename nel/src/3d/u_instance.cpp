@@ -1,7 +1,5 @@
 /** \file u_instance.cpp
  * Interface for instance objects.
- *
- * $Id: u_instance.cpp,v 1.7 2005/09/20 16:21:22 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

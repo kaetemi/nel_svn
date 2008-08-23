@@ -1,7 +1,5 @@
 /** \file animatable.h
  * Class IAnimatable
- *
- * $Id: animatable.h,v 1.5 2004/10/18 16:12:41 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

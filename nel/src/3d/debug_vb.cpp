@@ -1,6 +1,4 @@
 /** \file debug_vb.cpp
- *
- * $Id: debug_vb.cpp,v 1.4 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

@@ -1,8 +1,6 @@
 /** \file driver_opengl.cpp
  * OpenGL driver implementation
  *
- * $Id: driver_opengl.cpp,v 1.239 2006/12/06 17:21:23 boucher Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

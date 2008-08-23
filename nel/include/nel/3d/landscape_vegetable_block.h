@@ -1,7 +1,5 @@
 /** \file landscape_vegetable_block.h
  * TODO: File description
- *
- * $Id: landscape_vegetable_block.h,v 1.6 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

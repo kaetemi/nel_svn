@@ -1,7 +1,5 @@
 /** \file sound_driver.h
  * ISoundDriver: sound driver interface
- *
- * $Id: sound_driver.h,v 1.27 2004/12/13 17:51:09 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

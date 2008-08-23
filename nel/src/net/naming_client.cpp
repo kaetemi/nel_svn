@@ -1,8 +1,6 @@
 /** \file naming_client.cpp
  * CNamingClient
  *
- * $Id: naming_client.cpp,v 1.64 2007/05/02 13:51:54 cado Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

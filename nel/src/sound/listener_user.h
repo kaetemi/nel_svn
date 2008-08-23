@@ -1,7 +1,5 @@
 /** \file listener_user.h
  * UListenerUser: implementation of UListener
- *
- * $Id: listener_user.h,v 1.8 2002/11/04 15:40:44 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

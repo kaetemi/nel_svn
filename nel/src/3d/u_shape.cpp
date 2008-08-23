@@ -1,7 +1,5 @@
 /** \file u_shape.cpp
  * TODO: File description
- *
- * $Id: u_shape.cpp,v 1.8 2005/06/27 16:01:15 berenguier Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file algo.h
  * Some common algorithms.
- *
- * $Id: algo.h,v 1.17 2006/01/10 17:38:46 boucher Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

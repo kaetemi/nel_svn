@@ -1,7 +1,5 @@
 /** \file scissor.h
  * A scissor, used for IDriver rendering
- *
- * $Id: scissor.h,v 1.2 2002/10/28 17:32:12 corvazier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

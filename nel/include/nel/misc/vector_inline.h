@@ -1,7 +1,5 @@
 /** \file vector_inline.h
  * CVector class inline definitions
- *
- * $Id: vector_inline.h,v 1.13 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

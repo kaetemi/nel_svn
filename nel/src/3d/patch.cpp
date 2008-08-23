@@ -1,7 +1,5 @@
 /** \file patch.cpp
  * TODO: File description
- *
- * $Id: patch.cpp,v 1.103 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

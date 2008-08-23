@@ -1,7 +1,5 @@
 /** \file ps_attrib.h
  * TODO: File description
- *
- * $Id: ps_attrib.h,v 1.25 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

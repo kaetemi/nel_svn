@@ -1,7 +1,5 @@
 /** \file sock.cpp
  * Network engine, layer 0, base class
- *
- * $Id: sock.cpp,v 1.49 2007/06/18 08:47:44 distrib Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

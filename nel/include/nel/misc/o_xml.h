@@ -1,7 +1,5 @@
 	/** \file o_xml.h
  * Output xml stream
- *
- * $Id: o_xml.h,v 1.8 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

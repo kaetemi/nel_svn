@@ -1,7 +1,5 @@
 /** \file ps_register_attribs.cpp
  * 
- *
- * $Id: ps_register_attribs.cpp,v 1.3 2005/02/22 10:19:11 besson Exp $
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

@@ -1,7 +1,5 @@
 /** \file shape_bank_user.cpp
  * Implementation of the user interface managing instance groups.
- *
- * $Id: shape_bank_user.cpp,v 1.10 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

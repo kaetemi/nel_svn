@@ -1,7 +1,5 @@
 /** \file cloud_scape.cpp
  * cloud_scape implementation
- *
- * $Id: cloud_scape.cpp,v 1.13 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file net_log.cpp
  * Class CNetLog (logger for network transfers)
- *
- * $Id: net_log.cpp,v 1.16 2007/06/18 08:15:43 distrib Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

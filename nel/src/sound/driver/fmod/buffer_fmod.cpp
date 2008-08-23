@@ -1,7 +1,5 @@
 /** \file buffer_fmod.cpp
  * DirectSound sound buffer
- *
- * $Id: buffer_fmod.cpp,v 1.3 2005/04/04 09:49:45 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

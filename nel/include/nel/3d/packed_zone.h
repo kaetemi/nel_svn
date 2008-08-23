@@ -1,7 +1,5 @@
 /** \file packed_zone.h
  * Collision on packed zones
- *
- * $Id:
  */
 
 /* Copyright, 2000-2006 Nevrax Ltd.

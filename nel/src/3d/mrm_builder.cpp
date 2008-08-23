@@ -1,7 +1,5 @@
 /** \file mrm_builder.cpp
  * A Builder of MRM.
- *
- * $Id: mrm_builder.cpp,v 1.35 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

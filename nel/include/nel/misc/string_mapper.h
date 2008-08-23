@@ -1,6 +1,4 @@
 /** \file string_mapper.h
- *
- * $Id: string_mapper.h,v 1.19 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file driver/loader.h
  * ILoader: sound loader interface
- *
- * $Id: loader.h,v 1.3 2002/11/04 15:40:44 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,6 +1,4 @@
 /** \file water_env_map.cpp
- *
- * $Id: water_env_map.cpp,v 1.7 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

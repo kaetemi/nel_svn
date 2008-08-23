@@ -1,7 +1,5 @@
 /** \file lod_character_texture.h
  * Lod Texture Descriptor
- *
- * $Id: lod_character_texture.h,v 1.1 2002/11/08 18:41:58 berenguier Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file animation_playlist.h
  * TODO: File description
- *
- * $Id: animation_playlist.h,v 1.7 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

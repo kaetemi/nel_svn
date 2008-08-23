@@ -1,7 +1,5 @@
 /** \file quad_grid_clip_manager.cpp
  * TODO: File description
- *
- * $Id: quad_grid_clip_manager.cpp,v 1.16 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file animation_time.h
  * TODO: File description
- *
- * $Id: animation_time.h,v 1.6 2004/11/15 10:24:16 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

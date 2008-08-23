@@ -1,7 +1,5 @@
 /** \file anim_ctrl.h
  * TODO: File description
- *
- * $Id: anim_ctrl.h,v 1.2 2004/11/15 10:24:16 lecroart Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

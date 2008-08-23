@@ -1,7 +1,5 @@
 /** \file skeleton_model.h
  * TODO: File description
- *
- * $Id: skeleton_model.h,v 1.49 2006/07/12 14:37:22 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

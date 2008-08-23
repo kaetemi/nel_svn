@@ -1,7 +1,5 @@
 /** \file computed_string.h
  * Computed string
- *
- * $Id: computed_string.h,v 1.18 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

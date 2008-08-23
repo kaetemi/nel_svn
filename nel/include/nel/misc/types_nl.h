@@ -1,8 +1,6 @@
 /** \file types_nl.h
  * Basic types, define and class
  *
- * $Id: types_nl.h,v 1.58 2007/06/20 12:00:57 dailyserver Exp $
- *
  * Available constantes:
  * - NL_OS_WINDOWS		: windows operating system (32bits only)
  * - NL_OS_UNIX			: unix operating system (GNU/Linux and other)

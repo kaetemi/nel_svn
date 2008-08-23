@@ -1,7 +1,5 @@
 /** \file listener_fmod.h
  * DirectSound sound listener
- *
- * $Id: listener_fmod.h,v 1.3 2005/04/07 14:30:40 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

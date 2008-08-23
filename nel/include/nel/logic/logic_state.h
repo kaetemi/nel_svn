@@ -1,7 +1,5 @@
 /** \file logic_state.h
  * 
- *
- * $Id: logic_state.h,v 1.4 2004/11/15 10:24:24 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

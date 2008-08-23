@@ -1,7 +1,5 @@
 /** \file shadow_map.cpp
  * TODO: File description
- *
- * $Id: shadow_map.cpp,v 1.6 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

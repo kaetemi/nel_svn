@@ -1,7 +1,5 @@
 /** \file primitive.h
  * TODO: File description
- *
- * $Id: primitive.h,v 1.44 2005/09/22 10:16:34 lancon Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file zone_region.cpp
  * TODO: File description
- *
- * $Id: zone_region.cpp,v 1.8 2004/11/15 10:24:58 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

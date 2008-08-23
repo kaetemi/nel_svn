@@ -1,7 +1,5 @@
 /** \file u_particle_system_sound.h
  * TODO: File description
- *
- * $Id: u_particle_system_sound.h,v 1.6 2004/11/15 10:24:18 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

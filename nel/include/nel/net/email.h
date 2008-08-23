@@ -1,7 +1,5 @@
 /** \file email.h
  * send email
- *
- * $Id: email.h,v 1.2 2002/11/29 09:10:46 lecroart Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

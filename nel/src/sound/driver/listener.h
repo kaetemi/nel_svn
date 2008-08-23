@@ -1,7 +1,5 @@
 /** \file listener.h
  * IListener: sound listener interface
- *
- * $Id: listener.h,v 1.5 2002/11/04 15:40:44 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

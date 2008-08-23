@@ -1,7 +1,5 @@
 /** \file uv.h
  * TODO: File description
- *
- * $Id: uv.h,v 1.7 2006/01/10 17:38:46 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

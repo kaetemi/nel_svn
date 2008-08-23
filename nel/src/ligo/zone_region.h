@@ -1,7 +1,5 @@
 /** \file zone_region.h
  * TODO: File description
- *
- * $Id: zone_region.h,v 1.6 2004/11/15 10:24:58 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

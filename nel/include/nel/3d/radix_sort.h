@@ -1,7 +1,5 @@
 /** \file radix_sort.h
  * TODO: File description
- *
- * $Id: radix_sort.h,v 1.2 2004/11/15 10:24:48 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

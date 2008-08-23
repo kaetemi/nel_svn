@@ -1,7 +1,5 @@
 /** \file background_source.h
  * CSimpleSource: implementation of USource
- *
- * $Id: background_source.h,v 1.8 2004/11/15 10:25:06 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

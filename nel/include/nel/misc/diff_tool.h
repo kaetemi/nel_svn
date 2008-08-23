@@ -1,6 +1,4 @@
 /** \file diff_tool.h
- *
- * $Id: diff_tool.h,v 1.10 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

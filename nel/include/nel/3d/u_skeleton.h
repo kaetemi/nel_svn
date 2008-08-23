@@ -1,7 +1,5 @@
 /** \file u_skeleton.h
  * TODO: File description
- *
- * $Id: u_skeleton.h,v 1.26 2006/07/12 14:37:21 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

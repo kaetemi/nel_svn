@@ -1,7 +1,5 @@
 /** \file zone_symmetrisation.h
  * Environnement used to symmetrise zones
- *
- * $Id: zone_symmetrisation.h,v 1.3 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

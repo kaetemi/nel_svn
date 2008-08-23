@@ -1,7 +1,5 @@
 /** \file move_cell.h
  * TODO: File description
- *
- * $Id: move_cell.h,v 1.3 2004/11/15 10:25:05 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file callback_net_base.h
  * Network engine, layer 3, base
- *
- * $Id: callback_net_base.h,v 1.30 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

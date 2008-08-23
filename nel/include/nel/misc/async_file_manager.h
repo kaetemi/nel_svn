@@ -1,7 +1,5 @@
 /** \file async_file_manager.h
  * TODO: File description
- *
- * $Id: async_file_manager.h,v 1.6 2005/06/23 16:27:15 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

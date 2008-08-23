@@ -1,7 +1,5 @@
 /** \file u_transform.cpp
  * Interface for transform objects.
- *
- * $Id: u_transform.cpp,v 1.6 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

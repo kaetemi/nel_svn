@@ -1,7 +1,5 @@
 /** \file string_id_array.cpp
  * TODO: File description
- *
- * $Id: string_id_array.cpp,v 1.6 2004/11/15 10:25:05 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

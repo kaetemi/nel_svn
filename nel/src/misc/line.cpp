@@ -1,7 +1,5 @@
 /** \file line.cpp
  * TODO: File description
- *
- * $Id: line.cpp,v 1.4 2004/11/15 10:25:04 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

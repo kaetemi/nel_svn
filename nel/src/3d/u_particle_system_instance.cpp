@@ -1,7 +1,5 @@
 /** \file u_particle_system_instance.cpp
  * Interface for particule system.
- *
- * $Id: u_particle_system_instance.cpp,v 1.3 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

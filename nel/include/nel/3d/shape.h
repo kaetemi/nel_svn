@@ -1,7 +1,5 @@
 /** \file shape.h
  * TODO: File description
- *
- * $Id: shape.h,v 1.17 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

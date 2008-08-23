@@ -1,8 +1,6 @@
 /** \file driver_direct3d_inputs.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_inputs.cpp,v 1.3 2004/08/09 14:35:08 vizerie Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file win_thread.h
  * Windows implementation of CThread class (look at thread.h)
- *
- * $Id: win_thread.h,v 1.14 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

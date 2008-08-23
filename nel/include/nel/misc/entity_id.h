@@ -1,7 +1,5 @@
 /** \file entity_id.h
  * This class generate uniq Id for worl entities
- *
- * $Id: entity_id.h,v 1.43 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

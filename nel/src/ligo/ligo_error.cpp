@@ -1,7 +1,5 @@
 /** \file ligo_error.cpp
  * Error handling implementation
- *
- * $Id: ligo_error.cpp,v 1.5 2002/04/10 12:45:30 corvazier Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

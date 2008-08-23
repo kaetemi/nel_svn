@@ -1,7 +1,5 @@
 /** \file ps_util.h
  * TODO: File description
- *
- * $Id: ps_util.h,v 1.12 2005/03/01 09:12:37 vizerie Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

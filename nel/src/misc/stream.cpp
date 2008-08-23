@@ -1,7 +1,5 @@
 /** \file stream.cpp
  * This File handles IStream 
- *
- * $Id: stream.cpp,v 1.34 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

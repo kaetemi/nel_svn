@@ -1,7 +1,5 @@
 /** \file instance_lighter.h
  * TODO: File description
- *
- * $Id: instance_lighter.h,v 1.8 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

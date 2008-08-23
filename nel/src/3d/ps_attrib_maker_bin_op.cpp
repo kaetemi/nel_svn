@@ -1,7 +1,5 @@
 /** \file ps_attrib_maker_bin_op.cpp
  * TODO: File description
- *
- * $Id: ps_attrib_maker_bin_op.cpp,v 1.9 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

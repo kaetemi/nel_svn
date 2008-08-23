@@ -1,7 +1,5 @@
 /** \file triangle.cpp
  * TODO: File description
- *
- * $Id: triangle.cpp,v 1.8 2005/02/01 11:13:39 vizerie Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file animation_playlist.cpp
  * TODO: File description
- *
- * $Id: animation_playlist.cpp,v 1.15 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

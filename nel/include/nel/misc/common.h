@@ -1,7 +1,5 @@
 /** \file misc/common.h
  * common algorithms, constants and functions
- *
- * $Id: common.h,v 1.83 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

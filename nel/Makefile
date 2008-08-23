@@ -15,7 +15,6 @@
 
 
 #
-# $Id: Makefile.am,v 1.11 2005/04/04 11:53:51 cado Exp $
 #
 
 

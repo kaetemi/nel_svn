@@ -1,7 +1,5 @@
 /** \file ig_surface_light.h
  * TODO: File description
- *
- * $Id: ig_surface_light.h,v 1.9 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

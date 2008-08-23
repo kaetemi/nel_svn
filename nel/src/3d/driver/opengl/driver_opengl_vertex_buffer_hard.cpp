@@ -1,7 +1,5 @@
 /** \file driver_opengl_vertex_buffer_hard.cpp
  * TODO: File description
- *
- * $Id: driver_opengl_vertex_buffer_hard.cpp,v 1.22 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

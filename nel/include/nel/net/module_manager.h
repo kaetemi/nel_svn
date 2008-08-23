@@ -1,7 +1,5 @@
 /** \file module_manager.h
  * module manager inteface
- *
- * $Id: module_manager.h,v 1.6 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

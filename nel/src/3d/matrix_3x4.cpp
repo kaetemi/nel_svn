@@ -1,7 +1,5 @@
 /** \file matrix_3x4.cpp
  * TODO: File description
- *
- * $Id: matrix_3x4.cpp,v 1.3 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

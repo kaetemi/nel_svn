@@ -1,7 +1,5 @@
 /** \file unicode.cpp
  * Unicode functions
- *
- * $Id: unicode.cpp,v 1.2 2004/10/26 16:08:47 corvazier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

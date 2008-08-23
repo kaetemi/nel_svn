@@ -1,7 +1,5 @@
 /** \file mixing_track.h
  * CTrack: a source selected for playing
- *
- * $Id: mixing_track.h,v 1.4 2003/01/08 15:48:11 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file p_thread.cpp
  * class CPThread (POSIX threads)
- *
- * $Id: p_thread.cpp,v 1.19 2007/06/20 17:30:36 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

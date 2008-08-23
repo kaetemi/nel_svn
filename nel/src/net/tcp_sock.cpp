@@ -1,7 +1,5 @@
 /** \file tcp_sock.cpp
  * Network engine, layer 0, tcp socket
- *
- * $Id: tcp_sock.cpp,v 1.13 2007/06/15 18:55:06 distrib Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

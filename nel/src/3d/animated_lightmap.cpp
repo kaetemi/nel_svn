@@ -1,7 +1,5 @@
 /** \file animated_lightmap.cpp
  * TODO: File description
- *
- * $Id: animated_lightmap.cpp,v 1.7 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file shader.h
  * TODO: File description
- *
- * $Id: shader.h,v 1.3 2004/11/15 10:24:48 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file animated_value.h
  * Class IAnimatedValue
- *
- * $Id: animated_value.h,v 1.6 2004/07/09 09:45:52 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file landscape_def.h
  * Global Definitions for Landscape
- *
- * $Id: landscape_def.h,v 1.15 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

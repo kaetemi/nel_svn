@@ -1,6 +1,4 @@
 /** \file texture_emboss.cpp
- *
- * $Id: texture_emboss.cpp,v 1.2 2003/06/19 16:42:55 corvazier Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

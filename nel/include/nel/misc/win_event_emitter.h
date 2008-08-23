@@ -1,7 +1,5 @@
 /** \file win_event_emitter.h
  * TODO: File description
- *
- * $Id: win_event_emitter.h,v 1.7 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file tess_face_priority_list.cpp
  * TODO: File description
- *
- * $Id: tess_face_priority_list.cpp,v 1.9 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

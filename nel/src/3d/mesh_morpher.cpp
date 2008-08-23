@@ -1,7 +1,5 @@
 /** \file mesh_morpher.cpp
  * TODO: File description
- *
- * $Id: mesh_morpher.cpp,v 1.14 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,8 +1,6 @@
 /** \file login_server.cpp
  * CLoginServer is the interface used by the front end to *s authenticate users.
  *
- * $Id: login_server.cpp,v 1.45 2007/06/11 12:49:11 boucher Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

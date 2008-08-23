@@ -1,7 +1,5 @@
 /** \file ps_ribbon_base.cpp
  * Base class for (some) ribbons.
- *
- * $Id: ps_ribbon_base.cpp,v 1.16 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

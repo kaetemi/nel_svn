@@ -1,7 +1,5 @@
 /** \file event_listener.h
  * events listener
- *
- * $Id: event_listener.h,v 1.14 2006/05/31 12:03:13 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

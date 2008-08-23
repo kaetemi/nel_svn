@@ -1,7 +1,5 @@
 /** \file texture_font.cpp
  * TODO: File description
- *
- * $Id: texture_font.cpp,v 1.25 2005/03/25 16:32:42 berenguier Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file font_generator.h
  * CFontGenerator class
- *
- * $Id: font_generator.h,v 1.7 2004/01/13 18:10:32 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

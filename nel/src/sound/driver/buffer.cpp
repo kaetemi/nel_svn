@@ -1,7 +1,5 @@
 /** \file buffer.cpp
  * TODO: File description
- *
- * $Id: buffer.cpp,v 1.5 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

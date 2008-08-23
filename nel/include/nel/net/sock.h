@@ -1,7 +1,5 @@
 /** \file sock.h
  * Network engine, layer 0, base class
- *
- * $Id: sock.h,v 1.20 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

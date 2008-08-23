@@ -1,6 +1,4 @@
 /** \file reader_writer.cpp
- *
- * $Id: reader_writer.cpp,v 1.2 2001/12/28 10:17:20 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

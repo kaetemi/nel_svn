@@ -1,7 +1,5 @@
 /** \file logic_event.cpp
  * 
- *
- * $Id: logic_event.cpp,v 1.3 2002/06/20 12:17:56 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

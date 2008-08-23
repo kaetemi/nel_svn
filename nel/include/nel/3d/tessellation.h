@@ -1,7 +1,5 @@
 /** \file tessellation.h
  * TODO: File description
- *
- * $Id: tessellation.h,v 1.21 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

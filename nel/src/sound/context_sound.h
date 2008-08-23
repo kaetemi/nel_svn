@@ -1,6 +1,4 @@
 /** \file context_sound.h
- *
- * $Id: context_sound.h,v 1.11 2005/03/25 09:52:20 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

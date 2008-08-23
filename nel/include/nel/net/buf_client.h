@@ -1,7 +1,5 @@
 /** \file buf_client.h
  * Network engine, layer 1, client
- *
- * $Id: buf_client.h,v 1.13 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

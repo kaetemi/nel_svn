@@ -1,7 +1,5 @@
 /** \file module_message.cpp
  * module message implementation
- *
- * $Id: module_message.cpp,v 1.3 2006/05/31 12:03:17 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

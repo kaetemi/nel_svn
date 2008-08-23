@@ -1,7 +1,5 @@
 /** \file resource_ptr.h
  * CResourcePtr class.
- *
- * $Id: resource_ptr.h,v 1.4 2005/01/31 13:50:53 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file shape_bank_user.h
  * Implementation of the user interface managing shape bank.
- *
- * $Id: shape_bank_user.h,v 1.9 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

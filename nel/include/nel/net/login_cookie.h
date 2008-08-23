@@ -1,7 +1,5 @@
 /** \file login_cookie.h
  * container used by the login process to identify a user
- *
- * $Id: login_cookie.h,v 1.9 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,6 +1,4 @@
 /** \file vertex_program_parse.cpp
- *
- * $Id: vertex_program_parse.cpp,v 1.6 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file transform_shape.h
  * TODO: File description
- *
- * $Id: transform_shape.h,v 1.29 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

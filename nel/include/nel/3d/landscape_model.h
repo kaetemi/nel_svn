@@ -1,7 +1,5 @@
 /** \file landscape_model.h
  * TODO: File description
- *
- * $Id: landscape_model.h,v 1.15 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

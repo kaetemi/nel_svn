@@ -1,7 +1,5 @@
 /** \file async_texture_block.cpp
  * TODO: File description
- *
- * $Id: async_texture_block.cpp,v 1.3 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

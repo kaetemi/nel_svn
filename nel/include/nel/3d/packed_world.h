@@ -1,7 +1,5 @@
 /** \file packed_world.h
  * Collision on a set of packed zones (packed representation)
- *
- * $Id:
  */
 
 /* Copyright, 2000-2006 Nevrax Ltd.

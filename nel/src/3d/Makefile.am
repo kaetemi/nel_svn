@@ -1,5 +1,4 @@
 #
-# $Id: Makefile.am,v 1.112 2007/05/02 13:51:01 cado Exp $
 #
 
 MAINTAINERCLEANFILES = Makefile.in

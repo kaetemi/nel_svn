@@ -1,7 +1,5 @@
 /** \file ps_particle_basic.cpp
  * Some classes used for particle building.
- *
- * $Id: ps_particle_basic.cpp,v 1.21 2005/09/22 14:29:32 vizerie Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

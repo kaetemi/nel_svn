@@ -1,7 +1,5 @@
 /** \file ps_plane_basis.h
  * TODO: File description
- *
- * $Id: ps_plane_basis.h,v 1.9 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

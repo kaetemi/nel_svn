@@ -1,7 +1,5 @@
 /** \file ps_particle.h
  * 
- *
- * $Id: ps_particle.h,v 1.23 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

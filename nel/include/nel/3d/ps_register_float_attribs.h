@@ -1,7 +1,5 @@
 /** \file ps_register_float_attribs.h
  * 
- *
- * $Id: ps_register_float_attribs.h,v 1.2 2002/02/20 11:17:50 vizerie Exp $
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

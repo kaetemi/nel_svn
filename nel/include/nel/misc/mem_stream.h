@@ -1,7 +1,5 @@
 /** \file mem_stream.h
  * From memory serialization implementation of IStream using ASCII format (look at stream.h)
- *
- * $Id: mem_stream.h,v 1.47 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

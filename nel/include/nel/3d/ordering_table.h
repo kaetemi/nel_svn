@@ -1,7 +1,5 @@
 /** \file ordering_table.h
  * Generic Ordering Table
- *
- * $Id: ordering_table.h,v 1.8 2005/01/17 16:39:42 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

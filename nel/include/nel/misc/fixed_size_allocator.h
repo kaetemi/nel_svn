@@ -1,6 +1,4 @@
 /** \file fixed_size_allocator.h
- *
- * $Id: fixed_size_allocator.h,v 1.3 2004/11/15 10:24:24 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

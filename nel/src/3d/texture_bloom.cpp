@@ -1,6 +1,5 @@
 /** \file texture_bloom.cpp
  * TODO: File description
- *
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

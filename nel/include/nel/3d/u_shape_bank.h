@@ -1,7 +1,5 @@
 /** \file u_shape_bank.h
  * Game interface for managing shape bank.
- *
- * $Id: u_shape_bank.h,v 1.8 2005/03/10 17:26:47 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

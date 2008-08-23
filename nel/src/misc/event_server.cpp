@@ -1,7 +1,5 @@
 /** \file event_server.cpp
  * events server
- *
- * $Id: event_server.cpp,v 1.13 2006/05/31 12:03:17 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

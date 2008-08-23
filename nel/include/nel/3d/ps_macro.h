@@ -1,7 +1,5 @@
 /** \file ps_macro.h
  * Some macros used by the particle systems for rendering.
- *
- * $Id: ps_macro.h,v 1.6 2004/09/17 15:18:46 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file primitive_class.cpp
  * Ligo primitive class description. Give access at common properties for a primitive class. Properties are given in an XML file
- *
- * $Id: primitive_class.cpp,v 1.19 2005/02/22 10:19:22 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file scissor.cpp
  * A scissor, used for IDriver rendering
- *
- * $Id: scissor.cpp,v 1.2 2002/02/28 12:59:51 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

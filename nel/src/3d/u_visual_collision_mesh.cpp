@@ -1,7 +1,5 @@
 /** \file u_visual_collision_mesh.cpp
  * TODO: File description
- *
- * $Id: u_visual_collision_mesh.cpp,v 1.4 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

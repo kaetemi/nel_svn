@@ -1,7 +1,5 @@
 /** \file bitmap.cpp
  * Class managing bitmaps
- *
- * $Id: bitmap.cpp,v 1.66 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

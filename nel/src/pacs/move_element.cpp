@@ -1,7 +1,5 @@
 /** \file move_element.cpp
  * Element to insert in sorted lists
- *
- * $Id: move_element.cpp,v 1.5 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

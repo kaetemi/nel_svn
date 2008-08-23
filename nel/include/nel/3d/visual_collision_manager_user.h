@@ -1,7 +1,5 @@
 /** \file visual_collision_manager_user.h
  * UVisualCollisionManager implementation.
- *
- * $Id: visual_collision_manager_user.h,v 1.11 2006/01/09 10:59:24 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

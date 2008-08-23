@@ -1,7 +1,5 @@
 /** \file sound_bank.h
  * CSoundBank: a set of sounds
- *
- * $Id: sound_bank.h,v 1.10 2005/01/17 16:39:43 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

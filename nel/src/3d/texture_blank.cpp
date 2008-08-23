@@ -1,7 +1,5 @@
 /** \file texture_blank.cpp
  * TODO: File description
- *
- * $Id: texture_blank.cpp,v 1.5 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

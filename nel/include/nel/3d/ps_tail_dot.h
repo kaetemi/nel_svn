@@ -1,7 +1,5 @@
 /** \file ps_tail_dot.h
  * Tail dot particles.
- *
- * $Id: ps_tail_dot.h,v 1.13 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

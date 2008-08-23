@@ -1,7 +1,5 @@
 /** \file u_3d_mouse_listener.h
  * 3d mouse listener
- *
- * $Id: u_3d_mouse_listener.h,v 1.2 2004/04/09 14:16:23 vizerie Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

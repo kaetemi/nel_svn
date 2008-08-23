@@ -1,7 +1,5 @@
 /** \file quad.cpp
  * TODO: File description
- *
- * $Id: quad.cpp,v 1.4 2004/11/15 10:25:05 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

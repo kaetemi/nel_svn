@@ -1,7 +1,5 @@
 /** \file value_smoother.h
  * TODO: File description
- *
- * $Id: value_smoother.h,v 1.13 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

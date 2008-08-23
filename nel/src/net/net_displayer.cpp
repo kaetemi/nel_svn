@@ -1,7 +1,5 @@
 /** \file net_displayer.cpp
  * CNetDisplayer class
- *
- * $Id: net_displayer.cpp,v 1.24 2004/05/07 12:56:22 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

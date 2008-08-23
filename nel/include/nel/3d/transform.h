@@ -1,7 +1,5 @@
 /** \file transform.h
  * TODO: File description
- *
- * $Id: transform.h,v 1.62 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file visual_collision_mesh.h
  * TODO: File description
- *
- * $Id: visual_collision_mesh.h,v 1.8 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

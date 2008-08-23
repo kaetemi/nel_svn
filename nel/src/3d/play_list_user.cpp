@@ -1,7 +1,5 @@
 /** \file play_list_user.cpp
  * TODO: File description
- *
- * $Id: play_list_user.cpp,v 1.11 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

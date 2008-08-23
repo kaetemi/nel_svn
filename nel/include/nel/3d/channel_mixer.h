@@ -1,7 +1,5 @@
 /** \file channel_mixer.h
  * class CChannelMixer
- *
- * $Id: channel_mixer.h,v 1.11 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

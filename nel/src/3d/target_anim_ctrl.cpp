@@ -1,7 +1,5 @@
 /** \file target_anim_ctrl.cpp
  * TODO: File description
- *
- * $Id: target_anim_ctrl.cpp,v 1.3 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

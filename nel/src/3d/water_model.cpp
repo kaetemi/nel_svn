@@ -1,7 +1,5 @@
 /** \file water_model.cpp
  * TODO: File description
- *
- * $Id: water_model.cpp,v 1.57 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

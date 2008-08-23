@@ -1,7 +1,5 @@
 /** \file transport_class.cpp
  * TODO: File description
- *
- * $Id: transport_class.cpp,v 1.27 2007/06/18 08:15:43 distrib Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

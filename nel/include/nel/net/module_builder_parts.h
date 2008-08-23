@@ -1,7 +1,5 @@
 /** \file module_builder_parts.h
  * Template module building blocks.
- *
- * $Id: module_builder_parts.h,v 1.7 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

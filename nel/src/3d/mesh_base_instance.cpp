@@ -1,7 +1,5 @@
 /** \file mesh_base_instance.cpp
  * TODO: File description
- *
- * $Id: mesh_base_instance.cpp,v 1.28 2005/03/24 18:34:29 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

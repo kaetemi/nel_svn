@@ -1,6 +1,4 @@
 /** \file cvar_log_filter.h
- *
- * $Id: cvar_log_filter.h,v 1.1 2004/11/30 13:45:14 vizerie Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

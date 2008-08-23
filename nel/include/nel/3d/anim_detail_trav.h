@@ -1,7 +1,5 @@
 /** \file anim_detail_trav.h
  * TODO: File description
- *
- * $Id: anim_detail_trav.h,v 1.11 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

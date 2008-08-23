@@ -24,8 +24,6 @@
  *      for messages of any number of bits less than 2^64, this
  *      implementation only works with messages with a length that is
  *      a multiple of the size of an 8-bit character.
- *
- * $Id: sha1.cpp,v 1.6 2007/04/05 10:12:34 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

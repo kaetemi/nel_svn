@@ -1,7 +1,5 @@
 /** \file sound_driver_dsound.cpp
  * DirectSound driver
- *
- * $Id: sound_driver_dsound.cpp,v 1.37 2005/01/31 13:52:40 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

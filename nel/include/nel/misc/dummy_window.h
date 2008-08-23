@@ -1,6 +1,4 @@
 /** \file dummy_window.h
- *
- * $Id: dummy_window.h,v 1.2 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000-2007 Nevrax Ltd.

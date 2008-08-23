@@ -1,7 +1,5 @@
 /** \file texture_cube.h
  * Cube mapping (6 maps around the object)
- *
- * $Id: texture_cube.h,v 1.9 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

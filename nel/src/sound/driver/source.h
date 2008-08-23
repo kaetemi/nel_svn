@@ -1,7 +1,5 @@
 /** \file source.h
  * ISource: sound source interface
- *
- * $Id: source.h,v 1.15 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

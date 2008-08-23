@@ -4,8 +4,6 @@
  * The string compare functions of the class are case insensitive 
  *
  * The coding style is not CPU efficient - the routines are not designed for performance
- *
- * $Id: sstring.cpp,v 1.5 2007/05/15 11:21:51 distrib Exp $
  */
 
 #include "stdmisc.h"

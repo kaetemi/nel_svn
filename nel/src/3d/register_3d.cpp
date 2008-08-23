@@ -1,7 +1,5 @@
 /** \file register_3d.cpp
  * TODO: File description
- *
- * $Id: register_3d.cpp,v 1.34 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

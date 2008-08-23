@@ -1,7 +1,5 @@
 /** \file background_sound_manager.cpp
  * CBackgroundSoundManager
- *
- * $Id: background_sound_manager.cpp,v 1.27 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file u_bone.cpp
  * User interface for bones.
- *
- * $Id: u_bone.cpp,v 1.5 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

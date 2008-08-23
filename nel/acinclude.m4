@@ -2,7 +2,6 @@
 #
 # Macros used by Nevrax in configure.in files.
 #
-# $Id: acinclude.m4,v 1.20 2005/04/04 10:07:29 cado Exp $
 # 
 # =========================================================================
 

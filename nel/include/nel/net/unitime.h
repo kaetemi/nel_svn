@@ -1,8 +1,6 @@
 /** \file unitime.h
  * Manage universal time (synchronized with a centralized time manager)
  * THIS CLASS IS DEPRECATED, DON'T USE IT
- *
- * $Id: unitime.h,v 1.15 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

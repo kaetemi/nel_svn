@@ -1,7 +1,5 @@
 /** \file naming_client.h
  * Client part of the Naming Service
- *
- * $Id: naming_client.h,v 1.38 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

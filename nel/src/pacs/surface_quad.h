@@ -1,7 +1,5 @@
 /** \file surface_quad.h
  * 
- *
- * $Id: surface_quad.h,v 1.4 2002/07/01 18:23:55 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

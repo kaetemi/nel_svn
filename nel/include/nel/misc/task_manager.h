@@ -1,7 +1,5 @@
 /** \file task_manager.h
  * Manage a list of task in a separate thread
- *
- * $Id: task_manager.h,v 1.16 2006/05/31 12:03:13 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

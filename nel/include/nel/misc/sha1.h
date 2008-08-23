@@ -7,8 +7,6 @@
  *      Many of the variable names in this code, especially the
  *      single character names, were used because those were the names
  *      used in the publication.
- *
- * $Id: sha1.h,v 1.7 2005/08/19 15:34:08 cado Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file patch_noise.cpp
  * CPatch implementation of Noise
- *
- * $Id: patch_noise.cpp,v 1.9 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

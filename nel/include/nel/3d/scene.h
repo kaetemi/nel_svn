@@ -1,7 +1,5 @@
 /** \file scene.h
  * A 3d scene, manage model instantiation, tranversals etc..
- *
- * $Id: scene.h,v 1.65 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

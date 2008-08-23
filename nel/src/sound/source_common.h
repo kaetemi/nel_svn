@@ -1,7 +1,5 @@
 /** \file source_common.h
  * CSourceUSer: implementation of USource
- *
- * $Id: source_common.h,v 1.12 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

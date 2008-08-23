@@ -1,7 +1,5 @@
 /** \file service.h
  * Base class for all network services
- *
- * $Id: service.h,v 1.93 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

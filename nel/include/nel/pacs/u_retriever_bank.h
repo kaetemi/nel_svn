@@ -1,7 +1,5 @@
 /** \file u_retriever_bank.h
  * TODO: File description
- *
- * $Id: u_retriever_bank.h,v 1.5 2004/11/15 10:24:30 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

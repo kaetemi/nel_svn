@@ -1,6 +1,4 @@
 /** \file ps_spawn_info.h
- *
- * $Id: ps_spawn_info.h,v 1.3 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file di_keyboard_device.cpp
  * TODO: File description
- *
- * $Id: di_keyboard_device.cpp,v 1.16 2004/11/15 10:25:04 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

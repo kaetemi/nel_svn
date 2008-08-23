@@ -1,8 +1,6 @@
 /** \file cpu_time_stat.cpp
  * Timing utilities (only support for unixes)
  *
- * $Id: cpu_time_stat.cpp,v 1.4 2005/01/31 13:52:39 lecroart Exp $
- *
  * \todo ace: test the signal redirection on Unix
  */
 

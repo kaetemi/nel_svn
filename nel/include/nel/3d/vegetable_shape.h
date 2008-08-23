@@ -1,7 +1,5 @@
 /** \file vegetable_shape.h
  * TODO: File description
- *
- * $Id: vegetable_shape.h,v 1.12 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

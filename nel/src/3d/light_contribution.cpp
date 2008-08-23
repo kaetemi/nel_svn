@@ -1,7 +1,5 @@
 /** \file light_contribution.cpp
  * TODO: File description
- *
- * $Id: light_contribution.cpp,v 1.6 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

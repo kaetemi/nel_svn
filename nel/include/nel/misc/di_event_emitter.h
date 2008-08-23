@@ -1,7 +1,5 @@
 /** \file di_event_emitter.h
  * TODO: File description
- *
- * $Id: di_event_emitter.h,v 1.7 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

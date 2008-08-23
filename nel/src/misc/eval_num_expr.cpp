@@ -1,7 +1,5 @@
 /** \file eval_num_expr.cpp
  * Evaluate numerical expressions
- *
- * $Id: eval_num_expr.cpp,v 1.8 2005/01/31 15:11:56 cado Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

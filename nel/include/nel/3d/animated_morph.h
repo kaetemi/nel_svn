@@ -1,7 +1,5 @@
 /** \file animated_morph.h
  * TODO: File description
- *
- * $Id: animated_morph.h,v 1.5 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

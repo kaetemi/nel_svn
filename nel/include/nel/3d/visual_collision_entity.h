@@ -1,7 +1,5 @@
 /** \file visual_collision_entity.h
  * TODO: File description
- *
- * $Id: visual_collision_entity.h,v 1.14 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

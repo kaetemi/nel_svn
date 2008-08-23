@@ -1,7 +1,5 @@
 /** \file ps_register_particles.cpp
  * 
- *
- * $Id: ps_register_particles.cpp,v 1.4 2005/02/22 10:19:11 besson Exp $
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

@@ -1,7 +1,5 @@
 /** \file sound_anim_marker.cpp
  * A sound event marker on a sound track
- *
- * $Id: sound_anim_marker.cpp,v 1.9 2004/10/08 13:34:30 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

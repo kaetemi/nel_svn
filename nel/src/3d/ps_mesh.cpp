@@ -1,7 +1,5 @@
 /** \file ps_mesh.cpp
  * Particle meshs
- *
- * $Id: ps_mesh.cpp,v 1.49 2007/04/24 13:24:10 cado Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

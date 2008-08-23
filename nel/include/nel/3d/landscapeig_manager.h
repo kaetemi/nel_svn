@@ -1,7 +1,5 @@
 /** \file landscapeig_manager.h
  * TODO: File description
- *
- * $Id: landscapeig_manager.h,v 1.9 2004/11/15 10:24:16 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

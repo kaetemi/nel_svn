@@ -1,6 +1,4 @@
 /** \file ps_allocator.cpp
- *
- * $Id: ps_allocator.cpp,v 1.6 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

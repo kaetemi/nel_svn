@@ -1,7 +1,5 @@
 /** \file zone_template.cpp
  * Ligo zone template implementation
- *
- * $Id: zone_template.cpp,v 1.9 2004/03/19 16:31:28 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

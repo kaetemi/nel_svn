@@ -1,7 +1,5 @@
 /** \file module_common.h
  * basic type and forward declaration for module system
- *
- * $Id: module_common.h,v 1.7 2007/05/09 12:27:16 lancon Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file noise_3d.cpp
  * cloud_scape implementation
- *
- * $Id: noise_3d.cpp,v 1.7 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

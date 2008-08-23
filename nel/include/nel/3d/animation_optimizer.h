@@ -1,7 +1,5 @@
 /** \file animation_optimizer.h
  * TODO: File description
- *
- * $Id: animation_optimizer.h,v 1.3 2004/11/15 10:24:31 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

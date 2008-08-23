@@ -1,6 +1,5 @@
 /** \file random.h
  * Simple random generator
- * $Id: random.h,v 1.3 2005/08/29 16:12:12 boucher Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

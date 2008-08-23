@@ -1,7 +1,5 @@
 /** \file vector_h.h
  * Homogeneous vector
- *
- * $Id: vector_h.h,v 1.4 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

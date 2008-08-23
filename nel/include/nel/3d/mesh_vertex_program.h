@@ -1,7 +1,5 @@
 /** \file mesh_vertex_program.h
  * TODO: File description
- *
- * $Id: mesh_vertex_program.h,v 1.7 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

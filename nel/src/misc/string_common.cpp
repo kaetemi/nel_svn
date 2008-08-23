@@ -1,7 +1,5 @@
 /** \file string_common.cpp
  *
- *
- * $Id: string_common.cpp,v 1.1 2003/12/30 11:14:09 lecroart Exp $
  */
 
 /* Copyright, 2003 Nevrax Ltd.

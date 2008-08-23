@@ -1,7 +1,5 @@
 /** \file ps_register_plane_basis_attribs.h
  * 
- *
- * $Id: ps_register_plane_basis_attribs.h,v 1.3 2005/08/19 15:32:13 cado Exp $
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

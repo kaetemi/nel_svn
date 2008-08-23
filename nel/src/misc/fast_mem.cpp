@@ -1,7 +1,5 @@
 /** \file fast_mem.cpp
  * Fast memory copy and precache
- *
- * $Id: fast_mem.cpp,v 1.4 2002/05/22 15:47:21 cado Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

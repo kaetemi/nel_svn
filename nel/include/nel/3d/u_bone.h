@@ -1,7 +1,5 @@
 /** \file u_bone.h
  * User interface for bones.
- *
- * $Id: u_bone.h,v 1.7 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

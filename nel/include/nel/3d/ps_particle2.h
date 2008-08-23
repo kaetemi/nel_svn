@@ -1,7 +1,5 @@
 /** \file ps_particle2.h
  * Some more particles
- *
- * $Id: ps_particle2.h,v 1.4 2002/02/15 17:09:11 vizerie Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file quad_tree.h
  * Generic quad tree.
- *
- * $Id: quad_tree.h,v 1.19 2007/03/09 09:49:27 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file u_move_container.h
  * A container for movable objects
- *
- * $Id: u_move_container.h,v 1.16 2003/01/30 17:55:38 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

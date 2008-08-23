@@ -2,8 +2,6 @@
  *
  * interface for a class used by IService to create a monitor thread for stdin,
  * allowing ICommand commands to be executed in response to console input
- *
- * $Id: stdin_monitor_thread.h,v 1.2 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

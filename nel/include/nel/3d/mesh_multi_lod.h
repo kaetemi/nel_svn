@@ -1,7 +1,5 @@
 /** \file mesh_multi_lod.h
  * Mesh with several LOD meshes.
- *
- * $Id: mesh_multi_lod.h,v 1.27 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

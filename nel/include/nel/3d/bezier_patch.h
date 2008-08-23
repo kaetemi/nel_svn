@@ -1,7 +1,5 @@
 /** \file bezier_patch.h
  * TODO: File description
- *
- * $Id: bezier_patch.h,v 1.4 2004/11/15 10:24:32 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

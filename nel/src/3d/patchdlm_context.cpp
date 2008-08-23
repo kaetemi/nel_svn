@@ -1,7 +1,5 @@
 /** \file patchdlm_context.cpp
  * TODO: File description
- *
- * $Id: patchdlm_context.cpp,v 1.16 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

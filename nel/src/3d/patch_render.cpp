@@ -1,7 +1,5 @@
 /** \file patch_render.cpp
  * CPatch implementation of render: VretexBuffer and PrimitiveBlock build.
- *
- * $Id: patch_render.cpp,v 1.23 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

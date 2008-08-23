@@ -1,7 +1,5 @@
 /** \file sound_animation.cpp
  * An animation sound track
- *
- * $Id: sound_animation.cpp,v 1.9 2004/11/15 10:25:07 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

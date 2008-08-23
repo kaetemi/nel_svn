@@ -1,7 +1,5 @@
 /** \file form.cpp
  * Georges form class
- *
- * $Id: form.cpp,v 1.20 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

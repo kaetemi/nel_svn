@@ -1,7 +1,5 @@
 /** \file path.h
  * Utility class for searching files in differents paths.
- *
- * $Id: path.h,v 1.59 2007/06/20 08:00:28 boucher Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

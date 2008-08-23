@@ -1,7 +1,5 @@
 /** \file instance_lighter.cpp
  * TODO: File description
- *
- * $Id: instance_lighter.cpp,v 1.20 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file misc/thread.h
  * Base OS independant class interface for the thread management
- *
- * $Id: thread.h,v 1.24 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

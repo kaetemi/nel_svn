@@ -1,8 +1,6 @@
 /** \file driver_direct3d_profile.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_profile.cpp,v 1.7 2004/10/08 13:32:55 lecroart Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

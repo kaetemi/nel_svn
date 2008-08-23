@@ -1,7 +1,5 @@
 /** \file bitmap_png.cpp
  * Class managing bitmaps (complementary file in order to keep bitmap.cpp as clean as possible
- *
- * $Id: bitmap_png.cpp,v 1.5 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

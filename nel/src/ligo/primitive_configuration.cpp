@@ -1,7 +1,5 @@
 /** \file primitive_configuration.cpp
  * Ligo primitive configuration description.
- *
- * $Id: primitive_configuration.cpp,v 1.7 2005/02/22 10:19:22 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

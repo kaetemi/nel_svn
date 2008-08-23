@@ -1,7 +1,5 @@
 /** \file sheet_id.cpp
  * This class defines a sheet id
- * 
- * $Id: sheet_id.cpp,v 1.40 2007/06/15 14:33:13 distrib Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

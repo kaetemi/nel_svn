@@ -1,7 +1,5 @@
 /** \file mouse_device.h
  * TODO: File description
- *
- * $Id: mouse_device.h,v 1.5 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

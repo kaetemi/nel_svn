@@ -1,7 +1,5 @@
 /** \file landscape_face_vector_manager.h
  * TODO: File description
- *
- * $Id: landscape_face_vector_manager.h,v 1.5 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

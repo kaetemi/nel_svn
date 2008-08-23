@@ -1,7 +1,5 @@
 /** \file zone_search.h
  * CZoneSearch class
- *
- * $Id: zone_search.h,v 1.4 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file displayer.h
  * Displayer class interface and classic standard displayers
- *
- * $Id: displayer.h,v 1.25 2005/04/26 00:05:15 miller Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file index_buffer.cpp
  * Index buffers.
- *
- * $Id: index_buffer.cpp,v 1.9 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file buf_fifo.h
  * Dynamically resizable FIFO container which contains different size block
- *
- * $Id: buf_fifo.h,v 1.16 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

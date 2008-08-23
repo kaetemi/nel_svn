@@ -1,7 +1,5 @@
 /** \file scene_user.cpp
  * TODO: File description
- *
- * $Id: scene_user.cpp,v 1.71 2005/07/22 12:41:22 legallo Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

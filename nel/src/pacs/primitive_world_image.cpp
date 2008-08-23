@@ -1,7 +1,5 @@
 /** \file primitive_world_image.cpp
  * Data for the primitive duplicated for each world image it is linked
- *
- * $Id: primitive_world_image.cpp,v 1.24 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file tds.h
  * Thread dependant storage class
- *
- * $Id: tds.h,v 1.2 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

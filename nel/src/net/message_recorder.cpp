@@ -1,7 +1,5 @@
 /** \file message_recorder.cpp
  * Class CMessageRecorder (allows to record/replay message input/output)
- *
- * $Id: message_recorder.cpp,v 1.6 2002/05/21 16:37:38 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

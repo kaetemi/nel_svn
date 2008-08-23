@@ -1,7 +1,5 @@
 /** \file ps_located.h
  * TODO: File description
- *
- * $Id: ps_located.h,v 1.42 2006/07/12 14:37:22 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

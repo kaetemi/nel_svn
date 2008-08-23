@@ -1,7 +1,5 @@
 /** \file listener_fmod.cpp
  * DirectSound listener
- *
- * $Id: listener_fmod.cpp,v 1.1 2004/08/30 12:35:19 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

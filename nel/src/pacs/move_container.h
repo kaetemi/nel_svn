@@ -1,7 +1,5 @@
 /** \file move_container.h
  * Container for movable object
- *
- * $Id: move_container.h,v 1.19 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

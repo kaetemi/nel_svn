@@ -1,7 +1,5 @@
 /** \file ps_quad.h
  * Base quads particles.
- *
- * $Id: ps_quad.h,v 1.13 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

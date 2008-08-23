@@ -1,6 +1,4 @@
 /** \file mouse_smoother.h
- *
- * $Id: mouse_smoother.h,v 1.4 2005/03/03 14:15:23 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

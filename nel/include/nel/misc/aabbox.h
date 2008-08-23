@@ -1,7 +1,5 @@
 /** \file aabbox.h
  * TODO: File description
- *
- * $Id: aabbox.h,v 1.14 2005-02-22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

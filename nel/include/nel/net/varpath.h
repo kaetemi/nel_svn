@@ -1,7 +1,5 @@
 /** \file varpath.h
  * use to manage variable path (ie: [serv1,serv2].*.*.var)
- *
- * $Id: varpath.h,v 1.2 2002/12/11 08:36:46 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

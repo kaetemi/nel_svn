@@ -1,7 +1,5 @@
 /** \file hls_color_texture.h
  * TODO: File description
- *
- * $Id: hls_color_texture.h,v 1.3 2004/11/15 10:24:33 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

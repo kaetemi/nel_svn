@@ -1,7 +1,5 @@
 /** \file stop_watch.h
  * Performance stopwatch
- *
- * $Id: stop_watch.h,v 1.2 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

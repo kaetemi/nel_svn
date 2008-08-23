@@ -1,6 +1,4 @@
 /** \file texture_emboss.h
- *
- * $Id: texture_emboss.h,v 1.4 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

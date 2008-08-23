@@ -1,7 +1,5 @@
 /** \file events.cpp
  * Events
- *
- * $Id: events.cpp,v 1.4 2004/03/12 16:42:06 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

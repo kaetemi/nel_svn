@@ -1,7 +1,5 @@
 /** \file texture_user.h
  * TODO: File description
- *
- * $Id: texture_user.h,v 1.13 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

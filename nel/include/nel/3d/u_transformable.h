@@ -1,7 +1,5 @@
 /** \file u_transformable.h
  * Interface for transformable objects.
- *
- * $Id: u_transformable.h,v 1.3 2004/05/07 14:41:41 corvazier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

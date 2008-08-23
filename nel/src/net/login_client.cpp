@@ -2,8 +2,6 @@
  * CLoginClient is the interface used by the client to identifies itself to the login_sytem and
  * connects to the shard.
  *
- * $Id: login_client.cpp,v 1.20 2004/05/10 15:46:08 distrib Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

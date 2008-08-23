@@ -1,7 +1,5 @@
 /** \file message.h
  * From memory serialization implementation of IStream with typed system (look at stream.h)
- *
- * $Id: message.h,v 1.43 2006/01/10 17:38:47 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file frustum.cpp
  * TODO: File description
- *
- * $Id: frustum.cpp,v 1.16 2005/01/31 13:51:41 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

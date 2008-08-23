@@ -1,7 +1,5 @@
 /** \file stream_inline.h
  * This File Declares inline for stream.h CRegistry and CBaseStream 
- *
- * $Id: stream_inline.h,v 1.30 2005/08/19 15:30:04 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file grid_traversal.h
  * Utility class for incremental grid traversal
- *
- * $Id: grid_traversal.h
  */
 
 /* Copyright, 2000, 2006 Nevrax Ltd.

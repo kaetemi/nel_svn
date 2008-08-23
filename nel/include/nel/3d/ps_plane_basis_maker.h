@@ -1,7 +1,5 @@
 /** \file ps_plane_basis_maker.h
  * TODO: File description
- *
- * $Id: ps_plane_basis_maker.h,v 1.16 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

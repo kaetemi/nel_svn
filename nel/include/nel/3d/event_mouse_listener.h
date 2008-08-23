@@ -1,7 +1,5 @@
 /** \file event_mouse_listener.h
  * TODO: File description
- *
- * $Id: event_mouse_listener.h,v 1.8 2004/11/15 10:24:32 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

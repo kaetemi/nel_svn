@@ -1,7 +1,5 @@
 /** \file game_device_events.cpp
  * TODO: File description
- *
- * $Id: game_device_events.cpp,v 1.3 2005/01/17 16:39:43 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

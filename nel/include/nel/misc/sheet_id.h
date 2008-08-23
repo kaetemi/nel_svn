@@ -1,7 +1,5 @@
 /** \file sheet_id.h
  * This class defines a sheet id
- *
- * $Id: sheet_id.h,v 1.24 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

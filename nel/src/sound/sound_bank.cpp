@@ -1,7 +1,5 @@
 /** \file sound_bank.cpp
  * CSoundBank: a set of sounds
- *
- * $Id: sound_bank.cpp,v 1.18 2004/11/03 17:24:08 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

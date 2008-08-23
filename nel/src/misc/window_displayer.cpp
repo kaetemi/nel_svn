@@ -1,8 +1,6 @@
 /** \file window_displayer.cpp
  * Implementation of the CDisplayer (look at displayer.h) that display on a Windows.
  * It's the base class for win_displayer (win32 api) and gtk_displayer (gtk api)
- *
- * $Id: window_displayer.cpp,v 1.18 2005/08/29 16:12:47 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

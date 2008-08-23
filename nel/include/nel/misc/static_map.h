@@ -1,7 +1,5 @@
 /** \file static_map.h
  * a map that do not change over time. (lighter in memory consumption)
- *
- * $Id: static_map.h,v 1.5 2005/08/31 15:51:49 besson Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

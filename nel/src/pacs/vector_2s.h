@@ -1,7 +1,5 @@
 /** \file vector_2s.h
  * TODO: File description
- *
- * $Id: vector_2s.h,v 1.8 2004/11/15 10:25:06 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

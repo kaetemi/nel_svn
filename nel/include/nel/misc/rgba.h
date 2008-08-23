@@ -1,7 +1,5 @@
 /** \file rgba.h
  * ARGB pixel format
- *
- * $Id: rgba.h,v 1.30 2005/08/25 08:09:06 vizerie Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

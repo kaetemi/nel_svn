@@ -1,7 +1,5 @@
 /** \file coarse_mesh_build.h
  * Class used to build the coarse meshes
- *
- * $Id: coarse_mesh_build.h,v 1.3 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

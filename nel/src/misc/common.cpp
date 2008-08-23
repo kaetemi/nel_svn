@@ -1,7 +1,5 @@
 /** \file common.cpp
  * Common functions
- *
- * $Id: common.cpp,v 1.76 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

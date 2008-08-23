@@ -1,7 +1,5 @@
 /** \file shared_memory.h
  * Encapsulation of shared memory APIs
- *
- * $Id: shared_memory.h,v 1.9 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

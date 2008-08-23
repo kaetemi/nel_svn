@@ -1,7 +1,5 @@
 /** \file move_container_inline.h
  * Inline functions for movable object
- *
- * $Id: move_container_inline.h,v 1.3 2002/06/06 15:29:20 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

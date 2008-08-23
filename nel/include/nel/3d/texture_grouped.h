@@ -1,7 +1,5 @@
 /** \file texture_grouped.h
  * TODO: File description
- *
- * $Id: texture_grouped.h,v 1.11 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

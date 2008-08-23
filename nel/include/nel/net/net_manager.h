@@ -1,7 +1,5 @@
 /** \file net_manager.h
  * Network engine, layer 4
- *
- * $Id: net_manager.h,v 1.20 2005/08/09 19:06:25 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

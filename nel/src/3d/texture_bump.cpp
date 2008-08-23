@@ -1,7 +1,5 @@
 /** \file texture_bump.cpp
  * TODO: File description
- *
- * $Id: texture_bump.cpp,v 1.17 2005/09/22 14:28:31 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

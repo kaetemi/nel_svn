@@ -1,7 +1,5 @@
 /** \file visual_collision_manager.cpp
  * TODO: File description
- *
- * $Id: visual_collision_manager.cpp,v 1.17 2006/01/09 10:59:24 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

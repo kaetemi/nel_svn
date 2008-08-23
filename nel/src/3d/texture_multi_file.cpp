@@ -1,7 +1,5 @@
 /** \file texture_multi_file.cpp
  * TODO: File description
- *
- * $Id: texture_multi_file.cpp,v 1.11 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file i18n.h
  * Internationalisation class for localisation of the system
- *
- * $Id: i18n.h,v 1.24 2007/06/19 09:32:52 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

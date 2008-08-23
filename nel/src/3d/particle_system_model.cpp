@@ -1,7 +1,5 @@
 /** \file particle_system_model.cpp
  * TODO: File description
- *
- * $Id: particle_system_model.cpp,v 1.75 2006/07/12 14:37:22 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

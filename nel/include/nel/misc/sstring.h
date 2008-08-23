@@ -4,8 +4,6 @@
  * The string compare functions of the class are case insensitive 
  *
  * The coding style is not CPU efficient - the routines are not designed for performance
- *
- * $Id: sstring.h,v 1.41 2007/07/27 15:17:56 cado Exp $
  */
 
 

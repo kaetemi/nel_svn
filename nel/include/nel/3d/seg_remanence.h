@@ -1,7 +1,5 @@
 /** \file seg_remanence.h
  * A segment that let a remanence on the screen (for sword trace)
- * $Id: seg_remanence.h,v 1.10 2005/03/15 18:05:44 vizerie Exp $
- */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.
  *

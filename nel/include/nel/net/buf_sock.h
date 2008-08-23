@@ -1,7 +1,5 @@
 /** \file buf_sock.h
  * Network engine, layer 1, helper
- *
- * $Id: buf_sock.h,v 1.26 2007/06/15 19:02:43 distrib Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

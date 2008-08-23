@@ -1,7 +1,5 @@
 /** \file variable.h
  * Management of runtime variable
- *
- * $Id: variable.h,v 1.24 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2003 Nevrax Ltd.

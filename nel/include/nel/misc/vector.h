@@ -1,7 +1,5 @@
 /** \file vector.h
  * CVector class
- *
- * $Id: vector.h,v 1.14 2006/01/10 17:38:46 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

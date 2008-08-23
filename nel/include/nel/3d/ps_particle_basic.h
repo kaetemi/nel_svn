@@ -1,7 +1,5 @@
 /** \file ps_particle_basic.h
  * Some classes used for particle building.
- *
- * $Id: ps_particle_basic.h,v 1.23 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

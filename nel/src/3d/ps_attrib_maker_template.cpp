@@ -1,6 +1,4 @@
 /** \file ps_attrib_maker_template.cpp
- *
- * $Id: ps_attrib_maker_template.cpp,v 1.4 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

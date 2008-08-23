@@ -1,7 +1,5 @@
 /** \file array_2d.h
  * A simple 2D array
- *
- * $Id: array_2d.h
  */
 
 /* Copyright, 2000, 2006 Nevrax Ltd.

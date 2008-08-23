@@ -1,7 +1,5 @@
 /** \file ps_zone.h
  * TODO: File description
- *
- * $Id: ps_zone.h,v 1.15 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

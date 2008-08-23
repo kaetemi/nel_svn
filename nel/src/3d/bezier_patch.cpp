@@ -1,7 +1,5 @@
 /** \file bezier_patch.cpp
  * TODO: File description
- *
- * $Id: bezier_patch.cpp,v 1.14 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file init_3d.cpp
  * 
- *
- * $Id: init_3d.cpp,v 1.7 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

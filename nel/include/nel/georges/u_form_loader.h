@@ -1,7 +1,5 @@
 /** \file u_form_loader.h
  * Georges form loader interface
- *
- * $Id: u_form_loader.h,v 1.3 2002/09/25 09:38:05 corvazier Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

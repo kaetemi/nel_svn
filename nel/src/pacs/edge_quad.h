@@ -1,7 +1,5 @@
 /** \file edge_quad.h
  * a quadgrid of list of edge for the exterior collision mesh.
- *
- * $Id: edge_quad.h,v 1.3 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

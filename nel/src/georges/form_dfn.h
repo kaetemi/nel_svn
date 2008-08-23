@@ -1,7 +1,5 @@
 /** \file form_dfn.h
  * Georges form definition class
- *
- * $Id: form_dfn.h,v 1.22 2005/02/22 10:19:22 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

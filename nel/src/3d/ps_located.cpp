@@ -1,7 +1,5 @@
 /** \file ps_located.cpp
  * TODO: File description
- *
- * $Id: ps_located.cpp,v 1.82 2006/07/12 14:37:22 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

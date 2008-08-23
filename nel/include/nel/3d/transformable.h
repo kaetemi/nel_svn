@@ -1,7 +1,5 @@
 /** \file transformable.h
  * TODO: File description
- *
- * $Id: transformable.h,v 1.5 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

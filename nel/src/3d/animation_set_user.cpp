@@ -1,7 +1,5 @@
 /** \file animation_set_user.cpp
  * TODO: File description
- *
- * $Id: animation_set_user.cpp,v 1.10 2005/02/22 10:19:09 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

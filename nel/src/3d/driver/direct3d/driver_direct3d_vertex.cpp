@@ -1,8 +1,6 @@
 /** \file driver_direct3d_vertex.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_vertex.cpp,v 1.13 2005/02/22 10:19:22 besson Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

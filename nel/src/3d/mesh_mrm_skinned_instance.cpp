@@ -1,8 +1,6 @@
 /** \file mesh_mrm_skinned_instance.cpp
  * Optimised instance for skinned object with MRM, 1 UV coordinates, 1 to 4 skinning weight and 256 matrices.
  * Tangeant space, vertex program, mesh block rendering and vertex buffer hard are not available.
- *
- * $Id: mesh_mrm_skinned_instance.cpp,v 1.4 2005/03/10 17:27:04 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

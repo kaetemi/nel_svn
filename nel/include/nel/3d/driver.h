@@ -1,8 +1,6 @@
 /** \file driver.h
  * Generic driver header.
  * Low level HW classes : ITexture, CMaterial, CVertexBuffer, CIndexBuffer, IDriver
- *
- * $Id: driver.h,v 1.84 2006/12/06 17:21:15 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

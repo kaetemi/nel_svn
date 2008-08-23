@@ -1,8 +1,6 @@
 //file misc/dynloadlib.cpp
 /*
  * <dynloadlib.cpp>
- *
- * $Id: dynloadlib.cpp
  */
 
 /* Copyright, 2000 Nevrax Ltd.

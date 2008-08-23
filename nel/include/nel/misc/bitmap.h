@@ -1,7 +1,5 @@
 /** \file bitmap.h
  * Class managing bitmaps
- *
- * $Id: bitmap.h,v 1.34 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

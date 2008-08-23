@@ -1,7 +1,5 @@
 /** \file zone_tgt_smoother.cpp
  * TODO: File description
- *
- * $Id: zone_tgt_smoother.cpp,v 1.12 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

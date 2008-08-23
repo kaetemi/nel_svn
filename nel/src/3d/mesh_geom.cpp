@@ -1,7 +1,5 @@
 /** \file mesh_geom.cpp
  * TODO: File description
- *
- * $Id: mesh_geom.cpp,v 1.8 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

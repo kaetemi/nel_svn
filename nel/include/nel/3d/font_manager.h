@@ -1,7 +1,5 @@
 /** \file font_manager.h
  * Font manager
- *
- * $Id: font_manager.h,v 1.8 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

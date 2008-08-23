@@ -1,7 +1,5 @@
 /** \file edge_collide.cpp
  * Collisions against edge in 2D.
- *
- * $Id: edge_collide.cpp,v 1.20 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

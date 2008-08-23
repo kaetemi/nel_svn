@@ -1,8 +1,6 @@
 /** \file driver_direct3d_shader.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_shader.cpp,v 1.17 2007/05/09 15:32:05 boucher Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

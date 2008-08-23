@@ -1,7 +1,5 @@
 /** \file build_indoor.h
  * 
- *
- * $Id: build_indoor.h,v 1.2 2002/03/01 13:04:51 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

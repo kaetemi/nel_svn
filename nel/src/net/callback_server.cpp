@@ -1,7 +1,5 @@
 /** \file callback_server.cpp
  * Network engine, layer 3, server
- *
- * $Id: callback_server.cpp,v 1.32 2007/06/15 18:50:17 distrib Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

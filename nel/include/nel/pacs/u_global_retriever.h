@@ -1,7 +1,5 @@
 /** \file u_global_retriever.h
  * A class that allows to retrieve surface in a large amount of zones (referred as instances.)
- *
- * $Id: u_global_retriever.h,v 1.22 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

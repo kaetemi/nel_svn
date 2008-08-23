@@ -1,7 +1,5 @@
 /** \file transition.h
  * A transition template definition
- *
- * $Id: transition.h,v 1.2 2003/09/30 13:50:27 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

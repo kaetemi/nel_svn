@@ -1,7 +1,5 @@
 /** \file transport_class.h
  * TODO: File description
- *
- * $Id: transport_class.h,v 1.27 2007/06/15 17:19:01 distrib Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

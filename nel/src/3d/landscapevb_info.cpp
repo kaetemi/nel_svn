@@ -1,7 +1,5 @@
 /** \file landscapevb_info.cpp
  * TODO: File description
- *
- * $Id: landscapevb_info.cpp,v 1.7 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

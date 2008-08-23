@@ -1,7 +1,5 @@
 /** \file net_manager.cpp
  * Network engine, layer 3, base
- *
- * $Id: net_manager.cpp,v 1.28 2005/08/09 19:06:45 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

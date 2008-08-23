@@ -1,7 +1,5 @@
 /** \file ps_attrib_maker_helper.h
  * TODO: File description
- *
- * $Id: ps_attrib_maker_helper.h,v 1.24 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

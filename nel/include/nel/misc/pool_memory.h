@@ -1,7 +1,5 @@
 /** \file pool_memory.h
  * Pool memory allocation
- *
- * $Id: pool_memory.h,v 1.6 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

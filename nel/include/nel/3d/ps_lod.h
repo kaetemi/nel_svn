@@ -1,7 +1,5 @@
 /** \file ps_lod.h
  * TODO: File description
- *
- * $Id: ps_lod.h,v 1.2 2004/11/15 10:24:47 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

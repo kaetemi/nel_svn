@@ -1,7 +1,5 @@
 /** \file dru.cpp
  * Driver Utilities.
- *
- * $Id: dru.cpp,v 1.42 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

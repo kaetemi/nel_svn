@@ -1,7 +1,5 @@
 /** \file shape.cpp
  * TODO: File description
- *
- * $Id: shape.cpp,v 1.10 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file collision_callback.h
  * Collision callback interface
- *
- * $Id: collision_callback.h,v 1.1 2001/06/08 15:10:18 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

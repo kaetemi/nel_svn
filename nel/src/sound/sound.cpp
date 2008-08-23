@@ -1,7 +1,5 @@
 /** \file sound.cpp
  * CSound: a generic sound and its static properties
- *
- * $Id: sound.cpp,v 1.30 2004/11/03 17:24:08 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

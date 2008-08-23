@@ -1,7 +1,5 @@
 /** \file tile_color.h
  * TODO: File description
- *
- * $Id: tile_color.h,v 1.5 2004/11/15 10:24:50 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file callback_net_base.cpp
  * Network engine, layer 3, base
- *
- * $Id: callback_net_base.cpp,v 1.48 2007/06/15 18:50:17 distrib Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

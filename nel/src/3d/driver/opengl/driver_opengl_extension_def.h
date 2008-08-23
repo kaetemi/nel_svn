@@ -1,7 +1,5 @@
 /** \file driver_opengl_extension_def.h
  * External OpenGL extension definition.
- *
- * $Id: driver_opengl_extension_def.h,v 1.26 2006/12/06 17:21:23 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

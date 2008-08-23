@@ -1,7 +1,5 @@
 /** \file stl_block_list.h
  * TODO: File description
- *
- * $Id: stl_block_list.h,v 1.5 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

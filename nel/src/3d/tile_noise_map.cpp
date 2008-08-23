@@ -1,7 +1,5 @@
 /** \file tile_noise_map.cpp
  * A Noise Map for landscape.
- *
- * $Id: tile_noise_map.cpp,v 1.4 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

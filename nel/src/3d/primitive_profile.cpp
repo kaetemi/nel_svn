@@ -1,7 +1,5 @@
 /** \file primitive_profile.cpp
  * Primitive counter.
- *
- * $Id: primitive_profile.cpp,v 1.3 2002/10/28 17:32:13 corvazier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

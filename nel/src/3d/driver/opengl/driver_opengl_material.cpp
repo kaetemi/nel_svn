@@ -1,7 +1,5 @@
 /** \file driver_opengl_material.cpp
  * OpenGL driver implementation : setupMaterial
- *
- * $Id: driver_opengl_material.cpp,v 1.98 2005/09/22 14:27:11 vizerie Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

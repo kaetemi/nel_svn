@@ -1,7 +1,5 @@
 /** \file text_context.h
  * TODO: File description
- *
- * $Id: text_context.h,v 1.18 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

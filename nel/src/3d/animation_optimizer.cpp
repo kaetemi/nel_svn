@@ -1,7 +1,5 @@
 /** \file animation_optimizer.cpp
  * TODO: File description
- *
- * $Id: animation_optimizer.cpp,v 1.8 2006/06/13 15:01:11 berenguier Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /**
  * File not compiled. Included from mesh_mrm_skinned.cpp. It is an "old school" template.
- *
- * $Id: mesh_mrm_skinned_template.cpp,v 1.3 2004/11/15 10:24:44 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

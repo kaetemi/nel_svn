@@ -1,6 +1,4 @@
 /** \file fixed_size_allocator.cpp
- *
- * $Id: fixed_size_allocator.cpp,v 1.4 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

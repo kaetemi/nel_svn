@@ -1,7 +1,5 @@
 /** \file buffer_fmod.h
  * FMod buffer
- *
- * $Id: buffer_fmod.h,v 1.2 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

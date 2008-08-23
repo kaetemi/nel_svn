@@ -1,8 +1,6 @@
 /** \file sound_anim_manager.cpp
  * The sound animation manager handles all request to load, play, and
  * update sound animations.
- *
- * $Id: sound_anim_manager.cpp,v 1.14 2003/11/21 16:30:40 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

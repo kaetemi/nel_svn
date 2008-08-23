@@ -1,7 +1,5 @@
 /** \file texture_blank.h
  * TODO: File description
- *
- * $Id: texture_blank.h,v 1.5 2006/12/06 17:21:15 boucher Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

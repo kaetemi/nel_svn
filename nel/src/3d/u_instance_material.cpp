@@ -1,7 +1,5 @@
 /** \file u_instance_material.cpp
  * TODO: File description
- *
- * $Id: u_instance_material.cpp,v 1.5 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

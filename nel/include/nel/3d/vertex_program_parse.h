@@ -1,7 +1,6 @@
 /** \file vertex_program_parse.h
  * These are a set of classes used to parse a vertex program in proprietary format. This is used when
  * parsing isn't available in the target API (for example, missing OpenGL extension)
- * $Id: vertex_program_parse.h,v 1.5 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

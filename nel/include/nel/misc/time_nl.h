@@ -1,7 +1,5 @@
 /** \file time_nl.h
  * OS independant time class provided system clock
- *
- * $Id: time_nl.h,v 1.14 2007/06/07 13:23:59 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

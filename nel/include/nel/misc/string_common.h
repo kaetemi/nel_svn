@@ -1,7 +1,5 @@
 /** \file misc/string_common.h
  * common algorithms on string like toString() and fromString()
- *
- * $Id: string_common.h,v 1.9 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2003 Nevrax Ltd.

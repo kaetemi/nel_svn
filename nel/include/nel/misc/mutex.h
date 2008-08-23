@@ -1,8 +1,6 @@
 /** \file mutex.h
  * OS independant class for the mutex management with Windows and Posix implementation
  * Classes CMutex, CSynchronized
- *
- * $Id: mutex.h,v 1.29 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

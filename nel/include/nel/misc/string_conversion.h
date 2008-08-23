@@ -1,6 +1,4 @@
 /** \file string_conversion.h
- *
- * $Id: string_conversion.h,v 1.7 2006/10/31 16:10:51 blanchard Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

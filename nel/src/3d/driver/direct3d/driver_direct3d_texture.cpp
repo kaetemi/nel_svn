@@ -1,8 +1,6 @@
 /** \file driver_direct3d_texture.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_texture.cpp,v 1.23 2006/07/12 14:37:22 boucher Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

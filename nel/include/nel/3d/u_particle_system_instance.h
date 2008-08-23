@@ -1,7 +1,5 @@
 /** \file u_particle_system_instance.h
  * TODO: File description
- *
- * $Id: u_particle_system_instance.h,v 1.18 2004/11/15 10:24:17 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

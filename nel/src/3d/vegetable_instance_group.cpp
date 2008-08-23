@@ -1,7 +1,5 @@
 /** \file vegetable_instance_group.cpp
  * TODO: File description
- *
- * $Id: vegetable_instance_group.cpp,v 1.9 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

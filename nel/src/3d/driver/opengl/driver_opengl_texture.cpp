@@ -1,7 +1,5 @@
 /** \file driver_opengl_texture.cpp
  * OpenGL driver implementation : setupTexture
- *
- * $Id: driver_opengl_texture.cpp,v 1.83 2007-03-09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

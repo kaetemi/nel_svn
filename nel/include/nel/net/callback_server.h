@@ -1,7 +1,5 @@
 /** \file callback_server.h
  * Network engine, layer 3, server
- *
- * $Id: callback_server.h,v 1.19 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

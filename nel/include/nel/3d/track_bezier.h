@@ -1,7 +1,5 @@
 /** \file track_bezier.h
  * ITrack Bezier implementation
- *
- * $Id: track_bezier.h,v 1.4 2004/07/09 09:45:52 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

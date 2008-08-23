@@ -1,8 +1,6 @@
 /** \file driver_direct3d_vertex_program.cpp
  * Direct 3d driver implementation
  *
- * $Id: driver_direct3d_vertex_program.cpp,v 1.6 2004/10/19 12:46:08 vizerie Exp $
- *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

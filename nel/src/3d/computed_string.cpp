@@ -1,7 +1,5 @@
 /** \file computed_string.cpp
  * Computed string
- *
- * $Id: computed_string.cpp,v 1.38 2006/09/14 16:56:08 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

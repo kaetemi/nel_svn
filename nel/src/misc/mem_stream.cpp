@@ -1,7 +1,5 @@
 /** \file mem_stream.cpp
  * CMemStream class
- *
- * $Id: mem_stream.cpp,v 1.31 2007/02/01 16:24:41 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

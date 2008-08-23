@@ -1,7 +1,5 @@
 /** \file stddsound.cpp
  * 
- *
- * $Id: stddsound.cpp,v 1.3 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

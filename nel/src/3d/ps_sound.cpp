@@ -1,7 +1,5 @@
 /** \file ps_sound.cpp
  * TODO: File description
- *
- * $Id: ps_sound.cpp,v 1.35 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file async_file_manager_3d.cpp
  * TODO: File description
- *
- * $Id: async_file_manager_3d.cpp,v 1.14 2005/08/19 15:32:12 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

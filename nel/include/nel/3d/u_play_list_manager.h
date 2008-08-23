@@ -1,7 +1,5 @@
 /** \file u_play_list_manager.h
  * TODO: File description
- *
- * $Id: u_play_list_manager.h,v 1.6 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

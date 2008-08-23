@@ -1,7 +1,5 @@
 /** \file vegetable_light_ex.h
  * TODO: File description
- *
- * $Id: vegetable_light_ex.h,v 1.4 2004/11/15 10:24:53 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file texture_file.cpp
  * TODO: File description
- *
- * $Id: texture_file.cpp,v 1.29 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

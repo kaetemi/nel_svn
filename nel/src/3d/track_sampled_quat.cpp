@@ -1,7 +1,5 @@
 /** \file track_sampled_quat.cpp
  * TODO: File description
- *
- * $Id: track_sampled_quat.cpp,v 1.6 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file shared_memory.cpp
  * Encapsulation of shared memory APIs
- *
- * $Id: shared_memory.cpp,v 1.8 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

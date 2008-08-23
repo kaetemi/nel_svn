@@ -1,7 +1,5 @@
 /** \file stdfmod.cpp
  * 
- *
- * $Id: stdfmod.cpp,v 1.1 2004/08/30 12:35:19 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

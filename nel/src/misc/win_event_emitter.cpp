@@ -1,7 +1,5 @@
 /** \file win_event_emitter.cpp
  * class CWinEnventEmitter
- *
- * $Id: win_event_emitter.cpp,v 1.15 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,6 +1,4 @@
 /** \file dummy_window.cpp
- *
- * $Id: dummy_window.cpp,v 1.2 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000-2007 Nevrax Ltd.

@@ -1,6 +1,4 @@
 /** \file water_env_map_user.h
- *
- * $Id: water_env_map_user.h,v 1.3 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

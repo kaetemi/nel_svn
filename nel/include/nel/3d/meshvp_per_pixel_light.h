@@ -1,7 +1,5 @@
 /** \file meshvp_per_pixel_light.h
  * TODO: File description
- *
- * $Id: meshvp_per_pixel_light.h,v 1.5 2005/02/22 10:19:10 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

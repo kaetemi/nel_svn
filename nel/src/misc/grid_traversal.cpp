@@ -1,7 +1,5 @@
 /** \file grid_traversal.cpp
  * Utility class for incremental grid traversal
- *
- * $Id: grid_traversal.cpp
  */
 
 /* Copyright, 2000, 2006 Nevrax Ltd.

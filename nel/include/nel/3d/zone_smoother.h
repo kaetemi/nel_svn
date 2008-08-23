@@ -1,7 +1,5 @@
 /** \file zone_smoother.h
  * TODO: File description
- *
- * $Id: zone_smoother.h,v 1.4 2005/02/22 10:19:13 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

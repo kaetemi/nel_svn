@@ -1,7 +1,5 @@
 /** \file vectord.h
  * CVectorD class
- *
- * $Id: vectord.h,v 1.6 2005/02/22 10:14:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

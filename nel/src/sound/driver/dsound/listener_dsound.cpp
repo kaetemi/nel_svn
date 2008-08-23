@@ -1,7 +1,5 @@
 /** \file listener_dsound.cpp
  * DirectSound listener
- *
- * $Id: listener_dsound.cpp,v 1.16 2004/08/30 12:45:28 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

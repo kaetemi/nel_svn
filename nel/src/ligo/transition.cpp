@@ -1,7 +1,5 @@
 /** \file transition.cpp
  * A transition template implementation
- *
- * $Id: transition.cpp,v 1.4 2003/11/17 14:26:38 distrib Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

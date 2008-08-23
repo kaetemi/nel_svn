@@ -1,7 +1,5 @@
 /** \file form_loader.cpp
  * Georges form loader implementation
- *
- * $Id: form_loader.cpp,v 1.15 2005/01/17 16:39:42 lecroart Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

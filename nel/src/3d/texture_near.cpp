@@ -1,7 +1,5 @@
 /** \file texture_near.cpp
  * TODO: File description
- *
- * $Id: texture_near.cpp,v 1.8 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

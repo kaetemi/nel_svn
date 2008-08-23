@@ -1,7 +1,5 @@
 /** \file source_al.h
  * OpenAL sound source
- *
- * $Id: source_al.h,v 1.12 2004/02/23 14:38:45 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,8 +1,6 @@
 /** \file udp_sim_sock.h
  * This class provides the same function as CUdpSock but can simulate
  * lag and other parameter like packet lost.
- *
- * $Id: udp_sim_sock.h,v 1.3 2005/08/29 16:16:59 boucher Exp $
  */
 
 /* Copyright, 2002 Nevrax Ltd.

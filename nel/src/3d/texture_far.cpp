@@ -1,7 +1,5 @@
 /** \file texture_far.cpp
  * Texture used to store far textures for several patches.
- *
- * $Id: texture_far.cpp,v 1.28 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

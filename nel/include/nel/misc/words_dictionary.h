@@ -1,7 +1,5 @@
 /** \file words_dictionary.h
  * Words dictionary>
- *
- * $Id: words_dictionary.h,v 1.8 2005/06/23 16:27:15 boucher Exp $
  */
 
 /* Copyright, 2000-2003 Nevrax Ltd.

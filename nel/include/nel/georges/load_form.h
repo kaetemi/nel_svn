@@ -1,7 +1,5 @@
 /** \file load_form.h
  * quick load of values from georges sheet (using a fast load with compacted file)
- *
- * $Id: load_form.h,v 1.35 2005/07/07 11:44:46 vuarand Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

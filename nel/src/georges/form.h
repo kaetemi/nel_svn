@@ -1,7 +1,5 @@
 /** \file form.h
  * Georges form class
- *
- * $Id: form.h,v 1.16 2005/02/22 10:19:22 besson Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file ps_int.h
  * TODO: File description
- *
- * $Id: ps_int.h,v 1.9 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

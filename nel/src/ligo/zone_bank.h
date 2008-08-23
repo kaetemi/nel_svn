@@ -1,7 +1,5 @@
 /** \file zone_bank.h
  * Zone Bank
- *
- * $Id: zone_bank.h,v 1.2 2003/12/08 11:43:08 corvazier Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

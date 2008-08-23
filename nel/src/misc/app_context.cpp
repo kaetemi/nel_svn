@@ -1,8 +1,6 @@
 /** \file app_context.cpp
  * Classes for managing NeL context in order to support multi module NeL 
  * application.
- *
- * $Id: app_context.cpp,v 1.7 2007/05/09 15:32:12 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

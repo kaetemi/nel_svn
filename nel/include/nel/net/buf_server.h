@@ -1,7 +1,5 @@
 /** \file buf_server.h
  * Network engine, layer 1, server
- *
- * $Id: buf_server.h,v 1.23 2007/06/15 19:02:43 distrib Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

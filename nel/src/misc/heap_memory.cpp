@@ -1,7 +1,5 @@
 /** \file heap_memory.cpp
  * A Heap manager
- *
- * $Id: heap_memory.cpp,v 1.5 2002/08/21 09:41:12 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

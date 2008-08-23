@@ -1,7 +1,5 @@
 /** \file co_task.h
  * Coroutine based task.
- *
- * $Id: co_task.h,v 1.4 2007/05/09 15:31:57 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

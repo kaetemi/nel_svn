@@ -1,6 +1,4 @@
 /** \file ps_allocator.h
- *
- * $Id: ps_allocator.h,v 1.7 2004/10/26 13:50:56 lecroart Exp $
  */
 
 /* Copyright, 2000, 2001, 2002, 2003 Nevrax Ltd.

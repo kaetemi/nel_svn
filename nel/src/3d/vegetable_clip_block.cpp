@@ -1,7 +1,5 @@
 /** \file vegetable_clip_block.cpp
  * TODO: File description
- *
- * $Id: vegetable_clip_block.cpp,v 1.5 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

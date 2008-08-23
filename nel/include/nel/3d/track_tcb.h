@@ -1,7 +1,5 @@
 /** \file track_tcb.h
  * ITrack TCB implementation
- *
- * $Id: track_tcb.h,v 1.7 2005/01/17 16:39:42 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

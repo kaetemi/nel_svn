@@ -1,7 +1,5 @@
 /** \file u_audio_mixer.h
  * UAudioMixer: game interface for audio
- *
- * $Id: u_audio_mixer.h,v 1.45 2005/02/22 10:14:13 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,6 +1,4 @@
 /** \file seg_remanence_shape.h
- *
- * $Id: seg_remanence_shape.h,v 1.10 2005/03/15 18:05:43 vizerie Exp $
  */
 
 /* Copyright, 2000, 2001, 2002 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file retrievable_surface.h
  * 
- *
- * $Id: retrievable_surface.h,v 1.13 2005/02/22 10:19:20 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file raw_skin.cpp
  * Packed struct used for faster Software skinning
- *
- * $Id: raw_skin.cpp,v 1.4 2005/02/22 10:19:11 besson Exp $
  */
 
 /* Copyright, 2000-2002 Nevrax Ltd.

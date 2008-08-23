@@ -1,7 +1,5 @@
 /** \file mem_displayer.cpp
  * TODO: File description
- *
- * $Id: mem_displayer.cpp,v 1.18 2006/05/31 12:03:17 boucher Exp $
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.

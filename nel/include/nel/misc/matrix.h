@@ -1,6 +1,5 @@
 /** \file matrix.h
  * 
- * $Id: matrix.h,v 1.26 2005-07-22 12:37:57 legallo Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

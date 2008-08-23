@@ -1,7 +1,5 @@
 /** \file mrm_parameters.h
  * parameters of MRM build process.
- *
- * $Id: mrm_parameters.h,v 1.3 2001/06/29 09:48:57 berenguier Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

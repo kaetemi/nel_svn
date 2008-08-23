@@ -1,7 +1,5 @@
 /** \file header.cpp
  * Georges header file class
- *
- * $Id: header.cpp,v 1.8 2007/03/09 09:49:30 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

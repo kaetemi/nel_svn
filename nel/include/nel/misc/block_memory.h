@@ -1,7 +1,5 @@
 /** \file block_memory.h
  * Block memory allocation
- *
- * $Id: block_memory.h,v 1.7 2007/03/09 09:49:29 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

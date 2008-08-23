@@ -1,7 +1,5 @@
 /** \file vegetable_blend_layer_model.cpp
  * TODO: File description
- *
- * $Id: vegetable_blend_layer_model.cpp,v 1.14 2005/02/22 10:19:12 besson Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file 3d/quad_grid.h
  * Generic QuadGrid.
- *
- * $Id: quad_grid.h,v 1.14 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file scene_group.cpp
  * TODO: File description
- *
- * $Id: scene_group.cpp,v 1.83 2006/05/31 12:03:14 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

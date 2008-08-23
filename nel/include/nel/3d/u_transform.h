@@ -1,7 +1,5 @@
 /** \file u_transform.h
  * Interface for transform objects.
- *
- * $Id: u_transform.h,v 1.26 2006/05/31 12:03:13 boucher Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file ps_tail_dot.cpp
  * Tail dot particles.
- *
- * $Id: ps_tail_dot.cpp,v 1.20 2005/08/19 15:32:13 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file vector_h.cpp
  * TODO: File description
- *
- * $Id: vector_h.cpp,v 1.4 2004/11/15 10:25:05 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

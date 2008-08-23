@@ -1,7 +1,5 @@
 /** \file mesh.h
  * TODO: File description
- *
- * $Id: mesh.h,v 1.51 2005/08/19 15:33:05 cado Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
