@@ -486,13 +486,11 @@ bool CDriverGL::activeFrameBufferObject(ITexture * tex)
 			CTextureDrvInfosGL*	gltext = (CTextureDrvInfosGL*)(ITextureDrvInfos*)(tex->TextureDrvShare->DrvTexture);
 			return gltext->activeFrameBufferObject(tex);
 		}
-//#ifdef NL_OS_WINDOWS
 		else
 		{
 			nglBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 			return true;
 		}
-//#endif
 	}
 
 	return false;

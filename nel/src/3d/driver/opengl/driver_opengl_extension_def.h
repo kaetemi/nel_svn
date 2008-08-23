@@ -28,7 +28,7 @@
 #include "nel/misc/types_nl.h"
 
 #include <GL/gl.h>
-#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/"
+#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
 
 #ifdef __cplusplus
 extern "C" {
@@ -1169,7 +1169,7 @@ typedef ptrdiff_t GLsizeiptrARB;
 #endif
 
 #ifndef GL_ARB_vertex_buffer_object
-	#define GL_ARB_vertex_buffer_object 1	
+	#define GL_ARB_vertex_buffer_object 1
 	typedef void (APIENTRYP PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
 	typedef void (APIENTRYP PFNGLDELETEBUFFERSARBPROC) (GLsizei n, const GLuint *buffers);
 	typedef void (APIENTRYP PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint *buffers);

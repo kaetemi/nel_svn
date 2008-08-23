@@ -349,7 +349,7 @@ public:
 	virtual void			forceDXTCCompression(bool dxtcComp);
 
 	virtual void			forceTextureResize(uint divisor);
-	
+
 	virtual void			forceNativeFragmentPrograms(bool nativeOnly);
 
 	/// Setup texture env functions. Used by setupMaterial
@@ -760,7 +760,6 @@ private:
 	CViewport				_OldViewport;
 
 	bool					_RenderTargetFBO;
-	bool					_RenderTargetPackedDepthStencil;
 
 
 	// Num lights return by GL_MAX_LIGHTS

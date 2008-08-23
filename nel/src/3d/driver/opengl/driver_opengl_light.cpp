@@ -26,7 +26,7 @@
 #include "driver_opengl.h"
 #include "nel/3d/light.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -54,14 +54,14 @@ void	CDriverGL::setLight (uint8 num, const CLight& light)
 	setLightInternal(num, light);
 }
 
-	
+
 // ***************************************************************************
 void	CDriverGL::setLightInternal(uint8 num, const CLight& light)
 {
 	H_AUTO_OGL(CDriverGL_setLightInternal)
 	// Check light count is good
 //	nlassert (num<_MaxDriverLight);
-	
+
 	// Set the light
 	if (num<_MaxDriverLight)
 	{
@@ -91,7 +91,7 @@ void	CDriverGL::setLightInternal(uint8 num, const CLight& light)
 		colorGL[3]=1.f;
 		glLightfv (lightNum, GL_DIFFUSE, colorGL);
 
-		// Set the specular color		
+		// Set the specular color
 		colorNeL=light.getSpecular ();
 		// don't know why, but with ATI cards, specular of 0 causes incorrect rendering (random specular is added)
 		if (_Extensions.ATITextureEnvCombine3)
@@ -103,7 +103,7 @@ void	CDriverGL::setLightInternal(uint8 num, const CLight& light)
 			colorGL[3]=1.f;
 		}
 		else
-		{		
+		{
 			colorGL[0]=(float)colorNeL.R/255.f;
 			colorGL[1]=(float)colorNeL.G/255.f;
 			colorGL[2]=(float)colorNeL.B/255.f;
@@ -185,7 +185,7 @@ void	CDriverGL::enableLightInternal(uint8 num, bool enable)
 	H_AUTO_OGL(CDriverGL_enableLightInternal)
 	// Check light count is good
 	//	nlassert (num<_MaxDriverLight);
-	
+
 	// Enable glLight
 	if (num<_MaxDriverLight)
 	{
@@ -224,7 +224,7 @@ void				CDriverGL::cleanLightSetup ()
 	H_AUTO_OGL(CDriverGL_cleanLightSetup )
 	// Should be dirty
 	nlassert (_LightSetupDirty);
-	
+
 	// First light
 	bool first=true;
 
@@ -257,7 +257,7 @@ void				CDriverGL::cleanLightSetup ()
 				vectorGL[1]=-_WorldLightDirection[i].y;
 				vectorGL[2]=-_WorldLightDirection[i].z;
 				vectorGL[3]=0.f;
-	
+
 				// Set it
 				glLightfv ((GLenum)(GL_LIGHT0+i), (GLenum)GL_POSITION, vectorGL);
 			}
@@ -272,12 +272,12 @@ void				CDriverGL::cleanLightSetup ()
 				vectorGL[0]=_WorldLightDirection[i].x;
 				vectorGL[1]=_WorldLightDirection[i].y;
 				vectorGL[2]=_WorldLightDirection[i].z;
-	
+
 				// Set it
 				glLightfv ((GLenum)(GL_LIGHT0+i), (GLenum)GL_SPOT_DIRECTION, vectorGL);
 			}
 
-			// Position 
+			// Position
 			if (_LightMode[i]!=(uint)CLight::DirectionalLight)
 			{
 				// GL vector
@@ -289,7 +289,7 @@ void				CDriverGL::cleanLightSetup ()
 				vectorGL[1]=_WorldLightPos[i].y - _PZBCameraPos.y;
 				vectorGL[2]=_WorldLightPos[i].z - _PZBCameraPos.z;
 				vectorGL[3]=1.f;
-	
+
 				// Set it
 				glLightfv ((GLenum)(GL_LIGHT0+i), (GLenum)GL_POSITION, vectorGL);
 			}

@@ -36,7 +36,7 @@
 #endif // NL_OS_UNIX
 
 #include <GL/gl.h>
-#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/"
+#include <GL/glext.h>	// Please download it from http://www.opengl.org/registry/
 
 #ifndef GL_GLEXT_VERSION
 #	error "I need a newer <GL/glext.h>. Please download it from http://www.opengl.org/registry/"
@@ -63,7 +63,7 @@ struct	CGlExtensions
 	uint	NbTextureStages;
 	bool	EXTTextureEnvCombine;
 
-	// Optional Extensions.	
+	// Optional Extensions.
 	// NB: Fence extension is not here, because NVVertexArrayRange is false if GL_NV_fence is not here.
 	bool	NVVertexArrayRange;
 	uint	NVVertexArrayRangeMaxVertex;
@@ -83,7 +83,7 @@ struct	CGlExtensions
 	bool	NVVertexProgramEmulated;
 	bool	EXTSecondaryColor;
 	bool	EXTBlendColor;
-	// NVVertexArrayRange2. 
+	// NVVertexArrayRange2.
 	bool	NVVertexArrayRange2;
 	// equal to GL_VERTEX_ARRAY_RANGE_WITHOUT_FLUSH_NV if possible, or GL_VERTEX_ARRAY_RANGE_NV
 	uint	NVStateVARWithoutFlush;
@@ -147,6 +147,7 @@ public:
 		WGLARBPixelFormat= false;
 		WGLEXTSwapControl= false;
 		EXTBlendColor= false;
+		ATIVertexArrayObject= false;
 		ATIEnvMapBumpMap = false;
 		ATIFragmentShader = false;
 		ATIVertexArrayObject = false;
@@ -173,7 +174,7 @@ public:
 		result += IsATI9500OrAbove ? "; ATI9500 or better" : "";
 		result += IsGeforceFXOrAbove ? "; GeForce FX or better" : "";
 		result += "; Available extensions:";
-		
+
 		result += "\n  Texturing: ";
 		result += ARBMultiTexture ? "ARBMultiTexture " : "";
 		result += EXTTextureEnvCombine ? "EXTTextureEnvCombine(*) " : "";
@@ -187,7 +188,7 @@ public:
 		result += NVTextureRectangle ? "NVTextureRectangle " : "";
 		result += "texture stages(*) = ";
 		result += NLMISC::toString(NbTextureStages);
-		
+
 		result += "\n  Programs:  ";
 		result += NVTextureShader ? "NVTextureShader " : "";
 		result += ATIFragmentShader ? "ATIFragmentShader " : "";
@@ -243,7 +244,7 @@ void registerGlExtensions(CGlExtensions &ext);
 
 // ***************************************************************************
 // The exported function names
-/* NB: We named all like nglActiveTextureARB (n for NEL :) 
+/* NB: We named all like nglActiveTextureARB (n for NEL :)
 	to avoid compilation conflict with future version of gl.h
 	eg: gl.h Version 1.2 define glActiveTextureARB so we can't use it.
 
@@ -674,7 +675,6 @@ extern NEL_PFNGLRENDERBUFFERSTORAGEEXTPROC		nglRenderbufferStorageEXT;
 extern NEL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC	nglFramebufferRenderbufferEXT;
 extern NEL_PFNGLDELETERENDERBUFFERSEXTPROC		nglDeleteRenderbuffersEXT;
 extern NEL_PFNGLDELETEFRAMEBUFFERSEXTPROC		nglDeleteFramebuffersEXT;
-
 
 #endif // NL_OPENGL_EXTENSION_H
 

@@ -69,7 +69,7 @@ CMatrix CDriverGL::getFrustumMatrix()
 	glMatrixMode(GL_PROJECTION);
 
 	CMatrix frustumMatrix;
-	float frustum[16]; 
+	float frustum[16];
 	glGetFloatv(GL_PROJECTION_MATRIX, ((GLfloat*)&frustum));
 	frustumMatrix.set(frustum);
 

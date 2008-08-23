@@ -50,11 +50,11 @@ public:
 
   void init (Display *dpy, Window win);
 
-	/** 
+	/**
 	 * sends all events to server
-	 * (should call CEventServer method postEvent() ) 
+	 * (should call CEventServer method postEvent() )
 	 * \param server
-	 */	
+	 */
 	virtual void submitEvents(CEventServer & server, bool allWindows);
 
 public:

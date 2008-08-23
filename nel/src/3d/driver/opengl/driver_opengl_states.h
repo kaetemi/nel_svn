@@ -29,7 +29,7 @@
 #include <GL/gl.h>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -75,14 +75,14 @@ namespace NL3D
  */
 class CDriverGLStates
 {
-public:	
+public:
 	/// Constructor. no-op.
 	CDriverGLStates();
 	// init. Do it just after setDisplay()
 	void			init(bool supportTextureCubeMap, bool supportTextureRectangle, uint maxLight);
 
 	/// Reset all OpenGL states of interest to default, and update caching. This don't apply to light.
-	void			forceDefaults(uint nbTextureStages);	
+	void			forceDefaults(uint nbTextureStages);
 
 	/// \name enable if !0
 	// @{
@@ -91,7 +91,7 @@ public:
 	void			enableCullFace(uint enable);
 	/// enable and set good AlphaFunc.
 	void			enableAlphaTest(uint enable);
-	void			enableZWrite(uint enable);	
+	void			enableZWrite(uint enable);
 	// overall lighting enabled
 	void			enableLighting(uint enable);
 	bool			isLightingEnabled() const { return _CurLighting; }
@@ -127,19 +127,19 @@ public:
 	void			setVertexColorLighted(bool enable);
 	void			setDepthRange (float znear, float zfar);
 	void			getDepthRange(float &znear, float &zfar) const { znear = _DepthRangeNear; zfar = _DepthRangeFar; }
-	/** Set z-bias 
+	/** Set z-bias
       * NB : this is done in window coordinate, not in world coordinate as with CMaterial
 	  */
 	void			setZBias(float zbias);
 	// NB: set 0 to reset TexGen.
 	void			setTexGenMode (uint stage, GLint mode);
 	// @}
-	
-	
+
+
 
 	/// \name Texture Mode setting.
 	// @{
-	enum			TTextureMode {TextureDisabled, Texture2D, TextureRect, TextureCubeMap, TextureModeCount};	
+	enum			TTextureMode {TextureDisabled, Texture2D, TextureRect, TextureCubeMap, TextureModeCount};
 	/// same as glActiveTextureARB(). usefull for setTextureMode.
 	void			activeTextureARB(uint stage);
 	/// same as active texture arb, but with no cache check
@@ -152,7 +152,7 @@ public:
 	void			setTextureMode(TTextureMode texMode);
 	TTextureMode	getTextureMode() const { return _TextureMode[_CurrentActiveTextureARB]; }
 	// reset texture mode to the default (disabled) for the current stage. It forces the state (useful after texture shaders)
-	void			resetTextureMode();	
+	void			resetTextureMode();
 	// @}
 
 	/// \name Vertex Array enabling.
@@ -167,20 +167,20 @@ public:
 	void			clientActiveTextureARB(uint stage);
 	/// NB: caller must call correct clientActiveTextureARB() before.
 	void			enableTexCoordArray(bool enable);
-	/** For vertexProgram. do not check if supported or not.	
+	/** For vertexProgram. do not check if supported or not.
 	  */
 	void			enableVertexAttribArray(uint glIndex, bool enable);
 	/** Same as enableVertexAttribArray, but for EXTVertexShader (need variant ID)
 	  * \param firstVariantSymbol the first variant symbol
 	  */
-	void			enableVertexAttribArrayForEXTVertexShader(uint glIndex, bool enable, uint *variants);	
+	void			enableVertexAttribArrayForEXTVertexShader(uint glIndex, bool enable, uint *variants);
 
 	// special version for ARB_vertex_program used with ARB_vertex_buffer or ATI_vertex_attrib_array_object
-	void			enableVertexAttribArrayARB(uint glIndex, bool enable);		
+	void			enableVertexAttribArrayARB(uint glIndex, bool enable);
 
 
 	// @}
-	
+
 
 	// ARB_vertex_buffer_object buffer binding
 	void			bindARBVertexBuffer(uint objectID);
@@ -197,7 +197,7 @@ private:
 	bool			_CurCullFace;
 	bool			_CurAlphaTest;
 	bool			_CurLighting;
-	bool			_CurZWrite;	
+	bool			_CurZWrite;
 	bool			_CurStencilTest;
 
 	GLenum			_CurBlendSrc;
@@ -231,9 +231,9 @@ private:
 	bool			_SecondaryColorArrayEnabled;
 	uint			_CurrentClientActiveTextureARB;
 	bool			_TexCoordArrayEnabled[8];
-	bool			_VertexAttribArrayEnabled[CVertexBuffer::NumValue];	
+	bool			_VertexAttribArrayEnabled[CVertexBuffer::NumValue];
 
-	GLint			_TexGenMode[8];	
+	GLint			_TexGenMode[8];
 
 	uint			_CurrARBVertexBuffer;
 
