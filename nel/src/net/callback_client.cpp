@@ -225,6 +225,14 @@ void CCallbackClient::receive (CMessage &buffer, TSockId *hostid)
 		// Receive
 		CBufClient::receive (buffer);
 
+		// debug features, we number all packet to be sure that they are all sent and received
+		// \todo remove this debug feature when ok
+#ifdef NL_BIG_ENDIAN
+		uint32 val = NLMISC_BSWAP32(*(uint32*)buffer.buffer ());
+#else
+		uint32 val = *(uint32*)buffer.buffer ();
+#endif
+
 #ifdef USE_MESSAGE_RECORDER
 		if ( _MR_RecordingState == Record )
 		{
