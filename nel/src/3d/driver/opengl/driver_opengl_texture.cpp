@@ -1866,37 +1866,21 @@ bool CDriverGL::setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width
 {
 	H_AUTO_OGL(CDriverGL_setRenderTarget )
 
-	// Check the texture is a render target
-	if (tex)
-		nlassertex (tex->getRenderTarget(), ("The texture must be a render target. Call ITexture::setRenderTarget(true)."));
-
-	_RenderTargetFBO = supportFrameBufferObject();
-	_RenderTargetPackedDepthStencil = supportPackedDepthStencil();
-
 	// make backup of offscreen buffer to old texture if not using FBOs
-	if (!_RenderTargetFBO && _TextureTarget && (_TextureTarget != tex || _TextureTargetCubeFace != cubeFace) && _TextureTargetUpload)
+	if (!_RenderTargetFBO && _TextureTarget && _TextureTargetUpload && (_TextureTarget != tex || _TextureTargetCubeFace != cubeFace))
 	{
 		// Flush it
 		copyFrameBufferToTexture (_TextureTarget, _TextureTargetLevel, _TextureTargetX, _TextureTargetY, 0,
 			0, _TextureTargetWidth, _TextureTargetHeight, _TextureTargetCubeFace);
 	}
 
-	// Backup the texture
-	_TextureTarget = tex;
-
-	// Set a new texture as render target
+	// Set a new texture as render target ?
 	if (tex)
 	{
-		// Backup the parameters
-		_TextureTargetLevel = mipmapLevel;
-		_TextureTargetX = x;
-		_TextureTargetY = y;
-		_TextureTargetWidth = width;
-		_TextureTargetHeight = height;
-		_TextureTargetUpload = true;
-		_TextureTargetCubeFace = cubeFace;
+		// Check the texture is a render target
+		nlassertex (tex->getRenderTarget(), ("The texture must be a render target. Call ITexture::setRenderTarget(true)."));
 
-		if (_RenderTargetFBO)
+		if(tex->isBloomTexture() && supportBloomEffect())
 		{
 			uint32 w, h;
 			getWindowSize(w, h);
@@ -1905,30 +1889,44 @@ bool CDriverGL::setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width
 			CViewport newVP;
 			newVP.init(0, 0, ((float)width/(float)w), ((float)height/(float)h));
 			setupViewport(newVP);
-			setupScissor(_CurrScissor);
-			if (!tex->TextureDrvShare)
-				setupTexture(*tex);
+//			if (!tex->TextureDrvShare)
+//				setupTexture(*tex);
+
+			_RenderTargetFBO = true;
+
 			return activeFrameBufferObject(tex);
 		}
-		else
-		{
-			// Update the viewport
-			setupViewport (_CurrViewport);
-			// Update the scissor
-			setupScissor (_CurrScissor);
-			//_RenderTargetFBO = false;
-			_OldViewport = _CurrViewport;
-		}
+
+		// Backup the parameters
+		_TextureTargetLevel = mipmapLevel;
+		_TextureTargetX = x;
+		_TextureTargetY = y;
+		_TextureTargetWidth = width;
+		_TextureTargetHeight = height;
+		_TextureTargetUpload = true;
+		_TextureTargetCubeFace = cubeFace;
 	}
-	else
+	else if (_RenderTargetFBO)
 	{
-		if (_RenderTargetFBO)
-			activeFrameBufferObject(NULL);
+		activeFrameBufferObject(NULL);
 		setupViewport(_OldViewport);
-		setupScissor(_CurrScissor);
 		_OldViewport = _CurrViewport;
+
 		_RenderTargetFBO = false;
+		return false;
 	}
+
+	// Backup the texture
+	_TextureTarget = tex;
+
+	// Update the viewport
+	setupViewport (_CurrViewport);
+
+	// Update the scissor
+	setupScissor (_CurrScissor);
+
+	_RenderTargetFBO = false;
+	_OldViewport = _CurrViewport;
 
 	return true;
 }
@@ -1994,24 +1992,3 @@ bool CDriverGL::getRenderTargetSize (uint32 &width, uint32 &height)
 // ***************************************************************************
 
 } // NL3D
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
