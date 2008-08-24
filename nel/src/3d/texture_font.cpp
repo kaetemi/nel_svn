@@ -44,7 +44,7 @@ const int TextureSizeY = 1024; // If change this value -> change NbLine too
 const int Categories[TEXTUREFONT_NBCATEGORY] = { 8, 16, 24, 32, 64 };
 const int NbLine[TEXTUREFONT_NBCATEGORY] = { 8, 24, 16, 4, 1 }; // Based on textsize
 
-/*	
+/*
 const int TextureSizeX = 256;
 const int TextureSizeY = 256;
 const int Categories[TEXTUREFONT_NBCATEGORY] = { 8, 16, 24, 32 };
@@ -112,7 +112,7 @@ CTextureFont::CTextureFont()
 			rLetter.V = (posY + Categories[i]*((sint)(j/sizeX))) / ((float)TextureSizeY);
 
 			/////////////////////////////////////////////////
-			
+
 			rLetter.CharWidth = rLetter.CharHeight = 0;
 			rLetter.GlyphIndex = rLetter.Top = rLetter.Left = rLetter.AdvX = 0;
 		}
@@ -173,7 +173,7 @@ void CTextureFont::rebuildLetter (sint cat, sint x, sint y)
 	uint32 pitch = 0;
 	uint8 *bitmap = rLetter.FontGenerator->getBitmap (	rLetter.Char, rLetter.Size,
 														rLetter.CharWidth, rLetter.CharHeight,
-														pitch, rLetter.Left, rLetter.Top, 
+														pitch, rLetter.Left, rLetter.Top,
 														rLetter.AdvX, rLetter.GlyphIndex );
 
 	// Copy FreeType buffer
@@ -242,7 +242,7 @@ void CTextureFont::doGenerate(bool async)
 			y = ite->top();
 			y = y - catTopY;
 			y = y / Categories[cat];
-			
+
 			rebuildLetter (cat, x, y);
 
 			// Next rectangle
@@ -310,7 +310,7 @@ CTextureFont::SLetterInfo* CTextureFont::getLetterInfo (SLetterKey& k)
 	// \todo mat : Temporaire !!! Essayer de faire intervenir le cache de freetype
 	uint32 nPitch, nGlyphIndex;
 	sint32 nLeft, nTop, nAdvX;
-	k.FontGenerator->getBitmap (k.Char, k.Size, width, height, nPitch, nLeft, nTop, 
+	k.FontGenerator->getBitmap (k.Char, k.Size, width, height, nPitch, nLeft, nTop,
 														nAdvX, nGlyphIndex );
 
 	// Add 1 pixel space for black border to get correct category

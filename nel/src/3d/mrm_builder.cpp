@@ -29,7 +29,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -229,8 +229,8 @@ bool	CMRMBuilder::edgeNearUniqueMatFace(const CMRMEdge &edge)
 	for(i=0;i<(sint)deletedFaces.size();i++)
 	{
 		CMRMFaceBuild	&f=TmpFaces[deletedFaces[i]];
-		if( !edgeContinue(f.getEdge(0)) && 
-			!edgeContinue(f.getEdge(1)) && 
+		if( !edgeContinue(f.getEdge(0)) &&
+			!edgeContinue(f.getEdge(1)) &&
 			!edgeContinue(f.getEdge(2)))
 			return true;
 	}
@@ -303,7 +303,7 @@ float	CMRMBuilder::computeEdgeCost(const CMRMEdge &edge)
 			else
 			{
 				/* The edge is between 2 interfaces but not the same. If we collide it we'll have holes!
-					This problem arise if space beetween interfaces is small. eg: if we setup an interface beetween 
+					This problem arise if space beetween interfaces is small. eg: if we setup an interface beetween
 					hair and head, and an other one beetween head and torso, then we'll have this problem in the
 					back of the neck.
 					The solution is to make a big big cost to hope we'll never collide them (else Holes...)!!
@@ -565,7 +565,7 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 	// **** Else, on special cases, it is much more efficient to interpolate at start or at end of edge.
 	else
 	{
-		// If one vertex is "open", ie his shared faces do not represent a closed Fan, then interpolate to this one, 
+		// If one vertex is "open", ie his shared faces do not represent a closed Fan, then interpolate to this one,
 		// so the mesh has the same silhouette.
 		bool	vc1= vertexClosed(edgeV1);
 		bool	vc2= vertexClosed(edgeV2);
@@ -573,7 +573,7 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 		else if(vc1 && !vc2) InterValue=1;
 		else
 		{
-			// Do the same test but with vertex continue: it is preferable to not move the boundaries 
+			// Do the same test but with vertex continue: it is preferable to not move the boundaries
 			// of a material, or a mapping.
 			bool	vc1= vertexContinue(edgeV1);
 			bool	vc2= vertexContinue(edgeV2);
@@ -734,7 +734,7 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 			// if wedge not shared...
 			if(!wedge.Shared)
 			{
-				// We've got an "exterior wedge" which lost no corner => do not merge it nor delete it. 
+				// We've got an "exterior wedge" which lost no corner => do not merge it nor delete it.
 				// Leave it as the same value (extrapolate it may not be a good solution).
 			}
 			else
@@ -752,10 +752,10 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 					// Must interpolate it.
 					wedge.Current= face.InterpolatedAttribute;
 					wedge.BSCurrent = face.BSInterpolated;
-					
+
 					// Must merge the wedge of the second vertex on first
 					// ONLY IF 2 interpolated wedges are shared and NbSharedFaces!=0.
-					if(	numWedge==face.getAssociatedWedge(attId, edgeV2) && 
+					if(	numWedge==face.getAssociatedWedge(attId, edgeV2) &&
 						faceShareWedges(&face, attId, edgeV1, edgeV2) )
 					{
 						wedge.CollapsedTo= face.getAssociatedWedge(attId, edgeV1);
@@ -768,7 +768,7 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 
 	// 3. collapse faces.
 	//===================
-	
+
 	// delete face shared by edge.
 	for(i=0;i<(sint)deletedFaces.size();i++)
 	{
@@ -811,16 +811,16 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 		}
 
 		// good edges.
-		/* Those ones are updated in collapseEdges(): they are removed from the edgeCollapseList, 
+		/* Those ones are updated in collapseEdges(): they are removed from the edgeCollapseList,
 			then they are re-inserted with good Vertex indices.
 		*/
 	}
 
 
 	// The vertex1 has now the shared env of vertex2.
-	Vertex1.SharedFaces.insert(Vertex1.SharedFaces.end(), Vertex2.SharedFaces.begin(), 
+	Vertex1.SharedFaces.insert(Vertex1.SharedFaces.end(), Vertex2.SharedFaces.begin(),
 		Vertex2.SharedFaces.end());
-	
+
 
 	return deletedFaces.size();
 }
@@ -903,7 +903,7 @@ void	CMRMBuilder::init(const CMRMMesh &baseMesh)
 	{
 		for(i=0;i<(sint)baseMesh.Attributes[attId].size();i++)
 		{
-			TmpAttributes[attId][i].Current= TmpAttributes[attId][i].Original= 
+			TmpAttributes[attId][i].Current= TmpAttributes[attId][i].Original=
 			baseMesh.Attributes[attId][i];
 			TmpAttributes[attId][i].BSCurrent.resize(baseMesh.BlendShapes.size());
 			for(uint32 j = 0; j <baseMesh.BlendShapes.size() ;++j)
@@ -1282,7 +1282,7 @@ void	CMRMBuilder::makeFromMesh(const CMRMMesh &baseMesh, CMRMMeshGeom &lodMesh, 
 
 
 // ***************************************************************************
-void	CMRMBuilder::buildAllLods(const CMRMMesh &baseMesh, std::vector<CMRMMeshGeom> &lodMeshs, 
+void	CMRMBuilder::buildAllLods(const CMRMMesh &baseMesh, std::vector<CMRMMeshGeom> &lodMeshs,
 								  uint nWantedLods, uint divisor)
 {
 	sint	nFaces= baseMesh.Faces.size();
@@ -1466,7 +1466,7 @@ void	CMRMBuilder::buildFinalMRM(std::vector<CMRMMeshGeom> &lodMeshs, CMRMMeshFin
 		sglmGeomMax= max(sglmGeomMax, sglmGeom);
 	}
 
-	
+
 	// inform the finalMRM.
 	finalMRM.NGeomSpace= sglmGeomMax;
 
@@ -1747,7 +1747,7 @@ uint32			CMRMBuilder::buildMrmBaseMesh(const CMesh::CMeshBuild &mbuild, CMRMMesh
 
 	// Compute number of attributes used by the MeshBuild.
 	// ========================
-	// Compute too 
+	// Compute too
 	if(mbuild.VertexFlags & CVertexBuffer::NormalFlag)
 	{
 		baseMesh.NumAttributes++;
@@ -1811,7 +1811,7 @@ uint32			CMRMBuilder::buildMrmBaseMesh(const CMesh::CMeshBuild &mbuild, CMRMMesh
 			attId= 0;
 
 			// For all activated attributes in mbuild, find/insert the attribute in the baseMesh.
-			// NB: 2 attributes are said to be different if they have not the same value OR if they don't lie 
+			// NB: 2 attributes are said to be different if they have not the same value OR if they don't lie
 			// on the same vertex. This is very important for MRM computing.
 			if(mbuild.VertexFlags & CVertexBuffer::NormalFlag)
 			{
@@ -1967,7 +1967,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 			if (vbFlags & (CVertexBuffer::TexCoord0Flag << k))
 			{
 				switch(mb.NumCoords[k])
-				{	
+				{
 					case 2:
 						mbuild.VBuffer.addValueEx((CVertexBuffer::TValue) (CVertexBuffer::TexCoord0 + k), CVertexBuffer::Float2);
 					break;
@@ -2033,7 +2033,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 			{
 				switch(mb.NumCoords[k])
 				{
-					case 2:				
+					case 2:
 						vba.setTexCoord(i, k, (CUV) attToUvw(wedge.Attributes[attId]) );
 					break;
 					case 3:
@@ -2080,7 +2080,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 		// Reorder faces by rdrpass.
 		//---------
 
-		// First count the number of faces used by this LOD for each material 
+		// First count the number of faces used by this LOD for each material
 		vector<sint>	matCount;
 		// resize, and reset to 0.
 		matCount.clear();
@@ -2155,7 +2155,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 					// If it is a geomorph
 					if(wedgeId<finalMRM.NGeomSpace)
 					{
-						// add the start and end to the list (if not here). NB: wedgeId is both the id 
+						// add the start and end to the list (if not here). NB: wedgeId is both the id
 						// of the dest wedge, and the id of the geomorph.
 						sint	wedgeStartId= destLod.Geomorphs[wedgeId].Start;
 						sint	wedgeEndId= destLod.Geomorphs[wedgeId].End;
@@ -2298,7 +2298,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 					bIsDeltaNorm = true;
 				}
 				attId++;
-			}		
+			}
 
 			if (vbFlags & CVertexBuffer::PrimaryColorFlag)
 			{
@@ -2354,7 +2354,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 				}
 				attId++;
 			}
-			
+
 		} // End of all vertices added in blend shape
 
 		// Delete unused items and calculate the number of vertex used (blended)
@@ -2471,7 +2471,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 			if (vbFlags & (CVertexBuffer::TexCoord0Flag << k))
 			{
 				switch(mb.NumCoords[k])
-				{	
+				{
 					case 2:
 						mbuild.VBuffer.addValueEx((CVertexBuffer::TValue) (CVertexBuffer::TexCoord0 + k), CVertexBuffer::Float2);
 					break;
@@ -2538,7 +2538,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 			{
 				switch(mb.NumCoords[k])
 				{
-					case 2:				
+					case 2:
 						vba.setTexCoord(i, k, (CUV) attToUvw(wedge.Attributes[attId]) );
 					break;
 					case 3:
@@ -2585,7 +2585,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 		// Reorder faces by rdrpass.
 		//---------
 
-		// First count the number of faces used by this LOD for each material 
+		// First count the number of faces used by this LOD for each material
 		vector<sint>	matCount;
 		// resize, and reset to 0.
 		matCount.clear();
@@ -2657,7 +2657,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 					// If it is a geomorph
 					if(wedgeId<finalMRM.NGeomSpace)
 					{
-						// add the start and end to the list (if not here). NB: wedgeId is both the id 
+						// add the start and end to the list (if not here). NB: wedgeId is both the id
 						// of the dest wedge, and the id of the geomorph.
 						sint	wedgeStartId= destLod.Geomorphs[wedgeId].Start;
 						sint	wedgeEndId= destLod.Geomorphs[wedgeId].End;
@@ -2800,7 +2800,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 					bIsDeltaNorm = true;
 				}
 				attId++;
-			}		
+			}
 
 			if (vbFlags & CVertexBuffer::PrimaryColorFlag)
 			{
@@ -2856,7 +2856,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 				}
 				attId++;
 			}
-			
+
 		} // End of all vertices added in blend shape
 
 		// Delete unused items and calculate the number of vertex used (blended)
@@ -2919,7 +2919,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 }
 
 // ***************************************************************************
-void CMRMBuilder::buildBlendShapes (CMRMMesh& baseMesh, 
+void CMRMBuilder::buildBlendShapes (CMRMMesh& baseMesh,
 									std::vector<CMesh::CMeshBuild*> &bsList, uint32 VertexFlags)
 {
 	uint32 i, j, k, m, destIndex;
@@ -2946,7 +2946,7 @@ void CMRMBuilder::buildBlendShapes (CMRMMesh& baseMesh,
 		{
 			const CMesh::CCorner &srcCorner = bsList[i]->Faces[j].Corner[k];
 			CMRMCorner	&neutralCorner = baseMesh.Faces[j].Corner[k];
-			
+
 			attId= 0;
 
 			if (VertexFlags & CVertexBuffer::NormalFlag)
@@ -2999,7 +2999,7 @@ void CMRMBuilder::buildBlendShapes (CMRMMesh& baseMesh,
 
 // ***************************************************************************
 void	CMRMBuilder::compileMRM(const CMesh::CMeshBuild &mbuild, std::vector<CMesh::CMeshBuild*> &bsList,
-								const CMRMParameters &params, CMeshMRMGeom::CMeshBuildMRM &mrmMesh, 
+								const CMRMParameters &params, CMeshMRMGeom::CMeshBuildMRM &mrmMesh,
 								uint numMaxMaterial)
 {
 	// Temp data.
@@ -3022,7 +3022,7 @@ void	CMRMBuilder::compileMRM(const CMesh::CMeshBuild &mbuild, std::vector<CMesh:
 	_Skinned= ((mbuild.VertexFlags & CVertexBuffer::PaletteSkinFlag)==CVertexBuffer::PaletteSkinFlag);
 	// Skinning is OK only if SkinWeights are of same size as vertices.
 	_Skinned= _Skinned && ( mbuild.Vertices.size()==mbuild.SkinWeights.size() );
-	
+
 	// MeshInterface setuped ?
 	_HasMeshInterfaces= buildMRMSewingMeshes(mbuild, params.NLods, params.Divisor);
 
@@ -3058,7 +3058,7 @@ void	CMRMBuilder::compileMRM(const CMesh::CMeshBuild &mbuild, std::vector<CMesh:
 
 // ***************************************************************************
 void	CMRMBuilder::compileMRM(const CMesh::CMeshBuild &mbuild, std::vector<CMesh::CMeshBuild*> &bsList,
-								const CMRMParameters &params, CMeshMRMSkinnedGeom::CMeshBuildMRM &mrmMesh, 
+								const CMRMParameters &params, CMeshMRMSkinnedGeom::CMeshBuildMRM &mrmMesh,
 								uint numMaxMaterial)
 {
 	// Temp data.
@@ -3081,7 +3081,7 @@ void	CMRMBuilder::compileMRM(const CMesh::CMeshBuild &mbuild, std::vector<CMesh:
 	_Skinned= ((mbuild.VertexFlags & CVertexBuffer::PaletteSkinFlag)==CVertexBuffer::PaletteSkinFlag);
 	// Skinning is OK only if SkinWeights are of same size as vertices.
 	_Skinned= _Skinned && ( mbuild.Vertices.size()==mbuild.SkinWeights.size() );
-	
+
 	// MeshInterface setuped ?
 	_HasMeshInterfaces= buildMRMSewingMeshes(mbuild, params.NLods, params.Divisor);
 

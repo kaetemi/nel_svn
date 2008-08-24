@@ -187,7 +187,7 @@ string CSystemInfo::getOS()
 	if( !(bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi)) )
 	{
 		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) ) 
+		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) )
 		return OSString+" Can't GetVersionEx()";
 	}
 
@@ -227,7 +227,7 @@ string CSystemInfo::getOS()
                else
                   printf ( "Professional " );
             }
-            
+
             // Test for the server type.
             else if ( osvi.wProductType == VER_NT_SERVER )
             {
@@ -253,7 +253,7 @@ string CSystemInfo::getOS()
                      printf ( "Server " );
                }
 
-               else  // Windows NT 4.0 
+               else  // Windows NT 4.0
                {
                   if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
                      printf ("Server 4.0, Enterprise Edition " );
@@ -320,19 +320,19 @@ string CSystemInfo::getOS()
 				OSString = "Microsoft Windows 95 ";
 				if ( osvi.szCSDVersion[1] == 'C' || osvi.szCSDVersion[1] == 'B' )
 					OSString += "OSR2 ";
-			} 
+			}
 
 			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
 			{
 				OSString = "Microsoft Windows 98 ";
 				if ( osvi.szCSDVersion[1] == 'A' )
 					OSString += "SE ";
-			} 
+			}
 
 			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
 			{
 				OSString = "Microsoft Windows Millennium Edition ";
-			} 
+			}
 		break;
 
 		case VER_PLATFORM_WIN32s:
@@ -348,7 +348,7 @@ string CSystemInfo::getOS()
 	OSString = getsysctlstr("kern.version");
 
 #elif defined NL_OS_UNIX
-	
+
 	int fd = open("/proc/version", O_RDONLY);
 	if (fd == -1)
 	{
@@ -359,15 +359,15 @@ string CSystemInfo::getOS()
 		char buffer[4096+1];
 		int len = read(fd, buffer, sizeof(buffer)-1);
 		close(fd);
-		
+
 		// remove the \n and set \0
 		buffer[len-1] = '\0';
-		
+
 		OSString = buffer;
 	}
-	
+
 #endif	// NL_OS_UNIX
-	
+
 	return OSString;
 }
 
@@ -414,7 +414,7 @@ string CSystemInfo::getProc ()
 			ProcString += "UnknownVendor";
 
 		ProcString += " / ";
-		
+
 		// get processor frequency
 		result = ::RegQueryValueEx (hKey, _T("~MHz"), NULL, NULL, (LPBYTE)value, &valueSize);
 		if (result == ERROR_SUCCESS)
@@ -431,7 +431,7 @@ string CSystemInfo::getProc ()
 
 	// Make sure to close the reg key
 	RegCloseKey (hKey);
-	
+
 	// count the number of processor (max 8, in case this code don't work well)
 	uint	numProc= 1;
 	for(uint i=1;i<8;i++)
@@ -492,9 +492,9 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 {
 	static uint64 freq = 0;
 #ifdef	NL_CPU_INTEL
-	static bool freqComputed = false;	
+	static bool freqComputed = false;
 	if (freqComputed) return freq;
-	
+
 	if (!quick)
 	{
 		TTicks bestNumTicks   = 0;
@@ -502,21 +502,21 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 		uint64 numCycles;
 		const uint numSamples = 5;
 		const uint numLoops   = 50000000;
-		
+
 		volatile uint k; // prevent optimization for the loop
 		for(uint l = 0; l < numSamples; ++l)
-		{	
+		{
 			TTicks startTick = NLMISC::CTime::getPerformanceTime();
 			uint64 startCycle = rdtsc();
 			volatile uint dummy = 0;
 			for(k = 0; k < numLoops; ++k)
-			{		
+			{
 				++ dummy;
-			}		
+			}
 			numCycles = rdtsc() - startCycle;
 			TTicks numTicks = NLMISC::CTime::getPerformanceTime() - startTick;
 			if (numTicks > bestNumTicks)
-			{		
+			{
 				bestNumTicks  = numTicks;
 				bestNumCycles = numCycles;
 			}
@@ -530,13 +530,13 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 		nlSleep (100);
 		TTicks timeAfter = NLMISC::CTime::getPerformanceTime();
 		TTicks tickAfter = rdtsc();
-		
+
 		double timeDelta = CTime::ticksToSecond(timeAfter - timeBefore);
 		TTicks tickDelta = tickAfter - tickBefore;
-		
+
 		freq = (uint64) ((double)tickDelta / timeDelta);
 	}
-	
+
 	nlinfo ("SI: CSystemInfo: Processor frequency is %.0f MHz", (float)freq/1000000.0);
 	freqComputed = true;
 #endif // NL_CPU_INTEL
@@ -544,8 +544,8 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 }
 
 static bool DetectMMX()
-{		
-	#ifdef NL_CPU_INTEL	
+{
+	#ifdef NL_CPU_INTEL
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
 		uint32 result = 0;
@@ -556,7 +556,7 @@ static bool DetectMMX()
 			 cpuid
 			 test edx,0x800000  // bit 23 = MMX instruction set
 			 je   noMMX
-			 mov result, 1	
+			 mov result, 1
 			noMMX:
 		}
 		#elif NL_OS_UNIX
@@ -573,7 +573,7 @@ static bool DetectMMX()
 		#endif // NL_OS_UNIX
 
 		return result == 1;
- 
+
 		// printf("mmx detected\n");
 
 	#else // NL_CPU_INTEL
@@ -583,16 +583,16 @@ static bool DetectMMX()
 
 
 static bool DetectSSE()
-{	
+{
 	#ifdef NL_CPU_INTEL
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
 		uint32 result = 0;
 		#ifdef NL_OS_WINDOWS
 		__asm
-		{			
+		{
 			mov eax, 1   // request for feature flags
-			cpuid 							
+			cpuid
 			test EDX, 002000000h   // bit 25 in feature flags equal to 1
 			je noSSE
 			mov result, 1  // sse detected
@@ -614,7 +614,7 @@ static bool DetectSSE()
 		if (result)
 		{
 			// check OS support for SSE
-			try 
+			try
 			{
 				#ifdef NL_OS_WINDOWS
 				__asm
@@ -629,7 +629,7 @@ static bool DetectSSE()
 			{
 				return false;
 			}
-		
+
 			// printf("sse detected\n");
 
 			return true;
@@ -662,16 +662,16 @@ bool CSystemInfo::hasCPUID ()
 			 xor  eax,0x200000			// Flip ID bit
 			 push eax
 			 popfd						// Write EFLAGS
-			 pushfd      
+			 pushfd
 			 pop  eax					// read back EFLAG
 			 xor  eax,ecx
 			 je   noCpuid				// no flip -> no CPUID instr.
-			 
+
 			 popfd						// restore state
 			 popad
 			 mov  result, 1
 			 jmp  CPUIDPresent
-		
+
 			noCpuid:
 			 popfd					    // restore state
 			 popad
@@ -684,7 +684,7 @@ bool CSystemInfo::hasCPUID ()
 				"pushl  %%ebp;"
 				"pushl  %%ebx;"
 				"pushl  %%edx;"
-				
+
 				/* Check if this CPU supports cpuid */
 				"pushf;"
 				"pushf;"
@@ -700,16 +700,16 @@ bool CSystemInfo::hasCPUID ()
 				"jz     NoCPUID;"
 				"movl   $1, %0;"
 				"jmp    CPUID;"
-			  	
+
 			"NoCPUID:;"
-				"movl   $0, %0;" 
+				"movl   $0, %0;"
               		"CPUID:;"
 				"popl   %%edx;"
 				"popl   %%ebx;"
 				"popl   %%ebp;"
-			
+
 				:"=a"(result)
-                	); 
+                	);
 		#endif // NL_OS_UNIX
 		return result == 1;
 	#else
@@ -758,7 +758,7 @@ bool CSystemInfo::hasHyperThreading()
 		unsigned int reg_eax = 0;
 		unsigned int reg_edx = 0;
 		unsigned int vendor_id[3] = {0, 0, 0};
-		__asm 
+		__asm
 		{
 			xor eax, eax
 			cpuid
@@ -904,7 +904,7 @@ uint64 CSystemInfo::getAllocatedSystemMemory ()
 	}
 
 #elif defined NL_OS_UNIX
-	
+
 	int fd = open("/proc/self/stat", O_RDONLY);
 	if (fd == -1)
 	{
@@ -915,14 +915,14 @@ uint64 CSystemInfo::getAllocatedSystemMemory ()
 		char buffer[4096], *p;
 		int len = read(fd, buffer, sizeof(buffer)-1);
 		close(fd);
-	
+
 		buffer[len] = '\0';
-		
+
 		p = buffer;
 		p = strchr(p, ')')+1;			/* skip pid */
 		p = skipWS(p);
 		p++;
-		
+
 		p = skipToken(p);				/* skip ppid */
 		p = skipToken(p);				/* skip pgrp */
 		p = skipToken(p);				/* skip session */
@@ -942,7 +942,7 @@ uint64 CSystemInfo::getAllocatedSystemMemory ()
 		p = skipToken(p);				/* skip timeout */
 		p = skipToken(p);				/* skip it_real_val */
 		p = skipToken(p);				/* skip start_time */
-		
+
 		systemMemory = strtoul(p, &p, 10);	/* vsize in bytes */
 	}
 
@@ -1008,9 +1008,9 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 	 */
 
 	bool debug = false;
-#ifdef _DEBUG 
+#ifdef _DEBUG
 	debug = true;
-#endif _DEBUG 
+#endif _DEBUG
 
 	HMODULE hm = GetModuleHandle(TEXT("USER32"));
 	if (hm)
@@ -1112,7 +1112,7 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 						}
 					}
 
-					// * Read the registry 
+					// * Read the registry
 					HKEY baseKey;
 					if (RegOpenKeyExA(keyRoot, keyPath.c_str(), 0, KEY_READ, &baseKey) == ERROR_SUCCESS)
 					{

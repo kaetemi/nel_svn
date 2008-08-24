@@ -134,7 +134,7 @@ static const char *WaterVPStartCode =
 ";
 /** This part of vertex program compute 2 layers of bump (for use with texture shaders)
   */
-static const char *WaterVpBump2LayersCode = 
+static const char *WaterVpBump2LayersCode =
 "	MUL R3, v[0], c[10];			#compute bump 0 uv's			\n\
 	ADD o[TEX0], R3, c[9];										    \n\
 	MUL R3, v[0], c[12];			#compute bump 1 uv's			\n\
@@ -147,7 +147,7 @@ static const char *WaterVpBump2LayersCode =
 ";
 /** Version with one bump map only (Texture shaders support chaining of offset textures, EMBM does not)
   */
-static const char *WaterVpBump1LayersCode = 
+static const char *WaterVpBump1LayersCode =
 "MUL R3, v[0], c[12];			#compute bump 1 uv's				\n\
  ADD o[TEX0], R3, c[11];										    \n\
  DP3 R2.x, R1, R0;													\n\
@@ -158,26 +158,26 @@ static const char *WaterVpBump1LayersCode =
 ";
 /** Optionnal diffuse texture in stage 3
   */
-static const char *WaterVpDiffuseMapStage3Code = 
+static const char *WaterVpDiffuseMapStage3Code =
 "DP4 o[TEX3].x, R4, c[13]; #compute uv for diffuse texture					\n\
  DP4 o[TEX3].y, R4, c[14];													\n\
 ";
 /** Optionnal diffuse texture in stage 2
   */
-static const char *WaterVpDiffuseMapStage2Code = 
+static const char *WaterVpDiffuseMapStage2Code =
 "DP4 o[TEX2].x, R4, c[13]; #compute uv for diffuse texture					\n\
  DP4 o[TEX2].y, R4, c[14];													\n\
 ";
 
 /** Optionnal diffuse texture in stage 1
   */
-static const char *WaterVpDiffuseMapStage1Code = 
+static const char *WaterVpDiffuseMapStage1Code =
 "DP4 o[TEX1].x, R4, c[13]; #compute uv for diffuse texture					\n\
  DP4 o[TEX1].y, R4, c[14];													\n\
 ";
 
 // Envmap is setup in texture 0, no bump is used
-static const char *WaterVpNoBumpCode = 
+static const char *WaterVpNoBumpCode =
 "  DP3 R2.x, R1, R0;			 #project view vector on normal for symetry	\n\
    MUL R0, R0, R2.x;														\n\
    ADD R2, R0, R0;															\n\
@@ -207,12 +207,12 @@ std::auto_ptr<CVertexProgram>			CWaterShape::_VertexProgramNoWaveDiffuse;
 
 
 /** Build a vertex program for water depending on requirements
-  */ 
+  */
 static CVertexProgram *BuildWaterVP(bool diffuseMap, bool bumpMap, bool use2BumpMap)
 {
 	std::string vp = WaterVPStartCode;
 	if (bumpMap && use2BumpMap)
-	{ 
+	{
 		vp += WaterVpBump2LayersCode;
 		if (diffuseMap) vp += WaterVpDiffuseMapStage3Code;
 	}
@@ -253,8 +253,8 @@ CWaterShape::CWaterShape() :  _WaterPoolID(0), _TransitionRatio(0.6f), _WaveHeig
 	{
 		_HeightMapScale[k].set(1, 1);
 		_HeightMapSpeed[k].set(0, 0);
-		_HeightMapTouch[k] = true;		
-		_UsesSceneWaterEnvMap[k] = false;		
+		_HeightMapTouch[k] = true;
+		_UsesSceneWaterEnvMap[k] = false;
 	}
 	_ColorMapMatColumn0.set(1, 0);
 	_ColorMapMatColumn1.set(0, 1);
@@ -265,9 +265,9 @@ CWaterShape::CWaterShape() :  _WaterPoolID(0), _TransitionRatio(0.6f), _WaveHeig
 //============================================
 CRGBA CWaterShape::computeEnvMapMeanColor()
 {
-	// TMP : 
+	// TMP :
 	// just used for water rendering in multiple parts with parallel projection
-	// -> drawn as an uniform polygon with envmap mean coloe	
+	// -> drawn as an uniform polygon with envmap mean coloe
 	if (!_EnvMapMeanColorComputed)
 	{
 		_EnvMapMeanColor = NLMISC::CRGBA(0, 0, 255);
@@ -278,7 +278,7 @@ CRGBA CWaterShape::computeEnvMapMeanColor()
 			uint32 r = 0;
 			uint32 g = 0;
 			uint32 b = 0;
-			uint32 a = 0;			
+			uint32 a = 0;
 			uint numPixs = _EnvMap[0]->getHeight() * _EnvMap[0]->getWidth();
 			const CRGBA *src = (const CRGBA *) (&_EnvMap[0]->getPixels(0)[0]);
 			const CRGBA *last = src + numPixs;
@@ -289,16 +289,16 @@ CRGBA CWaterShape::computeEnvMapMeanColor()
 				b += src->B;
 				a += src->A;
 				++ src;
-			}			
+			}
 			if (numPixs != 0)
 			{
-				_EnvMapMeanColor = NLMISC::CRGBA((uint8) (r / numPixs), 
+				_EnvMapMeanColor = NLMISC::CRGBA((uint8) (r / numPixs),
 												 (uint8) (g / numPixs),
 												 (uint8) (b / numPixs),
 												 (uint8) (a / numPixs));
 			}
 			_EnvMap[0]->release();
-		}		
+		}
 		_EnvMapMeanColorComputed = true;
 	}
 	return _EnvMapMeanColor;
@@ -317,13 +317,13 @@ CWaterShape::~CWaterShape()
 		|| (_EnvMap[1] && dynamic_cast<CTextureBlend *>((ITexture *) _EnvMap[1]))
 		)
 	{
-		GetWaterPoolManager().unRegisterWaterShape(this);		
+		GetWaterPoolManager().unRegisterWaterShape(this);
 	}
 }
 
 //============================================
 void CWaterShape::initVertexProgram()
-{	
+{
 	static bool created = false;
 	if (!created)
 	{
@@ -353,9 +353,9 @@ CTransformShape		*CWaterShape::createInstance(CScene &scene)
 	wm->ITransformable::setScale( _DefaultScale.getDefaultValue() );
 	wm->ITransformable::setRotQuat( _DefaultRotQuat.getDefaultValue() );
 	//
-	wm->init();		
+	wm->init();
 	if (scene.getWaterCallback())
-	{			
+	{
 		CWaterShape *ws = NLMISC::safe_cast<CWaterShape *>((IShape *) wm->Shape);
 		scene.getWaterCallback()->waterSurfaceAdded(getShape(), wm->getMatrix(), ws->isSplashEnabled(), ws->getUseSceneWaterEnvMap(0) || ws->getUseSceneWaterEnvMap(1));
 	}
@@ -372,7 +372,7 @@ float CWaterShape::getNumTriangles (float distance)
 //============================================
 void CWaterShape::flushTextures (IDriver &driver, uint selectedTexture)
 {
-	// Test if bump maps are supported by driver before to flush them.	
+	// Test if bump maps are supported by driver before to flush them.
 	// TEMP : can't flush texture for water, because the upload format depends on the shader
 	// Only the driver can determine it.
 	// BumpMaps may be uploaded with unsigned or signed format
@@ -388,7 +388,7 @@ void CWaterShape::flushTextures (IDriver &driver, uint selectedTexture)
 			if (_BumpMap[k] != NULL)
 				driver.setupTexture(*_BumpMap[k]);
 			if (_EnvMap[k] != NULL)
-				driver.setupTexture(*_EnvMap[k]);		
+				driver.setupTexture(*_EnvMap[k]);
 		}
 	}
 	if (_ColorMap != NULL)
@@ -400,7 +400,7 @@ void CWaterShape::flushTextures (IDriver &driver, uint selectedTexture)
 void	CWaterShape::setScreenGridSize(uint32 x, uint32 y)
 {
 	nlassert(x > 0 && y > 0);
-	_XScreenGridSize = x;	
+	_XScreenGridSize = x;
 	_YScreenGridSize = y;
 	_GridSizeTouched = true;
 }
@@ -440,7 +440,7 @@ void CWaterShape::computeBBox()
 //============================================
 void				CWaterShape::setHeightMap(uint k, ITexture *hm)
 {
-	nlassert(k < 2);	
+	nlassert(k < 2);
 	if (!_BumpMap[k])
 	{
 		_BumpMap[k] = new CTextureBump;
@@ -471,16 +471,16 @@ void CWaterShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// version 4 : added scene water env map
 	// version 3 : added '_Splashenabled' flag
 	sint ver = f.serialVersion(4);
-	// serial 'shape' 
+	// serial 'shape'
 	f.serial(_Poly);
 	// serial heightMap identifier
 	f.serial(_WaterPoolID);
 	//serial maps
-	ITexture *map = NULL;	
+	ITexture *map = NULL;
 	if (f.isReading())
 	{
 		f.serialPolyPtr(map); _EnvMap[0] = map;
@@ -496,20 +496,20 @@ void CWaterShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		map = _EnvMap[1]; f.serialPolyPtr(map);
 		map = _BumpMap[0]; f.serialPolyPtr(map);
 		map = _BumpMap[1]; f.serialPolyPtr(map);
-		map = _ColorMap; f.serialPolyPtr(map);	
+		map = _ColorMap; f.serialPolyPtr(map);
 	}
 
 	f.serial(_HeightMapScale[0], _HeightMapScale[1],
 			 _HeightMapSpeed[0], _HeightMapSpeed[1]);
 
-	f.serial(_ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos);	
+	f.serial(_ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos);
 
 	// serial default tracks
 	f.serial(_DefaultPos);
 	f.serial(_DefaultScale);
 	f.serial(_DefaultRotQuat);
 
-	f.serial(_TransitionRatio);	
+	f.serial(_TransitionRatio);
 
 	f.serial(_WaveHeightFactor);
 
@@ -525,21 +525,21 @@ void CWaterShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	if (ver >= 4)
 	{
 		f.serial(_UsesSceneWaterEnvMap[0], _UsesSceneWaterEnvMap[1]);
-	}	
+	}
 
 	// tmp
 	/*
 	if (f.isReading())
 	{
 		_UsesSceneWaterEnvMap[0] = true;
-		_UsesSceneWaterEnvMap[1] = true;		
+		_UsesSceneWaterEnvMap[1] = true;
 	}
 	*/
 }
 
 //============================================
 bool CWaterShape::clip(const std::vector<CPlane>	&pyramid, const CMatrix &worldMatrix)
-{	
+{
 	for (uint k = 0; k < pyramid.size(); ++k)
 	{
 		if (! _BBox.clipBack(pyramid[k] * worldMatrix)) return false;
@@ -617,8 +617,8 @@ void CWaterShape::envMapUpdate()
 
 //============================================
 void CWaterShape::setColorMap(ITexture *map)
-{ 
-	_ColorMap = map; 
+{
+	_ColorMap = map;
 	//colorMapUpdate();
 }
 
@@ -626,7 +626,7 @@ void CWaterShape::setColorMap(ITexture *map)
 void CWaterShape::setEnvMap(uint index, ITexture *envMap)
 {
 	nlassert(index < 2);
-	_EnvMap[index] = envMap;	
+	_EnvMap[index] = envMap;
 }
 
 //============================================
@@ -635,11 +635,11 @@ void CWaterShape::getShapeInWorldSpace(NLMISC::CPolygon &poly) const
 	poly.Vertices.resize(_Poly.Vertices.size());
 	// compute the matrix of the object in world space, by using the default tracks
 	NLMISC::CMatrix objMat;
-	objMat.identity();		
+	objMat.identity();
 	objMat.translate(_DefaultPos.getDefaultValue());
 	objMat.rotate(_DefaultRotQuat.getDefaultValue());
 	objMat.scale(_DefaultScale.getDefaultValue());
-	
+
 	for (uint k = 0; k < _Poly.Vertices.size(); ++k)
 	{
 		poly.Vertices[k] = objMat * NLMISC::CVector(_Poly.Vertices[k].x, _Poly.Vertices[k].y, 0);
@@ -717,7 +717,7 @@ CTransformShape		*CWaveMakerShape::createInstance(CScene &scene)
 	CWaveMakerModel *wmm = NLMISC::safe_cast<CWaveMakerModel *>(scene.createModel(WaveMakerModelClassId) );
 	wmm->Shape = this;
 	// set default pos & scale
-	wmm->ITransformable::setPos( _DefaultPos.getDefaultValue() );		
+	wmm->ITransformable::setPos( _DefaultPos.getDefaultValue() );
 	return wmm;
 }
 
@@ -726,7 +726,7 @@ bool	CWaveMakerShape::clip(const std::vector<CPlane>	&pyramid, const CMatrix &wo
 {
 	// we just test if not too far
 	const CWaterHeightMap &whm = GetWaterPoolManager().getPoolByID(_PoolID);
-	const float maxDist = 0.5f * whm.getUnitSize() * whm.getSize();	
+	const float maxDist = 0.5f * whm.getUnitSize() * whm.getSize();
 	const NLMISC::CVector pos = worldMatrix.getPos();
 	for (std::vector<NLMISC::CPlane>::const_iterator it = pyramid.begin(); it != pyramid.end(); ++it)
 	{
@@ -738,7 +738,7 @@ bool	CWaveMakerShape::clip(const std::vector<CPlane>	&pyramid, const CMatrix &wo
 
 //============================================
 void	CWaveMakerShape::getAABBox(NLMISC::CAABBox &bbox) const
-{	
+{
 	// its just a point
 	bbox.setCenter(NLMISC::CVector::Null);
 	bbox.setHalfSize(NLMISC::CVector::Null);

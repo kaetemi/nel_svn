@@ -69,7 +69,7 @@ void CTileLand::removeTileSet (const std::string& name)
 }
 // ***************************************************************************
 void CTileLand::setName (const std::string& name)
-{ 
+{
 	_Name=name;
 };
 // ***************************************************************************
@@ -99,7 +99,7 @@ void    CTileBank::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	f.serialCheck (std::string ("BANK"));
 
 	sint streamver = f.serialVersion(_Version);
-	
+
 	// Version 1 not compatible
 	if (f.isReading())
 	{
@@ -159,7 +159,7 @@ void    CTileBank::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			{
 				// Remove diffuse bitmap
 				getTileSet(tileSet)->clearTransition ((CTileSet::TTransition)number, CTile::diffuse, *this);
-				
+
 				// Remove alpha bitmap
 				getTileSet(tileSet)->clearTransition ((CTileSet::TTransition)number, CTile::alpha, *this);
 			}
@@ -580,7 +580,7 @@ void CTileBank::removeDisplacementMap (uint mapId)
 		{
 			// Remove it
 			_DisplacementMap[mapId].reset();
-			
+
 			// Last element ?
 			if (mapId==_DisplacementMap.size()-1)
 			{
@@ -669,7 +669,7 @@ void CTileBank::loadTileVegetableDescs()
 {
 	// For all tileSets.
 	uint tileSet;
-	
+
 	for(tileSet=0; tileSet<_TileSetVector.size(); tileSet++)
 	{
 		// load their fileName
@@ -683,7 +683,7 @@ void	CTileBank::initTileVegetableDescs(CVegetableManager *vegetableManager)
 {
 	// For all tileSets.
 	uint tileSet;
-	
+
 	for(tileSet=0; tileSet<_TileSetVector.size(); tileSet++)
 	{
 		CTileVegetableDesc	&tvd= _TileSetVector[tileSet].getTileVegetableDesc();
@@ -698,7 +698,7 @@ void	CTileBank::postfixTileFilename (const char *postfix)
 	// For each tiles
 	uint tile;
 	for (tile=0; tile<_TileVector.size (); tile++)
-	{	
+	{
 		// For each bitmap
 		uint bitmap;
 		for (bitmap=0; bitmap<CTile::bitmapCount; bitmap++)
@@ -725,7 +725,7 @@ void	CTileBank::postfixTileVegetableDesc (const char *postfix)
 	// For each tiles
 	uint tileSet;
 	for (tileSet=0; tileSet<_TileSetVector.size (); tileSet++)
-	{	
+	{
 		string &filename = _TileSetVector[tileSet]._TileVegetableDescFileName;
 		if (!filename.empty())
 		{
@@ -782,10 +782,10 @@ void CTile::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	case 0:
 		// Initialize flags
 		_Flags=0;
-		
+
 		// Initialize alpha name
 		_BitmapName[alpha]="";
-		
+
 		// Read free flag
 		f.serial (tmp);
 
@@ -828,7 +828,7 @@ const char* CTileSet::_ErrorMessage[CTileSet::errorCount]=
 	"Left interface is incompatible.",			// leftInterfaceProblem
 	"Right interface is incompatible.",			// rightInterfaceProblem
 	"Add first a 128x128 tile.",				// addFirstA128128
-	"Top and bottom interface not the same.",	// topBottomNotTheSame, 
+	"Top and bottom interface not the same.",	// topBottomNotTheSame,
 	"Right and left interface not the same.",	// rightLeftNotTheSame
 	"Invalide bitmap size.",					// sizeInvalide
 };
@@ -1044,7 +1044,7 @@ CTileSet::TError CTileSet::checkTile128 (CTile::TBitmap type, const CTileBorder&
 			return rightInterfaceProblem;
 	}
 	else
-	{		
+	{
 		return addFirstA128128;
 	}
 
@@ -1072,7 +1072,7 @@ CTileSet::TError CTileSet::checkTile256 (CTile::TBitmap type, const CTileBorder&
 		return topBottomNotTheSame;
 	if (!CTileBorder::compare (border, border, CTileBorder::left, CTileBorder::right, pixel, composante))
 		return rightLeftNotTheSame;
-	
+
 	// Check if prb
 	if ((!_Border256[type].isSet())&&(_Border128[type].isSet()))
 	{
@@ -1110,7 +1110,7 @@ void CTileSet::setTile256 (int indexInTileSet, const std::string& name, CTile::T
 	tile->setRotAlpha (0);
 }
 // ***************************************************************************
-void CTileSet::setTileTransition (TTransition transition, const std::string& name, CTile::TBitmap type,	CTileBank& bank, 
+void CTileSet::setTileTransition (TTransition transition, const std::string& name, CTile::TBitmap type,	CTileBank& bank,
 											  const CTileBorder& border)
 {
 	// Check is not an alpha channel
@@ -1124,7 +1124,7 @@ void CTileSet::setTileTransition (TTransition transition, const std::string& nam
 	tile->setFileName (type, name);
 }
 // ***************************************************************************
-void CTileSet::setTileTransitionAlpha (TTransition transition, const std::string& name, CTileBank& bank, 
+void CTileSet::setTileTransitionAlpha (TTransition transition, const std::string& name, CTileBank& bank,
 									   const CTileBorder& border, uint8 rot)
 {
 	// Check some args
@@ -1278,7 +1278,7 @@ CTileSet::TTransition CTileSet::getTransitionTile (TFlagBorder _top, TFlagBorder
 			((_right==dontcare)||(_right==(TFlagBorder)_TransitionFlags[n][right])))
 		{
 			return (TTransition)n;
-		}	
+		}
 	}
 	return notfound;
 }
@@ -1295,7 +1295,7 @@ CTileSet::TTransition CTileSet::getExistingTransitionTile (TFlagBorder _top, TFl
 			((_right==dontcare)||(_right==(TFlagBorder)_TransitionFlags[n][right])))
 		{
 			return (TTransition)n;
-		}	
+		}
 	}
 	return notfound;
 }
@@ -1317,9 +1317,9 @@ CTileSet::TTransition CTileSet::getComplementaryTransition (TTransition transiti
 		getComplementaryBorder (_TransitionFlags[transition][bottom]),
 		getComplementaryBorder (_TransitionFlags[transition][left]),
 		getComplementaryBorder (_TransitionFlags[transition][right]));
-	
+
 	nlassert (trans!=notfound);
-	
+
 	return trans;
 }
 // ***************************************************************************
@@ -1397,7 +1397,7 @@ void CTileSet::clearTile128 (int indexInTileSet, CTile::TBitmap type, CTileBank&
 {
 	int nTile=_Tile128[indexInTileSet];
 	bank.getTile (nTile)->clearTile(type);
-	
+
 	// Erase border if it is the last texture
 	deleteBordersIfLast (bank, type);
 }
@@ -1406,7 +1406,7 @@ void CTileSet::clearTile256 (int indexInTileSet, CTile::TBitmap type, CTileBank&
 {
 	int nTile=_Tile256[indexInTileSet];
 	bank.getTile (nTile)->clearTile(type);
-	
+
 	// Erase border if it is the last texture
 	deleteBordersIfLast (bank, type);
 }
@@ -1417,7 +1417,7 @@ void CTileSet::clearTransition (TTransition transition, CTile::TBitmap type, CTi
 	if (nTile!=-1)
 		bank.getTile (nTile)->clearTile(type);
 	_BorderTransition[transition][type].reset();
-	
+
 	// Erase border if it is the last texture
 	deleteBordersIfLast (bank, type);
 }
@@ -1437,7 +1437,7 @@ void CTileSet::deleteBordersIfLast (const CTileBank& bank, CTile::TBitmap type)
 		// If the file name is valid
 		if (bank.getTile (*ite)->getRelativeFileName(type)!="")
 		{
-			// Don't delete, 
+			// Don't delete,
 			bDelete=false;
 			break;
 		}
@@ -1454,7 +1454,7 @@ void CTileSet::deleteBordersIfLast (const CTileBank& bank, CTile::TBitmap type)
 		// If the file name is valid
 		if (bank.getTile (*ite)->getRelativeFileName(type)!="")
 		{
-			// Don't delete, 
+			// Don't delete,
 			bDelete=false;
 			break;
 		}
@@ -1478,7 +1478,7 @@ void CTileSet::deleteBordersIfLast (const CTileBank& bank, CTile::TBitmap type)
 			// If the file name is valid
 			if (bank.getTile (nTile)->getRelativeFileName(type)!="")
 			{
-				// Don't delete, 
+				// Don't delete,
 				bDelete=false;
 				break;
 			}
@@ -1757,7 +1757,7 @@ void CTileBorder::operator= (const CTileBorder& border)
 	_Borders[left]=border._Borders[left];
 	_Borders[right]=border._Borders[right];
 }
-	
+
 // ***************************************************************************
 void CTileBorder::doubleSize ()
 {

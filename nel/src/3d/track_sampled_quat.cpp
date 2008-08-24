@@ -32,7 +32,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -51,13 +51,13 @@ void		CQuatPack::pack(const CQuat &quat)
 	/*
 		This is the most precise/faster compression we can have. Some other tries have been made.
 
-		- deducing w from x,y,z is possible with w= 1-sqrt(x²+y²+z²) (with tradeoff of the W sign) 
+		- deducing w from x,y,z is possible with w= 1-sqrt(x²+y²+z²) (with tradeoff of the W sign)
 			but very not precise.
 		- Transform the quaternion to an AxisAngle is possible, but slower (some cos/sin or LUT).
 			Axis is encoded with sint16, and angle is encoded with uint16.
 		- The same than above, but encode the axis as X/Y only, and deduce Z from
-			them, is possible but precision problems arise. 
-			
+			them, is possible but precision problems arise.
+
 		You can see that the operation "deduce a 3/4 member from unit lenght rule" is definetly not precise.
 
 		Hence this simpler but workable way.
@@ -148,7 +148,7 @@ void					CTrackSampledQuat::serial(NLMISC::IStream &f)
 }
 
 // ***************************************************************************
-void	CTrackSampledQuat::build(const std::vector<uint16> &timeList, const std::vector<CQuat> &keyList, 
+void	CTrackSampledQuat::build(const std::vector<uint16> &timeList, const std::vector<CQuat> &keyList,
 	float beginTime, float endTime)
 {
 	nlassert( endTime>beginTime || (beginTime==endTime && keyList.size()<=1) );
@@ -186,7 +186,7 @@ const IAnimatedValue	&CTrackSampledQuat::eval (const TAnimationTime& date, CAnim
 	float	interpValue;
 	TEvalType	evalType= evalTime(date, _Keys.size(), keyId0, keyId1, interpValue);
 
-	// Discard? 
+	// Discard?
 	if( evalType==EvalDiscard )
 		return avBlock.ValQuat;
 	// One Key? easy, and quit.
@@ -246,7 +246,7 @@ void CTrackSampledQuat::applySampleDivisor(uint sampleDivisor)
 	_Keys= newKeys;
 
 	// TestYoyo
-	/*nlinfo("ANIMQUAT:\t%d\t%d\t%d\t%d", sizeof(*this), _TimeBlocks.size(), 
+	/*nlinfo("ANIMQUAT:\t%d\t%d\t%d\t%d", sizeof(*this), _TimeBlocks.size(),
 		_TimeBlocks.size()?_TimeBlocks[0].Times.size():0,
 		_Keys.size() * sizeof(CQuatPack));*/
 }
@@ -262,12 +262,12 @@ bool	CTrackSampledQuat::applyTrackQuatHeaderCompressionPass0(class CTrackSampleC
 	// Support only 255 keys and not 256!!! cause _NumKeys is encoded in 8 bits!
 	if(_Keys.size()>=256)
 		return false;
-	
+
 	// if the number of keys ovveride the uint16 limit, abort
 	if(_Keys.size()+quatCounter.NumKeys > 65536)
 		return false;
 
-	// Search if the Track header is the same as one of the quatCounter. 
+	// Search if the Track header is the same as one of the quatCounter.
 	// NB: O(N*N) but quatCounter.TrackHeaders should be very small
 	uint	headerIndex;
 	for(headerIndex=0;headerIndex<quatCounter.TrackHeaders.size();headerIndex++)
@@ -316,7 +316,7 @@ ITrack	*CTrackSampledQuat::applyTrackQuatHeaderCompressionPass1(uint &globalKeyO
 	// if there is more than 1 timeBlock, fails
 	if(_TimeBlocks.size()>1)
 		return NULL;
-	
+
 	// Support only 255 keys and not 256!!! cause _NumKeys is encoded in 8 bits!
 	if(_Keys.size()>=256)
 		return NULL;
@@ -324,8 +324,8 @@ ITrack	*CTrackSampledQuat::applyTrackQuatHeaderCompressionPass1(uint &globalKeyO
 	// if the number of keys ovveride the uint16 limit, abort
 	if(_Keys.size()+globalKeyOffset > 65536)
 		return NULL;
-	
-	// Search if the Track header is the same as one of the quatPacker. 
+
+	// Search if the Track header is the same as one of the quatPacker.
 	// NB: O(N*N) but quatPacker.TrackHeaders should be very small
 	uint	headerIndex;
 	for(headerIndex=0;headerIndex<quatPacker.TrackHeaders.size();headerIndex++)

@@ -43,7 +43,7 @@ using namespace std;
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -118,7 +118,7 @@ void CMeshMultiLod::build(CMeshMultiLodBuild &mbuild)
 		}
 		else
 			// Ok, no prb
-			_MeshVector[slot].MeshGeom = mbuild.LodMeshes[slot].MeshGeom;	
+			_MeshVector[slot].MeshGeom = mbuild.LodMeshes[slot].MeshGeom;
 	}
 
 	// Sort the slot by the distance...
@@ -143,7 +143,7 @@ void CMeshMultiLod::build(CMeshMultiLodBuild &mbuild)
 		float startDist;
 		if (k==0)
 			startDist=0;
-		else 
+		else
 			startDist=_MeshVector[k-1].DistMax;
 
 		// Get start poly count
@@ -160,7 +160,7 @@ void CMeshMultiLod::build(CMeshMultiLodBuild &mbuild)
 			if (startPolyCount==_MeshVector[k].EndPolygonCount)
 				_MeshVector[k].EndPolygonCount=startPolyCount/2;
 		}
-		else 
+		else
 			_MeshVector[k].EndPolygonCount=_MeshVector[k+1].MeshGeom->getNumTriangles (endDist);
 
 		// Calc A
@@ -244,7 +244,7 @@ void CMeshMultiLod::render(IDriver *drv, CTransformShape *trans, bool passOpaque
 	// Second lod ?
 	if ( (instance->Lod1!=0xffffffff) && (passOpaque==false) )
 	{
-		// build rdrFlags to rdr both transparent and opaque materials, 
+		// build rdrFlags to rdr both transparent and opaque materials,
 		// use globalAlphaBlend, and disable ZWrite for Lod1
 		uint32	rdrFlags= IMeshGeom::RenderOpaqueMaterial | IMeshGeom::RenderTransparentMaterial |
 			IMeshGeom::RenderGlobalAlpha | IMeshGeom::RenderGADisableZWrite;
@@ -280,7 +280,7 @@ void CMeshMultiLod::render(IDriver *drv, CTransformShape *trans, bool passOpaque
 		// Should not be in opaque
 		nlassert (passOpaque==false);
 
-		// build rdrFlags to rdr both transparent and opaque materials, 
+		// build rdrFlags to rdr both transparent and opaque materials,
 		// use globalAlphaBlend, BUT Don't disable ZWrite for Lod0
 		uint32	rdrFlags= IMeshGeom::RenderOpaqueMaterial | IMeshGeom::RenderTransparentMaterial |
 			IMeshGeom::RenderGlobalAlpha;
@@ -323,11 +323,11 @@ float CMeshMultiLod::getNumTrianglesWithCoarsestDist(float distance, float coars
 {
 	// Look in the table for good distances..
 	uint meshCount=_MeshVector.size();
-	
+
 	// At least on mesh
 	if (meshCount>0)
-	{	
-		
+	{
+
 		if (coarsestMeshDist != -1)
 		{
 			if (coarsestMeshDist != 0)
@@ -335,9 +335,9 @@ float CMeshMultiLod::getNumTrianglesWithCoarsestDist(float distance, float coars
 				// rescale distance to new coarse mesh distance..
 				distance *= _MeshVector[meshCount - 1].DistMax / coarsestMeshDist;
 			}
-		}		
+		}
 
-		uint i=0;		
+		uint i=0;
 		// Look for good i
 		while ( _MeshVector[i].DistMax < distance)
 		{
@@ -371,7 +371,7 @@ float CMeshMultiLod::getNumTrianglesWithCoarsestDist(float distance, float coars
 				realEndPolyCount=slot.EndPolygonCount;
 
 			// Return blended polygon count to have a continous decreasing function
-			return (goodPolyCount-slot.BeginPolygonCount) * (realEndPolyCount-slot.BeginPolygonCount) / 
+			return (goodPolyCount-slot.BeginPolygonCount) * (realEndPolyCount-slot.BeginPolygonCount) /
 				(slot.EndPolygonCount-slot.BeginPolygonCount) + slot.BeginPolygonCount;*/
 			return polyCount;
 		}
@@ -472,7 +472,7 @@ void CMeshMultiLod::renderMeshGeom (uint slot, IDriver *drv, CMeshMultiLodInstan
 				// Use a CMeshBlender to modify material and driver.
 				CMeshBlender	blender;
 				blender.prepareRenderForGlobalAlphaCoarseMesh(material, drv, newCol, alpha, gaDisableZWrite);
-				
+
 
 				// render simple the coarseMesh
 				CMeshGeom *meshGeom= safe_cast<CMeshGeom*>(slotRef.MeshGeom);
@@ -628,7 +628,7 @@ void			CMeshMultiLod::changeMRMDistanceSetup(float distanceFinest, float distanc
 	CMeshMRMGeom	*mgeom= dynamic_cast<CMeshMRMGeom*>(_MeshVector[0].MeshGeom);
 	if(mgeom==NULL)
 		return;
-	
+
 	// ok, setup.
 	mgeom->changeMRMDistanceSetup(distanceFinest, distanceMiddle, distanceCoarsest);
 }
@@ -701,7 +701,7 @@ void	CMeshMultiLod::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *tr
 	// Second lod ?
 	if ( (instance->Lod1!=0xffffffff) && (passOpaque==false) )
 	{
-		// build rdrFlags to rdr both transparent and opaque materials, 
+		// build rdrFlags to rdr both transparent and opaque materials,
 		// use globalAlphaBlend, and disable ZWrite for Lod1
 		uint32	rdrFlags= IMeshGeom::RenderOpaqueMaterial | IMeshGeom::RenderTransparentMaterial |
 			IMeshGeom::RenderGlobalAlpha | IMeshGeom::RenderGADisableZWrite;
@@ -734,7 +734,7 @@ void	CMeshMultiLod::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *tr
 		// Should not be in opaque
 		nlassert (passOpaque==false);
 
-		// build rdrFlags to rdr both transparent and opaque materials, 
+		// build rdrFlags to rdr both transparent and opaque materials,
 		// use globalAlphaBlend, BUT Don't disable ZWrite for Lod0
 		uint32	rdrFlags= IMeshGeom::RenderOpaqueMaterial | IMeshGeom::RenderTransparentMaterial |
 			IMeshGeom::RenderGlobalAlpha;
@@ -797,7 +797,7 @@ void	CMeshMultiLod::compileCoarseMeshes()
 				if( slotRef.CoarseNumTris )
 				{
 					slotRef.CoarseTriangles.resize(slotRef.CoarseNumTris * 3);
-					TCoarseMeshIndexType	*dstPtr= &slotRef.CoarseTriangles[0];					
+					TCoarseMeshIndexType	*dstPtr= &slotRef.CoarseTriangles[0];
 					for(uint i=0;i<meshGeom->getNbRdrPass(0);i++)
 					{
 						const CIndexBuffer	&pb= meshGeom->getRdrPassPrimitiveBlock(0, i);
@@ -915,7 +915,7 @@ void	CMeshMultiLod::buildSystemGeometry()
 		if(meshGeom)
 		{
 			// retrieve geometry (if VB/IB not resident)
-			if( !meshGeom->retrieveVertices(_SystemGeometry.Vertices) || 
+			if( !meshGeom->retrieveVertices(_SystemGeometry.Vertices) ||
 				!meshGeom->retrieveTriangles(_SystemGeometry.Triangles))
 			{
 				_SystemGeometry.clear();
@@ -931,7 +931,7 @@ void	CMeshMultiLod::buildSystemGeometry()
 				if(meshMRMGeom->getNbLodLoaded()==0)
 					return;
 				uint	lodId= meshMRMGeom->getNbLodLoaded()-1;
-				
+
 				// retrieve geometry (if VB/IB not resident)
 				if( !meshMRMGeom->buildGeometryForLod(lodId, _SystemGeometry.Vertices, _SystemGeometry.Triangles) )
 				{
@@ -940,7 +940,7 @@ void	CMeshMultiLod::buildSystemGeometry()
 			}
 		}
 	}
-	
+
 	// TestYoyo
 	/*static uint32	totalMem= 0;
 	totalMem+= _SystemGeometry.Vertices.size()*sizeof(CVector);

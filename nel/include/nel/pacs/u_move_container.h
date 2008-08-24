@@ -28,13 +28,13 @@
 #include "nel/misc/vector.h"
 #include <vector>
 
-namespace NLMISC 
+namespace NLMISC
 {
 	class CVectorD;
-	class CMatrix;	
+	class CMatrix;
 }
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class UMovePrimitive;
@@ -50,7 +50,7 @@ class UPrimitiveBlock;
  * A container for movable objects
  * Some constraints:
  * * The move bounding box must be lower than the cell size
- * 
+ *
  * \author Cyril 'Hulud' Corvazier
  * \author Nevrax France
  * \date 2001
@@ -77,7 +77,7 @@ public:
 	  * This primtive should be inserted in a world image before use. See UMovePrimitive::insertInWorldImage.
 	  *
 	  * \param firstWorldImage is the first world image where the primitive can be inserted.
-	  * \param numWorldImage is the count of world image where the primitive can be inserted.	  
+	  * \param numWorldImage is the count of world image where the primitive can be inserted.
 	  * \return a pointer on the new primitive.
 	  */
 	virtual UMovePrimitive		*addCollisionablePrimitive (uint8 firstWorldImage, uint8 numWorldImage, const UMovePrimitive *copyFrom = NULL) =0;
@@ -116,7 +116,7 @@ public:
 	  * \param primitives is a pointer on an array of primitive pointer to fill if success. If NULL, Do return nothing.
 	  * \param orientation is the orientation to give to the primitives.
 	  * \param position is the position to give to the primitives.
-	  * \param primitives is a pointer on an array of primitive pointer to fill if success. If NULL, Do return nothing.	  
+	  * \param primitives is a pointer on an array of primitive pointer to fill if success. If NULL, Do return nothing.
 	  * \param dontSnapToGround force the inserted primitive to be flagged as 'DontSnapToGround'
 	  * \see addCollisionablePrimitive
 	  * \see getPACSCoordsFromMatrix
@@ -125,7 +125,7 @@ public:
 	virtual bool				loadCollisionablePrimitiveBlock (const char *filename, uint8 firstWorldImage, uint8 numWorldImage, std::vector<UMovePrimitive*> *primitives, float orientation, const NLMISC::CVector &position, bool dontSnapToGround = false) =0;
 
 
-	/** The same as loadCollisionablePrimitiveBlock, but the primitive block is provided by the caller	  
+	/** The same as loadCollisionablePrimitiveBlock, but the primitive block is provided by the caller
 	  */
 	virtual void                addCollisionnablePrimitiveBlock(UPrimitiveBlock *pb, uint8 firstWorldImage, uint8 numWorldImage, std::vector<UMovePrimitive*> *primitives, float orientation, const NLMISC::CVector &position, bool dontSnapToGround = false, const NLMISC::CVector &scale = NLMISC::CVector(1.0f, 1.0f, 1.0f)) = 0;
 
@@ -138,14 +138,14 @@ public:
 
 	/// Get all the primitives in the container
 	virtual	void				getPrimitives(std::vector<const UMovePrimitive *> &dest) const = 0;
-	 
+
 
 	/// \name Primitive evaluation.
 
 	/**
 	  * Evaluation of a worldImage of the collision system.
 	  * This method will evaluate the move of each modified collisionable primitives inserted in the world image.
-	  * The method test first collisions against the terrai, then test collisions against primitives 
+	  * The method test first collisions against the terrai, then test collisions against primitives
 	  * inserted in the world images declared as static,
 	  * then test the collision against the primitives inserted in the world image to evaluate.
 	  *
@@ -156,7 +156,7 @@ public:
 
 	/**
 	  * Evaluation of a single non collisionable primitive.
-	  * The method test first collisions against the terrai, then test collisions against primitives 
+	  * The method test first collisions against the terrai, then test collisions against primitives
 	  * inserted in the world images declared as static,
 	  * then test the collision against the primitives inserted in the world image to evaluate.
 	  *
@@ -203,7 +203,7 @@ public:
 	  * All primitive will be removed from the destination world image.
 	  * Then, the source world image will be copied in the destination world image.
 	  *
-	  * Warning, only primitives from the source that have been decalared as using the destintation 
+	  * Warning, only primitives from the source that have been decalared as using the destintation
 	  * world image will be copied.
 	  *
 	  * The source world image remain the same.
@@ -224,19 +224,19 @@ public:
 	/// \name Create methods.
 
 	// Create method
-	static 	UMoveContainer		*createMoveContainer (double xmin, double ymin, double xmax, double ymax, 
+	static 	UMoveContainer		*createMoveContainer (double xmin, double ymin, double xmax, double ymax,
 		uint widthCellCount, uint heightCellCount, double primitiveMaxSize, uint8 numWorldImage=NELPACS_DEFAULT_NUM_WORLD_IMAGE,
 		uint maxIteration=NELPACS_DEFAULT_MAX_TEST_ITERATION, uint otSize=NELPACS_DEFAULT_OT_SIZE);
 
 	// Create method
-	static 	UMoveContainer		*createMoveContainer (UGlobalRetriever* retriever, uint widthCellCount, 
-		uint heightCellCount, double primitiveMaxSize, uint8 numWorldImage=NELPACS_DEFAULT_NUM_WORLD_IMAGE, 
+	static 	UMoveContainer		*createMoveContainer (UGlobalRetriever* retriever, uint widthCellCount,
+		uint heightCellCount, double primitiveMaxSize, uint8 numWorldImage=NELPACS_DEFAULT_NUM_WORLD_IMAGE,
 		uint maxIteration=NELPACS_DEFAULT_MAX_TEST_ITERATION, uint otSize=NELPACS_DEFAULT_OT_SIZE);
 
 	// Delete method
 	static 	void				deleteMoveContainer (UMoveContainer	*container);
 
-	/** Get a pacs position and an orientation from a matrix	 
+	/** Get a pacs position and an orientation from a matrix
 	  */
 	static	void getPACSCoordsFromMatrix(NLMISC::CVector &pos, float &angle, const NLMISC::CMatrix &mat);
 };

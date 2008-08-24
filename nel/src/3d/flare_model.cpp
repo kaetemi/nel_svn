@@ -58,7 +58,7 @@ CFlareModel::CFlareModel()
 	_RenderFilterType= UScene::FilterFlare;
 	resetOcclusionQuerries();
 	std::fill(_LastRenderIntervalBegin, _LastRenderIntervalBegin + MaxNumContext, (uint64) -2);
-	std::fill(_LastRenderIntervalEnd, _LastRenderIntervalEnd + MaxNumContext, (uint64) -2);	
+	std::fill(_LastRenderIntervalEnd, _LastRenderIntervalEnd + MaxNumContext, (uint64) -2);
 	std::fill(_NumFrameForOcclusionQuery, _NumFrameForOcclusionQuery + MaxNumContext, 1);
 	Next = NULL;
 }
@@ -103,7 +103,7 @@ CFlareModel::~CFlareModel()
 void CFlareModel::registerBasic()
 {
 	// register the model
-	CScene::registerModel(FlareModelClassId, TransformShapeId, CFlareModel::creator);	
+	CScene::registerModel(FlareModelClassId, TransformShapeId, CFlareModel::creator);
 }
 
 
@@ -120,17 +120,17 @@ static inline void vbWrite(uint8 *&dest, const CVector &v)
 static inline void vbWrite(uint8 *&dest, float uCoord, float vCoord)
 {
 	((float *) dest)[0] = uCoord;
-	((float *) dest)[1] = vCoord;	
+	((float *) dest)[1] = vCoord;
 	dest += 2 * sizeof(float);
 }
 
 //********************************************************************************************************************
 void	CFlareModel::traverseRender()
-{				
+{
 	CRenderTrav			&renderTrav = getOwnerScene()->getRenderTrav();
-	if (renderTrav.isCurrentPassOpaque()) return;	
+	if (renderTrav.isCurrentPassOpaque()) return;
 	IDriver				*drv  = renderTrav.getDriver();
-	nlassert(drv);	
+	nlassert(drv);
 	// For now, don't render flare if occlusion query is not supported (direct read of z-buffer is far too slow)
 	if (!drv->supportOcclusionQuery()) return;
 	if (drv != _LastDrv)
@@ -140,17 +140,17 @@ void	CFlareModel::traverseRender()
 		_LastDrv = drv;
 	}
 	uint flareContext = _Scene ? _Scene->getFlareContext() : 0;
-	// transform the flare on screen	
-	const CVector	upt = getWorldMatrix().getPos(); // untransformed pos	
+	// transform the flare on screen
+	const CVector	upt = getWorldMatrix().getPos(); // untransformed pos
 	const CVector	pt = renderTrav.ViewMatrix * upt;
-	if (pt.y <= renderTrav.Near) 
-	{		
+	if (pt.y <= renderTrav.Near)
+	{
 		return; // flare behind us
 	}
 	nlassert(Shape);
-	CFlareShape *fs = NLMISC::safe_cast<CFlareShape *>((IShape *) Shape);	
-    if (pt.y > fs->getMaxViewDist()) 
-	{		
+	CFlareShape *fs = NLMISC::safe_cast<CFlareShape *>((IShape *) Shape);
+    if (pt.y > fs->getMaxViewDist())
+	{
 		return;	// flare too far away
 	}
 	float distIntensity;
@@ -159,47 +159,47 @@ void	CFlareModel::traverseRender()
 		distIntensity   = 1.f;
 	}
 	else
-	{	
+	{
 		// compute a color ratio for attenuation with distance
 		const float distRatio = pt.y / fs->getMaxViewDist();
-		distIntensity = distRatio > fs->getMaxViewDistRatio() ? 1.f - (distRatio - fs->getMaxViewDistRatio()) / (1.f - fs->getMaxViewDistRatio()) : 1.f;		
-	}	
+		distIntensity = distRatio > fs->getMaxViewDistRatio() ? 1.f - (distRatio - fs->getMaxViewDistRatio()) / (1.f - fs->getMaxViewDistRatio()) : 1.f;
+	}
 	//
 	uint32 width, height;
 	drv->getWindowSize(width, height);
-	// Compute position on screen		
+	// Compute position on screen
 	const float middleX = .5f * (renderTrav.Left + renderTrav.Right);
 	const float middleZ = .5f * (renderTrav.Bottom + renderTrav.Top);
 	const sint xPos = (width>>1) + (sint) (width * (((renderTrav.Near * pt.x) / pt.y) - middleX) / (renderTrav.Right - renderTrav.Left));
-	const sint yPos = (height>>1) - (sint) (height * (((renderTrav.Near * pt.z) / pt.y) - middleZ) / (renderTrav.Top - renderTrav.Bottom));	
+	const sint yPos = (height>>1) - (sint) (height * (((renderTrav.Near * pt.z) / pt.y) - middleZ) / (renderTrav.Top - renderTrav.Bottom));
 	// See if the flare was inside the frustum during the last frame
 	// We can't use the scene frame counter because a flare can be rendered in several viewport during the same frame
 	// The swapBuffer counter is called only once per frame
-	uint64 currFrame = drv->getSwapBufferCounter();	
+	uint64 currFrame = drv->getSwapBufferCounter();
 	//
 	bool visibilityRetrieved = false;
 	float visibilityRatio;
-	// if driver support occlusion query mechanism, use it	
+	// if driver support occlusion query mechanism, use it
 	CMesh *occlusionTestMesh = NULL;
 	if (_Scene->getShapeBank())
 	{
 		occlusionTestMesh = fs->getOcclusionTestMesh(*_Scene->getShapeBank());
 	}
 	if (drv->supportOcclusionQuery())
-	{		
+	{
 		bool issueNewQuery = true;
 		IOcclusionQuery *lastOQ = _OcclusionQuery[flareContext][OcclusionTestFrameDelay - 1];
 		IOcclusionQuery *lastDQ = _DrawQuery[flareContext][OcclusionTestFrameDelay - 1];
 		if (_LastRenderIntervalEnd[flareContext] + 1 == currFrame)
-		{		
+		{
 			if (_LastRenderIntervalEnd[flareContext] - _LastRenderIntervalBegin[flareContext] >= OcclusionTestFrameDelay - 1)
-			{			
-				// occlusion test are possibles if at least OcclusionTestFrameDelay frames have ellapsed				
+			{
+				// occlusion test are possibles if at least OcclusionTestFrameDelay frames have ellapsed
 				if (lastOQ)
 				{
 					switch(lastOQ->getOcclusionType())
 					{
-						case IOcclusionQuery::NotAvailable:								
+						case IOcclusionQuery::NotAvailable:
 							issueNewQuery = false;
 							++ _NumFrameForOcclusionQuery[flareContext];
 						break;
@@ -207,19 +207,19 @@ void	CFlareModel::traverseRender()
 							visibilityRetrieved = true;
 							visibilityRatio = 0.f;
 						break;
-						case IOcclusionQuery::NotOccluded:							
+						case IOcclusionQuery::NotOccluded:
 							if (occlusionTestMesh)
-							{								
+							{
 								if (lastDQ)
-								{									
+								{
 									if (lastDQ->getOcclusionType() != IOcclusionQuery::NotAvailable)
 									{
-										visibilityRetrieved = true;										
+										visibilityRetrieved = true;
 										// eval the percentage of samples that are visible
 										//nlinfo("%d / %d", lastOQ->getVisibleCount(), lastDQ->getVisibleCount());
 										visibilityRatio = (float) lastOQ->getVisibleCount() / (float) lastDQ->getVisibleCount();
-										NLMISC::clamp(visibilityRatio, 0.f, 1.f);										
-									}									
+										NLMISC::clamp(visibilityRatio, 0.f, 1.f);
+									}
 								}
 								else
 								{
@@ -235,11 +235,11 @@ void	CFlareModel::traverseRender()
 							}
 						break;
 					}
-				}				
+				}
 			}
-		}		
+		}
 		if (issueNewQuery)
-		{		
+		{
 			// shift the queries list
 			for(uint k = OcclusionTestFrameDelay - 1; k > 0; --k)
 			{
@@ -253,18 +253,18 @@ void	CFlareModel::traverseRender()
 				occlusionTest(*occlusionTestMesh, *drv);
 			}
 			else
-			{			
+			{
 				// Insert in list of waiting flare. Don't do it now to avoid repeated setup of test material (a material that don't write to color/zbuffer,
 				// and that is used for the sole purpose of the occlusion query)
 				_Scene->insertInOcclusionQueryList(this);
-			}	
-		}		
+			}
+		}
 	}
 	else
-	{	
+	{
 		_NumFrameForOcclusionQuery[flareContext] = 1;
 		visibilityRetrieved = true;
-		// The device doesn't support asynchronous query -> must read the z-buffer directly in a slow fashion								
+		// The device doesn't support asynchronous query -> must read the z-buffer directly in a slow fashion
 		CViewport vp;
 		drv->getViewport(vp);
 		// Read z-buffer value at the pos we are
@@ -280,13 +280,13 @@ void	CFlareModel::traverseRender()
 		z = (depthRangeFar - depthRangeNear) * z + depthRangeNear;
 		if (!v.size() || z > v[0]) // test against z-buffer
 		{
-			visibilityRatio = 0.f;			
+			visibilityRatio = 0.f;
 		}
 		else
 		{
-			visibilityRatio = 1.f;			
+			visibilityRatio = 1.f;
 		}
-	}		
+	}
 	// Update render interval
 //	nlwarning("frame = %d, last frame = %d", (int) currFrame, (int) _LastRenderIntervalEnd[flareContext]);
 	if (_LastRenderIntervalEnd[flareContext] + 1 != currFrame)
@@ -296,7 +296,7 @@ void	CFlareModel::traverseRender()
 		_LastRenderIntervalBegin[flareContext] = currFrame;
 	}
 	_LastRenderIntervalEnd[flareContext] = currFrame;
-	// Update intensity depending on visibility	
+	// Update intensity depending on visibility
 	if (visibilityRetrieved)
 	{
 		nlassert(visibilityRatio >= 0.f);
@@ -307,14 +307,14 @@ void	CFlareModel::traverseRender()
 			float p = fs->getPersistence();
 			if (p == 0.f)
 			{
-				_Intensity[flareContext] = visibilityRatio; // instant update				
+				_Intensity[flareContext] = visibilityRatio; // instant update
 			}
 			else
 			{
 				_Intensity[flareContext] -= 1.f / p * (float)_Scene->getEllapsedTime() * (float) _NumFrameForOcclusionQuery[flareContext];
-				if (_Intensity[flareContext] < visibilityRatio) 
-				{				
-					_Intensity[flareContext] = visibilityRatio;					
+				if (_Intensity[flareContext] < visibilityRatio)
+				{
+					_Intensity[flareContext] = visibilityRatio;
 				}
 			}
 			//nlwarning("intensity update < of %x : %f", (int) this, _Intensity[flareContext]);
@@ -324,32 +324,32 @@ void	CFlareModel::traverseRender()
 			float p = fs->getPersistence();
 			if (p == 0.f)
 			{
-				_Intensity[flareContext] = visibilityRatio; // instant update				
+				_Intensity[flareContext] = visibilityRatio; // instant update
 			}
 			else
 			{
 				//nlwarning("num frame = %d, currFrame = %d, ", (int) _NumFrameForOcclusionQuery[flareContext], (int) currFrame);
 				_Intensity[flareContext] += 1.f / p * (float)_Scene->getEllapsedTime() * (float) _NumFrameForOcclusionQuery[flareContext];
-				if (_Intensity[flareContext] > visibilityRatio) 
-				{				
-					_Intensity[flareContext] = visibilityRatio;					
+				if (_Intensity[flareContext] > visibilityRatio)
+				{
+					_Intensity[flareContext] = visibilityRatio;
 				}
-			}											
+			}
 			//nlwarning("intensity update > of %x : %f", (int) this, _Intensity[flareContext]);
-		}		
+		}
 	}
 	if (_Intensity[flareContext] == 0.f) return;
 	//
 	static CMaterial material;
-	static CVertexBuffer vb; 
-	static bool setupDone = false;  	
+	static CVertexBuffer vb;
+	static bool setupDone = false;
 	if (!setupDone)
 	{
 		material.setBlend(true);
 		material.setBlendFunc(CMaterial::one, CMaterial::one);
-		material.setZWrite(false);	
+		material.setZWrite(false);
 		material.setZFunc(CMaterial::always);
-		material.setLighting(false);	
+		material.setLighting(false);
 		material.setDoubleSided(true);
 
 		// setup vertex buffer
@@ -360,33 +360,33 @@ void	CFlareModel::traverseRender()
 		{
 			CVertexBufferReadWrite vba;
 			vb.lock (vba);
-			
+
 			vba.setTexCoord(0, 0, NLMISC::CUV(1, 0));
 			vba.setTexCoord(1, 0, NLMISC::CUV(1, 1));
 			vba.setTexCoord(2, 0, NLMISC::CUV(0, 1));
 			vba.setTexCoord(3, 0, NLMISC::CUV(0, 0));
 		}
 		setupDone = true;
-	}	
-	// setup driver	
-	drv->activeVertexProgram(NULL);	
-	drv->setupModelMatrix(fs->getLookAtMode() ? CMatrix::Identity : getWorldMatrix());	
+	}
+	// setup driver
+	drv->activeVertexProgram(NULL);
+	drv->setupModelMatrix(fs->getLookAtMode() ? CMatrix::Identity : getWorldMatrix());
 	// we don't change the fustrum to draw 2d shapes : it is costly, and we need to restore it after the drawing has been done
 	// we setup Z to be (near + far) / 2, and setup x and y to get the screen coordinates we want
-	const float zPos             = 0.5f * (renderTrav.Near + renderTrav.Far); 
+	const float zPos             = 0.5f * (renderTrav.Near + renderTrav.Far);
 	const float zPosDivNear      = zPos / renderTrav.Near;
 	// compute the coeff so that x = ax * px + bx; y = ax * py + by
-	const float aX = ( (renderTrav.Right - renderTrav.Left) / (float) width) * zPosDivNear;	
+	const float aX = ( (renderTrav.Right - renderTrav.Left) / (float) width) * zPosDivNear;
 	const float bX = zPosDivNear * (middleX - 0.5f * (renderTrav.Right - renderTrav.Left));
 	//
-	const float aY = - ( (renderTrav.Top - renderTrav.Bottom) / (float) height) * zPosDivNear;	
+	const float aY = - ( (renderTrav.Top - renderTrav.Bottom) / (float) height) * zPosDivNear;
 	const float bY = zPosDivNear * (middleZ + 0.5f * (renderTrav.Top - renderTrav.Bottom));
 	const CVector I = renderTrav.CamMatrix.getI();
 	const CVector J = renderTrav.CamMatrix.getJ();
 	const CVector K = renderTrav.CamMatrix.getK();
 	//
-	CRGBA		 col;	
-	CRGBA        flareColor = fs->getColor(); 
+	CRGBA		 col;
+	CRGBA        flareColor = fs->getColor();
 	const float norm = sqrtf((float) (((xPos - (width>>1)) * (xPos - (width>>1)) + (yPos - (height>>1))*(yPos - (height>>1)))))
 						   / (float) (width>>1);
 	// check for dazzle and draw it
@@ -395,11 +395,11 @@ void	CFlareModel::traverseRender()
 		if (norm < fs->getDazzleAttenuationRange())
 		{
 			float dazzleIntensity = 1.f - norm / fs->getDazzleAttenuationRange();
-			CRGBA dazzleColor = fs->getDazzleColor(); 
+			CRGBA dazzleColor = fs->getDazzleColor();
 			col.modulateFromui(dazzleColor, (uint) (255.f * _Intensity * dazzleIntensity));
 			material.setColor(col);
 			material.setTexture(0, NULL);
-	
+
 			const CVector dazzleCenter = renderTrav.CamPos + zPos * J;
 			const CVector dI = (width>>1) * aX * I;
 			const CVector dK = (height>>1) * bX * K;
@@ -411,38 +411,38 @@ void	CFlareModel::traverseRender()
 
 			drv->renderRawQuads(material, 0, 1);
 		}
-	}	*/	
+	}	*/
 	if (!fs->getAttenuable() )
 	{
 		col.modulateFromui(flareColor, (uint) (255.f * distIntensity * _Intensity[flareContext]));
 	}
 	else
 	{
-		if (norm > fs->getAttenuationRange() || fs->getAttenuationRange() == 0.f) 
-		{			
-			return; // nothing to draw;		
+		if (norm > fs->getAttenuationRange() || fs->getAttenuationRange() == 0.f)
+		{
+			return; // nothing to draw;
 		}
 		col.modulateFromui(flareColor, (uint) (255.f * distIntensity * _Intensity[flareContext] * (1.f - norm / fs->getAttenuationRange() )));
 	}
 	col.modulateFromColor(col, getMeanColor());
 	if (col == CRGBA::Black) return; // not visible
-	material.setColor(col);	
+	material.setColor(col);
 	CVector scrPos; // vector that will map to the center of the flare on screen
 	// process each flare
-	// delta for each new Pos 
+	// delta for each new Pos
 	const float dX = fs->getFlareSpacing() * ((sint) (width >> 1) - xPos);
-	const float dY = fs->getFlareSpacing() * ((sint) (height >> 1) - yPos);	
+	const float dY = fs->getFlareSpacing() * ((sint) (height >> 1) - yPos);
 	uint k = 0;
 	ITexture *tex;
-	// special case for first flare	
+	// special case for first flare
 	tex = fs->getTexture(0);
 	if (tex)
-	{		
+	{
 		{
 			CVertexBufferReadWrite vba;
 			vb.lock (vba);
 			float size;
-			if (fs->getScaleWhenDisappear()) 
+			if (fs->getScaleWhenDisappear())
 			{
 				size = _Intensity[flareContext] * fs->getSize(0) + (1.f - _Intensity[flareContext]) * fs->getSizeDisappear();
 			}
@@ -454,11 +454,11 @@ void	CFlareModel::traverseRender()
 			if (fs->getFirstFlareKeepSize())
 			{
 				size *= renderTrav.Near * (getWorldMatrix().getPos() - renderTrav.CamMatrix.getPos()) * J;
-			}			
+			}
 			if (fs->getAngleDisappear() == 0.f)
 			{
 				if (fs->getLookAtMode())
-				{				
+				{
 					rI = I;
 					rK = K;
 				}
@@ -474,7 +474,7 @@ void	CFlareModel::traverseRender()
 				float cosTheta = cosf(angle);
 				float sinTheta = sinf(angle);
 				if (fs->getLookAtMode())
-				{				
+				{
 					rI = cosTheta * I + sinTheta * K;
 					rK = -sinTheta * I + cosTheta * K;
 				}
@@ -487,7 +487,7 @@ void	CFlareModel::traverseRender()
 			uint8 *vbPtr = (uint8 *) vba.getVertexCoordPointer();
 			CHECK_VBA_RANGE(vba, vbPtr, vb.getVertexSize());
 			if (fs->getLookAtMode())
-			{				
+			{
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, upt + size * (rI + rK));
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, 1.f, 0.f); // uvs
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, upt + size * (rI - rK));
@@ -500,7 +500,7 @@ void	CFlareModel::traverseRender()
 			else
 			{
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, size * (rI + rK));
-				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, 1.f, 0.f); // uvs				
+				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, 1.f, 0.f); // uvs
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, size * (rI - rK));
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, 1.f, 1.f); // uvs
 				CHECK_VBA(vba, vbPtr); vbWrite(vbPtr, size * (-rI - rK));
@@ -511,10 +511,10 @@ void	CFlareModel::traverseRender()
 		}
 		material.setTexture(0, tex);
 		drv->activeVertexBuffer(vb);
-		drv->renderRawQuads(material, 0, 1);					
-	}		
+		drv->renderRawQuads(material, 0, 1);
+	}
 	if (fs->_LookAtMode)
-	{	
+	{
 		drv->setupModelMatrix(CMatrix::Identity); // look at mode is applied only to first flare
 	}
 	for (uint k = 1; k < MaxFlareNum; ++k)
@@ -523,9 +523,9 @@ void	CFlareModel::traverseRender()
 		if (tex)
 		{
 			// compute vector that map to the center of the flare
-			scrPos = (aX * (xPos + dX * fs->getRelativePos(k)) + bX) * I 
-				     +  zPos * J + (aY * (yPos + dY * fs->getRelativePos(k)) + bY) * K + renderTrav.CamMatrix.getPos(); 
-			
+			scrPos = (aX * (xPos + dX * fs->getRelativePos(k)) + bX) * I
+				     +  zPos * J + (aY * (yPos + dY * fs->getRelativePos(k)) + bY) * K + renderTrav.CamMatrix.getPos();
+
 			{
 				CVertexBufferReadWrite vba;
 				vb.lock (vba);
@@ -542,20 +542,20 @@ void	CFlareModel::traverseRender()
 			}
 			material.setTexture(0, tex);
 			drv->activeVertexBuffer(vb);
-			drv->renderRawQuads(material, 0, 1);		
-		}		
-	}		
+			drv->renderRawQuads(material, 0, 1);
+		}
+	}
 }
 
 
 //********************************************************************************************************************
 void CFlareModel::initStatics()
-{	
+{
 	if (!_OcclusionQuerySettuped)
 	{
 		// setup materials
 		_OcclusionQueryMaterial.initUnlit();
-		_OcclusionQueryMaterial.setZWrite(false);				
+		_OcclusionQueryMaterial.setZWrite(false);
 		_DrawQueryMaterial.initUnlit();
 		_DrawQueryMaterial.setZWrite(false);
 		_DrawQueryMaterial.setZFunc(CMaterial::always);
@@ -573,25 +573,25 @@ void CFlareModel::updateOcclusionQueryBegin(IDriver *drv)
 {
 	nlassert(drv);
 	drv->activeVertexProgram(NULL);
-	drv->setupModelMatrix(CMatrix::Identity);	
+	drv->setupModelMatrix(CMatrix::Identity);
 	initStatics();
-	drv->setColorMask(false, false, false, false); // don't write any pixel during the test		
-	
+	drv->setColorMask(false, false, false, false); // don't write any pixel during the test
+
 }
 
 //********************************************************************************************************************
 void CFlareModel::updateOcclusionQueryEnd(IDriver *drv)
 {
 	drv->setColorMask(true, true, true, true);
-} 
+}
 
 //********************************************************************************************************************
 void CFlareModel::updateOcclusionQuery(IDriver *drv)
 {
 	nlassert(drv);
-	nlassert(drv == _LastDrv); // driver shouldn't change during CScene::render	
+	nlassert(drv == _LastDrv); // driver shouldn't change during CScene::render
 	// allocate a new occlusion if nit already done
-	nlassert(_Scene);	
+	nlassert(_Scene);
 	IOcclusionQuery	*oq = _OcclusionQuery[_Scene->getFlareContext()][0];
 	if (!oq)
 	{
@@ -600,14 +600,14 @@ void CFlareModel::updateOcclusionQuery(IDriver *drv)
 		if (!oq) return;
 		_OcclusionQuery[_Scene->getFlareContext()][0] = oq;
 	}
-	{	
+	{
 		CVertexBufferReadWrite vbrw;
 		_OcclusionQueryVB.lock(vbrw);
 		*vbrw.getVertexCoordPointer(0) = getWorldMatrix().getPos();
-	}	
+	}
 	drv->activeVertexBuffer(_OcclusionQueryVB);
 	oq->begin();
-	// draw a single point		
+	// draw a single point
 	drv->renderRawPoints(_OcclusionQueryMaterial, 0, 1);
 	oq->end();
 }
@@ -625,14 +625,14 @@ void CFlareModel::renderOcclusionMeshPrimitives(CMesh &mesh, IDriver &drv)
 			drv.activeIndexBuffer(ib);
 			drv.renderSimpleTriangles(0, ib.getNumIndexes() / 3);
 		}
-	}	
+	}
 }
 
 //********************************************************************************************************************
 void CFlareModel::setupOcclusionMeshMatrix(IDriver &drv, CScene &scene) const
 {
 	nlassert(Shape);
-	CFlareShape *fs = NLMISC::safe_cast<CFlareShape *>((IShape *) Shape);	
+	CFlareShape *fs = NLMISC::safe_cast<CFlareShape *>((IShape *) Shape);
 	if (fs->getOcclusionTestMeshInheritScaleRot())
 	{
 		drv.setupModelMatrix(getWorldMatrix());
@@ -641,7 +641,7 @@ void CFlareModel::setupOcclusionMeshMatrix(IDriver &drv, CScene &scene) const
 	{
 		nlassert(scene.getCam());
 		CMatrix m = scene.getCam()->getWorldMatrix();
-		m.setPos(getWorldMatrix().getPos());		
+		m.setPos(getWorldMatrix().getPos());
 		drv.setupModelMatrix(m);
 	}
 }
@@ -667,7 +667,7 @@ void CFlareModel::occlusionTest(CMesh &mesh, IDriver &drv)
 		if (!dq) return;
 		_DrawQuery[_Scene->getFlareContext()][0] = dq;
 	}
-	drv.setColorMask(false, false, false, false); // don't write any pixel during the test	
+	drv.setColorMask(false, false, false, false); // don't write any pixel during the test
 	drv.activeVertexProgram(NULL);
 	setupOcclusionMeshMatrix(drv, *_Scene);
 	drv.activeVertexBuffer(const_cast<CVertexBuffer &>(mesh.getVertexBuffer()));
@@ -678,9 +678,9 @@ void CFlareModel::occlusionTest(CMesh &mesh, IDriver &drv)
 	oq->end();
 	// query total count
 	drv.setupMaterial(_DrawQueryMaterial);
-	dq->begin();	
-	renderOcclusionMeshPrimitives(mesh, drv);	
-	dq->end();	
+	dq->begin();
+	renderOcclusionMeshPrimitives(mesh, drv);
+	dq->end();
 	drv.setColorMask(true, true, true, true); // restore pixel writes
 }
 
@@ -688,7 +688,7 @@ void CFlareModel::occlusionTest(CMesh &mesh, IDriver &drv)
 void CFlareModel::renderOcclusionTestMesh(IDriver &drv)
 {
 	nlassert(_Scene);
-	if (!_Scene->getShapeBank()) return;	
+	if (!_Scene->getShapeBank()) return;
 	nlassert(Shape);
 	CFlareShape *fs = NLMISC::safe_cast<CFlareShape *>((IShape *) Shape);
 	CMesh *occlusionTestMesh = fs->getOcclusionTestMesh(*_Scene->getShapeBank());

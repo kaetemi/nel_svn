@@ -122,7 +122,7 @@ LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							string str;
 							nlassert (!access.value()[i].Value.empty());
 							nlassert (access.value()[i].Value[0] == '@');
-							
+
 							int pos = access.value()[i].Value.find ("|");
 							if (pos != string::npos)
 							{
@@ -250,7 +250,7 @@ LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 		}
 	}
-	
+
 	return DefWindowProcW (hWnd, message, wParam, lParam);
 }
 
@@ -386,7 +386,7 @@ void CWinDisplayer::open (string titleBar, bool iconified, sint x, sint y, sint 
 	Log = log;
 
 	_HistorySize = hs;
-	
+
 	WNDCLASSW wc;
 	memset (&wc,0,sizeof(wc));
 	wc.style			= CS_HREDRAW | CS_VREDRAW ;//| CS_DBLCLKS;
@@ -409,7 +409,7 @@ void CWinDisplayer::open (string titleBar, bool iconified, sint x, sint y, sint 
 	WndRect.right = w;
 	WndRect.bottom = h;
 	AdjustWindowRect(&WndRect,WndFlags,FALSE);
-	
+
 	// create the window
 	_HWnd = CreateWindowW (L"NLDisplayerClass", L"", WndFlags, CW_USEDEFAULT,CW_USEDEFAULT, WndRect.right,WndRect.bottom, NULL, NULL, GetModuleHandle(NULL), NULL);
 	SetWindowLongW (_HWnd, GWL_USERDATA, (LONG)this);
@@ -470,7 +470,7 @@ void CWinDisplayer::open (string titleBar, bool iconified, sint x, sint y, sint 
 	AdjustWindowRectEx (&rc, GetWindowStyle (_HWnd), GetMenu (_HWnd) != NULL, GetWindowExStyle (_HWnd));
 
 	LONG flag = SWP_NOZORDER | SWP_NOACTIVATE;
-	
+
 	if (x == -1 && y == -1) flag |= SWP_NOMOVE;
 	if (w == -1 && h == -1) flag |= SWP_NOSIZE;
 
@@ -483,7 +483,7 @@ void CWinDisplayer::open (string titleBar, bool iconified, sint x, sint y, sint 
 		ShowWindow(_HWnd,SW_MINIMIZE);
 	else
 		ShowWindow(_HWnd,SW_SHOW);
-	
+
 	SetFocus (_HInputEdit);
 
 	_Init = true;
@@ -511,12 +511,12 @@ void CWinDisplayer::clear ()
 	SendMessage (_HEdit, EM_REPLACESEL, FALSE, (LONG) "");
 
 	SendMessage(_HEdit,EM_SETMODIFY,(WPARAM)TRUE,(LPARAM)0);
-	
+
 	if ( focus )
 	{
 		SendMessage(_HEdit,EM_SETOPTIONS,ECOOP_OR,(LPARAM)ECO_AUTOVSCROLL);
 		SendMessage(_HEdit,EM_SETOPTIONS,ECOOP_OR,(LPARAM)ECO_AUTOHSCROLL);
-	}			
+	}
 }
 
 void CWinDisplayer::display_main ()
@@ -542,11 +542,11 @@ void CWinDisplayer::display_main ()
 				SCROLLINFO	info;
 				info.cbSize = sizeof(info);
 				info.fMask = SIF_ALL;
-				
+
 				bool bottom = true;
 				if (GetScrollInfo(_HEdit,SB_VERT,&info) != 0)
 					bottom = (info.nPage == 0) || (info.nMax<=(info.nPos+(int)info.nPage));
-				
+
 				// look if we have the focus
 				bool focus = (GetFocus() == _HEdit);
 				if (focus)
@@ -560,7 +560,7 @@ void CWinDisplayer::display_main ()
 				SendMessage (_HEdit, EM_GETSEL, (LONG)&startSel, (LONG)&endSel);
 
 				// find how many lines we have to remove in the current output to add new lines
-				
+
 				// get number of line
 				sint nLine = SendMessage (_HEdit, EM_GETLINECOUNT, 0, 0) - 1;
 
@@ -631,7 +631,7 @@ void CWinDisplayer::display_main ()
 
 				if (bottom)
 					SendMessage(_HEdit,WM_VSCROLL,(WPARAM)SB_BOTTOM,(LPARAM)0L);
-				
+
 				if (focus)
 				{
 					SendMessage(_HEdit,EM_SETOPTIONS,ECOOP_OR,(LPARAM)ECO_AUTOVSCROLL);
@@ -642,7 +642,7 @@ void CWinDisplayer::display_main ()
 			// clear the log
 			access.value().clear ();
 		}
-		
+
 		//
 		// Update labels
 		//

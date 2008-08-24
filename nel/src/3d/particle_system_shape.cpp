@@ -51,7 +51,7 @@ using NLMISC::CIFile;
 // private usage : macro to check the memory integrity
 #if defined(NL_DEBUG) && defined(NL_OS_WINDOWS)
 	// #define PARTICLES_CHECK_MEM NLMEMORY::CheckHeap(true);
-	#define PARTICLES_CHECK_MEM 
+	#define PARTICLES_CHECK_MEM
 #else
 	#define PARTICLES_CHECK_MEM
 #endif
@@ -103,13 +103,13 @@ CParticleSystemShape::CParticleSystemShape() : _MaxViewDist(100.f),
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	for (uint k = 0; k < 4; ++k)
 	{
 		_UserParamDefaultTrack[k].setDefaultValue(0);
 	}
 	_DefaultPos.setDefaultValue(CVector::Null);
-	_DefaultScale.setDefaultValue( CVector(1, 1, 1) );	
+	_DefaultScale.setDefaultValue( CVector(1, 1, 1) );
 	_DefaultRotQuat.setDefaultValue(CQuat());
 	_DefaultTriggerTrack.setDefaultValue(true); // by default, system start as soon as they are instanciated
 
@@ -122,7 +122,7 @@ void	CParticleSystemShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	sint ver = f.serialVersion(6);
 	/// version 6 : added sharing flag
 	//NLMISC::CVector8 &buf = _ParticleSystemProto.bufferAsVector();
@@ -150,13 +150,13 @@ void	CParticleSystemShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	if ( ver > 2)
 	{
 		f.serial (_DefaultPos);
-		f.serial (_DefaultScale);		
+		f.serial (_DefaultScale);
 		f.serial (_DefaultRotQuat);
 	}
 	if ( ver > 3)
 	{
 		f.serial(_MaxViewDist);
-		f.serial(_DestroyWhenOutOfFrustum);		
+		f.serial(_DestroyWhenOutOfFrustum);
 		f.serial(_DestroyModelWhenOutOfRange);
 	}
 	if ( ver > 4)
@@ -181,16 +181,16 @@ void CParticleSystemShape::buildFromPS(const CParticleSystem &ps)
 	{
 		_ParticleSystemProto.invert();
 	}
-	
+
 	// to have const correctness in the prototype, we must do this...
 	CParticleSystem *myPs = const_cast<CParticleSystem *>(&ps);
 	nlassert(myPs);
-	// build the prototype	
+	// build the prototype
 	_ParticleSystemProto.serialPtr(myPs);
 
 	// mirror some system values
 	_MaxViewDist = myPs->getMaxViewDist();
-	_DestroyWhenOutOfFrustum = myPs->doesDestroyWhenOutOfFrustum();	
+	_DestroyWhenOutOfFrustum = myPs->doesDestroyWhenOutOfFrustum();
 	_DestroyModelWhenOutOfRange = myPs->getDestroyModelWhenOutOfRange();
 	if (!myPs->getAutoComputeBBox())
 	{
@@ -221,7 +221,7 @@ void	CParticleSystemShape::getAABBox(NLMISC::CAABBox &bbox) const
 
 ///===========================================================================
 CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CContiguousBlockAllocator *blockAllocator /*= NULL*/)
-{					
+{
 	if (_Sharing && _SharedSystem != NULL) // is sharing enabled, and is a system already instanciated
 	{
 		return _SharedSystem;
@@ -238,7 +238,7 @@ CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CCon
 		{
 			// set new allocator for particle system memory
 			PSBlockAllocator = blockAllocator;
-			blockAllocator->init(_NumBytesWanted); // if size wanted is already known, set it		
+			blockAllocator->init(_NumBytesWanted); // if size wanted is already known, set it
 		}
 	#endif
 
@@ -246,7 +246,7 @@ CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CCon
 	// copy the datas
 	CParticleSystem *myInstance = NULL;
 
-	// serialize from the memory stream	
+	// serialize from the memory stream
 	if (!_ParticleSystemProto.isReading()) // we must be sure that we are reading the stream
 	{
 		_ParticleSystemProto.invert();
@@ -254,22 +254,22 @@ CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CCon
 
 	_ParticleSystemProto.resetPtrTable();
 	_ParticleSystemProto.seek(0, NLMISC::IStream::begin);
-	
-//	NLMISC::TTicks start = NLMISC::CTime::getPerformanceTime();	
-	_ParticleSystemProto.serialPtr(myInstance); // instanciate the system	
-/*	NLMISC::TTicks end = NLMISC::CTime::getPerformanceTime();
-	nlinfo("instanciation time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));	
-*/	
 
-	myInstance->setScene(&scene);	
+//	NLMISC::TTicks start = NLMISC::CTime::getPerformanceTime();
+	_ParticleSystemProto.serialPtr(myInstance); // instanciate the system
+/*	NLMISC::TTicks end = NLMISC::CTime::getPerformanceTime();
+	nlinfo("instanciation time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));
+*/
+
+	myInstance->setScene(&scene);
 
 	if (_CachedTex.empty() && scene.getDriver())
 	{
 		//nlinfo("flushing texs");
 		// load && cache textures
-		myInstance->enumTexs(_CachedTex, *scene.getDriver());		
+		myInstance->enumTexs(_CachedTex, *scene.getDriver());
 		for(uint k = 0; k < _CachedTex.size(); ++k)
-		{		
+		{
 			if (_CachedTex[k])
 			{
 				_CachedTex[k]->setTextureCategory(CPSTextureCategory::get());
@@ -281,7 +281,7 @@ CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CCon
 	{
 		/*
 		for(uint k = 0; k < _CachedTex.size(); ++k)
-		{								
+		{
 			nlinfo(_CachedTex[k]->getShareName().c_str());
 		}
 		*/
@@ -301,12 +301,12 @@ CParticleSystem *CParticleSystemShape::instanciatePS(CScene &scene, NLMISC::CCon
 			PSBlockAllocator = NULL;
 		}
 	#endif
-		
+
 	mutex.leave();
 
 	/*NLMISC::TTicks end = NLMISC::CTime::getPerformanceTime();
 	nlinfo("instanciation time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));	*/
-	return myInstance;		
+	return myInstance;
 }
 
 ///===========================================================================
@@ -314,13 +314,13 @@ CTransformShape		*CParticleSystemShape::createInstance(CScene &scene)
 {
 	CParticleSystemModel *psm = NLMISC::safe_cast<CParticleSystemModel *>(scene.createModel(NL3D::ParticleSystemModelId) );
 	psm->Shape = this;
-	psm->_Scene = &scene; // the model needs the scene to recreate the particle system he holds			
+	psm->_Scene = &scene; // the model needs the scene to recreate the particle system he holds
 	// by default, we don't instanciate the system. It will be instanciated only if visible and triggered
-	// psm->_ParticleSystem = instanciatePS(scene);	
+	// psm->_ParticleSystem = instanciatePS(scene);
 
 	// Setup position with the default value
 	psm->ITransformable::setPos( _DefaultPos.getDefaultValue() );
-	psm->ITransformable::setRotQuat( _DefaultRotQuat.getDefaultValue() );	
+	psm->ITransformable::setRotQuat( _DefaultRotQuat.getDefaultValue() );
 	psm->ITransformable::setScale( _DefaultScale.getDefaultValue() );
 
 	// ParticleSystems are added to the "Fx" Load Balancing Group.
@@ -339,9 +339,9 @@ void	CParticleSystemShape::render(IDriver *drv, CTransformShape *trans, bool pas
 	CParticleSystem *ps = psm->getPS();
 	/// has the system been triggered yet ?
 	if (!ps) return;
-	
+
 	TAnimationTime delay = psm->getEllapsedTime();
-	nlassert(ps->getScene());	
+	nlassert(ps->getScene());
 
 	///////////////////////
 	// render particles  //
@@ -353,20 +353,20 @@ void	CParticleSystemShape::render(IDriver *drv, CTransformShape *trans, bool pas
 		ps->setSysMat(&(psm->getWorldMatrix()));
 		ps->setUserMatrix(&(psm->getUserMatrix()));
 	}
-	
+
 	// Setup the matrix.
 	/// drv->setupModelMatrix(trans->getWorldMatrix());
 
 	ps->setDriver(drv);
 	// draw particle
-	PARTICLES_CHECK_MEM;	
+	PARTICLES_CHECK_MEM;
 	if (passOpaque)
 	{
 		PSLookAtRenderTime = 0;
-		//NLMISC::TTicks start = NLMISC::CTime::getPerformanceTime();					
+		//NLMISC::TTicks start = NLMISC::CTime::getPerformanceTime();
 		ps->step(CParticleSystem::SolidRender, delay, *this, *psm);
 		/*NLMISC::TTicks end = NLMISC::CTime::getPerformanceTime();
-		nlinfo("Solid render time time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));	
+		nlinfo("Solid render time time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));
 		nlinfo("LookAt Render time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(PSLookAtRenderTime)));	*/
 	}
 	else
@@ -383,14 +383,14 @@ void	CParticleSystemShape::render(IDriver *drv, CTransformShape *trans, bool pas
 	{
 		ps->step(CParticleSystem::ToolRender, delay, *this, *psm);
 		PARTICLES_CHECK_MEM;
-	}	
+	}
 }
 
 ///===========================================================================
 void CParticleSystemShape::flushTextures(IDriver &driver, uint selectedTexture)
 {
 	// if textures are already flushed, no-op
-	if (!_CachedTex.empty()) return;	
+	if (!_CachedTex.empty()) return;
 	if (_SharedSystem)
 	{
 		_SharedSystem->enumTexs(_CachedTex, driver);
@@ -407,16 +407,16 @@ void CParticleSystemShape::flushTextures(IDriver &driver, uint selectedTexture)
 			nlassert(PSBlockAllocator == NULL);
 			NLMISC::CContiguousBlockAllocator blockAllocator;
 			PSBlockAllocator = &blockAllocator;
-			blockAllocator.init(300000); // we release memory just after, and we don't want to fragment the memory, so provide large enough mem		
+			blockAllocator.init(300000); // we release memory just after, and we don't want to fragment the memory, so provide large enough mem
 		#endif
-		// serialize from the memory stream	
+		// serialize from the memory stream
 		if (!_ParticleSystemProto.isReading()) // we must be sure that we are reading the stream
 		{
 			_ParticleSystemProto.invert();
-		}						
+		}
 		_ParticleSystemProto.resetPtrTable();
 		_ParticleSystemProto.seek(0, NLMISC::IStream::begin);
-		_ParticleSystemProto.serialPtr(myInstance); // instanciate the system					
+		_ParticleSystemProto.serialPtr(myInstance); // instanciate the system
 		#ifdef PS_FAST_ALLOC
 			_NumBytesWanted = blockAllocator.getNumAllocatedBytes(); // next allocation will be fast because we know how much memory to allocate
 		#endif
@@ -439,19 +439,19 @@ void CParticleSystemShape::flushTextures(IDriver &driver, uint selectedTexture)
 		#endif */
 		// sort the process inside the fx
 		myInstance->getSortingByEmitterPrecedence(_ProcessOrder);
-		delete myInstance;		
+		delete myInstance;
 		#ifdef PS_FAST_ALLOC
 			PSBlockAllocator = NULL;
 		#endif
 		mutex.leave();
 	}
 	for(uint k = 0; k < _CachedTex.size(); ++k)
-	{				
+	{
 		//nlinfo(_CachedTex[k]->getShareName().c_str());
 		if (_CachedTex[k])
 		{
 			_CachedTex[k]->setTextureCategory(CPSTextureCategory::get());
-			driver.setupTexture(*_CachedTex[k]);		
+			driver.setupTexture(*_CachedTex[k]);
 		}
 	}
 }

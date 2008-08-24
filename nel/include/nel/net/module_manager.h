@@ -38,7 +38,7 @@ namespace NLNET
 	/** This is the interface for the module manager.
 	 *	Module manager is in charge of module factoring and
 	 *	referencing,
-	 *	It is also an entry point when you need to retrieve 
+	 *	It is also an entry point when you need to retrieve
 	 *	a module socket or a module gateway.
 	 */
 	class IModuleManager : public NLMISC::CRefCount
@@ -74,9 +74,9 @@ namespace NLNET
 		 *	Loading the library add the modules to the module
 		 *	factory.
 		 *	If the library can be loaded, the method return true, false otherwise.
-		 *	
+		 *
 		 *	The library name is the base name that will be 'decorated'
-		 *	with the nel naming standard according to compilation mode 
+		 *	with the nel naming standard according to compilation mode
 		 *	and platform specific file extension (.dll or .so).
 		 *
 		 *	A module library can only be loaded once. If the library
@@ -87,7 +87,7 @@ namespace NLNET
 		/** Unload a module library.
 		 *	Any module that come from the unloaded library
 		 *	are immediately deleted.
-		 *	If the specified library is not loaded, the 
+		 *	If the specified library is not loaded, the
 		 *	call is ignored.
 		 */
 		virtual bool unloadModuleLibrary(const std::string &libraryName) =0;
@@ -95,13 +95,13 @@ namespace NLNET
 		/** Unregister a module factory
 		*/
 		virtual void unregisterModuleFactory(class IModuleFactory *moduleFactory) =0;
-		
+
 
 		/** Fill the vector with the list of available module.
 		 *	Note that the vector is not cleared before being filled.
 		 */
 		virtual void getAvailableModuleClassList(std::vector<std::string> &moduleClassList) =0;
-		
+
 		/** Create a new module instance.
 		 *	The method create a module of the specified class with the
 		 *	specified local name.
@@ -129,7 +129,7 @@ namespace NLNET
 		/** Call this method to update all module instances.
 		 *	If the application is a NeL service, then this method
 		 *	is automaticly called in the service main loop.
-		 *	If the application is a regular one, then you 
+		 *	If the application is a regular one, then you
 		 *	have to call manually this method regularly
 		 *	to update the modules.
 		 */
@@ -164,17 +164,17 @@ namespace NLNET
 
 		/** Called by the gateway module to create new module proxy
 		 *	Module proxy are an easy way for implementor to send
-		 *	message to a module, without having to retrieve 
+		 *	message to a module, without having to retrieve
 		 *	the gateway that discovered the destination module.
 		 *	When module are created and plugged on a gateway,
 		 *	the gateway automaticly create a proxy
 		 *	for each local module and each foreing module.
 		 */
-		virtual IModuleProxy *createModuleProxy(	IModuleGateway *gateway, 
+		virtual IModuleProxy *createModuleProxy(	IModuleGateway *gateway,
 													CGatewayRoute *route,
 													uint32 distance,
 													IModule *localModule,
-													const std::string &moduleClassName, 
+													const std::string &moduleClassName,
 													const std::string &moduleFullyQualifiedName,
 													const std::string &moduleManifest,
 //													const TModuleGatewayProxyPtr &foreignGateway,

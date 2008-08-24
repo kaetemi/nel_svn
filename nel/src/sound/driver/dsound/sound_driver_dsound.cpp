@@ -67,9 +67,9 @@ BOOL WINAPI DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
   return TRUE;
 }
 
-class CSoundDriverDSoundNelLibrary : public NLMISC::INelLibrary { 
-	void onLibraryLoaded(bool firstTime) { } 
-	void onLibraryUnloaded(bool lastTime) { }  
+class CSoundDriverDSoundNelLibrary : public NLMISC::INelLibrary {
+	void onLibraryLoaded(bool firstTime) { }
+	void onLibraryUnloaded(bool lastTime) { }
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverDSoundNelLibrary)
 
@@ -77,7 +77,7 @@ NLMISC_DECL_PURE_LIB(CSoundDriverDSoundNelLibrary)
 
 
 // ******************************************************************
-// The event handling procedure of the invisible window created below. 
+// The event handling procedure of the invisible window created below.
 
 long FAR PASCAL CSoundDriverCreateWindowProc(HWND hWnd, unsigned message, WPARAM wParam, LPARAM lParam)
 {
@@ -105,7 +105,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 		// echo <your comment> | mail support@microsoft.com -s "F#%@cking window"
 		WNDCLASS myClass;
 		myClass.hCursor = LoadCursor( NULL, IDC_ARROW );
-		myClass.hIcon = NULL; 
+		myClass.hIcon = NULL;
 		myClass.lpszMenuName = (LPSTR) NULL;
 		myClass.lpszClassName = (LPSTR) "CSoundDriver";
 		myClass.hbrBackground = (HBRUSH)(COLOR_WINDOW);
@@ -115,7 +115,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 		myClass.cbClsExtra = 0;
 		myClass.cbWndExtra = 0;
 
-		if (!RegisterClass(&myClass)) 
+		if (!RegisterClass(&myClass))
 		{
 			nlwarning("Failed to initialize the sound driver (RegisterClass)");
 			return 0;
@@ -125,15 +125,15 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 	}
 
 	CSoundDriverWnd = CreateWindow((LPSTR) "CSoundDriver", (LPSTR) "CSoundDriver", WS_OVERLAPPEDWINDOW,
-									CW_USEDEFAULT, CW_USEDEFAULT, 400, 300, (HWND) NULL, (HMENU) NULL, 
-									CSoundDriverDllHandle, (LPSTR) NULL);  
+									CW_USEDEFAULT, CW_USEDEFAULT, 400, 300, (HWND) NULL, (HMENU) NULL,
+									CSoundDriverDllHandle, (LPSTR) NULL);
 
 	if (CSoundDriverWnd == NULL)
 	{
 		nlwarning("Failed to initialize the sound driver (CreateWindow)");
 		return 0;
 	}
-	
+
 /*	// install the NeL Io routine
 	LPMMIOPROC ret = mmioInstallIOProc(mmioStringToFOURCC("NEL_", 0), (LPMMIOPROC)NelIOProc, MMIO_INSTALLPROC);
 	nlassert(ret != 0);
@@ -236,7 +236,7 @@ LPKSPROPERTYSET	CSoundDriverDSound::createPropertySet(CSourceDSound *source)
 	{
 		if (propertySet != 0)
 		{
-			char *listenerProperties[] = 
+			char *listenerProperties[] =
 			{
 				"DSPROPERTY_EAXLISTENER_NONE",
 				"DSPROPERTY_EAXLISTENER_ALLPARAMETERS",
@@ -273,11 +273,11 @@ LPKSPROPERTYSET	CSoundDriverDSound::createPropertySet(CSourceDSound *source)
 				"DSPROPERTY_EAXBUFFER_DIRECT",
 				"DSPROPERTY_EAXBUFFER_DIRECTHF",
 				"DSPROPERTY_EAXBUFFER_ROOM",
-				"DSPROPERTY_EAXBUFFER_ROOMHF", 
+				"DSPROPERTY_EAXBUFFER_ROOMHF",
 				"DSPROPERTY_EAXBUFFER_ROOMROLLOFFFACTOR",
 				"DSPROPERTY_EAXBUFFER_OBSTRUCTION",
 				"DSPROPERTY_EAXBUFFER_OBSTRUCTIONLFRATIO",
-				"DSPROPERTY_EAXBUFFER_OCCLUSION", 
+				"DSPROPERTY_EAXBUFFER_OCCLUSION",
 				"DSPROPERTY_EAXBUFFER_OCCLUSIONLFRATIO",
 				"DSPROPERTY_EAXBUFFER_OCCLUSIONROOMRATIO",
 				"DSPROPERTY_EAXBUFFER_OUTSIDEVOLUMEHF",
@@ -315,7 +315,7 @@ public:
 
     static CDeviceDescription* _List;
 
-    CDeviceDescription(LPGUID guid, const char* descr) 
+    CDeviceDescription(LPGUID guid, const char* descr)
     {
         _Guid = guid;
         _Description = strdup(descr);
@@ -325,7 +325,7 @@ public:
 
     virtual ~CDeviceDescription()
     {
-        if (_Description) 
+        if (_Description)
         {
             free(_Description);
         }
@@ -363,21 +363,21 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 
 	if (useEax)
 	{
-		if (EAXDirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK) 
+		if (EAXDirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK)
 		{
 			throw ESoundDriver("Failed to create the DirectSound object from EAX proxy funtion");
 		}
 	}
 	else
 	{
-		if (DirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK) 
+		if (DirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK)
 		{
 			throw ESoundDriver("Failed to create the DirectSound object");
 		}
 	}
 
 
-    if (_DirectSound->SetCooperativeLevel(wnd, DSSCL_PRIORITY) != DS_OK) 
+    if (_DirectSound->SetCooperativeLevel(wnd, DSSCL_PRIORITY) != DS_OK)
     {
         throw ESoundDriver("Failed to set the cooperative level");
     }
@@ -385,16 +385,16 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 
     // Analyse the capabilities of the sound driver/device
 
-    _Caps.dwSize = sizeof(_Caps); 
+    _Caps.dwSize = sizeof(_Caps);
 
-    if (_DirectSound->GetCaps(&_Caps) != DS_OK)  
+    if (_DirectSound->GetCaps(&_Caps) != DS_OK)
     {
         throw ESoundDriver("Failed to query the sound device caps");
     }
 
 
-    // Create primary buffer 
- 
+    // Create primary buffer
+
     DSBUFFERDESC desc;
 
     ZeroMemory(&desc, sizeof(DSBUFFERDESC));
@@ -416,18 +416,18 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 		_UseEAX = false;
 	}
 
-    if (countHw3DBuffers() > 0) 
+    if (countHw3DBuffers() > 0)
     {
 		nldebug("Primary buffer: Allocating 3D buffer in hardware");
         desc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_LOCHARDWARE | DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME;
-    } 
+    }
     else
     {
  		nldebug("Primary buffer: Allocating 3D buffer in software");
         desc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME;
 //        desc.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION;
     }
-	
+
 
 
 	HRESULT res = _DirectSound->CreateSoundBuffer(&desc, &_PrimaryBuffer, NULL);
@@ -440,18 +440,18 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 		ZeroMemory(&desc, sizeof(DSBUFFERDESC));
 		desc.dwSize = sizeof(DSBUFFERDESC);
 
-		if (countHw2DBuffers() > 0) 
+		if (countHw2DBuffers() > 0)
 		{
 			nldebug("Primary buffer: Allocating 2D buffer in hardware");
 			desc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_LOCHARDWARE | DSBCAPS_CTRLVOLUME;
-		} 
+		}
 		else
 		{
  			nldebug("Primary buffer: Allocating 2D buffer in software");
 			desc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRLVOLUME;
 		}
 
-		if (_DirectSound->CreateSoundBuffer(&desc, &_PrimaryBuffer, NULL) != DS_OK) 
+		if (_DirectSound->CreateSoundBuffer(&desc, &_PrimaryBuffer, NULL) != DS_OK)
 		{
 			throw ESoundDriver("Failed to create the primary buffer");
 		}
@@ -469,12 +469,12 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
     // strategy will be handled later.
 
     if ((_Caps.dwMinSecondarySampleRate > 22050) && (22050 > _Caps.dwMaxSecondarySampleRate)) {
-        throw ESoundDriver("Unsupported sample rate range");        
-    }   
+        throw ESoundDriver("Unsupported sample rate range");
+    }
 
     if ((_Caps.dwFlags & DSCAPS_PRIMARY16BIT) == 0) {
-        throw ESoundDriver("Unsupported sample size [16bits]");        
-    }   
+        throw ESoundDriver("Unsupported sample size [16bits]");
+    }
 
     format.wBitsPerSample = 16;
     format.nChannels = 1;
@@ -484,7 +484,7 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
     format.wFormatTag = WAVE_FORMAT_PCM;
 
 
-    if (_PrimaryBuffer->SetFormat(&format) != DS_OK) 
+    if (_PrimaryBuffer->SetFormat(&format) != DS_OK)
     {
         throw ESoundDriver("Failed to create set the format of the primary buffer");
     }
@@ -508,12 +508,12 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 			throw ESoundDriver("Failed to lock the DirectSound primary buffer : DSERR_PRIOLEVELNEEDED");
 		default:
 			throw ESoundDriver("Failed to lock the DirectSound primary buffer : unkown error");
-		
+
 		}
 	}
 
 	memset(ptr, 0, bytes);
-	
+
 	_PrimaryBuffer->Unlock(ptr, bytes, 0, 0);
 */
 
@@ -527,14 +527,14 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
     _Sources = new CSourceDSound*[numBuffers];
 
 
-	for (uint i = 0; i < numBuffers; i++) 
+	for (uint i = 0; i < numBuffers; i++)
 	{
 		_Sources[i] = 0;
 	}
 
 	try
 	{
-	    for (i = 0; i < numBuffers; i++) 
+	    for (i = 0; i < numBuffers; i++)
 		{
 			_Sources[i] = new CSourceDSound(i);
 			_Sources[i]->init(_DirectSound);
@@ -546,8 +546,8 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 		// Okay, here's the situation: I'm listening to WinAmp while debugging.
 		// The caps told me there were 31 buffers available. In reality, there were
 		// only 30 available because WinAmp was using one. Somehow DirectSound didn't
-		// notice. So when creating buffer 31, an exception was thrown. 
-		// If something like this happens, don't bother and go on with the buffers we've 
+		// notice. So when creating buffer 31, an exception was thrown.
+		// If something like this happens, don't bother and go on with the buffers we've
 		// got. If no buffers are created at all, throw the exception again.
 
 		if (_Sources == 0)
@@ -560,10 +560,10 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 
 
     TIMECAPS tcaps;
-    
+
     timeGetDevCaps(&tcaps, sizeof(TIMECAPS));
     _TimerResolution = (tcaps.wPeriodMin > 10)? tcaps.wPeriodMin : 10;
-    timeBeginPeriod(_TimerResolution); 
+    timeBeginPeriod(_TimerResolution);
 
 
 
@@ -586,7 +586,7 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
         throw ESoundDriver("Failed to create the timer");
     }
 
-        
+
 
 
     return true;
@@ -601,11 +601,11 @@ CSoundDriverDSound::~CSoundDriverDSound()
     if (_TimerID != NULL)
     {
         timeKillEvent(_TimerID);
-        timeEndPeriod(_TimerResolution); 
+        timeEndPeriod(_TimerResolution);
     }
 
 
-	// Assure that the remaining sources have released all their DSBuffers 
+	// Assure that the remaining sources have released all their DSBuffers
 	// before closing down DirectSound
 	set<CSourceDSound*>::iterator iter;
 
@@ -615,7 +615,7 @@ CSoundDriverDSound::~CSoundDriverDSound()
 	}
 
 
-	// Assure that the listener has released all resources before closing 
+	// Assure that the listener has released all resources before closing
 	// down DirectSound
 	if (CListenerDSound::instance() != 0)
 	{
@@ -623,15 +623,15 @@ CSoundDriverDSound::~CSoundDriverDSound()
 	}
 
 
-    if (_PrimaryBuffer != NULL) 
+    if (_PrimaryBuffer != NULL)
     {
-        _PrimaryBuffer->Release(); 
+        _PrimaryBuffer->Release();
         _PrimaryBuffer = NULL;
     }
 
-    if (_DirectSound != NULL) 
+    if (_DirectSound != NULL)
     {
-        _DirectSound->Release(); 
+        _DirectSound->Release();
         _DirectSound = NULL;
     }
 
@@ -650,7 +650,7 @@ uint CSoundDriverDSound::countMaxSources()
 {
 	// Try the hardware 3d buffers first
 	uint n = countHw3DBuffers();
-	if (n > 0) 
+	if (n > 0)
 	{
 		return n;
 	}
@@ -682,15 +682,15 @@ void CSoundDriverDSound::writeProfile(string& out)
     out += "\tCopy size: " + toString ((int)CSourceDSound::_UpdateCopySize) + "\n";
     out += "\tSwap size: " + toString ((int)CSourceDSound::_SwapCopySize) + "\n";
 
-    // Write the number of hardware buffers 
+    // Write the number of hardware buffers
     DSCAPS caps;
-    caps.dwSize = sizeof(caps); 
-    _DirectSound->GetCaps(&caps);  
+    caps.dwSize = sizeof(caps);
+    _DirectSound->GetCaps(&caps);
 
     out += "\t3d hw buffers: " + toString ((uint32)caps.dwMaxHw3DAllBuffers) + "\n";
 	out += "\t2d hw buffers: " + toString ((uint32)caps.dwMaxHwMixingAllBuffers) + "\n";
 
-    // Write the number of hardware buffers 
+    // Write the number of hardware buffers
 #if NLSOUND_PROFILE
     out += "\tUpdate time total --- " + toString (getAverageUpdateTime()) + "\n";
 	out += "\tUpdate time source --- " + toString (CSourceDSound::getAverageUpdateTime()) + "\n";
@@ -746,7 +746,7 @@ void CSoundDriverDSound::update()
 	{
 		if ((*first)->needsUpdate())
 		{
-			if ((*first)->update()) 
+			if ((*first)->update())
 			{
 #if NLSOUND_PROFILE
 				_UpdateSources++;
@@ -766,7 +766,7 @@ void CSoundDriverDSound::update()
 		while (iter != _Sources.end())
 		{
 //			if ((*iter)->update2()) {
-			if ((*iter)->update()) 
+			if ((*iter)->update())
 			{
 #if NLSOUND_PROFILE
 				_UpdateSources++;
@@ -796,9 +796,9 @@ void CSoundDriverDSound::update()
 uint CSoundDriverDSound::countHw3DBuffers()
 {
     DSCAPS caps;
-    caps.dwSize = sizeof(caps); 
+    caps.dwSize = sizeof(caps);
 
-    if (_DirectSound->GetCaps(&caps) != DS_OK)  
+    if (_DirectSound->GetCaps(&caps) != DS_OK)
     {
         throw ESoundDriver("Failed to query the sound device caps");
     }
@@ -811,9 +811,9 @@ uint CSoundDriverDSound::countHw3DBuffers()
 uint CSoundDriverDSound::countHw2DBuffers()
 {
     DSCAPS caps;
-    caps.dwSize = sizeof(caps); 
+    caps.dwSize = sizeof(caps);
 
-    if (_DirectSound->GetCaps(&caps) != DS_OK)  
+    if (_DirectSound->GetCaps(&caps) != DS_OK)
     {
         throw ESoundDriver("Failed to query the sound device caps");
     }
@@ -827,12 +827,12 @@ IListener *CSoundDriverDSound::createListener()
 {
     LPDIRECTSOUND3DLISTENER8 dsoundListener;
 
-    if (CListenerDSound::instance() != NULL) 
+    if (CListenerDSound::instance() != NULL)
     {
         return CListenerDSound::instance();
     }
 
-    if (_PrimaryBuffer == 0) 
+    if (_PrimaryBuffer == 0)
     {
         throw ESoundDriver("Corrupt driver");
     }
@@ -850,7 +850,7 @@ IListener *CSoundDriverDSound::createListener()
 
 IBuffer *CSoundDriverDSound::createBuffer()
 {
-    if (_PrimaryBuffer == 0) 
+    if (_PrimaryBuffer == 0)
     {
         throw ESoundDriver("Corrupt driver");
     }
@@ -882,7 +882,7 @@ bool CSoundDriverDSound::readRawBuffer( IBuffer *destbuffer, const std::string &
 
 ISource *CSoundDriverDSound::createSource()
 {
-    if (_PrimaryBuffer == 0) 
+    if (_PrimaryBuffer == 0)
     {
         throw ESoundDriver("Corrupt driver");
     }
@@ -920,7 +920,7 @@ void CSoundDriverDSound::commit3DChanges()
 	// according to, euh ..., the new distance!
 	for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
 	{
-		if ((*iter)->isPlaying()) 
+		if ((*iter)->isPlaying())
 		{
 			(*iter)->updateVolume(origin);
 		}
@@ -937,7 +937,7 @@ uint CSoundDriverDSound::countPlayingSources()
 
 	for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
 	{
-		if ((*iter)->isPlaying()) 
+		if ((*iter)->isPlaying())
 		{
 			n++;
 		}
@@ -961,11 +961,11 @@ void CSoundDriverDSound::setGain( float gain )
 		/* convert from linear amplitude to hundredths of decibels */
 		LONG volume = (LONG)(100.0 * 20.0 * log10(gain));
 
-		if (volume < DSBVOLUME_MIN) 
+		if (volume < DSBVOLUME_MIN)
 		{
 			volume = DSBVOLUME_MIN;
 		}
-		else if (volume > DSBVOLUME_MAX) 
+		else if (volume > DSBVOLUME_MAX)
 		{
 			volume = DSBVOLUME_MAX;
 		}
@@ -1015,13 +1015,13 @@ uint CSoundDriverDSound::countTimerIntervals()
 // ******************************************************************
 
 uint CSoundDriverDSound::getTimerIntervals(uint index)
-{           
+{
     return _TimerInterval[index];
 }
 
 // ******************************************************************
 
-void CSoundDriverDSound::addTimerInterval(uint32 dt) 
+void CSoundDriverDSound::addTimerInterval(uint32 dt)
 {
     if (_TimerIntervalCount >= 1024)
     {
@@ -1035,7 +1035,7 @@ void CSoundDriverDSound::addTimerInterval(uint32 dt)
 
 double CSoundDriverDSound::getCPULoad()
 {
-    return (_TotalTime > 0.0)? 100.0 * _TotalUpdateTime / _TotalTime : 0.0;  
+    return (_TotalTime > 0.0)? 100.0 * _TotalUpdateTime / _TotalTime : 0.0;
 }
 
 // ******************************************************************
@@ -1053,7 +1053,7 @@ void CSoundDriverDSound::printDriverInfo(FILE* fp)
 
     fprintf(fp, "buffer size: %d\n"
 				"copy size: %d\n"
-				"swap size: %d\n", 
+				"swap size: %d\n",
 			CSourceDSound::_SecondaryBufferSize,
 			CSourceDSound::_UpdateCopySize,
 			CSourceDSound::_SwapCopySize);
@@ -1061,14 +1061,14 @@ void CSoundDriverDSound::printDriverInfo(FILE* fp)
     fprintf(fp, "\n");
 
     DSCAPS caps;
-    caps.dwSize = sizeof(caps); 
+    caps.dwSize = sizeof(caps);
 
-    if (_DirectSound->GetCaps(&caps) != DS_OK)  
+    if (_DirectSound->GetCaps(&caps) != DS_OK)
     {
         throw ESoundDriver("Failed to query the sound device caps");
     }
 
-    
+
     fprintf(fp, "3d hw buffers: %d\n" "2d hw buffers: %d\n\n", caps.dwMaxHw3DAllBuffers, caps.dwMaxHwMixingAllBuffers);
 }
 
@@ -1141,6 +1141,6 @@ void	CSoundDriverDSound::setMusicVolume(uint channel, float gain)
 {
 	// unsupported
 }
-	
+
 
 } // NLSOUND

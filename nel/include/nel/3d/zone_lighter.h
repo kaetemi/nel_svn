@@ -43,7 +43,7 @@
 
 #include <list>
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CZone;
@@ -153,7 +153,7 @@ public:
 		bool                    ModulateWaterColor;
 
 		/// Evaluation of the max height, in meters, of the vegetables. Needed when we compute wether a tile is below or above water.
-		float					VegetableHeight; 
+		float					VegetableHeight;
 
 		// Nombrer of CPU used
 		uint					NumCPU;
@@ -171,7 +171,7 @@ public:
 			ClampU = 4,
 			ClampV = 8,
 		};
-		
+
 		// Ctors
 		CTriangle (const NLMISC::CTriangle& triangle, bool doubleSided, const NLMISC::CBitmap *texture, bool clampU, bool clampV, float *u, float *v, uint8 alphaTestThreshold)
 		{
@@ -183,7 +183,7 @@ public:
 
 			// Double sided
 			Flags |= doubleSided ? DoubleSided : 0;
-			
+
 			// Texture
 			Texture = texture;
 
@@ -214,7 +214,7 @@ public:
 
 			// Draw it in the heightmap
 			Flags = Landscape;
-			
+
 			// Texture
 			Texture = NULL;
 		}
@@ -309,19 +309,19 @@ public:
 
 	private:
 		std::vector<std::vector<float> >	HeightFields;
-	};	
+	};
 
 	// Init the system
 	void init ();
 
 	// Light a zone
-	void light (CLandscape &landscape, CZone& output, uint zoneToLight, const CLightDesc& description, 
+	void light (CLandscape &landscape, CZone& output, uint zoneToLight, const CLightDesc& description,
 		std::vector<CTriangle>& obstacles, std::vector<uint> &listZone);
 
-	// patch a zone, to compute only the tile water states. 
-	void computeTileFlagsOnly (CLandscape &landscape, CZone& output, uint zoneToLight, const CLightDesc& description, 
+	// patch a zone, to compute only the tile water states.
+	void computeTileFlagsOnly (CLandscape &landscape, CZone& output, uint zoneToLight, const CLightDesc& description,
 		std::vector<uint> &listZone);
-	
+
 	// Add triangles from a landscape
 	void addTriangles (CLandscape &landscape, std::vector<uint> &listZone, uint order, std::vector<CTriangle>& triangleArray);
 
@@ -329,17 +329,17 @@ public:
 	void addTriangles (const IShape &shape, const NLMISC::CMatrix& modelMT, std::vector<CTriangle>& triangleArray);
 
 	/** Some shape (water shapes for now) can be lit.
-	  * This add such a shape to the process of lighting.	  
+	  * This add such a shape to the process of lighting.
 	  * \see isLightableShape()
 	  */
 	void addLightableShape(IShape *shape, const NLMISC::CMatrix& modelMT);
 
 	/// Add a water shape. This is needed to decide wether tiles are above / below water
-	void addWaterShape(CWaterShape *shape, const NLMISC::CMatrix &MT);	 
+	void addWaterShape(CWaterShape *shape, const NLMISC::CMatrix &MT);
 
 	/// get the number of water shapes added
 	uint getNumWaterShape() const {return _WaterShapes.size();}
-	
+
 	/// check wether a shape is lightable.
 	static bool isLightableShape(IShape &shape);
 
@@ -375,7 +375,7 @@ private:
 	void excludeAllPatchFromRefineAll (CLandscape &landscape, std::vector<uint> &listZone, bool exclude);
 
 	// Get positions and normal from a patch
-	void getPatchNormalAndPositions (std::vector<CLumelDescriptor>& lumels, CLandscape &landscape, uint zoneToLight, uint patch, 
+	void getPatchNormalAndPositions (std::vector<CLumelDescriptor>& lumels, CLandscape &landscape, uint zoneToLight, uint patch,
 									CPatchUVLocator *locator, bool *binded);
 
 	// Calc sky contribution. Used by getSkyContribution
@@ -387,15 +387,15 @@ private:
 
 	// Get max height
 	uint8 getMaxPhi (sint s, sint t, sint deltaS, sint deltaT, float heightPos) const;
-		
+
 	// Eval a normal in the neighborhood
-	void getNormal (const NL3D::CPatch *pPatch, sint16 lumelS, sint16 lumelT, std::vector<NL3D::CPatchUVLocator> &locator, 
-					const std::vector<NL3D::CPatch::CBindInfo> &bindInfo, const std::vector<bool> &binded, std::set<uint64>& visited, 
+	void getNormal (const NL3D::CPatch *pPatch, sint16 lumelS, sint16 lumelT, std::vector<NL3D::CPatchUVLocator> &locator,
+					const std::vector<NL3D::CPatch::CBindInfo> &bindInfo, const std::vector<bool> &binded, std::set<uint64>& visited,
 					float deltaS, float deltaT, uint rotation, const NL3D::CBezierPatch &bezierPatch, uint lastEdge=5);
 
 	// Tell if the edge lumel must be oversampled
-	bool isLumelOnEdgeMustBeOversample (uint patch, uint edge, sint s, sint t, const std::vector<bool> &binded, 
-										const std::vector<bool> &oversampleEdges, std::vector<CPatchUVLocator> &locator, 
+	bool isLumelOnEdgeMustBeOversample (uint patch, uint edge, sint s, sint t, const std::vector<bool> &binded,
+										const std::vector<bool> &oversampleEdges, std::vector<CPatchUVLocator> &locator,
 										uint8 shadowed, std::vector<std::vector<uint8> >& shadowBuffer);
 
 	/// Struct describing the position of a lightable shape
@@ -405,8 +405,8 @@ private:
 		NLMISC::CMatrix MT;
 	};
 	/// A vector of lightable shapes
-	typedef std::vector<CShapeInfo>	TShapeVect;	
-	
+	typedef std::vector<CShapeInfo>	TShapeVect;
+
 
 	/// Launch a set of threads to perform lighting of lightable shapes
 	void lightShapes(uint zoneID, const CLightDesc& description);
@@ -423,7 +423,7 @@ private:
 
 	/// Compute the lighting for a water shape
 	void lightWater(CWaterShape &ws, const CMatrix &MT, const CLightDesc& description, uint cpu);
-	
+
 	/** Make a quad grid of all the water shapes that where registered by calling addWaterShape()
 	  * The vector of water shapes is released then
 	  * \param bbox the bbox of the zone containing the water shapes
@@ -431,8 +431,8 @@ private:
 	void makeQuadGridFromWaterShapes(NLMISC::CAABBox zoneBBox);
 
 
-	/** For each tile of the current zone, check wether it below or above water. 
-	  * The result is stored in the flags of the tile. 
+	/** For each tile of the current zone, check wether it below or above water.
+	  * The result is stored in the flags of the tile.
 	  * The quadtree is removed then.
 	  */
 	void computeTileFlagsForPositionTowardWater(const CLightDesc &lightDesc,
@@ -516,7 +516,7 @@ private:
 	std::vector<std::vector<std::vector<bool> > >	_Binded;
 	std::vector<std::vector<bool> >				_OversampleEdges;
 	std::map<uint, uint>						_ZoneId;
-	
+
 	// Get normal info
 	const NL3D::CPatch							*_GetNormalPatch;
 	NLMISC::CVector								_GetNormalNormal;
@@ -590,7 +590,7 @@ private:
 	/// Fill CubeGrid, and set PointLightRT in _StaticPointLightQuadGrid.
 	void			compilePointLightRT(uint gridSize, float gridCellSize, std::vector<CTriangle>& obstacles, bool doShadow);
 
-	/** Process the zone, ie process _PatchInfo. 
+	/** Process the zone, ie process _PatchInfo.
 	 *	MultiCPU: not done for now. Be aware of CPointLightRT::RefCount!!!!
 	 */
 	void			processZonePointLightRT(std::vector<CPointLightNamed> &listPointLight);
@@ -602,7 +602,7 @@ private:
 	/// lightable shapes
 	TShapeVect									_LightableShapes;
 	uint										_NumLightableShapesProcessed;
-	
+
 	/** List of all the water shapes in the zone. We need them to check wether the tiles are above / below water, or if theyr intersect water
 	  */
 	TShapeVect									_WaterShapes;

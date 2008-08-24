@@ -30,7 +30,7 @@
 #include "nel/3d/fast_ptr_list.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

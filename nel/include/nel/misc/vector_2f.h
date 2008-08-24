@@ -143,7 +143,7 @@ inline	CVector2f	operator*(float f, const CVector2f &v)
 // for map/set insertion
 inline bool operator < (const CVector2f &lhs, const CVector2f &rhs)
 {
-	return (lhs.x != rhs.x) ? lhs.x < rhs.x : lhs.y < rhs.y;	
+	return (lhs.x != rhs.x) ? lhs.x < rhs.x : lhs.y < rhs.y;
 }
 
 } // NLMISC

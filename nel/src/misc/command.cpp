@@ -94,7 +94,7 @@ ICommand::~ICommand()
 				CCommandRegistry::getInstance().unregisterCommand(this);
 			}
 
-			
+
 			return;
 		}
 	}
@@ -163,7 +163,7 @@ void CCommandRegistry::unregisterNamedCommandHandler(ICommandsHandler *handler, 
 {
 	if (_CommandsHandlers.getA(handler) == NULL)
 		return;
-	
+
 	_CommandsHandlers.removeWithB(handler);
 
 	// update the handler class commands tables
@@ -234,7 +234,7 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 			}
 			i++;
 		}
-		
+
 		// get param
 		string arg;
 		if (allowControlChar && commandWithArgs[i] == '\"')
@@ -348,7 +348,7 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 		{
 			// store the raw command
 			if (!commands.empty() && commands.back().RawCommandString.empty())
-				commands.back().RawCommandString = string(commandWithArgs.begin()+commandBegin, commandWithArgs.begin()+i); 
+				commands.back().RawCommandString = string(commandWithArgs.begin()+commandBegin, commandWithArgs.begin()+i);
 			firstArg = true;
 			i++;
 			commandBegin = i;
@@ -357,14 +357,14 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 end:
 	// store the last raw command string
 	if (!commands.empty() && commands.back().RawCommandString.empty())
-		commands.back().RawCommandString = string(commandWithArgs.begin()+commandBegin, commandWithArgs.begin()+i); 
+		commands.back().RawCommandString = string(commandWithArgs.begin()+commandBegin, commandWithArgs.begin()+i);
 
 	bool ret = true;
 
 	for (uint u = 0; u < commands.size (); u++)
 	{
 		TCommandParams &cp = commands[u];
-		// find the command	
+		// find the command
 		// check for object name
 		string::size_type pos = cp.CommandName.find(".");
 		if (pos != string::npos)
@@ -380,8 +380,8 @@ end:
 			}
 			else
 			{
-				if (!quiet) 
-					log.displayNL("Command '%s' : can't found object named '%s'", 
+				if (!quiet)
+					log.displayNL("Command '%s' : can't found object named '%s'",
 						cp.CommandName.c_str(),
 						objectName.c_str());
 			}
@@ -394,7 +394,7 @@ end:
 			{
 				// the command doesn't exist
 				ret = false;
-				if (!quiet) 
+				if (!quiet)
 					log.displayNL("Command '%s' not found, try 'help'", commands[u].CommandName.c_str());
 			}
 			else
@@ -403,7 +403,7 @@ end:
 				ret = ret & res;
 				if (!res)
 				{
-					if (!quiet) 
+					if (!quiet)
 						log.displayNL("Bad command usage, try 'help %s'", commands[u].CommandName.c_str());
 				}
 			}
@@ -434,7 +434,7 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 	{
 		// eventually use the last dot as separator
 		string::size_type lastDot = commandName.find_last_of( "." );
-		if (lastDot != string::npos 
+		if (lastDot != string::npos
 			&& (lastseppos == string::npos || lastDot > lastseppos))
 		{
 			lastseppos = lastDot;
@@ -498,7 +498,7 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 				if (it != _CommandsHandlersClass.end())
 				{
 					TCommandHandlerClassInfo &chci = it->second;
-					
+
 					for (TCommandHandlerClassInfo::TCommandsInfo::iterator it(chci._Commands.begin()); it != chci._Commands.end(); ++it)
 					{
 						string first = toLower(it->first);
@@ -523,7 +523,7 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 	// Complete if there is a single result
 	if ( matchingnames.size() == 1 )
 	{
-		if (_CommandsHandlers.getAToBMap().find(matchingnames.front()) != _CommandsHandlers.getAToBMap().end()) 
+		if (_CommandsHandlers.getAToBMap().find(matchingnames.front()) != _CommandsHandlers.getAToBMap().end())
 		{
 			// this is an object, complete with '.'
 			commandName = matchingnames.front() + ".";
@@ -552,7 +552,7 @@ void CCommandRegistry::expand (std::string &commandName, NLMISC::CLog &log)
 					commandName = commonstr;
 					if ( lastCommandName == commandName )
 					{
-						// Display all the matching names 
+						// Display all the matching names
 						vector<string>::iterator imn2;
 						//stringstream ss;
 						string str;
@@ -627,7 +627,7 @@ bool CCommandRegistry::isCommand (const std::string &str)
 {
 	if (str.empty())
 		return false;
-	
+
 	return isupper(str[0]) == 0;
 }
 
@@ -648,9 +648,9 @@ ICommand *CCommandRegistry::getCommand(const std::string &commandName)
 
 
 NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/commands or on all variables and commands", "[<variable>|<command>]")
-{	
+{
 //	nlassert (_Commands != NULL);
-	
+
 	// make sure we have a valid number of parameters
 	if (args.size()>1)
 		return false;
@@ -706,8 +706,8 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 			CCommandRegistry::TCommandsHandlers::TAToBMap::const_iterator first(cr._CommandsHandlers.getAToBMap().begin()), last(cr._CommandsHandlers.getAToBMap().end());
 			for (; first != last; ++first)
 			{
-				log.displayNL(" %-15s: %s", 
-					first->first.c_str(), 
+				log.displayNL(" %-15s: %s",
+					first->first.c_str(),
 					first->second->getCommandHandlerClassName().c_str());
 			}
 		}
@@ -747,9 +747,9 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 					if (first->first == cmdName)
 					{
 						log.displayNL("%s::%s", className.c_str(), cmdName.c_str());
-						log.displayNL("usage: <instanceName>.%s %s : %s", 
-							cmdName.c_str(), 
-							first->second.CommandArgs.c_str(), 
+						log.displayNL("usage: <instanceName>.%s %s : %s",
+							cmdName.c_str(),
+							first->second.CommandArgs.c_str(),
 							first->second.CommandHelp.c_str());
 //						log.displayNL("  %s::%-15s: %s", className.c_str(), cmdName.c_str(), first->second.CommandHelp.c_str());
 						return true;
@@ -801,10 +801,10 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 						if (first->first == cmdName)
 						{
 							log.displayNL("%s.%s", objName.c_str(), cmdName.c_str());
-							log.displayNL("usage: %s.%s %s : %s", 
+							log.displayNL("usage: %s.%s %s : %s",
 								objName.c_str(),
-								cmdName.c_str(), 
-								first->second.CommandArgs.c_str(), 
+								cmdName.c_str(),
+								first->second.CommandArgs.c_str(),
 								first->second.CommandHelp.c_str());
 //							log.displayNL("  %s.%-15s: %s", className.c_str(), cmdName.c_str(), first->second.CommandHelp.c_str());
 							return true;
@@ -848,8 +848,8 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 			{
 				if (testWildCard(first->first, args[0]))
 				{
-					log.displayNL("  %-15s: '%s'", 
-						first->first.c_str(), 
+					log.displayNL("  %-15s: '%s'",
+						first->first.c_str(),
 						first->second->getCommandHandlerClassName().c_str());
 				}
 			}
@@ -869,9 +869,9 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 					{
 						if (testWildCard(first->first, args[0]))
 						{
-							log.displayNL("  %s::%-15s: %s", 
+							log.displayNL("  %s::%-15s: %s",
 								className.c_str(),
-								first->first.c_str(), 
+								first->first.c_str(),
 								first->second.CommandHelp.c_str());
 						}
 					}
@@ -889,9 +889,9 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 		{
 			TCommand::iterator comm = cr._Commands.find(args[0]);
 			log.displayNL("%s", comm->second->HelpString.c_str());
-			log.displayNL("usage: %s %s : %s", 
-				comm->first.c_str(), 
-				comm->second->CommandArgs.c_str(), 
+			log.displayNL("usage: %s %s : %s",
+				comm->first.c_str(),
+				comm->second->CommandArgs.c_str(),
 				comm->second->HelpString.c_str());
 			return true;
 		}
@@ -906,9 +906,9 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 					if (it != chci._Commands.end())
 					{
 						log.displayNL("%s", it->second.CommandHelp.c_str());
-						log.displayNL("usage: %s %s %s", 
-							it->first.c_str(), 
-							it->second.CommandArgs.c_str(), 
+						log.displayNL("usage: %s %s %s",
+							it->first.c_str(),
+							it->second.CommandArgs.c_str(),
 							it->second.CommandHelp.c_str());
 						return true;
 					}

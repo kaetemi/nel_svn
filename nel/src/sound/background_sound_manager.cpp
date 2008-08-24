@@ -50,13 +50,13 @@ using namespace NLLIGO;
 namespace NLSOUND {
 
 // external sound are cliping after 10 meter inside the inner patate
-const float	INSIDE_FALLOF = 10.0f; 
+const float	INSIDE_FALLOF = 10.0f;
 const float BACKGROUND_SOUND_ALTITUDE = 5.0f;
 
 
 
 CBackgroundSoundManager::CBackgroundSoundManager()
-: _Playing(false), _DoFade(false), _LastPosition(0,0,0) 
+: _Playing(false), _DoFade(false), _LastPosition(0,0,0)
 {
 	for (uint i=0; i<UAudioMixer::TBackgroundFlags::NB_BACKGROUND_FLAGS; ++i)
 	{
@@ -134,7 +134,7 @@ void CBackgroundSoundManager::addSound(const std::string &soundName, uint layerI
 
 		sd.MaxDist = dist;
 
-		// store the sound. 
+		// store the sound.
 		// TODO : handle the three layer.
 		_Layers[layerId].push_back(sd);
 	}
@@ -209,7 +209,7 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 		nlwarning ("zone have the malformated name '%s",  rawSoundName.c_str());
 		return;
 	}
-		
+
 	addSound(name, layerId, points, isPath);
 /*
 	TSoundData	sd;
@@ -255,7 +255,7 @@ void CBackgroundSoundManager::addSound(const std::string &rawSoundName, const st
 
 		sd.MaxDist = dist;
 
-		// store the sound. 
+		// store the sound.
 		// TODO : handle the three layer.
 		_Layers[layerId].push_back(sd);
 	}
@@ -275,7 +275,7 @@ void CBackgroundSoundManager::loadAudioFromPrimitives(const NLLIGO::IPrimitive &
 		if (className == "audio")
 		{
 			// ok, it a root of the audio primitives
-			
+
 			// remember playing state
 			bool oldState = _Playing;
 			unload();
@@ -633,7 +633,7 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 				uint32 version;
 				string filename = continent+".background_primitive";
 				string binPath = CPath::lookup(filename, false, false, false);
-				if (!binPath.empty() 
+				if (!binPath.empty()
 					&& (CFile::getFileModificationDate(binPath) > CFile::getFileModificationDate(path)))
 				{
 					CIFile binFile(binPath);
@@ -657,7 +657,7 @@ void CBackgroundSoundManager::load (const string &continent, NLLIGO::CLigoConfig
 					}
 				}
 			}
-			
+
 			nlinfo ("loading '%s'", fn.c_str());
 
 			CIXml xml;
@@ -787,11 +787,11 @@ void CBackgroundSoundManager::play ()
 		_FilterFadesStart[i] = 0;
 		_FilterFadeValues[i] = 1.0f * !_BackgroundFlags.Flags[i];
 	}
-	// force an initial filtering 
+	// force an initial filtering
 	_DoFade = true;
 	updateBackgroundStatus();
 
-	
+
 }
 
 
@@ -800,7 +800,7 @@ void CBackgroundSoundManager::stop ()
 	if(!_Playing)
 		return;
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
-	
+
 	for (uint i=0; i<BACKGROUND_LAYER; ++i)
 	{
 		// stop all playing source
@@ -822,7 +822,7 @@ void CBackgroundSoundManager::unload ()
 	stop();
 
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
-	
+
 	for (uint i=0; i<BACKGROUND_LAYER; ++i)
 	{
 		// delete all created source
@@ -895,7 +895,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 				&& listener.y >= first->MinBox.y && listener.y <= first->MaxBox.y
 				)
 			{
-				// bounding box ok, 
+				// bounding box ok,
 				if (CPrimZone::contains(listener, first->Points))
 				{
 					// stop at the first zone !
@@ -991,7 +991,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 				&& listener.y >= first->MinBox.y && listener.y <= first->MaxBox.y
 				)
 			{
-				// bounding box ok, 
+				// bounding box ok,
 				if (CPrimZone::contains(listener, first->Points))
 				{
 					// add the banks of this zone in the n
@@ -1024,7 +1024,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 		std::set<std::string>	noChange;
 		std::set_intersection(_LoadedBanks.begin(), _LoadedBanks.end(), newBanks.begin(), newBanks.end(), std::inserter(noChange, noChange.end()));
 
-		std::set<std::string>	loadList; 
+		std::set<std::string>	loadList;
 		std::set_difference(newBanks.begin(), newBanks.end(), noChange.begin(), noChange.end(), std::inserter(loadList, loadList.end()));
 
 		std::set<std::string>	unloadList;
@@ -1127,7 +1127,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 					bool	inside = false;
 
 					// inside the patat ?
-					
+
 					if(CPrimZone::contains(listener, sd.Points, distance, pos, sd.IsPath))
 					{
 						inside = true;
@@ -1175,7 +1175,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 						if (ss.Gain > 0)
 						{
 							ss.SoundData.Selected = true;
-							
+
 							// start the sound (if needed) and update the volume.
 							if (ss.SoundData.Source == 0)
 							{
@@ -1187,7 +1187,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 								// update the position (not used I think, but maybe important...)
 								ss.Position.z = _LastPosition.z + BACKGROUND_SOUND_ALTITUDE;
 								ss.SoundData.Source->setPos(ss.Position);
-								
+
 								if (!ss.SoundData.Source->isPlaying())
 								{
 									// start the sound is needed.
@@ -1207,7 +1207,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 						if (maskFactor > 0.0f && ss.Gain > 0)
 						{
 							float gain;
-							
+
 							if (!ss.SoundData.IsPath && ss.SoundData.Points.size() > 1)
 								gain = maskFactor * ss.Gain;
 							else
@@ -1258,7 +1258,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 						}
 					}
 				}
-			} 
+			}
 		} // compute source mixing
 	} // for each layer
 
@@ -1351,7 +1351,7 @@ void CBackgroundSoundManager::setBackgroundFlags(const UAudioMixer::TBackgroundF
 	{
 		if (_BackgroundFlags.Flags[i] != backgroundFlags.Flags[i])
 		{
-			// the filter flags has changed ! 
+			// the filter flags has changed !
 			if (backgroundFlags.Flags[i])
 			{
 				// the filter is activated, to a fade out
@@ -1441,7 +1441,7 @@ void CBackgroundSoundManager::setDayNightRatio(float ratio)
 				if (!BackgroundSounds[i].SourceDay->isPlaying())
 					BackgroundSounds[i].SourceDay->play();
 			}
-			
+
 			if(BackgroundSounds[i].SourceNight != NULL)
 			{
 				if (BackgroundSounds[i].SourceNight->isPlaying())

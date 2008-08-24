@@ -75,7 +75,7 @@ void	CLandscapeUser::loadBankFiles(const std::string &tileBankFile, const std::s
 
 	// Release all OLD tiles
 	_Landscape->Landscape.releaseAllTiles();
-	
+
 	// Clear the bank
 	_Landscape->Landscape.TileBank.clear ();
 
@@ -108,7 +108,7 @@ void	CLandscapeUser::flushTiles (NLMISC::IProgressCallback &progress)
 	{
 		nlwarning( "You need to recompute bank.farbank for the far textures" );
 	}
-	
+
 	// Count tiles
 	uint tileCount = 0;
 	sint	ts;
@@ -197,7 +197,7 @@ void	CLandscapeUser::loadAllZonesAround(const CVector &pos, float radius, std::v
 }
 
 //****************************************************************************
-void	CLandscapeUser::refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, std::vector<std::string> &zonesRemoved, 
+void	CLandscapeUser::refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, std::vector<std::string> &zonesRemoved,
 											  NLMISC::IProgressCallback &progress, const std::vector<uint16> *validZoneIds)
 {
 	NL3D_HAUTO_LOAD_LANDSCAPE;
@@ -224,7 +224,7 @@ void	CLandscapeUser::refreshAllZonesAround(const CVector &pos, float radius, std
 			zonesAdded.push_back(za);
 		if(zr != "")
 			zonesRemoved.push_back(zr);
-		
+
 		_ZoneManager.checkZonesAround ((uint)pos.x, (uint)(-pos.y), (uint)radius);
 
 		if (_ZoneManager.isLoading())

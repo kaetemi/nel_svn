@@ -41,7 +41,7 @@ const NLMISC::CClassId		CameraId=NLMISC::CClassId(0x5752634c, 0x6abe76f5);
 /**
   * A camera descriptor
   *
-  * Used to export or build a CCamera. 
+  * Used to export or build a CCamera.
   */
 class CCameraInfo
 {

@@ -44,26 +44,26 @@ namespace NLNET
 	 *	Gateway can interconnect local module with themselves, as well as
 	 *	connect with another gateway in another process or host.
 	 *
-	 *	Transport: 
+	 *	Transport:
 	 *	---------
 	 *	Gateway connectivity is provided by 'transport' that can
 	 *	be build on any support.
 	 *	There are available transport for NeL Layer 3 in server
 	 *	of client mode.
 	 *
-	 *	You can bind at run time, any number of transport to a 
-	 *	gateway. 
+	 *	You can bind at run time, any number of transport to a
+	 *	gateway.
 	 *	Each of these transport can then receive specific command
 	 *	from passed by the gateway.
-	 *	Transport then create routes that are active connection 
+	 *	Transport then create routes that are active connection
 	 *	to foreign gateways.
 	 *
 	 *	When using the layer 3 transport, you can choose either
 	 *	to instantiate a client mode transport or a server mode
 	 *	transport.
-	 *	In client mode, you can connect to one or more server, each 
+	 *	In client mode, you can connect to one or more server, each
 	 *	connection generating a new route.
-	 *	In server mode, you can put your transport as 'open' on 
+	 *	In server mode, you can put your transport as 'open' on
 	 *	a specified TCP port, then each client connection will
 	 *	generate a new route.
 	 *
@@ -90,17 +90,17 @@ namespace NLNET
 	 *
 	 *	Advanced transport options (i.e option settable on each transport):
 	 *	--------------------------
-	 *	- peer invisible : if activated on a transport, this option 
+	 *	- peer invisible : if activated on a transport, this option
 	 *		will mask the modules of the other routes of the same
 	 *		transport.
 	 *		This is useful for players modules (you sure don't want
 	 *		that all players can see all other clients modules),
 	 *		or for client/server structure where you don't want
-	 *		all client to see all module, bu only those that are 
+	 *		all client to see all module, bu only those that are
 	 *		available from the client side.
 	 *		Note that any module that come from another transport
 	 *		will be disclosed to all the route.
-	 *	
+	 *
 	 *	- firewalled : if activated, this option will mask any module
 	 *		to the connected unsecure route unless some module comming from another
 	 *		transport (or a local module) will try to send a message
@@ -115,9 +115,9 @@ namespace NLNET
 	 *
 	 *	The two options above can be used in combination. This is a prefered
 	 *	way of configuring transport for player connection : we don't want
-	 *	player to see other player modules, and we don't want player to see 
+	 *	player to see other player modules, and we don't want player to see
 	 *	any server side module until one of them started a communication
-	 *	with a player module. 
+	 *	with a player module.
 	 */
 	class IModuleGateway : public NLMISC::CRefCount
 	{
@@ -133,7 +133,7 @@ namespace NLNET
 		class EGatewayPortInUse : public NLMISC::Exception
 		{
 		};
-		
+
 		/// The gateway is not open while trying to close it.
 		class EGatewayNotOpen : public NLMISC::Exception
 		{
@@ -176,9 +176,9 @@ namespace NLNET
 
 		/// Activate/stop peer invisible mode on a transport
 		virtual void	setTransportPeerInvisible(const std::string &transportInstanceName, bool peerInvisible) =0;
-		
+
 		/// Activate/stop firewalling mode on a transport
-		virtual void	setTransportFirewallMode(const std::string &transportInstanceName, bool firewalled) 
+		virtual void	setTransportFirewallMode(const std::string &transportInstanceName, bool firewalled)
 			throw (EGatewayFirewallBreak) =0;
 
 		/// Send a command to a transport
@@ -225,7 +225,7 @@ namespace NLNET
 		//@{
 		//@name Module management
 		/** Callback called when the gateway has received some new module
-		 *	and eventually, need to disclose the module information to 
+		 *	and eventually, need to disclose the module information to
 		 *	the connected gateway.
 		 *	The default behavior is to disclose the module to all
 		 *	connected gateway.
@@ -240,13 +240,13 @@ namespace NLNET
 		/** Disclose module information to a connected gateway.
 		 *	This can also be this gateway itself.
 		 */
-		virtual void discloseModule(IModuleProxy *moduleProxy) 
+		virtual void discloseModule(IModuleProxy *moduleProxy)
 			throw (EGatewayNotConnected)
 			=0;
 
 		/** Retrieve the proxy for a locally plugged module.
 		 *	Each local module plugged in a gateway has an associated
-		 *	proxy. This method return this proxy or NULL if the 
+		 *	proxy. This method return this proxy or NULL if the
 		 *	module is not plugged here.
 		 */
 		virtual IModuleProxy *getPluggedModuleProxy(IModule *pluggedModule) =0;
@@ -302,7 +302,7 @@ namespace NLNET
 	 *	As each transport mode as it's own command requirement,
 	 *	a generic command system is provided for sending command message
 	 *	to the transport implementation.
-	 *	
+	 *
 	 *	At time of writing, NeL come with 2 transport : one based on layer 3 client, and one
 	 *	based on layer 3 server. In a short time, there will be transport using layer 5.
 	 */
@@ -371,7 +371,7 @@ namespace NLNET
 	 *	Route are provided by transport.
 	 *	Transport provide a mean to build route
 	 *	between gateway.
-	 *	Route show the list of foreign gateway that are 
+	 *	Route show the list of foreign gateway that are
 	 *	reachable with it and are use to send
 	 *	message to these gateways.
 	 *
@@ -425,7 +425,7 @@ namespace NLNET
 //		std::set<TModuleId>		PendingUndisclosure;
 		/// firewall disclosed module (empty in not firewalled mode)
 		std::set<TModuleId>		FirewallDisclosed;
-		
+
 		//@{
 		/// @name Informations on the next module message to dispatch
 
@@ -447,7 +447,7 @@ namespace NLNET
 #endif
 		}
 
-		virtual ~CGatewayRoute() 
+		virtual ~CGatewayRoute()
 		{
 #ifdef NL_DEBUG
 			nlassert(!_AssertOnDelete);
@@ -459,7 +459,7 @@ namespace NLNET
 		/// Send a message via the route
 		virtual void sendMessage(const CMessage &message) const =0;
 	};
-	
+
 #ifdef NL_DEBUG
 	struct CAutoAssertSetter
 	{
@@ -496,7 +496,7 @@ namespace NLNET
 			: _Gateway(params.Gateway)
 		{
 		}
-		
+
 		virtual ~CGatewaySecurity() { }
 
 		/** the gateway send a command to the security module */
@@ -521,7 +521,7 @@ namespace NLNET
 		 *	remove any security data that it added to the proxies.
 		 */
 		virtual void onDelete() =0;
-		
+
 		/** Set a security data block. If a bloc of the same type
 		 *	already exist in the list, the new one will replace the
 		 *	existing one.

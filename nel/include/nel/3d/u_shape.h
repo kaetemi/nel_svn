@@ -30,7 +30,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class	UVisualCollisionMesh;
@@ -49,7 +49,7 @@ class UShape
 {
 public:
 
-	/** Get the mesh under Triangle Form. 
+	/** Get the mesh under Triangle Form.
 	 *	For now only CMesh and CMeshMultiLod (CMeshGeom only) are supported.
 	 *	Warning! return false if the Mesh has already been rendered!! (VertexBuffer resident)
 	 *	\param vertices array of vertices

@@ -27,7 +27,7 @@
 #include "nel/3d/index_buffer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

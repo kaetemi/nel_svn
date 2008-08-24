@@ -84,7 +84,7 @@ public:
 		PropSInt8, PropSInt16, PropSInt32, PropSInt64,
 		PropBool, PropFloat, PropDouble, PropString, PropDataSetRow, PropSheetId, PropUKN };
 //		PropBool, PropFloat, PropDouble, PropString, PropDataSetRow, PropEntityId, PropSheetId, PropUKN };
-		
+
 
 	//
 	// Static methods
@@ -196,7 +196,7 @@ public:
 			nlstop;
 		}
 	}
-	
+
 	template <class T> void propertyVector (const std::string &name, TProp type, std::vector<T> &value)
 	{
 		if (Mode == 2)			// write
@@ -264,7 +264,7 @@ public:
 	{
 		msgin.serial(className);
 	}
-	
+
 	/// Display with nlinfo the content of the class (debug purpose)
 	void display ();
 
@@ -281,7 +281,7 @@ protected:
 
 
 		CRegisteredBaseProp (const std::string &name, TProp type) : Name(name), Type(type) { }
-		
+
 		std::string	Name;
 		TProp Type;
 
@@ -311,7 +311,7 @@ protected:
 
 		CRegisteredProp (const std::string &name, TProp type, T defaultValue, T *value = NULL) :
 			CRegisteredBaseProp (name, type), DefaultValue(defaultValue), Value (value) { }
-		
+
 		T DefaultValue, *Value;
 
 		virtual void serialDefaultValue (NLMISC::IStream &f)
@@ -338,7 +338,7 @@ protected:
 
 		CRegisteredPropCont (const std::string &name, TProp type, T *value = NULL) :
 			CRegisteredBaseProp (name, type), Value (value) { }
-		
+
 		T *Value;
 
 		virtual void serialDefaultValue (NLMISC::IStream &f)
@@ -377,13 +377,13 @@ protected:
 	//
 	// Methods
 	//
-	
+
 	// Read the TempMessage and call the callback
 	bool read (const std::string &name, NLNET::TServiceId sid);
 
 	// Used to create a TempMessage with this class
 	NLNET::CMessage &write ();
-	
+
 
 	//
 	// Static Variables
@@ -504,7 +504,7 @@ inline void CTransportClass::display ()
 
 	// set the mode to register
 	Mode = 4;
-	
+
 	description ();
 
 	// set to mode none
@@ -543,7 +543,7 @@ inline bool CTransportClass::read (const std::string &name, NLNET::TServiceId si
 {
 	nlassert (Init);
 	nlassert (Mode == 0);
-	
+
 	// there's no info about how to read this message from this sid, give up
 	if (sid.get() >= States.size())
 		return false;

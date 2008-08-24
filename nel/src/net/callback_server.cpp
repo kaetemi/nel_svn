@@ -73,7 +73,7 @@ CCallbackServer::CCallbackServer( TRecordingState rec, const string& recfilename
 #ifndef USE_MESSAGE_RECORDER
 	nlassertex( rec==Off, ("LNETL3S: The message recorder is disabled at compilation time ; switch the recording state Off") );
 #endif
-	
+
 	CBufServer::setDisconnectionCallback (_NewDisconnectionCallback, this);
 	CBufServer::setConnectionCallback (cbsNewConnection, this);
 
@@ -214,7 +214,7 @@ void CCallbackServer::receive (CMessage &buffer, TSockId *hostid)
 		_MR_Recorder.ReceivedMessages.pop();
 	}
 #endif
-	
+
 	buffer.readType ();
 }
 
@@ -269,7 +269,7 @@ bool CCallbackServer::dataAvailable ()
 #endif
 
 		// Real dataAvailable()
-		return CBufServer::dataAvailable (); 
+		return CBufServer::dataAvailable ();
 
 #ifdef USE_MESSAGE_RECORDER
 	}
@@ -285,7 +285,7 @@ bool CCallbackServer::dataAvailable ()
 //-------------------------
 #ifdef USE_MESSAGE_RECORDER
 
-  
+
 /*
  * Replay connection and disconnection callbacks, client version
  */
@@ -319,7 +319,7 @@ bool CCallbackServer::replaySystemCallbacks()
 				LNETL3_DEBUG( "LNETL3S: Disconnection event for %p", sockid );
 				sockid->Sock->disconnect();
 				sockid->setConnectedState( false );
-	
+
 				// Call callback if needed
 				if ( disconnectionCallback() != NULL )
 				{
@@ -335,7 +335,7 @@ bool CCallbackServer::replaySystemCallbacks()
 				CInetAddress addr;
 				_MR_Recorder.ReceivedMessages.front().Message.serial( addr );
 
-				// Create a new connection 
+				// Create a new connection
 				sockid = new CBufSock( new CDummyTcpSock() );
 				sockid->Sock->connect( addr );
 				_MR_Connections.push_back( sockid );
@@ -345,7 +345,7 @@ bool CCallbackServer::replaySystemCallbacks()
 
 				LNETL3_DEBUG( "LNETL3S: Connection event for %p", sockid );
 				sockid->setConnectedState( true );
-					
+
 				// Call callback if needed
 				if ( connectionCallback() != NULL )
 				{

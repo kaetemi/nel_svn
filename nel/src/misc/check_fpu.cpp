@@ -33,19 +33,19 @@
 
 
 namespace NLMISC
-{					  
+{
 
-	
+
 int		CFpuChecker::_RefFpuCtrl= 0x00090013;
 
 
 CFpuChecker::CFpuChecker()
 {
-	check();	
+	check();
 }
 CFpuChecker::~CFpuChecker()
 {
-	check();		
+	check();
 }
 
 void CFpuChecker::dumpFpu(int value)
@@ -76,20 +76,20 @@ void CFpuChecker::dumpFpu(int value)
 	{
 		case _PC_24: nlwarning("_PC_24"); break;
 		case _PC_53: nlwarning("_PC_53"); ; break;
-		case _PC_64: nlwarning("_PC_64"); break;		
+		case _PC_64: nlwarning("_PC_64"); break;
 	}
-		
+
 
 }
 
 void CFpuChecker::check()
-{	
+{
 #if defined(NL_OS_WINDOWS) && defined(NL_COMP_VC6)
 	// don't Check if in a user control state
 	if (NLMISC::OptFastFloorCWStackPtr != NLMISC::OptFastFloorCWStack) return;
 
 	// check standard control state
-	volatile int cfp = _controlfp(0, 0); 
+	volatile int cfp = _controlfp(0, 0);
 	if ((cfp & ~_MCW_EM) != (_RefFpuCtrl & ~_MCW_EM))
 	{
 		nlwarning("Ref = ");
@@ -98,8 +98,8 @@ void CFpuChecker::check()
 		nlwarning("Current = ");
 		nlwarning("=========================");
 		dumpFpu(cfp);
-		nlassert(0);	
-	}	
+		nlassert(0);
+	}
 #endif
 }
 

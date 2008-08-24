@@ -35,7 +35,7 @@ pixelshader five_stages_ps = asm
 	mad r1.xyz, c2, r2, r1;
 	mad r1.xyz, c3, r3, r1;
 	mad r1.xyz, c4, r4, r1;
-	mul_x2 r0.xyz, r1, r0;	
+	mul_x2 r0.xyz, r1, r0;
 };
 
 technique five_stages_5

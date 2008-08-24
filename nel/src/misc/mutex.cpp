@@ -124,7 +124,7 @@ CUnfairMutex::CUnfairMutex( const std::string &name )
 	// Create a mutex with no initial owner.
 	_Mutex = (void *) CreateMutex( NULL, FALSE, NULL );
 	nlassert( _Mutex != NULL );
-	
+
 	// (Does not use name, only provided for debug compatibility with CFairMutex)
 }
 
@@ -549,7 +549,7 @@ void	CSharedMutex::leave()
 /******************
  * Debugging code *
  ******************/
-	
+
 #ifdef MUTEX_DEBUG
 
 map<CFairMutex*,TMutexLocks>	*AcquireTime = NULL;

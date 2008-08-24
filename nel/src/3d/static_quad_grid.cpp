@@ -26,7 +26,7 @@
 #include "nel/3d/static_quad_grid.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

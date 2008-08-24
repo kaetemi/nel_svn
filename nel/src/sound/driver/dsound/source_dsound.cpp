@@ -53,12 +53,12 @@ namespace NLSOUND {
 	#if DEBUG_POSITIONS
 	#define DBGPOS(_a) nldebug ## _a
 	#else
-	#define DBGPOS(_a) 
+	#define DBGPOS(_a)
 	#endif
 
 #else
 	#define INITTIME(_var)
-	#define DBGPOS(_a) 
+	#define DBGPOS(_a)
 #endif
 
 
@@ -104,8 +104,8 @@ uint32 getWritePosAndSpace(uint32 &nextWritePos, uint32 playPos, uint32 writePos
 
 // ******************************************************************
 
-CSourceDSound::CSourceDSound( uint sourcename ) 
-:	ISource(), 
+CSourceDSound::CSourceDSound( uint sourcename )
+:	ISource(),
 	_SourceName(sourcename)
 {
 #if EAX_AVAILABLE == 1
@@ -152,13 +152,13 @@ CSourceDSound::~CSourceDSound()
 
 	CSoundDriverDSound::instance()->removeSource(this);
 
-	EnterCriticalSection(&_CriticalSection); 
+	EnterCriticalSection(&_CriticalSection);
 
 	// Release the DirectSound buffer within the critical zone
 	// to avoid a call to update during deconstruction
 	release();
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 	DeleteCriticalSection(&_CriticalSection);
 }
 
@@ -197,8 +197,8 @@ void CSourceDSound::release()
 }
 
 
-uint32	CSourceDSound::getTime() 
-{ 
+uint32	CSourceDSound::getTime()
+{
 	if (_Sample == 0)
 		return 0;
 
@@ -227,7 +227,7 @@ void CSourceDSound::init(LPDIRECTSOUND8 directSound, bool useEax)
 	format.wFormatTag = WAVE_FORMAT_PCM;
 
 
-	// Initialize the buffer description 
+	// Initialize the buffer description
 
 	DSBUFFERDESC desc;
 
@@ -237,25 +237,25 @@ void CSourceDSound::init(LPDIRECTSOUND8 directSound, bool useEax)
 	ZeroMemory(&desc, sizeof(DSBUFFERDESC));
 	desc.dwSize = sizeof(DSBUFFERDESC);
 	desc.lpwfxFormat = &format;
-	desc.dwBufferBytes = _SecondaryBufferSize;	
-	desc.dwReserved = 0; 
+	desc.dwBufferBytes = _SecondaryBufferSize;
+	desc.dwReserved = 0;
 
 	if (driver->countHw3DBuffers() > 0)
 	{
 		//nldebug("Source: Allocating 3D buffer in hardware");
-		desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCHARDWARE | DSBCAPS_GETCURRENTPOSITION2 
+		desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCHARDWARE | DSBCAPS_GETCURRENTPOSITION2
 						| DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY | DSBCAPS_MUTE3DATMAXDISTANCE;
-	} 
+	}
 	else
 	{
 		nldebug("Failed to create a 3D Hardware DirectX secondary buffer. Try 3D software one");
-		
+
 		if (useEax)
 		{
 			throw ESoundDriver("No 3d hardware sound buffer, but EAX support requested");
 		}
 		//nldebug("Source: Allocating 3D buffer in software");
-		desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCSOFTWARE | DSBCAPS_GETCURRENTPOSITION2 
+		desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCSOFTWARE | DSBCAPS_GETCURRENTPOSITION2
 						| DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY | DSBCAPS_MUTE3DATMAXDISTANCE;
 		desc.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION;
 		//desc.guid3DAlgorithm = DS3DALG_HRTF_FULL;
@@ -263,8 +263,8 @@ void CSourceDSound::init(LPDIRECTSOUND8 directSound, bool useEax)
 
 
 	// Allocate the secondary buffer
- 
-	if (FAILED(directSound->CreateSoundBuffer(&desc, &_SecondaryBuffer, NULL))) 
+
+	if (FAILED(directSound->CreateSoundBuffer(&desc, &_SecondaryBuffer, NULL)))
 	{
 		if (useEax)
 		{
@@ -275,21 +275,21 @@ void CSourceDSound::init(LPDIRECTSOUND8 directSound, bool useEax)
 		ZeroMemory(&desc, sizeof(DSBUFFERDESC));
 		desc.dwSize = sizeof(DSBUFFERDESC);
 		desc.lpwfxFormat = &format;
-		desc.dwBufferBytes = _SecondaryBufferSize;	
-		desc.dwReserved = 0; 
+		desc.dwBufferBytes = _SecondaryBufferSize;
+		desc.dwReserved = 0;
 
 		if (driver->countHw2DBuffers() > 0)
 		{
 			//nldebug("Source: Allocating 2D buffer in hardware");
 			desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCHARDWARE | DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY;
-		} 
+		}
 		else
 		{
 			//nldebug("Source: Allocating 2D buffer in software");
 			desc.dwFlags = DSBCAPS_GLOBALFOCUS | DSBCAPS_LOCSOFTWARE | DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY;
 		}
 
-		if (FAILED(directSound->CreateSoundBuffer(&desc, &_SecondaryBuffer, NULL))) 
+		if (FAILED(directSound->CreateSoundBuffer(&desc, &_SecondaryBuffer, NULL)))
 		{
 			throw ESoundDriver("Failed to allocate the DirectSound secondary buffer");
 		}
@@ -308,7 +308,7 @@ void CSourceDSound::init(LPDIRECTSOUND8 directSound, bool useEax)
 	}
 
 	memset(ptr, 0, bytes);
-	
+
 	_SecondaryBuffer->Unlock(ptr, bytes, 0, 0);
 
 	// Allocate the 3D interface, if necessary
@@ -340,7 +340,7 @@ void CSourceDSound::reset()
 
 void CSourceDSound::setStaticBuffer( IBuffer *buffer )
 {
-	EnterCriticalSection(&_CriticalSection); 
+	EnterCriticalSection(&_CriticalSection);
 
 	if (_State == source_playing)
 	{
@@ -377,12 +377,12 @@ void CSourceDSound::setStaticBuffer( IBuffer *buffer )
 				_SampleSize = buffer->getSize() / 2;
 				break;
 			case Stereo16:
-				_SampleSize = buffer->getSize() / 4; 
+				_SampleSize = buffer->getSize() / 4;
 				break;
 			}
 		}
 	}
-	
+
 /*
 	// If the user calls setStaticBuffer with a null buffer,
 	// stop the currently playing buffer and set it to null.
@@ -401,8 +401,8 @@ void CSourceDSound::setStaticBuffer( IBuffer *buffer )
 
 	_ADPCMState.PreviousSample = 0;
 	_ADPCMState.StepIndex = 0;
-*/	
-	LeaveCriticalSection(&_CriticalSection); 
+*/
+	LeaveCriticalSection(&_CriticalSection);
 }
 
 IBuffer *CSourceDSound::getStaticBuffer()
@@ -441,7 +441,7 @@ void CSourceDSound::fillData(sint16 *dst, uint nbSample)
 
 //nldebug("Filling from %p to %p (%p sample, %p bytes)", dst, dst+nbSample, nbSample, nbSample*2);
 
-		
+
 		switch(_Format)
 		{
 		case Mono8:
@@ -687,7 +687,7 @@ void CSourceDSound::advanceFill(TLockedBufferInfo &lbi, uint nbSample)
 bool CSourceDSound::play()
 {
 //	nldebug("Play");
-	EnterCriticalSection(&_CriticalSection); 
+	EnterCriticalSection(&_CriticalSection);
 
 	_SilenceWriten = 0;
 
@@ -728,7 +728,7 @@ bool CSourceDSound::play()
 					_SampleSize = _Sample->getSize() / 2;
 					break;
 				case Stereo16:
-					_SampleSize = _Sample->getSize() / 4; 
+					_SampleSize = _Sample->getSize() / 4;
 					break;
 				}
 				_State = source_playing;
@@ -818,7 +818,7 @@ bool CSourceDSound::play()
 
 	updateVolume(listener->getPos());
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 
 	return true;
 }
@@ -826,8 +826,8 @@ bool CSourceDSound::play()
 void CSourceDSound::stop()
 {
 //	nldebug("Stop");
-	EnterCriticalSection(&_CriticalSection); 
-	
+	EnterCriticalSection(&_CriticalSection);
+
 	if (_State != source_stoped && _State != source_silencing)
 	{
 		// retreive the cursors;
@@ -855,7 +855,7 @@ void CSourceDSound::stop()
 		}
 	}
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 }
 
 
@@ -890,13 +890,13 @@ void CSourceDSound::swap()
 /*
 bool CSourceDSound::play()
 {
-	EnterCriticalSection(&_CriticalSection); 
+	EnterCriticalSection(&_CriticalSection);
 
 	if (_Buffer == 0 || ((CBufferDSound*) _Buffer)->getData() == 0)
 	{
 		// the sample has been unloaded, can't play!
 
-		LeaveCriticalSection(&_CriticalSection); 
+		LeaveCriticalSection(&_CriticalSection);
 		return false;
 	}
 
@@ -907,7 +907,7 @@ bool CSourceDSound::play()
 	case NL_DSOUND_FILLING:
 		if (_SwapBuffer != 0)
 		{
-			// crossfade to the new sound 
+			// crossfade to the new sound
 			DBGPOS(("[%p] PLAY: XFading 1", this));
 			crossFade();
 		}
@@ -962,7 +962,7 @@ bool CSourceDSound::play()
 
 	//nldebug ("NLSOUND: %p play", this);
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 
 	return true;
 }
@@ -972,7 +972,7 @@ bool CSourceDSound::play()
 /*
 void CSourceDSound::stop()
 {
-	EnterCriticalSection(&_CriticalSection); 
+	EnterCriticalSection(&_CriticalSection);
 
 	TSourceDSoundUserState old = _UserState;
 
@@ -988,7 +988,7 @@ void CSourceDSound::stop()
 
 	_BytesWritten = 0;
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 }
 */
 // ******************************************************************
@@ -997,7 +997,7 @@ void CSourceDSound::pause()
 {
 	// TODO : recode this !
 	nlassert(false);
-/*	EnterCriticalSection(&_CriticalSection); 
+/*	EnterCriticalSection(&_CriticalSection);
 
 	TSourceDSoundUserState old = _UserState;
 
@@ -1011,7 +1011,7 @@ void CSourceDSound::pause()
 		fadeOut();
 	}
 
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 */
 }
 
@@ -1079,7 +1079,7 @@ bool CSourceDSound::update()
 //	if (_FillOffset < cursors.WriteCursor && _FillOffset >cursors.PlayCursor)
 	if (fillSize + margin > _SecondaryBufferSize)
 	{
-		// arg ! 
+		// arg !
 		nlwarning("FillOffset is between play and write cursor (P = %p F = %p W = %p!", cursors.PlayCursor, _FillOffset, cursors.WriteCursor);
 		_FillOffset = cursors.WriteCursor;
 		_FillOffset = (_FillOffset+3) & 0xfffffffC;
@@ -1247,7 +1247,7 @@ bool CSourceDSound::update2()
 
 	case NL_DSOUND_SILENCED:
 		{
-			// Just pretend were writing silence by advancing the next 
+			// Just pretend were writing silence by advancing the next
 			// write position.
 			DWORD playPos, writePos;
 			uint32 space;
@@ -1265,7 +1265,7 @@ bool CSourceDSound::update2()
 			// not enougth space available
 			if (space < _UpdateCopySize)
 				break;
-			
+
 			_NextWritePos += _UpdateCopySize;
 
 			if (_NextWritePos >= _SecondaryBufferSize)
@@ -1277,12 +1277,12 @@ bool CSourceDSound::update2()
 
 
 	case NL_DSOUND_FILLING:
-		res = fill();	
+		res = fill();
 		break;
 
 
 	case NL_DSOUND_SILENCING:
-		res = silence();	
+		res = silence();
 		break;
 
 	}
@@ -1291,7 +1291,7 @@ bool CSourceDSound::update2()
 	//
 	// Leave critical region
 	//
-	LeaveCriticalSection(&_CriticalSection); 
+	LeaveCriticalSection(&_CriticalSection);
 
 
 #if NLSOUND_PROFILE
@@ -1360,7 +1360,7 @@ void CSourceDSound::getVelocity( NLMISC::CVector& vel ) const
 		if (_3DBuffer->GetVelocity(&v) != DS_OK)
 		{
 			nlwarning ("GetVelocity failed");
-			vel.set(0, 0, 0);	
+			vel.set(0, 0, 0);
 		}
 		else
 		{
@@ -1369,7 +1369,7 @@ void CSourceDSound::getVelocity( NLMISC::CVector& vel ) const
 	}
 	else
 	{
-		vel.set(0, 0, 0);	
+		vel.set(0, 0, 0);
 	}
 }
 
@@ -1403,7 +1403,7 @@ void CSourceDSound::getDirection( NLMISC::CVector& dir ) const
 		if (_3DBuffer->GetConeOrientation(&v) != DS_OK)
 		{
 			nlwarning("GetConeOrientation failed");
-			dir.set(0, 0, 1);	
+			dir.set(0, 0, 1);
 		}
 		else
 		{
@@ -1412,7 +1412,7 @@ void CSourceDSound::getDirection( NLMISC::CVector& dir ) const
 	}
 	else
 	{
-		dir.set(0, 0, 1);	
+		dir.set(0, 0, 1);
 	}
 }
 
@@ -1604,7 +1604,7 @@ void CSourceDSound::updateVolume( const NLMISC::CVector& listener )
 
 	// attenuate the volume according to distance and alpha
 	sint32 volumeDB= ISource::computeManualRollOff(_Volume, DSBVOLUME_MIN, DSBVOLUME_MAX, _Alpha, sqrdist);
-	
+
 	// set attenuated volume
 	_SecondaryBuffer->SetVolume(volumeDB);
 
@@ -1630,7 +1630,7 @@ void CSourceDSound::setCone( float innerAngle, float outerAngle, float outerGain
 			outer = inner;
 		}
 
-		while (inner < DS3D_MINCONEANGLE) 
+		while (inner < DS3D_MINCONEANGLE)
 		{
 			inner += 360;
 		}
@@ -1640,7 +1640,7 @@ void CSourceDSound::setCone( float innerAngle, float outerAngle, float outerGain
 			inner -= 360;
 		}
 
-		while (outer < DS3D_MINCONEANGLE) 
+		while (outer < DS3D_MINCONEANGLE)
 		{
 			outer += 360;
 		}
@@ -1652,7 +1652,7 @@ void CSourceDSound::setCone( float innerAngle, float outerAngle, float outerGain
 
 		if (_3DBuffer->SetConeAngles(inner, outer, DS3D_DEFERRED) != DS_OK)
 		{
-			nlwarning("SetConeAngles failed");			
+			nlwarning("SetConeAngles failed");
 		}
 
 		// Set the outside volume
@@ -1661,21 +1661,21 @@ void CSourceDSound::setCone( float innerAngle, float outerAngle, float outerGain
 			outerGain = 0.00001f;
 		}
 
-		// convert from linear amplitude to hundredths of decibels 
+		// convert from linear amplitude to hundredths of decibels
 		LONG volume = (LONG)(100.0 * 20.0 * log10(outerGain));
 
-		if (volume < DSBVOLUME_MIN) 
+		if (volume < DSBVOLUME_MIN)
 		{
 			volume = DSBVOLUME_MIN;
 		}
-		else if (volume > DSBVOLUME_MAX) 
+		else if (volume > DSBVOLUME_MAX)
 		{
 			volume = DSBVOLUME_MAX;
 		}
 
 		if (_3DBuffer->SetConeOutsideVolume(volume, DS3D_DEFERRED) != DS_OK)
 		{
-			nlwarning("SetConeOutsideVolume failed"); 		
+			nlwarning("SetConeOutsideVolume failed");
 		}
 
 	}
@@ -1696,7 +1696,7 @@ void CSourceDSound::getCone( float& innerAngle, float& outerAngle, float& outerG
 
 		if (_3DBuffer->GetConeAngles(&inner, &outer) != DS_OK)
 		{
-			nlwarning("GetConeAngles failed");			
+			nlwarning("GetConeAngles failed");
 			innerAngle = outerAngle = (float)(2.0 * Pi);
 		}
 		else
@@ -1707,7 +1707,7 @@ void CSourceDSound::getCone( float& innerAngle, float& outerAngle, float& outerG
 
 		if (_3DBuffer->GetConeOutsideVolume(&volume) != DS_OK)
 		{
-			nlwarning("GetConeOutsideVolume failed"); 		
+			nlwarning("GetConeOutsideVolume failed");
 			outerGain = 0.0f;
 		}
 		else
@@ -1746,7 +1746,7 @@ void CSourceDSound::setEAXProperty( uint prop, void *value, uint valuesize )
 // ******************************************************************
 
 IBuffer *CSourceDSound::getBuffer()
-{	
+{
 	return _Sample;
 }
 
@@ -1770,7 +1770,7 @@ bool CSourceDSound::lock(uint32 offset, uint32 size, TLockedBufferInfo &lbi)
 			nlwarning("Lock failed (2)");
 			return false;
 		}
-	} 
+	}
 	else if (hr != DS_OK)
 	{
 		nlwarning("Lock failed (3)");
@@ -1798,7 +1798,7 @@ bool CSourceDSound::lock(uint32 writePos, uint32 size, uint8* &ptr1, DWORD &byte
 			nlwarning("Lock failed (2)");
 			return false;
 		}
-	} 
+	}
 	else if (hr != DS_OK)
 	{
 		nlwarning("Lock failed (3)");
@@ -1856,7 +1856,7 @@ void CSourceDSound::copySampleTo16BitsTrack(void *dst, void *src, uint nbSample,
 }
 */
 /***************************************************************************
- 
+
 
   Buffer operations
 
@@ -1878,12 +1878,12 @@ void CSourceDSound::copySampleTo16BitsTrack(void *dst, void *src, uint nbSample,
   into the DirectSound buffer.
 
   The update functions (fill, silence) refresh the buffer with new samples
-  or silence. That insert the sample data at the next write position NW. This 
-  write position is maintained as closely behind the DirectSound play cursor 
+  or silence. That insert the sample data at the next write position NW. This
+  write position is maintained as closely behind the DirectSound play cursor
   as possible to keep the buffer filled with data.
 
   The user functions (the fades) modify the sample data that is right after
-  the write cursor W maintained by DirectSound. The data has to be written 
+  the write cursor W maintained by DirectSound. The data has to be written
   after W to hear the changes as soon as possible. When a fade is done, the
   data already written in the buffer has to be overwritten. The function
   getFadeOutSize() helps to found out how many samples are writen between
@@ -1911,7 +1911,7 @@ void CSourceDSound::copySampleTo16BitsTrack(void *dst, void *src, uint nbSample,
 uint32 getWritePosAndSpace(uint32 &nextWritePos, uint32 playPos, uint32 writePos, uint32 bufferSize)
 {
 	uint32 space;
-	if (playPos < writePos) //_NextWritePos) 
+	if (playPos < writePos) //_NextWritePos)
 	{
 		// the 'forbiden' interval is continuous
 		if (nextWritePos > playPos && nextWritePos < writePos)
@@ -2020,7 +2020,7 @@ bool CSourceDSound::fill()
 
 	// Start copying the samples
 
- 
+
 	if (bytes1 <= bytes) {
 
 //		CFastMem::memcpy(ptr1, data + _BytesWritten, bytes1);
@@ -2032,7 +2032,7 @@ bool CSourceDSound::fill()
 		{
 			if (bytes > 0)
 			{
-//				CFastMem::memcpy(ptr2, data + _BytesWritten, bytes);					
+//				CFastMem::memcpy(ptr2, data + _BytesWritten, bytes);
 				copySampleTo16BitsTrack(ptr2, data + _BytesWritten, bytes/2, sampleFormat);
 				_BytesWritten += bytes;
 			}
@@ -2043,13 +2043,13 @@ bool CSourceDSound::fill()
 				{
 					DBGPOS(("[%p] FILL: LOOP", this));
 
-					//CFastMem::memcpy(ptr2 + bytes, data, bytes2 - bytes); 
-					copySampleTo16BitsTrack(ptr2 + bytes, data, (bytes2 - bytes)/2, sampleFormat); 
+					//CFastMem::memcpy(ptr2 + bytes, data, bytes2 - bytes);
+					copySampleTo16BitsTrack(ptr2 + bytes, data, (bytes2 - bytes)/2, sampleFormat);
 					_BytesWritten = bytes2 - bytes;
 				}
 				else
 				{
-					memset(ptr2 + bytes, 0, bytes2 - bytes); 
+					memset(ptr2 + bytes, 0, bytes2 - bytes);
 					_SilenceWritten = bytes2 - bytes;
 				}
 			}
@@ -2068,26 +2068,26 @@ bool CSourceDSound::fill()
 		{
 			DBGPOS(("[%p] FILL: LOOP", this));
 
-//			CFastMem::memcpy(ptr1 + bytes, data, bytes1 - bytes);					 
+//			CFastMem::memcpy(ptr1 + bytes, data, bytes1 - bytes);
 			copySampleTo16BitsTrack(ptr1 + bytes, data, (bytes1 - bytes)/2, sampleFormat);
 			_BytesWritten = bytes1 - bytes;
 
 			if (ptr2)
 			{
-//				CFastMem::memcpy(ptr2, data + _BytesWritten, bytes2);					 
+//				CFastMem::memcpy(ptr2, data + _BytesWritten, bytes2);
 				copySampleTo16BitsTrack(ptr2, data + _BytesWritten, bytes2 / 2, sampleFormat);
 				_BytesWritten += bytes2;
 			}
 
-		} 
+		}
 		else
 		{
-			memset(ptr1 + bytes, 0, bytes1 - bytes);					
+			memset(ptr1 + bytes, 0, bytes1 - bytes);
 			_SilenceWritten = bytes1 - bytes;
 
 			if (ptr2)
 			{
-				memset(ptr2, 0, bytes2);					
+				memset(ptr2, 0, bytes2);
 				_SilenceWritten += bytes2;
 			}
 		}
@@ -2106,7 +2106,7 @@ bool CSourceDSound::fill()
 	// Update the state variables
 
 	// Check if we've reached the end of the file
-	if (_BytesWritten == _BufferSize) 
+	if (_BytesWritten == _BufferSize)
 	{
 		if (_Loop)
 		{
@@ -2141,7 +2141,7 @@ bool CSourceDSound::fill()
 	{
 		_NextWritePos  -= _SecondaryBufferSize;
 	}
- 
+
 	DBGPOS(("[%p] FILL: P=%d, W=%d, NW=%d, SZ=%d, BW=%d, S=%d, B=%d", this, playPos, writePos, _NextWritePos, _BufferSize, _BytesWritten, _SilenceWritten, bytes1 + bytes2));
 
 
@@ -2174,7 +2174,7 @@ bool CSourceDSound::silence()
 	{
 		return false;
 	}
-		
+
 	INITTIME(startPos);
 
 	_SecondaryBuffer->GetCurrentPosition(&playPos, &writePos);
@@ -2186,7 +2186,7 @@ bool CSourceDSound::silence()
 
 	space = getWritePosAndSpace(_NextWritePos, playPos, writePos, _SecondaryBufferSize);
 */
-/*	else if (playPos > _NextWritePos) 
+/*	else if (playPos > _NextWritePos)
 	{
 		space = playPos - _NextWritePos;
 	}
@@ -2212,7 +2212,7 @@ bool CSourceDSound::silence()
 
 
 	INITTIME(startCopy);
-   
+
 	// Silence the buffer
 	memset(ptr1, 0, bytes1);
 	memset(ptr2, 0, bytes2);
@@ -2233,7 +2233,7 @@ bool CSourceDSound::silence()
 
 
 	// Check if all the samples in the buffer are played
-	if ((playPos > _EndPosition) && (_EndState == NL_DSOUND_TAIL2)) 
+	if ((playPos > _EndPosition) && (_EndState == NL_DSOUND_TAIL2))
 	{
 		// The buffer played passed the last sample. Flag the source as stopped.
 		_EndState = NL_DSOUND_ENDED;
@@ -2288,7 +2288,7 @@ bool CSourceDSound::silence()
 
 // ******************************************************************
 
-/** 
+/**
  *	Calculate the size of the crossfade and set the pointer in the sample buffer
  *	to the sample that comes after the write cursor in the DirectSound buffer.
  *	This method also returns the number of samples that have been written after
@@ -2303,11 +2303,11 @@ void CSourceDSound::getFadeOutSize(uint32 writePos, uint32 &xfadeSize, sint16* &
 
 
 	// The tricky part of this method is to figger out how many samples of the old
-	// buffer were written after the write cursor and figger our with what position 
+	// buffer were written after the write cursor and figger our with what position
 	// in the old buffer the write cursor corresponds. We have to consider the following
 	// cases:
 	//
-	// - the old buffer just looped, 
+	// - the old buffer just looped,
 	// - the old buffer is finished, but stil has samples in the DirectSound buffer
 	// - the default case, i.e. the old buffer is playing somewhere in the middle.
 	//
@@ -2328,7 +2328,7 @@ void CSourceDSound::getFadeOutSize(uint32 writePos, uint32 &xfadeSize, sint16* &
 
 	if (_SilenceWritten > 0)
 	{
-		
+
 		if (writtenTooMuch > _SilenceWritten)
 		{
 			writtenTooMuch -= _SilenceWritten;
@@ -2341,16 +2341,16 @@ void CSourceDSound::getFadeOutSize(uint32 writePos, uint32 &xfadeSize, sint16* &
 		}
 		else
 		{
-			xfadeSize = 0;							  
+			xfadeSize = 0;
 		}
 
 		DBGPOS(("[%p] FADE: END, TOO=%d, S=%d, F=%d", this, writtenTooMuch, _SilenceWritten, xfadeSize));
 	}
-	
+
 	// If the sound looped, it's possible that the number of samples
 	// written is small. In that case, the write cursor is still inside
 	// the previous loop. All we have to do is fade out the last part
-	// of the previous loop. 
+	// of the previous loop.
 
 	else if (writtenTooMuch >= _BytesWritten)
 	{
@@ -2410,10 +2410,10 @@ void CSourceDSound::crossFade()
 	}
 
 
-	INITTIME(start); 
-	
+	INITTIME(start);
 
-	EnterCriticalSection(&_CriticalSection); 
+
+	EnterCriticalSection(&_CriticalSection);
 
 	TSampleFormat	sampleFormat;
 	uint			freq;
@@ -2426,7 +2426,7 @@ void CSourceDSound::crossFade()
 	// The write cursor indicates where we can start writing the new samples.
 	// To avoid clicks, we have to do a cross fade between the old buffer and
 	// the new buffer.
-	
+
 	_SecondaryBuffer->GetCurrentPosition(&playPos, &writePos);
 
 
@@ -2446,7 +2446,7 @@ void CSourceDSound::crossFade()
 		throw ESoundDriver("Failed to lock the DirectSound secondary buffer");
 	}
 
-	
+
 	sint16* in1;
 	uint8* data1 = ((CBufferDSound*) _Buffer)->getData();
 	uint8* data2 = ((CBufferDSound*) _SwapBuffer)->getData();
@@ -2498,7 +2498,7 @@ void CSourceDSound::crossFade()
 
 
 	// Start copying the samples
-	
+
 
 	// In the first case, the cross fade is completely contained in the first buffer
 	// pointed to by ptr1.
@@ -2507,7 +2507,7 @@ void CSourceDSound::crossFade()
 
 		// Do cross fade
 
-		for (i = 0; i < xfadeSize; i++) 
+		for (i = 0; i < xfadeSize; i++)
 		{
 #if MIX
 			out[i] = (sint16) (amp1 * in1[i] + amp2 * in2[i]);
@@ -2524,7 +2524,7 @@ void CSourceDSound::crossFade()
 #if MIX
 //		CFastMem::memcpy(ptr1 + xfadeByteSize, data2 + xfadeByteSize, bytes1 - xfadeByteSize);
 		copySampleTo16BitsTrack(ptr1 + xfadeByteSize, data2 + xfadeByteSize, (bytes1 - xfadeByteSize)/2, sampleFormat);
-			
+
 		_BytesWritten = bytes1;
 #else
 //		CFastMem::memcpy(ptr1 + xfadeByteSize, data2, bytes1 - xfadeByteSize);
@@ -2551,7 +2551,7 @@ void CSourceDSound::crossFade()
 		// Do cross fade
 
 		// Part 1, start at ptr1
-		for (i = 0; i < fade1; i++) 
+		for (i = 0; i < fade1; i++)
 		{
 #if MIX
 			out[i] = (sint16) (amp1 * in1[i] + amp2 * in2[i]);
@@ -2574,7 +2574,7 @@ void CSourceDSound::crossFade()
 			out = (sint16*) ptr2;
 
 			// Part 2, ontinue at ptr2
-			for (uint32 k = 0; i < xfadeSize; i++, k++) 
+			for (uint32 k = 0; i < xfadeSize; i++, k++)
 			{
 #if MIX
 				out[k] = (sint16) (amp1 * in1[i] + amp2 * in2[i]);
@@ -2603,7 +2603,7 @@ void CSourceDSound::crossFade()
 	// Unlock the DirectSound buffer
 	_SecondaryBuffer->Unlock(ptr1, bytes1, ptr2, bytes2);
 
-	
+
 	// Update the state variables
 
 	_SilenceWritten = 0;
@@ -2627,7 +2627,7 @@ void CSourceDSound::crossFade()
 	setPitch(_Freq);
 
 	// Check if we've reached the end of the file
-	if (_BytesWritten == _BufferSize) 
+	if (_BytesWritten == _BufferSize)
 	{
 		if (_Loop)
 		{
@@ -2643,7 +2643,7 @@ void CSourceDSound::crossFade()
 	DBGPOS(("[%p] XFADE", this));
 	DBGPOS(("[%p] P=%d, W=%d, NW=%d, SZ=%d, BW=%d, B=%d", this, playPos, writePos, _NextWritePos, _BufferSize, _BytesWritten, bytes1 + bytes2));
 
-	
+
 
 	LeaveCriticalSection(&_CriticalSection);
 
@@ -2683,7 +2683,7 @@ void CSourceDSound::fadeOut()
 	}
 
 	INITTIME(start);
-	
+
 
 	_SecondaryBuffer->GetCurrentPosition(&playPos, &writePos);
 
@@ -2695,7 +2695,7 @@ void CSourceDSound::fadeOut()
 		throw ESoundDriver("Failed to lock the DirectSound secondary buffer");
 	}
 
-	
+
 
 	// in1 points to the position in the old buffer where the fade out starts
 	sint16* in1;
@@ -2735,7 +2735,7 @@ void CSourceDSound::fadeOut()
 
 
 	// Start copying the samples
-	
+
 
 	// In the first case, the fade out is completely contained in the first buffer
 	// pointed to by ptr1.
@@ -2744,7 +2744,7 @@ void CSourceDSound::fadeOut()
 
 		// Do cross fade
 
-		for (i = 0; i < xfadeSize; i++) 
+		for (i = 0; i < xfadeSize; i++)
 		{
 			out[i] = (sint16) (amp1 * in1[i]);
 			amp1 -= incr;
@@ -2773,7 +2773,7 @@ void CSourceDSound::fadeOut()
 		// Do cross fade
 
 		// Part 1, start at ptr1
-		for (i = 0; i < fade1; i++) 
+		for (i = 0; i < fade1; i++)
 		{
 			out[i] = (sint16) (amp1 * in1[i]);
 			amp1 -= incr;
@@ -2785,7 +2785,7 @@ void CSourceDSound::fadeOut()
 			out = (sint16*) ptr2;
 
 			// Part 2, continue at ptr2
-			for (uint32 k = 0; i < xfadeSize; i++, k++) 
+			for (uint32 k = 0; i < xfadeSize; i++, k++)
 			{
 				out[k] = (sint16) (amp1 * in1[i]);
 				amp1 -= incr;
@@ -2805,7 +2805,7 @@ void CSourceDSound::fadeOut()
 	// Unlock the DirectSound buffer
 	_SecondaryBuffer->Unlock(ptr1, bytes1, ptr2, bytes2);
 
-	
+
 	// Update the next write position
 	_NextWritePos = (writePos + bytes1 + bytes2);
 	if (_NextWritePos >= _SecondaryBufferSize)
@@ -2918,7 +2918,7 @@ void CSourceDSound::fadeIn()
 		{
 			if (bytes > 0)
 			{
-				//CFastMem::memcpy(ptr2, data + _BytesWritten, bytes);					
+				//CFastMem::memcpy(ptr2, data + _BytesWritten, bytes);
 				copySampleTo16BitsTrack(ptr2, data + _BytesWritten, bytes/2, sampleFormat);
 				_BytesWritten += bytes;
 			}
@@ -2929,13 +2929,13 @@ void CSourceDSound::fadeIn()
 				{
 					DBGPOS(("[%p] FDIN: LOOP", this));
 
-					//CFastMem::memcpy(ptr2 + bytes, data, bytes2 - bytes); 
-					copySampleTo16BitsTrack(ptr2 + bytes, data, (bytes2 - bytes)/2, sampleFormat); 
+					//CFastMem::memcpy(ptr2 + bytes, data, bytes2 - bytes);
+					copySampleTo16BitsTrack(ptr2 + bytes, data, (bytes2 - bytes)/2, sampleFormat);
 					_BytesWritten = bytes2 - bytes;
 				}
 				else
 				{
-					memset(ptr2 + bytes, 0, bytes2 - bytes); 
+					memset(ptr2 + bytes, 0, bytes2 - bytes);
 					_SilenceWritten = bytes2 - bytes;
 				}
 			}
@@ -2954,25 +2954,25 @@ void CSourceDSound::fadeIn()
 		{
 			DBGPOS(("[%p] FDIN: LOOP", this));
 
-			//CFastMem::memcpy(ptr1 + bytes, data, bytes1 - bytes);					 
+			//CFastMem::memcpy(ptr1 + bytes, data, bytes1 - bytes);
 			copySampleTo16BitsTrack(ptr1 + bytes, data, (bytes1 - bytes) / 2, sampleFormat);
 			_BytesWritten = bytes1 - bytes;
 
 			if (ptr2)
 			{
-				//CFastMem::memcpy(ptr2, data + _BytesWritten, bytes2);					 
+				//CFastMem::memcpy(ptr2, data + _BytesWritten, bytes2);
 				copySampleTo16BitsTrack(ptr2, data + _BytesWritten, bytes2/2, sampleFormat);
 				_BytesWritten += bytes2;
 			}
-		} 
+		}
 		else
 		{
-			memset(ptr1 + bytes, 0, bytes1 - bytes);					
+			memset(ptr1 + bytes, 0, bytes1 - bytes);
 			_SilenceWritten = bytes1 - bytes;
 
 			if (ptr2)
 			{
-				memset(ptr2, 0, bytes2);					
+				memset(ptr2, 0, bytes2);
 				_SilenceWritten += bytes2;
 			}
 		}
@@ -2992,7 +2992,7 @@ void CSourceDSound::fadeIn()
 
 
 	// Check if we've reached the end of the file
-	if (_BytesWritten == _BufferSize) 
+	if (_BytesWritten == _BufferSize)
 	{
 		if (_Loop)
 		{
@@ -3006,7 +3006,7 @@ void CSourceDSound::fadeIn()
 
 			// Keep track of where tha last sample was written and the position
 			// of the play cursor relative to the end position. if the _EndState
-			// is NL_DSOUND_TAIL1, the play cursor is after the end position, 
+			// is NL_DSOUND_TAIL1, the play cursor is after the end position,
 			// NL_DSOUND_TAIL2 otherwise.
 			_EndPosition = writePos + bytes;
 			if (_EndPosition >= _SecondaryBufferSize)
@@ -3028,7 +3028,7 @@ void CSourceDSound::fadeIn()
 	{
 		_NextWritePos  -= _SecondaryBufferSize;
 	}
- 
+
 	DBGPOS(("[%p] FDIN: P=%d, W=%d, NW=%d, SZ=%d, BW=%d, S=%d, B=%d", this, playPos, writePos, _NextWritePos, _BufferSize, _BytesWritten, _SilenceWritten, bytes1 + bytes2));
 
 

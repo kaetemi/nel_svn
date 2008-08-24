@@ -97,7 +97,7 @@ void CCallbackClient::send (const CMessage &buffer, TSockId hostid, bool log)
  * Recorded : NO
  * Replayed : NO
  */
-bool CCallbackClient::flush (TSockId hostid, uint *nbBytesRemaining) 
+bool CCallbackClient::flush (TSockId hostid, uint *nbBytesRemaining)
 {
 	nlassert (hostid == InvalidSockId);	// should always be InvalidSockId on client
 
@@ -108,7 +108,7 @@ bool CCallbackClient::flush (TSockId hostid, uint *nbBytesRemaining)
 
 		// Flush sending (nothing to do in replay mode)
 		return CBufClient::flush( nbBytesRemaining );
-		
+
 #ifdef USE_MESSAGE_RECORDER
 	}
 	else
@@ -144,7 +144,7 @@ void CCallbackClient::update2 ( sint32 timeout, sint32 mintime )
 #ifdef USE_MESSAGE_RECORDER
 	}
 #endif
-	
+
 	LockDeletion = false;
 }
 
@@ -174,7 +174,7 @@ void CCallbackClient::update ( sint32 timeout )
 #ifdef USE_MESSAGE_RECORDER
 	}
 #endif
-	
+
 	LockDeletion = false;
 }
 
@@ -192,7 +192,7 @@ bool CCallbackClient::dataAvailable ()
 #endif
 
 		// Real dataAvailable()
-		return CBufClient::dataAvailable (); 
+		return CBufClient::dataAvailable ();
 
 #ifdef USE_MESSAGE_RECORDER
 	}
@@ -219,7 +219,7 @@ void CCallbackClient::receive (CMessage &buffer, TSockId *hostid)
 	if ( _MR_RecordingState != Replay )
 	{
 #endif
-		
+
 		// Receive
 		CBufClient::receive (buffer);
 
@@ -336,7 +336,7 @@ void CCallbackClient::disconnect( TSockId hostid )
 	// Disconnect only if connected (same as physically connected for the client)
 	if ( _BufSock->connectedState() )
 	{
-		
+
 #ifdef USE_MESSAGE_RECORDER
 		if ( _MR_RecordingState != Replay )
 		{
@@ -386,7 +386,7 @@ bool CCallbackClient::replaySystemCallbacks()
 			case Disconnecting:
 				LNETL3_DEBUG( "LNETL3C: Disconnection event" );
 				_BufSock->setConnectedState( false );
-	
+
 				// Call callback if needed
 				if ( disconnectionCallback() != NULL )
 				{

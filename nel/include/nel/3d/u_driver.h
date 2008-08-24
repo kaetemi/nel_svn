@@ -166,8 +166,8 @@ public:
 	virtual	bool			isLost() const = 0;
 
 
-	/// \name Disable Hardware Feature 
-	/**	Disable some Feature that may be supported by the Hardware 
+	/// \name Disable Hardware Feature
+	/**	Disable some Feature that may be supported by the Hardware
 	 *	Call before setDisplay() to work properly
 	 */
 	// @{
@@ -193,7 +193,7 @@ public:
 	/// Set the title of the NeL window
 	virtual void			setWindowTitle(const std::string &title)=0;
 
-	/* Pass in dialog box mode. After having called this method, you can use normal GUI. 
+	/* Pass in dialog box mode. After having called this method, you can use normal GUI.
 	 * In fullscreen under direct3d, the main 3d window is minimized.
 	 *
 	 * \code
@@ -208,7 +208,7 @@ public:
 	 */
 	virtual void			beginDialogMode() =0;
 
-	/* Leave the dialog box mode. After having called this method, you can't use normal GUI anymore. 
+	/* Leave the dialog box mode. After having called this method, you can't use normal GUI anymore.
 	 * In fullscreen under direct3d, the main 3d window is maximized.
 	 */
 	virtual void			endDialogMode() =0;
@@ -269,7 +269,7 @@ public:
 	// @}
 
 	/// \name Cull mode
-	// @{	
+	// @{
 		virtual void			setCullMode(TCullMode cullMode) = 0;
 		virtual	TCullMode       getCullMode() const = 0;
 	// @}
@@ -301,8 +301,8 @@ public:
 	/// Delete a AnimationSet. NB: actually, this animation set is internally deleted only when no more UPlayList use it.
 	virtual	void				deleteAnimationSet(UAnimationSet *animationSet) =0;
 	// @}
-	
-	
+
+
 	/// \name Components gestion for Interface 2D/3D.
 	// @{
 
@@ -336,7 +336,7 @@ public:
 
 
 	/// \name Matrix context for Interface 2D/3D.
-	/** UScene ignore those function (use camera parameters instead, and UScene viewport), and do not disturb 
+	/** UScene ignore those function (use camera parameters instead, and UScene viewport), and do not disturb
 	 * this active Matrix context. (after a scene rendering, the Matrix context for this interface is restored).
 	 * Remarks are nearly same for UTextContext, except for UTextContext::render3D() (see doc):
 	 *		- UTextContext use the setuped viewport of UDriver Matrix context.
@@ -353,7 +353,7 @@ public:
 	 */
 	virtual	void			setViewport(const CViewport &)=0;
 	virtual	CViewport		getViewport()=0;
-	/** Set the active Frustum for rendering. 
+	/** Set the active Frustum for rendering.
 	 */
 	virtual	void			setFrustum(const CFrustum &frust) =0;
 	virtual	CFrustum		getFrustum() =0;
@@ -388,8 +388,8 @@ public:
 	virtual	void			setMatrixMode3D(UCamera &camera) =0;
 	/** Set depth range. Depth range specify a linear mapping from device z coordinates (in the [-1, 1] range) to window coordinates (in the [0, 1] range)
 	  * This mapping occurs after clipping of primitives and division by w of vertices coordinates.
-	  * Default range is [0, 1].	  
-	  * NB : znear should be different from zfar or an assertion is raised	  	  
+	  * Default range is [0, 1].
+	  * NB : znear should be different from zfar or an assertion is raised
 	  */
 	virtual void			setDepthRange(float znear, float zfar) = 0;
 	virtual void			getDepthRange(float & znear, float & zfar) = 0;
@@ -397,7 +397,7 @@ public:
 	/// Set the color mask filter through where the operation done will pass
 	virtual void			setColorMask (bool bRed, bool bGreen, bool bBlue, bool bAlpha)=0;
 
-	
+
 
 
 	/// \name Interface 2D/3D.
@@ -438,8 +438,8 @@ public:
 	virtual	void			drawQuads(const std::vector<NLMISC::CQuadColorUV2> &quad, UMaterial &mat) =0;
 	virtual	void			drawTriangles(const std::vector<NLMISC::CTriangleColorUV> &tris, UMaterial &mat) = 0;
 	virtual	void			drawQuads(const NLMISC::CQuadColorUV *qs, uint32 nbq, UMaterial &mat) =0;
-	virtual	void			drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads, UMaterial &mat) =0;	
-	virtual	void			drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbTris, UMaterial &mat) = 0;	
+	virtual	void			drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads, UMaterial &mat) =0;
+	virtual	void			drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbTris, UMaterial &mat) = 0;
 
 	// @}
 
@@ -560,10 +560,10 @@ public:
 		  */
 		virtual NLMISC::IMouseDevice			*enableLowLevelMouse(bool enable, bool hardware) = 0;
 
-		/** Enable / disable  a low level keyboard.		  
+		/** Enable / disable  a low level keyboard.
 		  * This returns a interface to some parameters when it is supported, or NULL otherwise.
 		  * The interface pointer is valid as long as the low level keyboard is enabled.
-		  * A call to disable the keyboard returns NULL, and restore the default keyboard behaviour.	  
+		  * A call to disable the keyboard returns NULL, and restore the default keyboard behaviour.
 		  */
 		virtual NLMISC::IKeyboardDevice			*enableLowLevelKeyboard(bool enable) = 0;
 
@@ -582,7 +582,7 @@ public:
 
 		/// x and y must be between 0.0 and 1.0
 		virtual void			setMousePos (float x, float y) = 0;
-	
+
 		/** If true, capture the mouse to force it to stay under the window.
 		  * NB : If a low level mouse is used, it does nothing
 		  */
@@ -602,7 +602,7 @@ public:
 	  * \param icon This is the icon of the message box should use like warning, error etc...
 	  */
 	virtual TMessageBoxId	systemMessageBox (const char* message, const char* title, TMessageBoxType type=okType, TMessageBoxIcon icon=noIcon) =0;
-	
+
 
 	/** Set the global polygon mode. Can be filled, line or point. The implementation driver must
 	  * call IDriver::setPolygonMode and active this mode.
@@ -620,13 +620,13 @@ public:
 	virtual TPolygonMode 	getPolygonMode () =0;
 
 	/** Create a 3d mouse listener
-	  * 
+	  *
 	  * \return a 3d mouse listener.
 	  */
 	virtual U3dMouseListener*	create3dMouseListener () =0;
 
 	/** Delete a 3d mouse listener
-	  * 
+	  *
 	  * \param listener a 3d mouse listener.
 	  */
 	virtual void delete3dMouseListener (U3dMouseListener *listener) =0;
@@ -643,16 +643,16 @@ public:
 	 *	NB: this is done only on TextureFile
 	 */
 	virtual void			forceTextureResize(uint divisor)=0;
-	
+
 	/** Sets enforcement of native fragment programs. This is by default enabled.
-	 * 
+	 *
 	 * \param nativeOnly If set to false, fragment programs don't need to be native to stay loaded,
 	 * 	                 otherwise (aka if true) they will be purged.
 	 */
 	virtual void			forceNativeFragmentPrograms(bool nativeOnly) = 0;
 
-	/** Setup monitor color properties. 
-	  * 
+	/** Setup monitor color properties.
+	  *
 	  * Return false if setup failed.
 	  */
 	virtual bool			setMonitorColorProperties (const CMonitorColorProperties &properties) = 0;
@@ -695,7 +695,7 @@ public:
 	/** Enable the sum of texture memory used since last swapBuffers() call. To retrieve the memory used call getUsedTextureMemory().
 	 */
 	virtual void			enableUsedTextureMemorySum (bool enable=true) =0;
-	
+
 	/** Return the amount of texture video memory used since last swapBuffers() call. Before use this method, you should enable
 	 *  the sum with enableUsedTextureMemorySum().
 	 */
@@ -742,13 +742,13 @@ public:
 	/** For each texture setuped in the driver, "print" result: type, shareName, format and size (mipmap included)
 	 */
 	virtual	void			profileTextureUsage(std::vector<std::string> &result) =0;
-	
+
 	// @}
 
 
 	/// \name Async Texture loading mgt (see UInstance)
 	// @{
-	/** setup the mipMap levels. 
+	/** setup the mipMap levels.
 	 *	\baseLevel When the texture is first added, it is loaded skipping the baseLevel
 	 *	first mipmap
 	 *	\maxLevel During time, furhter mipmap are loaded, according to instance position etc... maxLevel
@@ -762,7 +762,7 @@ public:
 	virtual void				setupMaxTotalAsyncTextureSize(uint maxText) =0;
 	/// Setup max texture HLS Coloring per update() call (in bytes). Default to 20K.
 	virtual void				setupMaxHLSColoringPerFrame(uint maxCol) =0;
-	/** update the manager. New loaded texture are uploaded. Instances are updated to know if all their 
+	/** update the manager. New loaded texture are uploaded. Instances are updated to know if all their
 	 *	pending textures have been uploaded.
 	 */
 	virtual void				updateAsyncTexture() =0;
@@ -772,7 +772,7 @@ public:
 	/// get what the system really allows
 	virtual	uint				getLastAsyncTextureSizeGot() const =0;
 
-	/** Load a .hlsBank, add it to the HLSManager of the AsyncTextureManager. 
+	/** Load a .hlsBank, add it to the HLSManager of the AsyncTextureManager.
 	 *	Use CPath::lookup. throw EPathNotFound if error
 	 */
 	virtual void				loadHLSBank(const std::string &fileName) =0;
@@ -806,7 +806,7 @@ public:
 		// Delete a water envmap previously created with 'createWaterEnvMap'
 		virtual void		  deleteWaterEnvMap(UWaterEnvMap *) = 0;
 	// @}
-	
+
 	virtual uint64	getSwapBufferCounter() = 0;
 
 public:

@@ -37,7 +37,7 @@ void CMemStream::swap(CMemStream &other)
 	std::swap(_StringMode, other._StringMode);
 	std::swap(_DefaultCapacity, other._DefaultCapacity);
 }
-	
+
 
 /*
  * serial (inherited from IStream)
@@ -51,7 +51,7 @@ void CMemStream::serialBuffer(uint8 *buf, uint len)
 		return;
 
 	nlassert (buf != NULL);
-	
+
 	if ( isReading() )
 	{
 		// Check that we don't read more than there is to read
@@ -194,7 +194,7 @@ uint CMemStream::serialSeparatedBufferIn( uint8 *buf, uint len )
 void CMemStream::serialSeparatedBufferOut( uint8 *buf, uint len )
 {
 	nlassert( _StringMode && (!isReading()) );
-	
+
 	// Serialize out
 	uint32 oldBufferSize = _Buffer.getBuffer().size();
 	if (_Buffer.Pos + (len + SEP_SIZE) > oldBufferSize)
@@ -240,6 +240,6 @@ uint			CMemStream::getDbgStreamSize() const
 	else
 		return 0;
 }
-		
+
 
 }

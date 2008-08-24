@@ -30,7 +30,7 @@
 #include "nel/3d/landscape_collision_grid.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -95,7 +95,7 @@ public:
 	void	setSnapToRenderedTesselation(bool snapMode) {_SnapToRenderedTesselation= snapMode;}
 	bool	getSnapToRenderedTesselation() const {return _SnapToRenderedTesselation;}
 
-	
+
 	/** Get surface informations.
 	 * pos is checked with polygons that are at least (cache dependent) at +- 10m in altitude.
 	 * \param info will be filled with surface informations if the method returns true.
@@ -108,9 +108,9 @@ public:
 	// @{
 	/// This is the radius of the bbox around the entity where we have correct collisions: 10m.
 	static const float					BBoxRadius;
-	/** Same as BBoxRadius, but for z value. This later should be greater because of NLPACS 
+	/** Same as BBoxRadius, but for z value. This later should be greater because of NLPACS
 	 *	surface quadtree imprecision. 20m
-	 *	NB: Because of caching, if the pos.z passed to snapToGround() is outside of the currentBBox 
+	 *	NB: Because of caching, if the pos.z passed to snapToGround() is outside of the currentBBox
 	 *	with BBoxRadiuZ/2 (=> 10m), then the bbox is recomputed.
 	 *	Hence, this actually means that a pos is checked with patchs that are at least at +- 10m in altitude.
 	 */

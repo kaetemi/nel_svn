@@ -21,8 +21,8 @@
  * MA 02111-1307, USA.
  */
 
-#ifndef NL_QUAT_H 
-#define NL_QUAT_H 
+#ifndef NL_QUAT_H
+#define NL_QUAT_H
 
 #include "types_nl.h"
 #include "vector.h"
@@ -87,7 +87,7 @@ public:
 	CQuatT(const CAngleAxis &aa) {setAngleAxis(aa);}
 	// @}
 
-    
+
 	/// \name Sets.
 	// @{
 	void	set(T X, T Y, T Z, T W)		{x= X; y= Y; z= Z; w= W;}
@@ -127,7 +127,7 @@ public:
 	/// \name Basic Quaternions operations.
 	// @{
 	/// Quaternion multiplication/composition.
-	CQuatT	operator*(const CQuatT&) const; 
+	CQuatT	operator*(const CQuatT&) const;
 	CQuatT&	operator*=(const CQuatT&);
 	/// Invert this quaternion. If normalized, conjugate is faster and does same thing.
 	void	invert();
@@ -205,7 +205,7 @@ public:
 // @{
 
 /// f*quat operator
-template <class T> 
+template <class T>
 inline	CQuatT<T>	operator*(T f, const CQuatT<T> &o) {return o*f;}
 
 // @}
@@ -221,7 +221,7 @@ inline	CQuatT<T>	operator*(T f, const CQuatT<T> &o) {return o*f;}
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline bool	CQuatT<T>::equal(const CQuatT<T>& a, float epsilon) const
 {
 	if (fabs(x-a.x)<epsilon &&
@@ -236,11 +236,11 @@ inline bool	CQuatT<T>::equal(const CQuatT<T>& a, float epsilon) const
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline CQuatT<T>	CQuatT<T>::operator*(const CQuatT<T>& o) const
 {
 	// wres= ww´ - v·v´
-	// vres= wv´ + w´v + v^v´ ] 
+	// vres= wv´ + w´v + v^v´ ]
 	return	CQuatT<T>(
 					(w*o.x) +(x*o.w) + (y*o.z)-(z*o.y),
 					(w*o.y) +(y*o.w) + (z*o.x)-(x*o.z),
@@ -250,7 +250,7 @@ inline CQuatT<T>	CQuatT<T>::operator*(const CQuatT<T>& o) const
 }
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline CQuatT<T>&	CQuatT<T>::operator*=(const CQuatT<T>& o)
 {
 	*this= *this * o;
@@ -259,7 +259,7 @@ inline CQuatT<T>&	CQuatT<T>::operator*=(const CQuatT<T>& o)
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline void	CQuatT<T>::invert()
 {
 	// Must invert the norm.
@@ -274,7 +274,7 @@ inline void	CQuatT<T>::invert()
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline void	CQuatT<T>::normalize()
 {
 	T	f= norm();
@@ -288,7 +288,7 @@ inline void	CQuatT<T>::normalize()
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 inline void	CQuatT<T>::setAngleAxis(const CVector &axis, float angle)
 {
 	CVector		v= axis;
@@ -303,7 +303,7 @@ inline void	CQuatT<T>::setAngleAxis(const CVector &axis, float angle)
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 T	CQuatT<T>::dotProduct(const CQuatT<T> &q0, const CQuatT<T> &q1)
 {
 	return q0.x*q1.x + q0.y*q1.y + q0.z*q1.z + q0.w*q1.w;
@@ -311,7 +311,7 @@ T	CQuatT<T>::dotProduct(const CQuatT<T> &q0, const CQuatT<T> &q1)
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::slerp(const CQuatT<T>& q0, const CQuatT<T>& q1, float t)
 {
 	// omega is the 4D angle between q0 and q1.
@@ -330,7 +330,7 @@ CQuatT<T>	CQuatT<T>::slerp(const CQuatT<T>& q0, const CQuatT<T>& q1, float t)
 	// ????
 
 	if ( cosom < 1.0 - NLMISC::QuatEpsilon)
-	{ 
+	{
 		omega = acos(cosom);
 		sinom = sin(omega);
 		s0 = (T) (sin((1.0f - t)*omega) / sinom);
@@ -349,7 +349,7 @@ CQuatT<T>	CQuatT<T>::slerp(const CQuatT<T>& q0, const CQuatT<T>& q1, float t)
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::squad(const CQuatT<T>& q0, const CQuatT<T>& tgtQ0, const CQuatT<T>& tgtQ1, const CQuatT<T>& q1, float t)
 {
 	return CQuatT<T>::slerp(
@@ -360,7 +360,7 @@ CQuatT<T>	CQuatT<T>::squad(const CQuatT<T>& q0, const CQuatT<T>& tgtQ0, const CQ
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::squadrev(const CAngleAxis &rot, const CQuatT<T>& q0, const CQuatT<T>& tgtQ0, const CQuatT<T>& tgtQ1, const CQuatT<T>& q1, float t)
 {
 	float s,v;
@@ -373,7 +373,7 @@ CQuatT<T>	CQuatT<T>::squadrev(const CAngleAxis &rot, const CQuatT<T>& q0, const 
 	if (omega<Pi-QuatEpsilon)
 	{
 		ret = CQuatT<T>::squad(q0,tgtQ0,tgtQ1,q1,t);
-		return ret; 
+		return ret;
 	}
 
 
@@ -387,7 +387,7 @@ CQuatT<T>	CQuatT<T>::squadrev(const CAngleAxis &rot, const CQuatT<T>& q0, const 
 	nrevs= (float)(omega/Pi);
 	// Angle>2Pi. squad from 0 to Pi, slerp from Pi to Angle-Pi, squad from Angle-Pi to Angle.
 	s = t*2*nrevs;
-	
+
 
 	// So for s, squad from 0 to 1, slerp from 1 to 2*nrevs-1, squad from 2*nrevs-1 to 2*nrevs.
 	if (s < 1.0f)
@@ -421,7 +421,7 @@ CQuatT<T>	CQuatT<T>::squadrev(const CAngleAxis &rot, const CQuatT<T>& q0, const 
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::log()
 {
 	double	len;
@@ -439,7 +439,7 @@ CQuatT<T>	CQuatT<T>::log()
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::exp()
 {
 	double	len;
@@ -449,14 +449,14 @@ CQuatT<T>	CQuatT<T>::exp()
 		return CQuatT<T>(0.f, 0.f, 0.f, 1.f);
 	else
 	{
-		double len1 = sin(len) / len; 
+		double len1 = sin(len) / len;
 		return CQuatT<T>( (T)(x*len1), (T)(y*len1), (T)(z*len1), (T)cos(len));
 	}
 }
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 CQuatT<T>	CQuatT<T>::lnDif(const CQuatT<T> &q0, const CQuatT<T> &q1)
 {
 	CQuatT<T>	dif = q0.inverted()*q1;
@@ -467,7 +467,7 @@ CQuatT<T>	CQuatT<T>::lnDif(const CQuatT<T> &q0, const CQuatT<T> &q1)
 
 
 // ***************************************************************************
-template <class T> 
+template <class T>
 void	CQuatT<T>::makeClosest(const CQuatT<T> &o)
 {
 	if( dotProduct(*this, o) < 0 )
@@ -535,12 +535,12 @@ public:
 	CQuatD(const CAngleAxis &aa) : CQuatT<double>(aa) {}
 	// @}
 
-	
+
 	/// \name CQuat conversion.
 	// @{
 	CQuatD(const CQuat &o) {x=o.x; y=o.y; z=o.z; w=o.w;}
 	CQuatD	&operator=(const CQuatT<float> &o) {x=o.x; y=o.y; z=o.z; w=o.w; return *this;}
-	operator	CQuat() const {return CQuat((float)x, (float)y, (float)z, (float)w);} 
+	operator	CQuat() const {return CQuat((float)x, (float)y, (float)z, (float)w);}
 	// @}
 
 };
@@ -551,5 +551,5 @@ public:
 
 } // NLMISC
 
-#endif // NL_QUAT_H 
+#endif // NL_QUAT_H
 

@@ -218,7 +218,7 @@ void			CEdgeQuad::build(const CExteriorMesh &em,
 				swap(op0, op1);
 				swap(gp0, gp1);
 			}
-			
+
 			const TCollisionSurfaceDescVector	*pcd = global.testCylinderMove(gp0, p1-p0, 0.01f, cst);
 
 			if (pcd == NULL)
@@ -337,7 +337,7 @@ void			CEdgeQuad::build(const CExteriorMesh &em,
 	nlinfo("Built ExteriorEdgeQuad, linked following doors:");
 	for (i=0; i<(sint)_EdgeEntries.size(); ++i)
 	{
-		if (edges[_EdgeEntries[i].EdgeId].Link != -1 && 
+		if (edges[_EdgeEntries[i].EdgeId].Link != -1 &&
 			(_EdgeEntries[i].Interior.RetrieverInstanceId == -1 || _EdgeEntries[i].Interior.SurfaceId == -1 ||
 			 _EdgeEntries[i].Exterior.RetrieverInstanceId == -1 || _EdgeEntries[i].Exterior.SurfaceId == -1))
 		{

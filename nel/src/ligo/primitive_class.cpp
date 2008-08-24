@@ -134,7 +134,7 @@ bool ReadChild (CPrimitiveClass::CChild &child, xmlNodePtr childNode, const char
 		{
 			// Add a static child
 			child.Parameters.push_back (CPrimitiveClass::CInitParameters ());
-			
+
 			// Child ref
 			CPrimitiveClass::CInitParameters &childParam = child.Parameters.back ();
 
@@ -162,7 +162,7 @@ bool ReadChild (CPrimitiveClass::CChild &child, xmlNodePtr childNode, const char
 				{
 					if (!config.getPropertyString (value, filename, childParamValueNode, "VALUE"))
 						goto failed;
-					
+
 					childParam.DefaultValue[defaultId].Name = value;
 				}
 				defaultId++;
@@ -178,11 +178,11 @@ failed:
 
 // ***************************************************************************
 
-bool CPrimitiveClass::read (xmlNodePtr primitiveNode, 
-							const char *filename, 
-							const char *className, 
-							std::set<std::string> &contextStrings, 
-							std::map<std::string, std::string> &contextFilesLookup, 
+bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
+							const char *filename,
+							const char *className,
+							std::set<std::string> &contextStrings,
+							std::map<std::string, std::string> &contextFilesLookup,
 							CLigoConfig &config,
 							bool parsePrimitiveComboContent)
 {
@@ -212,7 +212,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 		// copy all the properties
 		*this = *parent;
 	}
-	
+
 	// The name
 	Name = className;
 
@@ -234,7 +234,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 		Type = Bitmap;
 	else if (type == "alias")
 		Type = Alias;
-	else 
+	else
 	{
 		config.syntaxError (filename, primitiveNode, "Unknown primitive type (%s)", type.c_str ());
 		goto failed;
@@ -245,7 +245,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 
 	// Autoinit
 	ReadBool ("AUTO_INIT", AutoInit, primitiveNode, filename, config);
-	
+
 	// Deletable
 	ReadBool ("DELETABLE", Deletable, primitiveNode, filename, config);
 
@@ -263,7 +263,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 
 	// ShowArrow
 	ReadBool ("SHOW_ARROW", ShowArrow, primitiveNode, filename, config);
-	
+
 	// Numberize when copy the primitive
 	ReadBool ("NUMBERIZE", Numberize, primitiveNode, filename, config);
 
@@ -342,7 +342,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 		parameter.Editable = false;
 		ReadBool ("EDITABLE", parameter.Editable, paramNode, filename, config);
 
-		// sort combo box entries 
+		// sort combo box entries
 		parameter.SortEntries = false;
 		ReadBool ("SORT_ENTRIES", parameter.SortEntries, paramNode, filename, config);
 
@@ -364,7 +364,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 		// Autonaming preference
 		parameter.Autoname = "";
 		CIXml::getPropertyString (parameter.Autoname, paramNode, "AUTONAME");
-		
+
 		// Read the file extension
 		parameter.Folder = "";
 		CIXml::getPropertyString (parameter.Folder, paramNode, "FOLDER");
@@ -372,7 +372,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 
 		// Read the combo values
 		for (	xmlNodePtr comboValueNode = CIXml::getFirstChildNode (paramNode, "COMBO_VALUES");
-				comboValueNode != NULL; 
+				comboValueNode != NULL;
 				comboValueNode = CIXml::getNextChildNode (comboValueNode, "COMBO_VALUES"))
 		{
 			// Read the context
@@ -391,10 +391,10 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 
 			// Read the values
 			for (	xmlNodePtr comboValueValueNode = CIXml::getFirstChildNode (comboValueNode, "CONTEXT_VALUE");
-					comboValueValueNode != NULL; 
+					comboValueValueNode != NULL;
 					comboValueValueNode = CIXml::getNextChildNode (comboValueValueNode, "CONTEXT_VALUE"))
 			{
-				// Read the value 
+				// Read the value
 				if (!config.getPropertyString (type, filename, comboValueValueNode, "VALUE"))
 					goto failed;
 
@@ -465,11 +465,11 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 				// Add a combo value
 				pair<std::map<std::string, CParameter::CConstStringValue>::iterator, bool> insertResult =
 					parameter.ComboValues.insert (std::map<std::string, CParameter::CConstStringValue>::value_type (type, CParameter::CConstStringValue ()));
-				
+
 				// The combo value ref
 				CParameter::CConstStringValue &comboValue = insertResult.first->second;
 
-				comboValue.PrimitivePath.push_back(primpath);																					
+				comboValue.PrimitivePath.push_back(primpath);
 			}
 		}
 
@@ -507,7 +507,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 	{
 		// Add a static child
 		StaticChildren.push_back (CChild ());
-		
+
 		// Child ref
 		CChild &child = StaticChildren.back ();
 
@@ -524,7 +524,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 	{
 		// Add a static child
 		DynamicChildren.push_back (CChild ());
-		
+
 		// Child ref
 		CChild &child = DynamicChildren.back ();
 
@@ -541,7 +541,7 @@ bool CPrimitiveClass::read (xmlNodePtr primitiveNode,
 	{
 		// Add a static child
 		GeneratedChildren.push_back (CChild ());
-		
+
 		// Child ref
 		CChild &child = GeneratedChildren.back ();
 
@@ -588,7 +588,7 @@ bool CPrimitiveClass::CParameter::operator< (const CParameter &other) const
 		(Visible < other.Visible) ? true : (Visible > other.Visible) ? false :
 		(Filename < other.Filename) ? true : (Filename > other.Filename) ? false :
 		(ComboValues < other.ComboValues) ? true : (ComboValues > other.ComboValues) ? false :
-		(DefaultValue < other.DefaultValue) ? true : (DefaultValue > other.DefaultValue) ? false : 
+		(DefaultValue < other.DefaultValue) ? true : (DefaultValue > other.DefaultValue) ? false :
 		false;
 }
 
@@ -630,7 +630,7 @@ void	CPrimitiveClass::CParameter::CConstStringValue::appendPrimPath(std::vector<
 			if	(child->getPropertyByName("name", str))
 				relativePrimPathString.insert(str);
 		}
-		
+
 	}
 	pathList.insert(pathList.end(), relativePrimPathString.begin(), relativePrimPathString.end());
 }
@@ -649,7 +649,7 @@ void	CPrimitiveClass::CParameter::CConstStringValue::getPrimitivesForPrimPath	(s
 		if	(relativePrimPath.size()==1)
 			relativePrimPaths.push_back(*relativePrimPath.begin());
 	}
-	
+
 }
 
 // ***************************************************************************
@@ -696,8 +696,8 @@ bool CPrimitiveClass::CParameter::translateAutoname (std::string &result, const 
 								if (prop)
 								{
 									// Array or string ?
-									const CPropertyString *_string = dynamic_cast<const CPropertyString *>(prop);									
-							
+									const CPropertyString *_string = dynamic_cast<const CPropertyString *>(prop);
+
 									// Is a string ?
 									if (_string)
 									{
@@ -711,7 +711,7 @@ bool CPrimitiveClass::CParameter::translateAutoname (std::string &result, const 
 									{
 										// Try an array
 										const CPropertyStringArray *array = dynamic_cast<const CPropertyStringArray *>(prop);
-										
+
 										// Is an array ?
 										if (array)
 										{
@@ -739,7 +739,7 @@ bool CPrimitiveClass::CParameter::translateAutoname (std::string &result, const 
 					}
 					strEnd++;
 				}
-				
+
 			}
 		}
 		strBegin = strEnd;
@@ -793,7 +793,7 @@ bool CPrimitiveClass::CParameter::getDefaultValue (std::vector<std::string> &res
 					{
 						tmp.push_back(temp[i]);
 					}
-				}				
+				}
 				if (!tmp.empty())
 					result.push_back (tmp);
 			}

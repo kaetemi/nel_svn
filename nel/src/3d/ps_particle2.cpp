@@ -25,7 +25,7 @@
 
 #include "nel/3d/ps_particle2.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 } // NL3D

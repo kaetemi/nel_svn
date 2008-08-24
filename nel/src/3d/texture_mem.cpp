@@ -29,7 +29,7 @@
 #include <memory>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -41,7 +41,7 @@ namespace NL3D
 							doGenerate()
 \*------------------------------------------------------------------*/
 void CTextureMem::doGenerate(bool async)
-{	
+{
 	if (_Data)
 	{
 		if (_IsFile)
@@ -52,7 +52,7 @@ void CTextureMem::doGenerate(bool async)
 		}
 		else
 		{
-			resize(_TexWidth, _TexHeight, _TexType);			
+			resize(_TexWidth, _TexHeight, _TexType);
 			::memcpy(&getPixels(0)[0], _Data, _Length);
 			buildMipMaps();
 		}

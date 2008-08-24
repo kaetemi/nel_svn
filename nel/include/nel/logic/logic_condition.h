@@ -1,5 +1,5 @@
 /** \file logic_condition.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -54,7 +54,7 @@ public:
 
 	/// comparison operator
 	std::string Operator;
-	
+
 	/// comparand
 	sint64 Comparand;
 
@@ -117,13 +117,13 @@ public:
 		COMPARISON,
 		SUB_CONDITION,
 	};
-	
+
 	/// type of this condition block
 	TLogicConditionLogicBlockType Type;
 
 	/// name of the sub-condition
 	std::string SubCondition;
-	
+
 	/// comparison block
 	CLogicComparisonBlock ComparisonBlock;
 
@@ -142,7 +142,7 @@ public:
 	 * \return true if this block is a NOT block
 	 */
 	bool isNotBlock() const { return (Type == NOT); }
-	
+
 	/**
 	 *	Set the logic state machine
 	 *
@@ -188,24 +188,24 @@ class CLogicConditionNode
 	CLogicStateMachine * _LogicStateMachine;
 
 public:
-	
+
 	/// all condition node types
 	enum TConditionNodeType
 	{
-		TERMINATOR = 0, 
+		TERMINATOR = 0,
 		LOGIC_NODE
 	};
 
 	/// type of this condition node
 	TConditionNodeType Type;
-	
+
 	// if this node is a logical node :
 	/// condition logic node
 	CLogicConditionLogicBlock LogicBlock;
 
 	/// condition nodes
 	std::vector<CLogicConditionNode *> _Nodes;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -271,12 +271,12 @@ class CLogicCondition
 {
 	/// condition name
 	std::string _ConditionName;
-		
+
 public:
-	
+
 	/// condition tree
 	std::vector<CLogicConditionNode> Nodes;
-	
+
 	/**
 	 *	CLogicCondition
 	 */

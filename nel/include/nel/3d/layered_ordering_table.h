@@ -35,12 +35,12 @@ namespace NL3D {
  * - Layer 0 acts as an ordering table.
  * - Layer 1 is a simple vector, with no sort.
  * - Layer 2 acts as an ordering table.
- * Typically, this can be used to sort objects that are above or below  a surface (which fit in layer 1). 
+ * Typically, this can be used to sort objects that are above or below  a surface (which fit in layer 1).
  */
 template <class T>
 class CLayeredOrderingTable
 {
-public:	
+public:
 
 	/// ctor
 	CLayeredOrderingTable();
@@ -77,7 +77,7 @@ public:
 
 	/**
 	 * Traversal operations
-	 * 
+	 *
 	 *	LayeredOrderingTable<Face> ot;
 	 *	ot.begin();
 	 *	while( ot.get() != NULL )
@@ -108,9 +108,9 @@ public:
 // =================
 private:
 	typedef std::vector<T *> TTypePtVect;
-	COrderingTable<T>		_Layer0;	
+	COrderingTable<T>		_Layer0;
 	TTypePtVect				_Layer1;
-	COrderingTable<T>		_Layer2;	
+	COrderingTable<T>		_Layer2;
 	uint					_IndexInLayer1;
 	uint8					_CurrLayer;
 	bool					_ForwardTraversal;
@@ -166,13 +166,13 @@ void CLayeredOrderingTable<T>::insert( uint layer, T *pValue, uint32 nEntryPos /
 {
 	switch (layer)
 	{
-		case 0:			
+		case 0:
 			_Layer0.insert(nEntryPos, pValue);
 		break;
-		case 1:			
+		case 1:
 			_Layer1.push_back(pValue);
 		break;
-		case 2:			
+		case 2:
 			_Layer2.insert(nEntryPos, pValue);
 		break;
 		default:
@@ -187,7 +187,7 @@ inline void CLayeredOrderingTable<T>::begin(bool forwardTraversal /*= true*/)
 {
 	_ForwardTraversal = forwardTraversal;
 	if (forwardTraversal)
-	{				
+	{
 		_Layer0.begin();
 		if (!_Layer0.get())
 		{
@@ -208,7 +208,7 @@ inline void CLayeredOrderingTable<T>::begin(bool forwardTraversal /*= true*/)
 		}
 	}
 	else
-	{		
+	{
 		_Layer2.begin();
 		if (!_Layer2.get())
 		{
@@ -236,13 +236,13 @@ inline T* CLayeredOrderingTable<T>::get()
 {
 	switch(_CurrLayer)
 	{
-		case 0:			
+		case 0:
 			return _Layer0.get();
 		break;
-		case 1:			
+		case 1:
 			return _Layer1[_IndexInLayer1];
 		break;
-		case 2:			
+		case 2:
 			return _Layer2.get();
 		break;
 		default:
@@ -257,7 +257,7 @@ template <class T>
 inline void CLayeredOrderingTable<T>::next()
 {
 	if (_ForwardTraversal)
-	{		
+	{
 		switch(_CurrLayer)
 		{
 			case 0:
@@ -291,10 +291,10 @@ inline void CLayeredOrderingTable<T>::next()
 		}
 	}
 	else
-	{		
+	{
 		switch(_CurrLayer)
 		{
-		
+
 			case 2:
 				_Layer2.next();
 				if (_Layer2.get() == NULL)

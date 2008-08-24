@@ -44,7 +44,7 @@ inline uint ScaleFloatGE(float f, float deltaT, float clampValue, uint numStep)
 	float endValue = f + numStep * deltaT;
 	if (endValue < clampValue) return numStep;
 	const uint numAfterInitialDate = 	(uint) ((endValue - clampValue) / deltaT);
-	return numStep - numAfterInitialDate;		
+	return numStep - numAfterInitialDate;
 }
 
 
@@ -54,17 +54,17 @@ inline uint ScaleFloatGE(float f, float deltaT, float clampValue, uint numStep)
   * \param clampValue	A float such as startValue + n * deltaT < clampValue, where n is the number of value to fill.
   * \param startValue	The start value, used to get the number of steps, see clampValue.
   * \param deltaT		The step between values
-  * \param maxNumStep	The max number of steps that can be filled. It is modified to 
+  * \param maxNumStep	The max number of steps that can be filled. It is modified to
   * \param destPos		The destination, that will be filled with the given value
   * \param stride		Number of byte between each value to be copied
   */
-inline NLMISC::CVector *FillBufUsingSubdiv(const	NLMISC::CVector &value, 
-									  float					clampValue, 
-									  float					&startValue, 
+inline NLMISC::CVector *FillBufUsingSubdiv(const	NLMISC::CVector &value,
+									  float					clampValue,
+									  float					&startValue,
 									  float					deltaT,
-									  uint					&maxNumStep, 
-									  NLMISC::CVector		*destPos, 
-									  uint32				stride									  
+									  uint					&maxNumStep,
+									  NLMISC::CVector		*destPos,
+									  uint32				stride
 									  )
 {
 	NL_PS_FUNC(FillBufUsingSubdiv)
@@ -75,9 +75,9 @@ inline NLMISC::CVector *FillBufUsingSubdiv(const	NLMISC::CVector &value,
 	while (numToFill--)
 	{
 		*destPos = value;
-		destPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride);		
-	}	
-	
+		destPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride);
+	}
+
 	return destPos;
 }
 

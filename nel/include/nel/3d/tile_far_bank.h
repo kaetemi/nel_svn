@@ -35,12 +35,12 @@
 #define NL_NUM_PIXELS_ON_FAR_TILE_EDGE_SHIFT 2											// a 128x128 far tile is a 4x4 bitmap in far 0
 #define NL_NUM_PIXELS_ON_FAR_TILE_EDGE (1<<NL_NUM_PIXELS_ON_FAR_TILE_EDGE_SHIFT)	// a 128x128 far tile is a 4x4 bitmap in far 0
 
-namespace NLMISC 
+namespace NLMISC
 {
 	class IStream;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -71,7 +71,7 @@ public:
 		{
 		}
 
-		/// Return the pointer on the pixels data. Call this method only if isFill () returns true. 
+		/// Return the pointer on the pixels data. Call this method only if isFill () returns true.
 		const NLMISC::CRGBA*		getPixels (TFarType type, TFarOrder order) const
 		{
 			return &_Pixels[type][order][0];

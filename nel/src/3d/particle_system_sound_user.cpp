@@ -31,10 +31,10 @@
 #include "nel/3d/u_ps_sound_impl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
-void assignSoundServerToPS(UPSSoundServer *soundServer)	
+void assignSoundServerToPS(UPSSoundServer *soundServer)
 {
 	CParticleSystem::registerSoundServer(soundServer);
 } // NL3D
@@ -46,22 +46,22 @@ void UParticleSystemSound::setPSSound(NLSOUND::UAudioMixer *audioMixer)
 	static CPSSoundServImpl soundServer;
 	soundServer.init(audioMixer);
 	if (audioMixer)
-	{		
+	{
 		assignSoundServerToPS(&soundServer);
 	}
 	else
 	{
 		assignSoundServerToPS(NULL);
 	}
-}	
-	
+}
+
 
 void CPSSoundInstanceImpl::release(void)
-{	
+{
 	if (!_Spawned) // remove this source from the audio mixer if it hasn't been spawned
 	{
 		if (_SoundServImpl->getAudioMixer())
-		{			
+		{
 			//			_SoundServImpl->getAudioMixer()->removeSource(_Source);
 			delete _Source;
 		}

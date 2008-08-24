@@ -80,7 +80,7 @@ const uint32 IDRV_MAT_DOUBLE_SIDED	=	0x00000100;
 const uint32 IDRV_MAT_ALPHA_TEST	= 	0x00000200;
 const uint32 IDRV_MAT_TEX_ADDR	    = 	0x00000400;
 const uint32 IDRV_MAT_LIGHTED_VERTEX_COLOR	= 	0x00000800;
-///   automatic texture coordinate generation  
+///   automatic texture coordinate generation
 const uint32 IDRV_MAT_GEN_TEX_0		= 	0x00001000;
 const uint32 IDRV_MAT_GEN_TEX_1		= 	0x00002000;
 const uint32 IDRV_MAT_GEN_TEX_2		= 	0x00004000;
@@ -113,7 +113,7 @@ typedef	std::list<IMaterialDrvInfos*>			TMatDrvInfoPtrList;
 typedef	TMatDrvInfoPtrList::iterator	ItMatDrvInfoPtrList;
 
 // ***************************************************************************
-/** 
+/**
  *  Driver info for the material
  */
 class IMaterialDrvInfos : public CRefCount
@@ -148,7 +148,7 @@ public:
 	 *	blendConstant* enums are only valid if driver->supportBlendConstantColor().
 	 *	\see IDriver::supportBlendConstantColor()
 	 */
-	enum TBlend				{ one=0, zero, srcalpha, invsrcalpha, srccolor, invsrccolor, 
+	enum TBlend				{ one=0, zero, srcalpha, invsrcalpha, srccolor, invsrccolor,
 		blendConstantColor, blendConstantInvColor, blendConstantAlpha, blendConstantInvAlpha, blendCount };
 
 	/**
@@ -175,10 +175,10 @@ public:
 	 * PerPixelLighting : The same as PerPixelLighting but with no specular
 	 * Caustics: NOT IMPLEMENTED
 	 * Cloud :
-	 * - Alpha of texture in stage 0 is blended with alpha of texture in stage 1. Blend done with the alpha color of each 
+	 * - Alpha of texture in stage 0 is blended with alpha of texture in stage 1. Blend done with the alpha color of each
 	 * stage and the whole is multiplied by the alpha in color vertex [AT0*ADiffuseCol+AT1*(1-ADiffuseCol)]*AStage
 	 * - RGB still unchanged
-	 *    
+	 *
 	 */
 	enum TShader			{ Normal=0,
 							  Bump,
@@ -199,14 +199,14 @@ public:
 	 * Modulate:		out= arg0 * arg1
 	 * Add:				out= arg0 + arg1
 	 * AddSigned:		out= arg0 + arg1 -0.5
-	 * Interpolate*:	out= arg0*As + arg1*(1-As),  where As is taken from the SrcAlpha of 
+	 * Interpolate*:	out= arg0*As + arg1*(1-As),  where As is taken from the SrcAlpha of
 	 *		Texture/Previous/Diffuse/Constant, respectively if operator is
 	 *		InterpolateTexture/InterpolatePrevious/InterpolateDiffuse/InterpolateConstant.
 	 * Multiply-Add (Mad) out= arg0 * arg1 + arg2. Must be supported by driver (see IDriver::supportMADOperator)
 	 * EMBM : apply to both color and alpha : the current texture, whose format is DSDT, is used to offset the texture in the next stage, unless the EMBM unit is at the last stage, in which case it operates on texture at first stage
 	 *  NB : for EMBM, this must be supported by driver.
 	 */
-	enum TTexOperator		{ Replace=0, Modulate, Add, AddSigned, 
+	enum TTexOperator		{ Replace=0, Modulate, Add, AddSigned,
 							  InterpolateTexture, InterpolatePrevious, InterpolateDiffuse, InterpolateConstant, EMBM, Mad, TexOperatorCount };
 
 	/** Source argument.
@@ -227,15 +227,15 @@ public:
 	enum TTexOperand		{ SrcColor=0, InvSrcColor, SrcAlpha, InvSrcAlpha, TexOperandCount };
 	// @}
 
-	/** \name Texture Addressing Modes. They are valid only with the normal texture shader. 
+	/** \name Texture Addressing Modes. They are valid only with the normal texture shader.
 	  *	All modes are not supported everywhere, so you should check for it in the driver.
 	  * The modes are similar to those introduced with DirectX 8.0 Pixel Shaders and OpenGL
 	  * TEXTURE_SHADERS_NV
 	  */
 	// @{
-	enum TTexAddressingMode { 
+	enum TTexAddressingMode {
 							 TextureOff = 0 /* no texture */, FetchTexture, PassThrough, CullFragment,
-							 OffsetTexture, OffsetTextureScale, 
+							 OffsetTexture, OffsetTextureScale,
 							 DependentARTexture, DependentGBTexture,
 							 DP3, DP3Texture2D,
 							 DP3CubeMap, DP3ReflectCubeMap, DP3ConstEyeReflectCubeMap,
@@ -288,7 +288,7 @@ public:
 	 *	- Normal shader do multitexturing (see texEnv*() methods).
 	 *	- UserColor assert if stage!=0. (NB: internal only: UserColor setup texture to stage 0 and 1).
 	 *	- LightMap assert if stage!=0.
-	 */ 
+	 */
 	void 					setTexture(uint8 stage, ITexture* ptex);
 
 	ITexture*				getTexture(uint8 stage) const;
@@ -312,7 +312,7 @@ public:
 
 
 	/// \name Texture Addressing Mode Method
-	// @{		
+	// @{
 	/** enable / disable the use of special texture addressing modes
 	  * When enabled, all texture addressing modes are set to 'None'
 	  */
@@ -321,14 +321,14 @@ public:
 	/// test whether texture addressing mode are enabled
 	bool					texAddrEnabled() const;
 
-	/** Set a texture addressing mode for the given stage. 
+	/** Set a texture addressing mode for the given stage.
 	  * You should test if this mode is supported in the driver you plane to use.
 	  * Texture addressing modes should have been enabled otherwise an assertion is raised
 	  */
 	void					setTexAddressingMode(uint8 stage, TTexAddressingMode mode);
 
 	/// Get the texture addressing mode for the given stage
-	TTexAddressingMode		getTexAddressingMode(uint8 stage);			
+	TTexAddressingMode		getTexAddressingMode(uint8 stage);
 	// @}
 
 
@@ -361,7 +361,7 @@ public:
 	/// Positive bias give a lower z priority, negative bias give a higher bias priority.
 	void					setZBias(float val);
 
-	ZFunc					getZFunc(void)  const { return(_ZFunction); }		
+	ZFunc					getZFunc(void)  const { return(_ZFunction); }
 	bool					getZWrite(void)  const{ return (_Flags&IDRV_MAT_ZWRITE)!=0; }
 	float					getZBias(void)  const { return(_ZBias); }
 	// @}
@@ -373,10 +373,10 @@ public:
 	void					setColor(CRGBA rgba);
 
 	/// Batch setup lighting. Opacity is in diffuse.A.
-	void					setLighting(	bool active, 
-											CRGBA emissive=CRGBA(0,0,0), 
-											CRGBA ambient=CRGBA(0,0,0), 
-											CRGBA diffuse=CRGBA(0,0,0), 
+	void					setLighting(	bool active,
+											CRGBA emissive=CRGBA(0,0,0),
+											CRGBA ambient=CRGBA(0,0,0),
+											CRGBA diffuse=CRGBA(0,0,0),
 											CRGBA specular=CRGBA(0,0,0),
 											float shininess= 10);
 
@@ -460,7 +460,7 @@ public:
 	void                    enableUserTexMat(uint stage, bool enabled = true);
 	// Test wether a user texture is enabled for the n-th stage
 	bool                    isUserTexMatEnabled(uint stage) const;
-	/// Set a new texture matrix for the given stage.	
+	/// Set a new texture matrix for the given stage.
 	void					setUserTexMat(uint stage, const NLMISC::CMatrix &m);
 	/** Get a const ref. on the texture matrix of the n-th stage.
 	  * User texture matrix must be enabled for that stage, otherwise an assertion is raised.
@@ -468,7 +468,7 @@ public:
 	const NLMISC::CMatrix  &getUserTexMat(uint stage) const;
 	/// Decompose a user texture matrix, We assume that this is only a matrix for 2d texture.
 	void					decompUserTexMat(uint stage, float &uTrans, float &vTrans, float &wRot, float &uScale, float &vScale);
-	  
+
 	// @}
 
 
@@ -515,7 +515,7 @@ public:
 
 	bool					getStainedGlassWindow() { return _StainedGlassWindow; }
 	void					setStainedGlassWindow(bool val) { _StainedGlassWindow = val; }
-	
+
 	/// Flush textures. Force texture generation.
 	void					flushTextures (IDriver &driver, uint selectedTexture);
 
@@ -567,7 +567,7 @@ public:
 		void		setDefault()
 		{
 			// Don't worry, Visual optimize it quite well...
-			// We cannot do better, because bit fields ordeinrg seems not to be standardized, so we can not 
+			// We cannot do better, because bit fields ordeinrg seems not to be standardized, so we can not
 			// set Packed directly.
 			Env.OpRGB= Modulate;
 			Env.SrcArg0RGB= Texture;
@@ -592,7 +592,7 @@ public:
 		// Version 1 : added 'mad' operator
 		void		serial(NLMISC::IStream &f, sint version)
 		{
-			
+
 			Env.OpRGB= f.serialBitField8(Env.OpRGB);
 			Env.SrcArg0RGB= f.serialBitField8(Env.SrcArg0RGB);
 			Env.OpArg0RGB= f.serialBitField8(Env.OpArg0RGB);
@@ -625,7 +625,7 @@ public:
 
 		// helpers
 		inline uint getColorArg(uint index)
-		{	
+		{
 			switch(index)
 			{
 				case 0: return Env.SrcArg0RGB;
@@ -638,7 +638,7 @@ public:
 			return 0;
 		}
 		inline uint getAlphaArg(uint index)
-		{	
+		{
 			switch(index)
 			{
 				case 0: return Env.SrcArg0Alpha;
@@ -651,7 +651,7 @@ public:
 			return 0;
 		}
 		inline uint getColorOperand(uint index)
-		{	
+		{
 			switch(index)
 			{
 				case 0: return Env.OpArg0RGB;
@@ -664,7 +664,7 @@ public:
 			return 0;
 		}
 		inline uint getAlphaOperand(uint index)
-		{	
+		{
 			switch(index)
 			{
 				case 0: return Env.OpArg0Alpha;
@@ -696,9 +696,9 @@ private:
 	uint16					_TexCoordGenMode;
 	struct	CUserTexMat
 	{
-		NLMISC::CMatrix		TexMat[IDRV_MAT_MAXTEXTURES];		
+		NLMISC::CMatrix		TexMat[IDRV_MAT_MAXTEXTURES];
 	};
-	std::auto_ptr<CUserTexMat>	_TexUserMat;		 // user texture matrix	
+	std::auto_ptr<CUserTexMat>	_TexUserMat;		 // user texture matrix
 
 public:
 	// Private. For Driver only.
@@ -728,7 +728,7 @@ public:
 	typedef	std::vector<CLightMap>	TTexturePtrs;
 	TTexturePtrs			_LightMaps;
 	bool					_LightMapsMulx2;
-	
+
 
 	uint32					getFlags() const {return _Flags;}
 	uint32					getTouched(void)  const { return(_Touched); }

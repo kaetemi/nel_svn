@@ -29,7 +29,7 @@
 #include "nel/3d/vertex_buffer_heap.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -75,7 +75,7 @@ public:
 	/// release all Heaps => clear memory of meshs registered.
 	void			releaseVBHeaps();
 
-	/** Add a Heap for a given vertexFormat. Any meshGeom added with addInstance() which has this vertex Format 
+	/** Add a Heap for a given vertexFormat. Any meshGeom added with addInstance() which has this vertex Format
 	 *	may fit in this heap.
 	 *	return false and fail if the heap can't be allocated or if the heap with same vertexFormat still exist.
 	 */

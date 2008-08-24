@@ -37,7 +37,7 @@
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 std::auto_ptr<CVertexProgram>	CMeshVPPerPixelLight::_VertexProgram[NumVp];
 
@@ -372,7 +372,7 @@ void	CMeshVPPerPixelLight::initInstance(CMeshBaseInstance *mbi)
 	static	bool	vpCreated= false;
 	if(!vpCreated)
 	{
-		vpCreated= true;		
+		vpCreated= true;
 
 		// Gives each vp name
 		// Bit 0 : 1 when it is a directionnal light
@@ -381,18 +381,18 @@ void	CMeshVPPerPixelLight::initInstance(CMeshBaseInstance *mbi)
 		static const char *vpName[] =
 		{
 			//  no spec
-			PPLightingDirectionnalNoSpecVPCodeBegin, 
+			PPLightingDirectionnalNoSpecVPCodeBegin,
 			PPLightingNoSpecVPCodeBegin,
 			// specular
 			PPLightingDirectionnalVPCodeBegin,
-			PPLightingVPCodeBegin,									
+			PPLightingVPCodeBegin,
 			/////////////// normalized versions
 			// no spec
 			PPLightingDirectionnalNoSpecVPNormalizeCodeBegin,
 			PPLightingVPNormalizeNoSpecCodeBegin,
 			// spec
 			PPLightingDirectionnalVPNormalizeCodeBegin,
-			PPLightingVPNormalizeCodeBegin,						
+			PPLightingVPNormalizeCodeBegin,
 		};
 
 		uint numvp  = sizeof(vpName) / sizeof(const char *);
@@ -416,14 +416,14 @@ void	CMeshVPPerPixelLight::initInstance(CMeshBaseInstance *mbi)
 				CVPParser::TProgram result;
 				std::string          parseOutput;
 				if (!vpParser.parse(vpCode.c_str(), result, parseOutput))
-				{					
+				{
 					nlwarning(parseOutput.c_str());
 					nlassert(0);
 				}
 			#endif
 			_VertexProgram[vp]= std::auto_ptr<CVertexProgram>(new CVertexProgram(vpCode.c_str()));
 		}
-				
+
 	}
 }
 
@@ -435,7 +435,7 @@ bool	CMeshVPPerPixelLight::begin(IDriver *drv,
 {
 	// test if supported by driver
 	if (!
-		 (drv->isVertexProgramSupported() 
+		 (drv->isVertexProgramSupported()
 		  && !drv->isVertexProgramEmulated()
 		  &&  drv->supportPerPixelLighting(SpecularLighting)
 		 )
@@ -443,15 +443,15 @@ bool	CMeshVPPerPixelLight::begin(IDriver *drv,
 	{
 		return false;
 	}
-	//			
-	CRenderTrav		*renderTrav= &scene->getRenderTrav();			
+	//
+	CRenderTrav		*renderTrav= &scene->getRenderTrav();
 	/// Setup for gouraud lighting
 	renderTrav->beginVPLightSetup(VPLightConstantStart,
 								  SpecularLighting,
 								  invertedModelMat);
 	//
 	sint strongestLightIndex = renderTrav->getStrongestLightIndex();
-	if (strongestLightIndex == -1) return false; // if no strongest light, disable this vertex program		
+	if (strongestLightIndex == -1) return false; // if no strongest light, disable this vertex program
 	// setup the strongest light
 	///\todo disabling of specular lighting with this shader
 	const CLight &strongestLight  = renderTrav->getDriverLight(strongestLightIndex);
@@ -478,18 +478,18 @@ bool	CMeshVPPerPixelLight::begin(IDriver *drv,
 			return false;
 		break;
 	}
-				
-	
+
+
 	if (SpecularLighting)
 	{
 		// viewer pos in object space
 		NLMISC::CVector vPos = invertedModelMat * viewerPos;
 		drv->setConstant(5, vPos);
 	}
-		
+
 	// c[0..3] take the ModelViewProjection Matrix. After setupModelMatrix();
-	drv->setConstantMatrix(0, IDriver::ModelViewProjection, IDriver::Identity);			
-	//	
+	drv->setConstantMatrix(0, IDriver::ModelViewProjection, IDriver::Identity);
+	//
 	enable(true, drv); // must enable the vertex program before the vb is activated
 	//
 	return true;
@@ -507,8 +507,8 @@ void	CMeshVPPerPixelLight::end(IDriver *drv)
 void	CMeshVPPerPixelLight::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	(void)f.serialVersion(0);
-	f.serial(SpecularLighting);	
-}	
+	f.serial(SpecularLighting);
+}
 
 
 //=================================================================================
@@ -524,7 +524,7 @@ void	CMeshVPPerPixelLight::enable(bool enabled, IDriver *drv)
 				nlinfo("test vp %d", k);
 				drv->activeVertexProgram(_VertexProgram[k].get());
 			} */
-			uint	idVP =   (drv->isForceNormalize() ? 4 : 0) 
+			uint	idVP =   (drv->isForceNormalize() ? 4 : 0)
 						   | (SpecularLighting	      ? 2 : 0)
 						   | (_IsPointLight		      ? 1 : 0);
 			//
@@ -548,9 +548,9 @@ bool  CMeshVPPerPixelLight::setupForMaterial(const CMaterial &mat,
 	if (enabled)
 	{
 		CRenderTrav		*renderTrav= &scene->getRenderTrav();
-		renderTrav->changeVPLightSetupMaterial(mat, true /* exclude strongest*/);		
+		renderTrav->changeVPLightSetupMaterial(mat, true /* exclude strongest*/);
 
-		NLMISC::CRGBA pplDiffuse, pplSpecular;		
+		NLMISC::CRGBA pplDiffuse, pplSpecular;
 		renderTrav->getStrongestLightColors(pplDiffuse, pplSpecular);
 		drv->setPerPixelLightingLight(pplDiffuse, pplSpecular, mat.getShininess());
 	}
@@ -564,10 +564,10 @@ void	CMeshVPPerPixelLight::setupForMaterial(const CMaterial &mat,
 											   CScene *scene,
 											   CVertexBuffer *vb)
 {
-	
+
 	if (setupForMaterial(mat, drv, scene)) // a switch from v.p enabled / disabled force to reactivate the vertex buffer.
 	{
-		drv->activeVertexBuffer(*vb);		
+		drv->activeVertexBuffer(*vb);
 	}
 }
 

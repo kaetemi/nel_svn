@@ -37,7 +37,7 @@ namespace NLMISC
 	class NLMISC::CVector;
 };
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -71,7 +71,7 @@ public:
 	static void displayDisc(NL3D::IDriver &driver, float radius, const NLMISC::CVector &center, const NLMISC::CMatrix &mat, uint nbSubdiv = 32, NLMISC::CRGBA color = NLMISC::CRGBA::White);
 
 
-	/** draw a cylinder (not filled)	 
+	/** draw a cylinder (not filled)
 	 *  \param dim dimension of the cylinder along each axis, packed in a vector
 	 */
 	static void displayCylinder(NL3D::IDriver &driver, const NLMISC::CVector &center, const NLMISC::CMatrix &mat, const NLMISC::CVector &dim, uint nbSubdiv = 32, NLMISC::CRGBA color = NLMISC::CRGBA::White);
@@ -79,11 +79,11 @@ public:
 	/// display a 3d quad in wireline, by using the 4 gicen corners
 	static void display3DQuad(NL3D::IDriver &driver, const NLMISC::CVector &c1, const NLMISC::CVector &c2
 								,const NLMISC::CVector &c3,  const NLMISC::CVector &c4, NLMISC::CRGBA color = NLMISC::CRGBA::White);
-							
 
-	/// enlarge a bounding box by the specified radius	 
+
+	/// enlarge a bounding box by the specified radius
 	inline static void addRadiusToAABBox(NLMISC::CAABBox &box, float radius);
-	 
+
 	/// display a basis using the given matrix. The model matrix must be restored after this call
 	static void displayBasis(NL3D::IDriver *driver, const NLMISC::CMatrix &modelMat, const NLMISC::CMatrix &m, float size, CFontGenerator &fg, CFontManager &fm);
 
@@ -92,7 +92,7 @@ public:
 	  *  The user must setup the model matrix himself
 	  * \param driver the driver used for rendering
 	  * \param start start point of the arrow
-	  * \param v  direction of the arrow 
+	  * \param v  direction of the arrow
 	  * \param size size of the arrow (will be drawn as size * v)
 	  * \param col1 color of the arrow start
 	  * \param col2 color of the arrow end
@@ -101,7 +101,7 @@ public:
 	static void displayArrow(NL3D::IDriver *driver, const NLMISC::CVector &start, const NLMISC::CVector &v, float size, NLMISC::CRGBA col1, NLMISC::CRGBA col2);
 
 	/// display a string at the given world position. The The model matrix must be restored after this call
-	  
+
 	static void print(NL3D::IDriver *driver, const std::string &text, CFontGenerator &fg, CFontManager &fm, const NLMISC::CVector &pos, float size, NLMISC::CRGBA col = NLMISC::CRGBA::White);
 
 
@@ -109,14 +109,14 @@ public:
 	 *  \param v K axis in the resulting basis
 	 *  \param dest The matrix containing the result. Only the rotation part is modified
 	 */
-	static void buildSchmidtBasis(const NLMISC::CVector &v, NLMISC::CMatrix &dest);	 
+	static void buildSchmidtBasis(const NLMISC::CVector &v, NLMISC::CMatrix &dest);
 
 
 	/** get a cosine from the fast cosine table (which must be have initialised with initFastCosNSinTable).
 	 *  256 <=> 2 Pi
 	 */
-	static inline float getCos(sint32 angle) 
-	{ 
+	static inline float getCos(sint32 angle)
+	{
 		nlassert(_CosTableInitialized == true);
 		return _CosTable[angle & 0xff];
 	}
@@ -124,8 +124,8 @@ public:
 	/** get a cosine from the fast cosine table (which must be have initialised with initFastCosNSinTable).
 	 *  256 <=> 2 Pi
 	 */
-	static inline float getSin(sint32 angle) 
-	{ 
+	static inline float getSin(sint32 angle)
+	{
 		nlassert(_CosTableInitialized == true);
 		return _SinTable[angle & 0xff];
 	}
@@ -146,25 +146,25 @@ public:
 	 *  This must be used before any call to  buildPerlinNoise
 	 */
 	static void initPerlinNoiseTable(void);
-		
 
-private:	
+
+private:
 	static void registerForces();
 	static void registerParticles();
 	static void registerEmitters();
 	static void registerZones();
 	static void registerAttribs();
 
-	static bool _CosTableInitialized;	
-	static bool _PerlinNoiseTableInitialized;	
+	static bool _CosTableInitialized;
+	static bool _PerlinNoiseTableInitialized;
 	// a table for fast cosine lookup
 	static float _CosTable[256];
 	// a table for fast sinus lookup
 	static float _SinTable[256];
 	static float _PerlinNoiseTab[1024];
-	// used by perlin noise to compute each octave		
+	// used by perlin noise to compute each octave
 	static float getInterpolatedNoise(const NLMISC::CVector &pos);
-	// get non interpolated noise 
+	// get non interpolated noise
 	static float getPerlinNoise(uint x, uint y, uint z);
 };
 
@@ -178,7 +178,7 @@ inline void CPSUtil::addRadiusToAABBox(NLMISC::CAABBox &box, float radius)
 }
 
 
-// get non interpolated noise 
+// get non interpolated noise
 inline float CPSUtil::getPerlinNoise(uint x, uint y, uint z)
 {
 	return _PerlinNoiseTab[(x ^ y ^ z) & 1023];
@@ -208,7 +208,7 @@ inline float CPSUtil::getInterpolatedNoise(const NLMISC::CVector &pos)
 	//  |     | /
 	//  0_____1/__x
 
-	
+
 	const float v0 = getPerlinNoise(x, y, z)
 		 ,v1 = getPerlinNoise(x + 1, y, z)
 		 ,v2 = getPerlinNoise(x + 1, y + 1, z)
@@ -218,11 +218,11 @@ inline float CPSUtil::getInterpolatedNoise(const NLMISC::CVector &pos)
 		 ,v6 = getPerlinNoise(x + 1, y + 1, z + 1)
  		 ,v7 = getPerlinNoise(x, y + 1, z + 1);
 
-	
+
 	const float h1  = fx * v1 + (1.f - fx) * v0
-				,h2 = fx * v3 + (1.f - fx) * v2 
+				,h2 = fx * v3 + (1.f - fx) * v2
 				,h3  = fx * v5 + (1.f - fx) * v4
-				,h4 = fx * v7 + (1.f - fx )* v6; 
+				,h4 = fx * v7 + (1.f - fx )* v6;
 
     const float c1  = fy * h2 + (1.f - fy) * h1
 		       ,c2  = fy * h4 + (1.f - fy) * h3;
@@ -244,7 +244,7 @@ inline float CPSUtil::buildPerlinNoise(NLMISC::CVector &pos, uint numOctaves)
 		result += fact * getInterpolatedNoise(scale * pos);
 		fact *= .5f;
 		scale *= 1.2537f;
-	}	
+	}
 	return result;
 }
 

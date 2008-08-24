@@ -99,7 +99,7 @@ namespace NLNET
 		mutable bool	_Owner;
 
 	public:
-		
+
 		/// default constructor, used to read in stream
 		TBinBuffer()
 			:	_Buffer(NULL),
@@ -157,7 +157,7 @@ namespace NLNET
 		{
 			return _Buffer;
 		}
-			
+
 
 		/** Release the buffer by returning the pointer to the caller.
 		 *	The caller is now owner and responsible of the allocated

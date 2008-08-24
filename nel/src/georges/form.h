@@ -55,7 +55,7 @@ public:
 	void			getDependencies (std::set<std::string> &dependencies) const;
 	uint			getNumParent () const;
 	UForm			*getParentForm (uint parent) const;
-	
+
 #ifdef NL_OS_WINDOWS
 #  pragma warning (disable : 4355)
 #endif

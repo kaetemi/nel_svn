@@ -260,9 +260,9 @@ public:
 
 	/// \name Misc
 	// @{
-	/** 
+	/**
 	  * Setup Matrix by the lookAt method. Work only in DirectMatrix mode and RotQuat mode (not euler...).
-	  * 
+	  *
 	  * \param eye is the coordinate of the object.
 	  * \param target is the point the object look at.
 	  * \param roll is the roll angle in radian along the object's Y axis.
@@ -306,7 +306,7 @@ public:
 	static const char *getRotQuatValueName();
 	static const char *getScaleValueName();
 	static const char *getPivotValueName();
-	
+
 
 private:
 	// The computed matrix.

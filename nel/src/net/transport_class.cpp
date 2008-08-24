@@ -86,7 +86,7 @@ string typeToString (CTransportClass::TProp type)
 		"PropSInt8", "PropSInt16", "PropSInt32", "PropSInt64",
 		"PropBool", "PropFloat", "PropDouble", "PropString", "PropDataSetRow", "PropSheetId", "PropUKN" };
 //		"PropBool", "PropFloat", "PropDouble", "PropString", "PropDataSetRow", "PropEntityId", "PropSheetId", "PropUKN" };
-		
+
 	if (type > CTransportClass::PropUKN)
 		return "<InvalidType>";
 	return conv[type];
@@ -196,7 +196,7 @@ void CTransportClass::registerClass (CTransportClass &instance)
 
 	// set the mode to register
 	Mode = 3;
-	
+
 	// clear the current class
 	TempRegisteredClass.clear ();
 
@@ -275,7 +275,7 @@ void cbTCReceiveMessage (CMessage &msgin, const string &name, TServiceId sid)
 	}
 
 	nlassert ((*it).second.Instance != NULL);
-	
+
 	if (!(*it).second.Instance->read (name, sid))
 	{
 		nlwarning ("NETTC: Can't read the transportclass '%s' received from %s-%hu (probably not registered on sender service)", className.c_str(), name.c_str(), sid.get());

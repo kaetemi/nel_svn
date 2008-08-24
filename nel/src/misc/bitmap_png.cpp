@@ -100,17 +100,17 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	png_info *info_ptr = NULL;
 	PixelFormat=RGBA;
 
-	
+
 
 //	CLibrary fctLoader(CLibrary::loadLibrary(string("libpng13.dll")));
 	CLibrary fctLoader("libpng13.dll", false, false);
 
 	///////////////////////////
 
-	BOOL (* png_create_read_struct) (const char *user_png_ver, 
+	BOOL (* png_create_read_struct) (const char *user_png_ver,
 											void *error_ptr,
-											void *error_fn, 
-											void *warn_fn)		
+											void *error_fn,
+											void *warn_fn)
 	=NULL;
 	*(FARPROC*)&png_create_read_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_read_struct"));
 	if(!png_create_read_struct)
@@ -120,7 +120,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-		
+
 	BOOL (* png_create_info_struct)(png_struct *png_ptr)=NULL;
 	*(FARPROC*)&png_create_info_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_info_struct"));
 	if(!png_create_info_struct)
@@ -130,9 +130,9 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
-	BOOL (* png_destroy_read_struct) (png_struct **png_ptr_ptr, 
-											png_info **info_ptr_ptr, 
+
+	BOOL (* png_destroy_read_struct) (png_struct **png_ptr_ptr,
+											png_info **info_ptr_ptr,
 											png_info **end_info_ptr_ptr)
 	=NULL;
 	*(FARPROC*)&png_destroy_read_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_destroy_read_struct"));
@@ -143,7 +143,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 	BOOL (* png_set_sig_bytes)   (png_struct *png_ptr,
 										int num_bytes)
 	=NULL;
@@ -155,7 +155,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 	BOOL (* png_malloc)  (png_struct *png_ptr,
 								uint32 size)
 	=NULL;
@@ -167,7 +167,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 	BOOL (* png_get_rowbytes)    (png_struct *png_ptr,
 										png_info *info_ptr)
 	=NULL;
@@ -179,7 +179,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 	BOOL (* png_init_io)    (png_struct *png_ptr,
 										FILE *f)
 	=NULL;
@@ -191,8 +191,8 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
-	BOOL (* png_read_info)    (png_struct *png_ptr, 
+
+	BOOL (* png_read_info)    (png_struct *png_ptr,
 							 png_info *info_ptr)
 	=NULL;
 	*(FARPROC*)&png_read_info=(FARPROC)fctLoader.getSymbolAddress(string("png_read_info"));
@@ -205,7 +205,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	///////////////////////////
 
 	BOOL (* png_set_read_fn)    ( png_struct *png_ptr,
-								void *io_ptr, 
+								void *io_ptr,
 								void *read_data_fn)
 	=NULL;
 	*(FARPROC*)&png_set_read_fn=(FARPROC)fctLoader.getSymbolAddress(string("png_set_read_fn"));
@@ -218,16 +218,16 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	///////////////////////////
 
 	BOOL (* png_get_IHDR)    (  png_struct *png_ptr,
-								png_info *info_ptr, 
-								uint32 *width, 
+								png_info *info_ptr,
+								uint32 *width,
 								uint32 *height,
-								int *bit_depth, 
-								int *color_type, 
+								int *bit_depth,
+								int *color_type,
 								int *interlace_method,
-								int *compression_method, 
+								int *compression_method,
 								int *filter_method)
 	=NULL;
-	
+
 	*(FARPROC*)&png_get_IHDR=(FARPROC)fctLoader.getSymbolAddress(string("png_get_IHDR"));
 	if(!png_get_IHDR)
 	{
@@ -272,7 +272,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	///////////////////////////
 
 	BOOL (* png_get_valid)    ( png_struct *png_ptr,
-								png_info *info_ptr, 
+								png_info *info_ptr,
 								uint32 flag)
 	=NULL;
 	*(FARPROC*)&png_get_valid=(FARPROC)fctLoader.getSymbolAddress(string("png_get_valid"));
@@ -296,7 +296,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	///////////////////////////
 
 	BOOL (* png_get_gAMA)    (  png_struct *png_ptr,
-								png_info *info_ptr, 
+								png_info *info_ptr,
 								double *file_gamma  )
 	=NULL;
 	*(FARPROC*)&png_get_gAMA=(FARPROC)fctLoader.getSymbolAddress(string("png_get_gAMA"));
@@ -309,7 +309,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	///////////////////////////
 
 	BOOL (* png_set_gamma)    ( png_struct *png_ptr,
-								double screen_gamma, 
+								double screen_gamma,
 								double default_file_gamma)
 	=NULL;
 	*(FARPROC*)&png_set_gamma=(FARPROC)fctLoader.getSymbolAddress(string("png_set_gamma"));
@@ -344,7 +344,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 	BOOL (* png_read_image)    ( png_struct *png_ptr,
 								 char **image)
 	=NULL;
@@ -356,7 +356,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	}
 
 	///////////////////////////
-	
+
 
 	BOOL (* png_read_end)    (  png_struct *png_ptr,
 								png_info *info_ptr)
@@ -370,7 +370,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 	///////////////////////////
 
-	
+
 	if(!f.isReading()) return false;
 
 	/*Initialise the info header*/
@@ -418,15 +418,15 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 	//read header info and use it
 	png_read_info(png_ptr, info_ptr);
-	png_get_IHDR( png_ptr, 
+	png_get_IHDR( png_ptr,
 				  info_ptr,
 				  (uint32*) &_Width,
-				  (uint32*) &_Height, 
+				  (uint32*) &_Height,
 				  &iBitDepth,
-				  &iColorType, 
+				  &iColorType,
 				  NULL, NULL, NULL);
 
-		
+
 	// row_bytes is the width x number of channels
 
 	 uint32 ulRowBytes = png_get_rowbytes(png_ptr, info_ptr);
@@ -438,7 +438,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	// expand images of all color-type and bit-depth to 3x8 bit RGB images
     // let the library process things like alpha, transparency, background
     double              dGamma;
-	
+
     if (iBitDepth == 16)
         png_set_strip_16(png_ptr);
 
@@ -453,30 +453,30 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
         png_set_expand(png_ptr);
 
     if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-        png_set_expand(png_ptr);    
-    
+        png_set_expand(png_ptr);
+
     // if required set gamma conversion
     if (png_get_gAMA(png_ptr, info_ptr, &dGamma))
         png_set_gamma(png_ptr, (double) 2.2, dGamma);
 
 
     // after the transformations have been registered update info_ptr data
-    
+
     png_read_update_info(png_ptr, info_ptr);
-    
+
     // get again width, height and the new bit-depth and color-type
-    
-    png_get_IHDR(png_ptr, 
+
+    png_get_IHDR(png_ptr,
 				 info_ptr,
 				 (uint32*) &_Width,
 				 (uint32*) &_Height,
 				 &iBitDepth,
-				 &iColorType, 
-				 NULL, 
-				 NULL, 
+				 &iColorType,
+				 NULL,
+				 NULL,
 				 NULL);
 
-	
+
 	//At this point, the image must converted to an 24bit image RGB
 
 
@@ -485,7 +485,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 
 
-	
+
     // row_bytes is the width x number of channels
 	ulRowBytes = png_get_rowbytes(png_ptr, info_ptr);
 	ulChannels = png_get_channels(png_ptr, info_ptr);
@@ -519,15 +519,15 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	{
 		ppbRowPointers[i] = pbImageData + i * ulRowBytes;
 	}
-		
 
-	//effective read of the image 
+
+	//effective read of the image
 	png_read_image(png_ptr, ppbRowPointers);
 
-	png_read_end(png_ptr, NULL);  
-	
+	png_read_end(png_ptr, NULL);
 
-    
+
+
 	uint8 bit=0;//number of bit needed for a pixel
 
 	//RGB and RGBA results to almost the same bitmap, alpha will be added to RGB
@@ -540,12 +540,12 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 			for(uint32 line=0;line<_Width;line++)
 			{
 				for(uint32 pix=0;pix<3;pix++)
-				{//get the RGB 
+				{//get the RGB
 				 _Data[0][row*_Width*4+line*4+pix]=pbImageData[row*_Width*3+line*3+pix];
 				}//for pix<3
 				_Data[0][row*_Width*4+line*4+3]=(uint8)'255';//add the alpha seting
 			}//for line<_Width
-				
+
 	   }//for row<_Height
 		bit=4;
 
@@ -564,10 +564,10 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 				 _Data[0][row*_Width*4+line*4+pix]=pbImageData[row*_Width*4+line*4+pix];
 				}//for pix<4
 			}//for line<_Width
-				
-		}//for row<_Height  
+
+		}//for row<_Height
 		bit=4;
-    }	
+    }
 
 
 
@@ -584,10 +584,10 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 				//data is copied seamlessly
 				_Data[0][row*_Width+line]=pbImageData[row*_Width+line];
 			}//for line<_Width
-				
+
 		}  //for row<_Height
 		bit=1;
-    }	
+    }
 
 	//the paletted PNG are not handled yet
 	if(iColorType==PNG_COLOR_TYPE_PALETTE)
@@ -600,7 +600,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	delete []pbImageData;
 
 
-   
+
    /* clean up after the read, and free any memory allocated  */
    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
@@ -645,10 +645,10 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 
 	///////////////////////////
 
-	BOOL (* png_create_write_struct) (const char *user_png_ver, 
+	BOOL (* png_create_write_struct) (const char *user_png_ver,
 											void *error_ptr,
-											void *error_fn, 
-											void *warn_fn)		
+											void *error_fn,
+											void *warn_fn)
 	=NULL;
 	*(FARPROC*)&png_create_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_write_struct"));
 	if(!png_create_write_struct)
@@ -658,7 +658,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	}
 
 	///////////////////////////
-		
+
 	BOOL (* png_create_info_struct)(png_struct *png_ptr)=NULL;
 	*(FARPROC*)&png_create_info_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_info_struct"));
 	if(!png_create_info_struct)
@@ -668,8 +668,8 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	}
 
 	///////////////////////////
-	
-	BOOL (* png_destroy_write_struct) (png_struct **png_ptr_ptr, 
+
+	BOOL (* png_destroy_write_struct) (png_struct **png_ptr_ptr,
 											png_info **info_ptr_ptr)
 	=NULL;
 	*(FARPROC*)&png_destroy_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_destroy_write_struct"));
@@ -680,8 +680,8 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	}
 
 	///////////////////////////
-	
-	BOOL (* png_write_info) (png_struct *png_ptr, 
+
+	BOOL (* png_write_info) (png_struct *png_ptr,
 							 png_info *info_ptr)
 	=NULL;
 	*(FARPROC*)&png_write_info=(FARPROC)fctLoader.getSymbolAddress(string("png_write_info"));
@@ -694,7 +694,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	///////////////////////////
 
 	BOOL (* png_set_write_fn) ( png_struct *png_ptr,
-								void *io_ptr, 
+								void *io_ptr,
 								void *write_data_fn,
 								void *output_flush_fn)
 	=NULL;
@@ -708,16 +708,16 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	///////////////////////////
 
 	BOOL (* png_set_IHDR)    (  png_struct *png_ptr,
-								png_info *info_ptr, 
-								uint32 width, 
+								png_info *info_ptr,
+								uint32 width,
 								uint32 height,
-								int bit_depth, 
-								int color_type, 
+								int bit_depth,
+								int color_type,
 								int interlace_method,
-								int compression_method, 
+								int compression_method,
 								int filter_method)
 	=NULL;
-	
+
 	*(FARPROC*)&png_set_IHDR=(FARPROC)fctLoader.getSymbolAddress(string("png_set_IHDR"));
 	if(!png_set_IHDR)
 	{
@@ -726,7 +726,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	}
 
 	///////////////////////////
-	
+
 
 	BOOL (* png_write_end)   (  png_struct *png_ptr,
 								png_info *info_ptr)
@@ -897,7 +897,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 #endif
 
 /*-------------------------------------------------------------------*\
-								readPNGData		
+								readPNGData
 \*-------------------------------------------------------------------*/
 
 void readPNGData(png_struct *png_ptr, char *data, uint length)
@@ -907,7 +907,7 @@ void readPNGData(png_struct *png_ptr, char *data, uint length)
 }
 
 /*-------------------------------------------------------------------*\
-								writePNGData		
+								writePNGData
 \*-------------------------------------------------------------------*/
 
 void writePNGData(png_struct *png_ptr, char *data, uint length)

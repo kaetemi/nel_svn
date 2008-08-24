@@ -87,7 +87,7 @@ public:
 	virtual void					deleteEntity(UVisualCollisionEntity	*entity) =0;
 
 
-	/** 
+	/**
 	 *  Build a lighting table to remap sun contribution from landscape to sun contribution for objects.
 	 *  The value remap the landscape sun contribution (0 ~ 1) to an object sun contribution (0 ~1)
 	 *  using the following formula:
@@ -101,7 +101,7 @@ public:
 
 	/** Inform the VisualCollisionManager if the player is "inside" or "outside".
 	 *	set it to true if the player is not on Landscape.
-	 *	This is a tricky flag used for the IBBR problem: this is an issue with clusters and 
+	 *	This is a tricky flag used for the IBBR problem: this is an issue with clusters and
 	 *	"interior building that can be bigger than reality"
 	 *	It is used at getCameraCollision(), and receiveShadowMap() time
 	 */
@@ -134,7 +134,7 @@ public:
 	 */
 	virtual void					removeMeshCollision(uint id) =0;
 	// retrieve mesh that are in the given box
-	virtual	void					getMeshs(const NLMISC::CAABBox &aabbox, std::vector<CMeshInstanceColInfo> &dest) = 0;		
+	virtual	void					getMeshs(const NLMISC::CAABBox &aabbox, std::vector<CMeshInstanceColInfo> &dest) = 0;
 };
 
 

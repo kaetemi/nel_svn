@@ -136,11 +136,11 @@ inline	void	CVector::set(float _x, float _y, float _z)
 {
 	x=_x; y=_y; z=_z;
 }
-inline	bool	CVector::operator==(const CVector &v) const 
+inline	bool	CVector::operator==(const CVector &v) const
 {
 	return x==v.x && y==v.y && z==v.z;
 }
-inline	bool	CVector::operator!=(const CVector &v) const 
+inline	bool	CVector::operator!=(const CVector &v) const
 {
 	return !(*this==v);
 }

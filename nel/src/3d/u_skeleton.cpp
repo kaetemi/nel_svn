@@ -431,24 +431,24 @@ const std::string		&USkeleton::getShapeName() const
 	NL3D_HAUTO_UI_SKELETON;
 
 	static std::string emptyStr;
-	
+
 	CSkeletonModel	*object = getObjectPtr();
 	if(!object)
 		return emptyStr;
-	
+
 	// get the shape bank
 	CScene *scene= object->getOwnerScene();
 	CShapeBank	*sb= scene->getShapeBank();
 	if(!sb)
 		return emptyStr;
-	
+
 	// get the shape name
 	const std::string *str= sb->getShapeNameFromShapePtr(object->Shape);
 	if(str)
 		return *str;
 	else
 		return emptyStr;
-	
+
 }
 
 // ***************************************************************************
@@ -461,7 +461,7 @@ void USkeleton::getStickedObjects(std::vector<UTransform> &sticks)
 	CSkeletonModel	*sm= getObjectPtr();
 	if(!sm)
 		return;
-	
+
 	const std::set<CTransform*>	&stickSet= sm->getStickedObjects();
 	std::set<CTransform*>::const_iterator	it= stickSet.begin();
 	sticks.reserve(stickSet.size());

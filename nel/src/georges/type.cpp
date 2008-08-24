@@ -96,7 +96,7 @@ void CType::write (xmlDocPtr doc, bool georges4CVS) const
 		xmlSetProp (node, (const xmlChar*)"Increment", (const xmlChar*)Increment.c_str());
 	}
 
-	// Definition 
+	// Definition
 	uint def = 0;
 	for (def = 0; def<Definitions.size(); def++)
 	{
@@ -145,7 +145,7 @@ void CType::read (xmlNodePtr root)
 			xmlFree ((void*)value);
 
 			// Throw exception
-			warning2 (true, "read", "XML Syntax error in TYPE block line %d, the Type value is unknown (%s).", 
+			warning2 (true, "read", "XML Syntax error in TYPE block line %d, the Type value is unknown (%s).",
 				(ptrdiff_t)root->content, valueStr.c_str ());
 		}
 
@@ -155,7 +155,7 @@ void CType::read (xmlNodePtr root)
 	else
 	{
 		// Throw exception
-		warning2 (true, "read", "XML Syntax error in TYPE block line %d, the Type argument was not found.", 
+		warning2 (true, "read", "XML Syntax error in TYPE block line %d, the Type argument was not found.",
 			(ptrdiff_t)root->content);
 	}
 
@@ -263,9 +263,9 @@ void CType::read (xmlNodePtr root)
 				xmlFree ((void*)label);
 
 				// Throw exception
-				warning2 (true, "read", "XML Syntax error in DEFINITION block line %d, the Value argument was not found.", 
+				warning2 (true, "read", "XML Syntax error in DEFINITION block line %d, the Value argument was not found.",
 					(ptrdiff_t)childPtr->content);
-			}			
+			}
 
 			// Delete the value
 			xmlFree ((void*)label);
@@ -273,7 +273,7 @@ void CType::read (xmlNodePtr root)
 		else
 		{
 			// Throw exception
-			warning2 (true, "read", "XML Syntax error in DEFINITION block line %d, the Label argument was not found.", 
+			warning2 (true, "read", "XML Syntax error in DEFINITION block line %d, the Label argument was not found.",
 				(ptrdiff_t)childPtr->content);
 		}
 
@@ -344,7 +344,7 @@ public:
 			{
 				// Get the filename
 				const string filename = CFile::getFilenameWithoutExtension (Form->getFilename ());
-		
+
 				// While the filename as a number
 				sint i;
 				for (i=filename.size ()-1; i>=0; i--)
@@ -664,7 +664,7 @@ bool CType::getValue (string &result, const CForm *form, const CFormElmAtom *nod
 						char zeroPadding = 0;
 
 						// Format code ?
-						if ( ( (nextEnd - offset) >= 3 ) && ( result[offset] == '$' ) && ( result[offset+1] == 'z' ) 
+						if ( ( (nextEnd - offset) >= 3 ) && ( result[offset] == '$' ) && ( result[offset+1] == 'z' )
 							&& ( result[offset+2] <= '9' ) && ( result[offset+2] >= '0'  ) )
 						{
 							// Save padding
@@ -912,7 +912,7 @@ const string	&CType::getComment () const
 
 void CType::getDependencies (std::set<std::string> &dependencies) const
 {
-	
+
 }
 
 // ***************************************************************************

@@ -85,7 +85,7 @@ public:
 	virtual bool	getEntryName (uint entry, std::string &name) const = 0;
 
 	virtual	bool	getEntryIndexByName (uint &entry, const	std::string &name) const = 0;
-	
+
 	/**
 	  * Return the filename of the type or the DFN.
 	  * Doesn't look in parents DFN.

@@ -33,7 +33,7 @@
 #include "nel/3d/point_light_influence.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -58,7 +58,7 @@ class CSurfaceLightGrid
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 public:
 
 	/// We support only 2 light per corner. Should never be changed.

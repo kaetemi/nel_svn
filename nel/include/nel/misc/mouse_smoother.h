@@ -49,7 +49,7 @@ public:
 	  */
 	void				setSamplingPeriod(double period);
 	// Get the sampling period
-	double				getSamplingPeriod() const { return _SamplingPeriod; }	
+	double				getSamplingPeriod() const { return _SamplingPeriod; }
 	// Reset smoother. The next returned position will be the exact position of mouse (no smoothing with previous position is done)
 	void				reset();
 	// \return trueif no sampling has occured since last resetor construction

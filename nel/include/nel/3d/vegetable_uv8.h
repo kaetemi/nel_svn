@@ -27,12 +27,12 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 /**
- * A simple tuple UV in 8 bits, for Dynamic Lightmap encoding in Alpha components of colors 
+ * A simple tuple UV in 8 bits, for Dynamic Lightmap encoding in Alpha components of colors
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2002

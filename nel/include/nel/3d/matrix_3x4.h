@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -57,9 +57,9 @@ public:
 	void	set(const CMatrix &mat)
 	{
 		const float	*m =mat.get();
-		a11= m[0]; a12= m[4]; a13= m[8] ; a14= m[12]; 
-		a21= m[1]; a22= m[5]; a23= m[9] ; a24= m[13]; 
-		a31= m[2]; a32= m[6]; a33= m[10]; a34= m[14]; 
+		a11= m[0]; a12= m[4]; a13= m[8] ; a14= m[12];
+		a21= m[1]; a22= m[5]; a23= m[9] ; a24= m[13];
+		a31= m[2]; a32= m[6]; a33= m[10]; a34= m[14];
 	}
 
 
@@ -128,7 +128,7 @@ public:
 
 /** For fast vector/point multiplication. Special usage for Skinning.
  *	NB: SSE is no more used (no speed gain, some memory problem), but keep it for possible future usage.
- */ 
+ */
 class	CMatrix3x4SSE
 {
 public:
@@ -142,11 +142,11 @@ public:
 	void	set(const CMatrix &mat)
 	{
 		const float	*m =mat.get();
-		a11= m[0]; a12= m[4]; a13= m[8] ; a14= m[12]; 
-		a21= m[1]; a22= m[5]; a23= m[9] ; a24= m[13]; 
-		a31= m[2]; a32= m[6]; a33= m[10]; a34= m[14]; 
+		a11= m[0]; a12= m[4]; a13= m[8] ; a14= m[12];
+		a21= m[1]; a22= m[5]; a23= m[9] ; a24= m[13];
+		a31= m[2]; a32= m[6]; a33= m[10]; a34= m[14];
 		// not used.
-		a41= 0   ; a42= 0   ; a43= 0    ; a44= 1; 
+		a41= 0   ; a42= 0   ; a43= 0    ; a44= 1;
 	}
 
 

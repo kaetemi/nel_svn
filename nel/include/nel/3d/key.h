@@ -32,7 +32,7 @@
 
 // NOT TESTED, JUST COMPILED. FOR PURPOSE ONLY.
 
-namespace NL3D 
+namespace NL3D
 {
 
 

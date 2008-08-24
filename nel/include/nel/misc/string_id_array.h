@@ -104,22 +104,22 @@ public:
 			{
 				if (_AskedStringArray.find (str) == _AskedStringArray.end ())
 				{
-					//nldebug ("String '%s' not found, add it to _NeedToAskStringArray", str.c_str ());	
+					//nldebug ("String '%s' not found, add it to _NeedToAskStringArray", str.c_str ());
 					_NeedToAskStringArray.insert (str);
 				}
 				else
 				{
-					//nldebug ("Found '%s' in the _AskedStringArray", str.c_str ());	
+					//nldebug ("Found '%s' in the _AskedStringArray", str.c_str ());
 				}
 			}
 			else
 			{
-				//nldebug ("Found '%s' in the _NeedToAskStringArray", str.c_str ());	
+				//nldebug ("Found '%s' in the _NeedToAskStringArray", str.c_str ());
 			}
 		}
 		else
 		{
-			//nldebug ("Ignoring unknown association ('%s')", str.c_str ());	
+			//nldebug ("Ignoring unknown association ('%s')", str.c_str ());
 		}
 
 		return -1;

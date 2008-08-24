@@ -51,7 +51,7 @@ struct CContextMatcher
 		for (i=0; i<NbJoker; ++i)
 		{
 			JokersValues[i] = jokersValues[i];
-			
+
 			uint leftShift = (5*i)&0x1f;
 			HashValue ^= JokersValues[i] << leftShift;
 			HashValue ^= JokersValues[i] >> (32-leftShift);
@@ -150,7 +150,7 @@ class CContextSoundContainer : public IContextSoundContainer
 		// extract the context values
 		std::string::const_iterator	first(patternName.begin() + baseName.size()), last(patternName.end());
 //		std::string::const_iterator	first2(baseName.begin()), last2(baseName.end());
-		// 1st, skip the base name 
+		// 1st, skip the base name
 //		for (; first == first2; ++first, ++first2);
 
 		// 2nd, read all the joker values
@@ -216,7 +216,7 @@ class CContextSoundContainer : public IContextSoundContainer
 		{
 			randomValue = 0;
 		}
-			
+
 		// ok, now create the key and store the sound.
 		CContextMatcher<NbJoker, UseRandom, Shift>	cm(args, randomValue);
 
@@ -312,7 +312,7 @@ public:
 
 
 private:
-	
+
 	/// The context sound pattern name.
 	std::string					_PatternName;
 	/// The base name, that is the constante part of the name (before the first joker).
@@ -321,11 +321,11 @@ private:
 	/// The random lenght (0 mean no random)
 	uint32						_Random;
 
-	
+
 
 	/// container for all the candidate sounds
 	IContextSoundContainer		*_ContextSounds;
-	
+
 };
 
 } // NLSOUND

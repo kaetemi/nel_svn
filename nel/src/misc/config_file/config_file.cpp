@@ -426,9 +426,9 @@ void CConfigFile::reparse (bool lookupPaths)
 				debugFileName += CFile::getFilename(fn);
 
 				CI18N::writeTextFile(debugFileName, content, true);
-				nlwarning ("CF: Parsing error in file %s line %d, look in '%s' for a preprocessed version of the config file", 
-					cf_CurrentFile, 
-					cf_CurrentLine, 
+				nlwarning ("CF: Parsing error in file %s line %d, look in '%s' for a preprocessed version of the config file",
+					cf_CurrentFile,
+					cf_CurrentLine,
 					debugFileName.c_str());
 				throw EParseError (fn, cf_CurrentLine);
 			}
@@ -474,10 +474,10 @@ void CConfigFile::reparse (bool lookupPaths)
 				fn.clear ();
 		}
 		else
-			fn.clear ();	
+			fn.clear ();
 	}
 
-	if (_Callback != NULL) 
+	if (_Callback != NULL)
 		_Callback();
 
 /*	if (filename == NULL)
@@ -537,7 +537,7 @@ void CConfigFile::reparse (bool lookupPaths)
 
 	if (callingCallback)
 	{
-		if (_Callback != NULL) 
+		if (_Callback != NULL)
 			_Callback();
 	}
 */
@@ -549,7 +549,7 @@ void CConfigFile::reparse (bool lookupPaths)
 CConfigFile::CVar &CConfigFile::getVar (const std::string &varName)
 {
 	CVar *var =  getVarPtr (varName);
-	if (var == 0) 
+	if (var == 0)
 		throw EUnknownVar (getFilename(), varName);
 	else
 		return *var;
@@ -603,7 +603,7 @@ void CConfigFile::save () const
 
 	for(int i = 0; i < (int)_Vars.size(); i++)
 	{
-		// Not a root value 
+		// Not a root value
 		if (!_Vars[i].Root)
 		{
 			if (_Vars[i].Comp)

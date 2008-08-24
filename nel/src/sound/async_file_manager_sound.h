@@ -35,7 +35,7 @@ class IBuffer;
  * loas request.
  * \author Boris Boucher
  * \author Nevrax France
- * \date 2002 
+ * \date 2002
  */
 class CAsyncFileManagerSound
 {
@@ -73,11 +73,11 @@ private:
 
 	public:
 		std::string	_Filename;
-		
+
 		CLoadWavFile (IBuffer *pdestBuffer, const std::string &filename);
 		void run (void);
 	};
 
 };
-	
+
 } // NLSOUND

@@ -58,8 +58,8 @@ public:
 
 
 	/** Build method
-	  * 
-	  * 
+	  *
+	  *
 		We need 9 zone templates to create a transition set
 
 		0
@@ -91,7 +91,7 @@ public:
 		*0*1111*
 		********
 
-		3 
+		3
 		********
 		*111111*
 		*111111*
@@ -110,7 +110,7 @@ public:
 		*0000***
 		*000000*
 		********
-			  
+
 		5
 		********
 		*000000*
@@ -176,7 +176,7 @@ public:
 	  * \param errors is an array of error structure of size 9. One error structure by zone.
 	  * \return true if check success false if problem detected. Build is done if all the 18 pointers are not NULL.
 	  */
-	bool build (const CMaterial &mat0, const CMaterial &mat1, const std::vector<const CZoneTemplate*> &arrayTemplate, 
+	bool build (const CMaterial &mat0, const CMaterial &mat1, const std::vector<const CZoneTemplate*> &arrayTemplate,
 				const CLigoConfig &config, CLigoError *errors, CLigoError &mainErrors);
 
 	/**
@@ -197,7 +197,7 @@ public:
 private:
 
 	/** The 4 Edges that define the transitions set
-	  * 
+	  *
 	  * the 4 transitions are:
 	  * 0 : *000000*
 	  * 1 : *111111*

@@ -31,11 +31,11 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 /*
-	Once a reallocation of a VBHard occurs, how many vertices we add to the re-allocation, to avoid 
+	Once a reallocation of a VBHard occurs, how many vertices we add to the re-allocation, to avoid
 	as possible reallocations.
 */
 #define	NL3D_LANDSCAPE_VERTEX_ALLOCATE_SECURITY		1024
@@ -177,8 +177,8 @@ uint			CLandscapeVBAllocator::allocateVertex()
 	nlassert(_VertexInfos[id].Free);
 	_VertexInfos[id].Free= false;
 
-	
-		
+
+
 
 	return id;
 }
@@ -201,7 +201,7 @@ void			CLandscapeVBAllocator::deleteVertex(uint vid)
 void			CLandscapeVBAllocator::lockBuffer(CFarVertexBufferInfo &farVB)
 {
 	nlassert( _Type==Far0 || _Type==Far1 );
-	
+
 	// force unlock
 	unlockBuffer();
 
@@ -309,7 +309,7 @@ void				CLandscapeVBAllocator::allocateVertexBuffer(uint32 numVertices)
 	--------
 	Standard:
 	v[0] == StartPos.	Hence, It is the SplitPoint of the father face.
-	v[8] == Tex0 (xy) 
+	v[8] == Tex0 (xy)
 	v[9] == Tex1 (xy) (different meanings for Far and Tile).
 	v[13] == Tex2 (xy) (just for Tile mode).
 
@@ -464,7 +464,7 @@ const char* NL3D_LandscapeFar0EndProgram=
 /*
 	Far1:
 		Compute Alpha transition.
-		Project, copy uv0 and uv1, 
+		Project, copy uv0 and uv1,
 		NB: leave o[COL0] RGB undefined because the material don't care diffuse RGB
 */
 // ***********************
@@ -567,7 +567,7 @@ void			CLandscapeVBAllocator::setupVBFormatAndVertexProgram(bool withVertexProgr
 			_VB.initEx();
 
 			// Init the Vertex Program.
-			string	vpgram= string(NL3D_LandscapeCommonStartProgram) + 
+			string	vpgram= string(NL3D_LandscapeCommonStartProgram) +
 				string(NL3D_LandscapeFar0EndProgram);
 			_VertexProgram[0]= new CVertexProgram(vpgram.c_str());
 		}
@@ -584,7 +584,7 @@ void			CLandscapeVBAllocator::setupVBFormatAndVertexProgram(bool withVertexProgr
 			_VB.initEx();
 
 			// Init the Vertex Program.
-			string	vpgram= string(NL3D_LandscapeCommonStartProgram) + 
+			string	vpgram= string(NL3D_LandscapeCommonStartProgram) +
 				string(NL3D_LandscapeFar1EndProgram);
 			_VertexProgram[0]= new CVertexProgram(vpgram.c_str());
 		}
@@ -601,12 +601,12 @@ void			CLandscapeVBAllocator::setupVBFormatAndVertexProgram(bool withVertexProgr
 			_VB.initEx();
 
 			// Init the Vertex Program.
-			string	vpgram= string(NL3D_LandscapeCommonStartProgram) + 
+			string	vpgram= string(NL3D_LandscapeCommonStartProgram) +
 				string(NL3D_LandscapeTileEndProgram);
 			_VertexProgram[0]= new CVertexProgram(vpgram.c_str());
 
 			// Init the Vertex Program for lightmap pass
-			vpgram= string(NL3D_LandscapeCommonStartProgram) + 
+			vpgram= string(NL3D_LandscapeCommonStartProgram) +
 				string(NL3D_LandscapeTileLightMapEndProgram);
 			_VertexProgram[1]= new CVertexProgram(vpgram.c_str());
 		}

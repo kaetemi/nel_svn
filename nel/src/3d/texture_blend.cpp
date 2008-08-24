@@ -64,7 +64,7 @@ void CTextureBlend::enableSharing(bool enabled /*= false*/)
 
 //************************************************************************
 void CTextureBlend::release()
-{ 
+{
 	if (_BlendTex[0] && _BlendTex[0]->getReleasable()) _BlendTex[0]->release();
 	if (_BlendTex[1] && _BlendTex[1]->getReleasable()) _BlendTex[1]->release();
 	ITexture::release();
@@ -107,7 +107,7 @@ void CTextureBlend::doGenerate(bool async)
 	//NLMISC::TTicks start = NLMISC::CTime::getPerformanceTime();
 	_BlendTex[0]->generate();
 	_BlendTex[1]->generate();
-	
+
 	this->blend(*_BlendTex[0], *_BlendTex[1], _BlendFactor, true);
 	/*NLMISC::TTicks end = NLMISC::CTime::getPerformanceTime();
 	nlinfo("blend time = %.2f", (float) (1000 * NLMISC::CTime::ticksToSecond(end - start)));*/
@@ -121,14 +121,14 @@ void	CTextureBlend::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	ITexture::serial(f);
 	for (uint k = 0; k < 2; ++k)
 	{
-		ITexture *tex = NULL;	
+		ITexture *tex = NULL;
 		if (f.isReading())
-		{		
+		{
 			f.serialPolyPtr(tex);
 			_BlendTex[k] = tex;
 			touch();
 		}
-		else 
+		else
 		{
 			tex = _BlendTex[k];
 			f.serialPolyPtr(tex);

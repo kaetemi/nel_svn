@@ -28,7 +28,7 @@
 #include "nel/3d/lod_character_shape.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -77,7 +77,7 @@ public:
 private:
 	CLodCharacterShape			_LodCharacterShape;
 
-	NLMISC::CSmartPtr<CSkeletonShape>	_SkeletonShape; 
+	NLMISC::CSmartPtr<CSkeletonShape>	_SkeletonShape;
 	CLodCharacterShapeBuild		*_LodBuild;
 	std::vector<uint>			_BoneRemap;
 

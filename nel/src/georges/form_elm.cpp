@@ -36,7 +36,7 @@ using namespace NLMISC;
 using namespace std;
 
 namespace NLGEORGES
-{	
+{
 
 // ***************************************************************************
 // class CFormElm
@@ -48,33 +48,33 @@ void warning (bool exception, const char *format, ... );
 
 // ***************************************************************************
 
-bool CFormElm::isArray () const 
-{ 
-	return false; 
+bool CFormElm::isArray () const
+{
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getArraySize (uint &size) const 
+bool CFormElm::getArraySize (uint &size) const
 {
 	warning (false, "getArraySize", "This node is not an array.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
 bool CFormElm::getArrayNode (const UFormElm **result, uint arrayIndex) const
-{ 
+{
 	warning (false, "getArrayNode", "This node is not an array.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getArrayNode (UFormElm **result, uint arrayIndex) 
-{ 
+bool CFormElm::getArrayNode (UFormElm **result, uint arrayIndex)
+{
 	warning (false, "getArrayNode", "This node is not an array.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
@@ -175,16 +175,16 @@ bool CFormElm::getArrayValue (NLMISC::CRGBA &result, uint arrayIndex, TEval eval
 
 // ***************************************************************************
 
-bool CFormElm::isStruct () const 
-{ 
-	return false; 
+bool CFormElm::isStruct () const
+{
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::isVirtualStruct () const 
-{ 
-	return false; 
+bool CFormElm::isVirtualStruct () const
+{
+	return false;
 };
 
 // ***************************************************************************
@@ -196,49 +196,49 @@ bool CFormElm::getDfnName (std::string &dfnName ) const
 
 // ***************************************************************************
 
-bool CFormElm::getStructSize (uint &size) const 
-{ 
+bool CFormElm::getStructSize (uint &size) const
+{
 	warning (false, "getStructSize", "This node is not a struct.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getStructNodeName (uint element, string &result) const 
-{ 
+bool CFormElm::getStructNodeName (uint element, string &result) const
+{
 	warning (false, "getStructNodeName", "This node is not a struct.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getStructNode (uint element, const UFormElm **result) const 
-{ 
+bool CFormElm::getStructNode (uint element, const UFormElm **result) const
+{
 	warning (false, "getStructNode", "This node is not a struct.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getStructNode (uint element, UFormElm **result) 
-{ 
+bool CFormElm::getStructNode (uint element, UFormElm **result)
+{
 	warning (false, "getStructNode", "This node is not a struct.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::isAtom () const 
-{ 
-	return false; 
+bool CFormElm::isAtom () const
+{
+	return false;
 };
 
 // ***************************************************************************
 
-bool CFormElm::getValue (string &result, TEval evaluate) const 
-{ 
+bool CFormElm::getValue (string &result, TEval evaluate) const
+{
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 };
 
 // ***************************************************************************
@@ -246,7 +246,7 @@ bool CFormElm::getValue (string &result, TEval evaluate) const
 bool CFormElm::getValue (sint8 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -254,7 +254,7 @@ bool CFormElm::getValue (sint8 &result, TEval evaluate) const
 bool CFormElm::getValue (uint8 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -262,7 +262,7 @@ bool CFormElm::getValue (uint8 &result, TEval evaluate) const
 bool CFormElm::getValue (sint16 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -270,7 +270,7 @@ bool CFormElm::getValue (sint16 &result, TEval evaluate) const
 bool CFormElm::getValue (uint16 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -278,7 +278,7 @@ bool CFormElm::getValue (uint16 &result, TEval evaluate) const
 bool CFormElm::getValue (sint32 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -286,7 +286,7 @@ bool CFormElm::getValue (sint32 &result, TEval evaluate) const
 bool CFormElm::getValue (uint32 &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
@@ -294,31 +294,31 @@ bool CFormElm::getValue (uint32 &result, TEval evaluate) const
 bool CFormElm::getValue (float &result, TEval evaluate) const
 {
 	warning (false, "getValue", "This node is not an atom.");
-	return false; 
+	return false;
 }
 
 // ***************************************************************************
 
 bool CFormElm::getValue (double &result, TEval evaluate) const
 {
-	warning (false, "getValue", "This node is not an atom."); 
-	return false; 
+	warning (false, "getValue", "This node is not an atom.");
+	return false;
 }
 
 // ***************************************************************************
 
 bool CFormElm::getValue (bool &result, TEval evaluate) const
 {
-	warning (false, "getValue", "This node is not an atom."); 
-	return false; 
+	warning (false, "getValue", "This node is not an atom.");
+	return false;
 }
 
 // ***************************************************************************
 
 bool CFormElm::getValue (NLMISC::CRGBA &result, TEval evaluate) const
 {
-	warning (false, "getValue", "This node is not an atom."); 
-	return false; 
+	warning (false, "getValue", "This node is not an atom.");
+	return false;
 }
 
 // ***************************************************************************
@@ -392,7 +392,7 @@ bool CFormElm::getNodeByName (const UFormElm **result, const char *name, TWhereI
 			*where = (node->getForm () == Form) ? NodeForm : NodeParentForm;
 		}
 
-		// Ok 
+		// Ok
 		return true;
 	}
 
@@ -591,9 +591,9 @@ UFormElm *CFormElm::getParent () const
 
 // ***************************************************************************
 
-bool CFormElm::createNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-									const CFormDfn **nodeDfn, const CType **nodeType, 
-									CFormElm **node, UFormDfn::TEntryType &type, 
+bool CFormElm::createNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+									const CFormDfn **nodeDfn, const CType **nodeType,
+									CFormElm **node, UFormDfn::TEntryType &type,
 									bool &array, bool &created)
 {
 	*parentDfn = ParentDfn;
@@ -607,9 +607,9 @@ bool CFormElm::createNodeByName (const char *name, const CFormDfn **parentDfn, u
 
 // ***************************************************************************
 
-bool CFormElm::deleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-									const CFormDfn **nodeDfn, const CType **nodeType, 
-									CFormElm **node, UFormDfn::TEntryType &type, 
+bool CFormElm::deleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+									const CFormDfn **nodeDfn, const CType **nodeType,
+									CFormElm **node, UFormDfn::TEntryType &type,
 									bool &array)
 {
 	*parentDfn = ParentDfn;
@@ -624,9 +624,9 @@ bool CFormElm::deleteNodeByName (const char *name, const CFormDfn **parentDfn, u
 
 // ***************************************************************************
 
-bool CFormElm::getNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-									const CFormDfn **nodeDfn, const CType **nodeType, 
-									CFormElm **node, UFormDfn::TEntryType &type, 
+bool CFormElm::getNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+									const CFormDfn **nodeDfn, const CType **nodeType,
+									CFormElm **node, UFormDfn::TEntryType &type,
 									bool &array, bool &parentVDfnArray, bool verbose, uint32 round) const
 {
 	*parentDfn = ParentDfn;
@@ -640,9 +640,9 @@ bool CFormElm::getNodeByName (const char *name, const CFormDfn **parentDfn, uint
 
 // ***************************************************************************
 
-bool CFormElm::arrayInsertNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-									const CFormDfn **nodeDfn, const CType **nodeType, 
-									CFormElm **node, UFormDfn::TEntryType &type, 
+bool CFormElm::arrayInsertNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+									const CFormDfn **nodeDfn, const CType **nodeType,
+									CFormElm **node, UFormDfn::TEntryType &type,
 									bool &array, bool verbose, uint arrayIndex) const
 {
 	// Get the node by name
@@ -704,7 +704,7 @@ bool CFormElm::arrayInsertNodeByName (const char *name, const CFormDfn **parentD
 				// Set the element pointer
 				array->Elements[arrayIndex].Element = newelm;
 
-				// Ok 
+				// Ok
 				return true;
 			}
 		}
@@ -714,9 +714,9 @@ bool CFormElm::arrayInsertNodeByName (const char *name, const CFormDfn **parentD
 
 // ***************************************************************************
 
-bool CFormElm::arrayDeleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-									const CFormDfn **nodeDfn, const CType **nodeType, 
-									CFormElm **node, UFormDfn::TEntryType &type, 
+bool CFormElm::arrayDeleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+									const CFormDfn **nodeDfn, const CType **nodeType,
+									CFormElm **node, UFormDfn::TEntryType &type,
 									bool &array, bool verbose, uint arrayIndex) const
 {
 	// Get the node by name
@@ -749,7 +749,7 @@ bool CFormElm::arrayDeleteNodeByName (const char *name, const CFormDfn **parentD
 				// Erase the entry
 				array->Elements.erase (array->Elements.begin () + arrayIndex);
 
-				// Ok 
+				// Ok
 				return true;
 			}
 		}
@@ -764,7 +764,7 @@ bool CFormElm::getInternalNodeByName (CForm *form, const char *name, const CForm
 	// *** Init output variables
 	created = false;
 	parentVDfnArray = false;
-	
+
 	// ParentDfn or Node..
 	nlassert ( (*parentDfn) || (*node) );
 
@@ -988,7 +988,7 @@ bool CFormElm::getInternalNodeByName (CForm *form, const char *name, const CForm
 										// Get next node
 										CFormElmStruct *nodeStruct = safe_cast<CFormElmStruct*> (*node);
 										CFormElm *nextElt = nodeStruct->Elements[formElm].Element;
-										
+
 										// If no next node, watch for parent node
 										*node = nextElt;
 
@@ -1248,7 +1248,7 @@ bool CFormElm::getInternalNodeByName (CForm *form, const char *name, const CForm
 
 						// Type ?
 						type = (*parentDfn)->getEntry (indexDfn).getType ();
-						
+
 						// Can't be an array of array
 						array = false;
 
@@ -1416,7 +1416,7 @@ exit:;
 
 					return true;
 				}
-				else 
+				else
 				{
 					// Backup the first parent default value found
 					if (!defaultValue)
@@ -1643,7 +1643,7 @@ bool CFormElm::setValueByName (bool value, const char *name, bool *created)
 // ***************************************************************************
 
 bool CFormElm::setValueByName (NLMISC::CRGBA value, const char *name, bool *created)
-{	
+{
 	char tmp[512];
 	smprintf (tmp, 512, "%d,%d,%d", value.R, value.G, value.B);
 	return setValueByName (tmp, name, created);
@@ -1717,7 +1717,7 @@ bool CFormElmStruct::isStruct () const
 
 // ***************************************************************************
 
-bool CFormElmStruct::getStructSize (uint &size) const 
+bool CFormElmStruct::getStructSize (uint &size) const
 {
 	size = Elements.size();
 	return true;
@@ -1725,7 +1725,7 @@ bool CFormElmStruct::getStructSize (uint &size) const
 
 // ***************************************************************************
 
-bool CFormElmStruct::getStructNodeName (uint element, string &result) const 
+bool CFormElmStruct::getStructNodeName (uint element, string &result) const
 {
 	if (element<Elements.size())
 	{
@@ -1741,12 +1741,12 @@ bool CFormElmStruct::getStructNodeName (uint element, string &result) const
 
 // ***************************************************************************
 
-bool CFormElmStruct::getStructNode (uint element, const UFormElm **result) const 
+bool CFormElmStruct::getStructNode (uint element, const UFormElm **result) const
 {
 	if (element<Elements.size())
 	{
 		*result = Elements[element].Element;
-		return true; 
+		return true;
 	}
 	else
 	{
@@ -1764,12 +1764,12 @@ UFormDfn *CFormElmStruct::getStructDfn ()
 
 // ***************************************************************************
 
-bool CFormElmStruct::getStructNode (uint element, UFormElm **result) 
+bool CFormElmStruct::getStructNode (uint element, UFormElm **result)
 {
 	if (element<Elements.size())
 	{
 		*result = Elements[element].Element;
-		return true; 
+		return true;
 	}
 	else
 	{
@@ -1884,9 +1884,9 @@ void CFormElmStruct::read (xmlNodePtr node, CFormLoader &loader, const CFormDfn 
 					if (atom || _struct || vStruct || array)
 					{
 						// Same type ?
-						if ( 
-							(atom && (dfnArray[dfnId]->Entries[elm].getType ()==UFormDfn::EntryType) && (!dfnArray[dfnId]->Entries[elm].getArrayFlag ()) ) || 
-							(array && dfnArray[dfnId]->Entries[elm].getArrayFlag () && ( (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryType) || (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryDfn) ) ) || 
+						if (
+							(atom && (dfnArray[dfnId]->Entries[elm].getType ()==UFormDfn::EntryType) && (!dfnArray[dfnId]->Entries[elm].getArrayFlag ()) ) ||
+							(array && dfnArray[dfnId]->Entries[elm].getArrayFlag () && ( (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryType) || (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryDfn) ) ) ||
 							(_struct && (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryDfn) && (!dfnArray[dfnId]->Entries[elm].getArrayFlag ()) ) ||
 							(vStruct && (dfnArray[dfnId]->Entries[elm].getType () == UFormDfn::EntryVirtualDfn) && (!dfnArray[dfnId]->Entries[elm].getArrayFlag ()) )
 							)
@@ -1911,7 +1911,7 @@ void CFormElmStruct::read (xmlNodePtr node, CFormLoader &loader, const CFormDfn 
 						}
 
 						// Throw exception
-						warning (true, "read", "XML Syntax error in block line %d, node (%s) name should be STRUCT, ATOM or ARRAY.", 
+						warning (true, "read", "XML Syntax error in block line %d, node (%s) name should be STRUCT, ATOM or ARRAY.",
 							(ptrdiff_t)child->content, child->name);
 					}
 				}
@@ -2004,7 +2004,7 @@ void CFormElmStruct::build (const CFormDfn *dfn)
 
 	// Set the DFN
 	FormDfn = (CFormDfn*)dfn;
-	
+
 	// Get the parents
 	vector<const CFormDfn*> arrayDfn;
 	arrayDfn.reserve (dfn->countParentDfn ());
@@ -2193,7 +2193,7 @@ void CFormElmVirtualStruct::read (xmlNodePtr node, CFormLoader &loader, CForm *f
 	else
 	{
 		// Throw exception
-		warning (true, "read", "XML Syntax error in virtual struct in block line %d, should have a DfnName property.", 
+		warning (true, "read", "XML Syntax error in virtual struct in block line %d, should have a DfnName property.",
 			(ptrdiff_t)node->content, node->name);
 	}
 
@@ -2273,14 +2273,14 @@ void CFormElmArray::clean ()
 
 // ***************************************************************************
 
-bool CFormElmArray::isArray () const 
+bool CFormElmArray::isArray () const
 {
 	return true;
 };
 
 // ***************************************************************************
 
-bool CFormElmArray::getArraySize (uint &size) const 
+bool CFormElmArray::getArraySize (uint &size) const
 {
 	size = Elements.size ();
 	return true;
@@ -2288,7 +2288,7 @@ bool CFormElmArray::getArraySize (uint &size) const
 
 // ***************************************************************************
 
-bool CFormElmArray::getArrayNode (const UFormElm **result, uint arrayIndex) const 
+bool CFormElmArray::getArrayNode (const UFormElm **result, uint arrayIndex) const
 {
 	if (arrayIndex<Elements.size())
 	{
@@ -2323,7 +2323,7 @@ bool CFormElmArray::getArrayNodeName (std::string &result, uint arrayIndex) cons
 
 // ***************************************************************************
 
-bool CFormElmArray::getArrayNode (UFormElm **result, uint arrayIndex) 
+bool CFormElmArray::getArrayNode (UFormElm **result, uint arrayIndex)
 {
 	if (arrayIndex<Elements.size())
 	{
@@ -2561,7 +2561,7 @@ bool CFormElmArray::getArrayValue (NLMISC::CRGBA &result, uint arrayIndex, TEval
 // ***************************************************************************
 
 xmlNodePtr CFormElmArray::write (xmlNodePtr root, const CForm *form, const char *structName, bool forceWrite) const
-{	
+{
 	// Arrau is used ?
 	if (isUsed (form) || forceWrite)
 	{
@@ -2700,7 +2700,7 @@ void CFormElmArray::unlink (CFormElm *child)
 // ***************************************************************************
 
 bool CFormElmArray::isUsed (const CForm *form) const
-{	
+{
 	/*for (uint i=0; i<Elements.size(); i++)
 	{
 		if (Elements[i] && Elements[i]->isUsed (form))
@@ -2966,7 +2966,7 @@ bool CFormElmAtom::getValue (NLMISC::CRGBA &result, TEval evaluate) const
 // ***************************************************************************
 
 xmlNodePtr  CFormElmAtom::write (xmlNodePtr root, const CForm *form, const char *structName, bool forceWrite) const
-{	
+{
 	// Atom is used ?
 	if (isUsed (form) || forceWrite)
 	{

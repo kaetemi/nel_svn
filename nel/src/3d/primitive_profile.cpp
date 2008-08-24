@@ -26,7 +26,7 @@
 #include "nel/3d/primitive_profile.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************

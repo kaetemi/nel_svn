@@ -26,7 +26,7 @@
 #include "collision_desc.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 } // NLPACS

@@ -32,15 +32,15 @@ static inline void BuildHermiteVector(const NLMISC::CVector2f &P0,
 									  const NLMISC::CVector2f &P1,
 									  const NLMISC::CVector2f &T0,
 									  const NLMISC::CVector2f &T1,
-									  NLMISC::CVector2f &dest, 
+									  NLMISC::CVector2f &dest,
 									  float lambda
 									  )
-{		
+{
 	const float lambda2 = lambda * lambda;
 	const float lambda3 = lambda2 * lambda;
-	const float h1 = 2 * lambda3 - 3 * lambda2 + 1; 
-	const float h2 = - 2 * lambda3 + 3 * lambda2; 
-	const float h3 = lambda3 - 2 * lambda2 + lambda; 
+	const float h1 = 2 * lambda3 - 3 * lambda2 + 1;
+	const float h2 = - 2 * lambda3 + 3 * lambda2;
+	const float h3 = lambda3 - 2 * lambda2 + lambda;
 	const float h4 = lambda3 - lambda2;
 	/// just avoid some ctor calls here...
 	dest.set(h1 * P0.x + h2 * P1.x + h3 * T0.x + h4 * T1.x,
@@ -82,28 +82,28 @@ NLMISC::CVector2f CMouseSmoother::samplePos(const CVector2f &wantedPos, double d
 			uint numSamples = (uint) floor((date - _Sample[3].Date) / _SamplingPeriod);
 			numSamples = std::min(numSamples, (uint) 4);
 			for(uint k = 0; k < numSamples; ++k)
-			{			
+			{
 				// add a new sample
 				_Sample[0] = _Sample[1];
 				_Sample[1] = _Sample[2];
 				_Sample[2] = _Sample[3];
 				_Sample[3] = CSample(date, wantedPos);
 			}
-		}		
+		}
 		else if (date == _Sample[3].Date)
 		{
 			// update cur pos
 			_Sample[3] = CSample(date, wantedPos);
-		}		
+		}
 	}
 	if (_Sample[1].Pos.x == _Sample[2].Pos.x &&
-		_Sample[1].Pos.y == _Sample[2].Pos.y		
+		_Sample[1].Pos.y == _Sample[2].Pos.y
 	   )
 	{
 		// special case : if pointer hasn't moved, allow a discontinuity of speed
 		return _Sample[2].Pos;
 	}
-	double evalDate = date - 2 * _SamplingPeriod;	
+	double evalDate = date - 2 * _SamplingPeriod;
 	clamp(evalDate, _Sample[1].Date, _Sample[2].Date);
 	CVector2f t0;
 	double dt = _Sample[2].Date - _Sample[1].Date;
@@ -123,7 +123,7 @@ NLMISC::CVector2f CMouseSmoother::samplePos(const CVector2f &wantedPos, double d
 	else
 	{
 		t1= NLMISC::CVector::Null;
-	}	
+	}
 	NLMISC::CVector2f result;
 	if (dt == 0) return _Sample[2].Pos;
 	BuildHermiteVector(_Sample[1].Pos, _Sample[2].Pos, t0, t1, result, (float) ((evalDate - _Sample[1].Date) / dt));

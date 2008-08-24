@@ -119,20 +119,20 @@ CVector			CFrustum::projectZ(const CVector &vec) const
 	float		decalX, decalY;
 	float		w, h;
 	float		OOw, OOh;
-	
+
 	// Fast transform to openGL like axis.
 	CVector		pt;
 	pt.x= vec.x;
 	pt.y= vec.z;
 	pt.z= -vec.y;
-	
+
 	decalX= (Right+Left);
 	decalY= (Top+Bottom);
 	w= Right-Left;
 	h= Top-Bottom;
 	OOw= 1.0f/w;
 	OOh= 1.0f/h;
-	
+
 	// project to -1..+1.
 	if(Perspective)
 	{
@@ -146,13 +146,13 @@ CVector			CFrustum::projectZ(const CVector &vec) const
 		ret.x= (2*pt.x-decalX)*OOw;
 		ret.y= (2*pt.y-decalY)*OOh;
 	}
-	
-	
+
+
 	// Map it to 0..1.
 	ret.x= 0.5f*(ret.x+1);
 	ret.y= 0.5f*(ret.y+1);
 	ret.z= pt.z;
-	
+
 	return ret;
 }
 
@@ -174,7 +174,7 @@ CVector			CFrustum::unProject(const CVector &vec) const
 	pt.x= vec.x;
 	pt.y= vec.y;
 	pt.z= vec.z;
-	
+
 	// Map it to -1..1
 	pt.x= 2*(pt.x-0.5f);
 	pt.y= 2*(pt.y-0.5f);
@@ -242,7 +242,7 @@ CVector			CFrustum::unProjectZ(const CVector &vec) const
 	pt.x= vec.x;
 	pt.y= vec.y;
 	pt.z= vec.z;
-	
+
 	// Map it to -1..1
 	pt.x= 2*(pt.x-0.5f);
 	pt.y= 2*(pt.y-0.5f);

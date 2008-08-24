@@ -188,7 +188,7 @@ private:
 
 	// The service Id of this service
 	static TServiceId _MySId;
-	
+
 	/// Type of map of registered services
 	typedef std::map<TServiceId, std::string> TRegServices;
 

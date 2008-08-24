@@ -29,7 +29,7 @@
 #include "nel/georges/u_form_loader.h"
 
 
-namespace NLGEORGES 
+namespace NLGEORGES
 {
 
 class UForm;

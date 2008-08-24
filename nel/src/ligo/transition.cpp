@@ -63,7 +63,7 @@ sint32 CTransition::TransitionZoneOffset[TransitionZoneCount][2]=
 
 // ***************************************************************************
 
-bool CTransition::build (const CMaterial &mat0, const CMaterial &mat1, const std::vector<const CZoneTemplate*> &arrayTemplate, 
+bool CTransition::build (const CMaterial &mat0, const CMaterial &mat1, const std::vector<const CZoneTemplate*> &arrayTemplate,
 						 const CLigoConfig &config, CLigoError *errors, CLigoError &mainErrors)
 {
 	// Check size

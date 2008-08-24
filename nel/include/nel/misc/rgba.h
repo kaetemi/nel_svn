@@ -30,7 +30,7 @@
 #include "common.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 class	IStream;
@@ -48,7 +48,7 @@ public:
 	/// Default constructor. do nothing
 	CRGBA() {};
 
-	/** 
+	/**
 	 * Constructor.
 	 * \param r Red componant.
 	 * \param g Green componant.
@@ -58,7 +58,7 @@ public:
 	CRGBA(uint8 r, uint8 g, uint8 b, uint8 a=255) :
 		R(r), G(g), B(b), A(a) {}
 
-	/** 
+	/**
 	 * setup as a packed pixel
 	 */
 	void	setPacked(uint packed)
@@ -69,38 +69,38 @@ public:
 		A= packed & 255;
 	}
 
-	/** 
+	/**
 	 * Return a packed pixel
 	 */
 	uint	getPacked() const {return ((uint)R<<24) + ((uint)G<<16) + ((uint)B<<8) + A;}
 
-	/** 
+	/**
 	 * Comparison operator.
 	 */
 	bool	operator<(CRGBA c) const {return getPacked()<c.getPacked();}
-	/** 
+	/**
 	 * Comparison operator.
 	 */
 	bool	operator!=(CRGBA c) const {return !(*this==c);}
 
-	/** 
+	/**
 	 * Equality operator.
 	 */
-	bool	operator==(CRGBA c) const  
+	bool	operator==(CRGBA c) const
 		{return R==c.R && G==c.G && B==c.B && A==c.A;}
 
-	/** 
+	/**
 	 * Serialisation.
 	 * \param f Stream used for serialisation.
 	 */
 	void    serial (class NLMISC::IStream &f);
 
-	/** 
+	/**
 	 * Blend two colors.
 	 * \param c0 Color 0.
 	 * \param c1 Color 1.
 	 * \param coef Blend factor. 0~256. 0 return c0 and 256 return c1.
-	 */	
+	 */
 	void blendFromui(CRGBA c0, CRGBA c1, uint coef) // coef must be in [0,256]
 	{
 		uint	a1 = coef;
@@ -111,7 +111,7 @@ public:
 		A = (c0.A*a2 + c1.A*a1) >>8;
 	}
 
-	/** 
+	/**
 	 * Modulate colors with a constant.
 	 * \param c0 Color 0.
 	 * \param a E [0,256]. c0*a returned into this.
@@ -125,7 +125,7 @@ public:
 	}
 
 
-	/** 
+	/**
 	 * Modulate colors with another color.
 	 * \param c0 Color 0.
 	 * \param c1 Color 1. c0*c1 returned into this.
@@ -139,7 +139,7 @@ public:
 	}
 
 
-	/** 
+	/**
 	 * Set colors.
 	 * \param r Red componant.
 	 * \param g Green componant.
@@ -375,7 +375,7 @@ public:
 	 * Constructor from a CRGBA
 	 * \param c CRGBA color.
 	 */
-	CBGRA(CRGBA c) 
+	CBGRA(CRGBA c)
 	{
 		R=c.R;
 		G=c.G;
@@ -383,7 +383,7 @@ public:
 		A=c.A;
 	};
 
-	/** 
+	/**
 	 * Constructor.
 	 * \param r Red componant.
 	 * \param g Green componant.
@@ -401,45 +401,45 @@ public:
 		return CRGBA (R, G, B, A);
 	}
 
-	/** 
+	/**
 	 * Return a packed pixel
 	 */
-	uint	getPacked() const 
+	uint	getPacked() const
 	{
 		return ((uint)B<<24) + ((uint)G<<16) + ((uint)R<<8) + A;
 	}
 
-	/** 
+	/**
 	 * Comparison operator.
 	 */
-	bool	operator<(const CBGRA &c) const 
+	bool	operator<(const CBGRA &c) const
 	{
 		return getPacked()<c.getPacked();
 	}
 
-	/** 
+	/**
 	 * Equality operator.
 	 */
-	bool	operator==(const CBGRA &c) const  
+	bool	operator==(const CBGRA &c) const
 	{
 		return R==c.R && G==c.G && B==c.B && A==c.A;
 	}
 
-	/** 
+	/**
 	 * Serialisation.
 	 * \param f Stream used for serialisation.
 	 */
 	void    serial(class NLMISC::IStream &f);
 
-	/** 
+	/**
 	 * Blend two colors.
 	 * \param c0 Color 0.
 	 * \param c1 Color 1.
 	 * \param factor Blend factor. 0~256. 0 return c0 and 256 return c1.
 	 */
-	void blendFromui(CBGRA &c0, CBGRA &c1, uint factor); 
+	void blendFromui(CBGRA &c0, CBGRA &c1, uint factor);
 
-	/** 
+	/**
 	 * Set colors.
 	 * \param r Red componant.
 	 * \param g Green componant.
@@ -480,7 +480,7 @@ public:
 	CRGBAF ()
 	{}
 
-	/** 
+	/**
 	 * Constructor.
 	 * \param _r Red componant.
 	 * \param _g Green componant.
@@ -495,7 +495,7 @@ public:
 		A=_a;
 	}
 
-	/** 
+	/**
 	 * Constructor with a CRGBA.
 	 * \param c CRGBA color.
 	 */
@@ -507,7 +507,7 @@ public:
 		A=(float)c.A/255.f;
 	}
 
-	/** 
+	/**
 	 * Cast operator to CRGBA.
 	 */
 	operator CRGBA() const
@@ -519,7 +519,7 @@ public:
 		return CRGBA (_r, _g, _b, _a);
 	}
 
-	/** 
+	/**
 	 * Normalize component between [0.f,1.f]
 	 */
 	void normalize ()
@@ -530,7 +530,7 @@ public:
 		A= (A>1.f) ? 1.f : (A<0.f) ? 0.f : A;
 	}
 
-	/** 
+	/**
 	 * Add operator. Sum components.
 	 * \param c CRGBA color.
 	 * \return Return the result of the opertor
@@ -540,7 +540,7 @@ public:
 		return CRGBAF (R+c.R, G+c.G, B+c.B, A+c.A);
 	}
 
-	/** 
+	/**
 	 * Sub operator. Substract components.
 	 * \param c CRGBA color.
 	 * \return Return the result of the opertor
@@ -550,7 +550,7 @@ public:
 		return CRGBAF (R-c.R, G-c.G, B-c.B, A-c.A);
 	}
 
-	/** 
+	/**
 	 * Mul operator. Mul components.
 	 * \param c CRGBA color.
 	 * \return Return the result of the opertor
@@ -560,7 +560,7 @@ public:
 		return CRGBAF (R*c.R, G*c.G, B*c.B, A*c.A);
 	}
 
-	/** 
+	/**
 	 * Mul float operator. Mul each component by f.
 	 * \param f Float factor.
 	 * \return Return the result of the opertor
@@ -570,7 +570,7 @@ public:
 		return CRGBAF (R*f, G*f, B*f, A*f);
 	}
 
-	/** 
+	/**
 	 * Div float operator. Div each component by f.
 	 * \param f Float factor.
 	 * \return Return the result of the opertor
@@ -580,7 +580,7 @@ public:
 		return CRGBAF (R/f, G/f, B/f, A/f);
 	}
 
-	/** 
+	/**
 	 * Add operator. Add each component.
 	 * \param c CRGBA color.
 	 * \return Return a reference on the caller object
@@ -594,7 +594,7 @@ public:
 		return *this;
 	}
 
-	/** 
+	/**
 	 * Sub operator. Substract each component.
 	 * \param c CRGBA color.
 	 * \return Return a reference on the caller object
@@ -608,7 +608,7 @@ public:
 		return *this;
 	}
 
-	/** 
+	/**
 	 * Mul operator. Multiplate each component.
 	 * \param c CRGBA color.
 	 * \return Return a reference on the caller object
@@ -622,7 +622,7 @@ public:
 		return *this;
 	}
 
-	/** 
+	/**
 	 * Mul float operator. Multiplate each component by f.
 	 * \param f Float factor.
 	 * \return Return a reference on the caller object
@@ -636,7 +636,7 @@ public:
 		return *this;
 	}
 
-	/** 
+	/**
 	 * Div float operator. Divide each component by f.
 	 * \param f Float factor.
 	 * \return Return a reference on the caller object
@@ -650,13 +650,13 @@ public:
 		return *this;
 	}
 
-	/** 
+	/**
 	 * Serialisation.
 	 * \param f Stream used for serialisation.
 	 */
 	void    serial(class NLMISC::IStream &f);
 
-	/** 
+	/**
 	 * Set colors.
 	 * \param r Red componant.
 	 * \param g Green componant.
@@ -664,7 +664,7 @@ public:
 	 * \param a Alpha componant.
 	 */
 	void set(float r, float g, float b, float a);
-	
+
 	/// Red componant.
 	float	R;
 	/// Green componant.
@@ -675,7 +675,7 @@ public:
 	float	A;
 };
 
-/** 
+/**
  * Mul float operator. Multiplate each component by f.
  * \param f Float factor.
  * \return Return the result

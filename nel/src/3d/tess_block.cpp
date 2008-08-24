@@ -28,7 +28,7 @@
 #include "nel/3d/landscape_face_vector_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -185,7 +185,7 @@ void			CTessBlock::refillFaceVectorFar0()
 		for(pFace= FarFaceList.begin(); pFace; pFace= (CTessFace*)pFace->Next)
 		{
 			#if defined(NL_DEBUG) && defined(NL_LANDSCAPE_INDEX16)
-				nlassert(pFace->FVBase->Index0 <= 0xffff);				
+				nlassert(pFace->FVBase->Index0 <= 0xffff);
 				nlassert(pFace->FVLeft->Index0 <= 0xffff);
 				nlassert(pFace->FVRight->Index0 <= 0xffff);
 			#endif
@@ -235,7 +235,7 @@ void			CTessBlock::refillFaceVectorFar1()
 		for(pFace= FarFaceList.begin(); pFace; pFace= (CTessFace*)pFace->Next)
 		{
 			#if defined(NL_DEBUG) && defined(NL_LANDSCAPE_INDEX16)
-				nlassert(pFace->FVBase->Index1 <= 0xffff);				
+				nlassert(pFace->FVBase->Index1 <= 0xffff);
 				nlassert(pFace->FVLeft->Index1 <= 0xffff);
 				nlassert(pFace->FVRight->Index1 <= 0xffff);
 			#endif
@@ -296,7 +296,7 @@ void			CTessBlock::refillFaceVectorTile()
 					for(pFace= faceList.begin(); pFace; pFace= (CTileFace*)pFace->Next)
 					{
 						#if defined(NL_DEBUG) && defined(NL_LANDSCAPE_INDEX16)
-							nlassert(pFace->V[CTessFace::IdUvBase]->Index <= 0xffff);				
+							nlassert(pFace->V[CTessFace::IdUvBase]->Index <= 0xffff);
 							nlassert(pFace->V[CTessFace::IdUvLeft]->Index <= 0xffff);
 							nlassert(pFace->V[CTessFace::IdUvRight]->Index <= 0xffff);
 						#endif

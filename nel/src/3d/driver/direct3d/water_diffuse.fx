@@ -40,7 +40,7 @@ pixelshader water_diffuse_2_0 = asm
 technique technique_water_diffuse_2_0
 {
 	pass p0
-	{		
+	{
 		Texture[0] = <texture0>;
 		Texture[1] = <texture1>;
 		Texture[2] = <texture2>;
@@ -62,20 +62,20 @@ pixelshader water_diffuse_1_4 = asm
 	phase
 	texld r2, r2;
 	texld r3, t3;
-	mul r0, r2, r3;	
+	mul r0, r2, r3;
 };
 
 technique technique_water_diffuse_1_4
 {
 	pass p0
-	{		
+	{
 		Texture[0] = <texture0>;
 		Texture[1] = <texture1>;
 		Texture[2] = <texture2>;
 		Texture[3] = <texture3>;
 		PixelShaderConstant[0] = <factor0>;
 		PixelShaderConstant[1] = <factor1>;
-		PixelShader = (water_diffuse_1_4);		
+		PixelShader = (water_diffuse_1_4);
 	}
 };
 
@@ -92,7 +92,7 @@ pixelshader water_diffuse_1_1 = asm
 technique technique_water_diffuse_1_1
 {
 	pass p0
-	{		
+	{
 		Texture[1] = <texture1>;
 		Texture[2] = <texture2>;
 		Texture[3] = <texture3>;

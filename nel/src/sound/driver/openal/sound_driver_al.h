@@ -72,7 +72,7 @@ extern EAXGet	EAXGetProp;
 #ifdef NL_DEBUG
 void TestALError();
 #else
-#define TestALError() 
+#define TestALError()
 #endif
 
 
@@ -83,7 +83,7 @@ void TestALError();
  * The caller of the create methods is responsible for the deletion of the created objects
  * These objects must be deleted before deleting the ISoundDriver instance.
  *
- * 
+ *
  *
  * \author Olivier Cado
  * \author Nevrax France
@@ -139,7 +139,7 @@ public:
 	virtual void			writeProfile(std::string& out) {}
 
 	// Does not create a sound loader
-	
+
 	/// \name Music
 	// @{
 	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
@@ -152,9 +152,9 @@ public:
 	virtual float getMusicLength(uint channel);
 	virtual void setMusicVolume(uint channel, float gain);
 	// @}
-	
+
 public:
-	
+
 	/// Destructor
 	virtual					~CSoundDriverAL();
 
@@ -187,7 +187,7 @@ protected:
 
 	/// Delete a buffer or a source
 	bool					deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, std::vector<ALuint>& names );
-	
+
 private:
 
 	// The instance of the singleton
@@ -208,7 +208,7 @@ private:
 	// Rolloff factor (not in the listener in OpenAL, but relative to the sources)
 	float					_RolloffFactor;
 
-	
+
 	/// \name Music
 	// @{
 

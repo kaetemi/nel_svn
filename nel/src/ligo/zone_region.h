@@ -44,7 +44,7 @@ struct SPiece
 {
 	sint32				w, h;			// Max 255x255
 	std::vector<uint8>	Tab;
-	
+
 	void			rotFlip (uint8 rot, uint8 flip);
 };
 
@@ -56,7 +56,7 @@ class CZoneRegion
 public:
 
 	CZoneRegion ();
-	
+
 	void				serial (NLMISC::IStream &f);
 	void				resize (sint32 newMinX, sint32 newMaxX, sint32 newMinY, sint32 newMaxY);
 	void				basicSet (sint32 x, sint32 y, sint32 PosX, sint32 PosY,  const std::string &ZoneName);
@@ -114,7 +114,7 @@ protected:
 	{
 		uint32				DateLow;
 		uint32				DateHigh;
-		
+
 		SZoneUnit2 ();
 		void			serial (NLMISC::IStream &f);
 		const SZoneUnit2&operator= (const SZoneUnit2&zu);

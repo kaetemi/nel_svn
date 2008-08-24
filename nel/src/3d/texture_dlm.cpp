@@ -32,7 +32,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -80,7 +80,7 @@ CTextureDLM::CTextureDLM(uint width, uint height)
 		_FreeBlocks[i] = NULL;
 	}
 
-	// Since NL_DLM_BLOCK_SIZE is 10 or 18 (a factor of prime number 5 or 3 respectively), we are sure there is 
+	// Since NL_DLM_BLOCK_SIZE is 10 or 18 (a factor of prime number 5 or 3 respectively), we are sure there is
 	// at least one pixel which is not used by blcks. The last pixel is filled with black (see CTextureDLm doc)
 	nlassert(NL_DLM_BLOCK_SIZE==10 || NL_DLM_BLOCK_SIZE==18);
 	CRGBA *ptr = (CRGBA*)(&CBitmap::getPixels(0)[0]);

@@ -67,7 +67,7 @@ namespace NLMISC {
 
 #ifdef	NL_DEBUG_PATH
 	#define	NL_DISPLAY_PATH	nlinfo
-#else 
+#else
 	#ifdef __GNUC__
 		#define	NL_DISPLAY_PATH(format, args...)
 	#else // __GNUC__
@@ -399,7 +399,7 @@ void CFileContainer::loadRemappedFiles (const std::string &file)
 
 	char sTmp[514];
 	string str;
-	
+
 	while (!f.eof())
 	{
 		f.getline(sTmp, 512);
@@ -472,7 +472,7 @@ string CFileContainer::lookup (const string &filename, bool throwException, bool
 		}
 	}
 	else // NOT memory compressed
-	{				
+	{
 
 		TFiles::iterator it = _Files.find (str);
 		// If found in the map, returns it
@@ -488,18 +488,18 @@ string CFileContainer::lookup (const string &filename, bool throwException, bool
 			return path + fname;
 		}
 	}
-	
+
 
 	// Try to find in the alternative directories
 	for (uint i = 0; i < _AlternativePaths.size(); i++)
 	{
-		string s = _AlternativePaths[i] + str;		
+		string s = _AlternativePaths[i] + str;
 		if ( CFile::fileExists(s) )
 		{
 			NL_DISPLAY_PATH("PATH: CPath::lookup(%s): found in the alternative directory: '%s'", str.c_str(), s.c_str());
 			return s;
-		}		
-		
+		}
+
 		// try with the remapping
 		for (uint j = 0; j < _Extensions.size(); j++)
 		{
@@ -587,7 +587,7 @@ string CFileContainer::standardizePath (const string &path, bool addFinalSlash)
 //		newPath += "\\\\";
 //		i = 2;
 //	}
-	
+
 	for (uint i = 0; i < path.size(); i++)
 	{
 		// don't transform the first \\ for windows network path
@@ -604,13 +604,13 @@ string CFileContainer::standardizePath (const string &path, bool addFinalSlash)
 	return newPath;
 */
 
-	
+
 	// check empty path
 	if (path.empty())
 		return "";
 
 	string newPath(path);
-	
+
 	for (uint i = 0; i < path.size(); i++)
 	{
 		// don't transform the first \\ for windows network path
@@ -746,11 +746,11 @@ DIR *opendir (const char *path)
 
 	if (!CFile::isDirectory(path))
 		return NULL;
-	
+
 	sDir = path;
 
 	hFind = NULL;
-	
+
 	return (void *)1;
 }
 
@@ -909,10 +909,10 @@ void CFileContainer::getPathContent (const string &path, bool recurse, bool want
 				char sep = lastSep == std::string::npos ? '/'
 														: path[lastSep];
 			#endif
-*/			
+*/
 			string stdName = standardizePath(path) + getname(de);
-			
-				
+
+
 			NL_DISPLAY_PATH("PATH: CPath::getPathContent(%s, %d, %d, %d): adding file '%s'", path.c_str(), recurse, wantDir, wantFile, stdName.c_str());
 			result.push_back (stdName);
 		}
@@ -926,7 +926,7 @@ void CFileContainer::getPathContent (const string &path, bool recurse, bool want
 
 	// let s recurse
 	for (uint i = 0; i < recursPath.size (); i++)
-	{		
+	{
 		// Progress bar
 		if (progressCallBack)
 		{
@@ -971,9 +971,9 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 	// check empty directory
 	if (path.empty())
 	{
-		nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): can't add empty directory, skip it", 
-			path.c_str(), 
-			recurse ? "recursive" : "not recursive", 
+		nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): can't add empty directory, skip it",
+			path.c_str(),
+			recurse ? "recursive" : "not recursive",
 			alternative ? "alternative" : "not alternative");
 		return;
 	}
@@ -981,10 +981,10 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 	// check if it s a directory
 	if (!CFile::isDirectory (path))
 	{
-		nlinfo ("PATH: CPath::addSearchPath(%s, %s, %s): '%s' is not a directory, I'll call addSearchFile()", 
-			path.c_str(), 
-			recurse ? "recursive" : "not recursive", 
-			alternative ? "alternative" : "not alternative", 
+		nlinfo ("PATH: CPath::addSearchPath(%s, %s, %s): '%s' is not a directory, I'll call addSearchFile()",
+			path.c_str(),
+			recurse ? "recursive" : "not recursive",
+			alternative ? "alternative" : "not alternative",
 			path.c_str());
 		addSearchFile (path, false, "", progressCallBack);
 		return;
@@ -995,10 +995,10 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 	// check if it s a directory
 	if (!CFile::isExists (newPath))
 	{
-		nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): '%s' is not found, skip it", 
-			path.c_str(), 
-			recurse ? "recursive" : "not recursive", 
-			alternative ? "alternative" : "not alternative", 
+		nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): '%s' is not found, skip it",
+			path.c_str(),
+			recurse ? "recursive" : "not recursive",
+			alternative ? "alternative" : "not alternative",
 			newPath.c_str());
 		return;
 	}
@@ -1033,18 +1033,18 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 			{
 				// add them in the alternative directory
 				_AlternativePaths.push_back (pathsToProcess[p]);
-				NL_DISPLAY_PATH("PATH: CPath::addSearchPath(%s, %s, %s): path '%s' added", 
-					newPath.c_str(), 
-					recurse ? "recursive" : "not recursive", 
-					alternative ? "alternative" : "not alternative", 
+				NL_DISPLAY_PATH("PATH: CPath::addSearchPath(%s, %s, %s): path '%s' added",
+					newPath.c_str(),
+					recurse ? "recursive" : "not recursive",
+					alternative ? "alternative" : "not alternative",
 					pathsToProcess[p].c_str());
 			}
 			else
 			{
-				nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): path '%s' already added", 
-					newPath.c_str(), 
-					recurse ? "recursive" : "not recursive", 
-					alternative ? "alternative" : "not alternative", 
+				nlwarning ("PATH: CPath::addSearchPath(%s, %s, %s): path '%s' already added",
+					newPath.c_str(),
+					recurse ? "recursive" : "not recursive",
+					alternative ? "alternative" : "not alternative",
 					pathsToProcess[p].c_str());
 			}
 		}
@@ -1122,10 +1122,10 @@ void CFileContainer::addSearchFile (const string &file, bool remap, const string
 	// check if the file exists
 	if (!CFile::isExists (newFile))
 	{
-		nlwarning ("PATH: CPath::addSearchFile(%s, %d, '%s'): '%s' is not found, skip it (current dir is '%s'", 
-			file.c_str(), 
-			remap, 
-			virtual_ext.c_str(), 
+		nlwarning ("PATH: CPath::addSearchFile(%s, %d, '%s'): '%s' is not found, skip it (current dir is '%s'",
+			file.c_str(),
+			remap,
+			virtual_ext.c_str(),
 			newFile.c_str(),
 			CPath::getCurrentPath().c_str());
 		return;
@@ -1134,10 +1134,10 @@ void CFileContainer::addSearchFile (const string &file, bool remap, const string
 	// check if it s a file
 	if (CFile::isDirectory (newFile))
 	{
-		nlwarning ("PATH: CPath::addSearchFile(%s, %d, '%s'): '%s' is not a file, skip it", 
-			file.c_str(), 
-			remap, 
-			virtual_ext.c_str(), 
+		nlwarning ("PATH: CPath::addSearchFile(%s, %d, '%s'): '%s' is not a file, skip it",
+			file.c_str(),
+			remap,
+			virtual_ext.c_str(),
 			newFile.c_str());
 		return;
 	}
@@ -1311,9 +1311,9 @@ void CFileContainer::addSearchBigFile (const string &sBigFilename, bool recurse,
 				if (_Extensions[j].first == ext)
 				{
 					// need to remap
-					insertFileInMap (filenamewoext+"."+_Extensions[j].second, 
-									bigfilenamealone + "@" + sTmp, 
-									true, 
+					insertFileInMap (filenamewoext+"."+_Extensions[j].second,
+									bigfilenamealone + "@" + sTmp,
+									true,
 									_Extensions[j].first);
 				}
 			}
@@ -1398,9 +1398,9 @@ void CFileContainer::addSearchXmlpackFile (const string &sXmlpackFilename, bool 
 				if (_Extensions[j].first == ext)
 				{
 					// need to remap
-					insertFileInMap (filenamewoext+"."+_Extensions[j].second, 
-									packfilenamealone + "@@" + filenames[i], 
-									true, 
+					insertFileInMap (filenamewoext+"."+_Extensions[j].second,
+									packfilenamealone + "@@" + filenames[i],
+									true,
 									_Extensions[j].first);
 				}
 			}
@@ -1474,11 +1474,11 @@ void CFileContainer::insertFileInMap (const string &filename, const string &file
 
 			if (path2 == sPathOnly)
 				return;
-			nlwarning ("PATH: CPath::insertFileInMap(%s, %s, %d, %s): already inserted from '%s', skip it", 
-				filename.c_str(), 
-				filepath.c_str(), 
-				remap, 
-				extension.c_str(), 
+			nlwarning ("PATH: CPath::insertFileInMap(%s, %s, %d, %s): already inserted from '%s', skip it",
+				filename.c_str(),
+				filepath.c_str(),
+				remap,
+				extension.c_str(),
 				path2.c_str());
 		}
 	}
@@ -1492,7 +1492,7 @@ void CFileContainer::insertFileInMap (const string &filename, const string &file
 			sTmp = filepath.substr(0,filepath.rfind('/')+1);
 		else if (filepath.find("@@") != string::npos)
 			sTmp = filepath.substr(0,filepath.rfind("@@")+2);
-		else 
+		else
 			sTmp = filepath.substr(0,filepath.rfind('@')+1);
 
 		fe.idPath = SSMpath.add(sTmp);
@@ -1570,22 +1570,22 @@ void CFileContainer::removeBigFiles(const std::vector<std::string> &bnpFilenames
 		{
 			_Files.erase(fileIt);
 		}
-	}				
+	}
 	if (bnpStrIds.empty()) return;
-	//	remove remapped files	
+	//	remove remapped files
 	std::map<std::string, std::string>::iterator remapIt, remapCurrIt;
 	for(remapIt = _RemappedFiles.begin(); remapIt != _RemappedFiles.end();)
 	{
 		remapCurrIt = remapIt;
-		++ remapIt;		
+		++ remapIt;
 		const std::string &filename = remapCurrIt->second;
 		fileIt = _Files.find(filename);
 		if (fileIt != _Files.end())
 		{
 			if (bnpStrIds.count(fileIt->second.idPath))
-			{			
+			{
 				_Files.erase(fileIt);
-				_RemappedFiles.erase(remapCurrIt);			
+				_RemappedFiles.erase(remapCurrIt);
 			}
 		}
 	}
@@ -1593,13 +1593,13 @@ void CFileContainer::removeBigFiles(const std::vector<std::string> &bnpFilenames
 	for(fileIt = _Files.begin(); fileIt != _Files.end();)
 	{
 		fileCurrIt = fileIt;
-		++ fileIt;		
+		++ fileIt;
 		if (bnpStrIds.count(fileCurrIt->second.idPath))
-		{			
-			_Files.erase(fileCurrIt);			
-		}		
-	}	
-	
+		{
+			_Files.erase(fileCurrIt);
+		}
+	}
+
 
 }
 
@@ -1610,7 +1610,7 @@ void CPath::memoryCompress()
 }
 
 void CFileContainer::memoryCompress()
-{ 
+{
 
 	SSMext.memoryCompress();
 	SSMpath.memoryCompress();
@@ -1656,7 +1656,7 @@ void CFileContainer::memoryCompress()
 			_MCFiles[nNb].Name = _AllFileNames+nSize;
 			nSize += rFE.Name.size() + 1;
 		}
-		else 
+		else
 		{
 			// This is a file included in a bigfile (so the name is in the bigfile manager)
 			sTmp = sTmp.substr(0, sTmp.size()-1);
@@ -1666,7 +1666,7 @@ void CFileContainer::memoryCompress()
 				nlerror("memoryCompress: failed to find named file in big file: %s",SSMpath.get(rFE.idPath));
 			}
 		}
-		
+
 		_MCFiles[nNb].idExt = rFE.idExt;
 		_MCFiles[nNb].idPath = rFE.idPath;
 		_MCFiles[nNb].Remapped = rFE.Remapped;
@@ -1686,8 +1686,8 @@ void CPath::memoryUncompress()
 
 void CFileContainer::memoryUncompress()
 {
-	SSMext.memoryUncompress(); 
-	SSMpath.memoryUncompress(); 		
+	SSMext.memoryUncompress();
+	SSMpath.memoryUncompress();
 	for(std::vector<CMCFileEntry>::iterator it = _MCFiles.begin(); it != _MCFiles.end(); ++it)
 	{
 		CFileEntry fe;
@@ -1718,7 +1718,7 @@ std::string CFileContainer::getWindowsDirectory()
 	if (numChar > MAX_PATH || numChar == 0)
 	{
 		nlwarning("Couldn't retrieve windows directory");
-		return "";	
+		return "";
 	}
 	return CPath::standardizePath(winDir);
 #endif
@@ -1826,7 +1826,7 @@ string CFile::findNewFile (const string &filename)
 	string::size_type pos = filename.find_last_of ('.');
 	if (pos == string::npos)
 		return filename;
-	
+
 	string start = filename.substr (0, pos);
 	string end = filename.substr (pos);
 
@@ -1973,12 +1973,12 @@ uint32	CFile::getFileModificationDate(const std::string &filename)
 #elif defined (NL_OS_UNIX)
 	struct stat buf;
 	int result = stat (fn.c_str (), &buf);
-	if (result != 0) 
+	if (result != 0)
 	{
 		nlwarning("Can't get modification date on file '%s' : %s", fn.c_str(), NLMISC::formatErrorMessage(NLMISC::getLastError()).c_str());
 		return 0;
 	}
-	else 
+	else
 		return (uint32)buf.st_mtime;
 #endif
 
@@ -2019,7 +2019,7 @@ bool	CFile::setFileModificationDate(const std::string &filename, uint32 modTime)
 		CloseHandle(h);
 		return false;
 	}
-	
+
 	// win32 file times are in 10th of micro sec (100ns resolution), starting at jan 1, 1601
 	// hey Mr Gates, why 1601 ?
 
@@ -2046,7 +2046,7 @@ bool	CFile::setFileModificationDate(const std::string &filename, uint32 modTime)
 		CloseHandle(h);
 		return false;
 	}
-	
+
 	// close the handle
 	CloseHandle(h);
 
@@ -2056,7 +2056,7 @@ bool	CFile::setFileModificationDate(const std::string &filename, uint32 modTime)
 	// first, read the current time of the file
 	struct stat buf;
 	int result = stat (fn.c_str (), &buf);
-	if (result != 0) 
+	if (result != 0)
 		return false;
 
 	// prepare the new time to apply
@@ -2069,7 +2069,7 @@ bool	CFile::setFileModificationDate(const std::string &filename, uint32 modTime)
 		nlwarning("Can't set modification date on file '%s': %s", fn.c_str(), formatErrorMessage(getLastError()).c_str());
 	return res != -1;
 #endif
-	
+
 }
 
 uint32	CFile::getFileCreationDate(const std::string &filename)
@@ -2164,7 +2164,7 @@ void CFile::checkFileChange (TTime frequency)
 static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool failIfExists = false, IProgressCallback *progress = NULL)
 {
 	if (!dest || !src) return false;
-	if (!strlen(dest) || !strlen(src)) return false;	
+	if (!strlen(dest) || !strlen(src)) return false;
 	std::string sdest = CPath::standardizePath(dest,false);
 	std::string ssrc = CPath::standardizePath(src,false);
 
@@ -2195,9 +2195,9 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 		static char buffer [1000];
 		size_t s;
 
-		s = fread(buffer, 1, sizeof(buffer), fp1);		
+		s = fread(buffer, 1, sizeof(buffer), fp1);
 		while (s != 0)
-		{			
+		{
 			if (progress)
 			{
 				readSize += s;
@@ -2209,10 +2209,10 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 				nlwarning("Error copying '%s' to '%s', trying to write %u bytes failed.",
 					ssrc.c_str(),
 					sdest.c_str(),
-					s);				
+					s);
 				fclose(fp1);
 				fclose(fp2);
-				nlwarning("Errno = %d", errno);				
+				nlwarning("Errno = %d", errno);
 				return false;
 			}
 			s = fread(buffer, 1, sizeof(buffer), fp1);
@@ -2228,8 +2228,8 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 		if (MoveFile(ssrc.c_str(), sdest.c_str()) == 0)
 		{
 			LPVOID lpMsgBuf;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-					    FORMAT_MESSAGE_FROM_SYSTEM | 
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					    FORMAT_MESSAGE_FROM_SYSTEM |
 						FORMAT_MESSAGE_IGNORE_INSERTS,
 						NULL,
 						GetLastError(),
@@ -2237,8 +2237,8 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 						(LPTSTR) &lpMsgBuf,
 						0,
 						NULL );
-			nlwarning ("PATH: CopyMoveFile error: can't link/move '%s' into '%s', error %u (%s)", 
-				ssrc.c_str(), 
+			nlwarning ("PATH: CopyMoveFile error: can't link/move '%s' into '%s', error %u (%s)",
+				ssrc.c_str(),
 				sdest.c_str(),
 				GetLastError(),
 				lpMsgBuf);
@@ -2250,8 +2250,8 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 //		// This code does not work for directories!
 //		if (link (ssrc.c_str(), sdest.c_str()) == -1)
 //		{
-//			nlwarning ("PATH: CopyMoveFile error: can't link/move '%s' into '%s', error %u", 
-//				ssrc.c_str(), 
+//			nlwarning ("PATH: CopyMoveFile error: can't link/move '%s' into '%s', error %u",
+//				ssrc.c_str(),
 //				sdest.c_str(),
 //				errno);
 //			return false;
@@ -2264,13 +2264,13 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 
 		if (rename (ssrc.c_str(), sdest.c_str()) == -1)
 		{
-			nlwarning ("PATH: CopyMoveFile error: can't rename '%s' into '%s', error %u", 
-				ssrc.c_str(), 
+			nlwarning ("PATH: CopyMoveFile error: can't rename '%s' into '%s', error %u",
+				ssrc.c_str(),
 				sdest.c_str(),
 				errno);
 			return false;
 		}
-		
+
 #endif
 	}
 	if (progress) progress->progress(1.f);
@@ -2437,7 +2437,7 @@ bool CPath::makePathRelative (const char *basePath, std::string &relativePath)
 		// New prefix
 		prefix += "../";
 	}
-	
+
 	return false;
 }
 

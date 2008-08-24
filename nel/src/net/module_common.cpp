@@ -37,7 +37,7 @@ namespace NLNET
 	{
 
 
-		
+
 		uint first = 0, last = copy.SubParams.size();
 		SubParams.resize( last );
 		for (; first != last; ++first)
@@ -104,7 +104,7 @@ namespace NLNET
 	bool TParsedCommandLine::_parseParamList(const std::string &rawParamString)
 	{
 		CSString parsedString(rawParamString);
-		
+
 		for (CSString part = parsedString.strtok(" \t", true, false);
 			!part.empty();
 			part = parsedString.strtok(" \t", true, false))
@@ -140,7 +140,7 @@ namespace NLNET
 
 				if (!SubParams.back()->_parseParamList(part))
 				{
-					nlwarning("Error parsing sub param list for header '%s' in '%s'", 
+					nlwarning("Error parsing sub param list for header '%s' in '%s'",
 						SubParams.back()->ParamName.c_str(),
 						rawParamString.c_str());
 					return false;
@@ -159,7 +159,7 @@ namespace NLNET
 				// this is a quoted parameter value
 				if (SubParams.empty() || !SubParams.back()->ParamValue.empty())
 				{
-					nlwarning("While parsing param string '%s', param '%s' already have the value '%s'", 
+					nlwarning("While parsing param string '%s', param '%s' already have the value '%s'",
 						rawParamString.c_str(),
 						SubParams.back()->ParamName.c_str(),
 						SubParams.back()->ParamValue.c_str());
@@ -223,7 +223,7 @@ namespace NLNET
 				subName.join(reinterpret_cast<CVectorSString&>(parts), ".");
 				sub->setParam(subName, value);
 			}
-			else 
+			else
 			{
 				// last level, set the value
 				sub->ParamValue = value;

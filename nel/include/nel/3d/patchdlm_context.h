@@ -33,7 +33,7 @@
 #include "nel/3d/landscape_def.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -154,7 +154,7 @@ public:
 	 *	NB: full dst blackness is cached.
 	 *	\param compType say if, before writing to the texture, the lightmap is modulated with _Patch TileColor,
 	 *	_Patch textureFar (precomputed in the context), modulate with a constant or not modulated at all
-	 *	\param modulateCte used only if compType==ModulateConstant. this is the cte to be modulate by lightmap 
+	 *	\param modulateCte used only if compType==ModulateConstant. this is the cte to be modulate by lightmap
 	 *	before copy to texture
 	 */
 	void			compileLighting(TCompileType compType, NLMISC::CRGBA modulateCte= NLMISC::CRGBA::White);

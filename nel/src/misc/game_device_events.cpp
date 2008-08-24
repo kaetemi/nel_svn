@@ -25,7 +25,7 @@
 #include "nel/misc/game_device_events.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

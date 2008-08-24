@@ -28,14 +28,14 @@
 #include "nel/3d/driver.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
-IVertexProgramDrvInfos::IVertexProgramDrvInfos (IDriver *drv, ItVtxPrgDrvInfoPtrList it) 
+IVertexProgramDrvInfos::IVertexProgramDrvInfos (IDriver *drv, ItVtxPrgDrvInfoPtrList it)
 {
-	_Driver= drv; 
+	_Driver= drv;
 	_DriverIterator= it;
 }
 

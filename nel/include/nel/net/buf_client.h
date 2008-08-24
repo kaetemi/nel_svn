@@ -57,7 +57,7 @@ public:
 	TSockId					sockId() { return (TSockId)_NBBufSock; }
 
 	uint32	NbLoop;
-	
+
 private:
 
 	CBufClient					*_Client;
@@ -100,10 +100,10 @@ public:
 
 	/// Destructor
 	virtual ~CBufClient();
-	
+
 	/// Connects to the specified host
 	void	connect( const CInetAddress& addr );
-		
+
 	/** Disconnects the remote host and empties the receive queue.
 	 * Before that, tries to flush pending data to send unless quick is true.
 	 * In case of network congestion, the entire pending data may not be flushed.
@@ -150,7 +150,7 @@ public:
 	{
 		_BufSock->SendFifo.displayStats(log);
 	}
-	
+
 	void displayThreadStat (NLMISC::CLog *log);
 
 	/** Sets the time flush trigger (in millisecond). When this time is elapsed,
@@ -172,12 +172,12 @@ public:
 	bool	flush( uint *nbBytesRemaining=NULL ) { return _BufSock->flush( nbBytesRemaining ); }
 
 
-	
+
 	/** Returns true if the connection is still connected (changed when a disconnection
 	 * event has reached the front of the receive queue, just before calling the disconnection callback
 	 * if there is one)
 	 */
-	bool	connected() const { return _BufSock->connectedState(); } 
+	bool	connected() const { return _BufSock->connectedState(); }
 
 	/// Returns the address of the remote host
 	const CInetAddress&	remoteAddress() const { return _BufSock->Sock->remoteAddr(); }
@@ -197,7 +197,7 @@ public:
 	/*//Not right because we add callbacks in the receive queue
 	/// Returns the number of bytes popped by receive() since the beginning (mutexed on the receive queue)
 	uint64	bytesReceived() {  }
-	
+
 	/// Returns the number of bytes pushed by send() since the beginning
 	uint64	bytesSent() { return bytesUploaded() + getSendQueueSize(); }
 

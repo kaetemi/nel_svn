@@ -155,7 +155,7 @@ public:
 	  * NB: this is called by render()
 	  * \param systemTimeEllapsed : the time between 2 calls to updateWaitingInstances, in seconds
 	  */
-	virtual void			updateWaitingInstances(double systemTimeEllapsed) = 0;	  
+	virtual void			updateWaitingInstances(double systemTimeEllapsed) = 0;
 
 
 	/**
@@ -177,8 +177,8 @@ public:
 	/// Get the current Viewport.
 	virtual	CViewport		getViewport()=0;
 
-	/** Special For Camera Third person. Traverse the ClusterSystem with a Ray 
-	 *	(clip through portals, cluster system hierarchy...), to find where could lies 
+	/** Special For Camera Third person. Traverse the ClusterSystem with a Ray
+	 *	(clip through portals, cluster system hierarchy...), to find where could lies
 	 *	the camera at End point.
 	 *	\param endPos may be modified to ensure that it lies in a cluster of the found cluster system
 	 *	\return the found cluster System
@@ -212,23 +212,23 @@ public:
 	 */
 	virtual	void			deleteInstance(UInstance &inst)=0;
 
-	/** create an instance group asynchronously, and add it to a scene asynchronously once it has been 
+	/** create an instance group asynchronously, and add it to a scene asynchronously once it has been
 	  * loaded. The instance groups that must be added to the scene are checked at each render.
 	  * The pIG pointer is filled once the instance group has been loaded and add to the scene
 	  */
-	virtual	void createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup,														
+	virtual	void createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup,
 													    UInstanceGroup **pIG,
 														const NLMISC::CVector &pos,
 														const NLMISC::CQuat &rot,
 														uint selectedTexture,
 														IAsyncLoadCallback *pCB = NULL
 													   ) = 0;
-	
+
 	/**	If we are adding the ig : stop loading and adding it to the scene
 	  * if the ig is already added to the scene : remove it from scene
 	  */
 	virtual	void stopCreatingAndAddingIG(UInstanceGroup **pIG) = 0;
-	
+
 	/** Delete an instance group
 	  */
 	virtual void deleteInstanceGroup(UInstanceGroup *pIG) = 0;
@@ -260,7 +260,7 @@ public:
 	virtual	void			deleteCloudScape(UCloudScape *cs)=0;
 
 	/** Assign the Instance Group to the root cluster
-	  * 
+	  *
 	  */
 	virtual	void setToGlobalInstanceGroup(UInstanceGroup *pIGU) = 0;
 	//virtual	UInstanceGroup	*createInstanceGroup(const std::string &instanceGroup) =0;
@@ -282,9 +282,9 @@ public:
 	virtual	UPlayListManager	*createPlayListManager() =0;
 	/// Delete a PlayListManager.
 	virtual	void				deletePlayListManager(UPlayListManager *playListManager) =0;
-	/** Set the automatic animation set used by the scene.	  
+	/** Set the automatic animation set used by the scene.
 	  */
-	virtual void				setAutomaticAnimationSet(UAnimationSet *as) = 0;	
+	virtual void				setAutomaticAnimationSet(UAnimationSet *as) = 0;
 	// @}
 
 	/// \name Visual Collision manager.
@@ -401,11 +401,11 @@ public:
 	  */
 	virtual	uint				getMaxLightContribution() const =0;
 
-	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits 
+	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits
 	 *	of the light (attenuationEnd), the light can be darkened according to some threshold.
 	 *	The resultLightColor begin to fade when distModelToLight== attEnd- threshold*(attEnd-attBegin).
 	 *	when distModelToLight== 0, resultLightColor==Black.
-	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will 
+	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will
 	 *	generally darken the global effects of lights.
 	 *	NB: clamp(value, 0, 1);
 	 */
@@ -456,7 +456,7 @@ public:
 	virtual void				resetCLodManager() =0;
 
 	/** Load a Shape Bank. The ShapeMap is rebuilt. Hence slow call.
-	 *	NB: a vector of ShapeBank is maintained internally, hence, not so many shapeBank should be 
+	 *	NB: a vector of ShapeBank is maintained internally, hence, not so many shapeBank should be
 	 *	created at same Time.
 	 *	throw exception if failed to load the file
 	 *	\param fileName is a .clodbank file, to be loaded. CPath::lookup is used.
@@ -624,11 +624,11 @@ public:
 	  * \param maxPriority Defines the valid range for priority in the [0, n] interval. By default, there's no priority sorting (0 -> single priority, 255 -> 256 possible priorities)
 	  *                    Objects with higher priority are displayed before any other object with lower priority,
 	  *                    whatever their distance is.
-	  * \param NbDistanceEntries Defines the granularity for distance sorting. A value of N with a view distance of D meters means 
+	  * \param NbDistanceEntries Defines the granularity for distance sorting. A value of N with a view distance of D meters means
 	  *                          that the sorting accuracy will be of D / N meters at worst (when visible objects occupy the whole distance range)
 	  * NB : The memory allocated is a multiple of NumPriority * NbDistanceEntries * 2 (2 if because of water ordering)
 	  */
-	virtual void setupTransparencySorting(uint8 maxPriority = 0, uint NbDistanceEntries = 1024) = 0;	
+	virtual void setupTransparencySorting(uint8 maxPriority = 0, uint NbDistanceEntries = 1024) = 0;
 
 	/// \name Water envmaps
 	// @{
@@ -642,7 +642,7 @@ public:
 	  * Should be called at the beginning of the frame before anything is rendered.
 	  */
 	virtual void		  updateWaterEnvMaps(TGlobalAnimationTime time) = 0;
-	// @} 
+	// @}
 };
 
 } // NL3D

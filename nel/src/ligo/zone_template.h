@@ -72,7 +72,7 @@ private:
 
 	/// Round a value on the snap resolution
 	static inline void snap (float& value, float snap);
-	
+
 	/// Snap a value on the grid
 	static inline bool snapOnGrid (float& value, float resolution, float snap);
 

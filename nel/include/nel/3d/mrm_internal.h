@@ -181,7 +181,7 @@ struct	CMRMEdgeFace : public CMRMEdge
 {
 	CMRMFaceBuild		*Face;
 	CMRMEdgeFace();
-	CMRMEdgeFace(sint a, sint b, CMRMFaceBuild *f) 
+	CMRMEdgeFace(sint a, sint b, CMRMFaceBuild *f)
 	{
 		v0=a; v1=b;
 		Face= f;
@@ -299,7 +299,7 @@ public:
 		return Corner[0].Vertex==numvertex || Corner[1].Vertex==numvertex || Corner[2].Vertex==numvertex;
 	}
 
-	
+
 	// Wedges.
 	//==========
 	bool	hasWedge(sint attribId, sint numwedge)

@@ -55,9 +55,9 @@ public:
 		uint Rel1NumBits; // 4 for - 8 .. + 7 range
 		uint Rel2NumBits; // 8 for - 128 .. + 127 range
 		uint AbsNumBits; // num bits for absolute value
-	};	
+	};
 	void serialPackedVector16(std::vector<uint16> &v, NLMISC::IStream &f, const CFormat &format);
-	
+
 
 private:
 	// format is stored as 2 bits at each entry
@@ -76,19 +76,19 @@ private:
 	uint				_Repeated[4]; // statistics
 	CFormat				_Format;
 private:
-	void bufferizeDelta(uint32 tag, sint32 delta, CBitMemStream &bits);	
-	void flush(CBitMemStream &bits);	
+	void bufferizeDelta(uint32 tag, sint32 delta, CBitMemStream &bits);
+	void flush(CBitMemStream &bits);
 	void writeSimpleValue(CBitMemStream &bits, sint32 delta);
 	void readSimpleValue(uint32 tag, std::vector<uint16> &v, CBitMemStream &bits);
-	static sint32 getMax(uint numBits) 
+	static sint32 getMax(uint numBits)
 	{
 		return (uint32) ((1 << (numBits - 1)) - 1);
 	}
-	static sint32 getMin(uint numBits) 
+	static sint32 getMin(uint numBits)
 	{
 		return (uint32) (0xfffffffe << (numBits - 2));
 	}
-	static void extendSign(uint numBits, uint32 &value) 
+	static void extendSign(uint numBits, uint32 &value)
 	{
 		if (value & (1 << (numBits - 1)))
 		{
@@ -99,22 +99,22 @@ private:
 
 //********************************************************************************************
 void CVectorPacker::writeSimpleValue(CBitMemStream &bits, sint32 delta)
-{				
+{
 	uint32 croppedDelta = (uint32) delta;
 	switch(_LastTag)
 	{
 		case Rel0:
-		{				
+		{
 			bits.serial(croppedDelta, _Format.Rel0NumBits);
-		}				
+		}
 		break;
 		case Rel1:
-		{				
+		{
 			bits.serial(croppedDelta, _Format.Rel1NumBits);
 		}
 		break;
 		case Rel2:
-		{				
+		{
 			bits.serial(croppedDelta, _Format.Rel2NumBits);
 		}
 		break;
@@ -128,7 +128,7 @@ void CVectorPacker::writeSimpleValue(CBitMemStream &bits, sint32 delta)
 		default:
 			nlassert(0);
 		break;
-	}	
+	}
 	if (_LastTag == AbsOrRLE)
 	{
 		//nlwarning("writing simple value %d (tag = %d)", (int) (uint16) delta, (int) _LastTag);
@@ -137,41 +137,41 @@ void CVectorPacker::writeSimpleValue(CBitMemStream &bits, sint32 delta)
 	{
 		//nlwarning("writing simple delta %d (tag = %d)", (int) delta, (int) _LastTag);
 	}
-	++ _Count[_LastTag];		
+	++ _Count[_LastTag];
 }
 
 //********************************************************************************************
 void CVectorPacker::readSimpleValue(uint32 tag, std::vector<uint16> &v, CBitMemStream &bits)
-{		
+{
 	uint32 croppedDelta;
 	switch(tag)
 	{
 		case Rel0:
 			bits.serial(croppedDelta, _Format.Rel0NumBits);
 			extendSign(_Format.Rel0NumBits, croppedDelta);
-			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);			
-		break;					
+			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);
+		break;
 		case Rel1:
 			bits.serial(croppedDelta, _Format.Rel1NumBits);
 			extendSign(_Format.Rel1NumBits, croppedDelta);
-			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);			
+			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);
 		break;
 		case Rel2:
 			bits.serial(croppedDelta, _Format.Rel2NumBits);
 			extendSign(_Format.Rel2NumBits, croppedDelta);
-			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);			
+			v[_ReadIndex] = (uint16) (v[_ReadIndex - 1] + (sint16) croppedDelta);
 		break;
 		default:
 			nlassert(0);
 		break;
 	}
 	//nlwarning("reading simple delta %d (tag = %d)", (int) (v[_ReadIndex] - v[_ReadIndex - 1]), (int) tag);
-	++ _ReadIndex;	
+	++ _ReadIndex;
 }
 
 //********************************************************************************************
 void CVectorPacker::flush(CBitMemStream &bits)
-{		
+{
 	if (_LastDeltas.empty()) return;
 	if (_LastDeltas.size() > 4)
 	{
@@ -179,25 +179,25 @@ void CVectorPacker::flush(CBitMemStream &bits)
 		uint32 repeatTag = AbsOrRLE;
 		bits.serial(repeatTag, 2);
 		uint32 isRLE = 1;
-		bits.serial(isRLE, 1);		
+		bits.serial(isRLE, 1);
 		bits.serial(_LastTag, 2);
 		nlassert(_LastDeltas.size() <= 255);
 		uint8 length = _LastDeltas.size();
-		//nlwarning("begin RLE, length = %d, tag = %d", (int) length, (int) repeatTag);	
+		//nlwarning("begin RLE, length = %d, tag = %d", (int) length, (int) repeatTag);
 		bits.serial(length);
 		for(uint k = 0; k < _LastDeltas.size(); ++k)
 		{
 			writeSimpleValue(bits, _LastDeltas[k]);
 		}
 		_LastDeltas.clear();
-		++_Repeated[_LastTag];			
+		++_Repeated[_LastTag];
 	}
 	else
 	{
 		// flush separate values
 		for(uint k = 0; k < _LastDeltas.size(); ++k)
 		{
-			//nlwarning("write single value tag %d", (int) _LastTag);		
+			//nlwarning("write single value tag %d", (int) _LastTag);
 			bits.serial(_LastTag, 2);
 			if (_LastTag == (uint32) AbsOrRLE)
 			{
@@ -207,7 +207,7 @@ void CVectorPacker::flush(CBitMemStream &bits)
 			writeSimpleValue(bits, _LastDeltas[k]);
 		}
 		_LastDeltas.clear();
-	}		
+	}
 }
 
 //********************************************************************************************
@@ -224,21 +224,21 @@ void CVectorPacker::bufferizeDelta(uint32 tag, sint32 delta, CBitMemStream &bits
 //********************************************************************************************
 void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream &f, const CFormat &format)
 {
-	_Format = format;	
+	_Format = format;
 	if (f.isReading())
-	{				
+	{
 		CBitMemStream bits(true);
 		std::vector<uint8> datas;
-		f.serialCont(datas);		
+		f.serialCont(datas);
 		bits.fill(&datas[0], datas.size());
 		uint32 numValues = 0;
-		bits.serial(numValues);		
-		v.resize(numValues);	
+		bits.serial(numValues);
+		v.resize(numValues);
 		_ReadIndex = 0;
-		while (_ReadIndex != numValues)		
+		while (_ReadIndex != numValues)
 		{
-			if (_ReadIndex == 0)	
-			{				
+			if (_ReadIndex == 0)
+			{
 				uint32 value;
 				bits.serial(value, _Format.AbsNumBits);
 				v[0] = (uint16) value;
@@ -246,17 +246,17 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 				++ _ReadIndex;
 			}
 			else
-			{				
+			{
 				uint32 tag;
-				bits.serial(tag, 2);					
+				bits.serial(tag, 2);
 				//nlwarning("read tag %d", (int) tag);
 				switch(tag)
 				{
-					
-					case Rel0:							
-					case Rel1:							
+
+					case Rel0:
+					case Rel1:
 					case Rel2:
-						readSimpleValue(tag, v, bits);							
+						readSimpleValue(tag, v, bits);
 					break;
 					case AbsOrRLE:
 					{
@@ -264,7 +264,7 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 						uint32 isRLE = 0;
 						bits.serial(isRLE, 1);
 						if (isRLE)
-						{							
+						{
 							uint32 repeatTag;
 							bits.serial(repeatTag, 2);
 							uint8 length;
@@ -273,11 +273,11 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 							for(uint l = 0; l < length; ++l)
 							{
 								switch(repeatTag)
-								{	
-									case Rel0:											
-									case Rel1:											
+								{
+									case Rel0:
+									case Rel1:
 									case Rel2:
-										readSimpleValue(repeatTag, v, bits);											
+										readSimpleValue(repeatTag, v, bits);
 									break;
 									case AbsOrRLE:
 										uint32 value;
@@ -289,11 +289,11 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 									default:
 										throw NLMISC::EInvalidDataStream();
 									break;
-								}									
+								}
 							}
 						}
 						else
-						{							
+						{
 							// absolute value
 							uint32 value = 0;
 							bits.serial(value, _Format.AbsNumBits);
@@ -302,13 +302,13 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 							++ _ReadIndex;
 						}
 					}
-					break;					
-				}				
+					break;
+				}
 			}
-		}			
+		}
 	}
 	else
-	{				
+	{
 		_Count[Rel0] = 0;
 		_Count[Rel1] = 0;
 		_Count[Rel2] = 0;
@@ -323,21 +323,21 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 		bits.serial(numValues);
 		_LastTag = std::numeric_limits<uint32>::max();
 		_LastDeltas.clear();
-		for(uint k = 0; k < v.size(); ++k)			
+		for(uint k = 0; k < v.size(); ++k)
 		{
-			if (k == 0)	
-			{				
+			if (k == 0)
+			{
 				uint32 value = v[0];
 				bits.serial(value, _Format.AbsNumBits);
 				//nlwarning("v[0] = %d", (int) v[0]);
 			}
 			else
-			{		
-				sint32 delta = v[k] - v[k - 1];				
+			{
+				sint32 delta = v[k] - v[k - 1];
 				if (delta >= getMin(_Format.Rel0NumBits) && delta <= getMax(_Format.Rel0NumBits))
-				{			
+				{
 					bufferizeDelta(Rel0, delta, bits);
-				}				
+				}
 				else if (delta >= getMin(_Format.Rel1NumBits) && delta <= getMax(_Format.Rel1NumBits))
 				{
 					bufferizeDelta(Rel1, delta, bits);
@@ -349,15 +349,15 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 				else
 				{
 					bufferizeDelta(AbsOrRLE, v[k], bits); // absolute value here ...
-				}				
+				}
 			}
 		}
 		flush(bits);
 		std::vector<uint8> datas(bits.buffer(), bits.buffer() + bits.length());
-		f.serialCont(datas);	
+		f.serialCont(datas);
 		/*
 		if (_Count[Rel0] != 0 || _Count[Rel1] != 0 || _Count[Rel2] != 0 || _Count[AbsOrRLE] != 0)
-		{			
+		{
 			nlwarning("count0 = %d", _Count[Rel0]);
 			nlwarning("count1 = %d", _Count[Rel1]);
 			nlwarning("count2 = %d", _Count[Rel2]);
@@ -367,10 +367,10 @@ void CVectorPacker::serialPackedVector16(std::vector<uint16> &v,NLMISC::IStream 
 			nlwarning("repeat 1 = %d", _Repeated[Rel1]);
 			nlwarning("repeat 2 = %d", _Repeated[Rel2]);
 			nlwarning("repeat Abs = %d", _Repeated[AbsOrRLE]);
-			nlwarning("*");			
+			nlwarning("*");
 		}
 		*/
-	}	
+	}
 }
 
 
@@ -387,7 +387,7 @@ void serialPackedVector16(std::vector<uint16> &v, NLMISC::IStream &f)
 	packer.serialPackedVector16(v, f, format);
 	/*
 	if (!v.empty())
-	{		
+	{
 		nlwarning("*");
 		uint num = std::min((uint) v.size(), (uint) 1000);
 		for(uint k = 0; k < num; ++k)
@@ -408,10 +408,10 @@ void serialPackedVector12(std::vector<uint16> &v, NLMISC::IStream &f)
 	format.Rel1NumBits = 6;
 	format.Rel2NumBits = 9;
 	format.AbsNumBits = 12;
-	packer.serialPackedVector16(v, f, format);	
+	packer.serialPackedVector16(v, f, format);
 	/*
 	if (!v.empty())
-	{		
+	{
 		nlwarning("*");
 		uint num = std::min((uint) v.size(), (uint) 1000);
 		for(uint k = 0; k < num; ++k)
@@ -482,11 +482,11 @@ static inline void pushVBQuad(NLMISC::CVector *&dest, const NLMISC::CQuad &quad)
 	*dest++ = quad.V0;
 	*dest++ = quad.V1;
 	*dest++ = quad.V2;
-	*dest++ = quad.V3;	
+	*dest++ = quad.V3;
 }
 
 
-// compute rasters union. 
+// compute rasters union.
 static void computeRastersUnion(const CPolygon2D::TRasterVect &inRaster0, CPolygon2D::TRasterVect &inRaster1, sint minY0, sint minY1,
 						 CPolygon2D::TRasterVect &outRaster, sint &finalMinY)
 {
@@ -510,13 +510,13 @@ static void computeRastersUnion(const CPolygon2D::TRasterVect &inRaster0, CPolyg
 	}
 	nlassert(&outRaster != &inRaster0);
 	nlassert(&outRaster != &inRaster1);
-	finalMinY = std::min(minY0, minY1);	
-	sint maxY = std::max(minY0 + (sint) inRaster0.size(), minY1 + (sint) inRaster1.size());	
+	finalMinY = std::min(minY0, minY1);
+	sint maxY = std::max(minY0 + (sint) inRaster0.size(), minY1 + (sint) inRaster1.size());
 	outRaster.resize(maxY - finalMinY);
 	for(sint y = 0; y < (sint) outRaster.size(); ++y)
 	{
 		outRaster[y].first  = INT_MAX;
-		outRaster[y].second = INT_MIN;		
+		outRaster[y].second = INT_MIN;
 		sint raster0Y = y + finalMinY - minY0;
 		if (raster0Y >= 0  && raster0Y < (sint) inRaster0.size())
 		{
@@ -567,7 +567,7 @@ CPackedZone16::CPackedZone16()
 
 //***************************************************************************************
 void CPackedZone32::unpackTri(const CPackedTri &src, CVector dest[3]) const
-{	
+{
 	// TODO: add 'multiply-add' operator
 	dest[0].set(Verts[src.V0].X * _PackedLocalToWorld.x + _Origin.x,
 		        Verts[src.V0].Y * _PackedLocalToWorld.y + _Origin.y,
@@ -585,7 +585,7 @@ void CPackedZone32::unpackTri(const CPackedTri &src, CVector dest[3]) const
 //***************************************************************************************
 CPackedZone32::CPackedZone32()
 {
-	CellSize = 0;	
+	CellSize = 0;
 	_Origin = CVector::Null;
 }
 
@@ -607,7 +607,7 @@ void CPackedZone32::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 	{
 		_PackedLocalToWorld.set(1.f / (_WorldToLocal.x * (float) PACKED_COL_RANGE),
 								1.f / (_WorldToLocal.y * (float) PACKED_COL_RANGE),
-								1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));	
+								1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));
 	}
 }
 
@@ -632,7 +632,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 	Verts.clear();
 	Tris.clear();
 	TriLists.clear();
-	Grid.clear();	
+	Grid.clear();
 	if (leaves.empty()) return;
 	for(uint k = 0; k < leaves.size(); ++k)
 	{
@@ -651,7 +651,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 	}
 	CAABBox landBBox = Box;
 	landBBox.extend(baseZoneBBox.getMin());
-	landBBox.extend(baseZoneBBox.getMax());	
+	landBBox.extend(baseZoneBBox.getMax());
 	// list of instances that contribute to that zone
 	std::vector<CZoneInstance> instances;
 	// extends with instances that intersect the land bbox with respect to x/y
@@ -696,8 +696,8 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 	float depth = cornerMax.z - cornerMin.z;
 	if (width == 0 || height == 0) return;
 	Grid.init(width, height, ~0);
-	// 
-	TVertexGrid   vertexGrid; // grid for fast sharing of vertices 
+	//
+	TVertexGrid   vertexGrid; // grid for fast sharing of vertices
 	TTriListGrid  triListGrid; // grid for list of tris per grid cell (before packing in a single vector)
 	vertexGrid.init(width, height);
 	triListGrid.init(width, height);
@@ -714,13 +714,13 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 		tri.V0 = leaves[k]->VBase->EndPos;
 		tri.V1 = leaves[k]->VLeft->EndPos;
 		tri.V2 = leaves[k]->VRight->EndPos;
-		addTri(tri, vertexGrid, triListGrid);		
-	}	
-	// add each ig	
+		addTri(tri, vertexGrid, triListGrid);
+	}
+	// add each ig
 	for(uint k = 0; k < instances.size(); ++k)
-	{					
+	{
 		addInstance(*instances[k].SI, instances[k].WorldMat, vertexGrid, triListGrid);
-	}	
+	}
 	// pack tri lists
 	for (uint y = 0; y < height; ++y)
 	{
@@ -740,9 +740,9 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 	//
 	_PackedLocalToWorld.set(1.f / (_WorldToLocal.x * (float) PACKED_COL_RANGE),
 						    1.f / (_WorldToLocal.y * (float) PACKED_COL_RANGE),
-						    1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));	
-	// reorder vertices by distance for better compression : start with first vertex then found closest vertex	
-	// 		
+						    1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));
+	// reorder vertices by distance for better compression : start with first vertex then found closest vertex
+	//
 	/*
 	std::vector<uint32> triRemapping(Verts.size());
 	std::vector<uint32> vertRemapping(Verts.size());
@@ -778,7 +778,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 		lastPos = Verts[todo[best]];
 		vertRemapping[k] = todo[best];
 		triRemapping[todo[best]] = k;
-		todo[best] = todo[todo.size() - 1];				
+		todo[best] = todo[todo.size() - 1];
 		todo.pop_back();
 	}
 	// remap all tris
@@ -787,14 +787,14 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 		Tris[k].V0 = triRemapping[Tris[k].V0];
 		Tris[k].V1 = triRemapping[Tris[k].V1];
 		Tris[k].V2 = triRemapping[Tris[k].V2];
-	}	
+	}
 	// reorder vertices
 	std::vector<CPackedVertex>  remappedVerts(Verts.size());
 	for(uint k = 0; k < Verts.size(); ++k)
 	{
 		remappedVerts[k] = Verts[vertRemapping[k]];
 	}
-	Verts.swap(remappedVerts);	
+	Verts.swap(remappedVerts);
 	/////////////////////////////////////////////////////////////////////
 	// reorder tris
 	triRemapping.resize(Tris.size());
@@ -813,7 +813,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 		for(uint l = 0; l < todo.size(); ++l)
 		{
 			uint32 score = abs(Tris[todo[l]].V0 - lastIndex) +
-						   abs(Tris[todo[l]].V1 - Tris[todo[l]].V0) + 
+						   abs(Tris[todo[l]].V1 - Tris[todo[l]].V0) +
 						   abs(Tris[todo[l]].V2 - Tris[todo[l]].V1);
 			if (score < bestScore)
 			{
@@ -824,31 +824,31 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 		lastIndex = Tris[todo[best]].V2;
 		triRemapping[k] = todo[best];
 		triListRemapping[todo[best]] = k;
-		todo[best] = todo[todo.size() - 1];				
+		todo[best] = todo[todo.size() - 1];
 		todo.pop_back();
 	}
-	// remap tri lists	
+	// remap tri lists
 	for(uint k = 0; k < TriLists.size(); ++k)
 	{
 		if (TriLists[k] != ~0)
 		{
 			TriLists[k] = triListRemapping[TriLists[k]];
 		}
-	}	
+	}
 	// reorder tris
 	std::vector<CPackedTri>  remappedTris(Tris.size());
 	for(uint k = 0; k < Tris.size(); ++k)
 	{
 		remappedTris[k] = Tris[triRemapping[k]];
 	}
-	Tris.swap(remappedTris);	
+	Tris.swap(remappedTris);
 	*/
 
 	// reorder tri lists for better compression
 	std::vector<uint32>::iterator firstIt = TriLists.begin();
 	std::vector<uint32>::iterator currIt = firstIt;
 	std::vector<uint32>::iterator lastIt = TriLists.end();
-	
+
 	while (currIt != lastIt)
 	{
 		if (*currIt == (uint32)(~0))
@@ -882,22 +882,22 @@ void CPackedZone32::addTri(const CTriangle &tri, TVertexGrid &vertexGrid, TTriLi
 	CPackedTri pt;
 	pt.V0 = allocVertex(tri.V0, vertexGrid);
 	pt.V1 = allocVertex(tri.V1, vertexGrid);
-	pt.V2 = allocVertex(tri.V2, vertexGrid);	
-	
+	pt.V2 = allocVertex(tri.V2, vertexGrid);
+
 	//
 	static CPolygon2D::TRasterVect  rasters;
-	static CPolygon2D				polyTri;	
+	static CPolygon2D				polyTri;
 	sint							minY;
 	polyTri.Vertices.resize(3);
-	//	
+	//
 	polyTri.Vertices[0].set((tri.V0.x - _Origin.x) / CellSize, (tri.V0.y - _Origin.y) / CellSize);
 	polyTri.Vertices[1].set((tri.V1.x - _Origin.x) / CellSize, (tri.V1.y - _Origin.y) / CellSize);
-	polyTri.Vertices[2].set((tri.V2.x - _Origin.x) / CellSize, (tri.V2.y - _Origin.y) / CellSize);	
+	polyTri.Vertices[2].set((tri.V2.x - _Origin.x) / CellSize, (tri.V2.y - _Origin.y) / CellSize);
 	//
 	polyTri.computeOuterBorders(rasters, minY);
 	if (rasters.empty()) return;
 	Tris.push_back(pt);
-	//		
+	//
 	for (sint y = 0; y < (sint) rasters.size(); ++y)
 	{
 		sint gridY = y + minY;
@@ -941,7 +941,7 @@ uint32 CPackedZone32::allocVertex(const CVector &src, TVertexGrid &vertexGrid)
 	{
 		if (Verts[*it] == pv) return *it; // exists already
 	}
-	
+
 
 	// create a new vertex
 	Verts.push_back(pv);
@@ -954,15 +954,15 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 {
 	if (Tris.empty()) return;
 	IDriver::TPolygonMode oldPolygonMode = drv.getPolygonMode();
-	//	
+	//
 	CVector frustCorners[8];
 	for(uint k = 0; k < sizeofarray(frustCorners); ++k)
 	{
 		frustCorners[k] = camMat * localFrustCorners[k];
 		frustCorners[k].x -= _Origin.x;
-		frustCorners[k].y -= _Origin.y;		
+		frustCorners[k].y -= _Origin.y;
 	}
-	// project frustum on x/y plane to see where to test polys		
+	// project frustum on x/y plane to see where to test polys
 	sint minY = INT_MAX;
 	static CPolygon2D::TRasterVect silhouette;
 	silhouette.clear();
@@ -971,10 +971,10 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 	addQuadToSilhouette(frustCorners[4], frustCorners[5], frustCorners[6], frustCorners[7], silhouette, minY, CellSize);
 	addQuadToSilhouette(frustCorners[0], frustCorners[4], frustCorners[7], frustCorners[3], silhouette, minY, CellSize);
 	addQuadToSilhouette(frustCorners[0], frustCorners[1], frustCorners[5], frustCorners[4], silhouette, minY, CellSize);
-	addQuadToSilhouette(frustCorners[3], frustCorners[7], frustCorners[6], frustCorners[2], silhouette, minY, CellSize);	
-	//		
-	{		
-		CVertexBufferReadWrite vba;	
+	addQuadToSilhouette(frustCorners[3], frustCorners[7], frustCorners[6], frustCorners[2], silhouette, minY, CellSize);
+	//
+	{
+		CVertexBufferReadWrite vba;
 		vb.setNumVertices(batchSize * 3);
 		vb.lock(vba);
 		CVector *dest = vba.getVertexCoordPointer(0);
@@ -986,7 +986,7 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 			if (gridY >= (sint) Grid.getHeight()) continue;
 			sint minX = silhouette[y].first;
 			sint maxX = silhouette[y].second;
-			for (sint x = minX; x <= maxX; ++x)			
+			for (sint x = minX; x <= maxX; ++x)
 			{
 				if (x < 0) continue;
 				if (x >= (sint) Grid.getWidth()) break;
@@ -995,16 +995,16 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 				for (;;)
 				{
 					uint32 triIndex = TriLists[triRefIndex];
-					if (triIndex == (uint32)(~0)) break; // end of list					
+					if (triIndex == (uint32)(~0)) break; // end of list
 					unpackTri(Tris[triIndex], dest);
 					dest += 3;
 					if (dest == endDest)
 					{
 						// flush batch
-						vba.unlock();						
+						vba.unlock();
 						drv.setPolygonMode(IDriver::Filled);
 						drv.activeVertexBuffer(vb);
-						drv.renderRawTriangles(material, 0, batchSize);						
+						drv.renderRawTriangles(material, 0, batchSize);
 						drv.setPolygonMode(IDriver::Line);
 						//drv.renderRawTriangles(wiredMaterial, 0, batchSize);
 						// reclaim a new batch
@@ -1014,16 +1014,16 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 						endDest = dest + batchSize * 3;
 					}
 					++ triRefIndex;
-				}				
+				}
 			}
 		}
 		vba.unlock();
 		uint numRemainingTris = batchSize - ((endDest - dest) / 3);
 		if (numRemainingTris)
-		{			
+		{
 			drv.setPolygonMode(IDriver::Filled);
 			drv.activeVertexBuffer(vb);
-			drv.renderRawTriangles(material, 0, numRemainingTris);		
+			drv.renderRawTriangles(material, 0, numRemainingTris);
 			drv.setPolygonMode(IDriver::Line);
 			//drv.renderRawTriangles(wiredMaterial, 0, numRemainingTris);
 		}
@@ -1033,13 +1033,13 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 
 //***************************************************************************************
 void CPackedZone32::addInstance(const CShapeInfo &si, const NLMISC::CMatrix &matrix, TVertexGrid &vertexGrid, TTriListGrid &triListGrid)
-{	
+{
 	for(uint k = 0; k < si.Tris.size(); ++k)
 	{
 		CTriangle worldTri;
 		si.Tris[k].applyMatrix(matrix, worldTri);
 		addTri(worldTri, vertexGrid, triListGrid);
-	}	
+	}
 }
 
 //***************************************************************************************
@@ -1074,14 +1074,14 @@ CSmartPtr<CPackedZone16> CPackedZone32::buildPackedZone16()
 		}
 	}
 	dest->_Origin = _Origin;
-	dest->_WorldToLocal = _WorldToLocal;	
+	dest->_WorldToLocal = _WorldToLocal;
 	dest->ZoneX = ZoneX;
-	dest->ZoneY = ZoneY;	
-	
+	dest->ZoneY = ZoneY;
+
 	dest->_PackedLocalToWorld.set(1.f / (dest->_WorldToLocal.x * (float) PACKED_COL_RANGE),
 								  1.f / (dest->_WorldToLocal.y * (float) PACKED_COL_RANGE),
-								  1.f / (dest->_WorldToLocal.z * (float) PACKED_COL_RANGE));	
-	
+								  1.f / (dest->_WorldToLocal.z * (float) PACKED_COL_RANGE));
+
 	return dest;
 }
 
@@ -1089,12 +1089,12 @@ CSmartPtr<CPackedZone16> CPackedZone32::buildPackedZone16()
 void CPackedZone16::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 {
 	f.serialVersion(0);
-	f.serial(Box);	
-	std::vector<uint16> datas;	
+	f.serial(Box);
+	std::vector<uint16> datas;
 	if (f.isReading())
-	{		
+	{
 		// vertices
-		serialPackedVector12(datas, f);		
+		serialPackedVector12(datas, f);
 		Verts.resize(datas.size() / 3);
 		for(uint k = 0; k < Verts.size(); ++k)
 		{
@@ -1116,18 +1116,18 @@ void CPackedZone16::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 		// grid
 		uint16 width = (uint16) Grid.getWidth();
 		uint16 height = (uint16) Grid.getHeight();
-		f.serial(width, height);		
-		Grid.init(width, height);		
+		f.serial(width, height);
+		Grid.init(width, height);
 		serialPackedVector16(datas, f);
 		if ((uint) datas.size() != (uint) width * (uint) height)
 		{
 			throw NLMISC::EInvalidDataStream();
-		}		
-		std::copy(datas.begin(), datas.end(), Grid.begin());		
+		}
+		std::copy(datas.begin(), datas.end(), Grid.begin());
 	}
 	else
-	{		
-		// vertices		
+	{
+		// vertices
 		datas.resize(Verts.size() * 3);
 		for(uint k = 0; k < Verts.size(); ++k)
 		{
@@ -1153,13 +1153,13 @@ void CPackedZone16::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 		// grid
 		uint16 width = (uint16) Grid.getWidth();
 		uint16 height = (uint16) Grid.getHeight();
-		f.serial(width, height);		
+		f.serial(width, height);
 		datas.resize((uint) width * (uint) height);
-		std::copy(Grid.begin(), Grid.end(), datas.begin());		
+		std::copy(Grid.begin(), Grid.end(), datas.begin());
 		//nlwarning("serial grid");
-		serialPackedVector16(datas, f);		
-	}			
-	f.serial(CellSize);	
+		serialPackedVector16(datas, f);
+	}
+	f.serial(CellSize);
 	f.serial(_Origin);
 	f.serial(_WorldToLocal);
 	f.serial(ZoneX);
@@ -1169,7 +1169,7 @@ void CPackedZone16::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 	{
 		_PackedLocalToWorld.set(1.f / (_WorldToLocal.x * (float) PACKED_COL_RANGE),
 								1.f / (_WorldToLocal.y * (float) PACKED_COL_RANGE),
-								1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));	
+								1.f / (_WorldToLocal.z * (float) PACKED_COL_RANGE));
 	}
 }
 
@@ -1177,15 +1177,15 @@ void CPackedZone16::serial(NLMISC::IStream &f) throw (NLMISC::EStream)
 void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material, CMaterial &wiredMaterial, const CMatrix &camMat, uint batchSize, const CVector localFrustCorners[8])
 {
 	if (Tris.empty()) return;
-	IDriver::TPolygonMode oldPolygonMode = drv.getPolygonMode();		
+	IDriver::TPolygonMode oldPolygonMode = drv.getPolygonMode();
 	CVector frustCorners[8];
 	for(uint k = 0; k < sizeofarray(frustCorners); ++k)
 	{
 		frustCorners[k] = camMat * localFrustCorners[k];
 		frustCorners[k].x -= _Origin.x;
-		frustCorners[k].y -= _Origin.y;		
+		frustCorners[k].y -= _Origin.y;
 	}
-	// project frustum on x/y plane to see where to test polys		
+	// project frustum on x/y plane to see where to test polys
 	sint minY = INT_MAX;
 	static CPolygon2D::TRasterVect silhouette;
 	silhouette.clear();
@@ -1194,10 +1194,10 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 	addQuadToSilhouette(frustCorners[4], frustCorners[5], frustCorners[6], frustCorners[7], silhouette, minY, CellSize);
 	addQuadToSilhouette(frustCorners[0], frustCorners[4], frustCorners[7], frustCorners[3], silhouette, minY, CellSize);
 	addQuadToSilhouette(frustCorners[0], frustCorners[1], frustCorners[5], frustCorners[4], silhouette, minY, CellSize);
-	addQuadToSilhouette(frustCorners[3], frustCorners[7], frustCorners[6], frustCorners[2], silhouette, minY, CellSize);	
-	//		
+	addQuadToSilhouette(frustCorners[3], frustCorners[7], frustCorners[6], frustCorners[2], silhouette, minY, CellSize);
+	//
 	{
-		CVertexBufferReadWrite vba;		
+		CVertexBufferReadWrite vba;
 		vb.setNumVertices(batchSize * 3);
 		vb.lock(vba);
 		CVector *dest = vba.getVertexCoordPointer(0);
@@ -1209,7 +1209,7 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 			if (gridY >= (sint) Grid.getHeight()) continue;
 			sint minX = silhouette[y].first;
 			sint maxX = silhouette[y].second;
-			for (sint x = minX; x <= maxX; ++x)			
+			for (sint x = minX; x <= maxX; ++x)
 			{
 				if (x < 0) continue;
 				if (x >= (sint) Grid.getWidth()) break;
@@ -1222,12 +1222,12 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 					unpackTri(Tris[triIndex], dest);
 					dest += 3;
 					if (dest == endDest)
-					{						
+					{
 						// flush batch
-						vba.unlock();						
+						vba.unlock();
 						drv.setPolygonMode(IDriver::Filled);
 						drv.activeVertexBuffer(vb);
-						drv.renderRawTriangles(material, 0, batchSize);						
+						drv.renderRawTriangles(material, 0, batchSize);
 						drv.setPolygonMode(IDriver::Line);
 						//drv.renderRawTriangles(wiredMaterial, 0, batchSize);
 						// reclaim a new batch
@@ -1237,19 +1237,19 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 						endDest = dest + batchSize * 3;
 					}
 					++ triRefIndex;
-				}				
+				}
 			}
 		}
-		vba.unlock();		
+		vba.unlock();
 		uint numRemainingTris = batchSize - ((endDest - dest) / 3);
 		if (numRemainingTris)
-		{			
+		{
 			drv.setPolygonMode(IDriver::Filled);
 			drv.activeVertexBuffer(vb);
-			drv.renderRawTriangles(material, 0, numRemainingTris);			
+			drv.renderRawTriangles(material, 0, numRemainingTris);
 			drv.setPolygonMode(IDriver::Line);
 			//drv.renderRawTriangles(wiredMaterial, 0, numRemainingTris);
-		}		
+		}
 	}
 	drv.setPolygonMode(oldPolygonMode);
 }
@@ -1260,7 +1260,7 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 
 //***************************************************************************************
 void CPackedZone16::unpackTri(const CPackedTri16 &src, CVector dest[3]) const
-{	
+{
 	// yes this is ugly code duplication of CPackedZone16::unpackTri but this code is temporary anyway...
 	// TODO: add 'multiply-add' operator
 	dest[0].set(Verts[src.V0].X * _PackedLocalToWorld.x + _Origin.x,
@@ -1277,18 +1277,18 @@ void CPackedZone16::unpackTri(const CPackedTri16 &src, CVector dest[3]) const
 
 // raytrace code, common to CPackedZone32 & CPackedZone16
 template <class T> bool raytrace(T &packedZone, const NLMISC::CVector &start, const NLMISC::CVector &end, NLMISC::CVector &inter, std::vector<CTriangle> *testedTriangles = NULL, NLMISC::CVector *normal = NULL)
-{	
+{
 	if (packedZone.Grid.empty()) return false;
-	CVector2f start2f((start.x - packedZone.Box.getMin().x) / packedZone.CellSize, (start.y - packedZone.Box.getMin().y) / packedZone.CellSize);	
+	CVector2f start2f((start.x - packedZone.Box.getMin().x) / packedZone.CellSize, (start.y - packedZone.Box.getMin().y) / packedZone.CellSize);
 	CVector2f dir2f((end.x - start.x) / packedZone.CellSize, (end.y - start.y) / packedZone.CellSize);
 	sint x, y;
 	CGridTraversal::startTraverse(start2f, x, y);
 	do
-	{		
+	{
 		if (x < 0) continue;
 		if (x >= (sint) packedZone.Grid.getWidth()) continue;
 		if (y < 0) continue;
-		if (y >= (sint) packedZone.Grid.getHeight()) continue;		
+		if (y >= (sint) packedZone.Grid.getHeight()) continue;
 		uint32 triListIndex = packedZone.Grid(x, y);
 		if (triListIndex != (uint32)(~0))
 		{
@@ -1335,30 +1335,30 @@ template <class T> bool raytrace(T &packedZone, const NLMISC::CVector &start, co
 //***************************************************************************************
 bool CPackedZone32::raytrace(const NLMISC::CVector &start, const NLMISC::CVector &end, NLMISC::CVector &inter, std::vector<CTriangle> *testedTriangles /*= NULL*/, NLMISC::CVector *normal /*= NULL*/) const
 {
-	return NL3D::raytrace(*this, start, end, inter, testedTriangles, normal);	
+	return NL3D::raytrace(*this, start, end, inter, testedTriangles, normal);
 }
 
 //***************************************************************************************
 bool CPackedZone16::raytrace(const NLMISC::CVector &start, const NLMISC::CVector &end, NLMISC::CVector &inter, std::vector<CTriangle> *testedTriangles /*= NULL*/, NLMISC::CVector *normal /*= NULL*/) const
-{	
+{
 	return NL3D::raytrace(*this, start, end, inter, testedTriangles, normal);
 }
 
 //***************************************************************************************
 void CPackedZone16::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<NLMISC::CTriangle> &selectedTriangles) const
-{	
+{
 	// compute covered zones
 	NLMISC::CPolygon2D localPoly = poly;
 	for (uint k = 0; k < localPoly.Vertices.size(); ++k)
 	{
 		localPoly.Vertices[k].x = (localPoly.Vertices[k].x - Box.getMin().x) / CellSize;
-		localPoly.Vertices[k].y = (localPoly.Vertices[k].y - Box.getMin().y) / CellSize;		
+		localPoly.Vertices[k].y = (localPoly.Vertices[k].y - Box.getMin().y) / CellSize;
 	}
 	NLMISC::CPolygon2D::TRasterVect borders;
 	sint minY;
 	localPoly.computeOuterBorders(borders, minY);
 	CTriangle newTri;
-	// 
+	//
 	std::vector<bool> done(Tris.size(), false); // avoid double insertion
 	//
 	for (sint y = minY; y < (sint) (minY + borders.size()); ++y)
@@ -1381,7 +1381,7 @@ void CPackedZone16::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<
 						}
 						++ currTriIndex;
 					}
-				}				
+				}
 			}
 		}
 	}
@@ -1403,7 +1403,7 @@ void CPackedZone32::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<
 	sint minY;
 	localPoly.computeOuterBorders(borders, minY);
 	CTriangle newTri;
-	// 
+	//
 	std::vector<bool> done(Tris.size(), false); // avoid double insertion
 	//
 	for (sint y = minY; y < (sint) (minY + borders.size()); ++y)
@@ -1426,7 +1426,7 @@ void CPackedZone32::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<
 						}
 						++ currTriIndex;
 					}
-				}				
+				}
 			}
 		}
 	}

@@ -116,7 +116,7 @@ typedef void (*emptyProc)(void);
 // *** IMPORTANT ********************
 // *** IF YOU MODIFY THE STRUCTURE OF THIS CLASS, PLEASE INCREMENT IDriver::InterfaceVersion TO INVALIDATE OLD DRIVER DLL
 // **********************************
-// 
+//
 // * Driver implementation notes:
 // *
 // * Driver implementation must save monitor color parameters at initialization and restore it at release.
@@ -145,7 +145,7 @@ public:
 	/**
 	  * Driver Max matrix count.
 	  *	Kept for backward compatibility. Suppose any Hardware VertexProgram can handle only 16 matrix
-	  * 
+	  *
 	  */
 	enum TMatrixCount { MaxModelMatrix= 16 };
 
@@ -169,13 +169,13 @@ public:
 	virtual					~IDriver(void);
 
 	virtual bool			init (uint windowIcon = 0, emptyProc exitFunc = 0)=0;
-	
+
 	// Test if the device is lost. Can only happen with D3D.
 	// The calling application may skip some part of its rendering when it is the case (this is not a requirement, but may save cpu for other applications)
 	virtual	bool			isLost() const = 0;
 
-	/// \name Disable Hardware Feature 
-	/**	Disable some Feature that may be supported by the Hardware 
+	/// \name Disable Hardware Feature
+	/**	Disable some Feature that may be supported by the Hardware
 	 *	Call before setDisplay() to work properly
 	 */
 	// @{
@@ -184,7 +184,7 @@ public:
 	virtual void			disableHardwareTextureShader()=0;
 	// @}
 
-	// first param is the associated window. 
+	// first param is the associated window.
 	// Must be a HWND for Windows (WIN32).
 	virtual bool			setDisplay(void* wnd, const GfxMode& mode, bool show = true, bool resizeable = true) throw(EBadDisplay)=0;
 	// Must be called after a setDisplay that initialize the mode
@@ -205,9 +205,9 @@ public:
 	// Must be a HWND for Windows (WIN32).
 	virtual void			*getDisplay() =0;
 
-	/** 
-	  * Setup monitor color properties. 
-	  * 
+	/**
+	  * Setup monitor color properties.
+	  *
 	  * Return false if setup failed.
 	  */
 	virtual bool			setMonitorColorProperties (const CMonitorColorProperties &properties) = 0;
@@ -244,7 +244,7 @@ public:
 	/** Set depth range. Depth range specify a linear mapping from device z coordinates (in the [-1, 1] range) to window coordinates (in the [0, 1] range)
 	  * This mapping occurs after clipping of primitives and division by w of vertices coordinates.
 	  * Default depth range is [0, 1].
-	  * NB : znear should be different from zfar or an assertion is raised	  	  
+	  * NB : znear should be different from zfar or an assertion is raised
 	  */
 	virtual void			setDepthRange(float znear, float zfar) = 0;
 	// Get the current depth range
@@ -261,12 +261,12 @@ public:
 	 *  small piece each frame. There is ONE case where bUpload is forced to be true inside the method: if the texture
 	 *	must be converted to RGBA. \see bAllUploaded
 	 *	\param bAllUploaded true if any upload arise (texture invalid, must convert texture etc...).
-	 *	\param bMustRecreateSharedTexture if true and if the texture supportSharing, then the texture is recreated 
+	 *	\param bMustRecreateSharedTexture if true and if the texture supportSharing, then the texture is recreated
 	 *	(and uploaded if bUpload==true) into the shared DrvInfo (if found). Default setup (false) imply that the DrvInfo
 	 *	is only bound to tex (thus creating and uploading nothing)
 	 *	NB: the texture must be at least touch()-ed for the recreate to work.
 	 */
-	virtual bool			setupTextureEx (ITexture& tex, bool bUpload, bool& bAllUploaded, 
+	virtual bool			setupTextureEx (ITexture& tex, bool bUpload, bool& bAllUploaded,
 		bool bMustRecreateSharedTexture= false) = 0;
 
 	/** The texture must be created or uploadTexture do nothing.
@@ -298,17 +298,17 @@ public:
 	 *	NB: this is done only on TextureFile
 	 */
 	virtual void			forceTextureResize(uint divisor)=0;
-	
+
 	/** Sets enforcement of native fragment programs. This is by default enabled.
-	 * 
+	 *
 	 * \param nativeOnly If set to false, fragment programs don't need to be native to stay loaded,
 	 * 	                 otherwise (aka if true) they will be purged.
 	 */
 	virtual void			forceNativeFragmentPrograms(bool nativeOnly) = 0;
 
-	
+
 	virtual bool			setupMaterial(CMaterial& mat)=0;
-	
+
 	/**
 	  * Activate a shader, NULL to disable the current shader.
 	  */
@@ -347,9 +347,9 @@ public:
 	 */
 	virtual void			setupViewMatrix(const CMatrix& mtx)=0;
 
-	/** setup the view matrix (inverse of camera matrix). 
-	 *	Extended: give a cameraPos (mtx.Pos() is not taken into account but for getViewMatrix()), 
-	 *	so the driver use it to remove translation from all ModelMatrixes (and lights pos). 
+	/** setup the view matrix (inverse of camera matrix).
+	 *	Extended: give a cameraPos (mtx.Pos() is not taken into account but for getViewMatrix()),
+	 *	so the driver use it to remove translation from all ModelMatrixes (and lights pos).
 	 *	This approach improves greatly ZBuffer precision.
 	 *
 	 *	This is transparent to user, and getViewMatrix() return mtx (as in setupViewMatrix()).
@@ -393,7 +393,7 @@ public:
 	virtual	bool			supportVertexBufferHard() const =0;
 
 	/** return true if volatile vertex buffer are supported. (e.g a vertex buffer which can be created with the flag CVertexBuffer::AGPVolatile or CVertexBuffer::RAMVolatile)
-	 *  If these are not supported, a RAM vb is created instead (transparent to user)          
+	 *  If these are not supported, a RAM vb is created instead (transparent to user)
      */
 	virtual bool			supportVolatileVertexBuffer() const = 0;
 
@@ -408,7 +408,7 @@ public:
 
 
 	/* Returns true if static vertex and index buffers must by allocated in VRAM, false in AGP.
-	 * Default is false. 
+	 * Default is false.
 	 */
 	bool					getStaticMemoryToVRAM() const { return _StaticMemoryToVRAM; }
 
@@ -445,7 +445,7 @@ public:
 	/** Return the amount of video memory allocated by initVertexBufferHard() to store vertices.
 	*/
 	virtual uint32			getAvailableVertexVRAMMemory () =0;
-	
+
 
 	/** active a current VB, for future render().
 	 * This method suppose that all vertices in the VB will be used.
@@ -457,7 +457,7 @@ public:
 	 * \see activeVertexProgram
 	 */
 	virtual bool			activeVertexBuffer(CVertexBuffer& VB)=0;
-	
+
 
 	/** active a current IB, for future render().
 	 *
@@ -498,8 +498,8 @@ public:
 	 *  \param startVertex is the first vertex to use during this rendering.
 	 *  \param numPoints is the number of point to render.
 	 */
-	virtual bool			renderRawPoints(CMaterial& mat, uint32 startVertex, uint32 numPoints)=0;	
-	
+	virtual bool			renderRawPoints(CMaterial& mat, uint32 startVertex, uint32 numPoints)=0;
+
 	/** Render lines with previously setuped VertexBuffer / Matrixes.
 	 *  Lines are stored as a sequence in the vertex buffer.
 	 *  \param mat is the material to use during this rendering
@@ -522,8 +522,8 @@ public:
 	  */
 	virtual bool			renderLinesWithIndexOffset(CMaterial& mat, uint32 firstIndex, uint32 nlines, uint indexOffset)=0;
 	virtual bool			renderTrianglesWithIndexOffset(CMaterial& mat, uint32 firstIndex, uint32 ntris, uint indexOffset)=0;
-	virtual bool			renderSimpleTrianglesWithIndexOffset(uint32 firstIndex, uint32 ntris, uint indexOffset)=0;	
-	
+	virtual bool			renderSimpleTrianglesWithIndexOffset(uint32 firstIndex, uint32 ntris, uint indexOffset)=0;
+
 
 	/** render quads with previously setuped VertexBuffer / Matrixes.
 	 *  Quads are stored as a sequence in the vertex buffer.
@@ -534,22 +534,22 @@ public:
 	 *  | /  |
 	 *  |/   |
 	 *  0----1
-	 * 
+	 *
 	 *  \param mat is the material to use during this rendering
 	 *  \param startVertex is the first vertex to use during this rendering.
 	 *  \param numQuad is the number of quad to render.
 	 */
 	virtual bool			renderRawQuads(CMaterial& mat, uint32 startVertex, uint32 numQuads)=0;
 
-	/** Say what Texture Stage use what UV coord. 
-	 *	by default activeVertexBuffer*() methods map all stage i to UV i. You can change this behavior, 
+	/** Say what Texture Stage use what UV coord.
+	 *	by default activeVertexBuffer*() methods map all stage i to UV i. You can change this behavior,
 	 *	after calling activeVertexBuffer*(), by using this method.
 	 *
 	 *	eg: mapTextureStageToUV(0,2) will force the 0th texture stage to use the 2th UV.
 	 *
 	 *	Warning! This DOESN'T work with VertexProgram enabled!! (assert)
 	 *
-	 *	Warning!: some CMaterial Shader may change automatically this behavior too when setupMaterial() 
+	 *	Warning!: some CMaterial Shader may change automatically this behavior too when setupMaterial()
 	 *	(and so render*()) is called. But Normal shader doesn't do it.
 	 */
 	virtual	void			mapTextureStageToUV(uint stage, uint uv)=0;
@@ -582,7 +582,7 @@ public:
 	 */
 	virtual	uint32			profileAllocatedTextureMemory() =0;
 
-	
+
 	/** Get the number of material setuped from the last swapBuffers() call.
 	 */
 	virtual	uint32			profileSetupedMaterials() const =0;
@@ -596,7 +596,7 @@ public:
 	/** Enable the sum of texture memory used since last swapBuffers() call. To retrieve the memory used call getUsedTextureMemory().
 	 */
 	virtual void			enableUsedTextureMemorySum (bool enable=true) =0;
-	
+
 
 	/** Return the amount of texture video memory used since last swapBuffers() call. Before use this method, you should enable
 	 *  the sum with enableUsedTextureMemorySum().
@@ -631,7 +631,7 @@ public:
 	/** For each texture setuped in the driver, "print" result: type, shareName, format and size (mipmap included)
 	 */
 	void					profileTextureUsage(std::vector<std::string> &result);
-	
+
 	// @}
 
 
@@ -726,11 +726,11 @@ public:
 		  * gamepad with lots of buttons...
 		  * This returns a interface to some parameters when it is supported, or NULL otherwise.
 		  * The interface pointer is valid as long as the low level keyboard is enabled.
-		  * A call to disable the keyboard returns NULL, and restore the default keyboard behavior		  
+		  * A call to disable the keyboard returns NULL, and restore the default keyboard behavior
 		  */
 		virtual NLMISC::IKeyboardDevice			*enableLowLevelKeyboard(bool enable) = 0;
 
-		/** Get the delay in ms for mouse double clicks. 
+		/** Get the delay in ms for mouse double clicks.
 		  */
 		virtual uint	getDoubleClickDelay(bool hardwareMouse) = 0;
 
@@ -740,7 +740,7 @@ public:
 		virtual void			setCapture (bool b) = 0;
 
 		/** Check whether there is a low level device manager available, and get its interface. Return NULL if not available
-		  * From this interface you can deal with mouse and keyboard as above, but you can also manage game device (joysticks, joypads ...)		  
+		  * From this interface you can deal with mouse and keyboard as above, but you can also manage game device (joysticks, joypads ...)
 		  */
 		virtual NLMISC::IInputDeviceManager		*getLowLevelInputDeviceManager() = 0;
 
@@ -748,10 +748,10 @@ public:
 
 	/// Get the width and the height of the window
 	virtual void			getWindowSize (uint32 &width, uint32 &height) = 0;
-	
+
 	/// Get the position of the window always (0,0) in fullscreen
 	virtual void			getWindowPos (uint32 &x, uint32 &y) = 0;
-	
+
 	/** get the RGBA back buffer. After swapBuffers(), the content of the back buffer is undefined.
 	  *
 	  * \param bitmap the buffer will be written in this bitmap
@@ -774,7 +774,7 @@ public:
 
 	// copy the first texture in a second one of different dimensions
 	virtual bool			stretchRect (ITexture * srcText, NLMISC::CRect &srcRect, ITexture * destText, NLMISC::CRect &destRect) = 0;
-	
+
 	// is this texture a rectangle texture ?
 	virtual bool			isTextureRectangle(ITexture * tex) const = 0;
 
@@ -827,10 +827,10 @@ public:
 													uint32 y = 0,
 													uint32 width = 0,
 													uint32 height = 0,
-													uint32 mipmapLevel = 0, 
+													uint32 mipmapLevel = 0,
 													uint32 cubeFace = 0
 													) = 0 ;
-	
+
 	/** Trick method : copy the current texture target into another texture without updating the current texture.
 	  *
 	  * This method copies the current texture into another texture.
@@ -838,14 +838,14 @@ public:
 	  *
 	  * When direct render to texture is not available, this method can save a texture copy :
 	  *
-	  * Use this method to copy a temporary texture target into a destination texture. 
+	  * Use this method to copy a temporary texture target into a destination texture.
 	  * Then, resets the rendering target with setRenderTarget().
 	  *
 	  * The temporary texture is copied into the final texture direct from the frame buffer. The temporary texture is not filled in VRAM when
 	  * the framebuffer is set back as render target.
-	  * 
+	  *
 	  * Works only if a texture is used as render target.
-	  * 
+	  *
 	  * This method invalidates the vertex buffer, the view and model matrices, the viewport and the frustum.
 	  *
 	  * \param tex					the texture to render into.
@@ -893,14 +893,14 @@ public:
 	}
 
 
-	/** 
+	/**
 	  * return the number of light supported by driver. typically 8.
 	  *
 	  * \see enableLight() setLight()
 	  */
 	virtual uint			getMaxLight () const = 0;
 
-	/** 
+	/**
 	  * Setup a light.
 	  *
 	  * You must call enableLight() to active the light.
@@ -911,7 +911,7 @@ public:
 	  */
 	virtual void			setLight (uint8 num, const CLight& light) = 0;
 
-	/** 
+	/**
 	  * Enable / disable light.
 	  *
 	  * You must call setLight() if you active the light.
@@ -922,7 +922,7 @@ public:
 	  */
 	virtual void			enableLight (uint8 num, bool enable=true) = 0;
 
-	/** 
+	/**
 	  * Set ambient.
 	  *
 	  * \param color is the new global ambient color for the scene.
@@ -942,7 +942,7 @@ public:
 	  * \param the light used for per pixel lighting
 	  */
 	virtual void			setLightMapDynamicLight (bool enable, const CLight& light) = 0;
-	
+
 	/** Get the global polygon mode.
 	  *
 	  * \param polygon mode choose in this driver.
@@ -1035,12 +1035,12 @@ public:
 
 	/// Check if the driver support double sided colors vertex programs
 	virtual bool		    supportVertexProgramDoubleSidedColor() const = 0;
-	  
+
 	// test if support for cloud render in a single pass
 	virtual	bool			supportCloudRenderSinglePass() const = 0;
 
 	/**
-	  * Activate VertexProgram 2Sided Color mode. In 2Sided mode, the BackFace (if material 2Sided enabled) read the 
+	  * Activate VertexProgram 2Sided Color mode. In 2Sided mode, the BackFace (if material 2Sided enabled) read the
 	  *	result from o[BFC0], and not o[COL0].
 	  *	default is false. you should reset to false after use.
 	  * NB: no-op if not supported by driver
@@ -1063,7 +1063,7 @@ public:
 		  * [a0 a1]
 		  * [a2 a3]
 		  */
-		virtual void setMatrix2DForTextureOffsetAddrMode(const uint stage, const float mat[4]) = 0;		  	
+		virtual void setMatrix2DForTextureOffsetAddrMode(const uint stage, const float mat[4]) = 0;
 	//@}
 
 
@@ -1115,7 +1115,7 @@ public:
 	virtual void            flush() = 0;
 
 	/** Use AntiAliasing For polygons (GL_POLYGON_SMOOTH like, not the FSAA).
-	 *	See GL_POLYGON_SMOOTH help, and GL_SRC_ALPHA_SATURATE OpenGL doc (not yet implemented now since 
+	 *	See GL_POLYGON_SMOOTH help, and GL_SRC_ALPHA_SATURATE OpenGL doc (not yet implemented now since
 	 *	used only for alpha part in ShadowMap gen)
 	 */
 	virtual	void			enablePolygonSmoothing(bool smooth) =0;
@@ -1171,7 +1171,7 @@ public:
 	virtual bool			setAdapter(uint adapter)=0;
 
 	/** Tell if the vertex color memory format is RGBA (openGL) or BGRA (directx)
-	  * BGRA : 
+	  * BGRA :
    	  *			*****************************************************************
 	  *	Offset:	*    0          *      1        *     2         *     3         *
    	  *			*****************************************************************
@@ -1215,7 +1215,7 @@ public:
 	  * Useful for mirrors / cube map rendering or when the scene must be rendered upside down
 	  */
 	virtual void			setCullMode(TCullMode cullMode) = 0;
-	virtual	TCullMode       getCullMode() const = 0;	
+	virtual	TCullMode       getCullMode() const = 0;
 
 	/** Set stencil support
 	  */
@@ -1224,7 +1224,7 @@ public:
 	virtual void			stencilFunc(TStencilFunc stencilFunc, int ref, uint mask) = 0;
 	virtual void			stencilOp(TStencilOp fail, TStencilOp zfail, TStencilOp zpass) = 0;
 	virtual void			stencilMask(uint mask) = 0;
-	
+
 protected:
 	friend	class	IVBDrvInfos;
 	friend	class	IIBDrvInfos;

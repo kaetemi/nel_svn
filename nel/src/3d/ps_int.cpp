@@ -34,14 +34,14 @@ sint32 CPSIntGradient::_DefaultGradient[] = { 0, 10 };
 uint32 CPSUIntGradient::_DefaultGradient[] = { 0, 10 };
 
 
-CPSIntGradient::CPSIntGradient(const sint32 *intTab, uint32 nbValues, uint32 nbStages, float nbCycles) 
+CPSIntGradient::CPSIntGradient(const sint32 *intTab, uint32 nbValues, uint32 nbStages, float nbCycles)
 				: CPSValueGradient<sint32>(nbCycles)
 {
 	_F.setValues(intTab, nbValues, nbStages);
 }
 
 
-CPSUIntGradient::CPSUIntGradient(const uint32 *intTab, uint32 nbValues, uint32 nbStages, float nbCycles) 
+CPSUIntGradient::CPSUIntGradient(const uint32 *intTab, uint32 nbValues, uint32 nbStages, float nbCycles)
 				: CPSValueGradient<uint32>(nbCycles)
 {
 	_F.setValues(intTab, nbValues, nbStages);
@@ -51,13 +51,13 @@ CPSUIntGradient::CPSUIntGradient(const uint32 *intTab, uint32 nbValues, uint32 n
 /// Register attribute makers based on int (used in particle systems)
 void PSRegisterIntAttribs()
 {
-	NLMISC_REGISTER_CLASS(CPSIntBlender);		
-	NLMISC_REGISTER_CLASS(CPSIntMemory);		
-	NLMISC_REGISTER_CLASS(CPSIntBinOp);		
+	NLMISC_REGISTER_CLASS(CPSIntBlender);
+	NLMISC_REGISTER_CLASS(CPSIntMemory);
+	NLMISC_REGISTER_CLASS(CPSIntBinOp);
 	NLMISC_REGISTER_CLASS(CPSIntGradient);
-	NLMISC_REGISTER_CLASS(CPSUIntBlender);		
-	NLMISC_REGISTER_CLASS(CPSUIntMemory);		
-	NLMISC_REGISTER_CLASS(CPSUIntBinOp);		
+	NLMISC_REGISTER_CLASS(CPSUIntBlender);
+	NLMISC_REGISTER_CLASS(CPSUIntMemory);
+	NLMISC_REGISTER_CLASS(CPSUIntBinOp);
 	NLMISC_REGISTER_CLASS(CPSUIntGradient);
 }
 

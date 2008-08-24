@@ -1,5 +1,5 @@
 /** \file cloud_scape_user.h
- * 
+ *
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -23,7 +23,7 @@
 
 #include "nel/3d/u_cloud_scape.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 class UDriver;
@@ -33,7 +33,7 @@ class CCloudScape;
 /// implementation of UWaterInstance methods
 class CCloudScapeUser : public UCloudScape
 {
-public:		
+public:
 
 	CCloudScapeUser(CScene *scene);
 	virtual	~CCloudScapeUser();
@@ -53,7 +53,7 @@ public:
 	virtual void setNbCloudToUpdateIn80ms (uint32 n);
 
 	virtual bool isDebugQuadEnabled ();
-	
+
 	virtual void setDebugQuad (bool b);
 
 	CCloudScape *_CS;

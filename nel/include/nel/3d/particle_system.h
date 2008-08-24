@@ -42,7 +42,7 @@
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CParticleSystemShape;
@@ -89,7 +89,7 @@ public:
 			/// ctor
 			CParticleSystem();
 			/// dtor
-			virtual ~CParticleSystem();	
+			virtual ~CParticleSystem();
 			/// serialize this particle system
 			void serial(NLMISC::IStream &f)  throw(NLMISC::EStream);
 			/** Merge this system with a system instanciated from the given shape
@@ -123,7 +123,7 @@ public:
 			bool	isSharingEnabled() const { return _Sharing; }
 		//@}
 
-	//*****************************************************************************************************	  
+	//*****************************************************************************************************
 
 	///\name Driver setup
 		//@{
@@ -147,7 +147,7 @@ public:
 		//@}
 
 	//*****************************************************************************************************
-	
+
 	///\name Position of the system
 		//@{
 			/** Hide / show the system
@@ -158,52 +158,52 @@ public:
 			/** Called by owner model, when the visibility of this ps has changed
 			  * (that is, the show / hide flag, not the 'clipped' state)
 			  */
-			void onShow(bool shown);	
+			void onShow(bool shown);
 			/** Set the matrix for elements with matrixMode == PSFXMatrix.
 			  * NB: The previous matrix position is backuped during this call (used to interpolate the system position during integration),
 			  * so this should be called only once per frame
 			  * NB : pointer to the matrix should remains valid as long as that particle system exists (no copy of the matrix is kept)
-			  */		 
+			  */
 			void setSysMat(const NLMISC::CMatrix *m);
 
-			/** The same as 'setSysMat', but to set the matrix for elements with matrixMode == PSUserMatrix              
+			/** The same as 'setSysMat', but to set the matrix for elements with matrixMode == PSUserMatrix
 			  * NB : pointer to the matrix should remains valid as long as that particle system exists (no copy of the matrix is kept)
 			  */
 			void setUserMatrix(const NLMISC::CMatrix *m);
-			
+
 			/// return the matrix of the system
-			const NLMISC::CMatrix &getSysMat() const 
-			{ 				
-				return _CoordSystemInfo.Matrix ? *_CoordSystemInfo.Matrix : NLMISC::CMatrix::Identity; 
+			const NLMISC::CMatrix &getSysMat() const
+			{
+				return _CoordSystemInfo.Matrix ? *_CoordSystemInfo.Matrix : NLMISC::CMatrix::Identity;
 			}
 
 			/// return the inverted matrix of the system
-			const NLMISC::CMatrix &getInvertedSysMat() const { return _CoordSystemInfo.InvMatrix; } 
+			const NLMISC::CMatrix &getInvertedSysMat() const { return _CoordSystemInfo.InvMatrix; }
 
 			/** return the user matrix
 			  * NB : to save memory, the user matrix is actually saved when at least one instance of CPSLocated that belongs to the system
 			  * makes a reference on it. This is usually the case when CPSLocated::setMatrixMode(PSUserMatrix) is called.
 			  * If no reference is made, then the fx matrix is returned instead
 			  */
-			const NLMISC::CMatrix &getUserMatrix() const 
-			{ 				
+			const NLMISC::CMatrix &getUserMatrix() const
+			{
 				NL_PS_FUNC_MAIN(getUserMatrix)
-				return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? *(_UserCoordSystemInfo->CoordSystemInfo.Matrix) : getSysMat(); 
-			}		
+				return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? *(_UserCoordSystemInfo->CoordSystemInfo.Matrix) : getSysMat();
+			}
 
 			/** return the inverted user matrix
 			  * NB : to save memory, the user matrix is actually saved when at least one instance of CPSLocated that belongs to the system
 			  * makes a reference on it. This is usually the case when CPSLocated::setMatrixMode(PSUserMatrix) is called.
 			  * If no reference is made, then the inverted system matrix is returned instead.
 			  */
-			const NLMISC::CMatrix &getInvertedUserMatrix() const { return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? _UserCoordSystemInfo->CoordSystemInfo.InvMatrix : getInvertedSysMat(); } 
+			const NLMISC::CMatrix &getInvertedUserMatrix() const { return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? _UserCoordSystemInfo->CoordSystemInfo.InvMatrix : getInvertedSysMat(); }
 
 			// conversion matrix (from user matrix to fx matrix)
 			const NLMISC::CMatrix &getUserToFXMatrix() const { return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? _UserCoordSystemInfo->UserBasisToFXBasis : NLMISC::CMatrix::Identity; }
 			// conversion matrix (from fx matrix to user matrix)
 			const NLMISC::CMatrix &getFXToUserMatrix() const { return (_UserCoordSystemInfo && _UserCoordSystemInfo->CoordSystemInfo.Matrix) ? _UserCoordSystemInfo->FXBasisToUserBasis : NLMISC::CMatrix::Identity; }
-			
-			/** set the view matrix  
+
+			/** set the view matrix
 			  * This must be called otherwise results can't be correct
 			  */
 			void setViewMat(const NLMISC::CMatrix &m);
@@ -211,7 +211,7 @@ public:
 			/// get the view matrix .
 			const NLMISC::CMatrix &getViewMat(void) const { return _ViewMat; }
 
-			/// get the inverted view matrix . It is stored each time a new frame is processed	 
+			/// get the inverted view matrix . It is stored each time a new frame is processed
 			const NLMISC::CMatrix &getInvertedViewMat(void) const { return _InvertedViewMat; }
 		//@}
 
@@ -222,7 +222,7 @@ public:
 		//@{
 
 		/**
-		* execute all the process of the system. It uses the driver that was set by a call to setDriver. 
+		* execute all the process of the system. It uses the driver that was set by a call to setDriver.
 		* \param ellapsedTime The ellapsed time since the last call
 		* \param pass the pass to be executed
 		* \see setDriver
@@ -230,7 +230,7 @@ public:
 		virtual void step(TPass pass, TAnimationTime ellapsedTime, CParticleSystemShape &shape, CParticleSystemModel &model);
 		//@}
 
-		
+
 
 		/// used for benchs. must be reset by the user
 		static uint32 NbParticlesDrawn;
@@ -242,16 +242,16 @@ public:
 	  */
 
 		//@{
-		/** Attach a process (such as a located : see particle_system_process.h, and ps_located.h) to the system. 
-		 *  It is then owned by the process and will be deleted by it. 
-		 *  if already present -> nl assert	 
+		/** Attach a process (such as a located : see particle_system_process.h, and ps_located.h) to the system.
+		 *  It is then owned by the process and will be deleted by it.
+		 *  if already present -> nl assert
 		 * \return true if the operation could be performed. It can fail when this cause the system the system to last forever,
 		 *              which is incompatible with the 'BypassMaxNumIntegrationSteps' in CParticleSystem
 		 */
 		bool						attach(CParticleSystemProcess *process);
 
-		/** Detach a process from the system (but do not delete it)		  
-		  */ 
+		/** Detach a process from the system (but do not delete it)
+		  */
 		CParticleSystemProcess		*detach(uint index);
 
 		/** Test wether a process is part of this system
@@ -275,21 +275,21 @@ public:
 		/**
 		 *  Get a pointer to the nth process.
 		 *  Out of range -> nlassert
-		 */	
+		 */
 		CParticleSystemProcess		*getProcess(uint32 index)
-		{ 
+		{
 			nlassert(index < _ProcessVect.size());
-			return _ProcessVect[index]; 
+			return _ProcessVect[index];
 		}
 
 		/**
 		 *  Get a const pointer to the nth process.
 		 *  Out of range -> nlassert
-		 */	
+		 */
 		const CParticleSystemProcess *getProcess(uint32 index) const
-		{ 
+		{
 			nlassert(index < _ProcessVect.size());
-			return _ProcessVect[index]; 
+			return _ProcessVect[index];
 		}
 
 		//@}
@@ -326,11 +326,11 @@ public:
 		/** Set the value of a user parameter. It must range from 0 to 1. The user value are not saved, and their default value is 0.f.
 		  * The max number of user param is MaxPSUserParam.
 		  */
-		void setUserParam(uint userParamIndex, float value) 
+		void setUserParam(uint userParamIndex, float value)
 		{
 			NL_PS_FUNC_MAIN(setUserParam)
 			nlassert(userParamIndex < MaxPSUserParam);
-			NLMISC::clamp(value, 0, MaxInputValue);			
+			NLMISC::clamp(value, 0, MaxInputValue);
 			_UserParam[userParamIndex] = value;
 		}
 
@@ -338,7 +338,7 @@ public:
 		  * The max number of user param is in MaxPSUserParam.
 		  */
 		float getUserParam(uint userParamIndex) const
-		{			
+		{
 			NL_PS_FUNC_MAIN(getUserParam)
 			nlassert(userParamIndex < MaxPSUserParam);
 			return _UserParam[userParamIndex];
@@ -351,7 +351,7 @@ public:
 		  */
 		void  bindGlobalValueToUserParam(const std::string &globalValueName, uint userParamIndex);
 		// Get name of a global value, or NULL if no global value is bound to that user param
-		std::string getGlobalValueName(uint userParamIndex) const;		 
+		std::string getGlobalValueName(uint userParamIndex) const;
 		// Set a global value
 		static void  setGlobalValue(const std::string &name, float value);
 		// Get a global value
@@ -371,18 +371,18 @@ public:
 			void				   set(const NLMISC::CVector &value) { nlassert(_Value); *_Value = value; }
 			const std::string     &getName() const					 { nlassert(_Name); return *_Name; }
 			bool				   isValid() const { return _Name != NULL && _Value != NULL; }
-			void                   reset() { _Name = NULL; _Value = NULL; }			
+			void                   reset() { _Name = NULL; _Value = NULL; }
 		/////////////////////////////
 		private:
 			friend class CParticleSystem;
 			const std::string *_Name;
-			NLMISC::CVector   *_Value;		
+			NLMISC::CVector   *_Value;
 		};
 		// Get a handle on a global value that provide a quick access on it (no map lookup)
-		static CGlobalVectorValueHandle     getGlobalVectorValueHandle(const std::string &name);		
+		static CGlobalVectorValueHandle     getGlobalVectorValueHandle(const std::string &name);
 	//@}
 
-		
+
 
 	//*****************************************************************************************************
 
@@ -397,7 +397,7 @@ public:
 		 {
 			NL_PS_FUNC_MAIN(setCurrentEditedElement)
 			_CurrEditedElementLocated = loc;
-			_CurrEditedElementLocatedBindable = bd; 
+			_CurrEditedElementLocatedBindable = bd;
 			_CurrEditedElementIndex = index;
 		 }
 
@@ -411,7 +411,7 @@ public:
 			index = _CurrEditedElementIndex;
 			lb = _CurrEditedElementLocatedBindable;
 		 }
-	
+
 		/// Set a font generator. Useful only for edition. don't need that in runtime.
 		void setFontGenerator(CFontGenerator *fg) { _FontGenerator = fg; }
 
@@ -430,13 +430,13 @@ public:
 		/// Retrieve the font Manager (const version). Edition purpose only.
 		const CFontManager *getFontManager(void) const { return _FontManager; }
 		// @}
-		
+
 		/// Set the name of the system.
 		void setName(const std::string &s) { _Name = s; }
 
 		/// Get the name of the system.
 		std::string getName(void) const { return _Name; }
-		
+
 	//*****************************************************************************************************
 
 	///\name Transparency / opacity
@@ -461,7 +461,7 @@ public:
 	///\name Integration parameters
 	// @{
 		/** This enable for more accurate integrations of movement. When this is activated,
-		  *  integration is performed in a more accurate way when the ellapsed time goes over a threshold, but it is more slow to perform.	  
+		  *  integration is performed in a more accurate way when the ellapsed time goes over a threshold, but it is more slow to perform.
 		  */
 		void enableAccurateIntegration(bool enable = true) { _AccurateIntegration = enable; }
 		bool isAccurateIntegrationEnabled(void) const { return _AccurateIntegration; }
@@ -471,18 +471,18 @@ public:
 		  * \param canSlowDown : Allow the system to slow down in speed but to keep accuracy in its movement.
 		  *  It is useful for critical situations where the framerate is very low. The default is true.
 		  */
-		void setAccurateIntegrationParams(TAnimationTime threshold,										 
+		void setAccurateIntegrationParams(TAnimationTime threshold,
 										  uint32 maxNbIntegrations,
 										  bool canSlowDown,
 										  bool keepEllapsedTimeForLifeUpdate
 										 )
 		{
-			NL_PS_FUNC_MAIN(setAccurateIntegrationParams)			
+			NL_PS_FUNC_MAIN(setAccurateIntegrationParams)
 			_TimeThreshold = threshold;
 			_MaxNbIntegrations = maxNbIntegrations;
 			_CanSlowDown = canSlowDown;
 			if (_KeepEllapsedTimeForLifeUpdate != keepEllapsedTimeForLifeUpdate)
-			{			
+			{
 				_KeepEllapsedTimeForLifeUpdate = keepEllapsedTimeForLifeUpdate;
 				_PresetBehaviour = UserBehaviour;
 			}
@@ -510,7 +510,7 @@ public:
 		  * meaningful only if 'setBypassMaxNumIntegrationSteps' is false
 		  */
 		uint  getMaxNbIntegrations() const { return _MaxNbIntegrations; }
-           
+
 		/** When activated, this bypass the limit on the max number of integration steps
 		  * This should NOT be used on FXs that are looping, because it would slow endlessly
 		  * Anyway if you try to do that an assertion will ocurrs
@@ -521,7 +521,7 @@ public:
 		{
 			NL_PS_FUNC_MAIN(setBypassMaxNumIntegrationSteps)
 			if (_BypassIntegrationStepLimit != bypass)
-			{			
+			{
 				if (bypass)
 				{
 					if (!canFinish())
@@ -536,10 +536,10 @@ public:
 			}
 		}
 		bool	getBypassMaxNumIntegrationSteps() const { return _BypassIntegrationStepLimit; }
-		
+
 		/** Test if the system can finish (e.g it doesn't loop, doesn't have emitter with illimited lifetime)
 		  * NB : we assume that all emitters in the system are accessible, e.g that the located graph is connex
-		  * \param lastingForeverObj, if not NULL, the pointer will be filled with the first object that last or emit forever, or create a loop.		  
+		  * \param lastingForeverObj, if not NULL, the pointer will be filled with the first object that last or emit forever, or create a loop.
 		  */
 
 		bool canFinish(CPSLocatedBindable **lastingForeverObj = NULL) const;
@@ -550,7 +550,7 @@ public:
 		  */
 		bool hasLoop(CPSLocatedBindable **loopingObj = NULL) const;
 
-		
+
 	// @}
 
 	//*****************************************************************************************************
@@ -566,12 +566,12 @@ public:
 		// @{
 
 		/// set the max view distance for the system (in meters) . The default is 50 meters.
-		void setMaxViewDist(float maxDist) 
+		void setMaxViewDist(float maxDist)
 		{
 			NL_PS_FUNC_MAIN(setMaxViewDist)
-			nlassert(maxDist > 0.f); 
+			nlassert(maxDist > 0.f);
 			_MaxViewDist = maxDist;
-			_InvCurrentViewDist = _InvMaxViewDist = 1.f / maxDist; 
+			_InvCurrentViewDist = _InvMaxViewDist = 1.f / maxDist;
 		}
 
 		/// get the max view distance
@@ -584,14 +584,14 @@ public:
 		float getLODRatio(void) const  { return _LODRatio; }
 
 
-		/** compute a vector and a distance that are used for LOD computations. 
+		/** compute a vector and a distance that are used for LOD computations.
 		  * You'll have for a given pos : pos * v + offset  = 0 at the nearest point, and 1 when
 		  * pos is at maxDist from the viewer. This is used by sub-component of the system.
 		  */
 		void getLODVect(NLMISC::CVector &v, float &offset, TPSMatrixMode matrixMode);
 
 		/// get the current LOD of the system. It is based on the distance of the center of the system to the viewer
-		TPSLod getLOD(void) const;	
+		TPSLod getLOD(void) const;
 
 		/// get 1.f - the current lod ratio (it is updated at each motion pass)
 		float getOneMinusCurrentLODRatio(void) const { return _OneMinusCurrentLODRatio; }
@@ -618,19 +618,19 @@ public:
 			_AutoLODStartDistPercent    = 	startDistPercent;
 			_AutoLODDegradationExponent =	degradationExponent;
 		}
-		
+
 		/** when auto-lod on a non shared system is used, this set the degradation of the system when it is far
 		  * A value of 0 mean no more emissions at all.
 		  * A value of 0.1 means 10% of emission and so on.
 		  * A value of 1 means there's no LOD at all..
 		  */
 		void    setMaxDistLODBias(float lodBias);
-		float   getMaxDistLODBias() const { return _MaxDistLODBias; }		
-		
+		float   getMaxDistLODBias() const { return _MaxDistLODBias; }
 
-		
+
+
 		float	getAutoLODStartDistPercent() const { return _AutoLODStartDistPercent; }
-		uint8   getAutoLODDegradationExponent() const { return _AutoLODDegradationExponent; }		
+		uint8   getAutoLODDegradationExponent() const { return _AutoLODDegradationExponent; }
 
 		/** There are 2 modes for the auto-LOD (apply to shared systems only) :
 		  * - Particle are skip in the source container when display is performed (the default)
@@ -642,7 +642,7 @@ public:
 		/** Setup a color attenuation scheme with the distance from the viewer. This doesn't act on a particle basis,
 		  * the whole color of the system is changed in an uniform way so it is fast (the same can be achieved on a particle basis).
 		  * This bypass the source of the scheme : it is set to 0 when the system is on the user, and to 1 when
-		  * it is at its max distance. 
+		  * it is at its max distance.
 		  * \param scheme A color scheme, that is then owned by this object. NULL disable color attenuation. Any previous scheme is removed
 		  */
 		  void	setColorAttenuationScheme(CPSAttribMaker<NLMISC::CRGBA> *colScheme)
@@ -665,12 +665,12 @@ public:
 			* by the user color
 			* NB : that state is not serialized
             */
-		  void				setUserColor(NLMISC::CRGBA userColor) { _UserColor = userColor; } 
-		  NLMISC::CRGBA		getUserColor() const { return _UserColor; }		  
+		  void				setUserColor(NLMISC::CRGBA userColor) { _UserColor = userColor; }
+		  NLMISC::CRGBA		getUserColor() const { return _UserColor; }
 
 		  // shortcut : test il global color is used (not white)
-		  bool				isUserColorUsed() const { return _UserColor != NLMISC::CRGBA::White; }  
-			
+		  bool				isUserColorUsed() const { return _UserColor != NLMISC::CRGBA::White; }
+
 		  /** Get the current global color of the system. (It is updated just before drawing...). It there's
 		    * no color attenuation scheme it can be assumed to be the same than the user color
 			*/
@@ -680,7 +680,7 @@ public:
 		  NLMISC::CRGBA		getGlobalColorLighted() const { return _GlobalColorLighted; }
 		  // test if all objects should use global color lighting
 		  bool				getForceGlobalColorLightingFlag() { return _ForceGlobalColorLighting; }
-		  // force global color lighting 
+		  // force global color lighting
 		  void				setForceGlobalColorLightingFlag(bool enable) { _ForceGlobalColorLighting = enable; }
 		  // set lighting color (used by look at, and object that don't have normals)
 		  void				setLightingColor(NLMISC::CRGBA col) { _LightingColor = col; }
@@ -712,8 +712,8 @@ public:
 	//*****************************************************************************************************
 
 	///\name Bounding box managment
-		// @{		
-		/** Compute the aabbox of this system, (expressed in thesystem basis)	
+		// @{
+		/** Compute the aabbox of this system, (expressed in thesystem basis)
 		 * If the bbox is precomputed, the precomputed bbox is returned
 		 *  \param aabbox a ref to the result box
 		 */
@@ -724,7 +724,7 @@ public:
 		void forceComputeBBox(NLMISC::CAABBox &aabbox);
 
 		/** When this is set to false, the system will recompute his bbox each time it is querried
-		  * This may be needed for systems that move fast. 
+		  * This may be needed for systems that move fast.
 		  */
 		void setAutoComputeBBox(bool enable = true) { _ComputeBBox = enable; }
 
@@ -733,35 +733,35 @@ public:
 		bool getAutoComputeBBox(void) const { return _ComputeBBox; }
 
 
-		/** set a precomputed bbox (expressed in the system basis). This is allowed only when setAutoComputeBBox 
+		/** set a precomputed bbox (expressed in the system basis). This is allowed only when setAutoComputeBBox
 		  * is called with false (nlassert otherwise).
 		  */
 
-		void setPrecomputedBBox(const NLMISC::CAABBox &precompBBox) 
+		void setPrecomputedBBox(const NLMISC::CAABBox &precompBBox)
 		{
 			NL_PS_FUNC_MAIN(setPrecomputedBBox)
 			nlassert(!_ComputeBBox);
 			_PreComputedBBox = precompBBox;
 		}
-			
+
 		/// get the last computed bbox
 		void getLastComputedBBox(NLMISC::CAABBox &dest) { dest = _PreComputedBBox; }
 		// @}
-	
+
 	//*****************************************************************************************************
 
 	///\name Invalidity flags (no direct effect, just indications for a third party, a model holding the system for example)
 		// @{
-		/** Tell the system that it is invalid when its out of range. The default is false.	  
+		/** Tell the system that it is invalid when its out of range. The default is false.
 		  * This is only a indication flag and must be checked by third party (a model holding the system for example)
 		  */
-		void				setDestroyModelWhenOutOfRange(bool enable = true) 
+		void				setDestroyModelWhenOutOfRange(bool enable = true)
 		{
 			NL_PS_FUNC_MAIN(setDestroyModelWhenOutOfRange)
 			_DestroyModelWhenOutOfRange  = enable;
 			_PresetBehaviour = UserBehaviour;
 		}
-		
+
 		/// check whether the system is invalid it's out of range.
 		bool				getDestroyModelWhenOutOfRange(void) const { return _DestroyModelWhenOutOfRange; }
 
@@ -776,7 +776,7 @@ public:
 		  * \see hasEmitters
 		  * \see hasParticles
 		  */
-		void				setDestroyCondition(TDieCondition dieCondition) 
+		void				setDestroyCondition(TDieCondition dieCondition)
 		{
 			NL_PS_FUNC_MAIN(setDestroyCondition)
 			_DieCondition = dieCondition;
@@ -791,7 +791,7 @@ public:
 
 		/** Set a delay before to apply the death condition test
 		  * This may be necessary : the system could be destroyed because there are no particles, but no particles were emitted yet
-		  * 
+		  *
 		  * This is an indication, and has no direct effect, and must be check by calling isDestroyConditionVerified()
 		  *
 		  * If -1 is set (or a negative value), then the system will compute that delay itself
@@ -799,12 +799,12 @@ public:
 		  * \see hasEmitters()
 		  * \see hasParticles()
 		  * \see getDelayBeforeDeathConditionTest()
-		  */		
-		void setDelayBeforeDeathConditionTest(TAnimationTime delay) 
+		  */
+		void setDelayBeforeDeathConditionTest(TAnimationTime delay)
 		{
 			NL_PS_FUNC_MAIN(setDelayBeforeDeathConditionTest)
 
-			_DelayBeforeDieTest  = delay; 
+			_DelayBeforeDieTest  = delay;
 		}
 
 		/** Must be called by a sub component of the system to tell that the duration of the system may have changed.
@@ -816,7 +816,7 @@ public:
 		  */
 		void systemDurationChanged();
 
-		/** Get the a delay before to apply the death condition test	  
+		/** Get the a delay before to apply the death condition test
 		  * If the delay was set to -1 or a negative value, this will compute the delay.
 		  */
 		TAnimationTime		getDelayBeforeDeathConditionTest() const;
@@ -828,16 +828,16 @@ public:
 		  * - Emitter parameters are modified
 		  */
 		void				setAutoComputeDelayBeforeDeathConditionTest(bool computeAuto);
-		bool				getAutoComputeDelayBeforeDeathConditionTest() const { return _AutoComputeDelayBeforeDeathTest; }		
+		bool				getAutoComputeDelayBeforeDeathConditionTest() const { return _AutoComputeDelayBeforeDeathTest; }
 
-		/** tells the model holding this system that he become invalid when its out of the view frustum.	  
+		/** tells the model holding this system that he become invalid when its out of the view frustum.
 		  * This is only an indication flag and must be checked by third party (a model holding it for example)
 		  * It has no direct effects
 		  * \see doesDestroyWhenOutOfRange()
 		  */
-		void				destroyWhenOutOfFrustum(bool enable = true) 
-		{ 
-			_DestroyWhenOutOfFrustum = enable; 
+		void				destroyWhenOutOfFrustum(bool enable = true)
+		{
+			_DestroyWhenOutOfFrustum = enable;
 			_PresetBehaviour = UserBehaviour;
 		}
 
@@ -851,13 +851,13 @@ public:
 		bool				hasEmitters(void) const;
 
 		/// return true when there are still particles
-		bool				hasParticles() const;		
+		bool				hasParticles() const;
 
 		/// return true when there are still temporary particles
 		bool				hasTemporaryParticles() const;
 
 		/// This enum tells when animation must be performed
-		enum TAnimType 
+		enum TAnimType
 		{  AnimVisible = 0,   /* visible systems only are animated */
 		   AnimInCluster, /* systems that are in cluster are animated */
 		   AnimAlways,    /* animate always when not too far */
@@ -905,18 +905,18 @@ public:
 		enum TPresetBehaviour
 		{
 			EnvironmentFX = 0,    // environment FX, not animated when not visible, persistent.
-			RunningEnvironmentFX, /* an environment fx that should 
+			RunningEnvironmentFX, /* an environment fx that should
 								   * run when in parsed cluster : cascade for example,
 								   * so that it doesn't start when the player first see
 								   * it
 								   */
 			SpellFX,              // always animated, not persistent, garanteed to match the good frame even if framerate is low
 			LoopingSpellFX,       // alway animated, persistent until emitter are stopped
-			MinorFX,              // animated when visible, discarded when not visible 
-			UserBehaviour,        
+			MinorFX,              // animated when visible, discarded when not visible
+			UserBehaviour,
 			MovingLoopingFX,       // persistent, moving fx
 			SpawnedEnvironmentFX,  // environment fx, not animated when not visible, not persistent
-			GroundFX,			   /** usually fx of foot steps (dust clouds etc.). Always animated, persistents, duration of fxs is garanteed, 
+			GroundFX,			   /** usually fx of foot steps (dust clouds etc.). Always animated, persistents, duration of fxs is garanteed,
 									 * but not velocity of particle if framerate is too choppy (usually ok because particle stay in place with those fxs)
 									 */
 			Projectile,            // like moving looping fx, but not persistent
@@ -925,10 +925,10 @@ public:
 
 		void activatePresetBehaviour(TPresetBehaviour behaviour);
 
-		TPresetBehaviour getBehaviourType() const 
+		TPresetBehaviour getBehaviourType() const
 		{
 			NL_PS_FUNC_MAIN(getBehaviourType)
-			return _PresetBehaviour; 
+			return _PresetBehaviour;
 		}
 
 
@@ -939,8 +939,8 @@ public:
 	//*****************************************************************************************************
 	///\name sound managment
 		// @{
-		/// register a Sound server to this system. All systems share the same sound server. 
-		static void					registerSoundServer(UPSSoundServer *soundServer);		
+		/// register a Sound server to this system. All systems share the same sound server.
+		static void					registerSoundServer(UPSSoundServer *soundServer);
 
 		/// get the current sound server used by this system. NULL if none
 		static UPSSoundServer *		getSoundServer(void)
@@ -956,7 +956,7 @@ public:
 		void reactivateSound();
 
 		// @}
-	
+
 	//*****************************************************************************************************
 	///\name external access to locatedBindable. PRIVATE PART (to avoid the use of friend)
 		// @{
@@ -975,16 +975,16 @@ public:
 		// @{
 				/// return the number the number of located bindable bound with this ID
 				uint			   getNumLocatedBindableByExternID(uint32 id) const;
-				/** return the nth locatedBindable associtaed with this ID. 
+				/** return the nth locatedBindable associtaed with this ID.
 				  * \return NULL if it doesn't exist
 				  */
 				CPSLocatedBindable       *getLocatedBindableByExternID(uint32 id, uint index);
-				const CPSLocatedBindable *getLocatedBindableByExternID(uint32 id, uint index) const;				
+				const CPSLocatedBindable *getLocatedBindableByExternID(uint32 id, uint index) const;
 				/// Get the number of IDs in the system
 				uint   getNumID() const;
-				/// Get the nth ID, or 0 if index is invalid.			  
+				/// Get the nth ID, or 0 if index is invalid.
 				uint32 getID(uint index) const;
-				/** Get all the IDs in the system. 
+				/** Get all the IDs in the system.
 				  * \warning As IDs are not internally stored in a vector, it is faster than several calls to getID
 				  */
 				void getIDs(std::vector<uint32> &dest) const;
@@ -1000,10 +1000,10 @@ public:
 			  * The default is true
 			  */
 				void enableEmitThreshold(bool enabled = true) { _EmitThreshold = enabled; }
-				bool isEmitThresholdEnabled() const { return _EmitThreshold; }				
-					
+				bool isEmitThresholdEnabled() const { return _EmitThreshold; }
+
 			// activate // deactivate all emitters in the system
-			void activateEmitters(bool active);			
+			void activateEmitters(bool active);
 			// test is there are active emitters in the system
 			bool hasActiveEmitters() const;
 			// test if there are emitters in the system (e.g. derivers of CPSEmitter bound to the system)
@@ -1012,7 +1012,7 @@ public:
 			  * It is meaningful only if the system can finish.
 			  * After the given duration particle will have been spawn, and will possibly have finished their life.
 			  * The system may last longer (case where an emitter is triggered when it bounce cannot be evaluated correclty without running the system)
-			  * NB : calling this is costly	
+			  * NB : calling this is costly
 			  */
 			float evalDuration() const;
 			/** Enable/Disable auto-count mode. The default is disabled
@@ -1037,7 +1037,7 @@ public:
 			// tool fct : get the list of located that target another located
 			void getTargeters(const CPSLocated *target, std::vector<CPSTargetLocatedBindable *> &targeters);
 			// allow to serialize identifiers. The default is false (to speedup instanciation of ps by not creating unecessary strings)
-			static void setSerializeIdentifierFlag(bool on) { _SerialIdentifiers = on; }			
+			static void setSerializeIdentifierFlag(bool on) { _SerialIdentifiers = on; }
 			static bool getSerializeIdentifierFlag() { return _SerialIdentifiers; }
 			// list all textures used by the ps, and append them in the given vector
 			void enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv);
@@ -1051,13 +1051,13 @@ public:
 			void		getSortingByEmitterPrecedence(std::vector<uint> &result) const;
 		// @}
 
-	
+
 
 private:
 	typedef std::map<std::string, float> TGlobalValuesMap;
 	typedef std::map<std::string, NLMISC::CVector> TGlobalVectorValuesMap;
 private:
-	friend class CParticleSystemModel;	
+	friend class CParticleSystemModel;
 	/// process a pass on the bound located
 	void					stepLocated(TPSProcessPass pass);
 	// update the lod & return the distance from viewer
@@ -1076,18 +1076,18 @@ private:
 	// A bbox that has been specified by the user
 	NLMISC::CAABBox			 _PreComputedBBox;
 	// the driver used for rendering
-	IDriver					 *_Driver;	
-		
+	IDriver					 *_Driver;
+
 	typedef CPSVector<CParticleSystemProcess *>::V TProcessVect;
 	TProcessVect			 _ProcessVect;
 	CFontGenerator			 *_FontGenerator;
 	CFontManager			 *_FontManager;
-	
-	// Infos about a coordinate system (current matrix, previous pos...)	  
+
+	// Infos about a coordinate system (current matrix, previous pos...)
 	class CCoordSystemInfo
 	{
 	public:
-		const NLMISC::CMatrix *Matrix;			// gives the matrix to use 
+		const NLMISC::CMatrix *Matrix;			// gives the matrix to use
 		NLMISC::CMatrix		   InvMatrix;       // inverted matrix for that coord system
 		NLMISC::CVector		   OldPos;			// translation part of matrix at previous frame
 		NLMISC::CVector        CurrentDeltaPos;	// current pos (for integration step) of the coord system relative to its final pos
@@ -1102,9 +1102,9 @@ private:
 	class CUserCoordSystemInfo
 	{
 	public:
-		CCoordSystemInfo	CoordSystemInfo;		
+		CCoordSystemInfo	CoordSystemInfo;
 		NLMISC::CMatrix		UserBasisToFXBasis; // conversion matrix : from user basis to FX Basis
-		NLMISC::CMatrix		FXBasisToUserBasis; // conversion matrix : from FX basis to user Basis		
+		NLMISC::CMatrix		FXBasisToUserBasis; // conversion matrix : from FX basis to user Basis
 		uint16				NumRef; // number of objects in the system that use position of the user matrix
 		                            // because this is used rarely, we allocate memory to track the user matrix position only when needed
 	public:
@@ -1116,9 +1116,9 @@ private:
 
 	CCoordSystemInfo		   _CoordSystemInfo;				// coordinate system infos for this fx
 	CUserCoordSystemInfo	   *_UserCoordSystemInfo;           // coordinate system infos for an hypothetic user matrix
-	
-		
-	
+
+
+
 
 
 
@@ -1128,9 +1128,9 @@ private:
 	// the inverted view matrix (TODO : this is duplcated from CScene)
 	NLMISC::CMatrix			 _InvertedViewMat;
 
-	
+
 	// number of rendered pass on the system, incremented each time the system is redrawn
-	uint64					 _Date;	
+	uint64					 _Date;
 
 	/// Last update date of the system. Useful with sharing only, to avoid several motions.
 	sint64					 _LastUpdateDate;
@@ -1152,10 +1152,10 @@ private:
 
 	// contains the name of the system. (VERSION >= 2 only)
 	std::string _Name;
-	
+
 	TAnimationTime								_TimeThreshold;
-	TAnimationTime								_SystemDate;	
-	uint32										_MaxNbIntegrations;	
+	TAnimationTime								_SystemDate;
+	uint32										_MaxNbIntegrations;
 
 
 	float										_LODRatio;
@@ -1164,24 +1164,24 @@ private:
 	float										_MaxDistLODBias;
 	float										_InvMaxViewDist;
 	float										_InvCurrentViewDist; // inverse of the current view dist. It can be the same than _InvMaxViewDist
-														        // but when there's LOD, the view distance may be reduced	
+														        // but when there's LOD, the view distance may be reduced
 	float										_AutoLODEmitRatio;
 
 	TDieCondition								_DieCondition;
-	mutable TAnimationTime						_DelayBeforeDieTest;	
+	mutable TAnimationTime						_DelayBeforeDieTest;
 	uint										_NumWantedTris;
 	TAnimType									_AnimType;
 
 	static UPSSoundServer                      *_SoundServer;
 
 	float										_UserParam[MaxPSUserParam];
-	const TGlobalValuesMap::value_type		    **_UserParamGlobalValue; // usually set to NULL unless some user params mirror a global value, 
+	const TGlobalValuesMap::value_type		    **_UserParamGlobalValue; // usually set to NULL unless some user params mirror a global value,
 	                                                                     // in this case this contains as many pointer into the global map as there are user params
 	uint8                                       _BypassGlobalUserParam;  // mask to bypass a global user param. This state is not serialized
 
 	TPresetBehaviour							_PresetBehaviour;
 
-	typedef 
+	typedef
 		CPSMultiMap<uint32, CPSLocatedBindable *>::M TLBMap;
 	TLBMap											_LBMap;
 
@@ -1193,10 +1193,10 @@ private:
 	NLMISC::CRGBA								_GlobalColorLighted;
 	NLMISC::CRGBA								_LightingColor;
 	NLMISC::CRGBA								_UserColor;
-	
+
 	bool										_ComputeBBox                         : 1;	/// when set to true, the system will compute his BBox every time computeBBox is called
 	bool										_BBoxTouched                         : 1;
-	bool										_AccurateIntegration                 : 1;		
+	bool										_AccurateIntegration                 : 1;
 	bool										_CanSlowDown                         : 1;
 	bool										_DestroyModelWhenOutOfRange          : 1;
 	bool										_DestroyWhenOutOfFrustum             : 1;
@@ -1205,7 +1205,7 @@ private:
 	bool										_KeepEllapsedTimeForLifeUpdate       : 1;
 	bool										_AutoLODSkipParticles                : 1;
 	bool										_EnableLoadBalancing                 : 1;
-	bool										_EmitThreshold                       : 1;	
+	bool										_EmitThreshold                       : 1;
 	bool										_BypassIntegrationStepLimit          : 1;
 	bool										_ForceGlobalColorLighting            : 1;
 	bool										_AutoComputeDelayBeforeDeathTest     : 1;
@@ -1215,7 +1215,7 @@ private:
 
 	static bool									_SerialIdentifiers;
 	static bool									_ForceDisplayBBox;
-	
+
 
 	#ifdef NL_DEBUG
 		static uint									_NumInstances;
@@ -1226,7 +1226,7 @@ public:
 	// For use by emitters only : This compute a delta of position of the user matrix to ensure that spawning position are correct when the system moves
 	void		interpolateUserPosDelta(NLMISC::CVector &dest, TAnimationTime deltaT);
 	// For use by emitters only : Get the current emit ratio when auto-LOD is used. Valid only during the 'Emit' pass
-	float		getAutoLODEmitRatio() const { return _AutoLODEmitRatio; }	
+	float		getAutoLODEmitRatio() const { return _AutoLODEmitRatio; }
 	// For private used by CPSLocated instances : should be called when the matrix mode of a located has changed
 	void		matrixModeChanged(CParticleSystemProcess *proc, TPSMatrixMode oldMode, TPSMatrixMode newMode);
 	// FOR PRIVATE USE : called when one more object of the system needs the _UserCoordSystemInfo field => so allocate it if needed.
@@ -1243,24 +1243,24 @@ public:
 		TSpawnInfoVect SpawnInfos;
 		uint		   MaxNumSpawns;
 	};
-	static std::vector<NLMISC::CSmartPtr<CSpawnVect> > _Spawns; // for each process of the system (the array is ordered as CParticleSystem::_ProcessVect is) , store a list of particles to spawn. We can't spawn them directly, 
+	static std::vector<NLMISC::CSmartPtr<CSpawnVect> > _Spawns; // for each process of the system (the array is ordered as CParticleSystem::_ProcessVect is) , store a list of particles to spawn. We can't spawn them directly,
 															    // because ageing particle must be processed and removed first to make room
 															    // for new particles and thus avoid a 'pulse' effect when framerate is low or when spawning is fast  (see the update loop CParticleSystem::step for details)
 															    // NB : we use a smart pointer to avoid resize of a vector of vector, which is baaad...
 															    // This is public but intended to be used by CPSLocated only.
-	static std::vector<uint>						   _ParticleToRemove;			// used during the update step, contains the indices of the particles to remove	
+	static std::vector<uint>						   _ParticleToRemove;			// used during the update step, contains the indices of the particles to remove
 	static std::vector<sint>						   _ParticleRemoveListIndex; 	// for each particle, -1 if it hasn't been removed, or else give the insertion number in _ParticleToRemove
 	static std::vector<uint>						   _CollidingParticles; // index of particle that collided
-	static std::vector<NLMISC::CVector>				   _SpawnPos;			// spawn position of newly created particles		
+	static std::vector<NLMISC::CVector>				   _SpawnPos;			// spawn position of newly created particles
 public:
 	// current sim steps infos
 	static TAnimationTime								EllapsedTime;
 	static TAnimationTime								InverseTotalEllapsedTime;
 	static TAnimationTime								RealEllapsedTime;
-	static float										RealEllapsedTimeRatio;	
-	static bool											InsideSimLoop;	
+	static float										RealEllapsedTimeRatio;
+	static bool											InsideSimLoop;
 	static bool											InsideRemoveLoop;
-	static bool											InsideNewElementsLoop;	
+	static bool											InsideNewElementsLoop;
 	static CParticleSystemModel							*OwnerModel; // owner model for that system
 };
 
@@ -1269,15 +1269,15 @@ public:
  *	This class holds infos needed to duplicate a particle system
  *  Because of cross referencement, an object of the system may need referencment before it is created
  *  With map holding pointer to already created object, we can duplicate the system safely
- *  for now it is for PRIVATE USE... 
+ *  for now it is for PRIVATE USE...
  *  may be useful in NLMISC later as it could be used with other kind of objects ...
- */ 
+ */
 /*
 class CPSCopyHelper
 {
 	public:
 		// duplicate an object using the copy ctor, if it has not been before
-		template <class T> T *ctorCopy(const T &src) 
+		template <class T> T *ctorCopy(const T &src)
 		{
 			TCopiedIt it = _Alreadycopied.find(src);
 			if (it  != _AlreadyCopied.end())
@@ -1306,7 +1306,7 @@ class CPSCopyHelper
 				_AlreadyCopied.insert((void *) result);
 				return result;
 			}
-		}		
+		}
 
 
 		// insert a value that has been copied by other means
@@ -1314,7 +1314,7 @@ class CPSCopyHelper
 		{
 			std::pair<TCopiedIt, bool> result = _AlreadyCopied.insert(ptr);
 			nlassert(result.second);
-		}	
+		}
 
 	private:
 		typedef std::set<void *> TAlreadyCopied;
@@ -1325,7 +1325,7 @@ class CPSCopyHelper
 */
 
 
-	
+
 } // NL3D
 
 

@@ -83,9 +83,9 @@ public:
 						  const NLMISC::CMatrix &invertedModelMat,
 						  const NLMISC::CVector & /*viewerPos*/);
 	/// disable the VertexProgram.
-	virtual	void	end(IDriver *drv);	
+	virtual	void	end(IDriver *drv);
 
-	// Setup this shader for the given material. 
+	// Setup this shader for the given material.
 	virtual void	setupForMaterial(const CMaterial &mat,
 									 IDriver *drv,
 									 CScene *scene,
@@ -114,9 +114,9 @@ private:
 	void	setupLighting(CScene *scene, CMeshBaseInstance *mbi, const NLMISC::CMatrix &invertedModelMat);
 private:
 
-	enum { NumVp = 16};	
+	enum { NumVp = 16};
 
-	/** The 16 versions: Specular or not (0 or 2), + normalize normal or not (0 or 1). 
+	/** The 16 versions: Specular or not (0 or 2), + normalize normal or not (0 or 1).
 	 *	All multiplied by 4, because support from 0 to 3 pointLights activated. (0.., 4.., 8.., 12..)
 	 */
 	static	std::auto_ptr<CVertexProgram>	_VertexProgram[NumVp];
@@ -128,17 +128,17 @@ private:
 	// maximum amplitude vector for each level. Stored in mesh because same for all instances.
 	CVector		_MaxDeltaPos[HrcDepth];
 	float		_MaxVertexMove;
-	
+
 	// MBR Cache
 	uint		_LastMBRIdVP;
 
 	// Compute a cosinus with an angle given in 0-1 <=> 0-2Pi. Actual values goes from 0 to 2.
 	static float	speedCos(float angle);
 
-	
+
 	void		setupPerMesh(IDriver *driver, CScene *scene);
 	void		setupPerInstanceConstants(IDriver *driver, CScene *scene, CMeshBaseInstance *mbi, const NLMISC::CMatrix &invertedModelMat);
-	
+
 };
 
 

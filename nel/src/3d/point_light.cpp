@@ -32,7 +32,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -237,7 +237,7 @@ void			CPointLight::serial(NLMISC::IStream &f)
 		f.serial(_AddAmbientWithSun);
 	else
 		_AddAmbientWithSun= false;
-		
+
 	if(ver>=1)
 	{
 		f.serialEnum(_Type);
@@ -316,8 +316,8 @@ float			CPointLight::computeLinearAttenuation(const CVector &pos, float dist, fl
 			else
 			{
 				// compute the angle of the cone made by the model sphere and the pointLightCenter.
-				float	cosAngleSphere= modelRadius / sqrtf( sqr(dist) + sqr(modelRadius) ); 
-				/* If this one is smaller than cosAngleDirSpot, it's mean that the angle of this cone is greater than the 
+				float	cosAngleSphere= modelRadius / sqrtf( sqr(dist) + sqr(modelRadius) );
+				/* If this one is smaller than cosAngleDirSpot, it's mean that the angle of this cone is greater than the
 					angleDirSpot, hence a part of the sphere "ps" exist such that _SportDirection*(ps-_Position).normed() == 1
 					=> no spotAttenuation
 				*/
@@ -364,14 +364,14 @@ void			CPointLight::setupDriverLight(CLight &light, uint8 factor)
 	// setup the pointLight
 	if(_Type == SpotLight )
 	{
-		light.setupSpotLight(ambient, diffuse, specular, _Position, _SpotDirection, 
+		light.setupSpotLight(ambient, diffuse, specular, _Position, _SpotDirection,
 			_SpotExponent, float(NLMISC::Pi/2) ,
 			_ConstantAttenuation, _LinearAttenuation, _QuadraticAttenuation);
 	}
 	// PointLight or AmbientLight
 	else
 	{
-		light.setupPointLight(ambient, diffuse, specular, _Position, CVector::Null, 
+		light.setupPointLight(ambient, diffuse, specular, _Position, CVector::Null,
 			_ConstantAttenuation, _LinearAttenuation, _QuadraticAttenuation);
 	}
 }
@@ -389,9 +389,9 @@ void			CPointLight::setupDriverLightUserAttenuation(CLight &light, uint8 factor)
 	diffuse.modulateFromuiRGBOnly(_Diffuse, ufactor);
 	specular.modulateFromuiRGBOnly(_Specular, ufactor);
 
-	// setup the pointLight, disabling attenuation. 
+	// setup the pointLight, disabling attenuation.
 	// NB: setup a pointLight even if it is a SpotLight because already attenuated
-	light.setupPointLight(ambient, diffuse, specular, _Position, CVector::Null, 
+	light.setupPointLight(ambient, diffuse, specular, _Position, CVector::Null,
 		1, 0, 0);
 }
 

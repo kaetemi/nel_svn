@@ -175,13 +175,13 @@ bool			CAABBox::clipSegment(CVector &a, CVector &b) const
 // ***************************************************************************
 bool			CAABBox::intersect(const CBSphere &s) const
 {
-	if (Center.x + HalfSize.x < s.Center.x - s.Radius) return false; 
-	if (Center.y + HalfSize.y < s.Center.y - s.Radius) return false; 
-	if (Center.z + HalfSize.z < s.Center.z - s.Radius) return false; 
+	if (Center.x + HalfSize.x < s.Center.x - s.Radius) return false;
+	if (Center.y + HalfSize.y < s.Center.y - s.Radius) return false;
+	if (Center.z + HalfSize.z < s.Center.z - s.Radius) return false;
 
-	if (Center.x - HalfSize.x > s.Center.x + s.Radius) return false; 
-	if (Center.y - HalfSize.y > s.Center.y + s.Radius) return false; 
-	if (Center.z - HalfSize.z > s.Center.z + s.Radius) return false; 
+	if (Center.x - HalfSize.x > s.Center.x + s.Radius) return false;
+	if (Center.y - HalfSize.y > s.Center.y + s.Radius) return false;
+	if (Center.z - HalfSize.z > s.Center.z + s.Radius) return false;
 
 	return true;
 }
@@ -231,12 +231,12 @@ void	CAABBox::extend(const CVector &v)
 */
 
 CAABBox CAABBox::computeAABBoxUnion(const CAABBox &b1, const CAABBox &b2)
-{	
+{
 	CAABBox result;
 	CVector min, max;
-	CVector min1 = b1.getMin() 
-		    ,max1 = b1.getMax() 
-			,min2 = b2.getMin() 
+	CVector min1 = b1.getMin()
+		    ,max1 = b1.getMax()
+			,min2 = b2.getMin()
 		    ,max2 = b2.getMax();
 	max.maxof(max1, max2);
 	min.minof(min1, min2);
@@ -264,9 +264,9 @@ void	CAABBox::computeIntersection(const CAABBox &b1, const CAABBox &b2)
 CAABBox CAABBox::transformAABBox(const CMatrix &mat, const CAABBox &box)
 {
 	// TODO : optimize this a bit if possible...
-	CAABBox result;	
+	CAABBox result;
 
-	/* OMG. Old code was false!!  
+	/* OMG. Old code was false!!
 		if we have ht= M * h
 		then CVector(-ht.x, ht.y, ht.z) != M * CVector(-h.x, h.y, h.z) !!!!
 	*/
@@ -293,8 +293,8 @@ CAABBox CAABBox::transformAABBox(const CMatrix &mat, const CAABBox &box)
 	}
 
 	result.setMinMax(min, max);
-	
-	return result;	
+
+	return result;
 }
 
 

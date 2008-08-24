@@ -30,11 +30,11 @@
 #include "nel/3d/track_sampled_common.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
-// For Debug only (must be defined). Correct serialized version is with compression. 
+// For Debug only (must be defined). Correct serialized version is with compression.
 #define	NL3D_TSQ_ALLOW_QUAT_COMPRESS
 
 
@@ -47,21 +47,21 @@ class	CQuatPack
 {
 public:
 	sint16		x,y,z,w;
-	
+
 	void		pack(const CQuat &quat);
 	void		unpack(CQuat &quat);
-	
+
 	void		serial(NLMISC::IStream &f)
 	{
 		// NB: no version here.
 		f.serial(x,y,z,w);
 	}
-	
+
 	bool	operator==(const CQuatPack &oq) const
 	{
 		return x==oq.x && y==oq.y && z==oq.z && w==oq.w;
 	}
-	
+
 };
 #else
 // A dummy packed quaternion.
@@ -69,14 +69,14 @@ class	CQuatPack
 {
 public:
 	CQuat	q;
-	
+
 	void		pack(const CQuat &quat)	{q= quat;}
 	void		unpack(CQuat &quat)		{quat= q;}
 	void		serial(NLMISC::IStream &f)	{f.serial(q);}
 	bool	operator==(const CQuatPack &oq) const {return q==oq.q;}
 };
 #endif
-	
+
 
 // ***************************************************************************
 /**
@@ -110,7 +110,7 @@ public:
 	virtual void applySampleDivisor(uint sampleDivisor);
 	// @}
 
-	/** Build the track from a list of CKey. 
+	/** Build the track from a list of CKey.
 	 *	They must be already precompiled. ie they must all lies on the same hemisphere from prec key.
 	 *	nlassert if ! same length.
 	 *	\param timeList the list of key time. First must be ==0. nlassert if difference between 2 keys is > 255
@@ -118,7 +118,7 @@ public:
 	 *	\param beginTime map to the timeList[0] time.
 	 *	\param endTime map to the timeList[size-1] time.
 	 */
-	void	build(const std::vector<uint16> &timeList, const std::vector<CQuat> &keyList, 
+	void	build(const std::vector<uint16> &timeList, const std::vector<CQuat> &keyList,
 		float beginTime, float endTime);
 
 	/// For Quat Track Header Compression

@@ -46,13 +46,13 @@ class ISource;
 #define EAX_AVAILABLE	1
 #endif
 
-/** 
+/**
  *	Configuration to compile with manual or API (directx or open AL) rolloff factor.
- *	0 => API (directx or open AL) rollOff control. 
- *		ISource::setAlpha() has no impact. 
+ *	0 => API (directx or open AL) rollOff control.
+ *		ISource::setAlpha() has no impact.
  *		IListener::setRollOffFactor() works
  *	1 => Manual rollOff control
- *		ISource::setAlpha() change the shape of attenuation 
+ *		ISource::setAlpha() change the shape of attenuation
  *		IListener::setRollOffFactor() has no impact
  */
 #define MANUAL_ROLLOFF	1
@@ -173,34 +173,34 @@ public:
 	 *	NB: if an old music was played, it is first stop with stopMusic()
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently	 *	\param path full file path (no CPath::lookup is done since static)
 	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
-	 *	\param fileOffset and fileSize: if not 0, use it to load a .mp3 that reside in a BNP. 
-	 *		the offset and size have to be retrieved with CBigFile methods. 
-	 *		e.g.: use either 
+	 *	\param fileOffset and fileSize: if not 0, use it to load a .mp3 that reside in a BNP.
+	 *		the offset and size have to be retrieved with CBigFile methods.
+	 *		e.g.: use either
 	 *			playMusicAsync("C:/test/mymusic.mp3");
 	 *		or
 	 * 			playMusicAsync("C:/test/mydata.bnp", offsetOfMp3InBnp, sizeOfMp3InBnp);
 	 *		Notice that you must give the full path of the bnp (eg: "C:/test/mydata.bnp") in path.
-	 *	\param loop must be true to play the music in loop. 
+	 *	\param loop must be true to play the music in loop.
 	 */
 	virtual bool	playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop) =0;
-	
+
 	/** Stop the music previously loaded and played (the Memory is also freed)
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 *	\param xFadeTime if not 0 the old music played is not stoped but faded out of xFadeTime (in ms)
 	 */
 	virtual void	stopMusic(uint channel, uint xFadeTime) =0;
-	
+
 	/** Pause the music previously loaded and played (the Memory is not freed)
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 */
 	virtual void	pauseMusic(uint channel) =0;
-	
+
 	/** Resume the music previously paused
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 */
 	virtual void	resumeMusic(uint channel) =0;
 
-	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
+	/** Get the song title. Returns false if the song is not found or the function is not implemented.
 	 * If the song as no name, result is filled with the filename.
 	 */
 	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0) =0;
@@ -210,12 +210,12 @@ public:
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 */
 	virtual bool	isMusicEnded(uint channel) =0;
-	
+
 	/** Return the total length (in second) of the music currently played
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 */
 	virtual float	getMusicLength(uint channel) =0;
-	
+
 	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
 	 *	NB: the volume of music is NOT affected by IListener::setGain()
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
@@ -302,7 +302,7 @@ public:
 	ESoundDriverCantCreateDriver(const std::string &dllName) : ESoundDriver( dllName + " can't create driver" ) {}
 };
 
-  
+
 /**
  * ESoundDriverGenBuf
  */
@@ -322,7 +322,7 @@ public:
 	ESoundDriverGenSrc() : ESoundDriver( "Unable to generate sound sources" ) {}
 };
 
-  
+
 /**
  * ESoundDriverNotSupp
  */

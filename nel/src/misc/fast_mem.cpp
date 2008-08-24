@@ -36,11 +36,11 @@ namespace NLMISC
 // ***************************************************************************
 void		*CFastMem::memcpySSE(void *dest, const void *src, size_t nbytes)
 {
-	_asm 
+	_asm
 	{
-			mov esi, src 
-			mov edi, dest 
-			mov ebx, nbytes 
+			mov esi, src
+			mov edi, dest
+			mov ebx, nbytes
 
 			// edx takes number of bytes%64
 			mov	edx, ebx
@@ -51,8 +51,8 @@ void		*CFastMem::memcpySSE(void *dest, const void *src, size_t nbytes)
 			jz	byteCopy
 
 
-	loop4k: // flush 4k into temporary buffer 
-			push esi 
+	loop4k: // flush 4k into temporary buffer
+			push esi
 			mov ecx, ebx
 			// copy per block of 64 bytes. Must not override 64*64= 4096 bytes.
 			cmp ecx, 64
@@ -62,53 +62,53 @@ void		*CFastMem::memcpySSE(void *dest, const void *src, size_t nbytes)
 			// eax takes the number of 64bytes packet for this block.
 			mov eax, ecx
 
-	loopMemToL1: 
-			prefetchnta 64[ESI] // Prefetch next loop, non-temporal 
-			prefetchnta 96[ESI] 
+	loopMemToL1:
+			prefetchnta 64[ESI] // Prefetch next loop, non-temporal
+			prefetchnta 96[ESI]
 
-			movq mm1,  0[ESI] // Read in source data 
-			movq mm2,  8[ESI] 
-			movq mm3, 16[ESI] 
-			movq mm4, 24[ESI] 
-			movq mm5, 32[ESI] 
-			movq mm6, 40[ESI] 
-			movq mm7, 48[ESI] 
-			movq mm0, 56[ESI] 
+			movq mm1,  0[ESI] // Read in source data
+			movq mm2,  8[ESI]
+			movq mm3, 16[ESI]
+			movq mm4, 24[ESI]
+			movq mm5, 32[ESI]
+			movq mm6, 40[ESI]
+			movq mm7, 48[ESI]
+			movq mm0, 56[ESI]
 
-			add esi, 64 
-			dec ecx 
-			jnz loopMemToL1 
+			add esi, 64
+			dec ecx
+			jnz loopMemToL1
 
-			pop esi // Now copy from L1 to system memory 
+			pop esi // Now copy from L1 to system memory
 			mov ecx, eax
 
-	loopL1ToMem: 
-			movq mm1, 0[ESI] // Read in source data from L1 
-			movq mm2, 8[ESI] 
-			movq mm3, 16[ESI] 
-			movq mm4, 24[ESI] 
-			movq mm5, 32[ESI] 
-			movq mm6, 40[ESI] 
-			movq mm7, 48[ESI] 
-			movq mm0, 56[ESI] 
+	loopL1ToMem:
+			movq mm1, 0[ESI] // Read in source data from L1
+			movq mm2, 8[ESI]
+			movq mm3, 16[ESI]
+			movq mm4, 24[ESI]
+			movq mm5, 32[ESI]
+			movq mm6, 40[ESI]
+			movq mm7, 48[ESI]
+			movq mm0, 56[ESI]
 
-			movntq 0[EDI], mm1 // Non-temporal stores 
-			movntq 8[EDI], mm2 
-			movntq 16[EDI], mm3 
-			movntq 24[EDI], mm4 
-			movntq 32[EDI], mm5 
-			movntq 40[EDI], mm6 
-			movntq 48[EDI], mm7 
-			movntq 56[EDI], mm0 
+			movntq 0[EDI], mm1 // Non-temporal stores
+			movntq 8[EDI], mm2
+			movntq 16[EDI], mm3
+			movntq 24[EDI], mm4
+			movntq 32[EDI], mm5
+			movntq 40[EDI], mm6
+			movntq 48[EDI], mm7
+			movntq 56[EDI], mm0
 
-			add esi, 64 
-			add edi, 64 
-			dec ecx 
+			add esi, 64
+			add edi, 64
+			dec ecx
 			jnz loopL1ToMem
 
-			// Do next 4k block 
+			// Do next 4k block
 			sub ebx, eax
-			jnz loop4k 
+			jnz loop4k
 
 			emms
 
@@ -123,30 +123,30 @@ void		*CFastMem::memcpySSE(void *dest, const void *src, size_t nbytes)
 // ***************************************************************************
 void		CFastMem::precacheSSE(const void *src, uint nbytes)
 {
-	_asm 
-	{ 
-			mov esi, src 
+	_asm
+	{
+			mov esi, src
 			mov ecx, nbytes
 			// 64 bytes per pass
-			shr ecx, 6 
+			shr ecx, 6
 			jz endLabel
 
-	loopMemToL1: 
-			prefetchnta 64[ESI] // Prefetch next loop, non-temporal 
-			prefetchnta 96[ESI] 
+	loopMemToL1:
+			prefetchnta 64[ESI] // Prefetch next loop, non-temporal
+			prefetchnta 96[ESI]
 
-			movq mm1,  0[ESI] // Read in source data 
-			movq mm2,  8[ESI] 
-			movq mm3, 16[ESI] 
-			movq mm4, 24[ESI] 
-			movq mm5, 32[ESI] 
-			movq mm6, 40[ESI] 
-			movq mm7, 48[ESI] 
+			movq mm1,  0[ESI] // Read in source data
+			movq mm2,  8[ESI]
+			movq mm3, 16[ESI]
+			movq mm4, 24[ESI]
+			movq mm5, 32[ESI]
+			movq mm6, 40[ESI]
+			movq mm7, 48[ESI]
 			movq mm0, 56[ESI]
 
-			add esi, 64 
-			dec ecx 
-			jnz loopMemToL1 
+			add esi, 64
+			dec ecx
+			jnz loopMemToL1
 
 			emms
 
@@ -157,27 +157,27 @@ void		CFastMem::precacheSSE(const void *src, uint nbytes)
 // ***************************************************************************
 void		CFastMem::precacheMMX(const void *src, uint nbytes)
 {
-	_asm 
-	{ 
-			mov esi, src 
+	_asm
+	{
+			mov esi, src
 			mov ecx, nbytes
 			// 64 bytes per pass
-			shr ecx, 6 
+			shr ecx, 6
 			jz endLabel
 
-	loopMemToL1: 
-			movq mm1,  0[ESI] // Read in source data 
-			movq mm2,  8[ESI] 
-			movq mm3, 16[ESI] 
-			movq mm4, 24[ESI] 
-			movq mm5, 32[ESI] 
-			movq mm6, 40[ESI] 
-			movq mm7, 48[ESI] 
+	loopMemToL1:
+			movq mm1,  0[ESI] // Read in source data
+			movq mm2,  8[ESI]
+			movq mm3, 16[ESI]
+			movq mm4, 24[ESI]
+			movq mm5, 32[ESI]
+			movq mm6, 40[ESI]
+			movq mm7, 48[ESI]
 			movq mm0, 56[ESI]
 
-			add esi, 64 
-			dec ecx 
-			jnz loopMemToL1 
+			add esi, 64
+			dec ecx
+			jnz loopMemToL1
 
 			emms
 

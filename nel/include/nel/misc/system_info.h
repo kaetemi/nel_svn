@@ -55,10 +55,10 @@ public:
 	  */
 	static bool hasCPUID ();
 
-	/** Helps to know whether the processor features MMX instruction set 
+	/** Helps to know whether the processor features MMX instruction set
 	  * This is initialized at started, so its fast
 	  * (always false on non 0x86 architecture ...)
-	  */	  
+	  */
 	static bool hasMMX () {return _HaveMMX;}
 
 	/** Helps to know whether the processor has streaming SIMD instructions (the OS must supports it)
@@ -74,7 +74,7 @@ public:
 	/** true if the Processor has HyperThreading
 	  */
 	static bool hasHyperThreading();
-	
+
 	/** true if running under NT
 	  */
 	static bool isNT();

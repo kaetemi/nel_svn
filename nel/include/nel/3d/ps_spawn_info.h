@@ -29,9 +29,9 @@
 
 namespace NL3D
 {
-	
+
 	class CPSLocated;
-	
+
 	// info about the state of an emitting particle
 	class CPSEmitterInfo
 	{
@@ -51,8 +51,8 @@ namespace NL3D
 			Life = 0.f;
 		}
 	};
-	
-	
+
+
 	// info about a particle that should be spawned
 	struct CPSSpawnInfo
 	{
@@ -62,6 +62,6 @@ namespace NL3D
 		TPSMatrixMode	 SpeedCoordSystem;
 		TAnimationTime	 LifeTime; // age of the particle when it is spawned (may not be 0 because of sub-frame accuracy)
 	};
-	
+
 }
 #endif

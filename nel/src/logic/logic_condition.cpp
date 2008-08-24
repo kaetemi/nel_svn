@@ -1,5 +1,5 @@
 /** \file logic_condition.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -39,16 +39,16 @@ namespace NLLOGIC
 //
 //-------------------------------------------------
 void CLogicComparisonBlock::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
-{ 
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CLogicComparisonBlock::setLogicStateMachine> The state machine is null");
 	}
 	else
 	{
-		_LogicStateMachine = logicStateMachine; 
+		_LogicStateMachine = logicStateMachine;
 	}
-	
+
 } // setLogicStateMachine //
 
 
@@ -85,11 +85,11 @@ bool CLogicComparisonBlock::testLogic()
 /*void CLogicComparisonBlock::serial( IStream &f )
 {
 	f.xmlPush("COMPARISON_BLOCK");
-	
+
 	f.serial( VariableName );
 	f.serial( Operator );
 	f.serial( Comparand );
-	
+
 	f.xmlPop();
 
 } // serial //*/
@@ -122,7 +122,7 @@ void CLogicComparisonBlock::read (xmlNodePtr node)
 //
 //-------------------------------------------------
 void CLogicConditionLogicBlock::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
-{ 
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CCLogicConditionLogicBlock::setLogicStateMachine> The state machine is null");
@@ -130,9 +130,9 @@ void CLogicConditionLogicBlock::setLogicStateMachine( CLogicStateMachine * logic
 	else
 	{
 		// set the state machine of this node
-		_LogicStateMachine = logicStateMachine; 
+		_LogicStateMachine = logicStateMachine;
 
-		// set the state machine of the logic block 
+		// set the state machine of the logic block
 		ComparisonBlock.setLogicStateMachine( logicStateMachine );
 	}
 
@@ -171,13 +171,13 @@ bool CLogicConditionLogicBlock::testLogic()
 				nlwarning("(LOGIC)<CLogicConditionLogicBlock::testLogic> The subcondition \"%s\" is unknown in the state machine \"%s\"",
 					SubCondition.c_str(),_LogicStateMachine->getName().c_str());
 			}
-			
+
 		}
 
 		default :
 			nlerror("(LOGIC)<CLogicConditionLogicBlock::testLogic> logic block type %d is unknown",Type);
 	}
-	
+
 	return false;
 
 } // testLogic //
@@ -221,7 +221,7 @@ void CLogicConditionLogicBlock::fillVarSet( set<string>& condVars )
 	switch( Type )
 	{
 		case NOT : break;
-			
+
 		case COMPARISON :
 		{
 			f.serial( ComparisonBlock );
@@ -234,7 +234,7 @@ void CLogicConditionLogicBlock::fillVarSet( set<string>& condVars )
 		}
 		break;
 	};
-	
+
 	f.xmlPop();
 };*/
 
@@ -245,7 +245,7 @@ void CLogicConditionLogicBlock::write (xmlNodePtr node) const
 	switch( Type )
 	{
 		case NOT : break;
-			
+
 		case COMPARISON :
 		{
 			ComparisonBlock.write(elmPtr);
@@ -268,7 +268,7 @@ void CLogicConditionLogicBlock::read (xmlNodePtr node)
 	switch( Type )
 	{
 		case NOT : break;
-			
+
 		case COMPARISON :
 		{
 			ComparisonBlock.read (node);
@@ -292,7 +292,7 @@ void CLogicConditionLogicBlock::read (xmlNodePtr node)
 //
 //-------------------------------------------------
 void CLogicConditionNode::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
-{ 
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CLogicConditionNode::setLogicStateMachine> The state machine is null");
@@ -300,11 +300,11 @@ void CLogicConditionNode::setLogicStateMachine( CLogicStateMachine * logicStateM
 	else
 	{
 		// set the state machine of this node
-		_LogicStateMachine = logicStateMachine; 
+		_LogicStateMachine = logicStateMachine;
 
-		// set the state machine of the logic block 
+		// set the state machine of the logic block
 		LogicBlock.setLogicStateMachine( logicStateMachine );
-		
+
 		// set the state machine for the sub nodes
 		vector<CLogicConditionNode *>::iterator itNodes;
 		for( itNodes = _Nodes.begin(); itNodes != _Nodes.end(); ++itNodes )
@@ -406,7 +406,7 @@ void CLogicConditionNode::fillVarSet( set<string>& condVars )
 /*void CLogicConditionNode::serial( IStream &f )
 {
 	f.xmlPush("CONDITION_NODE");
-	
+
 	f.serialEnum( Type );
 	switch( Type )
 	{
@@ -523,7 +523,7 @@ CLogicConditionNode::~CLogicConditionNode()
 //
 //-------------------------------------------------
 void CLogicCondition::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
-{ 
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CLogicCondition::setLogicStateMachine> The state machine is null");
@@ -585,7 +585,7 @@ void CLogicCondition::fillVarSet( set<string>& condVars )
 /*void CLogicCondition::serial( IStream &f )
 {
 	f.xmlPush("CONDITION");
-	
+
 	f.serial( _ConditionName );
 	f.serialCont( Nodes );
 

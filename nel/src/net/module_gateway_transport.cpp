@@ -38,11 +38,11 @@ using namespace NLMISC;
 
 namespace NLNET
 {
-	
+
 	// keep alive delay in seconds of inactivity
 	// NB : it is useless to set it at a value less than 100" because
-	// according to RFC 1122 (Requirements for Internet Hosts), 
-	// the TCP transmission time out is a least of 100" before 
+	// according to RFC 1122 (Requirements for Internet Hosts),
+	// the TCP transmission time out is a least of 100" before
 	// closing a connection without acknowledge.
 	// That means modules seens from a dead connection will only be
 	// removed after little more than 100".
@@ -86,9 +86,9 @@ namespace NLNET
 		typedef std::map<TSockId, CL3ServerRoute*>	TRouteMap;
 		TRouteMap	_Routes;
 
-		
+
 		/// Constructor
-		CGatewayL3ServerTransport(const IGatewayTransport::TCtorParam &param) 
+		CGatewayL3ServerTransport(const IGatewayTransport::TCtorParam &param)
 			: IGatewayTransport(param)
 		{
 		}
@@ -188,13 +188,13 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand) 
+		void onCommand(const CMessage &command) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
 		}
 		/// The gateway send a textual command to the transport
-		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand) 
+		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand)
 		{
 			if (command.SubParams.size() < 1)
 				throw  EInvalidCommand();
@@ -236,7 +236,7 @@ namespace NLNET
 
 			// open the server
 			cbs->init(port);
-			
+
 			_CallbackServer = cbs;
 
 			// register it in the dispatcher
@@ -366,9 +366,9 @@ namespace NLNET
 			// forward the call
 			it->second->onDispatchMessage(msgin, from, netbase);
 		}
-	
+
 	};
-	
+
 	CGatewayL3ServerTransport::TDispatcherIndex	CGatewayL3ServerTransport::_DispatcherIndex;
 
 	// register this class in the transport factory
@@ -454,14 +454,14 @@ namespace NLNET
 		/// A list of free slot ready for use
 		typedef vector<TClientRouteIds::difference_type>	TFreeRouteIds;
 		TFreeRouteIds			_FreeRoutesIds;
-		
+
 		/// the route to delete outside of the update loop
 		list<CL3ClientRoute*>	_RouteToRemove;
 
 		/// Retry interval for reconnection
 		uint32					_RetryInterval;
 
-		enum 
+		enum
 		{
 			/// Default time interval (in seconds) between to reconnection attempts
 			RETRY_INTERVAL =  5,
@@ -470,7 +470,7 @@ namespace NLNET
 		};
 
 		/// Constructor
-		CGatewayL3ClientTransport(const IGatewayTransport::TCtorParam &param) 
+		CGatewayL3ClientTransport(const IGatewayTransport::TCtorParam &param)
 			: IGatewayTransport(param),
 			_RetryInterval(RETRY_INTERVAL)
 		{
@@ -563,7 +563,7 @@ namespace NLNET
 
 						route->sendMessage(keepAlive);
 					}
-					
+
 					// force a flush of the connection
 					route->CallbackClient.flush();
 				}
@@ -611,13 +611,13 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand) 
+		void onCommand(const CMessage &command) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
 		}
 		/// The gateway send a textual command to the transport
-		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand) 
+		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand)
 		{
 			if (command.SubParams.size() < 1)
 				throw  EInvalidCommand();
@@ -653,7 +653,7 @@ namespace NLNET
 				return false;
 
 			return true;
-			
+
 		}
 
 		/// connect to a server
@@ -722,7 +722,7 @@ namespace NLNET
 			if (_RouteIds[connId] == NULL)
 			{
 				nlwarning("CGatewayL3ClientTransport : Invalid connectionId %u, the connection is unused now.", connId);
-				return;		
+				return;
 			}
 
 
@@ -741,7 +741,7 @@ namespace NLNET
 			{
 				// callback gateway
 				_Gateway->onRouteRemoved(route);
-				
+
 				// close the connection
 				route->CallbackClient.disconnect();
 			}
@@ -826,9 +826,9 @@ namespace NLNET
 			// forward the call
 			it->second->onDispatchMessage(msgin, from, netbase);
 		}
-	
+
 	};
-	
+
 	CGatewayL3ClientTransport::TDispatcherIndex	CGatewayL3ClientTransport::_DispatcherIndex;
 
 	// register this class in the transport factory

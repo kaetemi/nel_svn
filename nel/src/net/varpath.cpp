@@ -75,7 +75,7 @@ using namespace NLMISC;
 string CVarPath::getToken ()
 {
 	string res;
-	
+
 	if (TokenPos >= RawVarPath.size())
 		return res;
 
@@ -106,7 +106,7 @@ void CVarPath::decode ()
 
 	if (val == "")
 		return;
-		
+
 	if (val == "[" )
 	{
 		do
@@ -126,7 +126,7 @@ void CVarPath::decode ()
 					Destination.clear ();
 					return;
 				}
-					
+
 				if (osbnb == 0 && (val == "," || val == "]"))
 					break;
 
@@ -170,7 +170,7 @@ void CVarPath::decode ()
 	{
 		string srv, var;
 		string::size_type pos;
-		
+
 		if ((pos = dest[i].find ('.')) != string::npos)
 		{
 			srv = dest[i].substr(0, pos);
@@ -224,6 +224,6 @@ NLMISC_CATEGORISED_COMMAND(nel, varPath, "Test a varpath (for debug purpose)", "
 		log.displayNL ("Dest '%s' value '%s'", vp.Destination[i].first.c_str(), vp.Destination[i].second.c_str());
 	}
 	log.displayNL ("End of varpath");
-	
+
 	return true;
 }

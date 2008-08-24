@@ -26,7 +26,7 @@
 #include "nel/3d/tile_color.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

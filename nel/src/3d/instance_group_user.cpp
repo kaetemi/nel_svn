@@ -36,7 +36,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -90,7 +90,7 @@ CInstanceGroupUser::CInstanceGroupUser()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	_AddToSceneState = StateNotAdded;
 
 	// set user info for possible get
@@ -104,7 +104,7 @@ CInstanceGroupUser::~CInstanceGroupUser()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// ensure all instances proxys are deleted
 	removeInstancesUser();
 }
@@ -182,7 +182,7 @@ void CInstanceGroupUser::addToScene (class UScene& scene, UDriver *driver, uint 
 // ***************************************************************************
 void CInstanceGroupUser::getInstanceMatrix(uint instanceNb,NLMISC::CMatrix &dest) const
 {
-	_InstanceGroup.getInstanceMatrix(instanceNb, dest);	
+	_InstanceGroup.getInstanceMatrix(instanceNb, dest);
 }
 
 
@@ -265,7 +265,7 @@ const std::string& CInstanceGroupUser::getShapeName (uint instanceNb) const
 	// Check args
 	if (instanceNb>=_InstanceGroup.getNumInstance ())
 		nlerror("getShapeName*(): bad instance Id");
-	
+
 	return _InstanceGroup.getShapeName (instanceNb);
 }
 
@@ -275,7 +275,7 @@ const std::string& CInstanceGroupUser::getInstanceName (uint instanceNb) const
 	// Check args
 	if (instanceNb>=_InstanceGroup.getNumInstance ())
 		nlerror("getInstanceName*(): bad instance Id");
-	
+
 	return _InstanceGroup.getInstanceName (instanceNb);
 }
 
@@ -285,7 +285,7 @@ const NLMISC::CVector& CInstanceGroupUser::getInstancePos (uint instanceNb) cons
 	// Check args
 	if (instanceNb>=_InstanceGroup.getNumInstance ())
 		nlerror("getInstancePos*(): bad instance Id");
-	
+
 	return _InstanceGroup.getInstancePos (instanceNb);
 }
 
@@ -295,7 +295,7 @@ const NLMISC::CQuat& CInstanceGroupUser::getInstanceRot (uint instanceNb) const
 	// Check args
 	if (instanceNb>=_InstanceGroup.getNumInstance ())
 		nlerror("getInstanceRot*(): bad instance Id");
-	
+
 	return _InstanceGroup.getInstanceRot (instanceNb);
 }
 
@@ -305,7 +305,7 @@ const NLMISC::CVector& CInstanceGroupUser::getInstanceScale (uint instanceNb) co
 	// Check args
 	if (instanceNb>=_InstanceGroup.getNumInstance ())
 		nlerror("getInstanceScale*(): bad instance Id");
-	
+
 	return _InstanceGroup.getInstanceScale (instanceNb);
 }
 
@@ -329,7 +329,7 @@ sint CInstanceGroupUser::getIndexByName(const std::string &name) const
 	{
 		if (_InstanceGroup._Instances[k] == it->second) return (sint) k;
 	}
-	return -1;	
+	return -1;
 }
 
 
@@ -422,10 +422,10 @@ void			CInstanceGroupUser::unfreezeHRC()
 
 // ***************************************************************************
 bool			CInstanceGroupUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient,
-		uint retrieverIdentifier, sint surfaceId, const NLMISC::CVector &localPos, 
+		uint retrieverIdentifier, sint surfaceId, const NLMISC::CVector &localPos,
 		std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient)
 {
-	return _InstanceGroup.getStaticLightSetup(sunAmbient, retrieverIdentifier, surfaceId, localPos, pointLightList, 
+	return _InstanceGroup.getStaticLightSetup(sunAmbient, retrieverIdentifier, surfaceId, localPos, pointLightList,
 		sunContribution, localAmbient);
 }
 
@@ -437,7 +437,7 @@ bool			CInstanceGroupUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient,
 		nlwarning("CInstanceGroupUser::setDistMax : instance index %d is invalid", instance);
 		return;
 	}
-	if (_InstanceGroup._Instances[instance]) _InstanceGroup._Instances[instance]->setDistMax(dist);	
+	if (_InstanceGroup._Instances[instance]) _InstanceGroup._Instances[instance]->setDistMax(dist);
 }
 
 // ***************************************************************************
@@ -460,8 +460,8 @@ bool			CInstanceGroupUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient,
 		nlwarning("CInstanceGroupUser::setCoarseMeshDist : instance index %d is invalid", instance);
 		return;
 	}
-	if (_InstanceGroup._Instances[instance]) 
-	{	
+	if (_InstanceGroup._Instances[instance])
+	{
 		CMeshMultiLodInstance *mmli = dynamic_cast<CMeshMultiLodInstance *>(_InstanceGroup._Instances[instance]);
 		if (mmli) mmli->setCoarseMeshDist(dist);
 	}
@@ -475,12 +475,12 @@ bool			CInstanceGroupUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient,
 		nlwarning("getCoarseMeshDist::getDistMax : instance index %d is invalid", instance);
 		return -1.f;
 	}
-	if (_InstanceGroup._Instances[instance]) 
+	if (_InstanceGroup._Instances[instance])
 	{
 		CMeshMultiLodInstance *mmli = dynamic_cast<CMeshMultiLodInstance *>(_InstanceGroup._Instances[instance]);
 		if (mmli) return mmli->getCoarseMeshDist();
 		else return -1.f;
-	}		
+	}
 	else return -1.f;
 }
 
@@ -500,7 +500,7 @@ void		CInstanceGroupUser::removeInstancesUser()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// clear the array and the map
 	_InstanceMap.clear();
 }

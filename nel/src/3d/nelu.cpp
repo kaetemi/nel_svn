@@ -37,7 +37,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 const float		CNELU::DefLx=0.26f;
@@ -92,7 +92,7 @@ bool			CNELU::initDriver (uint w, uint h, uint bpp, bool windowed, void *systemW
 		nlwarning ("CNELU::initDriver: activate() failed");
 		return false;
 	}
-	
+
 	// Create a skin manager
 	MeshSkinManager = new CVertexStreamManager;
 
@@ -110,7 +110,7 @@ void			CNELU::initScene(CViewport viewport)
 
 	// init default Roots.
 	CNELU::Scene->initDefaultRoots();
-	
+
 	// Set driver.
 	CNELU::Scene->setDriver(CNELU::Driver);
 
@@ -150,7 +150,7 @@ void			CNELU::releaseEventServer()
 	}
 }
 
-	
+
 void			CNELU::releaseScene()
 {
 	// Release the camera.

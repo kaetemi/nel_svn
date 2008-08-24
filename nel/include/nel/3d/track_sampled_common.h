@@ -64,7 +64,7 @@ protected:
 	// Param of animation
 	bool					_LoopMode;
 	float					_BeginTime;
-	float					_EndTime; 
+	float					_EndTime;
 	float					_TotalRange;
 	float					_OOTotalRange;
 	// The frame Time == (_EndTime-_BeginTime)/NumKeys
@@ -106,7 +106,7 @@ protected:
 	// called by sons.
 	void							serialCommon(NLMISC::IStream &f);
 
-	/** Build the track time from a list of Keys. 
+	/** Build the track time from a list of Keys.
 	 *	\param timeList the list of key time. First must be ==0. nlassert if difference between 2 keys is > 255
 	 *	\param beginTime map to the timeList[0] time.
 	 *	\param endTime map to the timeList[size-1] time.

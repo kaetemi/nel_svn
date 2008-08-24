@@ -43,7 +43,7 @@ namespace NL3D {
  */
 
 struct CPlaneBasis
-{	
+{
 	NLMISC::CVector X ;
 	NLMISC::CVector Y ;
 
@@ -51,7 +51,7 @@ struct CPlaneBasis
 	// default ctor
 	CPlaneBasis() {}
 
-	
+
 	// construct this basis by giving a normal to the plane that contains it
 	CPlaneBasis(const NLMISC::CVector &normal)
 	{
@@ -63,7 +63,7 @@ struct CPlaneBasis
 
 	// construct this basis by giving its X and Y vectors
 	CPlaneBasis(const NLMISC::CVector &x, const NLMISC::CVector &y) : X(x), Y(y)
-	{		
+	{
 	}
 
 	/// compute the normal of the plane basis

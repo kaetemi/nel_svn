@@ -28,7 +28,7 @@
 #include "stream.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -58,8 +58,8 @@ public:
 	CUV	operator-(const CUV &v) const
 		{ return CUV(U-v.U, V-v.V);}
 	// unary -
-	CUV operator-() const 
-		{ return CUV(-U, -V); }	
+	CUV operator-() const
+		{ return CUV(-U, -V); }
 	// = operators.
 	CUV	&operator*=(float f)
 		{ U*=f;V*=f; return *this;}
@@ -98,7 +98,7 @@ inline CUV blend(const CUV &uv0, const CUV &uv1, float lambda)
 	float invLambda = 1.f - lambda;
 	return CUV(invLambda * uv0.U + lambda * uv1.U,
 		       invLambda * uv0.V + lambda * uv1.V);
-				   
+
 }
 
 

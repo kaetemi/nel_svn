@@ -51,7 +51,7 @@ public:
 	static void  *(*memcpy)(void *dts, const void *src, size_t nbytes);
 
 	/**
-	 *	Fast precaching of memory in L1 cache using SSE or MMX where available 
+	 *	Fast precaching of memory in L1 cache using SSE or MMX where available
 	 *	(NB: others methods don't do the test)
 	 *	nbytes should not override 4K
 	 */
@@ -74,7 +74,7 @@ public:
 	static void		precacheSSE(const void *src, uint nbytes);
 
 	/**
-	 *	Fast precaching of memory in L1 cache using MMX instructions only: movq 
+	 *	Fast precaching of memory in L1 cache using MMX instructions only: movq
 	 *	Result is typically 720 Mo/s (surely slower because of overhead).
 	 *	Hence prefer precacheSSE() when available.
 	 *	nbytes should not override 4K

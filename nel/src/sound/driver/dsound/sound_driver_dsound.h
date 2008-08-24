@@ -120,7 +120,7 @@ public:
 	virtual float	getMusicLength(uint channel);
 	virtual void	setMusicVolume(uint channel, float gain);
 	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0);
-		
+
 private:
 
 	// The callback for the multimedia timer

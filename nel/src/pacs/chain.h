@@ -1,5 +1,5 @@
 /** \file chain.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

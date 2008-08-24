@@ -30,7 +30,7 @@
 #include "nel/3d/vertex_buffer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -110,7 +110,7 @@ public:
 	bool			bufferLocked() const {return _BufferLocked;}
 
 	/** activate the VB or the VBHard in Driver setuped. nlassert if driver is NULL or if buffer is locked.
-	 * If vertexProgram possible, activate the vertexProgram too. 
+	 * If vertexProgram possible, activate the vertexProgram too.
 	 * Give a vertexProgram Id to activate. Always 0, but 1 For tile Lightmap Pass.
 	 */
 	void			activate(uint vpId);
@@ -129,7 +129,7 @@ private:
 private:
 	TType						_Type;
 	std::string					_VBName;
-	
+
 	bool						_ReallocationOccur;
 	// List of vertices free.
 	std::vector<uint>			_VertexFreeMemory;

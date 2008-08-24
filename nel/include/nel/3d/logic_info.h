@@ -30,7 +30,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -38,7 +38,7 @@ namespace NL3D
  * An interface for UScene to retrieve client information for a specified UTransform
  *	( see UTransfrom::setLogicInfo() ).
  *
- *	implemented by user. typically, methods are called during UScene::render() and are called 
+ *	implemented by user. typically, methods are called during UScene::render() and are called
  *	only if necessary (typically after clip).
  *
  * \author Lionel Berenguier
@@ -59,14 +59,14 @@ public:
 	 *	pointLightList.size() may not be 0. Deriver should just append his light and do not clear this list.
 	 *
 	 *	NB: called by CLightingManager::computeModelLightContributions() when needed
-	 *	
+	 *
 	 *	\param pointLightList append to this list static pointLights which may influence this object.
 	 *	\param sunContribution contribution factor of the sun to apply to the transform.
-	 *	\param localAmbient ig or landscape may replace sunAmbient with their special ambient. 
-	 *	localAmbient.A tells the fraction of this color to take (255 => full contribution of the localAmbient, and 
+	 *	\param localAmbient ig or landscape may replace sunAmbient with their special ambient.
+	 *	localAmbient.A tells the fraction of this color to take (255 => full contribution of the localAmbient, and
 	 *	no contribution of the ambient of the sun)
 	 */
-	virtual	void		getStaticLightSetup(NLMISC::CRGBA sunAmbient, std::vector<CPointLightInfluence> &pointLightList, 
+	virtual	void		getStaticLightSetup(NLMISC::CRGBA sunAmbient, std::vector<CPointLightInfluence> &pointLightList,
 		uint8 &sunContribution, NLMISC::CRGBA &localAmbient) =0;
 
 

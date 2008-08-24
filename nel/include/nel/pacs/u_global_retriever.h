@@ -37,7 +37,7 @@ class CAABBox;
 class CLine;
 }
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class UGlobalPosition;

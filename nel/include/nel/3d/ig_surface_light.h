@@ -28,7 +28,7 @@
 #include "nel/3d/surface_light_grid.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -49,7 +49,7 @@ class CIGSurfaceLight
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 public:
 	struct	CRetrieverLightGrid
 	{
@@ -76,7 +76,7 @@ public:
 	 *	\param cellSize is the size in meter of a cell
 	 *	\param plRemap is the array returned by CInstanceGroup::build() to remap indices
 	 */
-	void			build(const TRetrieverGridMap &retrieverGridMap, float cellSize, 
+	void			build(const TRetrieverGridMap &retrieverGridMap, float cellSize,
 		const std::vector<uint>	&plRemap);
 
 	/// clear.
@@ -88,13 +88,13 @@ public:
 	/** Get StaticLightSetup Infos from the grid
 	 *	\param retrieverIdentifier value returned by CGlobalRetriever::getLocalRetrieverId(globalPos).
 	 *	\param surfaceId the id of the surface in the LocalRetriever
-	 *	\param localPos position to retrieve info. 
+	 *	\param localPos position to retrieve info.
 	 *	Position local to the LocalRetriever!! ie gp.LocalPosition.Estimated
 	 *	\param pointLightList list of pointlight to append pointLight influecnes
 	 *	\return false if retrieverIdentifier / surfaceId is not found. In this case pointLightList is not
 	 *	modified, and sunContribution is set to 255, and localAmbient is set to 0
 	 */
-	bool			getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos, 
+	bool			getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos,
 		std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient);
 
 

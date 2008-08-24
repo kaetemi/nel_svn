@@ -26,7 +26,7 @@
 #include "nel/3d/ig_surface_light.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -36,7 +36,7 @@ CIGSurfaceLight::CIGSurfaceLight()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	_Owner= NULL;
 	_CellSize= 1;
 	_OOCellSize= 1;
@@ -104,7 +104,7 @@ void			CIGSurfaceLight::serial(NLMISC::IStream &f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	/*
 	Version 1:
 		- The retriever grid map is now a map<uint,CRetrieverLightGrid>. Discard compatibility but.
@@ -126,7 +126,7 @@ void			CIGSurfaceLight::serial(NLMISC::IStream &f)
 }
 
 // ***************************************************************************
-bool			CIGSurfaceLight::getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos, 
+bool			CIGSurfaceLight::getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos,
 	std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient)
 {
 	nlassert(_Owner);

@@ -134,7 +134,7 @@ public:
 	virtual bool getLoopMode() const {return _LoopMode;}
 
 
-	/// From ITrack. 
+	/// From ITrack.
 	virtual const IAnimatedValue &eval (const TAnimationTime& inDate, CAnimatedValueBlock &avBlock)
 	{
 		float	date= inDate;
@@ -148,7 +148,7 @@ public:
 
 		// let son choose the animated value
 		IAnimatedValue	&result= chooseAnimatedValue(avBlock);
-		
+
 		// No keys?
 		if(_MapKey.empty())
 			return result;
@@ -190,7 +190,7 @@ public:
 		{
 			// loop to first!!
 			next= &(_MapKey.begin()->second);
-			// must slerp from last to first, 
+			// must slerp from last to first,
 			dateNext= _LoopEnd;
 		}
 		else if (!_LoopMode && _MapKey.size()>=1 )
@@ -379,7 +379,7 @@ protected:
 	virtual IAnimatedValue &chooseAnimatedValue(CAnimatedValueBlock &avBlock) =0;
 
 	/**
-	  * Evaluate the keyframe interpolation. 
+	  * Evaluate the keyframe interpolation.
 	  *
 	  * i is the keyframe with the bigger time value that is inferior or equal than date.
 	  *
@@ -389,7 +389,7 @@ protected:
 	  * \param next is the i+1 key in the keyframe. NULL if no key.
 	  */
 	virtual void evalKey   (const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext, 
+							TAnimationTime datePrevious, TAnimationTime dateNext,
 							TAnimationTime date, IAnimatedValue &result) =0;
 
 };
@@ -448,7 +448,7 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey   (const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext, 
+							TAnimationTime datePrevious, TAnimationTime dateNext,
 							TAnimationTime date, IAnimatedValue &result)
 	{
 		// Const key.
@@ -523,7 +523,7 @@ public:
 			date-= datePrevious;
 			date*= previous->OODeltaTime;
 			NLMISC::clamp(date, 0,1);
-			
+
 			// NB: in case of <CKeyInt,sint32> important that second terme is a float, so copyToValue(sint32, float) is used.
 			copyToValue(resultVal.Value, previous->Value*(1.f-(float)date) + next->Value*(float)date);
 		}
@@ -554,12 +554,12 @@ template<> class CTrackKeyFramerLinear<CKeyQuat, CQuat> : public ITrackKeyFramer
 public:
 
 	/// From ITrackKeyFramer
-	virtual void evalKey (	const CKeyQuat* previous, const CKeyQuat* next, 
+	virtual void evalKey (	const CKeyQuat* previous, const CKeyQuat* next,
 							TAnimationTime datePrevious, TAnimationTime dateNext,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<CQuat>	&resultVal= static_cast<CAnimatedValueBlendable<CQuat>&>(result);
-		
+
 		if(previous && next)
 		{
 			// slerp from previous to cur.
@@ -598,14 +598,14 @@ public:
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<NLMISC::CRGBA>	&resultVal= static_cast<CAnimatedValueBlendable<NLMISC::CRGBA>&>(result);
-		
+
 		if(previous && next)
 		{
 			// lerp from previous to cur.
 			date-= datePrevious;
 			date*= previous->OODeltaTime;
 			NLMISC::clamp(date, 0,1);
-			
+
 			// blend.
 			resultVal.Value.blendFromui(previous->Value, next->Value, (uint)(date*256));
 		}
@@ -700,14 +700,14 @@ class CTrackKeyFramerLinearFloat : public CTrackKeyFramerLinear<CKeyFloat, float
 public:
 	NLMISC_DECLARE_CLASS (CTrackKeyFramerLinearFloat);
 	NL3D_TRACKKEYF_CHOOSE(ValFloat)
-		
+
 	virtual	bool	addLinearFloatKey(const UKeyLinearFloat &key)
 	{
 		CKeyFloat	k;
 		k.Value= key.Value;
 		addKey(k, key.Time);
 		return true;
-	}	
+	}
 };
 class CTrackKeyFramerLinearVector : public CTrackKeyFramerLinear<CKeyVector, CVector>
 {
@@ -741,7 +741,7 @@ class CTrackKeyFramerTCBFloat : public CTrackKeyFramerTCB<CKeyTCBFloat, float>
 public:
 	NLMISC_DECLARE_CLASS (CTrackKeyFramerTCBFloat);
 	NL3D_TRACKKEYF_CHOOSE(ValFloat)
-		
+
 	virtual	bool	addTCBFloatKey(const UKeyTCBFloat &key)
 	{
 		CKeyTCBFloat	k;
@@ -754,7 +754,7 @@ public:
 		addKey(k, key.Time);
 
 		return true;
-	}	
+	}
 };
 class CTrackKeyFramerTCBVector : public CTrackKeyFramerTCB<CKeyTCBVector, CVector>
 {
@@ -788,7 +788,7 @@ class CTrackKeyFramerBezierFloat : public CTrackKeyFramerBezier<CKeyBezierFloat,
 public:
 	NLMISC_DECLARE_CLASS (CTrackKeyFramerBezierFloat);
 	NL3D_TRACKKEYF_CHOOSE(ValFloat)
-		
+
 	virtual	bool	addBezierFloatKey(const UKeyBezierFloat &key)
 	{
 		CKeyBezierFloat	k;
@@ -798,7 +798,7 @@ public:
 		k.Step= key.Step;
 		addKey(k, key.Time);
 		return true;
-	}	
+	}
 };
 class CTrackKeyFramerBezierVector : public CTrackKeyFramerBezier<CKeyBezierVector, CVector>
 {

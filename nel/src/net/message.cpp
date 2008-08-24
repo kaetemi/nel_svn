@@ -94,7 +94,7 @@ CMessage::CMessage (NLMISC::CMemStream &memstr) :
 /*
  * Copy constructor
  */
-CMessage::CMessage (const CMessage &other) 
+CMessage::CMessage (const CMessage &other)
 	:	CMemStream(),
 		_TypeSet(false)
 {
@@ -114,7 +114,7 @@ CMessage &CMessage::operator= (const CMessage &other)
 	}
 	else
 	{
-		
+
 		CMemStream::operator= (other);
 		_Type = other._Type;
 		_TypeSet = other._TypeSet;

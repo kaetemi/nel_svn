@@ -185,7 +185,7 @@ void CListenerDSound::getVelocity( NLMISC::CVector& vel ) const
     }
 	else
 	{
-		vel.set(0, 0, 0);	
+		vel.set(0, 0, 0);
 	}
 }
 
@@ -302,7 +302,7 @@ void CListenerDSound::setRolloffFactor( float f )
 
 
 float CListenerDSound::getRolloffFactor()
-{   
+{
 	// Works only in API rolloff mode
 #if MANUAL_ROLLOFF == 0
 	if (_Listener != NULL)

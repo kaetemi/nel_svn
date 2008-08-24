@@ -33,7 +33,7 @@
 #define NL_TILE_LIGHTMAP_SIZE	10
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

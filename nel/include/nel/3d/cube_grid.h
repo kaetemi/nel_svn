@@ -89,7 +89,7 @@ private:
 
 private:
 
-	void project	(const NLMISC::CTriangle &tri, NLMISC::CPlane pyr[4], NLMISC::CPlane &gridPlane, 
+	void project	(const NLMISC::CTriangle &tri, NLMISC::CPlane pyr[4], NLMISC::CPlane &gridPlane,
 					sint32 nGridNb, const TCell &cell);
 
 };
@@ -103,7 +103,7 @@ private:
 
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 CCubeGrid<TCell>::CCubeGrid ()
 {
 	NLMISC::CMatrix	tmp;
@@ -145,13 +145,13 @@ CCubeGrid<TCell>::CCubeGrid ()
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 CCubeGrid<TCell>::~CCubeGrid ()
 {
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::create (const CVector &center, int nSize)
 {
 	nlassert(!_Compiled);
@@ -166,7 +166,7 @@ void CCubeGrid<TCell>::create (const CVector &center, int nSize)
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::insert (const NLMISC::CTriangle &triIn, const TCell &cell)
 {
 	nlassert(!_Compiled);
@@ -223,7 +223,7 @@ void CCubeGrid<TCell>::insert (const NLMISC::CTriangle &triIn, const TCell &cell
 
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::compile()
 {
 	nlassert(!_Compiled);
@@ -247,7 +247,7 @@ void CCubeGrid<TCell>::compile()
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::select (const NLMISC::CVector &vIn)
 {
 	nlassert(_Compiled);
@@ -307,7 +307,7 @@ void CCubeGrid<TCell>::select (const NLMISC::CVector &vIn)
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 TCell CCubeGrid<TCell>::getSel ()
 {
 	nlassert(_Compiled);
@@ -315,7 +315,7 @@ TCell CCubeGrid<TCell>::getSel ()
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::nextSel ()
 {
 	nlassert(_Compiled);
@@ -323,7 +323,7 @@ void CCubeGrid<TCell>::nextSel ()
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 bool CCubeGrid<TCell>::isEndSel ()
 {
 	nlassert(_Compiled);
@@ -331,7 +331,7 @@ bool CCubeGrid<TCell>::isEndSel ()
 }
 
 // ***************************************************************************
-template<class TCell>	
+template<class TCell>
 void CCubeGrid<TCell>::project (const NLMISC::CTriangle &tri, NLMISC::CPlane pyr[4], NLMISC::CPlane &gridPlane, sint32 nGridNb, const TCell &cell)
 {
 	NLMISC::CVector vIn[7], vOut[7];

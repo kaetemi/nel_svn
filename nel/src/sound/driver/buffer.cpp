@@ -26,13 +26,13 @@
 
 namespace NLSOUND {
 
-const sint IBuffer::_IndexTable[16] = 
+const sint IBuffer::_IndexTable[16] =
 {
 	-1, -1, -1, -1, 2, 4, 6, 8,
 	-1, -1, -1, -1, 2, 4, 6, 8,
 };
 
-const uint IBuffer::_StepsizeTable[89] = 
+const uint IBuffer::_StepsizeTable[89] =
 {
 	7, 8, 9, 10, 11, 12, 13, 14, 16, 17,
 	19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
@@ -60,25 +60,25 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
     int index;			/* Current step change index */
     int outputbuffer;		/* place to keep previous 4-bit value */
     int bufferstep;		/* toggle between outputbuffer/output */
-	
+
     outp = outdata;
     inp = indata;
-	
+
     valpred = state.PreviousSample;
     index = state.StepIndex;
     step = _StepsizeTable[index];
-    
+
     bufferstep = 1;
-	
-    for ( ; nbSample > 0 ; nbSample-- ) 
+
+    for ( ; nbSample > 0 ; nbSample-- )
 	{
 		val = *inp++;
-		
+
 		/* Step 1 - compute difference with previous value */
 		diff = val - valpred;
 		sign = (diff < 0) ? 8 : 0;
 		if ( sign ) diff = (-diff);
-		
+
 		/* Step 2 - Divide and clamp */
 		/* Note:
 		** This code *approximately* computes:
@@ -90,8 +90,8 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
 		*/
 		delta = 0;
 		vpdiff = (step >> 3);
-		
-		if ( diff >= step ) 
+
+		if ( diff >= step )
 		{
 			delta = 4;
 			diff -= step;
@@ -105,18 +105,18 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
 			vpdiff += step;
 		}
 		step >>= 1;
-		if ( diff >= step ) 
+		if ( diff >= step )
 		{
 			delta |= 1;
 			vpdiff += step;
 		}
-		
+
 		/* Step 3 - Update previous value */
 		if ( sign )
 			valpred -= vpdiff;
 		else
 			valpred += vpdiff;
-		
+
 		/* Step 4 - Clamp previous value to 16 bits */
 		if ( valpred > 32767 )
 		{
@@ -128,33 +128,33 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
 			printf("over- %d\n",valpred);
 			valpred = -32768;
 		}
-		
+
 		/* Step 5 - Assemble value, update index and step values */
 		delta |= sign;
-		
+
 		index += _IndexTable[delta];
-		if ( index < 0 ) 
+		if ( index < 0 )
 			index = 0;
-		if ( index > 88 ) 
+		if ( index > 88 )
 			index = 88;
 		step = _StepsizeTable[index];
-		
+
 		/* Step 6 - Output value */
-		if ( bufferstep ) 
+		if ( bufferstep )
 		{
 			outputbuffer = (delta << 4) & 0xf0;
-		} 
-		else 
+		}
+		else
 		{
 			*outp++ = (delta & 0x0f) | outputbuffer;
 		}
 		bufferstep = !bufferstep;
     }
-	
+
     /* Output last step, if needed */
     if ( !bufferstep )
 		*outp++ = outputbuffer;
-    
+
     state.PreviousSample = valpred;
     state.StepIndex = index;
 }
@@ -171,42 +171,42 @@ void				IBuffer::decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADP
     int index;			/* Current step change index */
     int inputbuffer;		/* place to keep next 4-bit value */
     int bufferstep;		/* toggle between inputbuffer/input */
-	
+
     outp = outdata;
     inp = indata;
-	
+
     valpred = state.PreviousSample;
     index = state.StepIndex;
     step = _StepsizeTable[index];
-	
+
     bufferstep = 0;
-    
-    for ( ; nbSample > 0 ; nbSample-- ) 
+
+    for ( ; nbSample > 0 ; nbSample-- )
 	{
-		
+
 		/* Step 1 - get the delta value */
-		if ( bufferstep ) 
+		if ( bufferstep )
 		{
 			delta = inputbuffer & 0xf;
 		}
-		else 
+		else
 		{
 			inputbuffer = *inp++;
 			delta = (inputbuffer >> 4) & 0xf;
 		}
 		bufferstep = !bufferstep;
-		
+
 		/* Step 2 - Find new index value (for later) */
 		index += _IndexTable[delta];
 		if ( index < 0 )
 			index = 0;
 		if ( index > 88 )
 			index = 88;
-		
+
 		/* Step 3 - Separate sign and magnitude */
 		sign = delta & 8;
 		delta = delta & 7;
-		
+
 		/* Step 4 - Compute difference and new predicted value */
 		/*
 		** Computes 'vpdiff = (delta+0.5)*step/4', but see comment
@@ -219,25 +219,25 @@ void				IBuffer::decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADP
 			vpdiff += step>>1;
 		if ( delta & 1 )
 			vpdiff += step>>2;
-		
+
 		if ( sign )
 			valpred -= vpdiff;
 		else
 			valpred += vpdiff;
-		
+
 		/* Step 5 - clamp output value */
 		if ( valpred > 32767 )
 			valpred = 32767;
 		else if ( valpred < -32768 )
 			valpred = -32768;
-		
+
 		/* Step 6 - Update step value */
 		step = _StepsizeTable[index];
-		
+
 		/* Step 7 - Output value */
 		*outp++ = valpred;
     }
-	
+
     state.PreviousSample = valpred;
     state.StepIndex = index;
 }

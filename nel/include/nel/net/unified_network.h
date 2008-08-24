@@ -336,7 +336,7 @@ public:
 	/** Sets callback for incoming connections.
 	 * On a client, the callback will be called when the connection to the server is established (the first connection or after the server shutdown and started)
 	 * On a server, the callback is called each time a new client is connected to him
-	 * 
+	 *
 	 * You can set more than one callback, each one will be called one after one.
 	 * If the serviceName is "*", the callback will be call for any services, including 'external' services
 	 * (i.e. services not in the NS address space, usually connected by calling addService() manually)
@@ -352,7 +352,7 @@ public:
 	/** Sets callback for disconnections.
 	 * On a client, the callback will be call each time the connection to the server is lost.
 	 * On a server, the callback is called each time a client is disconnected.
-	 * 
+	 *
 	 * You can set more than one callback, each one will be called one after one.
 	 * If the serviceName is "*", the callback will be call for any services, including 'external' services
 	 * (i.e. services not in the NS address space, usually connected by calling addService() manually)
@@ -400,7 +400,7 @@ public:
 	/// Return a string identifying the service, using the format "NAME-sid" (or "sid" only if not found)
 	std::string			getServiceUnifiedName(TServiceId sid);
 
-	
+
 	/// \warning You should not use getNetBase functions because it could have more than one connection to a service and in this case
 	///          it ll return the first connection
 
@@ -427,7 +427,7 @@ public:
 
 	/// Return the service ids of the active connections
 	const std::vector<TServiceId>&	getConnectionList() const { return _UsedConnection; }
-	
+
 	/// Return the state of the connection (return true if the connection is fully connected)
 	bool isConnectionConnected(TServiceId sid) const;
 
@@ -478,7 +478,7 @@ private:
 
 			void setAppId (uint64 appid) { CbNetBase->getSockId (HostId)->setAppId (appid); }
 			uint64 getAppId () { return CbNetBase->getSockId (HostId)->appId (); }
-			
+
 			bool valid ()
 			{
 				if(IsServerConnection)
@@ -540,7 +540,7 @@ private:
 
 		CUnifiedConnection() { reset(); }
 
-		CUnifiedConnection(const std::string &name, TServiceId id, bool isExternal) 
+		CUnifiedConnection(const std::string &name, TServiceId id, bool isExternal)
 		{
 			reset ();
 			ServiceName = name;
@@ -715,18 +715,18 @@ private:
 	bool										_Initialised;
 
 	//
-	CUnifiedNetwork() :  
+	CUnifiedNetwork() :
 		ICommandsHandler(),
-		_CbServer(0), 
-		_ExtSId(256), 
-		_LastRetry(0), 
-		_NextUpdateTime(0), 
+		_CbServer(0),
+		_ExtSId(256),
+		_LastRetry(0),
+		_NextUpdateTime(0),
 		_Initialised(false)
 	{
 	}
 
 	~CUnifiedNetwork() {}
-	
+
 	//
 	void	autoCheck();
 
@@ -743,7 +743,7 @@ private:
 
 	void callServiceUpCallback (const std::string &serviceName, TServiceId sid, bool callGlobalCallback = true);
 	void callServiceDownCallback (const std::string &serviceName, TServiceId sid, bool callGlobalCallback = true);
-	
+
 	friend void	uncbConnection(TSockId from, void *arg);
 	friend void	uncbDisconnection(TSockId from, void *arg);
 	friend void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &netbase);

@@ -26,7 +26,7 @@
 #include "nel/3d/matrix_3x4.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

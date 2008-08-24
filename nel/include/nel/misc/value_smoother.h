@@ -58,18 +58,18 @@ public:
 
 		if (n > 0)
 			_LastFrames.resize(n, 0);
-		
+
 		_CurFrame = 0;
 		_NumFrame = 0;
 		_FrameSum = 0;
 		_CurrentValue = 0;
 	}
-	
+
 	/// reset only the ValueSmoother
 	void		reset()
 	{
 		std::fill(_LastFrames.begin(), _LastFrames.end(), T(0));
-		
+
 		_CurFrame = 0;
 		_NumFrame = 0;
 		_FrameSum = 0;
@@ -85,7 +85,7 @@ public:
 		// update the frame sum. NB: see init(), at start, array is full of 0. so it works even for un-inited values.
 		_FrameSum-= _LastFrames[_CurFrame];
 		_FrameSum+= dt;
-		
+
 		// backup this value in the array.
 		_LastFrames[_CurFrame]= dt;
 		_CurrentValue = dt;
@@ -95,12 +95,12 @@ public:
 //		_CurFrame%=_LastFrames.size();
 		if (_CurFrame >= _LastFrames.size())
 			_CurFrame -= _LastFrames.size();
-		
+
 		// update the number of frames added.
 		_NumFrame++;
 		_NumFrame= std::min(_NumFrame, (uint)_LastFrames.size());
 	}
-	
+
 	/// get the smoothed value.
 	T		getSmoothValue() const
 	{
@@ -170,7 +170,7 @@ public:
 
 		_NumFrame = 0;
 	}
-	
+
 	/// reset only the ValueSmoother
 	void		reset()
 	{
@@ -184,7 +184,7 @@ public:
 		if(_NumFrame>0)
 			_LastFrames[0] = dt;
 	}
-	
+
 	/// get the smoothed value.
 	bool		getSmoothValue() const
 	{

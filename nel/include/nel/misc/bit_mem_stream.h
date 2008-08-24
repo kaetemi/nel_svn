@@ -84,7 +84,7 @@ extern bool VerboseAllTraffic;
 
 
 #else
-	
+
 #define serialAndLog1 serial
 #define serialAndLog2 serial
 #define serialBitAndLog serialBit
@@ -203,7 +203,7 @@ public:
 		*_DbgData = *src._DbgData;
 		return *this;
 	}
-	
+
 	/// Destructor
 	~CBMSDbgInfo()
 	{
@@ -218,7 +218,7 @@ public:
 		std::swap(_DbgData, other._DbgData);
 #endif
 	}
-	
+
 	/// Add a serial event at the end
 	void	addSerial( uint32 bitpos, uint32 size, TBMSSerialInfo::TSerialType type )
 	{
@@ -572,19 +572,19 @@ public:
 	void			serialCont(std::multimap<K, T> &cont) 	{CMemStream::serialCont(cont);}
 
 	/*template<class T0,class T1>
-	void			serial(T0 &a, T1 &b) 
+	void			serial(T0 &a, T1 &b)
 	{ serial(a); serial(b);}
 	template<class T0,class T1,class T2>
-	void			serial(T0 &a, T1 &b, T2 &c) 
+	void			serial(T0 &a, T1 &b, T2 &c)
 	{ serial(a); serial(b); serial(c);}
 	template<class T0,class T1,class T2,class T3>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d)
 	{ serial(a); serial(b); serial(c); serial(d);}
 	template<class T0,class T1,class T2,class T3,class T4>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e)
 	{ serial(a); serial(b); serial(c); serial(d); serial(e);}
 	template<class T0,class T1,class T2,class T3,class T4,class T5>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e, T5 &f) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e, T5 &f)
 	{ serial(a); serial(b); serial(c); serial(d); serial(e); serial(f);}*/
 
 	/** \name Base type serialisation.
@@ -648,7 +648,7 @@ public:
 
 	virtual void	serial(CBitMemStream &b) { serialMemStream(b); }
 	virtual void	serialMemStream(CBitMemStream &b);
-		
+
 
 	//@}
 
@@ -739,7 +739,7 @@ protected:
 //		++_BufPos;
 		++_Buffer.Pos;
 	}
-	
+
 	/**
 	 * Increase the size of the buffer if necessary (outpout bit stream)
 	 *

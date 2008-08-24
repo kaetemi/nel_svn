@@ -29,7 +29,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -37,7 +37,7 @@ class	CPointLightNamed;
 
 // ***************************************************************************
 /**
- * This class is used by CLandscape and IG/Pacs to compute interpolated influence of lights 
+ * This class is used by CLandscape and IG/Pacs to compute interpolated influence of lights
  *	(biLinear-like) on a square. It works only with CPointLightNamed.
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -75,7 +75,7 @@ public:
 	CLightInfluenceInterpolator() {}
 
 
-	/** solve the biLinear (regrouping multiple influence of light at same id), 
+	/** solve the biLinear (regrouping multiple influence of light at same id),
 	 *	and add CPointLightInfluence to the list.
 	 *	\param subX E [0, 1] is the x coord for biLinear
 	 *	\param subY E [0, 1] is the y coord for biLinear

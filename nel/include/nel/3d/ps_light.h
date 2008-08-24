@@ -55,13 +55,13 @@ public:
 	/** From CPSLocatedBindable.
 	  * For lights, this update their pos, colors and attenuation distances in the engine
 	  */
-	virtual void			step(TPSProcessPass pass);	
+	virtual void			step(TPSProcessPass pass);
 	///\name Attributes
 	//@{
 		// Set a constant color, this removes any previous color scheme.
 		void					setColor(NLMISC::CRGBA color);
 		// Get last contant color set
-		NLMISC::CRGBA			getColor() const { return _Color; }	
+		NLMISC::CRGBA			getColor() const { return _Color; }
 		// Use an attribute maker for the color (NULL to discard)
 		void					setColorScheme(CPSAttribMaker<NLMISC::CRGBA> *scheme);
 		// Get attribute maker that generate colors (or NULL if constant color is used)
@@ -81,8 +81,8 @@ public:
 		// Set an attribute maker that generate the radius at which light attenuation ends (or NULL to discard)
 		void					setAttenEndScheme(CPSAttribMaker<float> *scheme);
 		// Get attribute maker that generate the radius for attenuation end (or NULL if constant radius is used)
-		CPSAttribMaker<float>  *getAttenEndScheme() const { return _AttenEndScheme; }		
-	//@}	
+		CPSAttribMaker<float>  *getAttenEndScheme() const { return _AttenEndScheme; }
+	//@}
 	// from CPSLocatedBindable
 	virtual void onShow(bool shown);
 protected:

@@ -68,7 +68,7 @@ public:
 	CWaterModel();
 
 	// dtor
-	~CWaterModel();	
+	~CWaterModel();
 
 	// to call the first time after the shape & the matrix  has been set
 	void init()
@@ -83,16 +83,16 @@ public:
 	// get default tracks
 	virtual ITrack* getDefaultTrack (uint valueId);
 
-	/// inherited from UWaterInstance	
+	/// inherited from UWaterInstance
 	virtual uint32	getWaterHeightMapID() const;
 
-	/// inherited from UWaterInstance	
+	/// inherited from UWaterInstance
 	virtual float	getHeightFactor() const;
 
-	/// inherited from UWaterInstance	
+	/// inherited from UWaterInstance
 	virtual float   getHeight(const NLMISC::CVector2f &pos);
 
-	/// inherited from UWaterInstance	
+	/// inherited from UWaterInstance
 	virtual float   getAttenuatedHeight(const NLMISC::CVector2f &pos, const NLMISC::CVector &viewer);
 
 	/// \name CTransform traverse specialisation
@@ -115,21 +115,21 @@ public:
 	void	debugClearClippedPoly();
 
 protected:
-	friend class CWaterShape;	
+	friend class CWaterShape;
 	void setupMaterialNVertexShader(IDriver *drv, CWaterShape *shape, const NLMISC::CVector &obsPos, bool above, float zHeight);
 	//
 	void setupSimpleRender(CWaterShape *shape, const NLMISC::CVector &obsPos, bool above);
 	// compute the clipped poly for cards that have vertex shaders
-	void computeClippedPoly();	
+	void computeClippedPoly();
 	// simple rendering version
 	//void doSimpleRender(IDriver *drv);
 private:
 	static NLMISC::CRefPtr<IDriver> _CurrDrv;
 	CSmartPtr<CTextureEmboss> _EmbossTexture;
 	// Matrix to compute uv of diffuse map
-	NLMISC::CVector2f		  _ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos;	
+	NLMISC::CVector2f		  _ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos;
 	uint64					  _MatrixUpdateDate;
-	// vertex buffer for simple rendering	
+	// vertex buffer for simple rendering
 	static CMaterial		  _WaterMat;
 	static CMaterial		  _SimpleWaterMat;
 	// grid cells that are exactly inside the poly
@@ -148,15 +148,15 @@ private:
 	std::vector<uint>		   _ClippedTriNumVerts;
 	// vertex range into global vb for current render
 	uint32					   _StartTri;
-	uint32                     _NumTris;	
+	uint32                     _NumTris;
 public:
 	// for use by CScene
 	void unlink();
 	void link();
 private:
-	void updateDiffuseMapMatrix(bool force = false);	
+	void updateDiffuseMapMatrix(bool force = false);
 	uint fillVBHard(void *dataStart, uint startIndex);
-	uint fillVBSoft(void *dataStart, uint startIndex);	
+	uint fillVBSoft(void *dataStart, uint startIndex);
 };
 
 //=====================================================================================================================
@@ -165,17 +165,17 @@ private:
 class CWaveMakerModel : public CTransformShape
 {
 	public:
-	
+
 	CWaveMakerModel();
 
 	// register this model
 	static void		registerBasic();
-	
+
 	static CTransform *creator() { return new CWaveMakerModel; }
 
 	// get default tracks
 	virtual ITrack* getDefaultTrack (uint valueId);
-	
+
 	/// \name CTransform traverse specialisation
 	// @{
 	/** this do :
@@ -185,7 +185,7 @@ class CWaveMakerModel : public CTransformShape
 	virtual void	traverseAnimDetail();
 	// @}
 
-protected:	
+protected:
 
 	friend class	CWaveMakerShape;
 	TAnimationTime  _Time;

@@ -29,7 +29,7 @@
 #include <string>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -51,49 +51,49 @@ class CTextureMem : public ITexture
 	uint		_TexWidth, _TexHeight;
 public:
 
-	/** 
+	/**
 	 * Default constructor
-	 */	
+	 */
 	CTextureMem() : _Data(NULL),
 					_Delete(false),
 					_AllowDegradation(false),
 					_TexType(CBitmap::RGBA)
-	{ 		
+	{
 	}
 
 
-	/** 
+	/**
 	 * Destructor
-	 */	
-	virtual ~CTextureMem() 
-	{ 
+	 */
+	virtual ~CTextureMem()
+	{
 		if (_Data && _Delete)
 			delete [] _Data;
 	}
 
 
-	/** 
+	/**
 	 * constructor
 	 * \param data Pointer of the file.
 	 * \param length length, in bytes, of the datas.
 	 * \param _delete Is true if the class must delete the pointer.
 	 * \param isFile is true if the data must be interpreted as a texture file. Otherwise, it is interpreted
 	 *        as the raw datas of the texture, so the format and size of the texture must also have been set to match
-	 *        the raw datas 
+	 *        the raw datas
 	 * \param width used only if isFile is set to false
 	 * \param height used only if isFile is set to false
 	 * \param texType relevant only when isFile is set to false. Gives the format to expand the texture to when it is generated.
-	 */	
-	CTextureMem(uint8 *data, uint32 length, bool _delete, bool isFile = true, uint width = 0, uint height = 0, CBitmap::TType texType = CBitmap::RGBA) 
-	{ 
+	 */
+	CTextureMem(uint8 *data, uint32 length, bool _delete, bool isFile = true, uint width = 0, uint height = 0, CBitmap::TType texType = CBitmap::RGBA)
+	{
 		_AllowDegradation=false;
 		_Data=NULL;
-		_Delete=false;		
-		setPointer(data, length, _delete, isFile, width, height, texType);		
+		_Delete=false;
+		setPointer(data, length, _delete, isFile, width, height, texType);
 	}
 
 
-	/** 
+	/**
 	 * Set the pointer of the mem file containing the texture.
 	 * \param data Pointer of the file.
 	 * \param length length, in bytes, of the datas.
@@ -102,9 +102,9 @@ public:
 	 *        the raw datas
 	 * \param _delete Is true if the class must delete the pointer.
 	 * \param texType relevant only when isFile is set to false. Gives the format to expand the texture to when it is generated.
-	 */	
-	void setPointer(uint8 *data, uint32 length, bool _delete, bool isFile = true, uint width = 0, uint height = 0, CBitmap::TType texType = CBitmap::RGBA) 
-	{ 
+	 */
+	void setPointer(uint8 *data, uint32 length, bool _delete, bool isFile = true, uint width = 0, uint height = 0, CBitmap::TType texType = CBitmap::RGBA)
+	{
 		if (_Data&&_Delete)
 			delete [] _Data;
 		_Touched=true;
@@ -119,51 +119,51 @@ public:
 
 
 
-	/** 
+	/**
 	 * Get the Pointer of the memory file containing the texture.
-	 */	
+	 */
 	uint8* getPointer() const { return _Data; }
 
 
-	/** 
+	/**
 	 * Get length of the memory file containing the texture
-	 */	
-	uint32 getLength() const { return _Length; }	
+	 */
+	uint32 getLength() const { return _Length; }
 
 
-	/** 
+	/**
 	 * Return true if the class handle the delete of the pointer.
-	 */	
-	bool isDeletable() const { return _Delete; } 
+	 */
+	bool isDeletable() const { return _Delete; }
 
 
-	/** 
+	/**
 	 * Generate the texture
-	 */	
+	 */
 	void doGenerate(bool async = false);
 
 	/// inherited from ITexture.
-	virtual bool			supportSharing() const 
+	virtual bool			supportSharing() const
 	{
 		return !_ShareName.empty();
 	}
 
 	/// inherited from ITexture.
-	virtual std::string		getShareName() const 
+	virtual std::string		getShareName() const
 	{
 		nlassert(!_ShareName.empty());
 		return _ShareName;
 	}
 
 	/// Make this texture sharable by assigning it a share name. An empty share name means it is not sharable, which is the default.
-	void setShareName(const std::string &shareName) 
-	{ 
+	void setShareName(const std::string &shareName)
+	{
 		_ShareName = shareName;
 	}
 
 	/// texture file may allow the driver to degrade (default is true).
 	virtual bool	allowDegradation() const { return _AllowDegradation; }
-	/// Change the degradation mode. NB: this does not touch() the ITexture... 
+	/// Change the degradation mode. NB: this does not touch() the ITexture...
 	void			setAllowDegradation(bool allow);
 
 	/// Todo: serialize a mem texture.
@@ -173,7 +173,7 @@ public:
 	/** This create a white square texture of 1x1
 	 *  It can be used to force the activation of a texture stage with no texture.
 	 */
-	static ITexture *Create1x1WhiteTex();	
+	static ITexture *Create1x1WhiteTex();
 
 	// get width of RAM image
 	uint32 getImageWidth() const;

@@ -89,7 +89,7 @@ public:
 									   const NLMISC::CPolygon2D &poly
 									  );
 
-	// a vertex 
+	// a vertex
 	struct CRGBAVertex
 	{
 		CVector V;
@@ -99,12 +99,12 @@ public:
 	};
 
 	/** Compute list of clipped tri under the shadow mat
-	  * useful for rendering of huge decal, that may consume a lot of fillrate, but change rarely.	  	  	  
-	  *                 
+	  * useful for rendering of huge decal, that may consume a lot of fillrate, but change rarely.
+	  *
 	  */
-	void			computeClippedTrisWithPolyClip(const CShadowMap *shadowMap, const CVector &casterPos, const CVector &vertDelta, const NLMISC::CPolygon2D &vertices, 
+	void			computeClippedTrisWithPolyClip(const CShadowMap *shadowMap, const CVector &casterPos, const CVector &vertDelta, const NLMISC::CPolygon2D &vertices,
 												   std::vector<CRGBAVertex> &destTris, bool colorUpfacingVertices);
-	
+
 
 	/** Use the triangles added for camera 3rd person collision
 	 *	return a [0,1] value. 0 => collision at start. 1 => no collision.

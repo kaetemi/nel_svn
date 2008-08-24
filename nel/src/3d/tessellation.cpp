@@ -35,7 +35,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -261,8 +261,8 @@ void			CTessFace::computeTileErrorMetric()
 				f= sqr(f);
 				ErrorMetric= ErrorMetric + (nearLimit-ErrorMetric)*f;
 
-				// If threshold is big like 0.5, transition is still hard, and pops occurs. But The goal is 
-				// 0.005 and less, so don't bother. 
+				// If threshold is big like 0.5, transition is still hard, and pops occurs. But The goal is
+				// 0.005 and less, so don't bother.
 			}
 		}
 	}
@@ -348,7 +348,7 @@ void	CTessFace::computeSplitPoint()
 	}
 	else
 	{
-		// If it is a square triangle, it will be splitted on middle of VLeft/VRight. 
+		// If it is a square triangle, it will be splitted on middle of VLeft/VRight.
 		// So for good geomorph compute per vertex, we must have this SplitPoint on this middle.
 		SplitPoint= (VLeft->EndPos + VRight->EndPos)/2;
 	}
@@ -562,7 +562,7 @@ void		CTessFace::initTileUvRGBA(sint pass, bool alpha, CParamCoord pointCoord, C
 	// Get good coordinate according to patch orientation.
 	uv.U= pointCoord.S<=middle.S? 0.0f: 1.0f;
 	uv.V= pointCoord.T<=middle.T? 0.0f: 1.0f;
-	
+
 	// Get Tile Uv info: orientation and scale.
 	uint8		orient;
 	CVector		uvScaleBias;
@@ -576,19 +576,19 @@ void		CTessFace::initTileUvRGBA(sint pass, bool alpha, CParamCoord pointCoord, C
 	// Speed rotation.
 	switch(orient)
 	{
-		case 0: 
+		case 0:
 			uv.U= u;
 			uv.V= v;
 			break;
-		case 1: 
+		case 1:
 			uv.U= 1-v;
 			uv.V= u;
 			break;
-		case 2: 
+		case 2:
 			uv.U= 1-u;
 			uv.V= 1-v;
 			break;
-		case 3: 
+		case 3:
 			uv.U= v;
 			uv.V= 1-u;
 			break;
@@ -633,7 +633,7 @@ void		CTessFace::initTileUvLightmap(CParamCoord pointCoord, CParamCoord middle, 
 	// Get good coordinate according to patch orientation.
 	uv.U= pointCoord.S<=middle.S? 0.0f: 1.0f;
 	uv.V= pointCoord.T<=middle.T? 0.0f: 1.0f;
-	
+
 	// Get Tile Lightmap Uv info: bias and scale.
 	CVector		uvScaleBias;
 	Patch->getTileLightMapUvInfo(TileMaterial->TileS, TileMaterial->TileT, uvScaleBias);
@@ -715,7 +715,7 @@ void		CTessFace::computeTileMaterial()
 		// Add this new material to the render list.
 		Patch->appendTileMaterialToRenderList(TileMaterial);
 
-		// First, get a lightmap for this tile. NB: important to do this after appendTileMaterialToRenderList(), 
+		// First, get a lightmap for this tile. NB: important to do this after appendTileMaterialToRenderList(),
 		// because use TessBlocks.
 		Patch->getTileLightMap(ts, tt, TileMaterial->Pass[NL3D_TILE_PASS_LIGHTMAP].PatchRdrPass);
 
@@ -764,7 +764,7 @@ void		CTessFace::computeTileMaterial()
 			nlassert(TileFaces[i]);
 			// Compute RGB UV in UV0.
 			initTileUvRGBA(i, false, PVBase, middle, TileFaces[i]->V[IdUvBase]->PUv0);
-			// If transition tile, compute alpha UV in UV1. 
+			// If transition tile, compute alpha UV in UV1.
 			// Do it also for Additive, because may have Transition
 			if(i== NL3D_TILE_PASS_RGB1 || i==NL3D_TILE_PASS_RGB2 || i==NL3D_TILE_PASS_ADD)
 				initTileUvRGBA(i, true, PVBase, middle, TileFaces[i]->V[IdUvBase]->PUv1);
@@ -915,7 +915,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 
 	/*
 		Tesselation is:
-        
+
        lt                    rt        lt        top         rt
 		---------------------        	---------------------
 		|----               |        	|\        |\        |
@@ -926,7 +926,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 		---------------------        	---------------------
 	   lb                    rb        lb        bot         rb
 
-		Why? For symetry and bind/split reasons: FBase->SonLeft->VBase is always the good vertex to take 
+		Why? For symetry and bind/split reasons: FBase->SonLeft->VBase is always the good vertex to take
 		(see vertex binding).
 	*/
 	CParamCoord		pclt= f1->PVLeft;
@@ -1023,7 +1023,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 	Patch->checkCreateVertexVBFar(farvbot);
 	Patch->checkFillVertexVBFar(farvbot);
 
-	// For VertexProgram only, must refill the Far vertex of neighbor(s), 
+	// For VertexProgram only, must refill the Far vertex of neighbor(s),
 	// because MaxFaceSize, and MaxNearLimit may have change.
 	if( CLandscapeGlobals::VertexProgramEnabled )
 	{
@@ -1035,7 +1035,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 			f1->FLeft->Patch->checkFillVertexVBFar(f1->FLeft->SonLeft->FVBase);
 	}
 
-	
+
 	// 2. Create sons, and update links.
 	//----------------------------------
 
@@ -1133,7 +1133,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 	f1l->FLeft= NULL;
 	f1r->FLeft= NULL;
 
-	// Neigbors pointers of undetermined splitted face are not changed. Must Doesn't change this. 
+	// Neigbors pointers of undetermined splitted face are not changed. Must Doesn't change this.
 	// Used and Updated in section 5. ...
 
 
@@ -1229,7 +1229,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 		}
 		else if (propagateSplit)
 		{
-			// Warning: at each iteration, the pointer of FLeft may change (because of split() which can change the neighbor 
+			// Warning: at each iteration, the pointer of FLeft may change (because of split() which can change the neighbor
 			// and so f).
 			while(f->FLeft->isLeaf())
 				f->FLeft->split();
@@ -1240,7 +1240,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 		}
 	}
 
-	
+
 	// 6. Must remove father from rdr list, and insert sons.
 	//------------------------------------------------------
 	// UGLY REFCOUNT SIDE EFFECT: do the append first.
@@ -1254,7 +1254,7 @@ void		CTessFace::splitRectangular(bool propagateSplit)
 
 	// 7. Update priority list.
 	//------------------------------------------------------
-	// Since we are freshly splitted, unlink from any list, and link to the MergePriorityList, because must look 
+	// Since we are freshly splitted, unlink from any list, and link to the MergePriorityList, because must look
 	// now when should merge.
 	Patch->getLandscape()->_MergePriorityList.insert(0, 0, f0);
 	Patch->getLandscape()->_MergePriorityList.insert(0, 0, f1);
@@ -1412,7 +1412,7 @@ void		CTessFace::split(bool propagateSplit)
 		Patch->checkCreateVertexVBFar(newFar);
 		Patch->checkFillVertexVBFar(newFar);
 
-		// For VertexProgram only, must refill the Far vertex of neighbor, 
+		// For VertexProgram only, must refill the Far vertex of neighbor,
 		// because MaxFaceSize, and MaxNearLimit may have change.
 		if( CLandscapeGlobals::VertexProgramEnabled && ! (FBase==NULL || FBase->isLeaf()) )
 			FBase->Patch->checkFillVertexVBFar(FBase->SonLeft->FVBase);
@@ -1507,7 +1507,7 @@ void		CTessFace::split(bool propagateSplit)
 	}
 	else if (propagateSplit)
 	{
-		// Warning: at each iteration, the pointer of FBase may change (because of split() which can change the neighbor 
+		// Warning: at each iteration, the pointer of FBase may change (because of split() which can change the neighbor
 		// and so "this").
 		while(FBase->isLeaf())
 			FBase->split();
@@ -1528,7 +1528,7 @@ void		CTessFace::split(bool propagateSplit)
 
 	// 7. Update priority list.
 	//------------------------------------------------------
-	// Since we are freshly splitted, unlink from any list, and link to the MergePriorityList, because must look 
+	// Since we are freshly splitted, unlink from any list, and link to the MergePriorityList, because must look
 	// now when should merge.
 	Patch->getLandscape()->_MergePriorityList.insert(0, 0, this);
 
@@ -1630,7 +1630,7 @@ void		CTessFace::doMerge()
 		Patch->removeFaceFromRenderList(SonLeft);
 		Patch->removeFaceFromRenderList(SonRight);
 
-		
+
 		// 3. Let's merge Uv.
 		//-------------------
 		// Delete Uv.
@@ -1735,7 +1735,7 @@ void		CTessFace::doMerge()
 
 	// Update priority list.
 	//------------------------------------------------------
-	// Since we are freshly merged, unlink from any list, and link to the SplitPriorityList, because must look 
+	// Since we are freshly merged, unlink from any list, and link to the SplitPriorityList, because must look
 	// now when we should split again.
 	Patch->getLandscape()->_SplitPriorityList.insert(0, 0, this);
 
@@ -1845,20 +1845,20 @@ void		CTessFace::refineAll()
 
 
 // Compute distNormalSplitMerge: distance from refineCenter to normal split/merge (ie without tile transition):
-/* 
+/*
 	normal ErrorMetric formula is:
 		em = Size*OORefineThreshold/ dist^2;	with dist == (SplitPoint - CLandscapeGlobals::RefineCenter).norm()
 	So inverse this function and we have:
 		dist= sqrt(Size*OORefineThreshold/em).
-	Split or merge is when em==1, so 
+	Split or merge is when em==1, so
 		distSplitMerge= sqrt(Size*OORefineThreshold)
 */
 
 
 // Compute distTileTransSplitMerge.
-/* When we are sure that CLandscapeGlobals::TileDistNear < distMinFace < CLandscapeGlobals::TileDistFar, 
+/* When we are sure that CLandscapeGlobals::TileDistNear < distMinFace < CLandscapeGlobals::TileDistFar,
 	the clamp in the original formula is skipped
-	
+
 	So the TileErrorMetric formula is:
 
 	{
@@ -1869,7 +1869,7 @@ void		CTessFace::refineAll()
 		emFinal= max(ema, emb).
 	}
 
-	The problem is that the formula is too complex (degree 8 equation). 
+	The problem is that the formula is too complex (degree 8 equation).
 	So search for the result recursively.
 */
 
@@ -1963,7 +1963,7 @@ void		CTessFace::updateRefineSplit()
 		}
 		else if(Level>=Patch->TileLimitLevel)
 		{
-			// Always normal ErrorMetric. Because Faces at Tile level decide to split or merge their sons independently 
+			// Always normal ErrorMetric. Because Faces at Tile level decide to split or merge their sons independently
 			// of "Tile ErrorMetric".
 
 			// The test is "when do we enter in the Split area?", so we can use Quadrant PriorityList
@@ -2004,7 +2004,7 @@ void		CTessFace::updateRefineSplit()
 			normalEMDeltaDist= distSplitPoint - distNormalSplitMerge;
 
 
-			/* 
+			/*
 			There is 3 possibles cases, according to level, and the distances minFaceDist:
 			*/
 			///	TileDistFar to +oo.
@@ -2019,7 +2019,7 @@ void		CTessFace::updateRefineSplit()
 				minDeltaDistToUpdate= min(minDeltaDistToUpdate, distMinFace - CLandscapeGlobals::TileDistFar);
 
 				// try with quadrant if > 0.
-				if(quadrantId>0)				
+				if(quadrantId>0)
 				{
 					const CVector	&quadrantDir= Patch->getLandscape()->_SplitPriorityList.getQuadrantDirection(quadrantId);
 
@@ -2068,7 +2068,7 @@ void		CTessFace::updateRefineSplit()
 				}
 				// And so take the minimum resulting delta distance
 				distTileTransSplitMerge= minDeltaDist;
-				
+
 				// take the min with distance of distMinFace to the TileDistNear and TileDistFar sphere, because formula change at
 				// those limits.
 				minDeltaDistToUpdate= min(distTileTransSplitMerge, CLandscapeGlobals::TileDistFar - distMinFace );
@@ -2077,7 +2077,7 @@ void		CTessFace::updateRefineSplit()
 			/// 0 to TileDistNear.
 			else
 			{
-				// because the face is not a Tile Level (ie Level<Patch->TileLimitLevel), it should be splitted, 
+				// because the face is not a Tile Level (ie Level<Patch->TileLimitLevel), it should be splitted,
 				// and won't merge until reaching at least the TileDistNear sphere.
 				// if not splited (should not arise), force the split next time.
 				minDeltaDistToUpdate= 0;
@@ -2172,7 +2172,7 @@ void		CTessFace::updateRefineMerge()
 		}
 		else if(Level>=Patch->TileLimitLevel)
 		{
-			// Always normal ErrorMetric. Because Faces at Tile level decide to split or merge their sons independently 
+			// Always normal ErrorMetric. Because Faces at Tile level decide to split or merge their sons independently
 			// of "Tile ErrorMetric".
 			// since splitted, compute distance to merge.
 			minDeltaDistToUpdate= distNormalSplitMerge - distSplitPoint;
@@ -2195,14 +2195,14 @@ void		CTessFace::updateRefineMerge()
 			normalEMDeltaDist= max( 0.f, normalEMDeltaDist );
 
 
-			/* 
+			/*
 			There is 3 possibles cases, according to level, and the distances minFaceDist:
 			*/
 			///	TileDistFar to +oo.
 			if( distMinFace > CLandscapeGlobals::TileDistFar )
 			{
 				// normal geomorph. Any face compute the distance to the SplitPoint, and take min with distance to
-				// the TileDistFar sphere. 
+				// the TileDistFar sphere.
 				minDeltaDistToUpdate= normalEMDeltaDist;
 
 				// We must know when we enter in TileErrorMetric zone, because the computing is different.
@@ -2236,7 +2236,7 @@ void		CTessFace::updateRefineMerge()
 				}
 				// And so take the minimum resulting delta distance
 				distTileTransSplitMerge= minDeltaDist;
-				
+
 				// take the min with distance of distMinFace to the TileDistNear and TileDistFar sphere, because formula change at
 				// those limits.
 				minDeltaDistToUpdate= min(distTileTransSplitMerge, CLandscapeGlobals::TileDistFar - distMinFace );
@@ -2245,7 +2245,7 @@ void		CTessFace::updateRefineMerge()
 			/// 0 to TileDistNear.
 			else
 			{
-				// because the face is not a Tile Level (ie Level<Patch->TileLimitLevel), it should be splitted, 
+				// because the face is not a Tile Level (ie Level<Patch->TileLimitLevel), it should be splitted,
 				// and won't merge until reaching at least the TileDistNear sphere.
 				// Since splitted, Must enter in TileErrorMetric area to know when to merge.
 				minDeltaDistToUpdate= CLandscapeGlobals::TileDistNear - distMinFace;
@@ -2476,8 +2476,8 @@ void		CTessFace::averageTesselationVertices()
 	// Special Rectangular case.
 	else
 	{
-		// NB: here, just need to compute average of myself with FLeft, because my neighbor FBase 
-		// is on same patch (see splitRectangular()), and is average with its FLeft neighbor is done 
+		// NB: here, just need to compute average of myself with FLeft, because my neighbor FBase
+		// is on same patch (see splitRectangular()), and is average with its FLeft neighbor is done
 		// on an other branch of the recurs call.
 		neighbor= FLeft;
 	}
@@ -2939,7 +2939,7 @@ CTessFace		*CTessFace::linkTessFaceWithEdge(const CVector2f &uv0, const CVector2
 		if(!ret)
 			ret= SonRight->linkTessFaceWithEdge(uv0, uv1, linkTo);
 	}
-	
+
 	// return the result from subBranchs
 	return ret;
 }

@@ -112,7 +112,7 @@ public:
 
 	/// Used by the george sound plugin to check sound recursion (ie sound 'toto' use sound 'titi' witch also use sound 'toto' ...).
 	virtual void		getSubSoundList(std::vector<std::pair<std::string, CSound*> > &subsounds) const =0;
-	 
+
 
 	virtual void		serial(NLMISC::IStream &s);
 

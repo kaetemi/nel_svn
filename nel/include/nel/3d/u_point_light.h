@@ -29,7 +29,7 @@
 #include "u_transform.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -74,7 +74,7 @@ public:
 	float			getAttenuationEnd() const;
 
 
-	/** Setup SpotLight. SpotLight is disabled by default. The direction of the spot is lead by the J vector of the 
+	/** Setup SpotLight. SpotLight is disabled by default. The direction of the spot is lead by the J vector of the
 	 *	UPointLight WorldMatrix
 	 */
 	void			enableSpotlight(bool enable);
@@ -93,9 +93,9 @@ public:
 
 
 	/**	setup the deltaPosToSkeletonWhenOutOfFrustum
-	 *	When a light is sticked to a skeleton, and if this skeleton is clipped, then the position of the light 
+	 *	When a light is sticked to a skeleton, and if this skeleton is clipped, then the position of the light
 	 *	can't be computed correctly without animating the skeleton. To allow good position of the light,
-	 *	and to avoid recomputing the skeleton even if it is clipped, the light position is set to 
+	 *	and to avoid recomputing the skeleton even if it is clipped, the light position is set to
 	 *	skeletonMatrix * this "deltaPosToSkeletonWhenOutOfFrustum".
 	 *
 	 *	Default is (0, 0, 1.5).
@@ -108,8 +108,8 @@ public:
 
 
 	/** Special For Lightmap dynamic Lighting. if true, this light will influence lightmaped objects.
-	 *	Lightmaped objects can be lighted by ONLY ONE (preference big) dynamic light. 
-	 *	If you setup multiple CPointLightModel with this flag, then it will randomly choose between one 
+	 *	Lightmaped objects can be lighted by ONLY ONE (preference big) dynamic light.
+	 *	If you setup multiple CPointLightModel with this flag, then it will randomly choose between one
 	 *	of those visible lights.
 	 *	NB: Lighting is made hardware per vertex.
 	 */

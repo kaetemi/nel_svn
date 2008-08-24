@@ -76,21 +76,21 @@ void		CLightTrav::traverse()
 		return;
 
 	/* for each visible lightable transform, reset them only if they have MergedPointLight.
-		NB: dynamic objetcs don't need it because already done in traverseHRC() 
+		NB: dynamic objetcs don't need it because already done in traverseHRC()
 		(but don't worry, reset state is flagged, so resetLighting() no op...)
 		This is important only for static object (freezeHRC()).
 		Why? because we are not sure the MergedPointLight does not represent moving DynamicPointLights.
-		Actually, it surely does. Because most of the static light setup return<=2 lights, and MaxLightContribution 
+		Actually, it surely does. Because most of the static light setup return<=2 lights, and MaxLightContribution
 		is typically==3. So any additional light may surely be a dynamic one.
 		NB: this may not be usefull since dynamicLights resetLighting() of all models in range. But this is important
 		when the dynamic light leave the model quiclky! (because don't dirt the model).
-		NB: this is also usefull only if there is no dynamic light but the ones merged in MergedPointLight. 
-		Because dynamic always reset their old attached models (see below). This still can arise if for example 
+		NB: this is also usefull only if there is no dynamic light but the ones merged in MergedPointLight.
+		Because dynamic always reset their old attached models (see below). This still can arise if for example
 		_MaxLightContribution=2 and there is a FrozenStaticLightSetup of 2 lights....
 	*/
 	for(i=0; i<_CurrentNumVisibleModels; i++ )
 	{
-		// if the model has a MergedPointLight, reset him (NB: already done for dynamics models) 
+		// if the model has a MergedPointLight, reset him (NB: already done for dynamics models)
 		if(_LightedList[i]->useMergedPointLight())
 		{
 			_LightedList[i]->resetLighting();

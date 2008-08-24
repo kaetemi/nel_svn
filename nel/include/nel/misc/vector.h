@@ -108,7 +108,7 @@ public:		// Methods.
 	bool	isNull() const;
 	/// This operator is here just for map/set insertion (no meaning). comparison order is x,y,z.
 	bool	operator<(const CVector &v) const;
-	/** 
+	/**
 	 * Setup the vector with spheric coordinates.
 	 * sphericToCartesian(1,0,0) build the I vector  ((1,0,0)).
 	 * the formula is:  \n
@@ -138,7 +138,7 @@ public:		// Methods.
 
 	/// Returns the contents as a printable string "x y z"
 	std::string	toString() const;
-	
+
 	// friends.
 	friend	CVector	operator*(float f, const CVector &v0);
 };

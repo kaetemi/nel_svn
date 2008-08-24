@@ -113,7 +113,7 @@ public:
 
 			bool			operator< (const CDefaultValue &other) const
 			{
-				if (Name < other.Name) 
+				if (Name < other.Name)
 					return true;
 				else if (Name == other.Name)
 				{
@@ -165,7 +165,7 @@ public:
 
 		// File extension
 		std::string	FileExtension;
-		
+
 		// Autonaming
 		std::string	Autoname;
 
@@ -235,11 +235,11 @@ public:
 	std::vector<CChild>			GeneratedChildren;
 
 	// Read
-	bool	read (xmlNodePtr primitiveNode, 
-					const char *filename, 
-					const char *className, 
+	bool	read (xmlNodePtr primitiveNode,
+					const char *filename,
+					const char *className,
 					std::set<std::string> &contextStrings,
-					std::map<std::string, std::string> &contextFilesLookup, 
+					std::map<std::string, std::string> &contextFilesLookup,
 					NLLIGO::CLigoConfig &config,
 					bool parsePrimitiveComboContent);
 };

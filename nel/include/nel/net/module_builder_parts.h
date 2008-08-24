@@ -74,13 +74,13 @@ namespace NLNET
 
 
 	/** Interceptor forwarder
-	 *	The trick is that if you build a module interceptor class 
+	 *	The trick is that if you build a module interceptor class
 	 *	and then you want to inherit this class in a module definition, then
-	 *	the virtual callbacks are received by the module instead of by your 
+	 *	the virtual callbacks are received by the module instead of by your
 	 *	interceptor (because the base module is also an interceptor and
 	 *	it eventualy overides the calls).
 	 *	The workaround consist of having the interceptor implemented in
-	 *	an inner class with method forwarded to you class with a different 
+	 *	an inner class with method forwarded to you class with a different
 	 *	interface.
 	 */
 	template <class ParentClass>
@@ -128,7 +128,7 @@ namespace NLNET
 		}
 	};
 
-	/** Callback class used by the CModuleTracker class below and to be 
+	/** Callback class used by the CModuleTracker class below and to be
 	 *	implemented if you want callback when tracked module are up/down.
 	 */
 	class IModuleTrackerCb
@@ -144,7 +144,7 @@ namespace NLNET
 	 *	the appropriate predicate) as member of your module.
 	 *	You can also have more than one tracker with different predicate
 	 *	if you are interested in different modules.
-	 *	
+	 *
 	 *	NB : don't forget to init() each tracker in order to let it register
 	 *	in you module interceptor list (typically, call "_MyTracker.init(this, this)" in
 	 *	your module's constructor).
@@ -171,7 +171,7 @@ namespace NLNET
 				_TrackerCallback(NULL)
 		{
 		}
-		/** Init : set the owner module (to register the interceptor) and the 
+		/** Init : set the owner module (to register the interceptor) and the
 		 *	optional callback interface.
 		 */
 		void init(NLNET::IModule *module, IModuleTrackerCb *trackerCallback = NULL)
@@ -183,7 +183,7 @@ namespace NLNET
 		/** Return the set of tracked module.
 		 *	The set is wrapped into a mutable container that allow
 		 *	to call non const begin() and end() from a const container.
-		 */	
+		 */
 		const TTrackedModules &getTrackedModules() const
 		{
 			return _TrackedModules;
@@ -191,13 +191,13 @@ namespace NLNET
 
 	private:
 
-		// unused interceptors 
+		// unused interceptors
 		std::string			fwdBuildModuleManifest() const	{ return std::string(); }
 		void				fwdOnModuleSecurityChange(NLNET::IModuleProxy *moduleProxy) {};
 		bool				fwdOnProcessModuleMessage(NLNET::IModuleProxy *sender, const NLNET::CMessage &message)	{return false;}
 
 		// check module up
-		void				fwdOnModuleUp(NLNET::IModuleProxy *moduleProxy)  
+		void				fwdOnModuleUp(NLNET::IModuleProxy *moduleProxy)
 		{
 			if (_ModulePred(moduleProxy))
 			{
@@ -208,7 +208,7 @@ namespace NLNET
 		};
 
 		// check module down
-		void				fwdOnModuleDown(NLNET::IModuleProxy *moduleProxy) 
+		void				fwdOnModuleDown(NLNET::IModuleProxy *moduleProxy)
 		{
 			if (_TrackedModules.find(moduleProxy) != _TrackedModules.end())
 			{
@@ -217,7 +217,7 @@ namespace NLNET
 					_TrackerCallback->onTrackedModuleDown(moduleProxy);
 			}
 		};
-		
+
 		typedef NLNET::CInterceptorForwarder < CModuleTracker>	TInterceptor;
 		// declare one interceptor member of the skeleton
 		TInterceptor	_Interceptor;

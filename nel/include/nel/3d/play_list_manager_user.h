@@ -32,7 +32,7 @@
 #include "nel/3d/ptr_set.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -76,7 +76,7 @@ public:
 	 * NB: all AnimationTime are in second.
 	 */
 	virtual	void		setup(TGlobalAnimationTime	time);
-	
+
 };
 
 

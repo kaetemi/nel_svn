@@ -35,7 +35,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -191,7 +191,7 @@ private:
 	 * \param nWantedLods number of LODs wanted.
 	 * \param divisor the coarsestMesh will have  baseMesh.Faces.size()/divisor  faces.
 	 */
-	void	buildAllLods(	const CMRMMesh &baseMesh, std::vector<CMRMMeshGeom> &lodMeshs, 
+	void	buildAllLods(	const CMRMMesh &baseMesh, std::vector<CMRMMeshGeom> &lodMeshs,
 							uint nWantedLods= 10, uint divisor= 50 );
 
 	/** given a list of LODs, compress/reorganize data, and store in finalMRM mesh.

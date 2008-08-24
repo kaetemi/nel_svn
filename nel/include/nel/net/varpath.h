@@ -29,7 +29,7 @@
 class CVarPath
 {
 public:
-	
+
 	CVarPath (const std::string &raw) : RawVarPath(raw)
 	{
 		decode ();

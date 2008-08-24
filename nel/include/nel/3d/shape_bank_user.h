@@ -29,7 +29,7 @@
 #include "nel/3d/shape_bank.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CDriverUser;
@@ -43,7 +43,7 @@ class CDriverUser;
 class CShapeBankUser : public UShapeBank
 {
 public:
-	virtual ~CShapeBankUser() 
+	virtual ~CShapeBankUser()
 	{
 	}
 
@@ -52,13 +52,13 @@ public:
 	virtual void reset();
 	virtual void setShapeCacheSize(const std::string &shapeCacheName, sint32 maxSize);
 	virtual void linkShapeToShapeCache(const std::string &shapeName, const std::string &shapeCacheName);
-	virtual void	preLoadShapesFromDirectory(const std::string &shapeCacheName, 
+	virtual void	preLoadShapesFromDirectory(const std::string &shapeCacheName,
 		const std::string &path, const std::string &wildCard, bool recurs, NLMISC::IProgressCallback *progress = NULL, bool flushTextures = false);
-	virtual void	preLoadShapesFromBNP(const std::string &shapeCacheName, 
+	virtual void	preLoadShapesFromBNP(const std::string &shapeCacheName,
 		const std::string &bnpName, const std::string &wildCard, NLMISC::IProgressCallback *progress = NULL, bool flushTextures = false);
 	virtual UShape	getShape(const std::string &shapeName);
 	virtual void	buildSystemGeometryForshape(const std::string &shapeName);
-	
+
 	// The real shape bank
 	CShapeBank _ShapeBank;
 	CDriverUser *_DriverUser;

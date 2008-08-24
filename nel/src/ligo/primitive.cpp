@@ -214,7 +214,7 @@ bool GetNodeString (string &result, const char *filename, xmlNodePtr xmlNode, co
 		XMLError (xmlNode, filename, "Can't find XML node named (%s)", nodeName);
 		return false;
 	}
-	
+
 	// Get the node string
 	if (!CIXml::getContentString (result, node))
 	{
@@ -305,7 +305,7 @@ bool CPrimZone::contains (const NLMISC::CVector &v, const std::vector<CPrimVecto
 	// Point or line can't contains !
 	if (points.size() < 3)
 		return false;
-	
+
 	// Get the bounding rectangle of the zone
 	vMax = vMin = points[0];
 	for (i = 0; i < points.size(); ++i)
@@ -354,7 +354,7 @@ bool CPrimZone::contains (const NLMISC::CVector &v, const std::vector<NLMISC::CV
 	// Point or line can't contains !
 	if (points.size() < 3)
 		return false;
-	
+
 	// Get the bounding rectangle of the zone
 	vMax = vMin = points[0];
 	for (i = 0; i < points.size(); ++i)
@@ -723,7 +723,7 @@ bool CPrimZone::contains (const NLMISC::CVector &v, const std::vector<CPrimVecto
 		}
 		return false;
 	}
-	
+
 	// Get the bounding rectangle of the zone
 	vMax = vMin = points[0];
 	for (i = 0; i < points.size(); ++i)
@@ -822,7 +822,7 @@ bool CPrimZone::contains (const NLMISC::CVector &v, const std::vector<CVector> &
 		}
 		return false;
 	}
-	
+
 	// Get the bounding rectangle of the zone
 	vMax = vMin = points[0];
 	for (i = 0; i < points.size(); ++i)
@@ -887,7 +887,7 @@ float CPrimZone::getSegmentDist(const NLMISC::CVector v, const NLMISC::CVector &
 	CVector V = (p2-p1).normed();
 	double	length= (p2-p1).norm();
 	float distance;
-	
+
 	// case where p1==p2
 	if(length==0.0)
 	{
@@ -978,7 +978,7 @@ void CPrimZone::serial (NLMISC::IStream &f)
 void CPrimRegion::serial (NLMISC::IStream &f)
 {
 	f.xmlPushBegin ("REGION");
-	
+
 	f.xmlSetAttrib ("NAME");
 	f.serial (Name);
 
@@ -1023,7 +1023,7 @@ void CPrimRegion::serial (NLMISC::IStream &f)
 // IPrimitive
 // ***************************************************************************
 
-IPrimitive::IPrimitive () 
+IPrimitive::IPrimitive ()
 {
 	_Parent = NULL;
 }
@@ -1207,7 +1207,7 @@ void IPrimitive::operator= (const IPrimitive &node)
 
 #ifdef NLLIGO_DEBUG
 	_DebugClassName = node._DebugClassName;
-	_DebugPrimitiveName = node._DebugPrimitiveName; 
+	_DebugPrimitiveName = node._DebugPrimitiveName;
 #endif
 }
 
@@ -1223,7 +1223,7 @@ const	IPrimitive	*IPrimitive::getPrimitive	(const	std::string	&absoluteOrRelativ
 			cursor=cursor->getParent();
 		path.erase(0,2);
 	}
-	
+
 	while (path.size()>0)
 	{
 		if	(path.find("/")==0)
@@ -1240,7 +1240,7 @@ const	IPrimitive	*IPrimitive::getPrimitive	(const	std::string	&absoluteOrRelativ
 			path.erase(0,2);
 			continue;
 		}
-		
+
 		string::size_type indexStr=path.find("/");
 		string	          childName;
 		if (indexStr==string::npos)
@@ -1266,7 +1266,7 @@ const	IPrimitive	*IPrimitive::getPrimitive	(const	std::string	&absoluteOrRelativ
 		}
 		if	(childIndex>=cursor->getNumChildren())
 			return	NULL;
-		
+
 		cursor=child;
 	}
 	return	cursor;
@@ -1703,7 +1703,7 @@ bool IPrimitive::read (xmlNodePtr xmlNode, const char *filename, uint version, C
 						// Create a new property
 						CPropertyString *propertyString = new CPropertyString;
 						property = propertyString;
-						
+
 						// Read it
 						if (!GetNodeString (propertyString->String, filename, propNode, "STRING"))
 						{
@@ -1860,7 +1860,7 @@ void IPrimitive::initDefaultValues (CLigoConfig &config)
 		for (i=0; i<count; i++)
 		{
 			const CPrimitiveClass::CParameter &parameter = primitiveClass->Parameters[i];
-			
+
 			// Get the property
 			IProperty *result;
 			if (!getPropertyByName (parameter.Name.c_str(), result))
@@ -1873,7 +1873,7 @@ void IPrimitive::initDefaultValues (CLigoConfig &config)
 				nlverify (addPropertyByName (parameter.Name.c_str(), result));
 			}
 		}
-			
+
 		// Set the default values
 		for (i=0; i<count; i++)
 		{
@@ -2017,7 +2017,7 @@ bool IPrimitive::getChildId (uint &childId, const IPrimitive *child) const
 
 // ***************************************************************************
 
-uint IPrimitive::getNumProperty () const 
+uint IPrimitive::getNumProperty () const
 {
 	return _Properties.size ();
 }
@@ -2136,7 +2136,7 @@ bool CPrimAlias::read (xmlNodePtr xmlNode, const char *filename, uint version, C
 			return false;
 		}
 	}
-	else 
+	else
 	{
 		// error in format !
 		nlwarning("CPrimAlias::read: Can't find xml element <ALIAS>");
@@ -2190,7 +2190,7 @@ CPrimitives::CPrimitives () :
 	_LigoConfig(NULL)
 {
 	// init the alias generator
-	_LastGeneratedAlias = 0;	
+	_LastGeneratedAlias = 0;
 	_AliasStaticPart = 0;
 
 	RootNode = static_cast<CPrimNode *> (CClassRegistry::create ("CPrimNode"));
@@ -2234,7 +2234,7 @@ uint32 CPrimitives::getAliasStaticPart()
 // ***************************************************************************
 
 void CPrimitives::setAliasStaticPart(uint32 staticPart)
-{	
+{
 	_AliasStaticPart = staticPart;
 }
 
@@ -2286,7 +2286,7 @@ uint32 CPrimitives::genAlias(IPrimitive *prim, uint32 preferedAlias)
 	// make sure there are some free aliases
 	uint32 mask = _LigoConfig->getDynamicAliasMask();
 	nlassert(_AliasInUse.size() < mask);
-	
+
 	// increment alias counter
 	++_LastGeneratedAlias;
 	// mask with the dynamic alias mask
@@ -2327,7 +2327,7 @@ uint32 CPrimitives::genAlias(IPrimitive *prim, uint32 preferedAlias)
 //		if (fileName.empty())
 //			nlwarning("Dynamic Alias %u is already in use");
 //		else
-//			nlwarning("Dynamic Alias %u is already in use in file '%s'", 
+//			nlwarning("Dynamic Alias %u is already in use in file '%s'",
 //				dynamicAlias,
 //				fileName.c_str());
 //		return;
@@ -2379,7 +2379,7 @@ void CPrimitives::forceAlias(CPrimAlias *prim, uint32 alias)
 
 		// reserve the alias for the new primitive
 		it->second = prim;
-		
+
 
 		// and regen an alias for the old
 		pa->regenAlias();
@@ -2425,7 +2425,7 @@ IPrimitive		*CPrimitives::getPrimitiveByAlias(uint32 primAlias)
 void		CPrimitives::buildPrimitiveWithAliasList(std::map<uint32, IPrimitive*> &result)
 {
 	nlassert(_LigoConfig != NULL);
-	
+
 	std::map<uint32, IPrimitive*>::iterator first(_AliasInUse.begin()), last(_AliasInUse.end());
 	for (; first != last; ++first)
 	{
@@ -2578,9 +2578,9 @@ void CPrimitives::serial(NLMISC::IStream &f)
 		RootNode->removeProperties ();
 	}
 	f.serialPolyPtr(RootNode);
-	f.serial(_Filename);	
+	f.serial(_Filename);
 	if (f.isReading() && _LigoConfig)
-	{		
+	{
 		_AliasStaticPart = _LigoConfig->getFileStaticAliasMapping(_Filename);
 	}
 }
@@ -2689,7 +2689,7 @@ void CPrimitives::convertPrimitive (const IPrimitive *prim, bool hidden)
 	{
 		// Create a node
 		CPrimNode *primNode = static_cast<CPrimNode *> (CClassRegistry::create ("CPrimNode"));
-	
+
 		// Create a property for the layer
 		CPropertyString *nameProp = new CPropertyString;
 //		nameProp->String = prim->Layer;
@@ -2731,9 +2731,9 @@ void CPrimitives::convert (const CPrimRegion &region)
 
 // ***************************************************************************
 
-CPrimitiveContext::CPrimitiveContext(): 
+CPrimitiveContext::CPrimitiveContext():
 	CurrentLigoConfig(NULL),
-	CurrentPrimitive(NULL)		
+	CurrentPrimitive(NULL)
 {
 }
 

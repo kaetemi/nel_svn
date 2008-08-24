@@ -30,7 +30,7 @@
 #include "nel/3d/animation_time.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

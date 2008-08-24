@@ -157,9 +157,9 @@ bool loadStringFile(const std::string filename, vector<TStringInfo> &stringInfos
 		if (!CI18N::parseLabel(first, last, si.Identifier))
 		{
 			uint32 line = countLine(text, first);
-			nlwarning("DT: Fatal : In '%s', line %u: Invalid label after '%s'\n", 
-				filename.c_str(), 
-				line, 
+			nlwarning("DT: Fatal : In '%s', line %u: Invalid label after '%s'\n",
+				filename.c_str(),
+				line,
 				lastLabel.c_str());
 			return false;
 		}
@@ -170,8 +170,8 @@ bool loadStringFile(const std::string filename, vector<TStringInfo> &stringInfos
 		if (!CI18N::parseMarkedString(openMark, closeMark, first, last, si.Text))
 		{
 			uint32 line = countLine(text, first);
-			nlwarning("DT: Fatal : In '%s', line %u: Invalid text value for label %s\n", 
-				filename.c_str(), 
+			nlwarning("DT: Fatal : In '%s', line %u: Invalid text value for label %s\n",
+				filename.c_str(),
 				line,
 				lastLabel.c_str());
 			return false;
@@ -184,8 +184,8 @@ bool loadStringFile(const std::string filename, vector<TStringInfo> &stringInfos
 			if (!CI18N::parseMarkedString(openMark, closeMark, first, last, si.Text2))
 			{
 				uint32 line = countLine(text, first);
-				nlwarning("DT: Fatal: In '%s' line %u: Invalid text2 value label %s\n", 
-					filename.c_str(), 
+				nlwarning("DT: Fatal: In '%s' line %u: Invalid text2 value label %s\n",
+					filename.c_str(),
 					line,
 					lastLabel.c_str());
 				return false;
@@ -215,7 +215,7 @@ bool loadStringFile(const std::string filename, vector<TStringInfo> &stringInfos
 		set<string>::iterator it;
 		for (uint i=0; i<stringInfos.size(); ++i)
 		{
-			it = unik.find(stringInfos[i].Identifier); 
+			it = unik.find(stringInfos[i].Identifier);
 			if (it != unik.end())
 			{
 				nlwarning("DT: loadStringFile : identifier '%s' exist twice", stringInfos[i].Identifier.c_str() );
@@ -223,7 +223,7 @@ bool loadStringFile(const std::string filename, vector<TStringInfo> &stringInfos
 			}
 			else
 				unik.insert(stringInfos[i].Identifier);
-				
+
 		}
 		if (error)
 			return false;
@@ -356,7 +356,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 		if (!CI18N::parseLabel(first, last, phrase.Identifier))
 		{
 			uint32 line = countLine(doc, first);
-			nlwarning("DT: In '%s' line %u: Error parsing phrase identifier after %s\n", 
+			nlwarning("DT: In '%s' line %u: Error parsing phrase identifier after %s\n",
 				filename.c_str(),
 				line,
 				lastRead.c_str());
@@ -368,7 +368,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 		if (!CI18N::parseMarkedString('(', ')', first, last, phrase.Parameters))
 		{
 			uint32 line = countLine(doc, first);
-			nlwarning("DT: in '%s', line %u: Error parsing parameter list for phrase %s\n", 
+			nlwarning("DT: in '%s', line %u: Error parsing parameter list for phrase %s\n",
 				filename.c_str(),
 				line,
 				phrase.Identifier.c_str());
@@ -378,7 +378,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 		if (first == last || *first != '{')
 		{
 			uint32 line = countLine(doc, first);
-			nlwarning("DT: In '%s', line %u: Error parsing block opening '{' in phase %s\n", 
+			nlwarning("DT: In '%s', line %u: Error parsing block opening '{' in phase %s\n",
 				filename.c_str(),
 				line,
 				phrase.Identifier.c_str());
@@ -412,10 +412,10 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 				if (!CI18N::parseMarkedString('(', ')', first, last, cond))
 				{
 					uint32 line = countLine(doc, first);
-					nlwarning("DT: In '%s' line %u: Error parsing conditional expression in phrase %s, clause %u\n", 
+					nlwarning("DT: In '%s' line %u: Error parsing conditional expression in phrase %s, clause %u\n",
 						filename.c_str(),
 						line,
-						phrase.Identifier.c_str(), 
+						phrase.Identifier.c_str(),
 						phrase.Clauses.size()+1);
 					return false;
 				}
@@ -424,7 +424,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 			}
 			if (first == last)
 			{
-				nlwarning("DT: in '%s': Found end of file in non closed block for phrase %s\n", 
+				nlwarning("DT: in '%s': Found end of file in non closed block for phrase %s\n",
 					filename.c_str(),
 					phrase.Identifier.c_str());
 				return false;
@@ -442,11 +442,11 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 			else
 			{
 				uint32 line = countLine(doc, first);
-				nlwarning("DT: in '%s' line %u: Error reading text for clause %u (%s) in  phrase %s\n", 
+				nlwarning("DT: in '%s' line %u: Error reading text for clause %u (%s) in  phrase %s\n",
 					filename.c_str(),
 					line,
-					phrase.Clauses.size()+1, 
-					clause.Identifier.c_str(), 
+					phrase.Clauses.size()+1,
+					clause.Identifier.c_str(),
 					phrase.Identifier.c_str());
 				return false;
 
@@ -458,7 +458,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 		if (first == last || *first != '}')
 		{
 			uint32 line = countLine(doc, first);
-			nlwarning("DT: in '%s' line %u: Missing block closing tag '}' in phrase %s\n", 
+			nlwarning("DT: in '%s' line %u: Missing block closing tag '}' in phrase %s\n",
 				filename.c_str(),
 				line,
 				phrase.Identifier.c_str());
@@ -493,7 +493,7 @@ bool readPhraseFileFromString(ucstring const& doc, const std::string &filename, 
 		set<string>::iterator it;
 		for (uint i=0; i<phrases.size(); ++i)
 		{
-			it = unik.find(phrases[i].Identifier); 
+			it = unik.find(phrases[i].Identifier);
 			if (it != unik.end())
 			{
 				nlwarning("DT: readPhraseFile : identifier '%s' exist twice", phrases[i].Identifier.c_str() );
@@ -601,9 +601,9 @@ ucstring preparePhraseFile(const vector<TPhrase> &phrases, bool removeDiffCommen
 					text = text.substr(pos+2);
 				}
 				text2 += text;//.substr(0, pos+2);
-				
+
 				text.swap(text2);
-				
+
 				text = tabLines(3, text);
 				// remove begin tabs
 				text = text.substr(3);
@@ -627,13 +627,13 @@ bool loadExcelSheet(const string filename, TWorksheet &worksheet, bool checkUniq
 		return true;
 	}
 	fp.close();
-				
+
 	ucstring str;
 	CI18N::readTextFile(filename, str, false, false, false, CI18N::LINE_FMT_CRLF);
-	
+
 	if (!readExcelSheet(str, worksheet, checkUnique))
 		return false;
-	
+
 	return true;
 }
 
@@ -709,7 +709,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 		}
 		// last cell
 		numCells++;
-		
+
 		// take max cell of all lines
 		if (newColCount != max(newColCount, numCells))
 		{
@@ -719,7 +719,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 		}
 	}
 
-	
+
 	// **** alloc / enlarge worksheet
 	// enlarge Worksheet column size, as needed
 	while (worksheet.ColCount < newColCount)
@@ -737,7 +737,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 		uint	numCells;
 		numCells= 0;
 		cell.erase();
-		
+
 		ucchar	*first= lines[i];
 		for (; *first != 0; ++first)
 		{
@@ -775,7 +775,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 		nlassertex(numCells<=newColCount, ("readExcelSheet: bad row format: at line %u, the row has %u cell, max is %u", i, numCells, newColCount));
 //		nldebug("Found %u cells in line %u", numCells, i);
 	}
-	
+
 
 	// **** identifier uniqueness checking.
 	if (checkUnique)
@@ -795,7 +795,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 				set<ucstring>::iterator it;
 				for (uint j=0; j<worksheet.size(); ++j)
 				{
-					it = unik.find(worksheet.getData(j, nameCol)); 
+					it = unik.find(worksheet.getData(j, nameCol));
 					if (it != unik.end())
 					{
 						nlwarning("DT: readExcelSheet : identifier '%s' exist twice", worksheet.getData(j, nameCol).toString().c_str() );
@@ -809,7 +809,7 @@ bool readExcelSheet(const ucstring &str, TWorksheet &worksheet, bool checkUnique
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -837,7 +837,7 @@ void makeHashCode(TWorksheet &sheet, bool forceRehash)
 					columnOk[k]= true;
 				}
 			}
-			
+
 			// make hash for each line
 			ucstring str;
 			for (uint j=1; j<sheet.Data.size(); ++j)

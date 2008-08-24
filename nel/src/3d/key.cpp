@@ -26,7 +26,7 @@
 #include "nel/3d/key.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // Some compilation check: force Visual to compile the template

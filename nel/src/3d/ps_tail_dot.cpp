@@ -32,7 +32,7 @@
 
 #include <memory>
 
-namespace NL3D 
+namespace NL3D
 {
 static NLMISC::CRGBA GradientB2W[] = {NLMISC::CRGBA(0, 0, 0, 0), NLMISC::CRGBA(255, 255, 255, 255) };
 
@@ -61,7 +61,7 @@ CPSTailDot::TVBMap			CPSTailDot::_FadedVBMap;	  // index / vertex buffers for co
 CPSTailDot::TVBMap			CPSTailDot::_ColoredVBMap;    // index / vertex buffer + colors
 CPSTailDot::TVBMap			CPSTailDot::_FadedColoredVBMap;    // index / vertex buffer + faded colors
 
-//=======================================================	
+//=======================================================
 CPSTailDot::CPSTailDot() : _ColorFading(false),
 						   _GlobalColor(false),
 						   _Lighted(false),
@@ -74,14 +74,14 @@ CPSTailDot::CPSTailDot() : _ColorFading(false),
 	if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("TailDot");
 }
 
-//=======================================================	
+//=======================================================
 CPSTailDot::~CPSTailDot()
 {
 	NL_PS_FUNC(CPSTailDot_CPSTailDotDtor)
 //	delete _DyingRibbons;
 }
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSTailDot_serial)
@@ -100,7 +100,7 @@ void CPSTailDot::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		f.serialPtr(_Owner);
 		if (ver3 > 1) f.serialEnum(_LOD);
 		if (ver3 > 2) f.serial(_Name);
-		if (ver3 > 3) 
+		if (ver3 > 3)
 		{
 			if (f.isReading())
 			{
@@ -125,19 +125,19 @@ void CPSTailDot::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		bool   colorFading;
 		bool   systemBasisEnabled;
 
-		CPSColoredParticle::serialColorScheme(f);	
-		f.serial(tailNbSegs, colorFading, systemBasisEnabled);		
+		CPSColoredParticle::serialColorScheme(f);
+		f.serial(tailNbSegs, colorFading, systemBasisEnabled);
 
 		_ColorFading = colorFading;
 		_NbSegs = tailNbSegs >> 1;
 		if (_NbSegs < 2) _NbSegs = 2;
-		setInterpolationMode(Linear);	
+		setInterpolationMode(Linear);
 		serialMaterial(f);
 
 
 		nlassert(_Owner);
 		resize(_Owner->getMaxSize());
-		initDateVect();		
+		initDateVect();
 		resetFromOwner();
 	}
 
@@ -159,16 +159,16 @@ void CPSTailDot::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			setTailNbSeg(_NbSegs);
 			touch();
 		}
-	}	
+	}
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::step(TPSProcessPass pass)
-{	
+{
 	NL_PS_FUNC(CPSTailDot_step)
 	if (pass == PSMotion)
-	{	
+	{
 		if (!_Parametric)
 		{
 			updateGlobals();
@@ -182,9 +182,9 @@ void CPSTailDot::step(TPSProcessPass pass)
 	{
 		uint32 step;
 		uint   numToProcess;
-		computeSrcStep(step, numToProcess);	
+		computeSrcStep(step, numToProcess);
 		if (!numToProcess) return;
-		
+
 		/// update the material color
 		CParticleSystem &ps = *(_Owner->getOwner());
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
@@ -195,7 +195,7 @@ void CPSTailDot::step(TPSProcessPass pass)
 		{
 			_Mat.setColor(ps.getGlobalColor());
 		}
-		
+
 		/** We support Auto-LOD for ribbons, although there is a built-in LOD (that change the geometry rather than the number of ribbons)
 		  * that gives better result (both can be used simultaneously)
 		  */
@@ -203,55 +203,55 @@ void CPSTailDot::step(TPSProcessPass pass)
 		displayRibbons(numToProcess, step);
 
 	}
-	else 
+	else
 	if (pass == PSToolRender) // edition mode only
-	{			
+	{
 		//showTool();
-	}	
+	}
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::newElement(const CPSEmitterInfo &info)
 {
 	NL_PS_FUNC(CPSTailDot_newElement)
 	CPSRibbonBase::newElement(info);
-	newColorElement(info);	
+	newColorElement(info);
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::deleteElement(uint32 index)
 {
 	NL_PS_FUNC(CPSTailDot_deleteElement)
 	CPSRibbonBase::deleteElement(index);
-	deleteColorElement(index);	
+	deleteColorElement(index);
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::resize(uint32 size)
 {
 	NL_PS_FUNC(CPSTailDot_resize)
 	nlassert(size < (1 << 16));
-	CPSRibbonBase::resize(size);	
-	resizeColor(size);	
+	CPSRibbonBase::resize(size);
+	resizeColor(size);
 }
 
-//=======================================================	
+//=======================================================
 void CPSTailDot::updateMatAndVbForColor(void)
 {
 	NL_PS_FUNC(CPSTailDot_updateMatAndVbForColor)
 	touch();
 }
 
-//==========================================================================	
+//==========================================================================
 void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
-{	
+{
 //	if (!FilterPS[8]) return;
 	NL_PS_FUNC(CPSTailDot_displayRibbons)
 	if (!nbRibbons) return;
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	CPSRibbonBase::updateLOD();
 	if (_UsedNbSegs < 2) return;
 	const float date = _Owner->getOwner()->getSystemDate();
@@ -260,15 +260,15 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 	CVertexBuffer				&VB = VBnPB.VB;
 	CIndexBuffer				&PB = VBnPB.PB;
 	const uint32				vertexSize  = VB.getVertexSize();
-	uint						colorOffset=0;	
-	
+	uint						colorOffset=0;
+
 	IDriver *drv = this->getDriver();
 	#ifdef NL_DEBUG
 		nlassert(drv);
 	#endif
-	drv->setupModelMatrix(getLocalToWorldTrailMatrix());	
-	_Owner->incrementNbDrawnParticles(nbRibbons); // for benchmark purpose		
-	const uint numRibbonBatch = getNumRibbonsInVB(); // number of ribons to process at once		
+	drv->setupModelMatrix(getLocalToWorldTrailMatrix());
+	_Owner->incrementNbDrawnParticles(nbRibbons); // for benchmark purpose
+	const uint numRibbonBatch = getNumRibbonsInVB(); // number of ribons to process at once
 	if (_UsedNbSegs == 0) return;
 
 	////////////////////
@@ -278,7 +278,7 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		bool useGlobalColor = ps.getColorAttenuationScheme() != NULL || ps.isUserColorUsed();
 		if (useGlobalColor != _GlobalColor)
 		{
-			_GlobalColor = useGlobalColor; 
+			_GlobalColor = useGlobalColor;
 			touch();
 		}
 		if (usesGlobalColorLighting() != _Lighted)
@@ -296,20 +296,20 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		//
 		if (_ColorScheme)
 		{
-			colorOffset = VB.getColorOff();	
-		}	
+			colorOffset = VB.getColorOff();
+		}
 
 	/////////////////////
 	// Compute ribbons //
 	/////////////////////
-	
+
 	uint toProcess;
-	uint ribbonIndex = 0; // index of the first ribbon in the batch being processed	
+	uint ribbonIndex = 0; // index of the first ribbon in the batch being processed
 	uint32 fpRibbonIndex = 0; // fixed point index in source
 	if (_ColorScheme)
 	{
 		_ColorScheme->setColorType(drv->getVertexColorFormat());
-	}			
+	}
 	do
 	{
 		toProcess = std::min((uint) (nbRibbons - ribbonIndex) /* = left to do */, numRibbonBatch);
@@ -318,12 +318,12 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 			CVertexBufferReadWrite vba;
 			VB.lock (vba);
 			currVert = (uint8 *) vba.getVertexCoordPointer();
-				
+
 			/// compute colors
 			if (_ColorScheme)
-			{			
-				_ColorScheme->makeN(this->_Owner, ribbonIndex, currVert + colorOffset, vertexSize, toProcess, _UsedNbSegs + 1, srcStep);			
-			}			
+			{
+				_ColorScheme->makeN(this->_Owner, ribbonIndex, currVert + colorOffset, vertexSize, toProcess, _UsedNbSegs + 1, srcStep);
+			}
 			uint k = toProcess;
 			//////////////////////////////////////////////////////////////////////////////////////
 			// interpolate and project points the result is directly setup in the vertex buffer //
@@ -341,7 +341,7 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 					currVert += vertexSize * (_UsedNbSegs + 1);
 					fpRibbonIndex += srcStep;
 				}
-				while (--k);			
+				while (--k);
 			}
 			else
 			{
@@ -350,14 +350,14 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 				//////////////////////
 				do
 				{
-					// we compute each pos thanks to the parametric curve				
+					// we compute each pos thanks to the parametric curve
 					_Owner->integrateSingle(date - _UsedSegDuration * (_UsedNbSegs + 1), _UsedSegDuration, _UsedNbSegs + 1, (uint) (fpRibbonIndex >> 16),
 											(NLMISC::CVector *) currVert, vertexSize);
 					currVert += vertexSize * (_UsedNbSegs + 1);
 					fpRibbonIndex += srcStep;
 				}
 				while (--k);
-				
+
 			}
 		}
 		const uint numLine = _UsedNbSegs * toProcess;
@@ -366,12 +366,12 @@ void CPSTailDot::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		drv->activeIndexBuffer(PB);
 		drv->activeVertexBuffer(VB);
 		drv->renderLines (_Mat, 0, numLine);
-		ribbonIndex += toProcess;		
+		ribbonIndex += toProcess;
 	}
 	while (ribbonIndex != nbRibbons);
-}	
+}
 
-//==========================================================================	
+//==========================================================================
 bool CPSTailDot::hasTransparentFaces(void)
 {
 	NL_PS_FUNC(CPSTailDot_hasTransparentFaces)
@@ -379,25 +379,25 @@ bool CPSTailDot::hasTransparentFaces(void)
 }
 
 
-//==========================================================================	
+//==========================================================================
 bool CPSTailDot::hasOpaqueFaces(void)
 {
 	NL_PS_FUNC(CPSTailDot_hasOpaqueFaces)
 	return !hasTransparentFaces();
 }
 
-//==========================================================================	
+//==========================================================================
 uint32 CPSTailDot::getNumWantedTris() const
 {
 	NL_PS_FUNC(CPSTailDot_getNumWantedTris)
 	nlassert(_Owner);
-	//return _Owner->getMaxSize() * _NbSegs;	
+	//return _Owner->getMaxSize() * _NbSegs;
 	return _Owner->getSize() * _NbSegs;
 }
 
 
 
-//==========================================================================	
+//==========================================================================
 CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 {
 	NL_PS_FUNC(CPSTailDot_getVBnPB)
@@ -419,7 +419,7 @@ CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 		/// If the ribbon has fading, but only a global color, we encode it in the primary color
 		CVertexBuffer &vb = VBnPB.VB;
 		vb.setPreferredMemory(CVertexBuffer::AGPVolatile, true);
-		vb.setVertexFormat(CVertexBuffer::PositionFlag	
+		vb.setVertexFormat(CVertexBuffer::PositionFlag
 						   |(_ColorScheme || _ColorFading ? CVertexBuffer::PrimaryColorFlag : 0)
 						   | (_ColorScheme && _ColorFading ? CVertexBuffer::TexCoord0Flag : 0));
 
@@ -431,7 +431,7 @@ CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 		pb.setNumIndexes(2 * _UsedNbSegs * numRibbonInVB);
 		/// Setup the pb and vb parts. Not very fast but executed only once
 		uint vbIndex = 0;
-		uint pbIndex = 0; 
+		uint pbIndex = 0;
 		CIndexBufferReadWrite ibaWrite;
 		pb.lock (ibaWrite);
 		CVertexBufferReadWrite vba;
@@ -439,8 +439,8 @@ CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 		for (uint i = 0; i < numRibbonInVB; ++i)
 		{
 			for (uint k = 0; k < (_UsedNbSegs + 1); ++k)
-			{								
-				
+			{
+
 				if (_ColorScheme && _ColorFading)
 				{
 					vba.setTexCoord(vbIndex, 0, 0.5f - 0.5f * ((float) k / _UsedNbSegs), 0);
@@ -449,15 +449,15 @@ CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 				{
 					uint8 intensity = (uint8) (255 * (1.f - ((float) k / _UsedNbSegs)));
 					NLMISC::CRGBA col(intensity, intensity, intensity, intensity);
-					vba.setColor(vbIndex, col);						
+					vba.setColor(vbIndex, col);
 				}
-					
+
 					/// add 1 line in the primitive block
 				if (k != _UsedNbSegs)
-				{					
+				{
 					ibaWrite.setLine(pbIndex, vbIndex, vbIndex + 1);
 					pbIndex+=2;
-				}				
+				}
 				++vbIndex;
 			}
 		}
@@ -467,17 +467,17 @@ CPSTailDot::CVBnPB &CPSTailDot::getVBnPB()
 	}
 }
 
-//==========================================================================	
+//==========================================================================
 uint	CPSTailDot::getNumRibbonsInVB() const
 {
 	NL_PS_FUNC(CPSTailDot_getNumRibbonsInVB)
 	/// approximation of the max number of vertices we want in a vb
-	const uint vertexInVB = 256;	
+	const uint vertexInVB = 256;
 	return std::max(1u, (uint) (vertexInVB / (_UsedNbSegs + 1)));
 }
 
 
-//==========================================================================	
+//==========================================================================
 void	CPSTailDot::updateMaterial()
 {
 	NL_PS_FUNC(CPSTailDot_updateMaterial)
@@ -488,7 +488,7 @@ void	CPSTailDot::updateMaterial()
 	CParticleSystem &ps = *(_Owner->getOwner());
 	if (_ColorScheme)
 	{	// PER RIBBON COLOR
-		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting() || ps.getColorAttenuationScheme() || ps.isUserColorUsed())		
+		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting() || ps.getColorAttenuationScheme() || ps.isUserColorUsed())
 		{
 			if (_ColorFading) // global color + fading + per ribbon color
 			{
@@ -499,20 +499,20 @@ void	CPSTailDot::updateMaterial()
 					ptGradTexture = CreateGradientTexture();
 				}
 				_Mat.setTexture(0, ptGradTexture);
-				CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed				
+				CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed
 				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Constant);
 				SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Diffuse);
 			}
-			else // per ribbon color with global color 
+			else // per ribbon color with global color
 			{
-				CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed				
+				CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed
 				SetupModulatedStage(_Mat, 0, CMaterial::Diffuse, CMaterial::Constant);
 			}
 		}
 		else
-		{	
+		{
 			if (_ColorFading) // per ribbon color, fading
-			{				
+			{
 				if (ptGradTexture == NULL) // have we got a gradient texture ?
 				{
 					ptGradTexture = CreateGradientTexture();
@@ -528,7 +528,7 @@ void	CPSTailDot::updateMaterial()
 		}
 	}
 	else // GLOBAL COLOR
-	{		
+	{
 		if (_ColorFading)
 		{
 			CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed
@@ -536,21 +536,21 @@ void	CPSTailDot::updateMaterial()
 		}
 		else // constant color
 		{
-			CPSMaterial::forceTexturedMaterialStages(0); // no texture use constant diffuse only			
-		}		
+			CPSMaterial::forceTexturedMaterialStages(0); // no texture use constant diffuse only
+		}
 	}
 
 	_Touch = false;
 }
 
-//==========================================================================	
+//==========================================================================
 void	CPSTailDot::setupGlobalColor()
-{	
+{
 	NL_PS_FUNC(CPSTailDot_setupGlobalColor)
 	/// setup the global color if it is used
-	CParticleSystem &ps = *(_Owner->getOwner());	
+	CParticleSystem &ps = *(_Owner->getOwner());
 	if (_ColorScheme)
-	{	
+	{
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
 		{
 			_Mat.texConstantColor(0, ps.getGlobalColorLighted());
@@ -567,25 +567,25 @@ void	CPSTailDot::setupGlobalColor()
 			NLMISC::CRGBA col;
 			col.modulateFromColor(ps.getGlobalColorLighted(), _Color);
 			if (_ColorFading)
-			{								
-				_Mat.texConstantColor(0, col);				
+			{
+				_Mat.texConstantColor(0, col);
 			}
-			else // color attenuation, no fading : 
-			{							
+			else // color attenuation, no fading :
+			{
 				_Mat.setColor(col);
 			}
 		}
 		else
 		if (ps.getColorAttenuationScheme() || ps.isUserColorUsed())
-		{			
+		{
 			NLMISC::CRGBA col;
 			col.modulateFromColor(ps.getGlobalColor(), _Color);
 			if (_ColorFading)
-			{								
-				_Mat.texConstantColor(0, col);				
+			{
+				_Mat.texConstantColor(0, col);
 			}
-			else // color attenuation, no fading : 
-			{							
+			else // color attenuation, no fading :
+			{
 				_Mat.setColor(col);
 			}
 		}
@@ -593,7 +593,7 @@ void	CPSTailDot::setupGlobalColor()
 		{
 			if (_ColorFading)
 			{
-				_Mat.texConstantColor(0, _Color);				
+				_Mat.texConstantColor(0, _Color);
 			}
 			else // constant color
 			{

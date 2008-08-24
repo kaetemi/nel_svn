@@ -40,14 +40,14 @@ namespace NLMISC {
  * This class works with STLPort. It implements __stl_alloc_rebind() (not C++ standard??) to work properly
  *	with list<>/set<> etc... node allocations.
  *
- * NB: if used with a vector<> or a deque<> (ie if allocate(..,n) is called with n>1), it's still work, 
+ * NB: if used with a vector<> or a deque<> (ie if allocate(..,n) is called with n>1), it's still work,
  *	but it's use malloc()/free() instead, so it is fully unusefull in this case :)
  *
- * CSTLBlockAllocator use a pointer on a CBlockMemory, so multiple containers can share the same 
+ * CSTLBlockAllocator use a pointer on a CBlockMemory, so multiple containers can share the same
  *	blockMemory, for maximum space/speed efficiency.
  *
  * Because of CBlockMemory allocation scheme, only same containers of same types can share the
- *	same CBlockMemory instance (eg: "list<uint, &myBlockMemory>; vector<uint, &myBlockMemory>;" is invalid and 
+ *	same CBlockMemory instance (eg: "list<uint, &myBlockMemory>; vector<uint, &myBlockMemory>;" is invalid and
  *	will assert when allocations will occur).
  *
  * To construct a container which use this allocator, do like this:
@@ -181,7 +181,7 @@ public:
 		// must change the internal eltSize of __a.
 		__a._BlockMemory->__stl_alloc_changeEltSize(sizeof(U));
 		// and just typecast/return him
-		return (CSTLBlockAllocator<U>&)(__a); 
+		return (CSTLBlockAllocator<U>&)(__a);
 	}
 
 	template <class _Tp, class U>

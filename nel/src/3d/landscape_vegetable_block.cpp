@@ -35,7 +35,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -84,7 +84,7 @@ CLandscapeVegetableBlock::CLandscapeVegetableBlock()
 
 
 // ***************************************************************************
-void			CLandscapeVegetableBlock::init(const CVector &center, CVegetableManager *vegetManager, 
+void			CLandscapeVegetableBlock::init(const CVector &center, CVegetableManager *vegetManager,
 	CVegetableClipBlock *vegetableClipBlock, CPatch *patch, uint ts, uint tt, CTessList<CLandscapeVegetableBlock> &vblist)
 {
 	nlassert(patch);
@@ -165,7 +165,7 @@ void			CLandscapeVegetableBlock::update(const CVector &viewCenter, CVegetableMan
 		newDistType++;
 	}
 	/*
-		NB: to test but may be better than 
+		NB: to test but may be better than
 			newDistType= floor()(delta.norm() / NL3D_VEGETABLE_BLOCK_ELTDIST);
 	*/
 
@@ -246,10 +246,10 @@ void			CLandscapeVegetableBlock::createVegetableIGForDistType(uint i, CVegetable
 			CVegetableInstanceGroup		*vegetIg= vegeManager->createIg(_VegetableSortBlock[tileId]);
 			_VegetableIG[tileId][i]= vegetIg;
 
-			// generate 
+			// generate
 			_Patch->generateTileVegetable(vegetIg, i, tms, tmt, vbCreateCtx);
 
-			// If the ig is empty, delete him. This optimize rendering because no unusefull ig are 
+			// If the ig is empty, delete him. This optimize rendering because no unusefull ig are
 			// tested for rendering. This speed up some 1/10 of ms...
 			if(vegetIg->isEmpty())
 			{
@@ -306,7 +306,7 @@ void			CLandscapeVegetableBlockCreateContext::eval(uint ts, uint tt, float x, fl
 			{
 				float	s= (float)(_Ts+i)/_Patch->getOrderS();
 				// eval position.
-				// use computeVertex() and not bpatch->eval() because vegetables must follow the 
+				// use computeVertex() and not bpatch->eval() because vegetables must follow the
 				// noise (at least at tile precision...). It is slower but necessary.
 				_Pos[j*3+i]= _Patch->computeVertex(s, t);
 			}

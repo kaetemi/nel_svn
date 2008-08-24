@@ -42,9 +42,9 @@ static const uint SoundContextNbArgs = 10;
 struct CSoundContext
 {
 	// -1 for args is a special value means that unset. Don't use negative number
-	
-	CSoundContext() 
-	:	Position(NLMISC::CVector::Null), 
+
+	CSoundContext()
+	:	Position(NLMISC::CVector::Null),
 		PreviousRandom(100),
 		RelativeGain(1.0f)
 	{
@@ -83,7 +83,7 @@ typedef void (*TSpawnEndCallback) (USource *, void *);
  * For arguments as 3D vectors, use the NeL vector coordinate system:
  * \verbatim
  *     (top)
- *       z    
+ *       z
  *       |  y (front)
  *       | /
  *       -----x (right)
@@ -125,7 +125,7 @@ public:
 	virtual uint32					getTime() =0;
 	//@}
 
-	
+
 	/// \name Source properties
 	//@{
 	/** Set the position vector (default: (0,0,0)).
@@ -152,7 +152,7 @@ public:
 	virtual void					setGain( float gain ) = 0;
 	/// Get the gain
 	virtual float					getGain() const = 0;
-	
+
 	/** Set the gain amount (value inside [0, 1]) to map between 0 and the nominal gain
 	 * (which is getSource()->getGain()). Does nothing if getSource() is null.
 	 */
@@ -173,7 +173,7 @@ public:
 
 	/// Destructor
 	virtual							~USource() {}
-	
+
 protected:
 
 	/// Constructor

@@ -38,7 +38,7 @@ void	CGridTraversal::startTraverse(const NLMISC::CVector2f &start, sint &nextX, 
 
 //********************************************************************************************************************************
 bool	CGridTraversal::traverse(const NLMISC::CVector2f &start, const NLMISC::CVector2f &dir, sint &x, sint &y)
-{	
+{
 	if (dir.x > 0.f)
 	{
 		float lambdaX = (x + 1.f - start.x) / dir.x;
@@ -73,9 +73,9 @@ bool	CGridTraversal::traverse(const NLMISC::CVector2f &start, const NLMISC::CVec
 				-- y;
 				return true;
 			}
-		}		
+		}
 		++ x;
-		return x <= (sint) floorf(start.x + dir.x);				
+		return x <= (sint) floorf(start.x + dir.x);
 	}
 	else if (dir.x < 0.f)
 	{
@@ -115,7 +115,7 @@ bool	CGridTraversal::traverse(const NLMISC::CVector2f &start, const NLMISC::CVec
 		-- x;
 		return x >= (sint) floorf(start.x + dir.x);
 	}
-	
+
 	if (dir.y > 0.f)
 	{
 		++ y;

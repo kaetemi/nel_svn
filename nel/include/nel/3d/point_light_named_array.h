@@ -55,7 +55,7 @@ public:
 	void			clear();
 
 	/** sort pointLights and make Groups by name for setFactor().
-	 *	indexRemap gets news Ids for pointLights. 
+	 *	indexRemap gets news Ids for pointLights.
 	 *	eg: old PointLight nb 0 is now at indexRemap[0].
 	 */
 	void			build(const std::vector<CPointLightNamed> &pointLights, std::vector<uint> &indexRemap);
@@ -74,8 +74,8 @@ public:
 	void			serial(NLMISC::IStream &f);
 
 	/* Init lighting information
-	 * Scan lights used by the array, and for each, bind the array to an 
-	 * animated light index from the scene. This index will be used at runtime to 
+	 * Scan lights used by the array, and for each, bind the array to an
+	 * animated light index from the scene. This index will be used at runtime to
 	 * get quickly a light factor.
 	 */
 	void			initAnimatedLightIndex (const CScene &scene);

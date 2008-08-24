@@ -67,7 +67,7 @@ void	CVegetableBlendLayerModel::setWorldPos(const CVector &pos)
 
 	// setup directly the world matrix.
 	_WorldMatrix.setPos(pos);
-	
+
 }
 
 
@@ -128,7 +128,7 @@ void	CVegetableBlendLayerModel::render(IDriver *driver)
 			}
 		#endif
 		driver->renderSimpleTriangles(
-			ptrSortBlock->_SortedTriangleIndices[ptrSortBlock->_QuadrantId], 
+			ptrSortBlock->_SortedTriangleIndices[ptrSortBlock->_QuadrantId],
 			ptrSortBlock->_NTriangles);
 	}
 

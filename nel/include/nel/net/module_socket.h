@@ -49,7 +49,7 @@ namespace NLNET
 		 *	If the destination module is not accessible through this socket,
 		 *	an exception is thrown.
 		 */
-		virtual void sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message ) 
+		virtual void sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message )
 			throw (EModuleNotPluggedHere)
 			=0;
 		/** A plugged module send a message to all the module reachable
@@ -109,8 +109,8 @@ namespace NLNET
 		virtual void _broadcastModuleMessage(IModule *senderModule, const NLNET::CMessage &message)
 			throw (EModuleNotPluggedHere)
 			=0;
-	
-		virtual void sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message ) 
+
+		virtual void sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message )
 			throw (EModuleNotPluggedHere);
 		/** A plugged module send a message to all the module reachable
 		 *	with this socket.

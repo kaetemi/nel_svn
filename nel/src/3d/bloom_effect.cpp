@@ -40,7 +40,7 @@ using namespace NLMISC;
 using namespace NL3D;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 static UDriver *Driver = 0;
@@ -50,7 +50,7 @@ static bool SquareBloom = true;
 static uint8 DensityBloom = 128;
 
 // vertex program used to blur texture
-static const char *TextureOffset = 
+static const char *TextureOffset =
 "!!VP1.0																	\n\
 	MOV o[COL0].x, c[8].x;	          										\n\
 	MOV o[COL0].y, c[8].y;	          										\n\
@@ -138,7 +138,7 @@ void CBloomEffect::init()
 
 	_BlurWidth = 256;
 	_BlurHeight = 256;
-	
+
 	// initialize textures
 	_InitText = NULL;
 	_BlurHorizontalTex = NULL;
@@ -168,7 +168,7 @@ void CBloomEffect::init()
 	// stage 0
 	matObject->texConstantColor(0, constantCol1);
 	matObject->texEnvOpRGB(0, CMaterial::Modulate);
-	matObject->texEnvArg0RGB(0, CMaterial::Texture, CMaterial::SrcColor);	
+	matObject->texEnvArg0RGB(0, CMaterial::Texture, CMaterial::SrcColor);
 	matObject->texEnvArg1RGB(0, CMaterial::Constant, CMaterial::SrcColor);
 
 	// stage 1
@@ -177,14 +177,14 @@ void CBloomEffect::init()
 	matObject->texEnvArg0RGB(1, CMaterial::Texture, CMaterial::SrcColor);
 	matObject->texEnvArg1RGB(1, CMaterial::Constant, CMaterial::SrcColor);
 	matObject->texEnvArg2RGB(1, CMaterial::Previous, CMaterial::SrcColor);
-	
+
 	// stage 2
 	matObject->texConstantColor(2, constantCol1);
 	matObject->texEnvOpRGB(2, CMaterial::Mad);
 	matObject->texEnvArg0RGB(2, CMaterial::Texture, CMaterial::SrcColor);
 	matObject->texEnvArg1RGB(2, CMaterial::Constant, CMaterial::SrcColor);
 	matObject->texEnvArg2RGB(2, CMaterial::Previous, CMaterial::SrcColor);
-	
+
 	// stage 3
 	matObject->texConstantColor(3, constantCol2);
 	matObject->texEnvOpRGB(3, CMaterial::Mad);
@@ -289,7 +289,7 @@ void CBloomEffect::initBloom()
 	if(Driver->getWindowWidth()==0 || Driver->getWindowHeight()==0)
 		return;
 
-	if(!_Init)	
+	if(!_Init)
 		init();
 
 	// if window resize, reinitialize textures
@@ -317,7 +317,7 @@ void CBloomEffect::initBloom()
 
 			reinitBlurTextures = true;
 		}
-		
+
 		if(_WndWidth>256 && _BlurWidth!=256)
 		{
 			_BlurWidth = 256;
@@ -348,7 +348,7 @@ void CBloomEffect::initBloom()
 
 			initTexture(_BlurFinalTex,		true, _BlurWidth, _BlurHeight);
 			initTexture(_BlurHorizontalTex, true, _BlurWidth, _BlurHeight);
-			
+
 			_DisplayBlurMat.getObjectPtr()->setTexture(0, _BlurFinalTex);
 
 			_DisplaySquareBlurMat.getObjectPtr()->setTexture(0, _BlurFinalTex);
@@ -380,9 +380,9 @@ void CBloomEffect::endBloom()
 	CRect *rect1 = new CRect(0, 0, _WndWidth, _WndHeight);
 	CRect *rect2 = new CRect(0, 0, _BlurWidth, _BlurHeight);
 	// stretch rect
-	((CDriverUser *) Driver)->stretchRect(Scene, *txt1 , *rect1, 
+	((CDriverUser *) Driver)->stretchRect(Scene, *txt1 , *rect1,
 		*txt2, *rect2);
-	
+
 	// horizontal blur pass
 	doBlur(true);
 
@@ -452,7 +452,7 @@ void CBloomEffect::applyBlur()
 	uint8 d = DensityBloom;
 	CRGBA constCoeff(d, d, d, d);
 	matObjectFinal->texConstantColor(0, constCoeff);
-	
+
 	// display quad
 	UCamera	pCam = Scene->getCam();
 	Driver->setMatrixMode2D11();
@@ -460,7 +460,7 @@ void CBloomEffect::applyBlur()
 	Driver->setMatrixMode3D(pCam);
 
 	// disable vertex program
-	drvInternal->activeVertexProgram(NULL);	
+	drvInternal->activeVertexProgram(NULL);
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -491,7 +491,7 @@ void CBloomEffect::endInterfacesDisplayBloom()
 
 		// init material texture
 		CMaterial * matObjectInit = _DisplayInitMat.getObjectPtr();
-		
+
 		// display
 		UCamera	pCam = Scene->getCam();
 		Driver->setMatrixMode2D11();
@@ -518,7 +518,7 @@ void CBloomEffect::doBlur(bool horizontalBlur)
 	}
 	else
 	{
-		blurVec = CVector2f(0.f, 1.f); 
+		blurVec = CVector2f(0.f, 1.f);
 		startTexture = _BlurHorizontalTex;
 		endTexture = _BlurFinalTex;
 	}
@@ -538,7 +538,7 @@ void CBloomEffect::doBlur(bool horizontalBlur)
 	drvInternal->setConstant(8, 255.f, 255.f, 255.f, 255.f);
 	drvInternal->setConstant(9, 0.0f, 0.f, 0.f, 1.f);
 
-	// set several decal constants in order to obtain in the render target texture a mix of color 
+	// set several decal constants in order to obtain in the render target texture a mix of color
 	// of a texel and its neighbored texels on the axe of the pass.
 	float decalL, decal2L, decalR, decal2R;
 	if(_InitBloomEffect)
@@ -559,7 +559,7 @@ void CBloomEffect::doBlur(bool horizontalBlur)
 	drvInternal->setConstant(11, (decal2R/(float)_BlurWidth)*blurVec.x,		(decal2R/(float)_BlurHeight)*blurVec.y, 0.f, 0.f);
 	drvInternal->setConstant(12, (decalL/(float)_BlurWidth)*blurVec.x,		(decalL/(float)_BlurHeight)*blurVec.y, 0.f, 0.f);
 	drvInternal->setConstant(13, (decal2L/(float)_BlurWidth)*blurVec.x,		(decal2L/(float)_BlurHeight)*blurVec.y, 0.f, 0.f);
-	
+
 	// initialize material textures
 	CMaterial * matObject = _BlurMat.getObjectPtr();
 	matObject->setTexture(0, startTexture);
@@ -577,12 +577,12 @@ void CBloomEffect::doBlur(bool horizontalBlur)
 	UCamera	pCam = Scene->getCam();
 	Driver->setMatrixMode2D11();
 	Driver->drawQuad(_BlurQuad, _BlurMat);
-	
+
 	// disable render target and vertex program
 	drvInternal->activeVertexProgram(NULL);
 	txt = new CTextureUser();
-	((CDriverUser *)Driver)->setRenderTarget(*txt, 0, 0, 0, 0);	
-	Driver->setMatrixMode3D(pCam);	
+	((CDriverUser *)Driver)->setRenderTarget(*txt, 0, 0, 0, 0);
+	Driver->setMatrixMode3D(pCam);
 	delete txt;
 }
 

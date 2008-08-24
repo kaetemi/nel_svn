@@ -46,7 +46,7 @@ namespace NL3D {
 class CTargetAnimCtrl : public IAnimCtrl
 {
 public:
-	
+
 	enum TMode	{TargetMode=0, DirectionMode, NumMode};
 
 public:
@@ -65,7 +65,7 @@ public:
 
 	/// \name Common
 	// @{
-	/** This enable or disable the ctrl. When disabled or enabled, the ctrl ensure 
+	/** This enable or disable the ctrl. When disabled or enabled, the ctrl ensure
 	 *	that the movement does not "pop", respecting MaxAngularVelocity. Default to true.
 	 */
 	bool			Enabled;

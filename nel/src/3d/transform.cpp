@@ -42,7 +42,7 @@ namespace	NL3D
 
 // ***************************************************************************
 #define	NL3D_TRANSFORM_DEFAULT_SHADOW_MAP_DEPTH		8.f
-	
+
 
 // ***************************************************************************
 void	CTransform::registerBasic()
@@ -80,7 +80,7 @@ CTransform::CTransform()
 
 	_TransparencyPriority = 0;
 
-	
+
 	// No logicInfo by default
 	_LogicInfo= NULL;
 
@@ -128,7 +128,7 @@ CTransform::CTransform()
 
 	// **** HRC Init Traversal Computed Data.
 	_LocalVis= CHrcTrav::Herit; _LocalMatrix.identity(); _LocalDate=0;
-	_WorldVis= true; _WorldMatrix.identity(); 
+	_WorldVis= true; _WorldMatrix.identity();
 	// Init the _WorldDate to -1 so at first pass, _LocalDate>_WorldDate, and so
 	// the model will be processed and so it'll may be inserted in LightingManager (for example)
 	_WorldDate=-1;
@@ -249,7 +249,7 @@ void		CTransform::hide()
 
 // ***************************************************************************
 void		CTransform::setTransparency(bool v)
-{ 
+{
 	bool bTmp = getStateFlag(IsTransparent) == 0 ? false : true;
 	if (bTmp != v)
 	{
@@ -270,7 +270,7 @@ void CTransform::setBypassLODOpacityFlag(bool bypass)
 
 // ***************************************************************************
 void		CTransform::setOpacity(bool v)
-{ 
+{
 	bool bTmp = getStateFlag(IsOpaque) == 0 ? false : true;
 	if (bTmp != v)
 	{
@@ -732,10 +732,10 @@ void	CTransform::updateWorld()
 	/*
 		If the model is not frozen in StaticLight, then must update lighting each frame.
 		Even if the object doesn't move, a new dynamic light may enter in its aera. Hence we must test
-		it in the light quadrid. StaticLight-ed Objects don't need it because they are inserted in a special quadgrid, 
+		it in the light quadrid. StaticLight-ed Objects don't need it because they are inserted in a special quadgrid,
 		where dynamics lights touch all StaticLight-ed object to force their computing
 
-		NB: not done if _AncestorSkeletonModel!=NULL. no need because  in this case, 
+		NB: not done if _AncestorSkeletonModel!=NULL. no need because  in this case,
 		result is driven by the _LightContribution of the _AncestorSkeletonModel.
 	*/
 	if( !_LightContribution.FrozenStaticLightSetup && _AncestorSkeletonModel==NULL )
@@ -911,13 +911,13 @@ void	CTransform::traverseClip()
 		if( _AncestorSkeletonModel==NULL )
 		{
 			// If needed, insert the model in the lighted list.
-			// don't insert if has an ancestorSkeletonModel, because in this case, result is driven by 
+			// don't insert if has an ancestorSkeletonModel, because in this case, result is driven by
 			// the _LightContribution of the _AncestorSkeletonModel.
 			if( isLightable() )
 				scene->getLightTrav().addLightedModel(this);
 
 			// If needed, insert the model in the animDetail list.
-			// don't insert if has an ancestoreSkeletonModel, because in this case, this ancestore will 
+			// don't insert if has an ancestoreSkeletonModel, because in this case, this ancestore will
 			// animDetail through the hierarchy...
 			if( isAnimDetailable() )
 				scene->getAnimDetailTrav().addVisibleModel(this);
@@ -1081,12 +1081,12 @@ void		CTransform::resetLighting()
 
 	// the model needs to update his lighting.
 	setStateFlag(IsNeedUpdateLighting, true);
-	
+
 }
 
 
 // ***************************************************************************
-void			CTransform::freezeStaticLightSetup(CPointLight *pointLight[NL3D_MAX_LIGHT_CONTRIBUTION], 
+void			CTransform::freezeStaticLightSetup(CPointLight *pointLight[NL3D_MAX_LIGHT_CONTRIBUTION],
 		uint numPointLights, uint8 sunContribution, CPointLight *frozenAmbientlight)
 {
 	nlassert(numPointLights <= NL3D_MAX_LIGHT_CONTRIBUTION);
@@ -1228,13 +1228,13 @@ void			CTransform::hrcLinkSon(CTransform *son)
 
 	// link son to me
 	_HrcSons.insert(son, &son->_HrcNode);
-	
+
 	// link me to son
 	son->_HrcParent= this;
-	
+
 	// Backup parent
 	son->_HrcParentUnfreeze= this;
-	
+
 	// my son should recompute his worldMatrix!
 	son->_WorldDate= -1;
 }
@@ -1292,7 +1292,7 @@ void			CTransform::clipAddChild(CTransform *son)
 	// link the son to us
 	clipNode->Parent= this;
 
-	// link us to the son 
+	// link us to the son
 	_ClipSons.insert(son, &clipNode->ClipNode);
 }
 
@@ -1398,7 +1398,7 @@ void			CTransform::enableCastShadowMap(bool state)
 {
 	bool	precState= canCastShadowMap();
 
-	if(modelCanCastShadowMap()) 
+	if(modelCanCastShadowMap())
 		setStateFlag(IsFinalShadowMapCaster, state);
 	else
 		setStateFlag(IsFinalShadowMapCaster, false);

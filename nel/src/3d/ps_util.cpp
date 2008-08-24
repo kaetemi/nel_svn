@@ -71,7 +71,7 @@ void CPSUtil::initPerlinNoiseTable(void)
 	NL_PS_FUNC(CPSUtil_initPerlinNoiseTable)
 	for (uint32 k = 0; k < 1024; ++k)
 	{
-		_PerlinNoiseTab[k] = (rand() % 30000) / 30000.f; 
+		_PerlinNoiseTab[k] = (rand() % 30000) / 30000.f;
 	}
 	//#ifdef NL_DEBUG
 		_PerlinNoiseTableInitialized = true;
@@ -84,7 +84,7 @@ void CPSUtil::initFastCosNSinTable(void)
 	NL_PS_FUNC(CPSUtil_initFastCosNSinTable)
 	for (uint32 k = 0; k < 256; k++)
 	{
-		const float angle =  k / 256.0f * 2.0f * float(NLMISC::Pi); 
+		const float angle =  k / 256.0f * 2.0f * float(NLMISC::Pi);
 		_CosTable[k] = (float) cos( angle );
 		_SinTable[k] = (float) sin( angle );
 	}
@@ -95,10 +95,10 @@ void CPSUtil::initFastCosNSinTable(void)
 
 //==========================================================================
 void CPSUtil::registerSerialParticleSystem(void)
-{				
+{
 	NL_PS_FUNC(CPSUtil_registerSerialParticleSystem)
-		NLMISC_REGISTER_CLASS(CPSLocated); 										
-		NLMISC_REGISTER_CLASS(CParticleSystemShape);		
+		NLMISC_REGISTER_CLASS(CPSLocated);
+		NLMISC_REGISTER_CLASS(CParticleSystemShape);
 		NLMISC_REGISTER_CLASS(CPSSound);
 		NLMISC_REGISTER_CLASS(CPSLight);
 
@@ -110,14 +110,14 @@ void CPSUtil::registerSerialParticleSystem(void)
 		registerAttribs();
 
 
-		// while we are here, we perform some important inits		
+		// while we are here, we perform some important inits
 		initFastCosNSinTable(); // init fast cosine lookup table
-		initPerlinNoiseTable(); // init perlin noise table				
+		initPerlinNoiseTable(); // init perlin noise table
 }
 
 //==========================================================================
 void CPSUtil::displayBBox(NL3D::IDriver *driver, const NLMISC::CAABBox &box, NLMISC::CRGBA col /* = NLMISC::CRGBA::White */)
-{	
+{
 	NL_PS_FUNC(CPSUtil_displayBBox)
 	CVector max = box.getMax()
 			,min = box.getMin();
@@ -155,18 +155,18 @@ void CPSUtil::displayBBox(NL3D::IDriver *driver, const NLMISC::CAABBox &box, NLM
 	{
 		CIndexBufferReadWrite ibaWrite;
 		pb.lock (ibaWrite);
-		ibaWrite.setLine(0, 0, 1); 
-		ibaWrite.setLine(2, 1, 5); 
-		ibaWrite.setLine(4, 5, 4); 
-		ibaWrite.setLine(6, 4, 0); 
-		ibaWrite.setLine(8, 0, 2); 
-		ibaWrite.setLine(10, 1, 3); 
-		ibaWrite.setLine(12, 4, 6); 
-		ibaWrite.setLine(14, 5, 7); 
-		ibaWrite.setLine(16, 6, 7); 
-		ibaWrite.setLine(18, 7, 3); 
-		ibaWrite.setLine(20, 3, 2); 
-		ibaWrite.setLine(22, 2, 6); 
+		ibaWrite.setLine(0, 0, 1);
+		ibaWrite.setLine(2, 1, 5);
+		ibaWrite.setLine(4, 5, 4);
+		ibaWrite.setLine(6, 4, 0);
+		ibaWrite.setLine(8, 0, 2);
+		ibaWrite.setLine(10, 1, 3);
+		ibaWrite.setLine(12, 4, 6);
+		ibaWrite.setLine(14, 5, 7);
+		ibaWrite.setLine(16, 6, 7);
+		ibaWrite.setLine(18, 7, 3);
+		ibaWrite.setLine(20, 3, 2);
+		ibaWrite.setLine(22, 2, 6);
 	}
 
 
@@ -180,13 +180,13 @@ void CPSUtil::displayBBox(NL3D::IDriver *driver, const NLMISC::CAABBox &box, NLM
 //==========================================================================
 void CPSUtil::displayArrow(IDriver *driver, const CVector &start, const CVector &v, float size, CRGBA col1, CRGBA col2)
 {
-	
+
 	NL_PS_FUNC(CPSUtil_displayArrow)
 
 	const float coneSize = size * 0.1f;
 
 	static CIndexBuffer vTab;
-	static const TIndexType vTabIndexes[] = 
+	static const TIndexType vTabIndexes[] =
 	{ 1, 2, 4,
 	  4, 2, 3,
 	  1, 2, 0,
@@ -194,7 +194,7 @@ void CPSUtil::displayArrow(IDriver *driver, const CVector &start, const CVector 
 	  3, 4, 0,
 	  4, 1, 0 };
 	vTab.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	
+
 	if (vTab.getNumIndexes()==0)
 	{
 		vTab.setNumIndexes (sizeofarray(vTabIndexes));
@@ -202,19 +202,19 @@ void CPSUtil::displayArrow(IDriver *driver, const CVector &start, const CVector 
 		vTab.lock(iba);
 		memcpy (iba.getPtr(), vTabIndexes, sizeof(vTabIndexes));
 	}
-	
+
 
 	CVector end = start + size * v;
 	CDRU::drawLine(start, end, col1, *driver);
 	CMatrix m;
 	buildSchmidtBasis(v, m);
-	
+
 
 	CVertexBuffer vb;
 	vb.setVertexFormat(CVertexBuffer::PositionFlag);
-	vb.setNumVertices(5); 
-	
-	
+	vb.setNumVertices(5);
+
+
 	{
 		CVertexBufferReadWrite vba;
 		vb.lock (vba);
@@ -224,7 +224,7 @@ void CPSUtil::displayArrow(IDriver *driver, const CVector &start, const CVector 
 		vba.setVertexCoord(3, end + m * CVector(coneSize, coneSize, 0) );
 		vba.setVertexCoord(4, end + m * CVector(-coneSize, coneSize, 0) );
 	}
-	
+
 
 	CMaterial material;
 
@@ -235,42 +235,42 @@ void CPSUtil::displayArrow(IDriver *driver, const CVector &start, const CVector 
 	material.setBlend(true);
 	material.setDoubleSided(true);
 
-	
+
 
 	driver->activeVertexBuffer(vb);
 	driver->activeIndexBuffer(vTab);
 	driver->renderTriangles(material, 0, 6);
 
-	
+
 }
 
 //==========================================================================
 void CPSUtil::displayBasis(IDriver *driver, const CMatrix &modelMat, const NLMISC::CMatrix &m, float size, CFontGenerator &fg, CFontManager &fm)
 {
 	NL_PS_FUNC(CPSUtil_displayBasis)
-	
+
 	CMaterial material;
 
 	driver->setupModelMatrix(modelMat);
-	
 
 
-	
+
+
 	displayArrow(driver, m.getPos(), m.getI(), size, CRGBA(127, 127, 127), CRGBA(0, 0, 80));
-	
+
 	displayArrow(driver, m.getPos(), m.getJ(), size, CRGBA(127, 127, 127), CRGBA(0, 0, 80));
-	
+
 	displayArrow(driver, m.getPos(), m.getK(), size, CRGBA(127, 127, 127), CRGBA(200, 0, 80));
-	
-	
+
+
 	// draw the letters
-	
+
 	CPSUtil::print(driver, std::string("x"), fg, fm, modelMat * m * CVector(1.4f * size, 0, 0), 15.0f * size);
-	
+
 	CPSUtil::print(driver, std::string("y"), fg, fm, modelMat * m * CVector(0, 1.4f  * size, 0), 15.0f * size);
-	
+
 	CPSUtil::print(driver, std::string("z"), fg, fm, modelMat * m * CVector(0, 0, 1.4f  * size), 15.0f * size);
-	
+
 };
 
 
@@ -278,21 +278,21 @@ void CPSUtil::displayBasis(IDriver *driver, const CMatrix &modelMat, const NLMIS
 void CPSUtil::print(IDriver *driver, const std::string &text, CFontGenerator &fg, CFontManager &fm, const CVector &pos, float size, NLMISC::CRGBA col /*= NLMISC::CRGBA::White*/)
 {
 	NL_PS_FUNC(CPSUtil_print)
-	nlassert((&fg) && (&fm));	
-	CComputedString cptedString;	
+	nlassert((&fg) && (&fm));
+	CComputedString cptedString;
 	fm.computeString ( text,
-						&fg, 
+						&fg,
 						col,
-						16, 
+						16,
 						driver,
 						cptedString);
-			
-		
-	CMatrix mat = driver->getViewMatrix();	
-	mat.setPos(CVector::Null);	
-	mat.scale(CVector(size, size, size));		
+
+
+	CMatrix mat = driver->getViewMatrix();
+	mat.setPos(CVector::Null);
+	mat.scale(CVector(size, size, size));
 	mat.transpose();
-	mat.setPos(pos);	 
+	mat.setPos(pos);
 	cptedString.render3D(*driver, mat);
 }
 
@@ -321,7 +321,7 @@ void CPSUtil::buildSchmidtBasis(const CVector &k_, NLMISC::CMatrix &result)
 
 	i = i - (k * i) * k;
 	i.normalize();
-	result.setRot(i, k ^ i, k, true);	
+	result.setRot(i, k ^ i, k, true);
 }
 
 
@@ -331,7 +331,7 @@ void CPSUtil::displaySphere(IDriver &driver, float radius, const CVector &center
 	NL_PS_FUNC(CPSUtil_displaySphere)
 	uint x, y, k;
 	CVector p, p1, p2;
-	
+
 	static const CVector lK[] = { CVector::I, -CVector::I
 								,CVector::J, -CVector::J
 								,CVector::K, -CVector::K };
@@ -356,7 +356,7 @@ void CPSUtil::displaySphere(IDriver &driver, float radius, const CVector &center
 				p1 = p + 2.f / float(nbSubdiv) * I;
 				p2 = p + 2.f / float(nbSubdiv) * J;
 
-				p.normalize(); 
+				p.normalize();
 				p1.normalize();
 				p2.normalize();
 
@@ -383,7 +383,7 @@ void CPSUtil::displayDisc(IDriver &driver, float radius, const CVector &center, 
 	const CVector &J = mat.getJ();
 	for (uint k = 0; k < nbSubdiv; ++k)
 	{
-		
+
 		CDRU::drawLine(center + radius * ((float) cos(theta) * I + (float) sin(theta) * J)
 					   , center + radius * ((float) cos(theta + thetaDelta) * I + (float) sin(theta + thetaDelta) * J)
 					   , color, driver);
@@ -405,7 +405,7 @@ void CPSUtil::displayCylinder(IDriver &driver, const CVector &center, const CMat
 
 	for (uint k = 0; k < nbSubdiv; ++k)
 	{
-		
+
 		CDRU::drawLine(center + dim.z * K + dim.x * cosf(theta) * I + dim.y * sinf(theta) * J
 					   , center + dim.z * K + dim.x * cosf(theta + thetaDelta) * I + dim.y * sinf(theta + thetaDelta) * J
 					   , color, driver);
@@ -419,10 +419,10 @@ void CPSUtil::displayCylinder(IDriver &driver, const CVector &center, const CMat
 					   , color, driver);
 
 
-		
-		
+
+
 		theta += thetaDelta;
-	}	
+	}
 }
 
 //==========================================================================

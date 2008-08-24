@@ -41,10 +41,10 @@ uint32 CBufNetBase::DefaultMaxSentBlockSize = 1048576; // 10 M unless changed by
 
 
 /***************************************************************************************************
- * User main thread 
+ * User main thread
  **************************************************************************************************/
 
- 
+
 /*
  * Constructor
  */
@@ -158,5 +158,5 @@ void	CBufNetBase::pushMessageIntoReceiveQueue( const uint8 *buffer, uint32 size 
 
 
 NLMISC_CATEGORISED_VARIABLE(nel, uint32, NbNetworkTask, "Number of server and client thread");
-	
+
 } // NLNET

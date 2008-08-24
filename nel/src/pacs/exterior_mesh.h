@@ -1,5 +1,5 @@
 /** \file exterior_mesh.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

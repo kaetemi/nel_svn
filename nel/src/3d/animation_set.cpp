@@ -37,7 +37,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -47,7 +47,7 @@ CAnimationSet::CAnimationSet (bool headerOptim)
 	_AnimHeaderOptimisation= headerOptim;
 	_Built= false;
 }
-	
+
 // ***************************************************************************
 CAnimationSet::~CAnimationSet ()
 {
@@ -120,7 +120,7 @@ void CAnimationSet::reset ()
 // ***************************************************************************
 void CAnimationSet::build ()
 {
-	// error to rebuild in if already done while _AnimHeaderOptimisation, 
+	// error to rebuild in if already done while _AnimHeaderOptimisation,
 	// cause applyAnimHeaderCompression() won't work
 	if(_Built && _AnimHeaderOptimisation)
 		return;
@@ -288,7 +288,7 @@ void	CAnimationSet::preloadSSSShapes(IDriver &drv, CShapeBank &shapeBank)
 		shapeBank.addShapeCache(shapeCacheName);
 		shapeBank.setShapeCacheSize(shapeCacheName, 1000000);
 	}
-	
+
 	// For all files
 	std::set<std::string>::iterator		it;
 	for(it=_SSSShapes.begin();it!=_SSSShapes.end();it++)
@@ -297,7 +297,7 @@ void	CAnimationSet::preloadSSSShapes(IDriver &drv, CShapeBank &shapeBank)
 
 		// link the shape to the shapeCache
 		shapeBank.linkShapeToShapeCache(fileName, shapeCacheName);
-		
+
 		// If !present in the shapeBank
 		if( shapeBank.getPresentState(fileName)==CShapeBank::NotPresent )
 		{
@@ -306,11 +306,11 @@ void	CAnimationSet::preloadSSSShapes(IDriver &drv, CShapeBank &shapeBank)
 			{
 				// load it.
 				shapeBank.load(fileName);
-				
+
 				// If success
 				if( shapeBank.getPresentState(fileName)==CShapeBank::Present )
 				{
-					// When a shape is first added to the bank, it is not in the cache. 
+					// When a shape is first added to the bank, it is not in the cache.
 					// add it and release it to force it to be in the cache.
 					IShape	*shp= shapeBank.addRef(fileName);
 					if(shp)

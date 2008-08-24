@@ -33,7 +33,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -56,7 +56,7 @@ public:
 	 * This method:
 	 *	- copy the material contents into the Defaults tracks values.
 	 *
-	 * NB: for emissive part, emissive defaut track value is set to 1, and emissive factor is set to the 
+	 * NB: for emissive part, emissive defaut track value is set to 1, and emissive factor is set to the
 	 * RGB emissive value stored into pMat.
 	 */
 	void			copyFromMaterial(CMaterial *pMat);
@@ -74,7 +74,7 @@ public:
 	CTrackDefaultRGBA		DefaultEmissive;
 	CTrackDefaultFloat		DefaultOpacity;
 	CTrackDefaultInt		DefaultTexture;
-	
+
 	// Texture animation
 	struct CTexAnimTracks
 	{
@@ -87,11 +87,11 @@ public:
 
 
 		// number of default tracks
-		enum { NumTexAnimatedValues = 5 }; 
-		
+		enum { NumTexAnimatedValues = 5 };
 
-		void setDefaultValue() 
-		{ 
+
+		void setDefaultValue()
+		{
 			DefaultUTrans.setDefaultValue(0);
 			DefaultVTrans.setDefaultValue(0);
 			DefaultUScale.setDefaultValue(1);
@@ -130,7 +130,7 @@ public:
 
 // *********************
 private:
-	
+
 	struct	CAnimatedTexture
 	{
 		CSmartPtr<ITexture>			Texture;
@@ -216,7 +216,7 @@ public:
 	enum	TAnimValues
 	{
 		OwnerBit= IAnimatable::AnimValueLast,
-		AmbientValue, 
+		AmbientValue,
 		DiffuseValue,
 		SpecularValue,
 		ShininessValue,
@@ -258,7 +258,7 @@ private:
 	CAnimatedValueRGBA		_Emissive;
 	CAnimatedValueFloat		_Opacity;
 	CAnimatedValueInt		_Texture;
-		
+
 	struct CTexAnimatedMatValues
 	{
 		CAnimatedValueFloat _UTrans;

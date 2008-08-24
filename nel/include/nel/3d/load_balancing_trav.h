@@ -31,7 +31,7 @@
 #include "nel/misc/value_smoother.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

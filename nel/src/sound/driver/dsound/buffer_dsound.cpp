@@ -128,7 +128,7 @@ CBufferDSound::CBufferDSound()
 {
 	_Name = CSoundDriverDSound::instance()->getStringMapper()->map(EmptyString);
     _Data = NULL;
-    _Size = 0; 
+    _Size = 0;
     _Format = Mono16;
     _Freq = 0;
 }
@@ -166,7 +166,7 @@ float CBufferDSound::getDuration() const
 {
     float frames = (float) _Size;
 
-    switch (_Format) 
+    switch (_Format)
 	{
     case Mono8:
         break;
@@ -190,7 +190,7 @@ float CBufferDSound::getDuration() const
 
 bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {
-    sint error; 
+    sint error;
     sint32 num;
     HMMIO hmmio;
     WAVEFORMATEX format;
@@ -198,7 +198,7 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
     MMCKINFO data_chunk;
     MMCKINFO chunk;
 
-  
+
     if (_Data != NULL)
     {
         delete [] _Data;
@@ -218,40 +218,40 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 	mmioInfo.pchBuffer = (char*)buffer;
 	mmioInfo.fccIOProc = FOURCC_MEM;
 	mmioInfo.cchBuffer = size;
-	
+
 
     hmmio = mmioOpen(NULL, &mmioInfo, MMIO_READ | MMIO_DENYWRITE);
 
-    if (hmmio == NULL) 
+    if (hmmio == NULL)
     {
         throw ESoundDriver("Failed to open the file");
     }
 
 
-    // Check it's a WAVE file 
+    // Check it's a WAVE file
     riff_chunk.ckid = FOURCC_RIFF;
 
     error = (sint) mmioDescend(hmmio, &riff_chunk, NULL, 0);
 
-    if ((error != 0) || (riff_chunk.ckid != FOURCC_RIFF) || (riff_chunk.fccType != mmioFOURCC('W', 'A', 'V', 'E'))) 
+    if ((error != 0) || (riff_chunk.ckid != FOURCC_RIFF) || (riff_chunk.fccType != mmioFOURCC('W', 'A', 'V', 'E')))
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Not a WAVE file");
     }
 
 
-    // Search the format chunk 
+    // Search the format chunk
     chunk.ckid = mmioFOURCC('f', 'm', 't', ' ');
 
     error = (sint) mmioDescend(hmmio, &chunk, &riff_chunk, MMIO_FINDCHUNK);
 
-    if (error != 0) 
+    if (error != 0)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Couldn't find the format chunk");
     }
 
-    if (chunk.cksize < (long) sizeof(PCMWAVEFORMAT)) 
+    if (chunk.cksize < (long) sizeof(PCMWAVEFORMAT))
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Invalid format chunk size");
@@ -261,7 +261,7 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
     // read in the format data
 
     num = mmioRead(hmmio, (HPSTR) &format, (long) sizeof(format));
-    if (num != (long) sizeof(format)) 
+    if (num != (long) sizeof(format))
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Read failed");
@@ -271,16 +271,16 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
     // Get out of the format chunk
 
-    if (mmioAscend(hmmio, &chunk, 0) != 0) 
+    if (mmioAscend(hmmio, &chunk, 0) != 0)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Read failed");
     }
 
 
-    // copy the format data 
+    // copy the format data
 
-    if (format.wFormatTag != WAVE_FORMAT_PCM) 
+    if (format.wFormatTag != WAVE_FORMAT_PCM)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Unsupported sample format");
@@ -288,12 +288,12 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
     _Freq = format.nSamplesPerSec;
 
-    if (format.nChannels == 1) 
+    if (format.nChannels == 1)
     {
         if (format.wBitsPerSample == 8)
         {
             _Format = Mono8;
-        } 
+        }
         else if (format.wBitsPerSample == 16)
         {
             _Format = Mono16;
@@ -309,7 +309,7 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
         if (format.wBitsPerSample == 8)
         {
             _Format = Stereo8;
-        } 
+        }
         else if (format.wBitsPerSample == 16)
         {
             _Format = Stereo16;
@@ -326,12 +326,12 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
         throw ESoundDriver("Unsupported number of channels");
     }
 
-    
+
     // Set the file position to the beginning of the data chunk */
- 
+
     sint32 pos = mmioSeek(hmmio, riff_chunk.dwDataOffset + sizeof(FOURCC), SEEK_SET);
 
-    if (pos < 0) 
+    if (pos < 0)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Read to set the read position");
@@ -339,7 +339,7 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
     data_chunk.ckid = mmioFOURCC('d', 'a', 't', 'a');
 
-    if (mmioDescend(hmmio, &data_chunk, &riff_chunk, MMIO_FINDCHUNK) != 0) 
+    if (mmioDescend(hmmio, &data_chunk, &riff_chunk, MMIO_FINDCHUNK) != 0)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Read to set the read position");
@@ -362,7 +362,7 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
     num = mmioRead(hmmio, (HPSTR) _Data, _Size);
 
-    if (num < 0) 
+    if (num < 0)
     {
 		delete [] _Data;
 		_Data= NULL;

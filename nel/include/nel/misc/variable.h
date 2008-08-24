@@ -149,22 +149,22 @@ public:
 	{
 		Type = Variable;
 	}
-		  
+
 	virtual void fromString(const std::string &val, bool human=false) = 0;
-	
+
 	virtual std::string toString(bool human=false) const = 0;
 
 	virtual bool execute(const std::string &rawCommandString, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
 	{
 		if (args.size() > 1)
 			return false;
-		
+
 		if (args.size() == 1)
 		{
 			// set the value
 			fromString (args[0], human);
 		}
-		
+
 		// display the value
 		if (quiet)
 		{
@@ -176,7 +176,7 @@ public:
 		}
 		return true;
 	}
-	
+
 	static void init (CConfigFile &configFile);
 
 private:
@@ -184,10 +184,10 @@ private:
 	bool _UseConfigFile;
 
 protected:
-	
+
 	// TODO: replace by interface (see IVariableChangedCallback)
 	void (*ChangeCallback)(IVariable &var);
-	
+
 };
 
 
@@ -230,12 +230,12 @@ class CVariable : public IVariable
 	{
 public:
 
-	CVariable (	const char *categoryName, 
-				const char *commandName, 
-				const char *commandHelp, 
-				const T &defaultValue, 
-				uint nbMeanValue = 0, 
-				bool useConfigFile = false, 
+	CVariable (	const char *categoryName,
+				const char *commandName,
+				const char *commandHelp,
+				const T &defaultValue,
+				uint nbMeanValue = 0,
+				bool useConfigFile = false,
 				void (*cc)(IVariable &var)=NULL,
 				bool executeCallbackForDefaultValue=false ) :
 		IVariable (categoryName, commandName, commandHelp, "[<value>|stat|mean|min|max]", useConfigFile, cc), _Mean(nbMeanValue), _First(true)
@@ -251,7 +251,7 @@ public:
 //		ss >> v;
 		set (v);
 	}
-	
+
 	virtual std::string toString (bool human) const
 	{
 		return NLMISC::toString(_Value);
@@ -259,7 +259,7 @@ public:
 //		ss << _Value;
 //		return ss.str();
 	}
-	
+
 	CVariable<T> &operator= (const T &val)
 	{
 		set (val);
@@ -288,7 +288,7 @@ public:
 		}
 		if (ChangeCallback && executeCallback) ChangeCallback (*this);
 	}
-	
+
 	const T &get () const
 	{
 		return _Value;
@@ -335,7 +335,7 @@ public:
 		}
 		return str;
 	}
-	
+
 	virtual bool execute (const std::string &rawCommandString, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
 	{
 		if (args.size() > 1)
@@ -397,7 +397,7 @@ public:
 		}
 		return true;
 	}
-	
+
 private:
 
 	T _Value;
@@ -409,13 +409,13 @@ private:
 template<> class CVariable<std::string> : public IVariable
 {
 public:
-	
+
 	CVariable (const char *categoryName, const char *commandName, const char *commandHelp, const std::string &defaultValue, uint nbMeanValue = 0, bool useConfigFile = false, void (*cc)(IVariable &var)=NULL, bool executeCallbackForDefaultValue=false) :
 		IVariable (categoryName, commandName, commandHelp, "[<value>]", useConfigFile, cc)
 	{
 		set (defaultValue, executeCallbackForDefaultValue);
 	}
-	  
+
 	virtual void fromString (const std::string &val, bool human=false)
 	{
 		set (val);

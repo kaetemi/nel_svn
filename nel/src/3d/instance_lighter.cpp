@@ -194,7 +194,7 @@ void CInstanceLighter::addTriangles (const CMeshGeom &meshGeom, const CMatrix& m
 
 			// Dump triangles
 			CIndexBufferRead iba;
-			primitive.lock (iba);			
+			primitive.lock (iba);
 			uint numTri=primitive.getNumIndexes ()/3;
 			uint tri;
 			if (primitive.getFormat() == CIndexBuffer::Indices16)
@@ -247,7 +247,7 @@ void CInstanceLighter::addTriangles (const CMeshMRMGeom &meshGeom, const CMatrix
 
 		// Dump triangles
 		CIndexBufferRead iba;
-		primitive.lock (iba);		
+		primitive.lock (iba);
 		uint numTri=primitive.getNumIndexes ()/3;
 		uint tri;
 		if (primitive.getFormat() == CIndexBuffer::Indices16)
@@ -310,7 +310,7 @@ void CInstanceLighter::excludeAllPatchFromRefineAll (CLandscape &landscape, vect
 
 
 // ***************************************************************************
-void CInstanceLighter::light (const CInstanceGroup &igIn, CInstanceGroup &igOut, const CLightDesc &lightDesc, 
+void CInstanceLighter::light (const CInstanceGroup &igIn, CInstanceGroup &igOut, const CLightDesc &lightDesc,
 	std::vector<CTriangle>& obstacles, CLandscape *landscape, CIGSurfaceLightBuild *igSurfaceLightBuild)
 {
 	sint					i;
@@ -343,7 +343,7 @@ void CInstanceLighter::light (const CInstanceGroup &igIn, CInstanceGroup &igOut,
 			// If !empty retriever.
 			if(numSurfaces>0)
 			{
-				// Add it to the map, 
+				// Add it to the map,
 				CIGSurfaceLight::CRetrieverLightGrid		&rlgDst= _IGRetrieverGridMap[itSrc->first];
 				// resize Array of surfaces.
 				rlgDst.Grids.resize(numSurfaces);
@@ -357,7 +357,7 @@ void CInstanceLighter::light (const CInstanceGroup &igIn, CInstanceGroup &igOut,
 					defaultCellCorner.SunContribution= 0;
 					defaultCellCorner.Light[0]= 0xFF;
 					defaultCellCorner.LocalAmbientId= 0xFF;
-					
+
 					// Init the grid.
 					surfDst.Origin= surfSrc.Origin;
 					surfDst.Width= surfSrc.Width;
@@ -609,7 +609,7 @@ void CInstanceLighter::light (const CInstanceGroup &igIn, CInstanceGroup &igOut,
 	if(_IGSurfaceLightBuild)
 	{
 		// build with IGSurfaceLight lighting
-		igOut.build(outGlobalPos, _Instances, outClusters, outPortals, pointLightList, 
+		igOut.build(outGlobalPos, _Instances, outClusters, outPortals, pointLightList,
 			&_IGRetrieverGridMap, _IGSurfaceLightBuild->CellSize);
 	}
 	else
@@ -655,7 +655,7 @@ void	CInstanceLighter::computeSunContribution(const CLightDesc &lightDesc, std::
 	dummyPointLightFromLandscape.reserve(1024);
 
 
-	// If DisableSunContribution, easy, 
+	// If DisableSunContribution, easy,
 	if(lightDesc.DisableSunContribution)
 	{
 		// Light all instances.
@@ -697,7 +697,7 @@ void	CInstanceLighter::computeSunContribution(const CLightDesc &lightDesc, std::
 			}
 		}
 	}
-	// If no Raytrace Shadow, easy, 
+	// If no Raytrace Shadow, easy,
 	else if(!lightDesc.Shadow)
 	{
 		// Light all instances.
@@ -848,7 +848,7 @@ void	CInstanceLighter::computeSunContribution(const CLightDesc &lightDesc, std::
 								break;
 							}
 						}
-						
+
 						it++;
 					}
 				}
@@ -913,7 +913,7 @@ void	CInstanceLighter::computeSunContribution(const CLightDesc &lightDesc, std::
 								// End
 								break;
 							}
-							
+
 							it++;
 						}
 					}
@@ -1101,7 +1101,7 @@ void			CInstanceLighter::compilePointLightRT(uint gridSize, float gridCellSize, 
 					   For objects:
 						AutoOccluding problem is avoided with _CurrentInstanceComputed scheme.
 						Also, With pointLights, there is no multiSampling (since no factor stored)
-						Hence we are sure that no Object samples will lies under floor, and that the center of the 
+						Hence we are sure that no Object samples will lies under floor, and that the center of the
 						object is far away.
 					   For IGSurface lighting:
 						notice that we already add 20cm in height because of "stairs problem" so
@@ -1193,7 +1193,7 @@ void			CInstanceLighter::processIGPointLightRT(std::vector<CPointLightNamed> &li
 
 		// get the point of the instance.
 		CVector		pos= inst.CenterPos;
-		
+
 		// Default: takes no LocalAmbientLight;
 		inst.LocalAmbientLight= NULL;
 		float	furtherAmbLight= 0;
@@ -1296,7 +1296,7 @@ void			CInstanceLighter::processIGPointLightRT(std::vector<CPointLightNamed> &li
 			{
 				// get the point of the cell.
 				CVector		pos= cellInfo.CenterPos;
-				
+
 				// Default: takes no LocalAmbientLight;
 				cellInfo.LocalAmbientLight= NULL;
 				float	furtherAmbLight= 0;
@@ -1403,7 +1403,7 @@ void			CInstanceLighter::processIGPointLightRT(std::vector<CPointLightNamed> &li
 			else
 			{
 				nlwarning("ERROR: Too many Static Point Lights influence the IG!!");
-				// Set 0xFF. Special code indicating that the light CAN'T BE USED => any instance using 
+				// Set 0xFF. Special code indicating that the light CAN'T BE USED => any instance using
 				// it is buggy (won't be lighted by this light).
 				plRT.DstId= plId++;
 			}
@@ -1578,7 +1578,7 @@ void	CInstanceLighter::lightIgSimple(CInstanceLighter &instLighter, const CInsta
 					}
 				}
 			}
-			
+
 			if(shapeFound)
 			{
 				CMatrix		matInst;

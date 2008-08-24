@@ -47,7 +47,7 @@ public:
 
 	// duplicate the object
 	virtual	CEvent		*clone() const =0;
-	
+
 	virtual ~CEvent() {}
 
 protected:
@@ -85,7 +85,7 @@ const CClassId EventDisplayChangeId(0x1751559, 0x25b52b3c);
 const CClassId EventIME (0x261f1ede, 0x1b0a6c3a);
 
 
-enum TKey 
+enum TKey
 {
 	Key0				='0',
 	Key1				='1',
@@ -375,7 +375,7 @@ class CEventMouseUp : public CEventMouse
 {
 public:
 	CEventMouseUp (float x, float y, TMouseButton button, IEventEmitter* emitter) : CEventMouse (x, y, button, emitter, EventMouseUpId)
-	{}	
+	{}
 
 	virtual	CEvent			*clone() const {return new CEventMouseUp(*this);}
 };
@@ -390,7 +390,7 @@ class CEventMouseMove : public CEventMouse
 {
 public:
 	CEventMouseMove (float x, float y, TMouseButton button, IEventEmitter* emitter) : CEventMouse (x, y, button, emitter, EventMouseMoveId)
-	{}	
+	{}
 
 	virtual	CEvent			*clone() const {return new CEventMouseMove(*this);}
 };
@@ -405,7 +405,7 @@ class CEventMouseDblClk : public CEventMouse
 {
 public:
 	CEventMouseDblClk (float x, float y, TMouseButton button, IEventEmitter* emitter) : CEventMouse (x, y, button, emitter, EventMouseDblClkId)
-	{}	
+	{}
 
 	virtual	CEvent			*clone() const {return new CEventMouseDblClk(*this);}
 };
@@ -512,7 +512,7 @@ public:
  */
 class CEventDisplayChange : public CEvent
 {
-public:	
+public:
 	uint Width;
 	uint Height;
 	uint BitDepth;

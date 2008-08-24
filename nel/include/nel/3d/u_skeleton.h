@@ -91,7 +91,7 @@ public:
 	sint		getBoneIdByName(const std::string &boneName) const;
 	/// Tell if a bone has been computed in the last frame or not. false if boneId is invalid
 	bool		isBoneComputed(uint boneId) const;
-	/// Force to compute a bone, even if object clipped. false if boneId is invalid 
+	/// Force to compute a bone, even if object clipped. false if boneId is invalid
 	bool		forceComputeBone(uint boneId);
 	// @}
 
@@ -115,10 +115,10 @@ public:
 	 *	NB: This apply to the shape direclty!! ie All instances using same shape will be affected
 	 *
 	 *	Note: If the skeleton himself is sticked to an other skeleton, this setup is not taken into account.
-	 *	ie the skeleton clip follow the ancestor skeleton clip result (ie the first skeleton in hierarchy 
+	 *	ie the skeleton clip follow the ancestor skeleton clip result (ie the first skeleton in hierarchy
 	 *	which is not sticked).
 	 *
-	 *	Note (complex): same remark for QuadGridClipManager interaction with this function as in 
+	 *	Note (complex): same remark for QuadGridClipManager interaction with this function as in
 	 *	UInstance::setShapeDistMax()
 	 */
 	void		setShapeDistMax(float distMax);
@@ -127,7 +127,7 @@ public:
 	float		getShapeDistMax() const;
 
 	/** Special version for skins. NB: skins never follow their original MRM distance setup, but follow
-	 *	this skeleton MRM setup. Default is 3-10-50. 
+	 *	this skeleton MRM setup. Default is 3-10-50.
 	 *	NB: Unlike UInstance::changeMRMDistanceSetup(), this setup applies to the SkeletonModel, not the shape.
 	 *	NB: no-op if distanceFinest<0, distanceMiddle<=distanceFinest or if distanceCoarsest<=distanceMiddle.
 	 *	\param distanceFinest The MRM has its max faces when dist<=distanceFinest.
@@ -186,7 +186,7 @@ public:
 	/// Set the emissive of the skeleton model, when it is rendered in CLod form. Default to Black
 	void			setLodEmit(NLMISC::CRGBA emit);
 	NLMISC::CRGBA	getLodEmit() const;
-	
+
 	// @}
 
 
@@ -205,7 +205,7 @@ public:
 	 *	NB: sticked objects don't influence the result
 	 */
 	bool		computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, bool computeInWorld= true);
-	
+
 	/** same as computeRenderedBBox() but force animation and compute of all bones => don't need render(), but slower.
 	 *	for all used bones, extend the bbox with their pos
 	 *	\param bbox return the bbox of the skinned skeleton, local to the skeleton. If the skeleton is not skinned/sticked
@@ -223,10 +223,10 @@ public:
 	/// SkeletonSpawnScript special: World Spawned objects are still relative to this direction (default: J)
 	void					setSSSWODir(const NLMISC::CVector &dir);
 	const NLMISC::CVector	&getSSSWODir() const;
-	
+
 	// get the shape name. empty if no instance bound
 	const std::string		&getShapeName() const;
-	
+
 	// @}
 
 

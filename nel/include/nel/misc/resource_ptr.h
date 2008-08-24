@@ -55,7 +55,7 @@ namespace NLMISC
 		int data;
 	    void thisIsGood();
 	};
-	
+
 	// Provide a class to retrieve a resource using a key (here, it is a string)
 	class CResourceFinder
 	{
@@ -72,7 +72,7 @@ namespace NLMISC
 		}
 	};
 
-	// Pointer typedef 
+	// Pointer typedef
 	typedef CResourcePtr<CResource, std::string, CResourceFinder> TAPtr;
 
 	// Exemple of utilsation
@@ -107,7 +107,7 @@ namespace NLMISC
  * TPtr is the type of the pointed object.
  * TKey is the key used to retrieve the object pointer.
  * TResourceFinder is a class with a static method "static void *getResource (const TKey &key)" that returns a pointer on an object using a key.
- * If the function return a non NULL pointer (resource found), the ResourcePtr is initialised with it. 
+ * If the function return a non NULL pointer (resource found), the ResourcePtr is initialised with it.
  * \sa CSmartPtr, CRefCount, CRefPtr
  * \author Cyril 'Hulud' Corvazier
  */

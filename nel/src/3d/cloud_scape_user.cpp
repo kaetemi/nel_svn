@@ -30,7 +30,7 @@
 #include "nel/3d/scene.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 //===========================================================================
@@ -94,7 +94,7 @@ bool CCloudScapeUser::isDebugQuadEnabled ()
 {
 	return _CS->isDebugQuadEnabled ();
 }
-	
+
 //===========================================================================
 void CCloudScapeUser::setDebugQuad (bool b)
 {

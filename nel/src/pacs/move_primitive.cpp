@@ -39,7 +39,7 @@ H_AUTO_DECL ( NLPACS_Move )
 #define	NLPACS_HAUTO_SET_UGLOBAL_POSITION	H_AUTO_USE ( NLPACS_Set_UGlobal_Position )
 #define	NLPACS_HAUTO_MOVE					H_AUTO_USE ( NLPACS_Move )
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************
@@ -104,7 +104,7 @@ void CMovePrimitive::removeCollisionOTInfo (CCollisionOTInfo *toRemove)
 			// End
 			break;
 		}
-		
+
 		// Look for next
 		previousElement=element;
 		element=element->getNext (this);
@@ -395,7 +395,7 @@ bool CMovePrimitive::isInCollision (CMovePrimitive *primitive)
 {
 	// Should be ok
 	CCollisionOTInfo	*element=_RootOTInfo;
-	
+
 	// Look for it
 	while (element)
 	{
@@ -404,16 +404,16 @@ bool CMovePrimitive::isInCollision (CMovePrimitive *primitive)
 		{
 			// Cast
 			const CCollisionOTDynamicInfo *dynInfo=static_cast<const CCollisionOTDynamicInfo*> (element);
-			
+
 			// Check if the primitive is used
 			if ((dynInfo->getFirstPrimitive()== primitive)||(dynInfo->getSecondPrimitive()== primitive))
 				return true;
 		}
-		
+
 		// Look for next
 		element=element->getNext (this);
 	}
-	
+
 	return false;
 }
 

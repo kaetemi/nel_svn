@@ -44,7 +44,7 @@ class CScene ;
  */
 class CHeatHaze
 {
-public:	
+public:
 	// you must have setup effect2d before calling this
 	static void performHeatHaze(uint width, uint height, CScene &s, IDriver *drv);
 };

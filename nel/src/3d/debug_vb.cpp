@@ -40,7 +40,7 @@ static void checkRange(const uint8 *min, const uint8 *max, const uint8 *start, u
 //************************************************************************************
 void nlCheckVertexBuffer(const CVertexBuffer &vb, const uint8 *ptr)
 {
-	CVertexBufferRead vba; 
+	CVertexBufferRead vba;
 	vb.lock (vba);
 	checkRange((uint8 *) vba.getVertexCoordPointer(), (uint8 *) vba.getVertexCoordPointer() + vb.getNumVertices() * vb.getVertexSize(), ptr, 0, vb.getName());
 }

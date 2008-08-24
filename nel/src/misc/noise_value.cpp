@@ -28,7 +28,7 @@
 
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -229,7 +229,7 @@ float	CNoiseValue::noise(const CVector &pos) const
 	for(uint level=0;level<NL3D_NOISE_LEVEL;level++)
 	{
 		// Add the influence of the ith level.
-		turb+= CRandomGrid3D::getLevelSize(level) * 
+		turb+= CRandomGrid3D::getLevelSize(level) *
 			CRandomGrid3D::evalBiLinear(vd + CRandomGrid3D::getLevelPhase(level) );
 		// Next level at higher frequency
 		vd*= 2;
@@ -237,13 +237,13 @@ float	CNoiseValue::noise(const CVector &pos) const
 #else
 	// special case. unrolled loop.
 	// level 0 has no phase.
-	turb= CRandomGrid3D::getLevelSize(0) * 
+	turb= CRandomGrid3D::getLevelSize(0) *
 		CRandomGrid3D::evalBiLinear(pos);
 	// level 1
-	turb+= CRandomGrid3D::getLevelSize(1) * 
+	turb+= CRandomGrid3D::getLevelSize(1) *
 		CRandomGrid3D::evalBiLinear(pos*2 + CRandomGrid3D::getLevelPhase(1) );
 	// level 2
-	turb+= CRandomGrid3D::getLevelSize(2) * 
+	turb+= CRandomGrid3D::getLevelSize(2) *
 		CRandomGrid3D::evalBiLinear(pos*4 + CRandomGrid3D::getLevelPhase(2) );
 #endif
 

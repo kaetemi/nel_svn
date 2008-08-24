@@ -44,7 +44,7 @@ namespace NLMISC
  * \author Nevrax France
  * \date 2000
  */
-class CRefCount 
+class CRefCount
 {
 public:
 	/// Destructor which release pinfo if necessary.
@@ -84,7 +84,7 @@ public:
 	// So Ptr gestion can only be used via CSmartPtr.
     mutable	sint		crefs;	// The ref counter for SmartPtr use.
 	mutable	CPtrInfo	*pinfo;	// The ref ptr for RefPtr use.
-	
+
 	/// operator= must NOT copy crefs/pinfo!!
 	CRefCount &operator=(const CRefCount &) {return *this;}
 	/// copy cons must NOT copy crefs/pinfo!!
@@ -112,7 +112,7 @@ public:
 /**
  * Standard SmartPtr class. T Must derive from CRefCount.
  * Once a normal ptr is assigned to a SmartPtr, the smartptr will own this pointer, and delete it when no other smartptr
- * reference the object (with a reference couting scheme). The following code works, since the object himself must herit 
+ * reference the object (with a reference couting scheme). The following code works, since the object himself must herit
  * from CRefCount, and so hold the refcount.
  * \code
 	CSmartPtr<A>	a0, a1;
@@ -192,7 +192,7 @@ public:
  * \date 2000
  */
 template <class T>
-class CSmartPtr 
+class CSmartPtr
 {
     T* Ptr;
 public:
@@ -232,7 +232,7 @@ public:
 	std::string toString() { if(Ptr) return toString(*Ptr); else return "<null>"; }
 
 	// serial using serialPtr
-	void serialPtr(NLMISC::IStream &f) throw(NLMISC::EStream ) 
+	void serialPtr(NLMISC::IStream &f) throw(NLMISC::EStream )
 	{
 		T*	obj= NULL;
 		if(f.isReading())
@@ -248,8 +248,8 @@ public:
 		}
 	}
 	// serial using serialPloyPtr
-	void serialPolyPtr(NLMISC::IStream &f) throw(NLMISC::EStream ) 
-	{ 
+	void serialPolyPtr(NLMISC::IStream &f) throw(NLMISC::EStream )
+	{
 		T*	obj= NULL;
 		if(f.isReading())
 		{
@@ -270,7 +270,7 @@ public:
 // ***************************************************************************
 /**
  * CRefPtr: an handle on a ptr. T Must derive from CRefCount.
- * If you use CRefPtr, you can kill the object simply by calling delete (T*)RefPtr, or the kill() method. All other CRefPtr which 
+ * If you use CRefPtr, you can kill the object simply by calling delete (T*)RefPtr, or the kill() method. All other CRefPtr which
  * point to it can know if it has been deleted. (but you must be sure that this ptr is not handle by a SmartPtr, of course...)
  *
  * SmartPtr are compatible with RefPtr. A ptr may be link to a CRefPtr and a CSmartPtr. As example, when the CSmartPtr
@@ -297,7 +297,7 @@ public:
  * Also, an object used with a CRefPtr will allocate a small PtrInfo (one only per object, not per ptr).
  * \sa CSmartPtr
  */
-template <class T> 
+template <class T>
 class CRefPtr
 {
 private:
@@ -336,14 +336,14 @@ public:
 	 * kill/delete the object pointed by the pointer, and inform the other RefPtr of this.
 	 * "rp.kill()" and "delete (T*)rp" do the same thing, except that rp NULLity is updated with kill().
 	 * RefPtr which point to the same object could know if the object is valid, by just testing it (
-	 * by an implicit call to the cast operator to T*). But any calls to operator->() or operator*() will have 
+	 * by an implicit call to the cast operator to T*). But any calls to operator->() or operator*() will have
 	 * unpredictible effects (may crash... :) ).
 	 */
 	void	kill();
 
 	// serial using serialPloyPtr
-	void serialPolyPtr(NLMISC::IStream &f) throw(NLMISC::EStream ) 
-	{ 
+	void serialPolyPtr(NLMISC::IStream &f) throw(NLMISC::EStream )
+	{
 		T*	obj= NULL;
 		if(f.isReading())
 		{
@@ -383,7 +383,7 @@ bool operator == (const CRefPtr<T> &leftRef, const CRefPtr<T> &rightRef)
 	return (T*)leftRef == (T*) rightRef;
 }
 
-template <class T> 
+template <class T>
 class CVirtualRefPtr
 {
 private:
@@ -422,7 +422,7 @@ public:
 	 * kill/delete the object pointed by the pointer, and inform the other VirtualRefPtr of this.
 	 * "rp.kill()" and "delete (T*)rp" do the same thing, except that rp NULLity is updated with kill().
 	 * VirtualRefPtr which point to the same object could know if the object is valid, by just testing it (
-	 * by an implicit call to the cast operator to T*). But any calls to operator->() or operator*() will have 
+	 * by an implicit call to the cast operator to T*). But any calls to operator->() or operator*() will have
 	 * unpredictible effects (may crash... :) ).
 	 */
 	void	kill();
@@ -450,10 +450,10 @@ public:
 	 * Warning:
 	 *  Be carefull to derivates first from CDbgRefCount<T> as derivation order implicates constructor/destructor order calls.
 	 *  Sometimes u may have to write some explicit casts, don't worry, it would be only common courtesy ;)
-	 *	 
+	 *
 	 * Futur work (only if you need it):
 	 *  enhanced features (like __FILE__ __LINE__ information).
-	 * 
+	 *
 	 * Extension by Jerome Vuarand
 	 *  I've added additional information to trace back invalid pointers. A linked list in the ref counter can be used to access to
 	 *  invalid pointers on referenced object deletion, and an additionnal data field in each pointer let pointer owner to specify
@@ -504,7 +504,7 @@ public:
 	, _FirstCstReference(NULL)
 	{
 	}
-	virtual	~CDbgRefCount()	
+	virtual	~CDbgRefCount()
 	{
 		if (_DbgCRefs!=0 || _DbgCCstRefs!=0)
 		{
@@ -588,7 +588,7 @@ template <class T>
 class CDbgPtr
 {
     T* Ptr;
-	
+
 #ifdef NL_DEBUG_PTR
 	/// \name Linked list management
 	//@{
@@ -605,7 +605,7 @@ public: // Methods
 	const CDbgPtr<T>* getPrevReference() const { return PrevReference; }
 	//@}
 #endif
-	
+
 public:
     CDbgPtr()
 	: Ptr(NULL)
@@ -616,7 +616,7 @@ public:
 #endif
 	{
 	}
-	
+
 	template <class W>
     CDbgPtr(const W* p)
 #ifdef NL_DEBUG_PTR
@@ -634,7 +634,7 @@ public:
 		}
 	#endif
 	}
-	
+
     CDbgPtr(const CDbgPtr& copy)
 #ifdef NL_DEBUG_PTR
 	: Data(NULL)
@@ -652,31 +652,31 @@ public:
 	#endif
 	}
     ~CDbgPtr();
-	
+
 	bool isNULL() const
 	{
 		return Ptr==NULL;
 	}
-	
+
 	T* ptr() const
 	{
 		return Ptr;
 	}
-	
+
 	operator T*(void) const
 	{
 		return Ptr;
 	}
-	
+
 	template <class W>
     operator W*(void) const
 	{
 		return NLMISC::type_cast<W*>(Ptr);
 	}
-	
+
     T& operator*(void) const { return *Ptr; }
 	T* operator->(void) const { return Ptr; }
-	
+
 	template <class W>
 	CDbgPtr<T>& operator=(const W* p)
 	{
@@ -703,8 +703,8 @@ public:
 	#ifdef NL_DEBUG
 		nlassert(value==NULL);
 	#endif
-		
-	#ifdef NL_DEBUG_PTR	
+
+	#ifdef NL_DEBUG_PTR
 		if (Ptr)
 		{
 			CDbgRefCount<T>* ref=static_cast<CDbgRefCount<T>*>(Ptr);
@@ -717,7 +717,7 @@ public:
 	*/
     CDbgPtr<T>& operator =(const CDbgPtr& p);
     bool operator <(const CDbgPtr& p) const;
-    
+
 	template <class W>
 	bool operator ==(const W* p) const
 	{
@@ -728,7 +728,7 @@ public:
 	{
 		return Ptr!=NLMISC::type_cast<const T*>(p);
 	}
-	
+
     bool operator ==(const CDbgPtr &p) const
 	{
 		return Ptr==p.Ptr;
@@ -737,7 +737,7 @@ public:
 	{
 		return Ptr!=p.Ptr;
 	}
-	
+
     bool operator ==(int p) const
 	{
 		nlassert(p == 0);
@@ -751,8 +751,8 @@ public:
 };
 
 template<class T>
-inline CDbgPtr<T>::~CDbgPtr(void) 
-{ 
+inline CDbgPtr<T>::~CDbgPtr(void)
+{
 #ifdef NL_DEBUG_PTR
     if (Ptr)
 	{
@@ -766,13 +766,13 @@ inline CDbgPtr<T>::~CDbgPtr(void)
 }
 
 
-template<class T>    
+template<class T>
 CDbgPtr<T>& CDbgPtr<T>::operator =(const CDbgPtr& p)
 {
 	return CDbgPtr<T>::operator =(p.Ptr);
 }
 
-template<class T>    
+template<class T>
 bool CDbgPtr<T>::operator <(const CDbgPtr& p) const
 {
 	return Ptr<p.Ptr;
@@ -782,7 +782,7 @@ template <class T>
 class CstCDbgPtr
 {
     const T* Ptr;
-	
+
 #ifdef NL_DEBUG_PTR
 	/// \name Linked list management
 	//@{
@@ -799,7 +799,7 @@ public: // Methods
 	const CstCDbgPtr<T>* getPrevReference() const { return PrevReference; }
 	//@}
 #endif
-	
+
 public:
     CstCDbgPtr()
 	: Ptr(NULL)
@@ -843,30 +843,30 @@ public:
 	#endif
 	}
     ~CstCDbgPtr();
-	
+
 	const T* ptr() const
 	{
 		return Ptr;
 	}
-	
+
 	bool isNULL() const
 	{
 		return Ptr==NULL;
 	}
-	
+
     operator const T*(void) const { return Ptr; }
     const T& operator*(void) const { return *Ptr; }
     const T* operator->(void) const { return Ptr; }
-	
+
     CstCDbgPtr& operator =(const T* p);
     CstCDbgPtr& operator =(const CstCDbgPtr& p);
-    bool operator <(const CstCDbgPtr& p) const;	
+    bool operator <(const CstCDbgPtr& p) const;
 };
 
 
 template<class T>
-CstCDbgPtr<T>::~CstCDbgPtr(void) 
-{ 
+CstCDbgPtr<T>::~CstCDbgPtr(void)
+{
 #ifdef NL_DEBUG_PTR
     if (Ptr)
 	{
@@ -877,7 +877,7 @@ CstCDbgPtr<T>::~CstCDbgPtr(void)
 	Ptr = NULL;
 }
 
-template<class T>    
+template<class T>
 CstCDbgPtr<T>& CstCDbgPtr<T>::operator =(const T* p)
 {
 #ifdef NL_DEBUG_PTR
@@ -896,13 +896,13 @@ CstCDbgPtr<T>& CstCDbgPtr<T>::operator =(const T* p)
 	return *this;
 }
 
-template<class T>    
+template<class T>
 CstCDbgPtr<T>& CstCDbgPtr<T>::operator =(const CstCDbgPtr& p)
 {
 	return CstCDbgPtr<T>::operator =(p.Ptr);
 }
 
-template<class T>    
+template<class T>
 bool CstCDbgPtr<T>::operator <(const CstCDbgPtr& p) const
 {
 	return Ptr<p.Ptr;

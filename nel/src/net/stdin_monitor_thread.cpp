@@ -87,7 +87,7 @@ namespace NLNET
 		// copy the next command into the appropriate buffer
 		_NextCommand= nextCommand;
 
-		while (!_NextCommand.empty() 
+		while (!_NextCommand.empty()
 				&& (_NextCommand[_NextCommand.size()-1] == '\n'
 					|| _NextCommand[_NextCommand.size()-1] == '\r'))
 		{

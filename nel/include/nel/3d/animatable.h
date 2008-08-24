@@ -31,7 +31,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class ITrack;
@@ -39,18 +39,18 @@ class CChannelMixer;
 class IAnimatedValue;
 
 /**
- * An animatable object. 
+ * An animatable object.
  *
  * This object can have a set of animated values. At Max 32 animated values can be set (because of bit and touch mgt)
  * Animated values are animated by a CChannelMixer object.
  * Each value have a name and a default track.
  *
- * An IAnimatable may have IAnimatable sons (list of bones, list of materails etc...). The value count and valueId of 
+ * An IAnimatable may have IAnimatable sons (list of bones, list of materails etc...). The value count and valueId of
  * the IAnimatable DO NOT count those sons, but register() should register his sons too.
  * A father propagated touch system (setFather()) is implemented. When a son is touched, he touchs his fathers, his grandfather
  * and so on.
  *
- * When a class derives from IAnimatable, it must implement all the 
+ * When a class derives from IAnimatable, it must implement all the
  * interface's methods:
  *
  *	extend TAnimValues enum, beginning to BaseClass::AnimValueLast, and add a bit OwnerBit.
@@ -76,7 +76,7 @@ public:
 	/**
 	  * Default Constructor. Set number of value to 0.
 	  * Deriver: should just write:  IAnimatable::resize (getValueCount());
-	  * 
+	  *
 	  */
 	IAnimatable ()
 	{
@@ -98,7 +98,7 @@ public:
 		AnimValueLast=0,
 	};
 
-	/** 
+	/**
 	  * Get a value pointer.
 	  *
 	  * \param valueId is the animated value ID in the object. IGNORING IANIMATABLE SONS (eg: bones, materials...).
@@ -114,7 +114,7 @@ public:
 	  */
 	virtual const char *getValueName (uint valueId) const =0;
 
-	/** 
+	/**
 	  * Get default track pointer.
 	  *
 	  * \param valueId is the animated value ID in the object we want the default track. IGNORING IANIMATABLE SONS (eg: bones, materials...).
@@ -122,7 +122,7 @@ public:
 	  */
 	virtual ITrack* getDefaultTrack (uint valueId) =0;
 
-	/** 
+	/**
 	  * register the Aniamtable to a channelMixer (using CChannelMixer::addChannel()). You MUST use this method to register Animatable.
 	  * This method should:
 	  *		- call is BaseClass method.
@@ -222,7 +222,7 @@ private:
 
 protected:
 	/** This is a tool function which add a given value to a channel.
-	  * \return -1 if the track was not found in the animationSet, else it return the channelId 
+	  * \return -1 if the track was not found in the animationSet, else it return the channelId
 	  *	as if returned by CAnimationSet::getChannelIdByName(channelName).
 	  */
 	sint	addValue(CChannelMixer *chanMixer, uint valueId, uint ownerValueId, const std::string &prefix, bool detail);
@@ -232,13 +232,13 @@ protected:
 	{
 		_BitSet&= ~(1<<valueId);
 	}
-	
+
 	/// This method set a bit in the bitset.
 	void	setFlag(uint valueId)
 	{
 		_BitSet|= (1<<valueId);
 	}
-	
+
 };
 
 

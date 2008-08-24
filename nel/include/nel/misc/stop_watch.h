@@ -51,7 +51,7 @@ public:
 	CStopWatch( uint queueLength=0 );
 
 
-	
+
 	/// Begin measurement
 	void						start();
 
@@ -82,7 +82,7 @@ public:
 	TMsDuration					getAverageDuration() const;
 
 
-	
+
 	/// Sum of the measured durations (in ticks)
 	TTickDuration				sumTicks() const { return _SumTicks; }
 

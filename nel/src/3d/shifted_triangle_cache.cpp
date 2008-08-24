@@ -25,7 +25,7 @@
 #include "nel/3d/shifted_triangle_cache.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

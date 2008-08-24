@@ -36,7 +36,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -102,15 +102,15 @@ ITrack*		CMeshBaseInstance::getDefaultTrack (uint valueId)
 	// Switch the value
 	switch (valueId)
 	{
-	case CTransform::PosValue:			
+	case CTransform::PosValue:
 		return pMesh->getDefaultPos();
-	case CTransform::RotEulerValue:		
+	case CTransform::RotEulerValue:
 		return pMesh->getDefaultRotEuler();
-	case CTransform::RotQuatValue:		
+	case CTransform::RotQuatValue:
 		return pMesh->getDefaultRotQuat();
-	case CTransform::ScaleValue:		
+	case CTransform::ScaleValue:
 		return pMesh->getDefaultScale();
-	case CTransform::PivotValue:		
+	case CTransform::PivotValue:
 		return pMesh->getDefaultPivot();
 	default:
 		// Problem, new values ?
@@ -200,7 +200,7 @@ void CMeshBaseInstance::traverseHrc()
 					chanMix->setSlotTime(0, anim->getBeginTime());
 				}
 
-				/** Eval non detail animation 
+				/** Eval non detail animation
 				  */
 				chanMix->eval(false);
 			}
@@ -217,7 +217,7 @@ void CMeshBaseInstance::traverseAnimDetail()
 
 	CTransformShape::traverseAnimDetail();
 
-	
+
 	// update animated materials.
 	// test if animated materials must be updated.
 	if(IAnimatable::isTouched(CMeshBaseInstance::OwnerBit))
@@ -315,8 +315,8 @@ void CMeshBaseInstance::selectTextureSet(uint id)
 // ***************************************************************************
 void CMeshBaseInstance::initAnimatedLightIndex (const CScene &scene)
 {
-	/* Scan lightmaps used by the shape, and for each, bind the transform shape to an 
-	 * animated lightmap index from the scene. This index will be used at runtime to 
+	/* Scan lightmaps used by the shape, and for each, bind the transform shape to an
+	 * animated lightmap index from the scene. This index will be used at runtime to
 	 * get quickly a lightmap factor. This index is not set in the CShape because
 	 * the CShape can be used with several CScene.
 	 */

@@ -517,8 +517,8 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		_ForbiddenInstances.clear();
 		return result;
 	}
-	
-	
+
+
 	// get the best matching instances
 	CAABBox	bbpos;
 	bbpos.setCenter(estimated);
@@ -584,7 +584,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		CRetrieverInstance::snapVector(result.LocalPosition.Estimation);
 
 		// if there are more than 1 one possible (and best matching) surface, insure the position within the surface (by moving the point)
-//		if (_InternalCST.SortedSurfaces.size() >= 2 && 
+//		if (_InternalCST.SortedSurfaces.size() >= 2 &&
 //			_InternalCST.SortedSurfaces[1].Distance-_InternalCST.SortedSurfaces[0].Distance < InsureSurfaceThreshold)
 		if (_InternalCST.SortedSurfaces[selInstance].FoundCloseEdge)
 		{
@@ -616,7 +616,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		if (PacsRetrieveVerbose)
 			nlinfo("DebugBen: retrievePosition(%f,%f,%f) -> %d/%d/(%f,%f,%f) - %s/%s",
 					estimated.x, estimated.y, estimated.z,
-					result.InstanceId, result.LocalPosition.Surface, 
+					result.InstanceId, result.LocalPosition.Surface,
 					result.LocalPosition.Estimation.x, result.LocalPosition.Estimation.y, result.LocalPosition.Estimation.z,
 					retriever.getIdentifier().c_str(),
 					retriever.getType() == CLocalRetriever::Interior ? "Interior" : "Landscape");
@@ -706,7 +706,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		CRetrieverInstance::snapVector(result.LocalPosition.Estimation);
 
 		// if there are more than 1 one possible (and best matching) surface, insure the position within the surface (by moving the point)
-//		if (_InternalCST.SortedSurfaces.size() >= 2 && 
+//		if (_InternalCST.SortedSurfaces.size() >= 2 &&
 //			_InternalCST.SortedSurfaces[1].Distance-_InternalCST.SortedSurfaces[0].Distance < InsureSurfaceThreshold)
 		if (_InternalCST.SortedSurfaces[h].FoundCloseEdge)
 		{
@@ -1044,7 +1044,7 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 
 			if (closeIt != close.end() && nextInfo.F < nextF)
 				continue;
-			
+
 			multimap<float, CRetrieverInstance::CAStarNodeAccess>::iterator	openIt;
 			for (openIt=open.begin(); openIt!=open.end() && openIt->second!=nextNode; ++openIt)
 				;
@@ -1073,8 +1073,8 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 
 
 
-void	NLPACS::CGlobalRetriever::findPath(const NLPACS::UGlobalPosition &begin, 
-										   const NLPACS::UGlobalPosition &end, 
+void	NLPACS::CGlobalRetriever::findPath(const NLPACS::UGlobalPosition &begin,
+										   const NLPACS::UGlobalPosition &end,
 										   NLPACS::CGlobalRetriever::CGlobalPath &path,
 										   uint32 forbidFlags) const
 {
@@ -1240,7 +1240,7 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 		// compute movement relative to this localRetriever.
 		CAABBox		bboxMoveLocal= bboxMove;
 		bboxMoveLocal.setCenter(bboxMoveLocal.getCenter()+deltaOrigin);
-	
+
 		// add possible collision chains with movement.
 		//================
 		sint		firstCollisionChain= cst.CollisionChains.size();
@@ -1353,7 +1353,7 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 					if(j<nCollisionChain-1)
 					{
 						swap(cst.CollisionChains[j], cst.CollisionChains[nCollisionChain-1]);
-						// NB: some holes remain in cst._EdgeCollideNodes, but do not matters since reseted at 
+						// NB: some holes remain in cst._EdgeCollideNodes, but do not matters since reseted at
 						// each collision test.
 					}
 
@@ -1374,7 +1374,7 @@ void	NLPACS::CGlobalRetriever::findCollisionChains(CCollisionSurfaceTemp &cst, c
 					if(j<nCollisionChain-1)
 					{
 						swap(cst.CollisionChains[j], cst.CollisionChains[nCollisionChain-1]);
-						// NB: some holes remain in cst._EdgeCollideNodes, but do not matters since reseted at 
+						// NB: some holes remain in cst._EdgeCollideNodes, but do not matters since reseted at
 						// each collision test.
 					}
 
@@ -1420,7 +1420,7 @@ void	NLPACS::CGlobalRetriever::testCollisionWithCollisionChains(CCollisionSurfac
 
 
 	/*
-		To manage recovery, we must use such an algorithm, so we are sure to trace the way across all surfaces really 
+		To manage recovery, we must use such an algorithm, so we are sure to trace the way across all surfaces really
 		collided, and discard any other (such as other floor or ceiling).
 	*/
 	while(true)
@@ -1625,7 +1625,7 @@ void	NLPACS::CGlobalRetriever::testCollisionWithCollisionChains(CCollisionSurfac
 			}
 			else
 			{
-				// Next time, we will test the following (NB: the array may grow during next pass, or reorder, 
+				// Next time, we will test the following (NB: the array may grow during next pass, or reorder,
 				// but only after nextCollisionSurfaceTested).
 				nextCollisionSurfaceTested++;
 			}
@@ -1678,7 +1678,7 @@ NLPACS::CSurfaceIdent	NLPACS::CGlobalRetriever::testMovementWithCollisionChains(
 	static vector<pair<sint32, bool> >	checkedExtEdges;
 
 	/*
-		To manage recovery, we must use such an algorithm, so we are sure to trace the way across all surfaces really 
+		To manage recovery, we must use such an algorithm, so we are sure to trace the way across all surfaces really
 		collided, and discard any other (such as other floor or ceiling).
 
 		This function is quite different from testCollisionWithCollisionChains() because she must detect all collisions
@@ -1725,7 +1725,7 @@ NLPACS::CSurfaceIdent	NLPACS::CGlobalRetriever::testMovementWithCollisionChains(
 			{
 				static const string	errs[CEdgeCollide::PointMoveProblemCount]= {
 					"ParallelEdges", "StartOnEdge", "StopOnEdge", "TraverseEndPoint", "EdgeNull"};
-				// return a "Precision Problem" ident. movement is invalid. 
+				// return a "Precision Problem" ident. movement is invalid.
 				// BUT if startOnEdge, which should never arrive.
 				if(pmpb==CEdgeCollide::StartOnEdge)
 				{
@@ -1834,7 +1834,7 @@ NLPACS::CSurfaceIdent	NLPACS::CGlobalRetriever::testMovementWithCollisionChains(
 						Then the chosen landscape position can be completly false. eg:
 							actual InteriorHeight: -84
 							new possibles landscape surfaces heights: -84 and -16
-							if we estimate by error InteriorHeight= 0, then we will 
+							if we estimate by error InteriorHeight= 0, then we will
 								have Best Landscape Surface == the one which has height=-16 !
 
 						Hence we use a specific method that look a bit outisde the triangles
@@ -1893,7 +1893,7 @@ NLPACS::CSurfaceIdent	NLPACS::CGlobalRetriever::testMovementWithCollisionChains(
 
 
 // ***************************************************************************
-const	NLPACS::TCollisionSurfaceDescVector	
+const	NLPACS::TCollisionSurfaceDescVector
 	*NLPACS::CGlobalRetriever::testCylinderMove(const UGlobalPosition &startPos, const NLMISC::CVector &delta, float radius, CCollisionSurfaceTemp &cst) const
 {
 //	H_AUTO(PACS_GR_testCylinderMove);
@@ -1966,8 +1966,8 @@ const	NLPACS::TCollisionSurfaceDescVector
 
 
 // ***************************************************************************
-const	NLPACS::TCollisionSurfaceDescVector	
-	*NLPACS::CGlobalRetriever::testBBoxMove(const UGlobalPosition &startPos, const NLMISC::CVector &delta, 
+const	NLPACS::TCollisionSurfaceDescVector
+	*NLPACS::CGlobalRetriever::testBBoxMove(const UGlobalPosition &startPos, const NLMISC::CVector &delta,
 	const NLMISC::CVector &locI, const NLMISC::CVector &locJ, CCollisionSurfaceTemp &cst) const
 {
 //	H_AUTO(PACS_GR_testBBoxMove);
@@ -1988,7 +1988,7 @@ const	NLPACS::TCollisionSurfaceDescVector
 		// Return NULL when lost
 		return NULL;
 	}
-	
+
 	// store this request in cst.
 	cst.PrecStartSurface= startSurface;
 	cst.PrecStartPos= startPos.LocalPosition.Estimation;
@@ -2057,7 +2057,7 @@ const	NLPACS::TCollisionSurfaceDescVector
 
 
 // ***************************************************************************
-NLPACS::UGlobalPosition		
+NLPACS::UGlobalPosition
 	NLPACS::CGlobalRetriever::doMove(const NLPACS::UGlobalPosition &startPos, const NLMISC::CVector &delta, float t, NLPACS::CCollisionSurfaceTemp &cst, bool rebuildChains) const
 {
 //	H_AUTO(PACS_GR_doMove);
@@ -2081,12 +2081,12 @@ NLPACS::UGlobalPosition
 		// Return startpos
 		return startPos;
 	}
-	
+
 	if(!rebuildChains)
 	{
 		// same move request than prec testMove() ??.
-		if( cst.PrecStartSurface != startSurface || 
-			cst.PrecStartPos!=startPos.LocalPosition.Estimation || 
+		if( cst.PrecStartSurface != startSurface ||
+			cst.PrecStartPos!=startPos.LocalPosition.Estimation ||
 			cst.PrecDeltaPos!=delta ||
 			!cst.PrecValid)
 		{
@@ -2253,7 +2253,7 @@ NLPACS::UGlobalPosition
 
 		// Because Origin precision is 1 meter, and end precision is 1/1024 meter, we have no precision problem.
 		// this is true because we cannot move more than, say 4*160 meters in one doMove().
-		// So global position should not be bigger than 1024 * 1024/1024 meters.  => Hence 20 bits of precision is 
+		// So global position should not be bigger than 1024 * 1024/1024 meters.  => Hence 20 bits of precision is
 		// required. We have 23 with floats.
 		res.LocalPosition.Estimation= end + deltaOrigin;
 
@@ -2266,7 +2266,7 @@ NLPACS::UGlobalPosition
 
 
 // ***************************************************************************
-const NLPACS::TCollisionSurfaceDescVector	&NLPACS::CGlobalRetriever::testBBoxRot(const CGlobalPosition &startPos, 
+const NLPACS::TCollisionSurfaceDescVector	&NLPACS::CGlobalRetriever::testBBoxRot(const CGlobalPosition &startPos,
 	const NLMISC::CVector &locI, const NLMISC::CVector &locJ, CCollisionSurfaceTemp &cst) const
 {
 //	H_AUTO(PACS_GR_testBBoxRot);
@@ -2455,7 +2455,7 @@ float			NLPACS::CGlobalRetriever::getMeanHeight(const UGlobalPosition &pos) cons
 	// for wrong positions, leave it unchanged
 	if ((pos.InstanceId==-1)||(pos.LocalPosition.Surface==-1))
 		return pos.LocalPosition.Estimation.z;
-	
+
 	// get instance/localretriever.
 	const CRetrieverInstance	&instance = getInstance(pos.InstanceId);
 	const CLocalRetriever		&retriever= _RetrieverBank->getRetriever(instance.getRetrieverId());
@@ -2473,14 +2473,14 @@ float			NLPACS::CGlobalRetriever::getInteriorHeightAround(const UGlobalPosition 
 	// for wrong positions, leave it unchanged
 	if ((pos.InstanceId==-1)||(pos.LocalPosition.Surface==-1))
 		return pos.LocalPosition.Estimation.z;
-	
+
 	// get instance/localretriever.
 	const CRetrieverInstance	&instance = getInstance(pos.InstanceId);
 	const CLocalRetriever		&retriever= _RetrieverBank->getRetriever(instance.getRetrieverId());
-	
+
 	if (!retriever.isLoaded())
 		return pos.LocalPosition.Estimation.z;
-	
+
 	// return height from local retriever
 	return retriever.getInteriorHeightAround(pos.LocalPosition, outsideTolerance);
 }
@@ -2511,19 +2511,19 @@ void	NLPACS::CGlobalRetriever::refreshLrAround(const CVector &position, float ra
 		{
 			if (!ite->_Buffer.isReading())
 				ite->_Buffer.invert();
-			
+
 			ite->_Buffer.resetBufPos();
-			
+
 			//		NLMEMORY::CheckHeap (true);
-			
+
 			const_cast<CRetrieverBank*>(_RetrieverBank)->loadRetriever(ite->LrId, ite->_Buffer);
-			
+
 			//		NLMEMORY::CheckHeap (true);
-			
+
 			ite->_Buffer.clear();
-			
+
 			//		NLMEMORY::CheckHeap (true);
-			
+
 			nlinfo("Lr '%s' loading task complete", ite->LoadFile.c_str());
 
 			// Remove this entry
@@ -2531,7 +2531,7 @@ void	NLPACS::CGlobalRetriever::refreshLrAround(const CVector &position, float ra
 
 			break;
 		}
-		
+
 		// Next lr
 		ite++;
 	}
@@ -2577,7 +2577,7 @@ void	NLPACS::CGlobalRetriever::refreshLrAround(const CVector &position, float ra
 
 			ite++;
 		}
-		
+
 		// Not found ?
 		if (ite == _LrLoaderList.end())
 		{
@@ -2590,9 +2590,9 @@ void	NLPACS::CGlobalRetriever::refreshLrAround(const CVector &position, float ra
 			loader.Finished = false;
 			loader.LrId = *iteIn;
 			loader.LoadFile = _RetrieverBank->getNamePrefix() + "_" + toString(loader.LrId) + ".lr";
-			
+
 			CAsyncFileManager::getInstance().addLoadTask(&loader);
-			
+
 			nlinfo("Lr '%s' added to load", loader.LoadFile.c_str());
 		}
 
@@ -2614,25 +2614,25 @@ void	NLPACS::CGlobalRetriever::waitEndOfAsyncLoading()
 			{
 				if (!ite->_Buffer.isReading())
 					ite->_Buffer.invert();
-				
+
 				const_cast<CRetrieverBank*>(_RetrieverBank)->loadRetriever(ite->LrId, ite->_Buffer);
-				
+
 				ite->_Buffer.clear();
-				
+
 				// Remove this from the list
 				_LrLoaderList.erase(ite);
-				
+
 				break;
 			}
-			
-			// 
+
+			//
 			ite++;
 		}
-		
+
 		if (!_LrLoaderList.empty())
 			nlSleep(0);
 	}
-	
+
 }
 
 // ***************************************************************************

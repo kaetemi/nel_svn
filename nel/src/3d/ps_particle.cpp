@@ -1,5 +1,5 @@
 /** \file ps_particle.cpp
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -25,7 +25,7 @@
 
 #include "nel/3d/ps_particle.h"
 
-namespace NL3D 
+namespace NL3D
 {
 	/// NOTE : implementation of particles rendering has now been split accross vrious files...
 

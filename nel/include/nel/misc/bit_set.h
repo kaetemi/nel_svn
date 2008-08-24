@@ -153,7 +153,7 @@ public:
 
 	/// \name Bit comparisons.
 	//@{
-	/** 
+	/**
 	 * Compare two BitSet not necessarely of same size. The comparison is done on N bits, where N=min(this->size(), bs.size())
 	 * \return true if the N common bits of this and bs are the same. false otherwise.
 	 */

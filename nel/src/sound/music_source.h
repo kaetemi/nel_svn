@@ -45,18 +45,18 @@ public:
 	CMusicSource	(class CMusicSound *sound=NULL, bool spawn=false, TSpawnEndCallback cb=0, void *cbUserParam = 0, NL3D::CCluster *cluster = 0);
 	/// Destructor
 	~CMusicSource	();
-	
+
 	/// Return the sound binded to the source (or NULL if there is no sound)
 	virtual TSoundId				getSound();
-	
+
 	virtual void					play();
 	/// Stop playing
 	virtual void					stop();
-	
+
 	TSOURCE_TYPE					getType() const								{return SOURCE_MUSIC;}
-	
+
 private:
-	
+
 	class CMusicSound				*_MusicSound;
 };
 

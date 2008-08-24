@@ -75,11 +75,11 @@ public:
 		CSegRemanenceShape(const CSegRemanenceShape &other);
 		// assignement
 		CSegRemanenceShape &operator = (const CSegRemanenceShape &other);
-		
+
 		virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 		NLMISC_DECLARE_CLASS(CSegRemanenceShape);
-	//@}	
-	
+	//@}
+
 	/** Set material.
 	  * A double sided material is forced
 	  */
@@ -103,7 +103,7 @@ public:
 	  */
 	void				setNumCorners(uint numCorners);
 	// get the number of corners
-	uint32				getNumCorners() const { return _Corners.size(); }	
+	uint32				getNumCorners() const { return _Corners.size(); }
 	// Set a corner
 	void				setCorner(uint corner, const NLMISC::CVector &value);
 	// Get a corner
@@ -119,8 +119,8 @@ public:
 	  */
 	void				setTextureShifting(bool on = true);
 	/// Test whether there is texture shifting at the start of the animation
-	bool				getTextureShifting() const { return _TextureShifting; }	  
-	
+	bool				getTextureShifting() const { return _TextureShifting; }
+
 	/// from IShape
 	virtual	void		getAABBox(NLMISC::CAABBox &bbox) const { bbox = _BBox.getAABBox(); }
 
@@ -134,19 +134,19 @@ public:
 	  * 0.5 means it takes  2 * sliceTime * numSlice to unroll
 	  * and so on
 	  * NB ratio must be > 0
-	  */ 
+	  */
 	void				setRollupRatio(float ratio);
 	float				getRollupRatio() const { return _RollUpRatio; }
-	
+
 	// from IShape
 	virtual bool		clip(const std::vector<CPlane>	&pyramid, const CMatrix &worldMatrix);
 
 	/// \name access default tracks.
 	// @{
-		CTrackDefaultVector*	getDefaultPos()		{return &_DefaultPos;}		
+		CTrackDefaultVector*	getDefaultPos()		{return &_DefaultPos;}
 		CTrackDefaultQuat*		getDefaultRotQuat()	{return &_DefaultRotQuat;}
-		CTrackDefaultVector*	getDefaultScale()		{return &_DefaultScale;}		
-	// @}	
+		CTrackDefaultVector*	getDefaultScale()		{return &_DefaultScale;}
+	// @}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,32 +154,32 @@ public:
 protected:
 	///\name from IShape
 	//@{
-		virtual void				render(IDriver *drv, CTransformShape *trans, bool opaquePass);	
+		virtual void				render(IDriver *drv, CTransformShape *trans, bool opaquePass);
 		virtual void				flushTextures (IDriver &driver, uint selectedTexture);
 		virtual	CTransformShape		*createInstance(CScene &scene);
 		virtual float				getNumTriangles (float distance);
 	//@}
-private:	
+private:
 	typedef std::vector<CVector>	TCornerVect;
 private:
 	bool						_GeomTouched;
 	bool						_MatTouched;
 	bool						_TextureShifting;
-	//	
+	//
 	uint32						_NumSlices;
 	float						_SliceTime;
 	float						_RollUpRatio;
-	TCornerVect					_Corners;	// start of segment	
+	TCornerVect					_Corners;	// start of segment
 	//
 	CMaterial					_Mat;
 	/// For clipping.
 	NLMISC::CAABBoxExt			_BBox;
 	CMaterialBase				*_AnimatedMat;
 	// Default tracks
-	CTrackDefaultVector			_DefaultPos;	
+	CTrackDefaultVector			_DefaultPos;
 	CTrackDefaultQuat			_DefaultRotQuat;
-	CTrackDefaultVector			_DefaultScale;	
-private:	
+	CTrackDefaultVector			_DefaultScale;
+private:
 	void    setupMaterial();
 	void	copyFromOther(const CSegRemanenceShape &other);
 };

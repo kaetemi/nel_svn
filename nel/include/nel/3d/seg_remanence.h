@@ -50,27 +50,27 @@ class CScene;
   * \author Nevrax France
   * \date 2002
   */
-	
+
 class CSegRemanence : public CTransformShape
 {
 public:
 	///\name object
-	//@{		
+	//@{
 		CSegRemanence();
 		~CSegRemanence();
-		CSegRemanence(CSegRemanence &other);		
+		CSegRemanence(CSegRemanence &other);
 		CSegRemanence &operator = (CSegRemanence &other);
 	//@}
 	/// Call at the begining of the program, to register the model
 	static	void			registerBasic();
 	/// to instanciate that model from a scene
-	static CTransform		*creator() { return new CSegRemanence; }	
+	static CTransform		*creator() { return new CSegRemanence; }
 	// Render this model with currently setupped material and matrix
 	void					render(IDriver *drv, CMaterial &mat);
 	// sample current position
 	void					samplePos(double date);
-	/** Setup from the shape (no effect if geometry described in the shape didn't change)	  
-	  */ 
+	/** Setup from the shape (no effect if geometry described in the shape didn't change)
+	  */
 	void					setupFromShape();
 
 
@@ -79,7 +79,7 @@ public:
 		virtual bool				canStartStop() { return true; }
 		// start the fx (by default it is off).
 		virtual void				start();
-		/// Stop the fx and let it unroll		   
+		/// Stop the fx and let it unroll
 		virtual void				stop();
 		/// Stop the fx with no unrolling
 		virtual void				stopNoUnroll();
@@ -96,7 +96,7 @@ public:
 	  */
 	void					setAnimatedMaterial(CAnimatedMaterial *mat);
 	//
-	CAnimatedMaterial		*getAnimatedMaterial() const { return _AniMat; }	
+	CAnimatedMaterial		*getAnimatedMaterial() const { return _AniMat; }
 
 	// Register to a channel mixer.
 	void					registerToChannelMixer(CChannelMixer *chanMixer, const std::string &prefix);
@@ -107,8 +107,8 @@ public:
 
 		AnimValueLast,
 	};
-	
-	
+
+
 	virtual ITrack *getDefaultTrack (uint valueId);
 
 
@@ -122,31 +122,31 @@ public:
 	  */
 	// @{
 	/** Change the sampling period.
-	  * NB : if the trail was started, then it is reseted by a call to stopNoUnroll	  
+	  * NB : if the trail was started, then it is reseted by a call to stopNoUnroll
 	  */
 	void setSliceTime(float duration);
-	float getSliceTime() const { return _SliceTime; }	
+	float getSliceTime() const { return _SliceTime; }
 	// @}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-private:	
+private:
 	class CSample
 	{
 	public:
 		double				 Date;
 		std::vector<CVector> Pos;          // sampled pos for each shape corner at the given date
 		void swap(CSample &other) { std::swap(Date, other.Date); Pos.swap(other.Pos);}
-	};	
-	CSample					 _Samples[4];    // 4 last sampled positions for all vertices	
+	};
+	CSample					 _Samples[4];    // 4 last sampled positions for all vertices
 	uint					 _HeadSample;    // current sample for the head
 	float					 _HeadProgress;  // progression of head in current sample (in [0, 1])
 	//
 	typedef std::vector<CVector> TPosVect;  // positions for each shape vertex at regular dates
 	                                       // positions are ordered per date, then per shape
 
-	
-private:		
+
+private:
 	TPosVect			_Pos;
 	uint				_NumSlices;
 	uint				_NumCorners;
@@ -155,9 +155,9 @@ private:
 	bool				_Restarted;
 	float				_StartDate;
 	float				_CurrDate;
-	float				_UnrollRatio;	
+	float				_UnrollRatio;
 	float				_SliceTime;
-	CAnimatedMaterial   *_AniMat;	
+	CAnimatedMaterial   *_AniMat;
 	uint64				_LastSampleFrame;
 	//
 	static CVertexBuffer _VB;

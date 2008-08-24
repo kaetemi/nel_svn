@@ -32,7 +32,7 @@
 
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -44,7 +44,7 @@ CStripifier::CStripifier()
 
 // ***************************************************************************
 /*
-	NVidia(tm) 's method get better performance (8ms on 50K faces meshe, instead of 8.9ms), but 
+	NVidia(tm) 's method get better performance (8ms on 50K faces meshe, instead of 8.9ms), but
 	precomputing is much slower (1'40 instead of 0'??  :)  ).
 */
 /*void		CStripifier::optimizeTriangles(const CIndexBuffer &in, CIndexBuffer &out, uint cacheSize)
@@ -238,7 +238,7 @@ void		CStripifier::optimizeTriangles(const CIndexBuffer &in, CIndexBuffer &out, 
 				const uint16 *ibaPtr = (const uint16 *) ibaRead.getPtr();
 				inFaces[i].v[0]= ibaPtr[i*3 + 0];
 				inFaces[i].v[1]= ibaPtr[i*3 + 1];
-				inFaces[i].v[2]= ibaPtr[i*3 + 2];				
+				inFaces[i].v[2]= ibaPtr[i*3 + 2];
 				inFaces[i].Inserted= false;
 			}
 		}

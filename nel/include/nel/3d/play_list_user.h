@@ -32,7 +32,7 @@
 #include "nel/3d/animation_playlist.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

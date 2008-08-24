@@ -57,34 +57,34 @@ void		CMusicSound::importForm(const std::string& filename, NLGEORGES::UFormElm& 
 {
 	NLGEORGES::UFormElm *psoundType;
 	std::string dfnName;
-	
+
 	// some basic checking.
 	root.getNodeByName(&psoundType, ".SoundType");
 	nlassert(psoundType != NULL);
 	psoundType->getDfnName(dfnName);
 	nlassert(dfnName == "music_sound.dfn");
-	
+
 	// Call the base class
 	CSound::importForm(filename, root);
-	
+
 	// fileName
 	std::string musicFileName;
 	root.getValueByName(musicFileName, ".SoundType.FileName");
 	musicFileName = CFile::getFilename(musicFileName);
 	_FileName = CStringMapper::map(musicFileName);
-	
+
 	// Other params
 	root.getValueByName(_FadeInLength, ".SoundType.FadeInLength");
 	root.getValueByName(_FadeOutLength, ".SoundType.FadeOutLength");
 	root.getValueByName(_MinimumPlayTime, ".SoundType.MinimumPlayTime");
 	root.getValueByName(_TimeBeforeCanReplay, ".SoundType.TimeBeforeCanReplay");
-	
+
 }
 
 // ***************************************************************************
 uint32		CMusicSound::getDuration()
 {
-	// Cannot know the length of this music sound. 
+	// Cannot know the length of this music sound.
 	// Since its not really a sound (played in an other "channel"), suppose 0
 	return 0;
 }
@@ -109,7 +109,7 @@ void		CMusicSound::serial(NLMISC::IStream &s)
 // ***************************************************************************
 float		CMusicSound::getMaxDistance() const
 {
-	// used in background_sound_manager, since 2D sound, return 0 because 
+	// used in background_sound_manager, since 2D sound, return 0 because
 	// the sound must be cut once out of the patat
 	return 0.f;
 }

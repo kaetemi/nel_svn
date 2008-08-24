@@ -97,7 +97,7 @@ public:
    * "Rescue feature": set "force" to true if a segment was created and left out of
    * control (meaning a new createSharedMemory() with the same sharedMemId fails), but
    * before, make sure the segment really belongs to you!
-   * 
+   *
    * Note: this method does nothing under Windows, destroying is automatic.
    * Under Unix, the segment will actually be destroyed after the last detach
    * (quoting shmctl man page). It means after calling destroySharedMemory(), the

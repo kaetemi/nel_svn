@@ -59,7 +59,7 @@ class   CWaterModel;
  * See void	CVertexStreamManager::init(IDriver *driver, uint vertexFormat, uint maxVertices)
  *	use 8 VBswap for minimal(=> no) lock() time. 2 is not enough (saw 7 ms lost because of this)
  *	=> size of the manager is 1280 Ko
- *	NB: 5000 vertices max for a model is a strong limitation, but it's OK for now... 
+ *	NB: 5000 vertices max for a model is a strong limitation, but it's OK for now...
  */
 #define	NL3D_MESH_SKIN_MANAGER_VERTEXFORMAT		(CVertexBuffer::PositionFlag | CVertexBuffer::NormalFlag | CVertexBuffer::TexCoord0Flag)
 #define	NL3D_MESH_SKIN_MANAGER_MAXVERTICES		5000
@@ -81,7 +81,7 @@ class   CWaterModel;
 /**
  * The Render traversal.
  * The purpose of this traversal is to render a list of models. This traversals is tightly linked to the cliptraversal.
- * The clipTraversals insert directly the models with CRenderTrav::addRenderModel(m). The traverse() method should 
+ * The clipTraversals insert directly the models with CRenderTrav::addRenderModel(m). The traverse() method should
  * render all the render models with IDriver.
  *
  * This traversal has no graph of models
@@ -146,7 +146,7 @@ public:
 	IDriver			*getDriver() {return Driver;}
 	// Yoyo: temporary. May be used later if we decide to support a PBuffer to render texture for ShadowMap
 	IDriver			*getAuxDriver() {return Driver;}
-	void			setViewport (const CViewport& viewport) 
+	void			setViewport (const CViewport& viewport)
 	{
 		_Viewport = viewport;
 	}
@@ -170,7 +170,7 @@ public:
 	  * \param maxPriority Defines the valid range for priority in the [0, n] interval. By default, there's no prioriy sorting (0 -> single priority, 255 -> 256 possible priorities)
 	  *                    Objects with highers priority are displayed before any other object with lower priority,
 	  *                    whatever their distance is.
-	  * \param NbDistanceEntries Defines the granularity for distance sorting. A value of N with a view distance of D meters means 
+	  * \param NbDistanceEntries Defines the granularity for distance sorting. A value of N with a view distance of D meters means
 	  *                          that the sorting accuracy will be of D / N meters at worst (when visible objects occupy the whole distance range)
 	  * NB : The memory allocated is a multiple of NumPriority * NbDistanceEntries * 2 (2 if because of water ordering)
 	  */
@@ -223,7 +223,7 @@ public:
 	// Yoyo: this crash seems to be fixed, but i leave the code, in case of.....
 	void			debugWaterModelMemory(const char *tag, bool dumpList= false);
 	//@}
-	
+
 // ******************
 public:
 
@@ -243,22 +243,22 @@ public:
 	 *	if lightContribution==NULL, then all currently enabled lights are disabled.
 	 *	NB: lightContribution is cached, so if same than preceding, no-op.
 	 *	cache cleared at each frame with resetLightSetup().
-	 *	NB: models which are sticked or skinned on a skeleton have same lightContribution 
+	 *	NB: models which are sticked or skinned on a skeleton have same lightContribution
 	 *	because lightSetup is made on the skeleton only. Hence the interest of this cache.
 	 *
-	 *	\param useLocalAttenuation if true, use Hardware Attenuation, else use global one 
+	 *	\param useLocalAttenuation if true, use Hardware Attenuation, else use global one
 	 *	(attenuation with AttFactor)
 	 */
 	void		changeLightSetup(CLightContribution	*lightContribution, bool useLocalAttenuation);
 
 
-	/** setup the driver VP constants to get info from current LightSetup. 
+	/** setup the driver VP constants to get info from current LightSetup.
 	 *	Only 0..3 Light + SunLights are supported. The VP do NOT support distance/Spot attenuation
 	 *	Also it does not handle World Matrix with non uniform scale correctly since lighting is made in ObjectSpace
-	 *	
+	 *
 	 *	\param ctStart the program use ctes from ctStart to ctStart+NumCtes.
 	 *	\param supportSpecular asitsounds. PointLights and dirLight are localViewer
-	 *	\param invObjectWM the inverse of object matrix: lights are mul by this. Vp compute in object space.	 
+	 *	\param invObjectWM the inverse of object matrix: lights are mul by this. Vp compute in object space.
 	 */
 	void		beginVPLightSetup(uint ctStart, bool supportSpecular, const CMatrix &invObjectWM);
 
@@ -269,10 +269,10 @@ public:
 
 
 	/** tool to get a VP fragment which compute lighting with following rules:
-	 *	IN: 
+	 *	IN:
 	 *		- R5  vertex in objectSpace (ie untransformed)
 	 *		- R6  normal in objectSpace (ie untransformed)
-	 *	OUT: 
+	 *	OUT:
 	 *		- R6  normal normalized
 	 *		- o[COL0] and o[COL1] are setuped. NB: BF0 and BF1 not computed/setuped.
 	 *	Scratch:
@@ -298,9 +298,9 @@ public:
 	 *		- 11:		eye position in objectSpace
 	 *		- 12..14:	light position (3 pointLihgts) in objectSpace
 	 *		TOTAL: 15 constants used.
-	 *	 
 	 *
-	 *	 NB: the number of active light does not change the number of constantes used. But the VP code returned is 
+	 *
+	 *	 NB: the number of active light does not change the number of constantes used. But the VP code returned is
 	 *	modified accordingly.
 	 *
 	 *  \param numActivePoinLights tells how many point light from 0 to 3 this VP must handle. NB: the Sun directionnal is not option
@@ -311,10 +311,10 @@ public:
 	/** This returns a reference to a driver light, by its index
 	  * \see getStrongestLightIndex
 	  */
-	const CLight  &getDriverLight(sint index) const 
-	{ 
+	const CLight  &getDriverLight(sint index) const
+	{
 		nlassert(index >= 0 && index < NL3D_MAX_LIGHT_CONTRIBUTION+1);
-		return _DriverLight[index]; 
+		return _DriverLight[index];
 	}
 
 	/// return an index to the current strongest settuped light (or -1 if there's none)
@@ -344,23 +344,23 @@ public:
 
 	// ReSetup the Driver Frustum/Camera. Called internally and by ShadowMapManager only.
 	void			setupDriverCamera();
-	
-private:	
+
+private:
 
 	// A grow only list of models to be rendered.
 	std::vector<CTransform*>	RenderList;
-	uint32						_CurrentNumVisibleModels;	
+	uint32						_CurrentNumVisibleModels;
 
 	// Ordering Table to sort transparent objects
 	COrderingTable<CTransform>			OrderOpaqueList;
 	std::vector<CLayeredOrderingTable<CTransform> >	_OrderTransparentListByPriority;
-	uint8											_MaxTransparencyPriority;	
+	uint8											_MaxTransparencyPriority;
 
 	IDriver			*Driver;
 	CViewport		_Viewport;
 
 	// Temporary for the render
-	bool			_CurrentPassOpaque;	
+	bool			_CurrentPassOpaque;
 	bool			_LayersRenderingOrder;
 
 
@@ -401,7 +401,7 @@ private:
 	NLMISC::CRGBAF				_VPLightSpecular[MaxVPLight];
 
 	NLMISC::CRGBA				_StrongestLightDiffuse;
-	NLMISC::CRGBA				_StrongestLightSpecular;	
+	NLMISC::CRGBA				_StrongestLightSpecular;
 
 	// Cache for changeVPLightSetupMaterial()
 	bool						_VPMaterialCacheDirty;
@@ -449,9 +449,9 @@ private:
 	};
 	std::vector<CWaterModelDump>	_DebugWaterModelList;
 	//@}
-	
+
 public:
-	CWaterModel *_FirstWaterModel;		
+	CWaterModel *_FirstWaterModel;
 };
 
 

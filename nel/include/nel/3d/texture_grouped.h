@@ -37,7 +37,7 @@ using NLMISC::CSmartPtr;
 using NLMISC::CUV;
 
 /**
- * This kind texture is used for grouping several other textures. Each texture must have the same size. 
+ * This kind texture is used for grouping several other textures. Each texture must have the same size.
  * The textures are copied into one single surface, so  animation can be performed only by UV shifting (if there's no wrapping).
  * This is useful when objects sorting (by texture) is too complex or cost too much time (particles for examples...)
  * \author Nicolas Vizerie
@@ -48,25 +48,25 @@ class CTextureGrouped : public ITexture
 {
 public:
 
-	/// default ctor. by default, there are no texture present	 	
+	/// default ctor. by default, there are no texture present
 	CTextureGrouped();
 
-	/// copy ctor	
+	/// copy ctor
 	CTextureGrouped(const CTextureGrouped &src);
-	
+
 
 	/// = operator
 	CTextureGrouped &operator=(const CTextureGrouped &src);
 
-	/** Check if all the textures in a tab have the same size and the same pixel format	
+	/** Check if all the textures in a tab have the same size and the same pixel format
 	 *  \param textureTab : pointer to a texture list*
-	 *  \param nbTex the number of textures in the list (>0)	 
+	 *  \param nbTex the number of textures in the list (>0)
 	 *  \see setTextures()
 	 */
 	bool areValid(CSmartPtr<ITexture> *textureTab, uint nbTex);
 
 	/** This set the textures to be used. They all must have the same size.
-	 *  An assertion is thrown otherwise.	 	 
+	 *  An assertion is thrown otherwise.
 	 *  WARNING : if you touch one of the textures in the tab later, you may need to touch this one if it changed
 	 *  \param checkValid check that textures are valid
 	 *  \param textureTab : pointer to a texture list
@@ -74,7 +74,7 @@ public:
 	 *  \see haveValidSizes()
 	 */
 	void setTextures(CSmartPtr<ITexture> *textureTab, uint nbTex, bool checkValid = true);
-	
+
 
 	/// Retrieve the number of textures grouped in this one
 	uint32 getNbTextures(void) const { return _NbTex; }
@@ -89,8 +89,8 @@ public:
 
 	// get a texture in the list
 	CSmartPtr<ITexture> getTexture(uint32 index) { return _Textures[index]; }
-	
-	/** Get the U-delta and V delta in the groupedTexture for one unit texture (they all have the same size).	 
+
+	/** Get the U-delta and V delta in the groupedTexture for one unit texture (they all have the same size).
 	 *  return (0, 0) if no textures have been set
 	 */
 	const CUV &getUVDelta(void) const
@@ -105,16 +105,16 @@ public:
 	}
 
 
-	/** 
-	 * sharing system.	 
-	 */	
+	/**
+	 * sharing system.
+	 */
 	virtual bool			supportSharing() const;
 	virtual std::string		getShareName() const;
 
 
-	/** 
-	 * Generate the texture.	 
-	 */	
+	/**
+	 * Generate the texture.
+	 */
 	void doGenerate(bool async = false);
 
 	/// serialization
@@ -140,7 +140,7 @@ public:
 		else
 		{
 			if (sint(texIndex) > 0)
-			{			
+			{
 				return _TexUVs[texIndex % _NbTex];
 			}
 			else
@@ -153,10 +153,10 @@ public:
 
 	virtual void release();
 
-	
+
 	NLMISC_DECLARE_CLASS(CTextureGrouped);
 
-protected:	
+protected:
 	uint32 _NbTex; // for caching
 
 	/// pointers to the original textures
@@ -168,7 +168,7 @@ protected:
 
 	/// the UVs for each texture in the group
 	TFourUVList _TexUVs;
-	
+
 
 	// cache sub bitmap size for each texture to avoid reloading of texture after each serial
 	static std::map<std::string, uint> _NameToSize;

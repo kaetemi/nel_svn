@@ -47,9 +47,9 @@ class IPrimitive;
 class CPrimitiveConfigurations
 {
 public:
-	
+
 	// The name of the matching values
-	std::string	Name;		
+	std::string	Name;
 
 	// The configuration color
 	NLMISC::CRGBA	Color;

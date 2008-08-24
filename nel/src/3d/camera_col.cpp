@@ -52,10 +52,10 @@ void		CCameraCol::build(const CVector &start, const CVector &end, float radius, 
 	_Radius= radius;
 	_Cone= cone;
 	_SimpleRay= false;
-	
+
 	// For camera smoothing
 	float	maxRadiusFactor= NL3D_CameraSmoothRadiusFactor;
-	
+
 	// not a Cone? => no smoothing
 	if(!_Cone)
 		maxRadiusFactor= 1;
@@ -117,13 +117,13 @@ void		CCameraCol::build(const CVector &start, const CVector &end, float radius, 
 	// front if not cone
 	if(!cone)
 		_Pyramid[5].make(ps[0], ps[2], ps[1]);
-	
+
 	// **** build the bbox
 	_BBox.setCenter(start);
 	_BBox.extend(end);
 	// enlarge a bit for radius
 	_BBox.setHalfSize(_BBox.getHalfSize()+CVector(_MaxRadius, _MaxRadius, _MaxRadius));
-	
+
 }
 
 
@@ -136,7 +136,7 @@ void		CCameraCol::buildRay(const CVector &start, const CVector &end)
 	_Radius= 0.f;
 	_Cone= false;
 	_SimpleRay= true;
-	
+
 	// compute infos
 	_MaxRadius= 0.f;
 	_MinRadiusProj= 0.f;
@@ -144,9 +144,9 @@ void		CCameraCol::buildRay(const CVector &start, const CVector &end)
 	_RayNorm= (end-start).normed();
 	_RayLen= (end-start).norm();
 	_OODeltaRadiusProj= 0;
-	
+
 	// Don't need to build the pyramids here
-	
+
 	// **** build the bbox
 	_BBox.setCenter(start);
 	_BBox.extend(end);
@@ -192,11 +192,11 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 		intersectRay(p0, p1, p2, sqrMinDist);
 		return;
 	}
-	
+
 	// Else compute the distance with a smoother way.
 	CVector		*pIn= _ArrayIn;
 	CVector		*pOut= _ArrayOut;
-	
+
 	// **** clip triangle against the pyramid
 	// build the triangle, local to start for precision problems
 	pIn[0]= p0 - _Start;
@@ -271,7 +271,7 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 		{
 			CVector	normal= plane.getNormal();
 
-			// the projection of Start on the plane: StartLocalToStart + 
+			// the projection of Start on the plane: StartLocalToStart +
 			CVector	proj= planeDist * normal;
 			// test poly inclusion
 			sint	sign= 0;
@@ -307,7 +307,7 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 			if(sqrPolyMinDist<sqrMinDist)
 				sqrMinDist= sqrPolyMinDist;
 		}
-		// Camera Smooth mode. if the unmodulated distance is lower than the current minDist, 
+		// Camera Smooth mode. if the unmodulated distance is lower than the current minDist,
 		// then this poly may be interesting, else don't have a chance
 		else if(sqrPolyMinDist<sqrMinDist)
 		{
@@ -333,7 +333,7 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 					pProj[i]= pIn[i] / z;
 				else
 					pProj[i]= CVector::Null;
-				
+
 				// make local
 				pProj[i]-= _RayNorm;
 			}
@@ -352,7 +352,7 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 			uint	numSubdiv= max(numSubdivZ, numSubdivAngle);
 			numSubdiv= max(numSubdiv, (uint)1);
 			float	ooNumSubdiv= 1.f / (float)numSubdiv;
-			
+
 			// **** Sample the polygon, to compute the minimum of the function
 			// for each tri of the polygon
 			for(sint tri=0;tri<nVert-2;tri++)
@@ -362,7 +362,7 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 				lp[0]= pIn[0] * ooNumSubdiv;
 				lp[1]= pIn[tri+1] * ooNumSubdiv;
 				lp[2]= pIn[tri+2] * ooNumSubdiv;
-				
+
 				// sample using barycentric coordinates
 				for(uint i=0;i<=numSubdiv;i++)
 				{
@@ -370,11 +370,11 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 					{
 						uint	k= numSubdiv - i - j;
 						CVector	sample= lp[0] * (float)i + lp[1] * (float)j + lp[2] * (float)k;
-						
+
 						// NB: sample is already local to start
 						float	sqrDist= sample.sqrnorm();
-						
-						// **** get the point projection 
+
+						// **** get the point projection
 						float		z= sample * _RayNorm;
 						CVector		proj;
 						// cause of pyramid cliping, z should be >=0
@@ -384,23 +384,23 @@ void		CCameraCol::minimizeDistanceAgainstTri(const CVector &p0, const CVector &p
 							proj= CVector::Null;
 						// make local
 						proj-= _RayNorm;
-						
+
 						// **** compute the Cone Linear factor (like a spot light)
 						float	rayDist= proj.norm();
 						float	angleFactor= (rayDist-_MinRadiusProj) * _OODeltaRadiusProj;
 						clamp(angleFactor, 0.f, 1.f);
 						// avoid C1 discontinuity when angleFactor==0
 						angleFactor= sqr(angleFactor);
-						
+
 						// **** modulate, but to a bigger value! (ie raylen)
 						sqrDist= _RayLen * angleFactor + sqrtf(sqrDist) * (1-angleFactor);
 						sqrDist= sqr(sqrDist);
-						
+
 						// if distance is lesser, take it
 						if(sqrDist<sqrMinDist)
 							sqrMinDist= sqrDist;
 					}
-				}			
+				}
 			}
 		}
 	}
@@ -448,7 +448,7 @@ void		CCameraCol::intersectRay(const CVector &p0, const CVector &p1, const CVect
 				// make local
 				pIn[i]-= _RayNorm;
 			}
-				
+
 			// Compute now poly distance to the ray
 			//	If the ray intersect the poly this is 0!!!
 			//	else this is the min distance of each edge/vertex against CVector::Null
@@ -560,11 +560,11 @@ for(uint i=0;i<=numSubdiv;i++)
 	{
 		uint	k= numSubdiv - i - j;
 		CVector	sample= lp[0] * i + lp[1] * j + lp[2] * k;
-		
+
 		// NB: sample is already local to start
 		float	sqrDist= sample.sqrnorm();
-		
-		// **** get the point projection 
+
+		// **** get the point projection
 		float		z= sample * _RayNorm;
 		CVector		proj;
 		// cause of pyramid cliping, z should be >=0
@@ -574,18 +574,18 @@ for(uint i=0;i<=numSubdiv;i++)
 			proj= CVector::Null;
 		// make local
 		proj-= _RayNorm;
-		
+
 		// **** compute the Cone Linear factor (like a spot light)
 		float	rayDist= proj.norm();
 		float	angleFactor= (rayDist-_MinRadiusProj) / (_MaxRadiusProj-_MinRadiusProj);
 		clamp(angleFactor, 0.f, 1.f);
 		// avoid C1 discontinuity when angleFactor==0
 		angleFactor= sqr(angleFactor);
-		
+
 		// **** modulate, but to a bigger value! (ie raylen)
 		sqrDist= _RayLen * angleFactor + sqrtf(sqrDist) * (1-angleFactor);
 		sqrDist= sqr(sqrDist);
-		
+
 		// if distance is lesser, take it
 		if(sqrDist<sqrMinDist)
 			sqrMinDist= sqrDist;

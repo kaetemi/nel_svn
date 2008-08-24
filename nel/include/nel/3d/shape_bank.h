@@ -48,7 +48,7 @@ class ITexture;
  * system.
  * There is a default cache. If the shape is not linked explicitly to any cache
  * it is linked to the default cache. The comportement of this cache is to not
- * do any cache. When the release is called on the last reference to a shape 
+ * do any cache. When the release is called on the last reference to a shape
  * linked to this cache, the shape is removed instantly. This is the behavior
  * of all newly created cache before we call the setShapeCacheSize method.
  *
@@ -70,7 +70,7 @@ public:
 	  * AsyncLoad_Shape : Asynchronous loading is currently loading the .shape file, textures and lightmaps
 	  * AsyncLoad_Texture : Asynchronous loading is currently uploading textures and lightmaps to VRAM
 	  */
-	enum TShapeState {	NotPresent, Present, 
+	enum TShapeState {	NotPresent, Present,
 						AsyncLoad_Error, AsyncLoad_Shape, AsyncLoad_Texture, AsyncLoad_Ready, AsyncLoad_Delete };
 	//@}
 
@@ -82,7 +82,7 @@ public:
 	/// Add a reference to a shape and return the instance created. NB: getPresentState()==Present must be tested first.
 	IShape*			addRef (const std::string &shapeName);
 
-	/** 
+	/**
 	  * Release a reference to a shape by its instance. If the shape has no more reference it is added to
 	  * its own shape cache. When the shape cache is full the last entry is deleted.
 	  */
@@ -91,12 +91,12 @@ public:
 	/// Return the shape state. Process the waiting shapes.
 	TShapeState		getPresentState (const std::string &shapeName);
 
-	/** Return the IShape from the bank. Unlike addRef, no reference is added. 
+	/** Return the IShape from the bank. Unlike addRef, no reference is added.
 	 *	Thus the returning shape sould be used temporarily
 	 *	\return NULL if shape not found or not loaded (if being async loaded still return NULL)
 	 */
 	IShape			*getShape (const std::string &shapeName);
-	
+
 	/// Load the corresponding file from disk and add it to the bank.
 	void			load (const std::string &shapeName);
 
@@ -120,8 +120,8 @@ public:
 	/// Add a new ShapeCache. If already exist do nothing.
 	void			addShapeCache (const std::string &shapeCacheName);
 
-	/** 
-	  * Remove a ShapeCache. All shapes in the shape cache are deleted. All links are redirected to 
+	/**
+	  * Remove a ShapeCache. All shapes in the shape cache are deleted. All links are redirected to
 	  * the default ShapeCache
 	  */
 	void			removeShapeCache (const std::string &shapeCacheName);
@@ -133,7 +133,7 @@ public:
 	  * Remove all ShapeCache and suppress all links (even the link to the default cache are removed)
 	  */
 	void			reset ();
-	
+
 	/// Set the shapeCache shapeCacheName the new size.(delete shapes if maxsize<shapeCacheSize).
 	void			setShapeCacheSize (const std::string &shapeCacheName, sint32 maxSize);
 
@@ -155,7 +155,7 @@ public:
 	 *	\param wildcard a filter string like: "*.shape", "??_HOM*.shape". NB: toLower-ed internally
 	 *  \param flushTextures if true, then textures are flushed in the driver drv
 	 */
-	void			preLoadShapes(const std::string &shapeCacheName, 
+	void			preLoadShapes(const std::string &shapeCacheName,
 		const std::vector<std::string> &listFile, const std::string &wildCardNotLwr, NLMISC::IProgressCallback *progress = NULL, bool flushTextures = false, IDriver *drv = NULL);
 
 	/** Mark this shape name as needing a buildSystemGeometry() (typically used for selection)
@@ -166,7 +166,7 @@ public:
 
 	// get the shape Name from the shape Ptr. return NULL if not found
 	const std::string*	getShapeNameFromShapePtr(IShape* pShp) const;
-	
+
 private:
 	/// \name Shape/Instances.
 	//@{

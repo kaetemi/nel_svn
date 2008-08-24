@@ -28,7 +28,7 @@
 #include "game_device.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -61,7 +61,7 @@ struct IInputDeviceManager
 	virtual void			releaseKeyboard() = 0;
 	// Enumerates current game devices (gamepads, joystick etc.). The result is stored in the given vector
 	virtual void			enumerateGameDevice(TDeviceDescVect &descs) throw(EInputDevice) = 0;
-	// Create the given game device interface from its instance name. It also means that it will begin to sends events.		  	  
+	// Create the given game device interface from its instance name. It also means that it will begin to sends events.
 	virtual IGameDevice		*createGameDevice(const std::string &instanceName) throw(EInputDevice) = 0;
 	// Release the given game device.
 	virtual void			releaseGameDevice(IGameDevice *gd) = 0;

@@ -52,7 +52,7 @@ public:
 
 	// Nothing
 	virtual void			setNoDelay( bool value ) {}
-	
+
 	// Nothing
 	virtual void			close() {}
 

@@ -55,16 +55,16 @@ public:
 
 	// serial this texture datas
 	virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	
+
 	virtual bool			supportSharing() const;
-	
+
 	virtual std::string		getShareName() const;
 
 	void					enableSharing(bool enabled = true) { _DisableSharing = !enabled; }
 
 	bool					isSharingEnabled() const { return !_DisableSharing; }
 
-	
+
 	/** Force normalization of this texture when it is generated, so that the deltas reach their maximum amplitude.
 	  * After the texture generation, the factor needed to normalize can be obtained
 	  */
@@ -76,21 +76,21 @@ public:
 	/** Get the normalization factor. This is valid only if the texture has been generated
 	  * NB : make this virtual because it access static object (_NameToNF) from both DLL and main app, so don't want duplication
 	  */
-	virtual float					getNormalizationFactor();	
+	virtual float					getNormalizationFactor();
 
 	// inherited from ITexture. release this texture, and its datas
-	virtual void release();	
+	virtual void release();
 
 	// this is a bump texture
 	virtual bool isBumpMap() const { return true; }
-	
+
 protected:
 	// inherited from ITexture. Generate this bumpmap pixels
-	virtual void doGenerate(bool async = false);	
+	virtual void doGenerate(bool async = false);
 	NLMISC::CSmartPtr<ITexture>  _HeightMap;
 	float						 *_NormalizationFactor;
-	bool						 _DisableSharing;	
-	bool						 _ForceNormalize;	
+	bool						 _DisableSharing;
+	bool						 _ForceNormalize;
 	// Map that give the normalization factor for each map from its sharename. This avoid to generate several time the maps to get the normalization factor if a bumpmap is shared by severals CTextureBump instances;
 	struct CNormalizationInfo
 	{

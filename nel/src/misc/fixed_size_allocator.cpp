@@ -40,7 +40,7 @@ CFixedSizeAllocator::CFixedSizeAllocator(uint numBytesPerBlock, uint numBlockPer
 
 //*****************************************************************************************************************
 CFixedSizeAllocator::~CFixedSizeAllocator()
-{	
+{
 	if (_NumAlloc != 0)
 	{
 		#ifdef NL_DEBUG
@@ -49,35 +49,35 @@ CFixedSizeAllocator::~CFixedSizeAllocator()
 		return;
 	}
 	if (_NumChunks > 0)
-	{		
+	{
 		nlassert(_NumChunks == 1);
 		// delete the left chunk. This should force all the left nodes to be removed from the empty list
 		delete _FreeSpace->Chunk;
-	}	
+	}
 }
 
 //*****************************************************************************************************************
 void *CFixedSizeAllocator::alloc()
 {
 	if (!_FreeSpace)
-	{				
+	{
 		CChunk *chunk = new CChunk; // link a new chunk to that object
 		chunk->init(this);
 	}
 	++ _NumAlloc;
-	return _FreeSpace->unlink();		
+	return _FreeSpace->unlink();
 }
 
 //*****************************************************************************************************************
 void CFixedSizeAllocator::free(void *block)
 {
-	if (!block) return;	
-	/// get the node from the object	
+	if (!block) return;
+	/// get the node from the object
 	CNode *node = (CNode *) ((uint8 *) block - offsetof(CNode, Next));
-	//	
+	//
 	nlassert(node->Chunk != NULL);
 	nlassert(node->Chunk->Allocator == this);
-	//	
+	//
 	--_NumAlloc;
 	node->link();
 }
@@ -85,7 +85,7 @@ void CFixedSizeAllocator::free(void *block)
 //*****************************************************************************************************************
 uint CFixedSizeAllocator::CChunk::getBlockSizeWithOverhead() const
 {
-	return std::max((uint)(sizeof(CNode) - offsetof(CNode, Next)),(uint)(Allocator->getNumBytesPerBlock())) + offsetof(CNode, Next);	
+	return std::max((uint)(sizeof(CNode) - offsetof(CNode, Next)),(uint)(Allocator->getNumBytesPerBlock())) + offsetof(CNode, Next);
 }
 
 //*****************************************************************************************************************
@@ -97,7 +97,7 @@ CFixedSizeAllocator::CChunk::CChunk()
 
 //*****************************************************************************************************************
 CFixedSizeAllocator::CChunk::~CChunk()
-{		
+{
 	nlassert(Allocator != NULL);
 	for (uint k = 0; k < Allocator->getNumBlockPerChunk(); ++k)
 	{
@@ -116,7 +116,7 @@ void CFixedSizeAllocator::CChunk::init(CFixedSizeAllocator *alloc)
 	nlassert(alloc != NULL);
 	Allocator = alloc;
 	//
-	Mem = new uint8[getBlockSizeWithOverhead() * alloc->getNumBlockPerChunk()];	
+	Mem = new uint8[getBlockSizeWithOverhead() * alloc->getNumBlockPerChunk()];
 	//
 	getNode(0).Chunk = this;
 	getNode(0).Next = &getNode(1);
@@ -130,11 +130,11 @@ void CFixedSizeAllocator::CChunk::init(CFixedSizeAllocator *alloc)
 		getNode(k).Next = &getNode(k + 1);
 		getNode(k).Prev = &getNode(k - 1).Next;
 	}
-	
+
 	getNode(NumFreeObjs - 1).Chunk = this;
 	getNode(NumFreeObjs - 1).Next  = alloc->_FreeSpace;
 	getNode(NumFreeObjs - 1).Prev = &(getNode(NumFreeObjs - 2).Next);
-	
+
 	if (alloc->_FreeSpace) { alloc->_FreeSpace->Prev = &getNode(NumFreeObjs - 1).Next; }
 	alloc->_FreeSpace = &getNode(0);
 	++(alloc->_NumChunks);
@@ -156,11 +156,11 @@ void CFixedSizeAllocator::CChunk::add()
 	nlassert(NumFreeObjs < Allocator->getNumBlockPerChunk());
 	++ NumFreeObjs;
 	if (NumFreeObjs == Allocator->getNumBlockPerChunk()) // all objects back ?
-	{		
+	{
 		if (Allocator->_NumChunks > 1) // we want to have at least one chunk left
 		{
 			delete this; // kill that object
-		}		
+		}
 	}
 }
 
@@ -169,12 +169,12 @@ void CFixedSizeAllocator::CChunk::grab()
 {
 	// a node of this chunk has been given back
 	nlassert(NumFreeObjs > 0);
-	-- NumFreeObjs;		
+	-- NumFreeObjs;
 }
 
 //*****************************************************************************************************************
 void *CFixedSizeAllocator::CNode::unlink()
-{			
+{
 	nlassert(Prev != NULL);
 	if (Next) { Next->Prev = Prev;}
 	*Prev = Next;
@@ -186,10 +186,10 @@ void *CFixedSizeAllocator::CNode::unlink()
 //*****************************************************************************************************************
 void CFixedSizeAllocator::CNode::link()
 {
-	// destroy the obj to get back uninitialized memory	
+	// destroy the obj to get back uninitialized memory
 	nlassert(Chunk);
 	nlassert(Chunk->Allocator);
-	
+
 	CNode *&head = Chunk->Allocator->_FreeSpace;
 	Next = head;
 	Prev = &head;

@@ -48,7 +48,7 @@ public:
 	virtual ~CMusicSound();
 
 	/// \name From CSound
-	//@{ 
+	//@{
 	/// Load the sound parameters from georges' form
 	virtual void		importForm(const std::string& filename, NLGEORGES::UFormElm& formRoot);
 	virtual TSOUND_TYPE getSoundType() {return SOUND_MUSIC;}
@@ -65,14 +65,14 @@ public:
 	sint32				getFadeOutLength() const {return _FadeOutLength;}
 	sint32				getMinimumPlayTime() const {return _MinimumPlayTime;}
 	sint32				getTimeBeforeCanReplay() const {return _TimeBeforeCanReplay;}
-	
+
 public:
-	
+
 	// For CMusicSoundManager. Mark the last time (in ms) this music was stoped, after a play. INT_MIN by default
 	NLMISC::TTime		LastStopTime;
 
 private:
-	// Music FileName 
+	// Music FileName
 	NLMISC::TStringId	_FileName;
 	// time in ms
 	sint32			_FadeInLength;

@@ -114,13 +114,13 @@ struct CVPOperand
 	};
 
 	EOperandType Type;
-	
+
 	// Datas for the various types.
 	union
-	{		
-		EOutputRegister OutputRegisterValue;		
-		EInputRegister  InputRegisterValue;		
-		uint		    VariableValue; // Index from 0 to 11			
+	{
+		EOutputRegister OutputRegisterValue;
+		EInputRegister  InputRegisterValue;
+		uint		    VariableValue; // Index from 0 to 11
 		sint            ConstantValue; // Index from 0 to 95, or -64 to +63 for constants with displacement
 	} Value;
 
@@ -129,7 +129,7 @@ struct CVPOperand
 	// write mask (for output operands)
 	uint WriteMask; // b0 -> X, b1 -> Y, b2 -> Z, b3 -> W
 
-	// swizzle & negate 
+	// swizzle & negate
 	bool		Negate;
 	CVPSwizzle	Swizzle;
 };
@@ -155,7 +155,7 @@ struct CVPInstruction
 		SGE,
 		EXPP,
 		LOG,
-		RCP,		
+		RCP,
 		OpcodeCount
 	};
 	EOpcode		Opcode;
@@ -202,7 +202,7 @@ public:
 	bool parse(const char *src, TProgram &result, std::string &errorOutput);
 
 	/** Debugging purpose : This output a parsed vertex program in a string, with the standard format.
-	  * This can serve as a base for other format code generation	  
+	  * This can serve as a base for other format code generation
 	  */
 	static void dump(const TProgram &prg, std::string &dest);
 
@@ -224,7 +224,7 @@ private:
 	bool parseVariableRegister(CVPOperand &operand, std::string &errorOutput);
 	bool parseAddressRegister(CVPOperand &operand, std::string &errorOutput);
 	//
-	bool parseSwizzle(CVPSwizzle &swizzle, std::string &errorOutput);	
+	bool parseSwizzle(CVPSwizzle &swizzle, std::string &errorOutput);
 	bool parseWriteMask(uint &mask, std::string &errorOutput);
 	//
 	bool parseInstruction(CVPInstruction &instr, std::string &errorOutput, bool &endEncountered);

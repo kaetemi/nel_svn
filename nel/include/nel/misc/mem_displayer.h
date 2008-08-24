@@ -66,7 +66,7 @@ protected:
 	bool						_NeedHeader;
 
 	uint32						_MaxStrings;	// number of string in the _Strings queue (default is 50)
-	
+
 	bool						_CanUseStrings;
 
 	std::deque<std::string>		_Strings;
@@ -91,7 +91,7 @@ protected:
 };
 
 
-	
+
 } // NLMISC
 
 

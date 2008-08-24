@@ -64,14 +64,14 @@ public:
 	virtual void					applySampleDivisor(uint sampleDivisor);
 	// @}
 
-	/** Build the track from a list of keys 
+	/** Build the track from a list of keys
 	 *	nlassert if ! same length.
 	 *	\param timeList the list of key time. First must be ==0. nlassert if difference between 2 keys is > 255
 	 *	\param keyList the list of keys, not yet compressed (done internally in future)
 	 *	\param beginTime map to the timeList[0] time.
 	 *	\param endTime map to the timeList[size-1] time.
 	 */
-	void	build(const std::vector<uint16> &timeList, const std::vector<CVector> &keyList, 
+	void	build(const std::vector<uint16> &timeList, const std::vector<CVector> &keyList,
 		float beginTime, float endTime);
 
 // **********************

@@ -77,7 +77,7 @@ public:
 	bool				receivedFrom( uint8 *buffer, uint& len, CInetAddress& addr, bool throw_exception=true );
 
 	//@}
-	
+
 
 	/// @name Sending data
 	//@{

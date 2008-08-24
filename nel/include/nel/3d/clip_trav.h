@@ -66,7 +66,7 @@ class	CSkeletonModel;
 // ***************************************************************************
 /**
  * The clip traversal.
- * The purpose of this traversal is to insert in the post-clip Traversal the models which are 
+ * The purpose of this traversal is to insert in the post-clip Traversal the models which are
  * said to be not clipped.
  *
  * Models should use the CTransform->clip() method to implement their models, or completly redefine the traverseClip() method.
@@ -145,13 +145,13 @@ public:
 	/// Vision Pyramid (6 normalized planes) in the world basis. NB: NOT modified by the ClusterSystem.
 	std::vector<CPlane>	WorldFrustumPyramid;
 	/// Vision Pyramid in the world basis. NB: may be modified by the ClusterSystem.
-	std::vector<CPlane>	WorldPyramid;	
+	std::vector<CPlane>	WorldPyramid;
 	//@}
 	sint64				CurrentDate;
 
 	CCluster			*RootCluster;
 	CCamera				*Camera;
-	
+
 	CQuadGrid<CCluster*> Accel;
 
 	/** for CQuadGridClipClusterClip only. This flag means models traversed do not need to clip,

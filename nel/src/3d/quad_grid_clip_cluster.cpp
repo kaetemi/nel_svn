@@ -33,7 +33,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -234,7 +234,7 @@ void		CQuadGridClipClusterQTreeNode::clip(CClipTrav *clipTrav)
 				// NB if too far, set _NumDist (ie will clip only the infinite objects ones)
 				clamp(minDistSetup, 0, (sint)Owner->_NumDist);
 
-				// clip the sons individually 
+				// clip the sons individually
 				H_AUTO( NL3D_QuadClip_SonsClip );
 				ListNode.clipSons(minDistSetup);
 			}

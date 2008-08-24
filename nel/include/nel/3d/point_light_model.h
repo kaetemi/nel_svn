@@ -51,7 +51,7 @@ const NLMISC::CClassId		PointLightModelId=NLMISC::CClassId(0x7e842eba, 0x140b6c6
  *	Clip: Lights are always in frustum, not renderable (default CTransform).
  *	Light: lightModels are not lightables (ie they can't be lighted). (default CTransform).
  *		traverseLight() is specialised.
- * 
+ *
  *	PERFORMANCE WARNING: big lights (disabled attenuation and big attenuationEnd) slow down
  *	performances. (by experience, with a factor of 2).
  *
@@ -70,7 +70,7 @@ public:
 
 	/** The pointLight setup (color/attenuation). Do not use PointLight.Pos to setup the position.
 	 *	Use the CTransform interface to set the position.
-	 *	To enable SpotLight, use PointLight.setType(), and use PointLight.setSpotAngle() but don't use 
+	 *	To enable SpotLight, use PointLight.setType(), and use PointLight.setSpotAngle() but don't use
 	 *	PointLight.setSpotDirection to setup the direction. The direction of the spotLight is driven by
 	 *	the J vector of the Transform WorldMatrix.
 	 */
@@ -78,9 +78,9 @@ public:
 
 
 	/**	setup the deltaPosToSkeletonWhenOutOfFrustum
-	 *	When a light is sticked to a skeleton, and if this skeleton is clipped, then the position of the light 
+	 *	When a light is sticked to a skeleton, and if this skeleton is clipped, then the position of the light
 	 *	can't be computed correctly without animating the skeleton. To allow good position of the light,
-	 *	and to avoid recomputing the skeleton even if it is clipped, the light position is set to 
+	 *	and to avoid recomputing the skeleton even if it is clipped, the light position is set to
 	 *	skeletonMatrix * this "deltaPosToSkeletonWhenOutOfFrustum".
 	 *
 	 *	Default is (0, 0, 1.5).
@@ -93,16 +93,16 @@ public:
 
 
 	/** Special For Lightmap dynamic Lighting. if true, this light will influence lightmaped objects.
-	 *	Lightmaped objects can be lighted by ONLY ONE (preference big) dynamic light. 
-	 *	If you setup multiple CPointLightModel with this flag, then it will randomly choose between one 
+	 *	Lightmaped objects can be lighted by ONLY ONE (preference big) dynamic light.
+	 *	If you setup multiple CPointLightModel with this flag, then it will randomly choose between one
 	 *	of those visible lights.
 	 *	NB: Lighting is made hardware per vertex.
 	 */
 	void			setInfluenceLightMap(bool enable) {_InfluenceLightMap= enable;}
 	bool			getInfluenceLightMap() const {return _InfluenceLightMap;}
-	
 
-	/** The traverse() method is called to update the worldPosition of the light, resetLightedModels(), and 
+
+	/** The traverse() method is called to update the worldPosition of the light, resetLightedModels(), and
 	 *	re-insert the light in the lightingManager.
 	 */
 	virtual void	traverseLight();

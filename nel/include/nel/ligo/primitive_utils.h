@@ -1,12 +1,12 @@
 /** \file primitive_utils.h
  * Utility to work with primitives tree
  *
- *	Some of this utilities use the concept of 'predicate' applyed to 
+ *	Some of this utilities use the concept of 'predicate' applyed to
  *	primitive node.
  *	As defined in the stl, a predicate is some form of functor that
  *	receive a parameter, apply some test on it, then return the result
  *	of the test.
- *	In this case, predicate functor receive a IPrimitive pointer and 
+ *	In this case, predicate functor receive a IPrimitive pointer and
  *	return a boolean.
  *	The utilities come with 4 predefined predicates :
  *		- primitive class property test
@@ -19,7 +19,7 @@
  *	your class declare a method
  *		bool operator() (const IPrimitive *) const
  *
- *	You can also 'combine' the predefined predicate by using the 
+ *	You can also 'combine' the predefined predicate by using the
  *	class CPrimitiveSetFilter that refine a set of primitive
  *	by applying another predicate.
  *
@@ -68,7 +68,7 @@ namespace NLLIGO
 typedef std::vector<IPrimitive*>	TPrimitiveSet;
 
 /** Default predicate for primitive enumerator.
- *	This predicate test the class name of each primitive against a 
+ *	This predicate test the class name of each primitive against a
  *	given class name.
  */
 struct TPrimitiveClassPredicate : public std::unary_function<IPrimitive*, bool>
@@ -90,7 +90,7 @@ struct TPrimitiveClassPredicate : public std::unary_function<IPrimitive*, bool>
 };
 
 /** Predicate for primitive enumerator.
- *	This predicate test the name of each primitive against a 
+ *	This predicate test the name of each primitive against a
  *	given name.
  */
 struct TPrimitiveNamePredicate
@@ -174,14 +174,14 @@ class CPrimitiveEnumerator
 public:
 	/** Construct a primitive enumerator.
 	 *	startPrim is the primitive where the enumeration start. Even if the startPrimitive
-	 *	is not at the root of the primitive tree, the enumerator will not 
+	 *	is not at the root of the primitive tree, the enumerator will not
 	 *	try to parse the parent of startPrim.
 	 *	predicate is the functor predicate. Each node is tested against the bool operator()(IPrimitive *)
 	 *	method of the predicate. If the predicate return true, then the node is returned by getNextMatch.
 	 */
 	CPrimitiveEnumerator(IPrimitive *startPrim, Pred &predicate)
-		: _StartPrim(startPrim), 
-		_Predicate(predicate), 
+		: _StartPrim(startPrim),
+		_Predicate(predicate),
 		_CurrentPrim(startPrim)
 	{
 		// mark the root node as non checked
@@ -337,7 +337,7 @@ inline bool saveXmlPrimitiveFile(CPrimitives &primDoc, const std::string &fileNa
 /** Utility function to look for the first child of a primitive node that
  *	match the predicate.
  *	Return NULL if none of the child match the predicate.
- *	There is no way to get the next matching child using this function, 
+ *	There is no way to get the next matching child using this function,
  *	you must use filterPrimitiveChilds to do this.
  */
 template <class Pred>
@@ -389,9 +389,9 @@ void filterPrimitiveChilds(IPrimitive *parent, Pred &predicate, TPrimitiveSet &r
 }
 
 
-/** Build a string that represent the path to a node 
+/** Build a string that represent the path to a node
  *	Note that the reverse operation does not guarantie to
- *	return a unique node because there is no name 
+ *	return a unique node because there is no name
  *	uniqueness constrains in the primitive system.
  */
 std::string buildPrimPath(const IPrimitive *prim);

@@ -60,10 +60,10 @@ class CPSFloatGradient : public CPSValueGradient<float>
 public:
 	NLMISC_DECLARE_CLASS(CPSFloatGradient);
 
-	
+
 	CPSFloatGradient() : CPSValueGradient<float>(1.f) {}
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a float table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
@@ -71,9 +71,9 @@ public:
 
 	CPSFloatGradient(const float *floatTab, uint32 nbValues, uint32 nbStages, float nbCycles = 1.0f);
 
-		
+
 	CPSAttribMakerBase *clone() const { return new CPSFloatGradient(*this); }
-	// F is serialized by base classes...	
+	// F is serialized by base classes...
 };
 
 /** this memorize float by applying some function on the emitter. For a particle's attribute, each particle has its
@@ -116,7 +116,7 @@ class CPSFloatCurveFunctor
 				f.serial(Date, Value);
 			}
 		};
-		
+
 		/** ctor. The default is a cst function whose value is .5
 		  * NB : must be init before use, or assert occurs
 		  */
@@ -128,7 +128,7 @@ class CPSFloatCurveFunctor
 		void							addControlPoint(const CCtrlPoint &ctrlPoint);
 
 		/// retrieve the number of control points
-		uint							getNumCtrlPoints(void) const { return _CtrlPoints.size(); }			
+		uint							getNumCtrlPoints(void) const { return _CtrlPoints.size(); }
 
 		/** get a control point.
 		  * \return a <date, value> std::pair
@@ -178,16 +178,16 @@ class CPSFloatCurveFunctor
 		float	getMinValue() const { return _MinValue; }
 		float	getMaxValue() const { return _MaxValue; }
 
-	protected:		
+	protected:
 		/// get the tangent (slope in our case) for the key at the given position
 		float getSlope(uint index) const ;
 		/// sort the ctrl points in increasing order
-		void						sortPoints(void);	
+		void						sortPoints(void);
 		/// update the value tab
-		void						updateTab(void);	
+		void						updateTab(void);
 		CPSVector<CCtrlPoint>::V	_CtrlPoints;
 		uint32						_NumSamples;
-		CPSVector<float>::V			_Tab; // sampled version of the curve		
+		CPSVector<float>::V			_Tab; // sampled version of the curve
 		bool						_Smoothing;
 		float						_MinValue;
 		float						_MaxValue;
@@ -206,7 +206,7 @@ public:
 	CPSFloatCurve() : CPSAttribMakerT<float, CPSFloatCurveFunctor>(1) {}
 	NLMISC_DECLARE_CLASS(CPSFloatCurve);
 	CPSAttribMakerBase *clone() const { return new CPSFloatCurve(*this); }
-	virtual float getMinValue(void) const { return _F.getMinValue(); }	
+	virtual float getMinValue(void) const { return _F.getMinValue(); }
 	virtual float getMaxValue(void) const { return _F.getMaxValue(); }
 };
 

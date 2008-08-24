@@ -65,7 +65,7 @@ protected:
 
 	/// Constructor
 	CServerTask();
-	
+
 	/// Returns true if the requireExit() has been called
 	bool	exitRequired() const { return _ExitRequired; }
 
@@ -76,7 +76,7 @@ protected:
 
 private:
 
-	volatile bool	_ExitRequired;	
+	volatile bool	_ExitRequired;
 };
 
 
@@ -104,7 +104,7 @@ public:
 
 private:
 
-	CBufServer			*_Server;	
+	CBufServer			*_Server;
 	CListenSock			_ListenSock;
 	uint32				_MaxExpectedBlockSize;
 
@@ -225,7 +225,7 @@ public:
 	void	displaySendQueueStat( NLMISC::CLog *log = NLMISC::InfoLog, TSockId destid = InvalidSockId);
 
 	void displayThreadStat (NLMISC::CLog *log = NLMISC::InfoLog);
-		
+
 
 	/** Sets the time flush trigger (in millisecond). When this time is elapsed,
 	 * all data in the send queue is automatically sent (-1 to disable this trigger)
@@ -408,7 +408,7 @@ typedef CConnections::iterator				ItConnection;
 #else
 typedef TSockId								ItConnection;
 #endif
-// Set of iterators to connections (set because we must not add an element twice) 
+// Set of iterators to connections (set because we must not add an element twice)
 typedef std::set<ItConnection>			CItConnections;
 */
 

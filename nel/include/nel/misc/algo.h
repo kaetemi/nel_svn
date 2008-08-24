@@ -30,7 +30,7 @@
 #include "ucstring.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -75,7 +75,7 @@ inline void incrementalBlend(float &value, float target, float absDelta)
   *  ^
   *  |
   *  |
-  *  +---> S  
+  *  +---> S
   */
 template <class T, class U>
 T computeBilinear(const T &v0, const T &v1, const T &v2, const T &v3, const U &s, const U &t)
@@ -86,7 +86,7 @@ T computeBilinear(const T &v0, const T &v1, const T &v2, const T &v3, const U &s
 }
 
 // ***************************************************************************
-/** Select all points crossed by the line [(x0,y0) ; (x1,y1)] 
+/** Select all points crossed by the line [(x0,y0) ; (x1,y1)]
  *  Not the same than brensenham
  */
 void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair<sint, sint> > &result);
@@ -175,12 +175,12 @@ static inline	void fastClamp8(sint &v)
 
 // ***************************************************************************
 /** return true if the string strIn verify the wildcard string wildCard.
- *	eg: 
+ *	eg:
  *		testWildCard("azert", "*")== true
  *		testWildCard("azert", "??er*")== true
  *		testWildCard("azert", "*er*")== true
  *		testWildCard("azert", "azert*")== true
- *	Undefined result if s has some '*', 
+ *	Undefined result if s has some '*',
  *	return false if wildcard has some "**" or "*?"
  *	NB: case-sensitive
  */

@@ -46,13 +46,13 @@ public:
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
 
-	/** 
+
+	/**
 	 * Default constructor
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
+	 */
 	CTextureFile() { _AllowDegradation=true; _SupportSharing= true; _EnlargeCanvasNonPOW2Tex = false; _MipMapSkipAtLoad=0; }
 
 	// copy ctor
@@ -61,46 +61,46 @@ public:
 	// assignment operator
 	CTextureFile &operator = (const CTextureFile &other);
 
-	/** 
+	/**
 	 * constructor
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
-	CTextureFile(const std::string &s) 
-	{ 
+	 */
+	CTextureFile(const std::string &s)
+	{
 		/* ***********************************************
 		 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 		 *	It can be loaded/called through CAsyncFileManager for instance
 		 * ***********************************************/
-		
-		touch(); _FileName = s; 
+
+		touch(); _FileName = s;
 		_AllowDegradation=true;
-		_SupportSharing= true; 
+		_SupportSharing= true;
 		_EnlargeCanvasNonPOW2Tex = false;
 		_MipMapSkipAtLoad=0;
-	} 
+	}
 
 
-	/** 
+	/**
 	 * Set the name of the file containing the texture
 	 * \param name of the file
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
-	void setFileName(const std::string &s) 
-	{ 
-		touch(); 
-		_FileName = s; 
+	 */
+	void setFileName(const std::string &s)
+	{
+		touch();
+		_FileName = s;
 	}
 
 
-	/** 
+	/**
 	 * get the name of the file containing the texture
 	 * \return name of the file
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
-	const std::string		&getFileName() const { return _FileName; } 
+	 */
+	const std::string		&getFileName() const { return _FileName; }
 
 
 	/// texture file may allow the driver to degrade (default is true).
@@ -109,11 +109,11 @@ public:
 	void			setAllowDegradation(bool allow);
 
 
-	/** 
+	/**
 	 * sharing system.
 	 * \author Lionel Berenguier
 	 * \date 2000
-	 */	
+	 */
 	virtual bool			supportSharing() const {return _SupportSharing;}
 
 	virtual std::string		getShareName() const;
@@ -121,11 +121,11 @@ public:
 	void					enableSharing(bool enable);
 
 
-	/** 
+	/**
 	 * Generate the texture, looking in CPath if necessary.
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
+	 */
 	void doGenerate(bool async = false);
 
 	/// Save the texture file name.

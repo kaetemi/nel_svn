@@ -101,7 +101,7 @@ uint			CShadowPolyReceiver::addTriangle(const NLMISC::CTriangle &tri)
 		// increment the reference of this vertex
 		incVertexRefCount(triId.Vertex[i]);
 	}
-	
+
 	// Insert the triangle in the quadGrid.
 	CAABBox		bb;
 	bb.setCenter(tri.V0);
@@ -230,14 +230,14 @@ inline void	CShadowPolyReceiver::renderSelection(IDriver *drv, CMaterial &shadow
 		// Volatile: must resize before lock
 		_VB.setNumVertices(_Vertices.size());
 		_RenderTriangles.setNumIndexes(_Triangles.size() * 3);
-		
+
 		// lock volatile, to avoid cpu stall
 		CVertexBufferReadWrite vba;
 		_VB.lock(vba);
 		CIndexBufferReadWrite iba;
 		_RenderTriangles.lock (iba);
 		TIndexType *triPtr = (TIndexType *) iba.getPtr();
-		
+
 		// For All triangles, clip them.
 		uint	currentVbIdx= 0;
 		for(it=_TriangleGrid.begin();it!=_TriangleGrid.end();it++)
@@ -321,7 +321,7 @@ inline void	CShadowPolyReceiver::renderSelection(IDriver *drv, CMaterial &shadow
 void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shadowMap, const CVector &casterPos, const CVector &vertDelta, const NLMISC::CPolygon2D &poly, std::vector<CRGBAVertex> &destTris, bool colorUpfacingVertices)
 {
 	nlctassert(sizeof(CRGBAVertex) == 12 + 4); // ensure padding works as expected
-	destTris.clear();	
+	destTris.clear();
 	selectPolygon(poly);
 	if (_TriangleGrid.begin() == _TriangleGrid.end()) return;
 	uint	i, j;
@@ -341,7 +341,7 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 		CTriangleId		&triId= *it;
 		for(i=0;i<3;i++)
 		{
-			_Vertices[triId.Vertex[i]].Flags= 0;			
+			_Vertices[triId.Vertex[i]].Flags= 0;
 		}
 	}
 
@@ -358,12 +358,12 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 		worldClipPlanes[i]= shadowMap->LocalClipPlanes[i] * worldMat;
 	}
 
-	static NLMISC::CPolygon clippedTri;	
+	static NLMISC::CPolygon clippedTri;
 
 	CVector triNormal;
-		
-							
-	// For All triangles, clip them.		
+
+
+	// For All triangles, clip them.
 	for(it=_TriangleGrid.begin();it!=_TriangleGrid.end();it++)
 	{
 		CTriangleId		&triId= *it;
@@ -373,11 +373,11 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 		CVectorId *vid[3] = { &_Vertices[triId.Vertex[0]],
 							  &_Vertices[triId.Vertex[1]],
 							  &_Vertices[triId.Vertex[2]]
-							};		
+							};
 
 		// for all vertices, clip them
 		for(i=0;i<3;i++)
-		{				
+		{
 
 			// if this vertex is still not computed
 			if(!vid[i]->Flags)
@@ -388,56 +388,56 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 					// out if in front
 					bool	out= worldClipPlanes[j]* *vid[i] > 0;
 
-					vid[i]->Flags |= ((uint)out)<<j;					
+					vid[i]->Flags |= ((uint)out)<<j;
 				}
 				// add the bit flag to say "computed".
-				vid[i]->Flags |= NL3D_SPR_NUM_CLIP_PLANE_SHIFT;				
-			}			
-			
+				vid[i]->Flags |= NL3D_SPR_NUM_CLIP_PLANE_SHIFT;
+			}
+
 			vertexNormalsUndefined[triId.Vertex[i]] = 1; // invalidate normal for next pass
 
 			// And all vertex bits.
 			triFlag&= vid[i]->Flags;
-		}			
+		}
 		// if triangle not clipped, do finer clip then add resulting triangles
 		if( (triFlag & NL3D_SPR_NUM_CLIP_PLANE_MASK)==0 )
-		{		
+		{
 			visibleTris.push_back(&triId);
 		}
 	}
 
-	uint numVisibleTris = visibleTris.size();	
-	// compute normals if needed	
+	uint numVisibleTris = visibleTris.size();
+	// compute normals if needed
 	if (colorUpfacingVertices)
 	{
 		for (uint triIndex = 0; triIndex < numVisibleTris; ++triIndex)
 		{
-			CTriangleId		&triId= *visibleTris[triIndex];			
+			CTriangleId		&triId= *visibleTris[triIndex];
 			CVectorId *vid[3] = { &_Vertices[triId.Vertex[0]],
 								  &_Vertices[triId.Vertex[1]],
 								  &_Vertices[triId.Vertex[2]]
 								};
-			// compute normal for this tri			
-			triNormal = ((*vid[1] - *vid[0]) ^ (*vid[2] - *vid[0])).normed();			
+			// compute normal for this tri
+			triNormal = ((*vid[1] - *vid[0]) ^ (*vid[2] - *vid[0])).normed();
 
 			// for all vertices, clip them
 			for(i=0;i<3;i++)
-			{								
-				sint vertIndex = triId.Vertex[i];				
+			{
+				sint vertIndex = triId.Vertex[i];
 				if (vertexNormalsUndefined[vertIndex])
-				{				
-					vertexNormals[vertIndex] = triNormal;	
+				{
+					vertexNormals[vertIndex] = triNormal;
 					vertexNormalsUndefined[vertIndex] = 0;
 				}
 				else
-				{					
-					vertexNormals[vertIndex] += triNormal;	
-				}				
-			}			
+				{
+					vertexNormals[vertIndex] += triNormal;
+				}
+			}
 		}
 	}
 
-	
+
 	if (colorUpfacingVertices)
 	{
 		for (uint triIndex = 0; triIndex < numVisibleTris; ++triIndex)
@@ -456,24 +456,24 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 			corner0[0] = _Vertices[triId.Vertex[0]];
 			corner0[1] = _Vertices[triId.Vertex[1]];
 			corner0[2] = _Vertices[triId.Vertex[2]];
-			//													
+			//
 			uv0[0].set(vertexNormals[triId.Vertex[0]].z >= 0.f ? 1.f : 0.f, 0.f);
 			uv0[1].set(vertexNormals[triId.Vertex[1]].z >= 0.f ? 1.f : 0.f, 0.f);
-			uv0[2].set(vertexNormals[triId.Vertex[2]].z >= 0.f ? 1.f : 0.f, 0.f);							
-			//				
+			uv0[2].set(vertexNormals[triId.Vertex[2]].z >= 0.f ? 1.f : 0.f, 0.f);
+			//
 			sint numVerts = 3;
 			//
 			for (uint k = 0; k < worldClipPlanes.size(); ++k)
-			{						
+			{
 				numVerts = worldClipPlanes[k].clipPolygonBack(&corner0[0], &uv0[0], &corner1[0], &uv1[0], numVerts);
 				nlassert(numVerts <= (sint) corner1.size());
 				if (numVerts == 0) break;
 				uv0.swap(uv1);
 				corner0.swap(corner1);
-			}			
+			}
 			for (sint k = 0; k < numVerts - 2; ++k)
 			{
-				uint8 alpha[3] = 
+				uint8 alpha[3] =
 				{
 					(uint8) (255.f * uv0[0].U),
 					(uint8) (255.f * uv0[k + 1].U),
@@ -485,11 +485,11 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 					destTris.push_back(CRGBAVertex(corner0[k + 1] + vertDelta, CRGBA(255, 255, 255, alpha[1])));
 					destTris.push_back(CRGBAVertex(corner0[k + 2] + vertDelta, CRGBA(255, 255, 255, alpha[2])));
 				}
-			}			
+			}
 		}
 	}
 	else
-	{	
+	{
 		for (uint triIndex = 0; triIndex < numVisibleTris; ++triIndex)
 		{
 			CTriangleId		&triId= *visibleTris[triIndex];
@@ -499,7 +499,7 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 			clippedTri.Vertices[2] = _Vertices[triId.Vertex[2]];
 			clippedTri.clip(worldClipPlanes);
 			if (clippedTri.Vertices.size() >= 3)
-			{					
+			{
 				for(uint k = 0; k < clippedTri.Vertices.size() - 2; ++k)
 				{
 					destTris.push_back(CRGBAVertex(clippedTri.Vertices[0] + vertDelta, CRGBA::White));
@@ -508,8 +508,8 @@ void CShadowPolyReceiver::computeClippedTrisWithPolyClip(const CShadowMap *shado
 				}
 			}
 		}
-	}	
-	
+	}
+
 }
 
 // ***************************************************************************
@@ -530,17 +530,17 @@ void			CShadowPolyReceiver::render(IDriver *drv, CMaterial &shadowMat, const CSh
 // ***************************************************************************
 void CShadowPolyReceiver::selectPolygon(const NLMISC::CPolygon2D &poly)
 {
-	static TTriangleGrid::TSelectionShape selectionShape;		
-	_TriangleGrid.buildSelectionShape(selectionShape, poly);	
+	static TTriangleGrid::TSelectionShape selectionShape;
+	_TriangleGrid.buildSelectionShape(selectionShape, poly);
 	_TriangleGrid.select(selectionShape);
 }
 
 // ***************************************************************************
 void			CShadowPolyReceiver::renderWithPolyClip(IDriver *drv, CMaterial &shadowMat, const CShadowMap *shadowMap, const CVector &casterPos, const CVector &vertDelta, const NLMISC::CPolygon2D &poly)
 {
-		
+
 	selectPolygon(poly);
-	renderSelection(drv, shadowMat, shadowMap, casterPos, vertDelta);	
+	renderSelection(drv, shadowMat, shadowMap, casterPos, vertDelta);
 }
 
 // ***************************************************************************
@@ -552,7 +552,7 @@ float			CShadowPolyReceiver::getCameraCollision(const CVector &start, const CVec
 		camCol.buildRay(start, end);
 	else
 		camCol.build(start, end, radius, testType==CameraColCone);
-			
+
 	// select with quadGrid
 	if(testType==CameraColSimpleRay)
 	{
@@ -562,7 +562,7 @@ float			CShadowPolyReceiver::getCameraCollision(const CVector &start, const CVec
 	{
 		_TriangleGrid.select(camCol.getBBox().getMin(), camCol.getBBox().getMax());
 	}
-	
+
 	// **** For all triangles, test if intersect the camera collision
 	TTriangleGrid::CIterator	it;
 	float		sqrMinDist= FLT_MAX;
@@ -570,7 +570,7 @@ float			CShadowPolyReceiver::getCameraCollision(const CVector &start, const CVec
 	{
 		CTriangleId		&triId= *it;
 		camCol.minimizeDistanceAgainstTri(
-			_Vertices[triId.Vertex[0]], 
+			_Vertices[triId.Vertex[0]],
 			_Vertices[triId.Vertex[1]],
 			_Vertices[triId.Vertex[2]],
 			sqrMinDist);

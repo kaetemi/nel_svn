@@ -1,5 +1,5 @@
 /** \file build_indoor.cpp
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -139,7 +139,7 @@ void	floodFillSurfaces(CCollisionMeshBuild &cmb, vector<CInteriorSurface> &surfa
 			sint32	edge, neighb;
 			for (edge=0; edge<3; ++edge)
 			{
-				if ((neighb = popFace.Edge[edge]) != -1 && 
+				if ((neighb = popFace.Edge[edge]) != -1 &&
 					cmb.Faces[neighb].InternalSurface == -1 &&
 					cmb.Faces[neighb].Surface == popFace.Surface)
 				{
@@ -215,7 +215,7 @@ void	followBorder(CInteriorSurface &surface, uint first, uint edge, uint sens, v
 			next = (current->Edge[nextEdge] == -1) ? NULL : &surface.CollisionMeshBuild->Faces[current->Edge[nextEdge]];
 			vstore.push_back(surface.CollisionMeshBuild->Vertices[current->V[pivot]]);
 		}
-		else 
+		else
 		{
 			// if the next element is inside the surface, then go to the next element
 			nlassert(next->InternalSurface == currentSurfId);
@@ -312,7 +312,7 @@ void	computeSurfaceCenter(CInteriorSurface &surface)
 	{
 		CCollisionFace	&face = surface.getFace(i);
 		CVector			v[3];
-		
+
 		for (j=0; j<3; ++j)
 			v[j] = cmb.Vertices[face.V[j]];
 
@@ -468,7 +468,7 @@ void	buildExteriorMesh(CCollisionMeshBuild &cmb, CExteriorMesh &em)
 
 		sint32			current = i;
 		sint32			next = cmb.Faces[current].Edge[edge];
-		
+
 		sint			oedge;
 		sint			pivot = (edge+1)%3;
 		sint			nextEdge = edge;
@@ -634,9 +634,9 @@ bool	computeRetriever(CCollisionMeshBuild &cmb, CLocalRetriever &lr, CVector &tr
 		translation.y = (float)ceil(translation.y);
 		translation.z = 0.0f;
 	}
-	
+
 	vector<string>	errors;
-	
+
 	cmb.link(false, errors);
 	cmb.link(true, errors);
 
@@ -649,7 +649,7 @@ bool	computeRetriever(CCollisionMeshBuild &cmb, CLocalRetriever &lr, CVector &tr
 			error += errors[i]+"\n";
 		return false;
 	}
-	
+
 	// translate the meshbuild to the local axis
 	cmb.translate(translation);
 

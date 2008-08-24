@@ -56,7 +56,7 @@ namespace NL3D
   *
   * After one's finished with IOcclusionQuery, IDriver::deleteOcclusionQuerry should be called
   *
-  * IMPORTANT : - Occlusion query objects are invalid after a driver has been deleted, and thus must be recreated when driver changes.  
+  * IMPORTANT : - Occlusion query objects are invalid after a driver has been deleted, and thus must be recreated when driver changes.
   *             - Only one occlusion query object can be active at a time, e.g IOcclusionQuery::begin() should not be called
   *               within another begin() / end() pair. Such a situation will cause an assertion.
   *             - Not all drivers support the occlusion query mechanism. This should be checked by calling IDriver::supportOcclusionQuery.
@@ -88,7 +88,7 @@ struct IOcclusionQuery
 	  */
 	virtual TOcclusionType getOcclusionType() = 0;
 	/** Get an indication about how many samples passed the z-test.
-	  * Depending on the implementation ,this may be the right number of sample, or just 0/1	  
+	  * Depending on the implementation ,this may be the right number of sample, or just 0/1
 	  */
 	virtual uint getVisibleCount() = 0;
 };

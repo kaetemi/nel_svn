@@ -27,7 +27,7 @@
 
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 //=======================================================================
 void	CInputDeviceServer::registerDevice(IInputDevice *device)
@@ -70,7 +70,7 @@ void	CInputDeviceServer::poll(CEventServer *server)
 	{
 		(*deviceIt)->begin(server);
 		(*deviceIt)->poll(this);
-	}			
+	}
 	// Sort the messages to get the right dates.
 	std::sort(_Events.begin(), _Events.end(), CInputDeviceEventLess());
 	// submit the result to the server
@@ -96,7 +96,7 @@ void	CInputDeviceServer::poll(CEventServer *server)
 	// delete the messages
 	for (eventIt = _Events.begin(); eventIt != _Events.end(); ++eventIt)
 	{
-		delete *eventIt;		
+		delete *eventIt;
 	}
 	//
 	_Events.clear();

@@ -71,7 +71,7 @@ public:
 	/** see setAnimationSampleDivisor
 	  */
 	virtual uint getAnimationSampleDivisor() const =0;
-	
+
 	/**
 	  *  Add an animation in the animation set. After adding all your animations, call build().
 	  *  This method use CPath to search the animation file.

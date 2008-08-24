@@ -27,7 +27,7 @@
 #include "nel/3d/point_light_named.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

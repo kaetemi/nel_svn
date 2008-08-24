@@ -34,7 +34,7 @@ namespace	NLMISC
 #ifdef NL_OS_WINDOWS
 #define	SMART_INLINE __forceinline
 #else
-#define	SMART_INLINE inline 
+#define	SMART_INLINE inline
 #endif
 
 
@@ -77,8 +77,8 @@ template <class TPtr, class TKey, class TResourceFinder> SMART_INLINE void	CReso
 
 // ***************************************************************************
 // Cons - dest.
-template <class TPtr, class TKey, class TResourceFinder> inline CResourcePtr<TPtr, TKey, TResourceFinder>::CResourcePtr() 
-{ 
+template <class TPtr, class TKey, class TResourceFinder> inline CResourcePtr<TPtr, TKey, TResourceFinder>::CResourcePtr()
+{
 	pinfo= static_cast<CRefCount::CPtrInfo*>(&CRefCount::NullPtrInfo);
 	Ptr= NULL;
 
@@ -157,7 +157,7 @@ template <class TPtr, class TKey, class TResourceFinder> CResourcePtr<TPtr, TKey
 }
 
 // ***************************************************************************
-template <class TPtr, class TKey, class TResourceFinder> CResourcePtr<TPtr, TKey, TResourceFinder> &CResourcePtr<TPtr, TKey, TResourceFinder>::operator=(const CResourcePtr &copy) 
+template <class TPtr, class TKey, class TResourceFinder> CResourcePtr<TPtr, TKey, TResourceFinder> &CResourcePtr<TPtr, TKey, TResourceFinder>::operator=(const CResourcePtr &copy)
 {
 	REF_TRACE("ope=(Smart)Start");
 
@@ -195,7 +195,7 @@ template <class TPtr, class TKey, class TResourceFinder> void	CResourcePtr<T>::k
 
 // ***************************************************************************
 // Cast.
-template <class TPtr, class TKey, class TResourceFinder> inline CResourcePtr<TPtr, TKey, TResourceFinder>::operator TPtr*()	const 
+template <class TPtr, class TKey, class TResourceFinder> inline CResourcePtr<TPtr, TKey, TResourceFinder>::operator TPtr*()	const
 {
 	REF_TRACE("SmartCast TPtr*()");
 
@@ -229,14 +229,14 @@ template <class TPtr, class TKey, class TResourceFinder> inline TPtr* CResourceP
 // ***************************************************************************
 // Operators.
 template <class TPtr, class TKey, class TResourceFinder> inline TPtr& CResourcePtr<TPtr, TKey, TResourceFinder>::operator*(void)  const
-{ 
+{
 	REF_TRACE("Smart *()");
-	return *Ptr; 
+	return *Ptr;
 }
 template <class TPtr, class TKey, class TResourceFinder> inline TPtr* CResourcePtr<TPtr, TKey, TResourceFinder>::operator->(void) const
-{ 
+{
 	REF_TRACE("Smart ->()");
-	return Ptr;  
+	return Ptr;
 }
 
 
@@ -249,8 +249,8 @@ template <class TPtr, class TKey, class TResourceFinder> inline TPtr* CResourceP
 
 // ***************************************************************************
 // Cons - dest.
-template <class TPtr, class TKey, class TResourceFinder> inline CStaticResourcePtr<TPtr, TKey, TResourceFinder>::CStaticResourcePtr() 
-{ 
+template <class TPtr, class TKey, class TResourceFinder> inline CStaticResourcePtr<TPtr, TKey, TResourceFinder>::CStaticResourcePtr()
+{
 	Ptr= NULL;
 
 	REF_TRACE("Smart()");
@@ -294,7 +294,7 @@ template <class TPtr, class TKey, class TResourceFinder> CStaticResourcePtr<TPtr
 }
 
 // ***************************************************************************
-template <class TPtr, class TKey, class TResourceFinder> CStaticResourcePtr<TPtr, TKey, TResourceFinder> &CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator=(const CStaticResourcePtr &copy) 
+template <class TPtr, class TKey, class TResourceFinder> CStaticResourcePtr<TPtr, TKey, TResourceFinder> &CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator=(const CStaticResourcePtr &copy)
 {
 	REF_TRACE("ope=(Smart)Start");
 
@@ -326,7 +326,7 @@ template <class TPtr, class TKey, class TResourceFinder> void	CStaticResourcePtr
 
 // ***************************************************************************
 // Cast.
-template <class TPtr, class TKey, class TResourceFinder> inline CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator TPtr*()	const 
+template <class TPtr, class TKey, class TResourceFinder> inline CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator TPtr*()	const
 {
 	REF_TRACE("SmartCast TPtr*()");
 
@@ -342,14 +342,14 @@ template <class TPtr, class TKey, class TResourceFinder> inline TPtr* CStaticRes
 // ***************************************************************************
 // Operators.
 template <class TPtr, class TKey, class TResourceFinder> inline TPtr& CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator*(void)  const
-{ 
+{
 	REF_TRACE("Smart *()");
-	return *Ptr; 
+	return *Ptr;
 }
 template <class TPtr, class TKey, class TResourceFinder> inline TPtr* CStaticResourcePtr<TPtr, TKey, TResourceFinder>::operator->(void) const
-{ 
+{
 	REF_TRACE("Smart ->()");
-	return Ptr;  
+	return Ptr;
 }
 
 

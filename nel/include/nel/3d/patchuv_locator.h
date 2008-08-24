@@ -29,7 +29,7 @@
 #include "nel/misc/vector_2f.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

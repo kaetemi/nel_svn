@@ -31,7 +31,7 @@ namespace NLMISC
 	class IStream;
 }
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 /**
@@ -51,8 +51,8 @@ public:
 	  * This may raise exception if loading failed
 	  */
 	static UPrimitiveBlock *createPrimitiveBlock(NLMISC::IStream &src);
-	/** Create a primitive block from its file name.	
-	  * This may raise exceptions if loading failed.	  
+	/** Create a primitive block from its file name.
+	  * This may raise exceptions if loading failed.
 	  */
 	static UPrimitiveBlock *createPrimitiveBlockFromFile(const std::string &fileName);
 

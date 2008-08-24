@@ -60,7 +60,7 @@ namespace NL3D {
 struct IPSMover
 {
 	virtual ~IPSMover() {}
-	
+
 	/** Send back true if uniform scaling can be applied
 	 *  If it sends false, uniform scaling leads to undefine results
 	 */
@@ -76,7 +76,7 @@ struct IPSMover
 
 	// set a non uniform scale (if supported)
 	virtual void					setScale(uint32 index, const NLMISC::CVector &s) { NL_PS_FUNC(setScale); }
-	
+
 	// get the scale of the object
 	virtual	NLMISC::CVector			getScale(uint32 index) const { NL_PS_FUNC(getScale); return NLMISC::CVector(1.f, 1.f, 1.f) ; }
 
@@ -90,12 +90,12 @@ struct IPSMover
 
 	/// if the object only stores a normal, this set the normal of the object. Otherwise it has no effect
 	virtual void					setNormal(uint32 index, NLMISC::CVector n) { NL_PS_FUNC(setNormal); }
-		 
+
 	// set a new orthogonal matrix for the object
 	virtual void					setMatrix(uint32 index, const NLMISC::CMatrix &m) = 0 ;
 	// return an orthogonal matrix of the system. No valid index -> assert
 	virtual NLMISC::CMatrix			getMatrix(uint32 index) const = 0 ;
-	
+
 };
 
 

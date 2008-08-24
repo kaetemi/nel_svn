@@ -32,7 +32,7 @@ namespace NLMISC
 	class CVectorD;
 }
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class UMoveContainer;
@@ -66,7 +66,7 @@ public:
 		  */
 		_2DOrientedBox=0x0,
 
-		/** 
+		/**
 		  * This is a movable 2d oriented cylinder. It can be oriented only on the Z axis.
 		  * It has a height. Collision can be performed only no its sides but not on its top and bottom
 		  * planes. It can move only with 3d translations.
@@ -320,7 +320,7 @@ public:
 	virtual double			getOrientation (uint8 worldImage) const =0;
 
 	/**
-	  * Set the global position of the move primitive. This method is fast because 
+	  * Set the global position of the move primitive. This method is fast because
 	  * you must pass the global position of the primitive.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
@@ -352,7 +352,7 @@ public:
 
 	/**
 	  * Insert the primitive in a world image of the move container.
-	  * 
+	  *
 	  * This primitive must a collisionable primitive.
 	  *
 	  * \param worldImage is the number of the world image where you want to insert the primitive.
@@ -369,7 +369,7 @@ public:
 	virtual void	removeFromWorldImage (uint8 worldImage) =0;
 
 	/**
-	  * Set the global position of the move primitive. Setting the global position 
+	  * Set the global position of the move primitive. Setting the global position
 	  * can take a long time if you use a UGlobalRetriever. Set the position with
 	  * this method only the first time or for teleporting.
 	  *
@@ -381,7 +381,7 @@ public:
 	virtual void	setGlobalPosition (const NLMISC::CVectorD& pos, uint8 worldImage, UGlobalPosition::TType type = UGlobalPosition::Unspecified) =0;
 
 	/**
-	  * Set the global position of the move primitive. This method is fast because 
+	  * Set the global position of the move primitive. This method is fast because
 	  * you must pass the global position of the primitive.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world

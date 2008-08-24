@@ -34,7 +34,7 @@
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -72,14 +72,14 @@ void				CAnimDetailTrav::traverse()
 		// If this object has an ancestorSkeletonModel
 		if(model->_AncestorSkeletonModel)
 		{
-			// then just skip it! because it will be parsed hierarchically by the first 
+			// then just skip it! because it will be parsed hierarchically by the first
 			// skeletonModel whith _AncestorSkeletonModel==NULL. (only if this one is visible)
 			continue;
 		}
 		else
 		{
 			// If this is a skeleton model, and because _AncestorSkeletonModel==NULL,
-			// then it means that it is the Root of a hierarchy of transform that have 
+			// then it means that it is the Root of a hierarchy of transform that have
 			// _AncestorSkeletonModel!=NULL.
 			if( model->isSkeleton() )
 			{

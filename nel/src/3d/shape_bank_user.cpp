@@ -32,7 +32,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -71,7 +71,7 @@ void CShapeBankUser::linkShapeToShapeCache(const std::string &shapeName, const s
 }
 
 // ***************************************************************************
-void CShapeBankUser::preLoadShapesFromDirectory(const std::string &shapeCacheName, 
+void CShapeBankUser::preLoadShapesFromDirectory(const std::string &shapeCacheName,
 	const std::string &path, const std::string &wildCardNotLwr, bool recurs, NLMISC::IProgressCallback *progress, bool flushTextures /*= false*/)
 {
 	// List all files From the path
@@ -84,13 +84,13 @@ void CShapeBankUser::preLoadShapesFromDirectory(const std::string &shapeCacheNam
 }
 
 // ***************************************************************************
-void CShapeBankUser::preLoadShapesFromBNP(const std::string &shapeCacheName, 
+void CShapeBankUser::preLoadShapesFromBNP(const std::string &shapeCacheName,
 		const std::string &bnpName, const std::string &wildCardNotLwr, NLMISC::IProgressCallback *progress, bool flushTextures /*= false*/)
 {
 	// List all files From the bnp
 	vector<string>	listFile;
 	CBigFile::getInstance().list(bnpName, listFile);
- 
+
 	// preLoad
 	if(!listFile.empty())
 		_ShapeBank.preLoadShapes(shapeCacheName, listFile, wildCardNotLwr, progress, flushTextures, _DriverUser->getDriver());

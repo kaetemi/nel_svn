@@ -30,7 +30,7 @@
 #include <vector>
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 /// Describe a game device
@@ -38,7 +38,7 @@ struct CGameDeviceDesc
 {
 	// type of the device
 	enum TDevType { GamePad, Joystick, DontKnow, DevTypeLast }		DevType;
-	// Friendly name for the instance. For example, "Joystick 1." 
+	// Friendly name for the instance. For example, "Joystick 1."
 	std::string	InstanceName;
 	// Friendly name for the product
 	std::string	ProductName;
@@ -72,11 +72,11 @@ struct IGameDevice : public IInputDevice
 	enum TAxis { XAxis = 0, YAxis, ZAxis, /* translation */
 				 RXAxis, RYAxis, RZAxis,   /* rotations */
 				 MaxNumAxis
-				}; 						  
+				};
 
 	/// Get a general description of this device
 	virtual const CGameDeviceDesc &getDescription()  const = 0;
-	
+
 	///\name Controls presence
 	//@{
 		// returns the number of buttons available on this game device

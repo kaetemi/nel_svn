@@ -30,7 +30,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 static const	sint	QuadDepth= 10;
@@ -168,7 +168,7 @@ void			CMiniCol::removeZone(uint16 zoneId)
 	// Then, delete it.
 	//=================
 	_Zones.erase(delZone);
-	
+
 }
 
 
@@ -278,7 +278,7 @@ bool			CMiniCol::snapToGround(CVector &pos, float hup, float hbot)
 			continue;*/
 
 		// Test if the face enclose the pos in X/Y plane.
-		// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will 
+		// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will
 		// add an overhead which is NOT negligeable compared to the following test.
 		float		a,b,c;		// 2D cartesian coefficients of line in plane X/Y.
 		// Line p0-p1.
@@ -377,7 +377,7 @@ bool			CMiniCol::getGroundNormal(const CVector &pos, CVector &normal, float hup,
 			continue;
 
 		// Test if the face enclose the pos in X/Y plane.
-		// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will 
+		// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will
 		// add an overhead which is NOT negligeable compared to the following test.
 		float		a,b,c;		// 2D cartesian coefficients of line in plane X/Y.
 		// Line p0-p1.

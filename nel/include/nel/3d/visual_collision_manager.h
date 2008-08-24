@@ -32,7 +32,7 @@
 #include "visual_collision_mesh.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -81,7 +81,7 @@ public:
 	{
 	public:
 		CVisualCollisionMesh  *Mesh;
-		const NLMISC::CMatrix *WorldMatrix;		
+		const NLMISC::CMatrix *WorldMatrix;
 		const NLMISC::CAABBox *WorldBBox;
 		uint ID;
 	};
@@ -107,7 +107,7 @@ public:
 	void						deleteEntity(CVisualCollisionEntity	*entity);
 
 
-	/** for CVisualCollisionEntity::getStaticLightSetup(). 
+	/** for CVisualCollisionEntity::getStaticLightSetup().
 	 *  \see CVisualCollisionEntity::getStaticLightSetup()
 	 *
 	 *  Build a lighting table to remap sun contribution from landscape to sun contribution for objects.
@@ -123,7 +123,7 @@ public:
 
 	/** Inform the VisualCollisionManager if the player is "inside" or "outside".
 	 *	set it to true if the player is not on Landscape.
-	 *	This is a tricky flag used for the IBBR problem: this is an issue with clusters and 
+	 *	This is a tricky flag used for the IBBR problem: this is an issue with clusters and
 	 *	"interior building that can be bigger than reality"
 	 *	It is used at getCameraCollision(), and receiveShadowMap() time
 	 */
@@ -160,8 +160,8 @@ public:
 
 	/** Use the MeshInstance Collision to rended a ShadowMap on them.
 	 *	NB: only the minimum faces touched by the shadowmap are rendered
-	 *	NB: the MeshInstance Collision use a fake lighting to avoid backface shadowing. 
-	 *		- driver light setup must be reseted 
+	 *	NB: the MeshInstance Collision use a fake lighting to avoid backface shadowing.
+	 *		- driver light setup must be reseted
 	 *		- light0 must be enabled
 	 *		- light0 setup is modified internally
 	 *	\see CTransform::receiveShadowMap() for more information

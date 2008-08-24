@@ -29,7 +29,7 @@
 
 #include "nel/3d/transform_shape.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -65,7 +65,7 @@ private:
 	// script cache to compare at each evaluate()
 	std::string			_Cache;
 	// List of instance spawned
-	struct CInstance 
+	struct CInstance
 	{
 		// the 3D model created (NULL if failed). NB: a CRefPtr is used, in case of "AutoDeletable ParticleSystem" usage
 		NLMISC::CRefPtr<CTransformShape>		Model;

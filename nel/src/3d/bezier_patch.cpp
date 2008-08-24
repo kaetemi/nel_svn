@@ -136,7 +136,7 @@ CVector		CBezierPatch::eval(float ps, float pt) const
 	mulAdd(p, Tangents[2] , s1 * t3);
 	mulAdd(p, Tangents[3] , s2 * t3);
 	mulAdd(p, Vertices[2] , s3 * t3);
-	
+
 	return p;
 }
 // ***************************************************************************
@@ -225,7 +225,7 @@ CVector		CBezierPatch::evalNormal(float ps, float pt) const
 	mulAdd(tgtS, Tangents[2] , s1 * t3);
 	mulAdd(tgtS, Tangents[3] , s2 * t3);
 	mulAdd(tgtS, Vertices[2] , s3 * t3);
-	
+
 	// Compute tangentT
 	//=================
 	// s/ds.
@@ -256,7 +256,7 @@ CVector		CBezierPatch::evalNormal(float ps, float pt) const
 	mulAdd(tgtT, Tangents[2] , s1 * t3);
 	mulAdd(tgtT, Tangents[3] , s2 * t3);
 	mulAdd(tgtT, Vertices[2] , s3 * t3);
-	
+
 
 	// Return the normal.
 	CVector	norm= tgtT^tgtS;

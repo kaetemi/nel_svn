@@ -84,7 +84,7 @@ public:
 	// @{
 	enum	TAnimValues
 	{
-		OwnerBit= CTransformShape::AnimValueLast, 
+		OwnerBit= CTransformShape::AnimValueLast,
 
 		AnimValueLast,
 	};
@@ -139,7 +139,7 @@ public:
 	 */
 	virtual void		changeMRMDistanceSetup(float distanceFinest, float distanceMiddle, float distanceCoarsest) {}
 
-	/** If there are selectable texture in this mesh shape, this replace the matching material instances with the right texture	
+	/** If there are selectable texture in this mesh shape, this replace the matching material instances with the right texture
 	 *	If getAsyncTextureMode()==true, then this replace the AsyncTexture fileNames, instead of the Materials file Names.
 	 */
 	void selectTextureSet(uint id);
@@ -150,8 +150,8 @@ public:
 	/** if true, the instance is said in "AsyncTextureMode". Ie user must fill AsyncTextures field with name of the
 	 *	textures to load. At each startAsyncTextureLoading(), the system start to load async them.
 	 *	Then, isAsyncTextureReady() should be test each frame, to know if loading has completed.
-	 *	By default, AsyncTextureMode=false. 
-	 *	When it swap from false to true, each texture file in Materials are replaced with 
+	 *	By default, AsyncTextureMode=false.
+	 *	When it swap from false to true, each texture file in Materials are replaced with
 	 *	"blank.tga", and true fileNames are copied into AsyncTextures.
 	 *	When it swap from true to false, the inverse is applied.
 	 *	NB: calling enableAsyncTextureMode(true) calls setAsyncTextureDirty(true)
@@ -165,7 +165,7 @@ public:
 	 */
 	void			startAsyncTextureLoading(const NLMISC::CVector &position);
 	/**	return true if all the async textures of the instances are uploaded.
-	 *	if was not ready before, this swap the 
+	 *	if was not ready before, this swap the
 	 *	return always true if not in async texture mode, or if startAsyncTextureLoading() has not been called
 	 *	since last enableAsyncTextureMode(true)
 	 */
@@ -176,8 +176,8 @@ public:
 	void			setAsyncTextureDistance(float dist) {_AsyncTextureDistance= dist;}
 	float			getAsyncTextureDistance() const {return _AsyncTextureDistance;}
 
-	/** User is free to flag this state, to know if startAsyncTextureLoading() should be called. 
-	 *	Internal system don't use this flag. 
+	/** User is free to flag this state, to know if startAsyncTextureLoading() should be called.
+	 *	Internal system don't use this flag.
 	 *	Default is false
 	 */
 	void			setAsyncTextureDirty(bool flag) {_AsyncTextureDirty= flag;}
@@ -212,7 +212,7 @@ public:
 	/// see CTransform::fastIntersect()
 	virtual bool		fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVector &dir, float &dist2D, float &distZ, bool computeDist2D);
 	// @}
-	
+
 protected:
 	/// Constructor
 	CMeshBaseInstance();
@@ -232,7 +232,7 @@ private:
 	// Index of the Animated lightmap in the scene
 	std::vector<sint>				_AnimatedLightmap;
 
-	std::vector<CAnimatedMorph>		_AnimatedMorphFactor; 
+	std::vector<CAnimatedMorph>		_AnimatedMorphFactor;
 
 	/// \name Async Texture Loading
 	// @{

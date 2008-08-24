@@ -31,7 +31,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -72,15 +72,15 @@ bool CEvent3dMouseListener::isModelTranslationEnabled(TAxis axis)
 		case yAxis: return _YModelTranslateEnabled ; break ;
 		case zAxis: return _ZModelTranslateEnabled ; break ;
 		default: return false ; break ;
-	}	
+	}
 }
 
 
 void CEvent3dMouseListener::truncateVect(CVector &v)
 {
-	if (!_XModelTranslateEnabled) v.x = 0.f ;	
-	if (!_YModelTranslateEnabled) v.y = 0.f ;	
-	if (!_ZModelTranslateEnabled) v.z = 0.f ;	
+	if (!_XModelTranslateEnabled) v.x = 0.f ;
+	if (!_YModelTranslateEnabled) v.y = 0.f ;
+	if (!_ZModelTranslateEnabled) v.z = 0.f ;
 }
 
 
@@ -93,7 +93,7 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 		bool bTranslateXY=false;
 		bool bTranslateZ=false;
 		bool bZoom=false;
-		
+
 
 		// Rotate Axis
 		CVector axis;
@@ -126,7 +126,7 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 		if (bRotate)
 		{
 			if (!_EnableModelMatrixEdition)
-			{							
+			{
 				// First in the hotSpot
 				CMatrix comeFromHotSpot=_Matrix;
 				comeFromHotSpot.setPos (axis);
@@ -160,12 +160,12 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 				Pivot*=turnX;
 				Pivot*=goToHotSpot;
 
-				
+
 				Pivot*=_Matrix;
-				_Matrix=Pivot;						
+				_Matrix=Pivot;
 				// Normalize, too much transformation could give an ugly matrix..
-				_Matrix.normalize (CMatrix::XYZ);			
-			
+				_Matrix.normalize (CMatrix::XYZ);
+
 			}
 			else
 			{
@@ -178,7 +178,7 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 					case zAxis : r = CQuat(CAngleAxis(_ModelMatrix.getK(), (float) Pi*2.f*(_X-mouseEvent->X))) ; break ;
 				} ;
 
-			
+
 				CMatrix rm ;
 				rm.rotate(r) ;
 
@@ -201,11 +201,11 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 
 			// Plane of the hotspot
 			if (! _EnableModelMatrixEdition)
-			{			
+			{
 				decal= axis;
 			}
 			else
-			{			
+			{
 				decal= _ModelMatrix.getPos();
 			}
 			// Choose plane to move on
@@ -279,7 +279,7 @@ void CEvent3dMouseListener::operator ()(const CEvent& event)
 				}
 			}
 		}
-		
+
 
 		// Update mouse position
 		_X=mouseEvent->X;
@@ -401,7 +401,7 @@ const NLMISC::CMatrix& CEvent3dMouseListener::getViewMatrix ()
 	// Last time
 	_LastTime=CTime::getLocalTime ();
 
-	
+
 	// Return the matrix
 	return _Matrix;
 }

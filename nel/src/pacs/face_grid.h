@@ -1,5 +1,5 @@
 /** \file face_grid.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -74,7 +74,7 @@ public:
 		float								Size;
 
 	public:
-		/// Init an empty build object with width and size 
+		/// Init an empty build object with width and size
 		void								init(uint width, float elsize);
 
 		/// Insert a value in the grid
@@ -98,8 +98,8 @@ protected:
 public:
 	/// Constructor.
 	CFaceGrid() : _Width(0), _Log2Width(0), _ElSize(0.0f) {}
-	
-	
+
+
 	/// Clear the grid.
 	void					clear();
 
@@ -191,8 +191,8 @@ inline void	CFaceGrid::CFaceGridBuild::init(uint width, float elsize)
 	Grid.resize(Width*Width);
 }
 
-inline void	CFaceGrid::CFaceGridBuild::insert(const NLMISC::CVector &bmin, 
-											  const NLMISC::CVector &bmax, 
+inline void	CFaceGrid::CFaceGridBuild::insert(const NLMISC::CVector &bmin,
+											  const NLMISC::CVector &bmax,
 											  uint32 value)
 {
 	sint	x0 = (sint)(bmin.x/Size),

@@ -42,7 +42,7 @@
 #define NL_DLM_LIGHTMAP_TYPE_SIZE	16
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -58,11 +58,11 @@ using NLMISC::CRGBA;
  *	Block can be of size of 3,5,9 or 17 * 3,5,9 or 17  (eg 3x17, or 9x9 texture).
  *
  *	Implementation note (NL_DLM_TILE_RES not defined):
- *	To make this possible easily, blocks of 10x10 are created and placed in the texture. 
- *	Hence a 9x9 texture lies in a single block, 3 textures of 3x9 lies in a block etc... 
+ *	To make this possible easily, blocks of 10x10 are created and placed in the texture.
+ *	Hence a 9x9 texture lies in a single block, 3 textures of 3x9 lies in a block etc...
  *	In worst case, lost space is 19%  (1 - 9*9 / 10*10).
  *
- *	If NL_DLM_TILE_RES is defined, then, same reasoning, with blocks of 18x18. In worst case, 
+ *	If NL_DLM_TILE_RES is defined, then, same reasoning, with blocks of 18x18. In worst case,
  *	space lost is 70%: (1 - 15*15 / 18*18). But others cases are pretty good (90% to 100%)
  *
  * 	NB: TextureDLM ensure that point (MaxX,MaxY) of this texture is black. UseFull for patch who
@@ -147,9 +147,9 @@ private:
 		uint16		PosX, PosY;
 
 		/* BitField of Space free (1 if not free).
-			NL_DLM_TILE_RES defined: since 3x3 is the minimum size, there is at max 6*6=36 lightmaps in a blocks. 
+			NL_DLM_TILE_RES defined: since 3x3 is the minimum size, there is at max 6*6=36 lightmaps in a blocks.
 			Hence a uint64.
-			NL_DLM_TILE_RES defined: since 2x2 is the minimum size, there is at max 5*5=25 lightmaps in a blocks. 
+			NL_DLM_TILE_RES defined: since 2x2 is the minimum size, there is at max 5*5=25 lightmaps in a blocks.
 			(NB: a uint32 would be sufficient, but never mind)
 		*/
 		uint64		FreeSpace;
@@ -170,7 +170,7 @@ private:
 	/// Number of block per line
 	uint				_WBlock;
 
-	/** The list of blocks. There is TextureWidth/NL_DLM_BLOCK_SIZE * TextureHeight/NL_DLM_BLOCK_SIZE blocks, 
+	/** The list of blocks. There is TextureWidth/NL_DLM_BLOCK_SIZE * TextureHeight/NL_DLM_BLOCK_SIZE blocks,
 	 *	ranged from left to right then top to bottom.
 	 */
 	std::vector<CBlock>	_Blocks;

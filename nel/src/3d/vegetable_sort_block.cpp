@@ -32,7 +32,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -47,7 +47,7 @@ CVegetableSortBlock::CVegetableSortBlock()
 	_NTriangles= 0;
 	_NIndices= 0;
 	_Dirty= false;
-	_UnderWater= false;	
+	_UnderWater= false;
 	NL_SET_IB_NAME(_SortedTriangleArray, "CVegetableSortBlock");
 }
 
@@ -116,14 +116,14 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 		_SortedTriangleArray.setNumIndexes(_NIndices * NL3D_VEGETABLE_NUM_QUADRANT);
 	}
 
-	// resize an array for sorting.	
+	// resize an array for sorting.
 	static	std::vector<CSortTri>	triSort;
 	static	std::vector<uint32>		triIndices32;
 	static	std::vector<uint16>		triIndices16;
 	// don't use resize because fill with default values. size() is the capacity here.
 	if(triSort.size()<_NTriangles)
 	{
-		triSort.resize(_NTriangles);		
+		triSort.resize(_NTriangles);
 	}
 
 	if (ZSortHardMode)
@@ -146,10 +146,10 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 		while(ptrIg)
 		{
 			CVegetableInstanceGroup::CVegetableRdrPass	&vegetRdrPass= ptrIg->_RdrPass[NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT];
-			nlassert(vegetRdrPass.HardMode);	
+			nlassert(vegetRdrPass.HardMode);
 			CIndexBufferRead ibaRead;
-			vegetRdrPass.TriangleIndices.lock (ibaRead);			
-			nlassert(ibaRead.getFormat() == CIndexBuffer::Indices16);			
+			vegetRdrPass.TriangleIndices.lock (ibaRead);
+			nlassert(ibaRead.getFormat() == CIndexBuffer::Indices16);
 			const uint16		*triSrcPtr= (const uint16 *) ibaRead.getPtr();
 			// add only zsort rdrPass triangles.
 			for(uint i=0; i<vegetRdrPass.NTriangles; i++)
@@ -158,7 +158,7 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 				*(triIdxPtr++)= *(triSrcPtr++);
 				*(triIdxPtr++)= *(triSrcPtr++);
 				*(triIdxPtr++)= *(triSrcPtr++);
-			}			
+			}
 			// next Ig in the SortBlock
 			ptrIg= (CVegetableInstanceGroup*)(ptrIg->Next);
 		}
@@ -173,7 +173,7 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 			CVegetableInstanceGroup::CVegetableRdrPass	&vegetRdrPass= ptrIg->_RdrPass[NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT];
 			nlassert(!vegetRdrPass.HardMode);
 			CIndexBufferRead ibaRead;
-			vegetRdrPass.TriangleIndices.lock (ibaRead);			
+			vegetRdrPass.TriangleIndices.lock (ibaRead);
 			nlassert(ibaRead.getFormat() == CIndexBuffer::Indices32);
 			const uint32		*triSrcPtr= (const uint32 *) ibaRead.getPtr();
 			// add only zsort rdrPass triangles.
@@ -183,7 +183,7 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 				*(triIdxPtr++)= *(triSrcPtr++);
 				*(triIdxPtr++)= *(triSrcPtr++);
 				*(triIdxPtr++)= *(triSrcPtr++);
-			}			
+			}
 			// next Ig in the SortBlock
 			ptrIg= (CVegetableInstanceGroup*)(ptrIg->Next);
 		}
@@ -241,7 +241,7 @@ void			CVegetableSortBlock::updateSortBlock(CVegetableManager &vegetManager)
 				*(pIdx++)= (uint16) triIndices16[idTriIdx+0];
 				*(pIdx++)= (uint16) triIndices16[idTriIdx+1];
 				*(pIdx++)= (uint16) triIndices16[idTriIdx+2];
-			}			
+			}
 		}
 		else
 		{

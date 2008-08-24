@@ -181,21 +181,21 @@ class	UTextureFile : virtual public UTexture
 {
 public:
 
-	/** 
+	/**
 	 * Set the name of the file containing the texture
 	 * \param name of the file
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
+	 */
 	virtual	void setFileName(std::string s) =0;
 
 
-	/** 
+	/**
 	 * get the name of the file containing the texture
 	 * \return name of the file
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
+	 */
 	virtual	std::string getFileName() const =0;
 
 	/// tells if this texture allow the driver to degrade it (default is false for UTextureFile).

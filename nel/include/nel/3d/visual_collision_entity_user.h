@@ -30,7 +30,7 @@
 #include "nel/3d/visual_collision_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -73,7 +73,7 @@ public:
 
 	virtual bool	getSurfaceInfo(const CVector &pos, CSurfaceInfo &surfaceInfo);
 
-	virtual bool	getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos, std::vector<CPointLightInfluence> &pointLightList, 
+	virtual bool	getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos, std::vector<CPointLightInfluence> &pointLightList,
 		uint8 &sunContribution, NLMISC::CRGBA &localAmbient);
 
 

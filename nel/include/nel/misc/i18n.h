@@ -38,7 +38,7 @@ namespace NLMISC {
 
 /**
  * Class for the internationalization. It's a singleton pattern.
- * 
+ *
  * This class provide an easy way to localize all string.
  * First you load the language file with \c load().
  * Now, you can get a localized string with his association with \c get().
@@ -60,7 +60,7 @@ namespace NLMISC {
  *	between language flavor (eg Chinese is ISO 639-1 zh, but come in
  *	traditional or simplified form. So we append the country code :
  *	zh-CN (china) for simplified, zh for traditional).
- *	
+ *
  *
  * \author Vianney Lecroart
  * \author Nevrax France
@@ -115,7 +115,7 @@ public:
 	static void load (const std::string &languageCode);
 
 	/** Load a language file from its filename
-	  * \param filename name of the language file to load, with its extension	  
+	  * \param filename name of the language file to load, with its extension
 	  * \param reload The file is being reloaded so error message won't be issued for string that are overwritten
 	  */
 	static void loadFromFilename (const std::string &filename, bool reload);
@@ -126,7 +126,7 @@ public:
 	/// Find a string in the selected language and return his association.
 	static const ucstring &get (const std::string &label);
 
-	// Test if a string has a translation in the selected language. 
+	// Test if a string has a translation in the selected language.
 	// NB : The empty string is considered to have a translation
 	static bool			   hasTranslation(const std::string &label);
 
@@ -136,14 +136,14 @@ public:
 	 *	EF,BB, BF.
 	 *	16 bits encoding can be recognized by the official header :
 	 *	FF, FE, witch can be reversed if the data are MSB first.
-	 *	
+	 *
 	 *	Optionally, you can force the reader to consider the file as
 	 *	UTF-8 encoded.
 	 *	Optionally, you can ask the reader to interpret #include commands.
 	 */
-	static void readTextFile(const std::string &filename, 
-								ucstring &result, bool forceUtf8 = false, 
-								bool fileLookup = true, 
+	static void readTextFile(const std::string &filename,
+								ucstring &result, bool forceUtf8 = false,
+								bool fileLookup = true,
 								bool preprocess = false,
 								TLineFormat lineFmt = LINE_FMT_NO_CARE,
 							    bool warnIfIncludesNotFound = true);
@@ -155,7 +155,7 @@ public:
 	 *	EF,BB, BF.
 	 *	16 bits encoding can be recognized by the official header :
 	 *	FF, FE, witch can be reversed if the data are MSB first.
-	 *	
+	 *
 	 *	Optionally, you can force the reader to consider the file as
 	 *	UTF-8 encoded.
 	 */
@@ -199,10 +199,10 @@ public:
 	//@}
 
 	//@{
-	//\name Hash code tools. 
+	//\name Hash code tools.
 	// Generate a hash value for a given string
 	static uint64	makeHash(const ucstring &str);
-	// convert a hash value to a readable string 
+	// convert a hash value to a readable string
 	static std::string hashToString(uint64 hash);
 	// convert a readable string into a hash value.
 	static uint64 stringToHash(const std::string &str);
@@ -245,9 +245,9 @@ private:
 	static bool loadFileIntoMap(const std::string &filename, StrMapContainer &dest);
 
 	/// The internal read function, it does the real job of readTextFile
-	static void _readTextFile(const std::string &filename, 
-								ucstring &result, bool forceUtf8, 
-								bool fileLookup, 
+	static void _readTextFile(const std::string &filename,
+								ucstring &result, bool forceUtf8,
+								bool fileLookup,
 								bool preprocess,
 								TLineFormat lineFmt,
 							    bool warnIfIncludesNotFound,

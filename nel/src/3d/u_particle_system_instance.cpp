@@ -68,17 +68,17 @@ NLMISC::CRGBA UParticleSystemInstance::getUserColor() const
 
 // ***************************************************************************
 void		UParticleSystemInstance::setUserParam(uint index, float value)
-{	
+{
 	if (index >= MaxPSUserParam)
 	{
 		nlwarning("invalid user param index");
 		return;
-	}	
+	}
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	// object->getPS()->setUserParam(index, value);
 	IAnimatedValue *av = object->getValue(CParticleSystemModel::PSParam0 + index);
 	NLMISC::safe_cast<CAnimatedValueFloat *>(av)->Value = value;
-	object->touch(CParticleSystemModel::PSParam0 + index, CParticleSystemModel::OwnerBit);	
+	object->touch(CParticleSystemModel::PSParam0 + index, CParticleSystemModel::OwnerBit);
 }
 
 // ***************************************************************************
@@ -118,7 +118,7 @@ bool	UParticleSystemInstance::emit(uint32 anId, uint quantity)
 	if (numLb == 0) return false; // INVALID ID !!
 	for (uint k = 0; k < numLb; ++k)
 	{
-		CPSLocatedBindable *lb = ps->getLocatedBindableByExternID(id, k);		
+		CPSLocatedBindable *lb = ps->getLocatedBindableByExternID(id, k);
 		if (lb->getType() == PSEmitter)
 		{
 			CPSEmitter *e = NLMISC::safe_cast<CPSEmitter *>(lb);
@@ -152,7 +152,7 @@ bool UParticleSystemInstance::removeByID(uint32 anId)
 		for (uint l = 0; l < nbInstances; ++l)
 		{
 			owner->deleteElement(0);
-		}		
+		}
 	}
 	return true;
 }
@@ -193,14 +193,14 @@ bool UParticleSystemInstance::setActive(uint32 anId, bool active)
 	for (uint k = 0; k < numLb; ++k)
 	{
 		CPSLocatedBindable *lb = ps->getLocatedBindableByExternID(id, k);
-		lb->setActive(active);		
+		lb->setActive(active);
 	}
 	return true;
 }
 
 // ***************************************************************************
 void UParticleSystemInstance::activateEmitters(bool active)
-{	
+{
 	(NLMISC::safe_cast<CParticleSystemModel *>(_Object))->activateEmitters(active);
 }
 
@@ -232,7 +232,7 @@ bool UParticleSystemInstance::isShared() const
 	if(object->Shape)
 	{
 		return NLMISC::safe_cast<CParticleSystemShape *>((IShape *) object->Shape)->isShared();
-	}	
+	}
 	return false;
 }
 
@@ -321,7 +321,7 @@ void UParticleSystemInstance::setUserMatrix(const NLMISC::CMatrix &userMat)
 void UParticleSystemInstance::forceSetUserMatrix(const NLMISC::CMatrix &userMat)
 {
 	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
-	object->forceSetUserMatrix(userMat);	
+	object->forceSetUserMatrix(userMat);
 }
 
 
@@ -357,7 +357,7 @@ bool UParticleSystemInstance::isValid() const
 void UParticleSystemInstance::stopSound()
 {
 	if (!_Object) return;
-	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);	
+	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->stopSound();
 }
 
@@ -365,7 +365,7 @@ void UParticleSystemInstance::stopSound()
 void UParticleSystemInstance::reactivateSound()
 {
 	if (!_Object) return;
-	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);	
+	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	object->reactivateSound();
 }
 

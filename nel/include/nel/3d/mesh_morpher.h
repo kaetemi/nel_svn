@@ -30,7 +30,7 @@
 #include "nel/misc/object_vector.h"
 #include <vector>
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CVertexBuffer;
@@ -66,7 +66,7 @@ class CMeshMorpher
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	typedef enum
 	{
 		OriginalAll=0,		// The vertex is the same as original into VBDst and VBHard
@@ -91,10 +91,10 @@ public:
 
 	void update (std::vector<CAnimatedMorph> *pBSFactor);
 	void updateSkinned (std::vector<CAnimatedMorph> *pBSFactor);
-	
+
 	// For RawSkin case.
 	void updateRawSkin (CVertexBuffer *vbOri,
-						NLMISC::CObjectVector<CRawSkinVertex*, false>	&vertexRemap, 
+						NLMISC::CObjectVector<CRawSkinVertex*, false>	&vertexRemap,
 						std::vector<CAnimatedMorph> *pBSFactor);
 
 	void serial (NLMISC::IStream &f) throw(NLMISC::EStream);
@@ -121,5 +121,5 @@ private:
 
 
 #endif // NL_MESH_MORPHER_H
-            
+
 /* End of mesh_morpher.h */

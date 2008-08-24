@@ -1,6 +1,6 @@
 
 /** \file logic_state_machine.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -56,9 +56,9 @@ void xmlCheckNodeName (xmlNodePtr &node, const char *nodeName)
 
 		// Make an error message
 		char tmp[512];
-		smprintf (tmp, 512, "LogicStateMachine STATE_MACHINE XML Syntax error in block line %d, node %s should be %s", 
+		smprintf (tmp, 512, "LogicStateMachine STATE_MACHINE XML Syntax error in block line %d, node %s should be %s",
 			(int)node->content, node->name, nodeName);
-		
+
 		nlinfo (tmp);
 		nlstop;
 		throw EXmlParsingError (tmp);
@@ -81,7 +81,7 @@ std::string getXMLProp (xmlNodePtr node, const char *propName)
 	{
 		// Make an error message
 		char tmp[512];
-		smprintf (tmp, 512, "LogicStateMachine XML Syntax error in block %s line %d, aguments Name not found", 
+		smprintf (tmp, 512, "LogicStateMachine XML Syntax error in block %s line %d, aguments Name not found",
 			node->name, (int)node->content);
 		throw EXmlParsingError (tmp);
 		return "";
@@ -91,7 +91,7 @@ std::string getXMLProp (xmlNodePtr node, const char *propName)
 
 //---------------------------------------------------
 // setCurrentState :
-// 
+//
 //---------------------------------------------------
 void CLogicStateMachine::setCurrentState( string stateName )
 {
@@ -99,7 +99,7 @@ void CLogicStateMachine::setCurrentState( string stateName )
 	if( itStates != _States.end() )
 	{
 		(*itStates).second.exitState();
-	
+
 		_CurrentState = stateName;
 
 		(*itStates).second.enterState();
@@ -117,12 +117,12 @@ void CLogicStateMachine::setCurrentState( string stateName )
 
 //---------------------------------------------------
 // addCondition :
-// 
+//
 //---------------------------------------------------
-void CLogicStateMachine::addCondition( CLogicCondition condition ) 
-{ 
+void CLogicStateMachine::addCondition( CLogicCondition condition )
+{
 	condition.setLogicStateMachine(this);
-	_Conditions.insert(make_pair(condition.getName(),condition)); 
+	_Conditions.insert(make_pair(condition.getName(),condition));
 
 } // addCondition //
 
@@ -130,13 +130,13 @@ void CLogicStateMachine::addCondition( CLogicCondition condition )
 
 //---------------------------------------------------
 // addState :
-// 
+//
 //---------------------------------------------------
-void CLogicStateMachine::addState( CLogicState logicState ) 
+void CLogicStateMachine::addState( CLogicState logicState )
 {
 	logicState.setLogicStateMachine( this );
 	_States.insert( std::make_pair(logicState.getName(),logicState) );
-	
+
 } // addState //
 
 
@@ -144,7 +144,7 @@ void CLogicStateMachine::addState( CLogicState logicState )
 
 //---------------------------------------------------
 // addSIdMap :
-// 
+//
 //---------------------------------------------------
 void CLogicStateMachine::addSIdMap( const TSIdMap& sIdMap )
 {
@@ -161,10 +161,10 @@ void CLogicStateMachine::addSIdMap( const TSIdMap& sIdMap )
 
 //---------------------------------------------------
 // processLogic :
-// 
+//
 //---------------------------------------------------
 void CLogicStateMachine::processLogic()
-{	
+{
 	// call processLogic for the current state
 	map<string,CLogicState>::iterator itStates = _States.find( _CurrentState );
 	nlassert( itStates != _States.end() );
@@ -176,14 +176,14 @@ void CLogicStateMachine::processLogic()
 	{
 		(*itCount).second.update();
 	}
-	
+
 } // processLogic //
 
 
 
 //---------------------------------------------------
 // getMessagesToSend :
-// 
+//
 //---------------------------------------------------
 void CLogicStateMachine::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 {
@@ -191,8 +191,8 @@ void CLogicStateMachine::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 	for( itState = _States.begin(); itState != _States.end(); ++itState )
 	{
 		(*itState).second.getMessagesToSend( msgs );
-	}	
-	
+	}
+
 } // getMessagesToSend //
 
 
@@ -200,7 +200,7 @@ void CLogicStateMachine::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 
 //---------------------------------------------------
 // getVariable :
-// 
+//
 //---------------------------------------------------
 bool CLogicStateMachine::getVariable( std::string& varName, CLogicVariable& var )
 {
@@ -217,7 +217,7 @@ bool CLogicStateMachine::getVariable( std::string& varName, CLogicVariable& var 
 		var = (*itCount).second;
 		return true;
 	}
-	
+
 	return false;
 
 } // getVariable //
@@ -226,7 +226,7 @@ bool CLogicStateMachine::getVariable( std::string& varName, CLogicVariable& var 
 
 //---------------------------------------------------
 // getCondition :
-// 
+//
 //---------------------------------------------------
 bool CLogicStateMachine::getCondition( const std::string& condName, CLogicCondition& cond )
 {
@@ -237,7 +237,7 @@ bool CLogicStateMachine::getCondition( const std::string& condName, CLogicCondit
 		return true;
 	}
 	else
-	{ 
+	{
 		return false;
 	}
 
@@ -246,7 +246,7 @@ bool CLogicStateMachine::getCondition( const std::string& condName, CLogicCondit
 
 //---------------------------------------------------
 // modifyVariable :
-// 
+//
 //---------------------------------------------------
 void CLogicStateMachine::modifyVariable( string varName, string modifOperator, sint64 value )
 {
@@ -271,20 +271,20 @@ void CLogicStateMachine::modifyVariable( string varName, string modifOperator, s
 
 //---------------------------------------------------
 // serial :
-// 
+//
 //---------------------------------------------------
 /*void CLogicStateMachine::serial( IStream &f )
 {
 	f.xmlPush("STATE_MACHINE");
 
-	
+
 	f.serialCont( _Variables );
 	f.serialCont( _Counters );
 	f.serialCont( _Conditions );
 	f.serialCont( _States );
 	f.serial( _CurrentState );
 	f.serial( _Name );
-	
+
 	if( f.isReading() )
 	{
 		// set the the logic state machine addr in each state
@@ -301,7 +301,7 @@ void CLogicStateMachine::modifyVariable( string varName, string modifOperator, s
 			(*itCond).second.setLogicStateMachine( this );
 		}
 	}
-	
+
 	f.xmlPop();
 
 } // serial //*/
@@ -314,7 +314,7 @@ void CLogicStateMachine::modifyVariable( string varName, string modifOperator, s
 void CLogicStateMachine::displayVariables()
 {
 	multimap<CEntityId,string> allVariables;
-	
+
 	// // get vars referenced in the states
 	map<string, CLogicState>::iterator itS;
 	for( itS = _States.begin(); itS != _States.end(); ++itS )
@@ -330,7 +330,7 @@ void CLogicStateMachine::displayVariables()
 	unknown.setDynamicId( 0 );
 	pair<multimap<CEntityId,string>::iterator,multimap<CEntityId,string>::iterator> itVarsRng = allVariables.equal_range(unknown);
 	multimap<CEntityId,string>::iterator itVars;
-	
+
 	for( itVars = itVarsRng.first; itVars != itVarsRng.second; )
 	{
 		multimap<CEntityId,string>::iterator itDel = itVars++;
@@ -368,7 +368,7 @@ void CLogicStateMachine::displayVariables()
 		map<string, CLogicVariable>::const_iterator itV = _Variables.find( *itUV );
 		nlinfo("(-)%s = %f",(*itV).first.c_str(),(double)(*itV).second.getValue());
 	}
-	
+
 } // displayVariables //
 
 
@@ -417,25 +417,25 @@ void CLogicStateMachine::setVerbose( string varName, bool b )
 		}
 		return;
 	}
-	
+
 	sint8 filter = -1;
 	string motif;
 	// *xxx* => we look for a string with xxx inside
-	if( varName[0]=='*' && varName[varName.size()-1]=='*') 
+	if( varName[0]=='*' && varName[varName.size()-1]=='*')
 	{
 		motif = varName.substr(1,varName.size()-2);
 		filter = 0;
 	}
 	else
 	// *xxx => we look for a string with xxx at the end
-	if( varName[0]=='*' ) 
+	if( varName[0]=='*' )
 	{
 		motif = varName.substr(1,varName.size()-1);
 		filter = 1;
 	}
 	else
 	// xxx* => we look for a string with xxx at the begining
-	if( varName[varName.size()-1]=='*' ) 
+	if( varName[varName.size()-1]=='*' )
 	{
 		motif = varName.substr(0,varName.size()-1);
 		filter = 2;
@@ -483,7 +483,7 @@ void CLogicStateMachine::setVerbose( string varName, bool b )
 	{
 		nlinfo("the verbose mode for variable \"%s\" has been desactivated",varName.c_str());
 	}
-	
+
 } // setVerbose //
 
 
@@ -519,7 +519,7 @@ bool testNameWithFilter( sint8 filter, string motif, string varName )
 				}
 			}
 			break;
-	
+
 			// xxx*
 			case 2 :
 			{
@@ -559,7 +559,7 @@ void CLogicStateMachine::write (xmlDocPtr doc) const
 	{
 		(*c2it).second.write(node);
 	}
-	
+
 	for (std::map<std::string, CLogicState>::const_iterator sit = _States.begin(); sit != _States.end(); sit++)
 	{
 		(*sit).second.write(node);

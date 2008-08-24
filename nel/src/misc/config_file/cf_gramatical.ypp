@@ -113,7 +113,7 @@ inst	:	FILELINE STRING INTEGER
 
 				if (cf_CurrentFile != NULL)
 					free(cf_CurrentFile);
-				// store the filename 
+				// store the filename
 				cf_CurrentFile = strdup($2.String);
 				// store the current line minus 1 because the #fileline count for a line
 				cf_CurrentLine = $3.Int-1;
@@ -161,7 +161,7 @@ inst:		VARIABLE ASSIGN expression SEMICOLON
 				}
 				else if (cf_OverwriteExistingVariable || (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i].Root || !strcmp($1.String,"RootConfigFilename"))
 				{
-					// reaffectation d'une variable 
+					// reaffectation d'une variable
 					Var.Callback = (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i].Callback;
 					DEBUG_PRINTF ("yacc: reassign var name '%s' type %d\n", Var.Name.c_str(), Var.Type);
 					if (Var != (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i] && Var.Callback != NULL)

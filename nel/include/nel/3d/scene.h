@@ -104,7 +104,7 @@ class	CWaterEnvMap;
  *		- ITransformShape is the instance, which smart_point to a IShape.
  *		- user can add shape manually in the scene CShapeBank with CShapeBank::add (), or remove them with CShapeBank::release ().
  *		- user create instance of a shape with CScene::createInstance(string shapeName);
- *			This create/load auto the shape if needed (searching in CPath, shapename must be a valid file name), 
+ *			This create/load auto the shape if needed (searching in CPath, shapename must be a valid file name),
  *			and then create the instance, with help of IShape::createInstance().
  *
  * \author Lionel Berenguier
@@ -114,14 +114,14 @@ class	CWaterEnvMap;
 class CScene
 {
 public:
-	
+
 	/// \name Basic registration.
 	//@{
 	/// Register Basic models
 	static void		registerBasics();
 
 	/**
-	 * Register a model, indicating from which he derive. 
+	 * Register a model, indicating from which he derive.
 	 * \param idModel the Unique Id of the registered model
 	 * \param idModelBase the Unique Id of the base calss of the registered model
 	 * \param creator the function which create the registered model.
@@ -145,7 +145,7 @@ public:
 	void			setDriver(IDriver *drv);
 	/// Get the driver of render Traversal.
 	IDriver			*getDriver() const;
-	
+
 
 	/** Release all relative to the scene (Models, traversals...)... Destroy the Basic traversals too.
 	 *	The Lod Character Manager is reset() ed, but not deleted (at dtor only).
@@ -161,7 +161,7 @@ public:
 	 * NB: no Driver clear buffers (color or ZBuffer) are done....
 	 * This call t->traverse() function to registered render traversal following their order given.
 	 * NB: assert-crash if you are between a beginPartRender() and a endPartRender()
-	 * \param doHrcPass set it to false to indicate that the CHrcTrav have not to be traversed. UseFull to optimize if 
+	 * \param doHrcPass set it to false to indicate that the CHrcTrav have not to be traversed. UseFull to optimize if
 	 * you know that NONE of your models have moved (a good example is a shoot of the scene from different cameras).
 	 */
 	void			render(bool	doHrcPass=true);
@@ -206,8 +206,8 @@ public:
 		return _Viewport;
 	}
 
-	/** Special For Camera Third person. Traverse the ClusterSystem with a Ray 
-	 *	(clip through portals, cluster system hierarchy...), to find where could lies 
+	/** Special For Camera Third person. Traverse the ClusterSystem with a Ray
+	 *	(clip through portals, cluster system hierarchy...), to find where could lies
 	 *	the camera at End point.
 	 *	\param endPos may be modified to ensure that it lies in a cluster of the found cluster system
 	 *	\return the found cluster System
@@ -241,7 +241,7 @@ public:
 	void			deleteModel(CTransform *model);
 
 	//@}
-	
+
 	/// \name Instance Mgt.
 	//@{
 	/// Set the shape bank
@@ -293,7 +293,7 @@ public:
 	/// get the ellapsed time (in second) between the last 2 calls of animate.
 	TAnimationTime		getEllapsedTime(void) const { return _EllapsedTime ; }
 
-	/** System time is a time that always run (independent from the animation time that run only on animate()) 
+	/** System time is a time that always run (independent from the animation time that run only on animate())
 	 *	It is updated at beginning of render()
 	 */
 	double				getCurrentSystemTime() const {return _GlobalSystemTime;}
@@ -460,11 +460,11 @@ public:
 	  */
 	uint		getMaxLightContribution() const;
 
-	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits 
+	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits
 	 *	of the light (attenuationEnd), the light can be darkened according to some threshold.
 	 *	The resultLightColor begin to fade when distModelToLight== attEnd- threshold*(attEnd-attBegin).
 	 *	when distModelToLight== 0, resultLightColor==Black.
-	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will 
+	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will
 	 *	generally darken the global effects of lights.
 	 *	NB: clamp(value, 0, 1);
 	 */
@@ -518,7 +518,7 @@ public:
 	void				setAutomaticAnimationSet(CAnimationSet *as);
 
 	/// Get a reference to the set of automatic animations
-	CAnimationSet		*getAutomaticAnimationSet() const { return _AutomaticAnimationSet; }	
+	CAnimationSet		*getAutomaticAnimationSet() const { return _AutomaticAnimationSet; }
 
 
 	/// Get the async texture manager. NULL if was not setuped
@@ -589,7 +589,7 @@ public:
 		// Set the current context for flares. context must be < to MaxNumFlareContexts
 		void	setFlareContext(uint context) { nlassert(context < MaxNumFlareContexts); _FlareContext = context; }
 		// Get the current context for flares
-		uint    getFlareContext() const { return _FlareContext; }		
+		uint    getFlareContext() const { return _FlareContext; }
 	// @}
 
 
@@ -629,7 +629,7 @@ public:
 	void			setWaterCallback(IWaterSurfaceAddedCallback *wcb) { _WaterCallback = wcb; }
 	IWaterSurfaceAddedCallback *getWaterCallback() const { return _WaterCallback; }
 
-	void			setLandscapePolyDrawingCallback(ILandscapePolyDrawingCallback *lpd) 
+	void			setLandscapePolyDrawingCallback(ILandscapePolyDrawingCallback *lpd)
 	{ _PolyDrawingCallback = lpd;}
 	ILandscapePolyDrawingCallback *getLandscapePolyDrawingCallback() const { return _PolyDrawingCallback;}
 
@@ -642,11 +642,11 @@ public:
 
 	// debugging aid : draw all occlusion test mesh that are used by flares
 	void			renderOcclusionTestMeshs();
-	
+
 	// Set a water envmap to be used with water surfaces in that scene. Water envmap may be shared accross several scenes.
 	void		  setWaterEnvMap(CWaterEnvMap *waterEnvMap) { _WaterEnvMap = waterEnvMap; }
 	// Get currenlty used water envmap for that scene.
-	CWaterEnvMap *getWaterEnvMap() const { return _WaterEnvMap; }	
+	CWaterEnvMap *getWaterEnvMap() const { return _WaterEnvMap; }
 	/** Update water envmaps. Water textures that need to be updated includes UWaterEnvMap textures & Day/Night textures (as defined in the water material).
 	  * Should be called at the beginning of the frame before anything is rendered.
 	  */
@@ -661,18 +661,18 @@ private:
 
 	// the current time
 	TGlobalAnimationTime  _CurrentTime ;
-	
+
 	// the real time
 	TGlobalAnimationTime  _RealTime;
 	TGlobalAnimationTime  _InitTime;
-	
+
 	// true when its the first call of animate
 	bool _FirstAnimateCall ;
 
 	// the ellapsed time
 	TAnimationTime  _EllapsedTime ;
 
-	// System time is a time that always run (independent from the animation time that run only on animate()) 
+	// System time is a time that always run (independent from the animation time that run only on animate())
 	double	_DeltaSystemTimeBetweenRender;
 	double	_GlobalSystemTime;
 	uint64  _NumRender; // the number of time render has been called
@@ -697,15 +697,15 @@ private:
 
 
 	// The Ligths automatic movements
-	
+
 	std::map<std::string, uint>					_AnimatedLightNameToIndex;
 	std::list<CAnimatedLightmap>				_AnimatedLight;
 	std::vector<CAnimatedLightmap*>				_AnimatedLightPtr;
 	CPlayListManager _LMAnimsAuto;
 
-	/* Lightmap factor for each lightmap group. 
+	/* Lightmap factor for each lightmap group.
 	 * size() must be == to CAnimatedLightmap::_GroupColor.size () */
-	std::vector<NLMISC::CRGBA>		_LightGroupColor;		
+	std::vector<NLMISC::CRGBA>		_LightGroupColor;
 
 	// List of InstanceGroup to animate PointLightFactor.
 	typedef std::set<CInstanceGroup*>	TAnimatedIgSet;
@@ -743,7 +743,7 @@ private:
 	uint8						_CoarseMeshLightingUpdate;
 
 	/// \name Particle systems specific
-	//@{		
+	//@{
 		CParticleSystemManager	_ParticleSystemManager;
 	//@}
 
@@ -753,10 +753,10 @@ private:
 	float						_GlobalWindPower;
 	CVector						_GlobalWindDirection;
 	//@}
-	
+
 
 	// A set of automatic animation
-	NLMISC::CSmartPtr<CAnimationSet>			_AutomaticAnimationSet;	
+	NLMISC::CSmartPtr<CAnimationSet>			_AutomaticAnimationSet;
 
 
 	// The async texture manager, setuped by the user.
@@ -783,7 +783,7 @@ private:
 
 	// List of shadow casters in the scene
 	TShadowCasterList			_ShadowCasterList;
-	
+
 // ******************
 private:
 	struct	CModelEntry
@@ -827,13 +827,13 @@ private:
 
 	UScene::TRenderPart	_RenderedPart;
 	void	renderOcclusionTestMeshsWithCurrMaterial();
-	CWaterEnvMap	*_WaterEnvMap;	
+	CWaterEnvMap	*_WaterEnvMap;
 	/// Delayed model creation For skeleton spawn script animation
 	std::vector<CSSSModelRequest>		_SSSModelRequests;
 	void									flushSSSModelRequests();
 	// common vb for water display
 	CVertexBuffer	 _WaterVB;
-	
+
 
 };
 

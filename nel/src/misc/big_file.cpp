@@ -90,7 +90,7 @@ void CBigFile::CThreadFileArray::currentThreadFinished()
 		if ((*ptr)[k].File)
 		{
 			fclose((*ptr)[k].File);
-			(*ptr)[k].File = NULL;			
+			(*ptr)[k].File = NULL;
 		}
 	}
 	delete ptr;
@@ -138,7 +138,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 	// Open the big file.
 	handle.File = fopen (sBigFileName.c_str(), "rb");
 	if (handle.File == NULL)
-		return false;	
+		return false;
 	uint32 nFileSize=CFile::getFileSize (handle.File);
 	//nlfseek64 (handle.File, 0, SEEK_END);
 	//uint32 nFileSize = ftell (handle.File);
@@ -146,7 +146,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 	// Result
 	if (nlfseek64 (handle.File, nFileSize-4, SEEK_SET) != 0)
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		return false;
 	}
@@ -154,14 +154,14 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 	uint32 nOffsetFromBegining;
 	if (fread (&nOffsetFromBegining, sizeof(uint32), 1, handle.File) != 1)
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		return false;
 	}
 
 	if (nlfseek64 (handle.File, nOffsetFromBegining, SEEK_SET) != 0)
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		return false;
 	}
@@ -170,7 +170,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 	uint32 nNbFile;
 	if (fread (&nNbFile, sizeof(uint32), 1, handle.File) != 1)
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		return false;
 	}
@@ -181,14 +181,14 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 		uint8 nStringSize;
 		if (fread (&nStringSize, 1, 1, handle.File) != 1)
 		{
-			fclose (handle.File);			
+			fclose (handle.File);
 			handle.File = NULL;
 			return false;
 		}
 
 		if (fread (FileName, nStringSize, 1, handle.File) != 1)
 		{
-			fclose (handle.File);			
+			fclose (handle.File);
 			handle.File = NULL;
 			return false;
 		}
@@ -197,7 +197,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 		uint32 nFileSize2;
 		if (fread (&nFileSize2, sizeof(uint32), 1, handle.File) != 1)
 		{
-			fclose (handle.File);			
+			fclose (handle.File);
 			handle.File = NULL;
 			return false;
 		}
@@ -205,7 +205,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 		uint32 nFilePos;
 		if (fread (&nFilePos, sizeof(uint32), 1, handle.File) != 1)
 		{
-			fclose (handle.File);			
+			fclose (handle.File);
 			handle.File = NULL;
 			return false;
 		}
@@ -218,7 +218,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 
 	if (nlfseek64 (handle.File, 0, SEEK_SET) != 0)
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		return false;
 	}
@@ -245,7 +245,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 		while (it != tempMap.end())
 		{
 			strcpy(bnp.FileNames+nSize, it->first.c_str());
-			
+
 			bnp.Files[nNb].Name = bnp.FileNames+nSize;
 			bnp.Files[nNb].Size = it->second.Size;
 			bnp.Files[nNb].Pos = it->second.Pos;
@@ -264,7 +264,7 @@ bool CBigFile::add (const std::string &sBigFileName, uint32 nOptions)
 
 	if (!(nOptions&BF_ALWAYS_OPENED))
 	{
-		fclose (handle.File);		
+		fclose (handle.File);
 		handle.File = NULL;
 		bnp.AlwaysOpened = false;
 	}
@@ -340,30 +340,30 @@ bool CBigFile::getFileInternal (const std::string &sFileName, BNP *&zeBnp, BNPFi
 	{
 		return false;
 	}
-	
+
 	for (i = 0; i < nPos; ++i)
 		zeBigFileName += lwrFileName[i];
 	++i; // Skip @
 	for (; i < lwrFileName.size(); ++i)
 		zeFileName += lwrFileName[i];
-	
+
 	if (_BNPs.find (zeBigFileName) == _BNPs.end())
 	{
 		return false;
 	}
-	
+
 	BNP &rbnp = _BNPs.find (zeBigFileName)->second;
 	if (rbnp.Files.size() == 0)
 	{
 		return false;
 	}
-	
+
 	vector<BNPFile>::iterator itNBPFile;
 
 	BNPFile temp_bnp_file;
 	temp_bnp_file.Name = (char*)zeFileName.c_str();
 	itNBPFile = lower_bound(rbnp.Files.begin(), rbnp.Files.end(), temp_bnp_file, CBNPFileComp());
-	
+
 	if (itNBPFile != rbnp.Files.end())
 	{
 		if (strcmp(itNBPFile->Name, zeFileName.c_str()) != 0)
@@ -375,18 +375,18 @@ bool CBigFile::getFileInternal (const std::string &sFileName, BNP *&zeBnp, BNPFi
 	{
 		return false;
 	}
-	
+
 	BNPFile &rbnpfile = *itNBPFile;
-	
+
 	// set ptr on found bnp/bnpFile
 	zeBnp= &rbnp;
 	zeBnpFile= &rbnpfile;
-	
+
 	return true;
 }
 
 // ***************************************************************************
-FILE* CBigFile::getFile (const std::string &sFileName, uint32 &rFileSize, 
+FILE* CBigFile::getFile (const std::string &sFileName, uint32 &rFileSize,
 						 uint32 &rBigFileOffset, bool &rCacheFileOnOpen, bool &rAlwaysOpened)
 {
 	BNP		*bnp= NULL;
@@ -397,17 +397,17 @@ FILE* CBigFile::getFile (const std::string &sFileName, uint32 &rFileSize,
 		return NULL;
 	}
 	nlassert(bnp && bnpFile);
-	
+
 	// Get a ThreadSafe handle on the file
 	CHandleFile		&handle= _ThreadFileArray.get(bnp->ThreadFileId);
-	/* If not opened, open it now. There is 2 reason for it to be not opened: 
+	/* If not opened, open it now. There is 2 reason for it to be not opened:
 		rbnp.AlwaysOpened==false, or it is a new thread which use it for the first time.
 	*/
 	if(handle.File== NULL)
 	{
 		handle.File = fopen (bnp->BigFileName.c_str(), "rb");
 		if (handle.File == NULL)
-			return NULL;		
+			return NULL;
 	}
 
 	rCacheFileOnOpen = bnp->CacheFileOnOpen;
@@ -428,7 +428,7 @@ bool CBigFile::getFileInfo (const std::string &sFileName, uint32 &rFileSize, uin
 		return false;
 	}
 	nlassert(bnp && bnpFile);
-	
+
 	// get infos
 	rBigFileOffset = bnpFile->Pos;
 	rFileSize = bnpFile->Size;
@@ -450,7 +450,7 @@ char *CBigFile::getFileNamePtr(const std::string &sFileName, const std::string &
 		BNPFile temp_bnp_file;
 		temp_bnp_file.Name = (char*)lwrFileName.c_str();
 		itNBPFile = lower_bound(rbnp.Files.begin(), rbnp.Files.end(), temp_bnp_file, CBNPFileComp());
-	
+
 		if (itNBPFile != rbnp.Files.end())
 		{
 			if (strcmp(itNBPFile->Name, lwrFileName.c_str()) == 0)

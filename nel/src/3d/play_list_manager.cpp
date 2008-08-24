@@ -26,7 +26,7 @@
 #include "nel/3d/play_list_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -80,7 +80,7 @@ void	CPlayListManager::animate(TGlobalAnimationTime time)
 void	CPlayListManager::setup(TGlobalAnimationTime time)
 {
 	TPlayListList::iterator		it;
-	
+
 	for(it=_List.begin();it!=_List.end();)
 	{
 		CNode	*node= &(it->second);

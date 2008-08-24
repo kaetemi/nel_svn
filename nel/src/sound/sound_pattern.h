@@ -2,7 +2,7 @@
  *
  * A sound pattern represents a sequence of sounds. The sounds can
  * be selected randomly from a set, or have a composed sequence.
- * The intervals can be determined or selected randomly. 
+ * The intervals can be determined or selected randomly.
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -92,7 +92,7 @@ public:
 	//@{
 
 	/** \def addSound(name)
-	 *  Add a sound to the list of sounds used in this pattern 
+	 *  Add a sound to the list of sounds used in this pattern
 	 */
 
 	/** \def removeSound(name)
@@ -109,17 +109,17 @@ public:
 	//@}
 
 
-	/// \name Iterating through the sound pattern 
+	/// \name Iterating through the sound pattern
 	//@{
 
 	/** \def beginSoundPattern()
-	 *  Get the beginning of the pattern. The pattern has infinite length. The code to run 
+	 *  Get the beginning of the pattern. The pattern has infinite length. The code to run
 	 *  through the list of elements ressembles the iteration in STL classes:
 	 *
 	 *\code
- 
+
 	 	PatternIterator iterator = pattern.beginSoundPattern();
-	 
+
 	 	while (true)
 	 	{
 	 		string& sound = *iterator;
@@ -130,7 +130,7 @@ public:
 	 */
 
 	/** \def getSound(iterator)
-	 *  Returns the sound corresponding to the iterator value in the sound pattern. 
+	 *  Returns the sound corresponding to the iterator value in the sound pattern.
 	 */
 
 	virtual PatternIterator		beginSoundPattern()							{ return PatternIterator(this, _SoundPattern.size()); }
@@ -138,24 +138,24 @@ public:
 	//@}
 
 
-	/// \name Iterating through the sound pattern 
+	/// \name Iterating through the sound pattern
 	//@{
 
 	/** \def beginIntervalPattern()
-	 *  Get the beginning of the interval pattern. The pattern has infinite length. The code 
+	 *  Get the beginning of the interval pattern. The pattern has infinite length. The code
 	 *  to run through the list of elements ressembles the iteration in STL classes. See
 	 *  code example in beginSoundPattern().
   	 * \see beginSoundPattern
 	 */
 
 	/** \def getInterval(iterator)
-	 *  Returns the interval corresponding to the iterator value in the sound pattern. 
+	 *  Returns the interval corresponding to the iterator value in the sound pattern.
 	 */
 
 	virtual IntervalIterator	beginIntervalPattern()						{ return IntervalIterator(this, _Intervals.size()); }
 	virtual uint16				getInterval(IntervalIterator* iterator);
 	//@}
-	
+
 	/// \name Sound pattern editing and generation
 	//@{
 	/** \def setSoundPattern(list)
@@ -215,7 +215,7 @@ public:
 	virtual ISoundController*	getFreqModulation()							{ return _FreqModulation; }
 	//@}
 
-	
+
 
 private:
 

@@ -30,11 +30,11 @@ namespace NLMISC
 {
 
 /** An historic with user defined size.
-  * An historic is just a fifo with constraint on size  
+  * An historic is just a fifo with constraint on size
   *
   * \author Nicolas Vizerie
   * \author Nevrax France
-  * \date 2004  
+  * \date 2004
   */
 template <class T>
 class CHistoric
@@ -56,7 +56,7 @@ public:
 	// Access to an element in history, 0 being the oldest, size - 1 being the lastest added element
 	const T		   &operator[](uint index) const { return _Historic[index]; /* let STL do out of range check */ }
 	// Clear historic
-	void			clear() { _Historic.clear(); }	
+	void			clear() { _Historic.clear(); }
 private:
 	std::deque<T> _Historic;
 	uint		  _MaxSize;
@@ -72,10 +72,10 @@ template <class T>
 inline void	CHistoric<T>::push(const T &value)
 {
 	nlassert(_Historic.size() <= _MaxSize);
-	if (_MaxSize == 0) return; 
+	if (_MaxSize == 0) return;
 	if (getSize() == _MaxSize)
 	{
-		_Historic.pop_front();	
+		_Historic.pop_front();
 	}
 	_Historic.push_back(value);
 }
@@ -84,7 +84,7 @@ inline void	CHistoric<T>::push(const T &value)
 template <class T>
 inline void	CHistoric<T>::pop()
 {
-	nlassert(!_Historic.empty());	
+	nlassert(!_Historic.empty());
 	_Historic.pop_back();
 }
 

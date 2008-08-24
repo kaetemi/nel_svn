@@ -1,5 +1,5 @@
 /** \file clustered_sound.h
- * 
+ *
  */
 
 /* Copyright, 2002 Nevrax Ltd.
@@ -45,7 +45,7 @@ namespace NLSOUND
 
 class USource;
 
-/** This class will manage the clipping/positioning/occlusion of sound placed inside the 
+/** This class will manage the clipping/positioning/occlusion of sound placed inside the
  *	cluster/portal system.
  *
  * \author Boris Boucher
@@ -117,7 +117,7 @@ public:
 		NLMISC::CVector	ListenerPos;
 
 		/// Constructor. Init all default value.
-		CSoundTravContext(const NLMISC::CVector &listenerPos, 
+		CSoundTravContext(const NLMISC::CVector &listenerPos,
 			bool filterUnvisibleChild, bool filterUnvisibleFather)
 			:	Gain(1.0f),
 				Occlusion(0),
@@ -212,7 +212,7 @@ private:
 	//@{
 	/** Compute the point on the poly that is the nearest from a given position.
 	 *	This point can be on the surface of the poly, on a segment or on one of the vertex.
-	 *	In addition, the method also return the distance from the nearest point to the 
+	 *	In addition, the method also return the distance from the nearest point to the
 	 *	reference position.
 	 *	\param poly The polygone description.
 	 *	\param pos The reference position.
@@ -223,7 +223,7 @@ private:
 
 	/** Compute the point in the bounding box that is the nearest from a given position.
 	 *	This point can be in the volume of the box, on a segment of one of the vertex.
-	 *	In addition, the method also return the distance from the nearest point to the 
+	 *	In addition, the method also return the distance from the nearest point to the
 	 *	reference position.
 	 *	\param poly The bounding box description.
 	 *	\param pos The reference position.

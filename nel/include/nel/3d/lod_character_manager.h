@@ -41,7 +41,7 @@ class	CBitmap;
 }
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -116,7 +116,7 @@ public:
 	/// reset the manager.
 	void			reset();
 
-	/** create a Shape Bank. NB: a vector of ShapeBank is maintained internally, hence, not so many shapeBank should be 
+	/** create a Shape Bank. NB: a vector of ShapeBank is maintained internally, hence, not so many shapeBank should be
 	 *	created at same Time.
 	 *	\return	id of the shape Bank.
 	 */
@@ -173,7 +173,7 @@ public:
 	 *	nlassert if isRendering()
 	 *	NB: VBhard is locked here, so you must call endRender to unlock him (even if 0 meshes are rendered)
 	 *
-	 *	\param managerPos is to help ZBuffer Precision (see IDriver::setupViewMatrixEx). This vector is removed from 
+	 *	\param managerPos is to help ZBuffer Precision (see IDriver::setupViewMatrixEx). This vector is removed from
 	 *	all instance worldMatrixes, and a IDriver::setupModelMatrix() will be done with this position.
 	 *	Hence, whatever value you give, the result will be the same. But if you give a value near the camera position,
 	 *	ZBuffer precision will be enhanced.
@@ -190,10 +190,10 @@ public:
 	 *	\param lightDir is the diffuse used to simulate the lighting on the lod (should be the bigger light influence)
 	 *		Don't need to be normalized (must do it internally)
 	 *	\return false if the key can't be added to this pass BECAUSE OF TOO MANY VERTICES reason. If the shapeId or animId
-	 *	are bad id, it return true!! You may call endRender(), then restart a block. Or you may just stop the process 
+	 *	are bad id, it return true!! You may call endRender(), then restart a block. Or you may just stop the process
 	 *	if you want.
 	 */
-	bool			addRenderCharacterKey(CLodCharacterInstance &instance, const CMatrix &worldMatrix, 
+	bool			addRenderCharacterKey(CLodCharacterInstance &instance, const CMatrix &worldMatrix,
 		CRGBA ambient, CRGBA diffuse, const CVector &lightDir);
 
 	/**	compile the rendering process, effectively rendering into driver the lods.
@@ -202,7 +202,7 @@ public:
 	 */
 	void			endRender();
 
-	/// tells if we are beetween a beginRender() and a endRender() 
+	/// tells if we are beetween a beginRender() and a endRender()
 	bool			isRendering() const {return _Rendering;}
 
 	/** Setup a correction matrix for Lighting. Normals are multiplied with this matrix before lighting.
@@ -239,7 +239,7 @@ public:
 	/// \name Misc
 	// @{
 	/** test if the CLod intersect the ray (0, K) (after mul vertices by toRaySpace)
-	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!) 
+	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!)
 	 *	if intersect, dist2D=0, and distZ= Depth Distance
 	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
@@ -284,7 +284,7 @@ private:
 	// list of triangles
 	uint							_CurrentTriId;
 	CIndexBuffer					_Triangles;
-	
+
 	// The inverse of the normal correction matrix.
 	CMatrix							_LightCorrectionMatrix;
 

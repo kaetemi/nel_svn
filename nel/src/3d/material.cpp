@@ -52,7 +52,7 @@ CMaterial::CMaterial()
 	_ZBias= 0;
 	_Color.set(255,255,255,255);
 	_StainedGlassWindow = false;
-	_AlphaTestThreshold= 0.5f;	
+	_AlphaTestThreshold= 0.5f;
 	_TexCoordGenMode= 0;
 	_LightMapsMulx2= false;
 }
@@ -140,7 +140,7 @@ CMaterial::~CMaterial()
 	 * ***********************************************/
 
 	// Must kill the drv mirror of this material.
-	_MatDrvInfo.kill();	
+	_MatDrvInfo.kill();
 }
 
 
@@ -308,7 +308,7 @@ void		CMaterial::setShader(TShader val)
 	// If userColor, use TexEnv caps (we got it, so use it :) ).
 	if(val== CMaterial::UserColor)
 	{
-		// force normal, to setup TexEnvMode correclty. 
+		// force normal, to setup TexEnvMode correclty.
 		_ShaderType=CMaterial::Normal;
 
 		// First stage, interpolate Constant and texture with Alpha of texture.
@@ -377,7 +377,7 @@ void			CMaterial::flushTextures (IDriver &driver, uint selectedTexture)
 		{
 			// Select the good texture
 			_Textures[tex]->selectTexture (selectedTexture);
-			
+
 			// Force setup texture
 			driver.setupTexture (*_Textures[tex]);
 		}
@@ -419,7 +419,7 @@ ITexture				*CMaterial::getLightMap(uint lmapId) const
 	if(lmapId<_LightMaps.size())
 		return _LightMaps[lmapId].Texture;
 	else
-		return NULL;	
+		return NULL;
 }
 
 // ***************************************************************************
@@ -444,7 +444,7 @@ void					CMaterial::setLMCColors(uint lmapId, CRGBA ambColor, CRGBA diffColor)
 			_LightMaps.resize(lmapId+1);
 		_LightMaps[lmapId].LMCAmbient= ambColor;
 		_LightMaps[lmapId].LMCDiffuse= diffColor;
-		
+
 		_Touched|=IDRV_TOUCHED_LIGHTMAP;
 	}
 }
@@ -462,7 +462,7 @@ void			CMaterial::CLightMap::serial(NLMISC::IStream &f)
 void			CMaterial::CLightMap::serial2(NLMISC::IStream &f)
 {
 	sint	ver= f.serialVersion(1);
-	
+
 	f.serial(Factor);
 	f.serial(LMCDiffuse);
 	if(ver>=1)
@@ -484,12 +484,12 @@ void				CMaterial::enableTexAddrMode(bool enable /*= true*/)
 			for (uint32 k = 0; k < IDRV_MAT_MAXTEXTURES; ++k)
 			{
 				_TexAddrMode[k] = (uint8) TextureOff;
-			}			
-		}		
+			}
+		}
 	}
 	else
 	{
-		_Flags &= ~IDRV_MAT_TEX_ADDR;			
+		_Flags &= ~IDRV_MAT_TEX_ADDR;
 	}
 }
 
@@ -505,7 +505,7 @@ void				CMaterial::setTexAddressingMode(uint8 stage, TTexAddressingMode mode)
 	nlassert(_Flags & IDRV_MAT_TEX_ADDR);
 	nlassert(stage < IDRV_MAT_MAXTEXTURES);
 	nlassert(mode < TexAddrCount);
-	_TexAddrMode[stage] = (uint8) mode;	
+	_TexAddrMode[stage] = (uint8) mode;
 }
 
 
@@ -526,15 +526,15 @@ void					CMaterial::decompUserTexMat(uint stage, float &uTrans, float &vTrans, f
 	convMat.setRot(CVector::I, -CVector::J, CVector::K);
 	convMat.setPos(CVector::J);
 
-	const NLMISC::CMatrix texMat = convMat * _TexUserMat->TexMat[stage] * convMat;	
+	const NLMISC::CMatrix texMat = convMat * _TexUserMat->TexMat[stage] * convMat;
 	/// find the rotation around w
 	NLMISC::CVector i = texMat.getI();
-	NLMISC::CVector j = texMat.getJ();	
+	NLMISC::CVector j = texMat.getJ();
 	uScale = sqrtf(i.x * i.x + j.x * j.x);
-	vScale = sqrtf(i.y * i.y + j.y * j.y);		
+	vScale = sqrtf(i.y * i.y + j.y * j.y);
 	//
-	i.normalize();	
-	//	
+	i.normalize();
+	//
 	float angle = acosf(i.x / i.norm());
 	if (i.y < 0)
 	{
@@ -571,7 +571,7 @@ IMaterialDrvInfos::~IMaterialDrvInfos()
 
 // ***************************************************************************
 uint CMaterial::getNumUsedTextureStages() const
-{	
+{
 	for(uint k = 0; k < IDRV_MAT_MAXTEXTURES; ++k)
 	{
 		if (!_Textures[k]) return k;
@@ -610,13 +610,13 @@ bool CMaterial::isSupportedByDriver(IDriver &drv, bool forceBaseCaps) const
 						case EMBM:				  if (forceBaseCaps || !drv.supportEMBM() || !drv.isEMBMSupportedAtStage(k)) return false;
 						case Mad:				  if (!drv.supportMADOperator()) return false;
 						default: break;
-					}					
+					}
 				}
 			}
 			return true;
 		}
 		break;
-		case Bump:					return false; // not impl.	
+		case Bump:					return false; // not impl.
 		case UserColor:				return true;
 		case LightMap:				return true;
 		case Specular:				return true;

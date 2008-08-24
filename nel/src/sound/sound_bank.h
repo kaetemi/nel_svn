@@ -75,7 +75,7 @@ public:
 	/// Return a sound corresponding to a name.
 	CSound				*getSound(const NLMISC::TStringId &name);
 
-	/// Return the names of the sounds 
+	/// Return the names of the sounds
 	void				getNames( std::vector<NLMISC::TStringId> &names );
 
 	/// Return the number of sounds in this bank.

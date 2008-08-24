@@ -1,5 +1,5 @@
 /** \file matrix.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -101,20 +101,20 @@ public:
 	/// Reset the matrix to identity.
 	void		identity();
 	/** Explicit setup the Rotation/Scale matrix (base).
-	 * Avoid it. It implies low compute since no check is done on base to see what type of matrix it is 
+	 * Avoid it. It implies low compute since no check is done on base to see what type of matrix it is
 	 * (identity, rotation, scale, uniform scale...)
 	 * \param i The I vector of the Cartesian base.
 	 * \param j The J vector of the Cartesian base.
 	 * \param k The K vector of the Cartesian base.
-	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale. 
+	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale.
 	 * If set to true and your rotation is not an orthonormal basis, unpredictable result are excepted.
 	 */
 	void		setRot(const CVector &i, const CVector &j, const CVector &k, bool hintNoScale=false);
 	/** Explicit setup the Rotation/Scale matrix (base).
-	 * Avoid it. It implies low compute since no check is done on m33 to see what type of matrix it is 
+	 * Avoid it. It implies low compute since no check is done on m33 to see what type of matrix it is
 	 * (identity, rotation, scale, uniform scale)
 	 * \param m33 the 3*3 column rotation matrix. (3x3 matrix stored in column-major order as 9 consecutive values)
-	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale. 
+	 * \param hintNoScale set it to true if you are sure that your rot matrix is a pure rot matrix with no scale.
 	 * If set to true and your rotation is not an orthonormal basis, unpredictable result are excepted.
 	 */
 	void		setRot(const float m33[9], bool hintNoScale=false);
@@ -159,14 +159,14 @@ public:
 	 */
 	void		resetProj();
 	/** Explicit setup the 4*4 matrix.
-	 * Avoid it. It implies low compute since no check is done on rotation matrix to see what type of matrix it is 
+	 * Avoid it. It implies low compute since no check is done on rotation matrix to see what type of matrix it is
 	 * (identity, rotation, scale, uniform scale).
 	 * BUT check are made to see if it has translation or projection components.
 	 * \param m44 the 4*4 column matrix (4x4 matrix stored in column-major order as 16 consecutive values)
 	 */
 	void		set(const float m44[16]);
 	/** Setup the (i, j) matrix coefficient
-	 *	\param coeff: coefficient value. 
+	 *	\param coeff: coefficient value.
 	 *	\param i : column index.
 	 *	\param j : line index.
 	 */
@@ -321,7 +321,7 @@ public:
 	CMatrix		inverted() const;
 	/** Normalize the matrix so that the rotation part is now an orthonormal basis, ie a rotation with no scale.
 	 * NB: projection part and translation part are not modified.
-	 * \param pref the preference axis order to normalize. ZYX means that K direction will be kept, and the plane JK 
+	 * \param pref the preference axis order to normalize. ZYX means that K direction will be kept, and the plane JK
 	 * will be used to lead the I vector.
 	 * \return false if One of the vector basis is null. true otherwise.
 	 */
@@ -402,7 +402,7 @@ private:
 	// Else it IS initialized to (0,0,0) (exception!!!)
 	bool	hasTrans() const;
 	// true if MAT_ROT | MAT_SCALEUNI | MAT_SCALEANY.
-	// rot part is true means the 3x3 rot matrix AND Scale33 are relevant. 
+	// rot part is true means the 3x3 rot matrix AND Scale33 are relevant.
 	// Else they are not initialized but are supposed to represent identity and Scale33==1.
 	bool	hasRot() const;
 	// true if MAT_PROJ.

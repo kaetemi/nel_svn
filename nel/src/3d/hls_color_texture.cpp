@@ -34,7 +34,7 @@
 using	namespace std;
 using	namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -565,10 +565,10 @@ void			CHLSColorTexture::uncompressBlockRGB(const uint8* srcDXTC, CRGBA *dstRGBA
 
 	c[0].set565(color0);
 	c[1].set565(color1);
-	
+
 	// ignore color0>color1 for DXT3 and DXT5.
 	c[2].blendFromui(c[0],c[1],85);
-	c[3].blendFromui(c[0],c[1],171);	
+	c[3].blendFromui(c[0],c[1],171);
 
 	// bits to color (ignore alpha result)
 	for(uint n= 16;n>0;n--)
@@ -631,7 +631,7 @@ void			CHLSColorTexture::compressBlockRGB(CRGBA *srcRGBA, uint8* dstDXTC)
 
 	// **** compute RGB0 and RGB1.
 	uint	i,j,n;
-	
+
 	// compute the mean color of 16 pixels
 	sint	mean[3];
 	mean[0]= 0;
@@ -760,7 +760,7 @@ void			CHLSColorTexture::compressBlockRGB(CRGBA *srcRGBA, uint8* dstDXTC)
 		// preapre mmx
 		uint64	blank= 0;
 		__asm
-		{	
+		{
 			movq		mm7, blank
 		}
 
@@ -824,7 +824,7 @@ void			CHLSColorTexture::compressBlockRGB(CRGBA *srcRGBA, uint8* dstDXTC)
 				sub			esi, ecx		// esi= iB-iA
 				and			esi, ebx		// esi= 0 if A<B, iB-iA else
 				add			esi, ecx		// esi= 0+iA= iA if A<B, else esi= iB-iA+iA= iB
-							
+
 				add			edi, 4
 				dec			ecx
 				jnz			myLoop

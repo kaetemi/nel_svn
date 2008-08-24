@@ -52,7 +52,7 @@ using NLMISC::CVector;
  * is required. As a direct consequence, when you select something, you are REALLY not sure that what you select is not
  * a mile away from your selection :) ....
  *
- * Also, for memory optimisation, no bbox is stored in the quadgrid. Hence no particular selection is made on the Z 
+ * Also, for memory optimisation, no bbox is stored in the quadgrid. Hence no particular selection is made on the Z
  * components...
  *
  * \author Lionel Berenguier
@@ -83,12 +83,12 @@ public:
 	  * NLMISC::CVector		I(1,0,0);
 	  * NLMISC::CVector		J(0,0,1);
 	  * NLMISC::CVector		K(0,-1,0);
-	  * 
+	  *
 	  * tmp.identity();
 	  * tmp.setRot(I,J,K, true);
 	  * quadTree.changeBase (tmp);
 	  * \endcode
-	  * 
+	  *
 	  * \param base Base of the quad grid
 	  */
 	void			changeBase(const NLMISC::CMatrix& base);

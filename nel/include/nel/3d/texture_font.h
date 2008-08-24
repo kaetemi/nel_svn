@@ -45,12 +45,12 @@ class CTextureFont : public ITexture
 public:
 
 	struct SLetterInfo
-	{	
+	{
 		// To generate the letter
 		ucchar Char;
 		CFontGenerator *FontGenerator;
 		sint Size;
-		
+
 
 		// The less recently used infos
 		SLetterInfo *Next, *Prev;
@@ -81,9 +81,9 @@ public:
 
 public:
 
-	/** 
+	/**
 	 * Default constructor
-	 */	
+	 */
 	CTextureFont();
 	virtual ~CTextureFont();
 

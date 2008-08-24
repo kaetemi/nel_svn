@@ -61,7 +61,7 @@ class CDIMouse : public IMouseDevice
 {
 public:
 	enum { MaxNumMouseButtons = 3, NumMouseAxis = 3};
-public:	
+public:
 	///\name Object
 	//@{
 		virtual ~CDIMouse();
@@ -70,27 +70,27 @@ public:
 		  */
 		static CDIMouse *createMouseDevice(IDirectInput8 *di8, HWND hwnd, CDIEventEmitter *diEventEmitter, bool hardware, class CWinEventEmitter *we) throw(EDirectInput);
 	//@}
-	
+
 	///\name Mouse params, inherited from IMouseDevice
-	//@{		
+	//@{
 		void				setMessagesMode(TMessageMode mode);
 		TMessageMode		getMessagesMode() const { return _MessageMode; }
-		void				setMouseMode(TAxis axis, TAxisMode axisMode);		
-		TAxisMode			getMouseMode(TAxis axis) const;		
-		void				setMouseSpeed(float speed);		
-		float				getMouseSpeed() const;		
+		void				setMouseMode(TAxis axis, TAxisMode axisMode);
+		TAxisMode			getMouseMode(TAxis axis) const;
+		void				setMouseSpeed(float speed);
+		float				getMouseSpeed() const;
 		void				setMouseAcceleration(uint speed);
 		uint				getMouseAcceleration() const;
-		void				setMouseFrame(const CRect &rect);		
-		const CRect			&getMouseFrame() const;		
+		void				setMouseFrame(const CRect &rect);
+		const CRect			&getMouseFrame() const;
 		void				setDoubleClickDelay(uint ms);
-		uint				getDoubleClickDelay() const;				
+		uint				getDoubleClickDelay() const;
 		void				setMousePos(float x, float y);
-		void				setFactors(float xFactor, float yFactor) 
-		{	
+		void				setFactors(float xFactor, float yFactor)
+		{
 			nlassert(_MessageMode == NormalMode);
-			_XFactor = xFactor; 
-			_YFactor = yFactor; 
+			_XFactor = xFactor;
+			_YFactor = yFactor;
 		}
 		float				getXFactor() const { nlassert(_MessageMode == NormalMode); return _XFactor; }
 		float				getYFactor() const { 	nlassert(_MessageMode == NormalMode); return _YFactor; }
@@ -99,23 +99,23 @@ public:
 
 	///\name From IInputDevice
 	//@{
-		
-		virtual bool setBufferSize(uint size);		
-		virtual uint getBufferSize() const;		
+
+		virtual bool setBufferSize(uint size);
+		virtual uint getBufferSize() const;
 	//@}
 
 	///\name From IInputDevice
 	//@{
 		void	setButton(uint button, bool pushed);
 		bool	getButton(uint button) const;
-	//@}	
+	//@}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
-	LPDIRECTINPUTDEVICE8		_Mouse;	
-	// 
+	LPDIRECTINPUTDEVICE8		_Mouse;
+	//
 	bool						_Hardware;
 	//
 	TMessageMode				_MessageMode;
@@ -157,9 +157,9 @@ private:
 	void					onButtonClicked(uint button, CEventServer *server, uint32 date);
 	///\name From IInputDevice
 	//@{
-		virtual void poll(CInputDeviceServer *dev);	
-		virtual void submit(IInputDeviceEvent *deviceEvent, CEventServer *server);	
-		virtual void transitionOccured(CEventServer *server, const IInputDeviceEvent *nextMessage);		
+		virtual void poll(CInputDeviceServer *dev);
+		virtual void submit(IInputDeviceEvent *deviceEvent, CEventServer *server);
+		virtual void transitionOccured(CEventServer *server, const IInputDeviceEvent *nextMessage);
 	//@}
 };
 

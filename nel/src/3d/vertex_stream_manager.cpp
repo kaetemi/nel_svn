@@ -29,7 +29,7 @@
 
 using namespace	NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -132,16 +132,16 @@ uint8			*CVertexStreamManager::lock()
 	H_AUTO( NL3D_VertexStreamManager_lock )
 	nlassert(_InitOk);
 	nlassert(!_LockDone);
-	_LockDone = true;	
+	_LockDone = true;
 	if (_SupportVolatileVB)
-	{	
+	{
 		_VBVolatile.lock (_VBA);
 		return (uint8*)_VBA.getVertexCoordPointer();
 	}
 	else
 	{
 		_VB[_CurentVB].lock (_VBA);
-		return 	(uint8*)_VBA.getVertexCoordPointer();		
+		return 	(uint8*)_VBA.getVertexCoordPointer();
 	}
 }
 // ***************************************************************************
@@ -149,7 +149,7 @@ void			CVertexStreamManager::unlock(uint numVertices)
 {
 	H_AUTO( NL3D_VertexStreamManager_unlock )
 	nlassert(_InitOk);
-	nlassert(_LockDone);	
+	nlassert(_LockDone);
 	_VBA.touchVertices (0, numVertices);
 	_VBA.unlock ();
 }
@@ -163,17 +163,17 @@ void			CVertexStreamManager::activate()
 		_Driver->activeVertexBuffer(_VBVolatile);
 	}
 	else
-	{	
+	{
 		_Driver->activeVertexBuffer(_VB[_CurentVB]);
 	}
 }
 // ***************************************************************************
 void			CVertexStreamManager::swapVBHard()
 {
-	nlassert(_InitOk);	
+	nlassert(_InitOk);
 	_LockDone = false;
 	if (!_SupportVolatileVB)
-	{	
+	{
 		_CurentVB++;
 		_CurentVB= _CurentVB%_NumVB;
 	}

@@ -27,7 +27,7 @@
 #include "move_element.h"
 #include "move_primitive.h"
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************

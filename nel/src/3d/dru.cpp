@@ -43,14 +43,14 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
-typedef IDriver* (*IDRV_CREATE_PROC)(void); 
+typedef IDriver* (*IDRV_CREATE_PROC)(void);
 const char *IDRV_CREATE_PROC_NAME = "NL3D_createIDriverInstance";
 
-typedef uint32 (*IDRV_VERSION_PROC)(void); 
+typedef uint32 (*IDRV_VERSION_PROC)(void);
 const char *IDRV_VERSION_PROC_NAME = "NL3D_interfaceVersion";
 
 #ifdef NL_STATIC
@@ -171,7 +171,7 @@ IDriver		*CDRU::createD3DDriver() throw (EDru)
 //	hInst=LoadLibrary(NL3D_D3D_DLL_NAME);
 
 	CLibrary driverLib;
-	
+
 //	if (!hInst)
 	if (!driverLib.loadLibrary(NL3D_D3D_DLL_NAME, true, true, false))
 	{
@@ -248,7 +248,7 @@ void	CDRU::drawBitmap (float x, float y, float width, float height, ITexture& te
 	static CIndexBuffer pb;
 	if (pb.getName().empty()) NL_SET_IB_NAME(pb, "CDRU::drawBitmap");
 	pb.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	pb.setNumIndexes (6);	
+	pb.setNumIndexes (6);
 	{
 		CIndexBufferReadWrite iba;
 		pb.lock (iba);
@@ -294,7 +294,7 @@ void	CDRU::drawLine (float x0, float y0, float x1, float y1, IDriver& driver, CR
 	static CIndexBuffer pb;
 	if (pb.getName().empty()) NL_SET_IB_NAME(pb, "CDRU::drawLine");
 	pb.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	pb.setNumIndexes (2);	
+	pb.setNumIndexes (2);
 	{
 		CIndexBufferReadWrite iba;
 		pb.lock (iba);
@@ -340,7 +340,7 @@ void	CDRU::drawTriangle (float x0, float y0, float x1, float y1, float x2, float
 	static CIndexBuffer pb;
 	if (pb.getName().empty()) NL_SET_IB_NAME(pb, "CDRU::drawTriangle");
 	pb.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	pb.setNumIndexes (3);	
+	pb.setNumIndexes (3);
 	{
 		CIndexBufferReadWrite iba;
 		pb.lock (iba);
@@ -370,7 +370,7 @@ void	CDRU::drawQuad (float x0, float y0, float x1, float y1, IDriver& driver, CR
 	mat.setBlend(true);
 	mat.setColor(col);
 	mat.setZFunc (CMaterial::always);
-	
+
 	static CVertexBuffer vb;
 	if (vb.getName().empty()) vb.setName("CDRU::drawQuad");
 	vb.setVertexFormat (CVertexBuffer::PositionFlag);
@@ -383,7 +383,7 @@ void	CDRU::drawQuad (float x0, float y0, float x1, float y1, IDriver& driver, CR
 		vba.setVertexCoord (2, CVector (x1, 0, y1));
 		vba.setVertexCoord (3, CVector (x0, 0, y1));
 	}
-	
+
 	driver.activeVertexBuffer(vb);
 	driver.renderRawQuads(mat, 0, 1);
 }
@@ -406,7 +406,7 @@ void	CDRU::drawQuad (float xcenter, float ycenter, float radius, IDriver& driver
 	mat.setBlend(true);
 	mat.setColor(col);
 	mat.setZFunc (CMaterial::always);
-	
+
 	static CVertexBuffer vb;
 	if (vb.getName().empty()) vb.setName("CDRU::drawQuad");
 	vb.setVertexFormat (CVertexBuffer::PositionFlag);
@@ -419,7 +419,7 @@ void	CDRU::drawQuad (float xcenter, float ycenter, float radius, IDriver& driver
 		vba.setVertexCoord (2, CVector (xcenter+radius, 0, ycenter+radius));
 		vba.setVertexCoord (3, CVector (xcenter-radius, 0, ycenter+radius));
 	}
-	
+
 	driver.activeVertexBuffer(vb);
 	driver.renderRawQuads(mat, 0, 1);
 }
@@ -429,13 +429,13 @@ void	CDRU::drawQuad (float xcenter, float ycenter, float radius, IDriver& driver
 void	CDRU::drawWiredQuad (float x0, float y0, float x1, float y1, IDriver& driver, CRGBA col, CViewport viewport)
 {
 	// v-left
-	CDRU::drawLine(x0,y0,x0,y1 ,driver,col,viewport);	
+	CDRU::drawLine(x0,y0,x0,y1 ,driver,col,viewport);
 	// v-right
-	CDRU::drawLine(x1,y0,x1,y1 ,driver,col,viewport);	
+	CDRU::drawLine(x1,y0,x1,y1 ,driver,col,viewport);
 	// h-up
-	CDRU::drawLine(x0,y1,x1,y1,driver,col,viewport);	
+	CDRU::drawLine(x0,y1,x1,y1,driver,col,viewport);
 	// h-bottom
-	CDRU::drawLine(x0,y0,x1,y0,driver,col,viewport);	
+	CDRU::drawLine(x0,y0,x1,y0,driver,col,viewport);
 }
 
 
@@ -443,11 +443,11 @@ void	CDRU::drawWiredQuad (float x0, float y0, float x1, float y1, IDriver& drive
 void	CDRU::drawWiredQuad (float xcenter, float ycenter, float radius, IDriver& driver, CRGBA col, CViewport viewport)
 {
 	// v-left
-	CDRU::drawLine(xcenter-radius,ycenter-radius,xcenter-radius,ycenter+radius,driver,col,viewport);	
+	CDRU::drawLine(xcenter-radius,ycenter-radius,xcenter-radius,ycenter+radius,driver,col,viewport);
 	// v-right
-	CDRU::drawLine(xcenter+radius,ycenter-radius,xcenter+radius,ycenter+radius,driver,col,viewport);	
+	CDRU::drawLine(xcenter+radius,ycenter-radius,xcenter+radius,ycenter+radius,driver,col,viewport);
 	// h-up
-	CDRU::drawLine(xcenter-radius,ycenter+radius,xcenter+radius,ycenter+radius,driver,col,viewport);	
+	CDRU::drawLine(xcenter-radius,ycenter+radius,xcenter+radius,ycenter+radius,driver,col,viewport);
 	// h-bottom
 	CDRU::drawLine(xcenter-radius,ycenter-radius,xcenter+radius,ycenter-radius,driver,col,viewport);
 }
@@ -463,10 +463,10 @@ void			CDRU::drawTrianglesUnlit(const NLMISC::CTriangleUV	*trilist, sint ntris, 
 
 	static	CIndexBuffer pb;
 	pb.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	pb.setNumIndexes(ntris*3);	
+	pb.setNumIndexes(ntris*3);
 	if (pb.getFormat() == CIndexBuffer::Indices16)
 	{
-		nlassert(ntris * 3 <= 0xffff); 
+		nlassert(ntris * 3 <= 0xffff);
 	}
 	{
 		CVertexBufferReadWrite vba;
@@ -484,7 +484,7 @@ void			CDRU::drawTrianglesUnlit(const NLMISC::CTriangleUV	*trilist, sint ntris, 
 			iba.setTri(i*3, i*3+0, i*3+1, i*3+2);
 		}
 	}
-	
+
 	driver.activeVertexBuffer(vb);
 	driver.activeIndexBuffer(pb);
 	driver.renderTriangles(mat, 0, ntris);
@@ -496,7 +496,7 @@ void			CDRU::drawTrianglesUnlit(const std::vector<NLMISC::CTriangleUV> &trilist,
 {
 	if(trilist.size()==0)
 		return;
-	
+
 	CDRU::drawTrianglesUnlit( &(*trilist.begin()), trilist.size(), mat, driver);
 }
 
@@ -526,7 +526,7 @@ void			CDRU::drawLinesUnlit(const NLMISC::CLine	*linelist, sint nlines, CMateria
 			iba.setLine(i*2, i*2+0, i*2+1);
 		}
 	}
-	
+
 	driver.activeVertexBuffer(vb);
 	driver.activeIndexBuffer(pb);
 	driver.renderLines(mat, 0, nlines);
@@ -574,7 +574,7 @@ void			CDRU::drawQuad (float x0, float y0, float x1, float y1, CRGBA col0, CRGBA
 	mat.setDstBlend(CMaterial::invsrcalpha);
 	mat.setBlend(true);
 	mat.setZFunc (CMaterial::always);
-	
+
 	static CVertexBuffer vb;
 	if (vb.getName().empty()) vb.setName("CDRU::drawQuad");
 	vb.setVertexFormat (CVertexBuffer::PositionFlag|CVertexBuffer::PrimaryColorFlag);

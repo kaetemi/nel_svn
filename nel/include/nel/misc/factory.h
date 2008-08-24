@@ -25,13 +25,13 @@
 
 /** \file factory.h
  *	This file contain definition and some useful macro for two object factories.
- *	The first one, called CFactory allow direct creation of object given 
+ *	The first one, called CFactory allow direct creation of object given
  *	a unique key. Factored objects must have a constructor with one parameter.
  *	The second version, call CFactoryIndirect will return an object that is
- *	the real factory object and that is provided by user. This allow 
+ *	the real factory object and that is provided by user. This allow
  *	factoring of objects having any constructor parameters.
  *
- *	The factory class accept a template parameter to define the key identifying the 
+ *	The factory class accept a template parameter to define the key identifying the
  *	registered factorable object.
  *
  */
@@ -67,7 +67,7 @@ public:
  *		* KeyType : the type of the key that identify the factorable object (string by default).
  *
  *	The factory conforms to singleton design pattern.
- *	
+ *
  *	BaseClass must provide a typedef for TCTorParam corresponding to the parameter
  *	required by the constructor of factored object.
  */
@@ -191,7 +191,7 @@ public:
  *		* KeyType : the type of the key that identify the factorable object (string by default).
  *
  *	The indirect factory conforms to singleton design pattern.
- *	
+ *
  *	In indirect factory, the object returned by the factory are not instance of factored object
  *	but instance of 'sub' factory that do the real job.
  *	This can be useful in some case, like adapting existing code into a factory

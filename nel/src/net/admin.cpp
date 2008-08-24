@@ -63,16 +63,16 @@ struct CRequest
 		nldebug ("ADMIN: ++ NbWaiting %d NbReceived %d", NbWaiting, NbReceived);
 		Time = CTime::getSecondsSince1970 ();
 	}
-	
+
 	uint32			Id;
 	uint			NbWaiting;
 	uint32			NbReceived;
 	TServiceId			SId;
 	uint32			Time;	// when the request was ask
-	
+
 	TAdminViewResult Answers;
 };
-	
+
 
 //
 // Variables
@@ -104,9 +104,9 @@ static void cbInfo (CMessage &msgin, const std::string &serviceName, TServiceId 
 	msgin.serialCont (alarms);
 	vector<string> graphupdate;
 	msgin.serialCont (graphupdate);
-	
+
 	setInformations (alarms, graphupdate);
-}	
+}
 
 static void cbServGetView (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
@@ -187,7 +187,7 @@ void cbAESConnection (const string &serviceName, TServiceId sid, void *arg)
 
 	nlinfo("cbAESConnection: Identifying self as: AliasName='%s' LongName='%s' PId=%u",
 		IService::getInstance()->_AliasName.c_str(),
-		IService::getInstance()->_LongName.c_str(), 
+		IService::getInstance()->_LongName.c_str(),
 		getpid ());
 	CMessage msgout ("SID");
 	uint32 pid = getpid ();
@@ -278,7 +278,7 @@ void addRequestAnswer (uint32 rid, const TAdminViewVarNames& varNames, const TAd
 
 			Requests[i].NbReceived++;
 			nldebug ("ADMIN: ++ i %d rid %d NbWaiting %d NbReceived+ %d", i, Requests[i].Id, Requests[i].NbWaiting, Requests[i].NbReceived);
-			
+
 			return;
 		}
 	}
@@ -341,7 +341,7 @@ static void cleanRequest ()
 					}
 					InfoLog->displayRawNL("");
 					InfoLog->displayRawNL("-------------------------");
-				}	
+				}
 			}
 			else
 			{
@@ -402,7 +402,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 		// add default row
 		varNames.push_back ("service");
 		values.push_back (IService::getInstance ()->getServiceUnifiedName());
-		
+
 		for (uint j = 0; j < varpath.Destination.size (); j++)
 		{
 			string cmd = varpath.Destination[j].first;
@@ -416,7 +416,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 			}
 			else
 				varNames.push_back(cmd);
-			
+
 			mdDisplayVars.clear ();
 			ICommand::execute(cmd, logDisplayVars, !ICommand::isCommand(cmd));
 			const std::deque<std::string>	&strs = mdDisplayVars.lockStrings();
@@ -430,7 +430,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 					varNames.push_back ("__log");
 					values.clear ();
 				}
-				
+
 				values.push_back ("----- Result from "+IService::getInstance()->getServiceUnifiedName()+" of command '"+cmd+"'\n");
 				for (uint k = 0; k < strs.size(); k++)
 				{
@@ -470,14 +470,14 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 
 		TAdminViewVarNames *varNames=0;
 		TAdminViewValues *values=0;
-		
+
 		// varpath.Destination		contains the entity number
 		// subvarpath.Destination	contains the command name
-		
+
 		for (uint i = 0; i < varpath.Destination.size (); i++)
 		{
 			CVarPath subvarpath(varpath.Destination[i].second);
-			
+
 			for (uint j = 0; j < subvarpath.Destination.size (); j++)
 			{
 				// set the variable name
@@ -507,7 +507,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 						// add the entity
 						cmd += " "+varpath.Destination[i].first;
 					}
-					
+
 					mdDisplayVars.clear ();
 					ICommand::execute(cmd, logDisplayVars, true);
 					const std::deque<std::string>	&strs = mdDisplayVars.lockStrings();
@@ -518,11 +518,11 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 						string::size_type pos = str.find(" ");
 						if(pos == string::npos)
 							continue;
-						
+
 						string entity = str.substr(0, pos);
 						string value = str.substr(pos+1, str.size()-pos-2);
 						for (uint u = 0; u < value.size(); u++) if (value[u] == ' ') value[u] = '_';
-						
+
 						// look in the array if we already have something about this entity
 
 						if (!async)
@@ -544,13 +544,13 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 
 								varNames = &(answer[answer.size()-1].VarNames);
 								values = &(answer[answer.size()-1].Values);
-								
+
 								// don't add service if we want an entity
 		// todo when we work on entity, we don't need service name and server so we should remove them and collapse all var for the same entity
 								varNames->push_back ("service");
 								string name = IService::getInstance ()->getServiceUnifiedName();
 								values->push_back (name);
-								
+
 								// add default row
 								varNames->push_back ("entity");
 								values->push_back (entity);
@@ -575,7 +575,7 @@ void serviceGetView (uint32 rid, const string &rawvarpath, TAdminViewResult &ans
 
 							varNames.push_back (cmd.substr(0, cmd.find(" ")));
 							values.push_back (value);
-	
+
 							addRequestAnswer (rid, varNames, values);
 						}
 						nlinfo ("ADMIN: Add to result view for entity '%s', '%s' = '%s'", varpath.Destination[i].first.c_str(), subvarpath.Destination[j].first.c_str(), str.c_str());
@@ -596,7 +596,7 @@ void sendAdminEmail (const char *format, ...)
 {
 	char *text;
 	NLMISC_CONVERT_VARGS (text, format, 4096);
-	
+
 	time_t t = time (&t);
 
 	string str;
@@ -645,14 +645,14 @@ void updateAdmin()
 	//
 
 	static uint32 lastGraphUpdateCheck = 0;
-	
+
 	if (CurrentTime >= lastGraphUpdateCheck+1)
 	{
 		string str;
 		CLog logDisplayVars;
 		CLightMemDisplayer mdDisplayVars;
 		logDisplayVars.addDisplayer (&mdDisplayVars);
-		
+
 		lastGraphUpdateCheck = CurrentTime;
 
 		CMessage msgout ("GRAPH_UPDATE");
@@ -678,7 +678,7 @@ void updateAdmin()
 				}
 				mdDisplayVars.unlockStrings ();
 				mdDisplayVars.clear ();
-				
+
 				string name = IService::getInstance()->getServiceAliasName();
 				if (name.empty())
 					name = IService::getInstance()->getServiceShortName();
@@ -718,7 +718,7 @@ void updateAdmin()
 		CLog logDisplayVars;
 		CLightMemDisplayer mdDisplayVars;
 		logDisplayVars.addDisplayer (&mdDisplayVars);
-		
+
 		lastAlarmsCheck = CTime::getSecondsSince1970();
 
 		for (uint i = 0; i < Alarms.size(); )
@@ -737,7 +737,7 @@ void updateAdmin()
 			}
 
 			mdDisplayVars.unlockStrings();
-			
+
 			if (str == "???")
 			{
 				// variable doesn't exist, remove it from alarms
@@ -775,7 +775,7 @@ void updateAdmin()
 						Alarms[i].Activated = false;
 					}
 				}
-				
+
 				i++;
 			}
 		}
@@ -799,7 +799,7 @@ void setInformations (const vector<string> &alarms, const vector<string> &graphu
 		CVarPath servicevarpath (servervarpath.Destination[0].second);
 		if(servicevarpath.Destination.size() == 0 || servicevarpath.Destination[0].second.empty())
 			continue;
-	
+
 		string name = servicevarpath.Destination[0].second;
 
 		if (IService::getInstance()->getServiceUnifiedName().find(servicevarpath.Destination[0].first) != string::npos && ICommand::exists(name))
@@ -833,7 +833,7 @@ void setInformations (const vector<string> &alarms, const vector<string> &graphu
 		CVarPath servicevarpath (servervarpath.Destination[0].second);
 		if(servicevarpath.Destination.size() == 0 || servicevarpath.Destination[0].second.empty())
 			continue;
-		
+
 		string VarName = servicevarpath.Destination[0].second;
 		string ServiceName = servicevarpath.Destination[0].first;
 
@@ -880,23 +880,23 @@ NLMISC_CATEGORISED_COMMAND(nel, displayInformations, "displays all admin informa
 NLMISC_CATEGORISED_COMMAND(nel, getView, "send a view and receive an array as result", "<varpath>")
 {
 	if(args.size() != 1) return false;
-	
+
 	TAdminViewResult answer;
 	serviceGetView (0, args[0], answer);
-	
+
 	log.displayNL("have %d answer", answer.size());
 	for (uint i = 0; i < answer.size(); i++)
 	{
 		log.displayNL("  have %d value", answer[i].VarNames.size());
-		
+
 		nlassert (answer[i].VarNames.size() == answer[i].Values.size());
-		
+
 		for (uint j = 0; j < answer[i].VarNames.size(); j++)
 		{
 			log.displayNL("    %s -> %s", answer[i].VarNames[j].c_str(), answer[i].Values[j].c_str());
 		}
 	}
-	
+
 	return true;
 }
 

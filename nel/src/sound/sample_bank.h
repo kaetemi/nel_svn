@@ -147,7 +147,7 @@ private:
 	// Hashtable with samples
 	TSampleTable		_Samples;
 
-	// Sample bank name and path 
+	// Sample bank name and path
 //	std::string			_Path;
 	NLMISC::TStringId	_Name;
 

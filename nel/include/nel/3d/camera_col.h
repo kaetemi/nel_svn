@@ -52,7 +52,7 @@ public:
 	 */
 	void			buildRay(const CVector &start, const CVector &end);
 
-	/** compute the intersection of the Camera Volume against the triangle, and minimize 
+	/** compute the intersection of the Camera Volume against the triangle, and minimize
 	 *	minDist (actual square of distance) with min sqr distance of the poly.
 	 */
 	void			minimizeDistanceAgainstTri(const CVector &p0, const CVector &p1, const CVector &p2, float &sqrMinDist);
@@ -61,11 +61,11 @@ public:
 	 *	NB: for cone Radius, suppose uniform scale, else will have strange result (a uniform scale is deduced)
 	 */
 	void			setApplyMatrix(const CCameraCol &other, const NLMISC::CMatrix &matrix);
-	
+
 	/** Get The World Bbox enclosing the camera collision volume
 	 */
 	const NLMISC::CAABBox		&getBBox() const {return _BBox;}
-	
+
 	/** Get the length of the ray built
 	 */
 	float			getRayLen() const {return _RayLen;}
@@ -74,7 +74,7 @@ public:
 
 private:
 	enum	{MaxNPlanes=6};
-	
+
 	// The start of the camera raycast
 	CVector		_Start;
 	// The end of the camera raycast
@@ -85,10 +85,10 @@ private:
 	bool		_Cone;
 	// Simple Ray?
 	bool		_SimpleRay;
-	
+
 	// The World Bbox enclosing the camera collision volume
 	NLMISC::CAABBox		_BBox;
-	
+
 	// Temp Data for minimizeDistanceAgainstTri
 	CVector		_ArrayIn[3+MaxNPlanes];
 	CVector		_ArrayOut[3+MaxNPlanes];
@@ -96,7 +96,7 @@ private:
 	// The pyramid representing the camera collision volume. Nb: local to start for precision problems
 	NLMISC::CPlane		_Pyramid[MaxNPlanes];
 	uint	_NPlanes;
-	
+
 	// For Camera smoothing. => the pyramid is bigger
 	float		_MaxRadius;
 	// projection of the radius at 1 meter
@@ -108,7 +108,7 @@ private:
 
 	// simpler method for simple ray
 	void			intersectRay(const CVector &p0, const CVector &p1, const CVector &p2, float &sqrMinDist);
-	
+
 };
 
 

@@ -84,15 +84,15 @@ public:
 	/// If a work is currently completed remove it and began another one
 	void checkZonesAround (uint x, uint y, uint area, const std::vector<uint16> *validZoneIds = NULL);
 
-	/// Is a work has been completed ? 
+	/// Is a work has been completed ?
 	bool isWorkComplete (SZoneManagerWork &rWork);
-	
+
 	/// Does the manager is loading ?
 	bool isLoading () const {return _LoadingZones.size () != 0;}
-	
+
 	/// Does the manager is removing ?
 	bool isRemoving () const {return _RemovingZone;}
-	
+
 	/// Return the count of zone left to load
 	uint getNumZoneLeftToLoad ();
 
@@ -133,7 +133,7 @@ private:
 	public:
 		// Zone ID
 		uint16				ZoneToAddId;
-		
+
 		// Zone name
 		std::string			ZoneToAddName;
 
@@ -167,7 +167,7 @@ public:
 	/// Runnable Task
 	void run (void);
 	void getName (std::string &result) const;
-	
+
 private:
 
 	TVolatileZonePtr	*_Zone;

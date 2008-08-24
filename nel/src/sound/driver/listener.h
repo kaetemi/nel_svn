@@ -44,7 +44,7 @@ namespace NLSOUND {
  * For arguments as 3D vectors, use the NeL vector coordinate system:
  * \verbatim
  *     (top)
- *       z    
+ *       z
  *       |  y (front)
  *       | /
  *       -----x (right)

@@ -76,7 +76,7 @@ public:
 		HalfSize= bmax-Center;
 	}
 	/** extend the bbox so it contains v.
-	 * Warning!! By default, a bbox is the vector 0,0,0. So set the first vertex with setCenter() or else the bbox will 
+	 * Warning!! By default, a bbox is the vector 0,0,0. So set the first vertex with setCenter() or else the bbox will
 	 * be the extension of v and (0,0,0)...
 	 */
 	void			extend(const CVector &v);

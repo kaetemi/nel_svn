@@ -85,13 +85,13 @@ class IThread
 {
 public:
 
-	/** 
+	/**
 	  * Create a new thread.
 	  * Implemented in the derived class.
 	  */
 	static IThread *create(IRunnable *runnable, uint32 stackSize = 0);
 
-	/** 
+	/**
 	  * Return a pointer on the current thread.
 	  * Implemented in the derived class.
 	  * Not implemented under Linux.
@@ -99,7 +99,7 @@ public:
 	static IThread *getCurrentThread ();
 
 	virtual ~IThread () { }
-	
+
 	// Starts the thread.
 	virtual void start()=0;
 
@@ -157,7 +157,7 @@ class IProcess
 public:
 	virtual ~IProcess() {};
 
-	/** 
+	/**
 	  * Return a pointer on the current process.
 	  * Implemented in the derived class.
 	  */

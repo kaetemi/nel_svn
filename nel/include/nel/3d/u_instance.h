@@ -74,7 +74,7 @@ public:
 	void selectTextureSet(uint id);
 	// @}
 
-	/** Change MRM Distance setup. Only for mesh which support MRM. NB MeshMultiLod apply it only on Lod0 
+	/** Change MRM Distance setup. Only for mesh which support MRM. NB MeshMultiLod apply it only on Lod0
 	 *	(if Lod0 is a MRM).
 	 *	NB: This apply to the shape directly!! ie All instances using same shape will be affected
 	 *	NB: no-op if distanceFinest<0, distanceMiddle<=distanceFinest or if distanceCoarsest<=distanceMiddle.
@@ -92,10 +92,10 @@ public:
 	 *	Note: If the instance is skinned/sticked to a skeleton, this setup is not taken into account. But you can
 	 *	call USkeleton::setShapeDistMax() to have same effect.
 	 *
-	 *	Note (complex): All instances of the same shape which are freezeHRC()-ed and are linked to the 
-	 *	QuadGridClipManager (ie not linked to a cluster) may not be updated correctly. 
-	 *	In other words, you should setup this value only at beginning of program, just after creating your 
-	 *	instance (more exactly before UScene::render()), and all instances of the same shape should be setuped 
+	 *	Note (complex): All instances of the same shape which are freezeHRC()-ed and are linked to the
+	 *	QuadGridClipManager (ie not linked to a cluster) may not be updated correctly.
+	 *	In other words, you should setup this value only at beginning of program, just after creating your
+	 *	instance (more exactly before UScene::render()), and all instances of the same shape should be setuped
 	 *	with same value (or don't call setShapeDistMax() for subsequent instances).
 	 *	If you don't do this, QuadGridClipManager may clip such instances nearer than they should
 	 */
@@ -112,9 +112,9 @@ public:
 	void		stop() ;
 	// For instance that have a start/stop caps
 	bool		isStarted() const;
-	
+
 	// Get the model distmax.
-	float		getDistMax() const;	
+	float		getDistMax() const;
 	// Set the model distmax.
 	void		setDistMax(float distMax);
 	// If the model has a coarse mesh, it set its dist. Set to -1 to keep default
@@ -131,8 +131,8 @@ public:
 	/** if true, the instance is said in "AsyncTextureMode". Ie user must fill AsyncTextures field with name of the
 	 *	textures to load. At each startAsyncTextureLoading(), the system start to load async them.
 	 *	Then, isAsyncTextureReady() should be test each frame, to know if loading has completed.
-	 *	By default, AsyncTextureMode=false. 
-	 *	When it swap from false to true, each texture file in Materials are replaced with 
+	 *	By default, AsyncTextureMode=false.
+	 *	When it swap from false to true, each texture file in Materials are replaced with
 	 *	"blank.tga", and true fileNames are copied into AsyncTextures.
 	 *	When it swap from true to false, the inverse is applied.
 	 *	NB: calling enableAsyncTextureMode(true) calls setAsyncTextureDirty(true)
@@ -159,8 +159,8 @@ public:
 	 */
 	float		getAsyncTextureDistance() const;
 
-	/** User is free to flag this state, to know if startAsyncTextureLoading() should be called. 
-	 *	Internal system don't use this flag. 
+	/** User is free to flag this state, to know if startAsyncTextureLoading() should be called.
+	 *	Internal system don't use this flag.
 	 *	Default is false
 	 */
 	void		setAsyncTextureDirty(bool flag);
@@ -204,7 +204,7 @@ public:
 	 */
 	void					setRelativeScale (const CVector &rs);
 	// @}
-	
+
 	/// Proxy interface
 
 	/// Constructors

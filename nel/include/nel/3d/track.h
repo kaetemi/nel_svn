@@ -33,7 +33,7 @@
 #include "nel/3d/animated_value.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -73,7 +73,7 @@ public:
 	virtual const IAnimatedValue &eval (const TAnimationTime& date, CAnimatedValueBlock &avBlock)=0;
 
 	/**
-	  * get LoopMode. 2 mode only: "constant" (<=>false), and "loop" (<=> true). 
+	  * get LoopMode. 2 mode only: "constant" (<=>false), and "loop" (<=> true).
 	  *	NB: same mode if time < getBeginTIme() and if time > getEndTime()
 	  */
 	virtual bool getLoopMode() const=0;
@@ -87,7 +87,7 @@ public:
 	 */
 	virtual bool	applyTrackQuatHeaderCompressionPass0(CTrackSampleCounter &quatCounter) {return false;}
 	virtual ITrack	*applyTrackQuatHeaderCompressionPass1(uint &globalKeyOffset, CTrackSamplePack &quatPacker) {return NULL;}
-	
+
 	/// \name From UTrack
 	// @{
 
@@ -170,8 +170,8 @@ public:
 	{
 		return _Value;
 	}
-	
-	
+
+
 	/// Serial the template
 	virtual void serial (NLMISC::IStream& f) throw (NLMISC::EStream)
 	{
@@ -221,7 +221,7 @@ public:
 	{
 		return _Value;
 	}
-	
+
 
 	/// Serial the template
 	virtual void serial (NLMISC::IStream& f) throw (NLMISC::EStream)

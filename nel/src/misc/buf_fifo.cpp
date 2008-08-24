@@ -64,7 +64,7 @@ CBufFIFO::~CBufFIFO()
 #ifdef BUFFIFO_TRACK_ALL_BUFFERS
 	_AllBuffers.erase(this);
 #endif
-	
+
 	if (_Buffer != NULL)
 	{
 		delete []_Buffer;
@@ -216,7 +216,7 @@ void CBufFIFO::pop ()
 uint8 CBufFIFO::frontLast ()
 {
 	uint8	*tail = _Tail;
-	
+
 	if (empty ())
 	{
 		nlwarning("BF: Try to get the front of an empty fifo!");
@@ -251,7 +251,7 @@ void CBufFIFO::front (vector<uint8> &buffer)
 	buffer.clear ();
 
 	front (tmpbuffer, s);
-	
+
 	buffer.resize (s);
 
 	CFastMem::memcpy (&(buffer[0]), tmpbuffer, s);
@@ -259,7 +259,7 @@ void CBufFIFO::front (vector<uint8> &buffer)
 /*	TTicks before = CTime::getPerformanceTime ();
 
 	uint8	*tail = _Tail;
-	
+
 	buffer.clear ();
 
 	if (empty ())
@@ -269,7 +269,7 @@ void CBufFIFO::front (vector<uint8> &buffer)
 	}
 
 	_Fronted++;
-	
+
 	if (_Rewinder != NULL && tail == _Rewinder)
 	{
 #if DEBUG_FIFO
@@ -312,12 +312,12 @@ void CBufFIFO::front (NLMISC::CMemStream &buffer)
 	front (tmpbuffer, s);
 
 	buffer.fill (tmpbuffer, s);
-	
+
 	/*
 	TTicks before = CTime::getPerformanceTime ();
 
 	uint8	*tail = _Tail;
-	
+
 	buffer.clear ();
 
 	if (empty ())
@@ -327,7 +327,7 @@ void CBufFIFO::front (NLMISC::CMemStream &buffer)
 	}
 
 	_Fronted++;
-	
+
 	if (_Rewinder != NULL && tail == _Rewinder)
 	{
 #if DEBUG_FIFO
@@ -375,7 +375,7 @@ void CBufFIFO::front (uint8 *&buffer, uint32 &s)
 	}
 
 	_Fronted++;
-	
+
 	if (_Rewinder != NULL && tail == _Rewinder)
 	{
 #if DEBUG_FIFO
@@ -707,7 +707,7 @@ NLMISC_CATEGORISED_COMMAND(misc, dumpAllBuffers, "Dump all the fifo buffer", "no
 	for (; first != last; ++first)
 	{
 		CBufFIFO *buf = *first;
-		
+
 		log.displayNL("Dumping buffer %p:", buf);
 
 		buf->displayStats(&log);

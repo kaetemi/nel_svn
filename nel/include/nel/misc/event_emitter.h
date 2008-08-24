@@ -50,13 +50,13 @@ class IEventEmitter	: public NLMISC::CRefCount
 public:
 	/// dtor
 	virtual ~IEventEmitter() {}
-	/** 
+	/**
 	 * sends all events to server
-	 * (should call CEventServer method postEvent() ) 
+	 * (should call CEventServer method postEvent() )
 	 * \param server
-	 */	
+	 */
 	virtual void submitEvents(CEventServer & server, bool allWindows) = 0;
-		
+
 };
 
 

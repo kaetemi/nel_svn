@@ -55,7 +55,7 @@ CWaterHeightMap::CWaterHeightMap() : Date(-1),
 									 _NewY(0),
 									 _CurrMap(0),
 									 _Size(0)
-{		
+{
 }
 
 
@@ -66,7 +66,7 @@ void	CWaterHeightMap::setPropagationTime(float time)
 	_PropagationTime = time;
 	_PropagateEllapsedTime = 0;
 	for (uint k = 0; k < NumWaterMap; ++k)
-	{	
+	{
 		clearArea(k, 0, 0, _Size << 1, _Size << 1);
 	}
 }
@@ -83,7 +83,7 @@ void CWaterHeightMap::updateUserPos()
 	if ((uint) abs((long int)(x - _X)) < _Size && (uint) abs((long int)(y - _Y)) < _Size) // are there common pixels with the previous location?
 	{
 		// compute zone
-	
+
 		sint XDivSize;
 		if ((sint) _X >= 0) XDivSize = (sint) _X / (sint) _Size;
 		else XDivSize = ((sint) (_X + 1) / (sint) _Size) - 1;
@@ -108,7 +108,7 @@ void CWaterHeightMap::updateUserPos()
 			sint right  = std::min(x + (sint) _Size, (sint) (_X + _Size));
 			sint bottom = std::min(y + (sint) _Size, (sint) (_Y + _Size));
 			sint offsetX, offsetY;
-			if (xDivSize != XDivSize) 
+			if (xDivSize != XDivSize)
 			{
 				offsetX = xDivSize < XDivSize ?  _Size : -(sint)_Size;
 			}
@@ -117,7 +117,7 @@ void CWaterHeightMap::updateUserPos()
 				offsetX = 0;
 			}
 
-			if (yDivSize != YDivSize) 
+			if (yDivSize != YDivSize)
 			{
 				offsetY = yDivSize < YDivSize ?  _Size : -(sint)_Size;
 			}
@@ -135,7 +135,7 @@ void CWaterHeightMap::updateUserPos()
 						(uint) (right - left), (uint) (bottom - top));
 			}
 		}
-		
+
 		sint newOrgX = _Size * xDivSize;
 		sint newOrgY = _Size * yDivSize;
 		// clear new area
@@ -188,7 +188,7 @@ void CWaterHeightMap::updateUserPos()
 				}
 			}
 		}
-		
+
 	}
 	else
 	{
@@ -212,14 +212,14 @@ void CWaterHeightMap::animatePart(float startTime, float endTime)
 	if (endTime < 0.5f * _PropagationTime)
 	{
 		// perform propagation
-		propagate((uint) (_Size * 2.f * startTime / _PropagationTime), (uint) (_Size * 2.f * endTime / _PropagationTime));	
+		propagate((uint) (_Size * 2.f * startTime / _PropagationTime), (uint) (_Size * 2.f * endTime / _PropagationTime));
 	}
 	else
 	{
 		//  end propagation and start filter
 		if (startTime < 0.5f * _PropagationTime)
 		{
-			propagate((uint) (_Size * 2.f * startTime / _PropagationTime), _Size);	
+			propagate((uint) (_Size * 2.f * startTime / _PropagationTime), _Size);
 			filter(0, (uint) (_Size * 2.f * (endTime / _PropagationTime - 0.5f)));
 		}
 		else
@@ -232,7 +232,7 @@ void CWaterHeightMap::animatePart(float startTime, float endTime)
 //===========================================================================================
 
 void CWaterHeightMap::animate(float deltaT)
-{	
+{
 	if (deltaT < 0) deltaT = 0;
 	if (deltaT > _PropagationTime)
 	{
@@ -242,7 +242,7 @@ void CWaterHeightMap::animate(float deltaT)
 	}
 	else
 	{
-		const float endTime   = _PropagateEllapsedTime + deltaT;		
+		const float endTime   = _PropagateEllapsedTime + deltaT;
 		const float startTime = _PropagateEllapsedTime;
 
 		if (endTime < _PropagationTime)
@@ -257,7 +257,7 @@ void CWaterHeightMap::animate(float deltaT)
 			//animatePart(0, endTime - _PropagationTime);
 
 			_PropagateEllapsedTime = 0 /*endTime - _PropagationTime*/;
-		}				
+		}
 	}
 	animateWaves(deltaT);
 }
@@ -267,19 +267,19 @@ void CWaterHeightMap::animate(float deltaT)
 void		CWaterHeightMap::setSize(uint32 size)
 {
 	nlassert(size > 4);
-	_Size  = size;	
+	_Size  = size;
 	for (uint k = 0; k < NumWaterMap; ++k)
 	{
 		_Map[k].resize(4 * _Size * _Size);
 		clearArea(k, 0, 0, _Size << 1, _Size << 1);
 	}
-	//_Grad.resize(4 * _Size * _Size);		
+	//_Grad.resize(4 * _Size * _Size);
 }
 
 //===========================================================================================
 
 void		CWaterHeightMap::makeCpy(uint buffer, uint dX, uint dY, uint sX, uint sY, uint width, uint height)
-{	
+{
 	if (width == 0 || height == 0) return;
 	nlassert(dX <= (2 * _Size));
 	nlassert(dY <= (2 * _Size));
@@ -289,7 +289,7 @@ void		CWaterHeightMap::makeCpy(uint buffer, uint dX, uint dY, uint sX, uint sY, 
 	nlassert(sX + width <= 2 * _Size);
 	nlassert(dY + height <= 2 * _Size);
 	nlassert(sY + height <= 2 * _Size);
-	
+
 	sint stepY;
 	float *src, *dest;
 
@@ -335,15 +335,15 @@ void		CWaterHeightMap::makeCpy(uint buffer, uint dX, uint dY, uint sX, uint sY, 
 //===========================================================================================
 
 void		CWaterHeightMap::setUserPos(sint x, sint y)
-{	
-	_NewX = x;	
-	_NewY = y;	
+{
+	_NewX = x;
+	_NewY = y;
 }
 
 //===========================================================================================
 
 void		CWaterHeightMap::getUserPos(sint &x, sint &y) const
-{		
+{
 	x = (sint) _X; y = (sint) _Y;
 }
 
@@ -352,7 +352,7 @@ void		CWaterHeightMap::getUserPos(sint &x, sint &y) const
 //===========================================================================================
 
 void		CWaterHeightMap::propagate(uint start, uint end)
-{	
+{
 	start = std::max(1u, start);
 	end   = std::min((uint) (_Size - 1), end);
 	const float damping = _Damping;
@@ -362,12 +362,12 @@ void		CWaterHeightMap::propagate(uint start, uint end)
 	sint x, y;
 	uint px = _X % _Size;
 	uint py = _Y % _Size;
-	sint offset = px + 1 + ((py + start) * (_Size << 1));	
-	//nlinfo("%d, %d, %d",  (_CurrMap + (NumWaterMap - 1)) % NumWaterMap,  _CurrMap, 
+	sint offset = px + 1 + ((py + start) * (_Size << 1));
+	//nlinfo("%d, %d, %d",  (_CurrMap + (NumWaterMap - 1)) % NumWaterMap,  _CurrMap,
 	float *buf2 = &_Map[ (_CurrMap + (NumWaterMap - 1)) % NumWaterMap][offset];
-	float *buf1 = &_Map[_CurrMap][offset];	
+	float *buf1 = &_Map[_CurrMap][offset];
 	float *dest = &_Map[(_CurrMap + 1) % NumWaterMap][offset];
-	
+
 	const sint  sizeX2 = _Size << 1;
 	y = end - start;
 	if (y <= 0) return;
@@ -376,7 +376,7 @@ void		CWaterHeightMap::propagate(uint start, uint end)
 		x = _Size - 2;
 		do
 		{
-			*dest	= damping * ( 0.5f * (buf1[1] + buf1[-1] + buf1[sizeX2] + buf1[- sizeX2]) - *buf2);			
+			*dest	= damping * ( 0.5f * (buf1[1] + buf1[-1] + buf1[sizeX2] + buf1[- sizeX2]) - *buf2);
 			++buf1;
 			++buf2;
 			++dest;
@@ -387,7 +387,7 @@ void		CWaterHeightMap::propagate(uint start, uint end)
 		dest = dest + _Size + 2;
 	}
 	while (--y);
-	
+
 }
 
 
@@ -395,7 +395,7 @@ void		CWaterHeightMap::propagate(uint start, uint end)
 //===========================================================================================
 
 void	CWaterHeightMap::filter(uint start, uint end)
-{	
+{
 	start = std::max(1u, start);
 	end   = std::min((uint) (_Size - 1), end);
 	const float blurCoeff = _FilterWeight;
@@ -416,11 +416,11 @@ void	CWaterHeightMap::filter(uint start, uint end)
 		do
 		{
 			*buf = totalBlurCoeff * (*buf * blurCoeff
-										 + buf[1] 
+										 + buf[1]
 										 + buf[-1]
 										 + buf[sizeX2]
 										 + buf[- sizeX2]
-									 );	
+									 );
 			// compute gradient
 			/*ptGrad->x = buf[1]		    - buf[- 1];
 			ptGrad->y = buf[sizeX2]     - buf[- sizeX2];*/
@@ -432,7 +432,7 @@ void	CWaterHeightMap::filter(uint start, uint end)
 		buf    += _Size + 2;
 		//ptGrad += _Size + 2;
 	}
-	while (--y);	
+	while (--y);
 }
 
 //===========================================================================================
@@ -460,7 +460,7 @@ void CWaterHeightMap::animateWaves(float deltaT)
 				numWaves = 0;
 			}
 		}
-		
+
 		uint k;
 		// generate automatic waves
 		if (!_BorderWaves)
@@ -502,7 +502,7 @@ void CWaterHeightMap::animateWaves(float deltaT)
 					}
 				break;
 			}
-	
+
 		}
 	}
 }
@@ -529,14 +529,14 @@ void CWaterHeightMap::clearZone(sint x, sint y, sint width, sint height)
 //===========================================================================================
 
 void CWaterHeightMap::clearArea(uint8 currMap, sint x, sint y, sint width, sint height)
-{	
+{
 	nlassert(_Size > 1);
 	nlassert(width >= 0);
 	nlassert(height >= 0);
 	uint sizex2 = _Size << 1;
 
 	if (x < 0)
-	{		
+	{
 		width += x;
 		x = 0;
 		if (width <= 0) return;
@@ -556,11 +556,11 @@ void CWaterHeightMap::clearArea(uint8 currMap, sint x, sint y, sint width, sint 
 	{
 		height = height - (y + height - sizex2);
 	}
-	
+
 	float *dest = &*(_Map[  currMap	 ].begin() + x + (_Size << 1) * y);
 	do
 	{
-		std::fill(dest, dest + width, 0.f);		
+		std::fill(dest, dest + width, 0.f);
 		dest  += (_Size << 1);
 	}
 	while (-- height);
@@ -580,12 +580,12 @@ void	CWaterHeightMap::perturbate(sint x, sint y, sint radius, float intensity)
 		const uint sizeX2 = _Size << 1;
 		for (sint px = -radius + 1; px < radius; ++px)
 		{
-			for (sint py = -radius + 1; py < radius; ++py)		
-			{	
-				if ((uint) (x + px - orgX) < sizeX2 
+			for (sint py = -radius + 1; py < radius; ++py)
+			{
+				if ((uint) (x + px - orgX) < sizeX2
 					&& (uint) (y + py - orgY) < sizeX2)
-				{					
-				
+				{
+
 					float dist = ((float) radius - sqrtf((float) (px * px + py * py ))) / (float) radius;
 					float v = dist < radius ? intensity * cosf(dist * (float) NLMISC::Pi * 0.5f) : 0.f;
 					map[x + px - orgX + sizeX2 * (y + py - orgY)] = v;
@@ -605,18 +605,18 @@ void	CWaterHeightMap::perturbate(const NLMISC::CVector2f &pos, float strenght, f
 //===========================================================================================
 
 void CWaterHeightMap::perturbatePoint(sint x, sint y, float intensity)
-{	
+{
 	sint orgX = _X - _X % _Size;
 	sint orgY = _Y - _Y % _Size;
 	uint X = (uint) (x - orgX);
-	uint Y = (uint) (y - orgY);	
+	uint Y = (uint) (y - orgY);
 	if (X < (_Size << 1)
 		&& Y < (_Size << 1)
 		)
 	{
-		const uint sizex2 = _Size << 1;		
+		const uint sizex2 = _Size << 1;
 		TFloatVect &map = _Map[(_CurrMap + 1) % NumWaterMap];
-		map[X + sizex2 * Y] = intensity;		
+		map[X + sizex2 * Y] = intensity;
 	}
 }
 
@@ -676,7 +676,7 @@ void CWaterHeightMap::setWaves(float intensity, float period, uint radius, bool 
 
 void CWaterHeightMap::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
 {
-	f.xmlPushBegin("WaterHeightMap");			
+	f.xmlPushBegin("WaterHeightMap");
 		f.xmlSetAttrib ("NAME")					;
 		f.serial (_Name);
 	f.xmlPushEnd();
@@ -688,7 +688,7 @@ void CWaterHeightMap::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
 	}
 	f.xmlSerial(_Damping, "DAMPING");
 	f.xmlSerial(_FilterWeight, "FILTER_WEIGHT");
-	f.xmlSerial(_UnitSize, "WATER_UNIT_SIZE");	
+	f.xmlSerial(_UnitSize, "WATER_UNIT_SIZE");
 	f.xmlSerial(_WavesEnabled, "WavesEnabled");
 	if (_WavesEnabled)
 	{
@@ -724,11 +724,11 @@ static float inline BilinFilter(float v0, float v1, float v2, float v3, float u,
 float	CWaterHeightMap::getHeight(const NLMISC::CVector2f &pos)
 {
 	const float invUnitSize = 1.f / _UnitSize;
-	
+
 	const float xPos = invUnitSize * pos.x; // position in map space
 	const float yPos = invUnitSize * pos.y; // position in map space
 
-	
+
 	if ((uint) xPos - _X < _Size - 1
 		&& (uint) yPos - _Y < _Size - 1
 		)
@@ -739,12 +739,12 @@ float	CWaterHeightMap::getHeight(const NLMISC::CVector2f &pos)
 		const sint orgY = _Y - _Y % _Size;
 		const uint sizeX2 = _Size << 1;
 
-	
-		const sint  fxPos = (sint) floorf(xPos); 
-		const sint  fyPos = (sint) floorf(yPos); 
 
-	
-			
+		const sint  fxPos = (sint) floorf(xPos);
+		const sint  fyPos = (sint) floorf(yPos);
+
+
+
 			const float deltaU	  = xPos - fxPos;
 			const float deltaV	  = yPos - fyPos;
 			const uint  offset	  = (uint) fxPos - orgX + sizeX2 * ( (uint) fyPos - orgY);
@@ -759,7 +759,7 @@ float	CWaterHeightMap::getHeight(const NLMISC::CVector2f &pos)
 							   deltaU,
 							   deltaV
 							   );
-	}						
+	}
 	else return 0;
 
 }

@@ -1,5 +1,5 @@
 /** \file ps_register_attribs.cpp
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *
@@ -36,7 +36,7 @@
 namespace NL3D
 {
 	void CPSUtil::registerAttribs()
-	{						
+	{
 		PSRegisterIntAttribs();
 		PSRegisterFloatAttribs();
 		PSRegisterColorAttribs();

@@ -30,7 +30,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -67,7 +67,7 @@ void UPointLight::setColor (NLMISC::CRGBA color)
 
 // ***************************************************************************
 
-NLMISC::CRGBA UPointLight::getAmbient () const 
+NLMISC::CRGBA UPointLight::getAmbient () const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getAmbient();
@@ -75,7 +75,7 @@ NLMISC::CRGBA UPointLight::getAmbient () const
 
 // ***************************************************************************
 
-NLMISC::CRGBA UPointLight::getDiffuse () const 
+NLMISC::CRGBA UPointLight::getDiffuse () const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getDiffuse ();
@@ -83,7 +83,7 @@ NLMISC::CRGBA UPointLight::getDiffuse () const
 
 // ***************************************************************************
 
-NLMISC::CRGBA UPointLight::getSpecular () const 
+NLMISC::CRGBA UPointLight::getSpecular () const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpecular();
@@ -115,7 +115,7 @@ float UPointLight::getAttenuationEnd() const
 
 // ***************************************************************************
 
-void UPointLight::enableSpotlight(bool enable) 
+void UPointLight::enableSpotlight(bool enable)
 {
 	CPointLightModel	*object = getObjectPtr();
 	if(enable)
@@ -126,7 +126,7 @@ void UPointLight::enableSpotlight(bool enable)
 
 // ***************************************************************************
 
-bool UPointLight::isSpotlight() const 
+bool UPointLight::isSpotlight() const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getType() == CPointLight::SpotLight;
@@ -134,7 +134,7 @@ bool UPointLight::isSpotlight() const
 
 // ***************************************************************************
 
-void UPointLight::setupSpotAngle(float spotAngleBegin, float spotAngleEnd) 
+void UPointLight::setupSpotAngle(float spotAngleBegin, float spotAngleEnd)
 {
 	CPointLightModel	*object = getObjectPtr();
 	object->PointLight.setupSpotAngle(spotAngleBegin, spotAngleEnd);
@@ -142,7 +142,7 @@ void UPointLight::setupSpotAngle(float spotAngleBegin, float spotAngleEnd)
 
 // ***************************************************************************
 
-float UPointLight::getSpotAngleBegin() const 
+float UPointLight::getSpotAngleBegin() const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpotAngleBegin();
@@ -150,7 +150,7 @@ float UPointLight::getSpotAngleBegin() const
 
 // ***************************************************************************
 
-float UPointLight::getSpotAngleEnd() const 
+float UPointLight::getSpotAngleEnd() const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->PointLight.getSpotAngleEnd();
@@ -158,7 +158,7 @@ float UPointLight::getSpotAngleEnd() const
 
 // ***************************************************************************
 
-void UPointLight::setDeltaPosToSkeletonWhenOutOfFrustum(const CVector &deltaPos) 
+void UPointLight::setDeltaPosToSkeletonWhenOutOfFrustum(const CVector &deltaPos)
 {
 	CPointLightModel	*object = getObjectPtr();
 	object->setDeltaPosToSkeletonWhenOutOfFrustum(deltaPos) ;
@@ -166,7 +166,7 @@ void UPointLight::setDeltaPosToSkeletonWhenOutOfFrustum(const CVector &deltaPos)
 
 // ***************************************************************************
 
-const CVector &UPointLight::getDeltaPosToSkeletonWhenOutOfFrustum() const 
+const CVector &UPointLight::getDeltaPosToSkeletonWhenOutOfFrustum() const
 {
 	CPointLightModel	*object = getObjectPtr();
 	return object->getDeltaPosToSkeletonWhenOutOfFrustum() ;

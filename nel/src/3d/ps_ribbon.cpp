@@ -31,7 +31,7 @@
 #include "nel/3d/texture_mem.h"
 #include "nel/misc/matrix.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 static NLMISC::CRGBA GradientB2W[] = {NLMISC::CRGBA(0, 0, 0, 0), NLMISC::CRGBA(255, 255, 255, 255) };
@@ -60,23 +60,23 @@ static ITexture *CreateGradientTexture()
 ///////////////////////////
 
 // predifined shapes
-const NLMISC::CVector CPSRibbon::Triangle[] = 
-{ 
+const NLMISC::CVector CPSRibbon::Triangle[] =
+{
 	NLMISC::CVector(0, 1, 0),
 	NLMISC::CVector(1, -1, 0),
-	NLMISC::CVector(-1, -1, 0),								 
+	NLMISC::CVector(-1, -1, 0),
 };
 
-const NLMISC::CVector CPSRibbon::Losange[] = 
-{ 
+const NLMISC::CVector CPSRibbon::Losange[] =
+{
 	NLMISC::CVector(0, 1.f, 0),
 	NLMISC::CVector(1.f, 0, 0),
 	NLMISC::CVector(0, -1.f, 0),
 	NLMISC::CVector(-1.f, 0, 0)
 };
 
-const NLMISC::CVector  CPSRibbon::HeightSides[] = 
-{  
+const NLMISC::CVector  CPSRibbon::HeightSides[] =
+{
 	NLMISC::CVector(-0.5f, 1, 0),
 	NLMISC::CVector(0.5f, 1, 0),
 	NLMISC::CVector(1, 0.5f, 0),
@@ -84,12 +84,12 @@ const NLMISC::CVector  CPSRibbon::HeightSides[] =
 	NLMISC::CVector(0.5f, -1, 0),
 	NLMISC::CVector(-0.5f, -1, 0),
 	NLMISC::CVector(-1, -0.5f, 0),
-	NLMISC::CVector(-1, 0.5f, 0) 
+	NLMISC::CVector(-1, 0.5f, 0)
 };
 
 
-const NLMISC::CVector CPSRibbon::Pentagram[] = 
-{ 
+const NLMISC::CVector CPSRibbon::Pentagram[] =
+{
 	NLMISC::CVector(0, 1, 0),
 	NLMISC::CVector(1, -1, 0),
 	NLMISC::CVector(-1, 0, 0),
@@ -158,7 +158,7 @@ void CPSRibbon::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		f.serialPtr(_Owner);
 		if (ver3 > 1) f.serialEnum(_LOD);
 		if (ver3 > 2) f.serial(_Name);
-		if (ver3 > 3) 
+		if (ver3 > 3)
 		{
 			if (f.isReading())
 			{
@@ -188,15 +188,15 @@ void CPSRibbon::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		CPSSizedParticle::serialSizeScheme(f);
 
 		// we dont use the 2d angle anymore...serial a dummy one
-		{			
+		{
 			 CDummy2DAngle _Dummy2DAngle;
-			_Dummy2DAngle.serialAngle2DScheme(f); 
+			_Dummy2DAngle.serialAngle2DScheme(f);
 		}
 
 		f.serial(colorFading, systemBasisEnabled);
 		serialMaterial(f);
 
-		f.serial(drEnabled);				
+		f.serial(drEnabled);
 		f.serial(tailNbSegs);
 		ITexture *tex = NULL;
 		f.serialPolyPtr(tex);
@@ -206,19 +206,19 @@ void CPSRibbon::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			f.serial(_UFactor, _VFactor) ;
 		}
 
-		// shape serialization	
+		// shape serialization
 		f.serialCont(_Shape);
-		
-		
+
+
 		_NbSegs = tailNbSegs >> 1;
 		if (_NbSegs < 1) _NbSegs = 2;
 		setInterpolationMode(Linear);
 
 		nlassert(_Owner);
 		resize(_Owner->getMaxSize());
-		initDateVect();		
-		resetFromOwner();	
-	}	
+		initDateVect();
+		resetFromOwner();
+	}
 
 
 	if (ver >= 2)
@@ -229,10 +229,10 @@ void CPSRibbon::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		CPSMaterial::serialMaterial(f);
 		f.serialCont(_Shape);
 		bool colorFading = _ColorFading;
-		f.serial(colorFading);	
+		f.serial(colorFading);
 		_ColorFading = colorFading;
 		uint32 tailNbSegs = _NbSegs;
-		f.serial(tailNbSegs);		
+		f.serial(tailNbSegs);
 		if (f.isReading())
 		{
 			setTailNbSeg(_NbSegs);
@@ -262,7 +262,7 @@ void CPSRibbon::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 }
 
 
-//=======================================================	
+//=======================================================
 CPSRibbon::CPSRibbon() : _UFactor(1.f),
 						 _VFactor(1.f),
 						 _Orientation(FollowPath),
@@ -282,14 +282,14 @@ CPSRibbon::CPSRibbon() : _UFactor(1.f),
 }
 
 
-//=======================================================	
+//=======================================================
 CPSRibbon::~CPSRibbon()
 {
 	NL_PS_FUNC(CPSRibbon_CPSRibbonDtor)
 }
 
 
-//==========================================================================	
+//==========================================================================
 inline uint CPSRibbon::getNumVerticesInSlice() const
 {
 	NL_PS_FUNC(CPSRibbon_getNumVerticesInSlice)
@@ -298,7 +298,7 @@ inline uint CPSRibbon::getNumVerticesInSlice() const
 		return _Shape.size();
 	}
 	else
-	{	
+	{
 		return _Shape.size() + (_Tex == NULL ? 0 : 1);
 	}
 }
@@ -307,12 +307,12 @@ inline uint CPSRibbon::getNumVerticesInSlice() const
 
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbon::step(TPSProcessPass pass)
-{	
+{
 	NL_PS_FUNC(CPSRibbon_step)
 	if (pass == PSMotion)
-	{	
+	{
 		if (!_Parametric)
 		{
 			updateGlobals();
@@ -326,20 +326,20 @@ void CPSRibbon::step(TPSProcessPass pass)
 	{
 		uint32 step;
 		uint   numToProcess;
-		computeSrcStep(step, numToProcess);	
+		computeSrcStep(step, numToProcess);
 		if (!numToProcess) return;
-		
+
 		/// update the material color
 		CParticleSystem &ps = *(_Owner->getOwner());
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
 		{
-			_Mat.setColor(ps.getGlobalColorLighted());			
+			_Mat.setColor(ps.getGlobalColorLighted());
 		}
 		else
 		{
 			_Mat.setColor(ps.getGlobalColor());
 		}
-		
+
 		/** We support Auto-LOD for ribbons, although there is a built-in LOD (that change the geometry rather than the number of ribbons)
 		  * that gives better result (both can be used simultaneously)
 		  */
@@ -347,15 +347,15 @@ void CPSRibbon::step(TPSProcessPass pass)
 		displayRibbons(numToProcess, step);
 
 	}
-	else 
+	else
 	if (pass == PSToolRender) // edition mode only
-	{			
+	{
 		//showTool();
-	}	
+	}
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbon::newElement(const CPSEmitterInfo &info)
 {
 	NL_PS_FUNC(CPSRibbon_newElement)
@@ -365,27 +365,27 @@ void CPSRibbon::newElement(const CPSEmitterInfo &info)
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbon::deleteElement(uint32 index)
 {
 	NL_PS_FUNC(CPSRibbon_deleteElement)
 	CPSRibbonBase::deleteElement(index);
-	deleteColorElement(index);	
-	deleteSizeElement(index);	
+	deleteColorElement(index);
+	deleteSizeElement(index);
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbon::resize(uint32 size)
 {
 	NL_PS_FUNC(CPSRibbon_resize)
 	nlassert(size < (1 << 16));
-	CPSRibbonBase::resize(size);	
+	CPSRibbonBase::resize(size);
 	resizeColor(size);
 	resizeSize(size);
 }
 
-//=======================================================	
+//=======================================================
 void CPSRibbon::updateMatAndVbForColor(void)
 {
 	NL_PS_FUNC(CPSRibbon_updateMatAndVbForColor)
@@ -415,7 +415,7 @@ static inline uint8 *BuildRibbonFirstSlice(const NLMISC::CVector &pos,
 ///=========================================================================
 // This compute one slice of a ribbon, and return the next vertex to be filled
 static inline uint8 *ComputeRibbonSliceFollowPath(const NLMISC::CVector &prev,
-									    const NLMISC::CVector &next,									 
+									    const NLMISC::CVector &next,
 									    const NLMISC::CVector *shape,
 									    uint  numVerts,
 									    uint8 *dest,
@@ -426,20 +426,20 @@ static inline uint8 *ComputeRibbonSliceFollowPath(const NLMISC::CVector &prev,
 {
 	NL_PS_FUNC(ComputeRibbonSliceFollowPath)
 	// compute a basis from the next and previous position.
-	// (not optimized for now, but not widely used, either...)		
-	const float epsilon = 10E-5f;	
+	// (not optimized for now, but not widely used, either...)
+	const float epsilon = 10E-5f;
 	if (fabsf(next.x - prev.x) > epsilon
 		|| fabsf(next.y - prev.y) > epsilon
 		|| fabsf(next.z - prev.z) > epsilon)
-	{	
+	{
 		// build a new basis, or use the previous one otherwise
 		CPSUtil::buildSchmidtBasis(next - prev, basis);
 	}
 	basis.setPos(next);
-	
+
 	const NLMISC::CVector *shapeEnd = shape + numVerts;
 	do
-	{		
+	{
 		*(NLMISC::CVector *) dest = basis * (size * (*shape));
 		++shape;
 		dest += vertexSize;
@@ -451,7 +451,7 @@ static inline uint8 *ComputeRibbonSliceFollowPath(const NLMISC::CVector &prev,
 ///=========================================================================
 // This compute one slice of a ribbon, and return the next vertex to be filled
 static inline uint8 *ComputeRibbonSliceIdentity(const NLMISC::CVector &prev,
-											   const NLMISC::CVector &next,									 
+											   const NLMISC::CVector &next,
 											   const NLMISC::CVector *shape,
 											   uint  numVerts,
 											   uint8 *dest,
@@ -462,8 +462,8 @@ static inline uint8 *ComputeRibbonSliceIdentity(const NLMISC::CVector &prev,
 	NL_PS_FUNC(ComputeRibbonSliceIdentity)
 	const NLMISC::CVector *shapeEnd = shape + numVerts;
 	do
-	{		
-		((NLMISC::CVector *) dest)->set(size * shape->x + next.x, 
+	{
+		((NLMISC::CVector *) dest)->set(size * shape->x + next.x,
 			                            size * shape->y + next.y,
 										size * shape->z + next.z);
 		++shape;
@@ -475,7 +475,7 @@ static inline uint8 *ComputeRibbonSliceIdentity(const NLMISC::CVector &prev,
 
 ///=========================================================================
 static inline uint8 *ComputeRibbonSliceFollowPathXY(const NLMISC::CVector &prev,
-												  const NLMISC::CVector &next,									 
+												  const NLMISC::CVector &next,
 												  const NLMISC::CVector *shape,
 												  uint  numVerts,
 												  uint8 *dest,
@@ -490,7 +490,7 @@ static inline uint8 *ComputeRibbonSliceFollowPathXY(const NLMISC::CVector &prev,
 	const float epsilon = 10E-5f;
 	if (fabsf(deltaX) > epsilon
 		|| fabsf(deltaY) > epsilon)
-	{	
+	{
 		float norm = sqrtf(NLMISC::sqr(deltaX) + NLMISC::sqr(deltaY));
 		float invNorm = (norm != 0.f) ? 1.f / norm : 0.f;
 		NLMISC::CVector I, J;
@@ -498,10 +498,10 @@ static inline uint8 *ComputeRibbonSliceFollowPathXY(const NLMISC::CVector &prev,
 		I.set(-J.y, J.x, 0.f);
 		basis.setRot(I, CVector::K, J, true);
 	}
-	basis.setPos(next);	
+	basis.setPos(next);
 	const NLMISC::CVector *shapeEnd = shape + numVerts;
 	do
-	{		
+	{
 		*(NLMISC::CVector *) dest = basis * (size * (*shape));
 		++shape;
 		dest += vertexSize;
@@ -531,7 +531,7 @@ static inline uint8 *ComputeUntexturedRibbonMesh(uint8 *destVb,
 	CMatrix basis;
 	basis.scale(0);
 	switch(orientation)
-	{	
+	{
 		case CPSRibbon::FollowPath:
 			do
 			{
@@ -563,7 +563,7 @@ static inline uint8 *ComputeUntexturedRibbonMesh(uint8 *destVb,
 				size -= sizeIncrement;
 			}
 			while (--numSegs);
-		break;		
+		break;
 		case CPSRibbon::Identity:
 			do
 			{
@@ -584,7 +584,7 @@ static inline uint8 *ComputeUntexturedRibbonMesh(uint8 *destVb,
 			nlassert(0);
 		break;
 	}
-	return BuildRibbonFirstSlice(curve[0], numVerticesInShape, destVb, vertexSize);  		
+	return BuildRibbonFirstSlice(curve[0], numVerticesInShape, destVb, vertexSize);
 }
 
 ///=========================================================================
@@ -603,7 +603,7 @@ static inline uint8 *ComputeTexturedRibbonMesh(uint8 *destVb,
 {
 	NL_PS_FUNC(ComputeTexturedRibbonMesh)
 	CMatrix basis;
-	basis.scale(0);	
+	basis.scale(0);
 	switch(orientation)
 	{
 		case CPSRibbon::FollowPath:
@@ -626,7 +626,7 @@ static inline uint8 *ComputeTexturedRibbonMesh(uint8 *destVb,
 				size -= sizeIncrement;
 			}
 			while (--numSegs);
-		break;		
+		break;
 		case CPSRibbon::FollowPathXY:
 			do
 			{
@@ -657,7 +657,7 @@ static inline uint8 *ComputeTexturedRibbonMesh(uint8 *destVb,
 					numVerticesInShape,
 					destVb,
 					vertexSize,
-					size					
+					size
 					);
 				// duplicate last vertex ( equal first)
 				* (NLMISC::CVector *) nextDestVb = * (NLMISC::CVector *) destVb;
@@ -672,16 +672,16 @@ static inline uint8 *ComputeTexturedRibbonMesh(uint8 *destVb,
 			nlassert(0);
 		break;
 	}
-	return BuildRibbonFirstSlice(curve[0], numVerticesInShape + 1, destVb, vertexSize);  	
+	return BuildRibbonFirstSlice(curve[0], numVerticesInShape + 1, destVb, vertexSize);
 }
 
-//==========================================================================	
+//==========================================================================
 void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
-{	
+{
 //	if (!FilterPS[5]) return;
 	NL_PS_FUNC(CPSRibbon_displayRibbons)
 	if (!nbRibbons) return;
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	CPSRibbonBase::updateLOD();
 	if (_UsedNbSegs < 2) return;
 	const float date = _Owner->getOwner()->getSystemDate();
@@ -690,16 +690,16 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 	CVertexBuffer				&VB = VBnPB.VB;
 	CIndexBuffer				&PB = VBnPB.PB;
 	const uint32				vertexSize  = VB.getVertexSize();
-	uint						colorOffset=0;	
-	
+	uint						colorOffset=0;
+
 	IDriver *drv = this->getDriver();
 	#ifdef NL_DEBUG
 		nlassert(drv);
 	#endif
-	drv->setupModelMatrix(getLocalToWorldTrailMatrix());		
-	_Owner->incrementNbDrawnParticles(nbRibbons); // for benchmark purpose		
-	const uint numRibbonBatch = getNumRibbonsInVB(); // number of ribons to process at once		
-	if (_UsedNbSegs == 0) return;	
+	drv->setupModelMatrix(getLocalToWorldTrailMatrix());
+	_Owner->incrementNbDrawnParticles(nbRibbons); // for benchmark purpose
+	const uint numRibbonBatch = getNumRibbonsInVB(); // number of ribons to process at once
+	if (_UsedNbSegs == 0) return;
 	////////////////////
 	// Material setup //
 	////////////////////
@@ -707,9 +707,9 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		bool useGlobalColor = ps.getColorAttenuationScheme() != NULL || ps.isUserColorUsed();
 		if (useGlobalColor != _GlobalColor)
 		{
-			_GlobalColor = useGlobalColor; 
+			_GlobalColor = useGlobalColor;
 			touch();
-		}							
+		}
 		if (usesGlobalColorLighting() != _Lighted)
 		{
 			_Lighted = usesGlobalColorLighting();
@@ -725,8 +725,8 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		//
 		if (_ColorScheme)
 		{
-			colorOffset = VB.getColorOff();	
-		}	
+			colorOffset = VB.getColorOff();
+		}
 	/////////////////////
 	// Compute ribbons //
 	/////////////////////
@@ -737,29 +737,29 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 		static std::vector<NLMISC::CVector> ribbonPos;  // this is where the position of each ribbon slice center i stored
 		ribbonPos.resize(_UsedNbSegs + 1); // make sure we have enough room
 		sizes.resize(numRibbonBatch);
-		
+
 		//
 		uint toProcess;
-		uint ribbonIndex = 0; // index of the first ribbon in the batch being processed	
+		uint ribbonIndex = 0; // index of the first ribbon in the batch being processed
 		uint32 fpRibbonIndex = 0; // fixed point index in source
 		if (_ColorScheme)
 		{
 			_ColorScheme->setColorType(drv->getVertexColorFormat());
 		}
 		do
-		{			
-			toProcess = std::min((uint) (nbRibbons - ribbonIndex) , numRibbonBatch);			
+		{
+			toProcess = std::min((uint) (nbRibbons - ribbonIndex) , numRibbonBatch);
 			VB.setNumVertices((_UsedNbSegs + 1) * toProcess * numVerticesInSlice);
 			{
 				CVertexBufferReadWrite vba;
-				VB.lock(vba);				
-				currVert = (uint8 *) vba.getVertexCoordPointer();					
+				VB.lock(vba);
+				currVert = (uint8 *) vba.getVertexCoordPointer();
 				/// setup sizes
 				const float	*ptCurrSize;
 				uint32  ptCurrSizeIncrement;
 				if (_SizeScheme)
-				{			
-					ptCurrSize = (float *) _SizeScheme->make(this->_Owner, ribbonIndex, &sizes[0], sizeof(float), toProcess, true, srcStep);			
+				{
+					ptCurrSize = (float *) _SizeScheme->make(this->_Owner, ribbonIndex, &sizes[0], sizeof(float), toProcess, true, srcStep);
 					ptCurrSizeIncrement = 1;
 				}
 				else
@@ -770,10 +770,10 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 
 				/// compute colors
 				if (_ColorScheme)
-				{			
-					_ColorScheme->makeN(this->_Owner, ribbonIndex, currVert + colorOffset, vertexSize, toProcess, numVerticesInSlice * (_UsedNbSegs + 1), srcStep);			
-				}			
-				uint k = toProcess;	
+				{
+					_ColorScheme->makeN(this->_Owner, ribbonIndex, currVert + colorOffset, vertexSize, toProcess, numVerticesInSlice * (_UsedNbSegs + 1), srcStep);
+				}
+				uint k = toProcess;
 				//////////////////////////////////////////////////////////////////////////////////////
 				// interpolate and project points the result is directly setup in the vertex buffer //
 				//////////////////////////////////////////////////////////////////////////////////////
@@ -781,7 +781,7 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 				{
 					//////////////////////
 					// INCREMENTAL CASE //
-					//////////////////////				
+					//////////////////////
 					if (_Tex != NULL && !_BraceMode) // textured case : must duplicate last vertex, unless in brace mod
 					{
 						do
@@ -824,14 +824,14 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 																  );
 							fpRibbonIndex += srcStep;
 						}
-						while (--k);	
+						while (--k);
 					}
 				}
 				else
 				{
 					//////////////////////
 					// PARAMETRIC  CASE //
-					//////////////////////				
+					//////////////////////
 					if (_Tex != NULL) // textured case
 					{
 						do
@@ -879,30 +879,30 @@ void CPSRibbon::displayRibbons(uint32 nbRibbons, uint32 srcStep)
 																   ribbonSizeIncrement,
 																   *ptCurrSize,
 																   _Orientation
-																  );				
+																  );
 							fpRibbonIndex += srcStep;
 						}
 						while (--k);
-					}							
-				}			
+					}
+				}
 			}
 			// display the result
 			uint numTri = numVerticesInShape * _UsedNbSegs * toProcess;
 			if (!_BraceMode)
 			{
 				numTri <<= 1;
-			}			
-			PB.setNumIndexes(3 * numTri);			
+			}
+			PB.setNumIndexes(3 * numTri);
 			drv->activeIndexBuffer(PB);
 			drv->activeVertexBuffer(VB);
 			drv->renderTriangles(_Mat, 0, numTri);
-			ribbonIndex += toProcess;		
+			ribbonIndex += toProcess;
 		}
 		while (ribbonIndex != nbRibbons);
-		
-}	
 
-//==========================================================================	
+}
+
+//==========================================================================
 bool CPSRibbon::hasTransparentFaces(void)
 {
 	NL_PS_FUNC(CPSRibbon_hasTransparentFaces)
@@ -910,14 +910,14 @@ bool CPSRibbon::hasTransparentFaces(void)
 }
 
 
-//==========================================================================	
+//==========================================================================
 bool CPSRibbon::hasOpaqueFaces(void)
 {
 	NL_PS_FUNC(CPSRibbon_hasOpaqueFaces)
 	return !hasTransparentFaces();
 }
 
-//==========================================================================	
+//==========================================================================
 uint32 CPSRibbon::getNumWantedTris() const
 {
 	NL_PS_FUNC(CPSRibbon_getNumWantedTris)
@@ -926,7 +926,7 @@ uint32 CPSRibbon::getNumWantedTris() const
 	return _Owner->getSize() * _NbSegs;
 }
 
-//==========================================================================	
+//==========================================================================
 // Set a tri in ribbon with check added
 static inline void setTri(CIndexBufferReadWrite &ibrw, const CVertexBuffer &vb, uint32 triIndex, uint32 i0, uint32 i1, uint32 i2)
 {
@@ -936,7 +936,7 @@ static inline void setTri(CIndexBufferReadWrite &ibrw, const CVertexBuffer &vb, 
 	ibrw.setTri(triIndex, i0, i1, i2);
 }
 
-//==========================================================================	
+//==========================================================================
 CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 {
 	NL_PS_FUNC(CPSRibbon_getVBnPB)
@@ -970,22 +970,22 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 		vb.setPreferredMemory(CVertexBuffer::AGPVolatile, true); // keep local memory because of interleaved format
 		/// set the vb format & size
 		/// In the case of a ribbon with color and fading, we encode the fading in a texture
-		/// If the ribbon has fading, but only a global color, we encode it in the primary color		
+		/// If the ribbon has fading, but only a global color, we encode it in the primary color
 		vb.setVertexFormat(CVertexBuffer::PositionFlag	| /* alway need position */
 						   (_ColorScheme || _ColorFading ? CVertexBuffer::PrimaryColorFlag : 0) | /* need a color ? */
 						   ((_ColorScheme && _ColorFading) ||  _Tex != NULL ? CVertexBuffer::TexCoord0Flag : 0) | /* need texture coordinates ? */
 						   (_Tex != NULL && _ColorScheme && _ColorFading ? CVertexBuffer::TexCoord1Flag : 0) /* need 2nd texture coordinates ? */
-						  );		
+						  );
 		vb.setNumVertices((_UsedNbSegs + 1) * numRibbonInVB * numVerticesInSlice); // 1 seg = 1 line + terminal vertices
 		pb.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-		// set the primitive block size		
+		// set the primitive block size
 		if (_BraceMode)
-		{		
+		{
 			pb.setNumIndexes(6 * _UsedNbSegs * numRibbonInVB * (_Shape.size() / 2));
 		}
 		else
 		{
-			pb.setNumIndexes(6 * _UsedNbSegs * numRibbonInVB * _Shape.size());			
+			pb.setNumIndexes(6 * _UsedNbSegs * numRibbonInVB * _Shape.size());
 		}
 		//
 		CIndexBufferReadWrite ibaWrite;
@@ -994,7 +994,7 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 		vb.lock(vba);
 		/// Setup the pb and vb parts. Not very fast but executed only once
 		uint vbIndex = 0;
-		uint pbIndex = 0; 
+		uint pbIndex = 0;
 		uint i, k, l;
 		for (i = 0; i < numRibbonInVB; ++i)
 		{
@@ -1003,34 +1003,34 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 
 				/// setup primitive block
 				if (k != _UsedNbSegs) /// there are alway one more slice than segments in the ribbon...
-				{	
+				{
 					if (_BraceMode)
 					{
 						uint vIndex = vbIndex;
 						for (l = 0; l < numVerticesInShape / 2; ++l) /// deals with segment
-						{																			
+						{
 							setTri(ibaWrite, vb, pbIndex, vIndex, vIndex + numVerticesInSlice, vIndex + numVerticesInSlice + 1);
 							pbIndex+=3;
 							setTri(ibaWrite, vb, pbIndex, vIndex, vIndex + numVerticesInSlice + 1, vIndex + 1);
 							pbIndex+=3;
 							vIndex += 2;
-						}													
+						}
 					}
 					else
-					{					
+					{
 						uint vIndex = vbIndex;
 						for (l = 0; l < (numVerticesInShape - 1); ++l) /// deals with each ribbon vertices
-						{																			
+						{
 							setTri(ibaWrite, vb, pbIndex, vIndex, vIndex + numVerticesInSlice, vIndex + numVerticesInSlice + 1);
 							pbIndex+=3;
 							setTri(ibaWrite, vb, pbIndex, vIndex, vIndex + numVerticesInSlice + 1, vIndex + 1);
 							pbIndex+=3;
 							++ vIndex;
-						}	
-						
+						}
+
 						/// the last 2 index don't loop if there's a texture
-						uint nextVertexIndex = (numVerticesInShape == numVerticesInSlice) ?	vIndex + 1 - numVerticesInShape // no texture -> we loop 
-											   : vIndex + 1; // a texture is used : use onemore vertex										
+						uint nextVertexIndex = (numVerticesInShape == numVerticesInSlice) ?	vIndex + 1 - numVerticesInShape // no texture -> we loop
+											   : vIndex + 1; // a texture is used : use onemore vertex
 						setTri(ibaWrite, vb, pbIndex, vIndex, vIndex + numVerticesInSlice, nextVertexIndex + numVerticesInSlice);
 						pbIndex+=3;
 						setTri(ibaWrite, vb, pbIndex, vIndex, nextVertexIndex + numVerticesInSlice, nextVertexIndex);
@@ -1046,16 +1046,16 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 						nlassert(vbIndex < vb.getNumVertices());
 						/// setup texture (if any)
 						if (_Tex != NULL)
-						{									
+						{
 							vba.setTexCoord(vbIndex,
 											_ColorScheme && _ColorFading ? 1 : 0,		// must we use the second texture coord ? (when 1st one used by the gradient texture : we can't encode it in the diffuse as it encodes each ribbon color)
 											(float) k / _UsedNbSegs,				    // u
 											0.f											// v
 										   );
 							vba.setTexCoord(vbIndex + 1,
-								            _ColorScheme && _ColorFading ? 1 : 0,		
-								            (float) k / _UsedNbSegs,				    
-								            1.f											
+								            _ColorScheme && _ColorFading ? 1 : 0,
+								            (float) k / _UsedNbSegs,
+								            1.f
 								           );
 						}
 						/// setup gradient
@@ -1079,18 +1079,18 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 					}
 				}
 				else
-				{				
+				{
 					for (l = 0; l < numVerticesInSlice; ++l) /// deals with each ribbon vertices
 					{
 						nlassert(vbIndex < vb.getNumVertices());
 						/// setup texture (if any)
 						if (_Tex != NULL)
-						{									
+						{
 							vba.setTexCoord(vbIndex,
 										   _ColorScheme && _ColorFading ? 1 : 0,		// must we use the second texture coord ? (when 1st one used by the gradient texture : we can't encode it in the diffuse as it encodes each ribbon color)
 										   (float) k / _UsedNbSegs,				  // u
 										   1.f - (l / (float) numVerticesInShape) // v
-										  );						
+										  );
 						}
 						/// setup gradient
 						if (_ColorFading)
@@ -1100,7 +1100,7 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 							{
 								uint8 intensity = (uint8) (255 * (1.f - ((float) k / _UsedNbSegs)));
 								NLMISC::CRGBA col(intensity, intensity, intensity, intensity);
-								vba.setColor(vbIndex, col);						
+								vba.setColor(vbIndex, col);
 							}
 							else // encode it in the first texture
 							{
@@ -1109,24 +1109,24 @@ CPSRibbon::CVBnPB &CPSRibbon::getVBnPB()
 						}
 						++ vbIndex;
 					}
-				}				
+				}
 			}
 		}
 		return VBnPB;
 	}
 }
 
-//==========================================================================	
+//==========================================================================
 uint	CPSRibbon::getNumRibbonsInVB() const
 {
 	NL_PS_FUNC(CPSRibbon_getNumRibbonsInVB)
 	const uint numVerticesInSlice = getNumVerticesInSlice(); /// 1 vertex added for textured ribbon (to avoid texture stretching)
-	const uint vertexInVB = 512;	
+	const uint vertexInVB = 512;
 	return std::max(1u, (uint) (vertexInVB / (numVerticesInSlice * (_UsedNbSegs + 1))));
 }
 
 
-//==========================================================================	
+//==========================================================================
 inline void	CPSRibbon::updateUntexturedMaterial()
 {
 	NL_PS_FUNC(CPSRibbon_updateUntexturedMaterial)
@@ -1139,7 +1139,7 @@ inline void	CPSRibbon::updateUntexturedMaterial()
 	CParticleSystem &ps = *(_Owner->getOwner());
 	if (_ColorScheme)
 	{	// PER RIBBON COLOR
-		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting() || ps.getColorAttenuationScheme() || ps.isUserColorUsed())		
+		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting() || ps.getColorAttenuationScheme() || ps.isUserColorUsed())
 		{
 			if (_ColorFading) // global color + fading + per ribbon color
 			{
@@ -1154,16 +1154,16 @@ inline void	CPSRibbon::updateUntexturedMaterial()
 				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Constant);
 				SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Diffuse);
 			}
-			else // per ribbon color with global color 
+			else // per ribbon color with global color
 			{
 				CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed
 				SetupModulatedStage(_Mat, 0, CMaterial::Diffuse, CMaterial::Constant);
 			}
 		}
 		else
-		{	
+		{
 			if (_ColorFading) // per ribbon color, no fading
-			{				
+			{
 				if (ptGradTexture == NULL) // have we got a gradient texture ?
 				{
 					ptGradTexture = CreateGradientTexture();
@@ -1181,21 +1181,21 @@ inline void	CPSRibbon::updateUntexturedMaterial()
 		}
 	}
 	else // GLOBAL COLOR
-	{		
+	{
 		if (_ColorFading)
-		{								
-			CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed				
+		{
+			CPSMaterial::forceTexturedMaterialStages(1); // use constant color 0 * diffuse, 1 stage needed
 			SetupModulatedStage(_Mat, 0, CMaterial::Diffuse, CMaterial::Constant);
 		}
-		else // color attenuation, no fading : 
+		else // color attenuation, no fading :
 		{
-			CPSMaterial::forceTexturedMaterialStages(0); // no texture use constant diffuse only				
-		}		
+			CPSMaterial::forceTexturedMaterialStages(0); // no texture use constant diffuse only
+		}
 	}
 	_Touch = false;
 }
 
-//==========================================================================	
+//==========================================================================
 inline void	CPSRibbon::updateTexturedMaterial()
 {
 	NL_PS_FUNC(CPSRibbon_updateTexturedMaterial)
@@ -1203,7 +1203,7 @@ inline void	CPSRibbon::updateTexturedMaterial()
 	// TEXTURED RIBBON //
 	/////////////////////
 	if (_Tex)
-	{	
+	{
 		//_Tex->setWrapS(ITexture::Clamp);
 		//_Tex->setWrapT(ITexture::Clamp);
 	}
@@ -1214,7 +1214,7 @@ inline void	CPSRibbon::updateTexturedMaterial()
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting() || ps.getColorAttenuationScheme() || ps.isUserColorUsed())
 		{
 			if (_ColorFading) // global color + fading + per ribbon color
-			{				
+			{
 				if (ptGradTexture == NULL) // have we got a gradient texture ?
 				{
 					ptGradTexture = CreateGradientTexture(); // create it
@@ -1223,25 +1223,25 @@ inline void	CPSRibbon::updateTexturedMaterial()
 				_Mat.setTexture(0, ptGradTexture);
 				ptGradTexture->setWrapS(ITexture::Clamp);
 				ptGradTexture->setWrapT(ITexture::Clamp);
-				_Mat.setTexture(1, _Tex);				
-				CPSMaterial::forceTexturedMaterialStages(3); // use constant color 0 * diffuse, 1 stage needed				
+				_Mat.setTexture(1, _Tex);
+				CPSMaterial::forceTexturedMaterialStages(3); // use constant color 0 * diffuse, 1 stage needed
 				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);
 				SetupModulatedStage(_Mat, 1, CMaterial::Texture, CMaterial::Previous);
-				SetupModulatedStage(_Mat, 2, CMaterial::Previous, CMaterial::Constant);				
+				SetupModulatedStage(_Mat, 2, CMaterial::Previous, CMaterial::Constant);
 			}
-			else // per ribbon color with global color 
+			else // per ribbon color with global color
 			{
 				_Mat.setTexture(0, _Tex);
-				
-				CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed				
+
+				CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed
 				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);
-				SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Constant);			
+				SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Constant);
 			}
 		}
 		else
-		{	
+		{
 			if (_ColorFading) // per ribbon color, fading : 2 textures needed
-			{				
+			{
 				if (ptGradTexture == NULL) // have we got a gradient texture ?
 				{
 					ptGradTexture = CreateGradientTexture(); // create it
@@ -1250,7 +1250,7 @@ inline void	CPSRibbon::updateTexturedMaterial()
 				ptGradTexture->setWrapS(ITexture::Clamp);
 				ptGradTexture->setWrapT(ITexture::Clamp);
 				_Mat.setTexture(1, _Tex);
-				CPSMaterial::forceTexturedMaterialStages(2); 
+				CPSMaterial::forceTexturedMaterialStages(2);
 				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse); // texture * ribbon color
 				SetupModulatedStage(_Mat, 1, CMaterial::Texture, CMaterial::Previous);	// * gradient
 			}
@@ -1258,36 +1258,36 @@ inline void	CPSRibbon::updateTexturedMaterial()
 			{
 				_Mat.setTexture(0, _Tex);
 				CPSMaterial::forceTexturedMaterialStages(1); // no texture use constant diffuse only
-				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);				
+				SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);
 			}
 		}
 	}
 	else // GLOBAL COLOR
 	{
-		
+
 		if (_ColorFading) // gradient is encoded in diffuse
 		{
 			_Mat.setTexture(0, _Tex);
-			CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed				
+			CPSMaterial::forceTexturedMaterialStages(2); // use constant color 0 * diffuse, 1 stage needed
 			SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);
-			SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Constant);			
+			SetupModulatedStage(_Mat, 1, CMaterial::Previous, CMaterial::Constant);
 		}
 		else // constant color
 		{
 			_Mat.setTexture(0, _Tex);
-			CPSMaterial::forceTexturedMaterialStages(1); // no texture use constant diffuse only							
-			SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);	
-		}		
+			CPSMaterial::forceTexturedMaterialStages(1); // no texture use constant diffuse only
+			SetupModulatedStage(_Mat, 0, CMaterial::Texture, CMaterial::Diffuse);
+		}
 	}
 	_Touch = false;
 }
 
-//==========================================================================	
+//==========================================================================
 void	CPSRibbon::updateMaterial()
 {
 	NL_PS_FUNC(CPSRibbon_updateMaterial)
 	if (!_Touch) return;
-	if (_Tex != NULL) 
+	if (_Tex != NULL)
 	{
 		updateTexturedMaterial();
 		setupTextureMatrix();
@@ -1300,14 +1300,14 @@ void	CPSRibbon::updateMaterial()
 
 
 
-//==========================================================================	
+//==========================================================================
 inline void	CPSRibbon::setupUntexturedGlobalColor()
-{	
+{
 	NL_PS_FUNC(CPSRibbon_setupUntexturedGlobalColor)
 	/// setup the global color if it is used
-	CParticleSystem &ps = *(_Owner->getOwner());	
+	CParticleSystem &ps = *(_Owner->getOwner());
 	if (_ColorScheme)
-	{	
+	{
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
 		{
 			_Mat.texConstantColor(0, ps.getGlobalColorLighted());
@@ -1318,7 +1318,7 @@ inline void	CPSRibbon::setupUntexturedGlobalColor()
 		}
 	}
 	else // GLOBAL COLOR with / without fading
-	{					
+	{
 		NLMISC::CRGBA col;
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
 		{
@@ -1331,26 +1331,26 @@ inline void	CPSRibbon::setupUntexturedGlobalColor()
 		else
 		{
 			col = _Color;
-		}		
-		if (_ColorFading)
-		{								
-			_Mat.texConstantColor(0, col);				
 		}
-		else // color attenuation, no fading : 
-		{							
+		if (_ColorFading)
+		{
+			_Mat.texConstantColor(0, col);
+		}
+		else // color attenuation, no fading :
+		{
 			_Mat.setColor(col);
-		}		
+		}
 	}
 }
 
-//==========================================================================	
+//==========================================================================
 inline void	CPSRibbon::setupTexturedGlobalColor()
-{	
+{
 	NL_PS_FUNC(CPSRibbon_setupTexturedGlobalColor)
 	/// setup the global color if it is used
-	CParticleSystem &ps = *(_Owner->getOwner());	
+	CParticleSystem &ps = *(_Owner->getOwner());
 	if (_ColorScheme)
-	{	
+	{
 		if (ps.getForceGlobalColorLightingFlag() || usesGlobalColorLighting())
 		{
 			if (_ColorFading)
@@ -1362,7 +1362,7 @@ inline void	CPSRibbon::setupTexturedGlobalColor()
 				_Mat.texConstantColor(1, ps.getGlobalColorLighted());
 			}
 		}
-		else 
+		else
 		{
 			if (_ColorFading)
 			{
@@ -1372,7 +1372,7 @@ inline void	CPSRibbon::setupTexturedGlobalColor()
 			{
 				_Mat.texConstantColor(1, ps.getGlobalColor());
 			}
-		}			
+		}
 	}
 	else // GLOBAL COLOR with / without fading
 	{
@@ -1381,25 +1381,25 @@ inline void	CPSRibbon::setupTexturedGlobalColor()
 			NLMISC::CRGBA col;
 			col.modulateFromColor(ps.getGlobalColorLighted(), _Color);
 			if (_ColorFading)
-			{								
-				_Mat.texConstantColor(1, col);				
+			{
+				_Mat.texConstantColor(1, col);
 			}
-			else // color attenuation, no fading : 
-			{							
+			else // color attenuation, no fading :
+			{
 				_Mat.setColor(col);
 			}
 		}
 		else
 		if (ps.getColorAttenuationScheme() || ps.isUserColorUsed())
-		{			
+		{
 			NLMISC::CRGBA col;
 			col.modulateFromColor(ps.getGlobalColor(), _Color);
 			if (_ColorFading)
-			{								
-				_Mat.texConstantColor(1, col);				
+			{
+				_Mat.texConstantColor(1, col);
 			}
-			else // color attenuation, no fading : 
-			{							
+			else // color attenuation, no fading :
+			{
 				_Mat.setColor(col);
 			}
 		}
@@ -1407,7 +1407,7 @@ inline void	CPSRibbon::setupTexturedGlobalColor()
 		{
 			if (_ColorFading)
 			{
-				_Mat.texConstantColor(1, _Color);				
+				_Mat.texConstantColor(1, _Color);
 			}
 			else // constant color
 			{
@@ -1418,7 +1418,7 @@ inline void	CPSRibbon::setupTexturedGlobalColor()
 }
 
 
-//==========================================================================	
+//==========================================================================
 void	CPSRibbon::setupGlobalColor()
 {
 	NL_PS_FUNC(CPSRibbon_setupGlobalColor)
@@ -1426,11 +1426,11 @@ void	CPSRibbon::setupGlobalColor()
 		else setupUntexturedGlobalColor();
 }
 
-//==========================================================================	
+//==========================================================================
 void CPSRibbon::setupTextureMatrix()
 {
 	NL_PS_FUNC(CPSRibbon_setupTextureMatrix)
-	uint stage = (_ColorScheme != NULL && _ColorFading == true) ? 1 : 0;	
+	uint stage = (_ColorScheme != NULL && _ColorFading == true) ? 1 : 0;
 	if (_UFactor != 1.f || _VFactor != 1.f)
 	{
 		_Mat.enableUserTexMat(stage);
@@ -1448,13 +1448,13 @@ void CPSRibbon::setupTextureMatrix()
 	_Mat.enableUserTexMat(1 - stage, false);
 }
 
-//==========================================================================	
+//==========================================================================
 ///==================================================================================================================
 void CPSRibbon::setShape(const CVector *shape, uint32 nbPointsInShape, bool braceMode)
 {
 	NL_PS_FUNC(CPSRibbon_setShape)
 	if (!braceMode)
-	{	
+	{
 		nlassert(nbPointsInShape >= 3);
 	}
 	else
@@ -1463,7 +1463,7 @@ void CPSRibbon::setShape(const CVector *shape, uint32 nbPointsInShape, bool brac
 		nlassert(!(nbPointsInShape & 1)); // must be even
 	}
 	_Shape.resize(nbPointsInShape);
-	std::copy(shape, shape + nbPointsInShape, _Shape.begin());	
+	std::copy(shape, shape + nbPointsInShape, _Shape.begin());
 	_BraceMode = braceMode;
 }
 
@@ -1478,7 +1478,7 @@ void CPSRibbon::getShape(CVector *shape) const
 void CPSRibbon::enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv)
 {
 	NL_PS_FUNC(CPSRibbon_enumTexs)
-	if (_Tex) 
+	if (_Tex)
 	{
 		dest.push_back(_Tex);
 	}

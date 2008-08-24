@@ -75,22 +75,22 @@ CPSLocated::CPSLocated() : /*_MaxNumFaces(0),*/
 						   _InitialLife(1.f),
 						   _LifeScheme(NULL),
 						   _InitialMass(1.f),
-						   _MassScheme(NULL),							   
-						   _LODDegradation(false),						   
+						   _MassScheme(NULL),
+						   _LODDegradation(false),
 						   _ParametricMotion(false),
 						   _TriggerOnDeath(false),
-						   _LastForever(true),						   
-						   _TriggerID((uint32) 'NONE'),						   							   
+						   _LastForever(true),
+						   _TriggerID((uint32) 'NONE'),
 						   _NonIntegrableForceNbRefs(0),
 						   _NumIntegrableForceWithDifferentBasis(0)
-{		
+{
 	NL_PS_FUNC(CPSLocated_CPSLocated)
 }
 
 
 //*****************************************************************************************************
 const NLMISC::CMatrix &CPSLocated::getLocalToWorldMatrix() const
-{		
+{
 	NL_PS_FUNC(CPSLocated_getLocalToWorldMatrix)
 	nlassert(_Owner);
 	switch(getMatrixMode())
@@ -151,7 +151,7 @@ void CPSLocated::checkIntegrity() const
 		nlassert(_CollisionNextPos->getSize() == _Pos.getSize());
 		nlassert(_CollisionNextPos->getMaxSize() == _Pos.getMaxSize());
 	}
-	//	
+	//
 }
 
 ///***************************************************************************************
@@ -194,20 +194,20 @@ void CPSLocated::releaseRefTo(const CParticleSystemProcess *other)
 	NL_PS_FUNC(CPSLocated_releaseRefTo)
 	CHECK_PS_INTEGRITY
 	// located bindables
-	{	
+	{
 		for(TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 		{
 			(*it)->releaseRefTo(other);
 		}
 	}
 	// dtor observers
-	{	
-				
+	{
+
 		for(TDtorObserversVect::iterator it = _DtorObserversVect.begin(); it != _DtorObserversVect.end(); ++it)
-		{	
+		{
 			if ((*it)->getOwner() == other)
-			{									
-				CPSLocatedBindable *refMaker = *it;				
+			{
+				CPSLocatedBindable *refMaker = *it;
 				refMaker->notifyTargetRemoved(this);
 				break;
 			}
@@ -222,7 +222,7 @@ void CPSLocated::releaseAllRef()
 	NL_PS_FUNC(CPSLocated_releaseAllRef)
 	CHECK_PS_INTEGRITY
 	 // located bindables
-	{	
+	{
 		for(TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 		{
 			(*it)->releaseAllRef();
@@ -236,14 +236,14 @@ void CPSLocated::releaseAllRef()
 	{
 		(*it)->notifyTargetRemoved(this);
 	}
-	_DtorObserversVect.clear();	
-	
+	_DtorObserversVect.clear();
+
 	nlassert(_CollisionInfoNbRef == 0); //If this is not = 0, then someone didnt call releaseCollisionInfo
 										 // If this happen, you can register with the registerDTorObserver
 										 // (observer pattern)
 										 // and override notifyTargetRemove to call releaseCollisionInfo
 	nlassert(_IntegrableForces.size() == 0);
-	nlassert(_NonIntegrableForceNbRefs == 0);	
+	nlassert(_NonIntegrableForceNbRefs == 0);
 	CHECK_PS_INTEGRITY
 }
 
@@ -262,11 +262,11 @@ void CPSLocated::notifyMotionTypeChanged(void)
 
 
 ///***************************************************************************************
-void CPSLocated::integrateSingle(float startDate, float deltaT, uint numStep,								
+void CPSLocated::integrateSingle(float startDate, float deltaT, uint numStep,
 								uint32 indexInLocated,
-								NLMISC::CVector *destPos,						
+								NLMISC::CVector *destPos,
 								uint stride) const
-{				
+{
 	NL_PS_FUNC(CPSLocated_integrateSingle)
 	CHECK_PS_INTEGRITY
 	nlassert(supportParametricMotion() && _ParametricMotion);
@@ -288,14 +288,14 @@ void CPSLocated::integrateSingle(float startDate, float deltaT, uint numStep,
 			const CPSLocated::CParametricInfo &pi = _PInfo[indexInLocated];
 			destPos = FillBufUsingSubdiv(pi.Pos, pi.Date, startDate, deltaT, numStep, destPos, stride);
 			if (numStep != 0)
-			{			
+			{
 				float currDate = startDate - pi.Date;
 				nlassert(currDate >= 0);
 				do
 				{
 					#ifdef NL_DEBUG
 						nlassert(destPos < endPos);
-					#endif					
+					#endif
 					destPos->x = pi.Pos.x + currDate * pi.Speed.x;
 					destPos->y = pi.Pos.y + currDate * pi.Speed.y;
 					destPos->z = pi.Pos.z + currDate * pi.Speed.z;
@@ -303,7 +303,7 @@ void CPSLocated::integrateSingle(float startDate, float deltaT, uint numStep,
 					destPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride);
 				}
 				while (--numStep);
-			}	
+			}
 	}
 	CHECK_PS_INTEGRITY
 }
@@ -314,7 +314,7 @@ void CPSLocated::performParametricMotion(TAnimationTime date)
 {
 	NL_PS_FUNC(CPSLocated_performParametricMotion)
 	CHECK_PS_INTEGRITY
-	if (!_Size) return;	
+	if (!_Size) return;
 	nlassert(supportParametricMotion() && _ParametricMotion);
 
 	if (_IntegrableForces.size() != 0)
@@ -418,7 +418,7 @@ void CPSLocated::setMatrixMode(TPSMatrixMode matrixMode)
 	NL_PS_FUNC(CPSLocated_setMatrixMode)
 	CHECK_PS_INTEGRITY
 	if (matrixMode != getMatrixMode())
-	{		
+	{
 		for (TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 		{
 			(*it)->basisChanged(matrixMode);
@@ -426,9 +426,9 @@ void CPSLocated::setMatrixMode(TPSMatrixMode matrixMode)
 
 		CParticleSystemProcess::setMatrixMode(matrixMode);
 		for (TForceVect::iterator fIt = _IntegrableForces.begin(); fIt != _IntegrableForces.end(); ++fIt)
-		{			
+		{
 			integrableForceBasisChanged( (*fIt)->getOwner()->getMatrixMode() );
-		}				
+		}
 	}
 	CHECK_PS_INTEGRITY
 }
@@ -439,7 +439,7 @@ void CPSLocated::notifyMaxNumFacesChanged(void)
 {
 	CHECK_PS_INTEGRITY
 	if (!_Owner) return;
-	
+
 	// we examine wether we have particle attached to us, and ask for the max number of faces they may want
 	_MaxNumFaces  = 0;
 	for (TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
@@ -460,12 +460,12 @@ uint CPSLocated::getNumWantedTris() const
 {
 	NL_PS_FUNC(CPSLocated_getNumWantedTris)
 	CHECK_PS_INTEGRITY
-	if (!_Owner) return 0;	
+	if (!_Owner) return 0;
 	uint numWantedTris = 0;
 	for (TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
 		if ((*it)->getType() == PSParticle)
-		{		
+		{
 			numWantedTris += NLMISC::safe_cast<CPSParticle *>(*it)->getNumWantedTris();
 		}
 	}
@@ -484,7 +484,7 @@ uint CPSLocated::querryMaxWantedNumFaces(void)
 /// ***************************************************************************************
 /// tells wether there are alive entities / particles in the system
 bool CPSLocated::hasParticles(void) const
-{	
+{
 	NL_PS_FUNC(CPSLocated_hasParticles)
 	CHECK_PS_INTEGRITY
 	for (TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
@@ -542,7 +542,7 @@ void CPSLocated::incrementNbDrawnParticles(uint num)
 {
 	NL_PS_FUNC(CPSLocated_incrementNbDrawnParticles)
 	CHECK_PS_INTEGRITY
-	CParticleSystem::NbParticlesDrawn += num; // for benchmark purpose	
+	CParticleSystem::NbParticlesDrawn += num; // for benchmark purpose
 }
 
 ///***************************************************************************************
@@ -553,7 +553,7 @@ void CPSLocated::setInitialLife(TAnimationTime lifeTime)
 	_LastForever = false;
 	_InitialLife = lifeTime;
 	delete _LifeScheme;
-	_LifeScheme = NULL;	
+	_LifeScheme = NULL;
 
 	/** Reset all particles current date to 0. This is needed because we do not check
 	  * if particle life is over when the date of the system has not gone beyond the life duration of particles
@@ -595,7 +595,7 @@ void CPSLocated::setInitialMass(float mass)
 	CHECK_PS_INTEGRITY
 	_InitialMass = mass;
 	delete _MassScheme;
-	_MassScheme = NULL;	
+	_MassScheme = NULL;
 	CHECK_PS_INTEGRITY
 }
 
@@ -607,14 +607,14 @@ void CPSLocated::setMassScheme(CPSAttribMaker<float> *scheme)
 	nlassert(scheme);
 	nlassert(!scheme->hasMemory()); // scheme with memory is invalid there !!
 	delete _MassScheme;
-	_MassScheme = scheme;	
+	_MassScheme = scheme;
 	CHECK_PS_INTEGRITY
 }
-	
+
 ///***************************************************************************************
 /// get a matrix that helps to express located B coordinate in located A basis
 const NLMISC::CMatrix &CPSLocated::getConversionMatrix(const CParticleSystem &ps, TPSMatrixMode destMode, TPSMatrixMode srcMode)
-{	
+{
 	NL_PS_FUNC(CPSLocated_getConversionMatrix)
 	switch(destMode)
 	{
@@ -622,7 +622,7 @@ const NLMISC::CMatrix &CPSLocated::getConversionMatrix(const CParticleSystem &ps
 			switch(srcMode)
 			{
 				case PSFXWorldMatrix:				return NLMISC::CMatrix::Identity;
-				case PSIdentityMatrix:				return ps.getInvertedSysMat();	
+				case PSIdentityMatrix:				return ps.getInvertedSysMat();
 				case PSUserMatrix:	return ps.getUserToFXMatrix();
 				default:
 				nlassert(0);
@@ -633,7 +633,7 @@ const NLMISC::CMatrix &CPSLocated::getConversionMatrix(const CParticleSystem &ps
 			{
 				case PSFXWorldMatrix:				return ps.getSysMat();
 				case PSIdentityMatrix:				return NLMISC::CMatrix::Identity;
-				case PSUserMatrix:	return ps.getUserMatrix();	
+				case PSUserMatrix:	return ps.getUserMatrix();
 				default:
 				nlassert(0);
 			}
@@ -656,7 +656,7 @@ const NLMISC::CMatrix &CPSLocated::getConversionMatrix(const CParticleSystem &ps
 }
 
 ///***************************************************************************************
-NLMISC::CVector CPSLocated::computeI(void) const 
+NLMISC::CVector CPSLocated::computeI(void) const
 {
 	NL_PS_FUNC(CPSLocated_computeI)
 	CHECK_PS_INTEGRITY
@@ -668,7 +668,7 @@ NLMISC::CVector CPSLocated::computeI(void) const
 			return _Owner->getInvertedViewMat().getI();
 		}
 		else
-		{		
+		{
 			return sysMat.getScaleUniform() * _Owner->getInvertedViewMat().getI();
 		}
 	}
@@ -693,17 +693,17 @@ NLMISC::CVector CPSLocated::computeIWithZAxisAligned(void) const
 	NL_PS_FUNC(CPSLocated_computeIWithZAxisAligned)
 	CHECK_PS_INTEGRITY
 	const NLMISC::CMatrix &sysMat = _Owner->getSysMat();
-	const CVector &camI = _Owner->getInvertedViewMat().getI();		
+	const CVector &camI = _Owner->getInvertedViewMat().getI();
 	CVector I(camI.x, camI.y, 0.f);
 	I.normalize();
 	if (getMatrixMode() == PSIdentityMatrix)
-	{		
+	{
 		if (!sysMat.hasScalePart())
-		{			
+		{
 			return I;
 		}
 		else
-		{		
+		{
 			return sysMat.getScaleUniform() * I;
 		}
 	}
@@ -723,7 +723,7 @@ NLMISC::CVector CPSLocated::computeIWithZAxisAligned(void) const
 }
 
 ///***************************************************************************************
-NLMISC::CVector CPSLocated::computeJ(void) const 
+NLMISC::CVector CPSLocated::computeJ(void) const
 {
 	NL_PS_FUNC(CPSLocated_computeJ)
 	CHECK_PS_INTEGRITY
@@ -762,7 +762,7 @@ NLMISC::CVector CPSLocated::computeK(void) const
 	const NLMISC::CMatrix &sysMat = _Owner->getSysMat();
 	if (getMatrixMode() == PSIdentityMatrix)
 	{
-		
+
 		if (!sysMat.hasScalePart())
 		{
 			return _Owner->getInvertedViewMat().getK();
@@ -816,12 +816,12 @@ NLMISC::CVector CPSLocated::computeKWithZAxisAligned(void) const
 			return getWorldToLocalMatrix().mulVector(CVector(0.f, 0.f, sysMat.getScaleUniform()));
 		}
 	}
-	CHECK_PS_INTEGRITY	
+	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
-IDriver *CPSLocated::getDriver() const 
-{ 
+IDriver *CPSLocated::getDriver() const
+{
 	NL_PS_FUNC(CPSLocated_getDriver)
 	CHECK_PS_INTEGRITY
 	nlassert(_Owner);
@@ -852,15 +852,15 @@ CPSLocated::~CPSLocated()
 
 	// delete all bindable
 	for (TLocatedBoundCont::iterator it2 = _LocatedBoundCont.begin(); it2 != _LocatedBoundCont.end(); ++it2)
-	{					
+	{
 		(*it2)->finalize();
-		delete *it2;		
-	} 
+		delete *it2;
+	}
 	_LocatedBoundCont.clear();
 
 	delete _LifeScheme;
 	delete _MassScheme;
-	delete _CollisionNextPos;	
+	delete _CollisionNextPos;
 	CHECK_PS_INTEGRITY
 }
 
@@ -872,7 +872,7 @@ bool CPSLocated::bind(CPSLocatedBindable *lb)
 {
 	NL_PS_FUNC(CPSLocated_bind)
 	CHECK_PS_INTEGRITY
-	nlassert(std::find(_LocatedBoundCont.begin(), _LocatedBoundCont.end(), lb) == _LocatedBoundCont.end());	
+	nlassert(std::find(_LocatedBoundCont.begin(), _LocatedBoundCont.end(), lb) == _LocatedBoundCont.end());
 	TLocatedBoundCont::iterator it = _LocatedBoundCont.begin();
 	while (it != _LocatedBoundCont.end() && **it < *lb) // the "<" operator sort them correctly
 	{
@@ -912,7 +912,7 @@ bool CPSLocated::bind(CPSLocatedBindable *lb)
 				unbind(getIndexOf(lb));
 				nlwarning("<CPSLocated::bind> Can't bind the located : this causes the system to last forever, and it has been flagged with 'BypassMaxNumIntegrationSteps'. Located is not bound.");
 				return false;
-			}		
+			}
 		}
 		// if there's an extern id, register in lb list
 		if (lb->getExternID() != 0)
@@ -933,7 +933,7 @@ void CPSLocated::remove(const CPSLocatedBindable *p)
 	NL_PS_FUNC(CPSLocated_remove)
 	CHECK_PS_INTEGRITY
 	TLocatedBoundCont::iterator it = std::find(_LocatedBoundCont.begin(), _LocatedBoundCont.end(), p);
-	nlassert(it != _LocatedBoundCont.end());	
+	nlassert(it != _LocatedBoundCont.end());
 	(*it)->finalize();
 	delete *it;
 	_LocatedBoundCont.erase(it);
@@ -975,10 +975,10 @@ void CPSLocated::postNewElement(const NLMISC::CVector &pos,
 							    uint32 indexInEmitter,
 							    TPSMatrixMode speedCoordSystem,
 							    TAnimationTime lifeTime)
-{		
+{
 	NL_PS_FUNC(CPSLocated_postNewElement)
 	nlassert(CParticleSystem::InsideSimLoop); // should be called only inside the sim loop!
-	// In the event loop life of emitter is updated just after particles are spawned, so we must check there if the particle wasn't emitted when the 
+	// In the event loop life of emitter is updated just after particles are spawned, so we must check there if the particle wasn't emitted when the
 	// emitter was already destroyed
 	// When postNewElement is called, the particle and the emitter that created it live at the same date, so EmitterLife - ParticleLife should be > 1.f
 	float emitterLife;
@@ -1000,7 +1000,7 @@ void CPSLocated::postNewElement(const NLMISC::CVector &pos,
 				return; // emitter had finished its life
 			}
 			if (emitterLocated._InitialLife != 0.f)
-			{			
+			{
 				emitterLife /= emitterLocated._InitialLife;
 			}
 		}
@@ -1009,34 +1009,34 @@ void CPSLocated::postNewElement(const NLMISC::CVector &pos,
 	{
 		emitterLife = emitterLocated.getTime()[indexInEmitter];
 	}
-		
+
 	// now check that the emitter didn't collide before it spawned a particle
 	if (emitterLocated.hasCollisionInfos())
 	{
 		const CPSCollisionInfo &ci = _Collisions[indexInEmitter];
 		if (ci.Dist != -1.f)
-		{			
+		{
 			// a collision occured, check time from collision to next time step
-			if ((emitterLocated.getPos()[indexInEmitter] - ci.NewPos) * (pos - ci.NewPos) > 0.f) return; // discard emit that are farther than the collision			
+			if ((emitterLocated.getPos()[indexInEmitter] - ci.NewPos) * (pos - ci.NewPos) > 0.f) return; // discard emit that are farther than the collision
 		}
 	}
-	
+
 
 	// create a request to create a new element
-	CParticleSystem::CSpawnVect &sp = *CParticleSystem::_Spawns[getIndex()];	
+	CParticleSystem::CSpawnVect &sp = *CParticleSystem::_Spawns[getIndex()];
 	if (!_Owner->getAutoCountFlag() && sp.MaxNumSpawns == sp.SpawnInfos.size()) return; // no more place to spawn
 	if (getMaxSize() >= ((1 << 16) - 1)) return;
 	sp.SpawnInfos.resize(sp.SpawnInfos.size() + 1);
-	CPSSpawnInfo &si = sp.SpawnInfos.back();	
+	CPSSpawnInfo &si = sp.SpawnInfos.back();
 	si.EmitterInfo.Pos = emitterLocated.getPos()[indexInEmitter];
 	si.EmitterInfo.Speed = emitterLocated.getSpeed()[indexInEmitter];
 	si.EmitterInfo.InvMass = emitterLocated.getInvMass()[indexInEmitter];
 	si.EmitterInfo.Life = emitterLife;
-	si.EmitterInfo.Loc = &emitterLocated;	
+	si.EmitterInfo.Loc = &emitterLocated;
 	si.SpawnPos = pos;
 	si.Speed = speed;
 	si.SpeedCoordSystem = speedCoordSystem;
-	si.LifeTime = lifeTime;	
+	si.LifeTime = lifeTime;
 }
 
 
@@ -1044,50 +1044,50 @@ void CPSLocated::postNewElement(const NLMISC::CVector &pos,
 sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false */, TAnimationTime ellapsedTime)
 {
 	NL_PS_FUNC(CPSLocated_newElement)
-	CHECK_PS_INTEGRITY			
+	CHECK_PS_INTEGRITY
 	sint32 creationIndex;
 
 	// get the convertion matrix  from the emitter basis to the emittee basis
-	// if the emitter is null, we assume that the coordinate are given in the chosen basis for this particle type		
-	if (_MaxSize == _Size) 
+	// if the emitter is null, we assume that the coordinate are given in the chosen basis for this particle type
+	if (_MaxSize == _Size)
 	{
 		if (_Owner && _Owner->getAutoCountFlag() && getMaxSize() < ((1 << 16) - 1) )
 		{
 			// we are probably in edition mode -> auto-count mode helps to compute ideal particle array size
 			// but at the expense of costly allocations
-			uint maxSize = getMaxSize();						
+			uint maxSize = getMaxSize();
 			resize((uint32) std::min((uint) NLMISC::raiseToNextPowerOf2(maxSize + 1), (uint) ((1 << 16) - 1))); // force a reserve with next power of 2 (no important in edition mode)
 			resize(maxSize + 1);
 			CParticleSystem::_SpawnPos.resize(maxSize + 1);
 		}
 		else
-		{		
+		{
 			return -1;
 		}
-	}	
+	}
 
 	// During creation, we interpolate the position of the system (by using the ellapsed time) if particle are created in world basis and if the emitter is in local basis.
 	// Example a fireball FX let particles in world basis, but the fireball is moving. If we dont interpolate position between 2 frames, emission will appear to be "sporadic".
-	// For now, we manage the local to world case. The world to local is possible, but not very useful	
+	// For now, we manage the local to world case. The world to local is possible, but not very useful
 	switch(si.EmitterInfo.Loc ? si.EmitterInfo.Loc->getMatrixMode() : this->getMatrixMode())
 	{
 		case PSFXWorldMatrix:
 			switch(this->getMatrixMode())
 			{
 				case PSFXWorldMatrix:
-				{								
+				{
 					creationIndex  =_Pos.insert(si.SpawnPos);
 				}
 				break;
 				case PSIdentityMatrix:
-				{			
+				{
 					CVector fxPosDelta;
 					_Owner->interpolateFXPosDelta(fxPosDelta, si.LifeTime);
 					creationIndex  =_Pos.insert(_Owner->getSysMat() * si.SpawnPos + fxPosDelta);
 				}
 				break;
 				case PSUserMatrix:
-				{					
+				{
 					CVector fxPosDelta;
 					_Owner->interpolateFXPosDelta(fxPosDelta, si.LifeTime);
 					CVector userMatrixPosDelta;
@@ -1103,19 +1103,19 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 			switch(this->getMatrixMode())
 			{
 				case PSFXWorldMatrix:
-				{					
+				{
 					CVector fxPosDelta;
 					_Owner->interpolateFXPosDelta(fxPosDelta, si.LifeTime);
 					creationIndex  =_Pos.insert(_Owner->getInvertedSysMat() * (si.SpawnPos - fxPosDelta));
 				}
 				break;
 				case PSIdentityMatrix:
-				{					
+				{
 					creationIndex  =_Pos.insert(si.SpawnPos);
 				}
 				break;
 				case PSUserMatrix:
-				{					
+				{
 					CVector userMatrixPosDelta;
 					_Owner->interpolateUserPosDelta(userMatrixPosDelta, si.LifeTime);
 					creationIndex  =_Pos.insert(_Owner->getInvertedUserMatrix() * (si.SpawnPos - userMatrixPosDelta));
@@ -1129,7 +1129,7 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 			switch(this->getMatrixMode())
 			{
 				case PSFXWorldMatrix:
-				{					
+				{
 					CVector fxPosDelta;
 					_Owner->interpolateFXPosDelta(fxPosDelta, si.LifeTime);
 					CVector userMatrixPosDelta;
@@ -1138,14 +1138,14 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 				}
 				break;
 				case PSIdentityMatrix:
-				{				
+				{
 					CVector userMatrixPosDelta;
 					_Owner->interpolateUserPosDelta(userMatrixPosDelta, si.LifeTime);
-					creationIndex  =_Pos.insert(_Owner->getUserMatrix() * si.SpawnPos + userMatrixPosDelta);	
+					creationIndex  =_Pos.insert(_Owner->getUserMatrix() * si.SpawnPos + userMatrixPosDelta);
 				}
 				break;
 				case PSUserMatrix:
-				{					
+				{
 					creationIndex  =_Pos.insert(si.SpawnPos);
 				}
 				break;
@@ -1157,11 +1157,11 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 			nlassert(0);
 	}
 
-	
-	nlassert(creationIndex != -1); // all attributs must contains the same number of elements	
+
+	nlassert(creationIndex != -1); // all attributs must contains the same number of elements
 
 	if (si.SpeedCoordSystem == this->getMatrixMode()) // is speed vector expressed in the good basis ?
-	{		
+	{
 		_Speed.insert(si.Speed);
 	}
 	else
@@ -1171,27 +1171,27 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 		const NLMISC::CMatrix &convMat = getConversionMatrix(*_Owner, this->getMatrixMode(), si.SpeedCoordSystem);
 		_Speed.insert(convMat.mulVector(si.Speed));
 	}
-			
-	_InvMass.insert(1.f / ((_MassScheme && si.EmitterInfo.Loc) ? _MassScheme->get(si.EmitterInfo) : _InitialMass ) );	
+
+	_InvMass.insert(1.f / ((_MassScheme && si.EmitterInfo.Loc) ? _MassScheme->get(si.EmitterInfo) : _InitialMass ) );
 	if (CParticleSystem::InsideSimLoop)
-	{	
-		CParticleSystem::_SpawnPos[creationIndex] = _Pos[creationIndex];		
+	{
+		CParticleSystem::_SpawnPos[creationIndex] = _Pos[creationIndex];
 	}
-	// compute age of particle when it has been created		
+	// compute age of particle when it has been created
 	if (getLastForever())
-	{	
+	{
 		// age of particle is in seconds
 		_Time.insert(CParticleSystem::RealEllapsedTimeRatio * si.LifeTime);
 		_TimeIncrement.insert(_InitialLife != 0.f ? 1.f / _InitialLife : 1.f);
 	}
 	else
-	{		
-		const float totalLifeTime = (_LifeScheme && si.EmitterInfo.Loc) ?  _LifeScheme->get(si.EmitterInfo) : _InitialLife ;	
+	{
+		const float totalLifeTime = (_LifeScheme && si.EmitterInfo.Loc) ?  _LifeScheme->get(si.EmitterInfo) : _InitialLife ;
 		float timeIncrement = totalLifeTime ? 1.f / totalLifeTime : 10E6f;
 		_TimeIncrement.insert(timeIncrement);
 		_Time.insert(CParticleSystem::RealEllapsedTimeRatio * si.LifeTime * timeIncrement);
-	}			
-	
+	}
+
 
 	// test wether parametric motion is used, and generate the infos that are needed then
 	if (_ParametricMotion)
@@ -1201,11 +1201,11 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 	else
 	{
 		_Pos[creationIndex] += si.LifeTime * _Speed[creationIndex];
-	}	
+	}
 
 	///////////////////////////////////////////
 	// generate datas for all bound objects  //
-	///////////////////////////////////////////					
+	///////////////////////////////////////////
 	for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
 		(*it)->newElement(si.EmitterInfo);
@@ -1217,41 +1217,41 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 		}
 	}
 	if (doEmitOnce && !CPSEmitter::getBypassEmitOnDeath())
-	{		
+	{
 		// can be called only outside the sim loop (when the user triggers an emitters for example)
 		for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
-		{				
+		{
 			if ((*it)->getType() == PSEmitter)
 			{
 				CPSEmitter *pEmit = NLMISC::safe_cast<CPSEmitter *>(*it);
 				if (pEmit->getEmissionType() == CPSEmitter::once)
-				{					
+				{
 					for(uint k = 0; k < getSize(); ++k)
 					{
 						pEmit->singleEmit(k, 1);
 					}
-				}					
+				}
 			}
-		}		
+		}
 	}
 	if (_CollisionNextPos)
 	{
 		_CollisionNextPos->insert();
-	}	
+	}
 	++_Size;	// if this is modified, you must also modify the getNewElementIndex in this class
 				// because that method give the index of the element being created for overrider of the newElement method
 				// of the CPSLocatedClass (which is called just above)
 
-	
+
 	CHECK_PS_INTEGRITY
 	return creationIndex;
 }
 
 
 ///***************************************************************************************
-sint32 CPSLocated::newElement(const CVector &pos, const CVector &speed, CPSLocated *emitter, uint32 indexInEmitter, 
+sint32 CPSLocated::newElement(const CVector &pos, const CVector &speed, CPSLocated *emitter, uint32 indexInEmitter,
 							  TPSMatrixMode speedCoordSystem, bool doEmitOnce /* = false */)
-{		
+{
 	NL_PS_FUNC(CPSLocated_newElement)
 	CPSSpawnInfo si;
 	si.EmitterInfo.Loc = emitter;
@@ -1276,7 +1276,7 @@ sint32 CPSLocated::newElement(const CVector &pos, const CVector &speed, CPSLocat
 	return newElement(si, doEmitOnce, 0.f);
 }
 
-		
+
 ///***************************************************************************************
 static inline uint32 IDToLittleEndian(uint32 input)
 {
@@ -1300,28 +1300,28 @@ inline void CPSLocated::deleteElementBase(uint32 index)
 	_Pos.remove(index);
 	_Speed.remove(index);
 	_Time.remove(index);
-	_TimeIncrement.remove(index);	
+	_TimeIncrement.remove(index);
 	if (_CollisionNextPos)
 	{
 		_CollisionNextPos->remove(index);
-	}	
+	}
 	if (_ParametricMotion)
 	{
 		_PInfo.remove(index);
-	}	
-	--_Size;	
+	}
+	--_Size;
 	if (_TriggerOnDeath)
 	{
 		const uint32 id = IDToLittleEndian(_TriggerID);
-		nlassert(_Owner);		
-		uint numLb  = _Owner->getNumLocatedBindableByExternID(id);		
+		nlassert(_Owner);
+		uint numLb  = _Owner->getNumLocatedBindableByExternID(id);
 		for (uint k = 0; k < numLb; ++k)
 		{
-			CPSLocatedBindable *lb = _Owner->getLocatedBindableByExternID(id, k);		
+			CPSLocatedBindable *lb = _Owner->getLocatedBindableByExternID(id, k);
 			if (lb->getType() == PSEmitter)
 			{
 				CPSEmitter *e = NLMISC::safe_cast<CPSEmitter *>(lb);
-				e->setEmitTrigger();				
+				e->setEmitTrigger();
 			}
 		}
 	}
@@ -1338,12 +1338,12 @@ void CPSLocated::deleteElement(uint32 index)
 			nlassert(CParticleSystem::InsideRemoveLoop);
 		}
 	#endif
-	CHECK_PS_INTEGRITY	
-	nlassert(index < _Size);	
+	CHECK_PS_INTEGRITY
+	nlassert(index < _Size);
 	for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
 		(*it)->deleteElement(index);
-	}	
+	}
 	deleteElementBase(index);
 }
 
@@ -1358,7 +1358,7 @@ void CPSLocated::deleteElement(uint32 index, TAnimationTime timeToNextSimStep)
 			nlassert(CParticleSystem::InsideRemoveLoop);
 		}
 	#endif
-	nlassert(index < _Size);	
+	nlassert(index < _Size);
 	for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
 		(*it)->deleteElement(index, timeToNextSimStep);
@@ -1371,14 +1371,14 @@ void CPSLocated::deleteElement(uint32 index, TAnimationTime timeToNextSimStep)
 void CPSLocated::resize(uint32 newSize)
 {
 	NL_PS_FUNC(CPSLocated_resize)
-	CHECK_PS_INTEGRITY	
+	CHECK_PS_INTEGRITY
 	nlassert(newSize < (1 << 16));
 	if (newSize < _Size)
 	{
 		for (uint32 k = _Size - 1; k >= newSize; --k)
 		{
 			deleteElement(k);
-			
+
 			if (k == 0) break; // we're dealing with unsigned quantities
 		}
 		_Size = newSize;
@@ -1395,13 +1395,13 @@ void CPSLocated::resize(uint32 newSize)
 	if (_ParametricMotion)
 	{
 		_PInfo.resize(newSize);
-	}	
+	}
 
 	if (_CollisionNextPos)
 	{
 		_CollisionNextPos->resize(newSize);
 	}
-	
+
 
 	// resize attributes for all bound objects
 	for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
@@ -1431,8 +1431,8 @@ public:
 
 ///***************************************************************************************
 void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
-{		
-	NL_PS_FUNC(CPSLocated_serial)	
+{
+	NL_PS_FUNC(CPSLocated_serial)
 
 	// version 7 : - removed the field _NbFramesToSkip to get some space (it is never used)
 	//			   - removed the requestStack (system graph can't contains loops now)
@@ -1441,7 +1441,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	// version 4 to version 5 : bugfix with reading of collisions
 	sint ver = f.serialVersion(7);
 	CParticleSystemProcess::serial(f);
-	
+
 	if (f.isReading() && !CParticleSystem::getSerializeIdentifierFlag())
 	{
 		// just skip the name
@@ -1450,7 +1450,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		f.seek(len, NLMISC::IStream::current);
 	}
 	else
-	{	
+	{
 		f.serial(_Name);
 	}
 
@@ -1465,12 +1465,12 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		// TODO : saving _Time is maybe unecessary... or find something better for CPSLocated::updateLife
 		uint timeSize = _Time.getSize();
 		if (timeSize != 0)
-		{		
+		{
 			std::fill(&_Time[0], &_Time[0] + timeSize, 0.f);
 		}
 	}
 	f.serial(_TimeIncrement);
-	f.serial(_Size); 
+	f.serial(_Size);
 	f.serial(_MaxSize);
 
 	bool lastForever = _LastForever;
@@ -1478,13 +1478,13 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	_LastForever = lastForever;
 
 	if (ver < 7)
-	{	
+	{
 		nlassert(f.isReading());
 		// serial a dummy ptr (previous code did a serial ptr)
 		uint64 dummyPtr;
 		f.serial(dummyPtr);
 		if (dummyPtr)
-		{			
+		{
 			#ifdef PS_FAST_ALLOC
 				extern NLMISC::CContiguousBlockAllocator *PSBlockAllocator;
 				NLMISC::CContiguousBlockAllocator *oldAlloc = PSBlockAllocator;
@@ -1501,7 +1501,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	f.serial(_CollisionInfoNbRef); // TODO avoid to serialize this ?
 	//
 	if (f.isReading())
-	{	
+	{
 		if (_CollisionInfoNbRef)
 		{
 			_CollisionNextPos = new TPSAttribVector;
@@ -1511,8 +1511,8 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 				_CollisionNextPos->insert();
 			}
 		}
-	}	
-	//CHECK_PS_INTEGRITY		
+	}
+	//CHECK_PS_INTEGRITY
 	if (f.isReading())
 	{
 		delete _LifeScheme;
@@ -1564,7 +1564,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		{
 			f.serial(bFalse);
 			nlassert(_InitialMass > 0);
-			f.serial(_InitialMass);			
+			f.serial(_InitialMass);
 		}
 	}
 
@@ -1577,9 +1577,9 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	f.serialContPolyPtr(_DtorObserversVect);
 
 	if (ver < 7)
-	{	
+	{
 		nlassert(f.isReading());
-		// previously, there was a request stack serialized (because system permitted loops)				
+		// previously, there was a request stack serialized (because system permitted loops)
 		uint32 size;
 		f.serial(size);
 		nlassert(size == 0);
@@ -1591,7 +1591,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			_RequestStack.push(t);
 		}
 		*/
-	}	
+	}
 
 	if (ver < 7)
 	{
@@ -1610,7 +1610,7 @@ void CPSLocated::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			nlassert(_LocatedBoundCont[k]->getOwner() == this);
 		}
 	#endif
-	
+
 	if (ver > 1)
 	{
 		bool lodDegradation = _LODDegradation;
@@ -1662,8 +1662,8 @@ static void IntegrateSpeed(uint count, float *src1, const float *src2, float *de
 		if (NLMISC::CCpuInfo::hasSSE()
 			&& ((uint) src1 & 15) == ((uint) src2 & 15)
 			&& ! ((uint) src1 & 3)
-			&& ! ((uint) src2 & 3)				
-		   )   // must must be sure that memory alignment is identical	   
+			&& ! ((uint) src2 & 3)
+		   )   // must must be sure that memory alignment is identical
 		{
 
 			// compute first datas in order to align to 16 byte boudary
@@ -1686,22 +1686,22 @@ static void IntegrateSpeed(uint count, float *src1, const float *src2, float *de
 				{
 						mov  ecx, count
 						shr  ecx, 2
-						
+
 
 						xor   edx, edx
 
-						mov    eax, src1			
-						mov    ebx, src2			
+						mov    eax, src1
+						mov    ebx, src2
 						movups  xmm0, et[0]
 					myLoop:
 						movaps xmm2, [ebx + 8 * edx]
 						movaps xmm1, [eax + 8 * edx]
-						mulps  xmm2, xmm0			
+						mulps  xmm2, xmm0
 						addps  xmm1, xmm2
-						movaps [eax + 8 * edx], xmm1			
-						add edx, 2					
+						movaps [eax + 8 * edx], xmm1
+						add edx, 2
 						dec ecx
-						jne myLoop				
+						jne myLoop
 				}
 			}
 			// proceed with left float
@@ -1709,7 +1709,7 @@ static void IntegrateSpeed(uint count, float *src1, const float *src2, float *de
 
 			if (count)
 			{
-				src1 += alignCount;	
+				src1 += alignCount;
 				src2 += alignCount;
 				do
 				{
@@ -1727,16 +1727,16 @@ static void IntegrateSpeed(uint count, float *src1, const float *src2, float *de
 		*/
 	#endif
 	{
-		// standard version	
-	
-		// standard version	
+		// standard version
+
+		// standard version
 		uint countDiv8 = count>>3;
 		count &= 7; // takes count % 8
 
 		if (dest == src1)
-		{		
+		{
 			while (countDiv8 --)
-			{		
+			{
 				src1[0] += ellapsedTime * src2[0];
 				src1[1] += ellapsedTime * src2[1];
 				src1[2] += ellapsedTime * src2[2];
@@ -1749,34 +1749,34 @@ static void IntegrateSpeed(uint count, float *src1, const float *src2, float *de
 
 				src2 += 8;
 				src1 += 8;
-			}			
+			}
 			while (count--)
 			{
-				*src1++ += ellapsedTime * *src2++;			
+				*src1++ += ellapsedTime * *src2++;
 			}
 		}
 		else
 		{
 			while (countDiv8 --)
-			{		
+			{
 				dest[0] = src1[0] + ellapsedTime * src2[0];
 				dest[1] = src1[1] + ellapsedTime * src2[1];
 				dest[2] = src1[2] + ellapsedTime * src2[2];
-				dest[3] = src1[3] + ellapsedTime * src2[3];				
+				dest[3] = src1[3] + ellapsedTime * src2[3];
 				dest[4] = src1[4] + ellapsedTime * src2[4];
 				dest[5] = src1[5] + ellapsedTime * src2[5];
 				dest[6] = src1[6] + ellapsedTime * src2[6];
-				dest[7] = src1[7] + ellapsedTime * src2[7];				
+				dest[7] = src1[7] + ellapsedTime * src2[7];
 				src2 += 8;
 				src1 += 8;
 				dest += 8;
-			}			
+			}
 			while (count--)
 			{
-				*dest++ = *src1++ + ellapsedTime * *src2++;			
+				*dest++ = *src1++ + ellapsedTime * *src2++;
 			}
-		}		
-	}	
+		}
+	}
 }
 
 ///***************************************************************************************
@@ -1787,24 +1787,24 @@ void CPSLocated::computeMotion()
 	// there are 2 integration steps : with and without collisions
 	if (!_CollisionNextPos) // no collisionner are used
 	{
-		{						
-			MINI_TIMER(PSMotion3)			
+		{
+			MINI_TIMER(PSMotion3)
 			if (_Size != 0) // avoid referencing _Pos[0] if there's no size, causes STL vectors to assert...
 				IntegrateSpeed(_Size * 3, &_Pos[0].x, &_Speed[0].x, &_Pos[0].x, CParticleSystem::EllapsedTime);
 		}
 	}
 	else
 	{
-		{						
+		{
 			MINI_TIMER(PSMotion4)
-			// compute new position after the timeStep			
+			// compute new position after the timeStep
 			IntegrateSpeed(_Size * 3, &_Pos[0].x, &_Speed[0].x, &(*_CollisionNextPos)[0].x, CParticleSystem::EllapsedTime);
 			nlassert(CPSLocated::_Collisions.size() >= _Size);
 			computeCollisions(0, &_Pos[0], &(*_CollisionNextPos)[0]);
 			// update new poositions by just swapping the 2 vectors
-			_CollisionNextPos->swap(_Pos);			
-		}				
-	}	
+			_CollisionNextPos->swap(_Pos);
+		}
+	}
 }
 
 
@@ -1814,17 +1814,17 @@ void CPSLocated::computeNewParticleMotion(uint firstInstanceIndex)
 {
 	NL_PS_FUNC(CPSLocated_computeNewParticleMotion)
 	nlassert(_CollisionNextPos);
-	resetCollisions(_Size);	
+	resetCollisions(_Size);
 	computeCollisions(firstInstanceIndex, &CParticleSystem::_SpawnPos[0], &_Pos[0]);
 }
 
 ///***************************************************************************************
 void CPSLocated::resetCollisions(uint numInstances)
-{	
+{
 	NL_PS_FUNC(CPSLocated_resetCollisions)
 	CPSCollisionInfo *currCollision = _FirstCollision;
 	while (currCollision)
-	{			
+	{
 		currCollision->Dist = -1.f;
 		currCollision = currCollision->Next;
 	}
@@ -1837,23 +1837,23 @@ void CPSLocated::resetCollisions(uint numInstances)
 		{
 			_Collisions[k].Index = k;
 		}
-	}	
+	}
 }
 
 ///***************************************************************************************
 void CPSLocated::updateCollisions()
-{	
+{
 	NL_PS_FUNC(CPSLocated_updateCollisions)
 	CPSCollisionInfo *currCollision = _FirstCollision;
 	if (getLastForever())
-	{	
+	{
 		while (currCollision)
-		{			
+		{
 			_Pos[currCollision->Index] = currCollision->NewPos;
 			std::swap(_Speed[currCollision->Index], currCollision->NewSpeed); // keep speed because may be needed when removing particles
 			// notify each located bindable that a bounce occured ...
 			for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
-			{					
+			{
 				(*it)->bounceOccured(currCollision->Index, computeDateFromCollisionToNextSimStep(currCollision->Index, getAgeInSeconds(currCollision->Index)));
 			}
 			if (currCollision->CollisionZone->getCollisionBehaviour() == CPSZone::destroy)
@@ -1867,7 +1867,7 @@ void CPSLocated::updateCollisions()
 				#endif
 				CParticleSystem::_ParticleRemoveListIndex[currCollision->Index] = CParticleSystem::_ParticleToRemove.size() - 1;
 
-			}			
+			}
 			currCollision = currCollision->Next;
 		}
 	}
@@ -1878,16 +1878,16 @@ void CPSLocated::updateCollisions()
 			if (_Time[currCollision->Index] >= 1.f)
 			{
 				// check wether particles died before the collision. If so, just continue (particle has already been inserted in the remove list), and cancel the collision
-				float timeToCollision = currCollision->Dist / _Speed[currCollision->Index].norm();				
-				if (_Time[currCollision->Index] / _TimeIncrement[currCollision->Index] - timeToCollision * CParticleSystem::RealEllapsedTimeRatio >= 1.f) 
+				float timeToCollision = currCollision->Dist / _Speed[currCollision->Index].norm();
+				if (_Time[currCollision->Index] / _TimeIncrement[currCollision->Index] - timeToCollision * CParticleSystem::RealEllapsedTimeRatio >= 1.f)
 				{
 					// says that collision did not occurs
 					currCollision->Dist = -1.f;
 					currCollision = currCollision->Next;
-					continue; 
+					continue;
 				}
 			}
-			// if particle is too old, check wether it died before the collision		
+			// if particle is too old, check wether it died before the collision
 			_Pos[currCollision->Index] = currCollision->NewPos;
 			std::swap(_Speed[currCollision->Index], currCollision->NewSpeed);
 			// notify each located bindable that a bounce occured ...
@@ -1895,7 +1895,7 @@ void CPSLocated::updateCollisions()
 			{
 				TAnimationTime timeFromcollisionToNextSimStep = computeDateFromCollisionToNextSimStep(currCollision->Index, getAgeInSeconds(currCollision->Index));
 				for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
-				{	
+				{
 					(*it)->bounceOccured(currCollision->Index, timeFromcollisionToNextSimStep);
 				}
 			}
@@ -1913,7 +1913,7 @@ void CPSLocated::updateCollisions()
 					#endif
 					CParticleSystem::_ParticleRemoveListIndex[currCollision->Index] = CParticleSystem::_ParticleToRemove.size() - 1;
 				}
-			}			
+			}
 			currCollision = currCollision->Next;
 		}
 	}
@@ -1936,17 +1936,17 @@ void CPSLocated::doLODDegradation()
 		{
 			// choose a random element to start at, and a random step
 			// this will avoid a pulse effect when the system is far away
-			
+
 			uint pos = maxToHave ? rand() % maxToHave : 0;
 			uint step  = maxToHave ? rand() % maxToHave : 0;
-			
+
 			do
 			{
 				deleteElement(pos);
 				pos += step;
 				if (pos >= maxToHave) pos -= maxToHave;
 			}
-			while (_Size !=maxToHave);				
+			while (_Size !=maxToHave);
 		}
 	}
 	CParticleSystem::InsideRemoveLoop = false;
@@ -1954,14 +1954,14 @@ void CPSLocated::doLODDegradation()
 
 ///***************************************************************************************
 void CPSLocated::step(TPSProcessPass pass)
-{	
+{
 	NL_PS_FUNC(CPSLocated_step)
 	CHECK_PS_INTEGRITY
-	if (!_Size) return;		
+	if (!_Size) return;
 
 	if (pass != PSMotion)
 	{
-		{			
+		{
 			/*
 			uint64 *target;
 			switch(pass)
@@ -1978,7 +1978,7 @@ void CPSLocated::step(TPSProcessPass pass)
 			for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 			{
 				if ((*it)->isActive())
-				{			
+				{
 					if ((*it)->getLOD() == PSLod1n2 || _Owner->getLOD() == (*it)->getLOD()) // has this object the right LOD ?
 					{
 						(*it)->step(pass);
@@ -1990,9 +1990,9 @@ void CPSLocated::step(TPSProcessPass pass)
 	else
 	{
 		for (TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
-		{	
+		{
 			if ((*it)->isActive())
-			{			
+			{
 				(*it)->step(pass);
 			}
 		}
@@ -2008,10 +2008,10 @@ void CPSLocated::updateLife()
 	CHECK_PS_INTEGRITY
 	if (!_Size) return;
 	if (! _LastForever)
-	{		
+	{
 		if (_LifeScheme != NULL)
-		{			
-			TPSAttribTime::iterator itTime = _Time.begin(), itTimeInc = _TimeIncrement.begin();			
+		{
+			TPSAttribTime::iterator itTime = _Time.begin(), itTimeInc = _TimeIncrement.begin();
 			for (uint32 k = 0; k < _Size; ++k)
 			{
 				*itTime += CParticleSystem::RealEllapsedTime * *itTimeInc;
@@ -2025,9 +2025,9 @@ void CPSLocated::updateLife()
 						nlassert(CParticleSystem::_ParticleToRemove.size() <= _Size);
 					#endif
 					CParticleSystem::_ParticleRemoveListIndex[k] = CParticleSystem::_ParticleToRemove.size() - 1;
-				}				
+				}
 				++itTime;
-				++itTimeInc;					
+				++itTimeInc;
 			}
 		}
 		else /// all particles have the same lifetime
@@ -2110,7 +2110,7 @@ static inline void removeParticleFromRemoveList(uint indexToRemove, uint arraySi
 		{
 			// when a particle is deleted, it is replaced by the last particle in the array
 			// if this particle is to be deleted too, must update its new index (becomes the index of the particle that has just been deleted)
-			CParticleSystem::_ParticleToRemove[CParticleSystem::_ParticleRemoveListIndex[arraySize]] = indexToRemove;			
+			CParticleSystem::_ParticleToRemove[CParticleSystem::_ParticleRemoveListIndex[arraySize]] = indexToRemove;
 			CParticleSystem::_ParticleRemoveListIndex[indexToRemove] = CParticleSystem::_ParticleRemoveListIndex[arraySize];
 			CParticleSystem::_ParticleRemoveListIndex[arraySize] = -1; // not to remove any more
 		}
@@ -2136,7 +2136,7 @@ void checkRemoveArray(uint size)
 		}
 	}
 	for(uint k = 0; k < CParticleSystem::_ParticleToRemove.size(); ++k)
-	{		
+	{
 		nlassert(CParticleSystem::_ParticleRemoveListIndex[CParticleSystem::_ParticleToRemove[k]] == (sint) k);
 	}
 
@@ -2145,7 +2145,7 @@ void checkRemoveArray(uint size)
 
 ///***************************************************************************************
 #ifndef NL_DEBUG
-	inline 
+	inline
 #endif
 TAnimationTime CPSLocated::computeDateFromCollisionToNextSimStep(uint particleIndex, float particleAgeInSeconds)
 {
@@ -2158,13 +2158,13 @@ TAnimationTime CPSLocated::computeDateFromCollisionToNextSimStep(uint particleIn
 	if (norm == 0.f) return 0.f;
 	float timeToCollision = _Collisions[particleIndex].Dist / norm;
 	// So time from collision to end of sim step is :
-	TAnimationTime result = CParticleSystem::EllapsedTime - ageAtStart - timeToCollision;	
+	TAnimationTime result = CParticleSystem::EllapsedTime - ageAtStart - timeToCollision;
 	return std::max(0.f, result);
 }
 
 ///***************************************************************************************
 void CPSLocated::removeOldParticles()
-{		
+{
 	NL_PS_FUNC(CPSLocated_removeOldParticles)
 	nlassert(CParticleSystem::RealEllapsedTime > 0.f);
 	#ifdef NL_DEBUG
@@ -2180,32 +2180,32 @@ void CPSLocated::removeOldParticles()
 		if (hasCollisionInfos())
 		{
 			for(std::vector<uint>::iterator it = CParticleSystem::_ParticleToRemove.begin(); it != CParticleSystem::_ParticleToRemove.end(); ++it)
-			{				
+			{
 				if (_Collisions[*it].Dist != -1.f)
-				{							
+				{
 					deleteElement(*it, computeDateFromCollisionToNextSimStep(*it, _Time[*it]));
 				}
 				else
-				{				
+				{
 					deleteElement(*it);
 				}
 				removeParticleFromRemoveList(*it, _Size);
-			}		
-		}		
+			}
+		}
 	}
 	else
 	if (hasCollisionInfos()) // particle has collision, and limited lifetime
 	{
-		float ellapsedTimeRatio = CParticleSystem::EllapsedTime / CParticleSystem::RealEllapsedTime;						
+		float ellapsedTimeRatio = CParticleSystem::EllapsedTime / CParticleSystem::RealEllapsedTime;
 		for(std::vector<uint>::iterator it = CParticleSystem::_ParticleToRemove.begin(); it != CParticleSystem::_ParticleToRemove.end(); ++it)
-		{		
+		{
 			TAnimationTime timeUntilNextSimStep;
 			if (_Collisions[*it].Dist == -1.f)
-			{		
+			{
 				// no collision occured
 				if (_Time[*it] > 1.f)
 				{
-					
+
 					if (_LifeScheme)
 					{
 						_Pos[*it] -= _Speed[*it] * ((_Time[*it] - 1.f) / _TimeIncrement[*it]) * ellapsedTimeRatio;
@@ -2215,19 +2215,19 @@ void CPSLocated::removeOldParticles()
 					{
 						_Pos[*it] -= _Speed[*it] * ((_Time[*it] - 1.f) * _InitialLife) * ellapsedTimeRatio;
 						timeUntilNextSimStep = (_Time[*it] - 1.f) * _InitialLife;
-					}						
+					}
 					_Time[*it] = 0.9999f;
 				}
 				else
-				{					
+				{
 					timeUntilNextSimStep = 0.f;
 				}
 			}
 			else
 			{
-				// a collision occured before particle died, so pos is already good				
+				// a collision occured before particle died, so pos is already good
 				if (_LifeScheme)
-				{					
+				{
 					timeUntilNextSimStep = computeDateFromCollisionToNextSimStep(*it, _Time[*it] / _TimeIncrement[*it]);
 					// compute age of particle when collision occured
 					_Time[*it] -= timeUntilNextSimStep * _TimeIncrement[*it];
@@ -2240,35 +2240,35 @@ void CPSLocated::removeOldParticles()
 					_Time[*it] -= timeUntilNextSimStep / (_InitialLife == 0.f ? 1.f : _InitialLife);
 					NLMISC::clamp(_Time[*it], 0.f, 1.f); // avoid imprecisions
 				}
-				
-				
-			}								
+
+
+			}
 			deleteElement(*it, timeUntilNextSimStep);
 			removeParticleFromRemoveList(*it, _Size);
-		}			
+		}
 	}
 	else // particle has no collisions, and limited lifetime
 	{
 		float ellapsedTimeRatio = CParticleSystem::EllapsedTime / CParticleSystem::RealEllapsedTime;
 		if (!isParametricMotionEnabled())
-		{		
+		{
 			if (_LifeScheme)
-			{				
+			{
 				for(std::vector<uint>::iterator it = CParticleSystem::_ParticleToRemove.begin(); it != CParticleSystem::_ParticleToRemove.end(); ++it)
-				{					
+				{
 					#ifdef NL_DEBUG
 						for(std::vector<uint>::iterator it2 = it; it2 != CParticleSystem::_ParticleToRemove.end(); ++it2)
 						{
 							nlassert(*it2 < _Size);
 						}
-					#endif					
+					#endif
 					TAnimationTime timeUntilNextSimStep;
 					if (_Time[*it] > 1.f)
-					{				
+					{
 						// move position backward (compute its position at death)
 						timeUntilNextSimStep = ((_Time[*it] - 1.f) / _TimeIncrement[*it]) * ellapsedTimeRatio;
 						_Pos[*it] -= _Speed[*it] * timeUntilNextSimStep;
-						
+
 						// force time to 1 because emitter 'on death' may rely on the date of emitter to compute its attributes
 						_Time[*it] = 0.9999f;
 					}
@@ -2277,13 +2277,13 @@ void CPSLocated::removeOldParticles()
 						timeUntilNextSimStep = 0.f;
 					}
 					deleteElement(*it, timeUntilNextSimStep);
-					removeParticleFromRemoveList(*it, _Size);					
+					removeParticleFromRemoveList(*it, _Size);
 					#ifdef NL_DEBUG
 						for(std::vector<uint>::iterator it2 = it + 1; it2 != CParticleSystem::_ParticleToRemove.end(); ++it2)
 						{
 							nlassert(*it2 < _Size);
 						}
-					#endif					
+					#endif
 				}
 			}
 			else
@@ -2312,12 +2312,12 @@ void CPSLocated::removeOldParticles()
 		{
 			// parametric case
 			if (_LifeScheme)
-			{				
+			{
 				for(std::vector<uint>::iterator it = CParticleSystem::_ParticleToRemove.begin(); it != CParticleSystem::_ParticleToRemove.end(); ++it)
 				{
 					TAnimationTime timeUntilNextSimStep;
 					if (_Time[*it] > 1.f)
-					{				
+					{
 						// move position backward (compute its position at death)
 						timeUntilNextSimStep = (_Time[*it] - 1.f) / _TimeIncrement[*it];
 						computeParametricPos(_Owner->getSystemDate() + CParticleSystem::RealEllapsedTime - timeUntilNextSimStep, *it, _Pos[*it]);
@@ -2350,7 +2350,7 @@ void CPSLocated::removeOldParticles()
 					else
 					{
 						timeUntilNextSimStep = 0.f;
-					}	
+					}
 					deleteElement(*it, timeUntilNextSimStep);
 					removeParticleFromRemoveList(*it, _Size);
 				}
@@ -2374,7 +2374,7 @@ void CPSLocated::removeOldParticles()
 
 ///***************************************************************************************
 void CPSLocated::addNewlySpawnedParticles()
-{	
+{
 	NL_PS_FUNC(CPSLocated_addNewlySpawnedParticles)
 	#ifdef NL_DEBUG
 		CParticleSystem::InsideNewElementsLoop = true;
@@ -2393,19 +2393,19 @@ void CPSLocated::addNewlySpawnedParticles()
 		}
 		CParticleSystem::TSpawnInfoVect::const_iterator endIt = spawns.SpawnInfos.begin() + numSpawns;
 		if (_LastForever)
-		{		
+		{
 			for (CParticleSystem::TSpawnInfoVect::const_iterator it = spawns.SpawnInfos.begin(); it !=endIt; ++it)
 			{
-				sint32 insertionIndex = newElement(*it, false, CParticleSystem::EllapsedTime);				
+				sint32 insertionIndex = newElement(*it, false, CParticleSystem::EllapsedTime);
 			}
 		}
 		else
-		{		
+		{
 			// to avoid warning in autocount mode
 			//CParticleSystem::InsideSimLoop = false;
 			for (CParticleSystem::TSpawnInfoVect::const_iterator it = spawns.SpawnInfos.begin(); it !=endIt; ++it)
 			{
-				sint32 insertionIndex = newElement(*it, false, CParticleSystem::EllapsedTime);				
+				sint32 insertionIndex = newElement(*it, false, CParticleSystem::EllapsedTime);
 				#ifdef NL_DEBUG
 					nlassert(insertionIndex != -1)
 				#endif
@@ -2444,13 +2444,13 @@ bool CPSLocated::computeBBox(NLMISC::CAABBox &box) const
 
 	for (it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
-		if ((*it)->doesProduceBBox()) 
+		if ((*it)->doesProduceBBox())
 		{
 			break;
 		}
 	}
 
-	if (it == _LocatedBoundCont.end()) 
+	if (it == _LocatedBoundCont.end())
 	{
 		return false;
 	}
@@ -2460,11 +2460,11 @@ bool CPSLocated::computeBBox(NLMISC::CAABBox &box) const
 	for (it2 = _Pos.begin(); it2 != _Pos.end(); ++ it2)
 	{
 		const CVector &v = (*it2);
-		min.minof(min, v);	
-		max.maxof(max, v);		
+		min.minof(min, v);
+		max.maxof(max, v);
 	}
 
-	box.setMinMax(min, max);	
+	box.setMinMax(min, max);
 
 	// we've considered that located had no extent in space
 	// now, we must call each objects that are bound to the located in order
@@ -2488,13 +2488,13 @@ bool CPSLocated::computeBBox(NLMISC::CAABBox &box) const
 }
 
 
-/// Setup the driver model matrix. It is set accordingly to the basis used for rendering	
+/// Setup the driver model matrix. It is set accordingly to the basis used for rendering
 ///***************************************************************************************
-void CPSLocated::setupDriverModelMatrix(void) 
+void CPSLocated::setupDriverModelMatrix(void)
 {
 	NL_PS_FUNC(CPSLocated_setupDriverModelMatrix)
-	CHECK_PS_INTEGRITY	
-	getDriver()->setupModelMatrix(getLocalToWorldMatrix());			
+	CHECK_PS_INTEGRITY
+	getDriver()->setupModelMatrix(getLocalToWorldMatrix());
 	CHECK_PS_INTEGRITY
 }
 
@@ -2515,7 +2515,7 @@ void CPSLocated::queryCollisionInfo(void)
 		for(uint k = 0; k < _Size; ++k)
 		{
 			_CollisionNextPos->insert();
-		}		
+		}
 	}
 	CHECK_PS_INTEGRITY
 }
@@ -2526,7 +2526,7 @@ void CPSLocated::releaseCollisionInfo(void)
 	NL_PS_FUNC(CPSLocated_releaseCollisionInfo)
 	CHECK_PS_INTEGRITY
 	nlassert(_CollisionInfoNbRef); // check whether queryCollisionInfo was called
-									// so the number of refs must not = 0									
+									// so the number of refs must not = 0
     --_CollisionInfoNbRef;
 	if (_CollisionInfoNbRef == 0)
 	{
@@ -2561,7 +2561,7 @@ void CPSLocated::unregisterIntegrableForce(CPSForce *f)
 	CHECK_PS_INTEGRITY
 	nlassert(f->getOwner()); // f must be attached to a located
 	CPSVector<CPSForce *>::V::iterator it = std::find(_IntegrableForces.begin(), _IntegrableForces.end(), f);
-	nlassert(it != _IntegrableForces.end() );	
+	nlassert(it != _IntegrableForces.end() );
 	_IntegrableForces.erase(it);
 	if (getMatrixMode() != f->getOwner()->getMatrixMode())
 	{
@@ -2593,7 +2593,7 @@ void CPSLocated::releaseNonIntegrableForceRef(void)
 
 ///***************************************************************************************
 void CPSLocated::integrableForceBasisChanged(TPSMatrixMode matrixMode)
-{	
+{
 	NL_PS_FUNC(CPSLocated_integrableForceBasisChanged)
 	CHECK_PS_INTEGRITY
 	if (getMatrixMode() != matrixMode)
@@ -2611,12 +2611,12 @@ void CPSLocated::integrableForceBasisChanged(TPSMatrixMode matrixMode)
 
 ///***************************************************************************************
 CPSLocatedBindable *CPSLocated::unbind(uint index)
-{	
+{
 	NL_PS_FUNC(CPSLocated_unbind)
 	CHECK_PS_INTEGRITY
 	nlassert(index < _LocatedBoundCont.size());
-	CPSLocatedBindable *lb = _LocatedBoundCont[index];		
-	lb->setOwner(NULL);	
+	CPSLocatedBindable *lb = _LocatedBoundCont[index];
+	lb->setOwner(NULL);
 	_LocatedBoundCont.erase(_LocatedBoundCont.begin() + index);
 	return lb;
 	CHECK_PS_INTEGRITY
@@ -2641,7 +2641,7 @@ uint CPSLocated::getIndexOf(const CPSLocatedBindable *lb) const
 	{
 		if (_LocatedBoundCont[k] == lb) return k;
 	}
-	nlassert(0);	
+	nlassert(0);
 	return 0;
 }
 
@@ -2661,7 +2661,7 @@ CPSLocatedBindable::CPSLocatedBindable() : _Owner(NULL), _ExternID(0), _LOD(PSLo
 
 ///***************************************************************************************
 void CPSLocatedBindable::setOwner(CPSLocated *psl)
-{ 
+{
 	NL_PS_FUNC(CPSLocatedBindable_setOwner)
 	if (psl == _Owner) return;
 	if (psl == NULL)
@@ -2674,8 +2674,8 @@ void CPSLocatedBindable::setOwner(CPSLocated *psl)
 			{
 				deleteElement(0);
 			}
-		}				
-	}	
+		}
+	}
 	if (_Owner && _Owner->getOwner())
 	{
 		_Owner->getOwner()->releaseRefForUserSysCoordInfo(getUserMatrixUsageCount());
@@ -2684,7 +2684,7 @@ void CPSLocatedBindable::setOwner(CPSLocated *psl)
 	if (_Owner && _Owner->getOwner())
 	{
 		_Owner->getOwner()->addRefForUserSysCoordInfo(getUserMatrixUsageCount());
-	} 
+	}
 }
 
 ///***************************************************************************************
@@ -2695,7 +2695,7 @@ void CPSLocatedBindable::finalize(void)
 	{
 		_Owner->getOwner()->releaseRefForUserSysCoordInfo(getUserMatrixUsageCount());
 	}
-}	
+}
 
 ///***************************************************************************************
 CPSLocatedBindable::~CPSLocatedBindable()
@@ -2721,10 +2721,10 @@ void CPSLocatedBindable::notifyTargetRemoved(CPSLocated *ptr)
 void CPSLocatedBindable::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSLocatedBindable_IStream )
-	sint ver = f.serialVersion(4);	
-	f.serialPtr(_Owner);	
+	sint ver = f.serialVersion(4);
+	f.serialPtr(_Owner);
 	if (ver > 1) f.serialEnum(_LOD);
-	if (ver > 2) 
+	if (ver > 2)
 	{
 		if (f.isReading() && !CParticleSystem::getSerializeIdentifierFlag())
 		{
@@ -2734,11 +2734,11 @@ void CPSLocatedBindable::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			f.seek(len, NLMISC::IStream::current);
 		}
 		else
-		{	
+		{
 			f.serial(_Name);
 		}
 	}
-	if (ver > 3) 
+	if (ver > 3)
 	{
 		if (f.isReading())
 		{
@@ -2751,7 +2751,7 @@ void CPSLocatedBindable::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 			f.serial(_ExternID);
 		}
 	}
-	
+
 }
 
 ///***************************************************************************************
@@ -2759,14 +2759,14 @@ void CPSLocatedBindable::displayIcon2d(const CVector tab[], uint nbSegs, float s
 {
 	NL_PS_FUNC(CPSLocatedBindable_displayIcon2d)
 	uint32 size = _Owner->getSize();
-	if (!size) return;		
-	setupDriverModelMatrix();	
+	if (!size) return;
+	setupDriverModelMatrix();
 
 	const CVector I = computeI();
 	const CVector K = computeK();
 
 	static std::vector<NLMISC::CLine> lines;
-	
+
 	lines.clear();
 
 	// ugly slow code, but not for runtime
@@ -2774,8 +2774,8 @@ void CPSLocatedBindable::displayIcon2d(const CVector tab[], uint nbSegs, float s
 	{
 		// center of the current particle
 		const CVector p = _Owner->getPos()[k];
-		
-		
+
+
 
 		for (uint l = 0; l < nbSegs; ++l)
 		{
@@ -2784,7 +2784,7 @@ void CPSLocatedBindable::displayIcon2d(const CVector tab[], uint nbSegs, float s
 			li.V1 = p + scale * (tab[(l << 1) + 1].x * I + tab[(l << 1) + 1].y * K);
 			lines.push_back(li);
 		}
-	
+
 		CMaterial mat;
 
 		mat.setBlendFunc(CMaterial::one, CMaterial::one);
@@ -2792,16 +2792,16 @@ void CPSLocatedBindable::displayIcon2d(const CVector tab[], uint nbSegs, float s
 		mat.setLighting(false);
 		mat.setBlend(true);
 		mat.setZFunc(CMaterial::less);
-		
-	
+
+
 
 		CPSLocated *loc;
-		uint32 index;		
+		uint32 index;
 		CPSLocatedBindable *lb;
 		_Owner->getOwner()->getCurrentEditedElement(loc, index, lb);
-	
+
 		mat.setColor((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));
-		
+
 
 		CDRU::drawLinesUnlit(lines, mat, *getDriver() );
 	}
@@ -2827,17 +2827,17 @@ const CFontManager *CPSLocatedBindable::getFontManager(void) const
 
 
 ///***************************************************************************************
-// Shortcut to get the matrix of the system	
- const NLMISC::CMatrix &CPSLocatedBindable::getSysMat(void) const 
+// Shortcut to get the matrix of the system
+ const NLMISC::CMatrix &CPSLocatedBindable::getSysMat(void) const
 {
 	NL_PS_FUNC( CPSLocatedBindable_getSysMat)
-	nlassert(_Owner);		
+	nlassert(_Owner);
 	return _Owner->getOwner()->getSysMat();
 }
 
  ///***************************************************************************************
 /// shortcut to get the inverted matrix of the system
-const NLMISC::CMatrix &CPSLocatedBindable::getInvertedSysMat(void) const 
+const NLMISC::CMatrix &CPSLocatedBindable::getInvertedSysMat(void) const
 {
 	NL_PS_FUNC(CPSLocatedBindable_getInvertedSysMat)
 	nlassert(_Owner);
@@ -2847,26 +2847,26 @@ const NLMISC::CMatrix &CPSLocatedBindable::getInvertedSysMat(void) const
 
 ///***************************************************************************************
 /// shortcut to get the view matrix
-const NLMISC::CMatrix &CPSLocatedBindable::getViewMat(void) const 
+const NLMISC::CMatrix &CPSLocatedBindable::getViewMat(void) const
 {
 	NL_PS_FUNC(CPSLocatedBindable_getViewMat)
 	nlassert(_Owner);
-	return _Owner->getOwner()->getViewMat();	
-}	
+	return _Owner->getOwner()->getViewMat();
+}
 
 
 ///***************************************************************************************
 /// shortcut to get the inverted view matrix
-const NLMISC::CMatrix &CPSLocatedBindable::getInvertedViewMat(void) const 
+const NLMISC::CMatrix &CPSLocatedBindable::getInvertedViewMat(void) const
 {
 	NL_PS_FUNC(CPSLocatedBindable_getInvertedViewMat)
 	nlassert(_Owner);
-	return _Owner->getOwner()->getInvertedViewMat();	
-}	
+	return _Owner->getOwner()->getInvertedViewMat();
+}
 
 ///***************************************************************************************
 /// shortcut to setup the model matrix (system basis or world basis)
-void CPSLocatedBindable::setupDriverModelMatrix(void)  
+void CPSLocatedBindable::setupDriverModelMatrix(void)
 {
 	NL_PS_FUNC(CPSLocatedBindable_setupDriverModelMatrix)
 	nlassert(_Owner);
@@ -2882,17 +2882,17 @@ void	CPSLocatedBindable::setExternID(uint32 id)
 	if (_Owner && _Owner->getOwner())
 	{
 		ps = _Owner->getOwner();
-	}	
-	if (ps) 
+	}
+	if (ps)
 	{
 		ps->unregisterLocatedBindableExternID(this);
-		_ExternID = 0;		
+		_ExternID = 0;
 	}
 	if (id != 0)
-	{	
+	{
 		if (ps) ps->registerLocatedBindableExternID(id, this);
 		_ExternID = id;
-	}	
+	}
 }
 
 ///***************************************************************************************
@@ -2901,7 +2901,7 @@ void CPSLocatedBindable::releaseAllRef()
 	NL_PS_FUNC(CPSLocatedBindable_releaseAllRef)
 }
 
-	 
+
 
 
 
@@ -2913,7 +2913,7 @@ void CPSLocatedBindable::releaseAllRef()
 void CPSTargetLocatedBindable::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSTargetLocatedBindable_serial)
-	(void)f.serialVersion(1);	
+	(void)f.serialVersion(1);
 	f.serialPtr(_Owner);
 	f.serial(_Name);
 	if (f.isReading())
@@ -2923,9 +2923,9 @@ void CPSTargetLocatedBindable::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		{
 			delete (*it);
 		}
-		_Targets.clear();		
+		_Targets.clear();
 	}
-	f.serialContPolyPtr(_Targets);	
+	f.serialContPolyPtr(_Targets);
 }
 
 
@@ -2942,7 +2942,7 @@ void CPSTargetLocatedBindable::attachTarget(CPSLocated *ptr)
 	}
 	#endif
 
-	// see wether this target has not been registered before 
+	// see wether this target has not been registered before
 	nlassert(std::find(_Targets.begin(), _Targets.end(), ptr) == _Targets.end());
 	_Targets.push_back(ptr);
 
@@ -2952,15 +2952,15 @@ void CPSTargetLocatedBindable::attachTarget(CPSLocated *ptr)
 
 
 ///***************************************************************************************
-void CPSTargetLocatedBindable::notifyTargetRemoved(CPSLocated *ptr) 
-{	
+void CPSTargetLocatedBindable::notifyTargetRemoved(CPSLocated *ptr)
+{
 	NL_PS_FUNC(CPSTargetLocatedBindable_notifyTargetRemoved)
 	TTargetCont::iterator it = std::find(_Targets.begin(), _Targets.end(), ptr);
 	nlassert(it != _Targets.end());
-	releaseTargetRsc(*it);	
+	releaseTargetRsc(*it);
 	_Targets.erase(it);
 
-	CPSLocatedBindable::notifyTargetRemoved(ptr);	
+	CPSLocatedBindable::notifyTargetRemoved(ptr);
 }
 
 
@@ -2969,25 +2969,25 @@ void CPSTargetLocatedBindable::notifyTargetRemoved(CPSLocated *ptr)
 
 ///***************************************************************************************
 void CPSTargetLocatedBindable::finalize(void)
-{	
+{
 	NL_PS_FUNC(CPSTargetLocatedBindable_finalize)
 	/** Release the collisionInfos we've querried. We can't do it in the dtor, as calls to releaseTargetRsc wouldn't be polymorphics for derived class!
 	  * And the behaviour of releaseTergetRsc is implemented in derived class
 	  */
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
-	{		
+	{
 		releaseTargetRsc(*it);
 	}
-	CPSLocatedBindable::finalize();	
+	CPSLocatedBindable::finalize();
 }
 
 ///***************************************************************************************
 CPSTargetLocatedBindable::~CPSTargetLocatedBindable()
-{	
+{
 	NL_PS_FUNC(CPSTargetLocatedBindable_CPSTargetLocatedBindable)
 	// we unregister to all the targets
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
-	{		
+	{
 		(*it)->unregisterDtorObserver(this);
 	}
 }
@@ -3011,7 +3011,7 @@ void CPSTargetLocatedBindable::releaseAllRef()
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
 	{
 		releaseTargetRsc(*it);
-		(*it)->unregisterDtorObserver(this);		
+		(*it)->unregisterDtorObserver(this);
 	}
 	_Targets.clear();
 	CPSLocatedBindable::releaseAllRef();
@@ -3024,7 +3024,7 @@ uint CPSLocated::getUserMatrixUsageCount() const
 	uint count = 0;
 	for(TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
-		count += (*it)->getUserMatrixUsageCount();		
+		count += (*it)->getUserMatrixUsageCount();
 	}
 	return count + CParticleSystemProcess::getUserMatrixUsageCount();
 }
@@ -3064,7 +3064,7 @@ void CPSLocated::computeCollisions(uint firstInstanceIndex, const NLMISC::CVecto
 
 ///***************************************************************************************
 void CPSLocated::computeSpawns(uint firstInstanceIndex, bool includeEmitOnce)
-{	
+{
 	NL_PS_FUNC(CPSLocated_computeSpawns)
 	nlassert(CParticleSystem::InsideSimLoop);
 	for(TLocatedBoundCont::iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
@@ -3072,10 +3072,10 @@ void CPSLocated::computeSpawns(uint firstInstanceIndex, bool includeEmitOnce)
 		if (!(*it)->isActive()) continue;
 		if ((*it)->getType() == PSEmitter)
 		{
-			CPSEmitter *emit = static_cast<CPSEmitter *>(*it);								
+			CPSEmitter *emit = static_cast<CPSEmitter *>(*it);
 			emit->updateEmitTrigger();
 			switch(emit->getEmissionType())
-			{	
+			{
 				case CPSEmitter::regular:
 					emit->computeSpawns(firstInstanceIndex);
 				break;
@@ -3091,7 +3091,7 @@ void CPSLocated::computeSpawns(uint firstInstanceIndex, bool includeEmitOnce)
 				break;
 				default:
 					break;
-			}			
+			}
 		}
 	}
 }
@@ -3115,8 +3115,8 @@ void CPSLocated::computeForces()
 void CPSCollisionInfo::update(const CPSCollisionInfo &other)
 {
 	NL_PS_FUNC(CPSCollisionInfo_update)
-	if (Dist == -1)			
-	{			
+	if (Dist == -1)
+	{
 		// link collision in the global list of active collisions
 		Next = CPSLocated::_FirstCollision;
 		CPSLocated::_FirstCollision = this;

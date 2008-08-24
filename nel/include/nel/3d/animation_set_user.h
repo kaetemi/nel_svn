@@ -35,7 +35,7 @@
 #include "nel/3d/animation_set.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -77,7 +77,7 @@ public:
 	{
 		nlassert(owner);
 		_Owner= owner;
-		
+
 		nlassert((uint)UAnimationSet::NotFound == (uint)CAnimationSet::NotFound );
 
 		// create a smartptred animation set. DO NOT Allow header compression, cause serial()
@@ -160,7 +160,7 @@ public:
 	/**
 	  * Get animations count.
 	  */
-	virtual	uint getNumAnimation () const 
+	virtual	uint getNumAnimation () const
 	{
 		return _AnimationSet->getNumAnimation();
 	}
@@ -168,7 +168,7 @@ public:
 	/**
 	  * Get a animation ID by name. If no animation is found, method returns NotFound.
 	  */
-	virtual	uint getAnimationIdByName (const std::string& name) const  
+	virtual	uint getAnimationIdByName (const std::string& name) const
 	{
 		return _AnimationSet->getAnimationIdByName(name);
 	}
@@ -176,7 +176,7 @@ public:
 	/**
 	  * Get animation name.
 	  */
-	virtual	const std::string& getAnimationName (uint animationId) const 
+	virtual	const std::string& getAnimationName (uint animationId) const
 	{
 		if(animationId>=getNumAnimation())
 			nlerror("getAnimation*(): bad animation Id");
@@ -198,7 +198,7 @@ public:
 	/**
 	  * Get skeleton weight count.
 	  */
-	virtual	uint getNumSkeletonWeight () const 
+	virtual	uint getNumSkeletonWeight () const
 	{
 		return _AnimationSet->getNumSkeletonWeight();
 	}
@@ -206,7 +206,7 @@ public:
 	/**
 	  * Get a SkeletonWeight ID by name. If no SkeletonWeight is found, method returns NotFound.
 	  */
-	virtual	uint getSkeletonWeightIdByName (const std::string& name) const 
+	virtual	uint getSkeletonWeightIdByName (const std::string& name) const
 	{
 		return _AnimationSet->getSkeletonWeightIdByName(name);
 	}
@@ -214,7 +214,7 @@ public:
 	/**
 	  * Get skeleton template name.
 	  */
-	virtual	const std::string& getSkeletonWeightName (uint skeletonId) const 
+	virtual	const std::string& getSkeletonWeightName (uint skeletonId) const
 	{
 		if(skeletonId>=getNumSkeletonWeight())
 			nlerror("getSkeletonWeight*(): bad SkeletonWeight Id");

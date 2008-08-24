@@ -133,7 +133,7 @@ void CAsyncFileManagerSound::cancelSignal (bool *pSgn)
 
 // Load task.
 CAsyncFileManagerSound::CLoadWavFile::CLoadWavFile (IBuffer *pdestBuffer, const std::string &filename)
-: _pDestbuffer(pdestBuffer), _Filename(filename) 
+: _pDestbuffer(pdestBuffer), _Filename(filename)
 {
 	if (_Filename.empty())
 	{
@@ -155,14 +155,14 @@ void CAsyncFileManagerSound::CLoadWavFile::run (void)
 		nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : mixer is not avalable !");
 		return;
 	}
-	
+
 	ISoundDriver *sndDrv = mixer->getSoundDriver();
 	if (sndDrv == 0)
 	{
 		nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : sound driver is null !");
 		return;
 	}
-	
+
 	if (_pDestbuffer == 0)
 	{
 		nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : dest buffer is null !");
@@ -188,7 +188,7 @@ void CAsyncFileManagerSound::CLoadWavFile::run (void)
 		nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : Exeption detected during IDriver::loadWavFile(%p, %s)", _pDestbuffer, _Filename.c_str());
 	}
 }
-	
+
 
 
 } // NLSOUND

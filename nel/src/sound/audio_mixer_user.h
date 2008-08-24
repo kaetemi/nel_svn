@@ -129,7 +129,7 @@ public:
 	const std::string &unmap(const NLMISC::TStringId &stringId)		{ return NLMISC::CStringMapper::unmap(stringId);}
 	//@}
 
-	
+
 	/** Initialization
 	 *
 	 * In case of failure, can throw one of these ESoundDriver (Exception) objects:
@@ -147,7 +147,7 @@ public:
 	 *	Each priority channel can be assign a restrictive reserve value.
 	 *	This value is used when the number free track available for playing drop
 	 *	under the low water mark value (see setLowWaterMark).
-	 *	The mixer count the number of playing source in each priority channel. 
+	 *	The mixer count the number of playing source in each priority channel.
 	 *	A priority channel can orverflow it's reserve value only if the low water
 	 *	mark is not reach.
 	 *	In other word, when the number of played source increase, you can control
@@ -171,7 +171,7 @@ public:
 	virtual void		setLowWaterMark(uint value);
 
 	virtual	void		changeMaxTrack(uint maxTrack);
-	
+
 	/// Resets the audio system (deletes all the sources, include envsounds)
 	virtual void				reset();
 	/// Disables or reenables the sound
@@ -198,7 +198,7 @@ public:
 	/// Load sounds. Returns the number of sounds successfully loaded.
 //	virtual void				loadSoundBank( const std::string &path );
 
-	
+
 	// Load environment sounds ; treeRoot can be null if you don't want an access to the envsounds
 //	virtual	void				loadEnvSounds( const char *filename, UEnvSound **treeRoot=NULL );
 	/// Get a TSoundId from a name (returns NULL if not found)
@@ -238,7 +238,7 @@ public:
 	/// Choose the environmental effect(s) corresponding to tag
 	virtual void				selectEnvEffects( const std::string &tag );
 	/// Update audio mixer (call evenly)
-	virtual void				update(); 
+	virtual void				update();
 
 
 	/// Return the names of the sounds (call this method after loadSounds())
@@ -273,7 +273,7 @@ public:
 	/// Add ambiant sound pointer for later deletion
 //	void						addAmbiantSound( CSound *sound )		{ _AmbSounds.insert( sound ); }
 	// Allow to load sound files (nss) when the corresponding wave file is missing (see CSound)
-	//static void					allowMissingWave( bool b )				{ CSound::allowMissingWave( b ); }	
+	//static void					allowMissingWave( bool b )				{ CSound::allowMissingWave( b ); }
 
 	/// Set the global path to the sample banks
 	virtual void				setSamplePath(const std::string& path);
@@ -356,7 +356,7 @@ private:
 		EventMusicChannel= 1
 	};
 	bool	playMusicChannel(TMusicChannel chan, const std::string &fileName, uint xFadeTime, bool async, bool loop);
-	
+
 
 public:
 	/// Interface for registering object in the mixer update.
@@ -521,11 +521,11 @@ private:
 
 	// For debug purpose only (not called)
 	void		debugLogEvent(const char *reason);
-	
+
 	// Instance of the background music manager
 	CMusicSoundManager			*_BackgroundMusicManager;
 
-public: 
+public:
 	struct TSampleBankHeader
 	{
 		enum

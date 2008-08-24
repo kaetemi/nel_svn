@@ -231,7 +231,7 @@ IDisplayer *CLog::getDisplayer (const char *displayerName)
 /*
  * Returns true if the specified displayer is attached to the log object
  */
-bool CLog::attached(IDisplayer *displayer) const 
+bool CLog::attached(IDisplayer *displayer) const
 {
 	return (find( _Displayers.begin(), _Displayers.end(), displayer ) != _Displayers.end()) ||
 			(find( _BypassFilterDisplayers.begin(), _BypassFilterDisplayers.end(), displayer ) != _BypassFilterDisplayers.end());
@@ -339,7 +339,7 @@ void CLog::displayNL (const char *format, ...)
 
 	displayString (str);
 }
- 
+
 /*
  * Display the string with decoration to all attached displayers
  */

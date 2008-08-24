@@ -30,7 +30,7 @@ CTextureEmboss::CTextureEmboss() : _Ambient(CRGBA::Black),
 								   _Diffuse(CRGBA::White),
 								   _DisableSharing(false),
 								   _SlopeFactor(1.f)
-{	
+{
 	_LightDir.set(1.f, 1.f, 1.f);
 	_LightDir.normalize();
 }
@@ -51,9 +51,9 @@ void CTextureEmboss::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	sint ver = f.serialVersion(0);
 	ITexture::serial(f);
-	ITexture *tex = NULL;	
+	ITexture *tex = NULL;
 	if (f.isReading())
-	{		
+	{
 		f.serialPolyPtr(tex);
 		_HeightMap = tex;
 		touch();
@@ -114,7 +114,7 @@ void CTextureEmboss::doGenerate(bool async)
 	releaseMipMaps();
 	uint width = _HeightMap->getWidth();
 	uint height = _HeightMap->getHeight();
-	
+
 	const CRGBA *src = (CRGBA *) &(_HeightMap->getPixels(0)[0]);
 	CRGBA *dest = (CRGBA *) &(getPixels(0)[0]);
 	CVector normal;
@@ -139,13 +139,13 @@ void CTextureEmboss::doGenerate(bool async)
 
 			float colorValue = _LightDir * normal;
 			if (colorValue <= 0.f) colorValue = 0.f;
-			
+
 			CRGBA diffuse;
-			*dest = _Ambient;			
+			*dest = _Ambient;
 			diffuse.modulateFromui(_Diffuse, (uint) (255.f * colorValue));
 			dest->add(*dest, diffuse);
 			dest->A = 255;
-			
+
 			++ src;
 			++ dest;
 		}

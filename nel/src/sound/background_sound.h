@@ -97,7 +97,7 @@ private:
 
 	/// The list of sound composing the background sound with there repective filter.
 	std::vector<TSoundInfo>		_Sounds;
-	
+
 
 	// Duration of sound.
 	uint32						_Duration;

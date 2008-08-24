@@ -44,7 +44,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -152,7 +152,7 @@ CDriverUser::CDriverUser (uint windowIcon, bool direct3d, emptyProc exitFunc)
 	_WindowInit= false;
 
 	// Init of VBuffers/PBs for 2D/3D interface.
-	_VBFlat.setVertexFormat(CVertexBuffer::PositionFlag);	
+	_VBFlat.setVertexFormat(CVertexBuffer::PositionFlag);
 	_VBColor.setVertexFormat(CVertexBuffer::PositionFlag | CVertexBuffer::PrimaryColorFlag);
 	_VBUv.setVertexFormat(CVertexBuffer::PositionFlag | CVertexBuffer::TexCoord0Flag);
 	_VBColorUv.setVertexFormat(CVertexBuffer::PositionFlag | CVertexBuffer::PrimaryColorFlag | CVertexBuffer::TexCoord0Flag);
@@ -163,7 +163,7 @@ CDriverUser::CDriverUser (uint windowIcon, bool direct3d, emptyProc exitFunc)
 	_VBFlat.setNumVertices(4);
 	_VBColor.setNumVertices(4);
 	_VBUv.setNumVertices(4);
-	_VBColorUv.setNumVertices(4); 
+	_VBColorUv.setNumVertices(4);
 	// memory management
 	_VBFlat.setPreferredMemory(CVertexBuffer::RAMVolatile, false);
 	_VBColor.setPreferredMemory(CVertexBuffer::RAMVolatile, false);
@@ -182,12 +182,12 @@ CDriverUser::CDriverUser (uint windowIcon, bool direct3d, emptyProc exitFunc)
 	_VBQuadsColUv2.setName("_VBQuadsColUv2");
 
 	_PBLine.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	_PBLine.setNumIndexes(2);	
+	_PBLine.setNumIndexes(2);
 	CIndexBufferReadWrite iba;
 	_PBLine.lock (iba);
 	iba.setLine(0, 0, 1);
 	_PBTri.setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
-	_PBTri.setNumIndexes(3);	
+	_PBTri.setNumIndexes(3);
 	_PBTri.lock (iba);
 	iba.setTri(0, 0, 1, 2);
 
@@ -315,7 +315,7 @@ void CDriverUser::setWindowTitle(const std::string &title)
 }
 
 // ***************************************************************************
-void			CDriverUser::release() 
+void			CDriverUser::release()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -380,7 +380,7 @@ void			*CDriverUser::getDisplay ()
 void			CDriverUser::restoreMatrixContextMatrixOnly()
 {
 	NL3D_HAUTO_UI_DRIVER;
-	
+
 	CFrustum	&f= _CurrentMatrixContext.Frustum;
 	_Driver->setFrustum(f.Left, f.Right, f.Bottom, f.Top, f.Near, f.Far, f.Perspective);
 	_Driver->setupViewMatrix(_CurrentMatrixContext.ViewMatrix);
@@ -391,7 +391,7 @@ void			CDriverUser::restoreMatrixContextMatrixOnly()
 void			CDriverUser::setupMatrixContext()
 {
 	NL3D_HAUTO_UI_DRIVER;
-	
+
 	_Driver->setupScissor(_CurrentMatrixContext.Scissor);
 	_Driver->setupViewport(_CurrentMatrixContext.Viewport);
 	CFrustum	&f= _CurrentMatrixContext.Frustum;
@@ -430,7 +430,7 @@ CViewport		CDriverUser::getViewport()
 	return _CurrentMatrixContext.Viewport;
 }
 // ***************************************************************************
-void			CDriverUser::setFrustum(const CFrustum &frust) 
+void			CDriverUser::setFrustum(const CFrustum &frust)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -438,21 +438,21 @@ void			CDriverUser::setFrustum(const CFrustum &frust)
 	setupMatrixContext();
 }
 // ***************************************************************************
-CFrustum		CDriverUser::getFrustum() 
+CFrustum		CDriverUser::getFrustum()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	return _CurrentMatrixContext.Frustum;
 }
 // ***************************************************************************
-void			CDriverUser::setFrustumMatrix(CMatrix &frust) 
+void			CDriverUser::setFrustumMatrix(CMatrix &frust)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	_Driver->setFrustumMatrix(frust);
 }
 // ***************************************************************************
-CMatrix			CDriverUser::getFrustumMatrix() 
+CMatrix			CDriverUser::getFrustumMatrix()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -466,7 +466,7 @@ float			CDriverUser::getClipSpaceZMin() const
 }
 // ***************************************************************************
 
-void			CDriverUser::setViewMatrix(const CMatrix &mat) 
+void			CDriverUser::setViewMatrix(const CMatrix &mat)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -474,14 +474,14 @@ void			CDriverUser::setViewMatrix(const CMatrix &mat)
 	setupMatrixContext();
 }
 // ***************************************************************************
-CMatrix			CDriverUser::getViewMatrix() 
+CMatrix			CDriverUser::getViewMatrix()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	return _CurrentMatrixContext.ViewMatrix;
 }
 // ***************************************************************************
-void			CDriverUser::setModelMatrix(const CMatrix &mat) 
+void			CDriverUser::setModelMatrix(const CMatrix &mat)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -489,7 +489,7 @@ void			CDriverUser::setModelMatrix(const CMatrix &mat)
 	setupMatrixContext();
 }
 // ***************************************************************************
-CMatrix			CDriverUser::getModelMatrix() 
+CMatrix			CDriverUser::getModelMatrix()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -499,7 +499,7 @@ CMatrix			CDriverUser::getModelMatrix()
 
 
 // ***************************************************************************
-void			CDriverUser::setMatrixMode2D(const CFrustum &frust) 
+void			CDriverUser::setMatrixMode2D(const CFrustum &frust)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -516,7 +516,7 @@ void			CDriverUser::setMatrixMode2D(const CFrustum &frust)
 	setupMatrixContext();
 }
 // ***************************************************************************
-void			CDriverUser::setMatrixMode3D(UCamera &camera) 
+void			CDriverUser::setMatrixMode3D(UCamera &camera)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -556,7 +556,7 @@ void CDriverUser::setColorMask (bool bRed, bool bGreen, bool bBlue, bool bAlpha)
 // ***************************************************************************
 
 // ***************************************************************************
-void			CDriverUser::drawLine(const NLMISC::CLine &shp, UMaterial &mat) 
+void			CDriverUser::drawLine(const NLMISC::CLine &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -569,13 +569,13 @@ void			CDriverUser::drawLine(const NLMISC::CLine &shp, UMaterial &mat)
 		vba.setVertexCoord (0, shp.V0);
 		vba.setVertexCoord (1, shp.V1);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderLines(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawLine(const NLMISC::CLineColor &shp, UMaterial &mat) 
+void			CDriverUser::drawLine(const NLMISC::CLineColor &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -590,13 +590,13 @@ void			CDriverUser::drawLine(const NLMISC::CLineColor &shp, UMaterial &mat)
 		vba.setColor(0, shp.Color0);
 		vba.setColor(1, shp.Color1);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderLines(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawLine(const NLMISC::CLineUV &shp, UMaterial &mat) 
+void			CDriverUser::drawLine(const NLMISC::CLineUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -611,13 +611,13 @@ void			CDriverUser::drawLine(const NLMISC::CLineUV &shp, UMaterial &mat)
 		vba.setTexCoord (0, 0, shp.Uv0);
 		vba.setTexCoord (1, 0, shp.Uv1);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderLines(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawLine(const NLMISC::CLineColorUV &shp, UMaterial &mat) 
+void			CDriverUser::drawLine(const NLMISC::CLineColorUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -634,7 +634,7 @@ void			CDriverUser::drawLine(const NLMISC::CLineColorUV &shp, UMaterial &mat)
 		vba.setTexCoord (0, 0, shp.Uv0);
 		vba.setTexCoord (1, 0, shp.Uv1);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderLines(convMat(mat), 0, 1);
@@ -643,7 +643,7 @@ void			CDriverUser::drawLine(const NLMISC::CLineColorUV &shp, UMaterial &mat)
 
 
 // ***************************************************************************
-void			CDriverUser::drawTriangle(const NLMISC::CTriangle &shp, UMaterial &mat) 
+void			CDriverUser::drawTriangle(const NLMISC::CTriangle &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -657,13 +657,13 @@ void			CDriverUser::drawTriangle(const NLMISC::CTriangle &shp, UMaterial &mat)
 		vba.setVertexCoord (1, shp.V1);
 		vba.setVertexCoord (2, shp.V2);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderTriangles(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawTriangle(const NLMISC::CTriangleColor &shp, UMaterial &mat) 
+void			CDriverUser::drawTriangle(const NLMISC::CTriangleColor &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -680,13 +680,13 @@ void			CDriverUser::drawTriangle(const NLMISC::CTriangleColor &shp, UMaterial &m
 		vba.setColor(1, shp.Color1);
 		vba.setColor(2, shp.Color2);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderTriangles(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawTriangle(const NLMISC::CTriangleUV &shp, UMaterial &mat) 
+void			CDriverUser::drawTriangle(const NLMISC::CTriangleUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -703,13 +703,13 @@ void			CDriverUser::drawTriangle(const NLMISC::CTriangleUV &shp, UMaterial &mat)
 		vba.setTexCoord (1, 0, shp.Uv1);
 		vba.setTexCoord (2, 0, shp.Uv2);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderTriangles(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawTriangle(const NLMISC::CTriangleColorUV &shp, UMaterial &mat) 
+void			CDriverUser::drawTriangle(const NLMISC::CTriangleColorUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -729,7 +729,7 @@ void			CDriverUser::drawTriangle(const NLMISC::CTriangleColorUV &shp, UMaterial 
 		vba.setTexCoord (1, 0, shp.Uv1);
 		vba.setTexCoord (2, 0, shp.Uv2);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->activeIndexBuffer(pb);
 	_Driver->renderTriangles(convMat(mat), 0, 1);
@@ -738,7 +738,7 @@ void			CDriverUser::drawTriangle(const NLMISC::CTriangleColorUV &shp, UMaterial 
 
 
 // ***************************************************************************
-void			CDriverUser::drawQuad(const NLMISC::CQuad &shp, UMaterial &mat) 
+void			CDriverUser::drawQuad(const NLMISC::CQuad &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -752,12 +752,12 @@ void			CDriverUser::drawQuad(const NLMISC::CQuad &shp, UMaterial &mat)
 		vba.setVertexCoord (2, shp.V2);
 		vba.setVertexCoord (3, shp.V3);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawQuad(const NLMISC::CQuadColor &shp, UMaterial &mat) 
+void			CDriverUser::drawQuad(const NLMISC::CQuadColor &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -775,12 +775,12 @@ void			CDriverUser::drawQuad(const NLMISC::CQuadColor &shp, UMaterial &mat)
 		vba.setColor(2, shp.Color2);
 		vba.setColor(3, shp.Color3);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawQuad(const NLMISC::CQuadUV &shp, UMaterial &mat) 
+void			CDriverUser::drawQuad(const NLMISC::CQuadUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -798,12 +798,12 @@ void			CDriverUser::drawQuad(const NLMISC::CQuadUV &shp, UMaterial &mat)
 		vba.setTexCoord (2, 0, shp.Uv2);
 		vba.setTexCoord (3, 0, shp.Uv3);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, 1);
 }
 // ***************************************************************************
-void			CDriverUser::drawQuad(const NLMISC::CQuadColorUV &shp, UMaterial &mat) 
+void			CDriverUser::drawQuad(const NLMISC::CQuadColorUV &shp, UMaterial &mat)
 {
 	H_AUTO2;
 
@@ -825,7 +825,7 @@ void			CDriverUser::drawQuad(const NLMISC::CQuadColorUV &shp, UMaterial &mat)
 		vba.setTexCoord (2, 0, shp.Uv2);
 		vba.setTexCoord (3, 0, shp.Uv3);
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, 1);
 }
@@ -833,7 +833,7 @@ void			CDriverUser::drawQuad(const NLMISC::CQuadColorUV &shp, UMaterial &mat)
 void			CDriverUser::drawQuads(const std::vector<NLMISC::CQuadColorUV> &q, UMaterial &mat)
 {
 	H_AUTO2;
-	
+
 	const CQuadColorUV *qptr = &(q[0]);
 	drawQuads(qptr , q.size(), mat);
 }
@@ -842,7 +842,7 @@ void			CDriverUser::drawQuads(const std::vector<NLMISC::CQuadColorUV> &q, UMater
 void			CDriverUser::drawQuads(const std::vector<NLMISC::CQuadColorUV2> &q, UMaterial &mat)
 {
 	H_AUTO2;
-	
+
 	const CQuadColorUV2 *qptr = &(q[0]);
 	drawQuads(qptr , q.size(), mat);
 }
@@ -863,7 +863,7 @@ void			CDriverUser::drawQuads(const NLMISC::CQuadColorUV *quads, uint32 nbQuads,
 		uint32	colorOfs= vb.getColorOff();
 		uint32	uvOfs= vb.getTexCoordOff();
 		uint32	vSize= vb.getVertexSize();
-		
+
 		if (vb.getVertexColorFormat() == CVertexBuffer::TRGBA)
 		{
 			for (uint32 i = 0; i < nbQuads; ++i)
@@ -935,7 +935,7 @@ void			CDriverUser::drawQuads(const NLMISC::CQuadColorUV *quads, uint32 nbQuads,
 			}
 		}
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, nbQuads);
 }
@@ -957,7 +957,7 @@ void			CDriverUser::drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads
 		uint32	uvOfs0= vb.getTexCoordOff(0);
 		uint32	uvOfs1= vb.getTexCoordOff(1);
 		uint32	vSize= vb.getVertexSize();
-		
+
 		if (vb.getVertexColorFormat() == CVertexBuffer::TRGBA)
 		{
 			for (uint32 i = 0; i < nbQuads; ++i)
@@ -1045,7 +1045,7 @@ void			CDriverUser::drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads
 			}
 		}
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawQuads(convMat(mat), 0, nbQuads);
 }
@@ -1065,21 +1065,21 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 	vb.setNumVertices (3*nbTris);
 	{
 		CVertexBufferReadWrite vba;
-		vb.lock (vba);		
+		vb.lock (vba);
 		uint8	*dstPtr= (uint8*)vba.getVertexCoordPointer();
 		uint32	colorOfs= vb.getColorOff();
-		uint32	uvOfs0= vb.getTexCoordOff(0);		
+		uint32	uvOfs0= vb.getTexCoordOff(0);
 		uint32	vSize= vb.getVertexSize();
 		const NLMISC::CTriangleColorUV *lastTri = tris + nbTris;
 		if (vb.getVertexColorFormat() == CVertexBuffer::TRGBA)
 		{
-			do		
-			{				
+			do
+			{
 				//
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V0;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv0;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv0;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CRGBA*)(dstPtr+colorOfs)= tris->Color0;
 				dstPtr+= vSize;
@@ -1087,7 +1087,7 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V1;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv1;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv1;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CRGBA*)(dstPtr+colorOfs)= tris->Color1;
 				dstPtr+= vSize;
@@ -1095,23 +1095,23 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V2;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv2;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv2;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CRGBA*)(dstPtr+colorOfs)= tris->Color2;
-				dstPtr+= vSize;			
+				dstPtr+= vSize;
 				++ tris;
 			}
 			while (tris != lastTri);
 		}
 		else
 		{
-			do		
-			{				
+			do
+			{
 				//
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V0;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv0;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv0;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CBGRA*)(dstPtr+colorOfs)= tris->Color0;
 				dstPtr+= vSize;
@@ -1119,7 +1119,7 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V1;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv1;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv1;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CBGRA*)(dstPtr+colorOfs)= tris->Color1;
 				dstPtr+= vSize;
@@ -1127,16 +1127,16 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 				CHECK_VBA_RANGE(vba, dstPtr+0, sizeof(CVector))
 				*(CVector*)(dstPtr+0)= tris->V2;
 				CHECK_VBA_RANGE(vba, dstPtr+uvOfs0, sizeof(CUV))
-				*(CUV*)(dstPtr+uvOfs0)= tris->Uv2;			
+				*(CUV*)(dstPtr+uvOfs0)= tris->Uv2;
 				CHECK_VBA_RANGE(vba, dstPtr+colorOfs, sizeof(CRGBA))
 				*(CBGRA*)(dstPtr+colorOfs)= tris->Color2;
-				dstPtr+= vSize;			
+				dstPtr+= vSize;
 				++ tris;
 			}
 			while (tris != lastTri);
 		}
 	}
-	
+
 	_Driver->activeVertexBuffer(vb);
 	_Driver->renderRawTriangles(convMat(mat), 0, nbTris);
 }
@@ -1149,7 +1149,7 @@ void CDriverUser::drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbT
 
 
 // ***************************************************************************
-void			CDriverUser::drawBitmap (float x, float y, float width, float height, class UTexture& texture, bool blend, CRGBA col) 
+void			CDriverUser::drawBitmap (float x, float y, float width, float height, class UTexture& texture, bool blend, CRGBA col)
 {
 	H_AUTO2;
 
@@ -1174,7 +1174,7 @@ void			CDriverUser::drawBitmap (float x, float y, float width, float height, cla
 	drawQuad(quad, _MatText);
 }
 // ***************************************************************************
-void			CDriverUser::drawLine (float x0, float y0, float x1, float y1, CRGBA col) 
+void			CDriverUser::drawLine (float x0, float y0, float x1, float y1, CRGBA col)
 {
 	H_AUTO2;
 
@@ -1188,7 +1188,7 @@ void			CDriverUser::drawLine (float x0, float y0, float x1, float y1, CRGBA col)
 	drawLine(line, _MatFlat);
 }
 // ***************************************************************************
-void			CDriverUser::drawTriangle (float x0, float y0, float x1, float y1, float x2, float y2, CRGBA col) 
+void			CDriverUser::drawTriangle (float x0, float y0, float x1, float y1, float x2, float y2, CRGBA col)
 {
 	H_AUTO2;
 
@@ -1203,7 +1203,7 @@ void			CDriverUser::drawTriangle (float x0, float y0, float x1, float y1, float 
 	drawTriangle(tri, _MatFlat);
 }
 // ***************************************************************************
-void			CDriverUser::drawQuad (float x0, float y0, float x1, float y1, CRGBA col) 
+void			CDriverUser::drawQuad (float x0, float y0, float x1, float y1, CRGBA col)
 {
 	H_AUTO2;
 
@@ -1220,31 +1220,31 @@ void			CDriverUser::drawQuad (float x0, float y0, float x1, float y1, CRGBA col)
 	drawQuad(quad, _MatFlat);
 }
 // ***************************************************************************
-void			CDriverUser::drawQuad (float xcenter, float ycenter, float radius, CRGBA col) 
+void			CDriverUser::drawQuad (float xcenter, float ycenter, float radius, CRGBA col)
 {
 	H_AUTO2;
 
 	drawQuad(xcenter-radius, ycenter-radius, xcenter+radius, ycenter+radius, col);
 }
 // ***************************************************************************
-void			CDriverUser::drawWiredQuad (float x0, float y0, float x1, float y1, CRGBA col) 
+void			CDriverUser::drawWiredQuad (float x0, float y0, float x1, float y1, CRGBA col)
 {
 	H_AUTO2;
-	
+
 	// v-left
-	drawLine(x0,y0,x0,y1,col);	
+	drawLine(x0,y0,x0,y1,col);
 	// v-right
-	drawLine(x1,y0,x1,y1,col);	
+	drawLine(x1,y0,x1,y1,col);
 	// h-up
-	drawLine(x0,y1,x1,y1,col);	
+	drawLine(x0,y1,x1,y1,col);
 	// h-bottom
-	drawLine(x0,y0,x1,y0,col);	
+	drawLine(x0,y0,x1,y0,col);
 }
 // ***************************************************************************
-void			CDriverUser::drawWiredQuad (float xcenter, float ycenter, float radius, CRGBA col) 
+void			CDriverUser::drawWiredQuad (float xcenter, float ycenter, float radius, CRGBA col)
 {
 	H_AUTO2;
-	
+
 	drawWiredQuad(xcenter-radius, ycenter-radius, xcenter+radius, ycenter+radius, col);
 }
 
@@ -1272,7 +1272,7 @@ UDriver::TMessageBoxId	CDriverUser::systemMessageBox (const char* message, const
 // ***************************************************************************
 CMaterial		&CDriverUser::convMat(UMaterial &mat)
 {
-	
+
 	return *mat.getObjectPtr();
 }
 
@@ -1407,7 +1407,7 @@ void CDriverUser::delete3dMouseListener (U3dMouseListener *listener)
 
 	delete (CEvent3dMouseListener*)listener;
 }
-UDriver::TPolygonMode 	CDriverUser::getPolygonMode () 
+UDriver::TPolygonMode 	CDriverUser::getPolygonMode ()
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -1439,7 +1439,7 @@ void			CDriverUser::forceTextureResize(uint divisor)
 void			CDriverUser::forceNativeFragmentPrograms(bool nativeOnly)
 {
 	NL3D_HAUTO_UI_DRIVER;
-	
+
 	_Driver->forceNativeFragmentPrograms(nativeOnly);
 }
 bool			CDriverUser::setMonitorColorProperties (const CMonitorColorProperties &properties)
@@ -1506,7 +1506,7 @@ uint			CDriverUser::getWindowHeight ()
 void			CDriverUser::getWindowPos (uint32 &x, uint32 &y)
 {
 	NL3D_HAUTO_UI_DRIVER;
-	
+
 	_Driver->getWindowPos (x, y);
 }
 uint32			CDriverUser::getAvailableVertexAGPMemory ()
@@ -1516,26 +1516,26 @@ uint32			CDriverUser::getAvailableVertexAGPMemory ()
 uint32			CDriverUser::getAvailableVertexVRAMMemory ()
 {
 	return _Driver->getAvailableVertexVRAMMemory ();
-}	
-void			CDriverUser::getBuffer (CBitmap &bitmap) 
+}
+void			CDriverUser::getBuffer (CBitmap &bitmap)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	_Driver->getBuffer (bitmap) ;
 }
-void			CDriverUser::getZBuffer (std::vector<float>  &zbuffer) 
+void			CDriverUser::getZBuffer (std::vector<float>  &zbuffer)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	_Driver->getZBuffer (zbuffer) ;
 }
-void			CDriverUser::getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect) 
+void			CDriverUser::getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
 	_Driver->getBufferPart (bitmap, rect) ;
 }
-void			CDriverUser::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect) 
+void			CDriverUser::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -1561,7 +1561,7 @@ NLMISC::IMouseDevice			*CDriverUser::enableLowLevelMouse(bool enable, bool exclu
 
 	return _Driver->enableLowLevelMouse(enable, exclusive);
 }
-NLMISC::IKeyboardDevice			*CDriverUser::enableLowLevelKeyboard(bool enable) 
+NLMISC::IKeyboardDevice			*CDriverUser::enableLowLevelKeyboard(bool enable)
 {
 	NL3D_HAUTO_UI_DRIVER;
 
@@ -1618,14 +1618,14 @@ void				CDriverUser::setupAsyncTextureLod(uint baseLevel, uint maxLevel)
 void				CDriverUser::setupAsyncTextureMaxUploadPerFrame(uint maxup)
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	_AsyncTextureManager.setupMaxUploadPerFrame(maxup);
 }
 // ***************************************************************************
 void				CDriverUser::updateAsyncTexture()
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	_AsyncTextureManager.update(getDriver());
 }
 
@@ -1634,21 +1634,21 @@ void				CDriverUser::updateAsyncTexture()
 void				CDriverUser::setupMaxTotalAsyncTextureSize(uint maxText)
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	_AsyncTextureManager.setupMaxTotalTextureSize(maxText);
 }
 // ***************************************************************************
 uint				CDriverUser::getTotalAsyncTextureSizeAsked() const
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	return _AsyncTextureManager.getTotalTextureSizeAsked();
 }
 // ***************************************************************************
 uint				CDriverUser::getLastAsyncTextureSizeGot() const
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	return _AsyncTextureManager.getLastTextureSizeGot();
 }
 
@@ -1656,7 +1656,7 @@ uint				CDriverUser::getLastAsyncTextureSizeGot() const
 void				CDriverUser::setupMaxHLSColoringPerFrame(uint maxCol)
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	_AsyncTextureManager.setupMaxHLSColoringPerFrame(maxCol);
 }
 
@@ -1664,7 +1664,7 @@ void				CDriverUser::setupMaxHLSColoringPerFrame(uint maxCol)
 void				CDriverUser::loadHLSBank(const std::string &fileName)
 {
 	NL3D_HAUTO_TEX_DRIVER;
-	
+
 	// load it.
 	CHLSTextureBank			*hlsBank= new CHLSTextureBank;
 	try
@@ -1813,7 +1813,7 @@ void CDriverUser::stencilFunc(TStencilFunc stencilFunc, int ref, uint mask)
 void CDriverUser::stencilOp(TStencilOp fail, TStencilOp zfail, TStencilOp zpass)
 {
 	NL3D_HAUTO_UI_DRIVER
-	_Driver->stencilOp((IDriver::TStencilOp)fail, (IDriver::TStencilOp)zfail, 
+	_Driver->stencilOp((IDriver::TStencilOp)fail, (IDriver::TStencilOp)zfail,
 						(IDriver::TStencilOp)zpass);
 }
 
@@ -1833,7 +1833,7 @@ uint64 CDriverUser::getSwapBufferCounter()
 
 // ***************************************************************************
 
-bool CDriverUser::stretchRect(UScene * scene, class UTexture & srcUText, NLMISC::CRect &srcRect, 
+bool CDriverUser::stretchRect(UScene * scene, class UTexture & srcUText, NLMISC::CRect &srcRect,
 		class UTexture & destUText, NLMISC::CRect &destRect)
 {
 	NL3D_HAUTO_UI_DRIVER
@@ -1891,7 +1891,7 @@ bool CDriverUser::setRenderTarget(class UTexture & uTex, uint32 x, uint32 y, uin
 	CViewport currentViewport;
 	_Driver->getViewport(currentViewport);
 	setViewport(currentViewport);
-	
+
 	return result;
 }
 

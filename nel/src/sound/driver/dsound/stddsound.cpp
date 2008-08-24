@@ -1,5 +1,5 @@
 /** \file stddsound.cpp
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

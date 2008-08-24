@@ -46,7 +46,7 @@ CBufferAL::~CBufferAL()
 	// delete local copy
 	if (_Data != NULL)
 		delete _Data;
-		
+
 	// delete OpenAL copy
 	CSoundDriverAL *sdal = CSoundDriverAL::instance();
 	//nlinfo( "Deleting buffer (name %u)", _BufferName );
@@ -110,20 +110,20 @@ float CBufferAL::getDuration() const
 		case AL_FORMAT_MONO8:
 			bytespersample = 1;
 			break;
-			
+
 		case AL_FORMAT_MONO16:
 		case AL_FORMAT_STEREO8:
 			bytespersample = 2;
 			break;
-			
+
 		case AL_FORMAT_STEREO16:
 			bytespersample = 4;
 			break;
-			
+
 		default:
 			return 0;
 	}
-	
+
 	return (float)(getSize()) * 1000.0f / (float)_Frequency / (float)bytespersample;
 }
 
@@ -154,7 +154,7 @@ bool CBufferAL::fillBuffer(void *src, uint32 bufsize)
 
 	// Fill buffer (OpenAL one)
 	alBufferData(_BufferName, _SampleFormat, src, bufsize, _Frequency);
-	
+
 	// Fill buffer (local copy)
 	_Size = bufsize;
 	_Data = new uint8[_Size];
@@ -189,20 +189,20 @@ uint32 CBufferAL::getBufferMono16(std::vector<sint16> &result)
 	// and fill it with data depending on the _SampleFormat
 	uint nbSample = 0;
 	switch (_SampleFormat) {
-		
+
 		case AL_FORMAT_MONO16:
-		
+
 			nbSample = _Size / 2;
 
 			result.reserve(nbSample);
 			result.insert(result.begin(), (sint16*)_Data, ((sint16*)_Data)+nbSample);
 
 			return nbSample;
-			
+
 		case AL_FORMAT_STEREO16:
 			{
 				nbSample = _Size / 4;
-			
+
 				result.reserve(nbSample);
 				TFrameStereo<sint16> *frame = (TFrameStereo<sint16> *)_Data;
 				for (uint i = 0; i < nbSample; i++) {
@@ -215,21 +215,21 @@ uint32 CBufferAL::getBufferMono16(std::vector<sint16> &result)
 
 				return nbSample;
 			}
-			
+
 		case AL_FORMAT_MONO8:
-		
+
 			nbSample = _Size;
-			
+
 			result.reserve(nbSample);
 			for (uint i = 0; i < nbSample; i++)
 				result[i] = ((sint16)_Data[i]) << 8;
-				
+
 			return nbSample;
-		
+
 		case AL_FORMAT_STEREO8:
 			{
 				nbSample = _Size / 2;
-			
+
 				result.reserve(nbSample);
 				TFrameStereo<sint8> *frame = (TFrameStereo<sint8> *)_Data;
 				for (uint i = 0; i < nbSample; i++) {

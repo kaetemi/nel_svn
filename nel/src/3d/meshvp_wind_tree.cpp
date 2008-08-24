@@ -36,7 +36,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -161,8 +161,8 @@ void	CMeshVPWindTree::initInstance(CMeshBaseInstance *mbi)
 			bool	specular= (i&2)!=0;
 
 			// combine fragments
-			vpCode= string(WindTreeVPCodeWave) 
-					+ CRenderTrav::getLightVPFragment(numPls, VPLightConstantStart, specular, normalize) 
+			vpCode= string(WindTreeVPCodeWave)
+					+ CRenderTrav::getLightVPFragment(numPls, VPLightConstantStart, specular, normalize)
 					+ WindTreeVPCodeEnd;
 			_VertexProgram[i]= std::auto_ptr<CVertexProgram>(new CVertexProgram(vpCode.c_str()));
 		}
@@ -200,7 +200,7 @@ inline void			CMeshVPWindTree::setupPerMesh(IDriver *driver, CScene *scene)
 			_MaxDeltaPos[i].z= PowerZ[i] * windPower;
 		}
 
-		/* Update the Max amplitude distance 
+		/* Update the Max amplitude distance
 			in world space, since maxdeltaPos are applied in world space, see setupPerInstanceConstants()
 		*/
 		_MaxVertexMove= 0;
@@ -258,7 +258,7 @@ inline	void		CMeshVPWindTree::setupPerInstanceConstants(IDriver *driver, CScene 
 
 
 	// c[16-19] take Wind of level 1.
-	// Unrolled. 
+	// Unrolled.
 	float	instTime1= _CurrentTime[1] + instancePhase;
 	// phase 0.
 	f= speedCos( instTime1+0 ) + Bias[1];
@@ -275,7 +275,7 @@ inline	void		CMeshVPWindTree::setupPerInstanceConstants(IDriver *driver, CScene 
 
 
 	// c[20, 23] take Wind of level 2.
-	// Unrolled. 
+	// Unrolled.
 	float	instTime2= _CurrentTime[2] + instancePhase;
 	// phase 0.
 	f= speedCos( instTime2+0 ) + Bias[2];
@@ -344,8 +344,8 @@ void	CMeshVPWindTree::setupForMaterial(const CMaterial &mat,
 										  IDriver *drv,
 									      CScene *scene,
 										  CVertexBuffer *)
-{	
-	SetupForMaterial(mat, scene);	
+{
+	SetupForMaterial(mat, scene);
 }
 
 // ***************************************************************************

@@ -52,7 +52,7 @@ namespace NLSOUND
 //#endif
 //
 //#ifdef NL_OS_WINDOWS
-//	
+//
 //#if _MSC_VER >= 1300	// visual .NET, use different dll name
 //	// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
 //#ifdef NL_DEBUG_FAST
@@ -66,9 +66,9 @@ namespace NLSOUND
 //#else
 //#error "Unknown dll name"
 //#endif
-//	
+//
 //#else
-//	
+//
 //	// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
 //#ifdef NL_DEBUG_FAST
 //#define NLSOUND_DLL_NAME "nel_drv_dsound_win_df.dll"
@@ -81,15 +81,15 @@ namespace NLSOUND
 //#else
 //#error "Unknown dll name"
 //#endif
-//	
-//#endif 
-//	
+//
+//#endif
+//
 //#elif defined (NL_OS_UNIX)
 //#define NLSOUND_DLL_NAME "libnel_drv_openal.so"
 //#else
 //#error "Unknown system"
 //#endif
-	
+
 
 // Interface version
 const uint32 ISoundDriver::InterfaceVersion = 0x08;
@@ -103,10 +103,10 @@ extern ISoundDriver::TDriver getDriverType();
 
 #else
 
-typedef ISoundDriver* (*ISDRV_CREATE_PROC)(bool, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer); 
+typedef ISoundDriver* (*ISDRV_CREATE_PROC)(bool, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
 const char *IDRV_CREATE_PROC_NAME = "NLSOUND_createISoundDriverInstance";
 
-typedef uint32 (*ISDRV_VERSION_PROC)(void); 
+typedef uint32 (*ISDRV_VERSION_PROC)(void);
 const char *IDRV_VERSION_PROC_NAME = "NLSOUND_interfaceVersion";
 
 #endif
@@ -135,7 +135,7 @@ ISoundDriver	*ISoundDriver::createDriver(bool useEax, IStringMapperProvider *str
 	default:
 		driverName = "UNKNOWN";
 	}
-	
+
 	nlinfo("Creating %s sound driver. This driver is statically linked into this application.", driverName.c_str());
 
 	return createISoundDriverInstance(useEax, stringMapper, forceSoftwareBuffer);

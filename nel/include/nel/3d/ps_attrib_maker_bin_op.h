@@ -75,8 +75,8 @@ public:
 		/// dtor
 		virtual ~CPSAttribMakerBinOp();
 
-		
-		
+
+
 	//@}
 
 	/// \name inherited from CPSAttribMaker
@@ -92,14 +92,14 @@ public:
 									   uint32 srcStep = (1 << 16),
 									   bool	forceClampEntry = false
 									  ) const;
-		
+
 		virtual void    make4		  (CPSLocated *loc,
 									   uint32 startIndex,
 									   void *tab,
 									   uint32 stride,
 									   uint32 numAttrib,
 									   uint32 srcStep = (1 << 16)
-									  ) const;	
+									  ) const;
 
 		virtual void	makeN		  (CPSLocated *loc,
 									   uint32 startIndex,
@@ -108,11 +108,11 @@ public:
 									   uint32 numAttrib,
 									   uint32 nbReplicate,
 									   uint32 srcStep = (1 << 16)
-									  ) const;	
+									  ) const;
 
-		virtual void    serial		  (NLMISC::IStream &f) throw(NLMISC::EStream);			
-		virtual void    deleteElement (uint32 index);	
-		virtual void    newElement	  (const CPSEmitterInfo &info);	
+		virtual void    serial		  (NLMISC::IStream &f) throw(NLMISC::EStream);
+		virtual void    deleteElement (uint32 index);
+		virtual void    newElement	  (const CPSEmitterInfo &info);
 		virtual void	resize		  (uint32 capacity, uint32 nbPresentElements);
 	//@}
 
@@ -130,7 +130,7 @@ public:
 			if (arg->hasMemory())
 			{
 				arg->resize(_MaxSize, _Size);
-			}		
+			}
 		}
 
 		/** get an argument
@@ -165,13 +165,13 @@ public:
 
 		/// return true if an operation is supported. The default support all ops
 		bool supportOp(CPSBinOp::BinOp op) { return true; }
-		
+
 		/// get the current operator
 		CPSBinOp::BinOp getOp(void) const { return _Op; }
 	//@}
 
 	// from CPSAttribMaker
-	virtual T getMinValue(void) const { return T() ; /* no mean by default */ }	
+	virtual T getMinValue(void) const { return T() ; /* no mean by default */ }
 	virtual T getMaxValue(void) const { return T() ; /* no mean by default */ }
 
 protected:
@@ -186,7 +186,7 @@ protected:
 						 uint32 srcStep = (1 << 16),
 						 bool	forceClampEntry = false
 						) const;
-	
+
 	void    make4Private	(T *buf1,
 							 T *buf2,
 							 CPSLocated *loc,
@@ -207,10 +207,10 @@ protected:
 						   uint32 nbReplicate,
 						   uint32 srcStep = (1 << 16)
 						  ) const;
-	
+
 	CPSBinOp::BinOp   _Op; // the operator being used
-	CPSAttribMaker<T> *_Arg[2]; // the arguments for the binary operator		
-	void clean(void);	
+	CPSAttribMaker<T> *_Arg[2]; // the arguments for the binary operator
+	void clean(void);
 	uint32 _Size, _MaxSize;
 };
 

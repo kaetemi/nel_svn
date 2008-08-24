@@ -70,10 +70,10 @@ void *CObjectArenaAllocator::alloc(uint size)
 	if (size >= _MaxAllocSize)
 	{
 		// use standard allocator
-		uint8 *block = new uint8[size + sizeof(uint)]; // an additionnal uint is needed to store size of block 
+		uint8 *block = new uint8[size + sizeof(uint)]; // an additionnal uint is needed to store size of block
 		if (!block) return NULL;
-		#ifdef NL_DEBUG						
-			_MemBlockToAllocID[block] = _AllocID;			
+		#ifdef NL_DEBUG
+			_MemBlockToAllocID[block] = _AllocID;
 		#endif
 		*(uint *) block = size;
 		return block + sizeof(uint);
@@ -84,10 +84,10 @@ void *CObjectArenaAllocator::alloc(uint size)
 	{
 		_ObjectSizeToAllocator[entry] = new CFixedSizeAllocator(entry * _Granularity + sizeof(uint), _MaxAllocSize / size); // an additionnal uint is needed to store size of block
 	}
-	void *block = _ObjectSizeToAllocator[entry]->alloc();	
+	void *block = _ObjectSizeToAllocator[entry]->alloc();
 	#ifdef NL_DEBUG
 		if (block)
-		{		
+		{
 			_MemBlockToAllocID[block] = _AllocID;
 		}
 		++_AllocID;

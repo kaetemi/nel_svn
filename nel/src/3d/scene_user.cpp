@@ -41,7 +41,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 H_AUTO_DECL( NL3D_UI_Scene )
@@ -86,14 +86,14 @@ void			CSceneUser::setAutomaticAnimationSet(UAnimationSet *as)
 }
 
 // ***************************************************************************
-UPlayListManager			*CSceneUser::createPlayListManager() 
+UPlayListManager			*CSceneUser::createPlayListManager()
 {
 	NL3D_HAUTO_ELT_SCENE;
 
 	return _PlayListManagers.insert(new CPlayListManagerUser());
 }
 // ***************************************************************************
-void			CSceneUser::deletePlayListManager(UPlayListManager	*playListManager) 
+void			CSceneUser::deletePlayListManager(UPlayListManager	*playListManager)
 {
 	NL3D_HAUTO_ELT_SCENE;
 
@@ -495,7 +495,7 @@ sint32				CSceneUser::getCLodAnimIdByName(uint32 shapeId, const std::string &nam
 
 // ***************************************************************************
 void			CSceneUser::render(bool updateWaitingInstancesFlag /*= true*/, bool restoreMatrixContextAfterRender /*= true*/)
-{	
+{
 
 	// render the scene.
 	{
@@ -515,7 +515,7 @@ void			CSceneUser::render(bool updateWaitingInstancesFlag /*= true*/, bool resto
 // ***************************************************************************
 void			CSceneUser::beginPartRender()
 {
-		
+
 	// render the scene.
 	{
 		NL3D_HAUTO_RENDER_SCENE_BEGIN
@@ -526,11 +526,11 @@ void			CSceneUser::beginPartRender()
 // ***************************************************************************
 void			CSceneUser::renderPart(TRenderPart rp)
 {
-		
+
 	// render the scene.
 	{
 		NL3D_HAUTO_RENDER_SCENE_PART
-			
+
 		if(_Scene.getCam() == NULL)
 			nlerror("render(): try to render with no camera linked (may have been deleted)");
 		_Scene.renderPart(rp, true);
@@ -540,7 +540,7 @@ void			CSceneUser::renderPart(TRenderPart rp)
 // ***************************************************************************
 void			CSceneUser::endPartRender(bool updateWaitingInstancesFlag, bool restoreMatrixContextAfterRender)
 {
-		
+
 	// render the scene.
 	{
 		NL3D_HAUTO_RENDER_SCENE_END
@@ -548,7 +548,7 @@ void			CSceneUser::endPartRender(bool updateWaitingInstancesFlag, bool restoreMa
 	}
 
 	if (updateWaitingInstancesFlag) updateWaitingInstances();
-	
+
 	// Must restore the matrix context, so 2D/3D interface not disturbed.
 	if (restoreMatrixContextAfterRender) _DriverUser->restoreMatrixContext();
 }
@@ -592,7 +592,7 @@ void CSceneUser::updateWaitingInstances()
 		NL3D_HAUTO_ASYNC_IG
 
 		updateWaitingIG();
-	}	
+	}
 }
 
 
@@ -646,7 +646,7 @@ UInstanceGroup	*CSceneUser::findCameraClusterSystemFromRay(UInstanceGroup *start
 			const NLMISC::CVector &startPos, NLMISC::CVector &endPos)
 {
 	NL3D_HAUTO_UI_SCENE;
-	
+
 	CInstanceGroupUser	*uig= dynamic_cast<CInstanceGroupUser*>(startClusterSystem);
 	CInstanceGroup		*pIg= NULL;
 	if(uig)
@@ -731,7 +731,7 @@ void			CSceneUser::deleteInstance(UInstance &inst)
 
 // ***************************************************************************
 
-void CSceneUser::createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup, UInstanceGroup **pIG, const NLMISC::CVector &pos, const NLMISC::CQuat &rot, 
+void CSceneUser::createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup, UInstanceGroup **pIG, const NLMISC::CVector &pos, const NLMISC::CQuat &rot,
 														uint selectedTexture, IAsyncLoadCallback *pCB)
 {
 	NL3D_HAUTO_ASYNC_IG;
@@ -776,7 +776,7 @@ void CSceneUser::stopCreatingAndAddingIG(UInstanceGroup **pIG)
 			_WaitingIGs.erase(it);
 			return;
 		}
-	}		
+	}
 }
 
 void CSceneUser::deleteInstanceGroup(UInstanceGroup *pIG)
@@ -918,7 +918,7 @@ void						CSceneUser::deleteVisualCollisionManager(UVisualCollisionManager *mgr)
 	// if it was the one used for shadow receiving in this scene, then set NULL
 	if(_Scene.getVisualCollisionManagerForShadow()==&vcmUser->getVCM())
 		_Scene.setVisualCollisionManagerForShadow(NULL);
-	
+
 	// and delete it
 	_VisualCollisionManagers.erase(vcmUser);
 }
@@ -1017,7 +1017,7 @@ void CSceneUser::setFlareContext(uint context)
 // ***************************************************************************
 uint CSceneUser::getFlareContext() const
 {
-	return _Scene.getFlareContext(); 
+	return _Scene.getFlareContext();
 }
 
 
@@ -1136,9 +1136,9 @@ void CSceneUser::setupTransparencySorting(uint8 maxPriority /*=0*/,uint NbDistan
 
 // ***************************************************************************
 void CSceneUser::setWaterEnvMap(UWaterEnvMap *waterEnvMap)
-{	
+{
 	if (waterEnvMap)
-	{		
+	{
 		if (((CWaterEnvMapUser *) waterEnvMap)->EnvMap.Driver != _DriverUser)
 		{
 			nlwarning("Water envmap can only be set in a scene that was created from the same driver");

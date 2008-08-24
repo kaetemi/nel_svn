@@ -30,7 +30,7 @@
 #include "nel/3d/landscape.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class	CLandscape;
@@ -56,7 +56,7 @@ public:
 	CLandscape		Landscape;
 
 	/** Set additive value
-	  * 
+	  *
 	  * \param additive new additive value. [0, 1]
 	  */
 	void			setAdditive (float additive)
@@ -65,7 +65,7 @@ public:
 	}
 
 	/** Get additive value
-	  * 
+	  *
 	  * \return the additive value. [0, 1]
 	  */
 	float			getAdditive () const
@@ -74,7 +74,7 @@ public:
 	}
 
 	/** Set additive set
-	  * 
+	  *
 	  * \param enable is true to activbe additive, false to disactive it.
 	  */
 	void			enableAdditive (bool enable)
@@ -83,7 +83,7 @@ public:
 	}
 
 	/** Get additive set
-	  * 
+	  *
 	  * \return true to if additive is actived, else false.
 	  */
 	bool			isAdditive () const
@@ -99,7 +99,7 @@ public:
 	bool			getRefineCenterAuto() const {return _RefineCenterAuto;}
 	void			setRefineCenterUser(const CVector &refineCenter) {_RefineCenterUser= refineCenter;}
 	const CVector	&getRefineCenterUser() const {return _RefineCenterUser;}
-	
+
 
 	/** Override CTransform::initModel(), to create CLandscape's VegetableManager's BlendLayer models in the scene.
 	 */
@@ -147,7 +147,7 @@ private:
 	// This is The Last WorldMatrix used to render (not identity for ZBuffer considerations).
 	CMatrix					_RenderWorldMatrix;
 
-	// 
+	//
 	CVector					_RefineCenterUser;
 	bool					_RefineCenterAuto;
 };

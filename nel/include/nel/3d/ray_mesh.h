@@ -53,11 +53,11 @@ public:
 	 */
 	static bool		getRayIntersection(std::vector<NLMISC::CVector> &vertices, const std::vector<uint32> &tris,
 		float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	/// same, for 16 bit indices
 	static bool		getRayIntersection(std::vector<NLMISC::CVector> &vertices, const std::vector<uint16> &tris,
 		float &dist2D, float &distZ, bool computeDist2D);
-	
+
 public:
 	// Simple Definition of a mesh used to test against Ray
 	std::vector<CVector>		Vertices;
@@ -84,8 +84,8 @@ public:
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
 	 */
 	bool	fastIntersect(const NLMISC::CMatrix &worldMatrix, const NLMISC::CVector &p0, const NLMISC::CVector &dir, float &dist2D, float &distZ, bool computeDist2D) const;
-	
-	
+
+
 private:
 	static  uint	NumCacheVertex;
 };

@@ -26,12 +26,12 @@
 #include "nel/misc/line.h"
 #include <limits>
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 void CLine::project(const CVector &inV,CVector &outV)
 {
-	CVector seg = V1 - V0;	
+	CVector seg = V1 - V0;
 	float n = seg.sqrnorm();
 	if (n == 0.f)
 	{

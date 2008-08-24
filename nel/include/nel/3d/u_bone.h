@@ -28,7 +28,7 @@
 #include "u_transformable.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -51,9 +51,9 @@ public:
 	 *
 	 *	NB: this WM may also not be computed in last render() for "Lod skeleton" reason. ie if the skeleton
 	 *	is too far, the engine may not compute a bone (for speed). To avoid problem, you should ask the artist what
-	 *	bones have such a scheme, or you could stickObject() a dummy (eg a UTransform) onto this bone, because 
+	 *	bones have such a scheme, or you could stickObject() a dummy (eg a UTransform) onto this bone, because
 	 *	in this case, this bone will always be computed.
-	 *	
+	 *
 	 */
 	const CMatrix	&getLastWorldMatrixComputed() const;
 

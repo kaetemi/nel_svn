@@ -50,7 +50,7 @@ public:
 class ULetterColors
 {
 public:
-	
+
 	ULetterColors() {}
 	virtual ~ULetterColors() {}
 
@@ -78,15 +78,15 @@ protected:
 
 public:
 
-	enum THotSpot 
+	enum THotSpot
 	{
 		BottomLeft=0,
-		MiddleLeft, 
+		MiddleLeft,
 		TopLeft,
-		MiddleBottom, 
-		MiddleMiddle, 
-		MiddleTop, 
-		BottomRight, 
+		MiddleBottom,
+		MiddleMiddle,
+		MiddleTop,
+		BottomRight,
 		MiddleRight,
 		TopRight,
 
@@ -197,7 +197,7 @@ public:
 	 * \returb the shadow color
 	 */
 	virtual	NLMISC::CRGBA	getShadeColor () const = 0;
-	/** set to true if you want that the font manager look at Driver window size, and resize 
+	/** set to true if you want that the font manager look at Driver window size, and resize
 	 * fontSize so it keeps same size than if it was in 800x600...
 	 */
 	virtual	void			setKeep800x600Ratio (bool keep) = 0;
@@ -208,7 +208,7 @@ public:
 
 
 	/// \name Rendering.
-	/** All rendering are done in proprietary matrix context for UTextContext: 
+	/** All rendering are done in proprietary matrix context for UTextContext:
 	 *		- UTextContext use the setuped viewport of UDriver Matrix context.
 	 *		- UTextContext use its own Matrix2D setup (own Frustum and own ViewAMtrix/ ModelMatrix).
 	 *			  Exception: render3D() use UDriver Matrix context for Frustum/ViewMatrix, but use its own modelmatrix.
@@ -295,7 +295,7 @@ public:
 
 	/**
 	 * Return max x coordinate of last string printed. Useful to know if a string
-	 * goes out of the screen (screen limit is supposed at x==4/3, should actually 
+	 * goes out of the screen (screen limit is supposed at x==4/3, should actually
 	 * depend on driver's frustum).
 	 *	\return x coordinate
 	 */
@@ -311,7 +311,7 @@ public:
 
 	/// Flush the rendered string buffer. This method sets the driver matrix to a 2d11 matrix and sets ztest to always and disable z write.
 	virtual void					flushRenderBuffer(URenderStringBuffer *buffer) = 0;
-	
+
 	/// Flush the rendered string buffer. This method doesn't change the current matrices nor the material properties.
 	virtual void					flushRenderBufferUnProjected(URenderStringBuffer *buffer, bool zwrite) = 0;
 
@@ -319,7 +319,7 @@ public:
 	virtual void setLetterColors(ULetterColors * letterColors, uint index) = 0;
 	virtual bool isSameLetterColors(ULetterColors * letterColors, uint index) = 0;
 	virtual ULetterColors * createLetterColors() = 0;
-	
+
 };
 
 

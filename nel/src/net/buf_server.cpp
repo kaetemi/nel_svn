@@ -212,7 +212,7 @@ CBufServer::~CBufServer()
 	#endif
 
 			}
-			
+
 			nlnettrace( "Waiting" );
 			for ( ipt=poolsync.value().begin(); ipt!=poolsync.value().end(); ++ipt )
 			{
@@ -340,7 +340,7 @@ void CBufServer::send( const CMemStream& buffer, TSockId hostid )
 					for ( ipb=connectionssync.value().begin(); ipb!=connectionssync.value().end(); ++ipb )
 					{
 						// Send only if the socket is logically connected
-						if ( (*ipb)->connectedState() ) 
+						if ( (*ipb)->connectedState() )
 						{
 							pushBufferToHost( buffer, *ipb );
 						}
@@ -397,7 +397,7 @@ bool CBufServer::dataAvailable()
 			//switch ( buffer[buffer.size()-1] )
 			switch ( val )
 			{
-				
+
 			// Normal message available
 			case CBufNetBase::User:
 				{
@@ -437,7 +437,7 @@ bool CBufServer::dataAvailable()
 					nlverify(_ConnectedClients.insert(sockid).second);
 
 					sockid->setConnectedState( true );
-					
+
 					// Call callback if needed
 					if ( connectionCallback() != NULL )
 					{
@@ -497,7 +497,7 @@ void	CBufServer::sleepUntilDataAvailable( uint usecMax )
 }
 #endif
 
- 
+
 /*
  * Receives next block of data in the specified. The length and hostid are output arguments.
  * Precond: dataAvailable() has returned true, phostid not null
@@ -568,7 +568,7 @@ void CBufServer::update()
 				        LNETL1_DEBUG( "LNETL1: Socket %s is disconnected", (*ipb)->asString().c_str() );
 						// Disconnection event if disconnected (known either from flush (in update) or when receiving data)
 						(*ipb)->advertiseDisconnection( this, *ipb );
-					
+
 						/*if ( (*ipb)->advertiseDisconnection( this, *ipb ) )
 						{
 							// Now the connection removal is in dataAvailable()
@@ -646,33 +646,33 @@ void CBufServer::displayThreadStat (NLMISC::CLog *log)
 	log->displayNL ("server listen thread %p nbloop %d", _ListenTask, _ListenTask->NbLoop);
 }
 
-void CBufServer::setTimeFlushTrigger( TSockId destid, sint32 ms ) 
-{ 
-	nlassert( destid != InvalidSockId ); 
-	if (_ConnectedClients.find(destid) != _ConnectedClients.end()) 
-		destid->setTimeFlushTrigger( ms ); 
+void CBufServer::setTimeFlushTrigger( TSockId destid, sint32 ms )
+{
+	nlassert( destid != InvalidSockId );
+	if (_ConnectedClients.find(destid) != _ConnectedClients.end())
+		destid->setTimeFlushTrigger( ms );
 }
 
-void CBufServer::setSizeFlushTrigger( TSockId destid, sint32 size ) 
-{ 
-	nlassert( destid != InvalidSockId ); 
-	if (_ConnectedClients.find(destid) != _ConnectedClients.end()) 
-		destid->setSizeFlushTrigger( size ); 
+void CBufServer::setSizeFlushTrigger( TSockId destid, sint32 size )
+{
+	nlassert( destid != InvalidSockId );
+	if (_ConnectedClients.find(destid) != _ConnectedClients.end())
+		destid->setSizeFlushTrigger( size );
 }
 
 bool CBufServer::flush( TSockId destid, uint *nbBytesRemaining)
-{ 
-	nlassert( destid != InvalidSockId ); 
-	if (_ConnectedClients.find(destid) != _ConnectedClients.end()) 
-		return destid->flush( nbBytesRemaining ); 
+{
+	nlassert( destid != InvalidSockId );
+	if (_ConnectedClients.find(destid) != _ConnectedClients.end())
+		return destid->flush( nbBytesRemaining );
 	else
 		return true;
 }
-const CInetAddress& CBufServer::hostAddress( TSockId hostid ) 
-{ 
-	nlassert( hostid != InvalidSockId ); 
-	if (_ConnectedClients.find(hostid) != _ConnectedClients.end()) 
-		return hostid->Sock->remoteAddr(); 
+const CInetAddress& CBufServer::hostAddress( TSockId hostid )
+{
+	nlassert( hostid != InvalidSockId );
+	if (_ConnectedClients.find(hostid) != _ConnectedClients.end())
+		return hostid->Sock->remoteAddr();
 
 	static CInetAddress nullAddr;
 	return nullAddr;
@@ -693,7 +693,7 @@ void CBufServer::displaySendQueueStat (NLMISC::CLog *log, TSockId destid)
 	else
 	{
 		// add all client buffers
-		
+
 		// For each thread
 		CThreadPool::iterator ipt;
 		{
@@ -834,7 +834,7 @@ void CListenTask::run()
 		}
 		catch ( ESocket& e )
 		{
-			LNETL1_INFO( "LNETL1: Exception in listen thread: %s", e.what() ); 
+			LNETL1_INFO( "LNETL1: Exception in listen thread: %s", e.what() );
 			// It can occur when too many sockets are open (e.g. 885 connections)
 		}
 	}
@@ -845,8 +845,8 @@ void CListenTask::run()
 }
 
 /// Close listening socket
-void CListenTask::close() 
-{ 
+void CListenTask::close()
+{
 	_ListenSock.close();
 //	_ListenSock.disconnect();
 }
@@ -861,7 +861,7 @@ void CBufServer::dispatchNewSocket( CServerBufSock *bufsock )
 	nlnettrace( "CBufServer::dispatchNewSocket" );
 
 	CSynchronized<CThreadPool>::CAccessor poolsync( &_ThreadPool );
-	if ( _ThreadStrategy == SpreadSockets )	
+	if ( _ThreadStrategy == SpreadSockets )
 	{
 		// Find the thread with the smallest number of connections and check if all
 		// threads do not have the same number of connections
@@ -898,8 +898,8 @@ void CBufServer::dispatchNewSocket( CServerBufSock *bufsock )
 			task->addNewSocket( bufsock );
 #ifdef NL_OS_UNIX
 			task->wakeUp();
-#endif			
-			
+#endif
+
 			if ( min >= (uint)_MaxSocketsPerThread )
 			{
 				nlwarning( "LNETL1: Exceeding the maximum number of sockets per thread" );
@@ -937,7 +937,7 @@ void CBufServer::dispatchNewSocket( CServerBufSock *bufsock )
 			task->addNewSocket( bufsock );
 #ifdef NL_OS_UNIX
 			task->wakeUp();
-#endif			
+#endif
 			LNETL1_DEBUG( "LNETL1: New socket dispatched to thread %d", ipt-poolsync.value().begin() );
 		}
 	}
@@ -990,9 +990,9 @@ void CServerReceiveTask::run()
 	// POLL7
 	nice( 2 ); // is this really useful as long as select() sleeps?
 #endif // NL_OS_UNIX
-	
+
 	// Copy of _Connections
-	vector<TSockId>	connections_copy;	
+	vector<TSockId>	connections_copy;
 
 	while ( ! exitRequired() )
 	{
@@ -1044,7 +1044,7 @@ void CServerReceiveTask::run()
 				descmax = _WakeUpPipeHandle[PipeRead];
 			}
 #endif
-			
+
 			// Unlock _Connections, use connections_copy instead
 		}
 

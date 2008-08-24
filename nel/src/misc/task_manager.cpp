@@ -50,7 +50,7 @@ CTaskManager::CTaskManager() : _RunningTask (""), _TaskQueue (""), _DoneTaskQueu
  * Destructeur
  */
 CTaskManager::~CTaskManager()
-{	
+{
 	_ThreadRunning = false;
 	while(!_ThreadRunning)
 		nlSleep(10);
@@ -90,7 +90,7 @@ void CTaskManager::run(void)
 				{
 					if (ite->Priority < bestIte->Priority)
 						bestIte = ite;
-					
+
 					// Next task;
 					ite++;
 				}
@@ -126,7 +126,7 @@ void CTaskManager::run(void)
 			sleepTask();
 		}
 	}
-	CBigFile::getInstance().currentThreadFinished();	
+	CBigFile::getInstance().currentThreadFinished();
 	_ThreadRunning = true;
 }
 
@@ -177,7 +177,7 @@ void CTaskManager::dump (std::vector<std::string> &result)
 	const list<CWaitingTask> &taskList = acces.value();
 	const deque<string> &taskDone = accesDone.value();
 	const string &taskCurrent = accesCurrent.value();
-	
+
 	// Resize the destination array
 	result.clear ();
 	result.reserve (taskList.size () + taskDone.size () + 1);
@@ -187,11 +187,11 @@ void CTaskManager::dump (std::vector<std::string> &result)
 	while (iteDone != taskDone.rend ())
 	{
 		result.push_back ("Done : " + *iteDone);
-		
+
 		// Next task
 		iteDone++;
 	}
-	
+
 	// Add the current string
 	if (!taskCurrent.empty())
 	{
@@ -205,7 +205,7 @@ void CTaskManager::dump (std::vector<std::string> &result)
 		string name;
 		ite->Task->getName (name);
 		result.push_back ("Waiting : " + name + " " + toString(ite->Priority));
-	
+
 		// Next task
 		ite++;
 	}
@@ -234,13 +234,13 @@ void CTaskManager::changeTaskPriority ()
 	{
 		CSynchronized<list<CWaitingTask> >::CAccessor acces(&_TaskQueue);
 		list<CWaitingTask> &taskList = acces.value();
-		
+
 		list<CWaitingTask>::iterator ite = taskList.begin();
 		while(ite != taskList.end())
 		{
 			// Get the new priority
 			ite->Priority = _ChangePriorityCallback->getTaskPriority(*(ite->Task));
-			
+
 			// Next task
 			ite++;
 		}

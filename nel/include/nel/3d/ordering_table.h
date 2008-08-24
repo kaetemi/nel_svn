@@ -29,12 +29,12 @@
 #include "nel/misc/smart_ptr.h"
 #include <vector>
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
 /**
- * 
+ *
  * \author Matthieu Besson
  * \author Nevrax France
  * \date 2000
@@ -49,10 +49,10 @@ public:
 
 	// copy ctor. NB : Allocator is not shared from source, and bahave like when reset(0) is called.
 	COrderingTable(const COrderingTable<T> &other);
-	
+
 	// assignement operator. NB : Allocator is not shared from source, and bahave like when reset(0) is called.
 	COrderingTable &operator=(const COrderingTable<T> &other);
-	
+
 
 	/**
 	 * Initialization.
@@ -67,7 +67,7 @@ public:
 
 	/**
 	 * Put the ordering table to empty
-	 *	\param maxElementToInsert prepare allocator for insert by setting maximum insert() that will arise.	 
+	 *	\param maxElementToInsert prepare allocator for insert by setting maximum insert() that will arise.
 	 */
 	void reset(uint maxElementToInsert);
 
@@ -75,7 +75,7 @@ public:
       * for both tables. This is useful if several table are used for sorting (example : sort by priority with one table per possible priority)
 	  * NB : the table of "source table" becomes the used allocator
 	  */
-	void shareAllocator(COrderingTable<T> &sourceTable) { _Allocator = sourceTable._Allocator; }	
+	void shareAllocator(COrderingTable<T> &sourceTable) { _Allocator = sourceTable._Allocator; }
 
 	/**
 	 * Insert an element in the ordering table
@@ -87,7 +87,7 @@ public:
 
 	/**
 	 * Traversing operations
-	 * 
+	 *
 	 *	OrderingTable<Face> ot;
 	 *	ot.begin();
 	 *	while( ot.get() != NULL )
@@ -122,11 +122,11 @@ private:
 		CNode *next;
 
 		CNode()
-		{ 
+		{
 			val = NULL;
 			next = NULL;
 		}
-	};	
+	};
 
 	class CAllocator : public NLMISC::CRefCount
 	{
@@ -137,7 +137,7 @@ private:
 	};
 	// a raw allocator of node.
 	NLMISC::CSmartPtr<CAllocator>	_Allocator;
-	
+
 
 	uint32 _nNbElt;
 	CNode* _Array;
@@ -150,20 +150,20 @@ template<class T> COrderingTable<T>::COrderingTable()
 {
 	_nNbElt = 0;
 	_Array = NULL;
-	_SelNode = NULL;	
+	_SelNode = NULL;
 	_Allocator = new CAllocator;
 }
 
 // ***************************************************************************
 template<class T> COrderingTable<T>::~COrderingTable()
-{	
+{
 	delete [] _Array;
 }
 
 // ***************************************************************************
-template<class T> void COrderingTable<T>::init( uint32 nNbEntries )	
-{	
-	delete [] _Array;	
+template<class T> void COrderingTable<T>::init( uint32 nNbEntries )
+{
+	delete [] _Array;
 	_nNbElt = nNbEntries;
 	if (nNbEntries == 0) return;
 	_Array = new CNode[_nNbElt];
@@ -236,7 +236,7 @@ template<class T> T* COrderingTable<T>::get()
 // ***************************************************************************
 template<class T> void COrderingTable<T>::next()
 {
-	_SelNode = _SelNode->next;                                                                                            
+	_SelNode = _SelNode->next;
 	while( ( _SelNode != NULL )&&( _SelNode->val == NULL ) )
 		_SelNode = _SelNode->next;
 }
@@ -248,7 +248,7 @@ inline COrderingTable<T>::COrderingTable(const COrderingTable<T> &other)
 {
 	_nNbElt = 0;
 	_Array = NULL;
-	_SelNode = NULL;	
+	_SelNode = NULL;
 	*this = other;
 }
 
@@ -257,8 +257,8 @@ inline COrderingTable<T>::COrderingTable(const COrderingTable<T> &other)
 template <class T>
 inline COrderingTable<T> &COrderingTable<T>::operator=(const COrderingTable<T> &other)
 {
-	_Allocator = new CAllocator;	
-	init(other._nNbElt);	
+	_Allocator = new CAllocator;
+	init(other._nNbElt);
 	return *this;
 }
 

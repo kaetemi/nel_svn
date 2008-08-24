@@ -63,7 +63,7 @@ public:
 		_TextContext.init(_Driver, fmg);
 		_TextContext.setFontGenerator(fontFileName, fontExFileName);
 	}
-	virtual ~CTextContextUser() 
+	virtual ~CTextContextUser()
 	{
 	}
 

@@ -28,7 +28,7 @@ namespace NL3D
 {
 	#ifdef PS_FAST_ALLOC
 		uint NumPSAlloc = 0;
-		uint NumDealloc = 0;	
+		uint NumDealloc = 0;
 		NLMISC::CContiguousBlockAllocator *PSBlockAllocator= NULL;
 		static std::allocator<uint8> PSStdAllocator;
 		//
@@ -46,7 +46,7 @@ namespace NL3D
 			CPSAllocInfo *result;
 			// if a block allocator is available, use it
 			if (PSBlockAllocator)
-			{		
+			{
 				result = (CPSAllocInfo *) PSBlockAllocator->alloc(numBytes + sizeof(CPSAllocInfo));
 				result->BlocAllocator = PSBlockAllocator; // mark as a block from block allocator
 			}
@@ -55,7 +55,7 @@ namespace NL3D
 				result = (CPSAllocInfo *) PSStdAllocator.allocate(numBytes + sizeof(CPSAllocInfo));
 				result->BlocAllocator = NULL;
 			}
-			result->NumAllocatedBytes = numBytes;			
+			result->NumAllocatedBytes = numBytes;
 			return (void *) (result + 1); // usable space starts after header
 		}
 
@@ -65,7 +65,7 @@ namespace NL3D
 			uint8 *realAddress = (uint8 *) ((uint8 *) block - sizeof(CPSAllocInfo));
 			CPSAllocInfo *ai = (CPSAllocInfo *) realAddress;
 			if (ai->BlocAllocator)
-			{	
+			{
 				// block comes from a block allocator
 				ai->BlocAllocator->free((void *) realAddress, ai->NumAllocatedBytes + sizeof(CPSAllocInfo));
 			}

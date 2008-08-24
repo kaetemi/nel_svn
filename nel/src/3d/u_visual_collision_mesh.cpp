@@ -27,7 +27,7 @@
 #include "nel/3d/visual_collision_mesh.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

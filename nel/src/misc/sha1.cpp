@@ -146,31 +146,31 @@ CHashKey getSHA1(const uint8 *buffer, uint32 size)
     SHA1Context sha;
     int err;
     uint8_t Message_Digest[20];
-	
+
 	err = SHA1Reset(&sha);
 	if (err)
 	{
 		nlwarning("SHA: SHA1Reset Error %d.\n", err );
 		return CHashKey();
 	}
-	
+
 	err = SHA1Input(&sha, (const uint8_t*)buffer, size);
 	if (err)
 	{
 		nlwarning ("SHA: SHA1Input Error %d.\n", err);
 		return CHashKey();
 	}
-	
+
 	err = SHA1Result(&sha, Message_Digest);
 	if (err)
 	{
 		nlwarning("SHA: SHA1Result Error %d, could not compute message digest.\n", err );
 		return CHashKey();
 	}
-	
+
 	CHashKey hk (Message_Digest);
 	return hk;
-}	
+}
 
 CHashKey getSHA1(const string &filename)
 {

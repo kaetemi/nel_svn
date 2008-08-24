@@ -33,7 +33,7 @@ class CFixedSizeAllocator;
 
 /** An allocator that can allocate/release in O(1) for a finite number of possible blocks size (usually small)..
   * For a given block size, a fixed size allocator is used.
-  * One possible use is with a family of class for which new and delete have been redefined at the top of the hierarchy  
+  * One possible use is with a family of class for which new and delete have been redefined at the top of the hierarchy
   * (which the NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR macro does)
   *
   * \author Nicolas Vizerie
@@ -44,11 +44,11 @@ class CObjectArenaAllocator
 {
 public:
 	/** ctor
-	  * \param maxAllocSize maximum intended size of allocation.	  
+	  * \param maxAllocSize maximum intended size of allocation.
 	  */
 	CObjectArenaAllocator(uint maxAllocSize, uint granularity = 4);
 	// dtor
-	~CObjectArenaAllocator();	
+	~CObjectArenaAllocator();
 	/** Allocate a block with the given size. 0 is an invalid size an will cause an assert.
 	  * If the size is > to the max size given at init, the allocation will succeed, but will use the standard allocator.
 	  */
@@ -64,14 +64,14 @@ public:
 		void setBreakForAllocID(bool enabled, uint id);
 #	endif
 	// for convenience, a default allocator is available
-	static CObjectArenaAllocator &getDefaultAllocator();	
+	static CObjectArenaAllocator &getDefaultAllocator();
 
 private:
 	std::vector<CFixedSizeAllocator *> _ObjectSizeToAllocator;
 	uint							 _MaxAllocSize;
 	uint							 _Granularity;
 #	ifdef NL_DEBUG
-		uint							 _AllocID;	
+		uint							 _AllocID;
 		std::map<void *, uint>			 _MemBlockToAllocID;
 		bool							 _WantBreakOnAlloc;
 		uint							 _BreakAllocID;

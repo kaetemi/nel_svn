@@ -33,7 +33,7 @@
 using namespace NLMISC;
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 
@@ -59,7 +59,7 @@ CSimpleSource::~CSimpleSource()
 {
 	if (_Playing)
 		stop();
-	// Yoyo: security. with prec stop(), should not be needed, but a crash still raise 
+	// Yoyo: security. with prec stop(), should not be needed, but a crash still raise
 	// in "currentEvent->onEvent();" in audio_mixer_user.cpp
 	CAudioMixerUser::instance()->removeEvents(this);
 }
@@ -131,9 +131,9 @@ void					CSimpleSource::play()
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
 
 	// -- Some test to scheck if we can play the source
-	
+
 	// Check if sample buffer is available and if the sound source is not too far
-	if (_Sound->getBuffer() == 0 
+	if (_Sound->getBuffer() == 0
 		|| !_Sound->getBuffer()->isBufferLoaded()
 		|| (mixer->getListenPosVector() - _Position).sqrnorm() > _Sound->getMaxDistance()*_Sound->getMaxDistance())
 	{
@@ -172,8 +172,8 @@ void					CSimpleSource::play()
 		_Track->DrvSource->setLooping( _Looping );
 		_Track->DrvSource->setPitch( _Pitch );
 		_Track->DrvSource->setAlpha( _Alpha );
-		
-		// and play the sound		
+
+		// and play the sound
 		bool play = _Track->DrvSource->play();
 
 		nlassert(play);
@@ -279,7 +279,7 @@ void					CSimpleSource::setVelocity( const NLMISC::CVector& vel )
 	// Set the velocity
 	if ( _Track != NULL )
 	{
-		// TODO : uncoment, test only	
+		// TODO : uncomment, test only
 		_Track->DrvSource->setVelocity( vel );
 	}
 }

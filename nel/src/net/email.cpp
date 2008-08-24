@@ -61,7 +61,7 @@ static void uuencode (const char *s, const char *store, const int length)
 	int i;
 	unsigned char *p = (unsigned char *)store;
 	unsigned char *us = (unsigned char *)s;
-	
+
 	/* Transform the 3x8 bits to 4x6 bits, as required by base64.  */
 	for (i = 0; i < length; i += 3) {
 		*p++ = tbl[us[0] >> 2];
@@ -99,7 +99,7 @@ bool sendEMailCommand (CTcpSock &sock, const std::string &command, uint32 code =
 	while (true)
 	{
 		size = 1;
-		
+
 		if (sock.receive((uint8*)&c, size, false) == CSock::Ok)
 		{
 			res += c;
@@ -292,20 +292,20 @@ bool sendEmail (const string &smtpServer, const string &from, const string &to, 
 					}
 					/* Encode the buffer we just read in */
 					uuencode(src_buf, dst_buf, size);
-					
+
 					formatedBody += dst_buf;
 					formatedBody += "\r\n";
 				}
 				fclose (src_stream);
 			}
 			formatedBody += "--Multipart_nel--";
-		}	
+		}
 
 		// debug, display what we send into a file
 		//	{	FILE *fp = fopen (CFile::findNewFile("mail.txt").c_str(), "wb");
 		//	fwrite (formatedBody.c_str(), 1, formatedBody.size(), fp);
 		//	fclose (fp); }
-		
+
 		if(!sendEMailCommand (sock, "", 220)) goto end;
 
 		if(onlyCheck)
@@ -323,13 +323,13 @@ bool sendEmail (const string &smtpServer, const string &from, const string &to, 
 			if(!sendEMailCommand (sock, "MAIL FROM: " + formatedFrom)) goto end;
 			if(!sendEMailCommand (sock, "RCPT TO: " + formatedTo)) goto end;
 			if(!sendEMailCommand (sock, "DATA", 354)) goto end;
-			
+
 			string buffer =
 				"From: " + formatedFrom + "\r\n"
 				"To: " + formatedTo + "\r\n"
 				"Subject: " + subject + "\r\n"
 				+ formatedBody + "\r\n.";
-			
+
 			if(!sendEMailCommand (sock, buffer)) goto end;
 			if(!sendEMailCommand (sock, "QUIT", 221)) goto end;
 

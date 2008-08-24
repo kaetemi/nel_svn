@@ -59,13 +59,13 @@ public:
 	void	setGlobalPosition (const UGlobalPosition& pos, CMoveContainer& container, CMovePrimitive &primitive, uint8 worldImage);
 
 	/**
-	  * Set the global position of the move primitive. Setting the global position 
+	  * Set the global position of the move primitive. Setting the global position
 	  * can take a long time if you use a UGlobalRetriever. Set the position with
 	  * this method only the first time or for teleporting.
 	  *
 	  * \param pos is the new global position of the primitive.
 	  */
-	void	setGlobalPosition (const NLMISC::CVectorD& pos, CMoveContainer& container, CMovePrimitive &primitive, 
+	void	setGlobalPosition (const NLMISC::CVectorD& pos, CMoveContainer& container, CMovePrimitive &primitive,
 								uint8 worldImage, bool keepZ = false, UGlobalPosition::TType type = UGlobalPosition::Unspecified);
 
 	/**
@@ -98,7 +98,7 @@ public:
 	  *
 	  * \param speed is the speed of the primitive.
 	  */
-	void	move (const NLMISC::CVectorD& speed, CMoveContainer& container, CMovePrimitive &primitive, 
+	void	move (const NLMISC::CVectorD& speed, CMoveContainer& container, CMovePrimitive &primitive,
 					uint8 worldImage);
 
 	/**
@@ -285,7 +285,7 @@ public:
 	{
 		return _InitTime;
 	}
-		
+
 	// Compute precalculated data for the position
 	void precalcPos (CMovePrimitive &primitive);
 
@@ -314,41 +314,41 @@ public:
 	  *
 	  * \return true if a collision has been detected in the time range, else false.
 	  */
-	bool	evalCollision (CPrimitiveWorldImage& other, class CCollisionDesc& desc, double timeMin, 
-									double timeMax, uint32 testTime, uint32 maxTestIteration, 
-									double &firstContactTime, double &lastContactTime, 
+	bool	evalCollision (CPrimitiveWorldImage& other, class CCollisionDesc& desc, double timeMin,
+									double timeMax, uint32 testTime, uint32 maxTestIteration,
+									double &firstContactTime, double &lastContactTime,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
 
 	// Box over box
-	bool	evalCollisionOBoverOB (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, 
-									double timeMax, double &firstContactTime, double &lastContactTime, 
+	bool	evalCollisionOBoverOB (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin,
+									double timeMax, double &firstContactTime, double &lastContactTime,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
 
 	// Box over cylinder
-	bool	evalCollisionOBoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, 
-									double timeMax, double &firstContactTime, double &lastContactTime, 
+	bool	evalCollisionOBoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin,
+									double timeMax, double &firstContactTime, double &lastContactTime,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
 
 	// Cylinder over cylinder
-	bool	evalCollisionOCoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, 
-									double timeMax, double &firstContactTime, double &lastContactTime, 
+	bool	evalCollisionOCoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin,
+									double timeMax, double &firstContactTime, double &lastContactTime,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
 
 	// *** Subprimitive over subprimitive
 
 	// Point over segment in OB/OB test
-	bool	evalCollisionPoverS (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, uint numSeg, 
+	bool	evalCollisionPoverS (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, uint numSeg,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
 
 	// Point over cylinder
-	bool	evalCollisionPoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, 
+	bool	evalCollisionPoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint,
 									double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 									CMovePrimitive& otherPrimitive);
 
 	// Segment over cylinder
-	bool	evalCollisionSoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, 
+	bool	evalCollisionSoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint,
 									CMovePrimitive& primitive, CMovePrimitive& otherPrimitive);
-	
+
 	/**
 	  * Eval collisions with the global retriever.
 	  *
@@ -356,7 +356,7 @@ public:
 	  *
 	  * \return true if a collision has been detected in the time range, else false.
 	  */
-	const TCollisionSurfaceDescVector *evalCollision (CGlobalRetriever &retriever, CCollisionSurfaceTemp& surfaceTemp, 
+	const TCollisionSurfaceDescVector *evalCollision (CGlobalRetriever &retriever, CCollisionSurfaceTemp& surfaceTemp,
 													uint32 testTime, uint32 maxTestIteration, CMovePrimitive& primitive);
 
 	// Make a move with globalRetriever. Must be call after a free collision evalCollision call.
@@ -367,8 +367,8 @@ public:
 
 	// Reaction between two primitives. Return true if one object has been modified.
 	void reaction (CPrimitiveWorldImage& second, const CCollisionDesc& desc, CGlobalRetriever* retriver,
-					CCollisionSurfaceTemp& surfaceTemp, bool collision, CMovePrimitive &primitive, 
-					CMovePrimitive &otherPrimitive, CMoveContainer *container, uint8 worldImage, 
+					CCollisionSurfaceTemp& surfaceTemp, bool collision, CMovePrimitive &primitive,
+					CMovePrimitive &otherPrimitive, CMoveContainer *container, uint8 worldImage,
 					uint8 secondWorldImage, bool secondConst);
 
 	// Reaction with a static collision. Return true if one object has been modified.
@@ -430,12 +430,12 @@ private:
 		// Set the global position
 		void										setGlobalPos (const UGlobalPosition& globalPosition,
 																  CGlobalRetriever& globalRetriver)
-		{			
+		{
 			// Get position with global position
 			_GlobalPosition=globalPosition;
 			_GlobalPosition.LocalPosition.Estimation.z = globalRetriver.getMeanHeight(globalPosition);
 			_3dPosition=globalRetriver.getDoubleGlobalPosition (_GlobalPosition);
-//			_3dPosition.z=(double)globalRetriver.getMeanHeight(globalPosition);			
+//			_3dPosition.z=(double)globalRetriver.getMeanHeight(globalPosition);
 		}
 
 		void										setGlobalPosKeepZ(const UGlobalPosition& globalPosition,
@@ -471,7 +471,7 @@ private:
 	double				_BBYMax;
 
 	// Union for data space shared by primitive type (cylinder or box)
-	union 
+	union
 	{
 		// Data for Boxes
 		struct

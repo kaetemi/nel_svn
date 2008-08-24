@@ -59,13 +59,13 @@ void CSegRemanenceShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	sint ver = f.serialVersion(2);
 	f.serial(_NumSlices);
 	f.serial(_SliceTime);
-	f.serialCont(_Corners);	
-	f.serial(_Mat);	
+	f.serialCont(_Corners);
+	f.serial(_Mat);
 	f.serial(_BBox);
 	f.serial(_TextureShifting);
 	f.serialPtr(_AnimatedMat);
 	if (f.isReading())
-	{	
+	{
 		_GeomTouched = true;
 		_MatTouched  = true;
 	}
@@ -75,9 +75,9 @@ void CSegRemanenceShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	}
 	if (ver >= 2)
 	{
-		f.serial(_DefaultPos);		
+		f.serial(_DefaultPos);
 		f.serial(_DefaultRotQuat);
-		f.serial(_DefaultScale);		
+		f.serial(_DefaultScale);
 	}
 }
 
@@ -85,7 +85,7 @@ void CSegRemanenceShape::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 void CSegRemanenceShape::setSliceTime(float sliceTime)
 {
 	nlassert(sliceTime > 0);
-	_SliceTime = sliceTime;	
+	_SliceTime = sliceTime;
 }
 
 //===========================================================
@@ -99,7 +99,7 @@ void CSegRemanenceShape::setCorner(uint corner, const NLMISC::CVector &value)
 void CSegRemanenceShape::setNumSlices(uint32 numSlices)
 {
 	nlassert(numSlices >= 2);
-	_NumSlices = numSlices;	
+	_NumSlices = numSlices;
 	_GeomTouched = true;
 }
 
@@ -128,11 +128,11 @@ void CSegRemanenceShape::render(IDriver *drv, CTransformShape *trans, bool opaqu
 	{
 		CSegRemanence *sr = NLMISC::safe_cast<CSegRemanence *>(trans);
 		#ifndef DEBUG_SEG_REMANENCE_DISPLAY
-		if (!sr->isStarted()) return;	
+		if (!sr->isStarted()) return;
 		#endif
-		setupMaterial();		
-		//		
-		sr->render(drv, _Mat);		
+		setupMaterial();
+		//
+		sr->render(drv, _Mat);
 	}
 }
 
@@ -145,20 +145,20 @@ void CSegRemanenceShape::flushTextures(IDriver &driver, uint selectedTexture)
 
 //===========================================================
 CTransformShape *CSegRemanenceShape::createInstance(CScene &scene)
-{	
+{
 	CSegRemanence *sr = NLMISC::safe_cast<CSegRemanence *>(scene.createModel(NL3D::SegRemanenceShapeId) );
 	sr->Shape = this;
 	CAnimatedMaterial *aniMat = NULL;
 	if (_AnimatedMat)
 	{
 		aniMat = new CAnimatedMaterial(_AnimatedMat);
-		aniMat->setMaterial(&_Mat);		
+		aniMat->setMaterial(&_Mat);
 	}
 	sr->setAnimatedMaterial(aniMat);
 	sr->setupFromShape();
 	// SegRemanence are added to the "Fx" Load Balancing Group.
 	sr->setLoadBalancingGroup("Fx");
-	
+
 	sr->ITransformable::setPos( _DefaultPos.getDefaultValue() );
 	sr->ITransformable::setRotQuat( _DefaultRotQuat.getDefaultValue() );
 	sr->ITransformable::setScale( _DefaultScale.getDefaultValue() );
@@ -206,7 +206,7 @@ void CSegRemanenceShape::setRollupRatio(float ratio)
 //===========================================================
 void CSegRemanenceShape::setupMaterial()
 {
-	if (!_MatTouched) return;	
+	if (!_MatTouched) return;
 	_Mat.enableUserTexMat(0);
 	if (_Mat.getTexture(0))
 	{
@@ -239,9 +239,9 @@ CSegRemanenceShape::CSegRemanenceShape(const CSegRemanenceShape &other) : IShape
 CSegRemanenceShape &CSegRemanenceShape::operator = (const CSegRemanenceShape &other)
 {
 	if (&other != this)
-	{	
+	{
 		copyFromOther(other);
-		(IShape &) *this = (IShape &) other; // copy base part	
+		(IShape &) *this = (IShape &) other; // copy base part
 	}
 	return *this;
 }
@@ -262,16 +262,16 @@ void CSegRemanenceShape::copyFromOther(const CSegRemanenceShape &other)
 	_AnimatedMat = otherAnimatedMat;
 
 	_GeomTouched	 = other._GeomTouched;
-	_MatTouched      = other._MatTouched; 
-	_TextureShifting = other._TextureShifting;	
+	_MatTouched      = other._MatTouched;
+	_TextureShifting = other._TextureShifting;
 	_NumSlices       = other._NumSlices;
 	_SliceTime       = other._SliceTime;
-	_Corners		 = other._Corners;	
+	_Corners		 = other._Corners;
 	_Mat             = other._Mat;
-	_BBox			 = other._BBox;	
-	_RollUpRatio     = other._RollUpRatio;	
+	_BBox			 = other._BBox;
+	_RollUpRatio     = other._RollUpRatio;
 }
-	
+
 
 
 //===========================================================

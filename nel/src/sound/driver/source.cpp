@@ -28,7 +28,7 @@ void foo_source_lowlevel() {}
 
 using namespace NLMISC;
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 // ***************************************************************************
@@ -36,8 +36,8 @@ sint32		ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMa
 {
 	float min, max;
 	getMinMaxDistances(min, max);
-	
-	if (sqrdist < min * min) 
+
+	if (sqrdist < min * min)
 	{
 		// no attenuation
 		return volumeDB;
@@ -50,29 +50,29 @@ sint32		ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMa
 	else
 	{
 		double dist = (double) sqrt(sqrdist);
-		
+
 		// linearly descending volume on a dB scale
 		double db1 = dbMin * (dist - min) / (max - min);
-		
+
 		if (alpha == 0.0) {
 			volumeDB += (sint32) db1;
-			
+
 		} else if (alpha > 0.0) {
 			double amp2 = 0.0001 + 0.9999 * (max - dist) / (max - min); // linear amp between 0.00001 and 1.0
 			double db2 = 2000.0 * log10(amp2); // convert to 1/100th decibels
 			volumeDB += (sint32) ((1.0 - alpha) * db1 + alpha * db2);
-			
+
 		} else if (alpha < 0.0) {
 			double amp3 = min / dist; // linear amplitude is 1/distance
 			double db3 = 2000.0 * log10(amp3); // convert to 1/100th decibels
 			volumeDB += (sint32) ((1.0 + alpha) * db1 - alpha * db3);
 		}
-		
+
 		clamp(volumeDB, dbMin, dbMax);
-		
+
 		return volumeDB;
 	}
 }
 
-	
+
 } // NLSOUND

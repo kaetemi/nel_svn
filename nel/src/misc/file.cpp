@@ -272,7 +272,7 @@ bool		CIFile::open(const std::string &path, bool text)
 			nlwarning("Failed to open file '%s', error %u : %s", path.c_str(), errno, strerror(errno));
 			_FileSize = 0;
 		}
-		
+
 		if ((_CacheFileOnOpen) && (_F != NULL))
 		{
 			// load file in the cache
@@ -470,7 +470,7 @@ bool		CIFile::seek (sint32 offset, IStream::TSeekOrigin origin) const throw(EStr
 			_ReadPos = _ReadPos + offset;
 		break;
 		case IStream::end:
-			_ReadPos = _FileSize + offset; 
+			_ReadPos = _FileSize + offset;
 		break;
 		default:
 			nlstop;
@@ -510,19 +510,19 @@ void	CIFile::allowBNPCacheFileOnOpen(bool newState)
 void	CIFile::dump (std::vector<std::string> &result)
 {
 	CSynchronized<deque<string> >::CAccessor acces(&_OpenedFiles);
-	
+
 	const deque<string> &openedFile = acces.value();
-	
+
 	// Resize the destination array
 	result.clear ();
 	result.reserve (openedFile.size ());
-	
+
 	// Add the waiting strings
 	deque<string>::const_reverse_iterator ite = openedFile.rbegin ();
 	while (ite != openedFile.rend ())
 	{
 		result.push_back (*ite);
-		
+
 		// Next task
 		ite++;
 	}

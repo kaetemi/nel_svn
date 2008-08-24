@@ -32,7 +32,7 @@ namespace NL3D {
 
 
 /**
- * This texture is a helper to build a embossed texture from a height map. 
+ * This texture is a helper to build a embossed texture from a height map.
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2003
@@ -52,8 +52,8 @@ public:
 	const ITexture		*getHeightMap() const { return _HeightMap; };
 
 	// serial this texture datas
-	virtual void			serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
-	virtual bool			supportSharing() const;	
+	virtual void			serial(NLMISC::IStream &f) throw(NLMISC::EStream);
+	virtual bool			supportSharing() const;
 	virtual std::string		getShareName() const;
 	//
 	void					enableSharing(bool enabled = true) { _DisableSharing = !enabled; }
@@ -65,22 +65,22 @@ public:
 	// Set the direction of light (usually should be normalized). The bitmap is in the x,y plane
 	void					setLightDir(const NLMISC::CVector &lightDir) { _LightDir = lightDir; touch(); }
 	// set a factor for the slope
-	void                    setSlopeFactor(float factor) { _SlopeFactor = factor; touch(); }	
-	// 
-	CRGBA					getAmbient() const { return _Ambient; }	
-	CRGBA					getDiffuse() const { return _Diffuse; }	
-	const CVector		   &getLightDir() const { return _LightDir; }	
+	void                    setSlopeFactor(float factor) { _SlopeFactor = factor; touch(); }
+	//
+	CRGBA					getAmbient() const { return _Ambient; }
+	CRGBA					getDiffuse() const { return _Diffuse; }
+	const CVector		   &getLightDir() const { return _LightDir; }
 	float					getSlopeFactor() const { return _SlopeFactor; }
-	
-	
+
+
 	// inherited from ITexture. release this texture, and its datas
-	virtual void release();	
-	
-	
+	virtual void release();
+
+
 protected:
 	// inherited from ITexture. Generate this bumpmap pixels
-	virtual void doGenerate(bool async = false);	
-	NLMISC::CSmartPtr<ITexture> _HeightMap;	
+	virtual void doGenerate(bool async = false);
+	NLMISC::CSmartPtr<ITexture> _HeightMap;
 	CRGBA						_Ambient;
 	CRGBA						_Diffuse;
 	NLMISC::CVector				_LightDir;

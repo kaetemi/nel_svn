@@ -53,7 +53,7 @@
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -109,9 +109,9 @@ void	registerSerial3d()
 		NLMISC_REGISTER_CLASS(CTrackDefaultRGBA);
 		NLMISC_REGISTER_CLASS(CTrackSampledQuat);
 		NLMISC_REGISTER_CLASS(CTrackSampledVector);
-		
+
 		// Particle system
-		CPSUtil::registerSerialParticleSystem();		
+		CPSUtil::registerSerialParticleSystem();
 
 		// Don't register CTextureCroos,, since local, and not designed to be serialised.
 

@@ -43,7 +43,7 @@ void CTextureFile::buildBitmapFromFile(NLMISC::CBitmap &dest, const std::string 
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	H_AUTO( NL3D_buildBitmapFromFile )
 
 	NLMISC::CIFile f;
@@ -65,7 +65,7 @@ void CTextureFile::buildBitmapFromFile(NLMISC::CBitmap &dest, const std::string 
 		H_AUTO( NL3D_buildBitmapFileCache )
 
 		f.setAsyncLoading (asyncload);
-		f.setCacheFileOnOpen(false);	//asyncload); //AJM: significant performance loss for caching when loading textures		
+		f.setCacheFileOnOpen(false);	//asyncload); //AJM: significant performance loss for caching when loading textures
 		f.allowBNPCacheFileOnOpen(false);	//asyncload);
 	}
 
@@ -138,7 +138,7 @@ void CTextureFile::buildBitmapFromFile(NLMISC::CBitmap &dest, const std::string 
 					uint pixel;
 					for (pixel = 0; pixel<pixelCount; pixel++)
 					{
-						if (userColor[pixel]==0) 
+						if (userColor[pixel]==0)
 						{
 							// New code: use new restrictions from IDriver.
 							float	Rt, Gt, Bt, At;
@@ -236,7 +236,7 @@ void CTextureFile::doGenerate(bool async)
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
 	H_AUTO( NL3D_TextureFileDoGenerate )
-		
+
 	buildBitmapFromFile(*this, _FileName, async, _MipMapSkipAtLoad, _EnlargeCanvasNonPOW2Tex);
 }
 
@@ -293,7 +293,7 @@ void CTextureFile::dupInfo(const CTextureFile &other)
 	_FileName         = other._FileName;
 	_AllowDegradation = other._AllowDegradation;
 	_SupportSharing	  = other._SupportSharing;
-	_MipMapSkipAtLoad = other._MipMapSkipAtLoad; 
+	_MipMapSkipAtLoad = other._MipMapSkipAtLoad;
 	_EnlargeCanvasNonPOW2Tex   = other._EnlargeCanvasNonPOW2Tex;
 }
 

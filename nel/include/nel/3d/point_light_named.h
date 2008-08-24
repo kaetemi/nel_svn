@@ -75,12 +75,12 @@ public:
 	/// get the unanimated diffuse (used for Landscape)
 	NLMISC::CRGBA	getUnAnimatedDiffuse() const {return _UnAnimatedDiffuse;}
 
-	/** modulate the default color setup with nFactor, and set to the current setup. 
+	/** modulate the default color setup with nFactor, and set to the current setup.
 	 *	NB: getUnAnimatedDiffuse() == getDiffuse()
 	 */
 	void			setLightFactor(NLMISC::CRGBA nFactor);
 
-	/** modulate the default color setup with nFactor, and set to the current setup. 
+	/** modulate the default color setup with nFactor, and set to the current setup.
 	 *	give 2 params the second is the "not animated" factor. used for Landscape.
 	 */
 	void			setLightFactor(NLMISC::CRGBA nAnimatedFactor, NLMISC::CRGBA nUnAnimatedFactor);
@@ -88,7 +88,7 @@ public:
 
 	void			serial(NLMISC::IStream &f);
 
-	
+
 // ******************
 private:
 

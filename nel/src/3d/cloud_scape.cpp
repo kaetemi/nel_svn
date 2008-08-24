@@ -39,7 +39,7 @@ namespace NL3D
 #define MAX_DIST	400.0f
 #define MAX_CLOUDS	256
 // QUEUE_SIZE must be at least 2*MAX_CLOUDS
-#define QUEUE_SIZE	512 
+#define QUEUE_SIZE	512
 static const double MAX_CLOUDS_ANIM_DELTA_TIME = 0.075;				  // maximum delta time handled by cloud animation, delta t above that are clamped
 static const double MIN_CLOUDS_ANIM_DELTA_TIME = 0.005;				  // minimum delta time handled by clouds animation
 static const double MAX_TIME_FOR_CLOUD_ANIM = 0.02;					  // max number of second spent for cloud render before we check if too slow
@@ -186,7 +186,7 @@ void SCloudTextureClamp::init (uint32 nWidth, uint32 nHeight, uint32 nDepth, con
 {
 	if (Mem != NULL)
 		return;
-	
+
 	Width = raiseToNextPowerOf2 (nWidth);
 	Height = raiseToNextPowerOf2 (nHeight);
 	Depth = raiseToNextPowerOf2 (nDepth);
@@ -219,7 +219,7 @@ void SCloudTextureClamp::init (uint32 nWidth, uint32 nHeight, uint32 nDepth, con
 					float yc = Height/2.0f;
 					float zc = Depth/2.0f;
 
-					float r = (x-xc)*(x-xc)/(Width*Width/4.0f) + (y-yc)*(y-yc)/(Height*Height/4.0f) 
+					float r = (x-xc)*(x-xc)/(Width*Width/4.0f) + (y-yc)*(y-yc)/(Height*Height/4.0f)
 							+ (z-zc)*(z-zc)/(Depth*Depth/4.0f);
 
 					uint8 col = 255;
@@ -303,7 +303,7 @@ CCloudScape::CCloudScape (NL3D::IDriver *pDriver) : _Noise3D (pDriver)
 	_CurrentCloudInProcess = NULL;
 
 	_LastAnimRenderTime = 0;
-	_MaxDeltaTime = 0.1; // 100 ms	
+	_MaxDeltaTime = 0.1; // 100 ms
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -316,7 +316,7 @@ void CCloudScape::init (SCloudScapeSetup *pCSS, NL3D::CCamera *pCamera)
 {
 	_ResetCounter = _Driver->getResetCounter();
 	_ViewerCam = pCamera;
-	
+
 	_Noise3D.init();
 
 	_AllClouds.resize (MAX_CLOUDS, CCloud(this));
@@ -369,8 +369,8 @@ void CCloudScape::init (SCloudScapeSetup *pCSS, NL3D::CCamera *pCamera)
 			{
 				CCloud &c2 = _AllClouds[k];
 
-				if ((fabs(newX-c2.getX()) < (newSizeX/2+c2.getSizeX()/2)) && 
-					(fabs(newY-c2.getY()) < (newSizeY/2+c2.getSizeY()/2)) && 
+				if ((fabs(newX-c2.getX()) < (newSizeX/2+c2.getSizeX()/2)) &&
+					(fabs(newY-c2.getY()) < (newSizeY/2+c2.getSizeY()/2)) &&
 					(fabs(newZ-c2.getZ()) < (newSizeZ/2+c2.getSizeZ()/2)))
 					bRecalc = true;
 			}
@@ -483,14 +483,14 @@ void CCloudScape::anim (double dt, NL3D::CCamera *pCamera)
 	// If rendering was too slow and took too much time of the previous frame, we decrease the max delta time to give clouds less processing time
 	// Otherwise a cycle occurs, and slow rendering propagate from frame to frame
 
-	
+
 
 	if (dt != 0 && _LastAnimRenderTime > MAX_TIME_FOR_CLOUD_ANIM && (_LastAnimRenderTime / dt) > MAX_FRAME_PERCENT_FOR_CLOUD_RENDERING)
 	{
 		// if cloud rendering take too much time of previous frame, allocate less time for clouds
 		// NB : check is only done if clouds rendering is above a given thrheshold, because if only clouds are rendered, then they may take 100% of frame without
 		// having slow rendering
-		_MaxDeltaTime = std::max(MIN_CLOUDS_ANIM_DELTA_TIME, _MaxDeltaTime / 2);		
+		_MaxDeltaTime = std::max(MIN_CLOUDS_ANIM_DELTA_TIME, _MaxDeltaTime / 2);
 	}
 	else
 	{
@@ -498,12 +498,12 @@ void CCloudScape::anim (double dt, NL3D::CCamera *pCamera)
 		_MaxDeltaTime = std::min(MAX_CLOUDS_ANIM_DELTA_TIME , _MaxDeltaTime + 0.002);
 	}
 
-	
+
 
 	// 10 fps -> 200 fps
 	if (dt > _MaxDeltaTime) dt = _MaxDeltaTime;
 	if (dt < MIN_CLOUDS_ANIM_DELTA_TIME) dt = MIN_CLOUDS_ANIM_DELTA_TIME;
-	
+
 
 	_DeltaTime = dt;
 	_GlobalTime += _DeltaTime;
@@ -615,7 +615,7 @@ void CCloudScape::anim (double dt, NL3D::CCamera *pCamera)
 		i = 0;
 		while (i < MAX_CLOUDS)
 		{
-			while (_ShouldProcessCloud[i] && 
+			while (_ShouldProcessCloud[i] &&
 				(!_AllClouds[i]._TexBill->setupedIntoDriver() || !_AllClouds[i]._TexOldBill->setupedIntoDriver()))
 			{
 				// Force a cloudscape rebuild
@@ -643,8 +643,8 @@ void CCloudScape::makeHalfCloud ()
 		// Is the cloud do not have another reference in the list add it now because it should be processed
 		sint32 CloudIndexToAdd = -1;
 
-		if ((FrontCSE.CloudIndex != -1) && 
-			(_ShouldProcessCloud[FrontCSE.CloudIndex] == true) && 
+		if ((FrontCSE.CloudIndex != -1) &&
+			(_ShouldProcessCloud[FrontCSE.CloudIndex] == true) &&
 			(	(_CloudSchedulerLastAdded[FrontCSE.CloudIndex].ValidPos == false) ||
 				((_CloudSchedulerLastAdded[FrontCSE.CloudIndex].ValidPos == true) &&
 				(_CloudSchedulerLastAdded[FrontCSE.CloudIndex].Pos == _CloudScheduler.begin()))
@@ -715,7 +715,7 @@ void CCloudScape::makeHalfCloud ()
 
 			for (i = 0; i < MAX_CLOUDS; ++i)
 			if (_ShouldProcessCloud[i])
-			{				
+			{
 				// Cloud Period
 				sint32 newPriority = nPeriodeMax;
 				// Is there a last entry in array ?
@@ -754,7 +754,7 @@ void CCloudScape::makeHalfCloud ()
 			{
 				// This means that the cloud were added from a long time ago
 				SCloudSchedulerEntry &lastCSE = *_CloudSchedulerLastAdded[CloudIndexToAdd].Pos;
-				sint32 delta = _FrameCounter - lastCSE.Frame;			
+				sint32 delta = _FrameCounter - lastCSE.Frame;
 				lastCSE.DeltaNextCalc = delta;
 
 				// But the cloud can be removed (if so we have to not process it anymore)
@@ -808,7 +808,7 @@ void CCloudScape::makeHalfCloud ()
 		// Is the cloud to calc is a real cloud
 		if (CSEToCalc.CloudIndex == -1)
 		{
-			_CurrentCloudInProcess = NULL;	
+			_CurrentCloudInProcess = NULL;
 		}
 		else
 		{
@@ -834,7 +834,7 @@ void CCloudScape::makeHalfCloud ()
 			c.CloudDiffuse = CSEToCalc.Diffuse;
 			c.CloudAmbient = CSEToCalc.Ambient;
 
-			c.anim (_CurrentCloudInProcessFuturTime*_CurrentCSS.CloudSpeed, 
+			c.anim (_CurrentCloudInProcessFuturTime*_CurrentCSS.CloudSpeed,
 					_CurrentCloudInProcessFuturTime*_CurrentCSS.WindSpeed);
 
 			c.generate (_Noise3D);
@@ -855,7 +855,7 @@ void CCloudScape::makeHalfCloud ()
 				c.setX (c.getX() - (2 * MAX_DIST));
 				c.setLooping ();
 			}
-			
+
 			float r = sqrtf(SQR(c.getSizeX()/2)+SQR(c.getSizeY()/2)+SQR(c.getSizeZ()/2));
 			float d2D = sqrtf(SQR(c.getX()+c.getSizeX()/2-Viewer.x)+SQR(c.getY()+c.getSizeY()/2-Viewer.y));
 			float d = sqrtf(SQR(c.getX()+c.getSizeX()/2-Viewer.x)+SQR(c.getY()+c.getSizeY()/2-Viewer.y)+
@@ -872,9 +872,9 @@ void CCloudScape::makeHalfCloud ()
 
 // ------------------------------------------------------------------------------------------------
 void CCloudScape::render ()
-{	
+{
 	uint32 i, j;
-	
+
 	CVector Viewer = CVector (0,0,0);
 
 	// Disable fog

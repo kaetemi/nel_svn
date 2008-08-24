@@ -36,7 +36,7 @@ namespace NLMISC
 	class CMatrix;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -64,7 +64,7 @@ public:
 	/** Called at creation of an instance, to setup some information directly in the CMeshBaseInstance
 	 */
 	virtual	void	initInstance(CMeshBaseInstance *mbi) =0;
-	
+
 
 	/** Called to setup constant / activate VertexProgram. (called before activate of the VB).
 	 *  The result tells wether the vertex program will be used in the given context.
@@ -85,7 +85,7 @@ public:
 	/** Typically disable the VertexProgram, or do some uninit.
 	 */
 	virtual	void	end(IDriver *drv) =0;
-	
+
 	/** Setup this shader for the given material. This may disable the shader if necessary.
 	  * This is why the vertex buffer is needed : when disabling the v.p we may need to reactivate it
 	  */
@@ -121,7 +121,7 @@ public:
 	 *	NB: This method call is relevant only after begin() or beginMBRInstance()
 	 */
 	virtual float	getMaxVertexMove() {return 0;}
-	
+
 
 };
 

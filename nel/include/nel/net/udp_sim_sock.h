@@ -50,7 +50,7 @@ struct CBufferizedOutPacket;
 class CUdpSimSock
 {
 public:
-	
+
 	CUdpSimSock (bool logging = true) : UdpSock(logging) { }
 
 	// this function is to call to set the simulation values

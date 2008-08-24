@@ -203,8 +203,8 @@ static	inline float		testCirclePoint(const CVector2f &start, const CVector2f &de
 	// compute quadratic..
 	relC= start-point;
 	relV= delta;
-	a= relV.x*relV.x + relV.y*relV.y;		
-	// a should be >0. BUT BECAUSE OF PRECISION PROBLEM, it may be ==0, and then cause 
+	a= relV.x*relV.x + relV.y*relV.y;
+	// a should be >0. BUT BECAUSE OF PRECISION PROBLEM, it may be ==0, and then cause
 	// divide by zero (because b may be near 0, but not 0)
 	if(a==0)
 	{
@@ -335,9 +335,9 @@ float		CEdgeCollide::testCircleMove(const CVector2f &start, const CVector2f &del
 			/* Special case: do not allow to leave the edge if we are too much in the edge.
 			 It is important for CGlobalRetriever::testCollisionWithCollisionChains() because of the
  			 "SURFACEMOVE NOT DETECTED" Problem.
-			 Suppose we can walk on this chain SA/SB (separate Surface A/SurfaceB). Suppose we are near this edge, 
-			 and on Surface SA, and suppose there is an other chain SB/SC the circle collide with. If we 
-			 return 1 (no collision), SB/SC won't be detected (because only SA/?? chains will be tested) and 
+			 Suppose we can walk on this chain SA/SB (separate Surface A/SurfaceB). Suppose we are near this edge,
+			 and on Surface SA, and suppose there is an other chain SB/SC the circle collide with. If we
+			 return 1 (no collision), SB/SC won't be detected (because only SA/?? chains will be tested) and
 			 so the cylinder will penetrate SB/SC...
 			 This case arise at best if chains SA/SB and chain SB/SC do an angle of 45deg
 			*/
@@ -446,7 +446,7 @@ bool		CEdgeCollide::testEdgeMove(const CVector2f &q0, const CVector2f &q1, const
 	// Project Intersection.
 	// ===========================
 	/*
-		Now, we project x,y onto each line D1 and D2, which gives  u(t) and v(t), each one giving the parameter of 
+		Now, we project x,y onto each line D1 and D2, which gives  u(t) and v(t), each one giving the parameter of
 		the parametric line function. When it is in [0,1], we are on the edge.
 
 		u(t)= (I(t)-q0(t)) * CVector2d(a,b)	= uc + uv*t
@@ -547,7 +547,7 @@ bool		CEdgeCollide::testEdgeMove(const CVector2f &q0, const CVector2f &q1, const
 		tMin= -1000;
 		tMax= 1000;
 	}
-	
+
 	return true;
 }
 

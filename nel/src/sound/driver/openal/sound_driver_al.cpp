@@ -48,8 +48,8 @@ EAXGet					EAXGetProp = NULL;
 // Currently, the OpenAL headers are different between Windows and Linux versions !
 // AL_INVALID_XXXX are part of the spec, though.
 /*#ifdef NL_OS_UNIX
-#define AL_INVALID_ENUM AL_ILLEGAL_ENUM  
-#define AL_INVALID_OPERATION AL_ILLEGAL_COMMAND 
+#define AL_INVALID_ENUM AL_ILLEGAL_ENUM
+#define AL_INVALID_OPERATION AL_ILLEGAL_COMMAND
 #endif*/
 
 
@@ -81,9 +81,9 @@ void TestALError()
 
 #ifndef NL_STATIC
 
-class CSoundDriverALNelLibrary : public NLMISC::INelLibrary { 
-	void onLibraryLoaded(bool firstTime) { } 
-	void onLibraryUnloaded(bool lastTime) { }  
+class CSoundDriverALNelLibrary : public NLMISC::INelLibrary {
+	void onLibraryLoaded(bool firstTime) { }
+	void onLibraryUnloaded(bool lastTime) { }
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverALNelLibrary)
 
@@ -95,7 +95,7 @@ NLMISC_DECL_PURE_LIB(CSoundDriverALNelLibrary)
 #ifdef NL_OS_WINDOWS
 
 // ******************************************************************
-	
+
 #ifdef NL_STATIC
 ISoundDriver* createISoundDriverInstance
 #else
@@ -193,7 +193,7 @@ CSoundDriverAL::~CSoundDriverAL()
 	// Remove the allocated (but not exported) source and buffer names
 	alDeleteSources(compactAliveNames( _Sources, alIsSource ), &*_Sources.begin());
 	alDeleteBuffers(compactAliveNames( _Buffers, alIsBuffer ), &*_Buffers.begin());
-	
+
 	// OpenAL exit
 	alutExit();
 
@@ -486,7 +486,7 @@ bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
 	if ( data == NULL )
 		return false;
 	nldebug("  format after load = %x", (uint)format);
-	
+
 	destbuffer->setFormat( ALtoNLSoundFormat(format), freq );
 	destbuffer->fillBuffer( data, size );
 
@@ -505,7 +505,7 @@ bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name,
 	ALsizei size;
 	ALfloat frequency;
 	ALvoid *sampleData;
-	
+
 	// FIXME check for correct buffer name
 	sampleData = alutLoadMemoryFromFileImage ((ALvoid *)wavData, (ALsizei)dataSize,
                                               &format, &size, &frequency);

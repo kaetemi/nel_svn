@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class UTrack;
@@ -35,7 +35,7 @@ class UTrack;
 /**
  * Give manual access to the animation functions.
  *
- * By this interface, you can load animations, get tracks from this animation 
+ * By this interface, you can load animations, get tracks from this animation
  * with there names, and interpolate manually value from those tracks.
  *
  * This interface is not made to work with UAnimationSet or UPlayList.
@@ -52,14 +52,14 @@ public:
 
 	/// \name Create / delete animations
 	// @{
-	
+
 	/**
 	  * Load an animation. This method will use CPath to find the good
 	  * animation file. (*.anim). You should call releaseAnimation
 	  * to delete the animation.
 	  *
 	  * \param sPath is the animation file path.
-	  * \return NULL if the file is not found. Else return the pointer on the 
+	  * \return NULL if the file is not found. Else return the pointer on the
 	  * animation interface.
 	  */
 	static UAnimation*	createAnimation (const char* sPath);

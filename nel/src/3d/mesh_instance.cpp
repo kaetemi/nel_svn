@@ -33,7 +33,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -111,10 +111,10 @@ const std::vector<NLMISC::CBSphere>	*CMeshInstance::getSkinBoneSphere() const
 {
 	// Get a pointer on the shape
 	CMesh *pMesh = NLMISC::safe_cast<CMesh *>((IShape*)Shape);
-	
+
 	// Recompute the id, and skin spheres, if needed
 	pMesh->computeBonesId (_FatherSkeletonModel);
-	
+
 	// get it.
 	return &pMesh->getMeshGeom().getSkinBoneSphere();
 }
@@ -247,12 +247,12 @@ void		CMeshInstance::generateShadowMap(const CVector &lightDir)
 	// Infos.
 	// ****
 
-	// Compute the BackPoint: the first point to be shadowed. 
+	// Compute the BackPoint: the first point to be shadowed.
 	CVector		backPoint= bbShape.getCenter();
 	// get the 3/4 bottom of the shape
 	backPoint.z-= bbShape.getHalfSize().z/2;
 	backPoint= localPosMatrix * backPoint;
-	// Use the 3/4 bottom of the BBox minus the light direction in XY. NB: little hack: 
+	// Use the 3/4 bottom of the BBox minus the light direction in XY. NB: little hack:
 	// suppose no Rotate (but Z) and no scale
 	CVector	ldir= lightDir;
 	ldir.z= 0;
@@ -296,7 +296,7 @@ void		CMeshInstance::deleteShadowMap()
 void		CMeshInstance::updateShadowMap(IDriver *driver)
 {
 	nlassert(_ShadowMap);
-	
+
 	// create/update texture
 	if(_ShadowMap->getTextureSize()!=getOwnerScene()->getShadowMapTextureSize())
 	{

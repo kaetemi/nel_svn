@@ -35,7 +35,7 @@
 namespace NLLIGO
 {
 
-#if defined(NL_DEBUG) || defined(NL_DEBUG_FAST) 
+#if defined(NL_DEBUG) || defined(NL_DEBUG_FAST)
 #  define NLLIGO_DEBUG
 #endif
 
@@ -200,7 +200,7 @@ public:
 	// Expended in the tree view
 //	bool							Expanded;
 
-	enum 
+	enum
 	{
 		NotAnArray,
 		AtTheEnd = 0xffffffff,
@@ -208,7 +208,7 @@ public:
 
 	/// \name Hierarchy
 	IPrimitive ();
-	
+
 	virtual ~IPrimitive ();
 
 	IPrimitive (const IPrimitive &node);
@@ -255,27 +255,27 @@ public:
 	/** Remove and delete all children primitives */
 	void				removeChildren ();
 
-	/** 
-	  * Insert a child primitive before the index. 
+	/**
+	  * Insert a child primitive before the index.
 	  * The pointer will be deleted by the parent primitive using the ::delete operator.
 	  * return false if the index is invalid
 	  */
 	bool				insertChild (IPrimitive *primitive, uint index = AtTheEnd);
 
-	/// \name Properties 
+	/// \name Properties
 
-	/** 
+	/**
 	  * Get a num properties
 	  **/
 	uint				getNumProperty () const;
 
-	/** 
+	/**
 	  * Get a properties by its index
 	  * This method (iterate a list) is slower than getPropertyByName (look up in a map).
 	  **/
 	bool				getProperty (uint index, std::string &property_name, const IProperty *&result) const;
 
-	/** 
+	/**
 	  * Get a properties by its index
 	  * This method (iterate a list) is slower than getPropertyByName (look up in a map).
 	  **/
@@ -284,60 +284,60 @@ public:
 	/** Check the existence of a named property */
 	bool				checkProperty(const std::string &property_name) const;
 
-	/** 
-	  * Add a property 
+	/**
+	  * Add a property
 	  * If the property already exist, the method does nothing and returns false.
 	  * The pointer will be deleted by the primitive using the ::delete operator.
 	  **/
 	bool				addPropertyByName (const char *property_name, IProperty *result);
 
-	/** 
+	/**
 	  * Get a property with its name
 	  **/
 	bool				getPropertyByName (const char *property_name, const IProperty *&result) const;
 
-	/** 
+	/**
 	  * Get a property with its name
 	  **/
 	bool				getPropertyByName (const char *property_name, IProperty *&result) const;
 
-	/** 
+	/**
 	  * Get a string property with its name. Return false if the property is not found or is not a string property.
 	  **/
 	bool				getPropertyByName (const char *property_name, std::string *&result) const;
 
-	/** 
+	/**
 	  * Get a string array property with its name. Return false if the property is not found or is not a string array property.
 	  **/
 	bool				getPropertyByName (const char *property_name, std::vector<std::string> *&result) const;
 
-	/** 
+	/**
 	  * Get a string property with its name. Return false if the property is not found or is not a string property.
 	  **/
 	bool				getPropertyByName (const char *property_name, std::string &result) const;
 
-	/** 
+	/**
 	  * Get a string array property with its name. Return false if the property is not found or is not a string array property.
 	  **/
 	bool				getPropertyByName (const char *property_name, const std::vector<std::string> *&result) const;
 
-	/** 
+	/**
 	  * Get a color property with its name. Return false if the property is not found or is not a string array property.
 	  **/
 	bool				getPropertyByName (const char *property_name, NLMISC::CRGBA &result) const;
 
-	/** 
+	/**
 	  * Remove a property
 	  * This is method (iterate a list) is slower than removePropertyByName (look up in a map).
 	  **/
 	bool				removeProperty (uint index);
 
-	/** 
+	/**
 	  * Remove a property by its name
 	  **/
 	bool				removePropertyByName (const char *property_name);
 
-	/** 
+	/**
 	  * Remove all the properties
 	  **/
 	void				removeProperties ();
@@ -363,7 +363,7 @@ public:
 	virtual IPrimitive *copy () const = 0;
 
 	// used for fast binary save/load (exploitation mode)
-	void serial(NLMISC::IStream &f);	
+	void serial(NLMISC::IStream &f);
 
 	// shortcut to getPropertyByName("name", ret); return ret;
 	std::string					getName() const;
@@ -429,7 +429,7 @@ public:
 protected:
 
 	// void operator= (const CPrimNode &node);
-	
+
 
 	// Get the vertices
 	virtual uint				getNumVector () const;
@@ -464,7 +464,7 @@ public:
 	void serial (NLMISC::IStream &f);
 
 	// void operator= (const CPrimPoint &node);
-	
+
 	// \name From IClassable
 	NLMISC_DECLARE_CLASS (CPrimPoint);
 
@@ -730,7 +730,7 @@ public:
 
 	// Build the complete list of indexed primitive (ie all primitive that have a primalias child)
 	void			buildPrimitiveWithAliasList(std::map<uint32, IPrimitive*> &result);
-	
+
 
 private:
 	// Conversion internal methods

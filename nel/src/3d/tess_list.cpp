@@ -26,7 +26,7 @@
 #include "nel/3d/tess_list.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

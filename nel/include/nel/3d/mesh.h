@@ -43,7 +43,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -152,7 +152,7 @@ public:
 	{
 		// The polygon describing the interface between 2 meshs.
 		std::vector<CInterfaceVertex>	Vertices;
-	}; 
+	};
 	/// For each vertex
 	struct	CInterfaceLink
 	{
@@ -170,7 +170,7 @@ public:
 	/// A mesh information.
 	struct	CMeshBuild
 	{
-		/** the IDRV_VF* flags which tells what vertices data are used. See IDriver::setVertexFormat() for 
+		/** the IDRV_VF* flags which tells what vertices data are used. See IDriver::setVertexFormat() for
 		 * more information. NB: IDRV_VF_XYZ is always considered to true..
 		 * Note that is some stage use 2 textures coordinates instead of 3, then the extended vertex format must be used isntead
 		 */
@@ -179,7 +179,7 @@ public:
 		uint8						UVRouting[CVertexBuffer::MaxStage]; // gives the uv routing table. Each final UV channel can be routed to any vertex uv
 
 		// Vertices array
-		std::vector<CVector>		Vertices;		
+		std::vector<CVector>		Vertices;
 
 		// Palette Skinning Vertices array (same size as Vertices). NULL if no skinning.
 		std::vector<CSkinWeight>	SkinWeights;
@@ -278,7 +278,7 @@ public:
 
 	/// System Mem Geometry Copy, built at load time
 	virtual void	buildSystemGeometry();
-	
+
 	// @}
 
 	/// \name Geometry accessors
@@ -426,17 +426,17 @@ public:
 
 	/// get the number of BlendShapes
 	uint getNbBlendShapes() const { if(_MeshMorpher) return _MeshMorpher->BlendShapes.size(); return 0; }
-	
-	/** Tool function to retrieve vector geometry only of the mesh. 
+
+	/** Tool function to retrieve vector geometry only of the mesh.
 	 *	return false if the vbuffer cannot be read (resident)
 	 */
 	bool	retrieveVertices(std::vector<NLMISC::CVector> &vertices) const;
 
-	/** Tool function to retrieve triangles geometry only of the mesh (of all rdrpass). 
+	/** Tool function to retrieve triangles geometry only of the mesh (of all rdrpass).
 	 *	return false if the index buffer cannot be read (resident)
 	 */
 	bool	retrieveTriangles(std::vector<uint32> &indices) const;
-	
+
 	// @}
 
 
@@ -460,11 +460,11 @@ public:
 
 	/// see CTransform::getSkinBoneSphere() doc for the meaning of this value. computeBonesId must has been called before.
 	const std::vector<NLMISC::CBSphere>	&getSkinBoneSphere() const {return _BonesSphere;}
-	
+
 	/// Skin intersection
 	bool			supportIntersectSkin() const {return _Skinned;}
 	bool			intersectSkin(CTransformShape	*mi, const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	// @}
 
 
@@ -542,7 +542,7 @@ private:
 	/// A block of RdrPasses, sorted by matrix use.
 	class	CMatrixBlock
 	{
-	public:	
+	public:
 		// ctor
 		CMatrixBlock() : NumMatrix(0)
 		{
@@ -560,12 +560,12 @@ private:
 			(void)f.serialVersion(0);
 
 			// Code written for IDriver::MaxModelMatrix==16 matrixs.
-			nlctassert(IDriver::MaxModelMatrix == 16);			
+			nlctassert(IDriver::MaxModelMatrix == 16);
 			for(uint i=0;i<IDriver::MaxModelMatrix;i++)
-			{				
+			{
 				f.serial(MatrixId[i]);
 			}
-			f.serial(NumMatrix);			
+			f.serial(NumMatrix);
 			f.serialCont(RdrPass);
 		}
 
@@ -613,7 +613,7 @@ private:
 			for(sint i=0;i<CVertexBuffer::MaxStage;i++)
 			{
 				Uvws[i]= o.Uvws[i];
-			}			
+			}
 			Color= o.Color;
 			Specular= o.Specular;
 
@@ -687,7 +687,7 @@ private:
 
 
 private:
-	/** Skinning: this is the list of vertices (mirror of VBuffer), at the bind Pos. 
+	/** Skinning: this is the list of vertices (mirror of VBuffer), at the bind Pos.
 	 *	Potentially modified by the mesh morpher
 	 */
 	std::vector<CVector>		_OriginalSkinVertices;
@@ -714,7 +714,7 @@ private:
 	/// see CTransform::getSkinBoneSphere() doc for the meaning of this value
 	std::vector<NLMISC::CBSphere>	_BonesSphere;
 
-	
+
 	/// This array give the name of the local bones used.
 	std::vector<std::string>	_BonesName;
 	/// This array give the index in the skeleton of the local bones used. computed at first computeBoneId()
@@ -739,7 +739,7 @@ private:
 	bool						_PreciseClipping;
 
 	// The Mesh Morpher
-	CMeshMorpher	*_MeshMorpher; 
+	CMeshMorpher	*_MeshMorpher;
 
 
 	// Possible MeshVertexProgram to apply at render()
@@ -799,7 +799,7 @@ private:
 						default: // not supported
 							nlassert(0);
 						break;
-					}					
+					}
 				}
 			}
 			// Color.
@@ -831,7 +831,7 @@ private:
 	// @{
 
 	enum	TSkinType {SkinPosOnly=0, SkinWithNormal, SkinWithTgSpace};
-	
+
 	// build skinning.
 	void	buildSkin(CMesh::CMeshBuild &m, std::vector<CFaceTmp>	&tmpFaces);
 
@@ -868,5 +868,5 @@ private:
 
 
 #endif // NL_MESH_H
-            
+
 /* End of mesh.h */

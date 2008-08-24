@@ -31,7 +31,7 @@ pixelshader four_stages_ps = asm
 	mad r0.xyz, c2, t2, r0;
 	mad r0.xyz, c3, t3, r0;
 	mul_x2 r0.xyz, r0, t0;
-	+mov r0.w, t0;	
+	+mov r0.w, t0;
 };
 
 technique four_stages_4
@@ -170,7 +170,7 @@ technique two_stages_2
 		ColorOp[0] = MODULATE;
 	}
 	pass p2
-	{		
+	{
 		Texture[0] = <texture3>;
 		TextureFactor = <color3>;
 	}

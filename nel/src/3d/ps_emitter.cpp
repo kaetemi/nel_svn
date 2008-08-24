@@ -65,12 +65,12 @@ CPSEmitter::CPSEmitter() : _EmittedType(NULL),
 						   _SpeedInheritanceFactor(0.f),
 						   _EmissionType(regular),
 						   _Period(0.02f),
-						   _PeriodScheme(NULL), 
-						   _GenNb(1), 
-						   _GenNbScheme(NULL), 
+						   _PeriodScheme(NULL),
+						   _GenNb(1),
+						   _GenNbScheme(NULL),
 						   _EmitDelay(0),
 						   _MaxEmissionCount(0),
-						   _SpeedBasisEmission(false),						   
+						   _SpeedBasisEmission(false),
 						   _ConsistentEmission(true),
 						   _BypassAutoLOD(false),
 						   _UserMatrixModeForEmissionDirection(false),
@@ -122,14 +122,14 @@ void CPSEmitter::setOwner(CPSLocated *psl)
 
 ///==========================================================================
 inline void CPSEmitter::processEmit(uint32 index, sint nbToGenerate)
-{		
+{
 	NL_PS_FUNC(CPSEmitter_processEmit)
 	NLMISC::CVector speed, pos;
 	nlassert(_Owner);
 	if (!_SpeedBasisEmission)
 	{
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			if (!_UserMatrixModeForEmissionDirection)
 			{
 				while (nbToGenerate > 0)
@@ -163,7 +163,7 @@ inline void CPSEmitter::processEmit(uint32 index, sint nbToGenerate)
 		NLMISC::CMatrix m;
 		CPSUtil::buildSchmidtBasis(_Owner->getSpeed()[index], m);
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			while (nbToGenerate > 0)
 			{
 				nbToGenerate --;
@@ -192,14 +192,14 @@ void CPSEmitter::processEmitOutsideSimLoop(uint32 index,sint nbToGenerate)
 	if (!_SpeedBasisEmission)
 	{
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			if (!_UserMatrixModeForEmissionDirection)
 			{
 				while (nbToGenerate > 0)
 				{
 					nbToGenerate --;
 					emit(_Owner->getPos()[index], index, pos, speed);
-					_EmittedType->newElement(pos, speed, this->_Owner, index, _Owner->getMatrixMode(), true);					
+					_EmittedType->newElement(pos, speed, this->_Owner, index, _Owner->getMatrixMode(), true);
 				}
 			}
 			else
@@ -226,7 +226,7 @@ void CPSEmitter::processEmitOutsideSimLoop(uint32 index,sint nbToGenerate)
 		NLMISC::CMatrix m;
 		CPSUtil::buildSchmidtBasis(_Owner->getSpeed()[index], m);
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			while (nbToGenerate > 0)
 			{
 				nbToGenerate --;
@@ -250,21 +250,21 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 											  uint32 index,
 											  sint nbToGenerate,
 											  TAnimationTime deltaT)
-{		
+{
 	NL_PS_FUNC(CPSEmitter_processEmitConsistent)
 	static NLMISC::CVector speed, pos; /// speed and pos of emittee
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	if (!_SpeedBasisEmission)
 	{
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			if (!_UserMatrixModeForEmissionDirection)
 			{
 				while (nbToGenerate > 0)
 				{
 					nbToGenerate --;
 					emit(emitterPos, index, pos, speed);
-					_EmittedType->postNewElement(pos, speed, *this->_Owner, index, _Owner->getMatrixMode(), deltaT);										
+					_EmittedType->postNewElement(pos, speed, *this->_Owner, index, _Owner->getMatrixMode(), deltaT);
 				}
 			}
 			else
@@ -273,7 +273,7 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 				{
 					nbToGenerate --;
 					emit(emitterPos, index, pos, speed);
-					_EmittedType->postNewElement(pos, speed, *this->_Owner, index, _UserDirectionMatrixMode, deltaT);										
+					_EmittedType->postNewElement(pos, speed, *this->_Owner, index, _UserDirectionMatrixMode, deltaT);
 				}
 			}
 		}
@@ -282,7 +282,7 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 			while (nbToGenerate --)
 			{
 				emit(emitterPos, index, pos, speed);
-				_EmittedType->postNewElement(pos, speed + _SpeedInheritanceFactor * _Owner->getSpeed()[index], *this->_Owner, index, _Owner->getMatrixMode(), deltaT);									
+				_EmittedType->postNewElement(pos, speed + _SpeedInheritanceFactor * _Owner->getSpeed()[index], *this->_Owner, index, _Owner->getMatrixMode(), deltaT);
 			}
 		}
 	}
@@ -291,12 +291,12 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 		NLMISC::CMatrix m;
 		CPSUtil::buildSchmidtBasis(_Owner->getSpeed()[index], m);
 		if (_SpeedInheritanceFactor == 0.f)
-		{		
+		{
 			while (nbToGenerate > 0)
 			{
 				nbToGenerate --;
 				emit(emitterPos, index, pos, speed);
-				_EmittedType->postNewElement(pos, m * speed, *this->_Owner, index, _Owner->getMatrixMode(), deltaT);				
+				_EmittedType->postNewElement(pos, m * speed, *this->_Owner, index, _Owner->getMatrixMode(), deltaT);
 			}
 		}
 		else
@@ -304,7 +304,7 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 			while (nbToGenerate --)
 			{
 				emit(emitterPos, index, pos, speed);
-				_EmittedType->postNewElement(pos, m * speed + _SpeedInheritanceFactor * _Owner->getSpeed()[index], *this->_Owner, index, _Owner->getMatrixMode(), deltaT);				
+				_EmittedType->postNewElement(pos, m * speed + _SpeedInheritanceFactor * _Owner->getSpeed()[index], *this->_Owner, index, _Owner->getMatrixMode(), deltaT);
 			}
 		}
 	}
@@ -313,7 +313,7 @@ inline void CPSEmitter::processEmitConsistent(const NLMISC::CVector &emitterPos,
 
 ///==========================================================================
 bool	CPSEmitter::setEmissionType(TEmissionType freqType)
-{ 
+{
 	NL_PS_FUNC(CPSEmitter_setEmissionType)
 	if (_Owner && _Owner->getOwner())
 	{
@@ -331,7 +331,7 @@ bool	CPSEmitter::setEmissionType(TEmissionType freqType)
 			if (testEmitForever() == true)
 			{
 				_EmissionType = oldType;
-				std::string mess = "<CPSEmitter::setEmissionType> can't set emission type to '" + 
+				std::string mess = "<CPSEmitter::setEmissionType> can't set emission type to '" +
 					               NLMISC::toString(freqType) +
 								  "' with the current configuration : the system has been flagged with \
 								   'BypassMaxNumIntegrationSteps', and should have a finite duration.  \
@@ -339,33 +339,33 @@ bool	CPSEmitter::setEmissionType(TEmissionType freqType)
 				nlwarning(mess.c_str());
 				return false;
 
-			}			
+			}
 		}
 		ps->systemDurationChanged();
 	}
-	_EmissionType = freqType; 
+	_EmissionType = freqType;
 	return true;
 }
 
 ///==========================================================================
-bool CPSEmitter::setEmittedType(CPSLocated *et) 
-{	
+bool CPSEmitter::setEmittedType(CPSLocated *et)
+{
 	NL_PS_FUNC(CPSEmitter_setEmittedType)
 	if (_EmittedType)
 	{
-		_EmittedType->unregisterDtorObserver(this);		
+		_EmittedType->unregisterDtorObserver(this);
 	}
 	if (et)
 	{
 		et->registerDtorObserver(this);
-	}	
+	}
 	CPSLocated *oldType = _EmittedType;
 	_EmittedType = et;
 	if (_Owner && _Owner->getOwner())
 	{
 		CParticleSystem *ps = _Owner->getOwner();
 		if (_EmittedType)
-		{		
+		{
 			bool ok = true;
 			if (ps->getBypassMaxNumIntegrationSteps())
 			{
@@ -380,7 +380,7 @@ bool CPSEmitter::setEmittedType(CPSLocated *et)
 				setEmittedType(oldType);
 				nlwarning("<CPSLocated::setEmittedType> Can't set new emitted type : this causes the system to last forever, and it has been flagged with 'BypassMaxNumIntegrationSteps'. New emitted type is not set");
 				return false;
-			}			
+			}
 		}
 		ps->systemDurationChanged();
 	}
@@ -392,7 +392,7 @@ void CPSEmitter::notifyTargetRemoved(CPSLocated *ptr)
 {
 	NL_PS_FUNC(CPSEmitter_notifyTargetRemoved)
 	nlassert(ptr == _EmittedType && _EmittedType);
-	setEmittedType(NULL);	
+	setEmittedType(NULL);
 }
 
 ///==========================================================================
@@ -413,9 +413,9 @@ void CPSEmitter::setPeriod(float period)
 
 ///==========================================================================
 void CPSEmitter::setPeriodScheme(CPSAttribMaker<float> *scheme)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_setPeriodScheme)
-	delete _PeriodScheme;	
+	delete _PeriodScheme;
 	_PeriodScheme = scheme;
 	if (_Owner && scheme->hasMemory()) scheme->resize(_Owner->getMaxSize(), _Owner->getSize());
 	if (_Owner && _Owner->getOwner())
@@ -433,25 +433,25 @@ void CPSEmitter::setGenNb(uint32 genNb)
 		delete _GenNbScheme;
 		_GenNbScheme = NULL;
 	}
-	_GenNb = genNb;	
+	_GenNb = genNb;
 }
 
 ///==========================================================================
 void CPSEmitter::setGenNbScheme(CPSAttribMaker<uint32> *scheme)
 {
 	NL_PS_FUNC(CPSEmitter_setGenNbScheme)
-	delete _GenNbScheme;	
+	delete _GenNbScheme;
 	_GenNbScheme = scheme;
 	if (_Owner && scheme->hasMemory()) scheme->resize(_Owner->getMaxSize(), _Owner->getSize());
 }
 
 ///==========================================================================
-void CPSEmitter::showTool(void) 
+void CPSEmitter::showTool(void)
 {
 	NL_PS_FUNC(CPSEmitter_showTool)
 	uint32 size = _Owner->getSize();
-	if (!size) return;		
-	setupDriverModelMatrix();	
+	if (!size) return;
+	setupDriverModelMatrix();
 
 	const CVector I = computeI();
 	const CVector K = computeK();
@@ -461,29 +461,29 @@ void CPSEmitter::showTool(void)
 	{
 		// center of the current particle
 		const CVector p = _Owner->getPos()[k];
-		const float sSize =0.1f;	
+		const float sSize =0.1f;
 		std::vector<NLMISC::CLine> lines;
 		NLMISC::CLine l;
 		l.V0 = p - sSize * I; l.V1 =  p + sSize * I; lines.push_back(l);
 		l.V0 = p - sSize * K; l.V1 =  p + sSize * K; lines.push_back(l);
 		l.V0 = p - sSize * (I + K); l.V1 = p + sSize * (I + K); lines.push_back(l);
 		l.V0 = p - sSize * (I - K); l.V1 = p + sSize * (I - K); lines.push_back(l);
-																		
+
 		CMaterial mat;
 		mat.setBlendFunc(CMaterial::one, CMaterial::one);
 		mat.setZWrite(false);
 		mat.setLighting(false);
 		mat.setBlend(true);
 		mat.setZFunc(CMaterial::less);
-		
-	
-		CPSLocated *loc;		
+
+
+		CPSLocated *loc;
 		uint32 index;
 		CPSLocatedBindable *lb;
 		_Owner->getOwner()->getCurrentEditedElement(loc, index, lb);
 
 		mat.setColor((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));
-		
+
 
 		CDRU::drawLinesUnlit(lines, mat, *getDriver() );
 	}
@@ -494,7 +494,7 @@ void CPSEmitter::singleEmit(uint32 index, uint quantity)
 {
 	NL_PS_FUNC(CPSEmitter_singleEmit)
 	nlassert(_Owner);
-	const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner,0) : _GenNb;		
+	const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner,0) : _GenNb;
 	processEmitOutsideSimLoop(index, quantity * nbToGenerate);
 }
 
@@ -512,16 +512,16 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 	const uint size = _Owner->getSize();
 	nlassert(firstInstanceIndex < size);
 	uint leftToDo = size - firstInstanceIndex, toProcess;
-	float emitPeriod[EMITTER_BUFF_SIZE]; 
+	float emitPeriod[EMITTER_BUFF_SIZE];
 	const float *currEmitPeriod;
-	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;			
+	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;
 	sint32 nbToGenerate;
 
-	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt; 
-	TPSAttribUInt8::iterator numEmitIt = _NumEmission.begin() + firstInstanceIndex; 
+	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt;
+	TPSAttribUInt8::iterator numEmitIt = _NumEmission.begin() + firstInstanceIndex;
 
 	// we don't use an iterator here
-	// because it could be invalidated if size change (a located could generate itself)	
+	// because it could be invalidated if size change (a located could generate itself)
 	do
 	{
 		toProcess = leftToDo < EMITTER_BUFF_SIZE ? leftToDo : EMITTER_BUFF_SIZE;
@@ -535,24 +535,24 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 			currEmitPeriod = (float *) (_PeriodScheme->make(_Owner, size - leftToDo, emitPeriod, sizeof(float), toProcess, true, 1 << 16, true));
 			if (emitThreshold)
 			{
-				
+
 				/** Test if 'make' filled our buffer. If this is not the case, we assume that values where precomputed, and that
 				  * all null period have already been replaced by the threshold
 				  */
-				if (currEmitPeriod == emitPeriod) 
+				if (currEmitPeriod == emitPeriod)
 				{
 					// if there possibility to have 0 in the scheme ?
 					if (_PeriodScheme->getMinValue() <= 0.f && _PeriodScheme->getMaxValue() >= 0.f)
-					{											
+					{
 						replaceNullPeriodsByThreshold(emitPeriod, toProcess);
 					}
-				}				
+				}
 			}
 		}
 		else
 		{
 			if (_Period != 0.f || !emitThreshold)
-			{			
+			{
 				currEmitPeriod = &_Period;
 			}
 			else
@@ -568,20 +568,20 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 			/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += CParticleSystem::EllapsedTime;
 					if ( *phaseIt >= *currEmitPeriod) // phase is greater than period -> must emit
-					{					
+					{
 						if (*currEmitPeriod != 0)
 						{
 							*phaseIt -= ::floorf(*phaseIt / *currEmitPeriod) * *currEmitPeriod;
 						}
 						const uint32 k = phaseIt - (_Phase.begin());
-						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
-						processEmit(k, nbToGenerate);										
-					}	
-					
+						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
+						processEmit(k, nbToGenerate);
+					}
+
 					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
@@ -589,7 +589,7 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += CParticleSystem::EllapsedTime;
 					if ( *phaseIt >= *currEmitPeriod + _EmitDelay) // phase is greater than period -> must emit
@@ -599,10 +599,10 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 							*phaseIt -= ::floorf((*phaseIt - _EmitDelay)  / *currEmitPeriod) * *currEmitPeriod;
 						}
 						const uint32 k = phaseIt - (_Phase.begin());
-						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
-						processEmit(k, nbToGenerate);										
-					}	
-					
+						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
+						processEmit(k, nbToGenerate);
+					}
+
 					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
@@ -614,7 +614,7 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 				/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < _MaxEmissionCount)
 					{
@@ -626,20 +626,20 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 								*phaseIt -= ::floorf(*phaseIt / *currEmitPeriod) * *currEmitPeriod;
 							}
 							const uint32 k = phaseIt - (_Phase.begin());
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 							processEmit(k, nbToGenerate);
 							++*numEmitIt;
-						}	
-					}	
+						}
+					}
 					++phaseIt;
-					currEmitPeriod += currEmitPeriodPtrInc;							
+					currEmitPeriod += currEmitPeriodPtrInc;
 					++ numEmitIt;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < _MaxEmissionCount)
 					{
@@ -651,11 +651,11 @@ void CPSEmitter::processRegularEmissionWithNoLOD(uint firstInstanceIndex)
 								*phaseIt -= ::floorf((*phaseIt - _EmitDelay) / *currEmitPeriod) * *currEmitPeriod;
 							}
 							const uint32 k = phaseIt - (_Phase.begin());
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 							processEmit(k, nbToGenerate);
 							++*numEmitIt;
 						}
-					}							
+					}
 					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 					++numEmitIt;
@@ -682,12 +682,12 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 	const uint size = _Owner->getSize();
 	nlassert(firstInstanceIndex < size);
 	uint leftToDo = size - firstInstanceIndex, toProcess;
-	float emitPeriod[EMITTER_BUFF_SIZE]; 
+	float emitPeriod[EMITTER_BUFF_SIZE];
 	const float *currEmitPeriod;
-	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;			
+	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;
 	sint32 nbToGenerate;
 
-	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt; 
+	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt;
 	TPSAttribUInt8::iterator numEmitIt = _NumEmission.begin() + firstInstanceIndex;
 
 	float ellapsedTimeLOD = emitLOD * CParticleSystem::EllapsedTime;
@@ -695,7 +695,7 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 	maxEmissionCountLOD = std::max(1u, maxEmissionCountLOD);
 
 	// we don't use an iterator here
-	// because it could be invalidated if size change (a located could generate itself)	
+	// because it could be invalidated if size change (a located could generate itself)
 	do
 	{
 		toProcess = leftToDo < EMITTER_BUFF_SIZE ? leftToDo : EMITTER_BUFF_SIZE;
@@ -709,24 +709,24 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 			currEmitPeriod = (float *) (_PeriodScheme->make(_Owner, size - leftToDo, emitPeriod, sizeof(float), toProcess, true, 1 << 16, true));
 			if (emitThreshold)
 			{
-				
+
 				/** Test if 'make' filled our buffer. If this is not the case, we assume that values where precomputed, and that
 				  * all null period have already been replaced by the threshold
 				  */
-				if (currEmitPeriod == emitPeriod) 
+				if (currEmitPeriod == emitPeriod)
 				{
 					// if there possibility to have 0 in the scheme ?
 					if (_PeriodScheme->getMinValue() <= 0.f && _PeriodScheme->getMaxValue() >= 0.f)
-					{											
+					{
 						replaceNullPeriodsByThreshold(emitPeriod, toProcess);
 					}
-				}				
+				}
 			}
 		}
 		else
 		{
 			if (_Period != 0.f || !emitThreshold)
-			{			
+			{
 				currEmitPeriod = &_Period;
 			}
 			else
@@ -742,11 +742,11 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 			/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += ellapsedTimeLOD;
 					if ( *phaseIt >= *currEmitPeriod) // phase is greater than period -> must emit
-					{					
+					{
 						if (*currEmitPeriod != 0)
 						{
 							*phaseIt -= ::floorf(*phaseIt / *currEmitPeriod) * *currEmitPeriod;
@@ -754,13 +754,13 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 						const uint32 k = phaseIt - (_Phase.begin());
 						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 						if (nbToGenerate)
-						{						
+						{
 							nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 							if (!nbToGenerate) nbToGenerate = 1;
 							processEmit(k, nbToGenerate);
 						}
-					}	
-					
+					}
+
 					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
@@ -768,10 +768,10 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					if (*phaseIt < _EmitDelay)
-					{					
+					{
 						*phaseIt += CParticleSystem::EllapsedTime;
 						if (*phaseIt < _EmitDelay)
 						{
@@ -798,13 +798,13 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 						const uint32 k = phaseIt - (_Phase.begin());
 						nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 						if (nbToGenerate)
-						{						
+						{
 							nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 							if (!nbToGenerate) nbToGenerate = 1;
 							processEmit(k, nbToGenerate);
-						}						
-					}	
-					
+						}
+					}
+
 					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
@@ -816,7 +816,7 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 				/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < maxEmissionCountLOD)
 					{
@@ -828,34 +828,34 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 								*phaseIt -= ::floorf(*phaseIt / *currEmitPeriod) * *currEmitPeriod;
 							}
 							const uint32 k = phaseIt - (_Phase.begin());
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 							if (nbToGenerate)
-							{						
+							{
 								nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 								if (!nbToGenerate) nbToGenerate = 1;
 								processEmit(k, nbToGenerate);
 							}
 							++*numEmitIt;
-						}	
+						}
 					}
 					else
 					{
 						*numEmitIt = _MaxEmissionCount;
 					}
 					++phaseIt;
-					currEmitPeriod += currEmitPeriodPtrInc;							
+					currEmitPeriod += currEmitPeriodPtrInc;
 					++ numEmitIt;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < maxEmissionCountLOD)
 					{
 						if (*phaseIt < _EmitDelay)
-						{					
+						{
 							*phaseIt += CParticleSystem::EllapsedTime;
 							if (*phaseIt < _EmitDelay)
 							{
@@ -882,9 +882,9 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 								*phaseIt -= ::floorf((*phaseIt - _EmitDelay) / *currEmitPeriod) * *currEmitPeriod;
 							}
 							const uint32 k = phaseIt - (_Phase.begin());
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;					
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, k) : _GenNb;
 							if (nbToGenerate)
-							{						
+							{
 								nbToGenerate = (sint32) (nbToGenerate * emitLOD);
 								if (!nbToGenerate) nbToGenerate = 1;
 								processEmit(k, nbToGenerate);
@@ -912,9 +912,9 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 /// private : generate the various position of an emitter in the given tab for the given slice of time,
 //  depending on wether its motion is parametric or incremental. This is used to create emittees at the right position
 
-static 
+static
 #ifndef NL_DEBUG
-	inline 
+	inline
 #endif
 uint GenEmitterPositions(CPSLocated *emitter,
 									   CPSLocated *emittee,
@@ -926,10 +926,10 @@ uint GenEmitterPositions(CPSLocated *emitter,
 									  )
 {
 	NL_PS_FUNC(GenEmitterPositions)
-	const uint toProcess = std::max(1U, std::min(numStep, (uint) emittee->getMaxSize()));	
+	const uint toProcess = std::max(1U, std::min(numStep, (uint) emittee->getMaxSize()));
 	dest.resize(toProcess);
-	
-	
+
+
 	if (!emitter->isParametricMotionEnabled()) // standard case : take current pos and integrate
 	{
 		if (toProcess == 1) // only one emission -> takes current pos
@@ -946,7 +946,7 @@ uint GenEmitterPositions(CPSLocated *emitter,
 			{
 				-- outIt;
 				*outIt = pos;
-				pos -= speed;				
+				pos -= speed;
 			}
 			while (outIt != endIt);
 		}
@@ -955,17 +955,17 @@ uint GenEmitterPositions(CPSLocated *emitter,
 	{
 		emitter->integrateSingle(emitter->getOwner()->getSystemDate() + CParticleSystem::RealEllapsedTime - deltaT,
 								 -step,
-								 toProcess,									 
+								 toProcess,
 								 emitterIndex,
 								 &dest[0]
-								);				
+								);
 	}
-	
+
 	return toProcess;
 }
 
 
-/** The same as GenEmitterPositions, but with LOD taken in account. 
+/** The same as GenEmitterPositions, but with LOD taken in account.
   */
 static inline uint GenEmitterPositionsWithLOD(CPSLocated *emitter,
 									   CPSLocated *emittee,
@@ -978,10 +978,10 @@ static inline uint GenEmitterPositionsWithLOD(CPSLocated *emitter,
 									  )
 {
 	NL_PS_FUNC(GenEmitterPositionsWithLOD)
-	const uint toProcess = std::max(1U, std::min(numStep, (uint) emittee->getMaxSize()));	
+	const uint toProcess = std::max(1U, std::min(numStep, (uint) emittee->getMaxSize()));
 	dest.resize(toProcess);
-	
-	
+
+
 	if (!emitter->isParametricMotionEnabled()) // standard case : take current pos and integrate
 	{
 		if (toProcess == 1) // only one emission -> takes current pos
@@ -998,7 +998,7 @@ static inline uint GenEmitterPositionsWithLOD(CPSLocated *emitter,
 			{
 				-- outIt;
 				*outIt = pos;
-				pos -= speed;				
+				pos -= speed;
 			}
 			while (outIt != endIt);
 		}
@@ -1007,12 +1007,12 @@ static inline uint GenEmitterPositionsWithLOD(CPSLocated *emitter,
 	{
 		emitter->integrateSingle(emitter->getOwner()->getSystemDate() - deltaT - step * toProcess,
 								 step,
-								 toProcess,									 
+								 toProcess,
 								 emitterIndex,
 								 &dest[0]
-								);				
+								);
 	}
-	
+
 	return toProcess;
 }
 
@@ -1029,15 +1029,15 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 	//
 
 
-	static std::vector<NLMISC::CVector> emitterPositions; 
+	static std::vector<NLMISC::CVector> emitterPositions;
 	// Positions for the emitter. They are computed by using a parametric trajectory or by using integration
 
 	const uint size = _Owner->getSize();
 	nlassert(firstInstanceIndex < size);
 	uint leftToDo = size - firstInstanceIndex, toProcess;
-	float emitPeriod[EMITTER_BUFF_SIZE]; 
+	float emitPeriod[EMITTER_BUFF_SIZE];
 	const float *currEmitPeriod;
-	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;			
+	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;
 	sint32 nbToGenerate;
 
 
@@ -1055,9 +1055,9 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 
 	float ellapsedTimeLOD = CParticleSystem::EllapsedTime * emitLOD;
 	uint maxEmissionCountLOD = (uint8) (_MaxEmissionCount * emitLOD);
-	maxEmissionCountLOD = std::max(1u, maxEmissionCountLOD);	
+	maxEmissionCountLOD = std::max(1u, maxEmissionCountLOD);
 	// we don't use an iterator here
-	// because it could be invalidated if size change (a located could generate itself)	
+	// because it could be invalidated if size change (a located could generate itself)
 	do
 	{
 		toProcess = leftToDo < EMITTER_BUFF_SIZE ? leftToDo : EMITTER_BUFF_SIZE;
@@ -1071,24 +1071,24 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 			currEmitPeriod = (float *) (_PeriodScheme->make(_Owner, size - leftToDo, emitPeriod, sizeof(float), toProcess, true, 1 << 16, true));
 			if (emitThreshold)
 			{
-				
+
 				/** Test if 'make' filled our buffer. If this is not the case, we assume that values where precomputed, and that
 				  * all null period have already been replaced by the threshold
 				  */
-				if (currEmitPeriod == emitPeriod) 
+				if (currEmitPeriod == emitPeriod)
 				{
 					// if there possibility to have 0 in the scheme ?
 					if (_PeriodScheme->getMinValue() <= 0.f && _PeriodScheme->getMaxValue() >= 0.f)
-					{											
+					{
 						replaceNullPeriodsByThreshold(emitPeriod, toProcess);
 					}
-				}				
+				}
 			}
 		}
 		else
 		{
 			if (_Period != 0.f || !emitThreshold)
-			{			
+			{
 				currEmitPeriod = &_Period;
 			}
 			else
@@ -1104,13 +1104,13 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 			/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += ellapsedTimeLOD;
 					if ( *phaseIt >= *currEmitPeriod) // phase is greater than period -> must emit
-					{									
+					{
 						if (*currEmitPeriod != 0)
-						{		
+						{
 							/** Must ensure phase is valid if period decrease over time
 							  */
 							*phaseIt = std::min(*phaseIt, *currEmitPeriod + ellapsedTimeLOD);
@@ -1118,12 +1118,12 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 							/// compute the number of emissions
 							uint numEmissions = (uint) ::floorf(*phaseIt / *currEmitPeriod);
 							*phaseIt -= *currEmitPeriod * numEmissions;
-														
+
 							uint emitterIndex = phaseIt - _Phase.begin();
 							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 							if (nbToGenerate)
 							{
-								float deltaT = std::max(0.f, *phaseIt);								
+								float deltaT = std::max(0.f, *phaseIt);
 
 								/// compute the position of the emitter for the needed dates
 								numEmissions = GenEmitterPositionsWithLOD(_Owner,
@@ -1136,20 +1136,20 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 																		  emitterPositions
 																		 );
 
-								/// process each emission at the right pos at the right date																				
+								/// process each emission at the right pos at the right date
 								nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 								if (!nbToGenerate) nbToGenerate = 1;
-								uint k = numEmissions;							
+								uint k = numEmissions;
 								float deltaTInc = *currEmitPeriod * inverseEmitLOD;
 								do
-								{	
+								{
 									--k;
 									processEmitConsistent(emitterPositions[k],
 														  emitterIndex,
 														  nbToGenerate,
 														  deltaT
 														 );
-									deltaT += deltaTInc;								
+									deltaT += deltaTInc;
 								}
 								while (k);
 							}
@@ -1165,19 +1165,19 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 								processEmit(emitterIndex, nbToGenerate);
 							}
 						}
-					}	
-					
-					++phaseIt;					
+					}
+
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // thhere's an emission delay
 			{
-				do			
+				do
 				{
 					if (*phaseIt < _EmitDelay)
-					{					
+					{
 						*phaseIt += CParticleSystem::EllapsedTime;
 						if (*phaseIt < _EmitDelay)
 						{
@@ -1194,11 +1194,11 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 					{
 						*phaseIt += ellapsedTimeLOD;
 					}
-										
+
 					if ( *phaseIt >= *currEmitPeriod + _EmitDelay) // phase is greater than period -> must emit
-					{						
+					{
 						if (*currEmitPeriod != 0)
-						{		
+						{
 							/** Must ensure phase is valid if period decrease over time
 							  */
 							*phaseIt = std::min(*phaseIt, *currEmitPeriod + ellapsedTimeLOD + _EmitDelay);
@@ -1207,12 +1207,12 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 							*phaseIt -= *currEmitPeriod * numEmissions;
 							float deltaT = std::max(*phaseIt - _EmitDelay, 0.f);
 							//nlassert(deltaT >= 0.f);
-							/// process each emission at the right pos at the right date							
+							/// process each emission at the right pos at the right date
 							uint emitterIndex = phaseIt - _Phase.begin();
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;																				
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 							if (nbToGenerate)
 							{
-								
+
 								/// compute the position of the emitter for the needed date
 								numEmissions = GenEmitterPositionsWithLOD(  _Owner,
 																			_EmittedType,
@@ -1223,25 +1223,25 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 																			inverseEmitLOD,
 																			emitterPositions
 																		   );
-											
+
 								nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 								if (!nbToGenerate) nbToGenerate = 1;
-								uint k = numEmissions;							
+								uint k = numEmissions;
 								float deltaTInc = *currEmitPeriod * inverseEmitLOD;
 								do
-								{	
+								{
 									--k;
 									processEmitConsistent(emitterPositions[k],
 														  emitterIndex,
 														  nbToGenerate,
 														  deltaT);
-									deltaT += deltaTInc;								
+									deltaT += deltaTInc;
 								}
 								while (k);
 							}
 						}
 						else
-						{		
+						{
 							const uint32 emitterIndex = phaseIt - (_Phase.begin());
 							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 							if (nbToGenerate)
@@ -1250,10 +1250,10 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 								if (!nbToGenerate) nbToGenerate = 1;
 								processEmit(emitterIndex, nbToGenerate);
 							}
-						}									
-					}	
-					
-					++phaseIt;					
+						}
+					}
+
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
 				while (phaseIt != endPhaseIt);
@@ -1264,7 +1264,7 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 				/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < maxEmissionCountLOD)
 					{
@@ -1278,7 +1278,7 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 								*phaseIt = std::min(*phaseIt, *currEmitPeriod + ellapsedTimeLOD);
 								//
 								uint numEmissions = (uint) ::floorf(*phaseIt / *currEmitPeriod);
-								*numEmitIt +=  numEmissions;								
+								*numEmitIt +=  numEmissions;
 								*phaseIt -= *currEmitPeriod * numEmissions;
 								float deltaT = std::max(*phaseIt, 0.f);
 								//nlassert(deltaT >= 0.f);
@@ -1288,7 +1288,7 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 									numEmissions -= *numEmitIt - _MaxEmissionCount;
 									*numEmitIt = _MaxEmissionCount;
 								}
-								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;								
+								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 								if (nbToGenerate)
 								{
 									/// compute the position of the emitter for the needed date
@@ -1301,7 +1301,7 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 																				inverseEmitLOD,
 																				emitterPositions
 																			 );
-									uint k = numEmissions;								
+									uint k = numEmissions;
 									/// process each emission at the right pos at the right date
 									nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 									if (!nbToGenerate) nbToGenerate = 1;
@@ -1322,39 +1322,39 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 							else
 							{
 								const uint32 emitterIndex = phaseIt - _Phase.begin();
-								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;								
+								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 								if (nbToGenerate)
 								{
 									nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 									if (!nbToGenerate) nbToGenerate = 1;
-									processEmit(emitterIndex, nbToGenerate);								
+									processEmit(emitterIndex, nbToGenerate);
 									++*numEmitIt;
 								}
 							}
-						}	
+						}
 					}
 					else
 					{
-						*numEmitIt = _MaxEmissionCount; // if the lod change, must ensure that the 
+						*numEmitIt = _MaxEmissionCount; // if the lod change, must ensure that the
 					}
-					++phaseIt;					
-					currEmitPeriod += currEmitPeriodPtrInc;							
+					++phaseIt;
+					currEmitPeriod += currEmitPeriodPtrInc;
 					++ numEmitIt;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < maxEmissionCountLOD)
 					{
 						if (*phaseIt < _EmitDelay)
-						{					
+						{
 							*phaseIt += CParticleSystem::EllapsedTime;
 							if (*phaseIt < _EmitDelay)
 							{
-								++phaseIt;					
+								++phaseIt;
 								currEmitPeriod += currEmitPeriodPtrInc;
 								++numEmitIt;
 								continue;
@@ -1370,15 +1370,15 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 						}
 						//
 						if ( *phaseIt >= *currEmitPeriod + _EmitDelay) // phase is greater than period -> must emit
-						{							
+						{
 							if (*currEmitPeriod != 0)
-							{		
+							{
 								/** Must ensure phase is valid if period decrease over time
 								 */
 								*phaseIt = std::min(*phaseIt, *currEmitPeriod + ellapsedTimeLOD + _EmitDelay);
 								//
 								uint numEmissions = (uint) ::floorf((*phaseIt - _EmitDelay) / *currEmitPeriod);
-								*numEmitIt +=  numEmissions;								
+								*numEmitIt +=  numEmissions;
 								*phaseIt -= *currEmitPeriod * numEmissions;
 								float deltaT = std::max(*phaseIt - _EmitDelay, 0.f);
 								//nlassert(deltaT >= 0.f);
@@ -1388,7 +1388,7 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 									numEmissions -= *numEmitIt - _MaxEmissionCount;
 									*numEmitIt = _MaxEmissionCount;
 								}
-								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;								
+								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 								if (nbToGenerate)
 								{
 									/// compute the position of the emitter for the needed date
@@ -1401,13 +1401,13 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 																			  inverseEmitLOD,
 																			  emitterPositions
 																			 );
-									uint k = numEmissions;							
+									uint k = numEmissions;
 									/// process each emission at the right pos at the right date
 									nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 									if (!nbToGenerate) nbToGenerate = 1;
 									float deltaTInc = *currEmitPeriod * inverseEmitLOD;
 									do
-									{	
+									{
 										--k;
 										processEmitConsistent(emitterPositions[k],
 															  emitterIndex,
@@ -1426,17 +1426,17 @@ void CPSEmitter::processRegularEmissionConsistent(uint firstInstanceIndex, float
 								{
 									nbToGenerate = (sint32) (emitLOD * nbToGenerate);
 									if (!nbToGenerate) nbToGenerate = 1;
-									processEmit(emitterIndex, nbToGenerate);								
+									processEmit(emitterIndex, nbToGenerate);
 									++*numEmitIt;
 								}
 							}
 						}
-					}							
+					}
 					else
 					{
-						*numEmitIt = _MaxEmissionCount; // if the lod change, must ensure that the 
+						*numEmitIt = _MaxEmissionCount; // if the lod change, must ensure that the
 					}
-					++phaseIt;					
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 					++numEmitIt;
 				}
@@ -1462,19 +1462,19 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 	//
 
 
-	static std::vector<NLMISC::CVector> emitterPositions; 
+	static std::vector<NLMISC::CVector> emitterPositions;
 	// Positions for the emitter. They are computed by using a parametric trajectory or by using integration
 
 	const uint size = _Owner->getSize();
 	nlassert(firstInstanceIndex < size);
 	uint leftToDo = size - firstInstanceIndex, toProcess;
-	float emitPeriod[EMITTER_BUFF_SIZE]; 
+	float emitPeriod[EMITTER_BUFF_SIZE];
 	const float *currEmitPeriod;
-	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;			
+	uint currEmitPeriodPtrInc = _PeriodScheme ? 1 : 0;
 	sint32 nbToGenerate;
 
 
-	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt; 
+	TPSAttribTime::iterator phaseIt = _Phase.begin() + firstInstanceIndex, endPhaseIt;
 	TPSAttribUInt8::iterator numEmitIt;
 	if (firstInstanceIndex < _NumEmission.getSize())
 		numEmitIt = _NumEmission.begin() + firstInstanceIndex;
@@ -1490,34 +1490,34 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 			// compute period
 			// NB : we ask to clamp entry because life counter of emitter are incremented, then spawn is called, and only after that dead emitters are removed
 			//      so we may have a life counter that is > to 1
-			currEmitPeriod = (float *) (_PeriodScheme->make(_Owner, size - leftToDo, emitPeriod, sizeof(float), toProcess, true, 1 << 16, true));		
+			currEmitPeriod = (float *) (_PeriodScheme->make(_Owner, size - leftToDo, emitPeriod, sizeof(float), toProcess, true, 1 << 16, true));
 			if (emitThreshold)
 			{
-				
+
 				/** Test if 'make' filled our buffer. If this is not the case, we assume that values where precomputed, and that
 				  * all null period have already been replaced by the threshold
 				  */
-				if (currEmitPeriod == emitPeriod) 
+				if (currEmitPeriod == emitPeriod)
 				{
 					// if there possibility to have 0 in the scheme ?
 					if (_PeriodScheme->getMinValue() <= 0.f && _PeriodScheme->getMaxValue() >= 0.f)
-					{											
+					{
 						replaceNullPeriodsByThreshold(emitPeriod, toProcess);
 					}
-				}				
+				}
 			}
 		}
 		else
 		{
 			if (_Period != 0.f || !emitThreshold)
-			{			
+			{
 				currEmitPeriod = &_Period;
 			}
 			else
 			{
 				currEmitPeriod = &EMIT_PERIOD_THRESHOLD;
 			}
-		}		
+		}
 
 		endPhaseIt = phaseIt + toProcess;
 
@@ -1526,13 +1526,13 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 			/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += CParticleSystem::EllapsedTime;
 					if ( *phaseIt >= *currEmitPeriod) // phase is greater than period -> must emit
-					{									
+					{
 						if (*currEmitPeriod != 0)
-						{		
+						{
 							/** Must ensure phase is valid if period decrease over time
 							  */
 							*phaseIt = std::min(*phaseIt, *currEmitPeriod + CParticleSystem::EllapsedTime);
@@ -1554,11 +1554,11 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 																emitterPositions
 															   );
 
-							/// process each emission at the right pos at the right date							
+							/// process each emission at the right pos at the right date
 							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
-							uint k = numEmissions;							
+							uint k = numEmissions;
 							do
-							{	
+							{
 								--k;
 								processEmitConsistent(emitterPositions[k],
 													  emitterIndex,
@@ -1566,7 +1566,7 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 													  deltaT);
 								deltaT += *currEmitPeriod;
 							}
-							while (k);																	
+							while (k);
 						}
 						else
 						{
@@ -1574,22 +1574,22 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 							processEmit(emitterIndex, nbToGenerate);
 						}
-					}	
-					
-					++phaseIt;					
+					}
+
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // thhere's an emission delay
 			{
-				do			
+				do
 				{
 					*phaseIt += CParticleSystem::EllapsedTime;
 					if ( *phaseIt >= *currEmitPeriod + _EmitDelay) // phase is greater than period -> must emit
-					{						
+					{
 						if (*currEmitPeriod != 0)
-						{		
+						{
 							/** Must ensure phase is valid if period decrease over time
 							  */
 							*phaseIt = std::min(*phaseIt, *currEmitPeriod + CParticleSystem::EllapsedTime + _EmitDelay);
@@ -1609,29 +1609,29 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 											    *currEmitPeriod,
 											    emitterPositions
 											   );
-							/// process each emission at the right pos at the right date							
-							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;							
-							uint k = numEmissions;							
+							/// process each emission at the right pos at the right date
+							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
+							uint k = numEmissions;
 							do
-							{	
+							{
 								--k;
 								processEmitConsistent(emitterPositions[k],
 													  emitterIndex,
 													  nbToGenerate,
 													  deltaT);
-								deltaT += *currEmitPeriod;								
+								deltaT += *currEmitPeriod;
 							}
-							while (k);													
+							while (k);
 						}
 						else
-						{		
+						{
 							const uint32 emitterIndex = phaseIt - (_Phase.begin());
 							nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
-							processEmit(emitterIndex, nbToGenerate);							
-						}									
-					}	
-					
-					++phaseIt;					
+							processEmit(emitterIndex, nbToGenerate);
+						}
+					}
+
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 				}
 				while (phaseIt != endPhaseIt);
@@ -1642,7 +1642,7 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 				/// is there an emission delay ?
 			if (_EmitDelay == 0.f) // no emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < _MaxEmissionCount)
 					{
@@ -1656,7 +1656,7 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 								*phaseIt = std::min(*phaseIt, *currEmitPeriod + CParticleSystem::EllapsedTime);
 								//
 								uint numEmissions = (uint) ::floorf(*phaseIt / *currEmitPeriod);
-								*numEmitIt +=  numEmissions;								
+								*numEmitIt +=  numEmissions;
 								*phaseIt -= *currEmitPeriod * numEmissions;
 								float deltaT = std::max(*phaseIt, 0.f);
 								//nlassert(deltaT >= 0.f);
@@ -1675,9 +1675,9 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 													*currEmitPeriod,
 													emitterPositions
 												   );
-								uint k = numEmissions;								
-								/// process each emission at the right pos at the right date								
-								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;								
+								uint k = numEmissions;
+								/// process each emission at the right pos at the right date
+								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 								do
 								{
 									--k;
@@ -1685,42 +1685,42 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 														  emitterIndex,
 														  nbToGenerate,
 														  deltaT);
-									deltaT += *currEmitPeriod;									
+									deltaT += *currEmitPeriod;
 								}
-								while (k);														
+								while (k);
 							}
 							else
 							{
 								const uint32 emitterIndex = phaseIt - _Phase.begin();
 								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
-								processEmit(emitterIndex, nbToGenerate);								
+								processEmit(emitterIndex, nbToGenerate);
 								++*numEmitIt;
 							}
-						}	
-					}	
-					++phaseIt;					
-					currEmitPeriod += currEmitPeriodPtrInc;							
+						}
+					}
+					++phaseIt;
+					currEmitPeriod += currEmitPeriodPtrInc;
 					++ numEmitIt;
 				}
 				while (phaseIt != endPhaseIt);
 			}
 			else // there's an emission delay
 			{
-				do			
+				do
 				{
 					if (*numEmitIt < _MaxEmissionCount)
 					{
 						*phaseIt += CParticleSystem::EllapsedTime;
 						if ( *phaseIt >= *currEmitPeriod + _EmitDelay) // phase is greater than period -> must emit
-						{							
+						{
 							if (*currEmitPeriod != 0)
-							{		
+							{
 								/** Must ensure phase is valid if period decrease over time
 								 */
 								*phaseIt = std::min(*phaseIt, *currEmitPeriod + CParticleSystem::EllapsedTime + _EmitDelay);
 								//
 								uint numEmissions = (uint) ::floorf((*phaseIt - _EmitDelay) / *currEmitPeriod);
-								*numEmitIt +=  numEmissions;								
+								*numEmitIt +=  numEmissions;
 								*phaseIt -= *currEmitPeriod * numEmissions;
 								float deltaT = std::max(*phaseIt - _EmitDelay, 0.f);
 								//nlassert(deltaT >= 0.f);
@@ -1739,30 +1739,30 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 																	*currEmitPeriod,
 																	emitterPositions
 																   );
-								uint k = numEmissions;								
-								/// process each emission at the right pos at the right date								
-								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;								
+								uint k = numEmissions;
+								/// process each emission at the right pos at the right date
+								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
 								do
-								{	
+								{
 									--k;
 									processEmitConsistent(emitterPositions[k],
 														  emitterIndex,
 														  nbToGenerate,
 														  deltaT);
-									deltaT += *currEmitPeriod;									
+									deltaT += *currEmitPeriod;
 								}
-								while (k);								
+								while (k);
 							}
 							else
 							{
 								const uint32 emitterIndex = phaseIt - (_Phase.begin());
 								nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, emitterIndex) : _GenNb;
-								processEmit(emitterIndex, nbToGenerate);								
+								processEmit(emitterIndex, nbToGenerate);
 								++*numEmitIt;
 							}
 						}
-					}							
-					++phaseIt;					
+					}
+					++phaseIt;
 					currEmitPeriod += currEmitPeriodPtrInc;
 					++numEmitIt;
 				}
@@ -1778,12 +1778,12 @@ void CPSEmitter::processRegularEmissionConsistentWithNoLOD(uint firstInstanceInd
 
 ///==========================================================================
 void CPSEmitter::step(TPSProcessPass pass)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_step)
 	if (pass == PSToolRender)
 	{
-		showTool();		
-	}		
+		showTool();
+	}
 }
 
 ///==========================================================================
@@ -1793,9 +1793,9 @@ void CPSEmitter::computeSpawns(uint firstInstanceIndex)
 	if (!_EmittedType) return;
 	nlassert(CParticleSystem::InsideSimLoop);
 	const uint32 size = _Owner->getSize();
-	if (!size) return;	
-	if (CParticleSystem::EllapsedTime == 0.f) return; // do nothing when paused	
-	CParticleSystem *ps = _Owner->getOwner();	
+	if (!size) return;
+	if (CParticleSystem::EllapsedTime == 0.f) return; // do nothing when paused
+	CParticleSystem *ps = _Owner->getOwner();
 	nlassert(ps);
 	float emitLOD;
 	if (ps->isAutoLODEnabled() && !ps->isSharingEnabled() && !_BypassAutoLOD)
@@ -1805,9 +1805,9 @@ void CPSEmitter::computeSpawns(uint firstInstanceIndex)
 	}
 	else
 	{
-		emitLOD = 1.f; 
-	}	
-	nlassert(_EmissionType == CPSEmitter::regular);	
+		emitLOD = 1.f;
+	}
+	nlassert(_EmissionType == CPSEmitter::regular);
 	if (!_ConsistentEmission)
 	{
 		if (emitLOD != 1.f)
@@ -1824,7 +1824,7 @@ void CPSEmitter::computeSpawns(uint firstInstanceIndex)
 		if (emitLOD != 1.f)
 		{
 			if (emitLOD != 0.f)
-			{					
+			{
 				processRegularEmissionConsistent(firstInstanceIndex, emitLOD, 1.f / emitLOD);
 			}
 		}
@@ -1832,20 +1832,20 @@ void CPSEmitter::computeSpawns(uint firstInstanceIndex)
 		{
 			processRegularEmissionConsistentWithNoLOD(firstInstanceIndex);
 		}
-	}		
+	}
 }
 
 
 ///==========================================================================
 void CPSEmitter::newElement(const CPSEmitterInfo &info)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_newElement)
-	nlassert(_Phase.getSize() != _Phase.getMaxSize());	
+	nlassert(_Phase.getSize() != _Phase.getMaxSize());
 
 	_Phase.insert(0.f);
 	if (_MaxEmissionCount != 0)
 	{
-		_NumEmission.insert(0);	
+		_NumEmission.insert(0);
 	}
 	if (_PeriodScheme && _PeriodScheme->hasMemory()) _PeriodScheme->newElement(info);
 	if (_GenNbScheme && _GenNbScheme->hasMemory()) _GenNbScheme->newElement(info);
@@ -1867,23 +1867,23 @@ inline void CPSEmitter::deleteElementBase(uint32 index)
 
 ///==========================================================================
 void CPSEmitter::deleteElement(uint32 index)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_deleteElement)
 
 	if (_EmissionType == CPSEmitter::onDeath && _EmittedType && _Active)
-	{		
+	{
 		if (!_BypassEmitOnDeath)
-		{		
-			const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, index) : _GenNb;			
+		{
+			const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, index) : _GenNb;
 			processEmitOutsideSimLoop(index, nbToGenerate);
 		}
-	}		
-	deleteElementBase(index);	
+	}
+	deleteElementBase(index);
 }
 
 ///==========================================================================
 void CPSEmitter::deleteElement(uint32 index, TAnimationTime timeUntilNextSimStep)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_deleteElement)
 	if (_EmissionType == CPSEmitter::onDeath && _EmittedType && _Active)
 	{
@@ -1910,14 +1910,14 @@ void CPSEmitter::resize(uint32 size)
 
 ///==========================================================================
 void CPSEmitter::bounceOccured(uint32 index, TAnimationTime timeToNextSimStep)
-{	
+{
 	NL_PS_FUNC(CPSEmitter_bounceOccured)
 	// TODO : avoid duplication with deleteElement
 	if (_EmittedType && _EmissionType == CPSEmitter::onBounce)
 	{
-		const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, index) : _GenNb;		
+		const uint32 nbToGenerate = _GenNbScheme ? _GenNbScheme->get(_Owner, index) : _GenNb;
 		processEmitConsistent(_Owner->getPos()[index], index, nbToGenerate, timeToNextSimStep);
-	}		
+	}
 }
 
 ///==========================================================================
@@ -1925,12 +1925,12 @@ void CPSEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSEmitter_serial)
 	/// version 6  : the flag _EmitDirBasis no longer exist, it has been replaced by _UserMatrixModeForEmissionDirection
-	//               
+	//
 	/// version 5  : added _BypassAutoLOD
 	/// version 4  : added consistent emissions
-	sint ver = f.serialVersion(6);	
+	sint ver = f.serialVersion(6);
 	CPSLocatedBindable::serial(f);
-	
+
 	f.serialPolyPtr(_EmittedType);
 	f.serial(_Phase);
 	f.serial(_SpeedInheritanceFactor);
@@ -1938,7 +1938,7 @@ void CPSEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	bool speedBasisEmission = _SpeedBasisEmission; // tmp copy because of bitfield serialization scheme
 	f.serial(speedBasisEmission);
 	_SpeedBasisEmission = speedBasisEmission;
-	
+
 	f.serialEnum(_EmissionType);
 
 	// this is for use with serial
@@ -1948,7 +1948,7 @@ void CPSEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	{
 		switch (_EmissionType)
 		{
-			case CPSEmitter::regular:			
+			case CPSEmitter::regular:
 				if (_PeriodScheme)
 				{
 					f.serial(trueB);
@@ -1961,7 +1961,7 @@ void CPSEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 				}
 				if (ver >= 3)
 				{
-					f.serial(_EmitDelay, _MaxEmissionCount);													
+					f.serial(_EmitDelay, _MaxEmissionCount);
 				}
 			break;
 			default:
@@ -1984,36 +1984,36 @@ void CPSEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		switch (_EmissionType)
 		{
 			case CPSEmitter::regular:
-			{				
+			{
 				f.serial(useScheme);
 				if (useScheme)
 				{
-					delete _PeriodScheme;					
+					delete _PeriodScheme;
 					f.serialPolyPtr(_PeriodScheme);
 				}
 				else
-				{					 
+				{
 					 f.serial(_Period);
 				}
 				if (ver >= 3)
 				{
 					f.serial(_EmitDelay, _MaxEmissionCount);
 					updateMaxCountVect();
-				}				
+				}
 			}
 			break;
 			default:
 			break;
 		}
 
-		f.serial(useScheme); 
+		f.serial(useScheme);
 		if (useScheme)
 		{
 			delete _GenNbScheme;
 			f.serialPolyPtr(_GenNbScheme);
 		}
 		else
-		{				
+		{
 			 f.serial(_GenNb);
 		}
 	}
@@ -2070,16 +2070,16 @@ void	CPSEmitter::updateMaxCountVect()
 		_NumEmission.resize(0);
 	}
 	else
-	{		
+	{
 		_NumEmission.resize(_Owner->getMaxSize());
-		while (_NumEmission.getSize() != 0) 
-		{		
+		while (_NumEmission.getSize() != 0)
+		{
 			_NumEmission.remove(0);
 		}
 		while (_NumEmission.getSize() != _Owner->getSize())
 		{
 			_NumEmission.insert(0);
-		}		
+		}
 	}
 }
 
@@ -2098,7 +2098,7 @@ void CPSEmitter::setEmitDelay(float delay)
 bool	CPSEmitter::setMaxEmissionCount(uint8 count)
 {
 	NL_PS_FUNC(CPSEmitter_setMaxEmissionCount)
-	if (count == _MaxEmissionCount) return true;	
+	if (count == _MaxEmissionCount) return true;
 	nlassert(_Owner && _Owner->getOwner());
 	CParticleSystem *ps = _Owner->getOwner();
 	if (ps->getBypassMaxNumIntegrationSteps())
@@ -2112,7 +2112,7 @@ bool	CPSEmitter::setMaxEmissionCount(uint8 count)
 			nlwarning("<CPSEmitter::setMaxEmissionCount> can't set max emission count to %d  \
 					   with the current configuration : the system has been flagged with     \
 					   'BypassMaxNumIntegrationSteps', and should have a finite duration.    \
-					   The new value is not set", (int) count);		
+					   The new value is not set", (int) count);
 			return false;
 		}
 	}
@@ -2128,7 +2128,7 @@ bool CPSEmitter::checkLoop() const
 	NL_PS_FUNC(CPSEmitter_checkLoop)
 	nlassert(_Owner);
 	nlassert(_Owner->getOwner());
-	if (!_EmittedType) return false;	
+	if (!_EmittedType) return false;
 	std::set<const CPSLocated *> seenLocated; // the located we've already seen
 	std::vector<const CPSLocated *> leftLoc(1);  // the located that are left to see
 	leftLoc[0] = _EmittedType;
@@ -2147,7 +2147,7 @@ bool CPSEmitter::checkLoop() const
 				{
 					leftLoc.push_back(emitter->_EmittedType);
 				}
-			}			
+			}
 		}
 	}
 	while (!leftLoc.empty());
@@ -2156,14 +2156,14 @@ bool CPSEmitter::checkLoop() const
 
 ///==========================================================================
 bool CPSEmitter::testEmitForever() const
-{				
+{
 	NL_PS_FUNC(CPSEmitter_testEmitForever)
 	if (!_Owner)
 	{
 		nlwarning("<CPSEmitter::testEmitForever> The emitter should be inserted in a CPSLocated instance for this call to work.");
 		nlassert(0);
 		return true;
-	}	
+	}
 	if (!_Owner->getLastForever()) return false;
 	switch(getEmissionType())
 	{
@@ -2191,7 +2191,7 @@ bool CPSEmitter::testEmitForever() const
 void CPSModulatedEmitter::serialEmitteeSpeedScheme(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSModulatedEmitter_IStream )
-	bool useScheme;			
+	bool useScheme;
 	if (!f.isReading())
 	{
 		useScheme = useEmitteeSpeedScheme();
@@ -2218,24 +2218,24 @@ void CPSEmitterOmni::emit(const NLMISC::CVector &srcPos, uint32 index, CVector &
 {
 	NL_PS_FUNC(CPSEmitterOmni_emit)
 	// TODO : verifier que ca marche si une particule s'emet elle-mem
-	nlassert(_EmittedType);	
-	
+	nlassert(_EmittedType);
+
 	CVector v( ((rand() % 1000) - 500) / 500.0f
 				   , ((rand() % 1000) - 500) / 500.0f
 				   , ((rand() % 1000) - 500) / 500.0f);
 	v.normalize();
-	v *= _EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed;		
+	v *= _EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed;
 
 	pos = srcPos;
-	speed = v;	
-	
+	speed = v;
+
 }
 
 ///==========================================================================
 void CPSEmitterOmni::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSEmitterOmni_serial)
-	f.serialVersion(1);	
+	f.serialVersion(1);
 	CPSEmitter::serial(f);
 	CPSModulatedEmitter::serialEmitteeSpeedScheme(f);
 }
@@ -2252,7 +2252,7 @@ void CPSEmitterOmni::newElement(const CPSEmitterInfo &info)
 inline void CPSEmitterOmni::deleteElementBase(uint32 index)
 {
 	NL_PS_FUNC(CPSEmitterOmni_deleteElementBase)
-	deleteEmitteeSpeedElement(index);	
+	deleteEmitteeSpeedElement(index);
 }
 
 ///==========================================================================
@@ -2265,7 +2265,7 @@ void CPSEmitterOmni::deleteElement(uint32 index, TAnimationTime timeUntilNextSim
 
 ///==========================================================================
 void CPSEmitterOmni::deleteElement(uint32 index)
-{	
+{
 	NL_PS_FUNC(CPSEmitterOmni_deleteElement)
 	CPSEmitter::deleteElement(index);
 	deleteElementBase(index);
@@ -2285,11 +2285,11 @@ void CPSEmitterDirectionnal::emit(const NLMISC::CVector &srcPos, uint32 index, C
 {
 	NL_PS_FUNC(CPSEmitterDirectionnal_emit)
 	// TODO : verifier que ca marche si une particule s'emet elle-mem
-	nlassert(_EmittedType);	
-	
+	nlassert(_EmittedType);
 
-	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) * _Dir;		
-	pos = srcPos;	
+
+	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) * _Dir;
+	pos = srcPos;
 }
 
 ///==========================================================================
@@ -2305,7 +2305,7 @@ void CPSEmitterDirectionnal::newElement(const CPSEmitterInfo &info)
 inline void CPSEmitterDirectionnal::deleteElementBase(uint32 index)
 {
 	NL_PS_FUNC(CPSEmitterDirectionnal_deleteElementBase)
-	deleteEmitteeSpeedElement(index);	
+	deleteEmitteeSpeedElement(index);
 }
 
 ///==========================================================================
@@ -2318,7 +2318,7 @@ void CPSEmitterDirectionnal::deleteElement(uint32 index, TAnimationTime timeUnti
 
 ///==========================================================================
 void CPSEmitterDirectionnal::deleteElement(uint32 index)
-{	
+{
 	NL_PS_FUNC(CPSEmitterDirectionnal_deleteElement)
 	CPSEmitter::deleteElement(index);
 	deleteElementBase(index);
@@ -2339,7 +2339,7 @@ void CPSEmitterDirectionnal::resize(uint32 capacity)
 void CPSEmitterDirectionnal::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSEmitterDirectionnal_IStream )
-	f.serialVersion(1);	
+	f.serialVersion(1);
 	CPSEmitter::serial(f);
 	CPSModulatedEmitter::serialEmitteeSpeedScheme(f);
 	f.serial(_Dir);
@@ -2353,10 +2353,10 @@ void CPSEmitterDirectionnal::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 void CPSEmitterRectangle::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSEmitterRectangle_IStream )
-	f.serialVersion(1);	
+	f.serialVersion(1);
 	CPSEmitter::serial(f);
 	CPSModulatedEmitter::serialEmitteeSpeedScheme(f);
-	f.serial(_Basis);	
+	f.serial(_Basis);
 	f.serial(_Width);
 	f.serial(_Height);
 	f.serial(_Dir);
@@ -2368,9 +2368,9 @@ void CPSEmitterRectangle::emit(const NLMISC::CVector &srcPos, uint32 index, CVec
 {
 	NL_PS_FUNC(CPSEmitterRectangle_emit)
 	CVector N = _Basis[index].X ^ _Basis[index].Y;
-	pos = srcPos + ((rand() % 32000) * (1.f / 16000) - 1.f) *  _Width[index] *  _Basis[index].X 
+	pos = srcPos + ((rand() % 32000) * (1.f / 16000) - 1.f) *  _Width[index] *  _Basis[index].X
 				 + ((rand() % 32000) * (1.f / 16000) - 1.f) *  _Height[index] * _Basis[index].Y;
-	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) 
+	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed)
 					* (_Dir.x * _Basis[index].X+ _Dir.y * _Basis[index].Y + _Dir.z *  N);
 }
 
@@ -2380,7 +2380,7 @@ void CPSEmitterRectangle::setMatrix(uint32 index, const CMatrix &m)
 	NL_PS_FUNC(CPSEmitterRectangle_setMatrix)
 	_Owner->getPos()[index] = m.getPos();
 
-	
+
 	 _Basis[index].X = m.getI();
 	 _Basis[index].Y = m.getJ();
 }
@@ -2413,9 +2413,9 @@ void CPSEmitterRectangle::setScale(uint32 index, const CVector &s)
 
 ///==========================================================================
 CVector CPSEmitterRectangle::getScale(uint32 index) const
-{	
+{
 	NL_PS_FUNC(CPSEmitterRectangle_getScale)
-	return CVector(_Width[index], _Height[index], 1.f); 
+	return CVector(_Width[index], _Height[index], 1.f);
 }
 
 ///==========================================================================
@@ -2438,7 +2438,7 @@ inline void CPSEmitterRectangle::deleteElementBase(uint32 index)
 	_Width.remove(index);
 	_Height.remove(index);
 }
-		
+
 ///==========================================================================
 void CPSEmitterRectangle::deleteElement(uint32 index)
 {
@@ -2474,25 +2474,25 @@ void CPSEmitterRectangle::showTool(void)
 	nlassert(_Owner);
 	const uint size = _Owner->getSize();
 	if (!size) return;
-	setupDriverModelMatrix();	
+	setupDriverModelMatrix();
 	CMatrix mat;
-	
+
 	CPSLocated *loc;
 	uint32 index;
 	CPSLocatedBindable *lb;
 	_Owner->getOwner()->getCurrentEditedElement(loc, index, lb);
 
-	for (uint k = 0; k < size; ++k) 
-	{	
+	for (uint k = 0; k < size; ++k)
+	{
 		const CVector &I = _Basis[k].X;
 		const CVector &J = _Basis[k].Y;
 		mat.setRot(I, J , I ^J);
 		mat.setPos(_Owner->getPos()[k]);
-		CPSUtil::displayBasis(getDriver() ,getLocalToWorldMatrix(), mat, 1.f, *getFontGenerator(), *getFontManager());				
-		setupDriverModelMatrix();	
+		CPSUtil::displayBasis(getDriver() ,getLocalToWorldMatrix(), mat, 1.f, *getFontGenerator(), *getFontManager());
+		setupDriverModelMatrix();
 
 		const CRGBA col = ((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));
-	
+
 
 
 		const CVector &pos = _Owner->getPos()[k];
@@ -2513,17 +2513,17 @@ void CPSEmitterRectangle::showTool(void)
 void CPSEmitterConic::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSEmitterConic_serial)
-	f.serialVersion(1);	
+	f.serialVersion(1);
 	CPSEmitterDirectionnal::serial(f);
-	f.serial(_Radius);	
+	f.serial(_Radius);
 }
-	
+
 ///==========================================================================
 void CPSEmitterConic::setDir(const CVector &v)
 {
 	NL_PS_FUNC(CPSEmitterConic_setDir)
 	CPSEmitterDirectionnal::setDir(v);
-	
+
 }
 
 ///==========================================================================
@@ -2531,8 +2531,8 @@ void CPSEmitterConic::emit(const NLMISC::CVector &srcPos, uint32 index, CVector 
 {
 	NL_PS_FUNC(CPSEmitterConic_emit)
 	// TODO : optimize that
-	nlassert(_EmittedType);	
-	
+	nlassert(_EmittedType);
+
 	// we choose a custom direction like with omnidirectionnal emitter
 	// then we force the direction vect to have the unit size
 
@@ -2549,11 +2549,11 @@ void CPSEmitterConic::emit(const NLMISC::CVector &srcPos, uint32 index, CVector 
 	dir -= (_Dir * dir) * _Dir;
 	dir += _Dir;
 	dir.normalize();
-	
-	
-	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) 
+
+
+	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed)
 		    * dir;
-	pos = srcPos;	
+	pos = srcPos;
 }
 
 ////////////////////////////////////////
@@ -2568,7 +2568,7 @@ void CPSSphericalEmitter::emit(const NLMISC::CVector &srcPos, uint32 index, CVec
 	CVector dir((float) (rand() * divRand - 1), (float) (rand() * divRand - 1) , (float) (rand() * divRand - 1) );
 	dir.normalize();
 	pos = srcPos + _Radius[index] * dir;
-	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed)  * dir;	
+	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed)  * dir;
 }
 
 
@@ -2584,10 +2584,10 @@ void CPSSphericalEmitter::showTool(void)
 
 	TPSAttribFloat::const_iterator radiusIt = _Radius.begin();
 	TPSAttribVector::const_iterator posIt = _Owner->getPos().begin(), endPosIt = _Owner->getPos().end();
-	setupDriverModelMatrix();	
-	for (uint k = 0; posIt != endPosIt; ++posIt, ++radiusIt, ++k) 
-	{	
-		const CRGBA col = ((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));		
+	setupDriverModelMatrix();
+	for (uint k = 0; posIt != endPosIt; ++posIt, ++radiusIt, ++k)
+	{
+		const CRGBA col = ((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));
 		CPSUtil::displaySphere(*getDriver(), *radiusIt, *posIt, 5, col);
 	}
 }
@@ -2597,10 +2597,10 @@ void CPSSphericalEmitter::showTool(void)
 void CPSSphericalEmitter::setMatrix(uint32 index, const CMatrix &m)
 {
 	NL_PS_FUNC(CPSSphericalEmitter_setMatrix)
-	nlassert(index < _Radius.getSize());		
+	nlassert(index < _Radius.getSize());
 	// compute new pos
 	_Owner->getPos()[index] = m.getPos();
-	
+
 }
 
 ///==========================================================================
@@ -2610,20 +2610,20 @@ CMatrix CPSSphericalEmitter::getMatrix(uint32 index) const
 	nlassert(index < _Radius.getSize());
 	CMatrix m;
 	m.identity();
-	m.translate(_Owner->getPos()[index]);	
-	return m; 
+	m.translate(_Owner->getPos()[index]);
+	return m;
 }
-		
+
 ///==========================================================================
 void CPSSphericalEmitter::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSSphericalEmitter_serial)
-	f.serialVersion(1);	
+	f.serialVersion(1);
 	CPSEmitter::serial(f);
 	CPSModulatedEmitter::serialEmitteeSpeedScheme(f);
 	f.serial(_Radius);
 }
-		
+
 ///==========================================================================
 void CPSSphericalEmitter::newElement(const CPSEmitterInfo &info)
 {
@@ -2637,8 +2637,8 @@ void CPSSphericalEmitter::newElement(const CPSEmitterInfo &info)
 inline void CPSSphericalEmitter::deleteElementBase(uint32 index)
 {
 	NL_PS_FUNC(CPSSphericalEmitter_deleteElementBase)
-	deleteEmitteeSpeedElement(index);	
-	_Radius.remove(index); 
+	deleteEmitteeSpeedElement(index);
+	_Radius.remove(index);
 }
 
 ///==========================================================================
@@ -2663,7 +2663,7 @@ void CPSSphericalEmitter::resize(uint32 size)
 	NL_PS_FUNC(CPSSphericalEmitter_resize)
 	nlassert(size < (1 << 16));
 	CPSEmitter::resize(size);
-	resizeEmitteeSpeed(size);	
+	resizeEmitteeSpeed(size);
 	_Radius.resize(size);
 }
 
@@ -2684,15 +2684,15 @@ void CPSRadialEmitter::emit(const NLMISC::CVector &srcPos, uint32 index, NLMISC:
 {
 	NL_PS_FUNC(CPSRadialEmitter_emit)
 	// TODO : verifier que ca marche si une particule s'emet elle-mem
-	nlassert(_EmittedType);	
+	nlassert(_EmittedType);
 
 	static const double divRand = (2.0 / RAND_MAX);
 	CVector dir((float) (rand() * divRand - 1),
 		        (float) (rand() * divRand - 1),
 				(float) (rand() * divRand - 1) );
 	dir -= (dir * _Dir) * _Dir; //keep tangential direction
-	dir.normalize();	
-	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) * dir;		
+	dir.normalize();
+	speed = (_EmitteeSpeedScheme ? _EmitteeSpeedScheme->get(_Owner, index) : _EmitteeSpeed) * dir;
 	pos = srcPos;
 }
 
@@ -2769,7 +2769,7 @@ void CPSEmitter::doEmitOnce(uint firstInstanceIndex)
 	float emitLOD;
 	nlassert(_Owner);
 	nlassert(_Owner->getOwner());
-	const CParticleSystem *ps = _Owner->getOwner(); 
+	const CParticleSystem *ps = _Owner->getOwner();
 	if (ps->isAutoLODEnabled() && !ps->isSharingEnabled() && !_BypassAutoLOD)
 	{
 		// temp test for auto lod
@@ -2777,11 +2777,11 @@ void CPSEmitter::doEmitOnce(uint firstInstanceIndex)
 	}
 	else
 	{
-		emitLOD = 1.f; 
+		emitLOD = 1.f;
 	}
 	nlassert(emitLOD >= 0.f);
 	if (_GenNbScheme)
-	{	
+	{
 		const uint BATCH_SIZE = 1024;
 		uint32 numToEmit[BATCH_SIZE];
 		uint k = firstInstanceIndex;
@@ -2794,10 +2794,10 @@ void CPSEmitter::doEmitOnce(uint firstInstanceIndex)
 			uint32 *numToEmitPtr = (uint32 *) _GenNbScheme->make(_Owner, k, numToEmit, sizeof(uint32), true);
 			leftToDo -= toProcess;
 			while (toProcess)
-			{				
+			{
 				CVector startPos;
 				if (!_Owner->isParametricMotionEnabled())
-				{					
+				{
 					startPos = _Owner->getPos()[k] - _Owner->getSpeed()[k] * CParticleSystem::EllapsedTime;
 				}
 				else
@@ -2805,32 +2805,32 @@ void CPSEmitter::doEmitOnce(uint firstInstanceIndex)
 					startPos = _Owner->getParametricInfos()[k].Pos;
 				}
 				float currTime = _Owner->getTime()[k];
-				_Owner->getTime()[k] = 0.f; // when emit occured, time was 0				
+				_Owner->getTime()[k] = 0.f; // when emit occured, time was 0
 				sint32 nbToGenerate = (sint32) (emitLOD * *numToEmitPtr);
 				if (nbToGenerate > 0)
-				{	
+				{
 					nbToGenerate = std::min(nbToGenerate, (sint32) _EmittedType->getMaxSize());
 					processEmitConsistent(startPos, k, nbToGenerate, _Owner->getAgeInSeconds(k) / CParticleSystem::RealEllapsedTimeRatio);
 				}
 				// restore time & pos
-				_Owner->getTime()[k] = currTime;				
+				_Owner->getTime()[k] = currTime;
 				++ k;
 				++ numToEmitPtr;
 				-- toProcess;
 			}
-		}		
+		}
 	}
 	else
 	{
-		sint nbToGenerate = (sint) (emitLOD * _GenNb);		
+		sint nbToGenerate = (sint) (emitLOD * _GenNb);
 		if (nbToGenerate <= 0)  nbToGenerate = 1;
 		nbToGenerate = std::min(nbToGenerate, (sint) _EmittedType->getMaxSize());
 		for(uint k = firstInstanceIndex; k < _Owner->getSize(); ++k)
-		{		
+		{
 			// retrieve previous position (because motion step is done before spawn step)
 			CVector startPos;
 			if (!_Owner->isParametricMotionEnabled())
-			{					
+			{
 				startPos = _Owner->getPos()[k] - _Owner->getSpeed()[k] * CParticleSystem::EllapsedTime;
 			}
 			else
@@ -2838,12 +2838,12 @@ void CPSEmitter::doEmitOnce(uint firstInstanceIndex)
 				startPos = _Owner->getParametricInfos()[k].Pos;
 			}
 			float currTime = _Owner->getTime()[k];
-			_Owner->getTime()[k] = 0.f; // when emit occured, time was 0					
-			processEmitConsistent(startPos, k, nbToGenerate, _Owner->getAgeInSeconds(k) / CParticleSystem::RealEllapsedTimeRatio);			
+			_Owner->getTime()[k] = 0.f; // when emit occured, time was 0
+			processEmitConsistent(startPos, k, nbToGenerate, _Owner->getAgeInSeconds(k) / CParticleSystem::RealEllapsedTimeRatio);
 			// restore time & pos
-			_Owner->getTime()[k] = currTime;			
+			_Owner->getTime()[k] = currTime;
 		}
-	}		
+	}
 }
 
 ///==========================================================================
@@ -2853,7 +2853,7 @@ void CPSEmitter::updateEmitTrigger()
 	if (!_EmitTrigger) return;
 	nlassert(_Owner);
 	nlassert(_Owner->getOwner());
-	const CParticleSystem *ps = _Owner->getOwner(); 
+	const CParticleSystem *ps = _Owner->getOwner();
 	float emitLOD;
 	if (ps->isAutoLODEnabled() && !ps->isSharingEnabled() && !_BypassAutoLOD)
 	{
@@ -2862,10 +2862,10 @@ void CPSEmitter::updateEmitTrigger()
 	}
 	else
 	{
-		emitLOD = 1.f; 
+		emitLOD = 1.f;
 	}
 	if (_GenNbScheme)
-	{	
+	{
 		const uint BATCH_SIZE = 1024;
 		uint32 numToEmit[BATCH_SIZE];
 		uint k = 0;
@@ -2875,14 +2875,14 @@ void CPSEmitter::updateEmitTrigger()
 			uint toProcess = std::min(BATCH_SIZE, leftToDo);
 			uint32 *numToEmitPtr = (uint32 *) _GenNbScheme->make(_Owner, k, numToEmit, sizeof(uint32), true);
 			while (toProcess)
-			{				
+			{
 				uint32 nbToGenerate = (sint32) (emitLOD * *numToEmitPtr);
 				if (!nbToGenerate) nbToGenerate = 1;
-				processEmit(k, nbToGenerate);				
+				processEmit(k, nbToGenerate);
 				++ k;
 				++ numToEmitPtr;
 			}
-			
+
 			leftToDo -= toProcess;
 		}
 	}
@@ -2891,10 +2891,10 @@ void CPSEmitter::updateEmitTrigger()
 		uint nbToGenerate = (sint32) (emitLOD * _GenNb);
 		if (!nbToGenerate) nbToGenerate = 1;
 		for(uint k = 0; k < _Owner->getSize(); ++k)
-		{					
-			processEmit(k, nbToGenerate);			
+		{
+			processEmit(k, nbToGenerate);
 		}
-	}		
+	}
 	_EmitTrigger = false;
 }
 

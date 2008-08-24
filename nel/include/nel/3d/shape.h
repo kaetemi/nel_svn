@@ -32,7 +32,7 @@
 #include "nel/misc/aabbox.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -50,7 +50,7 @@ class	CRenderTrav;
 /**
  * The basic interface for shapes. A shape is a kind of instanciable mesh.
  * For simplicity, render() and clip() virtual method are provided, so majority of shape could be implemented by just
- * define those methods, and let createInstance() as default. But other complex shapes may be defined, by implement 
+ * define those methods, and let createInstance() as default. But other complex shapes may be defined, by implement
  * a compatible model which will comunicate with them.
  *
  * Serialisation of a shape MUST be done with ISTREAM::serialPolyPtr.
@@ -176,7 +176,7 @@ protected:
 };
 
 // ***************************************************************************
-/** 
+/**
  * This class is used to serialize a shape. In reading, just create a CShapeStream object
  * and serial your class with your input stream using "serial (IStream&)". Then take back the shape pointer.
  * It is yours. In writing, create a CShapeStream object with a pointer on the IShape
@@ -194,7 +194,7 @@ public:
 	 *  \param shape the pointer on the IShape derived object you want to serialize.
 	 */
 	CShapeStream (IShape* shape);
-	
+
 	virtual ~CShapeStream() {}
 
 	/** Set the pointer to the IShape object. Used to serial a shape in output.

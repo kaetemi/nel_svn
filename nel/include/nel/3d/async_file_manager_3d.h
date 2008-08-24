@@ -42,7 +42,7 @@ class CTextureFile;
  * CAsyncFileManager is a class that manage file loading in a seperate thread
  * \author Matthieu Besson
  * \author Nevrax France
- * \date 2002 
+ * \date 2002
  */
 class CAsyncFileManager3D
 {
@@ -68,10 +68,10 @@ public:
 	void loadFile (const std::string &fileName, uint8 **pPtr);
 	void loadFiles (const std::vector<std::string> &vFileNames, const std::vector<uint8**> &vPtrs);
 
-	
+
 	void signal (bool *pSgn); // Signal a end of loading for a group of "mesh or file" added
 	void cancelSignal (bool *pSgn);
-	
+
 private:
 
 
@@ -82,10 +82,10 @@ private:
 
 	friend class CLoadMeshCancel;
 	friend class CLoadTextureCancel;
-	
+
 	// All the tasks
 	// -------------
-	
+
 	// Load a .shape
 	class CMeshLoad : public NLMISC::IRunnablePos
 	{

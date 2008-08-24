@@ -76,7 +76,7 @@ void CAsyncFileManager3D::terminate ()
 }
 
 // ***************************************************************************
-	
+
 void CAsyncFileManager3D::loadMesh(const std::string& meshName, IShape **ppShp, IDriver *pDriver, const CVector &position, uint textureSlot)
 {
 	if (meshName.empty())
@@ -95,7 +95,7 @@ public:
 	{}
 	virtual ~CLoadMeshCancel() { }
 
-private:	
+private:
 	std::string	_MeshName;
 
 	bool callback(const NLMISC::IRunnable *prunnable) const
@@ -123,14 +123,14 @@ bool CAsyncFileManager3D::cancelLoadMesh(const std::string& sMeshName)
 }
 
 // ***************************************************************************
-	
+
 void CAsyncFileManager3D::loadIG (const std::string& IGName, CInstanceGroup **ppIG)
 {
 	CAsyncFileManager::getInstance().addLoadTask(new CIGLoad(IGName, ppIG));
 }
 
 // ***************************************************************************
-	
+
 void CAsyncFileManager3D::loadIGUser (const std::string& IGName, UInstanceGroup **ppIG)
 {
 	CAsyncFileManager::getInstance().addLoadTask (new CIGLoadUser(IGName, ppIG));
@@ -143,17 +143,17 @@ void CAsyncFileManager3D::loadTexture (CTextureFile *textureFile, bool *pSgn, co
 	CAsyncFileManager::getInstance().addLoadTask(new CTextureLoad(textureFile, pSgn, position));
 }
 
-// Callback class for canceling a load texture 
+// Callback class for canceling a load texture
 class CLoadTextureCancel : public NLMISC::CAsyncFileManager::ICancelCallback
 {
 public:
 	CLoadTextureCancel (CTextureFile *ptextureFile)
 		: _TextureFile(ptextureFile)
 	{}
-	
+
 	virtual ~CLoadTextureCancel() {}
 
-private:	
+private:
 	CTextureFile	*_TextureFile;
 
 	bool callback(const NLMISC::IRunnable *prunnable) const
@@ -184,7 +184,7 @@ bool CAsyncFileManager3D::cancelLoadTexture (CTextureFile *textFile)
 
 
 // ***************************************************************************
-	
+
 void CAsyncFileManager3D::loadFile (const std::string& sFileName, uint8 **ppFile)
 {
 	CAsyncFileManager::getInstance().loadFile (sFileName, ppFile);
@@ -233,7 +233,7 @@ CAsyncFileManager3D::CMeshLoad::CMeshLoad(const std::string& sMeshName, IShape**
 void CAsyncFileManager3D::CMeshLoad::run()
 {
 	// This set represent the texture already loaded in memory
-	// We have to have this set because the driver load the textures only on the 
+	// We have to have this set because the driver load the textures only on the
 	// setupTexture, done in CShapeBank::isPresent. This must be done in the main
 	// thread because setupTexture upload texture to VRAM.
 	typedef set<string> TAlreadyPresentTextureSet;
@@ -261,16 +261,16 @@ void CAsyncFileManager3D::CMeshLoad::run()
 
 		CMeshBase *pMesh = dynamic_cast<CMeshBase *>(mesh.getShapePointer());
 
-		// If the shape is a mesh but the driver is not given or if the shape is not a mesh 
+		// If the shape is a mesh but the driver is not given or if the shape is not a mesh
 		// then do not try to load the textures
 
 		if ((pMesh == NULL) || ((pMesh != NULL) && (_pDriver == NULL)))
 		{
 			if (_pDriver == NULL || mesh.getShapePointer() == NULL)
-			{			
+			{
 				nlwarning ("mesh or driver is NULL for file '%s'", MeshName.c_str());
 			}
-			
+
 			*_ppShp = mesh.getShapePointer();
 			delete this;
 			return;
@@ -336,7 +336,7 @@ void CAsyncFileManager3D::CMeshLoad::run()
 								AlreadyPresentTextureSet.insert (pText->getShareName());
 								pText->generate(true);
 							}
-						}				
+						}
 					}
 					++j; pText = rMat.getLightMap (j);
 				}
@@ -424,7 +424,7 @@ void CAsyncFileManager3D::CIGLoadUser::run (void)
 	try
 	{
 		if (pIG->init (_IGName, true))
-		{		
+		{
 			*_ppIG = pIG;
 		}
 		else

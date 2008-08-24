@@ -30,7 +30,7 @@
 #include "nel/3d/driver_user.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 //===========================================================================

@@ -33,7 +33,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -93,7 +93,7 @@ void	CVegetable::setAngleCeiling(float cosAngleMax)
 	_CosAngleMax= cosAngleMax;
 	// We must be at densityFactor==1, when cosAngle==-1, keeping the same formula.
 	_CosAngleMin= -1 - (cosAngleMax-(-1));
-	
+
 	// precalc
 	_CosAngleMiddle= (_CosAngleMin + _CosAngleMax)/2;
 	_OOCosAngleDist= _CosAngleMax - _CosAngleMiddle;
@@ -211,7 +211,7 @@ void	CVegetable::generateGroupBiLinear(const CVector &posInWorld, const CVector 
 	edgeDensityCenterX= 0.5f * (edgeDensity[0] + edgeDensity[1]);
 	edgeDensityCenterY= 0.5f * (edgeDensity[2] + edgeDensity[3]);
 
-	
+
 	// Average for all the patch
 	float	nbInstAverage= 0.5f * (edgeDensityCenterX + edgeDensityCenterY);
 
@@ -255,7 +255,7 @@ void	CVegetable::generateGroupBiLinear(const CVector &posInWorld, const CVector 
 			// If on the side of the lowest density
 			if(densX < edgeDensityCenterX)
 			{
-				// may swap the position 
+				// may swap the position
 				float	rdSwap= (densX * OOEdgeDCX );
 				// (densX * OOEdgeDCX) E [0..1[. The more it is near 0, the more is has chance to be swapped.
 				rdSwap+= RandomGenerator.evalOneLevelRandom( randSeed );
@@ -280,7 +280,7 @@ void	CVegetable::generateGroupBiLinear(const CVector &posInWorld, const CVector 
 			// If on the side of the lowest density
 			if(densY < edgeDensityCenterY)
 			{
-				// may swap the position 
+				// may swap the position
 				float	rdSwap= (densY * OOEdgeDCY);
 				// (densY * OOEdgeDCY) E [0..1[. The more it is near 0, the more is has chance to be swapped.
 				rdSwap+= RandomGenerator.evalOneLevelRandom( randSeed );
@@ -305,7 +305,7 @@ void	CVegetable::reserveIgAddInstances(CVegetableInstanceGroupReserve &vegetIgRe
 
 
 // ***************************************************************************
-void	CVegetable::generateInstance(CVegetableInstanceGroup *ig, const NLMISC::CMatrix &posInWorld, 
+void	CVegetable::generateInstance(CVegetableInstanceGroup *ig, const NLMISC::CMatrix &posInWorld,
 		const NLMISC::CRGBAF &modulateAmbientColor, const NLMISC::CRGBAF &modulateDiffuseColor, float blendDistMax,
 		TVegetableWater vegetWaterState, CVegetableUV8 dlmUV) const
 {
@@ -366,8 +366,8 @@ void	CVegetable::generateInstance(CVegetableInstanceGroup *ig, const NLMISC::CMa
 	// ===============
 	if (_VegetableShape)
 	{
-		_Manager->addInstance(ig, _VegetableShape, finalMatrix, ambient, diffuse, 
-			bendFactor, bendPhase, BendFrequencyFactor, blendDistMax, 
+		_Manager->addInstance(ig, _VegetableShape, finalMatrix, ambient, diffuse,
+			bendFactor, bendPhase, BendFrequencyFactor, blendDistMax,
 			(CVegetableManager::TVegetableWater)vegetWaterState, dlmUV);
 	}
 }

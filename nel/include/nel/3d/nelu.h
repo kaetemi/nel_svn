@@ -34,8 +34,8 @@
 #include "nel/misc/rgba.h"
 
 
-namespace NL3D 
-{	
+namespace NL3D
+{
 
 
 using NLMISC::CSmartPtr;
@@ -45,7 +45,7 @@ using NLMISC::CSmartPtr;
  * 3d Engine Utilities. Simple Open / Close framework.
  * Designed to work only with a mono-threaded / mono-scene / single-windowed app.
  *
- * If your app want to register other Models with basics CScene traversals, it could use CNELU, and register his 
+ * If your app want to register other Models with basics CScene traversals, it could use CNELU, and register his
  * models after, or even before CNELU::init3d().
  *
  * If your app want to add funky traversals, it MUST NOT use CNELU (see CScene for more information...).
@@ -74,11 +74,11 @@ public:
 	static bool		initDriver(uint w, uint h, uint bpp=32, bool windowed=true, void *systemWindow=NULL, bool offscreen=false, bool direct3d=false) throw(EDru);
 
 	/** Init all that we need for a Scene.
-	 * - register scene basics models, 
-	 * - init the scene, with basic Traversals, 
+	 * - register scene basics models,
+	 * - init the scene, with basic Traversals,
 	 * - create a default camera, linked to the scene, and with default frustum as specified above.
 	 *
-	 * After creation, use the CNELU::Camera to manipulates the camera of scene (but you may change all you want 
+	 * After creation, use the CNELU::Camera to manipulates the camera of scene (but you may change all you want
 	 * to this camera or create/use an other camera if you want...)
 	 * \param viewport the viewport, fullscreen by default.
 	 */

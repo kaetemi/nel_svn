@@ -38,7 +38,7 @@
 #include <vector>
 #include <map>
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -74,7 +74,7 @@ protected:
  * is required. As a direct consequence, when you select something, you are REALLY not sure that what you select is not
  * a mile away from your selection :) ....
  *
- * Also, for memory optimisation, no bbox is stored in the quadgrid. Hence no particular selection is made on the Z 
+ * Also, for memory optimisation, no bbox is stored in the quadgrid. Hence no particular selection is made on the Z
  * components...
  *
  * For maximum allocation speed Efficiency, it uses a CBlockMemory<CNode> to allocate elements at insert().
@@ -115,12 +115,12 @@ public:
 	  * NLMISC::CVector		I(1,0,0);
 	  * NLMISC::CVector		J(0,0,1);
 	  * NLMISC::CVector		K(0,-1,0);
-	  * 
+	  *
 	  * tmp.identity();
 	  * tmp.setRot(I,J,K, true);
 	  * quadTree.changeBase (tmp);
 	  * \endcode
-	  * 
+	  *
 	  * \param base Base of the quad grid
 	  */
 	void			changeBase(const NLMISC::CMatrix& base);
@@ -160,7 +160,7 @@ public:
 	  *
 	  *	Warning! : bboxmin and bboxmax are multiplied by matrix setuped by changeBase. This work for any
 	  *	matrix with 90deg rotations (min and max are recomputed internally), but not with any rotation (43° ...)
-	  *	because of the nature of AABBox. To do this correclty you should compute the bbox min and max in the 
+	  *	because of the nature of AABBox. To do this correclty you should compute the bbox min and max in the
 	  *	basis given in changeBase, and insert() with multiplying min and max with inverse of this basis.
 	  *	eg:
 	  *		CMatrix					base= getSomeBase();
@@ -204,7 +204,7 @@ public:
 	  */
 	void			select(const NLMISC::CVector &bboxmin, const NLMISC::CVector &bboxmax);
 
-	// Select element intersecting a ray. Clear the selection first.	  	  
+	// Select element intersecting a ray. Clear the selection first.
 	void			selectRay(const NLMISC::CVector &rayStart, const NLMISC::CVector &rayEnd);
 
 	/** Build a selection from a convex polygon. The resulting selection can then be used for a subsequent call
@@ -245,7 +245,7 @@ private:// Classes.
 	public:
 		CQuadNode	*Prev,*Next;
 		CNode		*Node;
-		
+
 		CQuadNode() : Prev(NULL), Next(NULL), Node(NULL) {}
 
 		// can't call this at ctor since copied in array
@@ -266,7 +266,7 @@ private:// Classes.
 		bool		Selected;		// true if owned by _SelectedList, or by _UnSelectedList.
 		CBaseNode() {Prev= Next= NULL;}
 	};
-	
+
 	/** An element inserted in the quadGrid. T + Link-list variables (CBaseNode and QuadNodes)
 	 */
 	class	CNode : public CBaseNode
@@ -291,7 +291,7 @@ private:// Atttributes.
 
 
 private:// Methods.
-	
+
 
 	// default constor imp
 	void		initCons();
@@ -305,7 +305,7 @@ private:// Methods.
 		if(ptr->Next)
 			ptr->Next->Prev= ptr;
 	}
-	
+
 	void initSelectStamps() const
 	{
 		if (_AlreadySelected.size() < _Grid.size())
@@ -476,7 +476,7 @@ public:
 
 
 // ***************************************************************************
-template<class T>	CQuadGrid<T>::CQuadGrid(uint memoryBlockSize) : 
+template<class T>	CQuadGrid<T>::CQuadGrid(uint memoryBlockSize) :
 	_NodeBlockMemory(memoryBlockSize)
 {
 	initCons();
@@ -509,7 +509,7 @@ template<class T>	CQuadGrid<T> &CQuadGrid<T>::operator=(const CQuadGrid<T> &o)
 	nlassert(_Grid.size()==o._Grid.size());
 	nlassert(_SelectedList.Next==NULL);
 	nlassert(_UnSelectedList.Next==NULL);
-	
+
 	// copy basis
 	_ChangeBasis= o._ChangeBasis;
 
@@ -567,7 +567,7 @@ template<class T>	CQuadGrid<T> &CQuadGrid<T>::operator=(const CQuadGrid<T> &o)
 			quadDstCur.Prev= quadDstRoot.Prev;
 			quadDstRoot.Prev->Next= &quadDstCur;
 			quadDstRoot.Prev= &quadDstCur;
-			
+
 
 			// next
 			quadSrcCur= quadSrcCur->Next;
@@ -593,7 +593,7 @@ template<class T>	void		CQuadGrid<T>::create(uint size, float eltSize)
 	// full clear
 	clear();
 	_Grid.clear();
-	
+
 	// recreate
 	nlassert(NLMISC::isPowerOf2(size));
 	nlassert(size<=32768);
@@ -691,7 +691,7 @@ template<class T>	typename CQuadGrid<T>::CIterator	CQuadGrid<T>::insert(const NL
 	sint	wn= x1-x0;
 	sint	hn= y1-y0;
 	nlassert(wn>0 && hn>0);
-	// NB: this allocation may be slow (don't use BlockMemory system). But STLPort smallblock alloc 
+	// NB: this allocation may be slow (don't use BlockMemory system). But STLPort smallblock alloc
 	// works quite well (if <128 bytes, ie a block of 10 squares)
 	ptr->QuadNodes.resize(wn*hn);
 
@@ -807,7 +807,7 @@ template<class T>	void			CQuadGrid<T>::select(const NLMISC::CVector &bboxmin, co
 // ***************************************************************************
 template<class T> void	CQuadGrid<T>::buildSelectionShape(TSelectionShape &dest, const NLMISC::CPolygon2D &poly) const
 {
-	dest.clear();		
+	dest.clear();
 	sint minY;
 	uint numVerts = poly.Vertices.size();
 	_ScaledPoly.Vertices.resize(numVerts);
@@ -824,7 +824,7 @@ template<class T> void	CQuadGrid<T>::buildSelectionShape(TSelectionShape &dest, 
 	sint numSegs = _PolyBorders.size();
 	for (sint y = 0; y < numSegs; ++y)
 	{
-		sint currIndex = ((minY + y) & (_Size - 1)) << _SizePower;		
+		sint currIndex = ((minY + y) & (_Size - 1)) << _SizePower;
 		for (sint x = _PolyBorders[y].first; x <= _PolyBorders[y].second; ++x)
 		{
 			sint currX = x & (_Size - 1);
@@ -844,7 +844,7 @@ template<class T> void	CQuadGrid<T>::select(const TSelectionShape &shape)
 {
 	clearSelection();
 	for (TSelectionShape::const_iterator it = shape.begin(); it != shape.end(); ++it)
-	{		
+	{
 		addQuadNodeToSelection(_Grid[*it]);
 	}
 }

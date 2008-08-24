@@ -65,8 +65,8 @@ public:
 	void			setQuadGridSize(uint size, float cellSize);
 
 	/** clear both _ShadowCasters and _GenerateShadowCasters lists
-	 *	WARNING: the _GenerateShadowCasters list of shadow caster (added with addShadowCaster() / 
-	 *	selectShadowMapsToGenerate()) must have valid Ptrs. => Cannot leave this list 
+	 *	WARNING: the _GenerateShadowCasters list of shadow caster (added with addShadowCaster() /
+	 *	selectShadowMapsToGenerate()) must have valid Ptrs. => Cannot leave this list
 	 *	non empty at end of CScene::render() because some CTransform may be deleted between render()
 	 */
 	void			clearAllShadowCasters();
@@ -164,7 +164,7 @@ private:
 	CMaterial					_CasterShadowMaterial;
 
 	void			clearGenerateShadowCasters();
-		
+
 	// Texture allocation
 	typedef	std::map<ITexture *, CSmartPtr<ITexture> >	TTextureMap;
 	typedef	TTextureMap::iterator						ItTextureMap;

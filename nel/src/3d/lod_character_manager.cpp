@@ -41,7 +41,7 @@
 using	namespace std;
 using	namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -310,7 +310,7 @@ void			CLodCharacterManager::beginRender(IDriver *driver, const CVector &manager
 		_VertexStream.release();
 		_VertexStream.init(driver, NL3D_CLOD_VERTEX_FORMAT, _MaxNumVertices, _NumVBHard, "CLodManagerVB", false); // nb : don't use volatile lock as we keep the buffer locked
 	}
-	
+
 	// prepare for render.
 	//=================
 
@@ -320,7 +320,7 @@ void			CLodCharacterManager::beginRender(IDriver *driver, const CVector &manager
 	// NB: addRenderCharacterKey() loop hardCoded for Vertex+UV+Normal+Color only.
 	nlassert( _VertexSize == NL3D_CLOD_VERTEX_SIZE );	// Vector + Normal + UV + RGBA
 
-	
+
 	// Alloc a minimum of primitives (2*vertices), to avoid as possible reallocation in addRenderCharacterKey
 	if(_Triangles.getNumIndexes()<_MaxNumVertices * 2)
 	{
@@ -359,7 +359,7 @@ static inline void	computeLodLighting(CRGBA &lightRes, const CVector &lightObjec
 
 
 // ***************************************************************************
-bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instance, const CMatrix &worldMatrix, 
+bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instance, const CMatrix &worldMatrix,
 	CRGBA paramAmbient, CRGBA paramDiffuse, const CVector &lightDir)
 {
 	H_AUTO ( NL3D_CharacterLod_AddRenderKey )
@@ -377,9 +377,9 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 	const uint8		*alphaPtr;
 	CVector			lightObjectSpace;
 	CVector			matPos;
-	float			a00, a01, a02; 
-	float			a10, a11, a12; 
-	float			a20, a21, a22; 
+	float			a00, a01, a02;
+	float			a10, a11, a12;
+	float			a20, a21, a22;
 	sint			f8;
 	uint64			blank= 0;
 	CRGBA			ambient= paramAmbient;
@@ -440,7 +440,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 
 	// Lock Buffer if not done
 	//=============
-	
+
 	// Do this after code above because we are sure that we will fill something (numVertices>0)
 	if(!_LockDone)
 	{
@@ -455,8 +455,8 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 		ambient.swapBR();
 		diffuse.swapBR();
 	}
-	
-	
+
+
 	// Prepare Transform
 	//=============
 
@@ -468,8 +468,8 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 	matPos -= _ManagerMatrixPos;
 	// Get rotation line vectors
 	const float *worldM= worldMatrix.get();
-	a00= worldM[0]; a01= worldM[4]; a02= worldM[8]; 
-	a10= worldM[1]; a11= worldM[5]; a12= worldM[9]; 
+	a00= worldM[0]; a01= worldM[4]; a02= worldM[8];
+	a10= worldM[1]; a11= worldM[5]; a12= worldM[9];
 	a20= worldM[2]; a21= worldM[6]; a22= worldM[10];
 
 	// get the light in object space.
@@ -486,16 +486,16 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 	lightObjectSpace*= 255;
 
 	// multiply matrix with scale factor for Pos.
-	a00*= unPackScaleFactor.x; a01*= unPackScaleFactor.y; a02*= unPackScaleFactor.z; 
-	a10*= unPackScaleFactor.x; a11*= unPackScaleFactor.y; a12*= unPackScaleFactor.z; 
-	a20*= unPackScaleFactor.x; a21*= unPackScaleFactor.y; a22*= unPackScaleFactor.z; 
-	
+	a00*= unPackScaleFactor.x; a01*= unPackScaleFactor.y; a02*= unPackScaleFactor.z;
+	a10*= unPackScaleFactor.x; a11*= unPackScaleFactor.y; a12*= unPackScaleFactor.z;
+	a20*= unPackScaleFactor.x; a21*= unPackScaleFactor.y; a22*= unPackScaleFactor.z;
+
 	// get dst Array.
 	uint8	*dstPtr;
 	dstPtr= _VertexData + _CurrentVertexId * _VertexSize;
 
 
-	/* PreCaching Note: CFastMem::precache() has been tested (done on the 4 arrays) but not very interesting, 
+	/* PreCaching Note: CFastMem::precache() has been tested (done on the 4 arrays) but not very interesting,
 		maybe because the cache miss improve //ism a bit below.
 	*/
 
@@ -504,7 +504,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 #ifdef NL_OS_WINDOWS
 	// optimized version
 	if(CSystemInfo::hasMMX())
-	{   
+	{
 		H_AUTO( NL3D_CharacterLod_vertexFill );
 
 		if(numVertices)
@@ -513,14 +513,14 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 
 				Pentium2+ optimisation notes:
 
-				- "uop" comment formating: 
+				- "uop" comment formating:
 					A/B means "A micro-ops in port 0, and B micro-ops in port 2".  (port 1 is very rare for FPU)
 					A/B/C/D means "A micro-ops in port 0, B in port 2, C in port 3 and D in port 4".
 					The number in () is the delay (if any).
 				- the "compute lighting part" must done first, because of the "fistp f8" mem writes that must
 						be place far away from the "mov eax, f8" read in clamp lighting part
 						(else seems that it crashes all the //ism)
-				- No need to Interleave on Pentium2+. But prevents "write/read stall" by putting the write 
+				- No need to Interleave on Pentium2+. But prevents "write/read stall" by putting the write
 					far away from the next read. Else stall of 3 cycles + BIG BREAK OF //ism (I think).
 					This had save me 120 cycles / 240 !!!
 
@@ -528,7 +528,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				- The "transform vertex part" and "all next part" cost 42 cycles, but is somewhat optimal:
 					63 uop (=> min 21 cycles), but 36 uop in the P0 port (=> this is the bottleneck)
 				- The lighting part adds 1 cycle only ?????  (44 cycles) But still relevant and optimal:
-					43 uop in port P0!!!! 
+					43 uop in port P0!!!!
 				- The UV part adds 4 cycles (47) (should not since 0 in Port P0), still acceptable.
 				- The clamp part adds 3 cycles (50), and add 11 cycles in "P0 or P1" (but heavy dependency)
 					If we assume all goes into P1, it should takes 0... still acceptable (optimal==43?)
@@ -559,7 +559,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				add		esi, 12					// uop: 1/0
 				mov		normalPtr, esi			// uop: 0/0/1/1
 
-				
+
 				// **** transform vertex, and store
 				mov		esi, vertPtr			// uop: 0/1
 				fild	word ptr[esi]			// uop: 3/1 (5)
@@ -609,7 +609,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				add		esi, 6					// uop: 1/0
 				mov		vertPtr, esi			// uop: 0/0/1/1
 
-			
+
 				// **** copy uv
 				mov		esi, uvPtr							// uop: 0/1
 				mov		eax, [esi]							// uop: 0/1
@@ -627,8 +627,8 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				cmp		eax, 0x80000000			// if>=0 => CF=1
 				sbb		ebx, ebx				// if>=0 => CF==1 => ebx=0xFFFFFFFF
 				and		eax, ebx				// if>=0 => eax unchanged, else eax=0 (clamped)
-				
-				
+
+
 				// **** Modulate lighting modulate with diffuse color, add ambient term, using MMX
 				movd			mm0, eax		// 0000000L		uop: 1/0
 				packuswb		mm0, mm0		// 000L000L		uop: 1/0 (p1)
@@ -643,8 +643,8 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				movd			ebx, mm0		// ebx= AABBGGRR	uop: 1/0
 				// NB: emms is not so bad on P2+: delay of 6, +11 (NB: far better than no MMX instructions)
 				emms							// uop: 11/0 (6).  (?????)
-				
-				
+
+
 				// **** append alpha, and store
 				mov		esi, alphaPtr						// uop: 0/1
 				movzx	eax, byte ptr[esi]					// uop: 0/1
@@ -655,8 +655,8 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 				// next
 				add		esi, 1					// uop: 1/0
 				mov		alphaPtr, esi			// uop: 0/0/1/1
-				
-				
+
+
 				// **** next
 				add		edi, NL3D_CLOD_VERTEX_SIZE		// uop: 1/0
 
@@ -677,13 +677,13 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 		H_AUTO( NL3D_CharacterLod_vertexFill );
 
 		CVector		fVect;
-		
+
 		for(;numVertices>0;)
 		{
 			// NB: order is important for AGP filling optimisation
 			// transform vertex, and store.
 			CVector		*dstVector= (CVector*)dstPtr;
-			fVect.x= vertPtr->x; fVect.y= vertPtr->y; fVect.z= vertPtr->z; 
+			fVect.x= vertPtr->x; fVect.y= vertPtr->y; fVect.z= vertPtr->z;
 			++vertPtr;
 			dstVector->x= a00 * fVect.x + a01 * fVect.y + a02 * fVect.z + matPos.x;
 			dstVector->y= a10 * fVect.x + a11 * fVect.y + a12 * fVect.z + matPos.y;
@@ -691,7 +691,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 			// Copy UV
 			*(CUV*)(dstPtr + NL3D_CLOD_UV_OFF)= *uvPtr;
 			++uvPtr;
-			
+
 			// Compute Lighting.
 			CRGBA	lightRes;
 			computeLodLighting(lightRes, lightObjectSpace, *normalPtr, ambient, diffuse);
@@ -712,7 +712,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 
 	{
 		H_AUTO( NL3D_CharacterLod_primitiveFill )
-			
+
 		// get number of tri indexes
 		uint	numTriIdxs= clod->getNumTriangles() * 3;
 
@@ -756,7 +756,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 void			CLodCharacterManager::endRender()
 {
 	H_AUTO ( NL3D_CharacterLod_endRender );
-	
+
 	IDriver		*driver= _VertexStream.getDriver();
 	nlassert(driver);
 	// we must be between beginRender() and endRender()
@@ -768,23 +768,23 @@ void			CLodCharacterManager::endRender()
 		// UnLock Buffer.
 		_VertexStream.unlock(_CurrentVertexId);
 		_LockDone= false;
-		
+
 		// Render the VBuffer and the primitives.
 		if(_CurrentTriId>0)
 		{
 			// setup matrix.
-			CMatrix		managerMatrix; 
+			CMatrix		managerMatrix;
 			managerMatrix.setPos(_ManagerMatrixPos);
 			driver->setupModelMatrix(managerMatrix);
-			
+
 			// active VB
 			_VertexStream.activate();
-			
+
 			// render triangles
 			driver->activeIndexBuffer(_Triangles);
 			driver->renderTriangles(_Material, 0, _CurrentTriId/3);
 		}
-		
+
 		// swap Stream VBHard
 		_VertexStream.swapVBHard();
 	}
@@ -1059,9 +1059,9 @@ bool	CLodCharacterManager::fastIntersect(const CLodCharacterInstance &instance, 
 	uint			numVertices;
 	const CLodCharacterShape::CVector3s		*vertPtr;
 	CVector			matPos;
-	float			a00, a01, a02; 
-	float			a10, a11, a12; 
-	float			a20, a21, a22; 
+	float			a00, a01, a02;
+	float			a10, a11, a12;
+	float			a20, a21, a22;
 
 
 	// Get the Shape and current key.
@@ -1093,15 +1093,15 @@ bool	CLodCharacterManager::fastIntersect(const CLodCharacterInstance &instance, 
 	matPos= toRaySpace.getPos();
 	// Get rotation line vectors
 	const float *rayM= toRaySpace.get();
-	a00= rayM[0]; a01= rayM[4]; a02= rayM[8]; 
-	a10= rayM[1]; a11= rayM[5]; a12= rayM[9]; 
+	a00= rayM[0]; a01= rayM[4]; a02= rayM[8];
+	a10= rayM[1]; a11= rayM[5]; a12= rayM[9];
 	a20= rayM[2]; a21= rayM[6]; a22= rayM[10];
 
 	// multiply matrix with scale factor for Pos.
-	a00*= unPackScaleFactor.x; a01*= unPackScaleFactor.y; a02*= unPackScaleFactor.z; 
-	a10*= unPackScaleFactor.x; a11*= unPackScaleFactor.y; a12*= unPackScaleFactor.z; 
-	a20*= unPackScaleFactor.x; a21*= unPackScaleFactor.y; a22*= unPackScaleFactor.z; 
-	
+	a00*= unPackScaleFactor.x; a01*= unPackScaleFactor.y; a02*= unPackScaleFactor.z;
+	a10*= unPackScaleFactor.x; a11*= unPackScaleFactor.y; a12*= unPackScaleFactor.z;
+	a20*= unPackScaleFactor.x; a21*= unPackScaleFactor.y; a22*= unPackScaleFactor.z;
+
 	// get dst Array.
 	// enlarge temp buffer
 	static std::vector<CVector>	lodInRaySpace;
@@ -1114,11 +1114,11 @@ bool	CLodCharacterManager::fastIntersect(const CLodCharacterInstance &instance, 
 	//=============
 	{
 		CVector		fVect;
-		
+
 		for(;numVertices>0;)
 		{
 			// transform vertex, and store.
-			fVect.x= vertPtr->x; fVect.y= vertPtr->y; fVect.z= vertPtr->z; 
+			fVect.x= vertPtr->x; fVect.y= vertPtr->y; fVect.z= vertPtr->z;
 			++vertPtr;
 			dstPtr->x= a00 * fVect.x + a01 * fVect.y + a02 * fVect.z + matPos.x;
 			dstPtr->y= a10 * fVect.x + a11 * fVect.y + a12 * fVect.z + matPos.y;

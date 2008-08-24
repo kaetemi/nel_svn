@@ -1,6 +1,6 @@
 /** \file login_server.h
  * CLoginServer is the interface used by the front end to accepts authenticate users.
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -103,7 +103,7 @@ public:
 	/// Return the number of pending client connection.
 	static uint32 getNbPendingUsers();
 
-	/// Refresh the list of pending cookies to remove outdated one 
+	/// Refresh the list of pending cookies to remove outdated one
 	/// (i.e. cookies for users that never connect)
 	static void refreshPendingList();
 
@@ -114,7 +114,7 @@ private:
 
 	// called by other init()
 	static void init (const std::string &listenAddress);
-	
+
 };
 
 

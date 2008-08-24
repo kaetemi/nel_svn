@@ -32,7 +32,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -116,7 +116,7 @@ void		CMeshMultiLodInstance::traverseLoadBalancing()
 					break;
 			}
 		}
-		
+
 		// The slot
 		CMeshMultiLod::CMeshSlot	&slot=shape->_MeshVector[Lod0];
 
@@ -200,7 +200,7 @@ void		CMeshMultiLodInstance::traverseLoadBalancing()
 				Lod0=0xffffffff;
 		}
 
-		
+
 	}
 }
 
@@ -221,7 +221,7 @@ void		CMeshMultiLodInstance::changeMRMDistanceSetup(float distanceFinest, float 
 float	   CMeshMultiLodInstance::getNumTriangles (float distance)
 {
 	CMeshMultiLod *shape = safe_cast<CMeshMultiLod*> ((IShape*)Shape);
-	return shape->getNumTrianglesWithCoarsestDist(distance, _CoarseMeshDistance);	
+	return shape->getNumTrianglesWithCoarsestDist(distance, _CoarseMeshDistance);
 }
 
 
@@ -304,7 +304,7 @@ void		CMeshMultiLodInstance::setPosCoarseMesh( CMeshGeom &geom, const CMatrix &m
 	// Copy vector
 	const uint8 *vSrc = (const uint8 *)vba.getVertexCoordPointer (0);
 	uint8 *vDest = &_CoarseMeshVB[0];
-	
+
 	// Transform it
 	for (uint i=0; i<_LastCoarseMeshNumVertices; i++)
 	{
@@ -324,7 +324,7 @@ void		CMeshMultiLodInstance::setColorCoarseMesh( CRGBA color, uint vtDstSize, ui
 	// Copy vector
 	uint8 *vDest = &_CoarseMeshVB[0];
 	vDest+= dstColorOff;
-	
+
 	// Transform it
 	for (uint i=0; i<_LastCoarseMeshNumVertices; i++)
 	{

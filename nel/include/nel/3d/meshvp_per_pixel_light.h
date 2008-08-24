@@ -37,7 +37,7 @@ namespace NL3D {
 
 /**
  * This vertex program is used to perform perpixel lighting with meshs. Its ouputs are :
- *  
+ *
  * Coord Tex 0 : duplicate the tex Coord 0 set from the v.b.
  * Coord Tex 1 : The light vector in tangent space.
  * Coord Tex 2 : The half-angle vector in tangent space.
@@ -47,7 +47,7 @@ namespace NL3D {
  * It requires that the input mesh has its tangent space first column vector encoded in the 2nd texture coordinate.
  * Other stages are not supported for now.
  *
- * Note that this can be mixed with gouraud rendered light (the gouraud diffuse and specular component are still computed) 
+ * Note that this can be mixed with gouraud rendered light (the gouraud diffuse and specular component are still computed)
  *
  * \author Nicolas Vizerie
  * \author Nevrax France
@@ -59,17 +59,17 @@ public:
 	/// true if want Specular Lighting.
 	bool		SpecularLighting;
 public:
-	CMeshVPPerPixelLight() : SpecularLighting(true), _Enabled(false) {}	
+	CMeshVPPerPixelLight() : SpecularLighting(true), _Enabled(false) {}
 	/// \name IMeshVertexProgram implementation
-	// @{	
+	// @{
 		virtual	void	initInstance(CMeshBaseInstance *mbi);
 		virtual	bool	begin(IDriver *drv,
 							  CScene *scene,
 							  CMeshBaseInstance *mbi,
 							  const NLMISC::CMatrix &invertedModelMat,
-							  const NLMISC::CVector &viewerPos);			
-		virtual	void	end(IDriver *drv);				
-		virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream);				
+							  const NLMISC::CVector &viewerPos);
+		virtual	void	end(IDriver *drv);
+		virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 		virtual void	setupForMaterial(const CMaterial &mat,
 										 IDriver *drv,
 										 CScene *scene,
@@ -77,20 +77,20 @@ public:
 										);
 		virtual	bool	needTangentSpace() const { return true; }
 		NLMISC_DECLARE_CLASS(CMeshVPPerPixelLight);
-	// @}			
+	// @}
 private:
 	// enable / disable this v.p
 	void	enable(bool enabled, IDriver *drv);
-private:	
+private:
 	// this setup the material, and returns true if the v.p has been enabled / disabled
 	virtual bool	setupForMaterial(const CMaterial &mat,
 									 IDriver *drv,
 									 CScene *scene
 									);
-	bool	_Enabled;	
+	bool	_Enabled;
 	bool	_IsPointLight;
 	//
-	enum { NumVp = 8};	
+	enum { NumVp = 8};
 	static	std::auto_ptr<CVertexProgram>	_VertexProgram[NumVp];
 };
 

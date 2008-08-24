@@ -27,7 +27,7 @@
 #include "types_nl.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -37,14 +37,14 @@ struct IInputDeviceEvent;
 
 
 /**
- * Base class that wrap to a device 
+ * Base class that wrap to a device
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2002
  */
 
 struct IInputDevice
-{	
+{
 	/** Set the buffer size for this device (the number of samples it can retains).
 	  * This return true if the size could be set
 	  */
@@ -80,7 +80,7 @@ struct IInputDevice
 	//@}
 
 	// dtor
-	virtual ~IInputDevice() {}; 
+	virtual ~IInputDevice() {};
 };
 
 } // NLMISC

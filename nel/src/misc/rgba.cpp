@@ -105,7 +105,7 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 					* (CRGBA *) ((uint8 *) dest + destStride) = *dest;
 					dest = (CRGBA *) ((uint8 *) dest + (destStride << 1));
 
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -122,9 +122,9 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 						dest = (CRGBA *) ((uint8 *) dest + destStride);
 					}
 					while (--k);
-					
+
 					dest = (CRGBA *) ((uint8 *) dest + destStride);
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -132,13 +132,13 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 	}
 #if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
-	{	
+	{
 		/// well, this could be further optimized when stride is 4 (2 at once)
 		if (dup == 1)
 		{
 			__asm
 			{
-						push        ebp						
+						push        ebp
 						mov			edi, dest
 						mov			esi, src1
 						mov			ebx, src2
@@ -147,15 +147,15 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 						mov         edx, destStride
 						mov         ebp, srcStride
 						sub         edi, edx
-				myLoop:												
+				myLoop:
 						movd        mm0, [esi]
 						add         edi, edx
 						movd        mm1, [esi + ebx]
 						paddusb     mm0, mm1
 						movd        [edi], mm0
-						add         esi, ebp 						
+						add         esi, ebp
 						dec			ecx
-						jne         myLoop			
+						jne         myLoop
 						pop			ebp
 						emms
 			}
@@ -174,22 +174,22 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 							mov			ecx, numColors
 							mov         edx, destStride
 							mov         ebp, srcStride
-					myLoop4:							
-							movd        mm0, [esi]							
+					myLoop4:
+							movd        mm0, [esi]
 							movd        mm1, [esi + ebx]
 							paddusb     mm0, mm1
 							movd        eax, mm0
-							
-							mov         [edi], eax			
+
+							mov         [edi], eax
 							mov         [edi + edx], eax
 							mov         [edi + 2 * edx], eax
 							lea         edi, [edi + edx * 2]
 							mov         [edi + edx], eax
-							lea         edi, [edi + edx * 2]						
+							lea         edi, [edi + edx * 2]
 							add         esi, ebp
 
 							dec         ecx
-							jne         myLoop4					
+							jne         myLoop4
 							pop			ebp
 							emms
 				}
@@ -197,7 +197,7 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 			else
 			{
 				__asm
-				{						    
+				{
 							push        ebp
 							mov			edi, dest
 							mov			esi, src1
@@ -208,8 +208,8 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 							mov         eax, dup
 							mov         ebp, srcStride
 							push        eax
-					myLoopN:												
-							movd        mm0, [esi]							
+					myLoopN:
+							movd        mm0, [esi]
 							movd        mm1, [esi + ebx]
 							push        ecx
 							paddusb     mm0, mm1
@@ -220,10 +220,10 @@ void CRGBA::addColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, uint nu
 							dec         ecx
 							lea         edi, [edi + edx]
 							jne		    dupLoopN
-							pop         ecx			; get back the loop counter							
-							add         esi, ebp 
+							pop         ecx			; get back the loop counter
+							add         esi, ebp
 							dec         ecx
-							jne         myLoopN					
+							jne         myLoopN
 							pop eax
 							pop	ebp
 							emms
@@ -265,7 +265,7 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 					* (CRGBA *) ((uint8 *) dest + destStride) = *dest;
 					dest = (CRGBA *) ((uint8 *) dest + (destStride << 1));
 
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -282,9 +282,9 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 						dest = (CRGBA *) ((uint8 *) dest + destStride);
 					}
 					while (--k);
-					
+
 					dest = (CRGBA *) ((uint8 *) dest + destStride);
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -292,9 +292,9 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 	}
 #if 	defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
-	{	
+	{
 		uint64 blank = 0;
-		/// well, this could be further optimized when stride is 4 
+		/// well, this could be further optimized when stride is 4
 		if (dup == 1)
 		{	__asm
 			{
@@ -307,29 +307,29 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 						mov			ecx, numColors
 						mov         edx, destStride
 						mov         ebp, srcStride
-				myLoop:												
-						movd			mm0, [esi]												
+				myLoop:
+						movd			mm0, [esi]
 						movd			mm1, [esi + ebx]
 						punpcklbw	mm0, mm2
-						punpcklbw	mm1, mm2						
+						punpcklbw	mm1, mm2
 						pmullw		mm0, mm1
 						psrlw       mm0, 8
 						packuswb    mm0, mm0
-						movd        [edi], mm0						
+						movd        [edi], mm0
 						add         edi, edx
-						add         esi, ebp 
+						add         esi, ebp
 
 						dec         ecx
-						jne         myLoop				
+						jne         myLoop
 						pop			ebp
 						emms
 			}
 		}
 		else
 		{
-			if (dup == 4)			
+			if (dup == 4)
 			{
-				
+
 				__asm
 				{
 							push        ebp
@@ -342,24 +342,24 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							mov         edx, destStride
 							mov         ebp, srcStride
 					myLoop4:
-							movd		mm0, [esi]												
+							movd		mm0, [esi]
 							movd		mm1, [esi + ebx]
 							punpcklbw	mm0, mm2
-							punpcklbw	mm1, mm2						
+							punpcklbw	mm1, mm2
 							pmullw		mm0, mm1
 							psrlw       mm0, 8
 							packuswb    mm0, mm0
 							movd        eax, mm0
 							; duplicate the result 4 times
-							mov         [edi], eax			
+							mov         [edi], eax
 							mov         [edi + edx], eax
 							mov         [edi + 2 * edx], eax
 							lea         edi, [edi +  2 * edx]
 							mov         [edi + edx], eax
 							lea         edi, [edi + 2 * edx]
-							add         esi, ebp 
+							add         esi, ebp
 							dec         ecx
-							jne         myLoop4				
+							jne         myLoop4
 							pop			ebp
 							emms
 				}
@@ -380,14 +380,14 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							mov         ebp, srcStride
 							push        eax
 					myLoopN:
-							movd		mm0, [esi]												
+							movd		mm0, [esi]
 							movd		mm1, [esi + ebx]
 							punpcklbw	mm0, mm2
-							punpcklbw	mm1, mm2						
+							punpcklbw	mm1, mm2
 							pmullw		mm0, mm1
 							push        ecx
 							psrlw       mm0, 8
-							mov         ecx, 4[esp] 
+							mov         ecx, 4[esp]
 							packuswb    mm0, mm0
 							movd        eax, mm0
 					dupLoopN:
@@ -398,7 +398,7 @@ void CRGBA::modulateColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							pop         ecx			; get back the loop counter
 							add         esi, ebp
 							dec         ecx
-							jne         myLoopN					
+							jne         myLoopN
 							pop eax
 							pop			ebp
 							emms
@@ -440,7 +440,7 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 					* (CRGBA *) ((uint8 *) dest + destStride) = *dest;
 					dest = (CRGBA *) ((uint8 *) dest + (destStride << 1));
 
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -457,9 +457,9 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 						dest = (CRGBA *) ((uint8 *) dest + destStride);
 					}
 					while (--k);
-					
+
 					dest = (CRGBA *) ((uint8 *) dest + destStride);
-					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);													
+					src1 = (CRGBA *) ((uint8 *) src1 + srcStride);
 					src2 = (CRGBA *) ((uint8 *) src2 + srcStride);
 				}
 			}
@@ -467,13 +467,13 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 	}
 #if defined(NL_OS_WINDOWS) && !defined(DISABLE_MMX_OPTIM)
 	else // optimized mmx version
-	{	
+	{
 		/// well, this could be further optimized when stride is 4 (2 at once)
 		if (dup == 1)
 		{
 			__asm
 			{
-						push        ebp						
+						push        ebp
 						mov			edi, dest
 						mov			esi, src1
 						mov			ebx, src2
@@ -482,15 +482,15 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 						mov         edx, destStride
 						mov         ebp, srcStride
 						sub         edi, edx
-				myLoop:												
+				myLoop:
 						movd        mm0, [esi]
 						add         edi, edx
 						movd        mm1, [esi + ebx]
 						psubusb     mm0, mm1
 						movd        [edi], mm0
-						add         esi, ebp 						
+						add         esi, ebp
 						dec			ecx
-						jne         myLoop			
+						jne         myLoop
 						pop			ebp
 						emms
 			}
@@ -509,18 +509,18 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							mov			ecx, numColors
 							mov         edx, destStride
 							mov         ebp, srcStride
-					myLoop4:							
-							movd        mm0, [esi]							
+					myLoop4:
+							movd        mm0, [esi]
 							movd        mm1, [esi + ebx]
 							psubusb     mm0, mm1
 							movd        eax, mm0
-							
-							mov         [edi], eax			
+
+							mov         [edi], eax
 							mov         [edi + edx], eax
 							mov         [edi + 2 * edx], eax
 							lea         edi, [edi + edx * 2]
 							mov         [edi + edx], eax
-							lea         edi, [edi + edx * 2]						
+							lea         edi, [edi + edx * 2]
 							add         esi, ebp
 
 							dec         ecx
@@ -543,8 +543,8 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							mov         eax, dup
 							mov         ebp, srcStride
 							push        eax
-					myLoopN:												
-							movd        mm0, [esi]							
+					myLoopN:
+							movd        mm0, [esi]
 							movd        mm1, [esi + ebx]
 							push        ecx
 							psubusb     mm0, mm1
@@ -555,10 +555,10 @@ void CRGBA::subtractColors(CRGBA *dest, const CRGBA *src1, const CRGBA *src2, ui
 							dec         ecx
 							lea         edi, [edi + edx]
 							jne		    dupLoopN
-							pop         ecx			; get back the loop counter							
-							add         esi, ebp 
+							pop         ecx			; get back the loop counter
+							add         esi, ebp
 							dec         ecx
-							jne         myLoopN					
+							jne         myLoopN
 							pop eax
 							pop	ebp
 							emms
@@ -621,7 +621,7 @@ bool CRGBA::convertToHLS(float &h, float &l, float &s) const
 	if (minV == maxV)  // all composants are equals -> achromatique
 	{
 		h = 0;
-		s = 0;		
+		s = 0;
 		return true;
 	}
 	float diff = maxV - minV;
@@ -644,11 +644,11 @@ bool CRGBA::convertToHLS(float &h, float &l, float &s) const
 	{
 		h = 4.f + (r - g) / diff;
 	}
-		 
+
 	h *= 60.f; // scale to [0..360]
 
 	if (h < 0.f) h += 360.f;
-	
+
 	return false;
 }
 
@@ -678,7 +678,7 @@ static float HLSValue(float h, float v1, float v2)
 	else
 	{
 		return v1;
-	}		 
+	}
 }
 
 
@@ -709,7 +709,7 @@ void CRGBA::buildFromHLS(float h, float l, float s)
 		//
 		v = HLSValue(h - 120.f, v1, v2);
 		clamp(v, 0.f, 1.f);
-		B = (uint8) (255.f * v);	
+		B = (uint8) (255.f * v);
 	}
 }
 

@@ -1,5 +1,5 @@
 /** \file collision_mesh_build.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -75,12 +75,12 @@ struct CCollisionFace
 
 
 	/// The exterior/interior surfaces id
-	enum 
-	{ 
-		ExteriorSurface = -1, 
+	enum
+	{
+		ExteriorSurface = -1,
 		InteriorSurfaceFirst = 0
 	};
-	
+
 	/// Serialise the face
 	void	serial(NLMISC::IStream &f)
 	{
@@ -214,7 +214,7 @@ public:
 								 "left.0:%d: v0:(%.2f,%.2f) v1:(%.2f,%.2f), v2:(%.2f,%.2f) surf=%d material=%d\n"
 								 "left.1:%d: v0:(%.2f,%.2f) v1:(%.2f,%.2f), v2:(%.2f,%.2f) surf=%d material=%d",
 									eva.x, eva.y, eva.z, evb.x, evb.y, evb.z,
-									(*it).second.Left, Vertices[left0.V[0]].x, Vertices[left0.V[0]].y, Vertices[left0.V[1]].x, Vertices[left0.V[1]].y, Vertices[left0.V[2]].x, Vertices[left0.V[2]].y, Faces[(*it).second.Left].Surface, Faces[(*it).second.Left].Material, 
+									(*it).second.Left, Vertices[left0.V[0]].x, Vertices[left0.V[0]].y, Vertices[left0.V[1]].x, Vertices[left0.V[1]].y, Vertices[left0.V[2]].x, Vertices[left0.V[2]].y, Faces[(*it).second.Left].Surface, Faces[(*it).second.Left].Material,
 									i,                 Vertices[left1.V[0]].x, Vertices[left1.V[0]].y, Vertices[left1.V[1]].x, Vertices[left1.V[1]].y, Vertices[left1.V[2]].x, Vertices[left1.V[2]].y, Faces[i].Surface, Faces[i].Material);
 					errors.push_back(std::string(buf));
 					continue;

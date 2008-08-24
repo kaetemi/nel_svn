@@ -26,7 +26,7 @@
 #include "nel/3d/cube_grid.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 } // NL3D

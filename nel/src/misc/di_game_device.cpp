@@ -31,12 +31,12 @@
 
 #ifdef NL_OS_WINDOWS
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 //============================================================================
-CDIGameDevice::CDIGameDevice() : _Device(NULL)								 
-{	
+CDIGameDevice::CDIGameDevice() : _Device(NULL)
+{
 	::memset(&_CurrentState, 0, sizeof(_CurrentState));
 }
 
@@ -57,24 +57,24 @@ CDIGameDevice *CDIGameDevice::createGameDevice(IDirectInput8 *di8,
 											   const CGameDeviceDesc &desc,
 											   REFGUID rguid) throw(EDirectInput)
 {
-	nlassert(diEventEmitter);	
+	nlassert(diEventEmitter);
 	nlassert(di8);
 	std::auto_ptr<CDIGameDevice> dev(new CDIGameDevice);
 	//
 
 	HRESULT r = di8->CreateDevice(rguid, &dev->_Device, NULL);
-	if (r != DI_OK) throw EDirectInputGameDeviceNotCreated();	
+	if (r != DI_OK) throw EDirectInputGameDeviceNotCreated();
 
 	r = dev->_Device->SetDataFormat(pJoyDataFormat);
 	nlassert(r == DI_OK);
 	//
 	r = dev->_Device->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
 	if (r != DI_OK) throw EDirectInputCooperativeLevelFailed();
-	//	
-	//			
+	//
+	//
 	dev->_Desc = desc;
 	dev->_EventEmitter = diEventEmitter;
-	dev->querryControls();	
+	dev->querryControls();
 	return dev.release();
 }
 
@@ -85,14 +85,14 @@ void CDIGameDevice::begin(CEventServer *server)
 	HRESULT r;
 	r = _Device->Poll();
 	if (r == DIERR_INPUTLOST  || r == DIERR_NOTACQUIRED)
-	{				
+	{
         r = _Device->Acquire();
 		if (r != DI_OK) return;
 		r = _Device->Poll();
 		if (r != DI_OK) return;
 	}
 
-	CDIJoyState	newState;	
+	CDIJoyState	newState;
 	r = _Device->GetDeviceState(sizeof(CDIJoyState), &newState);
 	if (r != DI_OK) return;
 
@@ -104,10 +104,10 @@ void CDIGameDevice::begin(CEventServer *server)
 	{
 		CAxis &axis = _Axis[k];
 		if (axis.Present)
-		{			
-			
+		{
+
 			if (((LONG *) &newState)[k] != ((LONG *) &_CurrentState)[k]) // state changed ?
-			{				
+			{
 				// update position
 				axis.Value		= 2.f * (((LONG *) &newState)[k] - axis.Min) / (float) (axis.Max - axis.Min) - 1.f;
 				// create event
@@ -117,7 +117,7 @@ void CDIGameDevice::begin(CEventServer *server)
 				//
 				server->postEvent(event);
 				//
-			}							
+			}
 		}
 	}
 
@@ -126,17 +126,17 @@ void CDIGameDevice::begin(CEventServer *server)
 	// Buttons //
 	/////////////
 	for (k = 0; k < _Buttons.size(); ++k)
-	{		
-		CButton &bt = _Buttons[k];		
+	{
+		CButton &bt = _Buttons[k];
 		if ((newState.rgbButtons[k] & 0x80) != (_CurrentState.rgbButtons[k] & 0x80))
 		{
-			bool pushed = (newState.rgbButtons[k] & 0x80) != 0;			
+			bool pushed = (newState.rgbButtons[k] & 0x80) != 0;
 			// update the state of the button
 			bt.Pushed = pushed;
 			CGDButton *event;
 			if (pushed) event = new CGDButtonDown(k, this, _EventEmitter);
-			else event = new CGDButtonUp(k, this, _EventEmitter);					
-			// update state			
+			else event = new CGDButtonUp(k, this, _EventEmitter);
+			// update state
 			_CurrentState.rgbButtons[k] = newState.rgbButtons[k];
 			server->postEvent(event);
 		}
@@ -146,10 +146,10 @@ void CDIGameDevice::begin(CEventServer *server)
 	// Sliders //
 	/////////////
 	for (k = 0; k < _Sliders.size(); ++k)
-	{		
+	{
 		CSlider &sl = _Sliders[k];
 		if (newState.rglSlider[k] != _CurrentState.rglSlider[k]) // state changed ?
-		{								
+		{
 			// update position
 			sl.Pos		= ( newState.rglSlider[k] - sl.Min) / (float) (sl.Max - sl.Min);
 			// create event
@@ -166,9 +166,9 @@ void CDIGameDevice::begin(CEventServer *server)
 	//////////
 	for (k = 0; k < _POVs.size(); ++k)
 	{
-		CPOV &pov = _POVs[k];		
+		CPOV &pov = _POVs[k];
 		if (newState.rgdwPOV[k] != _CurrentState.rgdwPOV[k]) // state changed ?
-		{							
+		{
 			DWORD value = newState.rgdwPOV[k];
 
 			pov.Centered = (LOWORD(value) == 0xFFFF);
@@ -213,11 +213,11 @@ static void BuildCtrlName(LPCDIDEVICEOBJECTINSTANCE lpddoi,
 	if (lpddoi->dwSize >= offsetof(DIDEVICEOBJECTINSTANCE, tszName) + sizeof(TCHAR[MAX_PATH]))
 	{
 		destName = (::strcmp("N/A", lpddoi->tszName) == 0) ? defaultName
-														  : lpddoi->tszName;		
+														  : lpddoi->tszName;
 	}
 	else
 	{
-		destName = defaultName;	
+		destName = defaultName;
 	}
 }
 
@@ -226,7 +226,7 @@ static void BuildCtrlName(LPCDIDEVICEOBJECTINSTANCE lpddoi,
 static BOOL CALLBACK DIEnumDeviceObjectsCallback
 (
   LPCDIDEVICEOBJECTINSTANCE lpddoi,
-  LPVOID pvRef 
+  LPVOID pvRef
 )
 {
 
@@ -240,19 +240,19 @@ static BOOL CALLBACK DIEnumDeviceObjectsCallback
 // get range for an axis
 static HRESULT	GetDIAxisRange(LPDIRECTINPUTDEVICE8 device, uint offset, DWORD type, sint &min, sint &max)
 {
-	DIPROPRANGE diprg; 
-    diprg.diph.dwSize       = sizeof(DIPROPRANGE); 
-    diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER); 
-    diprg.diph.dwHow        = DIPH_BYOFFSET; 
+	DIPROPRANGE diprg;
+    diprg.diph.dwSize       = sizeof(DIPROPRANGE);
+    diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+    diprg.diph.dwHow        = DIPH_BYOFFSET;
     diprg.diph.dwObj        = offset;
-    
+
 	// Set the range for the axis
 	HRESULT r = device->GetProperty(DIPROP_RANGE, &diprg.diph);
 
 	if (r == DIERR_OBJECTNOTFOUND)
 	{
 		// try from its ID
-		diprg.diph.dwHow        = DIPH_BYID; 
+		diprg.diph.dwHow        = DIPH_BYID;
 		diprg.diph.dwObj        = type;
 
 		// Set the range for the axis
@@ -271,34 +271,34 @@ static HRESULT	GetDIAxisRange(LPDIRECTINPUTDEVICE8 device, uint offset, DWORD ty
 		max = 65535;
 		return r;
 	}
-		 
+
 
 /*	switch (r)
 	{
 		default:
 			nlinfo("ok");
 		break;
-		case DIERR_INVALIDPARAM: 
+		case DIERR_INVALIDPARAM:
 			nlinfo("invalid param");
 		break;
-		case DIERR_NOTEXCLUSIVEACQUIRED: 
+		case DIERR_NOTEXCLUSIVEACQUIRED:
 			nlinfo("DIERR_NOTEXCLUSIVEACQUIRED");
 		break;
-		case DIERR_NOTINITIALIZED: 
+		case DIERR_NOTINITIALIZED:
 			nlinfo("DIERR_NOTINITIALIZED");
 		break;
-		case DIERR_OBJECTNOTFOUND: 
+		case DIERR_OBJECTNOTFOUND:
 			nlinfo("DIERR_OBJECTNOTFOUND");
 		break;
-		case DIERR_UNSUPPORTED: 
+		case DIERR_UNSUPPORTED:
 			nlinfo("DIERR_UNSUPPORTED");
 		break;
 	}*/
 
-	
+
 	min = (sint) diprg.lMin;
 	max = (sint) diprg.lMax;
-	
+
 	return r;
 }
 
@@ -316,45 +316,45 @@ BOOL CDIGameDevice::processEnumObject(LPCDIDEVICEOBJECTINSTANCE lpddoi)
 	///////////////////////////////////////////
 
 	if (lpddoi->guidType == GUID_XAxis && (ctrlType & DIDFT_ABSAXIS) )
-	{		
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[XAxis].Min, _Axis[XAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[XAxis].Name, "X Axis");				
+		BuildCtrlName(lpddoi, _Axis[XAxis].Name, "X Axis");
 		_Axis[XAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
 	if (lpddoi->guidType == GUID_YAxis && (ctrlType & DIDFT_ABSAXIS))
-	{		
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[YAxis].Min, _Axis[YAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[YAxis].Name, "Y Axis");								
+		BuildCtrlName(lpddoi, _Axis[YAxis].Name, "Y Axis");
 		_Axis[YAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
-        
+
 	if (lpddoi->guidType == GUID_ZAxis && (ctrlType & DIDFT_ABSAXIS))
-	{        
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[ZAxis].Min, _Axis[ZAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[ZAxis].Name, "Z Axis");		
+		BuildCtrlName(lpddoi, _Axis[ZAxis].Name, "Z Axis");
 		_Axis[ZAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
 	if (lpddoi->guidType == GUID_RxAxis && (ctrlType & DIDFT_ABSAXIS))
-	{        
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[RXAxis].Min, _Axis[RXAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[RXAxis].Name, "RX Axis");				
+		BuildCtrlName(lpddoi, _Axis[RXAxis].Name, "RX Axis");
 		_Axis[RXAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
 	if (lpddoi->guidType == GUID_RyAxis && (ctrlType & DIDFT_ABSAXIS))
-	{        
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[RYAxis].Min, _Axis[RYAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[RYAxis].Name, "RY Axis");		
+		BuildCtrlName(lpddoi, _Axis[RYAxis].Name, "RY Axis");
 		_Axis[RYAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
 	if (lpddoi->guidType == GUID_RzAxis && (ctrlType & DIDFT_ABSAXIS))
-	{        
+	{
 		GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Axis[RZAxis].Min, _Axis[RZAxis].Max);
-		BuildCtrlName(lpddoi, _Axis[RZAxis].Name, "RZ Axis");		
+		BuildCtrlName(lpddoi, _Axis[RZAxis].Name, "RZ Axis");
 		_Axis[RZAxis].Present = true;
 		return DIENUM_CONTINUE;
 	}
@@ -376,7 +376,7 @@ BOOL CDIGameDevice::processEnumObject(LPCDIDEVICEOBJECTINSTANCE lpddoi)
 			uint buttonIndex = _Buttons.size() - 1;
 			char defaultButtonName[32];
 			smprintf(defaultButtonName, 32, "BUTTON %d", buttonIndex + 1);
-			BuildCtrlName(lpddoi, _Buttons[buttonIndex].Name, defaultButtonName);		
+			BuildCtrlName(lpddoi, _Buttons[buttonIndex].Name, defaultButtonName);
 			return DIENUM_CONTINUE;
 		}
 	}
@@ -393,7 +393,7 @@ BOOL CDIGameDevice::processEnumObject(LPCDIDEVICEOBJECTINSTANCE lpddoi)
 			GetDIAxisRange(_Device, lpddoi->dwOfs, lpddoi->dwType, _Sliders[sliderIndex].Min, _Sliders[sliderIndex].Max);
 			char defaultSliderName[32];
 			smprintf(defaultSliderName, 32, "SLIDER %d", sliderIndex + 1);
-			BuildCtrlName(lpddoi, _Sliders[sliderIndex].Name, defaultSliderName);					
+			BuildCtrlName(lpddoi, _Sliders[sliderIndex].Name, defaultSliderName);
 		}
 		return DIENUM_CONTINUE;
 	}
@@ -410,11 +410,11 @@ BOOL CDIGameDevice::processEnumObject(LPCDIDEVICEOBJECTINSTANCE lpddoi)
 			uint povIndex = _POVs.size() - 1;
 			char defaultPOVName[16];
 			smprintf(defaultPOVName, 16, "POV %d", povIndex + 1);
-			BuildCtrlName(lpddoi, _POVs[povIndex].Name, defaultPOVName);				
+			BuildCtrlName(lpddoi, _POVs[povIndex].Name, defaultPOVName);
 		}
 		return DIENUM_CONTINUE;
 	}
-	
+
 	return DIENUM_CONTINUE;
 }
 
@@ -459,7 +459,7 @@ uint		CDIGameDevice::getNumSliders() const
 }
 
 //============================================================================
-uint		CDIGameDevice::getNumPOV() const 
+uint		CDIGameDevice::getNumPOV() const
 {
 	return _POVs.size();
 }

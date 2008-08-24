@@ -138,7 +138,7 @@ void CNoise3d::render2passes (CQuadUV &qc, float wpos, float alpha)
 	// For the moment we do it in 2 passes : because wpos is a position between slice we have to do :
 	// [ At0*wpos+At1*(1-wpos) ] * alpha
 	// this is done like that :
-	// At0*[wpos*alpha] + At1*[(1-wpos)*alpha] 
+	// At0*[wpos*alpha] + At1*[(1-wpos)*alpha]
 
 	wpos = fmodf (wpos, 1.0f);
 	uint32 nSlice1 = (uint32)(wpos * _Depth), nSlice2;
@@ -169,22 +169,22 @@ void CNoise3d::render2passes (CQuadUV &qc, float wpos, float alpha)
 	*pVertices = qc.V3;
 
 	CUV *pUV = vba.getTexCoordPointer (_NbVertices, 0);
-	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice1].U, qc.Uv0.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice1].U, qc.Uv0.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice1].U, qc.Uv1.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice1].U, qc.Uv1.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice1].U, qc.Uv2.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice1].U, qc.Uv2.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice1].U, qc.Uv3.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice1].U, qc.Uv3.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
 
-	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice2].U, qc.Uv0.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice2].U, qc.Uv0.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice2].U, qc.Uv1.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice2].U, qc.Uv1.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice2].U, qc.Uv2.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice2].U, qc.Uv2.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice2].U, qc.Uv3.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice2].U, qc.Uv3.V*_ScaleH+_OffS[nSlice2].V);
 
 	uint8 finalAlpha = (uint8)(255*alphaPos*alpha);
 
@@ -246,22 +246,22 @@ void CNoise3d::render (CQuadUV &qc, float wpos, float intensity)
 	*pVertices = qc.V3;
 
 	CUV *pUV = vba.getTexCoordPointer (_NbVertices, 0);
-	*pUV = CUV(qc.Uv0.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv0.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv0.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv0.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv1.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv1.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv1.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv1.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv2.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv2.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv2.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv2.V*_ScaleH+_OffS[nSlice1].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv3.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv3.V*_ScaleH+_OffS[nSlice1].V); 
+	*pUV = CUV(qc.Uv3.U/_NbSliceW+_OffS[nSlice1].U, qc.Uv3.V*_ScaleH+_OffS[nSlice1].V);
 
 	pUV = vba.getTexCoordPointer (_NbVertices, 1);
-	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice2].U, qc.Uv0.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv0.U*_ScaleW+_OffS[nSlice2].U, qc.Uv0.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice2].U, qc.Uv1.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv1.U*_ScaleW+_OffS[nSlice2].U, qc.Uv1.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice2].U, qc.Uv2.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv2.U*_ScaleW+_OffS[nSlice2].U, qc.Uv2.V*_ScaleH+_OffS[nSlice2].V);
 	pUV = (CUV*)( ((uint8*)pUV) + nVSize );
-	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice2].U, qc.Uv3.V*_ScaleH+_OffS[nSlice2].V); 
+	*pUV = CUV(qc.Uv3.U*_ScaleW+_OffS[nSlice2].U, qc.Uv3.V*_ScaleH+_OffS[nSlice2].V);
 
 	// todo hulud d3d vertex color RGBA / BGRA
 	uint8 *pColA = (uint8*)vba.getColorPointer(_NbVertices) + 3;
@@ -274,7 +274,7 @@ void CNoise3d::render (CQuadUV &qc, float wpos, float intensity)
 }
 
 // ------------------------------------------------------------------------------------------------
-void CNoise3d::renderGrid (uint32 nbw, uint32 nbh, uint32 w, uint32 h, 
+void CNoise3d::renderGrid (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 					float UStart, float VStart, float WStart, float dU, float dV, float dW, float intensity)
 {
 
@@ -352,7 +352,7 @@ void CNoise3d::renderGrid (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 }
 
 // ------------------------------------------------------------------------------------------------
-void CNoise3d::renderGrid2passes (uint32 nbw, uint32 nbh, uint32 w, uint32 h, 
+void CNoise3d::renderGrid2passes (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 					float UStart, float VStart, float WStart, float dU, float dV, float dW, float intensity)
 {
 	uint32 i, j, nSlice1, nSlice2;
@@ -361,7 +361,7 @@ void CNoise3d::renderGrid2passes (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 	CUV *pUV0;
 	uint8 *pColA, nFinalAlpha;
 	uint32 nVSize = _VertexBuffer.getVertexSize ();
-	
+
 	if (_VertexBuffer.getNumVertices() < 2*nbw*nbh*4)
 	{
 		_VertexBuffer.setNumVertices (2*nbw*nbh*4);
@@ -439,7 +439,7 @@ void CNoise3d::flush ()
 		flush2passes ();
 		return;
 	}
-	
+
 	_Mat->setColor(CRGBA(0,0,0,(uint8)(255*_Intensity)));
 	_Driver->activeVertexBuffer (_VertexBuffer);
 	_Driver->renderRawQuads (*_Mat, 0, _NbVertices/4);

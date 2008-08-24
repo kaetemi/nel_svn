@@ -29,7 +29,7 @@
 void foo_block_memory_cpp() {}
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

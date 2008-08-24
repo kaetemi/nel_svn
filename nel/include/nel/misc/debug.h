@@ -35,7 +35,7 @@
 #include <set>
 
 namespace NLMISC
-{	
+{
 
 #ifdef ASSERT_THROW_EXCEPTION
 #define ASSERT_THROW_EXCEPTION_CODE(exp) ASSERT_THROW_EXCEPTION_CODE_EX(exp, #exp)
@@ -46,7 +46,7 @@ namespace NLMISC
 #endif
 
 /** Imposter class to wrap all global access to the nel context for backward compatibility
- *	Yoyo note: This was a template before, hence with inline. 
+ *	Yoyo note: This was a template before, hence with inline.
  *	We removed the inline because there was a hard compilation bug
  *	in plugin max under some compiler which caused operator-> to crash.... (don't understand why grrrr)
  *	Btw the method is optimized like this (1 call instead of 3 (and one with virtual)) because we added a local cache (_Log)
@@ -140,7 +140,7 @@ void	setCrashAlreadyReported(bool state);
  *	The macro generate a message formated like the visual C++ compiler message.
  *	NL_LOC_MSG generate informative message and
  *	NL_LOC_WRN generate warning message not differentiable to genuine Visual C++ warning.
- *	The two message allow automatic source access with F4 or double click in 
+ *	The two message allow automatic source access with F4 or double click in
  *	output window.
  *
  *  usage : #pragma message( NL_LOC_MGS "your message" )
@@ -149,7 +149,7 @@ void	setCrashAlreadyReported(bool state);
  *			can append using the NL_MACRO_TO_STR macro like in
  *			#define CLASS_NAME TheClassName
  *			#pragma message( NL_LOC_MGS "The class name is " NL_MACRO_TO_STR(CLASS_NAME))
- *  Note 2 : To show a warning under GCC, use #warning "Your warning here", 
+ *  Note 2 : To show a warning under GCC, use #warning "Your warning here",
  *           see nel/net/net_manager.h for an example on how to use these correctly.
  */
 #define NL_LOC_MSG __FILE__"("NL_MACRO_TO_STR(__LINE__)") : Message: "
@@ -312,7 +312,7 @@ void	setCrashAlreadyReported(bool state);
 	// You can also do this:
 	bool res = load ("test.tga"));
 	assert(res);
- 
+
  *\endcode
  */
 
@@ -646,7 +646,7 @@ public:
 #endif
 		return Value;
 	}
-	
+
 	//	Get the value and validate the access.
 	const T &consumeValue() const
 	{
@@ -662,7 +662,7 @@ public:
 		Consumed = true;
 #endif
 	}
-	
+
 private:
 	T				Value;
 #if !FINAL_VERSION
@@ -690,32 +690,32 @@ class CInstanceCounterManager
 {
 //	NLMISC_SAFE_SINGLETON_DECL(CInstanceCounterManager);
 	private:
-		/* declare private constructors*/ 
+		/* declare private constructors*/
 		CInstanceCounterManager () {}
 		CInstanceCounterManager (const CInstanceCounterManager &) {}
-		/* the local static pointer to the singleton instance */ 
-		static CInstanceCounterManager	*_Instance; 
+		/* the local static pointer to the singleton instance */
+		static CInstanceCounterManager	*_Instance;
 	public:
-		static CInstanceCounterManager &getInstance() 
-		{ 
-			if (_Instance == NULL) 
-			{ 
-				/* the nel context MUST be initialised */ 
-//				nlassert(NLMISC::NelContext != NULL); 
-				void *ptr = NLMISC::INelContext::getInstance().getSingletonPointer("CInstanceCounterManager"); 
-				if (ptr == NULL) 
-				{ 
-					/* allocate the singleton and register it */ 
-					_Instance = new CInstanceCounterManager; 
-					NLMISC::INelContext::getInstance().setSingletonPointer("CInstanceCounterManager", _Instance); 
-				} 
-				else 
-				{ 
-					_Instance = reinterpret_cast<CInstanceCounterManager*>(ptr); 
-				} 
-			} 
-			return *_Instance; 
-		} 
+		static CInstanceCounterManager &getInstance()
+		{
+			if (_Instance == NULL)
+			{
+				/* the nel context MUST be initialised */
+//				nlassert(NLMISC::NelContext != NULL);
+				void *ptr = NLMISC::INelContext::getInstance().getSingletonPointer("CInstanceCounterManager");
+				if (ptr == NULL)
+				{
+					/* allocate the singleton and register it */
+					_Instance = new CInstanceCounterManager;
+					NLMISC::INelContext::getInstance().setSingletonPointer("CInstanceCounterManager", _Instance);
+				}
+				else
+				{
+					_Instance = reinterpret_cast<CInstanceCounterManager*>(ptr);
+				}
+			}
+			return *_Instance;
+		}
 	private:
 public:
 
@@ -755,7 +755,7 @@ public:
 	static void releaseInstance()
 	{
 		if (_Instance != NULL)
-		{	
+		{
 			delete _Instance;
 			_Instance = NULL;
 		}
@@ -791,8 +791,8 @@ private:
 };
 
 
-/** Utility to count instance of class. 
- *	This class is designed to be lightweight and to trace 
+/** Utility to count instance of class.
+ *	This class is designed to be lightweight and to trace
  *	the number of instance of 'tagged' class.
  *	Commands are provided to display the actual number
  *	of object of each class and to compute delta
@@ -804,7 +804,7 @@ private:
  *	struct of 0 octets (witch can be 0 or 1 octet, compiler
  *	dependent).
  *	usage :
- *	
+ *
  *	In the header :
  *	class foo	// This is the class we want to count instance
  *	{
@@ -920,7 +920,7 @@ public:
 private:
 	// prohibit copy
 	CNLDebugOverride(const CNLDebugOverride&);
-	NLMISC::CLog *_OldValue;	
+	NLMISC::CLog *_OldValue;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -942,7 +942,7 @@ public:
 private:
 	// prohibit copy
 	CNLInfoOverride(const CNLInfoOverride&);
-	NLMISC::CLog *_OldValue;	
+	NLMISC::CLog *_OldValue;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -964,7 +964,7 @@ public:
 private:
 	// prohibit copy
 	CNLWarningOverride(const CNLWarningOverride&);
-	NLMISC::CLog *_OldValue;	
+	NLMISC::CLog *_OldValue;
 };
 
 //-------------------------------------------------------------------------------------------------

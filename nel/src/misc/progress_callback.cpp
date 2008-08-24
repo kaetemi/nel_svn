@@ -25,7 +25,7 @@
 #include "nel/misc/progress_callback.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 float IProgressCallback::getCropedValue (float value) const

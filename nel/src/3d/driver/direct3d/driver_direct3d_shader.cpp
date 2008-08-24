@@ -35,7 +35,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // mem allocator for state records
@@ -266,7 +266,7 @@ HRESULT CDriverD3D::SetVertexShaderConstantI(UINT StartRegister, CONST INT* pCon
 CShaderDrvInfosD3D::CShaderDrvInfosD3D(IDriver *drv, ItShaderDrvInfoPtrList it) : IShaderDrvInfos(drv, it)
 {
 	H_AUTO_D3D(CShaderDrvInfosD3D_CShaderDrvInfosD3D)
-	Validated = false;	
+	Validated = false;
 }
 
 // ***************************************************************************
@@ -274,7 +274,7 @@ CShaderDrvInfosD3D::CShaderDrvInfosD3D(IDriver *drv, ItShaderDrvInfoPtrList it) 
 CShaderDrvInfosD3D::~CShaderDrvInfosD3D()
 {
 	H_AUTO_D3D(CShaderDrvInfosD3D_CShaderDrvInfosD3DDtor)
-	Effect->Release();	
+	Effect->Release();
 }
 
 // ***************************************************************************
@@ -369,7 +369,7 @@ bool CDriverD3D::activeShader(CShader *shd)
 
 		// Assemble the shader
 		LPD3DXBUFFER pErrorMsgs;
-		if (D3DXCreateEffect(_DeviceInterface,	shd->getText(), strlen(shd->getText())+1, NULL, NULL, 0, NULL, &(shaderInfo->Effect), &pErrorMsgs) 
+		if (D3DXCreateEffect(_DeviceInterface,	shd->getText(), strlen(shd->getText())+1, NULL, NULL, 0, NULL, &(shaderInfo->Effect), &pErrorMsgs)
 			== D3D_OK)
 		{
 			// Get the texture handle
@@ -383,7 +383,7 @@ bool CDriverD3D::activeShader(CShader *shd)
 				name = "factor" + toString (i);
 				shaderInfo->FactorHandle[i] = shaderInfo->Effect->GetParameterByName(NULL, name.c_str());
 				name = "scalarFloat" + toString (i);
-				shaderInfo->ScalarFloatHandle[i] = shaderInfo->Effect->GetParameterByName(NULL, name.c_str());				
+				shaderInfo->ScalarFloatHandle[i] = shaderInfo->Effect->GetParameterByName(NULL, name.c_str());
 			}
 		}
 		else
@@ -417,14 +417,14 @@ static void setFX(CShader &s, const char *name, INT rsc, CDriverD3D *drv)
 	std::string path = CPath::lookup(string(name)+".fx");
 	CIFile file (path.c_str());
 	int size = file.getFileSize();
-	std::vector<char> shaderText(size + 1, 0);	
+	std::vector<char> shaderText(size + 1, 0);
 	file.serialBuffer((uint8*)&shaderText[0], size);
 
 #else
 
 	HRSRC hrsrc = FindResource(HInstDLL, MAKEINTRESOURCE(rsc), "FX");
 	HGLOBAL hglob = LoadResource(HInstDLL, hrsrc);
-	std::vector<char> shaderText(SizeofResource(HInstDLL, hrsrc) + 1, 0);	
+	std::vector<char> shaderText(SizeofResource(HInstDLL, hrsrc) + 1, 0);
 	memcpy(&shaderText[0], LockResource(hglob), shaderText.size() - 1);
 
 #endif
@@ -460,8 +460,8 @@ void CDriverD3D::initInternalShaders()
 	setFx(_ShaderLightmap3BlendX2,lightmap3blend_x2);
 	setFx(_ShaderLightmap4BlendX2,lightmap4blend_x2);
 	setFx(_ShaderCloud,cloud);
-	setFx(_ShaderWaterNoDiffuse,water_no_diffuse);	
-	setFx(_ShaderWaterDiffuse,water_diffuse);	
+	setFx(_ShaderWaterNoDiffuse,water_no_diffuse);
+	setFx(_ShaderWaterDiffuse,water_diffuse);
 }
 
 
@@ -491,8 +491,8 @@ void CDriverD3D::releaseInternalShaders()
 	_ShaderLightmap3BlendX2._DrvInfo.kill();
 	_ShaderLightmap4BlendX2._DrvInfo.kill();
 	_ShaderCloud._DrvInfo.kill();
-	_ShaderWaterNoDiffuse._DrvInfo.kill();	
-	_ShaderWaterDiffuse._DrvInfo.kill();	
+	_ShaderWaterNoDiffuse._DrvInfo.kill();
+	_ShaderWaterDiffuse._DrvInfo.kill();
 }
 
 // ***************************************************************************
@@ -508,7 +508,7 @@ bool CDriverD3D::setShaderTexture (uint textureHandle, ITexture *texture, CFXCac
 	CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
 	nlassert (shaderInfo);
 	ID3DXEffect	*effect = shaderInfo->Effect;
-	CTextureDrvInfosD3D *d3dtext = getTextureD3D (*texture);	
+	CTextureDrvInfosD3D *d3dtext = getTextureD3D (*texture);
 	if (texture)
 	{
 		if (cache)
@@ -520,7 +520,7 @@ bool CDriverD3D::setShaderTexture (uint textureHandle, ITexture *texture, CFXCac
 			effect->SetTexture (shaderInfo->TextureHandle[textureHandle], d3dtext->Texture);
 		}
 	}
-	
+
 
 	// Add a ref on this texture
 	_CurrentShaderTextures.push_back (CTextureRef());
@@ -579,17 +579,17 @@ void CDriverD3D::notifyAllShaderDrvOfResetDevice()
 // state records (for .fx caching)
 // ***************************************************************************
 
-class CStateRecordLightEnable : public CStateRecord 
-{ 
+class CStateRecordLightEnable : public CStateRecord
+{
 public:
 	DWORD Index;
 	BOOL  Enable;
 public:
 	CStateRecordLightEnable(DWORD index, BOOL enable) : Index(index), Enable(enable) {}
-	virtual void apply(class CDriverD3D &drv) 
-	{ 
-		drv.enableLight ((uint8)Index, Enable!=FALSE); 
-	}	
+	virtual void apply(class CDriverD3D &drv)
+	{
+		drv.enableLight ((uint8)Index, Enable!=FALSE);
+	}
 };
 //
 class CStateRecordLight : public CStateRecord
@@ -603,7 +603,7 @@ public:
 	{
 		drv._LightCache[Index].Light = Light;
 		drv.touchRenderVariable (&drv._LightCache[Index]);
-	}	
+	}
 };
 //
 class CStateRecordMaterial : public CStateRecord
@@ -612,10 +612,10 @@ public:
 	D3DMATERIAL9 Material;
 public:
 	CStateRecordMaterial(const D3DMATERIAL9 *pMaterial) : Material(*pMaterial) {}
-	virtual void apply(class CDriverD3D &drv) 
-	{ 
+	virtual void apply(class CDriverD3D &drv)
+	{
 		drv.setMaterialState(Material);
-	}	
+	}
 };
 //
 class CStateRecordPixelShader : public CStateRecord
@@ -627,7 +627,7 @@ public:
 	virtual void apply(class CDriverD3D &drv)
 	{
 		drv.setPixelShader(PixelShader);
-	}	
+	}
 };
 //
 class CStateRecordPixelShaderConstantB : public CStateRecord
@@ -646,13 +646,13 @@ public:
 		const BOOL *curr = &Values[0];
 		const BOOL *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setPixelShaderConstant (i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 //
 class CStateRecordPixelShaderConstantF : public CStateRecord
@@ -671,13 +671,13 @@ public:
 		const FLOAT *curr = &Values[0];
 		const FLOAT *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setPixelShaderConstant (i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 //
 class CStateRecordPixelShaderConstantI : public CStateRecord
@@ -696,13 +696,13 @@ public:
 		const INT *curr = &Values[0];
 		const INT *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setPixelShaderConstant (i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 //
 class CStateRecordRenderState : public CStateRecord
@@ -715,7 +715,7 @@ public:
 	virtual void apply(class CDriverD3D &drv)
 	{
 		drv.setRenderState(State, Value);
-	}	
+	}
 };
 //
 class CStateRecordSamplerState : public CStateRecord
@@ -729,7 +729,7 @@ public:
 	virtual void apply(class CDriverD3D &drv)
 	{
 		drv.setSamplerState(Sampler, Type, Value);
-	}	
+	}
 };
 //
 class CStateRecordTexture : public CStateRecord
@@ -738,11 +738,11 @@ public:
 	DWORD Stage;
 	CRefPtr<ITexture>      TexRef;
 	LPDIRECT3DBASETEXTURE9 Texture;
-	BOOL IsNelTexture; 
+	BOOL IsNelTexture;
 public:
 	CStateRecordTexture(DWORD stage, LPDIRECT3DBASETEXTURE9 texture, ITexture *nelTexture) : Stage(stage), Texture(texture)
-	{	
-		nlassert(Texture);		
+	{
+		nlassert(Texture);
 		H_AUTO_D3D(CDriverD3D_SetTexture )
 		// if not a NeL texture, should add a reference on texture, else use refptr instead
 		IsNelTexture = nelTexture != NULL;
@@ -751,7 +751,7 @@ public:
 		{
 			HRESULT r = Texture->AddRef();
 			nlassert(r == D3D_OK);
-		}		
+		}
 	}
 	~CStateRecordTexture()
 	{
@@ -765,7 +765,7 @@ public:
 	}
 	virtual void apply(class CDriverD3D &drv)
 	{
-		nlassert(Texture);		
+		nlassert(Texture);
 		if (TexRef)
 		{
 			drv.setTexture(Stage, TexRef);
@@ -773,8 +773,8 @@ public:
 		else
 		{
 			drv.setTexture(Stage, Texture);
-		}		
-	}	
+		}
+	}
 };
 //
 class CStateRecordTextureStageState : public CStateRecord
@@ -791,7 +791,7 @@ public:
 			drv.setTextureIndexUV (Stage, Value);
 		else
 			drv.setTextureState (Stage, Type, Value);
-	}	
+	}
 };
 //
 class CStateRecordTransform : public CStateRecord
@@ -804,7 +804,7 @@ public:
 	virtual void apply(class CDriverD3D &drv)
 	{
 		drv.setMatrix(State, Matrix);
-	}	
+	}
 };
 //
 class CStateRecordVertexShader : public CStateRecord
@@ -817,7 +817,7 @@ public:
 	{
 		nlassert(0); // not supported
 		//drv.setVertexProgram(Shader);
-	}	
+	}
 };
 //
 class CStateRecordVertexShaderConstantB : public CStateRecord
@@ -836,13 +836,13 @@ public:
 		const BOOL *curr = &Values[0];
 		const BOOL *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setVertexProgramConstant(i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 class CStateRecordVertexShaderConstantF : public CStateRecord
 {
@@ -860,13 +860,13 @@ public:
 		const FLOAT *curr = &Values[0];
 		const FLOAT *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setVertexProgramConstant(i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 class CStateRecordVertexShaderConstantI : public CStateRecord
 {
@@ -884,31 +884,31 @@ public:
 		const INT *curr = &Values[0];
 		const INT *last = &Values[0] + Values.size();
 		uint i = StartRegister;
-		while (curr != last)		
+		while (curr != last)
 		{
 			drv.setVertexProgramConstant(i, curr);
 			curr += 4;
 			++ i;
 		}
-	}	
+	}
 };
 
 // state recorder
 HRESULT STDMETHODCALLTYPE CFXPassRecorder::QueryInterface(REFIID riid, LPVOID *ppvObj)
 {
-	nlassert(Driver);	
+	nlassert(Driver);
 	return Driver->QueryInterface(riid, ppvObj);
 }
 
 ULONG STDMETHODCALLTYPE CFXPassRecorder::AddRef(VOID)
 {
-	nlassert(Driver);	
+	nlassert(Driver);
 	return Driver->AddRef();
 }
 
 ULONG STDMETHODCALLTYPE CFXPassRecorder::Release(VOID)
 {
-	nlassert(Driver);	
+	nlassert(Driver);
 	return Driver->Release();
 }
 
@@ -1017,9 +1017,9 @@ HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetTexture(DWORD Stage, LPDIRECT3DBAS
 	}
 	if (i == count)
 	{
-		// The texture isn't a NeL texture (was created inside driver)		
+		// The texture isn't a NeL texture (was created inside driver)
 		Target->States.push_back(new CStateRecordTexture(Stage, pTexture, NULL));
-	}	
+	}
 	return D3D_OK;
 }
 
@@ -1107,8 +1107,8 @@ void CFXCache::setConstants(CShaderDrvInfosD3D *si)
 
 void CFXCache::begin(CShaderDrvInfosD3D *si, CDriverD3D *driver)
 {
-	nlassert(driver);	
-	// amortize cost of caching for animated material -> ensure that the parameters don't change for 
+	nlassert(driver);
+	// amortize cost of caching for animated material -> ensure that the parameters don't change for
 	// a few number of display before doing caching
 	if (Params.Touched)
 	{
@@ -1129,21 +1129,21 @@ void CFXCache::begin(CShaderDrvInfosD3D *si, CDriverD3D *driver)
 		return;
 	}
 	if (Passes.empty()) // must record shader ?
-	{			
+	{
 		Passes.clear();
-		UINT numPasses;	
+		UINT numPasses;
 		CFXPassRecorder pr;
 		pr.Driver = driver;
 		si->Effect->SetStateManager(&pr);
 		// Set constants
 		setConstants(si);
-		//				
+		//
 		HRESULT r = si->Effect->Begin(&numPasses, D3DXFX_DONOTSAVESTATE|D3DXFX_DONOTSAVESHADERSTATE);
 		nlassert(r == D3D_OK);
 		Passes.resize(numPasses);
 		for(uint k = 0; k < numPasses; ++k)
-		{						
-			pr.Target = &Passes[k];			
+		{
+			pr.Target = &Passes[k];
 #if (DIRECT3D_VERSION >= 0x0900) && (D3D_SDK_VERSION >= 32)
 			si->Effect->BeginPass(k);
 			si->Effect->EndPass();
@@ -1163,8 +1163,8 @@ void CFXCache::applyPass(class CDriverD3D &drv, CShaderDrvInfosD3D *si, uint pas
 	if (Passes.empty() && NumPasses == 0)
 	{
 		// the shader has not been cached yet (maybe animated)
-		// so uses the standard path		
-		UINT numPasses;	
+		// so uses the standard path
+		UINT numPasses;
 		setConstants(si);
 		HRESULT r = si->Effect->Begin(&numPasses, D3DXFX_DONOTSAVESTATE|D3DXFX_DONOTSAVESHADERSTATE);
 		nlassert(r == D3D_OK);

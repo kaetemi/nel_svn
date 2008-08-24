@@ -27,7 +27,7 @@
 #include "types_nl.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

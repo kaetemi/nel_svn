@@ -33,7 +33,7 @@ namespace NLNET {
 /**
  * CTcpSock: Reliable socket via TCP.
  * See base class CSock.
- * 
+ *
  * When to set No Delay mode on ?
  * Set TCP_NODELAY (call setNoDelay(true)) *only* if you have to send small buffers that need to
  * be sent *immediately*. It should only be set for applications that send frequent small bursts

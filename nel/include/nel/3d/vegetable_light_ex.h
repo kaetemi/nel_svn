@@ -29,7 +29,7 @@
 #include "nel/misc/rgba.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -37,7 +37,7 @@ class	CPointLightNamed;
 
 
 /**
- * Additional information to light Vegetables. 2 "precomputed" pointLights can 
+ * Additional information to light Vegetables. 2 "precomputed" pointLights can
  *	additionally light the vegetables.
  * \author Lionel Berenguier
  * \author Nevrax France

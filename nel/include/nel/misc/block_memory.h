@@ -31,7 +31,7 @@
 #include "mutex.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -47,7 +47,7 @@ extern	bool		NL3D_BlockMemoryAssertOnPurge;	// =true.
  * This memory manager is a fast memory allocator, doing same thing as new/delete. It works by block. block are always
  * allocated, never deleted.  alocation/free are in O(1).
  *
- * Elements with sizeof(T)<sizeof(void*) should not be used with this allocator, because 
+ * Elements with sizeof(T)<sizeof(void*) should not be used with this allocator, because
  * sizeEltInMemory= max(sizeof(T),sizeof(void*)).
  *
  * free() check invalid ptr in debug only, for extra cost of 8 octets per element.
@@ -115,7 +115,7 @@ public:
 
 		// update _NextFreeElt, so it points to the next free element.
 		_NextFreeElt= *(void**)_NextFreeElt;
-		
+
 		// construct the allocated element.
 		if( __ctor_dtor__ )
 			new (ret) T;
@@ -157,7 +157,7 @@ public:
 		*checkStart= CheckDeletedIdent;
 		*checkEnd  = CheckDeletedIdent;
 #endif
-		
+
 		// destruct the element.
 		if( __ctor_dtor__ )
 			ptr->~T();

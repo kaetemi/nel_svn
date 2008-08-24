@@ -34,7 +34,7 @@ namespace NL3D {
 /**
  * This is a helper texture that helps to blend between 2 others textures. It may help where sharing is needed.
  * (for example, with a texture that blend between day / night, and that is shared by several object). The default is
- * to have sharing enabled. 
+ * to have sharing enabled.
  * NB : sharing is only supported if the 2 blending textures support sharing
  * IMPORTANT: you should setup all your blend texture after changing the blend factor to avoid previous texture
  * to be left in VRAM
@@ -44,7 +44,7 @@ namespace NL3D {
  */
 class CTextureBlend : public ITexture
 {
-public:	
+public:
 	NLMISC_DECLARE_CLASS(CTextureBlend);
 	/// ctor
 	CTextureBlend();
@@ -66,7 +66,7 @@ public:
 
 	///\name Texture sharing
 	// @{
-	virtual bool			supportSharing() const;	
+	virtual bool			supportSharing() const;
 	virtual std::string		getShareName() const;
 	/// enable / disable sharing support
 	void					enableSharing(bool enabled = false);

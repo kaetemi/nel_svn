@@ -62,12 +62,12 @@ public:
 	// ctor
 	CPSValueBlendFuncRGBA() : _ColorType(CVertexBuffer::TRGBA) {}
 	//
-	void getValues(NLMISC::CRGBA &startValue, NLMISC::CRGBA &endValue) const 
+	void getValues(NLMISC::CRGBA &startValue, NLMISC::CRGBA &endValue) const
 	{
 		CPSValueBlendFunc<NLMISC::CRGBA>::getValues(startValue, endValue);
 		startValue = convertVBColor(startValue, _ColorType);
 		endValue = convertVBColor(endValue, _ColorType);
-		
+
 	}
 	virtual void setValues(NLMISC::CRGBA startValue, NLMISC::CRGBA endValue)
 	{
@@ -80,7 +80,7 @@ public:
 	}
 	// change the color type
 	void setColorType(CVertexBuffer::TVertexColorType colorType);
-		
+
 	virtual NLMISC::CRGBA getMaxValue(void) const { return CRGBA::Black; }
 	virtual NLMISC::CRGBA getMinValue(void) const { return CRGBA::Black; }
 protected:
@@ -96,12 +96,12 @@ public:
 	// ctor
 	CPSValueBlendSampleFuncRGBA() : _ColorType(CVertexBuffer::TRGBA) {}
 	//
-	void getValues(NLMISC::CRGBA &startValue, NLMISC::CRGBA &endValue) const 
+	void getValues(NLMISC::CRGBA &startValue, NLMISC::CRGBA &endValue) const
 	{
 		CPSValueBlendSampleFunc<NLMISC::CRGBA, RGBA_BLENDER_NUM_VALUES>::getValues(startValue, endValue);
 		startValue = convertVBColor(startValue, _ColorType);
 		endValue = convertVBColor(endValue, _ColorType);
-		
+
 	}
 	virtual void setValues(NLMISC::CRGBA startValue, NLMISC::CRGBA endValue)
 	{
@@ -114,7 +114,7 @@ public:
 	}
 	// change the color type
 	void setColorType(CVertexBuffer::TVertexColorType colorType);
-	
+
 	virtual NLMISC::CRGBA getMaxValue(void) const { return CRGBA::Black; }
 	virtual NLMISC::CRGBA getMinValue(void) const { return CRGBA::Black; }
 protected:
@@ -127,10 +127,10 @@ public:
 	// ctor
 	CPSValueGradientFuncRGBA() : _ColorType(CVertexBuffer::TRGBA) {}
 	//
-	void getValues(NLMISC::CRGBA *tab) const;	
-	NLMISC::CRGBA getValue(uint index)	const;	
-	void setValues(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbStages);	
-	void setValuesUnpacked(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbStages);	
+	void getValues(NLMISC::CRGBA *tab) const;
+	NLMISC::CRGBA getValue(uint index)	const;
+	void setValues(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbStages);
+	void setValuesUnpacked(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbStages);
 	void serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	{
 		setColorType(CVertexBuffer::TRGBA);
@@ -138,7 +138,7 @@ public:
 	}
 	// change the color type
 	void setColorType(CVertexBuffer::TVertexColorType colorType);
-	
+
 	virtual NLMISC::CRGBA getMaxValue(void) const { return CRGBA::Black; }
 	virtual NLMISC::CRGBA getMinValue(void) const { return CRGBA::Black; }
 protected:
@@ -153,7 +153,7 @@ class CPSAttribMakerRGBA : public CPSAttribMakerT<NLMISC::CRGBA, F>
 {
 public:
 	// ctor
-	CPSAttribMakerRGBA(float nbCycles) : CPSAttribMakerT<NLMISC::CRGBA, F>(nbCycles) {}	
+	CPSAttribMakerRGBA(float nbCycles) : CPSAttribMakerT<NLMISC::CRGBA, F>(nbCycles) {}
 	// helps to change internal color representation
 	virtual void setColorType(CVertexBuffer::TVertexColorType colorType)
 	{
@@ -176,9 +176,9 @@ public:
 	CPSColorBlenderExact(NLMISC::CRGBA startColor = NLMISC::CRGBA::White , NLMISC::CRGBA endColor = NLMISC::CRGBA::Black, float nbCycles = 1.0f) : CPSAttribMakerRGBA<CPSValueBlendFuncRGBA>(nbCycles)
 	{
 		_F.setValues(startColor, endColor);
-	}		
+	}
 	CPSAttribMakerBase *clone() const { return new CPSColorBlenderExact(*this); }
-	
+
 };
 
 
@@ -191,7 +191,7 @@ public:
 	CPSColorBlender(NLMISC::CRGBA startColor = NLMISC::CRGBA::White , NLMISC::CRGBA endColor = NLMISC::CRGBA::Black, float nbCycles = 1.0f) : CPSAttribMakerRGBA<CPSValueBlendSampleFuncRGBA>(nbCycles)
 	{
 		_F.setValues(startColor, endColor);
-	}		
+	}
 	CPSAttribMakerBase *clone() const { return new CPSColorBlender(*this); }
 };
 
@@ -210,14 +210,14 @@ public:
 	  */
 	CPSColorGradient();
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a color table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
 	 */
 
 	CPSColorGradient(const NLMISC::CRGBA *colorTab, uint32 nbValues, uint32 nbStages, float nbCycles = 1.0f);
-	static NLMISC::CRGBA _DefaultGradient[];	
+	static NLMISC::CRGBA _DefaultGradient[];
 	CPSAttribMakerBase *clone() const { return new CPSColorGradient(*this); }
 };
 
@@ -233,10 +233,10 @@ public:
 	CPSColorMemory() : _ColorType(CVertexBuffer::TRGBA) { setDefaultValue(NLMISC::CRGBA::White); }
 	NLMISC_DECLARE_CLASS(CPSColorMemory);
 	CPSAttribMakerBase *clone() const { return new CPSColorMemory(*this); }
-	virtual void setColorType(CVertexBuffer::TVertexColorType colorType);	
+	virtual void setColorType(CVertexBuffer::TVertexColorType colorType);
 	virtual void setDefaultValue(NLMISC::CRGBA defaultValue);
 	virtual NLMISC::CRGBA getDefaultValue(void) const;
-	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 protected:
 	CVertexBuffer::TVertexColorType _ColorType;
 };
@@ -247,7 +247,7 @@ protected:
   */
 class CPSColorBinOp : public CPSAttribMakerBinOp<NLMISC::CRGBA>
 {
-public:		
+public:
 	NLMISC_DECLARE_CLASS(CPSColorBinOp);
 	CPSAttribMakerBase *clone() const { return new CPSColorBinOp(*this); }
 	virtual void setColorType(CVertexBuffer::TVertexColorType colorType);
@@ -274,9 +274,9 @@ public:
 	CPSColorBlenderExact(NLMISC::CRGBA startColor = NLMISC::CRGBA::White , NLMISC::CRGBA endColor = NLMISC::CRGBA::Black, float nbCycles = 1.0f) : CPSValueBlender<NLMISC::CRGBA>(nbCycles)
 	{
 		_F.setValues(startColor, endColor);
-	}		
+	}
 	CPSAttribMakerBase *clone() const { return new CPSColorBlenderExact(*this); }
-	
+
 };
 
 
@@ -291,7 +291,7 @@ public:
 	CPSColorBlender(NLMISC::CRGBA startColor = NLMISC::CRGBA::White , NLMISC::CRGBA endColor = NLMISC::CRGBA::Black, float nbCycles = 1.0f) : CPSValueBlenderSample<NLMISC::CRGBA, 64>(nbCycles)
 	{
 		_F.setValues(startColor, endColor);
-	}		
+	}
 	CPSAttribMakerBase *clone() const { return new CPSColorBlender(*this); }
 };
 
@@ -311,14 +311,14 @@ public:
 	  */
 //	CPSColorGradient();
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a color table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
 	 */
 /*
 	CPSColorGradient(const NLMISC::CRGBA *colorTab, uint32 nbValues, uint32 nbStages, float nbCycles = 1.0f);
-	static NLMISC::CRGBA _DefaultGradient[];	
+	static NLMISC::CRGBA _DefaultGradient[];
 	CPSAttribMakerBase *clone() const { return new CPSColorGradient(*this); }
 };
 */

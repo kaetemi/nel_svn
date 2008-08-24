@@ -40,7 +40,7 @@ namespace NLNET
 	/** A simple gateway that interconnect module locally
 	 *	For testing purpose and simple case.
 	 */
-	class CLocalGateway : 
+	class CLocalGateway :
 		public CModuleBase,
 		public CModuleGateway,
 		public CModuleSocket
@@ -52,12 +52,12 @@ namespace NLNET
 		// The modules proxies
 		TModuleProxies		_ModuleProxies;
 
-		
+
 	public:
 
 		CLocalGateway()
 		{
-			
+
 		}
 
 		~CLocalGateway()
@@ -74,7 +74,7 @@ namespace NLNET
 		}
 
 		/***********************************************************
-		 ** Gateway methods 
+		 ** Gateway methods
 		 ***********************************************************/
 		virtual const std::string &getGatewayName() const
 		{
@@ -99,16 +99,16 @@ namespace NLNET
 		virtual void deleteTransport(const std::string &instanceName)
 		{
 		}
-		
+
 		/// Activate/stop peer invisible mode on a transport
 		virtual void	setTransportPeerInvisible(const std::string &transportInstanceName, bool peerInvisible)
 		{
 			// unsupported
 			nlstop;
 		}
-		
+
 		/// Activate/stop firewalling mode on a transport
-		virtual void	setTransportFirewallMode(const std::string &transportInstanceName, bool firewalled) 
+		virtual void	setTransportFirewallMode(const std::string &transportInstanceName, bool firewalled)
 			throw (EGatewayFirewallBreak)
 		{
 			// unsupported
@@ -135,7 +135,7 @@ namespace NLNET
 			return 0;
 		}
 
-		virtual uint32 getReceivedPingCount() const 
+		virtual uint32 getReceivedPingCount() const
 		{
 			return 0;
 		}
@@ -145,7 +145,7 @@ namespace NLNET
 		}
 
 		/// A route is removed by a transport
-		virtual void onRouteRemoved(CGatewayRoute *route) 
+		virtual void onRouteRemoved(CGatewayRoute *route)
 		{
 		}
 
@@ -185,7 +185,7 @@ namespace NLNET
 //		{
 //			nlstop;
 //		}
-//		virtual void closeGatewayServer() 
+//		virtual void closeGatewayServer()
 //			throw (EGatewayNotOpen)
 //		{
 //			nlstop;
@@ -233,7 +233,7 @@ namespace NLNET
 //		}
 		virtual void onAddModuleProxy(IModuleProxy *addedModule)
 		{
-			// always disclose module to local modules 
+			// always disclose module to local modules
 			discloseModule(addedModule);
 		}
 		virtual void onRemoveModuleProxy(IModuleProxy *removedModule)
@@ -265,7 +265,7 @@ namespace NLNET
 			return NULL;
 		}
 
-		virtual uint32	getProxyCount() const 
+		virtual uint32	getProxyCount() const
 		{
 			return _ModuleProxies.getAToBMap().size();
 		}
@@ -314,7 +314,7 @@ namespace NLNET
 //			}
 		}
 		/***********************************************************
-		 ** Module methods 
+		 ** Module methods
 		 ***********************************************************/
 		bool	initModule(const TParsedCommandLine &initInfo)
 		{
@@ -363,7 +363,7 @@ namespace NLNET
 		}
 
 		/***********************************************************
-		 ** Socket methods 
+		 ** Socket methods
 		 ***********************************************************/
 
 		const std::string &getSocketName()
@@ -371,7 +371,7 @@ namespace NLNET
 			return getModuleName();
 		}
 
-		void _sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message ) 
+		void _sendModuleMessage(IModule *senderModule, TModuleId destModuleProxyId, const NLNET::CMessage &message )
 			throw (EModuleNotReachable, EModuleNotPluggedHere)
 		{
 			TModuleProxies::TAToBMap::const_iterator first(_ModuleProxies.getAToBMap().begin()), last(_ModuleProxies.getAToBMap().end());
@@ -394,11 +394,11 @@ namespace NLNET
 
 			// create a proxy for this module
 			IModuleProxy *modProx = IModuleManager::getInstance().createModuleProxy(
-					this, 
+					this,
 					NULL,	// the module is local, so there is no route
 					0,		// the module is local, distance is 0
 					pluggedModule,	// the module is local, so store the module pointer
-					pluggedModule->getModuleClassName(), 
+					pluggedModule->getModuleClassName(),
 					getGatewayName()+"/"+pluggedModule->getModuleFullyQualifiedName(),
 					pluggedModule->getModuleManifest(),
 //					_ThisProxy,
@@ -455,9 +455,9 @@ namespace NLNET
 			// remove reference to the proxy
 			_ModuleProxies.removeWithA(modProx);
 
-			// release the module proxy 
+			// release the module proxy
 			IModuleManager::getInstance().releaseModuleProxy(localProxyId);
-			
+
 		}
 
 		void getModuleList(std::vector<IModuleProxy*> &resultList)

@@ -44,8 +44,8 @@ namespace NLMISC {
 // ***************************************************************************
 /**
  * Implemented with a std::vector
- * Use it not like a map : begin by adding all your values with add()/del()/fromMap() 
- * and then call endAdd() that performs a slow sort on the vector and then call find() 
+ * Use it not like a map : begin by adding all your values with add()/del()/fromMap()
+ * and then call endAdd() that performs a slow sort on the vector and then call find()
  * to find the element you want. If you have not called endAdd() its done in find(),
  * but take care that endAdd() is slow.
  * \author Matthieu 'Trap' Besson
@@ -60,8 +60,8 @@ public:
 	typedef Typ						mapped_type;
 	typedef std::pair<Key, Typ>		value_type;
 	typedef Comp					key_compare;
-	
-	class value_compare : public std::binary_function<value_type, value_type, bool> 
+
+	class value_compare : public std::binary_function<value_type, value_type, bool>
 	{
 		friend class CStaticMap<Key, Typ, Comp>;
 	public:
@@ -112,14 +112,14 @@ public:
 	}
 
 	CStaticMap (const_iterator __first, const_iterator __last, const Comp& __comp)
-		: _CompFunc(__comp) 
-	{ 
+		: _CompFunc(__comp)
+	{
 		_DataSorted = false;
 		_Data.insert(__first, __last);
 		endAdd();
 	}
 
-	CStaticMap(const CStaticMap<Key, Typ, Comp>& __x) 
+	CStaticMap(const CStaticMap<Key, Typ, Comp>& __x)
 		: _Data(__x._Data) , _DataSorted(__x._DataSorted), _CompFunc(__x._CompFunc)
 	{
 	}
@@ -128,7 +128,7 @@ public:
 	{
 		_Data = __x._Data;
 		endAdd();
-		return *this; 
+		return *this;
 	}
 
 	// accessors:
@@ -168,10 +168,10 @@ public:
 		_Data.reserve(n);
 	}
 
-	void add(const value_type& __v) 
-	{ 
+	void add(const value_type& __v)
+	{
 		_DataSorted = false;
-		_Data.push_back (__v); 
+		_Data.push_back (__v);
 	}
 
 	void fromMap (const std::map<Key, Typ, Comp> &m)
@@ -204,7 +204,7 @@ public:
 		endAdd();
 		return _Data.erase (__x);
 	}
-	
+
 	void del(iterator __first, iterator __last)
 	{
 		nlassert(_DataSorted);
@@ -240,8 +240,8 @@ public:
 			return end();
 	}
 
-	size_type count(const key_type& __x) const 
-	{ 
+	size_type count(const key_type& __x) const
+	{
 		endAdd();
 		return find(__x) == _Data.end() ? 0 : 1;
 	}

@@ -30,7 +30,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 H_AUTO_DECL( NL3D_UTrack_interpolate )
@@ -60,7 +60,7 @@ bool ITrack::interpolate (TAnimationTime time, float& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueFloat *value;
 	value= dynamic_cast<const CAnimatedValueFloat*>(&eval (time, AnimatedValueBlock));
 
@@ -82,7 +82,7 @@ bool ITrack::interpolate (TAnimationTime time, sint32& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueInt *value;
 	value= dynamic_cast<const CAnimatedValueInt*>(&eval (time, AnimatedValueBlock));
 
@@ -104,7 +104,7 @@ bool ITrack::interpolate (TAnimationTime time, CRGBA& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueRGBA *value;
 	value= dynamic_cast<const CAnimatedValueRGBA*>(&eval (time, AnimatedValueBlock));
 
@@ -126,7 +126,7 @@ bool ITrack::interpolate (TAnimationTime time, CVector& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueVector *value;
 	value= dynamic_cast<const CAnimatedValueVector*>(&eval (time, AnimatedValueBlock));
 
@@ -148,7 +148,7 @@ bool ITrack::interpolate (TAnimationTime time, CQuat& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueQuat *value;
 	value= dynamic_cast<const CAnimatedValueQuat*>(&eval (time, AnimatedValueBlock));
 
@@ -170,7 +170,7 @@ bool ITrack::interpolate (TAnimationTime time, std::string& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueString *value;
 	value= dynamic_cast<const CAnimatedValueString*>(&eval (time, AnimatedValueBlock));
 
@@ -192,7 +192,7 @@ bool ITrack::interpolate (TAnimationTime time, bool& res)
 {
 	NL3D_HAUTO_UTRACK_INTERPOLATE;
 
-	// Evaluate it 
+	// Evaluate it
 	const CAnimatedValueBool *value;
 	value= dynamic_cast<const CAnimatedValueBool*>(&eval (time, AnimatedValueBlock));
 

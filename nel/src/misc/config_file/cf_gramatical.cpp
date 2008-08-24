@@ -824,7 +824,7 @@ case 5:
 
 				if (cf_CurrentFile != NULL)
 					free(cf_CurrentFile);
-				// store the filename 
+				// store the filename
 				cf_CurrentFile = strdup(yyvsp[-1].Val.String);
 				// store the current line minus 1 because the #fileline count for a line
 				cf_CurrentLine = yyvsp[0].Val.Int-1;
@@ -873,7 +873,7 @@ case 6:
 				}
 				else if (cf_OverwriteExistingVariable || (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i].Root || !strcmp(yyvsp[-3].Val.String,"RootConfigFilename"))
 				{
-					// reaffectation d'une variable 
+					// reaffectation d'une variable
 					Var.Callback = (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i].Callback;
 					DEBUG_PRINTF ("yacc: reassign var name '%s' type %d\n", Var.Name.c_str(), Var.Type);
 					if (Var != (*((vector<NLMISC::CConfigFile::CVar>*)(YYPARSE_PARAM)))[i] && Var.Callback != NULL)

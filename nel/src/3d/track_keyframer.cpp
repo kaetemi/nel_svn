@@ -35,9 +35,9 @@ void ITrackKeyFramer<T>::getKeysInRange(TAnimationTime t1, TAnimationTime t2, st
 	nlassert(t1 <= t2);
 	typename TMapTimeCKey::const_iterator it = _MapKey.lower_bound(t1);
 	typename TMapTimeCKey::const_iterator ub = _MapKey.upper_bound(t2);
-	result.clear();		
+	result.clear();
 	while (it != ub)
-	{			
+	{
 		result.push_back(it->first);
 		++it;
 	}

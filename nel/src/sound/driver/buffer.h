@@ -90,7 +90,7 @@ public:
 		sint16	PreviousSample;
 		/// Stepsize table index
 		uint8	StepIndex;
-		
+
 	};
 
 	// Encode 16 wav buffer into ADPCM
@@ -120,7 +120,7 @@ public:
 
 	/// Destructor
 	virtual		~IBuffer() {}
-	
+
 };
 
 

@@ -27,7 +27,7 @@
 
 //=====================================
 bool CVPParser::parseWriteMask(uint &mask, std::string &errorOutput)
-{	
+{
 	// parse output mask
 	if (*_CurrChar != '.')
 	{
@@ -51,7 +51,7 @@ bool CVPParser::parseWriteMask(uint &mask, std::string &errorOutput)
 				default:
 					if (k >= 1) return true;
 					else
-					{					
+					{
 						errorOutput = "Can't parse output mask.";
 						return false;
 					}
@@ -76,18 +76,18 @@ void CVPParser::skipSpacesAndComments()
 {
 	bool stop = false;
 	do
-	{	
+	{
 		switch(*_CurrChar)
 		{
 			case '\t':
 			case '\r':
-			case ' ' : 
-				++_CurrChar; 
+			case ' ' :
+				++_CurrChar;
 			break;
 			//
-			case '\n': 
-				++_CurrChar; 
-				++_LineIndex; 
+			case '\n':
+				++_CurrChar;
+				++_LineIndex;
 				_LineStart = _CurrChar;
 			break;
 			case '#': // comment go till end of line
@@ -96,7 +96,7 @@ void CVPParser::skipSpacesAndComments()
 			break;
 			default:
 				stop = true;
-			break;			
+			break;
 		}
 	}
 	while (!stop);
@@ -107,12 +107,12 @@ uint CVPInstruction::getNumUsedSrc() const
 {
 	switch(Opcode)
 	{
-		case CVPInstruction::ARL:		
-		case CVPInstruction::RSQ:			
-		case CVPInstruction::EXPP:			
-		case CVPInstruction::LOG:			
-		case CVPInstruction::RCP:			
-		case CVPInstruction::MOV:			
+		case CVPInstruction::ARL:
+		case CVPInstruction::RSQ:
+		case CVPInstruction::EXPP:
+		case CVPInstruction::LOG:
+		case CVPInstruction::RCP:
+		case CVPInstruction::MOV:
 		case CVPInstruction::LIT:
 			return 1;
 		//
@@ -122,16 +122,16 @@ uint CVPInstruction::getNumUsedSrc() const
 		case CVPInstruction::MUL:
 		case CVPInstruction::ADD:
 		case CVPInstruction::DP3:
-		case CVPInstruction::DP4:			
-		case CVPInstruction::DST:	
+		case CVPInstruction::DP4:
+		case CVPInstruction::DST:
 		case CVPInstruction::MIN:
-		case CVPInstruction::MAX:	
-		case CVPInstruction::SLT:	
+		case CVPInstruction::MAX:
+		case CVPInstruction::SLT:
 		case CVPInstruction::SGE:
 			return 2;
 		//
 		default:
-			nlstop;		
+			nlstop;
 	}
 	return 0;
 }
@@ -145,10 +145,10 @@ bool CVPParser::parseOperand(CVPOperand &operand, bool outputOperand, std::strin
 	{
 		operand.Negate = false;
 		switch(*_CurrChar)
-		{			
+		{
 			case 'o': result = parseOutputRegister(operand, errorOutput); break;
-			case 'R': 
-				result = parseVariableRegister(operand, errorOutput);							
+			case 'R':
+				result = parseVariableRegister(operand, errorOutput);
 			break;
 			case 'A': result = parseAddressRegister(operand, errorOutput); break;
 			case '-':
@@ -156,12 +156,12 @@ bool CVPParser::parseOperand(CVPOperand &operand, bool outputOperand, std::strin
 				return false;
 			default:
 				errorOutput = "Output, Address, or Temporary register expected as an output operand.";
-				return false;			
+				return false;
 		}
 		if (!result) return false;
 
 		// parse the write mask
-		return parseWriteMask(operand.WriteMask, errorOutput);				
+		return parseWriteMask(operand.WriteMask, errorOutput);
 	}
 	else
 	{
@@ -195,10 +195,10 @@ bool CVPParser::parseOperand(CVPOperand &operand, bool outputOperand, std::strin
 				return false;
 			break;
 		}
-		if (!result) return false;		
+		if (!result) return false;
 		if (operand.Type != CVPOperand::AddressRegister)
 		{
-			if (!parseSwizzle(operand.Swizzle, errorOutput)) return false;		
+			if (!parseSwizzle(operand.Swizzle, errorOutput)) return false;
 			if (operand.Type == CVPOperand::Variable)
 			{
 				for(uint k = 0; k < 4; ++k)
@@ -214,7 +214,7 @@ bool CVPParser::parseOperand(CVPOperand &operand, bool outputOperand, std::strin
 		return true;
 	}
 
-	
+
 }
 
 
@@ -222,7 +222,7 @@ bool CVPParser::parseOperand(CVPOperand &operand, bool outputOperand, std::strin
 bool CVPParser::parseInputRegister(CVPOperand &operand, std::string &errorOutput)
 {
 	++_CurrChar;
-	operand.Type = CVPOperand::InputRegister;	
+	operand.Type = CVPOperand::InputRegister;
 	if (*_CurrChar != '[')
 	{
 		errorOutput = "'[' expected when parsing an input register.";
@@ -241,7 +241,7 @@ bool CVPParser::parseInputRegister(CVPOperand &operand, std::string &errorOutput
 			++_CurrChar;
 		}
 		if (index > 15)
-		{		
+		{
 			errorOutput = "Invalid index for input register, must be in [0, 15].";
 			return false;
 		}
@@ -268,7 +268,7 @@ bool CVPParser::parseInputRegister(CVPOperand &operand, std::string &errorOutput
 			case 'WGHT': operand.Value.InputRegisterValue = CVPOperand::IWeight; break;
 			case 'NRML': operand.Value.InputRegisterValue = CVPOperand::INormal; break;
 			case 'COL0': operand.Value.InputRegisterValue = CVPOperand::IPrimaryColor; break;
-			case 'COL1': operand.Value.InputRegisterValue = CVPOperand::ISecondaryColor; break;			
+			case 'COL1': operand.Value.InputRegisterValue = CVPOperand::ISecondaryColor; break;
 			case 'FOGC': operand.Value.InputRegisterValue = CVPOperand::IFogCoord; break;
 			// texture argument
 			case 'TEX0':
@@ -279,12 +279,12 @@ bool CVPParser::parseInputRegister(CVPOperand &operand, std::string &errorOutput
 			case 'TEX5':
 			case 'TEX6':
 			case 'TEX7':
-				operand.Value.InputRegisterValue = (CVPOperand::EInputRegister) (CVPOperand::ITex0 + strValue & 0xff - '0'); 
+				operand.Value.InputRegisterValue = (CVPOperand::EInputRegister) (CVPOperand::ITex0 + strValue & 0xff - '0');
 			break;
 			default:
 				errorOutput = "Can't parse index for input register.";
 				return false;
-		}		
+		}
 	}
 	skipSpacesAndComments();
 	if (*_CurrChar != ']')
@@ -315,12 +315,12 @@ bool CVPParser::parseSwizzle(CVPSwizzle &swizzle,std::string &errorOutput)
 	if (*_CurrChar != '.')
 	{
 		// no swizzle
-		swizzle.Comp[0] = CVPSwizzle::X;	
+		swizzle.Comp[0] = CVPSwizzle::X;
 		swizzle.Comp[1] = CVPSwizzle::Y;
 		swizzle.Comp[2] = CVPSwizzle::Z;
 		swizzle.Comp[3] = CVPSwizzle::W;
 		return true;
-	}	
+	}
 	++_CurrChar;
 	// 4 letters case
 	for(uint k = 0; k < 4; ++k)
@@ -350,25 +350,25 @@ bool CVPParser::parseSwizzle(CVPSwizzle &swizzle,std::string &errorOutput)
 			{
 				errorOutput = "Invalid swizzle value.";
 				return false;
-			}			
+			}
 		}
-		
+
 		if (!letterToSwizzleComp(*_CurrChar, swizzle.Comp[k]))
-		{	
+		{
 			errorOutput = "Invalid swizzle value.";
 			return false;
 		}
 		++ _CurrChar;
 	}
-	
+
 	return true;
 }
 
 //=================================================================================================
 bool CVPParser::parseOutputRegister(CVPOperand &operand, std::string &errorOutput)
-{	
+{
 	++_CurrChar;
-	operand.Type = CVPOperand::OutputRegister;	
+	operand.Type = CVPOperand::OutputRegister;
 	if (*_CurrChar != '[')
 	{
 		errorOutput = "'[' expected when parsing an ouput register.";
@@ -440,7 +440,7 @@ static inline const char *parseUInt(const char *src, uint &dest)
 bool CVPParser::parseConstantRegister(CVPOperand &operand, std::string &errorOutput)
 {
 	++_CurrChar;
-	operand.Type = CVPOperand::Constant;	
+	operand.Type = CVPOperand::Constant;
 	if (*_CurrChar != '[')
 	{
 		errorOutput = "'[' expected when parsing a constant register.";
@@ -450,7 +450,7 @@ bool CVPParser::parseConstantRegister(CVPOperand &operand, std::string &errorOut
 	skipSpacesAndComments();
 	sint &index = operand.Value.ConstantValue;
 	if (isdigit(*_CurrChar))
-	{		
+	{
 		// immediat case : c[0] to c[95]
 		uint uIndex;
 		_CurrChar = parseUInt(_CurrChar, uIndex);
@@ -502,7 +502,7 @@ bool CVPParser::parseConstantRegister(CVPOperand &operand, std::string &errorOut
 				if (isdigit(*_CurrChar))
 				{
 					uint uIndex;
-					_CurrChar = parseUInt(_CurrChar, uIndex);					
+					_CurrChar = parseUInt(_CurrChar, uIndex);
 					if (uIndex > 64)
 					{
 						errorOutput = "Constant register index must range from -64 to +63.";
@@ -537,7 +537,7 @@ bool CVPParser::parseConstantRegister(CVPOperand &operand, std::string &errorOut
 bool CVPParser::parseVariableRegister(CVPOperand &operand, std::string &errorOutput)
 {
 	++_CurrChar;
-	operand.Type = CVPOperand::Variable;	
+	operand.Type = CVPOperand::Variable;
 	if (!isdigit(*_CurrChar))
 	{
 		errorOutput = "Can't parse variable register.";
@@ -564,7 +564,7 @@ bool CVPParser::parseAddressRegister(CVPOperand &operand, std::string &errorOutp
 		return false;
 	}
 	_CurrChar += 3;
-	return true;	
+	return true;
 }
 
 //=================================================================================================
@@ -590,7 +590,7 @@ bool CVPParser::parseOp2(CVPInstruction &instr,std::string &errorOutput)
 	skipSpacesAndComments();
 	// parse src1
 	if (!parseOperand(instr.Src1, false, errorOutput)) return false;
-	if (instr.Src1.Type == CVPOperand::AddressRegister 
+	if (instr.Src1.Type == CVPOperand::AddressRegister
 		|| instr.Src1.Type == CVPOperand::OutputRegister)
 	{
 		errorOutput = "Src1 must be constant, variable, or input register.";
@@ -601,7 +601,7 @@ bool CVPParser::parseOp2(CVPInstruction &instr,std::string &errorOutput)
 
 //=================================================================================================
 bool CVPParser::parseOp3(CVPInstruction &instr, std::string &errorOutput)
-{	
+{
 	if (!parseOp2(instr, errorOutput)) return false;
 	skipSpacesAndComments();
 	if (*_CurrChar != ',')
@@ -613,7 +613,7 @@ bool CVPParser::parseOp3(CVPInstruction &instr, std::string &errorOutput)
 	skipSpacesAndComments();
 	// parse src2
 	if (!parseOperand(instr.Src2, false, errorOutput)) return false;
-	if (instr.Src2.Type == CVPOperand::AddressRegister 
+	if (instr.Src2.Type == CVPOperand::AddressRegister
 		|| instr.Src2.Type == CVPOperand::OutputRegister)
 	{
 		errorOutput = "Src2 must be constant, variable, or input register.";
@@ -635,7 +635,7 @@ bool CVPParser::parseOp3(CVPInstruction &instr, std::string &errorOutput)
 		{
 			errorOutput = "Can't read 2 different constant registers in a single instruction.";
 			return false;
-		}			
+		}
 	}
 
 	// 2 input registers ?
@@ -647,7 +647,7 @@ bool CVPParser::parseOp3(CVPInstruction &instr, std::string &errorOutput)
 		{
 			errorOutput = "Can't read 2 different input registers in a single instruction.";
 			return false;
-		}			
+		}
 	}
 	return true;
 }
@@ -667,13 +667,13 @@ bool CVPParser::parseOp4(CVPInstruction &instr, std::string &errorOutput)
 	skipSpacesAndComments();
 	// parse src4
 	if (!parseOperand(instr.Src3, false, errorOutput)) return false;
-	if (instr.Src3.Type == CVPOperand::AddressRegister 
+	if (instr.Src3.Type == CVPOperand::AddressRegister
 		|| instr.Src3.Type == CVPOperand::OutputRegister)
 	{
 		errorOutput = "Src3 must be constant, variable, or input register.";
 		return false;
 	}
-	
+
 	///////////////////////////////////////////////////
 	// check for different contant / input registers //
 	///////////////////////////////////////////////////
@@ -713,7 +713,7 @@ bool CVPParser::parseOp4(CVPInstruction &instr, std::string &errorOutput)
 	if (instr.Src3.Type == CVPOperand::InputRegister)
 	{
 		if (instr.Src1.Type == CVPOperand::InputRegister)
-		{			
+		{
 			if (instr.Src1.Value.InputRegisterValue != instr.Src3.Value.InputRegisterValue)
 			{
 				errorOutput = "Can't read 2 different input registers in a single instruction.";
@@ -750,7 +750,7 @@ bool CVPParser::parseInstruction(CVPInstruction &instr, std::string &errorOutput
 				errorOutput = "Syntax error : can't read opcode.";
 				return false;
 			}
-			else break;			
+			else break;
 		}
 		instrStr |= ((uint) *_CurrChar) << (8 * (3 - k));
 		++ _CurrChar;
@@ -769,7 +769,7 @@ bool CVPParser::parseInstruction(CVPInstruction &instr, std::string &errorOutput
 				errorOutput = "ARL need a scalar src value.";
 				return false;
 			}
-		break;		
+		break;
 		case 'RSQ ':
 			instr.Opcode = CVPInstruction::RSQ;
 			if (!parseOp2(instr, errorOutput)) return false;
@@ -824,12 +824,12 @@ bool CVPParser::parseInstruction(CVPInstruction &instr, std::string &errorOutput
 		case 'MOV ':
 			instr.Opcode = CVPInstruction::MOV;
 			if (!parseOp2(instr, errorOutput)) return false;
-			
+
 		break;
 		case 'LIT ':
 			instr.Opcode = CVPInstruction::LIT;
 			if (!parseOp2(instr, errorOutput)) return false;
-		break;		
+		break;
 		/////////////////
 		case 'MAD ':
 			instr.Opcode = CVPInstruction::MAD;
@@ -844,7 +844,7 @@ bool CVPParser::parseInstruction(CVPInstruction &instr, std::string &errorOutput
 		case 'MUL ':
 			instr.Opcode = CVPInstruction::MUL;
 			if (!parseOp3(instr, errorOutput)) return false;
-		break;				
+		break;
 		case 'DP3 ':
 			instr.Opcode = CVPInstruction::DP3;
 			if (!parseOp3(instr, errorOutput)) return false;
@@ -856,7 +856,7 @@ bool CVPParser::parseInstruction(CVPInstruction &instr, std::string &errorOutput
 		case 'DST ':
 			instr.Opcode = CVPInstruction::DST;
 			if (!parseOp3(instr, errorOutput)) return false;
-		break;		
+		break;
 		case 'MIN ':
 			instr.Opcode = CVPInstruction::MIN;
 			if (!parseOp3(instr, errorOutput)) return false;
@@ -933,7 +933,7 @@ static std::string getStringUntilCR(const char *src)
 {
 	nlassert(src);
 	std::string result;
-	while (*src != '\n' && *src != '\r' && *src != '\0') 
+	while (*src != '\n' && *src != '\r' && *src != '\0')
 	{
 		result += *src;
 		++src;
@@ -944,7 +944,7 @@ static std::string getStringUntilCR(const char *src)
 //=================================================================================================
 bool CVPParser::parse(const char *src, CVPParser::TProgram &result, std::string &errorOutput)
 {
-	if (!src) return false;	
+	if (!src) return false;
 	//
 	std::fill(_RegisterMask, _RegisterMask + 96, 0);
 
@@ -956,7 +956,7 @@ bool CVPParser::parse(const char *src, CVPParser::TProgram &result, std::string 
 	//skipSpacesAndComments(); // in fact space are not allowed at the start of the vertex program
 
 	// parse version
-	if (   _CurrChar[0] != '!' 
+	if (   _CurrChar[0] != '!'
 		|| _CurrChar[1] != '!'
 		|| _CurrChar[2] != 'V'
 		|| _CurrChar[3] != 'P'
@@ -972,20 +972,20 @@ bool CVPParser::parse(const char *src, CVPParser::TProgram &result, std::string 
 	errorOutput.clear();
 	// parse instructions
 	bool endEncoutered = false;
-	
+
 	std::string errorMess;
 	for(;;)
 	{
-		CVPInstruction instr;		
+		CVPInstruction instr;
 		if (!parseInstruction(instr, errorMess, endEncoutered))
 		{
 			errorOutput = std::string("CVPParser::parse : Error encountered at line ") + NLMISC::toString(_LineIndex) + std::string(" : ") + errorMess + std::string(" Text : ") + getStringUntilCR(_LineStart);
 			return false;
 		}
-		if (endEncoutered) break;		
+		if (endEncoutered) break;
 		result.push_back(instr);
-	}	
-	return true;	
+	}
+	return true;
 }
 
 
@@ -1080,13 +1080,13 @@ static void dumpOperand(const CVPOperand &op, bool destOperand, std::string &out
 	switch(op.Type)
 	{
 		case CVPOperand::Variable: out += "R" + NLMISC::toString(op.Value.VariableValue); break;
-		case CVPOperand::Constant: 
+		case CVPOperand::Constant:
 			out += "c[";
 			if (op.Indexed)
 			{
 				out += "A0.x + ";
 			}
-			out += NLMISC::toString(op.Value.ConstantValue) + "]"; 
+			out += NLMISC::toString(op.Value.ConstantValue) + "]";
 		break;
 		case CVPOperand::InputRegister: out += "v[" + NLMISC::toString((uint) op.Value.InputRegisterValue) + "]"; break;
 		case CVPOperand::OutputRegister:
@@ -1134,7 +1134,7 @@ static void dumpInstr(const CVPInstruction &instr, std::string &out)
 
 //=================================================================================================
 void CVPParser::dump(const TProgram &prg, std::string &dest)
-{	
+{
 	dest = "!!VP1.0 \n";
 	for(uint k = 0; k < prg.size(); ++k)
 	{

@@ -44,7 +44,7 @@ CSurfaceLightGrid::CSurfaceLightGrid()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	Width= 0;
 	Height= 0;
 }
@@ -57,7 +57,7 @@ void		CSurfaceLightGrid::serial(NLMISC::IStream &f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	(void)f.serialVersion(0);
 	f.serial(Origin);
 	f.serial(Width);
@@ -67,7 +67,7 @@ void		CSurfaceLightGrid::serial(NLMISC::IStream &f)
 
 
 // ***************************************************************************
-void		CSurfaceLightGrid::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &localPos, std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, 
+void		CSurfaceLightGrid::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &localPos, std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution,
 	CIGSurfaceLight &igsl, NLMISC::CRGBA &localAmbient) const
 {
 	// Get local coordinate to the grid.
@@ -102,7 +102,7 @@ void		CSurfaceLightGrid::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVe
 	CPointLightNamed	*igPointLights= NULL;;
 	if( igsl._Owner->getPointLightList().size() >0 )
 	{
-		// const_cast, because will only change _IdInfluence, and 
+		// const_cast, because will only change _IdInfluence, and
 		// also because CLightingManager will call appendLightedModel()
 		igPointLights= const_cast<CPointLightNamed*>(&(igsl._Owner->getPointLightList()[0]));
 	}
@@ -188,7 +188,7 @@ void		CSurfaceLightGrid::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVe
 	// Blend, but tempAmbient.r/g/b is already multiplied by weight.
 	localAmbient.modulateFromuiRGBOnly(sunAmbient, 256 - uAmbFactor);
 	localAmbient.addRGBOnly(localAmbient, tempAmbient);
-	
+
 }
 
 

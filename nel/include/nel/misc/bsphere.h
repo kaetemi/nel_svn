@@ -30,7 +30,7 @@
 #include "matrix.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

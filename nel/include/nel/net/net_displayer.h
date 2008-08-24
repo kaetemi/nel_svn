@@ -61,7 +61,7 @@ public:
 
 	/// Destructor
 	virtual ~CNetDisplayer();
-		
+
 protected:
 
 	/** Sends the string to the logging server

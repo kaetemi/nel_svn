@@ -52,16 +52,16 @@ public:
 	CContiguousBlockAllocator();
 	// dtor
 	~CContiguousBlockAllocator();
-	// Init the allocator with the given size. Previous allocations become invalid, so when calling init again, the user must have 
+	// Init the allocator with the given size. Previous allocations become invalid, so when calling init again, the user must have
     // freed all memory he allocated
 	void init(uint numBytes = 0);
 	// synonymous to init(0)
-	void release() { init(0); }	
+	void release() { init(0); }
 	// allocated a block of n bytes
 	void *alloc(uint numBytes);
 	// deallocate a block
 	void free(void *block, uint numBytes);
-	// compute the total number of bytes allocated since init 
+	// compute the total number of bytes allocated since init
 	// NB : freed block are not subtracted from that total !!
 	uint getNumAllocatedBytes() const { return _NumAllocatedBytes; }
 	#ifdef NL_DEBUG
@@ -75,7 +75,7 @@ private:
 	uint8					*_BlockEnd;
 	uint8					*_NextAvailablePos;
 	uint					 _NumAllocatedBytes;
-	std::allocator<uint8>    _DefaultAlloc;	
+	std::allocator<uint8>    _DefaultAlloc;
 
 	#ifdef NL_DEBUG
 		uint _NumAlloc;

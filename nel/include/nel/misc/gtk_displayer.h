@@ -72,14 +72,14 @@ private:
 	void	display_main ();
 
 	virtual void	setTitleBar (const std::string &titleBar);
-	
+
 	virtual void	getWindowPos (uint32 &x, uint32 &y, uint32 &w, uint32 &h);
-	
+
 	// all these variables above is used only by the DT
-	
+
 	friend gint updateInterf (gpointer data);
 	friend gint ButtonClicked(GtkWidget *Widget, gpointer *Data);
-		
+
 	// the MT must set the value to true to exit the thread
 	bool Exit;
 };

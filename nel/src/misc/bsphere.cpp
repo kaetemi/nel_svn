@@ -144,8 +144,8 @@ void	CBSphere::setUnion(const CBSphere &sa, const CBSphere &sb)
 	}
 	else
 	{
-		/* Compute the Union sphere Diameter. It is D= r0 + r2 + r1 
-			do the draw, works for intersect and don't intersect case, 
+		/* Compute the Union sphere Diameter. It is D= r0 + r2 + r1
+			do the draw, works for intersect and don't intersect case,
 			acknowledge that Sphere1 not included inton Sphere0
 		*/
 		float	diameter= r0 + r2 + r1;

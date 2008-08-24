@@ -1,5 +1,5 @@
 /** \file logic_state.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -49,8 +49,8 @@ CLogicState::CLogicState()
 //	setLogicStateMachine
 //
 //---------------------------------------------------
-void CLogicState::setLogicStateMachine( CLogicStateMachine * logicStateMachine ) 
-{ 
+void CLogicState::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CLogicCondition::setLogicStateMachine> The state machine is null");
@@ -58,7 +58,7 @@ void CLogicState::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
 	else
 	{
 		// init the logic state machine for this state
-		_LogicStateMachine = logicStateMachine; 
+		_LogicStateMachine = logicStateMachine;
 
 		// init the logic state machine in each event
 		vector<CLogicEvent>::iterator itEvent;
@@ -74,12 +74,12 @@ void CLogicState::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
 
 //---------------------------------------------------
 // addEvent :
-// 
+//
 //---------------------------------------------------
-void CLogicState::addEvent( CLogicEvent event ) 
-{ 
+void CLogicState::addEvent( CLogicEvent event )
+{
 	event.setLogicStateMachine( _LogicStateMachine );
-	_Events.push_back( event ); 
+	_Events.push_back( event );
 
 } // addEvent //
 
@@ -88,7 +88,7 @@ void CLogicState::addEvent( CLogicEvent event )
 //---------------------------------------------------
 // addSIdMap :
 //
-// looks in all the messages of the state if the 
+// looks in all the messages of the state if the
 // destination names can be associated with a sid.
 //---------------------------------------------------
 void CLogicState::addSIdMap( const TSIdMap& sIdMap )
@@ -107,7 +107,7 @@ void CLogicState::addSIdMap( const TSIdMap& sIdMap )
 	}
 	/// send the entry messages that can be sent
 	trySendEntryMessages();
-		
+
 
 	// event messages
 	vector<CLogicEvent>::iterator itEvt;
@@ -135,13 +135,13 @@ void CLogicState::addSIdMap( const TSIdMap& sIdMap )
 			(*itMsg).DestinationId = (*itId).second;
 		}
 	}
-	
+
 } // addSIdMap //
 
 
 //---------------------------------------------------
 // processLogic :
-// 
+//
 //---------------------------------------------------
 void CLogicState::processLogic()
 {
@@ -177,7 +177,7 @@ void CLogicState::processLogic()
 
 //---------------------------------------------------
 // enterState :
-// 
+//
 //---------------------------------------------------
 void CLogicState::enterState()
 {
@@ -189,7 +189,7 @@ void CLogicState::enterState()
 
 //---------------------------------------------------
 // exitState :
-// 
+//
 //---------------------------------------------------
 void CLogicState::exitState()
 {
@@ -200,7 +200,7 @@ void CLogicState::exitState()
 		{
 			CMessage msgOut( (*itMsg).MessageId );
 			msgOut.serial( (*itMsg).Arguments );
-			
+
 			_MessagesToSend.insert( make_pair((*itMsg).DestinationId,msgOut) );
 		}
 	}
@@ -225,14 +225,14 @@ void CLogicState::exitState()
 		(*itMsg).ToSend = false;
 		(*itMsg).Sent = false;
 	}
-	
+
 } // exitState //
 
 
 
 //---------------------------------------------------
 // trySendEntryMessages :
-// 
+//
 //---------------------------------------------------
 void CLogicState::trySendEntryMessages()
 {
@@ -246,7 +246,7 @@ void CLogicState::trySendEntryMessages()
 			msgOut.serial( (*itMsg).Arguments );
 
 			_MessagesToSend.insert( make_pair((*itMsg).DestinationId,msgOut) );
-			
+
 			(*itMsg).ToSend = false;
 			(*itMsg).Sent = true;
 		}
@@ -258,7 +258,7 @@ void CLogicState::trySendEntryMessages()
 
 //---------------------------------------------------
 // trySendEventMessages :
-// 
+//
 //---------------------------------------------------
 void CLogicState::trySendEventMessages()
 {
@@ -274,7 +274,7 @@ void CLogicState::trySendEventMessages()
 				{
 					CMessage msgOut( (*itEvent).EventAction.EventMessage.MessageId );
 					msgOut.serial( (*itEvent).EventAction.EventMessage.Arguments );
-					
+
 					_MessagesToSend.insert( make_pair((*itEvent).EventAction.EventMessage.DestinationId,msgOut) );
 
 					(*itEvent).EventAction.EventMessage.ToSend = false;
@@ -289,7 +289,7 @@ void CLogicState::trySendEventMessages()
 
 //---------------------------------------------------
 // getMessagesToSend :
-// 
+//
 //---------------------------------------------------
 void CLogicState::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 {
@@ -308,7 +308,7 @@ void CLogicState::getMessagesToSend( multimap<CEntityId,CMessage>& msgs )
 
 //---------------------------------------------------
 // fillVarMap :
-// 
+//
 //---------------------------------------------------
 void CLogicState::fillVarMap( multimap<CEntityId,string >& stateMachineVariables )
 {
@@ -339,7 +339,7 @@ void CLogicState::fillVarMap( multimap<CEntityId,string >& stateMachineVariables
 
 //---------------------------------------------------
 // serial :
-// 
+//
 //---------------------------------------------------
 /*void CLogicState::serial( IStream &f )
 {
@@ -396,7 +396,7 @@ void CLogicState::read (xmlNodePtr node)
 			i++;
 		}
 	}
-	
+
 	{
 		// Count the parent
 		uint nb = CIXml::countChildren (node, "EXIT_EVENT_MESSAGE");

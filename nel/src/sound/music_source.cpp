@@ -38,7 +38,7 @@ CMusicSource::CMusicSource(CMusicSound *musicSound, bool spawn, TSpawnEndCallbac
 {
 	_MusicSound= musicSound;
 }
-	
+
 // ***************************************************************************
 CMusicSource::~CMusicSource()
 {

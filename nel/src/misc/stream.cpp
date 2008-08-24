@@ -1,5 +1,5 @@
 /** \file stream.cpp
- * This File handles IStream 
+ * This File handles IStream
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -263,7 +263,7 @@ void			IStream::serialIStreamable(IStreamable* &ptr)
 		}
 	}
 
-	// Close the node 
+	// Close the node
 	xmlPop ();
 }
 // ======================================================================================================
@@ -280,7 +280,7 @@ void			IStream::resetPtrTable()
 
 
 // ======================================================================================================
-uint IStream::serialVersion(uint currentVersion) 
+uint IStream::serialVersion(uint currentVersion)
 {
 	uint8	b=0;
 	uint32	v=0;
@@ -332,31 +332,7 @@ uint IStream::serialVersion(uint currentVersion)
 // ======================================================================================================
 
 // ======================================================================================================
-void			IStream::serialCont(vector<uint8> &cont) 
-{
-	sint32	len=0;
-	if(isReading())
-	{
-		serial(len);
-
-		// check stream holds enough bytes (avoid STL to crash on resize)
-		checkStreamSize(len);
-		
-		// one block serial
-		cont.resize(len);
-		if (len != 0)
-			serialBuffer( (uint8*)&(*cont.begin()) , len);
-	}
-	else
-	{
-		len= cont.size();
-		serial(len);
-		if (len != 0)
-			serialBuffer( (uint8*)&(*cont.begin()) ,  len);
-	}
-}
-// ======================================================================================================
-void			IStream::serialCont(vector<sint8> &cont) 
+void			IStream::serialCont(vector<uint8> &cont)
 {
 	sint32	len=0;
 	if(isReading())
@@ -380,7 +356,31 @@ void			IStream::serialCont(vector<sint8> &cont)
 	}
 }
 // ======================================================================================================
-void			IStream::serialCont(vector<bool> &cont) 
+void			IStream::serialCont(vector<sint8> &cont)
+{
+	sint32	len=0;
+	if(isReading())
+	{
+		serial(len);
+
+		// check stream holds enough bytes (avoid STL to crash on resize)
+		checkStreamSize(len);
+
+		// one block serial
+		cont.resize(len);
+		if (len != 0)
+			serialBuffer( (uint8*)&(*cont.begin()) , len);
+	}
+	else
+	{
+		len= cont.size();
+		serial(len);
+		if (len != 0)
+			serialBuffer( (uint8*)&(*cont.begin()) ,  len);
+	}
+}
+// ======================================================================================================
+void			IStream::serialCont(vector<bool> &cont)
 {
 	sint32	len=0;
 	vector<uint8>	vec;
@@ -391,7 +391,7 @@ void			IStream::serialCont(vector<bool> &cont)
 
 		// check stream holds enough bytes (avoid STL to crash on resize)
 		checkStreamSize(len/8);
-		
+
 		// One Block Serial
 		cont.resize(len);
 

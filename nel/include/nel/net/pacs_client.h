@@ -35,7 +35,7 @@
 
 #define NLNET_PACS_PROTOCOL_VERSION 1
 
-namespace NLNET 
+namespace NLNET
 {
 
 TCallbackItem PacsCallbackArray[];
@@ -134,7 +134,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, p0, p1, testId);
 	}
-	
+
 	/// \name Move container methods
 
 	/**
@@ -151,9 +151,9 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, id);
 	}
-	
+
 	/**
-	  * Remove a primitive from the service. 
+	  * Remove a primitive from the service.
 	  *
 	  * No answer will be send by the service.
 	  *
@@ -166,7 +166,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, id);
 	}
-	
+
 	/**
 	  * Evaluate the collision on the servive.
 	  *
@@ -199,9 +199,9 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, id, const_cast<NLMISC::CVectorD&> (speed), deltaTime);
 	}
-	
+
 	/// \name Primitives methods
-	
+
 	/**
 	  * Set the current primitive on the service. The primitive stay current
 	  * for the current message.
@@ -217,7 +217,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, id);
 	}
-	
+
 	/**
 	  * Set the type of the current primitive on the service.
 	  *
@@ -233,7 +233,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, t);
 	}
-	
+
 	/**
 	  * Set the reaction type of the current primitive on the service.
 	  *
@@ -249,7 +249,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, t);
 	}
-	
+
 	/**
 	  * Set the trigger type of the current primitive on the service.
 	  *
@@ -265,7 +265,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, t);
 	}
-	
+
 	/**
 	  * Set the collision mask of the current primitive on the service.
 	  *
@@ -280,7 +280,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, mask);
 	}
-	
+
 	/**
 	  * Set the occlusion mask of the current primitive on the service.
 	  *
@@ -295,7 +295,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, mask);
 	}
-	
+
 	/**
 	  * Set the obstacle flag of the current primitive on the service.
 	  *
@@ -310,7 +310,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, obstacle);
 	}
-	
+
 	/**
 	  * Set the orientation the current primitive on the service.
 	  *
@@ -325,7 +325,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, orientation);
 	}
-	
+
 	/**
 	  * Set the attenuation factor of the current primitive on the service.
 	  *
@@ -340,7 +340,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, absorption);
 	}
-	
+
 	/**
 	  * Set the size of the current primitive on the service. Only for boxes primitives.
 	  *
@@ -356,7 +356,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, width, depth);
 	}
-	
+
 	/**
 	  * Set the height of the current primitive on the service. For boxes and cylinders primitives.
 	  *
@@ -371,7 +371,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, height);
 	}
-	
+
 	/**
 	  * Set the radius of the current primitive on the service. For cylinders primitives.
 	  *
@@ -386,7 +386,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, radius);
 	}
-	
+
 	/**
 	  * Make the current primitive a global move. This move is slow.
 	  * Use it only for the first placement and for teleporting.
@@ -402,11 +402,11 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, const_cast<NLMISC::CVectorD&> (position));
 	}
-	
+
 	/**
 	  * Make the current primitive a relative move. This move is fast.
 	  * Use it for current move. Make first a relative move of all your
-	  * primitives, then put a evalCollision message. Then you can 
+	  * primitives, then put a evalCollision message. Then you can
 	  * query position and speed by posting getPositionSpeed message.
 	  *
 	  * No answer will be send by the service.
@@ -420,7 +420,7 @@ public:
 		bool nlTrue=true;
 		_Message.serial (nlTrue, name, const_cast<NLMISC::CVectorD&> (speed));
 	}
-	
+
 	/**
 	  * Query the position and the speed of the primitive after an evalCollision message.
 	  *
@@ -459,7 +459,7 @@ protected:
 	  * This message is send by the service to answer the evalCollision request.
 	  *
 	  * \param evalId is the id of the evaluation passed to evalCollision.
-	  * \param triggerInfo is an array of trigger descriptor. Each entry of the array is 
+	  * \param triggerInfo is an array of trigger descriptor. Each entry of the array is
 	  * a new trigger raised by evalCollision.
 	  */
 	virtual void	triggerCallback (uint32 evalId, const std::vector<NLPACS::UTriggerInfo>& triggerInfo)
@@ -503,7 +503,7 @@ static void cbPacsAnswer (CMessage &msgin, TSockId from, CCallbackNetBase &netba
 
 	bool again;
 	msgin.serial (again);
-	
+
 	while (again)
 	{
 		// Read the message sub string
@@ -543,8 +543,8 @@ static void cbPacsAnswer (CMessage &msgin, TSockId from, CCallbackNetBase &netba
 			NLPACS::UMovePrimitive::TUserData id;
 			bool testResult;
 			msgin.serial (id, testResult);
-			
-			// Call the callback	
+
+			// Call the callback
 			client->testMoveCallback (id, testResult);
 		}
 		// Test move callback ?
@@ -555,8 +555,8 @@ static void cbPacsAnswer (CMessage &msgin, TSockId from, CCallbackNetBase &netba
 			NLMISC::CVectorD position;
 			NLMISC::CVectorD speed;
 			msgin.serial (id, position, speed);
-			
-			// Call the callback	
+
+			// Call the callback
 			client->getPositionSpeedCallback (id, position, speed);
 		}
 		else

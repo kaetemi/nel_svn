@@ -1,7 +1,7 @@
 /** \file login_client.h
  * CLoginClient is the interface used by the client to identifies itself to the login_sytem and
  * connects to the shard.
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

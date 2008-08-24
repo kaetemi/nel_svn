@@ -1,5 +1,5 @@
 /** \file surface_quad.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

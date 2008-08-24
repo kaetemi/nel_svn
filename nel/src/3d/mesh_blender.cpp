@@ -188,7 +188,7 @@ void		CMeshBlender::restoreRenderCoarseMesh(CMaterial &material, IDriver *drv, b
 		material.setZWrite (true);
 	// Reset blend
 	material.setBlend (false);
-	
+
 	// 2 ways: if Blend Constant Color is supported or not.
 	if(drv->supportBlendConstantColor())
 	{

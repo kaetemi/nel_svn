@@ -73,7 +73,7 @@ NL_TRIVIAL_TYPE_TRAITS(sint);
 NL_TRIVIAL_TYPE_TRAITS(uint);
 #endif // NL_COMP_VC6
 
-// characters 
+// characters
 NL_TRIVIAL_TYPE_TRAITS(char);
 NL_TRIVIAL_TYPE_TRAITS(unsigned char);
 

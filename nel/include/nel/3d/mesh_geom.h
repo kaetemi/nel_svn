@@ -36,7 +36,7 @@ namespace NLMISC
 	class CAABBoxExt;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -133,7 +133,7 @@ public:
 	  *
 	  * \param distance is the distance of the shape from the eye.
 	  * \return the approximate number of triangles this instance will render at this distance. This
-	  * number can be a float. The function MUST be decreasing or constant with the distance but don't 
+	  * number can be a float. The function MUST be decreasing or constant with the distance but don't
 	  * have to be continus.
 	  */
 	virtual float	getNumTriangles (float distance) =0;

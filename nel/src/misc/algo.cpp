@@ -30,14 +30,14 @@
 using	namespace std;
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 bool		testWildCard(const std::string &strIn, const std::string &wildCard)
 {
 	return testWildCard(strIn.c_str(), wildCard.c_str());
 }
-	
+
 
 // ***************************************************************************
 bool		testWildCard(const char *strIn, const char *wildCard)
@@ -90,7 +90,7 @@ bool		testWildCard(const char *strIn, const char *wildCard)
 					// fails=> test with an other occurence of token in the string.
 					pos= sCopy.find(token, pos+1);
 				}
-				
+
 				// if all failed, fail
 				return false;
 			}
@@ -191,7 +191,7 @@ void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair
 			sint previousY = currentY;
 
 			// Next y0
-			if (deltaX > 1)	
+			if (deltaX > 1)
 				y0 += deltaY;
 			else
 				y0 += deltaX * deltaY;
@@ -199,7 +199,7 @@ void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair
 			deltaX -= 1;
 
 			currentY = (sint)y0;
-			
+
 			// Add point
 			if (currentY<=previousY)
 			{
@@ -224,7 +224,7 @@ void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair
 			currentX++;
 		}
 	}
-	else 
+	else
 	{
 		if (y0 > y1)
 		{
@@ -250,7 +250,7 @@ void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair
 			sint previousX = currentX;
 
 			// Next x0
-			if (deltaY > 1)	
+			if (deltaY > 1)
 				x0 += deltaX;
 			else
 				x0 += deltaY * deltaX;
@@ -258,7 +258,7 @@ void drawFullLine (float x0, float y0, float x1, float y1, std::vector<std::pair
 			deltaY -= 1;
 
 			currentX = (sint)x0;
-			
+
 			// Add point
 			if (currentX<=previousX)
 			{

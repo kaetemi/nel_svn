@@ -27,7 +27,7 @@
 #include "nel/3d/channel_mixer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -125,8 +125,8 @@ void	ITransformable::clearTransformFlags() const
 
 	// clear my falgs.
 	self->clearFlag(PosValue);
-	self->clearFlag(RotEulerValue); 
-	self->clearFlag(RotQuatValue); 
+	self->clearFlag(RotEulerValue);
+	self->clearFlag(RotQuatValue);
 	self->clearFlag(ScaleValue);
 	self->clearFlag(PivotValue);
 

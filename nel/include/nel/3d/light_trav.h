@@ -37,7 +37,7 @@ using NLMISC::CVector;
 using NLMISC::CPlane;
 using NLMISC::CMatrix;
 
-	
+
 class	CTransform;
 class	CPointLightModel;
 

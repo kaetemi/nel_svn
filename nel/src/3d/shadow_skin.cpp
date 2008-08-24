@@ -32,7 +32,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -42,7 +42,7 @@ const	uint	NL_BlockByteL1= 4096;
 
 // Number of vertices per block to process For ShadowMap generation
 uint	CShadowSkin::NumCacheVertexShadow= NL_BlockByteL1 / sizeof(CShadowVertex);
-	
+
 
 // ***************************************************************************
 void		CShadowSkin::applySkin(CVector *dst, std::vector<CMatrix3x4> &boneMat3x4)
@@ -51,7 +51,7 @@ void		CShadowSkin::applySkin(CVector *dst, std::vector<CMatrix3x4> &boneMat3x4)
 		return;
 	uint	numVerts= Vertices.size();
 	CShadowVertex	*src= &Vertices[0];
-	
+
 	// Then do the skin
 	for(;numVerts>0;)
 	{
@@ -59,10 +59,10 @@ void		CShadowSkin::applySkin(CVector *dst, std::vector<CMatrix3x4> &boneMat3x4)
 		uint	nBlockInf= min(NumCacheVertexShadow, numVerts);
 		// next block.
 		numVerts-= nBlockInf;
-		
+
 		// cache the data in L1 cache.
 		CFastMem::precache(src, nBlockInf * sizeof(CShadowVertex));
-		
+
 		//  for all InfluencedVertices only.
 		for(;nBlockInf>0;nBlockInf--, src++, dst++)
 		{
@@ -81,18 +81,18 @@ bool	CShadowSkin::getRayIntersection(const CMatrix &toRaySpace, CSkeletonModel &
 	static std::vector<CVector>	skinInRaySpace;
 	if(Vertices.size()>skinInRaySpace.size())
 		skinInRaySpace.resize(Vertices.size());
-	
+
 	// compute matrixes
 	static	vector<CMatrix3x4>		boneMat3x4;
 	computeBoneMatrixes3x4PreMul(boneMat3x4, toRaySpace, matrixInfluences, &skeleton);
-	
+
 	// apply the skinning
 	applySkin(&skinInRaySpace[0], boneMat3x4);
-	
+
 	// *** return the distance to the ray intersection
 	return CRayMesh::getRayIntersection(skinInRaySpace, Triangles, dist2D, distZ, computeDist2D);
 }
 
 
-	
+
 } // NL3D

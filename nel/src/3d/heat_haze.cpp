@@ -31,7 +31,7 @@
 
 namespace NL3D
 {
-	
+
 
 	struct CSinWave : public CDeform2d::IPerturbUV
 	{
@@ -44,17 +44,17 @@ namespace NL3D
 		}
 	} _SinWave;
 
-	
 
 
-	void CHeatHaze::performHeatHaze(uint width, uint height, CScene &s, IDriver *drv)	
+
+	void CHeatHaze::performHeatHaze(uint width, uint height, CScene &s, IDriver *drv)
 	{
 		NLMISC::CMatrix m  = s.getCam()->getMatrix();
 		NLMISC::CMatrix im = m.inverted();
 
 		// compute the shape of the horizon
 
-		// first we compute the direction of the world up vector in the viewer basis.	
+		// first we compute the direction of the world up vector in the viewer basis.
 		NLMISC::CVector up = im * NLMISC::CVector::K;
 		// project onto the I and K vectors
 		float upNorm = (up.x * up.x + up.z * up.z);
@@ -63,7 +63,7 @@ namespace NL3D
 
 		if (upNorm < threshold) return; // the viewer is looking above or below  himlself
 
-		// Compute the right vector. This is done by intersecting the horizon plane with a near plane. 
+		// Compute the right vector. This is done by intersecting the horizon plane with a near plane.
 		// to do this, we transform the horizon plane into the view basis.This may be optimized, but is not critical.
 		//
 		NLMISC::CPlane h;
@@ -90,9 +90,9 @@ namespace NL3D
 		right.normalize();
 
 		// now, find a point on screen that lay on the horizon line
-		static std::vector<NLMISC::CVector2f> poly(4);		
+		static std::vector<NLMISC::CVector2f> poly(4);
 
-		
+
 
 		const sint xCenter = width >> 1;
 		const sint yCenter = height >> 1;

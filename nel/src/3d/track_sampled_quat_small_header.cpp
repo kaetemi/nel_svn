@@ -31,7 +31,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -132,7 +132,7 @@ CTrackSampledQuatSmallHeader::TEvalType				CTrackSampledQuatSmallHeader::evalTim
 
 	// get the key.
 	keyId0= searchLowerBound(times, _NumKeys, (uint8)frame);
-	
+
 	// Get the Frame of Key0.
 	uint		frameKey0= times[keyId0];
 
@@ -180,12 +180,12 @@ const IAnimatedValue	&CTrackSampledQuatSmallHeader::eval (const TAnimationTime& 
 	uint	keyId1;
 	float	interpValue;
 	TEvalType	evalType= evalTime(date, keyId0, keyId1, interpValue);
-	
+
 	// **** Eval Keys
 	// get starting keys
 	CQuatPack	*keys= &_TrackSamplePack->Keys[_KeyIndex];
 
-	// Discard? 
+	// Discard?
 	if( evalType==EvalDiscard )
 		return avBlock.ValQuat;
 	// One Key? easy, and quit.
@@ -198,7 +198,7 @@ const IAnimatedValue	&CTrackSampledQuatSmallHeader::eval (const TAnimationTime& 
 	{
 		CQuatPack	valueKey0= keys[keyId0];
 		CQuatPack	valueKey1= keys[keyId1];
-		
+
 		// If the 2 keys have same value, just unpack.
 		if(valueKey0 == valueKey1)
 		{
@@ -211,7 +211,7 @@ const IAnimatedValue	&CTrackSampledQuatSmallHeader::eval (const TAnimationTime& 
 			CQuat	quat0, quat1;
 			valueKey0.unpack(quat0);
 			valueKey1.unpack(quat1);
-			
+
 			// interpolate
 			avBlock.ValQuat.Value= CQuat::slerp(quat0, quat1, interpValue);
 		}
@@ -220,7 +220,7 @@ const IAnimatedValue	&CTrackSampledQuatSmallHeader::eval (const TAnimationTime& 
 	{
 		nlstop;
 	}
-	
+
 	return avBlock.ValQuat;
 }
 

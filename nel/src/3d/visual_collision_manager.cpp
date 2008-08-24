@@ -36,7 +36,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -50,8 +50,8 @@ const	float	MeshColQuadGridEltSize= 20;
 
 
 // ***************************************************************************
-CVisualCollisionManager::CVisualCollisionManager() : 
-	_TileDescNodeAllocator(TileDescNodeAllocatorBlockSize), 
+CVisualCollisionManager::CVisualCollisionManager() :
+	_TileDescNodeAllocator(TileDescNodeAllocatorBlockSize),
 	_PatchQuadBlockAllocator(PatchQuadBlockAllocatorBlockSize)
 {
 	_Landscape= NULL;
@@ -175,7 +175,7 @@ float					CVisualCollisionManager::getCameraCollision(const CVector &start, cons
 			continue;
 		if((*it)->AvoidCollisionWhenPlayerOutside && !_PlayerInside)
 			continue;
-		
+
 		// collide
 		float	meshCol= (*it)->getCameraCollision(camCol);
 		// Keep only yhe smallest value
@@ -195,7 +195,7 @@ bool					CVisualCollisionManager::getRayCollision(const NLMISC::CVector &start, 
 		if( _Landscape->getRayCollision(start, end) < 1.f)
 			return true;
 	}
-	
+
 	// try col with meshes, if wanted
 	if(!landscapeOnly)
 	{
@@ -211,14 +211,14 @@ bool					CVisualCollisionManager::getRayCollision(const NLMISC::CVector &start, 
 				continue;
 			if((*it)->AvoidCollisionWhenPlayerOutside && !_PlayerInside)
 				continue;
-			
+
 			// collide
 			float	meshCol= (*it)->getCameraCollision(camCol);
 			if(meshCol<1.f)
 				return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -261,7 +261,7 @@ uint					CVisualCollisionManager::addMeshInstanceCollision(CVisualCollisionMesh 
 	meshInst.AvoidCollisionWhenPlayerInside= avoidCollisionWhenInside;
 	meshInst.AvoidCollisionWhenPlayerOutside= avoidCollisionWhenOutside;
 	meshInst.ID = id;
-	
+
 	// insert in quadGrid
 	meshInst.QuadGridIt= _MeshQuadGrid.insert(meshInst.WorldBBox.getMin(), meshInst.WorldBBox.getMax(), &meshInst);
 
@@ -296,7 +296,7 @@ void					CVisualCollisionManager::receiveShadowMap(IDriver *drv, CShadowMap *sha
 
 	// bkup shadowColor
 	CRGBA	shadowColor= shadowContext.ShadowMaterial.getColor();
-	
+
 	// try to intersect with any instance meshs in quadgrid
 	_MeshQuadGrid.select(shadowContext.ShadowWorldBB.getMin(), shadowContext.ShadowWorldBB.getMax());
 	CQuadGrid<CMeshInstanceCol*>::CIterator		it;
@@ -314,11 +314,11 @@ void					CVisualCollisionManager::receiveShadowMap(IDriver *drv, CShadowMap *sha
 
 
 		/* Avoid BackFace Shadowing on CVisualCollisionMesh. To do this simply and smoothly, use a trick:
-			Use a FakeLight: a directional light in reverse direction of the shadow direction 
+			Use a FakeLight: a directional light in reverse direction of the shadow direction
 			The material is now a lighted material, with
-				Emissive= ShadowColor so we get correct dark color, for frontfaces agst shadow direction 
+				Emissive= ShadowColor so we get correct dark color, for frontfaces agst shadow direction
 				(which are actually backfaces agst FakeLight)
-				Diffuse= White so shadow is off, for pure backFace agst shadow direction 
+				Diffuse= White so shadow is off, for pure backFace agst shadow direction
 				(which are actually frontFaces agst FakeLight)
 			NB: CShadowMapManager::renderProject() has called CRenderTrav::resetLighting() and enableLight(0, true) so we get clean setup here
 		*/
@@ -356,7 +356,7 @@ void		CVisualCollisionManager::CMeshInstanceCol::receiveShadowMap(const CVisualC
 		// first test if intersect with the bboxes
 		if(!shadowContext.ShadowWorldBB.intersect(WorldBBox))
 			return;
-		
+
 		// get the collision with the mesh
 		Mesh->receiveShadowMap(WorldMatrix, shadowContext);
 	}
@@ -377,10 +377,10 @@ void CVisualCollisionManager::getMeshs(const NLMISC::CAABBox &aabbox, std::vecto
 			infos.Mesh = (*it)->Mesh;
 			infos.ID = (*it)->ID;
 			infos.WorldBBox = &((*it)->WorldBBox);
-			infos.WorldMatrix = &((*it)->WorldMatrix);			
+			infos.WorldMatrix = &((*it)->WorldMatrix);
 			dest.push_back(infos);
 		}
-		++ it;	
+		++ it;
 	}
 }
 

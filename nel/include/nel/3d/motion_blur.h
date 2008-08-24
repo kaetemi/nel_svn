@@ -47,22 +47,22 @@ public:
 	CMotionBlur() ;
 	/** Must be called before performing motion blur on a image sequence. Motion blur is performed
 	  * on a rectangular area.
-	  * 2 calls -> nlassert. Once motion blur must be stopped, you must call releaseMotionBlur.	  
+	  * 2 calls -> nlassert. Once motion blur must be stopped, you must call releaseMotionBlur.
 	  * \param x the x position of the top-left coener of the rectangle on which motion blur apply
 	  * \param y the y position of the top-left coener of the rectangle on which motion blur apply
 	  * \param width the width of the rectangle on which motion blur apply
-	  * \param height the height of the rectangle on which motion blur apply	  
+	  * \param height the height of the rectangle on which motion blur apply
       */
 	void startMotionBlur(uint x, uint y, uint width, uint height) ;
 
 	/// release the resources used by motion blur
 	void releaseMotionBlur() ;
 
-	/** perform motion blur, using the given driver	 
+	/** perform motion blur, using the given driver
 	  * This can only have been called between a startMotionBlur / releaseMotionBlur pair.
 	  * It must be called after the scene has been drawn of course.
 	  * WARNING : this change the projection matrix and the frustum in the driver.
-	  * \param motionBlurAmount ranges from 0.f to 1.f. Blend using the following : 
+	  * \param motionBlurAmount ranges from 0.f to 1.f. Blend using the following :
 	  * motionBlurAmount * previous frame + (1 - motionBlurAmount) * current Frame buffer state
 	  */
 	void performMotionBlur(IDriver *driver, float motionBlurAmount) ;

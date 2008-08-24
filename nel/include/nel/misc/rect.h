@@ -45,7 +45,7 @@ public:
 	CRect() {}
 
 	/// Constructor with a 2d point, a width and a height
-	CRect (sint32 x, sint32 y, uint32 width, uint32 height);	
+	CRect (sint32 x, sint32 y, uint32 width, uint32 height);
 
 	/// Constructor with a single 2d point. Build a rectangle with width and height = 0.
 	CRect (sint32 x, sint32 y)

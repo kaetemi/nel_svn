@@ -40,17 +40,17 @@ struct IWaterEnvMapRender
 	enum TFace { positive_x=0, negative_x, positive_y, negative_y, positive_z, negative_z };
 	/** viewport / scissor / render target are set by the caller. The user can begin to render the required env map directly.
       * All faces are rendered in order (rendering may be spread accross several frames, so it's up to the user to provide coherent datas for all faces)
-	  * The time parameter will be the same for all faces until the cube map is completed	  
+	  * The time parameter will be the same for all faces until the cube map is completed
 	  */
 	virtual void render(TFace face, TGlobalAnimationTime time, UDriver &drv) = 0;
-	
+
 	virtual ~IWaterEnvMapRender() {}
 };
 
 /** An environment map that can be rendered by user.
   * Such a map should be created and deleted from a UDriver interface.
   * The map must then be set in a UScene for the water objects of that scene to use it.
-  * A water envmap can be shared accross several scenes  
+  * A water envmap can be shared accross several scenes
   *
   * \author Nicolas Vizerie
   * \author Nevrax France
@@ -62,7 +62,7 @@ public:
 	virtual ~UWaterEnvMap() {};
 
 	/** Init the envmap
-	  * \param cubeMapSize Size of environment cube map 
+	  * \param cubeMapSize Size of environment cube map
 	  * \param projection2DSize Depending on the shader being used, the cube map may need to be projected in 2D before use
 	  *        This give the size of the 2D envmap used in this case
 	  * \param updateTime The time for envmap update will be spread accros the given time interval (in seconds). 0 means an update each frame
@@ -77,7 +77,7 @@ public:
 	virtual void				setAlpha(uint8 alpha) = 0;
 	virtual uint8				getAlpha() const = 0;
 	// Advanced : direct access to internal class
-	virtual CWaterEnvMap		*getWaterEnvMap() = 0;	
+	virtual CWaterEnvMap		*getWaterEnvMap() = 0;
 };
 
 
@@ -92,13 +92,13 @@ public:
 	// for each faces of the cubemap
 	virtual void doRender(const CMatrix &camMatrix, TGlobalAnimationTime time, UDriver &drv) = 0;
 private:
-	// from IWaterEnvMapRender	  
+	// from IWaterEnvMapRender
 	virtual void render(TFace face, TGlobalAnimationTime time, UDriver &drv);
 };
 
 
 /** Helper class to render faces of a water env cubemap from a UScene at the given position
-  * Deriver may redefine the preRender method for scene animation & framebuffer setup  
+  * Deriver may redefine the preRender method for scene animation & framebuffer setup
   */
 class CWaterEnvMapRenderFromUScene : public CWaterEnvMapRenderHelper
 {
@@ -106,17 +106,17 @@ public:
 	// ctor
 	CWaterEnvMapRenderFromUScene();
 	virtual ~CWaterEnvMapRenderFromUScene() {}
-	// Set the scene and camera to be used for render, and create a camera for that purpose      
-	void				  setScene(UScene *scene, UCamera cam);	
+	// Set the scene and camera to be used for render, and create a camera for that purpose
+	void				  setScene(UScene *scene, UCamera cam);
 	void				  setCamPos(const NLMISC::CVector &pos) { _CamPos = pos; }
-	const NLMISC::CVector  &getCamPos() const { return _CamPos; }	
+	const NLMISC::CVector  &getCamPos() const { return _CamPos; }
 	void				  setZRange(float znear, float zfar) { _ZNear = znear; _ZFar = zfar; }
 	UScene				  *getScene() { return _Scene; }
 	float				  getZNear() const { return _ZNear; }
-	float				  getZFar() const { return _ZFar; }	
+	float				  getZFar() const { return _ZFar; }
 	// set the parts of the scene to be rendered
 	void				  setRenderPart(UScene::TRenderPart renderPart) { _RenderPart = renderPart; }
-	UScene::TRenderPart	  getRenderPart() const { return _RenderPart; }	
+	UScene::TRenderPart	  getRenderPart() const { return _RenderPart; }
 	/**
 	  * This is the place to do scene animation before rendering, and to prepare z-buffer / color buffer
 	  * The passed date will be the same for all 6 faces until the cubemap is completed
@@ -131,10 +131,10 @@ public:
 private:
 	UCamera				_Cam;
 	UScene				*_Scene;
-	float				_ZNear, _ZFar;	
+	float				_ZNear, _ZFar;
 	UScene::TRenderPart _RenderPart;
-	NLMISC::CVector	_CamPos;	
-private:	
+	NLMISC::CVector	_CamPos;
+private:
 	virtual void doRender(const CMatrix &camMatrix, TGlobalAnimationTime time, UDriver &drv);
 };
 

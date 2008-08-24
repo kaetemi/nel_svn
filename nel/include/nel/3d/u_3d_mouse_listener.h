@@ -32,7 +32,7 @@ namespace NLMISC
 }
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -49,18 +49,18 @@ public:
 	/**
 	  * Mouse mode.
 	  * There is two move modes: 3d editor style and NeL style. Default mode is NeL style.
-	  * 
+	  *
 	  * (nelStyle) NeL style is:
 	  * MouseRotateHotSpot:			CTRL + RIGHTMOUSE
 	  * MouseTranslateXYHotSpot:	CTRL + LEFTMOUSE
 	  * MouseTranslateZHotSpot:		CTRL + SHIFT + LEFTMOUSE
 	  * MouseZoomHotSpot:			ALT + LEFTMOUSE
-	  * 
+	  *
 	  * (edit3dStyle) 3d editor style is:
 	  * MouseRotateHotSpot:			ALT + MIDDLEMOUSE
 	  * MouseTranslateXYHotSpot:	MIDDLEMOUSE
 	  * MouseTranslateZHotSpot:		CTRL + MIDDLEMOUSE
-	  * 
+	  *
 	  * (firstPerson) First person shooter style is:
 	  * MouseRotateView:			MOUSE MOVE
 	  * KeyUp:						MOVE FORWARD
@@ -76,26 +76,26 @@ public:
 
 	/// \name Setup
 
-	/** 
+	/**
 	  * Set the current view matrix to use.
 	  * \param matrix is the matrix to set.
 	  * \see getViewMatrix()
 	  */
 	virtual void setMatrix (const NLMISC::CMatrix& matrix) =0;
 
-	/** 
+	/**
 	  * Set the current frustrum to use.
 	  * \param frustrum is the frustrum.
 	  */
 	virtual void setFrustrum (const CFrustum& frustrum) =0;
 
-	/** 
+	/**
 	  * Set the viewport in use in the window. By default, the viewport is full window.
 	  * \param viewport is the viewport to use. All events outside the viewport are ignored.
 	  */
 	virtual void setViewport (const NL3D::CViewport& viewport) =0;
 
-	/** 
+	/**
 	  * Set the current hot spot.
 	  * \param hotSpot is the target to use when the mouse move. It can be for example the center.
 	  * of the selected object. The hotspot is not modified by mouse events.
@@ -103,14 +103,14 @@ public:
 	  */
 	virtual void setHotSpot (const CVector& hotSpot) =0;
 
-	/** 
+	/**
 	  * Set the mouse mode.
 	  * \param mouseMode is the mode you want to use.
 	  * \see TMouseMode
 	  */
 	virtual void setMouseMode(TMouseMode mouseMode) =0;
 
-	/** 
+	/**
 	  * Set the speed for first person mode. Default 10.f;
 	  * \param speed is in unit per second.
 	  * \see TMouseMode
@@ -126,7 +126,7 @@ public:
 	  */
 	virtual const NLMISC::CMatrix& getViewMatrix () =0;
 
-	/** 
+	/**
 	  * Get the current hot spot.
 	  * \return the target used when the mouse move. It can be for example the center.
 	  * of the selected object. The hotspot is not modified by mouse events.

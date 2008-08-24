@@ -1,5 +1,5 @@
 /** \file ps_register_particles.cpp
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

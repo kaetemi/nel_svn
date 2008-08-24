@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -44,16 +44,16 @@ class	CSkeletonModel;
  *	computed.
  *	Typically, animCtrls should modify the matrix parts of the bone, and then call bone->compute(..,..,NULL)
  *
- *	Note: for convenience, when execute() is called on a bone, the LocalSkeletonMatrix and WorldMatrix 
+ *	Note: for convenience, when execute() is called on a bone, the LocalSkeletonMatrix and WorldMatrix
  *		of this bone are already computed.
  *
- *	Important Note about Bone Loding: 
+ *	Important Note about Bone Loding:
  *		- AnimCtrl are not called if the bone is loded (ie not animated/computed)
  *		- AnimCtrl is called BEFORE Bone Lod interpolation, resulting in the excepted behavior.
  *
  *	Note about UserInterface logic: CSkeletonModel and CBone appears here but are used only for the derivers of this
  *		class (that are still in 3D), so the UserInterface don't need and don't use it.
- *		Therefore, there is no way (for now) with the strict UserInterface scheme to implements new AnimCtrls. 
+ *		Therefore, there is no way (for now) with the strict UserInterface scheme to implements new AnimCtrls.
  *		But the user is allowed to use the Layer2 (ie CScene, CSkeletonModel etc classes) to create its own AnimCtrls.
  * \author Lionel Berenguier
  * \author Nevrax France

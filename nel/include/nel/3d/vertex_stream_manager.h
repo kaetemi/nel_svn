@@ -39,7 +39,7 @@ namespace NL3D
 /**
  * A class used to fill a virtual Vertexbuffer, while rendering it, avoiding Stalls during Locks. Actually multiple versions
  *	of VertexBuffer are kept and the swapVBHard() method cycles around them.
- *	NB: it is used for instance to render all skins of a CSkeletonModel, in just one CVertexStreamManager. 
+ *	NB: it is used for instance to render all skins of a CSkeletonModel, in just one CVertexStreamManager.
  *	This allow optimisation because less VBuffer activation is needed.
  * NB: only a single lock/unlock may happen between 2 calls of swapVBHard
  * \author Lionel Berenguier
@@ -57,7 +57,7 @@ public:
 	/// \name Init/Setup
 	// @{
 
-	/** init the manager with a driver, allocate the VBHards, and setup the vertexFormat. 
+	/** init the manager with a driver, allocate the VBHards, and setup the vertexFormat.
 	 *	Must call each time the drive changes.
 	 *	NB: if VBufferHard creation fail (not supported etc...), then a VBSoft is created instead (and just one since not usefull)
 	 *	\param numVBHard the number of VBHard to create. The max you set, the lower lock you'll have.

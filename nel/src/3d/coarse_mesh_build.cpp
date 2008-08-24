@@ -202,7 +202,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 	// ***************************************************************************
 
 	// 2. Calc the best area for the dest texture and resize the bitmap
-	
+
 	// Total area used by the textures + a little more
 	uint newArea=getPowerOf2 (raiseToNextPowerOf2 (totalArea));
 	while ((1<<newArea)<(sint)(mulArea*(float)totalArea))
@@ -232,7 +232,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 
 	// 3. Place each texture in the bitmap in uncreasing order
 	typedef std::multimap<sint, CInsertedBitmap> mapInsertedBitmap;
-	
+
 	// For each texture
 	MapAreaBitmap::iterator ite=mapArea.end();
 
@@ -242,7 +242,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 	// Max texture height
 	uint maxTexHeight=0;
 
-	do 
+	do
 	{
 		ite--;
 		nlassert (ite!=mapArea.end());
@@ -310,7 +310,7 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 					descInserted.U=u;
 					descInserted.V=v;
 					inserted.insert (mapInsertedBitmap::value_type (v, descInserted));
-	
+
 					// Max height
 					if (heightTex>maxTexHeight)
 						maxTexHeight=heightTex;
@@ -320,12 +320,12 @@ bool CCoarseMeshBuild::buildBitmap (const std::vector<CCoarseMeshDesc>& coarseMe
 					for (i=0; i<bitmaps.size (); i++)
 					{
 						// Check..
-						nlassert (	(ite->second->Bitmaps[0].getWidth () == ite->second->Bitmaps[i].getWidth ()) && 
+						nlassert (	(ite->second->Bitmaps[0].getWidth () == ite->second->Bitmaps[i].getWidth ()) &&
 									(ite->second->Bitmaps[0].getHeight () == ite->second->Bitmaps[i].getHeight ())	);
 
 						// Blit it
 						bitmaps[i].blit (&(ite->second->Bitmaps[i]), u, v);
-					}					
+					}
 
 					// Set the U and V texture coordinates
 					ite->second->U=(float)(u+1)/(float)width;
@@ -533,7 +533,7 @@ void CCoarseMeshBuild::remapCoordinates (const std::vector<CCoarseMeshDesc>& coa
 
 						// Next vertex
 						iteRemap++;
-					}					
+					}
 				}
 			}
 		}

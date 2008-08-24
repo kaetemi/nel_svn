@@ -75,14 +75,14 @@ float UMaterial::getAlphaTestThreshold() const
 
 // ***************************************************************************
 
-void UMaterial::setTexture(UTexture* ptex) 
+void UMaterial::setTexture(UTexture* ptex)
 {
 	setTexture (0, ptex);
 }
 
 // ***************************************************************************
 
-void UMaterial::setTexture(uint stage, UTexture* ptex) 
+void UMaterial::setTexture(uint stage, UTexture* ptex)
 {
 	CMaterial *object = getObjectPtr();
 	CTextureUser	*text= dynamic_cast<CTextureUser*>(ptex);
@@ -99,14 +99,14 @@ void UMaterial::setTexture(uint stage, UTexture* ptex)
 
 // ***************************************************************************
 
-bool UMaterial::texturePresent() 
+bool UMaterial::texturePresent()
 {
 	return texturePresent (0);
 }
 
 // ***************************************************************************
 
-bool UMaterial::texturePresent (uint stage) 
+bool UMaterial::texturePresent (uint stage)
 {
 	CMaterial *object = getObjectPtr();
 	return object->texturePresent (stage);
@@ -122,7 +122,7 @@ void UMaterial::selectTextureSet(uint id)
 
 // ***************************************************************************
 
-void UMaterial::setBlend(bool active) 
+void UMaterial::setBlend(bool active)
 {
 	CMaterial *object = getObjectPtr();
 	object->setBlend(active);
@@ -130,7 +130,7 @@ void UMaterial::setBlend(bool active)
 
 // ***************************************************************************
 
-void UMaterial::setBlendFunc(TBlend src, TBlend dst) 
+void UMaterial::setBlendFunc(TBlend src, TBlend dst)
 {
 	CMaterial *object = getObjectPtr();
 	object->setBlendFunc((CMaterial::TBlend)(uint32)src, (CMaterial::TBlend)(uint32)dst);
@@ -138,7 +138,7 @@ void UMaterial::setBlendFunc(TBlend src, TBlend dst)
 
 // ***************************************************************************
 
-void UMaterial::setSrcBlend(TBlend val) 
+void UMaterial::setSrcBlend(TBlend val)
 {
 	CMaterial *object = getObjectPtr();
 	object->setSrcBlend((CMaterial::TBlend)(uint32)val);
@@ -146,7 +146,7 @@ void UMaterial::setSrcBlend(TBlend val)
 
 // ***************************************************************************
 
-void UMaterial::setDstBlend(TBlend val) 
+void UMaterial::setDstBlend(TBlend val)
 {
 	CMaterial *object = getObjectPtr();
 	object->setDstBlend((CMaterial::TBlend)(uint32)val);
@@ -154,7 +154,7 @@ void UMaterial::setDstBlend(TBlend val)
 
 // ***************************************************************************
 
-bool UMaterial::getBlend() const 
+bool UMaterial::getBlend() const
 {
 	CMaterial *object = getObjectPtr();
 	return object->getBlend();
@@ -162,7 +162,7 @@ bool UMaterial::getBlend() const
 
 // ***************************************************************************
 
-UMaterial::TBlend UMaterial::getSrcBlend(void)  const 
+UMaterial::TBlend UMaterial::getSrcBlend(void)  const
 {
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::TBlend)(uint32)object->getSrcBlend();
@@ -170,7 +170,7 @@ UMaterial::TBlend UMaterial::getSrcBlend(void)  const
 
 // ***************************************************************************
 
-UMaterial::TBlend UMaterial::getDstBlend(void)  const 
+UMaterial::TBlend UMaterial::getDstBlend(void)  const
 {
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::TBlend)(uint32)object->getDstBlend();
@@ -242,7 +242,7 @@ void UMaterial::texEnvArg2Alpha(uint stage, TTexSource src, TTexOperand oper)
 
 // ***************************************************************************
 
-void			UMaterial::setZFunc(ZFunc val) 
+void			UMaterial::setZFunc(ZFunc val)
 {
 	CMaterial *object = getObjectPtr();
 	object->setZFunc((CMaterial::ZFunc)(uint32) val);
@@ -250,7 +250,7 @@ void			UMaterial::setZFunc(ZFunc val)
 
 // ***************************************************************************
 
-void			UMaterial::setZWrite(bool active) 
+void			UMaterial::setZWrite(bool active)
 {
 	CMaterial *object = getObjectPtr();
 	object->setZWrite(active);
@@ -258,7 +258,7 @@ void			UMaterial::setZWrite(bool active)
 
 // ***************************************************************************
 
-void			UMaterial::setZBias(float val) 
+void			UMaterial::setZBias(float val)
 {
 	CMaterial *object = getObjectPtr();
 	object->setZBias(val);
@@ -266,7 +266,7 @@ void			UMaterial::setZBias(float val)
 
 // ***************************************************************************
 
-UMaterial::ZFunc			UMaterial::getZFunc(void)  const  
+UMaterial::ZFunc			UMaterial::getZFunc(void)  const
 {
 	CMaterial *object = getObjectPtr();
 	return (UMaterial::ZFunc)(uint32)object->getZFunc();
@@ -274,7 +274,7 @@ UMaterial::ZFunc			UMaterial::getZFunc(void)  const
 
 // ***************************************************************************
 
-bool			UMaterial::getZWrite(void)  const 
+bool			UMaterial::getZWrite(void)  const
 {
 	CMaterial *object = getObjectPtr();
 	return object->getZWrite();
@@ -282,7 +282,7 @@ bool			UMaterial::getZWrite(void)  const
 
 // ***************************************************************************
 
-float			UMaterial::getZBias(void)  const  
+float			UMaterial::getZBias(void)  const
 {
 	CMaterial *object = getObjectPtr();
 	return object->getZBias();
@@ -290,7 +290,7 @@ float			UMaterial::getZBias(void)  const
 
 // ***************************************************************************
 
-void			UMaterial::setColor(CRGBA rgba) 
+void			UMaterial::setColor(CRGBA rgba)
 {
 	CMaterial *object = getObjectPtr();
 	object->setColor(rgba);
@@ -298,7 +298,7 @@ void			UMaterial::setColor(CRGBA rgba)
 
 // ***************************************************************************
 
-CRGBA			UMaterial::getColor(void) const 
+CRGBA			UMaterial::getColor(void) const
 {
 	CMaterial *object = getObjectPtr();
 	return object->getColor();

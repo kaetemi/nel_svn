@@ -34,7 +34,7 @@ namespace NL3D {
 // CPSFloatGradient implementation //
 /////////////////////////////////////
 
-CPSFloatGradient::CPSFloatGradient(const float *floatTab, uint32 nbValues, uint32 nbStages, float nbCycles) 
+CPSFloatGradient::CPSFloatGradient(const float *floatTab, uint32 nbValues, uint32 nbStages, float nbCycles)
 				: CPSValueGradient<float>(nbCycles)
 {
 	_F.setValues(floatTab, nbValues, nbStages) ;
@@ -49,8 +49,8 @@ CPSFloatCurveFunctor::CPSFloatCurveFunctor() : _NumSamples(0), _Smoothing(true)
 {
 	/*
 	_CtrlPoints.push_back(CCtrlPoint(0, 0.5f));
-	_CtrlPoints.push_back(CCtrlPoint(1, 0.5f));	
-	updateTab();	
+	_CtrlPoints.push_back(CCtrlPoint(1, 0.5f));
+	updateTab();
 	*/
 }
 
@@ -103,7 +103,7 @@ void CPSFloatCurveFunctor::setNumSamples(uint32 numSamples)
 float CPSFloatCurveFunctor::getValue(float date) const
 {
 	if (_CtrlPoints.empty()) return 0.f;
-	NLMISC::clamp(date, 0, 1);	
+	NLMISC::clamp(date, 0, 1);
 	// find a key that has a higher value
 	CPSVector<CCtrlPoint>::V::const_iterator it = _CtrlPoints.begin();
 	while ( it != _CtrlPoints.end() && it->Date <= date ) ++it;
@@ -114,7 +114,7 @@ float CPSFloatCurveFunctor::getValue(float date) const
 	if (precIt->Date == it->Date) return 0.5f * (precIt->Value + it->Value);
 	const float lambda = (date - precIt->Date) / (it->Date - precIt->Date);
 	if (!_Smoothing) // linear interpolation
-	{		
+	{
 		return lambda * it->Value + (1.f - lambda) * precIt->Value;
 	}
 	else // hermite interpolation
@@ -124,10 +124,10 @@ float CPSFloatCurveFunctor::getValue(float date) const
 		float t1 = getSlope(index) * width, t2 = getSlope(index + 1) * width;
 		const float lambda2 = NLMISC::sqr(lambda);
 		const float lambda3 = lambda2 * lambda;
-		const float h1 = 2 * lambda3 - 3 * lambda2 + 1; 
-		const float h2 = - 2 * lambda3 + 3 * lambda2; 
-		const float h3 = lambda3 - 2 * lambda2 + lambda; 
-		const float h4 = lambda3 - lambda2; 
+		const float h1 = 2 * lambda3 - 3 * lambda2 + 1;
+		const float h2 = - 2 * lambda3 + 3 * lambda2;
+		const float h3 = lambda3 - 2 * lambda2 + lambda;
+		const float h4 = lambda3 - lambda2;
 
 		return h1 * precIt->Value + h2 * it->Value + h3 * t1 + h4 * t2;
 	}
@@ -147,7 +147,7 @@ void CPSFloatCurveFunctor::updateTab(void)
 	}
 	_MinValue = _MaxValue = _Tab[0];
 	for (k = 1; k <= _NumSamples; ++k)
-	{		
+	{
 		_MinValue = std::min(_MinValue, _Tab[k]);
 		_MaxValue = std::max(_MaxValue, _Tab[k]);
 	}
@@ -167,11 +167,11 @@ void CPSFloatCurveFunctor::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 
 ///=======================================================================================
 float CPSFloatCurveFunctor::getSlope(uint index) const
-{	
+{
 	// tangent for first point
 	if (index == 0)
 	{
-		return _CtrlPoints[1].Date != _CtrlPoints[0].Date ? (_CtrlPoints[1].Value - _CtrlPoints[0].Value) 
+		return _CtrlPoints[1].Date != _CtrlPoints[0].Date ? (_CtrlPoints[1].Value - _CtrlPoints[0].Value)
 															 / (_CtrlPoints[1].Date - _CtrlPoints[0].Date)
 														  : 1e6f;
 	}
@@ -179,7 +179,7 @@ float CPSFloatCurveFunctor::getSlope(uint index) const
 	// tangent for last point
 	if (index == _CtrlPoints.size() - 1)
 	{
-		return _CtrlPoints[index].Date != _CtrlPoints[index - 1].Date ? (_CtrlPoints[index].Value - _CtrlPoints[index - 1].Value) 
+		return _CtrlPoints[index].Date != _CtrlPoints[index - 1].Date ? (_CtrlPoints[index].Value - _CtrlPoints[index - 1].Value)
 																		/ (_CtrlPoints[index].Date - _CtrlPoints[index - 1].Date)
 																	  : 1e6f;
 	}
@@ -187,12 +187,12 @@ float CPSFloatCurveFunctor::getSlope(uint index) const
 	// tangent for other points
 	return _CtrlPoints[index + 1].Date != _CtrlPoints[index - 1].Date ? (_CtrlPoints[index + 1].Value - _CtrlPoints[index - 1].Value)
 																		/ (_CtrlPoints[index + 1].Date - _CtrlPoints[index - 1].Date)
-																	  : 1e6f;	
+																	  : 1e6f;
 }
 
 ///=======================================================================================
 void CPSFloatCurveFunctor::enableSmoothing(bool enable /* = true*/)
-{ 
+{
 	_Smoothing = enable;
 	updateTab();
 }
@@ -200,11 +200,11 @@ void CPSFloatCurveFunctor::enableSmoothing(bool enable /* = true*/)
 ///=======================================================================================
 void PSRegisterFloatAttribs()
 {
-	NLMISC_REGISTER_CLASS(CPSFloatBlender);		
+	NLMISC_REGISTER_CLASS(CPSFloatBlender);
 	NLMISC_REGISTER_CLASS(CPSFloatGradient);
 	NLMISC_REGISTER_CLASS(CPSFloatMemory);
 	NLMISC_REGISTER_CLASS(CPSFloatBinOp);
-	NLMISC_REGISTER_CLASS(CPSFloatCurve);		
+	NLMISC_REGISTER_CLASS(CPSFloatCurve);
 }
 
 } // NL3D

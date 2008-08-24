@@ -32,7 +32,7 @@
 using namespace NLMISC;
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************
@@ -54,7 +54,7 @@ CPrimitiveWorldImage::CPrimitiveWorldImage()
 
 void CPrimitiveWorldImage::deleteIt (CMoveContainer &container, uint8 worldImage)
 {
-	// Free the move elements	
+	// Free the move elements
 	for (uint i=0; i<4; i++)
 		if (_MoveElement[i])
 			removeMoveElement (i, container, worldImage);
@@ -76,14 +76,14 @@ void CPrimitiveWorldImage::copy (const CPrimitiveWorldImage& source)
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollision (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax, uint32 testTime, 
+bool CPrimitiveWorldImage::evalCollision (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax, uint32 testTime,
 									uint32 maxTestIteration, double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 									CMovePrimitive& otherPrimitive)
 {
 //	H_AUTO(PACS_PWI_evalCollision_long);
 
 	// Mask test
-	if (( (primitive.getCollisionMaskInternal() & otherPrimitive.getOcclusionMaskInternal())  == 0) && 
+	if (( (primitive.getCollisionMaskInternal() & otherPrimitive.getOcclusionMaskInternal())  == 0) &&
 		( (primitive.getOcclusionMaskInternal() & otherPrimitive.getCollisionMaskInternal())  == 0))
 		return false;
 
@@ -105,7 +105,7 @@ bool CPrimitiveWorldImage::evalCollision (CPrimitiveWorldImage& other, CCollisio
 			// Switch second type
 			switch (otherPrimitive.getPrimitiveTypeInternal())
 			{
-			
+
 			// Static box over movable box
 			case UMovePrimitive::_2DOrientedBox:
 				// Make the test
@@ -128,12 +128,12 @@ bool CPrimitiveWorldImage::evalCollision (CPrimitiveWorldImage& other, CCollisio
 			// Switch second type
 			switch (otherPrimitive.getPrimitiveTypeInternal())
 			{
-			
+
 			// Static box over movable box
 			case UMovePrimitive::_2DOrientedBox:
 				{
 					// Make the test
-					bool collid=other.evalCollisionOBoverOC (*this, desc, timeMin, timeMax, firstContactTime, lastContactTime, otherPrimitive, 
+					bool collid=other.evalCollisionOBoverOC (*this, desc, timeMin, timeMax, firstContactTime, lastContactTime, otherPrimitive,
 						primitive);
 					if (collid)
 						desc.XChgContactNormals ();
@@ -154,14 +154,14 @@ bool CPrimitiveWorldImage::evalCollision (CPrimitiveWorldImage& other, CCollisio
 	default:
 		// Should not go here
 		nlstop;
-	}	
+	}
 
 	return false;
 }
 
 // ***************************************************************************
 
-const TCollisionSurfaceDescVector *CPrimitiveWorldImage::evalCollision (CGlobalRetriever &retriever, CCollisionSurfaceTemp& surfaceTemp, 
+const TCollisionSurfaceDescVector *CPrimitiveWorldImage::evalCollision (CGlobalRetriever &retriever, CCollisionSurfaceTemp& surfaceTemp,
 																  uint32 testTime, uint32 maxTestIteration, CMovePrimitive& primitive)
 {
 //	H_AUTO(PACS_PWI_evalCollision_short);
@@ -189,7 +189,7 @@ const TCollisionSurfaceDescVector *CPrimitiveWorldImage::evalCollision (CGlobalR
 
 		// Test
 		//nlinfo ("1) %f %f %f\n", _DeltaPosition.x, _DeltaPosition.y, _DeltaPosition.z);
-		
+
 		return retriever.testCylinderMove (_Position.getGlobalPos (), _DeltaPosition, primitive.getRadiusInternal(), surfaceTemp);
 	}
 }
@@ -199,7 +199,7 @@ const TCollisionSurfaceDescVector *CPrimitiveWorldImage::evalCollision (CGlobalR
 void CPrimitiveWorldImage::doMove (CGlobalRetriever &retriever, CCollisionSurfaceTemp& surfaceTemp, double originalMax, double finalMax, bool keepZ /*= false*/)
 {
 	H_AUTO(NLPACS_PWI_Do_Move);
-	
+
 
 	// Time to avance
 	double ratio;
@@ -210,14 +210,14 @@ void CPrimitiveWorldImage::doMove (CGlobalRetriever &retriever, CCollisionSurfac
 
 	// Make the move
 	if (!keepZ)
-	{	
+	{
 		_Position.setGlobalPos (retriever.doMove(_Position.getGlobalPos(), _DeltaPosition, (float)ratio, surfaceTemp, false), retriever);
 	}
 	else
 	{
 		_Position.setGlobalPosKeepZ(retriever.doMove(_Position.getGlobalPos(), _DeltaPosition, (float)ratio, surfaceTemp, false), retriever);
 	}
-		
+
 
 	// Final position
 	_InitTime=finalMax;
@@ -238,7 +238,7 @@ void CPrimitiveWorldImage::doMove (double timeMax)
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollisionOBoverOB (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax, 
+bool CPrimitiveWorldImage::evalCollisionOBoverOB (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax,
 											double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 										   CMovePrimitive& otherPrimitive)
 {
@@ -344,7 +344,7 @@ bool CPrimitiveWorldImage::evalCollisionOBoverOB (CPrimitiveWorldImage& other, C
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollisionOBoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax, 
+bool CPrimitiveWorldImage::evalCollisionOBoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax,
 											double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 										   CMovePrimitive& otherPrimitive)
 {
@@ -450,7 +450,7 @@ bool CPrimitiveWorldImage::evalCollisionOBoverOC (CPrimitiveWorldImage& other, C
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollisionPoverS (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, uint numSeg, 
+bool CPrimitiveWorldImage::evalCollisionPoverS (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, uint numSeg,
 												CMovePrimitive& primitive, CMovePrimitive& otherPrimitive)
 {
 	// Checks
@@ -471,7 +471,7 @@ bool CPrimitiveWorldImage::evalCollisionPoverS (CPrimitiveWorldImage& other, CCo
 	if ( dotProd != 0 )
 	{
 		// Time of the collision
-		double time= (normalSegX*(_OBData.PointPosX[numPoint] - other._OBData.PointPosX[numSeg]) + 
+		double time= (normalSegX*(_OBData.PointPosX[numPoint] - other._OBData.PointPosX[numSeg]) +
 			normalSegY*(_OBData.PointPosY[numPoint] - other._OBData.PointPosY[numSeg])) / dotProd;
 
 		// Position of segment point at collision time
@@ -493,7 +493,7 @@ bool CPrimitiveWorldImage::evalCollisionPoverS (CPrimitiveWorldImage& other, CCo
 		if ( ( length >= 0 ) && ( length <= otherPrimitive.getLength(numSeg&1) ) )
 		{
 			// 2d Collid checked... Now check height
-			
+
 			// Pos Z
 			const double pointSegZ=other._3dInitPosition.z;
 			const double segPosZ= pointSegZ + other._Speed.z*time;
@@ -506,7 +506,7 @@ bool CPrimitiveWorldImage::evalCollisionPoverS (CPrimitiveWorldImage& other, CCo
 			if ( (ptPosZ <= segPosZ + otherPrimitive.getHeightInternal()) && (ptPosZ + primitive.getHeightInternal() >= segPosZ) )
 			{
 				// Ok Collision, fill the result
-				
+
 				// Time
 				desc.ContactTime=time;
 
@@ -568,7 +568,7 @@ inline uint secondDegree (double a, double b, double c, double& s0, double& s1)
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollisionPoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint, 
+bool CPrimitiveWorldImage::evalCollisionPoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, uint numPoint,
 										   double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 										   CMovePrimitive& otherPrimitive)
 {
@@ -647,7 +647,7 @@ bool CPrimitiveWorldImage::evalCollisionPoverOC (CPrimitiveWorldImage& other, CC
 		if ( (ptPosZ <= cylPosZ + otherPrimitive.getHeightInternal()) && (ptPosZ + primitive.getHeightInternal() >= cylPosZ) )
 		{
 			// Ok Collision, fill the result
-			
+
 			// Time
 			desc.ContactTime=time;
 
@@ -705,7 +705,7 @@ bool CPrimitiveWorldImage::evalCollisionSoverOC (CPrimitiveWorldImage& other, CC
 	if ( dotProd !=0 )
 	{
 		// Time of the collision
-		double time= (otherPrimitive.getRadiusInternal() + normalSegX*(_OBData.PointPosX[numSeg] - other._3dInitPosition.x ) + 
+		double time= (otherPrimitive.getRadiusInternal() + normalSegX*(_OBData.PointPosX[numSeg] - other._3dInitPosition.x ) +
 			normalSegY*(_OBData.PointPosY[numSeg] - other._3dInitPosition.y ) ) / dotProd;
 
 		// Position of segment point at collision time
@@ -731,7 +731,7 @@ bool CPrimitiveWorldImage::evalCollisionSoverOC (CPrimitiveWorldImage& other, CC
 		if ( ( length >= 0 ) && ( length <= primitive.getLength (numSeg&1) ) )
 		{
 			// 2d Collid checked... Now check height
-			
+
 			// Pos Z
 			const double segPosZ= _3dInitPosition.z + _Speed.z*time;
 
@@ -742,7 +742,7 @@ bool CPrimitiveWorldImage::evalCollisionSoverOC (CPrimitiveWorldImage& other, CC
 			if ( (cylPosZ <= segPosZ + primitive.getHeightInternal() ) && (cylPosZ + otherPrimitive.getHeightInternal() >= segPosZ) )
 			{
 				// Ok Collision, fill the result
-				
+
 				// Time
 				desc.ContactTime=time;
 
@@ -775,7 +775,7 @@ bool CPrimitiveWorldImage::evalCollisionSoverOC (CPrimitiveWorldImage& other, CC
 
 // ***************************************************************************
 
-bool CPrimitiveWorldImage::evalCollisionOCoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax, 
+bool CPrimitiveWorldImage::evalCollisionOCoverOC (CPrimitiveWorldImage& other, CCollisionDesc& desc, double timeMin, double timeMax,
 											double &firstContactTime, double &lastContactTime, CMovePrimitive& primitive,
 										   CMovePrimitive& otherPrimitive)
 {
@@ -867,7 +867,7 @@ bool CPrimitiveWorldImage::evalCollisionOCoverOC (CPrimitiveWorldImage& other, C
 			if ( (cyl0PosZ <= cyl1PosZ + otherPrimitive.getHeightInternal() ) && (cyl0PosZ + primitive.getHeightInternal() >= cyl1PosZ) )
 			{
 				// Ok Collision, fill the result
-				
+
 				// Time
 				desc.ContactTime=std::max (_timeMin, timeMin);
 
@@ -930,11 +930,11 @@ void CPrimitiveWorldImage::precalcPos (CMovePrimitive &primitive)
 		// Second point
 		_OBData.PointPosX[1]=cosinus*halfWidth-sinus*(-halfDepth)+_3dInitPosition.x;
 		_OBData.PointPosY[1]=sinus*halfWidth+cosinus*(-halfDepth)+_3dInitPosition.y;
-		
+
 		// Third point
 		_OBData.PointPosX[2]=cosinus*halfWidth-sinus*halfDepth+_3dInitPosition.x;
 		_OBData.PointPosY[2]=sinus*halfWidth+cosinus*halfDepth+_3dInitPosition.y;
-		
+
 		// Fourth point
 		_OBData.PointPosX[3]=cosinus*(-halfWidth)-sinus*halfDepth+_3dInitPosition.x;
 		_OBData.PointPosY[3]=sinus*(-halfWidth)+cosinus*halfDepth+_3dInitPosition.y;
@@ -1003,8 +1003,8 @@ void CPrimitiveWorldImage::precalcBB (double beginTime, double endTime, CMovePri
 		_BBYMin=std::min (std::min (_BBYMin, _BBYMin+endTime*_Speed.y), _BBYMin+beginTime*_Speed.y);
 		_BBYMax=std::max (std::max (_BBYMax, _BBYMax+endTime*_Speed.y), _BBYMax+beginTime*_Speed.y);
 
-/*		
-		// This code is faster but buggy.. 
+/*
+		// This code is faster but buggy..
 		_BBXMin= _OBData.PointPosX[minX[orient]] + _Speed.x*beginTime;
 		_BBXMin= std::min (_BBXMin, _OBData.PointPosX[minX[orient]] + _Speed.x*endTime);
 
@@ -1163,7 +1163,7 @@ void CPrimitiveWorldImage::checkSortedList (uint8 worldImage)
 // ***************************************************************************
 
 void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollisionDesc& desc, CGlobalRetriever* retriever,
-							   CCollisionSurfaceTemp& surfaceTemp, bool collision, CMovePrimitive &primitive, 
+							   CCollisionSurfaceTemp& surfaceTemp, bool collision, CMovePrimitive &primitive,
 							   CMovePrimitive &otherPrimitive, CMoveContainer *container, uint8 worldImage, uint8 secondWorldImage,
 							   bool secondConst)
 {
@@ -1173,7 +1173,7 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 	UMovePrimitive::TReaction firstReaction=primitive.getReactionTypeInternal();
 	UMovePrimitive::TReaction secondReaction=otherPrimitive.getReactionTypeInternal();
 
-	// Overide collsion 
+	// Overide collsion
 	collision = collision && (primitive.isObstacle ()) && (otherPrimitive.isObstacle ());
 
 	// Get the two mass
@@ -1191,7 +1191,7 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 
 	// Calc new speed
 	CVectorD newSpeed;
-	
+
 	// Obstacle ?
 	if (collision)
 	{
@@ -1219,10 +1219,10 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 			break;
 		default: break;
 		}
-		
+
 		// Set new speed
 		setSpeed (newSpeed, container, &primitive, worldImage);
-		
+
 		// New position at t=0
 		if (retriever)
 		{
@@ -1235,16 +1235,16 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 				deltaTime=(collisionPosition-_Position.getPos ()).norm()/deltaDist;
 			nlassert (deltaTime>=0);
 			nlassert (deltaTime<=1);
-			
+
 			UGlobalPosition newPosition = retriever->doMove (_Position.getGlobalPos (), _DeltaPosition,
 				(float)deltaTime, surfaceTemp, true);
-			
+
 			// Set the new position
 			_Position.setGlobalPos (newPosition, *retriever);
-			
+
 			// Position at t=0
 			_3dInitPosition = _Position.getPos() - newSpeed * desc.ContactTime;
-			
+
 			// New init time
 			_InitTime = desc.ContactTime;
 		}
@@ -1252,40 +1252,40 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 		{
 			// No retriever used
 			_Position.setPos (collisionPosition);
-			
+
 			// Position at t=0
 			_3dInitPosition = collisionPosition - newSpeed * desc.ContactTime;
-			
+
 			// New init time
 			_InitTime = desc.ContactTime;
 		}
-		
+
 		// Dirt pos
 		dirtPos (container, &primitive, worldImage);
-		
+
 		// ****** Second object
-		
+
 		// Is second object in a static world ?
 		if (!secondConst)
 		{
 			// Old position
 			collisionPosition=second._3dInitPosition;
 			collisionPosition+=second._Speed * desc.ContactTime;
-			
+
 			// Obstacle ?
 			switch (secondReaction)
 			{
 			case UMovePrimitive::Slide:
 				// Remove projected speed
 				newSpeed=second._Speed - projSpeed1 * desc.ContactNormal0;
-				
+
 				// Reflexion speed
 				newSpeed+=( otherPrimitive.getAttenuation()*energySum / mass1 ) * desc.ContactNormal1;
 				break;
 			case UMovePrimitive::Reflexion:
 				// Remove projected speed
 				newSpeed=second._Speed - projSpeed1 * desc.ContactNormal0;
-				
+
 				// Reflexion speed
 				newSpeed+=( otherPrimitive.getAttenuation()*energySum / mass1 ) * desc.ContactNormal0;
 				break;
@@ -1297,10 +1297,10 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 				break;
 			default: break;
 			}
-			
+
 			// Set new speed
 			second.setSpeed (newSpeed, container, &otherPrimitive, secondWorldImage);
-			
+
 			// New position at t=0
 			if (retriever)
 			{
@@ -1312,16 +1312,16 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 				else
 					deltaTime=(collisionPosition-second._Position.getPos ()).norm()/deltaDist;
 				clamp (deltaTime, 0.0, 1.0);
-				
+
 				UGlobalPosition newPosition = retriever->doMove (second._Position.getGlobalPos (), second._DeltaPosition,
 					(float)deltaTime, surfaceTemp, true);
-				
+
 				// Set the new position
 				second._Position.setGlobalPos (newPosition, *retriever);
-				
+
 				// Position at t=0
 				second._3dInitPosition = second._Position.getPos() - newSpeed * desc.ContactTime;
-				
+
 				// New init time
 				second._InitTime = desc.ContactTime;
 			}
@@ -1329,14 +1329,14 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 			{
 				// No retriever used
 				second._Position.setPos (collisionPosition);
-				
+
 				// Position at t=0
 				second._3dInitPosition = collisionPosition - newSpeed * desc.ContactTime;
-				
+
 				// New init time
 				second._InitTime = desc.ContactTime;
 			}
-			
+
 			// Dirt pos
 			second.dirtPos (container, &otherPrimitive, secondWorldImage);
 		}
@@ -1356,7 +1356,7 @@ void CPrimitiveWorldImage::reaction (const CCollisionSurfaceDesc&	surfaceDesc, c
 
 	// Reaction to the collision: copy the CGlobalRetriever::CGlobalPosition
 	_Position.setGlobalPos (globalPosition, retriever);
-	
+
 	// Relfexion or slide ?
 	if ((type==UMovePrimitive::Reflexion)||(type==UMovePrimitive::Slide))
 	{
@@ -1408,9 +1408,9 @@ void CPrimitiveWorldImage::setGlobalPosition (const UGlobalPosition& pos, CMoveC
 	if (!cont->getGlobalRetriever()) return;
 	// Use the global retriever ?
 	nlassert (cont->getGlobalRetriever());
-	
+
 	// Get the pos
-	_Position.setGlobalPos (pos, *cont->getGlobalRetriever());	
+	_Position.setGlobalPos (pos, *cont->getGlobalRetriever());
 
 	// Precalc some values
 	_3dInitPosition = _Position.getPos ();

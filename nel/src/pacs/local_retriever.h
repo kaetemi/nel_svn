@@ -1,5 +1,5 @@
 /** \file local_retriever.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -139,7 +139,7 @@ public:
 	{
 	public:
 		/// Constructor.
-		CLocalPosition(sint32 surface=-1, const NLMISC::CVector &estimation=NLMISC::CVector::Null) 
+		CLocalPosition(sint32 surface=-1, const NLMISC::CVector &estimation=NLMISC::CVector::Null)
 		{
 			Surface=surface;
 			Estimation=estimation;
@@ -281,7 +281,7 @@ public:
 
 protected:
 	friend class	CRetrieverInstance;
-	
+
 	/// The chains insinde the zone.
 	std::vector<COrderedChain>			_OrderedChains;
 	std::vector<COrderedChain3f>		_FullOrderedChains;
@@ -468,7 +468,7 @@ public:
 												   sint8 quantHeight = 0);
 
 	/**
-	 * Adds a chain to the local retriever, using the vertices of the chain, 
+	 * Adds a chain to the local retriever, using the vertices of the chain,
 	 * the left and right surfaces id and the edge on which the chain is stuck
 	 */
 	sint32								addChain(const std::vector<NLMISC::CVector> &vertices,
@@ -590,7 +590,7 @@ protected:
 	void								unify();
 
 	/** Get the height of interior surface that matches the best this position. Allows the position to be a bit outside the triangles.
-	 *	return 0 if not loaded or not an interior surface. 
+	 *	return 0 if not loaded or not an interior surface.
 	 *	\param outsideTolerance how much are we allowed to look outside the triangles
 	 */
 	float								getInteriorHeightAround(const ULocalPosition &position, float outsideTolerance) const;
@@ -633,7 +633,7 @@ public:
 /*
 	uint16								getStartTip(uint32 chain, sint32 surface) const;
 	uint16								getStopTip(uint32 chain, sint32 surface) const;
-	
+
 	void								setStartTip(uint32 chain, sint32 surface, uint16 startTip);
 	void								setStopTip(uint32 chain, sint32 surface, uint16 stopTip);
 */

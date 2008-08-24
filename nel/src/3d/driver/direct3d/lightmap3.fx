@@ -169,7 +169,7 @@ technique two_stages_2
 		ColorOp[0] = MODULATE;
 	}
 	pass p2
-	{		
+	{
 		Texture[0] = <texture3>;
 		TextureFactor = <color3>;
 	}

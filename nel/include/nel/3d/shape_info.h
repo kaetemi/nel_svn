@@ -42,7 +42,7 @@ class CMeshBase;
 // Mesh or mrm mesh as a bunch of triangles
 class CShapeInfo
 {
-public:	
+public:
 	NLMISC::CAABBox					LocalBBox;
 	std::vector<NLMISC::CTriangle>	Tris;
 public:

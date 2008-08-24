@@ -28,7 +28,7 @@
 #include <map>
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

@@ -35,7 +35,7 @@
 
 #define NELPACS_DIST_BACK 0.01
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 /**
@@ -69,7 +69,7 @@ private:
 
 		// Ghost flag. This flag tells that this object is a ghost object or not.
 		NonCollisionableFlag	=0x2000,
-		
+
 		/// The primitive shoudln't be snapped to ground
 		DontSnapToGroundFlag = 0x4000,
 
@@ -91,7 +91,7 @@ public:
 		else _StaticFlags &= ~DontSnapToGroundFlag;
 	}
 	//
-	bool	getDontSnapToGround() const 
+	bool	getDontSnapToGround() const
 	{
 		return (_StaticFlags & DontSnapToGroundFlag) != 0;
 	}
@@ -415,7 +415,7 @@ public:
 	}
 
 	// *** Get mass
-	
+
 	float getMass () const
 	{
 		// Box ?
@@ -441,7 +441,7 @@ private:
 	// This is the height of the box or of the cylinder.
 	float				_Height;
 
-	// Attenuation 
+	// Attenuation
 	float				_Attenuation;
 
 	// Flags

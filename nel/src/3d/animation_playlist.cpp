@@ -30,7 +30,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -206,7 +206,7 @@ void CAnimationPlaylist::setupMixer (CChannelMixer& mixer, TGlobalAnimationTime 
 		}
 
 		// *** Set the animation
-	
+
 		// Still enabled
 		if (enabled)
 		{
@@ -249,9 +249,9 @@ float CAnimationPlaylist::getWeightValue (TGlobalAnimationTime startWeightTime, 
 	// Clamp left
 	if (time>=endWeightTime)
 		return endWeight;
-	
+
 	// *** Interpolate
-	
+
 	// Linear value
 	TGlobalAnimationTime linear=startWeight+(endWeight-startWeight)*(time-startWeightTime)/(endWeightTime-startWeightTime);
 

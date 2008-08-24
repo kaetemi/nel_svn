@@ -44,7 +44,7 @@ public:
 
 	CType ();
 	virtual ~CType ();
-	
+
 	// ** UI
 	enum TUI
 	{
@@ -66,7 +66,7 @@ public:
 
 	// Header
 	CFileHeader			Header;
-	
+
 	// Type of the type
 	UType::TType		Type;
 
@@ -86,7 +86,7 @@ public:
 	std::string			Increment;
 
 	// Evaluate a node
-	bool				getValue (std::string &result, const class CForm *form, const class CFormElmAtom *node, const class CFormDfn &parentDfn, 
+	bool				getValue (std::string &result, const class CForm *form, const class CFormElmAtom *node, const class CFormDfn &parentDfn,
 									uint parentIndex, UFormElm::TEval evaluate, uint32 *where, uint32 round, const char *formName) const;
 
 	// Definitions

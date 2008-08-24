@@ -54,9 +54,9 @@ class CParticleSystemDetailObs;
 
 
 
-/** This class helps to instanciate a particle system 
+/** This class helps to instanciate a particle system
  * (the shape contains a particle system prototype stored as a memory stream)
- *  Use the createInstance method to insert the system in a scene 
+ *  Use the createInstance method to insert the system in a scene
  *  To load the shape from a file, use a shape stream
  */
 class CParticleSystemShape : public IShape
@@ -66,7 +66,7 @@ public:
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 
 	/// Default ctor
 	CParticleSystemShape();
@@ -112,7 +112,7 @@ public:
 	/// get a the trigger default track
 	CTrackDefaultBool *getDefaultTriggerTrack(void)
 	{
-	
+
 		return &_DefaultTriggerTrack;
 	}
 
@@ -135,17 +135,17 @@ public:
 	// @}
 
 	// Test if the system is shared
-	bool			isShared() const { return _Sharing; }		
+	bool			isShared() const { return _Sharing; }
 
 	// Get the number of cached textures
 	uint			getNumCachedTextures() const { return _CachedTex.size(); }
-	
+
 	// Get a cached texture
-	ITexture		*getCachedTexture(uint index) const { return _CachedTex[index]; }	
+	ITexture		*getCachedTexture(uint index) const { return _CachedTex[index]; }
 
 protected:
 
-	friend class CParticleSystemModel; 
+	friend class CParticleSystemModel;
 	friend class CParticleSystem;
 
 public:
@@ -157,52 +157,52 @@ public:
 	CParticleSystem *instanciatePS(CScene &scene, NLMISC::CContiguousBlockAllocator *blockAllocator = NULL);
 public:
 	/// inherited from ishape
-	virtual void				flushTextures (IDriver &driver, uint selectedTexture);	
+	virtual void				flushTextures (IDriver &driver, uint selectedTexture);
 protected:
 
 	/** A memory stream containing a particle system. Each system is instanciated from this prototype
 	  * Nevertheless, we store some more system infos which are needed for its lifecycle mgt.
 	  */
 	NLMISC::CMemStream  _ParticleSystemProto;
-	float				_MaxViewDist;							// the max view distance of the system, mirror the PS value	
+	float				_MaxViewDist;							// the max view distance of the system, mirror the PS value
 	NLMISC::CAABBox     _PrecomputedBBox;						// mirror the ps value
-	
+
 	/// the default track for animation of user parameters
 	CTrackDefaultFloat _UserParamDefaultTrack[4];
 
 	/// Transform default tracks.
 	CTrackDefaultVector			_DefaultPos;
-	CTrackDefaultVector			_DefaultScale;	
+	CTrackDefaultVector			_DefaultScale;
 	CTrackDefaultQuat			_DefaultRotQuat;
 
 	/// Trigger default track
-	CTrackDefaultBool			_DefaultTriggerTrack;	
+	CTrackDefaultBool			_DefaultTriggerTrack;
 
 	/// For sharing, this tells us if there's a system already instanciated that we could use for sharing
-	NLMISC::CRefPtr<CParticleSystem> _SharedSystem; 
+	NLMISC::CRefPtr<CParticleSystem> _SharedSystem;
 
-	bool                _DestroyWhenOutOfFrustum;				// mirror the ps value	
+	bool                _DestroyWhenOutOfFrustum;				// mirror the ps value
 	bool				_DestroyModelWhenOutOfRange;			// mirror the ps value
 	bool				_UsePrecomputedBBox;					// mirror the ps value
 	bool				_Sharing;								// mirror the ps value
 
-	// keep smart pointer on textures for caching, so that when flushTextures is called, subsequent 
-	std::vector<NLMISC::CSmartPtr<ITexture> > _CachedTex;	
+	// keep smart pointer on textures for caching, so that when flushTextures is called, subsequent
+	std::vector<NLMISC::CSmartPtr<ITexture> > _CachedTex;
 
 	// The amount of memory needed for instanciation or 0 if not known.
 	// If the amount is known, a big block can be allocated for fast contiguous allocations
-	// Given that a .ps can allocate numerous small block, this can be slow indeed.. 
+	// Given that a .ps can allocate numerous small block, this can be slow indeed..
 	uint				_NumBytesWanted;
-	
+
 public:
 	#ifdef PS_FAST_ALLOC
 		// for fast allocation of ps resources. Used only if the system is shared
 		// In this case, only one CParticleSystem instance is created, even if there are several models,
 		// and because the allocator must remains until the instance is released, we must keep it in the shape
-		// 
+		//
 		NLMISC::CContiguousBlockAllocator		Allocator;
 	#endif
-	// Order in which the element of the particle system must be processed during the sim loop. 
+	// Order in which the element of the particle system must be processed during the sim loop.
 	std::vector<uint>	_ProcessOrder;
 };
 

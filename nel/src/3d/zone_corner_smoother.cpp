@@ -80,17 +80,17 @@ void	CZoneCornerSmoother::buildPatchBindInfo(CPatch &pa, const CZone::CPatchConn
 				// Beware of the mirroring!! (make a draw...)
 				/*
 					----------|-----------
-						      |           
-						      | |         
-						    1 | |         
-						  ^   | v         
-						  |   |           
+						      |
+						      | |
+						    1 | |
+						  ^   | v
+						  |   |
 						  |   *-----------
-						  |   |           
-						  |   | |         
-						    0 | |         
-						      | v         
-						      |           
+						  |   |
+						  |   | |
+						    0 | |
+						      | v
+						      |
 					----------|-----------
 				*/
 				// If we are the patch0 on the neighbor, then we start on a bind, else we ends.
@@ -121,7 +121,7 @@ void	CZoneCornerSmoother::updateVertex(uint idVert, uint corner, bool smoothEdge
 	if( !smoothEdge[e0] || !smoothEdge[e1] )
 		vert.Smoothed= false;
 
-	
+
 	// Are we a vertex on a bind??
 	if(cornerOnBind[corner])
 		vert.VertexOnBind= true;

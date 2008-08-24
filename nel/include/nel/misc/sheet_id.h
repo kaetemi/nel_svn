@@ -74,7 +74,7 @@ public :
 	void	 buildSheetId(uint32 shortId, uint32 type);
 
 	/**
-	 *	Load the association sheet ref / sheet name 
+	 *	Load the association sheet ref / sheet name
 	 */
 	static void init(bool removeUnknownSheet = true);
 
@@ -87,7 +87,7 @@ public :
 	 * Remove all allocated memory
 	 */
 	static void uninit();
-	
+
 	/**
 	 * Return the **whole** sheet id (id+type)
 	 */
@@ -143,7 +143,7 @@ public :
 	 * - if 'ifNotFoundUseNumericId==tue'   the returned string is "#%u" with the id in %u
 	 */
 	std::string toString(bool ifNotFoundUseNumericId=false) const;
-	
+
 	/**
 	 *	Serial
 	 */
@@ -157,7 +157,7 @@ public :
 	static void display(uint32 type);
 
 	/**
-	 *  Generate a vector of all the sheet ids of a given type 
+	 *  Generate a vector of all the sheet ids of a given type
 	 *  This operation is non-destructive, the new entries are appended to the result vector
 	 *  note: fileExtension *not* include the '.' eg "bla" and *not* ".bla"
 	 **/
@@ -180,7 +180,7 @@ private :
 	union TSheetId
 	{
 		uint32		Id;
-		
+
 		struct
 		{
 			uint32	Type	: NL_SHEET_ID_TYPE_BITS;

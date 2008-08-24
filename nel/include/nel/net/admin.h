@@ -43,18 +43,18 @@ namespace NLNET {
 struct CAlarm
 {
 	CAlarm (const std::string &n, sint l, bool gt) : Name(n), Limit(l), GT(gt), Activated(false) { }
-	
+
 	std::string Name;		// variable name
 	int	 Limit;				// limit value where the alarm is setted
 	bool GT;				// true if the error is produce when var is greater than bound
-	
+
 	bool Activated;			// true if the limit is exceeded (mail is send everytimes the actived bool change from false to true)
 };
 
 struct CGraphUpdate
 {
 	CGraphUpdate (const std::string &n, sint u) : Name(n), Update(u), LastUpdate(0) { }
-	
+
 	std::string Name;		// variable name
 	int	 Update;			// delta time in second when we have to check variable
 

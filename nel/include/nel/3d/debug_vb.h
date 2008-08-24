@@ -34,8 +34,8 @@
 #ifdef NL_DEBUG_VB
 
 #define CHECK_VERTEX_BUFFER(vb, pt) nlCheckVertexBuffer((vb), (const uint8 *) (pt));
-#define CHECK_VBA(vba, pt) nlCheckVBA((vba), (const uint8 *) (pt));	 
-#define CHECK_VBA_RANGE(vba, ptStart, length) nlCheckVBARange((vba), (const uint8 *) (ptStart), (uint) (length)); 
+#define CHECK_VBA(vba, pt) nlCheckVBA((vba), (const uint8 *) (pt));
+#define CHECK_VBA_RANGE(vba, ptStart, length) nlCheckVBARange((vba), (const uint8 *) (ptStart), (uint) (length));
 #define CHECK_IBA_RANGE(iba, ptStart, length) nlCheckIBARange((iba), (const uint8 *) (ptStart), (uint) (length));
 #define CHECK_IBA(iba, ptStart) nlCheckIBA((iba), (const uint8 *) (ptStart));
 

@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <deque>
 
-namespace NL3D 
+namespace NL3D
 {
 
 // a 2d edge, ordered so that p1 is the highest point of the edge
@@ -80,7 +80,7 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 	float highest = poly[0].y;
 	lel.clear();
 	ael.clear();
-	
+
 	/// build a segment list, and go through it;
 
 	for (k = 0; k < size; ++k)
@@ -89,7 +89,7 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 		lel.push_front(
 						CEdge(poly[k], poly[k == (size - 1) ? 0 : k + 1])
 			          );
-		if (poly[k].y < highest) { highest = poly[k].y; }		
+		if (poly[k].y < highest) { highest = poly[k].y; }
 	}
 
 	/// sort the segs
@@ -99,13 +99,13 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 	float left, right, inter, diff;
 	float currY = highest;
 	startY = highest;
-	
-	TEdgeList::iterator elIt; 
+
+	TEdgeList::iterator elIt;
 
 	do
-	{		
+	{
 		/// fetch new segment into the ael
-		while (size 
+		while (size
 			   && lel.begin()->P1.y < (currY +  quadHeight)
 			  )
 		{
@@ -133,12 +133,12 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 				{
 
 					/** edge is in scope. compute its extreme positions
-					  * so we need to intersect it with the y = currY and y =  currY + quadHeight lines					  
+					  * so we need to intersect it with the y = currY and y =  currY + quadHeight lines
 					  */
-										
+
 					/// top of the edge
-					if (elIt->P1.y >= currY) 
-					{						
+					if (elIt->P1.y >= currY)
+					{
 						if (!borderFound)
 						{
 							left = right = elIt->P1.x;
@@ -177,8 +177,8 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 
 					/// bottom of the edge
 
-					if (elIt->P2.y <= currY + quadHeight) 
-					{						
+					if (elIt->P2.y <= currY + quadHeight)
+					{
 						if (!borderFound)
 						{
 							left = right = elIt->P2.x;
@@ -214,17 +214,17 @@ void CQuadEffect::makeRasters(const TPoint2DVect &poly
 							right = std::max(right, inter);
 						}
 					}
-					
+
 				}
-				++ elIt;				
-			}		
+				++ elIt;
+			}
 
 			dest.push_back(std::make_pair(left, right));
 		}
 
 		currY += quadHeight;
 
-	} while (size || aelSize);	
+	} while (size || aelSize);
 }
 
 //**
@@ -246,7 +246,7 @@ void CQuadEffect::processPoly(const TPoint2DVect &poly
 			float currX = it->first;
 			for (sint k = 0; k < nbQuad; ++k)
 			{
-				dest.push_back(NLMISC::CVector2f(currX, currY));										  
+				dest.push_back(NLMISC::CVector2f(currX, currY));
 				currX += quadWidth;
 			}
 			currY += quadHeight;

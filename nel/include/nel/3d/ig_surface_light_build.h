@@ -30,7 +30,7 @@
 #include "nel/3d/mesh.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -59,7 +59,7 @@ public:
 		bool				Dilated;
 		// Copy of SunContribution computed by CInstanceLighter.
 		uint8				SunContribution;
-		// Number of overSamples. At least one if InSurface. NB: Put here for packing. 
+		// Number of overSamples. At least one if InSurface. NB: Put here for packing.
 		uint8				NumOverSamples;
 
 		// World Position of this corner.
@@ -119,7 +119,7 @@ public:
 	void			buildPLDebugMesh(CMesh::CMeshBuild &meshBuild, CMeshBase::CMeshBaseBuild &meshBaseBuild, const CVector &deltaPos, const CInstanceGroup &igOut);
 
 private:
-	void			addDebugMeshFaces(CMesh::CMeshBuild &meshBuild, CSurface &surface, uint vId0, 
+	void			addDebugMeshFaces(CMesh::CMeshBuild &meshBuild, CSurface &surface, uint vId0,
 		const std::vector<CRGBA>	&colors);
 
 };

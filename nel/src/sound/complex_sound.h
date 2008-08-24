@@ -62,7 +62,7 @@ public:
 	NLMISC::TStringId				getSound(uint index) const					{ return !_Sounds.empty() ? _Sounds[index%_Sounds.size()]:0;}
 	const std::vector<NLMISC::TStringId>	&getSounds() const					{ return _Sounds;}
 
-	uint32							getFadeLenght() const						{ return _XFadeLenght;} 
+	uint32							getFadeLenght() const						{ return _XFadeLenght;}
 
 	/** Constructor */
 	CComplexSound();

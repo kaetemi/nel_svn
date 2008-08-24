@@ -27,7 +27,7 @@
 
 
 namespace NLMISC
-{					  
+{
 
 class CFpuChecker
 {
@@ -36,8 +36,8 @@ private:
 	void check();
 	void dumpFpu(int value);
 public:
-	CFpuChecker::CFpuChecker();	
-	CFpuChecker::~CFpuChecker();	
+	CFpuChecker::CFpuChecker();
+	CFpuChecker::~CFpuChecker();
 };
 
 }

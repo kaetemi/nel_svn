@@ -29,15 +29,15 @@ namespace NLMISC
 
 /** An allocator that can allocate and deallocate blocks of fixed size in O(1)
   * Blocks are managed by chunks. Any number of blocks can be allocated, but once
-  * a block is allocated, a whole chunk need to be.  
+  * a block is allocated, a whole chunk need to be.
   * With 32 bits pointers, there may be a 4 - 12 bytes overhead per object
   * NB: Unlike CBlockManager, when a chunk contains no allocated blocks, it will be freed.
-  *     If only one chunk remains, it isn't deleted, however. 
+  *     If only one chunk remains, it isn't deleted, however.
   *     Another motivation for that class is that it can be used for a memory arena style allocator, because
   *     size isn't a fixed parameter of template. A fixed size allocator implemented as a template for type T can be layered on this implementation.
   *
   * NB : number of blocks per chunks must be at least 3
-  * 
+  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2004
@@ -56,29 +56,29 @@ public:
 	uint getNumBlockPerChunk() const { return _NumBlockPerChunk; }
 	//
 	uint getNumAllocatedBlocks() const { return _NumAlloc; }
-private:	
+private:
 	class CChunk;
 	class CNode
-	{	
+	{
 	public:
 		CChunk *Chunk; // the Chunk this node belongs to.
 		// NB: blocks starts here in memory when node is allocated
 		CNode  *Next;  // points the next free block. Valid only if node is not allocated, otherwise, block datas overlap tht field.
 		CNode  **Prev; // points the previous node 'Next' field. Valid only if node is not allocated, otherwise, block datas overlap that field.
 		// Unlink this node from the chunk it is in
-		// Then it is considered allocated		
+		// Then it is considered allocated
 	public:
-		void *unlink();				
+		void *unlink();
 		// Link back this node to the chunk it belongs to.
 		// Then, it is added as a free node in the chunk and in the allocator
 		// If all node of a chunk are unused, and it is not the last chunk of the allocator, it
-		// is removed.		
-		void link();	
+		// is removed.
+		void link();
 	};
 	class CChunk
 	{
 	public:
-		uint						NumFreeObjs;		
+		uint						NumFreeObjs;
 		CFixedSizeAllocator			*Allocator;
 		uint8						*Mem;
 	public:
@@ -93,17 +93,17 @@ private:
 		// get the block size in bytes (header included)
 		uint  getBlockSizeWithOverhead() const;
 		/// a chunk has been given back
-		inline void add();		
+		inline void add();
 		/// a chunk has been taken
 		inline void grab();
-	};	
+	};
 	friend class CChunk;
 	friend class CNode;
 	//
 	CNode	*_FreeSpace;
 	uint     _NumChunks; // The number of created chunks. Once one of them is created, we manage
 						 // to keep it alive in order to avoid chunk creation / destructions
-						 // if only a few blocks are used		
+						 // if only a few blocks are used
 	uint	_NumBytesPerBlock;
 	uint	_NumBlockPerChunk;
 	//

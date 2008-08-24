@@ -35,7 +35,7 @@
 
 #include "Mmsystem.h"
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 // used to do a conversion from DX key code to Nel keys enums
@@ -49,7 +49,7 @@ struct CKeyConv
 
 // this is used to build a conversion table
 static const CKeyConv DIToNel[] =
-{	
+{
 	//
 	{DIK_F1, KeyF1, "F1", true},
 	{DIK_F2, KeyF2, "F2", true},
@@ -78,11 +78,11 @@ static const CKeyConv DIToNel[] =
 	{DIK_NUMPAD8, KeyNUMPAD8, "NUMPAD8", true},
 	{DIK_NUMPAD9, KeyNUMPAD9, "NUMPAD9", true},
 	//
-	{DIK_DIVIDE, KeyDIVIDE, "/", true},	
+	{DIK_DIVIDE, KeyDIVIDE, "/", true},
 	{DIK_DECIMAL, KeyDECIMAL, "NUMPAD .", true},
 	//
 	{DIK_LSHIFT, KeyLSHIFT, "LEFT SHIFT", false},
-	{DIK_RSHIFT, KeyRSHIFT, "RIGHT SHIFT", false},	
+	{DIK_RSHIFT, KeyRSHIFT, "RIGHT SHIFT", false},
 	//
 	{DIK_LCONTROL, KeyLCONTROL, "LEFT CONTROL", false},
 	{DIK_RCONTROL, KeyRCONTROL, "RIGHT CONTROL", false},
@@ -102,14 +102,14 @@ static const CKeyConv DIToNel[] =
 	{DIK_HOME, KeyHOME, "HOME", true},
 	{DIK_LWIN, KeyLWIN, "LEFT WIN", false},
 	{DIK_RWIN, KeyRWIN, "RIGHT WIN", false},
-	{DIK_APPS, KeyAPPS, "APPS", false},		
-	{DIK_BACK, KeyBACK, "BACK", true},		
+	{DIK_APPS, KeyAPPS, "APPS", false},
+	{DIK_BACK, KeyBACK, "BACK", true},
 	//
 	{DIK_SYSRQ, KeySNAPSHOT, "SNAPSHOT", false},
 	{DIK_SCROLL, KeySCROLL, "SCROLL", false},
 	{DIK_PAUSE, KeyPAUSE, "PAUSE", false},
-	//	
-	{DIK_NUMLOCK, KeyNUMLOCK, "NUMLOCK", false},		
+	//
+	{DIK_NUMLOCK, KeyNUMLOCK, "NUMLOCK", false},
 	//
 	{DIK_NUMPADENTER, KeyRETURN, "RETURN", true},
 	//{DIK_NUMPADENTER, KeyRETURN, "ENTER", true},
@@ -126,8 +126,8 @@ static const CKeyConv DIToNel[] =
 const CKeyConv	*CDIKeyboard::DIKeyToNelKeyTab[CDIKeyboard::NumKeys];
 
 ///========================================================================
-CDIKeyboard::CDIKeyboard(CWinEventEmitter *we, HWND hwnd)	
-:	_Keyboard(NULL),		
+CDIKeyboard::CDIKeyboard(CWinEventEmitter *we, HWND hwnd)
+:	_Keyboard(NULL),
 	_WE(we),
 	ShiftPressed(false),
 	CtrlPressed(false),
@@ -138,7 +138,7 @@ CDIKeyboard::CDIKeyboard(CWinEventEmitter *we, HWND hwnd)
 	_RepeatPeriod(200),
 	_FirstPressDate(-1),
 	_LastDIKeyPressed(0)
-{		
+{
 	if (::GetKeyboardState((PBYTE) _VKKeyState) == FALSE)
 	{
 		std::fill(_VKKeyState, _VKKeyState + NumKeys, 0);
@@ -170,7 +170,7 @@ CDIKeyboard::CDIKeyboard(CWinEventEmitter *we, HWND hwnd)
 	// get keyboard layout
 	_KBLayout = ::GetKeyboardLayout(NULL);
 
-	_RepetitionDisabled.resize(NumKeys);	
+	_RepetitionDisabled.resize(NumKeys);
 	_RepetitionDisabled.clearAll();
 }
 
@@ -189,13 +189,13 @@ void	CDIKeyboard::updateVKKeyState(uint diKey, bool pressed, TKey &keyValue, TKe
 	//
 	if (pressed)
 	{
-		// check for toggle key	
+		// check for toggle key
 		switch (keyValue)
-		{						
-			case KeyPAUSE:			
-			case KeyKANA:			
-			case KeyKANJI:				
-				_VKKeyState[keyValue] ^= 0x01; // toggle first bit	
+		{
+			case KeyPAUSE:
+			case KeyKANA:
+			case KeyKANJI:
+				_VKKeyState[keyValue] ^= 0x01; // toggle first bit
 			break;
 			case KeyCAPITAL:
 				if (_CapsLockToggle)
@@ -228,7 +228,7 @@ void	CDIKeyboard::updateVKKeyState(uint diKey, bool pressed, TKey &keyValue, TKe
 	else
 	{
 		_VKKeyState[keyValue] &= ~0x80;
-	}	
+	}
 	//
 	switch (keyValue)
 	{
@@ -245,7 +245,7 @@ void	CDIKeyboard::updateVKKeyState(uint diKey, bool pressed, TKey &keyValue, TKe
 	{
 		if (_VKKeyState[KeyCAPITAL] & 0x01)
 		{
-			_VKKeyState[KeyCAPITAL] &= ~0x01;		
+			_VKKeyState[KeyCAPITAL] &= ~0x01;
 			//toggleCapsLock(true);
 		}
 	}
@@ -255,7 +255,7 @@ void	CDIKeyboard::updateVKKeyState(uint diKey, bool pressed, TKey &keyValue, TKe
 		_VKKeyState[charValue] = _VKKeyState[keyValue];
 	}
 	//
-	updateCtrlAltShiftValues();	
+	updateCtrlAltShiftValues();
 }
 
 ///========================================================================
@@ -269,7 +269,7 @@ void	CDIKeyboard::updateCtrlAltShiftValues()
 ///========================================================================
 CDIKeyboard::~CDIKeyboard()
 {
-	if (_Keyboard) 
+	if (_Keyboard)
 	{
 		_Keyboard->Unacquire();
 		_Keyboard->Release();
@@ -291,12 +291,12 @@ CDIKeyboard *CDIKeyboard::createKeyboardDevice(IDirectInput8 *di8,
 	if (result != DI_OK) throw EDirectInputCooperativeLevelFailed();
 	result = kb->_Keyboard->SetDataFormat(&c_dfDIKeyboard);
 	kb->setBufferSize(16);
-	kb->_Keyboard->Acquire();		
+	kb->_Keyboard->Acquire();
 
 	// Enable win32 keyboard messages only if hardware mouse in normal mode
 	if (kb->_WE)
 		kb->_WE->enableKeyboardEvents(false);
-	
+
 	return kb.release();
 }
 
@@ -315,18 +315,18 @@ void CDIKeyboard::poll(CInputDeviceServer *dev)
 		if (result != DI_OK) return;
 		// get device state
 		::GetKeyboardState((unsigned char *) _VKKeyState);
-		_LastDIKeyPressed = 0;		
+		_LastDIKeyPressed = 0;
 		updateCtrlAltShiftValues();
 		result = _Keyboard->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &datas[0], &numElements, 0);
 		if (result != DI_OK) return;
 	}
 	else if (result != DI_OK)
-	{	
+	{
 		return;
 	}
-	
+
 	_PollTime = (uint32) CTime::getLocalTime();
-		
+
 
 	// process each message in the list
 	for	(uint k = 0; k < numElements; ++k)
@@ -340,7 +340,7 @@ void CDIKeyboard::poll(CInputDeviceServer *dev)
 
 ///========================================================================
 void	CDIKeyboard::transitionOccured(CEventServer *server, const IInputDeviceEvent *nextMessage)
-{	
+{
 	repeatKey(buildDateFromEvent(nextMessage), server);
 }
 
@@ -356,7 +356,7 @@ TKeyButton CDIKeyboard::buildKeyButtonsFlags() const
 ///========================================================================
 void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, uint32 date)
 {
-	#if 0		
+	#if 0
 		const uint numPairs = sizeof(DIToNel) / sizeof(CKeyConv);
 		for (uint k = 0; k < numPairs; ++k)
 		{
@@ -366,9 +366,9 @@ void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, u
 			}
 		}
 	#endif
-	
-	
-	TKey keyValue, charValue;		
+
+
+	TKey keyValue, charValue;
 	updateVKKeyState(dikey, pressed, keyValue, charValue);
 	if (keyValue == 0) return;
 
@@ -377,7 +377,7 @@ void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, u
 	{
 		ek = new CEventKeyDown(keyValue, buildKeyButtonsFlags(), true, _DIEventEmitter);
 	}
-	else 
+	else
 	{
 		ek = new CEventKeyUp(keyValue, buildKeyButtonsFlags(), _DIEventEmitter);
 	}
@@ -403,14 +403,14 @@ void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, u
 		{
 			_LastDIKeyPressed = 0;
 		}
-		
+
 		if (_RepetitionDisabled[(uint) keyValue] == true)
 		{
 			return;
 		}
 	}
 
-	// first char event (if repetition not disabled)	
+	// first char event (if repetition not disabled)
 	if (keyValue >= KeyNUMPAD0 && keyValue <= KeyNUMPAD9 || keyValue == KeyDECIMAL)
 	{
 		if ((_VKKeyState[KeyNUMLOCK] & 0x01) != 0)
@@ -421,8 +421,8 @@ void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, u
 	else
 	{
 		sendUnicode(charValue, dikey, server, pressed);
-	}	
-	
+	}
+
 	_FirstPressDate  = (uint32) NLMISC::CTime::getLocalTime(); // can't use the time stamp, because we can't not sure it matches the local time.
 	                                                  // time stamp is used for evenrts sorting only
 }
@@ -431,8 +431,8 @@ void CDIKeyboard::keyTriggered(bool pressed, uint dikey, CEventServer *server, u
 void CDIKeyboard::submit(IInputDeviceEvent *deviceEvent, CEventServer *server)
 {
 	CDIEvent *die = safe_cast<CDIEvent *>(deviceEvent);
-	bool pressed = (die->Datas.dwData & 0x80) != 0;		
-	keyTriggered(pressed, (uint) die->Datas.dwOfs, server, die->Datas.dwTimeStamp);	
+	bool pressed = (die->Datas.dwData & 0x80) != 0;
+	keyTriggered(pressed, (uint) die->Datas.dwOfs, server, die->Datas.dwTimeStamp);
 }
 
 ///========================================================================
@@ -447,7 +447,7 @@ bool	CDIKeyboard::setBufferSize(uint size)
 {
 	nlassert(size > 0);
 	nlassert(_Keyboard);
-	_Keyboard->Unacquire();	
+	_Keyboard->Unacquire();
 	DIPROPDWORD dipdw;
     dipdw.diph.dwSize       = sizeof(DIPROPDWORD);
     dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
@@ -455,7 +455,7 @@ bool	CDIKeyboard::setBufferSize(uint size)
     dipdw.diph.dwHow        = DIPH_DEVICE;
     dipdw.dwData            = size;
 	HRESULT					r = _Keyboard->SetProperty( DIPROP_BUFFERSIZE, &dipdw.diph );
-	if (r != DI_OK)			return false;	
+	if (r != DI_OK)			return false;
 	_KeyboardBufferSize = size;
 	return true;
 }
@@ -468,7 +468,7 @@ uint	CDIKeyboard::getBufferSize() const
 
 ///========================================================================
 TKey CDIKeyboard::DIKeyToNelKey(uint diKey, bool &extKey, bool &repeatable)
-{	
+{
 	// some key are not handled by MapVirtualKeyEx so we need to convert them ourselves
 	static bool tableBuilt = false;
 
@@ -481,37 +481,37 @@ TKey CDIKeyboard::DIKeyToNelKey(uint diKey, bool &extKey, bool &repeatable)
 		}
 		const uint numPairs = sizeof(DIToNel) / sizeof(CKeyConv);
 		for (k = 0; k < numPairs; ++k)
-		{	
+		{
 			DIKeyToNelKeyTab[DIToNel[k].DIKey] = &DIToNel[k];
-		}			
+		}
 		tableBuilt = true;
 	}
-	
+
 
 	//
 	if (DIKeyToNelKeyTab[diKey] != NULL)
-	{			
-		const CKeyConv &keyConv = *DIKeyToNelKeyTab[diKey];		
+	{
+		const CKeyConv &keyConv = *DIKeyToNelKeyTab[diKey];
 		extKey     = true;
 		repeatable = keyConv.Repeatable;
 		return keyConv.NelKey;
-	}	
+	}
 
 
 
-	// try doing the conversion using MapVirtualKey		
-	TKey key = (TKey) ::MapVirtualKeyEx(diKey, 1, _KBLayout);	
+	// try doing the conversion using MapVirtualKey
+	TKey key = (TKey) ::MapVirtualKeyEx(diKey, 1, _KBLayout);
 	extKey = false;
 	return key;
 }
-	
+
 ///========================================================================
 void	CDIKeyboard::sendUnicode(TKey vkey, uint dikey, CEventServer *server, bool pressed)
-{		
+{
 	uint8 oldShift = _VKKeyState[KeySHIFT];
-	/// If caps lock is off when pressing shift, we must disable shift, to get no minuscule letters when it is pressed and capslocks is on.	  
+	/// If caps lock is off when pressing shift, we must disable shift, to get no minuscule letters when it is pressed and capslocks is on.
 	if (!_CapsLockToggle && _VKKeyState[KeyCAPITAL] & 0x01)
-	{		
+	{
 		_VKKeyState[KeySHIFT] = 0;
 	}
 	// 'ToUnicode??' is supported since NT4.0 only
@@ -526,7 +526,7 @@ void	CDIKeyboard::sendUnicode(TKey vkey, uint dikey, CEventServer *server, bool 
 		OSVERSIONINFO osvi;
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 		if (::GetVersionEx (&osvi))
-		{		
+		{
 			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
 			{
 				if (osvi.dwMajorVersion >= 4)
@@ -538,10 +538,10 @@ void	CDIKeyboard::sendUnicode(TKey vkey, uint dikey, CEventServer *server, bool 
 	}
 
 
-	if (toUnicodeSupported)	
-	{	
+	if (toUnicodeSupported)
+	{
 		const uint maxNumKeys = 8;
-		WCHAR keyUnicodes[maxNumKeys];    				
+		WCHAR keyUnicodes[maxNumKeys];
 		int res = ::ToUnicodeEx(vkey, dikey | (pressed ? 0 : (1 << 15)), (unsigned char *) _VKKeyState, keyUnicodes, maxNumKeys, 0, _KBLayout);
 		//
 		_VKKeyState[KeySHIFT] = oldShift;
@@ -553,38 +553,38 @@ void	CDIKeyboard::sendUnicode(TKey vkey, uint dikey, CEventServer *server, bool 
 		}
 	}
 	else
-	{				
+	{
 		unsigned char buf[2];
-		int res = ::ToAsciiEx(vkey, dikey | (pressed ? 0 : (1 << 15)), (unsigned char *) _VKKeyState, (LPWORD) buf, 0, _KBLayout);			
+		int res = ::ToAsciiEx(vkey, dikey | (pressed ? 0 : (1 << 15)), (unsigned char *) _VKKeyState, (LPWORD) buf, 0, _KBLayout);
 		for (sint k = 0; k < res; ++k)
 		{
 			CEventChar *evc = new CEventChar((ucchar) buf[k], buildKeyButtonsFlags(), _DIEventEmitter);
 			server->postEvent(evc);
-		}		
+		}
 	}
 }
 
 ///========================================================================
 void	CDIKeyboard::repeatKey(uint32 currentDate, CEventServer *server)
-{	
+{
 	if (_LastDIKeyPressed == 0 || _LastDIKeyPressed == DIK_INSERT) return;
 	bool extKey;
 	bool repeatable;
 	TKey vkey = DIKeyToNelKey(_LastDIKeyPressed, extKey, repeatable);
-	if (vkey == 0) return;	
-	if (currentDate - _FirstPressDate < _RepeatDelay) return;	
+	if (vkey == 0) return;
+	if (currentDate - _FirstPressDate < _RepeatDelay) return;
 
 	sint32 firstDate = _LastEmitDate - (_FirstPressDate + _RepeatDelay);
 	sint32 lastDate = currentDate - (_FirstPressDate + _RepeatDelay);
 	if (firstDate < 0) firstDate = 0;
 
 	if (lastDate < firstDate) return;
-	
-	uint numRep = (uint) ((lastDate + _RepeatPeriod - 1) / _RepeatPeriod  - (firstDate + _RepeatPeriod - 1) / _RepeatPeriod);	
+
+	uint numRep = (uint) ((lastDate + _RepeatPeriod - 1) / _RepeatPeriod  - (firstDate + _RepeatPeriod - 1) / _RepeatPeriod);
 	//numRep = std::min(16u, numRep); // too much repetitions don't make sense...
 	if ((sint) numRep < 0) return; // 50 days loop..
 	numRep = 1; // fix : for now it seems better to limit the number of repetition to 1 per frame (it can be greater than 1 only if framerate is slow, but its not very useable)
-	
+
 
 	// numpad case
 	if (vkey >= KeyNUMPAD0 && vkey <= KeyNUMPAD9 || vkey == KeyDECIMAL)
@@ -593,7 +593,7 @@ void	CDIKeyboard::repeatKey(uint32 currentDate, CEventServer *server)
 		if ((_VKKeyState[KeyNUMLOCK] & 0x01) != 0)
 		{
 			for (uint k = 0; k < numRep; ++k)
-			{	
+			{
 				sendUnicode(vkey, _LastDIKeyPressed, server, true);
 			}
 		}
@@ -601,7 +601,7 @@ void	CDIKeyboard::repeatKey(uint32 currentDate, CEventServer *server)
 		{
 			// arrow, home, end.. events
 			for (uint k = 0; k < numRep; ++k)
-			{	
+			{
 				CEventKey *ek = new CEventKeyDown(vkey, buildKeyButtonsFlags(), false, _DIEventEmitter);
 				server->postEvent(ek);
 			}
@@ -620,10 +620,10 @@ void	CDIKeyboard::repeatKey(uint32 currentDate, CEventServer *server)
 			else
 			{
 				sendUnicode(vkey, _LastDIKeyPressed, server, true);
-			}			
+			}
 		}
 	}
-	
+
 	_LastEmitDate = currentDate;
 }
 
@@ -637,7 +637,7 @@ uint32	CDIKeyboard::buildDateFromEvent(const IInputDeviceEvent *deviceEvent)
 	}
 	else
 	{
-		return _PollTime;	
+		return _PollTime;
 	}
 }
 

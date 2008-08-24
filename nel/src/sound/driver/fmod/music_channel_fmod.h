@@ -29,7 +29,7 @@
 struct FSOUND_STREAM;
 
 namespace NLSOUND {
-	
+
 // ***************************************************************************
 /**
  * A player of music in sound driver, allowing fade across music
@@ -50,7 +50,7 @@ public:
 
 	// stoping the channel with/wo fading
 	void	stopMusic(uint xFadeTime);
-	
+
 	// set the music volume
 	void	setMusicVolume(float volume);
 
@@ -59,7 +59,7 @@ public:
 	void	resumeMusic();
 	bool	isMusicEnded();
 	float	getMusicLength();
-		
+
 	// update
 	void	updateMusic(float dt);
 
@@ -78,7 +78,7 @@ private:
 		float				XFadeVolume;		// 0--1
 		float				XFadeDVolume;		// dt
 		bool				CallBackEnded;		// true if the fmod end callback said the stream is ended
-		
+
 	public:
 		CMusicFader()
 		{
@@ -97,13 +97,13 @@ private:
 	uint8						_ActiveMusicFader;
 	float						_FModMusicVolume;
 	std::list<FSOUND_STREAM*>	_FModMusicStreamWaitingForClose;	// see stopMusicFader()
-	
+
 	void	playMusicStartCrossFade(uint xFadeTime);
 	void	playMusicStartFader(uint musicFader);
 	void	stopMusicFader(uint musicFader);
 	void	updateMusicVolumeFader(uint musicFader);
 	void	updateMusicFModStreamWaitingForClose();
-	
+
 };
 
 }

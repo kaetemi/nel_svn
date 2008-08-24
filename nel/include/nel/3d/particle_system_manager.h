@@ -44,9 +44,9 @@ namespace NL3D {
 class CParticleSystemModel;
 
 /**
- * This class list all the particle systems that have resources allocated at a given time, so that 
+ * This class list all the particle systems that have resources allocated at a given time, so that
  * we can remove the resource of those who are too far from the viewer.
- * This has been added because objects that are in a cluster that is not 
+ * This has been added because objects that are in a cluster that is not
  * visible are not parsed during traversals, so their resources couldn't just be released
  * Only a few systems are parsed each time (because they can be numerous).
  * Call to that class should be made by CScene, so you don't need to use it
@@ -58,7 +58,7 @@ class CParticleSystemManager
 {
 public:
 	enum { NumProcessToRefresh  = 3 }; // the number of systems that are refreshed at each call
-	
+
 	/// default ctor
 	CParticleSystemManager();
 
@@ -88,14 +88,14 @@ public:
 
 private:
 	friend class CParticleSystemModel;
-	
+
 	// info about a ps that is always animated
 	class CAlwaysAnimatedPS
 	{
 	public:
-		CParticleSystemModel *Model;		
+		CParticleSystemModel *Model;
 		CMatrix				 OldAncestorMatOrRelPos;	// last matrix of ancestor skeleton or relative matrix of ps to its ancestor (see flag below)
-		bool				 IsRelMatrix;				// gives usage of the field OldAncestorMatOrRelPos		
+		bool				 IsRelMatrix;				// gives usage of the field OldAncestorMatOrRelPos
 		bool				 HasAncestorSkeleton;		// has the system an ancestor skeleton ?
 	public:
 		// ctor
@@ -105,7 +105,7 @@ private:
 			Model = NULL;
 			IsRelMatrix = false;
 			HasAncestorSkeleton = false;
-		}		
+		}
 	};
 
 	typedef std::list<CParticleSystemModel *>   TModelList;
@@ -113,7 +113,7 @@ private:
 	typedef std::list<CParticleSystemManager *> TManagerList;
 
 	static TManagerList *ManagerList;
-	
+
 	struct TModelHandle
 	{
 		TModelList::iterator Iter;
@@ -128,7 +128,7 @@ private:
 		TAlwaysAnimatedModelHandle() : Valid(false) {}
 	};
 
-	
+
 	/** Should be called when a new p.s. model has resources attached to it.
 	  * \see removeSystemModel
 	  */
@@ -142,17 +142,17 @@ private:
 
 	/// Remove a permanenlty animated system
 	void			removePermanentlyAnimatedSystem(TAlwaysAnimatedModelHandle &handle);
-	
+
 private:
 
 	TModelList::iterator	_CurrListIterator; /// the current element being processed
 	TModelList				_ModelList;
 	TAlwaysAnimatedModelList _PermanentlyAnimatedModelList;
-	uint					_NumModels;	
+	uint					_NumModels;
 	// access to list of currently instanciated managers
 	static TManagerList     &getManagerList();
 	// link into the global manager list for that manager
-	TManagerList::iterator	_GlobalListHandle;	
+	TManagerList::iterator	_GlobalListHandle;
 };
 
 

@@ -170,7 +170,7 @@ private:
 
 	// The internal stream
 	IStream			*_InternalStream;
-	
+
 	// Document pointer
 	xmlDocPtr		_Document;
 

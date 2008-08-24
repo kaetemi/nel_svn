@@ -81,11 +81,11 @@ public:
 	void			setRotEuler(float rx, float ry, float rz) {setRotEuler(CVector(rx, ry, rz));}
 	/// Work only in RotQuat mode (nlassert).
 	void			setRotQuat(const CQuat &quat);
-	/** Work only in RotQuat mode (nlassert). 
+	/** Work only in RotQuat mode (nlassert).
 	 * Build a quaternion from a forward direction (a J vector). there is no roll... jdir do not need to be noramlized.
 	 */
 	void			setRotQuat(const CVector &jdir);
-	/** Work only in RotQuat mode (nlassert). 
+	/** Work only in RotQuat mode (nlassert).
 	 * Build a quaternion from a forward direction (a J vector). the roll is determined with help of the vector up vup... vectors do not need to be noramlized.
 	 */
 	void			setRotQuat(const CVector &jdir, const CVector &vup);
@@ -140,9 +140,9 @@ public:
 
 	/// \name Misc
 	// @{
-	/** 
+	/**
 	  * Setup Matrix by the lookAt method. Work only in DirectMatrix mode and RotQuat mode (not euler...).
-	  * 
+	  *
 	  * \param eye is the coordinate of the object.
 	  * \param target is the point the object look at.
 	  * \param roll is the roll angle in radian along the object's Y axis.

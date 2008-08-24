@@ -166,7 +166,7 @@
 #	if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		pragma warning (disable : 4005)			// don't warn on redefinitions caused by xp platform sdk
 #		pragma warning (disable : 4996)			// don't warn for deprecated function (sprintf, sscanf in VS8)
-#	endif // NL_COMP_VC8 || NL_COMP_VC9 
+#	endif // NL_COMP_VC8 || NL_COMP_VC9
 #endif // NL_OS_WINDOWS
 
 
@@ -378,7 +378,7 @@ typedef	uint16	ucchar;
  #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	<p1, p2>
 #else
  #define NL_TMPL_PARAM_ON_METHOD_1(p1)
- #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	
+ #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)
 #endif
 
 #endif // NL_TYPES_H

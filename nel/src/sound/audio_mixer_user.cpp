@@ -78,7 +78,7 @@ namespace NLSOUND {
 #if NL_TRACE_MIXER
 #define _profile(_a) nldebug ## _a
 #else
-#define _profile(_a) 
+#define _profile(_a)
 #endif
 
 // The audio mixer singleton instance
@@ -168,7 +168,7 @@ CAudioMixerUser::~CAudioMixerUser()
 		delete _BackgroundSoundManager;
 		_BackgroundSoundManager= NULL;
 	}
-	
+
 	if (_BackgroundMusicManager != NULL)
 	{
 		delete _BackgroundMusicManager;
@@ -237,8 +237,8 @@ void CAudioMixerUser::setLowWaterMark(uint value)
 void				CAudioMixerUser::writeProfile(std::string& out)
 {
 	// compute number of muted source
-	uint nb = 0;	
-	
+	uint nb = 0;
+
 /*	TSourceContainer::iterator first(_Sources.begin()), last(_Sources.end());
 	for (; first != last; ++first)
 	{
@@ -358,7 +358,7 @@ void	CAudioMixerUser::setPackedSheetOption(const std::string &path, bool update)
 
 void CAudioMixerUser::setSamplePath(const std::string& path)
 {
-	_SamplePath = CPath::standardizePath(path, true); 
+	_SamplePath = CPath::standardizePath(path, true);
 }
 
 
@@ -373,7 +373,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	_UseEax = useEax;
 	_UseADPCM = useADPCM;
 	_AutoLoadSample = autoLoadSample;
-	
+
 	// Init sound driver
 	try
 	{
@@ -446,7 +446,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 		_PriorityReserve[i] = _NbTracks;
 		_ReserveUsage[i] = 0;
 	}
-	
+
 	_StartTime = CTime::getLocalTime();
 
 	// if needed (update == true), build the sample bank list
@@ -473,7 +473,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 		useADPCM ? "with ADPCM sample source" : "with 16 bits PCM sample source");
 
 	// try to load default configuration from george sheet
-	
+
 	NLGEORGES::UFormLoader *formLoader = NULL;
 
 	try
@@ -517,7 +517,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 				{
 					std::string name;
 					sampleBanks->getArrayValue(name, i);
-					
+
 					if (!name.empty())
 						loadSampleBank(false, name);
 
@@ -763,7 +763,7 @@ void	CAudioMixerUser::buildSampleBankList()
 			}
 		}
 	}
-	// clear any out of date bank file 
+	// clear any out of date bank file
 	for (; i<bankFile.size(); ++i)
 	{
 		CFile::deleteFile(bankFile[i]);
@@ -883,7 +883,7 @@ public:
 				cs.ParamId = CAudioMixerUser::pitch_control;
 			else
 				return;
-		
+
 			root.getNodeByName(&items, ".Sounds");
 			items->getArraySize(size);
 
@@ -952,7 +952,7 @@ void CAudioMixerUser::initUserVar()
 			}
 		}
 	}
-	
+
 }
 
 void CAudioMixerUser::CControledSources::serial (NLMISC::IStream &s)
@@ -1139,7 +1139,7 @@ void				CAudioMixerUser::getFreeTracks( uint nb, CTrack **tracks )
 	}
 }
 
- 
+
 // ******************************************************************
 
 void				CAudioMixerUser::applyListenerMove( const NLMISC::CVector& listenerpos )
@@ -1179,11 +1179,11 @@ CTrack *CAudioMixerUser::getFreeTrack(CSimpleSource *source)
 	if	(!_FreeTracks.empty())
 	{
 		// under the low water mark or  under the reserve
-		if (_FreeTracks.size() > _LowWaterMark		
+		if (_FreeTracks.size() > _LowWaterMark
 				|| _ReserveUsage[source->getPriority()] < _PriorityReserve[source->getPriority()] )
 		{
 			// non discardable track  or not too many waiting source
-			if (source->getPriority() == HighestPri		
+			if (source->getPriority() == HighestPri
 				|| _FreeTracks.size() > _SourceWaitingForPlay.size())
 			{
 				CTrack *ret = _FreeTracks.back();
@@ -1409,7 +1409,7 @@ void				CAudioMixerUser::update()
 				CSimpleSource *source = _Tracks[i]->getSource();
 				source->stop();
 			}
-	
+
 			// try to play any waiting source.
 			if (!_SourceWaitingForPlay.empty())
 			{
@@ -1533,9 +1533,9 @@ TSoundId			CAudioMixerUser::getSoundId( const NLMISC::TStringId &name )
 // ******************************************************************
 
 void				CAudioMixerUser::addSource( CSourceCommon *source )
-{ 
+{
 	nlassert(_Sources.find(source) == _Sources.end());
-	_Sources.insert( source ); 
+	_Sources.insert( source );
 
 //	_profile(( "AM: ADDSOURCE, SOUND: %d, TRACK: %p, NAME=%s", source->getSound(), source->getTrack(),
 //			source->getSound() && (source->getSound()->getName()!="") ? source->getSound()->getName().c_str() : "" ));
@@ -1731,7 +1731,7 @@ retrySound:
 				ret->setPitch(pitch);
 			}
 		}
-		else 
+		else
 			ret = 0;
 	}
 	else
@@ -1745,8 +1745,8 @@ retrySound:
 	_CreateCount++;
 #endif
 
-	//nldebug( "AM: Source created" ); 
-	return ret;						
+	//nldebug( "AM: Source created" );
+	return ret;
 }
 
 
@@ -1763,7 +1763,7 @@ USource				*CAudioMixerUser::createSource( const NLMISC::TStringId &name, bool s
 void				CAudioMixerUser::removeSource( CSourceCommon *source )
 {
 	nlassert( source != NULL );
-	
+
 	size_t n = _Sources.erase(source);
 	nlassert(n == 1);
 }
@@ -1839,13 +1839,13 @@ uint32			CAudioMixerUser::loadSampleBank(bool async, const std::string &name, st
 		bank = new CSampleBank(name, _SoundDriver);
 	}
 
-	try 
+	try
 	{
 		bank->load(async);
 	}
 	catch (Exception& e)
 	{
-		if (notfoundfiles) 
+		if (notfoundfiles)
 		{
 			notfoundfiles->push_back(name);
 		}
@@ -2100,9 +2100,9 @@ void CAudioMixerUser::removeEvents( CAudioMixerUser::IMixerEvent *pmixerEvent)
 	nlassert(pmixerEvent != 0);
 	//	nldebug("Removing event %p", pmixerEvent);
 
-	// we have to remove from the _EventListUpdate, in the case a IMixerEvent is 
+	// we have to remove from the _EventListUpdate, in the case a IMixerEvent is
 	// added/removed during the same frame!!!
-	// Slow O(N) but _EventListUpdate should be small, cause cleared each frame and not so 
+	// Slow O(N) but _EventListUpdate should be small, cause cleared each frame and not so
 	// many events are added/removed.
 	std::list<std::pair<NLMISC::TTime, IMixerEvent*> >::iterator	itUp;
 	for(itUp=_EventListUpdate.begin(); itUp!=_EventListUpdate.end();)
@@ -2153,19 +2153,19 @@ void CAudioMixerUser::loadBackgroundAudioFromPrimitives(const NLLIGO::IPrimitive
 	_BackgroundSoundManager->loadAudioFromPrimitives(audioRoot);
 }
 
-void CAudioMixerUser::playBackgroundSound () 
-{ 
-	_BackgroundSoundManager->play (); 
+void CAudioMixerUser::playBackgroundSound ()
+{
+	_BackgroundSoundManager->play ();
 }
 
-void CAudioMixerUser::stopBackgroundSound () 
-{ 
-	_BackgroundSoundManager->stop (); 
+void CAudioMixerUser::stopBackgroundSound ()
+{
+	_BackgroundSoundManager->stop ();
 }
 
 void CAudioMixerUser::loadBackgroundSound (const std::string &continent, NLLIGO::CLigoConfig &config)
-{ 
-	_BackgroundSoundManager->load (continent, config); 
+{
+	_BackgroundSoundManager->load (continent, config);
 }
 
 void CAudioMixerUser::startDriverBench()
@@ -2190,7 +2190,7 @@ void CAudioMixerUser::displayDriverBench(CLog *log)
 void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 {
 	maxTrack = min(maxTrack, MAX_TRACKS);
-	
+
 	// if same, no op
 	if(maxTrack==_NbTracks)
 		return;
@@ -2333,7 +2333,7 @@ bool	CAudioMixerUser::playMusic(const std::string &fileName, uint xFadeTime, boo
 {
 	return playMusicChannel(GeneralMusicChannel, fileName, xFadeTime, async, loop);
 }
-	
+
 // ***************************************************************************
 void	CAudioMixerUser::stopMusic(uint xFadeTime)
 {

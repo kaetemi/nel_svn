@@ -73,7 +73,7 @@ namespace NLNET
 		return _Registrar;
 	}
 
-	
+
 	//////////////////////////////////////
 	// Module factory implementation
 	//////////////////////////////////////
@@ -125,7 +125,7 @@ namespace NLNET
 
 		nlassert(sanityCheck == NULL);
 	}
-	
+
 	void IModuleFactory::registerModuleInFactory(TModulePtr module)
 	{
 		nlassert(module != NULL);
@@ -191,7 +191,7 @@ namespace NLNET
 	CModuleBase::~CModuleBase()
 	{
 		// deleting a module from it's own current task is forbiden
-		nlassert(_ModuleTasks.empty() 
+		nlassert(_ModuleTasks.empty()
 			||  CCoTask::getCurrentTask() != _ModuleTasks.front());
 
 		// terminate and release any pending module task
@@ -204,7 +204,7 @@ namespace NLNET
 
 			_ModuleTasks.erase(_ModuleTasks.begin());
 		}
-		
+
 		if (_MessageDispatchTask)
 		{
 			// delete reception task
@@ -325,7 +325,7 @@ namespace NLNET
 	void CModuleBase::_receiveModuleMessageTask()
 	{
 		H_AUTO(CModuleBase__receiveModuleMessageTask);
-		
+
 		while (!_MessageDispatchTask->isTerminationRequested())
 		{
 			// we have a message to dispatch
@@ -384,7 +384,7 @@ namespace NLNET
 		{
 			// init the message dispatch task
 //			NLNET_START_MODULE_TASK(CModuleBase, _receiveModuleMessageTask);
-//	TModuleTask<className> *task = new TModuleTask<className>(this, &className::methodName); 
+//	TModuleTask<className> *task = new TModuleTask<className>(this, &className::methodName);
 			 _MessageDispatchTask = new TModuleTask<CModuleBase>(this,  TModuleTask<CModuleBase>::TMethodPtr(&CModuleBase::_receiveModuleMessageTask));
 		}
 
@@ -426,7 +426,7 @@ namespace NLNET
 		TModuleSockets::iterator it(_ModuleSockets.find(moduleSocket));
 		if (it == _ModuleSockets.end())
 			throw EModuleNotPluggedHere();
-		
+
 		sock->_onModuleUnplugged(TModulePtr(this));
 
 		_ModuleSockets.erase(it);
@@ -526,7 +526,7 @@ namespace NLNET
 //						}
 //
 //					}
-					
+
 					// remove this message form the queue
 					_SyncMessages.pop_front();
 				}
@@ -594,7 +594,7 @@ namespace NLNET
 		for (;first != last; ++first)
 		{
 			(*first)->onModuleDown(removedProxy);
-		}								
+		}
 	}
 
 	bool CModuleBase::_onProcessModuleMessage(IModuleProxy *senderModuleProxy, const CMessage &message)
@@ -668,12 +668,12 @@ namespace NLNET
 
 		if (_ModuleSockets.find(socket) == _ModuleSockets.end())
 		{
-			log.displayNL("Failed to plug the module '%s' into the socket '%s'", 
+			log.displayNL("Failed to plug the module '%s' into the socket '%s'",
 				getModuleName().c_str(),
 				socket->getSocketName().c_str());
 		}
 		else
-			log.displayNL("Module '%s' plugged into the socket '%s'", 
+			log.displayNL("Module '%s' plugged into the socket '%s'",
 				getModuleName().c_str(),
 				socket->getSocketName().c_str());
 
@@ -780,7 +780,7 @@ namespace NLNET
 						name = name.substr(name.find('/')+1);
 					if (name != getModuleFullyQualifiedName())
 					{
-						log.displayNL("      Module '%s' (Module Proxy ID : %u, class : '%s')", 
+						log.displayNL("      Module '%s' (Module Proxy ID : %u, class : '%s')",
 							proxies[i]->getModuleName().c_str(),
 							proxies[i]->getModuleProxyId(),
 							proxies[i]->getModuleClassName().c_str());
@@ -812,7 +812,7 @@ namespace NLNET
 	{
 		return _ModuleProxyId;
 	}
-	
+
 	TModuleId	CModuleProxy::getForeignModuleId() const
 	{
 		return _ForeignModuleId;
@@ -846,7 +846,7 @@ namespace NLNET
 	{
 		return _Manifest;
 	}
-	
+
 
 	IModuleGateway *CModuleProxy::getModuleGateway() const
 	{

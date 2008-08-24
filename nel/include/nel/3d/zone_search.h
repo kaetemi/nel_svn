@@ -77,7 +77,7 @@ private:
 
 	/// Number zones on Y axis of landscape
 	uint _NbZoneY;
-	
+
 	// Size X of one zone (in meters)
 	uint _SizeZoneX;
 

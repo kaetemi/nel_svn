@@ -77,7 +77,7 @@ namespace NLNET
 	 *	The total L5 transport instance is limited to 256.
 	 *	This really should be enough or you have a problem in
 	 *	your design !
-	 *	The allocator keep released ID as long as possible 
+	 *	The allocator keep released ID as long as possible
 	 *	and reallocated them only when all other ids
 	 *	have been used/allocated.
 	 */
@@ -140,9 +140,9 @@ namespace NLNET
 		typedef std::map<TL5TransportId, CGatewayL5Transport*>	TTransportDispatcher;
 		/// Global index of transport use to dispatch received message
 		static TTransportDispatcher	_TransportDispatcher;
-		
+
 		/// Constructor
-		CGatewayL5Transport(const IGatewayTransport::TCtorParam &param) 
+		CGatewayL5Transport(const IGatewayTransport::TCtorParam &param)
 			: IGatewayTransport(param),
 			_Open(false)
 		{
@@ -224,13 +224,13 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand) 
+		void onCommand(const CMessage &command) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
 		}
 		/// The gateway send a textual command to the transport
-		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand) 
+		bool onCommand(const TParsedCommandLine &command) throw (EInvalidCommand)
 		{
 			if (command.SubParams.size() < 1)
 				throw  EInvalidCommand();
@@ -277,7 +277,7 @@ namespace NLNET
 
 			_SubNetName = subNetName;
 
-			
+
 			CUnifiedNetwork *un = CUnifiedNetwork::getInstance();
 
 			static bool callbackRegistered = false;
@@ -314,7 +314,7 @@ namespace NLNET
 				{
 					// the Connection is not established right now. We wait for the ServiceUp callback
 				}
-				
+
 			}
 
 			_Open = true;
@@ -395,7 +395,7 @@ namespace NLNET
 			TRouteMap::iterator it(_Routes.find(sid));
 			if (it == _Routes.end())
 			{
-				nlwarning("Gateway '%s' : Can't find route for service %hu for dispatching, message is discarded", 
+				nlwarning("Gateway '%s' : Can't find route for service %hu for dispatching, message is discarded",
 					_Gateway->getGatewayName().c_str(),
 					sid.get());
 				return;
@@ -411,7 +411,7 @@ namespace NLNET
 			msgin.lockSubMessage(msgLen);
 
 			_Gateway->onReceiveMessage(it->second, msgin);
-			
+
 			// unlock the sub message
 			msgin.unlockSubMessage();
 		}
@@ -465,7 +465,7 @@ namespace NLNET
 			TRouteMap::iterator it(_Routes.find(sid));
 			if (it == _Routes.end())
 			{
-				nlwarning("onRemoveTransport : can't find a route the the transport %hu on service %u", 
+				nlwarning("onRemoveTransport : can't find a route the the transport %hu on service %u",
 					desc.TransportId,
 					sid.get());
 				return;
@@ -493,7 +493,7 @@ namespace NLNET
 			// a route for it
 
 			TTransportDesc	desc;
-			
+
 			msgin.serial(desc);
 
 			// for each existing transport here, check if they are in the
@@ -503,14 +503,14 @@ namespace NLNET
 			for (; first != last; ++first)
 			{
 				CGatewayL5Transport *transport = first->second;
-				if (transport->_Open 
-					&& transport->_SubNetName == desc.SubNetName 
+				if (transport->_Open
+					&& transport->_SubNetName == desc.SubNetName
 					&& (sid != IService::getInstance()->getServiceId()
 						|| desc.TransportId != transport->_TransportId))
 				{
 					// this one is on the same subnet
 					transport->onAddTransport(sid, desc);
-				}	
+				}
 			}
 		}
 
@@ -521,7 +521,7 @@ namespace NLNET
 			// the route for it
 
 			TTransportDesc	desc;
-			
+
 			msgin.serial(desc);
 
 			// for each existing transport here, check if they are in the
@@ -531,16 +531,16 @@ namespace NLNET
 			for (; first != last; ++first)
 			{
 				CGatewayL5Transport *transport = first->second;
-				if (transport->_Open 
-					&& transport->_SubNetName == desc.SubNetName 
+				if (transport->_Open
+					&& transport->_SubNetName == desc.SubNetName
 					&& desc.TransportId != transport->_TransportId)
 				{
 					// this one is on the same subnet
 					transport->onRemoveTransport(sid, desc);
-				}	
+				}
 			}
 		}
-	
+
 		static void cbDispatchL5Message (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 		{
 			LNETL6_DEBUG("LNETL6: L5 transport cbDispatch called, receiving from %s", serviceName.c_str());
@@ -589,9 +589,9 @@ namespace NLNET
 					transport->onServiceDown(serviceName, sid);
 			}
 		}
-	
+
 	};
-	
+
 	CGatewayL5Transport::TTransportDispatcher	CGatewayL5Transport::_TransportDispatcher;
 
 	// register this class in the transport factory

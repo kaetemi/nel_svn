@@ -28,7 +28,7 @@
 #include "nel/misc/time_nl.h"
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 class CMusicSource;

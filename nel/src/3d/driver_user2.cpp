@@ -45,7 +45,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -58,7 +58,7 @@ namespace NL3D
 
 
 // ***************************************************************************
-UScene			*CDriverUser::createScene(bool bSmallScene) 
+UScene			*CDriverUser::createScene(bool bSmallScene)
 {
 	CSceneUser *pSU = new CSceneUser(this, bSmallScene);
 
@@ -74,26 +74,26 @@ UScene			*CDriverUser::createScene(bool bSmallScene)
 	return _Scenes.insert(pSU);
 }
 // ***************************************************************************
-void			CDriverUser::deleteScene(UScene	*scene) 
+void			CDriverUser::deleteScene(UScene	*scene)
 {
 
 	_Scenes.erase((CSceneUser*)scene, "deleteScene(): Bad scene ptr");
 }
 
 // ***************************************************************************
-UTextContext	*CDriverUser::createTextContext(const std::string fontFileName, const std::string fontExFileName) 
+UTextContext	*CDriverUser::createTextContext(const std::string fontFileName, const std::string fontExFileName)
 {
 
 	return _TextContexts.insert(new CTextContextUser(fontFileName, fontExFileName, this, &_FontManager));
 }
 // ***************************************************************************
-void			CDriverUser::deleteTextContext(UTextContext	*textContext) 
+void			CDriverUser::deleteTextContext(UTextContext	*textContext)
 {
 
 	_TextContexts.erase((CTextContextUser*)textContext, "deleteTextContext: Bad TextContext");
 }
 // ***************************************************************************
-void			CDriverUser::setFontManagerMaxMemory(uint maxMem) 
+void			CDriverUser::setFontManagerMaxMemory(uint maxMem)
 {
 
 	_FontManager.setMaxMemory(maxMem);
@@ -106,7 +106,7 @@ std::string		CDriverUser::getFontManagerCacheInformation() const
 }
 
 // ***************************************************************************
-UTextureFile	*CDriverUser::createTextureFile(const std::string &file) 
+UTextureFile	*CDriverUser::createTextureFile(const std::string &file)
 {
 
 	CTextureFileUser	*text= new CTextureFileUser(file);
@@ -114,7 +114,7 @@ UTextureFile	*CDriverUser::createTextureFile(const std::string &file)
 	return text;
 }
 // ***************************************************************************
-void			CDriverUser::deleteTextureFile(UTextureFile *textfile) 
+void			CDriverUser::deleteTextureFile(UTextureFile *textfile)
 {
 
 	_Textures.erase(dynamic_cast<CTextureFileUser*>(textfile), "deleteTextureFile: Bad textfile");
@@ -128,19 +128,19 @@ UTextureMem		*CDriverUser::createTextureMem(uint width, uint height, CBitmap::TT
 	return pTx;
 }
 // ***************************************************************************
-void			CDriverUser::deleteTextureMem(UTextureMem *pTx) 
+void			CDriverUser::deleteTextureMem(UTextureMem *pTx)
 {
 
 	_Textures.erase(dynamic_cast<CTextureMemUser*>(pTx), "deleteTextureMem: Bad pTx");
 }
 // ***************************************************************************
-UMaterial		CDriverUser::createMaterial() 
+UMaterial		CDriverUser::createMaterial()
 {
 
 	return UMaterial(new CMaterial);
 }
 // ***************************************************************************
-void			CDriverUser::deleteMaterial(UMaterial &umat) 
+void			CDriverUser::deleteMaterial(UMaterial &umat)
 {
 
 	delete umat.getObjectPtr();
@@ -148,16 +148,16 @@ void			CDriverUser::deleteMaterial(UMaterial &umat)
 }
 
 // ***************************************************************************
-UAnimationSet			*CDriverUser::createAnimationSet() 
+UAnimationSet			*CDriverUser::createAnimationSet()
 {
-	
+
 	return _AnimationSets.insert(new CAnimationSetUser(this));
 }
 // ***************************************************************************
-UAnimationSet			*CDriverUser::createAnimationSet(const std::string &animationSetFile) 
+UAnimationSet			*CDriverUser::createAnimationSet(const std::string &animationSetFile)
 {
 	H_AUTO( NL3D_Load_AnimationSet )
-	
+
 	NLMISC::CIFile	f;
 	// throw exception if not found.
 	std::string	path= CPath::lookup(animationSetFile);
@@ -165,9 +165,9 @@ UAnimationSet			*CDriverUser::createAnimationSet(const std::string &animationSet
 	return _AnimationSets.insert(new CAnimationSetUser(this, f));
 }
 // ***************************************************************************
-void			CDriverUser::deleteAnimationSet(UAnimationSet *animationSet) 
+void			CDriverUser::deleteAnimationSet(UAnimationSet *animationSet)
 {
-	
+
 	_AnimationSets.erase((CAnimationSetUser*)animationSet, "deleteAnimationSet(): Bad AnimationSet ptr");
 }
 

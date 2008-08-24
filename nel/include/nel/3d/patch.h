@@ -84,8 +84,8 @@ class	CPatchDLMPointLight;
 
 
 // ***************************************************************************
-/* 
-	NL3D_PATCH_VEGETABLE_NUM_TESSBLOCK_PER_CLIPBLOCK == 2 means that 
+/*
+	NL3D_PATCH_VEGETABLE_NUM_TESSBLOCK_PER_CLIPBLOCK == 2 means that
 	clipBlocks enclose 2*2 tessBlocks (hence 4*4 tiles).
 */
 #define	NL3D_PATCH_VEGETABLE_NUM_TESSBLOCK_PER_CLIPBLOCK_SHIFT	1
@@ -253,7 +253,7 @@ public:
 
 public:
 
-	/** build the 2 triangles from a quad of the CPatchQuadBlock. 
+	/** build the 2 triangles from a quad of the CPatchQuadBlock.
 	 * quadId is the number of the quad, relatively to the PatchQuadBlock.
 	 */
 	void		buildTileTriangles(uint8 quadId, CTrianglePatch  triangles[2]) const;
@@ -265,7 +265,7 @@ public:
 /**
  * A landscape patch.
  * QuadPatch layout (same notations as 3ds Max SDK).
- * 
+ *
  *   A---> ad ---- da <---D
  *   |                    |
  *   |                    |
@@ -340,7 +340,7 @@ public:
 	/// The orientation of the NoiseMap. 0,1,2,3. This represent a CCW rotation of the NoiseMap.
 	uint8			NoiseRotation;
 
-	/** setup Smooth flags for Noise on corner: used for Noise geometry and for lighting. 
+	/** setup Smooth flags for Noise on corner: used for Noise geometry and for lighting.
 	 *	NB: convention: corner0==A, corner1==B ...
 	 */
 	void			setCornerSmoothFlag(uint corner, bool smooth);
@@ -367,7 +367,7 @@ public:
 	 * \param z zone where the patch must be binded.
 	 * \param orderS the Tile order in S direction: 2,4,8,16.
 	 * \param orderT the Tile order in T direction: 2,4,8,16.
-	 * \param errorSize if 0, setup() compute himself the errormetric of the patch. May be setup to surface of patch, 
+	 * \param errorSize if 0, setup() compute himself the errormetric of the patch. May be setup to surface of patch,
 	 *  modulated by tangents and displacement map.
 	 */
 	void			compile(CZone *z, uint patchId, uint8 orderS, uint8 orderT, CTessVertex *baseVertices[4], float errorSize=0);
@@ -524,7 +524,7 @@ public:
 	// Count the number of tri needed to draw the patch
 	uint32 countNumTriFar0() const;
 	uint32 countNumTriFar1() const;
-	
+
 private:
 
 	// Methods used internaly to compute shadowmaps
@@ -561,7 +561,7 @@ public:
 	{
 		// Erase it
 		Flags&=~(1<<(edge+NL_PATCH_SMOOTH_FLAG_SHIFT));
-		
+
 		// Set it
 		Flags|=(((uint)flag)<<(edge+NL_PATCH_SMOOTH_FLAG_SHIFT));
 	}
@@ -623,7 +623,7 @@ public:
 	/** Append lights under the position to pointLightList.
 	 *	Notice that the PointLight are ensured to be actually CPointLightNamed.
 	 */
-	void		appendTileLightInfluences(const CUV &uv, 
+	void		appendTileLightInfluences(const CUV &uv,
 		std::vector<CPointLightInfluence> &pointLightList) const;
 
 	/** For CTextureFar, compute current TLI Lightmap at tile level. array should be allocated of at least
@@ -690,7 +690,7 @@ public:
 	void		fillVBFar1Only();
 
 
-	// fill DLM Uv (ie UV1) for Far0 and Far1 VB only. NB: do not fill Far0 if !Far0 (idem fro Far1). 
+	// fill DLM Uv (ie UV1) for Far0 and Far1 VB only. NB: do not fill Far0 if !Far0 (idem fro Far1).
 	// Do not Test isRenderClipped() state. Do not fill a VB if reallocationOccurs().
 	void		fillVBFarsDLMUvOnly();
 	void		fillFar0DLMUvOnlyVertexListVB(CTessList<CTessFarVertex>  &vertList);
@@ -725,7 +725,7 @@ public:
 
 	/// \name TileLightInfluences
 	// @{
-	/** make a valid empty array of TileLightInfluences (ie resized to good size, but with empty 
+	/** make a valid empty array of TileLightInfluences (ie resized to good size, but with empty
 	 *	light influences
 	 */
 	void		resetTileLightInfluences();
@@ -748,7 +748,7 @@ public:
 	/**
 	 *	recompute the near lightmap of tessBlock "numTb".
 	 *	return the number of pixels updated by computing of this tessBlock.
-	 *	Actually 0 if the tessBlock lightmap is not computed, or 100 
+	 *	Actually 0 if the tessBlock lightmap is not computed, or 100
 	 *	(NL_TILE_LIGHTMAP_SIZE*NL_TILE_LIGHTMAP_SIZE) pixels.
 	 */
 	uint		updateTessBlockLighting(uint numTb);
@@ -764,7 +764,7 @@ public:
 	 *	Called by CLandscape. _DLMContext must exist
 	 */
 	void		beginDLMLighting();
-	/** Process a Dynamic light, creating the DLMContext if necessary. Increment RefCount. 
+	/** Process a Dynamic light, creating the DLMContext if necessary. Increment RefCount.
 	 *	Called by CLandscape.
 	 */
 	void		processDLMLight(CPatchDLMPointLight &pl);
@@ -823,23 +823,23 @@ private:
 	/**
 	  * Flags NL_PATCH_FAR0_ROTATED and NL_PATCH_FAR1_ROTATED
 	  *		NL_PATCH_FAR0_ROTATED for Far0, NL_PATCH_FAR1_ROTATED for Far1
-	  *		If the flag is set, the far texture of the patch is rotated of 1 
+	  *		If the flag is set, the far texture of the patch is rotated of 1
 	  *		(to the left of course)
 	  *
 	  * Flags NL_PATCH_SMOOTH_FLAG_MASK
 	  *		4 flag for smooth edge. Same as CPatchInfo::CBindInfo shifted by (<<NL_PATCH_SMOOTH_FLAG_SHIFT).
-	  *		See CPatchInfo::CBindInfo::Flags for details. 
+	  *		See CPatchInfo::CBindInfo::Flags for details.
 	  */
 	uint8			Flags;
-						
-	
+
+
 	// Info for alpha transition with Far1.
 	float			TransitionSqrMin;
 	float			OOTransitionSqrDelta;
 
 	/*
 		Cache Optim Note:
-		NB: for faster Cache Access during preRender(), you must leave those variables packed like this 
+		NB: for faster Cache Access during preRender(), you must leave those variables packed like this
 
 		Far0
 		Far1
@@ -890,7 +890,7 @@ private:
 
 
 	/**
-	  *  Stream version of the class. 
+	  *  Stream version of the class.
 	  */
 	static uint32	_Version;
 
@@ -1074,18 +1074,18 @@ private:
 	 * pa is the bezier patch for this subdivision of this patch. \n
 	 * s0, s1, t0, t1 represent the part of the bezier patch subdivided. At start, s0=0, s1=OrderS, t0=0, t1=OrderT.
 	 */
-	void		addTrianglesInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel, 
+	void		addTrianglesInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel,
 		const CBezierPatch &pa, uint8 s0, uint8 s1, uint8 t0, uint8 t1) const;
 	/** called by addTrianglesInBBoxRecurs(). effective fill the array of triangles from 1 tile at tile coordinates s0,t0.
 	 * depending of tessLevel (0,1,2), 2, 8 or 32 triangles are added.  (2*2m, 1*1*m or 0.5*0.5m).
 	 * NB: only triangles of quad included in the bbox are added.
 	 */
-	void		addTileTrianglesInBBox(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel, 
+	void		addTileTrianglesInBBox(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel,
 		uint8 s0, uint8 t0) const;
 
 	/** recurse method of addPatchBlocksInBBox.
 	 */
-	void		addPatchBlocksInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CPatchBlockIdent> &paBlockIds, 
+	void		addPatchBlocksInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CPatchBlockIdent> &paBlockIds,
 		const CBezierPatch &pa, uint8 s0, uint8 s1, uint8 t0, uint8 t1) const;
 
 	/// Used by computeContinousVertex()
@@ -1120,7 +1120,7 @@ private:
 	float		computeDisplaceRawInteger(sint ts, sint tt, sint ms, sint mt) const;
 	void		computeDisplaceRawCoordinates(float sTile, float tTile, float s, float t,
 	sint &ts, sint &tt, sint &ms, sint &mt) const;
-	/** compute the displacement for s,t ([0;OrderS], [0;OrderT]) 
+	/** compute the displacement for s,t ([0;OrderS], [0;OrderT])
 	 *  (sTile, tTile) choose what NoiseMap to use, and (s,t) choose the coordinate in the patch to compute this NoiseMap.
 	 *	Any rotation of the NoiseMap is included in this method.
 	 *	NB: s,t does not have to be clamped to ([0;OrderS], [0;OrderT]).
@@ -1202,7 +1202,7 @@ private:
 	/// \name Dynamic Lighting Management
 	// @{
 
-	/** The Dynamic LightMap context. 
+	/** The Dynamic LightMap context.
 	 *	created only when compiled, AND (when in Near OR (when in Far AND touched by pointLight))
 	 *	else NULL.
 	 */

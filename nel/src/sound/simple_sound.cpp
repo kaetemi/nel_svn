@@ -42,7 +42,7 @@ namespace NLSOUND {
  */
 CSimpleSound::CSimpleSound() :
 	_Registered(false),
-	_Buffer(NULL), 
+	_Buffer(NULL),
 	_Detailed(false),
 	_MinDist(1.0f),
 	_NeedContext(false)
@@ -92,11 +92,11 @@ void				CSimpleSound::getSubSoundList(std::vector<std::pair<std::string, CSound*
  * Return the sample buffer of this sound
  */
 IBuffer*			CSimpleSound::getBuffer()
-{ 
+{
 	if (_Buffer == 0)
 	{
 		// try to find the sample buffer in the sample bank.
-		_Buffer = CSampleBank::get(_Buffername); 
+		_Buffer = CSampleBank::get(_Buffername);
 		CSoundBank::instance()->registerBufferAssoc(this, _Buffer);
 		_Registered = true;
 	}
@@ -107,7 +107,7 @@ IBuffer*			CSimpleSound::getBuffer()
 /*
  * Return the length of the sound in ms
  */
-uint32				CSimpleSound::getDuration() 
+uint32				CSimpleSound::getDuration()
 {
 	IBuffer* buffer = getBuffer();
 
@@ -126,7 +126,7 @@ void				CSimpleSound::serial(NLMISC::IStream &s)
 {
 	std::string bufferName;
 	CSound::serial(s);
-	
+
 	s.serial(_MinDist);
 	s.serial(_Alpha);
 

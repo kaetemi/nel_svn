@@ -28,7 +28,7 @@
 #include "nel/3d/material.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

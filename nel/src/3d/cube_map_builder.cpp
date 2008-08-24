@@ -56,8 +56,8 @@ static uint8 *BuildCubeMapTex(const NLMISC::CVector &start,
 	{
 		NLMISC::CVector hCurrN = currN;
 		for (uint x = 0; x < size; ++x)
-		{						
-			destTexel[x + y *size] = f(hCurrN.normed());			
+		{
+			destTexel[x + y *size] = f(hCurrN.normed());
 			hCurrN += uStep;
 		}
 		currN += vStep;
@@ -83,8 +83,8 @@ static uint8 *BuildCubeMapTexLuminance(const NLMISC::CVector &start,
 	{
 		NLMISC::CVector hCurrN = currN;
 		for (uint x = 0; x < size; ++x)
-		{						
-			destTexel[x + y *size] = f(hCurrN.normed()).A;		
+		{
+			destTexel[x + y *size] = f(hCurrN.normed()).A;
 			hCurrN += uStep;
 		}
 		currN += vStep;
@@ -95,13 +95,13 @@ static uint8 *BuildCubeMapTexLuminance(const NLMISC::CVector &start,
 
 
 CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly /* = false*/, const std::string &shareName /* = "" */)
-{	
+{
 	std::auto_ptr<CTextureCube> cubeMap(new CTextureCube);
-	std::auto_ptr<CTextureMem> faces[6];		
+	std::auto_ptr<CTextureMem> faces[6];
 
 	/// this gives the start (unormalized normal for each face for u,v = 0, 0)
-	static const NLMISC::CVector start[] = 
-	{ 
+	static const NLMISC::CVector start[] =
+	{
 		NLMISC::CVector(1, 1, 1),		/// positive_x
 		NLMISC::CVector(-1, 1, -1),		/// negative_x
 		NLMISC::CVector(-1, 1, -1),		/// positive_y
@@ -111,8 +111,8 @@ CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly 
 	};
 
 
-	static const NLMISC::CVector uDir[] = 
-	{ 
+	static const NLMISC::CVector uDir[] =
+	{
 		NLMISC::CVector::K,		/// positive_x
 		- NLMISC::CVector::K,			/// negative_x
 		- NLMISC::CVector::I,			/// positive_y
@@ -121,8 +121,8 @@ CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly 
 		-NLMISC::CVector::I,			/// negative_z
 	};
 
-	static const NLMISC::CVector vDir[] = 
-	{ 
+	static const NLMISC::CVector vDir[] =
+	{
 		- NLMISC::CVector::J,		/// positive_x
 		- NLMISC::CVector::J,		/// negative_x
 		NLMISC::CVector::K,			/// positive_y
@@ -130,16 +130,16 @@ CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly 
 		NLMISC::CVector::J,		/// positive_z
 		NLMISC::CVector::J,		/// negative_z
 	};
-	
+
 
 	uint k;
 
 	/// build all faces
 	for (k = 0;  k < 6; ++k)
-	{				
+	{
 		faces[k].reset(new CTextureMem);
 		uint8 *map = luminanceOnly ?	BuildCubeMapTexLuminance(start[k], uDir[k], vDir[k], mapSize, f)
-							   :	BuildCubeMapTex(start[k], uDir[k], vDir[k], mapSize, f);				
+							   :	BuildCubeMapTex(start[k], uDir[k], vDir[k], mapSize, f);
 		faces[k]->setPointer(map,
 							 mapSize * mapSize * sizeof(uint8) * (luminanceOnly ? 1 : 4),
 							 true,
@@ -153,14 +153,14 @@ CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly 
 			faces[k]->setShareName(shareName + (char) ('0' + k));
 		}
 	}
-		
+
 	static const CTextureCube::TFace toTC[] = { CTextureCube::positive_x, CTextureCube::negative_x,
 												CTextureCube::positive_z, CTextureCube::negative_z,
 												CTextureCube::negative_y, CTextureCube::positive_y };
 	/// assign faces
 	for (k = 0;  k < 6; ++k)
 	{
-		cubeMap->setTexture(toTC[k], faces[k].release());	
+		cubeMap->setTexture(toTC[k], faces[k].release());
 	}
 
 	return cubeMap.release();

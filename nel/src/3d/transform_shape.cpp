@@ -39,7 +39,7 @@
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -135,7 +135,7 @@ void	CTransformShape::unlinkFromQuadCluster()
 
 
 // ***************************************************************************
-bool	CTransformShape::clip() 
+bool	CTransformShape::clip()
 {
 	H_AUTO( NL3D_TrShape_Clip );
 
@@ -151,7 +151,7 @@ bool	CTransformShape::clip()
 			// Calc the distance
 			float sqrDist = (clipTrav.CamPos - getWorldMatrix().getPos()).sqrnorm ();
 			maxDist*=maxDist;
-			
+
 			// if dist > maxDist, skip
 			if (sqrDist > maxDist)
 			{
@@ -285,7 +285,7 @@ void	CTransformShape::traverseLoadBalancingPass0()
 	}
 	else
 	{
-		// get our position from 
+		// get our position from
 		modelPos= &getWorldMatrix().getPos();
 	}
 
@@ -295,7 +295,7 @@ void	CTransformShape::traverseLoadBalancingPass0()
 
 
 	// Get the number of triangles this model use now.
-	_FaceCount= getNumTriangles(modelDist);	
+	_FaceCount= getNumTriangles(modelDist);
 	_LoadBalancingGroup->addNbFacesPass0(_FaceCount);
 }
 

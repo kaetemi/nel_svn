@@ -65,7 +65,7 @@ public:
 	std::string				asString() const;
 
 	/// get the TCP sock object
-	const CTcpSock			*getTcpSock() const { return Sock;} 
+	const CTcpSock			*getTcpSock() const { return Sock;}
 
 	/// Little tricky but this string is used by Layer4 to know which callback is authorized.
 	/// This is empty when all callback are authorized.
@@ -89,7 +89,7 @@ protected:
 
 	///@name Sending data
 	//@{
-	
+
 	/// Update the network sending (call this method evenly). Returns false if an error occured.
 	bool	update();
 
@@ -131,7 +131,7 @@ protected:
 		return advertiseSystemEvent( bnb, sockid, _KnowConnected, true, CBufNetBase::Disconnection );
 	}
 
-	
+
 	/** Pushes a system message into bnb's receive queue, if the flags meets the condition, then
 	 * resets the flag and returns true. You can either specify a sockid (for server) or InvalidSockId (for client).
 	 */
@@ -234,7 +234,7 @@ protected:
 	void disconnect( bool connectedstate );
 
 	/// Sets the "logically connected" state (changed when processing a connection/disconnection callback)
-	void setConnectedState( bool connectedstate ) { _ConnectedState = connectedstate; } 
+	void setConnectedState( bool connectedstate ) { _ConnectedState = connectedstate; }
 
 	/// Returns the "logically connected" state (changed when processing a connection/disconnection callback)
 	bool connectedState() const { return _ConnectedState; }

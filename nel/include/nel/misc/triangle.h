@@ -33,7 +33,7 @@ namespace NLMISC
 	class CMatrix;
 }
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

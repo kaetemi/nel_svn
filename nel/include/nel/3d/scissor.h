@@ -28,7 +28,7 @@
 #include "nel/misc/vector.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using NLMISC::CVector;

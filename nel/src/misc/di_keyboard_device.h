@@ -80,20 +80,20 @@ public:
 
 	///\name From IInputDevice
 	//@{
-		virtual bool		setBufferSize(uint size);		
+		virtual bool		setBufferSize(uint size);
 		virtual uint		getBufferSize() const;
 	//@}
 
 	///\name From IInputDevice
-	//@{		
-		uint getKeyRepeatDelay() const { return _RepeatDelay; }	
-		void setKeyRepeatDelay(uint delay) { nlassert(delay > 0); _RepeatDelay = delay; }	
+	//@{
+		uint getKeyRepeatDelay() const { return _RepeatDelay; }
+		void setKeyRepeatDelay(uint delay) { nlassert(delay > 0); _RepeatDelay = delay; }
 		uint getKeyRepeatPeriod() const { return _RepeatPeriod; }
 		void setKeyRepeatPeriod(uint period) { nlassert(period > 0); _RepeatPeriod = period; }
-		void disableRepetition(const TKey *keyTab, uint numKey);	
-		uint getNumDisabledRepetition() const;	
+		void disableRepetition(const TKey *keyTab, uint numKey);
+		uint getNumDisabledRepetition() const;
 		void getDisabledRepetitions(TKey *destTab) const;
-	//@}	
+	//@}
 
 	TMouseButton	buildKeyboardFlags() const;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ private:
 	uint						_RepeatPeriod; // The period for key repetitions (in ms)
 	//
 	LPDIRECTINPUTDEVICE8		_Keyboard;
-	uint						_KeyboardBufferSize;	
+	uint						_KeyboardBufferSize;
 	// virtual code state
 	uint8						_VKKeyState[NumKeys];
 	// tells for which keys repetition is disabled
@@ -119,7 +119,7 @@ private:
 	uint						_LastDIKeyPressed;
 	CWinEventEmitter			*_WE;
 	HWND						_hWnd;
-	HKL							_KBLayout;	
+	HKL							_KBLayout;
 	//
 	CDIEventEmitter				*_DIEventEmitter;
 	//
@@ -127,7 +127,7 @@ private:
 private:
 	/// ctor
 	CDIKeyboard(CWinEventEmitter	*we, HWND hwnd);
-	/** Convert a direct input scancode to a virtual key. Note that DirectInput scancodes do not always match system scan codes. 
+	/** Convert a direct input scancode to a virtual key. Note that DirectInput scancodes do not always match system scan codes.
 	  * Repeatable has a meaning only for extended keys
 	  */
 	TKey			DIKeyToNelKey(uint diKey, bool &extKey, bool &repeatable);
@@ -136,27 +136,27 @@ private:
 	  * \param charValue contains the value that must be used for Unicode conversion (which generate EventChar messages)
 	  */
 	void			updateVKKeyState(uint diKey, bool pressed, TKey &keyValue, TKey &charValue);
-	// Use the given virtual key code and the current keyb state to produce Unicode 
+	// Use the given virtual key code and the current keyb state to produce Unicode
 	void			sendUnicode(TKey vkey, uint dikey, CEventServer *server, bool pressed);
 	// Build a TKeyButton value from the state of shift, ctrl and alt
 	TKeyButton		buildKeyButtonsFlags() const;
 	// Update the state of this object and send the appropriate message when a direct / input key has been pressed / released
 	void			keyTriggered(bool pressed, uint key, CEventServer *server, uint32 date);
 	// The same as buildKeyButtonsFlags(), but the return is a TMouseButtonValue (with no mouse value setupped)
-	TMouseButton	buildKeyboardButtonFlags() const;	
+	TMouseButton	buildKeyboardButtonFlags() const;
 	// setup the state of the Ctrl, Alt and Shift key from the state in the _VKKeyState buffer
 	void			updateCtrlAltShiftValues();
-	/// Repeat the current key, and create events	  
+	/// Repeat the current key, and create events
 	void			repeatKey(uint32 currentDate, CEventServer *server);
 	/// Build a date by using an event time stamp, or generate one if NULL
-	uint32			buildDateFromEvent(const IInputDeviceEvent *deviceEvent);	
+	uint32			buildDateFromEvent(const IInputDeviceEvent *deviceEvent);
 
 	///\name From IInputDevice
 	//@{
-		virtual void		poll(CInputDeviceServer *dev);	
+		virtual void		poll(CInputDeviceServer *dev);
 		virtual void		submit(IInputDeviceEvent *deviceEvent, CEventServer *server);
 		virtual void		transitionOccured(CEventServer *server, const IInputDeviceEvent *nextMessage);
-	//@}	
+	//@}
 };
 
 

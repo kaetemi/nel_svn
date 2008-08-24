@@ -205,7 +205,7 @@ public:
 	// An wedge value (vertex + all attribs).
 	struct	CWedge
 	{
-		CWedge();		
+		CWedge();
 		CMesh::CSkinWeight		VertexSkin;
 		// Number of matrix this wedge use.
 		uint		NSkinMatUsed;
@@ -273,7 +273,7 @@ public:
 	};
 
 public:
-	/** The wedges of the final mesh. Contains all Wedges for all lods, sorted from LOD0 to LODN, 
+	/** The wedges of the final mesh. Contains all Wedges for all lods, sorted from LOD0 to LODN,
 	 * with additional empty wedges, for geomorph.
 	 */
 	std::vector<CWedge>			Wedges;

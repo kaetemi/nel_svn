@@ -31,7 +31,7 @@
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -61,14 +61,14 @@ public:
 
 	/// return this bindable type
 	uint32						getType(void) const;
-	/// return priority	
+	/// return priority
 	virtual uint32				getPriority(void) const { return 500; }
 
 	/**
 	  * process one pass for the sound. This is usually done during the motion pass
 	  */
 	virtual void				step(TPSProcessPass pass);
-	
+
 	/// set the name of the sound
 	void						setSoundName(const NLMISC::TStringId &soundName)
 	{
@@ -91,7 +91,7 @@ public:
 	}
 
 	/** Set a gain scheme. It must have been allocated by new, and is then owned by this object
-	  */	  
+	  */
 	void						setGainScheme(CPSAttribMaker<float> *gain);
 
 	/// get the current gain scheme
@@ -116,7 +116,7 @@ public:
 	}
 
 	/** Set a pitch scheme. It must have been allocated by new, and is then owned by this object
-	  */	  
+	  */
 	void						setPitchScheme(CPSAttribMaker<float> *pitch);
 
 	/// get the current pitch scheme
@@ -150,7 +150,7 @@ public:
 	/// test wether mute has been activated
 	bool						getMute(void) const { return _Mute; }
 
-	
+
 	void						stopSound();
 
 	void						reactivateSound();
@@ -160,7 +160,7 @@ public:
 	  */
 	void						setUseOriginalPitchFlag(bool useOriginalPitch);
 	bool						getUseOriginalPitchFlag() const { return _UseOriginalPitch; }
-	
+
 protected:
 	virtual void			newElement(const CPSEmitterInfo &info);
 	virtual void			deleteElement(uint32 index);
@@ -172,7 +172,7 @@ protected:
 	float							_Gain;
 	CPSAttribMaker<float> *			_GainScheme;
 	float							_Pitch;
-	CPSAttribMaker<float> *			_PitchScheme;	
+	CPSAttribMaker<float> *			_PitchScheme;
 	float							_EmissionPercent;
 	bool							_SpawnSounds;
 	bool							_Mute;

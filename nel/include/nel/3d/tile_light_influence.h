@@ -28,7 +28,7 @@
 #include "nel/misc/stream.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

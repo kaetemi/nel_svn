@@ -31,22 +31,22 @@ namespace NL3D {
 
 using NLMISC::CRGBA ;
 
-CRGBA CPSColorGradient::_DefaultGradient[] = 
-{ 
+CRGBA CPSColorGradient::_DefaultGradient[] =
+{
 	CRGBA(0, 0, 0),
 	CRGBA(255, 255, 255)
 };
-	
+
 
 
 
 CPSColorGradient::CPSColorGradient()  : CPSAttribMakerRGBA<CPSValueGradientFuncRGBA>(1.f)
-{	
+{
 }
 
 
 ///======================================================================================
-CPSColorGradient::CPSColorGradient(const CRGBA *colorTab, uint32 nbValues, uint32 nbStages, float nbCycles) 
+CPSColorGradient::CPSColorGradient(const CRGBA *colorTab, uint32 nbValues, uint32 nbStages, float nbCycles)
 				: CPSAttribMakerRGBA<CPSValueGradientFuncRGBA>(nbCycles)
 {
 	_F.setValues(colorTab, nbValues, nbStages) ;
@@ -58,10 +58,10 @@ void CPSColorMemory::setColorType(CVertexBuffer::TVertexColorType colorType)
 	if (colorType != _ColorType)
 	{
 		if (_T.getSize())
-		{		
+		{
 			convertVBColor(&_T[0], _T.getSize(), CVertexBuffer::TBGRA);
 		}
-		_DefaultValue = convertVBColor(_DefaultValue, CVertexBuffer::TBGRA);		
+		_DefaultValue = convertVBColor(_DefaultValue, CVertexBuffer::TBGRA);
 		_ColorType = colorType;
 	}
 	if (_Scheme) _Scheme->setColorType(colorType);
@@ -90,7 +90,7 @@ void CPSColorMemory::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 void CPSColorBinOp::setColorType(CVertexBuffer::TVertexColorType colorType)
 {
 	if (_Arg[0]) _Arg[0]->setColorType(colorType);
-	if (_Arg[1]) _Arg[1]->setColorType(colorType);	
+	if (_Arg[1]) _Arg[1]->setColorType(colorType);
 }
 
 ///======================================================================================

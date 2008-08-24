@@ -1,12 +1,12 @@
 /** \file primitive_utils.cpp
  * Utility to work with primitives tree
  *
- *	Some of this utilities use the concept of 'predicate' applyed to 
+ *	Some of this utilities use the concept of 'predicate' applyed to
  *	primitive node.
  *	As defined in the stl, a predicate is some form of functor that
  *	receive a parameter, apply some test on it, then return the result
  *	of the test.
- *	In this case, predicate functor receive a IPrimitive pointer and 
+ *	In this case, predicate functor receive a IPrimitive pointer and
  *	return a boolean.
  *	The utilities come with 4 predefined predicate :
  *		- primitive class property test
@@ -19,7 +19,7 @@
  *	your class declare a method
  *		bool operator() (const IPrimitive *) const
  *
- *	You can also 'combine' the predefined predicate by using the 
+ *	You can also 'combine' the predefined predicate by using the
  *	class CPrimitiveSetFilter that refine a set of primitive
  *	by applying another predicate.
  *
@@ -116,16 +116,16 @@ void selectPrimByPath(IPrimitive *rootNode, const std::string &path, TPrimitiveS
 //
 //			bool test=false;
 //			for(uint k=0;k<name.size();k++)
-//			{				
+//			{
 //				if (name.at(k)==parts[i+k])
-//					test=true;	
+//					test=true;
 //				else
 //				{
 //					test=false;
 //					break;
 //				}
 //			}
-//			if (test) 
+//			if (test)
 //			{
 //				if (i == parts.size()-1)
 //				{
@@ -143,9 +143,9 @@ void selectPrimByPath(IPrimitive *rootNode, const std::string &path, TPrimitiveS
 //				i+=name.size()-1;
 //				break;
 //			}
-//			
+//
 //		}
-//		
+//
 //		candidats.swap(nextStep);
 //		nextStep.clear();
 //

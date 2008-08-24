@@ -91,7 +91,7 @@ class CStringMapper
 	std::set<std::string*,CCharComp>	_StringTable;
 	std::string*			_EmptyId;
 	CFastMutex				_Mutex;		// Must be thread-safe (Called by CPortal/CCluster, each of them called by CInstanceGroup)
-	
+
 	// The 'singleton' for static methods
 	static	CStringMapper	_GlobalMapper;
 
@@ -130,11 +130,11 @@ public:
 
 };
 
-// linear from 0 (0 is empty string) (The TSStringId returned by CStaticStringMapper 
+// linear from 0 (0 is empty string) (The TSStringId returned by CStaticStringMapper
 // is an index in the vector and begin at 0)
 typedef uint TSStringId;
 
-/** 
+/**
  * After endAdd you cannot add strings anymore or it will assert
  * \author Matthieu Besson
  * \author Nevrax France
@@ -189,7 +189,7 @@ public:
 
 	// helper serialize a string id vector
 	void				serial(NLMISC::IStream &f, std::vector<TSStringId> &strIdVect) throw(EStream);
-	
+
 };
 
 } //namespace NLMISC

@@ -101,7 +101,7 @@ public:
 	// @{
 	enum	TAnimValues
 	{
-		OwnerBit= CTransformShape::AnimValueLast, 
+		OwnerBit= CTransformShape::AnimValueLast,
 		SpawnScriptValue,
 		AnimValueLast,
 	};
@@ -175,7 +175,7 @@ public:
 
 	typedef enum {UsageNormal, UsageForced, UsageCLodForced} TBoneUsageType;
 
-	/** increment the refCount of the ith bone. 
+	/** increment the refCount of the ith bone.
 	 *	set boneUsageType to UsageNormal if enable Skeleton Bone degradation (skins)
 	 *	Forced usage are for Sticked objects
 	 */
@@ -199,7 +199,7 @@ public:
 	/// Tell if a bone has been computed in the last frame or not. false if boneId is invalid
 	bool		isBoneComputed(uint boneId) const;
 
-	/** Force to compute a bone right now (useful if the skeleton is not visible and the bone position is needed) 
+	/** Force to compute a bone right now (useful if the skeleton is not visible and the bone position is needed)
       * no-op is bone not present or already computed
 	  * \return true if good indes & bone recomputed
 	  */
@@ -222,10 +222,10 @@ public:
 	const NLMISC::CMatrix	&getActiveBoneSkinMatrix(uint boneId) const;
 
 
-	/** Tool function, especially for animation bake. It updates all bones (independent of bone usage, 
+	/** Tool function, especially for animation bake. It updates all bones (independent of bone usage,
 	 *	and lod interpolation), and take a user skeleton worldMatrix as input.
 	 *	NB: no detail animation is performed here, just the compute of bone hierarchy.
-	 *	NB: also, no special AnimCtrl (IK etc....) is performed here 
+	 *	NB: also, no special AnimCtrl (IK etc....) is performed here
 	 */
 	void		computeAllBones(const CMatrix &modelWorldMatrix);
 
@@ -242,7 +242,7 @@ public:
 	 *	NB: sticked objects don't influence the result
 	 */
 	bool		computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, bool computeInWorld= true);
-	
+
 	/** same as computeRenderedBBox() but force animation and compute of all bones => don't need render(), but slower.
 	 *	for all used bones, extend the bbox with their pos
 	 *	NB: AnimCtrl are not evaluated by this method (since computed with 0 pos).
@@ -337,7 +337,7 @@ public:
 	/// Set the emissive of the skeleton model, when it is rendered in CLod form. Default to Black
 	void			setLodEmit(NLMISC::CRGBA emit) {_LodEmit= emit;}
 	NLMISC::CRGBA	getLodEmit() const {return _LodEmit;}
-	
+
 	// @}
 
 	/// \name Load balancing methods
@@ -379,8 +379,8 @@ public:
 
 	/// \name AnimCtrl (IK...)
 	// @{
-	/** Set a special ctrl on a bone. see IAnimCtrl. NB: once an animCtrl is set to a bone in a skeleton, 
-	 *	his bones are always computed each frame. 
+	/** Set a special ctrl on a bone. see IAnimCtrl. NB: once an animCtrl is set to a bone in a skeleton,
+	 *	his bones are always computed each frame.
 	 *	set to NULL if you want to reset this bone AnimCtrl.
 	 */
 	void			setBoneAnimCtrl(uint boneId, IAnimCtrl *ctrl);
@@ -456,12 +456,12 @@ private:
 		uint16			Usage;
 		/// Same as Usage, but must be animated/computed, even if Skeleton Lods say not (stickedObjects).
 		uint16			ForcedUsage;
-		/** Same as ForcedUsage, but must be animated/computed, even if the skeleton is in CLod state 
-		 *	ie displayed with a CLodCharacterShape. This is important for skeletons which have skeletons 
+		/** Same as ForcedUsage, but must be animated/computed, even if the skeleton is in CLod state
+		 *	ie displayed with a CLodCharacterShape. This is important for skeletons which have skeletons
 		 *	sons sticked on them
 		 */
 		uint16			CLodForcedUsage;
-		/** The current state: which bones need to be computed. ie: 
+		/** The current state: which bones need to be computed. ie:
 		 *	(CLodForcedUsage) | ( ((Usage & currentLodUsage) | ForcedUsage) & skeleton not in CLod state )
 		 */
 		uint16			MustCompute;
@@ -538,7 +538,7 @@ private:
 
 
 	void				dirtLodVertexAlpha() {_CLodVertexAlphaDirty= true;}
-	
+
 	/// recompute _CLodVertexAlpha, ignoring _CLodVertexAlphaDirty
 	void				computeCLodVertexAlpha(CLodCharacterManager *mngr);
 
@@ -590,7 +590,7 @@ private:
 	CVector							_SSSWOPos;
 	CVector							_SSSWODir;
 	sint							_SpawnScriptChannelId;
-	
+
 	// Default track
 	static CTrackDefaultString		_DefaultSpawnScript;		// ""
 	// @}
@@ -615,7 +615,7 @@ inline void	computeBoneMatrixes3x4(TMatrixArray &boneMat3x4, const std::vector<u
 		// Get Matrix info.
 		uint	matId= matInfs[i];
 		const CMatrix		&boneMat= skeleton->getActiveBoneSkinMatrix(matId);
-		
+
 		// compute "fast" matrix 3x4.
 		// resize Matrix3x4.
 		if(matId>=boneMat3x4.size())
@@ -639,7 +639,7 @@ inline void	computeBoneMatrixes3x4PreMul(TMatrixArray &boneMat3x4, const CMatrix
 		const CMatrix		&boneMat= skeleton->getActiveBoneSkinMatrix(matId);
 		CMatrix		boneMatMul;
 		boneMatMul.setMulMatrixNoProj(preMulMat, boneMat);
-		
+
 		// compute "fast" matrix 3x4.
 		// resize Matrix3x4.
 		if(matId>=boneMat3x4.size())

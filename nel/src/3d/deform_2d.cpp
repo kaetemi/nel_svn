@@ -80,14 +80,14 @@ static inline void computePerturbation(const float x, const float y, float &dx, 
 
 void CDeform2d::doDeform(const TPoint2DVect &surf, IDriver *drv, IPerturbUV *uvp)
 {
-	
+
 	nlassert(uvp);
-	
+
 	typedef CQuadEffect::TPoint2DVect TPoint2DVect;
 	TPoint2DVect dest;
 
 	CQuadEffect::processPoly(surf, (float) _XGranularity, (float) _YGranularity, dest);
-	
+
 	uint realWidth = NLMISC::raiseToNextPowerOf2(_Width);
 	uint realHeight= NLMISC::raiseToNextPowerOf2(_Height);
 
@@ -99,20 +99,20 @@ void CDeform2d::doDeform(const TPoint2DVect &surf, IDriver *drv, IPerturbUV *uvp
 	}*/
 
 
-	
-	
+
+
 	static CMaterial mat;
 	mat.setDoubleSided(true);
 	mat.setLighting(false);
 	mat.setZFunc(CMaterial::always);
 /*	mat.setColor(CRGBA::Red);
 	mat.texEnvOpRGB(0, CMaterial::Add); */
-	
+
 	static CVertexBuffer  vb;
 	vb.setName("CDeform2d");
 	vb.setVertexFormat(CVertexBuffer::PositionFlag | CVertexBuffer::TexCoord0Flag);
-	
-	
+
+
 
 	drv->setFrustum(0, (float) _Width, 0, (float) _Height, -1, 1, false);
 	drv->setupViewMatrix(CMatrix::Identity);
@@ -127,14 +127,14 @@ void CDeform2d::doDeform(const TPoint2DVect &surf, IDriver *drv, IPerturbUV *uvp
 
 	float u, u2, v;
 	float du, dv;
-	
+
 	TPoint2DVect::const_iterator it;
 
 	// get back datas from frame buffer
 	for (it = dest.begin(); it != dest.end(); ++it)
 	{
 		// todo hulud use the new render to texture interface
-		// drv->copyFrameBufferToTexture(_Tex, 0, (uint32) it->x,(uint32) it->y, (uint32) it->x, (uint32) it->y, _XGranularity, _YGranularity);		
+		// drv->copyFrameBufferToTexture(_Tex, 0, (uint32) it->x,(uint32) it->y, (uint32) it->x, (uint32) it->y, _XGranularity, _YGranularity);
 	}
 
 
@@ -164,18 +164,18 @@ void CDeform2d::doDeform(const TPoint2DVect &surf, IDriver *drv, IPerturbUV *uvp
 			u =  it->x * iDu;
 			v = it->y * iDv;
 			uvp->perturbUV(u, v, du, dv);
-			vba.setTexCoord(k, 0, (u + du) * widthRatio, (v + dv) * heightRatio );	
+			vba.setTexCoord(k, 0, (u + du) * widthRatio, (v + dv) * heightRatio );
 
 			u2 =  (it->x + _XGranularity) * iDu;
 			uvp->perturbUV(u2, v, du, dv);
-			vba.setTexCoord(k + 1, 0, (u2 + du) * widthRatio, (v + dv) * heightRatio );	
+			vba.setTexCoord(k + 1, 0, (u2 + du) * widthRatio, (v + dv) * heightRatio );
 
 			v =  (it->y + _YGranularity) * iDv;
 			uvp->perturbUV(u2, v, du, dv);
-			vba.setTexCoord(k + 2, 0, (u2 + du) * widthRatio, (v + dv) * heightRatio );	
+			vba.setTexCoord(k + 2, 0, (u2 + du) * widthRatio, (v + dv) * heightRatio );
 
 			uvp->perturbUV(u, v, du, dv);
-			vba.setTexCoord(k + 3, 0, (u + du) * widthRatio, (v + dv) * heightRatio );	
+			vba.setTexCoord(k + 3, 0, (u + du) * widthRatio, (v + dv) * heightRatio );
 		}
 	}
 

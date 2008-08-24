@@ -43,7 +43,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -54,7 +54,7 @@ namespace NL3D
 
 // ***************************************************************************
 CVegetableManager::CVegetableManager(uint maxVertexVbHardUnlit, uint maxVertexVbHardLighted,
-	uint nbBlendLayers, float blendLayerDistMax) : 
+	uint nbBlendLayers, float blendLayerDistMax) :
 	_ClipBlockMemory(NL3D_VEGETABLE_CLIP_BLOCK_BLOCKSIZE),
 	_SortBlockMemory(NL3D_VEGETABLE_SORT_BLOCK_BLOCKSIZE),
 	_InstanceGroupMemory(NL3D_VEGETABLE_INSTANCE_GROUP_BLOCKSIZE),
@@ -240,7 +240,7 @@ CVegetableVBAllocator	&CVegetableManager::getVBAllocatorForRdrPassAndVBHardMode(
 	v[2]  == Normal (present if lighted only)
 	v[3]  == Color (if unlit) or DiffuseColor (if lighted)
 	v[4]  == SecondaryColor (==ambient if Lighted, and use only Alpha part for DLM if Unlit)
-	v[8]  == Tex0 (xy) 
+	v[8]  == Tex0 (xy)
 	v[9]  == BendInfo (xyz) = {BendWeight/2, BendPhase, BendFrequencyFactor}
 		NB: /2 because compute a quaternion
 
@@ -287,22 +287,22 @@ CVegetableVBAllocator	&CVegetableManager::getVBAllocatorForRdrPassAndVBHardMode(
 	Speed Note:
 	-----------
 	Max program length (lighted/2Sided) is:
-		29 (bend-quaternion) + 
-		16 (rotNormal + bend + lit 2Sided) + 
+		29 (bend-quaternion) +
+		16 (rotNormal + bend + lit 2Sided) +
 		5  (proj + tex)
 		2  (Dynamic lightmap copy)
 		51
 
 	Normal program length (unlit/2Sided/No Alpha Blend) is:
-		12 (bend-delta) + 
-		1  (unlit) + 
+		12 (bend-delta) +
+		1  (unlit) +
 		5  (proj + tex)
 		2  (Dynamic lightmap copy)
 		20
 
 	AlphaBlend program length (unlit/2Sided/Alpha Blend) is:
-		12 (bend-delta) + 
-		1  (unlit) + 
+		12 (bend-delta) +
+		1  (unlit) +
 		5  (Alpha Blend)
 		5  (proj + tex)
 		2  (Dynamic lightmap copy)
@@ -314,7 +314,7 @@ CVegetableVBAllocator	&CVegetableManager::getVBAllocatorForRdrPassAndVBHardMode(
 // ***********************
 /*
 	Fast (but less accurate) Bend program:
-		Result: bend pos into R5, 
+		Result: bend pos into R5,
 */
 // ***********************
 const char* NL3D_FastBendProgram=
@@ -507,7 +507,7 @@ const char* NL3D_LightedStartVegetableProgram=
 
 
 // Unlit no alpha blend.
-const char* NL3D_UnlitVegetableProgram= 
+const char* NL3D_UnlitVegetableProgram=
 "	MOV o[COL0].xyz, v[3];			# col.RGBA= vertex color							\n\
 																						\n\
 	MOV o[COL0].w, c[8].y;																\n\
@@ -553,7 +553,7 @@ const char* NL3D_VegetableProgramFog =
 
 
 // ***********************
-/* 
+/*
 	Speed test VP, No bend,no lighting.
 */
 // ***********************
@@ -585,16 +585,16 @@ void					CVegetableManager::initVertexProgram(uint vpType, bool fogEnabled)
 	switch(vpType)
 	{
 	case NL3D_VEGETABLE_RDRPASS_LIGHTED:
-	case NL3D_VEGETABLE_RDRPASS_LIGHTED_2SIDED:		
+	case NL3D_VEGETABLE_RDRPASS_LIGHTED_2SIDED:
 		vpgram+= string(NL3D_LightedStartVegetableProgram);
 		break;
-	case NL3D_VEGETABLE_RDRPASS_UNLIT:		
-	case NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED:		
+	case NL3D_VEGETABLE_RDRPASS_UNLIT:
+	case NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED:
 		vpgram+= string(NL3D_UnlitVegetableProgram);
 		break;
-	case NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT:		
+	case NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT:
 		vpgram+= string(NL3D_UnlitAlphaBlendVegetableProgram);
-		break;	
+		break;
 	}
 
 	// common end of VP
@@ -690,7 +690,7 @@ CVegetableInstanceGroup		*CVegetableManager::createIg(CVegetableSortBlock *sortB
 {
 	nlassert(sortBlock);
 	CVegetableClipBlock		*clipBlock= sortBlock->_Owner;
-	
+
 
 	// create an IG
 	CVegetableInstanceGroup	*ret;
@@ -815,10 +815,10 @@ CVegetableShape				*CVegetableManager::getVegetableShape(const std::string &shap
 			{
 				// Warning
 				nlwarning ("CVegetableManager::getVegetableShape could not load shape file '%s'", shape.c_str ());
-				
+
 				// Remove from map
 				_ShapeMap.erase (shape);
-				
+
 				// Return NULL
 				ret = NULL;
 			}
@@ -890,7 +890,7 @@ void			CVegetableManager::reserveIgAddInstances(CVegetableInstanceGroupReserve &
 
 	// get correct rdrPass / info
 	uint	rdrPass;
-	rdrPass= getRdrPassInfoForShape(shape, vegetWaterState, instanceLighted, instanceDoubleSided, 
+	rdrPass= getRdrPassInfoForShape(shape, vegetWaterState, instanceLighted, instanceDoubleSided,
 		instanceZSort, destLighted, precomputeLighting);
 
 	// veget rdrPass
@@ -936,7 +936,7 @@ void			CVegetableManager::reserveIgCompile(CVegetableInstanceGroup *ig, const CV
 		uint	numVertices= vegetIgReserve._RdrPass[rdrPass].NVertices;
 		uint	numTris= vegetIgReserve._RdrPass[rdrPass].NTriangles;
 		uint	numLightedInstances= vegetIgReserve._RdrPass[rdrPass].NLightedInstances;
-		// reserve triangles indices and vertices for this rdrPass.		
+		// reserve triangles indices and vertices for this rdrPass.
 		vegetRdrPass.TriangleIndices.setFormat(vegetRdrPass.HardMode ? CIndexBuffer::Indices16 : CIndexBuffer::Indices32);
 		vegetRdrPass.TriangleIndices.setNumIndexes(numTris*3);
 		vegetRdrPass.TriangleLocalIndices.resize(numTris*3);
@@ -964,7 +964,7 @@ void			CVegetableManager::reserveIgCompile(CVegetableInstanceGroup *ig, const CV
 
 
 // ***************************************************************************
-inline void		computeVegetVertexLighting(const CVector &rotNormal, 
+inline void		computeVegetVertexLighting(const CVector &rotNormal,
 	const CVector &sunDir, CRGBA primaryRGBA, CRGBA secondaryRGBA,
 	CVegetableLightEx &vegetLex, CRGBA diffusePL[2], CRGBA *dst)
 {
@@ -1011,7 +1011,7 @@ inline void		computeVegetVertexLighting(const CVector &rotNormal,
 
 
 // ***************************************************************************
-inline void		computeVegetVertexLightingForceBestSided(const CVector &rotNormal, 
+inline void		computeVegetVertexLightingForceBestSided(const CVector &rotNormal,
 	const CVector &sunDir, CRGBA primaryRGBA, CRGBA secondaryRGBA,
 	CVegetableLightEx &vegetLex, CRGBA diffusePL[2], CRGBA *dst)
 {
@@ -1061,9 +1061,9 @@ inline void		computeVegetVertexLightingForceBestSided(const CVector &rotNormal,
 
 
 // ***************************************************************************
-void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig, 
-		CVegetableShape	*shape, const NLMISC::CMatrix &mat, 
-		const NLMISC::CRGBAF &ambientColor, const NLMISC::CRGBAF &diffuseColor, 
+void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
+		CVegetableShape	*shape, const NLMISC::CMatrix &mat,
+		const NLMISC::CRGBAF &ambientColor, const NLMISC::CRGBAF &diffuseColor,
 		float	bendFactor, float bendPhase, float bendFreqFactor, float blendDistMax,
 		TVegetableWater vegetWaterState, CVegetableUV8 dlmUV)
 {
@@ -1080,7 +1080,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 
 	// get correct rdrPass / info
 	uint	rdrPass;
-	rdrPass= getRdrPassInfoForShape(shape, vegetWaterState, instanceLighted, instanceDoubleSided, 
+	rdrPass= getRdrPassInfoForShape(shape, vegetWaterState, instanceLighted, instanceDoubleSided,
 		instanceZSort, destLighted, precomputeLighting);
 	// bestSided Precompute lighting or not??
 	bool	bestSidedPrecomputeLighting= precomputeLighting && shape->BestSidedPreComputeLighting;
@@ -1160,7 +1160,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 		if(allocator->exceedMaxVertexInBufferHard(shape->VB.getNumVertices()))
 		{
 			// if exceed, then must pass ALL the IG in software mode. vertices/faces are correclty updated.
-			// special: if rdrPass is the ZSort one, 
+			// special: if rdrPass is the ZSort one,
 			if(rdrPass == NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT)
 			{
 				nlassert(ig->_SortOwner->ZSortHardMode);
@@ -1259,7 +1259,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 	{
 		// allocate a Vertex
 		uint	vid= allocator->allocateVertex();
-		
+
 		CVertexBufferReadWrite vbaOut;
 		allocator->getSoftwareVertexBuffer ().lock(vbaOut);
 
@@ -1341,14 +1341,14 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 			// Do the compute.
 			if(!bestSidedPrecomputeLighting)
 			{
-				computeVegetVertexLighting(rotNormal, 
-					_DirectionalLight, primaryRGBA, secondaryRGBA, 
+				computeVegetVertexLighting(rotNormal,
+					_DirectionalLight, primaryRGBA, secondaryRGBA,
 					vegetLex, diffusePL, (CRGBA*)(dstPtr + dstColor0Off) );
 			}
 			else
 			{
-				computeVegetVertexLightingForceBestSided(rotNormal, 
-					_DirectionalLight, primaryRGBA, secondaryRGBA, 
+				computeVegetVertexLightingForceBestSided(rotNormal,
+					_DirectionalLight, primaryRGBA, secondaryRGBA,
 					vegetLex, diffusePL, (CRGBA*)(dstPtr + dstColor0Off) );
 			}
 
@@ -1454,7 +1454,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 			{
 				// compute the distance with orientation of the quadrant. (DotProduct)
 				float	dist= triangleCenters[i] * quadDir;
-				// compress to sint16. 
+				// compress to sint16.
 				ig->_TriangleQuadrantOrders[quadId][offTri + i]= (sint16)NLMISC::OptFastFloor(dist*distFactor);
 			}
 		}
@@ -1538,7 +1538,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 		nlassert(vegetRdrPass.NLightedInstances < vegetRdrPass.LightedInstances.size());
 
 		// Fill instance info
-		CVegetableInstanceGroup::CVegetableLightedInstance	&vli= 
+		CVegetableInstanceGroup::CVegetableLightedInstance	&vli=
 			vegetRdrPass.LightedInstances[vegetRdrPass.NLightedInstances];
 		vli.Shape= shape;
 		vli.NormalMat= normalMat;
@@ -1576,7 +1576,7 @@ void			CVegetableManager::swapIgRdrPassHardMode(CVegetableInstanceGroup *ig, uin
 
 	// for all vertices of the IG, change of VBAllocator
 	uint i;
-	// Do it only for current Vertices setuped!!! because a swapIgRdrPassHardMode awlays arise when the ig is 
+	// Do it only for current Vertices setuped!!! because a swapIgRdrPassHardMode awlays arise when the ig is
 	// in construcion.
 	// Hence here, we may have vegetRdrPass.NVertices < vegetRdrPass.Vertices.size() !!!
 	for(i=0;i<vegetRdrPass.NVertices;i++)
@@ -1610,7 +1610,7 @@ void			CVegetableManager::swapIgRdrPassHardMode(CVegetableInstanceGroup *ig, uin
 	CIndexBufferReadWrite ibaWrite;
 	// For hard mode, uses faster 16 bit indices because the VB is not bigger than 65K
 	vegetRdrPass.TriangleIndices.setFormat(vegetRdrPass.HardMode ? CIndexBuffer::Indices32 : CIndexBuffer::Indices16); // NB : this is not an error here : vegetRdrPass.HardMode has not been inverted yet
-	vegetRdrPass.TriangleIndices.lock (ibaWrite);	
+	vegetRdrPass.TriangleIndices.lock (ibaWrite);
 	if (ibaWrite.getFormat() == CIndexBuffer::Indices16)
 	{
 		uint16 *ptr = (uint16 *) ibaWrite.getPtr();
@@ -1623,14 +1623,14 @@ void			CVegetableManager::swapIgRdrPassHardMode(CVegetableInstanceGroup *ig, uin
 		}
 	}
 	else
-	{		
+	{
 		uint32 *ptr = (uint32 *) ibaWrite.getPtr();
 		for(i=0;i<vegetRdrPass.NTriangles*3;i++)
 		{
 			// get the index in Vertices.
 			uint	localVid= vegetRdrPass.TriangleLocalIndices[i];
-			// get the index in new VBufffer (dstAllocator), and copy to TriangleIndices			
-			ptr[i]= (uint32) vegetRdrPass.Vertices[localVid];			
+			// get the index in new VBufffer (dstAllocator), and copy to TriangleIndices
+			ptr[i]= (uint32) vegetRdrPass.Vertices[localVid];
 		}
 	}
 
@@ -1658,7 +1658,7 @@ void		CVegetableManager::setGlobalDensity(float density)
 bool			CVegetableManager::doubleSidedRdrPass(uint rdrPass)
 {
 	nlassert(rdrPass<NL3D_VEGETABLE_NRDRPASS);
-	return (rdrPass == NL3D_VEGETABLE_RDRPASS_LIGHTED_2SIDED) || 
+	return (rdrPass == NL3D_VEGETABLE_RDRPASS_LIGHTED_2SIDED) ||
 		(rdrPass == NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED) ||
 		(rdrPass == NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT);
 }
@@ -1673,7 +1673,7 @@ void			CVegetableManager::updateDriver(IDriver *driver)
 		_VBHardAllocator[i].updateDriver(driver);
 		_VBSoftAllocator[i].updateDriver(driver);
 	}
-	
+
 	// if driver changed, recreate vertex programs
 	if (driver != _LastDriver)
 	{
@@ -1683,8 +1683,8 @@ void			CVegetableManager::updateDriver(IDriver *driver)
 			// both fog & no fog
 			initVertexProgram(i, true);
 			initVertexProgram(i, false);
-		}		
-	}	
+		}
+	}
 }
 
 
@@ -1810,7 +1810,7 @@ void			CVegetableManager::setupVertexProgramConstants(IDriver *driver)
 
 
 // ***************************************************************************
-void			CVegetableManager::render(const CVector &viewCenter, const CVector &frontVector, const std::vector<CPlane> &pyramid, 
+void			CVegetableManager::render(const CVector &viewCenter, const CVector &frontVector, const std::vector<CPlane> &pyramid,
 	ITexture *textureDLM, IDriver *driver)
 {
 	H_AUTO( NL3D_Vegetable_Render );
@@ -1990,11 +1990,11 @@ void			CVegetableManager::render(const CVector &viewCenter, const CVector &front
 
 			// which allocator?
 			CVegetableVBAllocator	&vbAllocator= getVBAllocatorForRdrPassAndVBHardMode(rdrPass, vbHardMode);
-			
+
 
 			// Do the pass only if there is some vertices to draw.
 			if(vbAllocator.getNumUserVerticesAllocated()>0)
-			{				
+			{
 				// additional setup to the material
 				bool	doubleSided= doubleSidedRdrPass(rdrPass);
 				// set the 2Sided flag in the material
@@ -2057,7 +2057,7 @@ void			CVegetableManager::render(const CVector &viewCenter, const CVector &front
 						ptrSortBlock= (CVegetableSortBlock	*)(ptrSortBlock->Next);
 					}
 
-					// next clipBlock to render 
+					// next clipBlock to render
 					ptrClipBlock= ptrClipBlock->_RenderNext;
 				}
 			}
@@ -2120,7 +2120,7 @@ void			CVegetableManager::render(const CVector &viewCenter, const CVector &front
 				if(ptrSortBlock->_NTriangles != 0)
 				{
 					// Compute Distance to Viewer.
-					/* NB: compute radial distance (with norm()) instead of linear distance 
+					/* NB: compute radial distance (with norm()) instead of linear distance
 						(DotProduct with front vector) get less "ZSort poping".
 					*/
 					CVector		dirToSb= ptrSortBlock->_Center - viewCenter;
@@ -2172,7 +2172,7 @@ void			CVegetableManager::render(const CVector &viewCenter, const CVector &front
 				ptrSortBlock= (CVegetableSortBlock	*)(ptrSortBlock->Next);
 			}
 
-			// next clipBlock to render 
+			// next clipBlock to render
 			ptrClipBlock= ptrClipBlock->_RenderNext;
 		}
 
@@ -2218,7 +2218,7 @@ void			CVegetableManager::render(const CVector &viewCenter, const CVector &front
 			else
 				_ZSortModelLayers[layer]->SortBlocks.push_back(ptrSortBlock);
 		}
-		
+
 	}
 
 
@@ -2256,11 +2256,11 @@ void		CVegetableManager::setupRenderStateForBlendLayerModel(IDriver *driver)
 {
 	// Setup Global.
 	//=============
-	
+
 	// disable fog, for faster VP.
 	_BkupFog= driver->fogEnabled();
 	static volatile bool testDist = true;
-	bool fogged = _BkupFog && driver->getFogStart() < _ZSortLayerDistMax;	
+	bool fogged = _BkupFog && driver->getFogStart() < _ZSortLayerDistMax;
 	driver->enableFog(fogged);
 
 	// set model matrix to the manager matrix.
@@ -2304,14 +2304,14 @@ uint		CVegetableManager::getNumVegetableFaceRendered() const
 	return _NumVegetableFaceRendered;
 }
 
-	
+
 // ***************************************************************************
 void		CVegetableManager::exitRenderStateForBlendLayerModel(IDriver *driver)
 {
 	// disable VertexProgram.
 	driver->activeVertexProgram(NULL);
 
-	// restore Fog.	
+	// restore Fog.
 	driver->enableFog(_BkupFog);
 }
 
@@ -2419,7 +2419,7 @@ bool		CVegetableManager::updateLightingIGPart()
 	nlassert(_ULRootIg);
 
 
-	// First, update lighting info global to the ig, ie update current 
+	// First, update lighting info global to the ig, ie update current
 	// colros of the PointLights which influence the ig.
 	_ULRootIg->VegetableLightEx.computeCurrentColors();
 
@@ -2512,7 +2512,7 @@ uint		CVegetableManager::updateInstanceLighting(CVegetableInstanceGroup *ig, uin
 
 	// Recompute lighting
 	//===========
-	
+
 	// setup for this instance.
 	//---------
 	// 2Sided
@@ -2546,7 +2546,7 @@ uint		CVegetableManager::updateInstanceLighting(CVegetableInstanceGroup *ig, uin
 	uint	srcNormalOff= (instanceLighted? shape->VB.getNormalOff() : 0);
 	uint	dstColor0Off= dstVBInfo.getValueOffEx(NL3D_VEGETABLE_VPPOS_COLOR0);
 	uint	dstColor1Off= dstVBInfo.getValueOffEx(NL3D_VEGETABLE_VPPOS_COLOR1);
-	
+
 	// For D3D, If the VertexBuffer is in BGRA mode
 	if(allocator->isBGRA())
 	{
@@ -2556,7 +2556,7 @@ uint		CVegetableManager::updateInstanceLighting(CVegetableInstanceGroup *ig, uin
 		diffusePL[0].swapBR();
 		diffusePL[1].swapBR();
 	}
-	
+
 	CVertexBufferRead vba;
 	shape->VB.lock (vba);
 	CVertexBufferReadWrite vbaOut;
@@ -2595,14 +2595,14 @@ uint		CVegetableManager::updateInstanceLighting(CVegetableInstanceGroup *ig, uin
 			// Do the compute.
 			if(!bestSidedPrecomputeLighting)
 			{
-				computeVegetVertexLighting(rotNormal, 
-					_DirectionalLight, primaryRGBA, secondaryRGBA, 
+				computeVegetVertexLighting(rotNormal,
+					_DirectionalLight, primaryRGBA, secondaryRGBA,
 					vegetLex, diffusePL, (CRGBA*)(dstPtr + dstColor0Off) );
 			}
 			else
 			{
-				computeVegetVertexLightingForceBestSided(rotNormal, 
-					_DirectionalLight, primaryRGBA, secondaryRGBA, 
+				computeVegetVertexLightingForceBestSided(rotNormal,
+					_DirectionalLight, primaryRGBA, secondaryRGBA,
 					vegetLex, diffusePL, (CRGBA*)(dstPtr + dstColor0Off) );
 			}
 

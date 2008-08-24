@@ -26,7 +26,7 @@
 #include "nel/3d/lod_character_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

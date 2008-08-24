@@ -29,7 +29,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 CComplexSource::CComplexSource	(CComplexSound *soundPattern, bool spawn, TSpawnEndCallback cb, void *cbUserParam, NL3D::CCluster *cluster)
@@ -118,7 +118,7 @@ void CComplexSource::playStuf()
 
 				if (sound == 0)
 					return;
-				
+
 				if (_PatternSound->doFadeIn())
 					_FadeLength = min(uint32(_PatternSound->getFadeLenght()/_TickPerSecond), sound->getDuration() /2);
 				else
@@ -217,7 +217,7 @@ void CComplexSource::playStuf()
 							source->setPos(_Position);
 							source->setPitch(source->getSound()->getPitch() * _Pitch);
 							source->play();
-							
+
 							_AllSources.push_back(source);
 						}
 					}
@@ -304,7 +304,7 @@ void CComplexSource::stop()
 void CComplexSource::setPos( const NLMISC::CVector& pos )
 {
 	CSourceCommon::setPos(pos);
-	
+
 	if (_Source1 != NULL)
 		_Source1->setPos(pos);
 	if (_Source2 != NULL)
@@ -320,7 +320,7 @@ void CComplexSource::setPos( const NLMISC::CVector& pos )
 void CComplexSource::setVelocity( const NLMISC::CVector& vel )
 {
 	CSourceCommon::setVelocity(vel);
-	
+
 	if (_Source1 != NULL)
 		_Source1->setVelocity(vel);
 	if (_Source2 != NULL)
@@ -339,7 +339,7 @@ void CComplexSource::setVelocity( const NLMISC::CVector& vel )
 void CComplexSource::setDirection( const NLMISC::CVector& dir )
 {
 	CSourceCommon::setDirection(dir);
-	
+
 	if (_Source1 != NULL)
 		_Source1->setDirection(dir);
 	if (_Source2 != NULL)
@@ -456,15 +456,15 @@ uint32 CComplexSource::getTime()
 /// Mixer update implementation.
 void CComplexSource::onUpdate()
 {
-	// do the cross fade : 
-	//	- lower sound1, louder sound2, 
+	// do the cross fade :
+	//	- lower sound1, louder sound2,
 	//	- when max reach, stop the update, swap the sound, delete sound1 and set event for next fade.
 
 	// can only occur for chained mode.
 	nlassert(_PatternSound->getPatternMode() == CComplexSound::MODE_CHAINED);
 
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
-	
+
 	// compute xfade factor.
 	TTime now = NLMISC::CTime::getLocalTime();
 	if (_FadeLength > 0)
@@ -510,7 +510,7 @@ void CComplexSource::onUpdate()
 				_SoundSeqIndex = 0;
 				sound2 = mixer->getSoundId(_PatternSound->getSound(soundSeq[_SoundSeqIndex++]));
 			}
-				
+
 
 			if (sound2 != NULL)
 			{

@@ -92,6 +92,6 @@ technique two_stages_2
 		DestBlend = one;
 		Texture[0] = <texture2>;
 		TextureFactor = <color2>;
-		ColorOp[0] = MODULATE;		
+		ColorOp[0] = MODULATE;
 	}
 }

@@ -47,7 +47,7 @@ namespace NLSOUND {
  */
 class CListenerFMod : public IListener
 {
-friend class CSoundDriverFMod;  
+friend class CSoundDriverFMod;
 
 public:
 
@@ -102,7 +102,7 @@ public:
     /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 	virtual void			setRolloffFactor( float f );
 
-    /// Return the rolloff factor 
+    /// Return the rolloff factor
 	virtual float			getRolloffFactor();
 
     /// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
@@ -116,7 +116,7 @@ public:
 	/// Get Matrix for RelativeToAbsolute compute in Sources
 	const NLMISC::CMatrix	&getPosMatrix() const {return _PosMatrix;}
 	const NLMISC::CMatrix	&getVelMatrix() const {return _VelMatrix;}
-	
+
 private:
 
 	/// Release all DirectSound resources
@@ -132,7 +132,7 @@ private:
 	NLMISC::CVector			_Up;
 	NLMISC::CMatrix			_PosMatrix;
 	NLMISC::CMatrix			_VelMatrix;
-	
+
 	// Some props
 	float					_RolloffFactor;
 

@@ -61,7 +61,7 @@ static TCallbackItem FESCallbackArray[] =
 string CLoginClient::connectToShard (CLoginCookie &lc, const std::string &addr, CCallbackClient &cnx)
 {
 	nlassert (!cnx.connected());
-	
+
 	try
 	{
 		//
@@ -82,7 +82,7 @@ string CLoginClient::connectToShard (CLoginCookie &lc, const std::string &addr, 
 			cnx.update ();
 			nlSleep(10);
 		}
-		
+
 		// have we received the answer?
 		if (!ShardValidate) return "FES disconnect me";
 	}
@@ -97,7 +97,7 @@ string CLoginClient::connectToShard (CLoginCookie &lc, const std::string &addr, 
 string CLoginClient::connectToShard (const std::string &addr, CUdpSock &cnx)
 {
 	nlassert (!cnx.connected());
-	
+
 	try
 	{
 		//
@@ -121,7 +121,7 @@ string CLoginClient::connectToShard (const std::string &addr, CUdpSock &cnx)
 string CLoginClient::connectToShard (const std::string &addr, CUdpSimSock &cnx)
 {
 	nlassert (!cnx.connected());
-	
+
 	try
 	{
 		//

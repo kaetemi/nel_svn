@@ -45,7 +45,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -147,7 +147,7 @@ public:
 
 	/** Load next lod of a stream. use getNbLodLoaded() to know what Lod will be loaded.
 	 * NB: if getNbLodLoaded() == getNbLod(), no op.
-	 *	\param f the same input stream passed to loadFirstLod(). NB: after load, f.getPos() is "unedfined" 
+	 *	\param f the same input stream passed to loadFirstLod(). NB: after load, f.getPos() is "unedfined"
 	 *	(actually return the position of the next lod in the stream).
 	 */
 	void			loadNextLod(NLMISC::IStream &f);
@@ -219,7 +219,7 @@ public:
 
 	/// get the number of BlendShapes
 	uint getNbBlendShapes() const { return _MeshMorpher.BlendShapes.size(); }
-	
+
 	/** Build a geometry copy for the given Lod. The VBuffer/IndexBuffer must not be resident. false if bad lodId
 	 *	The process ensure there is no hole in the resulting vertices array. Hence VB num Verts != vertices.size().
 	 */
@@ -251,7 +251,7 @@ public:
 
 	/// Called for edition purpose (slow  O(NVertex) ). computeBonesId must has been called before.
 	bool			getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAABBox &bbox, uint boneId) const;
-	
+
 	// @}
 
 
@@ -295,7 +295,7 @@ public:
 
 	/// \name ShadowMap Skin rendering
 	// @{
-	/// Setup the ShadowMesh 
+	/// Setup the ShadowMesh
 	void			setShadowMesh(const std::vector<CShadowVertex> &shadowVertices, const std::vector<uint32> &triangles);
 
 	/// Get the num of shadow skin vertices
@@ -306,12 +306,12 @@ public:
 	sint			renderShadowSkinGeom(CMeshMRMInstance	*mi, uint remainingVertices, uint8 *vbDest);
 	void			renderShadowSkinPrimitives(CMeshMRMInstance	*mi, CMaterial &castMat, IDriver *drv, uint baseVertex);
 
-	/** Special use of skinning to compute intersection of a ray with it. 
+	/** Special use of skinning to compute intersection of a ray with it.
 	 *	Internaly Use same system than ShadowSkinning, see CShadowSkin::getRayIntersection()
 	 */
 	bool			supportIntersectSkin() const {return supportShadowSkinGrouping();}
 	bool			intersectSkin(CMeshMRMInstance	*mi, const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	// @}
 
 // ************************
@@ -376,7 +376,7 @@ private:
 		/// List of rdr pass, for this LOD.
 		std::vector<CRdrPass>		RdrPass;
 
-		/** Skinning: list of influenced vertices to compute, for this lod only. There is 4 array, 0th 
+		/** Skinning: list of influenced vertices to compute, for this lod only. There is 4 array, 0th
 		 *	is for vertices which have only one matrix. 1st if for vertices which have only 2 matrix ....
 		 */
 		std::vector<uint32>				InfluencedVertices[NL3D_MESH_SKINNING_MAX_MATRIX];
@@ -416,7 +416,7 @@ private:
 		bool								Skinned;
 
 		// This is the array of SkinWeights, same size as the VB.
-		std::vector<CMesh::CSkinWeight>		SkinWeights;		
+		std::vector<CMesh::CSkinWeight>		SkinWeights;
 
 		// This VB is computed with CMRMBuilder and is ready to used
 		CVertexBuffer			VBuffer;
@@ -477,7 +477,7 @@ private:
 	CVertexBuffer				_VBufferOriginal;
 	/// The Final VBuffer
 	CVertexBuffer				_VBufferFinal;
-	
+
 	/// This is the array of SkinWeights, same size as the VB.
 	std::vector<CMesh::CSkinWeight>		_SkinWeights;
 
@@ -522,7 +522,7 @@ private:
 	bool						_PreciseClipping;
 
 	// The Mesh Morpher
-	CMeshMorpher				_MeshMorpher; 
+	CMeshMorpher				_MeshMorpher;
 
 	// Possible MeshVertexProgram to apply at render()
 	NLMISC::CSmartPtr<IMeshVertexProgram>	_MeshVertexProgram;
@@ -537,7 +537,7 @@ private:
 	sint							_MBRCurrentLodId;
 	// @}
 
-	
+
 	/// \name ShadowMap Skin rendering
 	// @{
 	CShadowSkin						_ShadowSkin;
@@ -566,7 +566,7 @@ private:
 	/// Skinning: restore Vertex/Normal from _OriginalSkin* to VBuffer.
 	void	restoreOriginalSkinVertices();
 
-	/// Skinning: Apply skinning to the _VBuffer (before geomorph).	  	  
+	/// Skinning: Apply skinning to the _VBuffer (before geomorph).
 	void	applySkin(CLod &lod, const CSkeletonModel *skeleton);
 
 	/** The same as apply skin, but with normal modified. Normal is not normalized.
@@ -613,15 +613,15 @@ private:
 	void		updateRawSkinNormal(bool enabled, CMeshMRMInstance *mi, sint curLodId);
 	/// Increment the refCount, so instances RawSkins are no longer valid
 	void		dirtMeshDataId();
-	
+
 	// ApplySkin method
-	void		applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal4(CRawVertexNormalSkin4 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal4(CRawVertexNormalSkin4 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
 
 
@@ -720,7 +720,7 @@ public:
 
 	/// System Mem Geometry Copy, built at load time
 	virtual void	buildSystemGeometry();
-	
+
 	// @}
 
 

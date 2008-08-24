@@ -31,7 +31,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -42,10 +42,10 @@ const	uint	NL_BlockByteL1= 4096;
 // Number of vertices per block to process For vertices mul
 uint	CRayMesh::NumCacheVertex= NL_BlockByteL1 / sizeof(CVector);
 
-	
+
 // ***************************************************************************
 template<class TIndex>
-static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const std::vector<TIndex> &tris, 
+static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const std::vector<TIndex> &tris,
 							   float &dist2D, float &distZ, bool computeDist2D)
 {
 	uint	numTris= tris.size()/3;
@@ -60,20 +60,20 @@ static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const st
 		const CVector &p0= vertices[*(pTri++)];
 		const CVector &p1= vertices[*(pTri++)];
 		const CVector &p2= vertices[*(pTri++)];
-		
+
 		// 2D tri seg
 		CVector2f	p01(p1.x-p0.x, p1.y-p0.y);
 		CVector2f	p12(p2.x-p1.x, p2.y-p1.y);
 		CVector2f	p20(p0.x-p2.x, p0.y-p2.y);
-		
-		// If some vertices are equal (cause of graphists, or cause of projection), then  this triangle cannot 
+
+		// If some vertices are equal (cause of graphists, or cause of projection), then  this triangle cannot
 		// include the ray.
 		// must do this, else it is bugguy (if one degenerated triangle exist, will return true for all the skin)
 		if(p01.isNull() || p12.isNull() || p20.isNull())
 			continue;
 
 		/* Since the triangle is "rendered" in the ray "camera", the ray here is (Pos=Null,dir=K)
-			Therefore we can do fast triangle intersection test, only testing the 2D intersection in 
+			Therefore we can do fast triangle intersection test, only testing the 2D intersection in
 			the X/Y plane first
 		*/
 		float		a,b,c;		// 2D cartesian coefficients of line in plane X/Y.
@@ -101,7 +101,7 @@ static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const st
 		// all on same side (don't bother front or backfaces)?
 		if(allInf || allSup)
 		{
-			// => ray intersect. compute the intersection now. 
+			// => ray intersect. compute the intersection now.
 			// This code is called for a very small subset of faces, hence don't bother optim.
 			CPlane	plane;
 			plane.make(p0,p1,p2);
@@ -136,20 +136,20 @@ static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const st
 				const CVector &p0= vertices[*(pTri++)];
 				const CVector &p1= vertices[*(pTri++)];
 				const CVector &p2= vertices[*(pTri++)];
-				
+
 				// 2D tri seg
 				CVector2f	p01(p1.x-p0.x, p1.y-p0.y);
 				CVector2f	p12(p2.x-p1.x, p2.y-p1.y);
 				CVector2f	p20(p0.x-p2.x, p0.y-p2.y);
-				
-				// If some vertices are equal (cause of graphists, or cause of projection), then  this triangle cannot 
+
+				// If some vertices are equal (cause of graphists, or cause of projection), then  this triangle cannot
 				// include the ray.
 				// must do this, else it is bugguy (if one degenerated triangle exist, will return true for all the skin)
 				if(p01.isNull() || p12.isNull() || p20.isNull())
 					continue;
 
 				// compute the min dist to the ray
-				// ** Min 2D vert dist to Center(Null) 
+				// ** Min 2D vert dist to Center(Null)
 				float	p0sqdist= sqr(p0.x) + sqr(p0.y);
 				float	p1sqdist= sqr(p1.x) + sqr(p1.y);
 				float	p2sqdist= sqr(p2.x) + sqr(p2.y);
@@ -189,7 +189,7 @@ static bool	getRayIntersectionT(std::vector<NLMISC::CVector> &vertices, const st
 				minSkinSqrDist2D= min(minSkinSqrDist2D, sqdTri);
 			}
 		}
-		
+
 
 		// NB: in case of all degenerated triangles FLT_MAX is return...)
 		if(minSkinSqrDist2D==FLT_MAX)
@@ -214,7 +214,7 @@ bool		CRayMesh::getRayIntersection(std::vector<NLMISC::CVector> &vertices, const
 {
 	return getRayIntersectionT(vertices, tris, dist2D, distZ, computeDist2D);
 }
-	
+
 
 // ***************************************************************************
 bool		CRayMesh::getRayIntersection(std::vector<NLMISC::CVector> &vertices, const std::vector<uint16> &tris,
@@ -229,7 +229,7 @@ bool		CRayMesh::fastIntersect(const NLMISC::CMatrix &worldMatrix, const NLMISC::
 {
 	if(empty())
 		return false;
-	
+
 
 	// *** Compute toRaySpace matrix
 	// The skinning must be done in final RaySpace.
@@ -257,7 +257,7 @@ bool		CRayMesh::fastIntersect(const NLMISC::CMatrix &worldMatrix, const NLMISC::
 	if(Vertices.size()>meshInRaySpace.size())
 		meshInRaySpace.resize(Vertices.size());
 	CVector	*dst= &meshInRaySpace[0];
-	
+
 	// Then do the skin
 	for(;numVerts>0;)
 	{
@@ -265,10 +265,10 @@ bool		CRayMesh::fastIntersect(const NLMISC::CMatrix &worldMatrix, const NLMISC::
 		uint	nBlockInf= min(NumCacheVertex, numVerts);
 		// next block.
 		numVerts-= nBlockInf;
-		
+
 		// cache the data in L1 cache.
 		CFastMem::precache(src, nBlockInf * sizeof(CVector));
-		
+
 		//  for all InfluencedVertices only.
 		for(;nBlockInf>0;nBlockInf--, src++, dst++)
 		{
@@ -276,7 +276,7 @@ bool		CRayMesh::fastIntersect(const NLMISC::CMatrix &worldMatrix, const NLMISC::
 		}
 	}
 
-	
+
 	// *** and get ray intersection
 	return getRayIntersection(meshInRaySpace, Triangles, dist2D, distZ, computeDist2D);
 }

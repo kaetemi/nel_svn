@@ -31,7 +31,7 @@
 namespace	NLMISC
 {
 
-	
+
 const	CClassId	CClassId::Null(0);
 
 

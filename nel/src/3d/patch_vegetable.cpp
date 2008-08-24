@@ -40,7 +40,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -67,7 +67,7 @@ void		CPatch::generateTileVegetable(CVegetableInstanceGroup *vegetIg, uint distT
 	const std::vector<CVegetable>	&vegetableList= tileVegetDesc.getVegetableList(distType);
 	uint							distAddSeed= tileVegetDesc.getVegetableSeed(distType);
 	uint							numVegetable= vegetableList.size();
-	
+
 	// If no vegetables at all, skip.
 	if(numVegetable==0)
 		return;
@@ -92,7 +92,7 @@ void		CPatch::generateTileVegetable(CVegetableInstanceGroup *vegetIg, uint distT
 	CBezierPatch	*bpatch= unpackIntoCache();
 	// Get approximate position for the tile (usefull for noise). NB: eval() is faster than computeVertex().
 	CVector		tilePos= bpatch->eval(tileU, tileV);
-	// Get also the normal used for all instances on this tile (not precise, 
+	// Get also the normal used for all instances on this tile (not precise,
 	// don't take noise into account, but faster).
 	CVector		tileNormal= bpatch->evalNormal(tileU, tileV);
 
@@ -159,7 +159,7 @@ void		CPatch::generateTileVegetable(CVegetableInstanceGroup *vegetIg, uint distT
 	}
 	// sort the light by influence
 	sort(lightList.begin(), lightList.end());
-	// Setup the vegetLex directly in the ig. 
+	// Setup the vegetLex directly in the ig.
 	CVegetableLightEx	&vegetLex= vegetIg->VegetableLightEx;
 	// take only 2 first, computing direction to tilePos and computing attenuation.
 	vegetLex.NumLights= min((uint)CVegetableLightEx::MaxNumLight, (uint)lightList.size());
@@ -260,7 +260,7 @@ void		CPatch::generateTileVegetable(CVegetableInstanceGroup *vegetIg, uint distT
 			clamp(lumelT, 0, NL_LUMEL_BY_TILE-1);
 
 			// generate the instance of the vegetable
-			veget.generateInstance(vegetIg, matInstance, ambientF, 
+			veget.generateInstance(vegetIg, matInstance, ambientF,
 				diffuseColorF[ (lumelT<<NL_LUMEL_BY_TILE_SHIFT) + lumelS ],
 				(distType+1) * NL3D_VEGETABLE_BLOCK_ELTDIST, (CVegetable::TVegetableWater)vegetWaterState, dlmUV8);
 		}

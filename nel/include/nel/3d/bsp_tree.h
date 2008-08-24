@@ -41,10 +41,10 @@ namespace	NL3D
 
 /**
   * class:	CBSPTree.
-  * 
-  * 
+  *
+  *
   * A template CBSPTree.
-  * 
+  *
   */
 template<class T>	class	CBSPTree
 {
@@ -70,7 +70,7 @@ private:
 	std::vector<CBSPNode*> _Selection;
 
 private:
-	
+
 	class CBSPNode
 	{
 		CBSPNode *pBack, *pFront;
@@ -82,7 +82,7 @@ private:
 
 	public:
 
-		CBSPNode( NLMISC::CTriangle &tri, T &val ) : Value(val), pBack(NULL), pFront(NULL) 
+		CBSPNode( NLMISC::CTriangle &tri, T &val ) : Value(val), pBack(NULL), pFront(NULL)
 		{
 			p.make( tri.V0, tri.V1, tri.V2 );
 			p.normalize();
@@ -228,7 +228,7 @@ private:
 						//CVector newV2 = v2;
 						//pCurrent->p.clipSegmentBack( newV1, newV2 );
 						//pCurrent->pBack->select( sel, newV1, newV2 );
-						pCurrent->pBack->select( sel, v1, v2 );						
+						pCurrent->pBack->select( sel, v1, v2 );
 					}
 					return;
 				}
@@ -281,7 +281,7 @@ template<class T> sint32 CBSPTree<T>::select( CVector &v1, CVector &v2 )
 		_Root->select( _Selection, v1, v2 );
 		return _Selection.size();
 	}
-	else 
+	else
 		return 0;
 }
 

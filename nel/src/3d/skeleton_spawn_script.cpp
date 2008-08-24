@@ -34,7 +34,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -94,7 +94,7 @@ void	CSkeletonSpawnScript::parseCache(CScene *scene, CSkeletonModel *skeleton)
 	uint	i;
 	nlassert(scene);
 	nlassert(_Cache.empty() || skeleton);
-	
+
 	static std::vector<std::string>	newLines;
 	newLines.clear();
 	splitString(_Cache,"\n",newLines);
@@ -174,7 +174,7 @@ void	CSkeletonSpawnScript::parseCache(CScene *scene, CSkeletonModel *skeleton)
 				{
 					// format: "objl inst shapeName boneName"
 					// inst is a number only used to generate line difference (for cache comparison)
-					
+
 					// get the bone name, but may have space in its name => words[3] is not the correct name
 					uint	pos= 0;
 					bool	inWord= false;
@@ -182,7 +182,7 @@ void	CSkeletonSpawnScript::parseCache(CScene *scene, CSkeletonModel *skeleton)
 					// skip first spaces
 					while(pos<line.size() && line[pos]==' ')
 						pos++;
-					// count word until reach 
+					// count word until reach
 					while(pos<line.size())
 					{
 						if(line[pos]!=' ')

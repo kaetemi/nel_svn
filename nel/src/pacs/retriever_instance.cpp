@@ -114,7 +114,7 @@ void	NLPACS::CRetrieverInstance::make(sint32 instanceId, sint32 retrieverId, con
 		nlwarning("instanceId=%d retrieverId=%d orientation=%d", instanceId, retrieverId, orientation);
 		nlerror("Retriever instance %d has already been set", _InstanceId);
 	}
-	
+
 	_InstanceId = instanceId;
 	_RetrieverId = retrieverId;
 	_Orientation = (orientation%4);
@@ -178,7 +178,7 @@ void	NLPACS::CRetrieverInstance::linkEdgeQuad(NLPACS::CGlobalRetriever &gr)
 				else
 				{
 					nlwarning("Instance %d, borderLink %d: link already set to inst=%d, surf=%d, try to set to inst=%d, surf=%d",
-								_InstanceId, link.BorderChainId, borderLink.Instance, borderLink.SurfaceId, 
+								_InstanceId, link.BorderChainId, borderLink.Instance, borderLink.SurfaceId,
 								(uint16)(ee[i].Exterior.RetrieverInstanceId), (uint16)(ee[i].Exterior.SurfaceId));
 				}
 			}
@@ -493,7 +493,7 @@ void	NLPACS::CRetrieverInstance::retrievePosition(const NLMISC::CVectorD &estima
 
 
 
-void	NLPACS::CRetrieverInstance::snapToInteriorGround(NLPACS::ULocalPosition &position, 
+void	NLPACS::CRetrieverInstance::snapToInteriorGround(NLPACS::ULocalPosition &position,
 														 const NLPACS::CLocalRetriever &retriever) const
 {
 	bool	lfound;

@@ -65,7 +65,7 @@ protected:
 	/// Method to implement in the derived class
 	virtual void doDisplay( const CLog::TDisplayInfo& args, const char *message) = 0;
 
-	
+
 	// Return the header string with date (for the first line of the log)
 	static const char *HeaderString ();
 

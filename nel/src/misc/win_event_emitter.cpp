@@ -33,9 +33,9 @@
 #include <windows.h>
 #include <windowsx.h>
 
-/** 
-  * Needed for definition of WM_MOUSEWHEEL. It should be in winuser.h 
-  * but not under win98.. strange.. 
+/**
+  * Needed for definition of WM_MOUSEWHEEL. It should be in winuser.h
+  * but not under win98.. strange..
   */
 #include <zmouse.h>
 
@@ -74,12 +74,12 @@ TKeyButton getKeyButton (bool _altButton, bool _shiftButton, bool _ctrlButton)
 		(int&)button|=shiftKeyButton;
 	if (_ctrlButton)
 		(int&)button|=ctrlKeyButton;
- 
+
 	return button;
 }
 
 /*TMouseButton getMouseButton (uint32 wParam, bool _altButton)
-{	
+{
 	TMouseButton button=noButton;
 	if (wParam&MK_CONTROL)
 		(int&)button|=ctrlButton;
@@ -97,7 +97,7 @@ TKeyButton getKeyButton (bool _altButton, bool _shiftButton, bool _ctrlButton)
 
 
 TMouseButton CWinEventEmitter::getButtons() const
-{	
+{
 	uint result = (_CtrlButton ? ctrlButton : 0)
 				 | (_AltButton ? altButton : 0)
 				 | (_ShiftButton ? shiftButton : 0)
@@ -140,7 +140,7 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 				server->postEvent (new CEventKeyDown ((NLMISC::TKey)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), (((int) wParam)&(1<<30))==0, this));
 		}
 		break;
-		
+
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
 		if (_KeyboardEventsEnabled)
@@ -211,8 +211,8 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 				float fX, fY;
 				RECT client;
 
-				float xPos = (float)GET_X_LPARAM(lParam); 
-				float yPos = (float)GET_Y_LPARAM(lParam); 
+				float xPos = (float)GET_X_LPARAM(lParam);
+				float yPos = (float)GET_Y_LPARAM(lParam);
 
 				GetClientRect ((HWND)hWnd, &client);
 				fX=xPos/(float)(client.right-client.left);
@@ -225,7 +225,7 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 				switch (msg)
 				{
 				case WM_MOUSEMOVE:
-					server->postEvent (new CEventMouseMove (fX, fY, button, this));					
+					server->postEvent (new CEventMouseMove (fX, fY, button, this));
 					break;
 
 				case WM_RBUTTONDOWN:
@@ -271,7 +271,7 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 	case WM_DESTROY:
 		server->postEvent (new CEventDestroyWindow (this));
 		break;
-	case WM_DISPLAYCHANGE:		
+	case WM_DISPLAYCHANGE:
 		server->postEvent (new CEventDisplayChange (LOWORD(lParam), HIWORD(lParam), wParam, this));
 		break;
 	case WM_MOUSEWHEEL:
@@ -315,7 +315,7 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 
 //==========================================================
 void CWinEventEmitter::resetButtonFlagState ()
-{ 
+{
 	_CtrlButton=( (GetAsyncKeyState(VK_CONTROL)&0x8000) != 0);
 	_ShiftButton=( (GetAsyncKeyState(VK_SHIFT)&0x8000) != 0);
 	_AltButton=( (GetAsyncKeyState(VK_MENU)&0x8000) != 0);

@@ -31,7 +31,7 @@ void	dummyToAvoidStupidCompilerWarning_misc_geom_ext_cpp()
 {
 }
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

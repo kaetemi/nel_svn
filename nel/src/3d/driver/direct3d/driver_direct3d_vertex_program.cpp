@@ -29,7 +29,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -164,16 +164,16 @@ void dumpOperand(const CVPOperand &op, bool destOperand, std::string &out, set<u
 	switch(op.Type)
 	{
 		case CVPOperand::Variable: out += "r" + NLMISC::toString(op.Value.VariableValue); break;
-		case CVPOperand::Constant: 
+		case CVPOperand::Constant:
 			out += "c[";
 			if (op.Indexed)
 			{
 				out += "a0.x + ";
 			}
-			out += NLMISC::toString(op.Value.ConstantValue) + "]"; 
+			out += NLMISC::toString(op.Value.ConstantValue) + "]";
 		break;
-		case CVPOperand::InputRegister: 
-			out += "v" + NLMISC::toString((uint) op.Value.InputRegisterValue); 
+		case CVPOperand::InputRegister:
+			out += "v" + NLMISC::toString((uint) op.Value.InputRegisterValue);
 			inputs.insert (op.Value.InputRegisterValue);
 		break;
 		case CVPOperand::OutputRegister:
@@ -244,7 +244,7 @@ static const char *inputToDecl[CVPOperand::InputRegisterCount] =
 // ***************************************************************************
 
 void dump(const CVPParser::TProgram &prg, std::string &dest)
-{	
+{
 	H_AUTO_D3D(dump)
 	// Set of input registers used
 	set<uint> inputs;
@@ -320,7 +320,7 @@ bool CDriverD3D::activeVertexProgram (CVertexProgram *program)
 						{
 							nlassert(op.Value.InputRegisterValue != CVPOperand::IWeight);
 							nlassert(op.Value.InputRegisterValue != CVPOperand::IPaletteSkin);
-						}				
+						}
 					}
 				}
 			#endif
@@ -362,8 +362,8 @@ bool CDriverD3D::activeVertexProgram (CVertexProgram *program)
 		CVertexProgamDrvInfosD3D *info = static_cast<CVertexProgamDrvInfosD3D *>((IVertexProgramDrvInfos*)program->_DrvInfo);
 		setVertexProgram (info->Shader, program);
 
-		/* D3DRS_FOGSTART and D3DRS_FOGEND must be set with [1, 0] else the fog doesn't work properly on VertexShader and non-VertexShader objects 
-		(random fog flicking) with Geforce4 TI 4200 (drivers 53.03 and 45.23). The other cards seam to interpret the "oFog"'s values using D3DRS_FOGSTART, 
+		/* D3DRS_FOGSTART and D3DRS_FOGEND must be set with [1, 0] else the fog doesn't work properly on VertexShader and non-VertexShader objects
+		(random fog flicking) with Geforce4 TI 4200 (drivers 53.03 and 45.23). The other cards seam to interpret the "oFog"'s values using D3DRS_FOGSTART,
 		D3DRS_FOGEND.
 		 */
 		float z = 0;
@@ -520,7 +520,7 @@ void CDriverD3D::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver
 		{
 			case IDriver::Inverse:
 				D3DXMatrixInverse (&mat, NULL, &mat);
-			break;		
+			break;
 			case IDriver::Transpose:
 				D3DXMatrixTranspose (&mat, &mat);
 			break;
@@ -557,7 +557,7 @@ void CDriverD3D::enableVertexProgramDoubleSidedColor(bool doubleSided)
 
 // ***************************************************************************
 
-bool CDriverD3D::supportVertexProgramDoubleSidedColor() const 
+bool CDriverD3D::supportVertexProgramDoubleSidedColor() const
 {
 	H_AUTO_D3D(CDriverD3D_supportVertexProgramDoubleSidedColor)
 	// Not supported under D3D

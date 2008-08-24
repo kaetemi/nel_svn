@@ -39,27 +39,27 @@ class CBufferDSound;
  *   - the buffer still contains samples but silence is being written (silencing),
  *   - the buffer contains no samples but only silence (silenced)
  */
-/*enum TSourceDSoundBufferState 
-{ 
+/*enum TSourceDSoundBufferState
+{
 	/// The buffer is being filled with samples (filling),
-	NL_DSOUND_FILLING, 
+	NL_DSOUND_FILLING,
 	/// The buffer still contains samples but silence is being written (silencing),
-	NL_DSOUND_SILENCING, 
+	NL_DSOUND_SILENCING,
 	/// The buffer contains no samples but only silence (silenced)
-	NL_DSOUND_SILENCED 
+	NL_DSOUND_SILENCED
 } ;
 /*
 
 /** The state of the source as experienced by the user: playing, paused, and stopped. */
 /*
-enum TSourceDSoundUserState 
-{ 
+enum TSourceDSoundUserState
+{
 	/// The buffer is playing.
-	NL_DSOUND_PLAYING, 
+	NL_DSOUND_PLAYING,
 	/// The buffer is paused.
-	NL_DSOUND_PAUSED, 
+	NL_DSOUND_PAUSED,
 	/// The buffer is stopped.
-	NL_DSOUND_STOPPED 
+	NL_DSOUND_STOPPED
 };
 */
 
@@ -70,9 +70,9 @@ enum TSourceDSoundUserState
 /*
 enum TSourceDSoundEndState
 {
-	NL_DSOUND_TAIL1, 
-	NL_DSOUND_TAIL2, 
-	NL_DSOUND_ENDED 
+	NL_DSOUND_TAIL1,
+	NL_DSOUND_TAIL2,
+	NL_DSOUND_ENDED
 };
 */
 
@@ -81,7 +81,7 @@ enum TSourceDSoundEndState
  *
 
  * For arguments as 3D vectors, use the NeL vector coordinate system
- * 
+ *
  * \author Peter Hanappe
  * \author Nevrax France
  * \date 2002
@@ -89,7 +89,7 @@ enum TSourceDSoundEndState
 class CSourceDSound : public ISource
 {
 
-friend class CSoundDriverDSound;  
+friend class CSoundDriverDSound;
 
 public:
 
@@ -118,7 +118,7 @@ public:
 	//virtual void					setNext( ISource *next );
 	//@}
 
-	
+
 	/// \name Playback control
 	//@{
 
@@ -231,13 +231,13 @@ public:
 	/// Return the OpenAL source name
 	uint					sourceName() { return _SourceName; }
 
-    /// Returns the buffer associated with this source. 
+    /// Returns the buffer associated with this source.
     IBuffer*				getBuffer();
 
 	// Reset the source before reuse
 	void					reset();
 
-	/// Update the source's volume according to its distance and fade out curve. 
+	/// Update the source's volume according to its distance and fade out curve.
 	/// It takes the current position of the listener as argument.
 	void					updateVolume( const NLMISC::CVector& listener );
 
@@ -288,7 +288,7 @@ private:
 		sint16		*Ptr1;
 		uint32		Size1;
 
-		// second locked part (or 0 if none) 
+		// second locked part (or 0 if none)
 		sint16		*Ptr2;
 		uint32		Size2;
 	};
@@ -297,7 +297,7 @@ private:
 //	bool					lock(uint32 writePos, uint32 size, uint8* &ptr1, DWORD &bytes1, uint8* &ptr2, DWORD &bytes2);
 	bool					lock(uint32 writePos, uint32 size, TLockedBufferInfo &lockedInfo);
 
-	// Utility function that unlocks the DirectSound buffer 
+	// Utility function that unlocks the DirectSound buffer
 //	bool					unlock(uint8* ptr1, DWORD bytes1, uint8* ptr2, DWORD bytes2);
 	bool					unlock(const TLockedBufferInfo &lockedInfo);
 
@@ -340,7 +340,7 @@ private:
 	/// Check whether the play position has advanced enough to require an update
 	bool					needsUpdate();
 
-	
+
 	// Source name
 	uint					_SourceName;
 
@@ -353,7 +353,7 @@ private:
 
 	IBuffer					*_Sample;
 	// Size of the buffer in sample
-	uint					_SampleSize;	
+	uint					_SampleSize;
 	// Position in the buffer in sample.
 	uint					_SampleOffset;
 	// The number of sample realy played (depend on play cursor).
@@ -389,10 +389,10 @@ private:
     static const uint32			_SecondaryBufferSize;
 	// The mask for the buffer size
     static const uint32			_SizeMask;
-    // 3D interface of the secondary buffer. 
+    // 3D interface of the secondary buffer.
     LPDIRECTSOUND3DBUFFER	_3DBuffer;
     // The critial section object to protect the swap and update functions
-    CRITICAL_SECTION		_CriticalSection; 
+    CRITICAL_SECTION		_CriticalSection;
 
 	// The state for ADPCM decompression.
 	IBuffer::TADPCMState	_ADPCMState;
@@ -424,9 +424,9 @@ private:
 //	TSourceDSoundEndState	_EndState;
 
 
-	// Has this source been handed out. 
+	// Has this source been handed out.
 /*	bool					_IsUsed;
-	
+
 	// Set the 'used' state of the source. Managed by the driver.
 	void					setUsed(bool v) { _IsUsed = v; }
 

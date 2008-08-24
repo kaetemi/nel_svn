@@ -81,7 +81,7 @@ void CSoundAnimMarker::removeSound(const NLMISC::TStringId &soundName)
 	}
 	else
 	{
-		nlwarning("No sound was removed (%s)", CStringMapper::unmap(soundName).c_str());		
+		nlwarning("No sound was removed (%s)", CStringMapper::unmap(soundName).c_str());
 	}
 }
 

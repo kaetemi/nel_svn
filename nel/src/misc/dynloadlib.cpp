@@ -167,7 +167,7 @@ void CLibrary::addLibPath(const std::string &path)
 		_LibPaths.push_back(newPath);
 	}
 }
-	
+
 CLibrary::CLibrary()
 :	_LibHandle(NULL),
 	_Ownership(true),
@@ -335,7 +335,7 @@ void INelLibrary::_onLibraryLoaded(INelContext &nelContext)
 void INelLibrary::_onLibraryUnloaded()
 {
 	nlassert(_LoadingCounter > 0);
-	
+
 	onLibraryUnloaded(_LoadingCounter == 1);
 
 	--_LoadingCounter;

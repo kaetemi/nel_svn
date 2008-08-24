@@ -104,13 +104,13 @@ sint	CPlane::clipPolygonBack(CVector in[], CVector out[], sint nIn) const
 		p=i;
 		if ( (*this)*in[p] < 0 )
 		{
-			if ( (*this)*in[s] >= 0 ) 
+			if ( (*this)*in[s] >= 0 )
 				out[nOut++]= intersect(in[s],in[p]);
 			out[nOut++]=in[p];
 		}
 		else
 		{
-			if ( (*this)*in[s] < 0 ) 
+			if ( (*this)*in[s] < 0 )
 				out[nOut++]= intersect(in[s],in[p]);
 		}
 		s=p;
@@ -134,7 +134,7 @@ sint CPlane::clipPolygonBack(const CVector in[], const CUV inUV[], CVector out[]
 		float dp3Prev = (*this)*in[s];
 		if ( dp3Curr < 0 )
 		{
-			if (dp3Prev >= 0 ) 
+			if (dp3Prev >= 0 )
 			{
 				float lambda = favoid0((float) ((double) dp3Prev / ((double) dp3Prev - (double) dp3Curr)));
 				out[nOut] = blend(in[s], in[p], lambda);
@@ -145,11 +145,11 @@ sint CPlane::clipPolygonBack(const CVector in[], const CUV inUV[], CVector out[]
 		}
 		else
 		{
-			if (dp3Prev < 0 ) 
+			if (dp3Prev < 0 )
 			{
 				float lambda = favoid0((float) ((double) dp3Prev / ((double) dp3Prev - (double) dp3Curr)));
 				out[nOut] = blend(in[s], in[p], lambda);
-				outUV[nOut++] = blend(inUV[s], inUV[p], lambda);				
+				outUV[nOut++] = blend(inUV[s], inUV[p], lambda);
 			}
 		}
 		s=p;
@@ -171,13 +171,13 @@ sint	CPlane::clipPolygonFront(CVector in[], CVector out[], sint nIn) const
 		p=i;
 		if ( (*this)*in[p] > 0 )
 		{
-			if ( (*this)*in[s] <= 0 ) 
+			if ( (*this)*in[s] <= 0 )
 				out[nOut++]= intersect(in[s],in[p]);
 			out[nOut++]=in[p];
 		}
 		else
 		{
-			if ( (*this)*in[s] > 0 ) 
+			if ( (*this)*in[s] > 0 )
 				out[nOut++]= intersect(in[s],in[p]);
 		}
 		s=p;
@@ -192,7 +192,7 @@ CPlane  CPlane::inverted() const
 {
 	return CPlane(-a, -b, -c, -d);
 }
-		
+
 //============================================================
 void	CPlane::invert()
 {

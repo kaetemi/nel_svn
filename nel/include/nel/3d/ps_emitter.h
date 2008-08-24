@@ -40,7 +40,7 @@ namespace NL3D {
  * Base class for all emitters in a particle system.
  * Derivers should at least define the emit method which is called each time an emission is needed.
  * Not sharable accross systems.
- * 
+ *
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
@@ -66,8 +66,8 @@ public:
 
 	/// Return true if this located bindable derived class holds alive emitters
 	virtual bool					hasEmitters(void) { nlassert(_Owner); return _Owner->getSize() != 0; }
-		
-	
+
+
 	virtual void					step(TPSProcessPass pass);
 
 	/**
@@ -77,10 +77,10 @@ public:
 	*
 	*/
 	void							computeSpawns(uint firstInstanceIndex);
-	/// This is called inside the sim step, and triggers emitter that where flagged as 'emit once'	  
+	/// This is called inside the sim step, and triggers emitter that where flagged as 'emit once'
 	void							doEmitOnce(uint firstInstanceIndex);
 
-	
+
 
 	/// Display the emitter in edition mode
 	virtual void					showTool(void);
@@ -184,13 +184,13 @@ public:
 	//@{
 		/** Set a factor, to add the emitter speed to the emittee creation speed. this can be < 0
 		 *  The default is 0
-		 */	 
+		 */
 		void							setSpeedInheritanceFactor(float fact)
 		{
 			_SpeedInheritanceFactor = fact;
 		}
 
-		/// Get the Speed Inheritance factor 
+		/// Get the Speed Inheritance factor
 		float							getSpeedInheritanceFactor(void) const
 		{
 			return _SpeedInheritanceFactor;
@@ -200,7 +200,7 @@ public:
 		  * NB This also implies that the coord. system in which the speed vector is expressed if the same than the one of the emitter
 		  * so the calls to enableUserMatrixModeForEmissionDirection() & setUserMatrixModeForEmissionDirection() have no effects (but their value is retained)
 		  */
-		void							enableSpeedBasisEmission(bool enabled = true);		
+		void							enableSpeedBasisEmission(bool enabled = true);
 
 		/** Check if the direction of emission is aligned on the emitter speed.
 		 *  \see enableSpeedBasisEmission()
@@ -223,9 +223,9 @@ public:
 		  * NB  : if isSpeedBasisEmissionEnabled() == true then this value is meaningless
           */
 		void							setUserMatrixModeForEmissionDirection(TPSMatrixMode matrixMode);
-		TPSMatrixMode					getUserMatrixModeForEmissionDirection() const {	return _UserDirectionMatrixMode; }		
+		TPSMatrixMode					getUserMatrixModeForEmissionDirection() const {	return _UserDirectionMatrixMode; }
 	//@}
-	
+
 	/// Process a single emission. For external use (in the user interface layer)
 	void							singleEmit(uint32 index, uint quantity);
 
@@ -235,7 +235,7 @@ public:
 	  * - The motion is in straight lines.
 	  * - It assumes that emitter has no motion (for now). RESOLVED
 	  * NB nico : this is the default now ...
-	  * In fact, this should be used when there can't be collisions with the emitted particles, and with main emitters only.	  
+	  * In fact, this should be used when there can't be collisions with the emitted particles, and with main emitters only.
 	  * NB : this has no effect if the emission period is 0 (which mean emit at each frame)
 	  */
 	void							enableConsistenEmission(bool enable) { _ConsistentEmission = enable; }
@@ -243,12 +243,12 @@ public:
 	bool						    isConsistentEmissionEnabled() const { return _ConsistentEmission; }
 
 	/** Release any reference this obj may have on the given process.
-	  * For example, this is used when detaching a located bindable from a system.  	 
+	  * For example, this is used when detaching a located bindable from a system.
 	  */
 	virtual	void			 releaseRefTo(const CParticleSystemProcess *other);
-	 
+
 	/** Release any reference this obj may have to other process of the system
-	  * For example, this is used when detaching a located bindable from a system.	  
+	  * For example, this is used when detaching a located bindable from a system.
 	  */
 	virtual void			 releaseAllRef();
 
@@ -258,7 +258,7 @@ public:
 
 	/** For edition only : avoid that a call to CPSLocated::deleteElement() causes emitters flagged with 'emitOnDeath' to emit
 	  */
-	static void				setBypassEmitOnDeath(bool bypass) { _BypassEmitOnDeath = bypass; }	
+	static void				setBypassEmitOnDeath(bool bypass) { _BypassEmitOnDeath = bypass; }
 	static bool				getBypassEmitOnDeath() { return _BypassEmitOnDeath; }
 
 	/** check if there's a loop with that emitter e.g. A emit B emit A
@@ -273,18 +273,18 @@ public:
 	bool					testEmitForever() const;
 
 	// from CPSLocated
-	virtual void setOwner(CPSLocated *psl);		
+	virtual void setOwner(CPSLocated *psl);
 
 	// from from CPSLocated
 	virtual bool			getUserMatrixUsageCount() const;
 
 	// Set the emit trigger. At the next sim step, all particles will emit at the start of the step.
-	void					setEmitTrigger() { _EmitTrigger = true; }	
+	void					setEmitTrigger() { _EmitTrigger = true; }
 	// Update emit trigger. To Be called at the start of the sim step.
 	// If emit trigger is set, all emitter emit a single time, and then the falg is cleared
 	void					updateEmitTrigger();
 
-protected:	
+protected:
 	friend class CPSLocated;
 
 	/// This will call emit, and will add additionnal features (speed addition and so on). This must be called inside the sim loop.
@@ -316,21 +316,21 @@ protected:
 	  * This tool function helps increasing / decreasing that count by seeing if the matrix is still required or not
 	  */
 	void							updatePSRefCountForUserMatrixUsage(bool matrixIsNeededNow, bool matrixWasNeededBefore);
-	
+
 
 	/** This method is called each time one (and only one) located must be emitted.
 	 *  DERIVERS MUST DEFINE THIS
 	 *  \param srcPos the source position of the emitter (with eventually a correction)
-	 *  \param index the index of the emitter in the tab that generated a located	 
+	 *  \param index the index of the emitter in the tab that generated a located
 	 *  \param pos the resulting pos of the particle, expressed in the emitter basis
 	 *  \param speed the reulting speed of the emitter, expressed in the emitter basis
 	 */
 	virtual void					emit(const NLMISC::CVector &srcPos, uint32 index, NLMISC::CVector &pos, NLMISC::CVector &speed) = 0;
 
-	/**	Generate a new element for this bindable. They are generated according to the propertie of the class		 
+	/**	Generate a new element for this bindable. They are generated according to the propertie of the class
 	 */
 	virtual void					newElement(const CPSEmitterInfo &info);
-	
+
 	/** Delete an element given its index
 	 *  Attributes of the located that hold this bindable are still accessible for of the index given
 	 *  index out of range -> nl_assert
@@ -351,21 +351,21 @@ protected:
 	/// A pointer on the type to be emitted.
 	CPSLocated						*_EmittedType;
 
-	/** The phase (  0 < phase  < period of emission). This is the time ellapsed since the last emission    
+	/** The phase (  0 < phase  < period of emission). This is the time ellapsed since the last emission
 	 */
 	TPSAttribFloat					_Phase;
 	TPSAttribUInt8					_NumEmission; // used only if MaxEmissionCount is != 0
 
-	float							_SpeedInheritanceFactor;	
+	float							_SpeedInheritanceFactor;
 	TEmissionType					_EmissionType;
 	float _Period;
-	CPSAttribMaker<float>			*_PeriodScheme;			
+	CPSAttribMaker<float>			*_PeriodScheme;
 	uint32 _GenNb;
 	CPSAttribMaker<uint32>			*_GenNbScheme;
 	float							_EmitDelay;
 	uint8							_MaxEmissionCount;
-	bool							_SpeedBasisEmission                 : 1;	
-	bool							_ConsistentEmission                 : 1; 
+	bool							_SpeedBasisEmission                 : 1;
+	bool							_ConsistentEmission                 : 1;
 	bool							_BypassAutoLOD                      : 1;
 	bool							_UserMatrixModeForEmissionDirection : 1; // true when the direction of emission is expressed in a user defined coordinate system (otherwise it is expressed in this object coordinate system, as specified by setMatrixMode)
 	bool							_EmitTrigger						: 1;
@@ -405,7 +405,7 @@ class CPSModulatedEmitter
 		{
 			delete _EmitteeSpeedScheme;
 			_EmitteeSpeedScheme = scheme;
-			if (getModulatedEmitterOwner() && scheme->hasMemory()) 
+			if (getModulatedEmitterOwner() && scheme->hasMemory())
 				scheme->resize(getModulatedEmitterOwner()->getMaxSize(), getModulatedEmitterOwner()->getSize());
 		}
 
@@ -415,7 +415,7 @@ class CPSModulatedEmitter
 			delete _EmitteeSpeedScheme;
 			_EmitteeSpeedScheme = NULL;
 			_EmitteeSpeed = speed;
-		
+
 		}
 
 		/// get the modulation speed (valid only if no scheme is used)
@@ -430,9 +430,9 @@ class CPSModulatedEmitter
 		/// check wether a speed modulation scheme is being used
 		bool useEmitteeSpeedScheme(void) const { return _EmitteeSpeedScheme != NULL; }
 
-		/// serialization 
+		/// serialization
 		void serialEmitteeSpeedScheme(NLMISC::IStream &f) throw(NLMISC::EStream);
-		
+
 	protected:
 
 		// emitter must define this in order to allow this class to access the located owner
@@ -452,11 +452,11 @@ class CPSModulatedEmitter
 		{
 			if (_EmitteeSpeedScheme && _EmitteeSpeedScheme->hasMemory()) _EmitteeSpeedScheme->resize(capacity, getModulatedEmitterOwner()->getSize());
 		}
-	
+
 
 		float _EmitteeSpeed;
 		CPSAttribMaker<float> *_EmitteeSpeedScheme;
-}; 
+};
 
 
 
@@ -467,21 +467,21 @@ class CPSModulatedEmitter
 class CPSEmitterDirectionnal : public CPSEmitter, public CPSModulatedEmitter
 							   ,public CPSDirection
 {
-	
+
 public:
 
 
 	CPSEmitterDirectionnal() : _Dir(NLMISC::CVector::K)
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("DirectionnalEmitter"); 
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("DirectionnalEmitter");
 	}
 
 	/// Serialisation
  	virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
-	
+
 	NLMISC_DECLARE_CLASS(CPSEmitterDirectionnal);
-	
+
 	virtual void emit(const NLMISC::CVector &srcPos, uint32 index, NLMISC::CVector &pos, NLMISC::CVector &speed);
 
 	void setDir(const NLMISC::CVector &v) { _Dir = v; }
@@ -494,12 +494,12 @@ protected:
 	NLMISC::CVector _Dir;
 
 	virtual CPSLocated *getModulatedEmitterOwner(void) { return _Owner; }
-	virtual void newElement(const CPSEmitterInfo &info);	
+	virtual void newElement(const CPSEmitterInfo &info);
 	virtual void deleteElement(uint32 index);
 	void deleteElementBase(uint32 index);
 	virtual void deleteElement(uint32 index, TAnimationTime timeUntilNextSimStep);
 	virtual void resize(uint32 capacity);
-}; 
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -509,11 +509,11 @@ class CPSRadialEmitter : public CPSEmitterDirectionnal
 {
 	public:
 	CPSRadialEmitter()
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("RadialEmitter"); 
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("RadialEmitter");
 	}
 	/// Serialisation
- 	virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+ 	virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 	NLMISC_DECLARE_CLASS(CPSRadialEmitter);
 	virtual void emit(const NLMISC::CVector &srcPos, uint32 index, NLMISC::CVector &pos, NLMISC::CVector &speed);
 };
@@ -525,7 +525,7 @@ class CPSRadialEmitter : public CPSEmitterDirectionnal
 /// Emit randomly in all direction
 class CPSEmitterOmni : public CPSEmitter, public CPSModulatedEmitter
 {
-	
+
 public:
 
 	CPSEmitterOmni()
@@ -535,7 +535,7 @@ public:
 
 	/// Serialisation
  	virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	
+
 	NLMISC_DECLARE_CLASS(CPSEmitterOmni);
 
 
@@ -550,7 +550,7 @@ protected:
 	virtual void resize(uint32 capacity);
 
 
-}; 
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -569,7 +569,7 @@ class CPSEmitterRectangle : public CPSEmitter, public CPSModulatedEmitter, publi
 
 		/// Serialisation
  		virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	
+
 		NLMISC_DECLARE_CLASS(CPSEmitterRectangle);
 
 
@@ -581,25 +581,25 @@ class CPSEmitterRectangle : public CPSEmitter, public CPSModulatedEmitter, publi
 
 		NLMISC::CVector getDir(void) const { return _Dir; }
 
-	
+
 		void showTool(void);
 
-	
+
 
 		// Inherited from IPSMover
 		virtual bool supportUniformScaling(void) const { return true; }
-		virtual bool supportNonUniformScaling(void) const { return true; }			
-		virtual void setMatrix(uint32 index, const NLMISC::CMatrix &m);	
-		virtual NLMISC::CMatrix getMatrix(uint32 index) const;			
-		virtual void setScale(uint32 index, float scale);	
+		virtual bool supportNonUniformScaling(void) const { return true; }
+		virtual void setMatrix(uint32 index, const NLMISC::CMatrix &m);
+		virtual NLMISC::CMatrix getMatrix(uint32 index) const;
+		virtual void setScale(uint32 index, float scale);
 		virtual void setScale(uint32 index, const NLMISC::CVector &s);
 		NLMISC::CVector getScale(uint32 index) const;
 
 	protected:
 
 		virtual CPSLocated *getModulatedEmitterOwner(void) { return _Owner; }
-		
-		CPSAttrib<CPlaneBasis> _Basis;				
+
+		CPSAttrib<CPlaneBasis> _Basis;
 
 		//  Width
 		TPSAttribFloat _Width;
@@ -610,10 +610,10 @@ class CPSEmitterRectangle : public CPSEmitter, public CPSModulatedEmitter, publi
 		// Direction of emission (in each plane basis)
 		NLMISC::CVector _Dir;
 
-		/**	Generate a new element for this bindable. They are generated according to the propertie of the class		 
+		/**	Generate a new element for this bindable. They are generated according to the propertie of the class
 		 */
 		virtual void newElement(const CPSEmitterInfo &info);
-	
+
 		/** Delete an element given its index
 		 *  Attributes of the located that hold this bindable are still accessible for of the index given
 		 *  index out of range -> nl_assert
@@ -626,15 +626,15 @@ class CPSEmitterRectangle : public CPSEmitter, public CPSModulatedEmitter, publi
 		 * should not be called directly. Call CPSLocated::resize instead
 		 */
 		virtual void resize(uint32 size);
-}; 
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// The same as a directionnel emitter, but you can also specify the radius for emission
-class CPSEmitterConic : public CPSEmitterDirectionnal					
-{	
+class CPSEmitterConic : public CPSEmitterDirectionnal
+{
 public:
 
 	CPSEmitterConic() : _Radius(1.f)
@@ -644,7 +644,7 @@ public:
 
 	/// Serialisation
  	virtual	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	
+
 	NLMISC_DECLARE_CLASS(CPSEmitterConic);
 
 
@@ -660,11 +660,11 @@ public:
 	/// Set the direction for emission
 	virtual void setDir(const NLMISC::CVector &v);
 
-protected:	
+protected:
 
 	// The radius for emission
 	float _Radius;
- 
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -691,7 +691,7 @@ public:
 
 	virtual void emit(const NLMISC::CVector &srcPos, uint32 index, NLMISC::CVector &pos, NLMISC::CVector &speed);
 
-	
+
 
 	void showTool(void);
 
@@ -699,16 +699,16 @@ public:
 
 	// Inherited from IPSMover
 	virtual bool supportUniformScaling(void) const { return true; }
-	virtual bool supportNonUniformScaling(void) const { return false; }			
-	virtual void setMatrix(uint32 index, const NLMISC::CMatrix &m);	
-	virtual NLMISC::CMatrix getMatrix(uint32 index) const;			
-	virtual void setScale(uint32 index, float scale) { _Radius[index] = scale; }		
+	virtual bool supportNonUniformScaling(void) const { return false; }
+	virtual void setMatrix(uint32 index, const NLMISC::CMatrix &m);
+	virtual NLMISC::CMatrix getMatrix(uint32 index) const;
+	virtual void setScale(uint32 index, float scale) { _Radius[index] = scale; }
 	NLMISC::CVector getScale(uint32 index) const { return NLMISC::CVector(_Radius[index], _Radius[index], _Radius[index]); }
 
 protected:
-	virtual CPSLocated *getModulatedEmitterOwner(void) { return _Owner; }	
-	TPSAttribFloat _Radius;	
-	virtual void newElement(const CPSEmitterInfo &info);	
+	virtual CPSLocated *getModulatedEmitterOwner(void) { return _Owner; }
+	TPSAttribFloat _Radius;
+	virtual void newElement(const CPSEmitterInfo &info);
 	virtual void deleteElement(uint32 index);
 	void deleteElementBase(uint32 index);
 	virtual void deleteElement(uint32 index, TAnimationTime timeUntilNextSimStep);

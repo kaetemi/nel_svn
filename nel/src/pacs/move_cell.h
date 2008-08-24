@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class CMoveElement;

@@ -72,23 +72,23 @@ public:
 
 	// Remove all big files added
 	void removeAll ();
-	
+
 	/** Signal that the current thread has ended : all file handles "permanently" allocated for that thread
-	  * can be released then, preventing them from accumulating.	  
+	  * can be released then, preventing them from accumulating.
 	  */
 	void currentThreadFinished();
 
 
 	// Used by CIFile to get information about the files within the big file
-	FILE* getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rBigFileOffset, 
+	FILE* getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rBigFileOffset,
 					bool &rCacheFileOnOpen, bool &rAlwaysOpened);
 
 	// Used by Sound to get information for async loading of mp3 in .bnp. Return false if file not found in registered bnps
 	bool getFileInfo (const std::string &sFileName, uint32 &rFileSize, uint32 &rBigFileOffset);
-	
+
 	// Used for CPath only for the moment !
 	char *getFileNamePtr(const std::string &sFileName, const std::string &sBigFileName);
-	
+
 // ***************
 private:
 	class	CThreadFileArray;

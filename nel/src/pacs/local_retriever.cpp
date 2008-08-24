@@ -249,7 +249,7 @@ void	NLPACS::CLocalRetriever::dumpSurface(uint surf, const CVector &vect) const
 
 	nlinfo("dump surf %d", surf);
 	nlinfo("%d chains, %d loops", surface._Chains.size(), surface._Loops.size());
-	
+
 	uint	i, j, k;
 
 	for (i=0; i<surface._Chains.size(); ++i)
@@ -408,7 +408,7 @@ sint32	NLPACS::CLocalRetriever::addChain(const vector<CVector> &verts,
 			prev3f = *it3f;
 		}
 	}
-	
+
 	if (vertices.size() < 2)
 	{
 		nlwarning("in NLPACS::CLocalRetriever::addChain()");
@@ -527,7 +527,7 @@ void	NLPACS::CLocalRetriever::computeLoopsAndTips()
 						nlinfo("start=(%f,%f,%f)", start.x, start.y, start.z);
 						nlinfo("end=(%f,%f,%f)", end.x, end.y, end.z);
 					}
-					
+
 					nlwarning("bestChain=%d best=%f", bestChain, best);
 					nlwarning("loopCloseDistance=%f", loopCloseDistance);
 					nlerror("Couldn't close loop on surface=%d", i);
@@ -925,7 +925,7 @@ void	NLPACS::CLocalRetriever::serial(NLMISC::IStream &f)
 	f.serial(_BBox);
 	f.serialEnum(_Type);
 	f.serial(_ExteriorMesh);
-	
+
 	// a fix for old versions (with wrong _Type value)
 	if (_Type != CLocalRetriever::Interior)	_Type = CLocalRetriever::Landscape;
 
@@ -1149,7 +1149,7 @@ void	NLPACS::CLocalRetriever::retrievePosition(CVector estimated, CCollisionSurf
 					cst.SurfaceLUT[left].FoundCloseEdge = true;
 					cst.SurfaceLUT[left].OnVerticalEdge = true;
 				}
-				if (right >= 0)	
+				if (right >= 0)
 				{
 					cst.SurfaceLUT[right].FoundCloseEdge = true;
 					cst.SurfaceLUT[right].OnVerticalEdge = true;
@@ -1240,7 +1240,7 @@ void	NLPACS::CLocalRetriever::retrieveAccuratePosition(CVector2s estim, CCollisi
 	CAABBox			box;
 	CVector			estimated = estim.unpack3f();
 	const double	BorderThreshold = 2.0e-2f;
-	box.setMinMax(CVector(estimated.x-(float)BorderThreshold, _BBox.getMin().y, 0.0f), 
+	box.setMinMax(CVector(estimated.x-(float)BorderThreshold, _BBox.getMin().y, 0.0f),
 				  CVector(estimated.x+(float)BorderThreshold, _BBox.getMax().y, 0.0f));
 	uint			numEdges = _ChainQuad.selectEdges(box, cst);
 
@@ -1349,7 +1349,7 @@ void	NLPACS::CLocalRetriever::retrieveAccuratePosition(CVector2s estim, CCollisi
 				sint32	det = (estim.y-vstart.y)*(vstop.x-vstart.x) - (estim.x-vstart.x)*(vstop.y-vstart.y);
 
 				isUpper = (det > 0);
-				
+
 				if (det == 0)
 					onBorder = true;
 			}
@@ -1575,13 +1575,13 @@ float	NLPACS::CLocalRetriever::getInteriorHeightAround(const ULocalPosition &pos
 {
 	if (!_Loaded)
 		return 0.0f;
-	
+
 	if (_Type == Interior)
 	{
 		// first preselect faces around the (x, y) position (CQuadGrid ?)
 		vector<uint32>	selection;
 		_FaceGrid.select(position.Estimation, selection);
-		
+
 		// from the preselect faces, look for the only face that belongs to the surface
 		// and that contains the position
 		CVector	pos = position.Estimation;
@@ -1598,7 +1598,7 @@ float	NLPACS::CLocalRetriever::getInteriorHeightAround(const ULocalPosition &pos
 				v[0] = _InteriorVertices[f.Verts[0]];
 				v[1] = _InteriorVertices[f.Verts[1]];
 				v[2] = _InteriorVertices[f.Verts[2]];
-				
+
 				// Test if out of this triangle (+ tolerance)
 				float		a,b;		// 2D cartesian coefficients of line in plane X/Y.
 				float		len;
@@ -1617,16 +1617,16 @@ float	NLPACS::CLocalRetriever::getInteriorHeightAround(const ULocalPosition &pos
 				b =  (v[0].x-v[2].x);
 				len= sqrtf(a*a+b*b);		// norm of the normal vector
 				if (a*(pos.x-v[2].x) + b*(pos.y-v[2].y) < -len*outsideTolerance)	continue;
-				
+
 
 				// Ok IN => compute z and keep nearest to wanted one
 				CPlane	p;
 				p.make(v[0], v[1], v[2]);
-				
+
 				CVector i = p.intersect(pos, posh);
-				
+
 				float	d = (float)fabs(pos.z-i.z);
-				
+
 				if (d < bestDist)
 				{
 					bestDist = d;
@@ -1634,7 +1634,7 @@ float	NLPACS::CLocalRetriever::getInteriorHeightAround(const ULocalPosition &pos
 				}
 			}
 		}
-		
+
 		// and computes the real position on this face
 		return (bestDist < 200.0f) ? best.z : position.Estimation.z;
 	}
@@ -1648,9 +1648,9 @@ float	NLPACS::CLocalRetriever::getInteriorHeightAround(const ULocalPosition &pos
 #pragma optimize( "", off )
 #endif // NL_OS_WINDOWS
 
-void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosition &A, 
-										  const NLPACS::CLocalRetriever::CLocalPosition &B, 
-										  std::vector<NLPACS::CVector2s> &path, 
+void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosition &A,
+										  const NLPACS::CLocalRetriever::CLocalPosition &B,
+										  std::vector<NLPACS::CVector2s> &path,
 										  NLPACS::CCollisionSurfaceTemp &cst) const
 {
 	if (A.Surface != B.Surface)
@@ -1730,7 +1730,7 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 			nlwarning("in NLPACS::CLocalRetriever::findPath()");
 			nlerror("Found an odd (%d) number of intersections", intersections.size());
 		}
-		
+
 		for (i=intersStart; i<intersEnd; )
 		{
 			uint	exitLoop, enterLoop;
@@ -1846,7 +1846,7 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 
 				thisChainId = surface._Chains[loop[loopIndex]].Chain;
 				thisChainForward = (_Chains[thisChainId].getLeft() == surfaceId);
-				thisOChainIndex = (thisChainForward && forward || !thisChainForward && !forward) ? 
+				thisOChainIndex = (thisChainForward && forward || !thisChainForward && !forward) ?
 					0 : _Chains[thisChainId]._SubChains.size()-1;
 			}
 
@@ -1860,7 +1860,7 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 	path.push_back(CVector2s(B.Estimation));
 }
 #ifdef NL_OS_WINDOWS
-#pragma optimize( "", on ) 
+#pragma optimize( "", on )
 #endif // NL_OS_WINDOWS
 
 // ***************************************************************************

@@ -26,7 +26,7 @@
 
 #include "nel/misc/types_nl.h"
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************
@@ -38,7 +38,7 @@ inline void CMoveContainer::changed (CMovePrimitive* primitive, uint8 worldImage
 	{
 		// Get the world image
 		CPrimitiveWorldImage *wI;
-		
+
 		wI=primitive->getWorldImage (worldImage);
 
 		// Not yet in the list ?
@@ -46,7 +46,7 @@ inline void CMoveContainer::changed (CMovePrimitive* primitive, uint8 worldImage
 		{
 			// Flag it
 			wI->setInModifiedListFlag (true);
-			
+
 			// Link it
 			wI->linkInModifiedList (_ChangedRoot[worldImage]);
 

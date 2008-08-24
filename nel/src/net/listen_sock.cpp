@@ -105,7 +105,7 @@ void CListenSock::init( const CInetAddress& addr )
 	}
 #endif
 
-	// Bind socket to port	
+	// Bind socket to port
 	if ( ::bind( _Sock, (const sockaddr *)addr.sockAddr(), sizeof(sockaddr_in) ) != 0 )
 	{
 		throw ESocket( "Unable to bind listen socket to port" );

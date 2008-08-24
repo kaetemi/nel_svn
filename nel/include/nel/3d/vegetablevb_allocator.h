@@ -28,7 +28,7 @@
 #include "nel/3d/driver.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -134,7 +134,7 @@ private:
 
 private:
 	TVBType						_Type;
-	
+
 	// List of vertices free.
 	std::vector<uint>			_VertexFreeMemory;
 	std::vector<CVertexInfo>	_VertexInfos;
@@ -149,7 +149,7 @@ private:
 	CVertexBuffer						_VBHard;
 	CVertexBufferRead					_VBASoft;
 	CVertexBufferReadWrite				_VBAHard;
-	
+
 	// a refPtr on the driver, to delete VBuffer Hard at clear().
 	NLMISC::CRefPtr<IDriver>			_Driver;
 	// tell if VBHard is possible.

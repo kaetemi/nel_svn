@@ -42,9 +42,9 @@ inline bool CMaterial::texturePresent(uint8 n) const
 }
 
 inline ITexture*		CMaterial::getTexture(uint8 n) const
-{ 
+{
 	nlassert(n<IDRV_MAT_MAXTEXTURES);
-	return(_Textures[n]); 
+	return(_Textures[n]);
 }
 
 inline void CMaterial::setSrcBlend(TBlend val)
@@ -122,10 +122,10 @@ inline void CMaterial::setColor(NLMISC::CRGBA rgba)
 	}
 }
 
-inline void CMaterial::setLighting(	bool active, 
-									NLMISC::CRGBA emissive, 
-									NLMISC::CRGBA ambient, 
-									NLMISC::CRGBA diffuse, 
+inline void CMaterial::setLighting(	bool active,
+									NLMISC::CRGBA emissive,
+									NLMISC::CRGBA ambient,
+									NLMISC::CRGBA diffuse,
 									NLMISC::CRGBA specular,
 									float	shininess)
 {
@@ -222,7 +222,7 @@ inline CMaterial::TTexOperator	    CMaterial::getTexEnvOpRGB(uint stage) const
 {
 	nlassert(_ShaderType==CMaterial::Normal);
 	nlassert(stage<IDRV_MAT_MAXTEXTURES);
-	return (TTexOperator) _TexEnvs[stage].Env.OpRGB;	
+	return (TTexOperator) _TexEnvs[stage].Env.OpRGB;
 }
 
 // ***************************************************************************
@@ -238,7 +238,7 @@ inline void					CMaterial::texEnvArg0RGB(uint stage, TTexSource src, TTexOperand
 inline void					CMaterial::texEnvArg1RGB(uint stage, TTexSource src, TTexOperand oper)
 {
 	nlassert(_ShaderType==CMaterial::Normal);
-	nlassert(stage<IDRV_MAT_MAXTEXTURES);	
+	nlassert(stage<IDRV_MAT_MAXTEXTURES);
 	_TexEnvs[stage].Env.SrcArg1RGB= src;
 	_TexEnvs[stage].Env.OpArg1RGB= oper;
 	_Touched|=IDRV_TOUCHED_TEXENV;
@@ -247,7 +247,7 @@ inline void					CMaterial::texEnvArg1RGB(uint stage, TTexSource src, TTexOperand
 inline void					CMaterial::texEnvArg2RGB(uint stage, TTexSource src, TTexOperand oper)
 {
 	nlassert(_ShaderType==CMaterial::Normal);
-	nlassert(stage<IDRV_MAT_MAXTEXTURES);	
+	nlassert(stage<IDRV_MAT_MAXTEXTURES);
 	_TexEnvs[stage].Env.SrcArg2RGB= src;
 	_TexEnvs[stage].Env.OpArg2RGB= oper;
 }
@@ -266,7 +266,7 @@ inline CMaterial::TTexOperator	    CMaterial::getTexEnvOpAlpha(uint stage) const
 {
 	nlassert(_ShaderType==CMaterial::Normal);
 	nlassert(stage<IDRV_MAT_MAXTEXTURES);
-	return (TTexOperator) _TexEnvs[stage].Env.OpAlpha;	
+	return (TTexOperator) _TexEnvs[stage].Env.OpAlpha;
 }
 
 // ***************************************************************************
@@ -284,7 +284,7 @@ inline void					CMaterial::texEnvArg1Alpha(uint stage, TTexSource src, TTexOpera
 {
 	nlassert(_ShaderType==CMaterial::Normal);
 	nlassert(stage<IDRV_MAT_MAXTEXTURES);
-	nlassert(oper==SrcAlpha || oper==InvSrcAlpha);	
+	nlassert(oper==SrcAlpha || oper==InvSrcAlpha);
 	_TexEnvs[stage].Env.SrcArg1Alpha= src;
 	_TexEnvs[stage].Env.OpArg1Alpha= oper;
 	_Touched|=IDRV_TOUCHED_TEXENV;
@@ -294,7 +294,7 @@ inline void					CMaterial::texEnvArg2Alpha(uint stage, TTexSource src, TTexOpera
 {
 	nlassert(_ShaderType==CMaterial::Normal);
 	nlassert(stage<IDRV_MAT_MAXTEXTURES);
-	nlassert(oper==SrcAlpha || oper==InvSrcAlpha);	
+	nlassert(oper==SrcAlpha || oper==InvSrcAlpha);
 	_TexEnvs[stage].Env.SrcArg2Alpha= src;
 	_TexEnvs[stage].Env.OpArg2Alpha= oper;
 }

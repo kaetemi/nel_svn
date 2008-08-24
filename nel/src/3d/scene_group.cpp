@@ -43,7 +43,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ---------------------------------------------------------------------------
@@ -57,7 +57,7 @@ CInstanceGroup::CInstance::CInstance ()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	DontAddToScene = false;
 	AvoidStaticLightPreCompute= false;
 	StaticLightEnabled= false;
@@ -75,7 +75,7 @@ void CInstanceGroup::CInstance::serial (NLMISC::IStream& f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	/*
 	Version 7:
 		- Visible
@@ -222,13 +222,13 @@ const CVector& CInstanceGroup::getInstanceScale (uint instanceNb) const
 
 void CInstanceGroup::getInstanceMatrix(uint instanceNb,NLMISC::CMatrix &dest) const
 {
-	dest.identity();	
+	dest.identity();
 	dest.translate(getInstancePos(instanceNb));
 	dest.rotate(getInstanceRot(instanceNb));
-	dest.scale(getInstanceScale(instanceNb));	
+	dest.scale(getInstanceScale(instanceNb));
 }
 
-	
+
 
 // ***************************************************************************
 
@@ -266,7 +266,7 @@ CInstanceGroup::CInstanceGroup()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	_IGSurfaceLight.setOwner(this);
 	_GlobalPos = CVector(0,0,0);
 	_Root = NULL;
@@ -287,15 +287,15 @@ CInstanceGroup::~CInstanceGroup()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 }
 
 // ***************************************************************************
-void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& array, 
-							const std::vector<CCluster>& Clusters, 
+void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& array,
+							const std::vector<CCluster>& Clusters,
 							const std::vector<CPortal>& Portals,
 							const std::vector<CPointLightNamed> &pointLightList,
-							const CIGSurfaceLight::TRetrieverGridMap *retrieverGridMap, 
+							const CIGSurfaceLight::TRetrieverGridMap *retrieverGridMap,
 							float igSurfaceLightCellSize)
 {
 	_GlobalPos = vGlobalPos;
@@ -319,7 +319,7 @@ void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& arr
 					break;
 				}
 			if (bPortalInCluster)
-			{				
+			{
 				_Portals[i].setCluster(&_ClusterInfos[j]);
 				_ClusterInfos[j].link (&_Portals[i]);
 			}
@@ -367,8 +367,8 @@ void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& arr
 
 
 // ***************************************************************************
-void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& array, 
-							const std::vector<CCluster>& Clusters, 
+void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& array,
+							const std::vector<CCluster>& Clusters,
 							const std::vector<CPortal>& Portals)
 {
 	// empty pointLightList
@@ -379,8 +379,8 @@ void CInstanceGroup::build (const CVector &vGlobalPos, const TInstanceArray& arr
 
 
 // ***************************************************************************
-void CInstanceGroup::retrieve (CVector &vGlobalPos, TInstanceArray& array, 
-				std::vector<CCluster>& Clusters, 
+void CInstanceGroup::retrieve (CVector &vGlobalPos, TInstanceArray& array,
+				std::vector<CCluster>& Clusters,
 				std::vector<CPortal>& Portals,
 				std::vector<CPointLightNamed> &pointLightList) const
 {
@@ -410,7 +410,7 @@ void CInstanceGroup::serial (NLMISC::IStream& f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// Serial a header
 	f.serialCheck ((uint32)'TPRG');
 
@@ -540,7 +540,7 @@ bool CInstanceGroup::addToScene (CScene& scene, IDriver *driver, uint selectedTe
 
 	uint32 i, j;
 
-	// Test if portals are linked to their 2 clusters 
+	// Test if portals are linked to their 2 clusters
 	for (i = 0; i < _Portals.size(); ++i)
 	for (j = 0; j < 2; ++j)
 	{
@@ -549,7 +549,7 @@ bool CInstanceGroup::addToScene (CScene& scene, IDriver *driver, uint selectedTe
 			nlwarning("Portal %d (name:%s) is not linked to 2 clusters. Instance Group Not Added To Scene.", i, _Portals[i].getName().c_str());
 		}
 	}
-	
+
 	_Instances.resize (_InstancesInfos.size(), NULL);
 
 	if (_IGAddBeginCallback)
@@ -603,10 +603,10 @@ void CInstanceGroup::getShapeName (uint instanceIndex, std::string &shapeName) c
 	// If there is a callback added to this instance group then transform
 	// the name of the shape to load.
 	if (_TransformName != NULL && !rInstanceInfo.InstanceName.empty())
-	{												
+	{
 		shapeName = _TransformName->transformName (instanceIndex, rInstanceInfo.InstanceName, rInstanceInfo.Name);
 	}
-	
+
 	toLower(shapeName);
 	if (!shapeName.empty() && shapeName.find('.') == std::string::npos)
 		shapeName += ".shape";
@@ -626,7 +626,7 @@ bool CInstanceGroup::addToSceneWhenAllShapesLoaded (CScene& scene, IDriver *driv
 		if (!rInstanceInfo.DontAddToScene)
 		{
 			if (_Instances[i])
-			{				
+			{
 				_Instances[i]->setPos (rInstanceInfo.Pos);
 				_Instances[i]->setRotQuat (rInstanceInfo.Rot);
 				_Instances[i]->setScale (rInstanceInfo.Scale);
@@ -637,12 +637,12 @@ bool CInstanceGroup::addToSceneWhenAllShapesLoaded (CScene& scene, IDriver *driv
 					_Instances[i]->hide();
 
 				if (scene.getWaterCallback())
-				{				
+				{
 					CWaterModel *wm = dynamic_cast<CWaterModel *>(_Instances[i]);
 					if (wm)
 					{
 						const CWaterShape *ws = safe_cast<const CWaterShape *>((const IShape *) wm->Shape);
-						scene.getWaterCallback()->waterSurfaceAdded(ws->getShape(), wm->getMatrix(), ws->isSplashEnabled(), ws->getUseSceneWaterEnvMap(0) || ws->getUseSceneWaterEnvMap(1)); 
+						scene.getWaterCallback()->waterSurfaceAdded(ws->getShape(), wm->getMatrix(), ws->isSplashEnabled(), ws->getUseSceneWaterEnvMap(0) || ws->getUseSceneWaterEnvMap(1));
 					}
 				}
 				// Static Light Setup
@@ -852,15 +852,15 @@ bool CInstanceGroup::addToSceneAsync (CScene& scene, IDriver *driver, uint selec
 		{
 			string shapeName = rInstanceInfo.Name;
 			if (_TransformName != NULL && !rInstanceInfo.InstanceName.empty())
-			{												
+			{
 				shapeName = _TransformName->transformName (i, rInstanceInfo.InstanceName, rInstanceInfo.Name);
 			}
-			
+
 			toLower(shapeName);
 
 			if (!shapeName.empty() && shapeName.find('.') == std::string::npos)
 				shapeName += ".shape";
-			
+
 
 			if (allShapesToLoad.find(shapeName) == allShapesToLoad.end())
 			{
@@ -901,15 +901,15 @@ void CInstanceGroup::stopAddToSceneAsync ()
 			bool getShapeName = true;
 
 			if (_TransformName != NULL && !rInstanceInfo.InstanceName.empty())
-			{												
+			{
 				shapeName = _TransformName->transformName (i, rInstanceInfo.InstanceName, rInstanceInfo.Name);
 				if (shapeName != rInstanceInfo.Name)
 					getShapeName = false;
 			}
 
-			
+
 			if (getShapeName)
-			{			
+			{
 				if (rInstanceInfo.Name.find('.') == std::string::npos)
 					shapeName = rInstanceInfo.Name + ".shape";
 				else	// extension has already been added
@@ -941,7 +941,7 @@ CInstanceGroup::TState CInstanceGroup::getAddToSceneState ()
 // Search in the hierarchy of ig the most low level (child) ig that contains the clusters that
 // are flagged to be visible from father or which father is visible
 bool CInstanceGroup::linkToParent (CInstanceGroup *pFather)
-{		
+{
 	uint32 i, j;
 	bool ret;
 /*
@@ -952,11 +952,11 @@ bool CInstanceGroup::linkToParent (CInstanceGroup *pFather)
 			if (linkToParent(pFather->_ClusterInstances[i]->Children[j]->Group))
 				return true;
 		}
-	}	
+	}
 */
 	ret = false;
 	if (this != pFather)
-	{		
+	{
 		for (j = 0; j < this->_ClusterInstances.size(); ++j)
 		{
 			if ((this->_ClusterInstances[j]->FatherVisible) ||
@@ -968,7 +968,7 @@ bool CInstanceGroup::linkToParent (CInstanceGroup *pFather)
 					if (pFather->_ClusterInstances[i]->isIn(this->_ClusterInstances[j]->getBBox()))
 					{
 						if (this->_ClusterInstances[j]->Father != pFather->_ClusterInstances[i]) // and not already son of the father cluster ?
-						{						
+						{
 							// unlink from parent
 							this->_ClusterInstances[j]->unlinkFromParent();
 
@@ -1021,7 +1021,7 @@ bool CInstanceGroup::removeFromScene (CScene& scene)
 
 			nlassert (j!=_ClusterInstances.size());
 			_Portals[i]._Clusters[k] = &_ClusterInfos[j];
-		}	
+		}
 	}
 
 	// Remove clusters
@@ -1308,7 +1308,7 @@ void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *tx
 	lineMat.setZWrite(false);
 	lineMat.setDoubleSided(true);
 	lineMat.setColor(CRGBA(0,0,0,opacity));
-	
+
 
 	// The geometry for each cluster
 	CVertexBuffer	vb;
@@ -1330,7 +1330,7 @@ void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *tx
 	clusterLines.setNumIndexes(maxVertices*2);
 	portalTriangles.setNumIndexes(maxVertices*3);
 	portalLines.setNumIndexes(maxVertices*2);
-	
+
 	// setup identity matrix
 	drv->setupModelMatrix(CMatrix::Identity);
 
@@ -1477,7 +1477,7 @@ void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *tx
 						// add the vertices
 						for(k=0;k<portalVerts.size();k++)
 							vba.setVertexCoord(iVert+k, portalVerts[k]);
-						
+
 						// add the triangles
 						for(k=0;k<portalVerts.size()-2;k++)
 						{
@@ -1487,7 +1487,7 @@ void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *tx
 								numTriIndexes += 3;
 							}
 						}
-						
+
 						// add the lines
 						for(k=0;k<portalVerts.size();k++)
 						{

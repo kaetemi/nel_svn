@@ -65,7 +65,7 @@ CTcpSock::CTcpSock( bool logging ) :
 
 
 /*
- * Construct a CTcpSocket object using an already connected socket 
+ * Construct a CTcpSocket object using an already connected socket
  */
 CTcpSock::CTcpSock( SOCKET sock, const CInetAddress& remoteaddr ) :
 	CSock( sock, remoteaddr )
@@ -88,7 +88,7 @@ void CTcpSock::connect( const CInetAddress& addr )
 //		LNETL0_DEBUG( "LNETL0: Closing socket %d before reconnecting", _Sock );
 	    }
 	  close();
-	}	
+	}
 	createSocket( SOCK_STREAM, IPPROTO_TCP );
 
 	// activate keep alive
@@ -188,7 +188,7 @@ void CTcpSock::connectWithCustomWindowSize( const CInetAddress& addr, int window
 	{
 		throw ESocket( "setWindowSize failed" );
 	}
-	
+
 	// Connection
 	CSock::connect( addr );
 }

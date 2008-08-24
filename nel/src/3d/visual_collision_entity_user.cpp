@@ -28,7 +28,7 @@
 #include "nel/misc/hierarchical_timer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 H_AUTO_DECL( NL3D_UI_VisualCollisionEntity )
@@ -96,7 +96,7 @@ bool	CVisualCollisionEntityUser::getSnapToRenderedTesselation() const
 }
 
 
-bool	CVisualCollisionEntityUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos, std::vector<CPointLightInfluence> &pointLightList, 
+bool	CVisualCollisionEntityUser::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos, std::vector<CPointLightInfluence> &pointLightList,
 	uint8 &sunContribution, NLMISC::CRGBA &localAmbient)
 {
 	NL3D_HAUTO_LIGHT_VCE;

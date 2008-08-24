@@ -33,7 +33,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -123,7 +123,7 @@ bool			UShape::getDefaultOpacity() const
 	{
 		return mesh->getDefaultOpacity();
 	}
-	
+
 	return false;
 }
 
@@ -135,7 +135,7 @@ bool			UShape::getDefaultTransparency() const
 	{
 		return mesh->getDefaultTransparency();
 	}
-	
+
 	return false;
 }
 

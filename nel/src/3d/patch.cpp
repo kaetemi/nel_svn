@@ -45,7 +45,7 @@ using	namespace	NLMISC;
 // Define this to remove user color (debug)
 // #define NEL_FORCE_NO_USER_COLOR
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -154,7 +154,7 @@ void			CPatch::release()
 		Zone->_PatchOldRenderClipped.set( PatchId, true);
 	}
 
-	// the pathc is uncompiled. must do it after clearTessBlocks(), because may use it 
+	// the pathc is uncompiled. must do it after clearTessBlocks(), because may use it
 	// for vegetable manager, and for updateLighting
 	Zone= NULL;
 
@@ -221,7 +221,7 @@ void			CPatch::buildBBoxFromBezierPatch(const CBezierPatch &p, CAABBox &ret) con
 	// Because of the structure of CAABBox, extend() is not fast enough for us. first compute bmin, bmax,
 	// then compute the bbox.
 	CVector		bmin= p.Vertices[0];
-	CVector		bmax= bmin; 
+	CVector		bmax= bmin;
 
 	sint			i;
 	for(i=0;i<4;i++)
@@ -275,7 +275,7 @@ void		CPatch::addTrianglesInBBox(CPatchIdent paId, const CAABBox &bbox, std::vec
 
 
 // ***************************************************************************
-void		CPatch::addTrianglesInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel, 
+void		CPatch::addTrianglesInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tessLevel,
 		const CBezierPatch &pa, uint8 s0, uint8 s1, uint8 t0, uint8 t1) const
 {
 	uint8	lenS=s1-s0, lenT=t1-t0;
@@ -509,7 +509,7 @@ void		CPatch::addPatchBlocksInBBox(CPatchIdent paId, const CAABBox &bbox, std::v
 
 
 // ***************************************************************************
-void		CPatch::addPatchBlocksInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CPatchBlockIdent> &paBlockIds, 
+void		CPatch::addPatchBlocksInBBoxRecurs(CPatchIdent paId, const CAABBox &bbox, std::vector<CPatchBlockIdent> &paBlockIds,
 		const CBezierPatch &pa, uint8 s0, uint8 s1, uint8 t0, uint8 t1) const
 {
 	uint8	lenS=s1-s0, lenT=t1-t0;
@@ -943,7 +943,7 @@ void			CPatch::computeTbTm(uint &numtb, uint &numtm, uint ts, uint tt)
 	sint	it= tt&1;
 	ts>>=1;
 	tt>>=1;
-	
+
 	numtb= tt*(uint)(OrderS>>1) + ts;
 	numtm= it*2+is;
 }
@@ -978,12 +978,12 @@ void			CPatch::appendTileMaterialToRenderList(CTileMaterial *tm)
 	{
 		createVegetableBlock(numtb, tm->TileS, tm->TileT);
 	}
-	const std::vector<ULandscapeTileCallback *> &tc = getLandscape()->getTileCallbacks();	
+	const std::vector<ULandscapeTileCallback *> &tc = getLandscape()->getTileCallbacks();
 	if (!tc.empty())
 	{
 		CBezierPatch	*bpatch= unpackIntoCache();
 		CTileAddedInfo tai;
-		//		
+		//
 		tai.Corners[0] = bpatch->eval((float) tm->TileS / OrderS, (float) tm->TileT / OrderT);
 		tai.Corners[1] = bpatch->eval((tm-> TileS + 1.f) / OrderS, (float) tm->TileT / OrderT);
 		tai.Corners[2] = bpatch->eval( (tm-> TileS + 1.f) / OrderS, (tm->TileT + 1.f) / OrderT);
@@ -996,7 +996,7 @@ void			CPatch::appendTileMaterialToRenderList(CTileMaterial *tm)
 		for(std::vector<ULandscapeTileCallback *>::const_iterator it = tc.begin(); it != tc.end(); ++it)
 		{
 			(*it)->tileAdded(tai);
-		}		
+		}
 	}
 }
 // ***************************************************************************
@@ -1029,14 +1029,14 @@ void			CPatch::removeTileMaterialFromRenderList(CTileMaterial *tm)
 	// dec ref the context, deleting it if needed.
 	decRefDLMContext();
 
-	const std::vector<ULandscapeTileCallback *> &tc = getLandscape()->getTileCallbacks();	
+	const std::vector<ULandscapeTileCallback *> &tc = getLandscape()->getTileCallbacks();
 	if (!tc.empty())
 	{
 		//
 		for(std::vector<ULandscapeTileCallback *>::const_iterator it = tc.begin(); it != tc.end(); ++it)
 		{
 			(*it)->tileRemoved((uint64) tm); // pointer to tile material serves as a unique identifier
-		}		
+		}
 	}
 }
 
@@ -1047,14 +1047,14 @@ void			CPatch::appendFarVertexToRenderList(CTessFarVertex *fv)
 	TFarVertType	type;
 	uint			numtb;
 	getNumTessBlock(fv->PCoord, type, numtb);
-	
-	
+
+
 	if(type==FVMasterBlock || type==FVTessBlockEdge)
 	{
 		fv->OwnerBlock= &MasterBlock;
 		MasterBlock.FarVertexList.append(fv);
 	}
-	else 
+	else
 	{
 		// Alloc if necessary the TessBlocks.
 		addRefTessBlocks();
@@ -1069,14 +1069,14 @@ void			CPatch::removeFarVertexFromRenderList(CTessFarVertex *fv)
 	TFarVertType	type;
 	uint			numtb;
 	getNumTessBlock(fv->PCoord, type, numtb);
-	
-	
+
+
 	if(type==FVMasterBlock || type==FVTessBlockEdge)
 	{
 		MasterBlock.FarVertexList.remove(fv);
 		fv->OwnerBlock= NULL;
 	}
-	else 
+	else
 	{
 		TessBlocks[numtb].FarVertexList.remove(fv);
 		fv->OwnerBlock= NULL;
@@ -1325,7 +1325,7 @@ void			CPatch::compile(CZone *z, uint patchId, uint8 orderS, uint8 orderT, CTess
 	TileLimitLevel= pmin*2 + pmax-pmin;
 	// A TessBlock is a 2*2 tile. This simple formula works because patch 1xX are illegal.
 	TessBlockLimitLevel= TileLimitLevel-2;
-	// This tell us when the tess face is "un-rectangular-ed" (to say a square). Before, it is a "rectangular" face, 
+	// This tell us when the tess face is "un-rectangular-ed" (to say a square). Before, it is a "rectangular" face,
 	// which has a strange fxxxxxg split.
 	// If patch is square, then SquareLimitLevel=0 (ok!!).
 	SquareLimitLevel= pmax-pmin;
@@ -1513,7 +1513,7 @@ void			CPatch::averageTesselationVertices()
 	nlassert(Son1);
 
 	// Recompute the BaseVertices. This is usefull for Pacs.
-	// Because CLandscape::averageTesselationVertices() is made on a strict order for patchs (map of zones, then 
+	// Because CLandscape::averageTesselationVertices() is made on a strict order for patchs (map of zones, then
 	// array of patchs), we are sure to overwrite BaseVertices in this order.
 	CTessVertex *a= BaseVertices[0];
 	CTessVertex *b= BaseVertices[1];
@@ -1614,7 +1614,7 @@ void			CPatch::serial(NLMISC::IStream &f)
 	f.serial (Tangents[0], Tangents[1], Tangents[2], Tangents[3]);
 	f.serial (Tangents[4], Tangents[5], Tangents[6], Tangents[7]);
 	f.xmlPop ();
-	
+
 	f.xmlSerial (Interiors[0], Interiors[1], Interiors[2], Interiors[3], "INTERIORS");
 
 	f.xmlPush ("TILES");
@@ -1702,7 +1702,7 @@ void			CPatch::serial(NLMISC::IStream &f)
 		}
 	}
 
-	// if read a too old version, 
+	// if read a too old version,
 	if(ver<6 && f.isReading())
 	{
 		// reset tileElements vegetableState to AboveWater.
@@ -1961,15 +1961,15 @@ void			CPatch::bind(CBindInfo	Edges[4], bool rebind)
 		else if(bind.NPatchs==5)
 		{
 			/* I am binded to a bigger patch. There is 2 cases:
-				- rebind=false. This is an original Bind of all patch of a zone. 
-					If my bigger patch has not be bound, I CANNOT do rebind faces, since my bigger neighbor patch is not 
+				- rebind=false. This is an original Bind of all patch of a zone.
+					If my bigger patch has not be bound, I CANNOT do rebind faces, since my bigger neighbor patch is not
 					correctly tesselated.
 					Wait for the BiggerPatch do the correct bind (see above)
-				- rebind=true. This is possible for a patch in border of zone to have some bind 1/X (even if Bind 1/X 
+				- rebind=true. This is possible for a patch in border of zone to have some bind 1/X (even if Bind 1/X
 					is not possible across zone, it IS possible that a patch containing a bind 1/X NOT ON EDGE OF ZONE
 					exist (and they do exist...))
-				
-				If neighbor bind has been done (must be the case for rebind), MUST do the rebind 
+
+				If neighbor bind has been done (must be the case for rebind), MUST do the rebind
 					(because of CZoneBindPatch() which first unbind() this, then bind())
 			*/
 			// if rebind, my neigbhor bind should be done
@@ -2062,7 +2062,7 @@ void			CPatch::forceMergeAtTileLevel()
 CPatchRdrPass	*CPatch::getTileRenderPass(sint tileId, sint pass)
 {
 	// All but lightmap.
-	nlassert(pass==NL3D_TILE_PASS_RGB0 || pass==NL3D_TILE_PASS_RGB1 || pass==NL3D_TILE_PASS_RGB2 || 
+	nlassert(pass==NL3D_TILE_PASS_RGB0 || pass==NL3D_TILE_PASS_RGB1 || pass==NL3D_TILE_PASS_RGB2 ||
 		pass==NL3D_TILE_PASS_ADD);
 
 	bool	additive= (pass==NL3D_TILE_PASS_ADD);
@@ -2102,7 +2102,7 @@ CPatchRdrPass	*CPatch::getTileRenderPass(sint tileId, sint pass)
 void			CPatch::getTileUvInfo(sint tileId, sint pass, bool alpha, uint8 &orient, CVector &uvScaleBias, bool &is256x256, uint8 &uvOff)
 {
 	// All but lightmap.
-	nlassert(pass==NL3D_TILE_PASS_RGB0 || pass==NL3D_TILE_PASS_RGB1 || pass==NL3D_TILE_PASS_RGB2 || 
+	nlassert(pass==NL3D_TILE_PASS_RGB0 || pass==NL3D_TILE_PASS_RGB1 || pass==NL3D_TILE_PASS_RGB2 ||
 		pass==NL3D_TILE_PASS_ADD);
 
 	bool	additive= (pass==NL3D_TILE_PASS_ADD);
@@ -2256,9 +2256,9 @@ void CPatch::setupColorsFromTileFlags(const NLMISC::CRGBA colors[4])
 	{
 		for (uint t = 0; t <= OrderT; ++t)
 		{
-			uint index = std::min(t, (uint) (OrderT - 1)) * OrderS 
+			uint index = std::min(t, (uint) (OrderT - 1)) * OrderS
 				         + std::min(s, (uint) (OrderS - 1));
-			TileColors[s + t * (OrderS + 1)].Color565 = colors[(uint) (Tiles[index].getVegetableState())].get565();					
+			TileColors[s + t * (OrderS + 1)].Color565 = colors[(uint) (Tiles[index].getVegetableState())].get565();
 		}
 	}
 }
@@ -2312,7 +2312,7 @@ uint32	CPatch::countNumTriFar0() const
 		// if block visible, render
 		if( tblock.visibleFar0() )
 		{
-			numIndex += *(tblock.Far0FaceVector);				
+			numIndex += *(tblock.Far0FaceVector);
 		}
 	}
 	return numIndex;
@@ -2330,10 +2330,10 @@ uint32	CPatch::countNumTriFar1() const
 		// if block visible, render
 		if( tblock.visibleFar1() )
 		{
-			numIndex += *(tblock.Far1FaceVector);				
+			numIndex += *(tblock.Far1FaceVector);
 		}
 	}
-	return numIndex;	
+	return numIndex;
 }
 
 

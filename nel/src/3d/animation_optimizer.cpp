@@ -37,7 +37,7 @@ using	namespace NLMISC;
 using	namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -131,7 +131,7 @@ void		CAnimationOptimizer::optimize(const CAnimation &animIn, CAnimation &animOu
 	const vector<string>	&shapes= animIn.getSSSShapes();
 	for(uint i=0;i<shapes.size();i++)
 		animOut.addSSSShape(shapes[i]);
-	
+
 	// Set min animation length
 	animOut.setMinEndTime (animIn.getEndTime ());
 	nlassert (animOut.getEndTime() == animIn.getEndTime());
@@ -161,13 +161,13 @@ bool		CAnimationOptimizer::isTrackOptimisable(const ITrack	*trackIn)
 	nlassert(trackIn);
 
 	// If the track is a Linear, Bezier or a TCB track, suppose we can optimize it. Constant may not be interressant....
-	if(	dynamic_cast<const CTrackKeyFramerTCBQuat*>(trackIn) || 
+	if(	dynamic_cast<const CTrackKeyFramerTCBQuat*>(trackIn) ||
 		dynamic_cast<const CTrackKeyFramerBezierQuat*>(trackIn) ||
 		dynamic_cast<const CTrackKeyFramerLinearQuat*>(trackIn) )
 		return true;
 
 	// If the track is a Linear, Bezier or a TCB track, suppose we can optimize it. Constant may not be interressant....
-	if(	dynamic_cast<const CTrackKeyFramerTCBVector*>(trackIn) || 
+	if(	dynamic_cast<const CTrackKeyFramerTCBVector*>(trackIn) ||
 		dynamic_cast<const CTrackKeyFramerBezierVector*>(trackIn) ||
 		dynamic_cast<const CTrackKeyFramerLinearVector*>(trackIn) )
 		return true;
@@ -184,7 +184,7 @@ ITrack		*CAnimationOptimizer::optimizeTrack(const ITrack	*trackIn)
 	float endTime= trackIn->getEndTime();
 	nlassert(endTime>=beginTime);
 
-	// Get num Sample 
+	// Get num Sample
 	uint	numSamples= (uint)ceil( (endTime-beginTime)*_SampleFrameRate);
 	numSamples= max(1U, numSamples);
 	nlassert(numSamples<65535);

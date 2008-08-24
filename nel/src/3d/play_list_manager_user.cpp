@@ -28,7 +28,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -37,7 +37,7 @@ UPlayList	*CPlayListManagerUser::createPlayList(UAnimationSet	*animSet)
 {
 	if(!animSet)
 		nlerror("createPlayList(): animSet==NULL");
-	
+
 	CPlayListUser	*pl= new CPlayListUser( safe_cast<CAnimationSetUser*>(animSet)->_AnimationSet );
 	_PlayLists.insert(pl);
 
@@ -61,7 +61,7 @@ void		CPlayListManagerUser::deletePlayList(UPlayList *playList)
 void		CPlayListManagerUser::animate(TGlobalAnimationTime	time)
 {
 		H_AUTO( NL3D_Render_PlayListMgr_Animate );
-	
+
 	_PlayListManager.animate(time);
 }
 
@@ -70,7 +70,7 @@ void		CPlayListManagerUser::animate(TGlobalAnimationTime	time)
 void		CPlayListManagerUser::setup(TGlobalAnimationTime	time)
 {
 	H_AUTO( NL3D_Render_PlayListMgr_Setup );
-	
+
 	_PlayListManager.setup(time);
 }
 

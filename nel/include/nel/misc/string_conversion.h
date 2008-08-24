@@ -51,7 +51,7 @@ struct CUnsensitiveStrLessPred
   *
   * // The conversion table
   * static const CStringConversion<TMyType>::CPair stringTable [] =
-  * { 
+  * {
   *   { "Foo", Foo },
   *   { "Bar", Bar },
   *   { "FooBar", FooBar }
@@ -70,7 +70,7 @@ struct CUnsensitiveStrLessPred
   *      \see NL_END_STRING_CONVERSION_TABLE
   *
   *
-  * NB: by default this class behaves in a case unsensitive way. To change this, just change the 'Pred' template parameter 
+  * NB: by default this class behaves in a case unsensitive way. To change this, just change the 'Pred' template parameter
   *     to std::less<std::string>
   *
   * \author Nicolas Vizerie
@@ -95,7 +95,7 @@ public:
 
 	// add a pair in the array
 	void insert(const char *str, TDestType value);
-		
+
 	// From a string, retrieve the associated value, or the 'notFoundValue' provided to the ctor of this object if the string wasn't found
 	const TDestType &fromString(const std::string &str) const;
 
@@ -120,7 +120,7 @@ private:
 /** This macro helps building a string conversion table
   * Example of use :
   *
-  * // The enumerated type for which a conversion should be defined  
+  * // The enumerated type for which a conversion should be defined
   * enum TMyType { Foo = 0, Bar, FooBar, Unknown };
   *
   * // The conversion table
@@ -133,11 +133,11 @@ private:
   * // Now, we can use the 'myConversionTable' intance
   *
   * std::string str = myConversionTable.toString(Bar)      // returns "Bar"
-  * 
+  *
   */
 #define NL_BEGIN_STRING_CONVERSION_TABLE(__type)                                               \
 static const NLMISC::CStringConversion<__type>::CPair __type##_nl_string_conversion_table[] =          \
-{                                                                                              
+{
 #define NL_END_STRING_CONVERSION_TABLE(__type, __tableName, __defaultValue)                    \
 };                                                                                             \
 NLMISC::CStringConversion<__type>                                                                \
@@ -146,7 +146,7 @@ __tableName(__type##_nl_string_conversion_table, sizeof(__type##_nl_string_conve
 #define NL_STRING_CONVERSION_TABLE_ENTRY(val) { #val, val},
 
 
-	
+
 
 
 
@@ -183,7 +183,7 @@ const DestType &CStringConversion<DestType, Pred>::fromString(const std::string 
 {
 	typename TString2DestType::const_iterator it = _String2DestType.find(str);
 	if (it == _String2DestType.end())
-	{		
+	{
 		return _NotFoundValue;
 	}
 	else
@@ -199,7 +199,7 @@ const std::string &CStringConversion<DestType, Pred>::toString(const DestType &v
 	typename TDestType2String::const_iterator it = _DestType2String.find(value);
 	if (it == _DestType2String.end())
 	{
-		static std::string emptyString;		
+		static std::string emptyString;
 		return emptyString;
 	}
 	else

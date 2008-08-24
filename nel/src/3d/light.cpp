@@ -27,7 +27,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -56,10 +56,10 @@ void CLight::setupDirectional (const CRGBA& ambiant, const CRGBA& diffuse, const
 	setExponent(0.f);
 	setCutoff(0.f);
 }
-	
+
 // ***************************************************************************
 
-void CLight::setupPointLight (const CRGBA& ambiant, const CRGBA& diffuse, const CRGBA& specular, const CVector& position, 
+void CLight::setupPointLight (const CRGBA& ambiant, const CRGBA& diffuse, const CRGBA& specular, const CVector& position,
 						const CVector& direction, float constant, float linear, float quadratic)
 {
 	// Set the mode
@@ -86,7 +86,7 @@ void CLight::setupPointLight (const CRGBA& ambiant, const CRGBA& diffuse, const 
 
 // ***************************************************************************
 
-void CLight::setupSpotLight (const CRGBA& ambiant, const CRGBA& diffuse, const CRGBA& specular, const CVector& position, 
+void CLight::setupSpotLight (const CRGBA& ambiant, const CRGBA& diffuse, const CRGBA& specular, const CVector& position,
 						const CVector& direction, float exponent, float cutoff, float constant, float linear, float quadratic)
 {
 	// Set the mode
@@ -119,7 +119,7 @@ void CLight::setupAttenuation (float farAttenuationBegin, float farAttenuationEn
 		The old compute had too smooth decrease, regarding this (at farAttenuationEnd, the light could be
 		attenuated by a factor of 0.7 (instead of 0) and slowly decreased).
 	*/
-	
+
 	// limit case
 	if(farAttenuationEnd<=0)
 	{
@@ -137,7 +137,7 @@ void CLight::setupAttenuation (float farAttenuationBegin, float farAttenuationEn
 
 		/*
 			With GL/D3D   'att=1/(c+l*r+q*r2)'  formula, I think it is impossible to simulate correctly
-			farAttenuationBegin (very big decrase if for instance farAttenuationBegin is near farAttenuationEnd), 
+			farAttenuationBegin (very big decrase if for instance farAttenuationBegin is near farAttenuationEnd),
 			hence I simulate it very badly by multiplying the farAttenuationEnd by some factor
 		*/
 		float	factor= 1.f;
@@ -146,7 +146,7 @@ void CLight::setupAttenuation (float farAttenuationBegin, float farAttenuationEn
 		else if(farAttenuationBegin>0)
 			factor= 1.f + 2*farAttenuationBegin/farAttenuationEnd;
 		farAttenuationEnd*= factor;
-		
+
 		// scale according to farAttenuationEnd.
 		_ConstantAttenuation= constant;
 		_LinearAttenuation= linear/farAttenuationEnd;

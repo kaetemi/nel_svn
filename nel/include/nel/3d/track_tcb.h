@@ -71,7 +71,7 @@ protected:
 				float	e0= it->second.EaseFrom;
 				float	e1= next->second.EaseTo;
 				float	s =  e0 + e1;
-				
+
 				// "normalize".
 				if (s > 1.0f)
 				{
@@ -116,10 +116,10 @@ protected:
 	}
 
 	// compute hermite factors.
-	void computeHermiteBasis(float d, float hb[4]) 
+	void computeHermiteBasis(float d, float hb[4])
 	{
 		float d2,d3,a;
-		
+
 		d2 = d*d;
 		d3 = d2*d;
 		a  = 3.0f*d2 - 2.0f*d3;
@@ -131,7 +131,7 @@ protected:
 
 
 	// compute TCB tangents factors.
-	void computeTCBFactors(const CKeyT &key, float timeBefore, float time, float timeAfter, 
+	void computeTCBFactors(const CKeyT &key, float timeBefore, float time, float timeAfter,
 		float rangeDelta, bool firstKey, bool endKey, bool isLoop, float &ksm, float &ksp, float &kdm, float &kdp)
 	{
 		float fp,fn;
@@ -217,20 +217,20 @@ protected:
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<T>	&resultVal= static_cast<CAnimatedValueBlendable<T>&>(result);
-		
+
 		if(previous && next)
 		{
 			// lerp from previous to cur.
 			date-= datePrevious;
 			date*= previous->OODeltaTime;
 			NLMISC::clamp(date, 0,1);
-			
+
 			date = ease(previous, date);
 
 			float hb[4];
 			this->computeHermiteBasis(date, hb);
-			copyToValue(resultVal.Value, 
-				previous->Value*hb[0] + next->Value*hb[1] + 
+			copyToValue(resultVal.Value,
+				previous->Value*hb[0] + next->Value*hb[1] +
 				previous->TanFrom*hb[2] + next->TanTo*hb[3]);
 		}
 		else
@@ -280,8 +280,8 @@ protected:
 				// NB: we are the last if itNext==_MapKey.begin().
 				if(this->getLoopMode() || (it!=this->_MapKey.begin() && itNext!=this->_MapKey.begin()) )
 				{
-					computeTCBKey(itPrev->second, it->second, itNext->second, 
-						itPrev->first, it->first, itNext->first, rangeDelta, 
+					computeTCBKey(itPrev->second, it->second, itNext->second,
+						itPrev->first, it->first, itNext->first, rangeDelta,
 						it==this->_MapKey.begin(), itNext==this->_MapKey.begin(), this->getLoopMode());
 				}
 
@@ -315,7 +315,7 @@ protected:
 private:
 
 
-	void computeTCBKey(CKeyT &keyBefore, CKeyT &key, CKeyT &keyAfter, float timeBefore, float time, float timeAfter, 
+	void computeTCBKey(CKeyT &keyBefore, CKeyT &key, CKeyT &keyAfter, float timeBefore, float time, float timeAfter,
 		float rangeDelta, bool firstKey, bool endKey, bool isLoop)
 	{
 		float	ksm,ksp,kdm,kdp;
@@ -339,7 +339,7 @@ private:
 	{
 		float f0, f1;
 		TKeyValueType	dv;
-		
+
 		f0 = 1.0f - key0.Tension;
 		f1 = 1.0f - key1.Tension;
 		dv = key1.Value - key0.Value;
@@ -375,7 +375,7 @@ private:
  * \author Nevrax France
  * \date 2001
  */
-template<> class CTrackKeyFramerTCB<CKeyTCBQuat, NLMISC::CAngleAxis> : public ITrackKeyFramer<CKeyTCBQuat>, 
+template<> class CTrackKeyFramerTCB<CKeyTCBQuat, NLMISC::CAngleAxis> : public ITrackKeyFramer<CKeyTCBQuat>,
 	private CTCBTools<CKeyTCBQuat, NLMISC::CAngleAxis, std::map<TAnimationTime, CKeyTCBQuat> >
 {
 public:
@@ -384,12 +384,12 @@ public:
 	// @{
 
 	/// evalKey (runtime).
-	virtual void evalKey (	const CKeyTCBQuat* previous, const CKeyTCBQuat* next, 
+	virtual void evalKey (	const CKeyTCBQuat* previous, const CKeyTCBQuat* next,
 							TAnimationTime datePrevious, TAnimationTime dateNext,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueQuat	&resultVal= static_cast<CAnimatedValueQuat&>(result);
-		
+
 		if(previous && next)
 		{
 			// lerp from previous to cur.
@@ -483,7 +483,7 @@ public:
 		for(;it!=_MapKey.end();)
 		{
 			// NB: we are the last key if itNext==_MapKey.begin().
-			computeTCBKey(itPrev->second, it->second, itNext->second, 
+			computeTCBKey(itPrev->second, it->second, itNext->second,
 				itPrev->first, it->first, itNext->first, rangeDelta, it==_MapKey.begin(), itNext==_MapKey.begin(), getLoopMode());
 
 			// Next key!!
@@ -503,11 +503,11 @@ public:
 // *****************
 private:
 
-	void computeTCBKey(CKeyTCBQuat &keyBefore, CKeyTCBQuat &key, CKeyTCBQuat &keyAfter, float timeBefore, float time, float timeAfter, 
-		float rangeDelta, bool firstKey, bool endKey, bool isLoop) 
+	void computeTCBKey(CKeyTCBQuat &keyBefore, CKeyTCBQuat &key, CKeyTCBQuat &keyAfter, float timeBefore, float time, float timeAfter,
+		float rangeDelta, bool firstKey, bool endKey, bool isLoop)
 	{
 		CQuat  qp, qm;
-		
+
 		// compute qm.
 		if (!firstKey || isLoop)
 		{
@@ -526,7 +526,7 @@ private:
 				qm = CQuat::lnDif(qprev, key.Quat);
 			}
 		}
-		
+
 		// compute qp.
 		if (!endKey || isLoop)
 		{
@@ -545,7 +545,7 @@ private:
 				qp = CQuat::lnDif(key.Quat, qnext);
 			}
 		}
-		
+
 		// not loop mgt.
 		if (firstKey && !isLoop)
 			qm = qp;

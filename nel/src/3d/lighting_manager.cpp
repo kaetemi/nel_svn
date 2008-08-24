@@ -130,7 +130,7 @@ void		CLightingManager::setLightTransitionThreshold(float lightTransitionThresho
 }
 
 
-	
+
 // ***************************************************************************
 void		CLightingManager::clearDynamicLights()
 {
@@ -251,7 +251,7 @@ struct	CSortLight
 };
 
 // ***************************************************************************
-void		CLightingManager::computeModelLightContributions(NLMISC::CRGBA sunAmbient, CTransform *model, CLightContribution &lightContrib, 
+void		CLightingManager::computeModelLightContributions(NLMISC::CRGBA sunAmbient, CTransform *model, CLightContribution &lightContrib,
 	ILogicInfo *logicInfo)
 {
 	sint	i;
@@ -391,10 +391,10 @@ void		CLightingManager::computeModelLightContributions(NLMISC::CRGBA sunAmbient,
 		// Any light under this minInfluence+deltaMinInfluence will be smoothly darken.
 		float	minInfluenceStart = minInfluence + deltaMinInfluence;
 		float	OOdeltaMinInfluence= 1.0f / deltaMinInfluence;
-		/* NB: this is not an error if we have only 3 light for example (assuming _MaxLightContribution=3), 
+		/* NB: this is not an error if we have only 3 light for example (assuming _MaxLightContribution=3),
 			and still have minInfluenceStart>0.
-			It's to have a continuity in the case of for example we have 3 lights in lightLists at frame T0, 
-			resulting in "doMerge=0"  and at frame T1 we have 4 lights, the farthest having an influence of 0 
+			It's to have a continuity in the case of for example we have 3 lights in lightLists at frame T0,
+			resulting in "doMerge=0"  and at frame T1 we have 4 lights, the farthest having an influence of 0
 			or nearly 0.
 		*/
 
@@ -468,14 +468,14 @@ void		CLightingManager::computeModelLightContributions(NLMISC::CRGBA sunAmbient,
 					float		attInf= pl->computeLinearAttenuation(modelPos, distToModel);
 					// Attenuate the color of the light by biLinear and distance/spot attenuation.
 					float		lightInf= attInf * bkupInf;
-					// Modulate also by the percentage to merge 
+					// Modulate also by the percentage to merge
 					lightInf*= lightToMergeWeight[j];
 					// Add the full ambient term of the light, attenuated by light attenuation and WeightMerge
 					mergedAmbient.R+= pl->getAmbient().R * lightInf;
 					mergedAmbient.G+= pl->getAmbient().G * lightInf;
 					mergedAmbient.B+= pl->getAmbient().B * lightInf;
 					// Add 0.25f of the diffuse term of the light, attenuated by light attenuation and WeightMerge
-					// mul by 0.25f, because this is the averaged contribution of the diffuse part of a 
+					// mul by 0.25f, because this is the averaged contribution of the diffuse part of a
 					// light to a sphere (do the maths...).
 					float	f= lightInf*0.25f;
 					mergedAmbient.R+= pl->getDiffuse().R * f;
@@ -488,7 +488,7 @@ void		CLightingManager::computeModelLightContributions(NLMISC::CRGBA sunAmbient,
 			// Setup the merged Light
 			CRGBA	amb;
 			sint	v;
-			// Because of floating point error, it appears that sometime result may be slightly below 0. 
+			// Because of floating point error, it appears that sometime result may be slightly below 0.
 			// => clamp necessary
 			v= NLMISC::OptFastFloor(mergedAmbient.R);	fastClamp8(v);	amb.R= v;
 			v= NLMISC::OptFastFloor(mergedAmbient.G);	fastClamp8(v);	amb.G= v;

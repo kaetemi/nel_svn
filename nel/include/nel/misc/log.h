@@ -56,7 +56,7 @@ public:
 	struct TDisplayInfo
 	{
 		TDisplayInfo() : Date(0), LogType(CLog::LOG_NO), ThreadId(0), FileName(NULL), Line(-1), FuncName(NULL) {}
-		
+
 		time_t				Date;
 		TLogType			LogType;
 		std::string			ProcessName;
@@ -86,7 +86,7 @@ public:
 
 	/// Returns true if the specified displayer is attached to the log object
 	bool attached (IDisplayer *displayer) const;
-	
+
 	/// Returns true if no displayer is attached
 	bool noDisplayer () const { return _Displayers.empty() && _BypassFilterDisplayers.empty(); }
 
@@ -139,15 +139,15 @@ public:
 	/// Display a string in decorated form to all attached displayers. Call setPosition() before. Releases the mutex.
 	void _display (const char *format, ...);
 	CHECK_TYPES2(void display, _display)
-	
+
 	/// Display a string with a final new line to all attached displayers. Call setPosition() before. Releases the mutex.
 	void _displayRawNL (const char *format, ...);
 	CHECK_TYPES2(void displayRawNL, _displayRawNL)
-	
+
 	/// Display a string (and nothing more) to all attached displayers. Call setPosition() before. Releases the mutex.
 	void _displayRaw (const char *format, ...);
 	CHECK_TYPES2(void displayRaw, _displayRaw)
-	
+
 	/// Display a raw text to the normal displayer but without filtering
 	/// It's used by the Memdisplayer (little hack to work)
 	void _forceDisplayRaw (const char *format, ...);
@@ -160,13 +160,13 @@ public:
 
 	/// Display a string in decorated form to all attached displayers. Call setPosition() before. Releases the mutex.
 	void display (const char *format, ...);
-	
+
 	/// Display a string with a final new line to all attached displayers. Call setPosition() before. Releases the mutex.
 	void displayRawNL (const char *format, ...);
-	
+
 	/// Display a string (and nothing more) to all attached displayers. Call setPosition() before. Releases the mutex.
 	void displayRaw (const char *format, ...);
-	
+
 	/// Display a raw text to the normal displayer but without filtering
 	/// It's used by the Memdisplayer (little hack to work)
 	void forceDisplayRaw (const char *format, ...);

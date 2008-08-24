@@ -50,7 +50,7 @@ public:
 
 
 	/// Un-initialized frustum.
-	CFrustum() 
+	CFrustum()
 	{
 	}
 	/// ctor.

@@ -1,5 +1,5 @@
 /** \file stream_inline.h
- * This File Declares inline for stream.h CRegistry and CBaseStream 
+ * This File Declares inline for stream.h CRegistry and CBaseStream
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -65,19 +65,19 @@ inline	bool		IStream::isReading() const
 // ======================================================================================================
 
 // ======================================================================================================
-inline	void		IStream::serial(uint8 &b) 
+inline	void		IStream::serial(uint8 &b)
 {
 	serialBuffer((uint8 *)&b, 1);
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(sint8 &b) 
+inline	void		IStream::serial(sint8 &b)
 {
 	serialBuffer((uint8 *)&b, 1);
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(uint16 &b) 
+inline	void		IStream::serial(uint16 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 2);
@@ -99,7 +99,7 @@ inline	void		IStream::serial(uint16 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(sint16 &b) 
+inline	void		IStream::serial(sint16 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 2);
@@ -121,7 +121,7 @@ inline	void		IStream::serial(sint16 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(uint32 &b) 
+inline	void		IStream::serial(uint32 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 4);
@@ -143,7 +143,7 @@ inline	void		IStream::serial(uint32 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(sint32 &b) 
+inline	void		IStream::serial(sint32 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 4);
@@ -165,7 +165,7 @@ inline	void		IStream::serial(sint32 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(uint64 &b) 
+inline	void		IStream::serial(uint64 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 		serialBuffer((uint8 *)&b, 8);
@@ -187,7 +187,7 @@ inline	void		IStream::serial(uint64 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(sint64 &b) 
+inline	void		IStream::serial(sint64 &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 8);
@@ -209,7 +209,7 @@ inline	void		IStream::serial(sint64 &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(float &b) 
+inline	void		IStream::serial(float &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 4);
@@ -231,7 +231,7 @@ inline	void		IStream::serial(float &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(double &b) 
+inline	void		IStream::serial(double &b)
 {
 #ifdef NL_LITTLE_ENDIAN
 	serialBuffer((uint8 *)&b, 8);
@@ -253,21 +253,21 @@ inline	void		IStream::serial(double &b)
 }
 
 // ======================================================================================================
-inline	void		IStream::serial(bool &b) 
+inline	void		IStream::serial(bool &b)
 {
 	serialBit(b);
 }
 
 #ifndef NL_OS_CYGWIN
 // ======================================================================================================
-inline	void		IStream::serial(char &b) 
+inline	void		IStream::serial(char &b)
 {
 	serialBuffer((uint8 *)&b, 1);
 }
 #endif
 
 // ======================================================================================================
-inline	void		IStream::serial(std::string &b) 
+inline	void		IStream::serial(std::string &b)
 {
 	uint32	len=0;
 	// Read/Write the length.
@@ -300,7 +300,7 @@ inline	void		IStream::serial(std::string &b)
 
 
 // ======================================================================================================
-inline	void		IStream::serial(ucstring &b) 
+inline	void		IStream::serial(ucstring &b)
 {
 	uint32	len=0;
 	// Read/Write the length.

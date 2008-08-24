@@ -33,7 +33,7 @@ void	dummyToAvoidStupidCompilerWarning_pacs_move_element_cpp()
 }
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************

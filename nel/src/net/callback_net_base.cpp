@@ -62,7 +62,7 @@ void cbnbNewDisconnection (TSockId from, void *data)
 	// Record or replay disconnection
 	base->noticeDisconnection( from );
 #endif
-	
+
 	// Call the client callback if necessary
 	if (base->_DisconnectionCallback != NULL)
 		base->_DisconnectionCallback (from, base->_DisconnectionCbArg);
@@ -72,15 +72,15 @@ void cbnbNewDisconnection (TSockId from, void *data)
 /*
  * Constructor
  */
-CCallbackNetBase::CCallbackNetBase(  TRecordingState rec, const string& recfilename, bool recordall ) 
+CCallbackNetBase::CCallbackNetBase(  TRecordingState rec, const string& recfilename, bool recordall )
 	:	_BytesSent(0),
 		_BytesReceived(0),
 		_NewDisconnectionCallback(cbnbNewDisconnection),
 		_DefaultCallback(NULL),
 		_PreDispatchCallback(NULL),
-		_FirstUpdate (true), 
+		_FirstUpdate (true),
 		_UserData(NULL),
-		_DisconnectionCallback(NULL), 
+		_DisconnectionCallback(NULL),
 		_DisconnectionCbArg(NULL)
 #ifdef USE_MESSAGE_RECORDER
 		, _MR_RecordingState(rec), _MR_UpdateCounter(0)
@@ -138,7 +138,7 @@ void CCallbackNetBase::addCallbackArray (const TCallbackItem *callbackarray, sin
 		sint ni = oldsize + i;
 //TOO MUCH MESSAGE		nldebug ("L3NB_CB: Adding callback to message '%s', id '%d'", callbackarray[i].Key, ni);
 		// copy callback value
-		
+
 		_CallbackArray[ni] = callbackarray[i];
 
 	}
@@ -167,7 +167,7 @@ void CCallbackNetBase::processOneMessage ()
 	}
 
 	_BytesReceived += msgin.length ();
-	
+
 	// now, we have to call the good callback
 	sint pos = -1;
 	std::string name = msgin.getName ();
@@ -220,7 +220,7 @@ void CCallbackNetBase::processOneMessage ()
 		}
 		cb(msgin, realid, *this);
 	}
-	
+
 /*
 	if (pos < 0 || pos >= (sint16) _CallbackArray.size ())
 	{
@@ -370,7 +370,7 @@ void CCallbackNetBase::baseUpdate2 (sint32 timeout, sint32 mintime)
 	 *   are available, the callback may take more time than specified in timeout. Then the loop
 	 *   will end when the timeout is "exceeded" instead of "reached". When yielding cpu, some
 	 *   more time than specified may be spent as well.
-	 *   
+	 *
 	 * Flooding Detection Option (TODO)
 	 *   _FloodingByteLimit => If setFloodingDetection() has been called, and the size of the
 	 *                    queue exceeds the flooding limit, the connection will be dropped and
@@ -413,7 +413,7 @@ void CCallbackNetBase::baseUpdate2 (sint32 timeout, sint32 mintime)
 		// Inner loop
 		while ( dataAvailable () )
 		{
-			processOneMessage();  
+			processOneMessage();
 
 			// ONE-SHOT MODE/"HARE AND TORTOISE" (or CONSTRAINED with no more time): break
 			if ( timeout == 0 )
@@ -452,7 +452,7 @@ void	CCallbackNetBase::authorizeOnly (const char *callbackName, TSockId hostid)
 	LNETL3_DEBUG ("LNETL3NB: authorizeOnly (%s, %s)", callbackName, hostid->asString().c_str());
 
 	hostid = getSockId (hostid);
-	
+
 	nlassert (hostid != InvalidSockId);
 
 	hostid->AuthorizedCallback = (callbackName == NULL)?"":callbackName;

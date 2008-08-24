@@ -117,21 +117,21 @@ void CEventListenerAsync::operator ()(const CEvent& event)
 	if (event==EventKeyUpId)
 	{
 		CEventKeyUp *pEvent=(CEventKeyUp*)&event;
-		
+
 		_KeyArray.clear (pEvent->Key);
-		
+
 		switch(pEvent->Key)
 		{
 			case KeyRCONTROL:
 			case KeyLCONTROL:
-				// Do not "raise up" the key, until someone has get the state of this key.						
+				// Do not "raise up" the key, until someone has get the state of this key.
 				if (!_KeyArray[KeyLCONTROL] && !_KeyArray[KeyRCONTROL])
 				{
-					_KeyArray.clear(KeyCONTROL);					
+					_KeyArray.clear(KeyCONTROL);
 
 					if(_KeyReleaseArray.get(KeyCONTROL))
-					{						
-						_KeyDownArray.clear (KeyCONTROL);						
+					{
+						_KeyDownArray.clear (KeyCONTROL);
 						_KeyReleaseArray.clear (KeyCONTROL);
 					}
 				}
@@ -140,11 +140,11 @@ void CEventListenerAsync::operator ()(const CEvent& event)
 			case KeyLSHIFT:
 				if (!_KeyArray[KeyLSHIFT] && !_KeyArray[KeyRSHIFT])
 				{
-					_KeyArray.clear(KeySHIFT);					
+					_KeyArray.clear(KeySHIFT);
 
 					if(_KeyReleaseArray.get(KeySHIFT))
-					{						
-						_KeyDownArray.clear (KeySHIFT);						
+					{
+						_KeyDownArray.clear (KeySHIFT);
 						_KeyReleaseArray.clear (KeySHIFT);
 					}
 				}
@@ -153,22 +153,22 @@ void CEventListenerAsync::operator ()(const CEvent& event)
 			case KeyLMENU:
 				if (!_KeyArray[KeyLMENU] && !_KeyArray[KeyRMENU])
 				{
-					_KeyArray.clear(KeyMENU);					
+					_KeyArray.clear(KeyMENU);
 
 					if(_KeyReleaseArray.get(KeyMENU))
-					{						
-						_KeyDownArray.clear (KeyMENU);						
+					{
+						_KeyDownArray.clear (KeyMENU);
 						_KeyReleaseArray.clear (KeyMENU);
 					}
 				}
-			break;			
+			break;
 			default: break;
 		}
 
 
 		// Do not "raise up" the key, until someone has get the state of this key.
 		if(_KeyReleaseArray.get(pEvent->Key))
-		{			
+		{
 			_KeyDownArray.clear (pEvent->Key);
 			_KeyReleaseArray.clear (pEvent->Key);
 		}
@@ -183,7 +183,7 @@ void CEventListenerAsync::operator ()(const CEvent& event)
 			// Disactive all keys
 			_KeyArray.clearAll ();
 			_KeyDownArray.clearAll ();
-			_KeyReleaseArray.clearAll ();			
+			_KeyReleaseArray.clearAll ();
 		}
 	}
 }

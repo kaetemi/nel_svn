@@ -62,7 +62,7 @@ protected:
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<T>	&resultVal= static_cast<CAnimatedValueBlendable<T>&>(result);
-		
+
 		if(previous && next && !previous->Step)
 		{
 			// lerp from previous to cur.
@@ -84,7 +84,7 @@ protected:
 			// NB: loop case: dateNext is always > datePrevious....
 			cp0 =	previous->Value + previous->OutTan * (dateNext-datePrevious) / 3.0f;
 			cp1 =	next->Value + next->InTan * (dateNext-datePrevious) / 3.0f;
-			
+
 			copyToValue(resultVal.Value, previous->Value*u3 + cp0*3.0f*u2*s
 		 		+ cp1*3.0f*u*s2 + next->Value*s3);
 		}
@@ -135,7 +135,7 @@ protected:
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueQuat	&resultVal= static_cast<CAnimatedValueQuat&>(result);
-		
+
 		if(previous && next)
 		{
 			// lerp from previous to cur.
@@ -144,7 +144,7 @@ protected:
 			NLMISC::clamp(date, 0,1);
 
 			// quad slerp.
-			resultVal.Value = CQuat::squad(previous->Value, previous->A, next->A, next->Value, date);	
+			resultVal.Value = CQuat::squad(previous->Value, previous->A, next->A, next->Value, date);
 		}
 		else
 		{

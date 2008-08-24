@@ -13,15 +13,15 @@ namespace NLMISC
 //*************************************************************************************
 void CWin32Util::localizeWindow(HWND wnd)
 {
-	if (!wnd) return;	
-	int textLength = GetWindowTextLength(wnd);	
+	if (!wnd) return;
+	int textLength = GetWindowTextLength(wnd);
 	if (textLength > 0)
-	{		
-		std::vector<char> str(textLength + 1);		
+	{
+		std::vector<char> str(textLength + 1);
 		GetWindowText(wnd, &str[0], textLength + 1);
 		std::string winText(str.begin(), str.end() - 1);
 		if (CI18N::hasTranslation(winText))
-		{			
+		{
 			SetWindowTextW(wnd, (const WCHAR *) CI18N::get(winText).c_str());
 		}
 	}
@@ -41,7 +41,7 @@ void CWin32Util::localizeWindow(HWND wnd)
 //*************************************************************************************
 void CWin32Util::appendChildWindows(HWND parentWnd, std::vector<HWND> &childWindows)
 {
-	if (!parentWnd) return;		
+	if (!parentWnd) return;
 	HWND currSon = GetWindow(parentWnd, GW_CHILD);
 	if (currSon)
 	{

@@ -43,7 +43,7 @@ static	const CVector	UnitScale(1,1,1);
 
 
 // ***************************************************************************
-CBoneBase::CBoneBase() : DefaultPos(CVector(0,0,0)), DefaultRotEuler(CVector(0,0,0)), 
+CBoneBase::CBoneBase() : DefaultPos(CVector(0,0,0)), DefaultRotEuler(CVector(0,0,0)),
 	DefaultScale(UnitScale), DefaultPivot(CVector(0,0,0)), SkinScale(UnitScale)
 {
 	FatherId= -1;
@@ -128,7 +128,7 @@ CBone::CBone(CBoneBase *boneBase)
 ITrack* CBone::getDefaultTrack (uint valueId)
 {
 	nlassert(_BoneBase);
-	
+
 	// what value ?
 	switch (valueId)
 	{
@@ -170,7 +170,7 @@ void	CBone::compute(CBone *parent, const CMatrix &rootMatrix, CSkeletonModel *sk
 
 	// get/compute our local matrix
 	const CMatrix	&localMatrix= getMatrix();
-	
+
 	// Compute LocalSkeletonMatrix.
 	// Root case?
 	if(!parent)
@@ -244,7 +244,7 @@ void	CBone::compute(CBone *parent, const CMatrix &rootMatrix, CSkeletonModel *sk
 		tmp.setMulMatrixNoProj(_LocalSkeletonMatrix, scaleMat);
 		_BoneSkinMatrix.setMulMatrixNoProj( tmp, _BoneBase->InvBindPos );
 	}
-	
+
 	// When compute is done, do extra user ctrl?
 	if(_AnimCtrl && skeletonForAnimCtrl)
 		_AnimCtrl->execute(skeletonForAnimCtrl, this);

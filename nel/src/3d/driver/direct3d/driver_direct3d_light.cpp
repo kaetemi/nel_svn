@@ -39,7 +39,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -47,7 +47,7 @@ const D3DLIGHTTYPE  RemapLightTypeNeL2D3D[3]=
 {
 	D3DLIGHT_DIRECTIONAL,	// CLight::DirectionalLight
 	D3DLIGHT_POINT,			// CLight::PointLight
-	D3DLIGHT_SPOT,			// CLight::SpotLight 
+	D3DLIGHT_SPOT,			// CLight::SpotLight
 };
 
 
@@ -62,10 +62,10 @@ void CDriverD3D::setLight (uint8 index, const CLight &light)
 		// because the D3D setup change, must dirt lightmap rendering
 		_LightMapDynamicLightDirty= true;
 	}
-	
+
 	setLightInternal(index, light);
 }
-	
+
 
 // ***************************************************************************
 void CDriverD3D::enableLight (uint8 index, bool enable)
@@ -76,10 +76,10 @@ void CDriverD3D::enableLight (uint8 index, bool enable)
 	{
 		_UserLightEnable[index]= enable;
 	}
-	
+
 	// enable the light in D3D
 	enableLightInternal(index, enable);
-	
+
 	// because the D3D setup has changed, must dirt lightmap rendering
 	_LightMapDynamicLightDirty= true;
 }
@@ -90,11 +90,11 @@ static const float sqrtFLT_MAX = (float) sqrtf(FLT_MAX);
 void CDriverD3D::setLightInternal (uint8 index, const CLight &light)
 {
 	H_AUTO_D3D(CDriverD3D_setLightInternal);
-	nlassert (_DeviceInterface);	
+	nlassert (_DeviceInterface);
 	if (index<MaxLight)
 	{
 		// Ref on the state
-		D3DLIGHT9 &lightRef = _LightCache[index].Light;		
+		D3DLIGHT9 &lightRef = _LightCache[index].Light;
 		lightRef.Type = RemapLightTypeNeL2D3D[light.getMode ()];
 		NL_D3DCOLORVALUE_RGBA(lightRef.Diffuse, light.getDiffuse());
 		NL_D3DCOLORVALUE_RGBA(lightRef.Specular, light.getSpecular());
@@ -109,8 +109,8 @@ void CDriverD3D::setLightInternal (uint8 index, const CLight &light)
 		lightRef.Attenuation1 = light.getLinearAttenuation();
 		lightRef.Attenuation2 = light.getQuadraticAttenuation();
 		if (lightRef.Type == D3DLIGHT_SPOT)
-		{			
-			lightRef.Phi = light.getCutoff();			
+		{
+			lightRef.Phi = light.getCutoff();
 			float divid=light.getExponent();
 			if (divid==0.f)
 				divid=0.0001f;
@@ -128,8 +128,8 @@ void CDriverD3D::setLightInternal (uint8 index, const CLight &light)
 
 		// Touch only if enabled
 		if (_LightCache[index].Enabled)
-			touchRenderVariable (&_LightCache[index]);		
-	}	
+			touchRenderVariable (&_LightCache[index]);
+	}
 }
 
 // ***************************************************************************
@@ -149,16 +149,16 @@ void CDriverD3D::enableLightInternal (uint8 index, bool enable)
 }
 
 // ***************************************************************************
-uint CDriverD3D::getMaxLight () const 
+uint CDriverD3D::getMaxLight () const
 {
-	H_AUTO_D3D(CDriverD3D_getMaxLight);	
+	H_AUTO_D3D(CDriverD3D_getMaxLight);
 	return _MaxLight;
 }
 
 // ***************************************************************************
 void CDriverD3D::setAmbientColor (CRGBA color)
 {
-	H_AUTO_D3D(CDriverD3D_setAmbientColor);	
+	H_AUTO_D3D(CDriverD3D_setAmbientColor);
 	setRenderState(D3DRS_AMBIENT, NL_D3DCOLOR_RGBA(color));
 }
 
@@ -166,7 +166,7 @@ void CDriverD3D::setAmbientColor (CRGBA color)
 // ***************************************************************************
 void CDriverD3D::setLightMapDynamicLight (bool enable, const CLight& light)
 {
-	H_AUTO_D3D(CDriverD3D_setLightMapDynamicLight);	
+	H_AUTO_D3D(CDriverD3D_setLightMapDynamicLight);
 	// just store, for future setup in lightmap material rendering
 	_LightMapDynamicLightEnabled= enable;
 	_LightMapDynamicLight= light;
@@ -184,7 +184,7 @@ void			CDriverD3D::setupLightMapDynamicLighting(bool enable)
 		// disable all lights but the 0th.
 		for(uint i=1;i<_MaxLight;i++)
 			enableLightInternal(i, false);
-		
+
 		// if the dynamic light is really enabled
 		if(_LightMapDynamicLightEnabled)
 		{
@@ -197,7 +197,7 @@ void			CDriverD3D::setupLightMapDynamicLighting(bool enable)
 		{
 			enableLightInternal(0, false);
 		}
-		
+
 		// ok it has been setup
 		_LightMapDynamicLightDirty= false;
 	}
@@ -206,7 +206,7 @@ void			CDriverD3D::setupLightMapDynamicLighting(bool enable)
 	{
 		// restore the light 0
 		setLightInternal(0, _UserLight0);
-		
+
 		// restore all standard light enable states
 		for(uint i=0;i<_MaxLight;i++)
 			enableLightInternal(i, _UserLightEnable[i]);

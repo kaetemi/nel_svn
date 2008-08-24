@@ -31,7 +31,7 @@
 
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 struct IMouseDevice;
@@ -62,7 +62,7 @@ public:
 
 //==========================================================================================
 /**
- * An event from a game device (joystick, joypad ...) 
+ * An event from a game device (joystick, joypad ...)
  */
 class CGameDeviceEvent : public CEvent
 {
@@ -74,8 +74,8 @@ public:
 					 IGameDevice *gameDevice,
 					 IEventEmitter *emitter,
 					 const CClassId &classId
-					) 
-					: CEvent(emitter, classId), 
+					)
+					: CEvent(emitter, classId),
 					  GameDevice(gameDevice)
 	{}
 };
@@ -98,7 +98,7 @@ public:
 			  IGameDevice *gameDevice,
 			  IEventEmitter *emitter,
 			  const CClassId &classId
-			 ) 
+			 )
 			 : CGameDeviceEvent(gameDevice, emitter, classId),
 			   ButtonIndex(buttonIndex),
 			   Pushed(pushed)
@@ -113,7 +113,7 @@ class CGDButtonDown : public CGDButton
 {
 public:
 	///
-	CGDButtonDown(uint buttonIndex, IGameDevice *gameDevice, IEventEmitter *emitter) 
+	CGDButtonDown(uint buttonIndex, IGameDevice *gameDevice, IEventEmitter *emitter)
 				 : CGDButton(buttonIndex, true, gameDevice, emitter, EventGDButtonDownId)
 	{}
 
@@ -127,7 +127,7 @@ class CGDButtonUp : public CGDButton
 {
 public:
 	///
-	CGDButtonUp(uint buttonIndex, IGameDevice *gameDevice, IEventEmitter *emitter) 
+	CGDButtonUp(uint buttonIndex, IGameDevice *gameDevice, IEventEmitter *emitter)
 				 : CGDButton(buttonIndex, false, gameDevice, emitter, EventGDButtonUpId)
 	{}
 
@@ -138,7 +138,7 @@ public:
 /// An axis has moved
 class CGDAxisMoved : public CGameDeviceEvent
 {
-public:	
+public:
 	IGameDevice::TAxis	Axis;
 	// current position of the axis, ranges from -1.f to 1.f
 	float				Value;
@@ -148,11 +148,11 @@ public:
 				  float	value,
 				  IGameDevice *gameDevice,
 				  IEventEmitter *emitter
-				 ) 
+				 )
 				 : CGameDeviceEvent(gameDevice, emitter, EventGDAxisMovedId),
 				   Axis(axis),
 				   Value(value)
-	{}																		 
+	{}
 
 	virtual	CEvent			*clone() const {return new CGDAxisMoved(*this);}
 };
@@ -172,7 +172,7 @@ public:
 				  uint sliderIndex,
 				  IGameDevice *gameDevice,
 				  IEventEmitter *emitter
-				 ) 
+				 )
 				 : CGameDeviceEvent(gameDevice, emitter, EventGDSliderMovedId),
 				   SliderIndex(sliderIndex),
 				   SliderPos(sliderPos)
@@ -192,12 +192,12 @@ public:
 	float POVAngle;
 public:
 	CGDPOVChanged(
-				  bool  centered,				  
+				  bool  centered,
 				  float	povAngle,
 				  uint	povIndex,
 				  IGameDevice *gameDevice,
 				  IEventEmitter *emitter
-				 ) 
+				 )
 				 : CGameDeviceEvent(gameDevice, emitter, EventGDPOVChanged),
 				   POVIndex(povIndex),
 				   Centered(centered),

@@ -55,7 +55,7 @@ CShapeBank::~CShapeBank()
 // ***************************************************************************
 
 IShape*CShapeBank::addRef(const string &shapeNameNotLwr)
-{	
+{
 	string	shapeName= toLower(shapeNameNotLwr);
 
 	// get the shape info (must succeed)
@@ -78,7 +78,7 @@ IShape*CShapeBank::addRef(const string &shapeNameNotLwr)
 		if( *sTemp == shapeName )
 		{
 			// Ok the shape cache contains the shape remove it and return
-			pShpCache->Elements.erase( lsIt );				
+			pShpCache->Elements.erase( lsIt );
 			return getShapePtrFromShapeName( shapeName );
 		}
 		++lsIt;
@@ -114,7 +114,7 @@ void CShapeBank::release(IShape* pShp)
 				{
 					scfpmIt->second.isAdded = true;
 				}
-				
+
 				// check the shape cache
 				checkShapeCache(getShapeCachePtrFromShapePtr(pShp));
 			}
@@ -177,7 +177,7 @@ void CShapeBank::processWaitingShapes ()
 							{
 								if (rMat.texturePresent(j))
 								{
-									if ((!_pDriver->isTextureExist(*rMat.getTexture(j))) || 
+									if ((!_pDriver->isTextureExist(*rMat.getTexture(j))) ||
 										(rWS.UpTextLine > 0) || (rWS.UpTextMipMap > 0))
 									{
 										//_pDriver->setupTexture (*rMat.getTexture(j));
@@ -187,7 +187,7 @@ void CShapeBank::processWaitingShapes ()
 									}
 									else
 									{
-										/* 
+										/*
 											Must release texture data because of the following scenario (common!)
 											- An IG with 2 different meshs is async loaded
 											- the 2 meshs access the same texture "pipo.tga"
@@ -195,7 +195,7 @@ void CShapeBank::processWaitingShapes ()
 												textures are loaded twice in RAM!!!! (is managed per mesh, but not
 												thourhg meshs)
 											- hence the first mesh setup and upload above the texture in VRAM
-												but the second still have data in RAM!! (because 2nd will 
+												but the second still have data in RAM!! (because 2nd will
 												say that isTextureExist() ....
 
 											Note: you could say that the cool stuff would be to not load the 2 :)
@@ -227,11 +227,11 @@ void CShapeBank::processWaitingShapes ()
 							{
 								if (CurrentProgress >= rWS.UpTextProgress)
 								{
-									if ((!_pDriver->isTextureExist(*pText)) || 
+									if ((!_pDriver->isTextureExist(*pText)) ||
 										(rWS.UpTextLine > 0) || (rWS.UpTextMipMap > 0))
 									{
 										//_pDriver->setupTexture (*pText);
-										
+
 										if (!processWSUploadTexture (rWS, nTotalUploaded, pText))
 											break;
 									}
@@ -258,7 +258,7 @@ void CShapeBank::processWaitingShapes ()
 					break;
 
 				rWS.State = AsyncLoad_Ready;
-			}				
+			}
 			break;
 
 			case AsyncLoad_Ready:
@@ -268,7 +268,7 @@ void CShapeBank::processWaitingShapes ()
 
 			// The delete operation can take several frames to complete but this is not a problem
 
-			// For error do the same as delete but let the flag to error if a shape is asked just after 
+			// For error do the same as delete but let the flag to error if a shape is asked just after
 			// the error was found
 
 			case AsyncLoad_Error:
@@ -336,7 +336,7 @@ bool CShapeBank::processWSUploadTexture (CWaitingShape &rWS, uint32 &nTotalUploa
 {
 	CRect zeRect;
 	uint32 nFace, nWeight = 0, nMipMap;
-	
+
 	if ((rWS.UpTextMipMap == 0) && (rWS.UpTextLine == 0))
 	{
 		// Create the texture only and do not upload anything
@@ -348,12 +348,12 @@ bool CShapeBank::processWSUploadTexture (CWaitingShape &rWS, uint32 &nTotalUploa
 		if (isAllUploaded)
 			return true;
 	}
-	
+
 	if (pText->mipMapOn())
 		nMipMap = pText->getMipMapCount();
 	else
 		nMipMap = 1;
-	
+
 	// Upload all mipmaps
 	for (; rWS.UpTextMipMap < nMipMap;)
 	{
@@ -451,7 +451,7 @@ CShapeBank::TShapeState CShapeBank::getPresentState (const string &shapeNameNotL
 IShape	*CShapeBank::getShape (const std::string &shapeNameNotLwr)
 {
 	string	shapeName= toLower(shapeNameNotLwr);
-	
+
 	// Is the shape is found in the shape map so return Present
 	TShapeMap::iterator smIt = ShapeMap.find (shapeName);
 	if( smIt != ShapeMap.end() )
@@ -491,7 +491,7 @@ void CShapeBank::load (const string &shapeNameNotLwr)
 			// Add the shape to the map.
 			add( shapeName, mesh.getShapePointer() );
 		}
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -505,7 +505,7 @@ void CShapeBank::loadAsync (const std::string &shapeNameNotLwr, IDriver *pDriver
 		return;
 	_pDriver = pDriver; // Backup the pointer to the driver for later use
 	TWaitingShapesMap::iterator wsmmIt = WaitingShapes.find (shapeName);
-	
+
 	// First time this shape is loaded ?
 	bool firstTime = wsmmIt == WaitingShapes.end();
 
@@ -556,17 +556,17 @@ void CShapeBank::cancelLoadAsync (const std::string &shapeNameNotLwr)
 				{
 					// this ptr should not be added to the map
 					nlassert(ShapePtrToShapeInfo.find(shape)==ShapePtrToShapeInfo.end());
-					
+
 					// Before deleting this shape, we must ensure it is not currently uploading texture
 					if(wsmmIt->second.State==AsyncLoad_Texture)
 					{
-						/* if it was uploading a texture, then force him to end, else may have a bug 
+						/* if it was uploading a texture, then force him to end, else may have a bug
 							in this scenario (very improbable, but possible I think):
 								- a mesh is loaded asynchronously, and reference a texture "pipo.tga"
-								- mesh load async is ended, and the texture is not found in the driver 
+								- mesh load async is ended, and the texture is not found in the driver
 									=> texture generate()-d too
 								- mesh state is AsyncLoad_Texture, and begin (but doesn't end) to upload the texture
-								- an other mesh is created syncrhonously using also this texture (thus 
+								- an other mesh is created syncrhonously using also this texture (thus
 									found in driver, and so just referencing it, no generate)
 								- the async mesh is then canceled, while the texture has not end to load!
 								- the texture is still in memory (the sync mesh still point to it), but with
@@ -624,7 +624,7 @@ void CShapeBank::add (const string &shapeNameNotLwr, IShape* pShp)
 		CShapeInfo siTemp;
 		siTemp.sShpName = shapeName;
 		siTemp.pShpCache = getShapeCachePtrFromShapeName( shapeName );
-		// Is the shape has a valid shape cache ? 
+		// Is the shape has a valid shape cache ?
 		if( siTemp.pShpCache == NULL )
 		{
 			// No -> link to default (which do the UpdateShapeInfo)
@@ -648,7 +648,7 @@ void CShapeBank::addShapeCache(const string &shapeCacheName)
 	TShapeCacheMap::iterator scmIt = ShapeCacheNameToShapeCache.find( shapeCacheName );
 	if( scmIt == ShapeCacheNameToShapeCache.end() )
 	{
-		// Not found so add it		
+		// Not found so add it
 		ShapeCacheNameToShapeCache.insert(TShapeCacheMap::value_type(shapeCacheName,CShapeCache()));
 	}
 }
@@ -672,7 +672,7 @@ void CShapeBank::removeShapeCache(const std::string &shapeCacheName)
 
 	// All links are redirected to the default cache
 	TShapeCacheNameMap::iterator scnIt = ShapeNameToShapeCacheName.begin();
-	while( scnIt != ShapeNameToShapeCacheName.end() )	
+	while( scnIt != ShapeNameToShapeCacheName.end() )
 	{
 		if( scnIt->second == shapeCacheName )
 			scnIt->second = "default";
@@ -697,7 +697,7 @@ void CShapeBank::reset()
 		++scmIt;
 	}
 	ShapeNameToShapeCacheName.clear();
-	ShapeCacheNameToShapeCache.clear();	
+	ShapeCacheNameToShapeCache.clear();
 	addShapeCache( "default" );
 }
 
@@ -754,7 +754,7 @@ void CShapeBank::linkShapeToShapeCache(const string &shapeNameNotLwr, const stri
 		if( shapeInfo.isAdded )
 			// Abort, because impossible.
 			return;
-		
+
 		// Is the shape is present ?
 		// Yes -> Update the ShapeInfo
 		shapeInfo.pShpCache= shapeCachePtr;
@@ -854,7 +854,7 @@ bool CShapeBank::isShapeCache(const std::string &shapeCacheName) const
 }
 
 // ***************************************************************************
-void CShapeBank::preLoadShapes(const std::string &shapeCacheName, 
+void CShapeBank::preLoadShapes(const std::string &shapeCacheName,
 	const std::vector<std::string> &listFile, const std::string &wildCardNotLwr, NLMISC::IProgressCallback *progress, bool flushTextures /*= false*/, IDriver *drv /*= NULL*/)
 {
 	// Abort if cache don't exist.
@@ -890,14 +890,14 @@ void CShapeBank::preLoadShapes(const std::string &shapeCacheName,
 					// If success
 					if( getPresentState(fileName)==CShapeBank::Present )
 					{
-						// When a shape is first added to the bank, it is not in the cache. 
+						// When a shape is first added to the bank, it is not in the cache.
 						// add it and release it to force it to be in the cache.
 						IShape	*shp= addRef(fileName);
 						if(shp)
 						{
 							//nlinfo("Loading %s", CPath::lookup(fileName.c_str(), false, false).c_str());
 							if (flushTextures && drv)
-							{							
+							{
 								shp->flushTextures(*drv, 0);
 							}
 							release(shp);

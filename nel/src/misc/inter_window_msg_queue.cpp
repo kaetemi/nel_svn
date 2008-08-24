@@ -27,7 +27,7 @@ namespace NLMISC
 	//**************************************************************************************************
 	CInterWindowMsgQueue::CProtagonist::CProtagonist() : _Id(0),
 														 _Wnd(0),
-														 _SharedMemMutex(0),													 
+														 _SharedMemMutex(0),
 														 _SharedWndHandle(NULL)
 	{
 	}
@@ -36,14 +36,14 @@ namespace NLMISC
 	//**************************************************************************************************
 	CInterWindowMsgQueue::CProtagonist::~CProtagonist()
 	{
-		release();	
+		release();
 	}
 
 	//**************************************************************************************************
 	void CInterWindowMsgQueue::CProtagonist::release()
-	{		
+	{
 		CloseHandle(_SharedMemMutex);
-		_SharedMemMutex = 0;				
+		_SharedMemMutex = 0;
 		if (_SharedWndHandle)
 		{
 			CSharedMemory::closeSharedMemory(_SharedWndHandle);
@@ -51,7 +51,7 @@ namespace NLMISC
 		}
 		_Wnd = 0;
 		_Id = 0;
-		// unhook window	
+		// unhook window
 	}
 
 	//**************************************************************************************************
@@ -75,10 +75,10 @@ namespace NLMISC
 		nlassert(id != 0);
 		nlassert(id != 0x3a732235); // cf doc of NLMISC::CSharedMemory : this id is reserved
 		nlassert(_Id == 0); // init done twice
-		release();		
+		release();
 		// create a system wide mutex
 		_SharedMemMutex = CreateMutex(NULL, FALSE, toString("NL_MUTEX_%d", (int) id).c_str());
-		if (!_SharedMemMutex) return false;	
+		if (!_SharedMemMutex) return false;
 		_Id = id;
 		return true;
 	}
@@ -110,7 +110,7 @@ namespace NLMISC
 		}
 		if (_Wnd != 0)
 		{
-			// local window case		
+			// local window case
 			return _Wnd;
 		}
 		// this is the foreign window
@@ -122,7 +122,7 @@ namespace NLMISC
 		if (sharedMem)
 		{
 			result = *(HWND *) sharedMem;
-			CSharedMemory::closeSharedMemory(sharedMem);		
+			CSharedMemory::closeSharedMemory(sharedMem);
 		}
 		releaseSMMutex();
 		return result;
@@ -147,7 +147,7 @@ namespace NLMISC
 	void CInterWindowMsgQueue::CSendTask::run()
 	{
 		while(!_StopAsked)
-		{		
+		{
 			nlassert(_Parent);
 			HWND targetWindow = _Parent->_ForeignWindow.getWnd();
 			if (targetWindow == 0)
@@ -156,12 +156,12 @@ namespace NLMISC
 				_Parent->clearOutQueue();
 			}
 			else
-			{			
-				TMsgList nestedMsgs;	
+			{
+				TMsgList nestedMsgs;
 				CMemStream outMsg;
-				{					
-					CSynchronized<TMsgList>::CAccessor outMessageQueue(&_Parent->_OutMessageQueue);					
-					nestedMsgs.swap(outMessageQueue.value());					
+				{
+					CSynchronized<TMsgList>::CAccessor outMessageQueue(&_Parent->_OutMessageQueue);
+					nestedMsgs.swap(outMessageQueue.value());
 				}
 				if (!nestedMsgs.empty())
 				{
@@ -171,7 +171,7 @@ namespace NLMISC
 					uint32 toId(_Parent->_ForeignWindow.getId());
 					msgOut.serial(fromId);
 					msgOut.serial(toId);
-					msgOut.serialCont(nestedMsgs);				
+					msgOut.serialCont(nestedMsgs);
 					COPYDATASTRUCT cds;
 					cds.dwData = 0;
 					cds.cbData = msgOut.length();
@@ -186,7 +186,7 @@ namespace NLMISC
 						{
 							nlwarning("CInterWindowMsgQueue : tried to send message, but destination window has been closed");
 							break;
-						}								
+						}
 					}
 				}
 			}
@@ -209,9 +209,9 @@ namespace NLMISC
 
 	//**************************************************************************************************
 	CInterWindowMsgQueue::CInterWindowMsgQueue() : _SendTask(NULL),
-												   _SendThread(NULL),											   
+												   _SendThread(NULL),
 												   _OutMessageQueue("CInterWindowMsgQueue::_OutMessageQueue")
-	{	
+	{
 	}
 
 	//**************************************************************************************************
@@ -228,45 +228,45 @@ namespace NLMISC
 
 	//**************************************************************************************************
 	bool CInterWindowMsgQueue::initInternal(HINSTANCE hInstance, HWND ownerWindow, uint32 localId, uint32 foreignId)
-	{			
+	{
 		if (!ownerWindow)
 		{
-			// see if 
+			// see if
 			nlassert(hInstance);
 			bool ok = _DummyWindow.init(hInstance, invisibleWindowListenerProc);
-			if (!ok) return false;		
+			if (!ok) return false;
 			ownerWindow = _DummyWindow.getWnd();
 		}
 		else
 		{
 			nlassert(ownerWindow);
 			nlassert(!hInstance);
-		}	
+		}
 		nlassert(localId != 0);
 		nlassert(foreignId != 0);
 		nlassert(localId != foreignId);
-		{				
+		{
 			typedef CSynchronized<TMessageQueueMap>::CAccessor TAccessor;
 			// NB : use a 'new' instead of an automatic object here, because I got an 'INTERNAL COMPILER ERROR' compiler file 'msc1.cpp', line 1794
 			// else, this is one of the way recommended by microsoft to solve the problem.
-			std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));		
+			std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));
 			CMsgQueueIdent msgQueueIdent(ownerWindow, localId, foreignId);
 			if (messageQueueMap->value().count(msgQueueIdent))
-			{			
-				nlassert(!_DummyWindow.getWnd()); // invisible window has just been created, it can't be in the map now!			
+			{
+				nlassert(!_DummyWindow.getWnd()); // invisible window has just been created, it can't be in the map now!
 				// message queue already exists
 				return false;
-			}		
+			}
 			if (ownerWindow != _DummyWindow.getWnd())
 			{
 				// subclass window
 				WNDPROC oldWinProc = (WNDPROC) GetWindowLong(ownerWindow, GWL_WNDPROC);
-				uint &refCount = _OldWinProcMap[ownerWindow].RefCount;	
+				uint &refCount = _OldWinProcMap[ownerWindow].RefCount;
 				++ refCount;
 				if (refCount == 1)
 				{
 					nlassert(oldWinProc != listenerProc); // first registration so the winproc must be different
-					SetWindowLong(ownerWindow, GWL_WNDPROC, (LONG) listenerProc);	
+					SetWindowLong(ownerWindow, GWL_WNDPROC, (LONG) listenerProc);
 					_OldWinProcMap[ownerWindow].OldWinProc = oldWinProc;
 				}
 				else
@@ -294,20 +294,20 @@ namespace NLMISC
 
 	//**************************************************************************************************
 	void CInterWindowMsgQueue::release()
-	{		
+	{
 		if (_LocalWindow.getWnd() != 0)
 		{
 			if (IsWindow(_LocalWindow.getWnd())) // handle gracefully case where the window has been destroyed before
 												 // this manager
 			{
-				
+
 				if (_LocalWindow.getWnd() != _DummyWindow.getWnd())
 				{
 					WNDPROC currWinProc = (WNDPROC) GetWindowLong(_LocalWindow.getWnd(), GWL_WNDPROC);
 					if (currWinProc != listenerProc)
 					{
-						nlassert(0); // IF THIS ASSERT FIRES : 
-									 // either : 
+						nlassert(0); // IF THIS ASSERT FIRES :
+									 // either :
 									 // - The window handle has been removed, and recreated
 									 // - The window has been hooked by someone else
 									 // in the application, but not unhooked properly.
@@ -345,19 +345,19 @@ namespace NLMISC
 			_SendThread = NULL;
 		}
 		if (_LocalWindow.getId() != 0)
-		{		
+		{
 			typedef CSynchronized<TMessageQueueMap>::CAccessor TAccessor;
 			// NB : use a 'new' instead of an automatic object here, because I got an 'INTERNAL COMPILER ERROR' compiler file 'msc1.cpp', line 1794
 			// else, this is one of the way recommended by microsoft to solve the problem.
-			std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));				
+			std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));
 			TMessageQueueMap::iterator it = messageQueueMap->value().find(CMsgQueueIdent(_LocalWindow.getWnd(), _LocalWindow.getId(), _ForeignWindow.getId()));
 			nlassert(it != messageQueueMap->value().end());
-			messageQueueMap->value().erase(it);		
-		}	
+			messageQueueMap->value().erase(it);
+		}
 		clearOutQueue();
 		_LocalWindow.release();
 		_ForeignWindow.release();
-		_DummyWindow.release();	
+		_DummyWindow.release();
 	}
 
 
@@ -365,19 +365,19 @@ namespace NLMISC
 	LRESULT CInterWindowMsgQueue::handleWMCopyData(HWND hwnd, COPYDATASTRUCT *cds)
 	{
 		// ctruct a write stream
-		CMemStream msgIn;		
+		CMemStream msgIn;
 		if (cds->lpData)
 		{
 			uint32 fromId;
 			uint32 toId;
-			TMsgList nestedMsgs;			
+			TMsgList nestedMsgs;
 			try
 			{
-				
+
 				msgIn.serialBuffer((uint8 *) cds->lpData, cds->cbData);
 				// make it a read stream
 				msgIn.resetPtrTable();
-				msgIn.invert();				
+				msgIn.invert();
 				nlassert(msgIn.isReading());
 				msgIn.serialVersion(_CurrentVersion);
 				msgIn.serial(fromId);
@@ -389,7 +389,7 @@ namespace NLMISC
 					typedef CSynchronized<TMessageQueueMap>::CAccessor TAccessor;
 					// NB : use a 'new' instead of an automatic object here, because I got an 'INTERNAL COMPILER ERROR' compiler file 'msc1.cpp', line 1794
 					// else, this is one of the way recommended by microsoft to solve the problem.
-					std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));									
+					std::auto_ptr<TAccessor> messageQueueMap(new TAccessor(&_MessageQueueMap));
 					TMessageQueueMap::iterator it = messageQueueMap->value().find(CMsgQueueIdent(hwnd, toId, fromId));
 					if (it != messageQueueMap->value().end())
 					{
@@ -400,9 +400,9 @@ namespace NLMISC
 					}
 					else
 					{
-						nlwarning("CInterWindowMsgQueue : Received inter window message from '%x' to '%x', but there's no associated message queue", (int) fromId, (int) toId);						
-					}					
-				}								
+						nlwarning("CInterWindowMsgQueue : Received inter window message from '%x' to '%x', but there's no associated message queue", (int) fromId, (int) toId);
+					}
+				}
 			}
 			catch(EStream &)
 			{
@@ -411,7 +411,7 @@ namespace NLMISC
 
 		}
 		else
-		{			
+		{
 			// msg received with NULL content
 			nlwarning("CInterWindowMsgQueue : NULL message received");
 		}
@@ -420,41 +420,41 @@ namespace NLMISC
 
 	//=====================================================
 	LRESULT CALLBACK CInterWindowMsgQueue::listenerProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{	
+	{
 		if (uMsg == WM_COPYDATA) // WM_COPYDATA messages are sent by the other window to communicate with the client
 		{
 			COPYDATASTRUCT *cds = (COPYDATASTRUCT *) lParam;
-			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);		
+			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);
 		}
 		else
 		{
 			TOldWinProcMap::iterator it = _OldWinProcMap.find(hwnd);
-			nlassert(it != _OldWinProcMap.end());			
+			nlassert(it != _OldWinProcMap.end());
 			return CallWindowProc(it->second.OldWinProc, hwnd, uMsg, wParam, lParam);
 		}
 	}
 
 	//=====================================================
 	LRESULT CALLBACK CInterWindowMsgQueue::invisibleWindowListenerProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{	
+	{
 		if (uMsg == WM_COPYDATA) // WM_COPYDATA messages are sent by the other window to communicate with the client
 		{
 			COPYDATASTRUCT *cds = (COPYDATASTRUCT *) lParam;
-			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);		
+			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);
 		}
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);	
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
 	//**************************************************************************************************
 	CInterWindowMsgQueue::~CInterWindowMsgQueue()
-	{		
+	{
 		release();
 	}
 
 	//**************************************************************************************************
 	void CInterWindowMsgQueue::clearOutQueue()
 	{
-		CSynchronized<TMsgList>::CAccessor  outMessageQueue(&_OutMessageQueue);	
+		CSynchronized<TMsgList>::CAccessor  outMessageQueue(&_OutMessageQueue);
 		if (!outMessageQueue.value().empty())
 		{
 			outMessageQueue.value().clear();
@@ -470,10 +470,10 @@ namespace NLMISC
 		}
 		msg.resetPtrTable();
 		{
-			CSynchronized<TMsgList>::CAccessor outMessageQueue(&_OutMessageQueue);		
-			std::vector<uint8> sentMsg(msg.buffer(), msg.buffer() + msg.length());		
+			CSynchronized<TMsgList>::CAccessor outMessageQueue(&_OutMessageQueue);
+			std::vector<uint8> sentMsg(msg.buffer(), msg.buffer() + msg.length());
 			outMessageQueue.value().push_back(CMsg());
-			outMessageQueue.value().back().Msg.swap(sentMsg);		
+			outMessageQueue.value().back().Msg.swap(sentMsg);
 		}
 	}
 
@@ -485,7 +485,7 @@ namespace NLMISC
 		if (dest.isReading())
 		{
 			dest.invert();
-			dest.clear();		
+			dest.clear();
 		}
 		std::vector<uint8> &msgIn = _InMessageQueue.front().Msg;
 		dest.serialBuffer(&(msgIn[0]), msgIn.size());
@@ -506,7 +506,7 @@ namespace NLMISC
 	uint CInterWindowMsgQueue::getSendQueueSize() const
 	{
 		CSynchronized<TMsgList>::CAccessor outMessageQueue(&const_cast<CSynchronized<TMsgList> &>(_OutMessageQueue));
-		return outMessageQueue.value().size();	
+		return outMessageQueue.value().size();
 	}
 
 	//**************************************************************************************************

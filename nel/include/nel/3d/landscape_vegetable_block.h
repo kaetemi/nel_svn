@@ -32,7 +32,7 @@
 #include "nel/3d/tess_block.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

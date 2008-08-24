@@ -54,16 +54,16 @@ namespace NLMISC
  *
  *	// Attach a callback to the var1 variable. When the var1 will changed, this cvar1cb function will be called
  *	cf.setCallback ("var1", var1cb);
- * 
+ *
  *	// Get the foo variable (suppose it's a string variable)
  *	CConfigFile::CVar &foo = cf.getVar ("foo");
- * 
+ *
  *	// Display the content of the variable
  *	printf ("foo = %s\n", foo.asString ().c_str ());
- * 
+ *
  * 	// Get the bar variable (suppose it's an array of int)
  * 	CConfigFile::CVar &bar = cf.getVar ("bar");
- * 
+ *
  * 	// Display the content of the all elements of the bar variable
  * 	printf ("bar have %d elements : \n", bar.size ());
  * 	for (int i = 0; i < bar.size (); i++)
@@ -82,25 +82,25 @@ namespace NLMISC
  * // one line comment
  * / * big comment
  *     on more than one line * /
- * 
+ *
  * var1 = 123;                           // var1  type:int,         value:123
  * var2 = "456.25";                      // var2  type:string,      value:"456.25"
  * var3 = 123.123;                       // var3  type:real,        value:123.123
- * 
+ *
  * // the resulting type is type of the first left value
  * var4 = 123.123 + 2;                   // var4  type:real,        value:125.123
  * var5 = 123 + 2.1;                     // var5  type:int,         value:125
- * 
+ *
  * var6 = (-112+1) * 3 - 14;             // var6  type:int,         value:-347
- * 
+ *
  * var7 = var1 + 1;                      // var7  type:int,         value:124
- * 
+ *
  * var8 = var2 + 10;                     // var8  type:string,      value:456.2510 (convert 10 into a string and concat it)
  * var9 = 10.15 + var2;                  // var9  type:real,        value:466.4 (convert var2 into a real and add it)
- * 
+ *
  * var10 = { 10.0, 51.1 };               // var10 type:realarray,   value:{10.0,51.1}
  * var11 = { "str1", "str2", "str3" };   // var11 type:stringarray, value:{"str1", "str2", "str3"}
- * 
+ *
  * var12 = { 10+var1, var1-var7 };       // var12 type:intarray,    value:{133,-1}
  *\endcode
  *
@@ -165,7 +165,7 @@ public:
 		void				forceAsDouble	(double val);
 		/// Force the content of the variable to be a single string
 		void				forceAsString	(const std::string &val);
-		
+
 		/// Set the content of the aray variable as an integer
 		void				setAsInt	(const std::vector<int> &vals);
 		/// Set the content of the aray variable as a double
@@ -174,7 +174,7 @@ public:
 		void				setAsFloat	(const std::vector<float> &vals);
 		/// Set the content of the aray variable as a string
 		void				setAsString	(const std::vector<std::string> &vals);
-		
+
 		//@}
 
 		bool		operator==	(const CVar& var) const;
@@ -208,7 +208,7 @@ public:
 	};
 
 	CConfigFile() : _Callback(NULL) {}
-	
+
 	virtual ~CConfigFile ();
 
 	/// Get a variable with the variable name

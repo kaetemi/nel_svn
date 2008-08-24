@@ -66,7 +66,7 @@ NLMISC_COMMAND(setWaterPool, "Setup a pool of water in the water pool manager",
 		whmb.WavePeriod = ::atof(args[5].c_str());
 	}
 	// create the water pool
-	GetWaterPoolManager().createWaterPool(whmb);	
+	GetWaterPoolManager().createWaterPool(whmb);
 	return true;
 }
 */
@@ -90,7 +90,7 @@ bool	CWaterPoolManager::hasPool(uint32 ID) const
 
 CWaterHeightMap *CWaterPoolManager::createWaterPool(const CWaterHeightMapBuild &params)
 {
-	CWaterHeightMap *whm = _PoolMap.count(params.ID) == 0 ? new CWaterHeightMap : _PoolMap[params.ID];	
+	CWaterHeightMap *whm = _PoolMap.count(params.ID) == 0 ? new CWaterHeightMap : _PoolMap[params.ID];
 	whm->setDamping(params.Damping);
 	whm->setFilterWeight(params.FilterWeight);
 	whm->setSize(params.Size);
@@ -112,10 +112,10 @@ CWaterHeightMap &CWaterPoolManager::getPoolByID(uint32 ID)
 	}
 	else
 	{
-		return *createWaterPool();	
+		return *createWaterPool();
 	}
 }
-	
+
 //===============================================================================================
 
 void CWaterPoolManager::reset()
@@ -126,12 +126,12 @@ void CWaterPoolManager::reset()
 	}
 	_PoolMap.clear ();
 }
-	
+
 
 //===============================================================================================
 
 void CWaterPoolManager::registerWaterShape(CWaterShape *shape)
-{	
+{
 	nlassert(std::find(_WaterShapes.begin(), _WaterShapes.end(), shape) == _WaterShapes.end()); // Shape registered twice!
 	_WaterShapes.push_back(shape);
 }
@@ -177,7 +177,7 @@ void CWaterPoolManager::releaseBlendTextures()
 			if (tb)
 			{
 				tb->setReleasable(true);
-				tb->release();				
+				tb->release();
 			}
 		}
 	}
@@ -219,9 +219,9 @@ void	CWaterPoolManager::removePool(uint32 ID)
 
 //===============================================================================================
 void CWaterPoolManager::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
-{	
+{
 	f.xmlPush("WaterPoolManager");
-	(void)f.serialVersion(0);	
+	(void)f.serialVersion(0);
 	uint32 size;
 	TPoolMap::iterator it;
 	if (!f.isReading())
@@ -235,7 +235,7 @@ void CWaterPoolManager::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
 	}
 	f.xmlSerial(size, "NUM_POOLS");
 	while (size --)
-	{		
+	{
 		f.xmlPush("PoolDesc");
 		if (f.isReading())
 		{
@@ -243,7 +243,7 @@ void CWaterPoolManager::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
 			uint32 id;
 			f.xmlSerial(id, "POOL_ID");
 			f.serialPtr(whm);
-			_PoolMap[id] = whm;	
+			_PoolMap[id] = whm;
 		}
 		else
 		{
@@ -254,7 +254,7 @@ void CWaterPoolManager::serial(NLMISC::IStream &f)  throw(NLMISC::EStream)
 		}
 		f.xmlPop();
 	}
-	f.xmlPop();		
+	f.xmlPop();
 }
 
 } // NL3D

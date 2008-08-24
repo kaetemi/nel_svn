@@ -64,7 +64,7 @@
 //#	error "Unknown system"
 //#endif // NL_OS_UNIX
 
-namespace NL3D 
+namespace NL3D
 {
 
 /// Exception thrown by CDru::createGlDriver.
@@ -129,10 +129,10 @@ struct EDruDirect3dDriverCantCreateDriver : public EDru
 class	CDRU
 {
 public:
-	
+
 	/// Portable Function which create a GL Driver (using gl dll...).
 	static IDriver		*createGlDriver() throw(EDru);
-	
+
 #ifdef NL_OS_WINDOWS
 	/// Windows Function which create a Direct3d Driver.
 	static IDriver		*createD3DDriver() throw(EDru);
@@ -169,7 +169,7 @@ public:
 	static void			drawWiredQuad (float x0, float y0, float x1, float y1, IDriver& driver, CRGBA col, CViewport viewport);
 	/// Draw a Quad in 2D. Warning: this is slow...
 	static void			drawWiredQuad (float xcenter, float ycenter, float radius, IDriver& driver, CRGBA col, CViewport viewport);
-	
+
 	// @}
 
 	/// \name Easy render (2D or 3D).

@@ -35,7 +35,7 @@ using namespace std;
 
 #define NLMISC_READ_BUFFER_SIZE 1024
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 // *********************************************************
@@ -120,7 +120,7 @@ void CIXml::release ()
 	_PushBegin = false;
 	_AttribPresent = false;
 	_ErrorString = "";
-	
+
 	resetPtrTable();
 }
 
@@ -291,12 +291,12 @@ void CIXml::serialSeparatedBufferIn ( string &value, bool checkSeparator )
 
 						// Make an error message
 						char tmp[512];
-						smprintf (tmp, 512, "NeL XML Syntax error in block line %d\nAttribute \"%s\" is missing in node \"%s\"", 
+						smprintf (tmp, 512, "NeL XML Syntax error in block line %d\nAttribute \"%s\" is missing in node \"%s\"",
 							(int)_CurrentElement->line, _AttribName.c_str(), _CurrentElement->name);
 						throw EXmlParsingError (tmp);
 					}
 
-					// The attribute has been used 
+					// The attribute has been used
 					_AttribPresent = false;
 				}
 				else
@@ -402,7 +402,7 @@ void CIXml::serialSeparatedBufferIn ( string &value, bool checkSeparator )
 
 					// Make an error message
 					char tmp[512];
-					smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nMissing keywords in text child node in the node %s", 
+					smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nMissing keywords in text child node in the node %s",
 						(int)_CurrentElement->line, _CurrentElement->name);
 					throw EXmlParsingError (tmp);
 				}
@@ -499,7 +499,7 @@ void CIXml::serial(uint32 &b)
 
 // ***************************************************************************
 
-void CIXml::serial(sint32 &b) 
+void CIXml::serial(sint32 &b)
 {
 	if (_BinaryStream)
 	{
@@ -513,7 +513,7 @@ void CIXml::serial(sint32 &b)
 
 // ***************************************************************************
 
-void CIXml::serial(uint64 &b) 
+void CIXml::serial(uint64 &b)
 {
 	if (_BinaryStream)
 	{
@@ -527,7 +527,7 @@ void CIXml::serial(uint64 &b)
 
 // ***************************************************************************
 
-void CIXml::serial(sint64 &b) 
+void CIXml::serial(sint64 &b)
 {
 	if (_BinaryStream)
 	{
@@ -541,7 +541,7 @@ void CIXml::serial(sint64 &b)
 
 // ***************************************************************************
 
-void CIXml::serial(float &b) 
+void CIXml::serial(float &b)
 {
 	if (_BinaryStream)
 	{
@@ -555,7 +555,7 @@ void CIXml::serial(float &b)
 
 // ***************************************************************************
 
-void CIXml::serial(double &b) 
+void CIXml::serial(double &b)
 {
 	if (_BinaryStream)
 	{
@@ -600,7 +600,7 @@ void CIXml::serialBit(bool &bit)
 // ***************************************************************************
 
 #ifndef NL_OS_CYGWIN
-void CIXml::serial(char &b) 
+void CIXml::serial(char &b)
 {
 	if (_BinaryStream)
 	{
@@ -622,7 +622,7 @@ void CIXml::serial(char &b)
 
 				// Make an error message
 				char tmp[512];
-				smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nValue is not a char in the node named %s", 
+				smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nValue is not a char in the node named %s",
 					(int)_CurrentElement->line, _CurrentElement->name);
 				throw EXmlParsingError (tmp);
 			}
@@ -743,7 +743,7 @@ bool CIXml::xmlPushBeginInternal (const char *nodeName)
 				{
 					// Get the first node
 					_CurrentNode = xmlDocGetRootElement (_Parser->myDoc);
-					
+
 					// Has a root node ?
 					if (_CurrentNode)
 					{
@@ -795,11 +795,11 @@ bool CIXml::xmlPushBeginInternal (const char *nodeName)
 				{
 					// Make an error message
 					char tmp[512];
-					smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nCan't open the node named %s in node named %s", 
+					smprintf (tmp, 512, "NeL XML Syntax error in block line %d \nCan't open the node named %s in node named %s",
 						(int)_CurrentElement->line, nodeName, _CurrentElement->name);
 					throw EXmlParsingError (tmp);
 				}
-				
+
 				// Get first child
 				_CurrentNode = _CurrentNode->children;
 
@@ -1059,7 +1059,7 @@ xmlNodePtr CIXml::getRootNode () const
 }
 
 // ***************************************************************************
-	
+
 bool CIXml::getPropertyString (std::string &result, xmlNodePtr node, const char *property)
 {
 	// Get the value
@@ -1098,7 +1098,7 @@ int CIXml::getIntProperty(xmlNodePtr node, const char *property, int defaultValu
 	}
 
 	return val;
-} 
+}
 
 // ***************************************************************************
 
@@ -1112,7 +1112,7 @@ double CIXml::getFloatProperty(xmlNodePtr node, const char *property, float defa
 		return defaultValue;
 
 	return s.strip().atof();
-} 
+}
 
 // ***************************************************************************
 
@@ -1126,10 +1126,10 @@ std::string CIXml::getStringProperty(xmlNodePtr node, const char *property, cons
 		return defaultValue;
 
 	return s;
-} 
+}
 
 // ***************************************************************************
-	
+
 bool CIXml::getContentString (std::string &result, xmlNodePtr node)
 {
 	const char *valueText = (const char*)xmlNodeGetContent (node);
@@ -1139,7 +1139,7 @@ bool CIXml::getContentString (std::string &result, xmlNodePtr node)
 
 		// Delete the value
 		xmlFree ((void*)valueText);
-	
+
 		// Found
 		return true;
 	}
@@ -1147,7 +1147,7 @@ bool CIXml::getContentString (std::string &result, xmlNodePtr node)
 }
 
 // ***************************************************************************
-	
+
 } // NLMISC
 
 #endif // NL_DONT_USE_EXTERNAL_CODE

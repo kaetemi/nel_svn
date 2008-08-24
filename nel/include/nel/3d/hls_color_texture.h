@@ -37,7 +37,7 @@ namespace NLMISC
 }
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -131,7 +131,7 @@ private:
 private:
 	/// uncompress DXTC5 RGB only block, into a RGBA raw array. Alpha is setup with undefined values
 	static void			uncompressBlockRGB(const uint8* srcDXTC, CRGBA *dstRGBA);
-	
+
 	/// used by compressBlockRGB()
 	static void			computeMinMax(sint *diffBlock, CVectorInt &v, sint mean[3], sint rgb0[3], sint rgb1[3]);
 

@@ -32,11 +32,11 @@
 #include "u_particle_system_sound.h"
 
 
-// WARNING : this file is not intended to be directly included by the client. 
+// WARNING : this file is not intended to be directly included by the client.
 // It is just used to avoid a dependencie between NL3D and NLSOUND
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -51,9 +51,9 @@ class CPSSoundInstanceImpl : public UPSSoundInstance
 {
 public:
 	/// construct this object from a nel sound source
-	/** The system will call this method to set the parameters of the sound	  
+	/** The system will call this method to set the parameters of the sound
 	  */
-	CPSSoundInstanceImpl() 
+	CPSSoundInstanceImpl()
 		: _Source(NULL), _Spawned(false), _SoundServImpl(NULL)
 	{
 	}
@@ -62,7 +62,7 @@ public:
 	void init(NLSOUND::USource *source, CPSSoundServImpl *soundServImp, bool spawned)
 	{
 		nlassert(source);
-		_Source = source;		
+		_Source = source;
 		_Spawned    = spawned;
 		_SoundServImpl = soundServImp;
 	}
@@ -74,9 +74,9 @@ public:
 								float pitch
 							  )
 	{
-		if (!_Source) return;		
+		if (!_Source) return;
 		if (gain < 0) gain = 0;
-		if (gain > 1) gain = 1;		
+		if (gain > 1) gain = 1;
 		if (pitch < 0.0001f) pitch = 0.0001f;
 		_Source->setPos(pos);
 		_Source->setVelocity(velocity);
@@ -125,7 +125,7 @@ public:
 
 
 	/// release the sound source
-	virtual void release(void);	
+	virtual void release(void);
 
 protected:
 	friend inline void SpawnedSourceEndedCallback(NLSOUND::USource *source, void *userParam);
@@ -148,7 +148,7 @@ protected:
  */
 class CPSSoundServImpl : public UPSSoundServer
 {
-public:	
+public:
 	/// construct this sound server; You must init it then
 	CPSSoundServImpl() : _AudioMixer(NULL)
 	{
@@ -158,7 +158,7 @@ public:
 
 	/// init this particle system sound server, using the given audio mixer
 	void init(NLSOUND::UAudioMixer *audioMixer)
-	{		
+	{
 		_AudioMixer = audioMixer;
 	}
 
@@ -170,13 +170,13 @@ public:
 
 	/// inherited from IPSSoundServer
 	UPSSoundInstance *createSound(const NLMISC::TStringId &soundName, bool spawned = true)
-	{		
-		if (!_AudioMixer) 
+	{
+		if (!_AudioMixer)
 			return NULL;
 		CPSSoundInstanceImpl *sound = new CPSSoundInstanceImpl;
 		NLSOUND::USource *source = _AudioMixer->createSource(soundName, spawned, SpawnedSourceEndedCallback, sound );
 		if (source)
-		{			
+		{
 			/*
 			if (spawned)
 			{

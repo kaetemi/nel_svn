@@ -27,7 +27,7 @@
 #include "nel/3d/mrm_level_detail.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

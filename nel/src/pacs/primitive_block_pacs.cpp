@@ -27,7 +27,7 @@
 #include <memory>
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 // ***************************************************************************
@@ -49,7 +49,7 @@ void CPrimitiveDesc::serial (NLMISC::IStream &s)
 {
 	// Serial the version
 	sint ver = s.serialVersion (1);
-	
+
 	s.xmlPush ("LENGTH");
 	s.serial (Length[0]);
 	s.serial (Length[1]);

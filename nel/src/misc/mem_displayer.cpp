@@ -150,7 +150,7 @@ static string getSourceInfo (DWORD addr)
 		sprintf (tmp, "!0x%X", addr);
 		str += tmp;
 	}
-	
+
 	return str;
 }
 
@@ -210,7 +210,7 @@ static void displayCallStack (CLog *log)
 	static string symbolPath;
 
 	DWORD symOptions = SymGetOptions();
-	symOptions |= SYMOPT_LOAD_LINES; 
+	symOptions |= SYMOPT_LOAD_LINES;
 	symOptions &= ~SYMOPT_UNDNAME;
 	SymSetOptions (symOptions);
 
@@ -265,7 +265,7 @@ static void displayCallStack (CLog *log)
 		nlwarning ("DISP: GetThreadContext(%p) failed", GetCurrentThread());
 		return;
 	}
-	
+
 	STACKFRAME callStack;
 	::ZeroMemory (&callStack, sizeof(callStack));
 	callStack.AddrPC.Mode      = AddrModeFlat;
@@ -291,7 +291,7 @@ static void displayCallStack (CLog *log)
 
 		if (res == FALSE || callStack.AddrFrame.Offset == 0)
 			break;
-	
+
 		string symInfo, srcInfo;
 
 		symInfo = getFuncInfo (callStack.AddrPC.Offset, callStack.AddrFrame.Offset);
@@ -385,7 +385,7 @@ void CMemDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 		str += NLMISC::toString(args.Line);
 		needSpace = true;
 	}
-	
+
 	if (needSpace) { str += " : "; needSpace = false; }
 
 	str += message;
@@ -448,17 +448,17 @@ void	CLightMemDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char 
 	//stringstream	ss;
 	string str;
 	//bool			needSpace = false;
-	
+
 	if (!_CanUseStrings) return;
-	
+
 	str += message;
-	
+
 	// clear old line
 	while (_Strings.size () >= _MaxStrings)
 	{
 		_Strings.pop_front ();
 	}
-	
+
 	_Strings.push_back (str);
 }
 

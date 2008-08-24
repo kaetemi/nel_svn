@@ -29,7 +29,7 @@
 #include "nel/3d/mesh.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -92,8 +92,8 @@ public:
 
 public:
 
-	/** compile the lod: compute Texture Information. 
-	 *	\param triangleSelection. If not same size as triangles, not used. Else texture info is filled only with 
+	/** compile the lod: compute Texture Information.
+	 *	\param triangleSelection. If not same size as triangles, not used. Else texture info is filled only with
 	 *	triangles whose their triangleSelection[triId]==true
 	 *	\param textureOverSample is rounded to the best square (4,9,...). Prefer a srq(oddVal): 1,9,25,49 etc...
 	 *	NB: overSamples are not averaged, but the nearest sample to the texel center is taken.
@@ -103,7 +103,7 @@ public:
 	/// serial
 	void				serial(NLMISC::IStream &f);
 
-	/// get TextureInfo 
+	/// get TextureInfo
 	const CPixelInfo	*getTextureInfoPtr();
 	uint				getTextureInfoWidth() const {return _Width;}
 	uint				getTextureInfoHeight() const {return _Height;}
@@ -212,7 +212,7 @@ public:
 	/// init the process by resize-ing a tmp uint8 vector of getNumVertices() size, and reset to 0
 	void			startBoneAlpha(std::vector<uint8>	&tmpAlphas) const;
 
-	/// Add a bone alpha influence to tmpAlpha. 
+	/// Add a bone alpha influence to tmpAlpha.
 	void			addBoneAlpha(uint boneId, std::vector<uint8> &tmpAlphas) const;
 
 	// @}

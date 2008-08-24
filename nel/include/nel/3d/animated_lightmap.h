@@ -32,7 +32,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -61,7 +61,7 @@ public:
 	enum	TAnimValues
 	{
 		OwnerBit= IAnimatable::AnimValueLast,
-		FactorValue, 
+		FactorValue,
 		AnimValueLast
 	};
 
@@ -85,10 +85,10 @@ public:
 	// Update the group color with the scene
 	void			updateGroupColors (class NL3D::CScene &scene);
 
-	NLMISC::CRGBA	getFactor (uint group) const 
-	{ 
+	NLMISC::CRGBA	getFactor (uint group) const
+	{
 		if (group < _GroupColor.size ())
-			return _GroupColor[group]; 
+			return _GroupColor[group];
 		else
 			return _Factor.Value;
 	}
@@ -101,7 +101,7 @@ private:
 	// AnimValues.
 
 	CAnimatedValueRGBA			_Factor;
-	CTrackDefaultRGBA			_DefaultFactor; 
+	CTrackDefaultRGBA			_DefaultFactor;
 	std::vector<NLMISC::CRGBA>	_GroupColor;
 };
 

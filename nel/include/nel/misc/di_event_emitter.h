@@ -99,13 +99,13 @@ struct CDIEvent : public IInputDeviceEvent
  * \date 2002
  */
 class CDIEventEmitter : public IEventEmitter, public IInputDeviceManager
-{	
+{
 public:
 	/** Build a Direct Input Event Emitter object. An exception containing the reason is thrown if the initialization failed.
 	  * The obtained object must be released by deleting it.
 	  * \param hinst the instance of the application.
 	  * \param hwnd  the main window of the application.
-	  * \param we A windows eventsemitter. Can be NULL. Needed if you want to mix WIN32 events and Direct Input events 	  
+	  * \param we A windows eventsemitter. Can be NULL. Needed if you want to mix WIN32 events and Direct Input events
 	  *			  (for example, a Direct Input Mouse and a Win32 Keyboard)
 	  */
 	static CDIEventEmitter *create(HINSTANCE hinst, HWND hwnd, CWinEventEmitter *we);
@@ -122,7 +122,7 @@ public:
 		/** Create the mouse device if needed (one active at a time for that object, repeated calls returns the same pointer) and get an interface on it. An exception if thrown if it couldn't be obtained.
 		  * If this object has a pointer on a win32 emiter, Win32 mouse messages are replaced by this mouse messages.
 		  */
-		virtual IMouseDevice	*getMouseDevice(bool hardware) throw(EInputDevice);		
+		virtual IMouseDevice	*getMouseDevice(bool hardware) throw(EInputDevice);
 		/// remove the direct input mouse
 		virtual void	releaseMouse();
 		/** Create the keyboard device if needed (one active at a time for that object, repeated calls returns the same pointer)  and get an interface on it.
@@ -141,7 +141,7 @@ public:
 	//@}
 
 	/// from IEventEmitter
-	virtual void			submitEvents(CEventServer &server, bool allWindows);	
+	virtual void			submitEvents(CEventServer &server, bool allWindows);
 
 	// Build a TMouseButton value from the current buttons state
 	TMouseButton	buildButtonsFlags() const;
@@ -149,7 +149,7 @@ public:
 	TMouseButton	buildKeyboardButtonFlags() const
 	{
 		return (TMouseButton) (buildButtonsFlags() & (ctrlButton|shiftButton|altButton));
-	}	
+	}
 
 //================================================================
 //================================================================
@@ -174,7 +174,7 @@ private:
 		}
 	private:
 		CEventServer *_Server;
-	};		
+	};
 private:
 	HWND								_hWnd;
 	TMouseButton						_ButtonsFlags;
@@ -190,10 +190,10 @@ private:
 	CDIEventServer							_InternalServer;
 	CInputDeviceServer						_DeviceServer;
 	IDirectInput8							*_DInput8;
-	CDIMouse								*_Mouse;	
-	CDIKeyboard								*_Keyboard;	
+	CDIMouse								*_Mouse;
+	CDIKeyboard								*_Keyboard;
 private:
-	CDIEventEmitter(HWND hwnd, CWinEventEmitter *we);	
+	CDIEventEmitter(HWND hwnd, CWinEventEmitter *we);
 };
 
 

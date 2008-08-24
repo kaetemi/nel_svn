@@ -26,6 +26,6 @@
 #include "collision_callback.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 } // NLPACS

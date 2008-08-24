@@ -32,7 +32,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 H_AUTO_DECL( NL3D_UI_PlayList )

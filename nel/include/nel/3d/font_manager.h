@@ -46,18 +46,18 @@ struct CComputedString;
  * Font manager
  * The font manager manages CMaterial pointers through a list
  * of CSmartPtr. When the user asks for the texture font representing
- * a character(font/size), it generates and stores this pointer in the list. 
- * If this character has already been generated, and lies in the list, 
+ * a character(font/size), it generates and stores this pointer in the list.
+ * If this character has already been generated, and lies in the list,
  * it increments its reference count.
- * If the memory used by generated textures exceeds the max memory, 
- * then the useless character/pointer is erased from the list. 
+ * If the memory used by generated textures exceeds the max memory,
+ * then the useless character/pointer is erased from the list.
  * Max memory is set to 0 by default, so this value should be set to non-zero
  * before generating textures to prevent immediate memory deletion.
  * \author Stephane Coutelas
  * \author Nevrax France
  * \date 2000
  */
-class CFontManager 
+class CFontManager
 {
 	uint32 _MemSize;
 	uint32 _MaxMemory;
@@ -68,9 +68,9 @@ class CFontManager
 
 public:
 
-	/** 
+	/**
 	 * Default constructor
-	 */	
+	 */
 	CFontManager()
 	{
 		_MemSize = 0;
@@ -81,28 +81,28 @@ public:
 	}
 
 
-	/** 
+	/**
 	 * define maximum memory allowed
 	 * \param maximum memory
-	 */	
+	 */
 	void setMaxMemory(uint32 mem) { _MaxMemory = mem; }
 
 
-	/** 
+	/**
 	 * gives maximum memory allowed
 	 * \return maximum memory
-	 */	
+	 */
 	uint32 getMaxMemory() const { return _MaxMemory; }
 
-	/** 
+	/**
 	 * manages fonts in memory using CSmartPtr
 	 * \param character descriptor
 	 * \return CSmartPtr to a font texture
-	 */	
+	 */
 	CMaterial* getFontMaterial();
 
 
-	/** 
+	/**
 	 * Compute primitive blocks and materials of each character of
 	 * the string.
 	 * \param s string to compute
@@ -112,22 +112,22 @@ public:
 	 * \param desc display descriptor (screen size, font ratio)
 	 * \param output computed string
 	 * \param keep800x600Ratio true if you want that CFontManager look at Driver window size, and resize fontSize so it keeps same size...
-	 */	
+	 */
 	void computeString (const std::string& s,
-						CFontGenerator *fontGen, 
+						CFontGenerator *fontGen,
 						const NLMISC::CRGBA &color,
-						uint32 fontSize, 
+						uint32 fontSize,
 					    IDriver *driver,
 						CComputedString& output,
 						bool	keep800x600Ratio= true);
 
-	/** 
+	/**
 	 * Same as computeString but works with a unicode string (ucstring)
 	 */
 	void computeString (const ucstring &s,
-						CFontGenerator *fontGen, 
+						CFontGenerator *fontGen,
 						const NLMISC::CRGBA &color,
-						uint32 fontSize, 
+						uint32 fontSize,
 					    IDriver *driver,
 						CComputedString &output,
 						bool	keep800x600Ratio= true);
@@ -136,17 +136,17 @@ public:
 	 * Same as computeString but do not make vertex buffers and primitives
 	 */
 	void computeStringInfo (const ucstring &s,
-							CFontGenerator *fontGen, 
+							CFontGenerator *fontGen,
 							const NLMISC::CRGBA &color,
-							uint32 fontSize, 
+							uint32 fontSize,
 							IDriver *driver,
 							CComputedString &output,
 							bool keep800x600Ratio= true);
 
 
-	/** 
+	/**
 	 * return a string given information about the cache
-	 */	
+	 */
 	std::string getCacheInformation() const;
 
 	void	dumpCache (const char *filename)

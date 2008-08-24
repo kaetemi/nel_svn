@@ -114,9 +114,9 @@ void CVertexBuffer::construct()
 	_Location = NotResident;
 	_ResidentSize = 0;
 	_KeepLocalMemory = false;
-	
+
 	// Default routing
-	uint i; 
+	uint i;
 	for (i=0; i<MaxStage; i++)
 		_UVRouting[i] = i;
 }
@@ -124,7 +124,7 @@ void CVertexBuffer::construct()
 // --------------------------------------------------
 
 CVertexBuffer::CVertexBuffer()
-{	
+{
 	construct();
 }
 
@@ -158,7 +158,7 @@ CVertexBuffer::CVertexBuffer(const CVertexBuffer &vb) : CRefCount()
 	operator=(vb);
 
 	// Default routing
-	uint i; 
+	uint i;
 	for (i=0; i<MaxStage; i++)
 		_UVRouting[i] = i;
 }
@@ -231,7 +231,7 @@ void CVertexBuffer::copyVertices(CVertexBuffer &dest) const
 	nlassert(dest.getLocation() == NotResident);
 	CVertexBufferReadWrite destDatas;
 	dest.lock(destDatas); // will be in vram
-	NLMISC::CFastMem::memcpy (destDatas.getVertexCoordPointer(), srcDatas.getVertexCoordPointer(), getVertexSize() * getNumVertices());	
+	NLMISC::CFastMem::memcpy (destDatas.getVertexCoordPointer(), srcDatas.getVertexCoordPointer(), getVertexSize() * getNumVertices());
 }
 
 // --------------------------------------------------
@@ -242,7 +242,7 @@ bool CVertexBuffer::setVertexFormat(uint32 flags)
 
 	uint	i;
 
-	// Clear extended values 
+	// Clear extended values
 	clearValueEx ();
 
 	// Position ?
@@ -362,7 +362,7 @@ void CVertexBuffer::dumpFormat() const
 		{
 			std::string result = "Component :";
 			switch(k)
-			{			
+			{
 				case Position:      result += "Position"; break;
 				case Normal:        result += "Normal"; break;
 				case TexCoord0:		result += "TexCoord0"; break;
@@ -432,7 +432,7 @@ void CVertexBuffer::addValueEx (TValue valueId, TType type)
 		case SecondaryColor:	nlassert(numComp == 4); break;
 		case Weight:			nlassert(numComp == 4); break;
 		case PaletteSkin:		nlassert(numComp == 4); break;
-		case Fog:				nlassert(numComp == 4); break;		
+		case Fog:				nlassert(numComp == 4); break;
 		default: break;
 	}
 }
@@ -901,7 +901,7 @@ void		CVertexBuffer::serialHeader(NLMISC::IStream &f)
 
 // --------------------------------------------------
 uint	CVertexBuffer::	getNumTexCoordUsed() const
-{	
+{
 	for (sint k = (MaxStage - 1); k >= 0; --k)
 	{
 		if (_Flags & (TexCoord0Flag << k))  return (uint) (k + 1);
@@ -1121,7 +1121,7 @@ void CVertexBuffer::setLocation (TLocation newLocation)
 void CVertexBuffer::restaureNonResidentMemory()
 {
 	setLocation (NotResident);
-	
+
 	if (DrvInfos)
 		DrvInfos->VertexBufferPtr = NULL;	// Tell the driver info to not restaure memory when it will die
 
@@ -1138,8 +1138,8 @@ void CVertexBuffer::fillBuffer ()
 		// Copy the local memory in local memory
 		const uint size = _NbVerts*_VertexSize;
 		nlassert (size<=_NonResidentVertices.size());
-		uint8 *dest = DrvInfos->lock (0, size, false);		
-		NLMISC::CFastMem::memcpy (dest, &(_NonResidentVertices[0]), size);		
+		uint8 *dest = DrvInfos->lock (0, size, false);
+		NLMISC::CFastMem::memcpy (dest, &(_NonResidentVertices[0]), size);
 		DrvInfos->unlock(0, size);
 	}
 }

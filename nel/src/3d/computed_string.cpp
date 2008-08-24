@@ -49,25 +49,25 @@ CVector CComputedString::getHotSpotVector(THotSpot hotspot)
 
 	if (hotspot==MiddleLeft)
 		hotspotVector = CVector(0,0,-StringHeight/2);
-	
+
 	if (hotspot==TopLeft)
 		hotspotVector = CVector(0,0,-StringHeight);
-	
+
 	if (hotspot==MiddleBottom)
 		hotspotVector = CVector(-StringWidth/2,0,0);
-	
+
 	if (hotspot==MiddleMiddle)
 		hotspotVector = CVector(-StringWidth/2,0,-StringHeight/2);
-	
+
 	if (hotspot==MiddleTop)
 		hotspotVector = CVector(-StringWidth/2,0,-StringHeight);
-	
+
 	if (hotspot==BottomRight)
 		hotspotVector = CVector(-StringWidth,0,0);
-	
+
 	if (hotspot==MiddleRight)
 		hotspotVector = CVector(-StringWidth,0,-StringHeight/2);
-	
+
 	if (hotspot==TopRight)
 		hotspotVector = CVector(-StringWidth,0,-StringHeight);
 
@@ -104,7 +104,7 @@ void CComputedString::render2D (IDriver& driver,
 	// transformation matrix initialized to identity
 	CMatrix matrix;
 	matrix.identity();
-		
+
 	// view matrix <-> identity
 	driver.setupViewMatrix(matrix);
 
@@ -129,10 +129,10 @@ void CComputedString::render2D (IDriver& driver,
 	}
 	// setup the matrix
 	driver.setupModelMatrix(matrix);
-	
+
 	driver.activeVertexBuffer(Vertices);
 
-	// rendering each primitives 
+	// rendering each primitives
 	Material->setZFunc (CMaterial::always);
 	Material->setZWrite (false);
 	Material->setColor (Color);
@@ -243,21 +243,21 @@ void CComputedString::render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuf
 	// **** clipping?
 	if(allIn)
 	{
-		// copy All vertices 
+		// copy All vertices
 		uint numVerts= nNumQuadSrc*4;
 		uint count = 4;
 		uint lastIndex = 0;
 		for(uint i=0;i<numVerts;i++)
 		{
 			if(count==4){
-				
+
 				if(!LetterColors.empty())
 				{
 					uint ind = LetterColors.getIndex(lastIndex);
 					if(LetterColors.getIndex(lastIndex)==i/4)
 					{
 						mCol.modulateFromColor(Color, LetterColors.getColor(lastIndex));
-						
+
 						if(lastIndex+1<LetterColors.size())
 						{
 							lastIndex++;
@@ -321,13 +321,13 @@ void CComputedString::render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuf
 				// Totally clipped do nothing
 			}
 			else
-			{	
+			{
 				if(!LetterColors.empty())
 				{
 					if(LetterColors.getIndex(lastIndex)==(i/4))
 					{
 						mCol.modulateFromColor(Color, LetterColors.getColor(lastIndex));
-						
+
 						if(lastIndex+1<LetterColors.size())
 						{
 							lastIndex++;
@@ -500,7 +500,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 	// **** clipping?
 	if(allIn)
 	{
-		// copy All vertices 
+		// copy All vertices
 		uint numVerts= nNumQuadSrc*4;
 		for(uint i=0;i<numVerts;i++)
 		{
@@ -509,7 +509,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 			CHECK_VBA_RANGE(srcvba, srcPtr, rdrBuffer.Vertices.getVertexSize());
 			((CVector*)dstPtr)->x= x + ((CVector*)srcPtr)->x;
 			((CVector*)dstPtr)->z= z + ((CVector*)srcPtr)->z;
-			
+
 			// uv
 			*((CUV*)(dstPtr+ofsDstUV))= *((CUV*)(srcPtr+ofsSrcUV));
 			// color
@@ -628,7 +628,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 						pClipUV3->V += ratio*(pClipUV0->V - pClipUV3->V);
 					}
 				}
-				
+
 				// next quad out
 				++nNumQuadClipped;
 				pClipPos0 = (CVector*)(((uint8*)pClipPos0) + dstSize*4);
@@ -653,7 +653,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 
 	const float OOW = 1.f / (float)wndWidth;
 	const float OOH = 1.f / (float)wndHeight;
-	
+
 	while (dstPtrBackup != dstPtr)
 	{
 		// preset unprojection
@@ -667,7 +667,7 @@ void CComputedString::render2DUnProjected (IDriver& driver, CRenderStringBuffer 
 		*((CVector*)dstPtrBackup) = frustum.unProjectZ(tmp);
 		dstPtrBackup += dstSize;
 	}
-	
+
 }
 
 // ***************************************************************************
@@ -677,7 +677,7 @@ CRenderStringBuffer::CRenderStringBuffer()
 	Vertices.setVertexFormat (CVertexBuffer::PositionFlag | CVertexBuffer::TexCoord0Flag | CVertexBuffer::PrimaryColorFlag);
 	Vertices.setPreferredMemory (CVertexBuffer::RAMVolatile, true);
 	Vertices.setName("CRenderStringBuffer");
-	NumQuads= 0;	
+	NumQuads= 0;
 }
 
 
@@ -692,28 +692,28 @@ void	CRenderStringBuffer::flush(IDriver& driver, CMaterial *fontMat)
 {
 	if(NumQuads==0)
 		return;
-	
+
 	// get window size
 	uint32	wndWidth, wndHeight;
 	driver.getWindowSize(wndWidth, wndHeight);
-	
+
 	// **** setup driver context
 	driver.setFrustum(0, (float)wndWidth, 0, (float)wndHeight, -1, 1, false);  // resX/resY
-	
+
 	// view matrix and model matrix <-> identity
 	driver.setupViewMatrix (CMatrix::Identity);
 	driver.setupModelMatrix (CMatrix::Identity);
-	
+
 	// setup material
 	fontMat->setZFunc (CMaterial::always);
 	fontMat->setZWrite (false);
-	
+
 	// setup vertices clipped
 	driver.activeVertexBuffer (Vertices);
-	
+
 	// *** rendering
 	driver.renderRawQuads (*fontMat, 0, NumQuads );
-	
+
 	// *** reset
 	NumQuads= 0;
 }
@@ -724,14 +724,14 @@ void	CRenderStringBuffer::flushUnProjected(IDriver& driver, CMaterial *fontMat, 
 {
 	if(NumQuads==0)
 		return;
-	
+
 	// setup material
 	fontMat->setZFunc (CMaterial::lessequal);
 	fontMat->setZWrite (zwrite);
-	
+
 	// setup vertices clipped
 	driver.activeVertexBuffer (Vertices);
-	
+
 	// *** rendering
 	driver.renderRawQuads (*fontMat, 0, NumQuads );
 

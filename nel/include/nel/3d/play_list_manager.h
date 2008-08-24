@@ -30,7 +30,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -60,7 +60,7 @@ public:
 	 * If a playlist/channelmixer has been deleted (RefPtr), the node is removed from the list.
 	 */
 	void	animate(TGlobalAnimationTime time);
-	
+
 	/** steup all the playlist: setupMixer() the channelMixer.
 	 * If a playlist/channelmixer has been deleted (RefPtr), the node is removed from the list.
 	 */

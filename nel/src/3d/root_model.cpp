@@ -57,7 +57,7 @@ void	CRootModel::traverseClip()
 
 // ***************************************************************************
 void	CRootModel::traverseAnimDetail()
-{	
+{
 	// no-op
 }
 

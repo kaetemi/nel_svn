@@ -91,7 +91,7 @@ void CZoneManager::checkZonesAround (uint x, uint y, uint area, const std::vecto
 	// **** Look if we have zone loaded that is not needed anymore
 	uint32 i, j;
 	for (i = 0; i < _LoadedZones.size(); ++i)
-	{		
+	{
 		// If the loadedzone i do not appear in the zone list so we have to remove it
 		bool bFound = false;
 		uint16 nLoadedZone = _LoadedZones[i];
@@ -102,7 +102,7 @@ void CZoneManager::checkZonesAround (uint x, uint y, uint area, const std::vecto
 				bFound = true;
 				break;
 			}
-		}		
+		}
 
 		if (!bFound)
 		{
@@ -110,7 +110,7 @@ void CZoneManager::checkZonesAround (uint x, uint y, uint area, const std::vecto
 			_IdZoneToRemove = nLoadedZone;
 			_RemovingZone = true;
 			return;
-		}		
+		}
 	}
 
 	// **** Look if we have zone not already loaded
@@ -151,7 +151,7 @@ void CZoneManager::checkZonesAround (uint x, uint y, uint area, const std::vecto
 				newZone.ZoneToAddName = getZoneNameFromId(nZone);
 				newZone.ZoneToAddId = nZone;
 				newZone.Zone = NULL;
-				
+
 				// We have to load this zone. add a load task
 				CAsyncFileManager &rAFM = CAsyncFileManager::getInstance();
 

@@ -34,7 +34,7 @@ namespace	NLMISC
 #ifdef NL_OS_WINDOWS
 #define	SMART_INLINE __forceinline
 #else
-#define	SMART_INLINE inline 
+#define	SMART_INLINE inline
 #endif
 
 
@@ -64,8 +64,8 @@ inline CRefCount::~CRefCount()
 
 // ***************************************************************************
 template<class T>
-inline CSmartPtr<T>::~CSmartPtr(void) 
-{ 
+inline CSmartPtr<T>::~CSmartPtr(void)
+{
 	SMART_TRACE("dtor()");
 
     if(Ptr)
@@ -78,7 +78,7 @@ inline CSmartPtr<T>::~CSmartPtr(void)
 		Ptr=NULL;
 	}
 }
-template<class T>    
+template<class T>
 SMART_INLINE CSmartPtr<T>& CSmartPtr<T>::operator=(T* p)
 {
 	SMART_TRACE("ope=(T*)Start");
@@ -97,12 +97,12 @@ SMART_INLINE CSmartPtr<T>& CSmartPtr<T>::operator=(T* p)
 
 	return *this;
 }
-template<class T>    
+template<class T>
 SMART_INLINE CSmartPtr<T>& CSmartPtr<T>::operator=(const CSmartPtr &p)
 {
 	return operator=(p.Ptr);
 }
-template<class T>    
+template<class T>
 SMART_INLINE bool CSmartPtr<T>::operator<(const CSmartPtr &p) const
 {
 	return Ptr<p.Ptr;
@@ -118,7 +118,7 @@ SMART_INLINE bool CSmartPtr<T>::operator<(const CSmartPtr &p) const
 
 
 // ***************************************************************************
-template<class T>    
+template<class T>
 SMART_INLINE void	CRefPtr<T>::unRef() const
 {
 	pinfo->RefCount--;
@@ -151,8 +151,8 @@ SMART_INLINE void	CRefPtr<T>::unRef() const
 
 // ***************************************************************************
 // Cons - dest.
-template <class T> inline CRefPtr<T>::CRefPtr() 
-{ 
+template <class T> inline CRefPtr<T>::CRefPtr()
+{
 	pinfo= static_cast<CRefCount::CPtrInfo*>(&CRefCount::NullPtrInfo);
 	Ptr= NULL;
 
@@ -198,7 +198,7 @@ template <class T> inline CRefPtr<T>::~CRefPtr(void)
 
 // ***************************************************************************
 // Operators=.
-template <class T> CRefPtr<T> &CRefPtr<T>::operator=(T *v) 
+template <class T> CRefPtr<T> &CRefPtr<T>::operator=(T *v)
 {
 	REF_TRACE("ope=(T*)Start");
 
@@ -229,7 +229,7 @@ template <class T> CRefPtr<T> &CRefPtr<T>::operator=(T *v)
 
 	return *this;
 }
-template <class T> CRefPtr<T> &CRefPtr<T>::operator=(const CRefPtr &copy) 
+template <class T> CRefPtr<T> &CRefPtr<T>::operator=(const CRefPtr &copy)
 {
 	REF_TRACE("ope=(Smart)Start");
 
@@ -266,13 +266,13 @@ template <class T> void	CRefPtr<T>::kill()
 
 // ***************************************************************************
 // Cast.
-template <class T> inline CRefPtr<T>::operator T*()	const 
+template <class T> inline CRefPtr<T>::operator T*()	const
 {
 	REF_TRACE("SmartCast T*()");
 
 	// Refresh Ptr.
 	// NB: It is preferable (faster) here to just copy than testing if NULL and set NULL if necessary.
-	// (static_cast is like a simple copy but for multiple inheritance) 
+	// (static_cast is like a simple copy but for multiple inheritance)
 	Ptr= const_cast<T*>(static_cast<T const*>(pinfo->Ptr));
 	return Ptr;
 }
@@ -281,14 +281,14 @@ template <class T> inline CRefPtr<T>::operator T*()	const
 // ***************************************************************************
 // Operators.
 template <class T> inline T& CRefPtr<T>::operator*(void)  const
-{ 
+{
 	REF_TRACE("Smart *()");
-	return *Ptr; 
+	return *Ptr;
 }
 template <class T> inline T* CRefPtr<T>::operator->(void) const
-{ 
+{
 	REF_TRACE("Smart ->()");
-	return Ptr;  
+	return Ptr;
 }
 
 
@@ -300,7 +300,7 @@ template <class T> inline T* CRefPtr<T>::operator->(void) const
 
 
 // ***************************************************************************
-template<class T>    
+template<class T>
 SMART_INLINE void	CVirtualRefPtr<T>::unRef() const
 {
 	pinfo->RefCount--;
@@ -333,8 +333,8 @@ SMART_INLINE void	CVirtualRefPtr<T>::unRef() const
 
 // ***************************************************************************
 // Cons - dest.
-template <class T> inline CVirtualRefPtr<T>::CVirtualRefPtr() 
-{ 
+template <class T> inline CVirtualRefPtr<T>::CVirtualRefPtr()
+{
 	pinfo= static_cast<CRefCount::CPtrInfo*>(&CRefCount::NullPtrInfo);
 	Ptr= NULL;
 
@@ -381,7 +381,7 @@ template <class T> inline CVirtualRefPtr<T>::~CVirtualRefPtr(void)
 
 // ***************************************************************************
 // Operators=.
-template <class T> CVirtualRefPtr<T> &CVirtualRefPtr<T>::operator=(T *v) 
+template <class T> CVirtualRefPtr<T> &CVirtualRefPtr<T>::operator=(T *v)
 {
 	REF_TRACE("ope=(T*)Start");
 
@@ -412,7 +412,7 @@ template <class T> CVirtualRefPtr<T> &CVirtualRefPtr<T>::operator=(T *v)
 
 	return *this;
 }
-template <class T> CVirtualRefPtr<T> &CVirtualRefPtr<T>::operator=(const CVirtualRefPtr &copy) 
+template <class T> CVirtualRefPtr<T> &CVirtualRefPtr<T>::operator=(const CVirtualRefPtr &copy)
 {
 	REF_TRACE("ope=(Smart)Start");
 
@@ -451,7 +451,7 @@ template <class T> void	CVirtualRefPtr<T>::kill()
 
 // ***************************************************************************
 // Cast.
-template <class T> inline CVirtualRefPtr<T>::operator T*()	const 
+template <class T> inline CVirtualRefPtr<T>::operator T*()	const
 {
 	REF_TRACE("SmartCast T*()");
 
@@ -466,14 +466,14 @@ template <class T> inline CVirtualRefPtr<T>::operator T*()	const
 // ***************************************************************************
 // Operators.
 template <class T> inline T& CVirtualRefPtr<T>::operator*(void)  const
-{ 
+{
 	REF_TRACE("Smart *()");
-	return *Ptr; 
+	return *Ptr;
 }
 template <class T> inline T* CVirtualRefPtr<T>::operator->(void) const
-{ 
+{
 	REF_TRACE("Smart ->()");
-	return Ptr;  
+	return Ptr;
 }
 
 // ***************************************************************************

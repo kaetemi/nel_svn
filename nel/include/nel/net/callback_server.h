@@ -67,7 +67,7 @@ public:
 	void	setDisconnectionCallback (TNetCallback cb, void *arg) { CCallbackNetBase::setDisconnectionCallback (cb, arg); }
 
 	/// Returns true if the connection is still connected. on server, we always "connected"
-	bool	connected () const { return true; } 
+	bool	connected () const { return true; }
 
 	/** Disconnect a connection
 	 * Set hostid to InvalidSockId to disconnect all connections.
@@ -87,7 +87,7 @@ public:
 
 	void displayReceiveQueueStat (NLMISC::CLog *log = NLMISC::InfoLog) { CBufServer::displayReceiveQueueStat(log); }
 	void displaySendQueueStat (NLMISC::CLog *log = NLMISC::InfoLog, TSockId destid = InvalidSockId) { CBufServer::displaySendQueueStat(log, destid); }
-	
+
 	void displayThreadStat (NLMISC::CLog *log = NLMISC::InfoLog) { CBufServer::displayThreadStat(log); }
 
 private:
@@ -115,7 +115,7 @@ private:
 	std::map<TSockId,TSockId>	_MR_SockIds; // first=sockid in file; second=CBufSock*
 #endif
 	// ---------------------------------------
-	
+
 };
 
 

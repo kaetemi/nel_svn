@@ -134,7 +134,7 @@ IBuffer*		CSampleBank::get(const NLMISC::TStringId &name)
 			return buffer;
 		}
 	}
-	
+
 	//nlwarning ("Try to get an unknown sample '%s'", name);
 	return 0;
 }
@@ -174,7 +174,7 @@ void CSampleBank::getLoadedSampleBankInfo(std::vector<std::pair<std::string, uin
 
 // ********************************************************
 
-CSampleBank::CSampleBank(const std::string& name, ISoundDriver *sd) 
+CSampleBank::CSampleBank(const std::string& name, ISoundDriver *sd)
 : _SoundDriver(sd), _Name(CStringMapper::map(name)), _Loaded(false), _LoadingDone(true), _ByteSize(0)
 {
 //	_Name = CFile::getFilenameWithoutExtension(_Path);
@@ -288,7 +288,7 @@ void				CSampleBank::load(bool async)
 
 			TStringId	nameId = CStringMapper::map(CFile::getFilenameWithoutExtension(sbh.Name[i]));
 			ibuffer->presetName(nameId);
-			
+
 	/*		{
 				sint16 *data16 = new sint16[sbh.NbSample[i]];
 				IBuffer::TADPCMState	state;
@@ -334,7 +334,7 @@ void				CSampleBank::load(bool async)
 				sampleBank.serialBuffer(data, sbh.SizeMono16[i]);
 				_SoundDriver->readRawBuffer(ibuffer, sbh.Name[i], data, sbh.SizeMono16[i], Mono16, sbh.Freq[i]);
 			}
-			
+
 			_ByteSize += ibuffer->getSize();
 
 			_Samples[nameId] = ibuffer;
@@ -469,7 +469,7 @@ void CSampleBank::onUpdate()
 			{
 				_ByteSize += first->second->getSize();
 			}
-		
+
 			_LoadedSize += _ByteSize;
 
 			// stop the update.

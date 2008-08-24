@@ -1,5 +1,5 @@
 /** \file logic_state.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -72,14 +72,14 @@ public:
 
 	/// messages to send by the service
 	std::multimap<NLMISC::CEntityId, NLNET::CMessage> _MessagesToSend;
-	
+
 public:
 
 	/**
 	 *	Default constructor
 	 */
 	CLogicState();
-	
+
 	/**
 	 * Set the state machine which contains this state
 	 *

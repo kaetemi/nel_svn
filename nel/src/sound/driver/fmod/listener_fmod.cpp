@@ -33,7 +33,7 @@
 using namespace NLMISC;
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 
@@ -167,10 +167,10 @@ void CListenerFMod::setRolloffFactor( float f )
 #if MANUAL_ROLLOFF == 0
 	if( !CSoundDriverFMod::instance()->fmodOk() )
 		return;
-	
+
 	// clamp as in DSound (FMod requirement)
 	clamp(f, 0.f, 10.f);
-	
+
 	_RolloffFactor= f;
 
 	// set
@@ -181,7 +181,7 @@ void CListenerFMod::setRolloffFactor( float f )
 
 // ***************************************************************************
 float CListenerFMod::getRolloffFactor()
-{   
+{
 	return _RolloffFactor;
 }
 
@@ -212,7 +212,7 @@ void CListenerFMod::updateFModPos()
 	// special position
 	_PosMatrix.setPos(_Pos);
 	_VelMatrix.setPos(_Vel);
-	
+
 	// set up FMod attributes
 	float		pos[3];
 	float		vel[3];

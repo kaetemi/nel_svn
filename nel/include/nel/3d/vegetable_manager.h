@@ -40,7 +40,7 @@
 #include "nel/3d/vegetable_uv8.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -59,10 +59,10 @@ class	CVegetableLightEx;
 // ***************************************************************************
 /**
  * Manager of vegetable. Instance Factory and rendering.
- *	A VegetableManager should be put into a CScene model which is Opaque (ie rendered in Opaque pass), and call 
+ *	A VegetableManager should be put into a CScene model which is Opaque (ie rendered in Opaque pass), and call
  *	vegetableManager::render() at this time. a good example is CLandscape.
  *
- *	Because during render(), it uses and setup special "Vegetable Blend Layer models" to render transparents 
+ *	Because during render(), it uses and setup special "Vegetable Blend Layer models" to render transparents
  *	alpha blended vegetables. Toses models are transparent so they are drawn during the transparent pass of
  *	the renderTrav's CScene (so after the Opaque pass).
  *
@@ -78,14 +78,14 @@ public:
 
 public:
 
-	/**	
+	/**
 	 * \param maxVertexVbHardUnlit maximum VertexCount in VBHard for Unlit (or precomputed lighted) vegetables
 	 * \param maxVertexVbHardLighted maximum VertexCount in VBHard for Lighted vegetables
 	 * \param nbBlendLayers for ZSort/AlphaBlend rdrPass: number of layers of vegetables rendered independently.
 	 * \param blendLayerDistMax for ZSort/AlphaBlend rdrPass: distance of the farest layer.
 	 */
-	CVegetableManager(uint maxVertexVbHardUnlit, uint maxVertexVbHardLighted, 
-		uint nbBlendLayers= NL3D_VEGETABLE_DEFAULT_NUM_BLEND_LAYER, 
+	CVegetableManager(uint maxVertexVbHardUnlit, uint maxVertexVbHardLighted,
+		uint nbBlendLayers= NL3D_VEGETABLE_DEFAULT_NUM_BLEND_LAYER,
 		float blendLayerDistMax= NL3D_VEGETABLE_DEFAULT_DIST_MAX);
 	~CVegetableManager();
 
@@ -182,9 +182,9 @@ public:
 	 *	\param dlmUV is the dynamic lightmap UV for this vegetable.
 	 *	\see reserveIgAddInstances() reserveIgCompile()
 	 */
-	void						addInstance(CVegetableInstanceGroup *ig, 
-		CVegetableShape	*shape, const NLMISC::CMatrix &mat, 
-		const NLMISC::CRGBAF &ambientColor, const NLMISC::CRGBAF &diffuseColor, 
+	void						addInstance(CVegetableInstanceGroup *ig,
+		CVegetableShape	*shape, const NLMISC::CMatrix &mat,
+		const NLMISC::CRGBAF &ambientColor, const NLMISC::CRGBAF &diffuseColor,
 		float	bendFactor, float bendPhase, float bendFreqFactor, float blendDistMax,
 		TVegetableWater vegetWaterState, CVegetableUV8 dlmUV);
 
@@ -195,7 +195,7 @@ public:
 	/** Get density multiplicator [0,1], for performance reason for instance
 	 */
 	float			getGlobalDensity() const {return _GlobalDensity;}
-	
+
 	// @}
 
 
@@ -211,7 +211,7 @@ public:
 	void			loadTexture(ITexture *itex);
 	/// setup the directional light
 	void			setDirectionalLight(const CRGBA &ambient, const CRGBA &diffuse, const CVector &light);
-	
+
 	/** lock any AGP vertex buffers. Do it wisely (just one time before refine as example).
 	 *	You MUST enclose calls to addInstance() (and so CVegetable::generateInstance())
 	 *	with lockBuffers() / unlockBuffers().
@@ -221,10 +221,10 @@ public:
 	void			unlockBuffers();
 
 	/** render the manager into a driver, with current viewMatrix/frustum/fog  setuped
-	 *	Buffers should be unlocked. 
+	 *	Buffers should be unlocked.
 	 *	\param	textureDLM is the dynamic lightmap to use. can be NULL if don't want DLM
 	 */
-	void			render(const CVector &viewCenter, const CVector &frontVector, const std::vector<CPlane> &pyramid, 
+	void			render(const CVector &viewCenter, const CVector &frontVector, const std::vector<CPlane> &pyramid,
 		ITexture *textureDLM, IDriver *driver);
 
 	// @}
@@ -239,7 +239,7 @@ public:
 	 *	\param windDir is the direction of the wind. NB: only XY direction is kept.
 	 *	\param windFreq is the frequency for the animation (speed)
 	 *	\param windPower is the power of the wind, and is a factor (0..1) of Bend
-	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum 
+	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum
 	 *	(for very powerfull wind)
 	 */
 	void		setWind(const CVector &windDir, float windFreq, float windPower, float windBendMin);
@@ -335,7 +335,7 @@ private:
 
 
 	/// get the rdrPass and other info for a given shape.
-	uint			getRdrPassInfoForShape(CVegetableShape *shape, TVegetableWater vegetWaterState, 
+	uint			getRdrPassInfoForShape(CVegetableShape *shape, TVegetableWater vegetWaterState,
 		bool &instanceLighted, bool &instanceDoubleSided, bool &instanceZSort,
 		bool &destLighted, bool &precomputeLighting);
 
@@ -364,7 +364,7 @@ private:
 	float											_WindFrequency;
 	float											_WindPower;
 	float											_WindBendMin;
-	// nb: used for wind animation 
+	// nb: used for wind animation
 	double											_Time;
 	double											_WindPrecRenderTime;
 	// updated at each render().

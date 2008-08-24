@@ -47,36 +47,36 @@ public:
 
 public:
 
-	/** 
+	/**
 	 * Default constructor
-	 */	
+	 */
 	CTextureCube();
 
 
-	/** 
+	/**
 	 * Accessors
-	 */	
+	 */
 	void setTexture(TFace f, ITexture *t);
 	ITexture* getTexture(TFace f) { return _Textures[f]; }
 
 
-	/** 
+	/**
 	 * Set the name of the file containing the texture
 	 * \param name of the file
-	 */	
+	 */
 	//void setFileName(std::string s);
 
 
-	/** 
+	/**
 	 * sharing system.
-	 */	
+	 */
 	virtual bool			supportSharing() const {return true;}
 	virtual std::string		getShareName() const;
 
 
-	/** 
+	/**
 	 * Generate the texture, looking in CPath if necessary.
-	 */	
+	 */
 	void doGenerate(bool async = false);
 
 	virtual void release();

@@ -1,5 +1,5 @@
 /** \file app_context.cpp
- * Classes for managing NeL context in order to support multi module NeL 
+ * Classes for managing NeL context in order to support multi module NeL
  * application.
  */
 
@@ -252,7 +252,7 @@ CLibraryContext::CLibraryContext(INelContext &applicationContext)
 
 void *CLibraryContext::getSingletonPointer(const std::string &singletonName)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getSingletonPointer(singletonName);
@@ -260,7 +260,7 @@ void *CLibraryContext::getSingletonPointer(const std::string &singletonName)
 
 void CLibraryContext::setSingletonPointer(const std::string &singletonName, void *ptr)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setSingletonPointer(singletonName, ptr);
@@ -268,7 +268,7 @@ void CLibraryContext::setSingletonPointer(const std::string &singletonName, void
 
 void CLibraryContext::releaseSingletonPointer(const std::string &singletonName, void *ptr)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.releaseSingletonPointer(singletonName, ptr);
@@ -277,7 +277,7 @@ void CLibraryContext::releaseSingletonPointer(const std::string &singletonName, 
 
 CLog *CLibraryContext::getErrorLog()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getErrorLog();
@@ -285,7 +285,7 @@ CLog *CLibraryContext::getErrorLog()
 
 void CLibraryContext::setErrorLog(CLog *errorLog)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setErrorLog(errorLog);
@@ -293,7 +293,7 @@ void CLibraryContext::setErrorLog(CLog *errorLog)
 
 CLog *CLibraryContext::getWarningLog()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getWarningLog();
@@ -301,7 +301,7 @@ CLog *CLibraryContext::getWarningLog()
 
 void CLibraryContext::setWarningLog(CLog *warningLog)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setWarningLog(warningLog);
@@ -309,7 +309,7 @@ void CLibraryContext::setWarningLog(CLog *warningLog)
 
 CLog *CLibraryContext::getInfoLog()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getInfoLog();
@@ -317,7 +317,7 @@ CLog *CLibraryContext::getInfoLog()
 
 void CLibraryContext::setInfoLog(CLog *infoLog)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setInfoLog(infoLog);
@@ -325,7 +325,7 @@ void CLibraryContext::setInfoLog(CLog *infoLog)
 
 CLog *CLibraryContext::getDebugLog()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getDebugLog();
@@ -333,7 +333,7 @@ CLog *CLibraryContext::getDebugLog()
 
 void CLibraryContext::setDebugLog(CLog *debugLog)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setDebugLog(debugLog);
@@ -341,7 +341,7 @@ void CLibraryContext::setDebugLog(CLog *debugLog)
 
 CLog *CLibraryContext::getAssertLog()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getAssertLog();
@@ -349,7 +349,7 @@ CLog *CLibraryContext::getAssertLog()
 
 void CLibraryContext::setAssertLog(CLog *assertLog)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setAssertLog(assertLog);
@@ -357,7 +357,7 @@ void CLibraryContext::setAssertLog(CLog *assertLog)
 
 CMemDisplayer *CLibraryContext::getDefaultMemDisplayer()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getDefaultMemDisplayer();
@@ -365,7 +365,7 @@ CMemDisplayer *CLibraryContext::getDefaultMemDisplayer()
 
 void CLibraryContext::setDefaultMemDisplayer(CMemDisplayer *memDisplayer)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setDefaultMemDisplayer(memDisplayer);
@@ -373,7 +373,7 @@ void CLibraryContext::setDefaultMemDisplayer(CMemDisplayer *memDisplayer)
 
 CMsgBoxDisplayer *CLibraryContext::getDefaultMsgBoxDisplayer()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getDefaultMsgBoxDisplayer();
@@ -381,7 +381,7 @@ CMsgBoxDisplayer *CLibraryContext::getDefaultMsgBoxDisplayer()
 
 void CLibraryContext::setDefaultMsgBoxDisplayer(CMsgBoxDisplayer *msgBoxDisplayer)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setDefaultMsgBoxDisplayer(msgBoxDisplayer);
@@ -389,7 +389,7 @@ void CLibraryContext::setDefaultMsgBoxDisplayer(CMsgBoxDisplayer *msgBoxDisplaye
 
 bool CLibraryContext::getDebugNeedAssert()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getDebugNeedAssert();
@@ -397,7 +397,7 @@ bool CLibraryContext::getDebugNeedAssert()
 
 void CLibraryContext::setDebugNeedAssert(bool needAssert)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setDebugNeedAssert(needAssert);
@@ -405,7 +405,7 @@ void CLibraryContext::setDebugNeedAssert(bool needAssert)
 
 bool CLibraryContext::getNoAssert()
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	return _ApplicationContext.getNoAssert();
@@ -415,7 +415,7 @@ bool CLibraryContext::getNoAssert()
 
 void CLibraryContext::setNoAssert(bool noAssert)
 {
-//	nlassert(_ApplicationContext != NULL); 
+//	nlassert(_ApplicationContext != NULL);
 
 	// just forward the call
 	_ApplicationContext.setNoAssert(noAssert);

@@ -36,7 +36,7 @@
 
 
 // ***************************************************************************
-static void	applyArraySkinNormalT(uint numMatrixes, uint32 *infPtr, CMesh::CSkinWeight *srcSkinPtr, 
+static void	applyArraySkinNormalT(uint numMatrixes, uint32 *infPtr, CMesh::CSkinWeight *srcSkinPtr,
 	CVector *srcVertexPtr, CVector *srcNormalPtr, uint normalOff,
 	uint8 *destVertexPtr, vector<CMatrix3x4> &boneMat3x4, uint vertexSize, uint nInf)
 {
@@ -173,7 +173,7 @@ static void	applyArraySkinNormalT(uint numMatrixes, uint32 *infPtr, CMesh::CSkin
 
 
 // ***************************************************************************
-static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh::CSkinWeight *srcSkinPtr, 
+static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh::CSkinWeight *srcSkinPtr,
 	CVector *srcVertexPtr, CVector *srcNormalPtr, CVector *tgSpacePtr, uint normalOff, uint tgSpaceOff,
 	uint8 *destVertexPtr, vector<CMatrix3x4> &boneMat3x4, uint vertexSize, uint nInf)
 {
@@ -231,7 +231,7 @@ static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh:
 
 			// Vertex.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetPoint( *srcVertex, *dstVertex);
-			// Normal.				
+			// Normal.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcNormal, *dstNormal);
 			// Tg space
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcTgSpace, *dstTgSpace);
@@ -258,7 +258,7 @@ static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh:
 			// Vertex.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetPoint( *srcVertex, srcSkin->Weights[0], *dstVertex);
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddPoint( *srcVertex, srcSkin->Weights[1], *dstVertex);
-			// Normal.				
+			// Normal.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcNormal, srcSkin->Weights[0], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcNormal, srcSkin->Weights[1], *dstNormal);
 			// Tg space
@@ -287,14 +287,14 @@ static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh:
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetPoint( *srcVertex, srcSkin->Weights[0], *dstVertex);
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddPoint( *srcVertex, srcSkin->Weights[1], *dstVertex);
 			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddPoint( *srcVertex, srcSkin->Weights[2], *dstVertex);
-			// Normal.				
+			// Normal.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcNormal, srcSkin->Weights[0], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcNormal, srcSkin->Weights[1], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcNormal, srcSkin->Weights[2], *dstNormal);
 			// Tg space
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcTgSpace, srcSkin->Weights[0], *dstTgSpace);
-			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcTgSpace, srcSkin->Weights[1], *dstTgSpace);				
-			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcTgSpace, srcSkin->Weights[2], *dstTgSpace);				
+			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcTgSpace, srcSkin->Weights[1], *dstTgSpace);
+			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcTgSpace, srcSkin->Weights[2], *dstTgSpace);
 		}
 		break;
 
@@ -319,16 +319,16 @@ static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh:
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddPoint( *srcVertex, srcSkin->Weights[1], *dstVertex);
 			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddPoint( *srcVertex, srcSkin->Weights[2], *dstVertex);
 			boneMat3x4[ srcSkin->MatrixId[3] ].mulAddPoint( *srcVertex, srcSkin->Weights[3], *dstVertex);
-			// Normal.				
+			// Normal.
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcNormal, srcSkin->Weights[0], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcNormal, srcSkin->Weights[1], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcNormal, srcSkin->Weights[2], *dstNormal);
 			boneMat3x4[ srcSkin->MatrixId[3] ].mulAddVector( *srcNormal, srcSkin->Weights[3], *dstNormal);
 			// Tg space
 			boneMat3x4[ srcSkin->MatrixId[0] ].mulSetVector( *srcTgSpace, srcSkin->Weights[0], *dstTgSpace);
-			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcTgSpace, srcSkin->Weights[1], *dstTgSpace);				
-			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcTgSpace, srcSkin->Weights[2], *dstTgSpace);								
-			boneMat3x4[ srcSkin->MatrixId[3] ].mulAddVector( *srcTgSpace, srcSkin->Weights[3], *dstTgSpace);								
+			boneMat3x4[ srcSkin->MatrixId[1] ].mulAddVector( *srcTgSpace, srcSkin->Weights[1], *dstTgSpace);
+			boneMat3x4[ srcSkin->MatrixId[2] ].mulAddVector( *srcTgSpace, srcSkin->Weights[2], *dstTgSpace);
+			boneMat3x4[ srcSkin->MatrixId[3] ].mulAddVector( *srcTgSpace, srcSkin->Weights[3], *dstTgSpace);
 		}
 		break;
 
@@ -360,8 +360,8 @@ void	CMeshMRMGeom::applySkinWithNormal(CLod &lod, const CSkeletonModel *skeleton
 	uint		flags= _VBufferFinal.getVertexFormat();
 	sint32		vertexSize= _VBufferFinal.getVertexSize();
 	// must have XYZ and Normal.
-	nlassert((flags & CVertexBuffer::PositionFlag) 
-			 && (flags & CVertexBuffer::NormalFlag) 
+	nlassert((flags & CVertexBuffer::PositionFlag)
+			 && (flags & CVertexBuffer::NormalFlag)
 			);
 
 
@@ -401,17 +401,17 @@ void	CMeshMRMGeom::applySkinWithNormal(CLod &lod, const CSkeletonModel *skeleton
 		// TestYoyo
 		/*extern	uint TESTYOYO_NumStdSkinVertices;
 		TESTYOYO_NumStdSkinVertices+= nInf;*/
-		
+
 		// apply the skin to the vertices
-		applyArraySkinNormalT(i, infPtr, srcSkinPtr, srcVertexPtr, srcNormalPtr, 
-			normalOff, destVertexPtr, 
+		applyArraySkinNormalT(i, infPtr, srcSkinPtr, srcVertexPtr, srcNormalPtr,
+			normalOff, destVertexPtr,
 			boneMat3x4, vertexSize, nInf);
 	}
 }
 
 
 // ***************************************************************************
-void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *skeleton, 
+void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *skeleton,
 	uint tangentSpaceTexCoord)
 {
 	nlassert(_Skinned);
@@ -427,15 +427,15 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 	sint32		vertexSize= _VBufferFinal.getVertexSize();
 	// must have XYZ.
 	// if there's tangent space, there also must be a normal there.
-	nlassert((flags & CVertexBuffer::PositionFlag) 
-			 && (flags & CVertexBuffer::NormalFlag) 
+	nlassert((flags & CVertexBuffer::PositionFlag)
+			 && (flags & CVertexBuffer::NormalFlag)
 			);
 
 
 	// Compute offset of each component of the VB.
-	sint32		normalOff;	
+	sint32		normalOff;
 	normalOff= _VBufferFinal.getNormalOff();
-	
+
 	// tg space offset
 	sint32		tgSpaceOff = _VBufferFinal.getTexCoordOff((uint8) tangentSpaceTexCoord);
 
@@ -446,7 +446,7 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 	CVector				*tgSpacePtr;
 	//
 	srcSkinPtr= &_SkinWeights[0];
-	srcVertexPtr= &_OriginalSkinVertices[0];	
+	srcVertexPtr= &_OriginalSkinVertices[0];
 	srcNormalPtr= &(_OriginalSkinNormals[0]);
 	tgSpacePtr = &(_OriginalTGSpace[0]);
 
@@ -471,8 +471,8 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 		uint32		*infPtr= &(lod.InfluencedVertices[i][0]);
 
 		// apply the skin to the vertices
-		applyArraySkinTangentSpaceT(i, infPtr, srcSkinPtr, srcVertexPtr, srcNormalPtr, tgSpacePtr, 
-			normalOff, tgSpaceOff, destVertexPtr, 
+		applyArraySkinTangentSpaceT(i, infPtr, srcSkinPtr, srcVertexPtr, srcNormalPtr, tgSpacePtr,
+			normalOff, tgSpaceOff, destVertexPtr,
 			boneMat3x4, vertexSize, nInf);
 	}
 }
@@ -492,9 +492,9 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 
 
 /* Speed Feature test.
-	Don't use precaching for now, cause its seems to be slower on some configs (P4-2.4Ghz), 
+	Don't use precaching for now, cause its seems to be slower on some configs (P4-2.4Ghz),
 	but maybe faster on other (P3-800)
-	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm 
+	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm
 	saves 27% of execution time in the applyRawSkinNormal*() loop (ie 1 ms)
 */
 #ifdef NL_OS_WINDOWS
@@ -504,13 +504,13 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 
 
 // ***************************************************************************
-void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *destVertexPtr, 
+void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
 	nlctassert(NL3D_RAWSKIN_NORMAL_OFF==12);
 	nlctassert(NL3D_RAWSKIN_UV_OFF==24);
-	
+
 	/*extern	uint TESTYOYO_NumRawSkinVertices1;
 	TESTYOYO_NumRawSkinVertices1+= nInf;
 	H_AUTO( TestYoyo_RawSkin1 );*/
@@ -522,7 +522,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *
 		uint	nBlockInf= min(NumCacheVertexNormal1, nInf);
 		// next block.
 		nInf-= nBlockInf;
-		
+
 		// cache the data in L1 cache.
 		CFastMem::precache(src, nBlockInf * sizeof(CRawVertexNormalSkin1));
 #else
@@ -613,7 +613,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Vertex.Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -664,8 +664,8 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.Vertex.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 36								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -683,7 +683,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkin1 *src, uint8 *
 }
 
 // ***************************************************************************
-void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *destVertexPtr, 
+void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -693,7 +693,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 	/*extern	uint TESTYOYO_NumRawSkinVertices2;
 	TESTYOYO_NumRawSkinVertices2+= nInf;
 	H_AUTO( TestYoyo_RawSkin2 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 
@@ -731,7 +731,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 #else
 		// ASM harcoded for 48
 		nlctassert(sizeof(CRawVertexNormalSkin2)==48);
-		
+
 		/*  154 cycles / loop typical
 			124 cycles / loop in theory (no memory problem)
 		*/
@@ -755,7 +755,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 			lea		ebx, [ebx*2+ebx]
 			shl		ebx, 4
 			add		ebx, edx							// uop: 1/0
-				
+
 			// load x y z
 			fld		[esi]src.Vertex.Pos.x					// uop: 0/1
 			fld		[esi]src.Vertex.Pos.y					// uop: 0/1
@@ -862,7 +862,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Vertex.Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -968,8 +968,8 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.Vertex.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 48								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -986,7 +986,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkin2 *src, uint8 *
 }
 
 // ***************************************************************************
-void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *destVertexPtr, 
+void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -996,7 +996,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 	/*extern	uint TESTYOYO_NumRawSkinVertices3;
 	TESTYOYO_NumRawSkinVertices3+= nInf;
 	H_AUTO( TestYoyo_RawSkin3 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 
@@ -1036,8 +1036,8 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 #else
 		// ASM harcoded for 56
 		nlctassert(sizeof(CRawVertexNormalSkin3)==56);
-		
-		
+
+
 		/*  226 cycles / loop typical
 			192 cycles / loop in theory (no memory problem)
 			148 optimal
@@ -1066,7 +1066,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			lea		edx, [edx*2+edx]
 			shl		edx, 4
 			add		edx, boneMat3x4						// uop: 1/0
-			
+
 			// load x y z
 			fld		[esi]src.Vertex.Pos.x					// uop: 0/1
 			fld		[esi]src.Vertex.Pos.y					// uop: 0/1
@@ -1101,7 +1101,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a11
 			fmul	st, st(4)
@@ -1116,7 +1116,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi]						// uop: 0/0/1/1
 
@@ -1148,7 +1148,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a21
 			fmul	st, st(4)
@@ -1163,7 +1163,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi+4]
 
@@ -1195,7 +1195,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a31
 			fmul	st, st(4)
@@ -1210,7 +1210,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi+8]
 
@@ -1218,7 +1218,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Vertex.Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -1362,8 +1362,8 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.Vertex.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 56								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -1380,7 +1380,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkin3 *src, uint8 *
 }
 
 // ***************************************************************************
-void		CMeshMRMGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkin4 *src, uint8 *destVertexPtr, 
+void		CMeshMRMGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkin4 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -1390,7 +1390,7 @@ void		CMeshMRMGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkin4 *src, uint8 *
 	/*extern	uint TESTYOYO_NumRawSkinVertices4;
 	TESTYOYO_NumRawSkinVertices4+= nInf;
 	H_AUTO( TestYoyo_RawSkin4 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 

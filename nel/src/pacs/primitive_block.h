@@ -29,7 +29,7 @@
 #include "nel/pacs/u_primitive_block.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 /**
@@ -41,7 +41,7 @@ namespace NLPACS
 class CPrimitiveDesc
 {
 public:
-	
+
 	// Default constructor
 	CPrimitiveDesc ();
 
@@ -52,7 +52,7 @@ public:
 	// This is the height of the box or of the cylinder.
 	float							Height;
 
-	// Attenuation 
+	// Attenuation
 	float							Attenuation;
 
 	// Primitive type
@@ -107,9 +107,9 @@ public:
 	static UPrimitiveBlock *createPrimitiveBlock(NLMISC::IStream &src);
 	static UPrimitiveBlock *createPrimitiveBlockFromFile(const std::string &fileName);
 	uint						getNbPrimitive() { return Primitives.size(); }
-	UMovePrimitive::TUserData	getUserData(uint nPrimNb) { nlassert(nPrimNb < Primitives.size()); 
+	UMovePrimitive::TUserData	getUserData(uint nPrimNb) { nlassert(nPrimNb < Primitives.size());
 															return Primitives[nPrimNb].UserData; }
-	//@}	
+	//@}
 };
 
 

@@ -92,7 +92,7 @@ bool CAsyncFileManager::cancelLoadTask(const CAsyncFileManager::ICancelCallback 
 	}
 
 	// If not found, the current running task may be the one we want to cancel. Must wait it.
-	// Beware that this code works because of the CSynchronized access we made above (ensure that the 
+	// Beware that this code works because of the CSynchronized access we made above (ensure that the
 	// taskmanager will end just the current task async (if any) and won't start an other one.
 	waitCurrentTaskToComplete ();
 
@@ -100,7 +100,7 @@ bool CAsyncFileManager::cancelLoadTask(const CAsyncFileManager::ICancelCallback 
 }
 
 // ***************************************************************************
-/*	
+/*
 void CAsyncFileManager::loadMesh(const std::string& meshName, IShape **ppShp, IDriver *pDriver)
 {
 	addTask (new CMeshLoad(meshName, ppShp, pDriver));
@@ -134,21 +134,21 @@ bool CAsyncFileManager::cancelLoadMesh(const std::string& sMeshName)
 }
 */
 // ***************************************************************************
-/*	
+/*
 void CAsyncFileManager::loadIG (const std::string& IGName, CInstanceGroup **ppIG)
 {
 	addTask (new CIGLoad(IGName, ppIG));
 }
 
 // ***************************************************************************
-	
+
 void CAsyncFileManager::loadIGUser (const std::string& IGName, UInstanceGroup **ppIG)
 {
 	addTask (new CIGLoadUser(IGName, ppIG));
 }
 */
 // ***************************************************************************
-	
+
 void CAsyncFileManager::loadFile (const std::string& sFileName, uint8 **ppFile)
 {
 	addTask (new CFileLoad (sFileName, ppFile));
@@ -241,7 +241,7 @@ void CAsyncFileManager::CFileLoad::getName (std::string &result) const
 // ***************************************************************************
 
 // ***************************************************************************
-CAsyncFileManager::CMultipleFileLoad::CMultipleFileLoad (const std::vector<std::string> &vFileNames, 
+CAsyncFileManager::CMultipleFileLoad::CMultipleFileLoad (const std::vector<std::string> &vFileNames,
 														 const std::vector<uint8**> &vPtrs)
 {
 	_FileNames = vFileNames;

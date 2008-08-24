@@ -30,12 +30,12 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
-void			CIGSurfaceLightBuild::buildSunDebugMesh(CMesh::CMeshBuild &meshBuild, 
+void			CIGSurfaceLightBuild::buildSunDebugMesh(CMesh::CMeshBuild &meshBuild,
 	CMeshBase::CMeshBaseBuild &meshBaseBuild, const CVector &deltaPos)
 {
 	contReset(meshBuild);
@@ -114,7 +114,7 @@ void			CIGSurfaceLightBuild::buildPLDebugMesh(CMesh::CMeshBuild &meshBuild, CMes
 	for(it= RetrieverGridMap.begin(); it!= RetrieverGridMap.end(); it++)
 	{
 		// get the final surface
-		CIGSurfaceLight::TRetrieverGridMap::const_iterator	itIg= 
+		CIGSurfaceLight::TRetrieverGridMap::const_iterator	itIg=
 			igOut.getIGSurfaceLight().getRetrieverGridMap().find(it->first);
 
 		// If not found, abort
@@ -125,7 +125,7 @@ void			CIGSurfaceLightBuild::buildPLDebugMesh(CMesh::CMeshBuild &meshBuild, CMes
 		}
 		else if( it->second.Grids.size()!=itIg->second.Grids.size() )
 		{
-			nlwarning("buildPLDebugMesh find retriever '%d' in igOut, but with bad size: excepting: %d, get: %d", 
+			nlwarning("buildPLDebugMesh find retriever '%d' in igOut, but with bad size: excepting: %d, get: %d",
 				it->first, it->second.Grids.size(), itIg->second.Grids.size() );
 			continue;
 		}
@@ -186,7 +186,7 @@ void			CIGSurfaceLightBuild::buildPLDebugMesh(CMesh::CMeshBuild &meshBuild, CMes
 
 
 // ***************************************************************************
-void			CIGSurfaceLightBuild::addDebugMeshFaces(CMesh::CMeshBuild &meshBuild, CSurface &surface, uint vId0, 
+void			CIGSurfaceLightBuild::addDebugMeshFaces(CMesh::CMeshBuild &meshBuild, CSurface &surface, uint vId0,
 	const std::vector<CRGBA>	&colors)
 {
 	// Resize faces.

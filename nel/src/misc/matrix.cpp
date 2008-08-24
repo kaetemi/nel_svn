@@ -152,7 +152,7 @@ inline void CMatrix::testExpandProj() const
 	{
 		CMatrix	*self= const_cast<CMatrix*>(this);
 		self->StateBit|=MAT_VALIDPROJ;
-		self->a41=0; self->a42=0; self->a43=0; self->a44=1; 
+		self->a41=0; self->a42=0; self->a43=0; self->a44=1;
 	}
 }
 
@@ -209,9 +209,9 @@ void		CMatrix::setRot(const CVector &i, const CVector &j, const CVector &k, bool
 	StateBit|= MAT_ROT | MAT_SCALEANY;
 	if(hintNoScale)
 		StateBit&= ~(MAT_SCALEANY|MAT_SCALEUNI);
-	a11= i.x; a12= j.x; a13= k.x; 
-	a21= i.y; a22= j.y; a23= k.y; 
-	a31= i.z; a32= j.z; a33= k.z; 
+	a11= i.x; a12= j.x; a13= k.x;
+	a21= i.y; a22= j.y; a23= k.y;
+	a31= i.z; a32= j.z; a33= k.z;
 	Scale33= 1.0f;
 }
 // ======================================================================================================
@@ -220,9 +220,9 @@ void		CMatrix::setRot(const float m33[9], bool hintNoScale)
 	StateBit|= MAT_ROT | MAT_SCALEANY;
 	if(hintNoScale)
 		StateBit&= ~(MAT_SCALEANY|MAT_SCALEUNI);
-	a11= m33[0]; a12= m33[3]; a13= m33[6]; 
-	a21= m33[1]; a22= m33[4]; a23= m33[7]; 
-	a31= m33[2]; a32= m33[5]; a33= m33[8]; 
+	a11= m33[0]; a12= m33[3]; a13= m33[6];
+	a21= m33[1]; a22= m33[4]; a23= m33[7];
+	a31= m33[2]; a32= m33[5]; a33= m33[8];
 	Scale33= 1.0f;
 }
 // ======================================================================================================
@@ -727,13 +727,13 @@ void		CMatrix::setMulMatrixNoProj(const CMatrix &m1, const CMatrix &m2)
 
 	// Setup no proj at all, and force valid rot (still may be identity, but 0/1 are filled)
 	StateBit= (m1.StateBit | m2.StateBit | MAT_VALIDROT) & ~(MAT_PROJ|MAT_VALIDPROJ);
-	
+
 	// Modify Scale. This test is important because Scale33 may be a #NAN if SCALEANY => avoid very slow mul.
 	if( hasScaleUniform() )
 		Scale33= m1.Scale33*m2.Scale33;
 	else
 		Scale33=1;
-	
+
 }
 
 
@@ -791,8 +791,8 @@ void		CMatrix::setMulMatrix(const CMatrix &m1, const CMatrix &m2)
 	else if( M1ScaleOnly && M2ScaleOnly )
 	{
 		// same process for scaleUni or scaleAny.
-		a11= m1.a11*m2.a11; a12= 0; a13= 0; 
-		a21= 0; a22= m1.a22*m2.a22; a23= 0; 
+		a11= m1.a11*m2.a11; a12= 0; a13= 0;
+		a21= 0; a22= m1.a22*m2.a22; a23= 0;
 		a31= 0; a32= 0; a33= m1.a33*m2.a33;
 	}
 	// If one of the matrix is a scaleOnly matrix, do a scale*Rot.
@@ -1165,8 +1165,8 @@ CMatrix		CMatrix::inverted() const
 		// The matrix inverted keep the same state bits.
 		ret.StateBit= StateBit;
 	}
-	
-	
+
+
 	return ret;
 }
 // ======================================================================================================
@@ -1224,9 +1224,9 @@ bool		CMatrix::normalize(TRotOrder ro)
 	// Check, and set result.
 	if( ti.isNull() || tj.isNull() || tk.isNull() )
 		return false;
-	a11= ti.x; a12= tj.x; a13= tk.x; 
-	a21= ti.y; a22= tj.y; a23= tk.y; 
-	a31= ti.z; a32= tj.z; a33= tk.z; 
+	a11= ti.x; a12= tj.x; a13= tk.x;
+	a21= ti.y; a22= tj.y; a23= tk.y;
+	a31= ti.z; a32= tj.z; a33= tk.z;
 	// Scale is reseted.
 	StateBit&= ~(MAT_SCALEUNI|MAT_SCALEANY);
 	// Rot is setup...
@@ -1350,9 +1350,9 @@ void		CMatrix::setRot(const CQuat &quat)
 	Scale33= 1.0f;
 	if(quat.isIdentity())
 	{
-		a11= 1; a12= 0; a13= 0; 
-		a21= 0; a22= 1; a23= 0; 
-		a31= 0; a32= 0; a33= 1; 
+		a11= 1; a12= 0; a13= 0;
+		a21= 0; a22= 1; a23= 0;
+		a31= 0; a32= 0; a33= 1;
 	}
 	else
 	{
@@ -1360,7 +1360,7 @@ void		CMatrix::setRot(const CQuat &quat)
 		float wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2;
 
 		// calculate coefficients
-		x2 = quat.x + quat.x; y2 = quat.y + quat.y; 
+		x2 = quat.x + quat.x; y2 = quat.y + quat.y;
 		z2 = quat.z + quat.z;
 		xx = quat.x * x2;   xy = quat.x * y2;   xz = quat.x * z2;
 		yy = quat.y * y2;   yz = quat.y * z2;   zz = quat.z * z2;
@@ -1419,7 +1419,7 @@ void		CMatrix::getRot(CQuat &quat) const
 		quat.z = (pmat->a21 - pmat->a12) * s;
 	}
 	else
-	{		
+	{
 		sint    i, j, k;
 		sint	nxt[3] = {1, 2, 0};
 
@@ -1461,9 +1461,9 @@ inline	void	CMatrix::setScaleUni(float scale)
 	StateBit&= ~(MAT_ROT | MAT_SCALEANY | MAT_SCALEUNI);
 	StateBit|= MAT_SCALEUNI | MAT_VALIDROT;
 	Scale33= scale;
-	a11= scale; a12= 0; a13= 0; 
-	a21= 0; a22= scale; a23= 0; 
-	a31= 0; a32= 0; a33= scale; 
+	a11= scale; a12= 0; a13= 0;
+	a21= 0; a22= scale; a23= 0;
+	a31= 0; a32= 0; a33= scale;
 }
 
 // ======================================================================================================
@@ -1483,10 +1483,10 @@ void		CMatrix::setScale(const CVector &v)
 	// A Scale matrix do not have rotation.
 	StateBit&= ~(MAT_ROT | MAT_SCALEANY | MAT_SCALEUNI);
 	StateBit|= MAT_SCALEANY | MAT_VALIDROT;
-	a11= v.x; a12= 0; a13= 0; 
-	a21= 0; a22= v.y; a23= 0; 
-	a31= 0; a32= 0; a33= v.z; 
-	
+	a11= v.x; a12= 0; a13= 0;
+	a21= 0; a22= v.y; a23= 0;
+	a31= 0; a32= 0; a33= v.z;
+
 }
 
 

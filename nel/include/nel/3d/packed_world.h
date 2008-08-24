@@ -37,7 +37,7 @@
 
 namespace NLMISC
 {
-	class CVector;	
+	class CVector;
 }
 
 namespace NL3D
@@ -45,7 +45,7 @@ namespace NL3D
 
 /** A set of packed zones
   * Allows for world scale collision test with a packed format
-  *  
+  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2005
@@ -56,7 +56,7 @@ public:
 	// list of zones that goes into this packed world (used by incremental build to know if some
 	// zones need to be rebuilt)
 	std::vector<std::string> ZoneNames;
-public:		
+public:
 	// build world from a set of packed zones
 	void build(std::vector<TPackedZoneBaseSPtr> &packesZones);
 	bool raytrace(const NLMISC::CVector &start, const NLMISC::CVector &end, NLMISC::CVector &inter, std::vector<NLMISC::CTriangle> *testedTriangles = NULL, NLMISC::CVector *normal = NULL);
@@ -83,7 +83,7 @@ private:
 			Zone = pz;
 		}
 	};
-	std::vector<CZoneInfo>				 _Zones;	
+	std::vector<CZoneInfo>				 _Zones;
 	class CZoneIndexList
 	{
 	public:

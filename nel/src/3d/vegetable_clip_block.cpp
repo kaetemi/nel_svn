@@ -26,7 +26,7 @@
 #include "nel/3d/vegetable_clip_block.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -79,7 +79,7 @@ void			CVegetableClipBlock::extendSphere(const CVector &vec)
 // ***************************************************************************
 bool			CVegetableClipBlock::clip(const std::vector<CPlane>	&pyramid)
 {
-	if(_Empty) 
+	if(_Empty)
 		return false;
 
 	for(uint i=0;i<pyramid.size();i++)

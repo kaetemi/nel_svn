@@ -104,7 +104,7 @@ void CSoundAnimation::save()
 		for (iter = _Markers.begin(); iter != _Markers.end(); iter++)
 		{
 			CSoundAnimMarker* marker = (*iter);
-		
+
 			set<string>::iterator iter;
 
 			char s[64];
@@ -215,4 +215,4 @@ void CSoundAnimation::load()
 	_Dirty = false;
 }
 
-} //namespace NLSOUND 
+} //namespace NLSOUND

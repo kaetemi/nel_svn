@@ -54,9 +54,9 @@ public:
 	void render (NLMISC::CQuadUV &qc, float wpos, float intensity);
 	void render2passes (NLMISC::CQuadUV &qc, float wpos, float intensity);
 
-	void renderGrid (uint32 nbw, uint32 nbh, uint32 w, uint32 h, 
+	void renderGrid (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 					float UStart, float VStart, float WStart, float dU, float dV, float dW, float intensity);
-	void renderGrid2passes (uint32 nbw, uint32 nbh, uint32 w, uint32 h, 
+	void renderGrid2passes (uint32 nbw, uint32 nbh, uint32 w, uint32 h,
 					float UStart, float VStart, float WStart, float dU, float dV, float dW, float intensity);
 
 	void flush ();

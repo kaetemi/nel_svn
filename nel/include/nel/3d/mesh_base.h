@@ -71,8 +71,8 @@ public:
 	//@{
 
 	struct CMatStageV7
-	{ 
-		uint8 nMatNb, nStageNb; 
+	{
+		uint8 nMatNb, nStageNb;
 		void	serial(NLMISC::IStream &f)
 		{
 			f.serial(nMatNb);
@@ -94,7 +94,7 @@ public:
 	public:
 		// Index of the material stage where the lightmap is used
 		class CMatStage
-		{ 
+		{
 		public:
 			// Material ID
 			uint8	MatId;
@@ -255,10 +255,10 @@ public:
 
 	// Return the Default setup choosed for this shape (used for UInstance::setOpacity())
 	bool			getDefaultOpacity() const {return _DefaultOpacity;}
-	
+
 	// Return the Default setup computed for this shape (used for UInstance::setTransparency())
 	bool			getDefaultTransparency() const {return _DefaultTransparency;}
-	
+
 
 // ************************
 protected:
@@ -283,7 +283,7 @@ protected:
 	CTrackDefaultQuat			_DefaultRotQuat;
 	CTrackDefaultVector			_DefaultScale;
 	CTrackDefaultRGBA			_DefaultLMFactor;
-	
+
 	std::vector<CMorphBase>		_AnimatedMorph;
 
 	/// Is this mesh lightable??
@@ -297,14 +297,14 @@ protected:
 	bool						_DefaultOpacity;
 	bool						_DefaultTransparency;
 
-	
+
 	// Indicate how this mesh should build the collision mesh (for camera ThirPerson collision)
 	TCameraCollisionGenerate	_CollisionMeshGeneration;
 	// Built only by CMesh and CMeshMultiLod
 	CVisualCollisionMesh		*_VisualCollisionMesh;
 
 	/** (optional) SystemMem copy of the geometry, for ray intersection
-	 *	We cannot use the meshgeom, since once the VBuffer/IndexBuffer are resident (maybe AGP), 
+	 *	We cannot use the meshgeom, since once the VBuffer/IndexBuffer are resident (maybe AGP),
 	 *	they can't be locked without heavy performance penalty
 	 *	This is built by CMesh/CMeshMRM/CMeshMultiLod::buildSystemGeometry()
 	 *	And only if it has been flagged through CShapeBank::buildSystemGeometryForshape()
@@ -318,7 +318,7 @@ protected:
 	/// instanciate MeshBase part to an instance (a CMeshBaseInstance).
 	void	instanciateMeshBase(CMeshBaseInstance *mi, CScene *ownerScene);
 
-	/** delete any material not used, and build remap table (old to new). 
+	/** delete any material not used, and build remap table (old to new).
 	 *	_AnimatedMaterials are reseted
 	 *	resetLodCharacterTexture(); is called
 	 */

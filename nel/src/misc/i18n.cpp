@@ -33,7 +33,7 @@ using namespace std;
 
 namespace NLMISC {
 
-/*const std::string		CI18N::_LanguageFiles[] = 
+/*const std::string		CI18N::_LanguageFiles[] =
 {
 	std::string("english"),
 	std::string("french")
@@ -89,7 +89,7 @@ void CI18N::load (const std::string &languageCode)
 	if (_StrMapLoaded)	_StrMap.clear ();
 	else				_StrMapLoaded = true;
 
-	loadFileIntoMap(fileName, _StrMap);	
+	loadFileIntoMap(fileName, _StrMap);
 }
 
 bool CI18N::loadFileIntoMap(const std::string &fileName, StrMapContainer &destMap)
@@ -105,7 +105,7 @@ bool CI18N::loadFileIntoMap(const std::string &fileName, StrMapContainer &destMa
 
 	ucstring::const_iterator first(text.begin()), last(text.end());
 	std::string lastReadLabel("nothing");
-	
+
 	while (first != last)
 	{
 		skipWhiteSpace(first, last);
@@ -147,7 +147,7 @@ bool CI18N::loadFileIntoMap(const std::string &fileName, StrMapContainer &destMa
 void CI18N::loadFromFilename(const std::string &filename, bool reload)
 {
 	StrMapContainer destMap;
-	if (!loadFileIntoMap(filename, destMap)) 
+	if (!loadFileIntoMap(filename, destMap))
 	{
 		return;
 	}
@@ -203,10 +203,10 @@ const ucstring &CI18N::get (const std::string &label)
 
 bool CI18N::hasTranslation(const std::string &label)
 {
-	if (label.empty()) return true;	
-	
-	StrMapContainer::iterator it(_StrMap.find(label));	
-	return it != _StrMap.end();		
+	if (label.empty()) return true;
+
+	StrMapContainer::iterator it(_StrMap.find(label));
+	return it != _StrMap.end();
 }
 
 
@@ -318,7 +318,7 @@ bool CI18N::parseLabel(ucstring::const_iterator &it, ucstring::const_iterator &l
 	label.erase();
 
 	// first char must be A-Za-z@_
-	if (it != last && 
+	if (it != last &&
 			(
 				(*it >= '0' && *it <= '9')
 			||	(*it >= 'A' && *it <= 'Z')
@@ -335,7 +335,7 @@ bool CI18N::parseLabel(ucstring::const_iterator &it, ucstring::const_iterator &l
 	}
 
 	// other char must be [0-9A-Za-z@_]*
-	while (it != last && 
+	while (it != last &&
 			(
 				(*it >= '0' && *it <= '9')
 			||	(*it >= 'A' && *it <= 'Z')
@@ -367,8 +367,8 @@ bool CI18N::parseMarkedString(ucchar openMark, ucchar closeMark, ucstring::const
 				nlwarning("I18N: Found a non escaped openmark %c in a delimited string (Delimiters : '%c' - '%c')", char(openMark), char(openMark), char(closeMark));
 				return false;
 			}
-			if (*it == '\t' 
-				|| (*it == '\n' && allowNewline) 
+			if (*it == '\t'
+				|| (*it == '\n' && allowNewline)
 				|| *it == '\r')
 				++it;
 			else if (*it == '\\' && it+1 != last && *(it+1) != '\\')
@@ -437,10 +437,10 @@ bool CI18N::parseMarkedString(ucchar openMark, ucchar closeMark, ucstring::const
 }
 
 
-void CI18N::readTextFile(const std::string &filename, 
-						 ucstring &result, 
-						 bool forceUtf8, 
-						 bool fileLookup, 
+void CI18N::readTextFile(const std::string &filename,
+						 ucstring &result,
+						 bool forceUtf8,
+						 bool fileLookup,
 						 bool preprocess,
 						 TLineFormat lineFmt,
 						 bool warnIfIncludesNotFound)
@@ -492,10 +492,10 @@ void CI18N::skipLine(ucstring::const_iterator &it, ucstring::const_iterator end,
 }
 
 
-void CI18N::_readTextFile(const std::string &filename, 
-						 ucstring &result, 
-						 bool forceUtf8, 
-						 bool fileLookup, 
+void CI18N::_readTextFile(const std::string &filename,
+						 ucstring &result,
+						 bool forceUtf8,
+						 bool fileLookup,
 						 bool preprocess,
 						 TLineFormat lineFmt,
 						 bool warnIfIncludesNotFound,
@@ -569,7 +569,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					{
 						// we have an include command
 						skipWhiteSpace(it, end, NULL, false);
-						
+
 						// read the file name between quote
 						ucstring str;
 						breakable
@@ -577,14 +577,14 @@ void CI18N::_readTextFile(const std::string &filename,
 							if (!parseMarkedString(ucchar('\"'), ucchar('\"'), it, end, str, &currentLine, false))
 							{
 								nlwarning("Preprocess: In file %s(%u) : Error parsing include file command", filename.c_str(), currentLine);
-								
+
 								break;
 							}
 							else
 							{
 								// ok, read the subfile
 								string subFilename = str.toString();
-								
+
 								// check is file exist
 								if (!CFile::fileExists(subFilename))
 								{
@@ -593,18 +593,18 @@ void CI18N::_readTextFile(const std::string &filename,
 									if (!CFile::fileExists(subFilename))
 									{
 										// the include file is not found, issue a warning
-										nlwarning("Preprocess: In file %s(%u) : Cannot include file '%s'", 
+										nlwarning("Preprocess: In file %s(%u) : Cannot include file '%s'",
 											filename.c_str(), currentLine,
 											str.toString().c_str());
-										
+
 										break;
 									}
 								}
-								
+
 								nlinfo("Preprocess: In file %s(%u) : Including '%s'",
 									filename.c_str(), currentLine,
 									subFilename.c_str());
-								
+
 								ucstring inserted;
 								_readTextFile(subFilename, inserted, forceUtf8, fileLookup, preprocess, lineFmt, warnIfIncludesNotFound, readContext);
 								final += inserted;
@@ -622,7 +622,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					{
 						// we have an optional include command
 						skipWhiteSpace(it, end, NULL, false);
-						
+
 						// read the file name between quote
 						ucstring str;
 						breakable
@@ -630,14 +630,14 @@ void CI18N::_readTextFile(const std::string &filename,
 							if (!parseMarkedString('\"', '\"', it, end, str, &currentLine, false))
 							{
 								nlwarning("Preprocess: In file %s(%u) : Error parsing optional file command", filename.c_str(), currentLine);
-								
+
 								break;
 							}
 							else
 							{
 								// ok, read the subfile
 								string subFilename = str.toString();
-								
+
 								// check is file exist
 								if (!CFile::fileExists(subFilename))
 								{
@@ -647,18 +647,18 @@ void CI18N::_readTextFile(const std::string &filename,
 									{
 										// not found but optionnal, only emit a debug log
 										// the include file is not found, issue a warning
-										nldebug("Preprocess: In file %s(%u) : Cannot include optional file '%s'", 
+										nldebug("Preprocess: In file %s(%u) : Cannot include optional file '%s'",
 											filename.c_str(), currentLine,
 											str.toString().c_str());
-										
+
 										break;
 									}
 								}
-								
+
 								nlinfo("Preprocess: In file %s(%u) : Including optional '%s'",
 									filename.c_str(), currentLine,
 									subFilename.c_str());
-								
+
 								ucstring inserted;
 								_readTextFile(subFilename, inserted, forceUtf8, fileLookup, preprocess, lineFmt, warnIfIncludesNotFound, readContext);
 								final += inserted;
@@ -675,13 +675,13 @@ void CI18N::_readTextFile(const std::string &filename,
 					if (readContext.IfStack.empty() || readContext.IfStack.back())
 					{
 						skipWhiteSpace(it, end, NULL, false);
-						
+
 						string label;
 						if (parseLabel(it, end, label))
 						{
 							if (readContext.Defines.find(label) != readContext.Defines.end())
 							{
-								nlinfo("Preprocess: In file %s(%u) : symbol '%s' already defined", 
+								nlinfo("Preprocess: In file %s(%u) : symbol '%s' already defined",
 									filename.c_str(), currentLine,
 									label.c_str());
 							}
@@ -694,7 +694,7 @@ void CI18N::_readTextFile(const std::string &filename,
 						{
 							nlwarning("Preprocess: In file %s(%u) : Error parsing #define command", filename.c_str(), currentLine);
 						}
-						
+
 						// advance to next line
 						skipLine(it, end, currentLine);
 						// update filename and line number
@@ -724,7 +724,7 @@ void CI18N::_readTextFile(const std::string &filename,
 						{
 							nlwarning("Preprocess: In file %s(%u) : Error parsing #ifdef command", filename.c_str(), currentLine);
 						}
-						
+
 						// advance to next line
 						skipLine(it, end, currentLine);
 						// update filename and line number
@@ -761,7 +761,7 @@ void CI18N::_readTextFile(const std::string &filename,
 						{
 							nlwarning("Preprocess: In file %s(%u) : Error parsing #ifndef command", filename.c_str(), currentLine);
 						}
-						
+
 						// advance to next line
 						skipLine(it, end, currentLine);
 						// update filename and line number
@@ -785,7 +785,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					else
 					{
 						previous = readContext.IfStack.back();
-						
+
 						readContext.IfStack.pop_back();
 					}
 					skipLine(it, end, currentLine);
@@ -798,7 +798,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					// update filename and line number
 //					final += toString("#fileline \"%s\" %u\n", filename.c_str(), currentLine);
 				}
-				else 
+				else
 				{
 					// unrecognized command, ignore line
 					nlwarning("Preprocess: In file %s(%u) : Error unrecognized preprocessor command",
@@ -809,7 +809,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					final += toString("#fileline \"%s\" %u\n", filename.c_str(), currentLine);
 				}
 			}
-			else 
+			else
 			{
 				// normal line
 				skipLine(it, end, currentLine);
@@ -934,8 +934,8 @@ void CI18N::readTextBuffer(uint8 *buffer, uint size, ucstring &result, bool forc
 	if (forceUtf8)
 	{
 		if (size>=3 &&
-			buffer[0]==utf8Header[0] && 
-			buffer[1]==utf8Header[1] && 
+			buffer[0]==utf8Header[0] &&
+			buffer[1]==utf8Header[1] &&
 			buffer[2]==utf8Header[2]
 			)
 		{
@@ -947,8 +947,8 @@ void CI18N::readTextBuffer(uint8 *buffer, uint size, ucstring &result, bool forc
 		result.fromUtf8(text);
 	}
 	else if (size>=3 &&
-			 buffer[0]==utf8Header[0] && 
-			 buffer[1]==utf8Header[1] && 
+			 buffer[0]==utf8Header[0] &&
+			 buffer[1]==utf8Header[1] &&
 			 buffer[2]==utf8Header[2]
 			)
 	{
@@ -959,7 +959,7 @@ void CI18N::readTextBuffer(uint8 *buffer, uint size, ucstring &result, bool forc
 		result.fromUtf8(text);
 	}
 	else if (size>=2 &&
-			 buffer[0]==utf16Header[0] && 
+			 buffer[0]==utf16Header[0] &&
 			 buffer[1]==utf16Header[1]
 			)
 	{
@@ -975,7 +975,7 @@ void CI18N::readTextBuffer(uint8 *buffer, uint size, ucstring &result, bool forc
 			result[j]= *src++;
 	}
 	else if (size>=2 &&
-			 buffer[0]==utf16RevHeader[0] && 
+			 buffer[0]==utf16RevHeader[0] &&
 			 buffer[1]==utf16RevHeader[1]
 			)
 	{
@@ -1000,9 +1000,9 @@ void CI18N::readTextBuffer(uint8 *buffer, uint size, ucstring &result, bool forc
 	else
 	{
 		// hum.. ascii read ?
-		// so, just do a direct conversion				
-		std::string text((char*)buffer, size);				
-		result = text;		
+		// so, just do a direct conversion
+		std::string text((char*)buffer, size);
+		result = text;
 	}
 }
 
@@ -1080,7 +1080,7 @@ ucstring CI18N::makeMarkedString(ucchar openMark, ucchar closeMark, const ucstri
 string CI18N::encodeUTF8(const ucstring &str)
 {
 	return str.toUtf8();
-	/*	
+	/*
 	string	res;
 	ucstring::const_iterator first(str.begin()), last(str.end());
 	for (; first != last; ++first)
@@ -1111,7 +1111,7 @@ string CI18N::encodeUTF8(const ucstring &str)
 			ucchar	c = *first;
 			c = c >> ((nbLoop - i - 1) * 6);
 			c = c & 0x3F;
-			res += char(c) | 0x80; 
+			res += char(c) | 0x80;
 		}
 	}
 	return res;
@@ -1119,13 +1119,13 @@ string CI18N::encodeUTF8(const ucstring &str)
 }
 
 /* UTF-8 conversion table
-U-00000000 - U-0000007F:  0xxxxxxx  
-U-00000080 - U-000007FF:  110xxxxx 10xxxxxx  
-U-00000800 - U-0000FFFF:  1110xxxx 10xxxxxx 10xxxxxx  
+U-00000000 - U-0000007F:  0xxxxxxx
+U-00000080 - U-000007FF:  110xxxxx 10xxxxxx
+U-00000800 - U-0000FFFF:  1110xxxx 10xxxxxx 10xxxxxx
 // not used as we convert from 16 bits unicode
-U-00010000 - U-001FFFFF:  11110xxx 10xxxxxx 10xxxxxx 10xxxxxx  
-U-00200000 - U-03FFFFFF:  111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx  
-U-04000000 - U-7FFFFFFF:  1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx  
+U-00010000 - U-001FFFFF:  11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-00200000 - U-03FFFFFF:  111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-04000000 - U-7FFFFFFF:  1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
 */
 
 
@@ -1154,7 +1154,7 @@ uint64	CI18N::makeHash(const ucstring &str)
 	return hash;
 }
 
-// convert a hash value to a readable string 
+// convert a hash value to a readable string
 string CI18N::hashToString(uint64 hash)
 {
 	uint32 *ph = (uint32*)&hash;

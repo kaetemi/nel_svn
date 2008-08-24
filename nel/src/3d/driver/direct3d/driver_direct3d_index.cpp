@@ -38,7 +38,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -48,7 +48,7 @@ CIBDrvInfosD3D::CIBDrvInfosD3D(CDriverD3D *drv, ItIBDrvInfoPtrList it, CIndexBuf
 	H_AUTO_D3D(CIBDrvInfosD3D_CIBDrvInfosD3D)
 	Driver = drv;
 	IndexBuffer = NULL;
-	VolatileIndexBuffer = NULL;	
+	VolatileIndexBuffer = NULL;
 
 }
 
@@ -66,7 +66,7 @@ CIBDrvInfosD3D::~CIBDrvInfosD3D()
 		IndexBufferPtr->setLocation(CIndexBuffer::NotResident);
 		IndexBufferPtr= NULL;
 	}
-		
+
 	// release index buffer
 	if (IndexBuffer && !Volatile)
 	{
@@ -87,10 +87,10 @@ CIBDrvInfosD3D::~CIBDrvInfosD3D()
 
 void *CIBDrvInfosD3D::lock (uint first, uint last, bool readOnly)
 {
-	H_AUTO_D3D(CIBDrvInfosD3D_lock);	
+	H_AUTO_D3D(CIBDrvInfosD3D_lock);
 	nlassert (first != last);
 	CDriverD3D *driver = static_cast<CDriverD3D*>(_Driver);
-	
+
 	if (driver->getMaxVertexIndex() <= 0xffff && getFormat() != CIndexBuffer::Indices16)
 	{
 		nlassert(getFormat() == CIndexBuffer::Indices32);
@@ -118,8 +118,8 @@ void *CIBDrvInfosD3D::lock (uint first, uint last, bool readOnly)
 			}
 			void *ptr = (*buffer)->lock ((last-first)*getIndexNumBytes(), Offset);
 			if (!ptr)
-			{			
-				// buffer full, swap them			
+			{
+				// buffer full, swap them
 				CVolatileIndexBuffer **bufferOther;
 				if (getFormat() == CIndexBuffer::Indices16)
 				{
@@ -128,11 +128,11 @@ void *CIBDrvInfosD3D::lock (uint first, uint last, bool readOnly)
 				else
 				{
 					bufferOther = VolatileRAM ? (&driver->_VolatileIndexBuffer32RAM[(driver->_CurrentRenderPass + 1) &1]):(&driver->_VolatileIndexBuffer32AGP[(driver->_CurrentRenderPass + 1 ) &1]);
-				}				
+				}
 				std::swap(*buffer, *bufferOther);
 				(*buffer)->reset();
 				ptr = (*buffer)->lock ((last-first)*getIndexNumBytes(), Offset);
-				nlassert(ptr);			
+				nlassert(ptr);
 			}
 			nlassert(!VolatileIndexBuffer);
 			VolatileIndexBuffer = *buffer;
@@ -144,18 +144,18 @@ void *CIBDrvInfosD3D::lock (uint first, uint last, bool readOnly)
 
 			// Touch the index buffer
 			driver->touchRenderVariable (&driver->_IndexBufferCache);
-			
+
 			return ptr;
 		}
 		else
-		{			
+		{
 			nlassert (IndexBuffer);
 			// Lock Profile?
 			TTicks	beforeLock;
 			if(driver->_IBProfiling /*&& Hardware*/)
 			{
 				beforeLock= CTime::getPerformanceTime();
-			}		
+			}
 			void *pbData;
 			HRESULT result = IndexBuffer->Lock ( first*getIndexNumBytes(), (last-first)*getIndexNumBytes(), &pbData, readOnly?D3DLOCK_READONLY:0);
 			nlassert(result == D3D_OK);
@@ -181,7 +181,7 @@ void	CIBDrvInfosD3D::unlock (uint first, uint last)
 	if (driver->getMaxVertexIndex() > 0xffff || getFormat() == CIndexBuffer::Indices16)
 	{
 		if (Volatile)
-		{		
+		{
 			nlassert(VolatileIndexBuffer);
 			VolatileIndexBuffer->unlock ();
 			VolatileIndexBuffer = NULL;
@@ -217,7 +217,7 @@ D3DPOOL RemapIndexBufferPool[CIndexBuffer::LocationCount]=
 
 bool CDriverD3D::activeIndexBuffer(CIndexBuffer& IB)
 {
-	H_AUTO_D3D(CDriverD3D_activeIndexBuffer)		
+	H_AUTO_D3D(CDriverD3D_activeIndexBuffer)
 
 	// Must not be locked
 	nlassert (!IB.isLocked());
@@ -249,7 +249,7 @@ bool CDriverD3D::activeIndexBuffer(CIndexBuffer& IB)
 		_IBDrvInfos.push_front (NULL);
 		ItIBDrvInfoPtrList ite = _IBDrvInfos.begin();
 		info = new CIBDrvInfosD3D(this, ite, &IB);
-		*ite = info;		
+		*ite = info;
 		// Create the index buffer
 		const uint size = (uint)IB.capacity();
 		uint preferredMemory;
@@ -304,22 +304,22 @@ bool CDriverD3D::activeIndexBuffer(CIndexBuffer& IB)
 				info->VolatileRAM = preferredMemory == CIndexBuffer::RAMResident;
 			}
 			else
-			{				 
+			{
 				// Offset will be 0
-				info->Offset = 0;			
+				info->Offset = 0;
 				bool sucess;
 				do
 				{
-					if (sucess =(_DeviceInterface->CreateIndexBuffer(size*IB.getIndexNumBytes(), 
+					if (sucess =(_DeviceInterface->CreateIndexBuffer(size*IB.getIndexNumBytes(),
 						RemapIndexBufferUsage[preferredMemory],
 						IB.getFormat() == CIndexBuffer::Indices32 ? D3DFMT_INDEX32 : D3DFMT_INDEX16, RemapIndexBufferPool[preferredMemory], &(info->IndexBuffer), NULL) == D3D_OK))
 						break;
 				}
 				while (preferredMemory--);
 				if (!sucess)
-					return false;				
+					return false;
 				indexCount++;
-			}			
+			}
 			// Force the vertex buffer update
 			touchRenderVariable (&_IndexBufferCache);
 		}
@@ -347,7 +347,7 @@ bool CDriverD3D::activeIndexBuffer(CIndexBuffer& IB)
 
 // ***************************************************************************
 
-bool CDriverD3D::supportIndexBufferHard() const 
+bool CDriverD3D::supportIndexBufferHard() const
 {
 	H_AUTO_D3D(CDriverD3D_supportIndexBufferHard);
 	return !_DisableHardwareIndexArrayAGP;
@@ -401,7 +401,7 @@ void CVolatileIndexBuffer::init (CIndexBuffer::TLocation location, uint sizeInBy
 	Location = location;
 	Size = sizeInBytes;
 	MaxSize = maxSize;
-	Driver = driver;	
+	Driver = driver;
 
 	nlassert(format == CIndexBuffer::Indices16 || format == CIndexBuffer::Indices32);
 	if (format == CIndexBuffer::Indices32)
@@ -431,19 +431,19 @@ void CVolatileIndexBuffer::init (CIndexBuffer::TLocation location, uint sizeInBy
 
 // ***************************************************************************
 void *CVolatileIndexBuffer::lock (uint size, uint &offset)
-{		
+{
 	nlassertex(!Locked, ("Volatile buffer usage should follow an atomic lock/unlock/render sequence"));
 	H_AUTO_D3D(CVolatileIndexBuffer_lock);
 	/* If not enough room to allocate this buffer, resise the buffer to Size+Size/2 but do not reset CurrentIndex
 	 * to be sure the buffer will be large enough next pass. */
-	
+
 	// Enough room for this index ?
 	if (CurrentIndex+size > Size)
-	{		
+	{
 		if (CurrentIndex+size > MaxSize && CurrentIndex != 0)
 		{
 			return NULL;  // max size exceeded -> can reallocate only if we are at start of block
-		}		
+		}
 		// No, reallocate
 		init (Location, std::max (std::min(Size+Size/2, MaxSize),  CurrentIndex+size), MaxSize, Driver, Format);
 	}
@@ -468,7 +468,7 @@ void *CVolatileIndexBuffer::lock (uint size, uint &offset)
 		TTicks	afterLock;
 		afterLock= CTime::getPerformanceTime();
 		Driver->_VolatileIBLockTime += afterLock - beforeLock;
-	}		
+	}
 
 	// Old buffer position
 	offset = CurrentIndex / (Format == CIndexBuffer::Indices32 ? sizeof(uint32) : sizeof(uint16));
@@ -476,7 +476,7 @@ void *CVolatileIndexBuffer::lock (uint size, uint &offset)
 	// New buffer position
 	CurrentIndex += size;
 	Locked = true;
-	return pbData;	
+	return pbData;
 }
 
 // ***************************************************************************

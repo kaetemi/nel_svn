@@ -54,7 +54,7 @@
 
 // H_AUTO split in 2. The declaration of the static timer, and a CAutoTimer instance.
 // Useful to group same timer bench in different functions for example
-#	define H_AUTO_DECL(__name)	static NLMISC::CHTimer	__name##_timer(#__name); 
+#	define H_AUTO_DECL(__name)	static NLMISC::CHTimer	__name##_timer(#__name);
 #	define H_AUTO_USE(__name)	NLMISC::CAutoTimer	__name##_auto(&__name##_timer);
 
 //
@@ -70,8 +70,8 @@
 // void macros
 #	define H_TIME(__name,__inst) __inst
 #	define H_BEFORE(__name)
-#	define H_AFTER(__name)	
-#	define H_AUTO(__name)	
+#	define H_AFTER(__name)
+#	define H_AUTO(__name)
 #	define H_AUTO2
 #	define H_AUTO_INST(__name)
 #	define H_AUTO_DECL(__name)
@@ -89,7 +89,7 @@ namespace NLMISC
 
 /**  A simple clock to measure ticks.
   *  \warning On Intel platform, processor cycles are counted, on other platforms, CTime::getPerformanceTime is used instead.
-  *  
+  *
   * \sa CStopWatch
   * \author Nicolas Vizerie
   * \author Nevrax France
@@ -97,7 +97,7 @@ namespace NLMISC
   */
 class CSimpleClock
 {
-public:	
+public:
 	CSimpleClock() : _NumTicks(0)
 	{
 #ifdef NL_DEBUG
@@ -129,7 +129,7 @@ public:
 #else
 		_NumTicks = CTime::getPerformanceTime() - _StartTick;
 #endif
-	}	
+	}
 	// get measure
 	uint64	getNumTicks() const
 	{
@@ -138,16 +138,16 @@ public:
 #endif
 		nlassert(_NumTicks != 0);
 		return _NumTicks;
-	}	
+	}
 	// This compute the duration of start and stop (in cycles).
 	static void init();
 	/** Get the number of ticks needed to perform start().
 	  * Should have called init() before calling this.
 	  */
-	static uint64 getStartStopNumTicks() 
-	{ 		
-		return _StartStopNumTicks; 
-	}	
+	static uint64 getStartStopNumTicks()
+	{
+		return _StartStopNumTicks;
+	}
 private:
 	uint64  _StartTick;
 	uint64	_NumTicks;
@@ -155,7 +155,7 @@ private:
 	bool	_Started;
 #endif
 	static bool		_InitDone;
-	static uint64	_StartStopNumTicks;	
+	static uint64	_StartStopNumTicks;
 };
 
 
@@ -186,7 +186,7 @@ class CHTimer
 {
 public:
 	// this enum is used to sort displayed results
-	enum TSortCriterion { NoSort, 
+	enum TSortCriterion { NoSort,
 						  TotalTime,
 						  TotalTimeWithoutSons,
 						  MeanTime,
@@ -229,7 +229,7 @@ public:
 	  */
 	static void		bench() { startBench(); }
 	/** For backward compatibility
-	  */ 
+	  */
 	static void		adjust() {}
 	/// Ends a bench session
 	static void		endBench();
@@ -240,7 +240,7 @@ public:
 	  * \param displayEx true to display more detailed infos
 	  */
 	static void		display(CLog *log= InfoLog, TSortCriterion criterion = TotalTime, bool displayInline = true, bool displayEx = true);
-	/** Display results by execution paths	
+	/** Display results by execution paths
 	  * \param displayInline true to display each result on a single line.
 	  * \param alignPaths    true to display all execution paths aligned.
 	  * \param displayEx	 true to display more detailed infos.
@@ -249,25 +249,25 @@ public:
 
 	/** Hierarchical display, no sorting is done
 	  * \param displayEx	 true to display more detailed infos.
-	  * \param labelNumChar  
+	  * \param labelNumChar
 	  */
 	static void		displayHierarchical(CLog *log= InfoLog, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2);
 
 	/** Hierarchical display, no sorting is done
 	  * \param displayEx	 true to display more detailed infos.
-	  * \param labelNumChar  
+	  * \param labelNumChar
 	  */
 	static void		displayHierarchicalByExecutionPath(CLog *log= InfoLog, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2);
 
 	/** Hierarchical display, sorting is done in branches
 	  * \param displayEx	 true to display more detailed infos.
-	  * \param labelNumChar  
+	  * \param labelNumChar
 	  */
 	static void		displayHierarchicalByExecutionPathSorted(CLog *log= InfoLog, TSortCriterion criterion = TotalTime, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2);
 
 	/** Hierarchical display, sorting is done in branches
 	  * \param displayEx	 true to display more detailed infos.
-	  * \param labelNumChar  
+	  * \param labelNumChar
 	  */
 	static void		displaySummary(CLog *log= InfoLog, TSortCriterion criterion = TotalTime, bool displayEx = true, uint labelNumChar = 32, uint indentationStep = 2, uint maxDepth = 3);
 
@@ -292,26 +292,26 @@ private:
 	//
 	/// a node in an execution path
 	struct CNode
-	{		
+	{
 		typedef std::vector<double> TTimeVect;
 		//
 		CNode					*Parent;
 		TNodeVect				Sons;
-		CHTimer					*Owner;	   // the hierarchical timer this node is associated with		
-		uint64					TotalTime; // the total time spent in that node, including sons		
-		uint64					LastSonsTotalTime; 
+		CHTimer					*Owner;	   // the hierarchical timer this node is associated with
+		uint64					TotalTime; // the total time spent in that node, including sons
+		uint64					LastSonsTotalTime;
 		uint64					SonsTotalTime; // maybe different from LastSonsTotalTime while benching the sons and if the display is called in a benched node
 		TTimeVect				Measures;  // All time measures. Used only when standard deviation is wanted
 		uint64					MinTime;   // the minimum time spent in that node
 		uint64					MaxTime;   // the maximum time spent in that node
-		uint64					NumVisits; // the number of time the execution has gone through this node		
+		uint64					NumVisits; // the number of time the execution has gone through this node
 		// session max measure
 		uint64					SessionCurrent;
 		uint64					SessionMax;
 		//
-		uint64					SonsPreambule; // preamble time for the sons		
+		uint64					SonsPreambule; // preamble time for the sons
 		CSimpleClock			Clock;         // a clock to do the measures at this node
-		// ctor 
+		// ctor
 	  CNode(CHTimer	*owner = NULL, CNode	*parent = NULL) : Parent(parent), Owner(owner)
 		{
 			reset();
@@ -330,13 +330,13 @@ private:
 			MaxTime				 = 0;
 			MinTime				 = (uint64) -1;
 			NumVisits			 = 0;
-			SonsPreambule	     = 0;			
+			SonsPreambule	     = 0;
 			LastSonsTotalTime    = 0;
 			SessionCurrent       = 0;
 			SessionMax           = 0;
 			NLMISC::contReset(Measures);
 		}
-		// 
+		//
 		// Display this node path
 		void	displayPath(CLog *log) const;
 		// Get this node path
@@ -370,9 +370,9 @@ private:
 	  * They can be build from a set of nodes
 	  */
 	struct CStats
-	{	
+	{
 		double  TimeStandardDeviation;
-		double	TotalTime;		
+		double	TotalTime;
 		double	TotalTimeWithoutSons;
 		double	MeanTime;
 		uint64	NumVisits;
@@ -382,7 +382,7 @@ private:
 
 		// build stats from a single node
 		void buildFromNode(CNode *node, double msPerTick);
-		
+
 		// build stats from a vector of nodes
 		void buildFromNodes(CNode **firstNode, uint numNodes, double msPerTick);
 
@@ -397,13 +397,13 @@ private:
 	// Stats and the associated timer
 	struct CTimerStat : public CStats
 	{
-		CHTimer *Timer;			
+		CHTimer *Timer;
 	};
 	// Stats and the associated node
 	struct CNodeStat : public CStats
 	{
 		CNode *Node;
-	};	
+	};
 
 	/** A statistics sorter, based on some criterion.
 	  * It works on pointers on CStats objects
@@ -449,10 +449,10 @@ private:
 
 	// Real Job.
 	void			doBefore();
-	void			doAfter(bool displayAfter = false);	
+	void			doAfter(bool displayAfter = false);
 
 	static void		estimateAfterStopTime();
-		
+
 private:
 	// walk the tree to current execution node, creating it if necessary
 	void			walkTreeToCurrent();
@@ -469,7 +469,7 @@ private:
 	// root node of the hierarchy
 	static CNode					_RootNode;
 	// the current node of the execution
-	static CNode					*_CurrNode;	
+	static CNode					*_CurrNode;
 	// the root timer
 	static CHTimer					 _RootTimer;
 	/** This clock is used to measure the preamble of methods such as CHTimer::before()
@@ -485,8 +485,8 @@ private:
 	//
 	static bool						_WantStandardDeviation;
 	//
-	static CHTimer				   *_CurrTimer;	
-	// 
+	static CHTimer				   *_CurrTimer;
+	//
 	static sint64					_AfterStopEstimateTime;
 	static bool						_AfterStopEstimateTimeDone;
 };

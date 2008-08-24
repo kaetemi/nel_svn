@@ -28,7 +28,7 @@
 using namespace std;
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

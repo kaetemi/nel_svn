@@ -46,7 +46,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -59,7 +59,7 @@ H_AUTO_DECL( NL3D_MeshMRMGeom_RenderShadow )
 // ***************************************************************************
 // ***************************************************************************
 
-	
+
 // ***************************************************************************
 void		CMeshMRMGeom::CLod::serial(NLMISC::IStream &f)
 {
@@ -233,7 +233,7 @@ void			CMeshMRMGeom::changeMRMDistanceSetup(float distanceFinest, float distance
 	_LevelDetail.DistanceMiddle= distanceMiddle;
 	_LevelDetail.DistanceCoarsest= distanceCoarsest;
 
-	// compile 
+	// compile
 	_LevelDetail.compileDistanceSetup();
 }
 
@@ -256,13 +256,13 @@ void			CMeshMRMGeom::build(CMesh::CMeshBuild &m, std::vector<CMesh::CMeshBuild*>
 
 
 	// SmartPtr Copy VertexProgram effect.
-	//================================================	
+	//================================================
 	this->_MeshVertexProgram= m.MeshVertexProgram;
 
 
 	/// 0. First, make bbox.
 	//======================
-	// NB: this is equivalent as building BBox from MRM VBuffer, because CMRMBuilder create new vertices 
+	// NB: this is equivalent as building BBox from MRM VBuffer, because CMRMBuilder create new vertices
 	// which are just interpolation of original vertices.
 	_BBox= makeBBox(m.Vertices);
 
@@ -305,7 +305,7 @@ void			CMeshMRMGeom::build(CMesh::CMeshBuild &m, std::vector<CMesh::CMeshBuild*>
 		precNWedges= _Lods[i].NWedges;
 		// LodOffset is filled in serial() when stream is input.
 	}
-	// After build, all lods are present in memory. 
+	// After build, all lods are present in memory.
 	_NbLodLoaded= _Lods.size();
 
 
@@ -357,12 +357,12 @@ void			CMeshMRMGeom::build(CMesh::CMeshBuild &m, std::vector<CMesh::CMeshBuild*>
 	}
 
 	// Copy Blend Shapes
-	//================================================	
+	//================================================
 	_MeshMorpher.BlendShapes = meshBuildMRM.BlendShapes;
-	
+
 
 	// Compact bone id and build a bone id names
-	//================================================	
+	//================================================
 
 	// Skinned ?
 	if (_Skinned)
@@ -382,7 +382,7 @@ void			CMeshMRMGeom::build(CMesh::CMeshBuild &m, std::vector<CMesh::CMeshBuild*>
 		{
 			// Found one ?
 			bool found=false;
-			
+
 			// For each weight
 			uint weight;
 			for (weight=0; weight<NL3D_MESH_SKINNING_MAX_MATRIX; weight++)
@@ -518,7 +518,7 @@ void	CMeshMRMGeom::applyGeomorphWithVBHardPtr(std::vector<CMRMWedgeGeom>  &geoms
 		uint		ua= (uint)(a*256);
 		clamp(ua, (uint)0, (uint)256);
 		uint		ua1= 256 - ua;
-		
+
 		// if an offset is 0, it means that the component is not in the VBuffer.
 		sint32		normalOff;
 		sint32		colorOff;
@@ -540,12 +540,12 @@ void	CMeshMRMGeom::applyGeomorphWithVBHardPtr(std::vector<CMRMWedgeGeom>  &geoms
 			specularOff= _VBufferFinal.getSpecularOff();
 		else
 			specularOff= 0;
-			
+
 		for(i= 0; i<CVertexBuffer::MaxStage;i++)
 		{
 			if(flags & (CVertexBuffer::TexCoord0Flag<<i))
 			{
-				uvOff[i]= _VBufferFinal.getTexCoordOff(i);			
+				uvOff[i]= _VBufferFinal.getTexCoordOff(i);
 				has3Coords[i] = (_VBufferFinal.getValueType(i + CVertexBuffer::TexCoord0) == CVertexBuffer::Float3);
 			}
 			else
@@ -595,38 +595,38 @@ void	CMeshMRMGeom::applyGeomorphWithVBHardPtr(std::vector<CMRMWedgeGeom>  &geoms
 				// Uvs.
 				// uv[0].
 				if(uvOff[0])
-				{				
+				{
 					// Uv.
 					CUV			*start= (CUV*)(startPtr + uvOff[0]);
 					CUV			*end=	(CUV*)(endPtr   + uvOff[0]);
 					CUV			*dst=	(CUV*)(destPtr  + uvOff[0]);
-					*dst= *start * a + *end * a1;				
+					*dst= *start * a + *end * a1;
 				}
 				// uv[1].
 				if(uvOff[1])
-				{				
+				{
 					// Uv.
 					CUV			*start= (CUV*)(startPtr + uvOff[1]);
 					CUV			*end=	(CUV*)(endPtr   + uvOff[1]);
 					CUV			*dst=	(CUV*)(destPtr  + uvOff[1]);
-					*dst= *start * a + *end * a1;				
+					*dst= *start * a + *end * a1;
 				}
 				// uv[2].
 				if(uvOff[2])
-				{				
+				{
 					CUV			*start= (CUV*)(startPtr + uvOff[2]);
 					CUV			*end=	(CUV*)(endPtr   + uvOff[2]);
 					CUV			*dst=	(CUV*)(destPtr  + uvOff[2]);
-					*dst= *start * a + *end * a1;				
+					*dst= *start * a + *end * a1;
 				}
 				// uv[3].
 				if(uvOff[3])
-				{				
+				{
 					// Uv.
 					CUV			*start= (CUV*)(startPtr + uvOff[3]);
 					CUV			*end=	(CUV*)(endPtr   + uvOff[3]);
 					CUV			*dst=	(CUV*)(destPtr  + uvOff[3]);
-					*dst= *start * a + *end * a1;				
+					*dst= *start * a + *end * a1;
 				}
 			}
 		}
@@ -1004,7 +1004,7 @@ void	CMeshMRMGeom::render(IDriver *drv, CTransformShape *trans, float polygonCou
 
 	// force normalisation of normals..
 	bool	bkupNorm= drv->isForceNormalize();
-	drv->forceNormalize(true);			
+	drv->forceNormalize(true);
 
 
 	// Setup meshVertexProgram
@@ -1019,7 +1019,7 @@ void	CMeshMRMGeom::render(IDriver *drv, CTransformShape *trans, float polygonCou
 		// really ok if success to begin VP
 		useMeshVP= _MeshVertexProgram->begin(drv, mi->getOwnerScene(), mi, invertedObjectMatrix, renderTrav->CamPos);
 	}
-	
+
 
 	// Render the lod.
 	//===========
@@ -1082,7 +1082,7 @@ void	CMeshMRMGeom::render(IDriver *drv, CTransformShape *trans, float polygonCou
 				if (useMeshVP)
 				{
 					_MeshVertexProgram->setupForMaterial(material, drv, ownerScene, &_VBufferFinal);
-				}	
+				}
 
 				// Render with the Materials of the MeshInstance.
 				drv->activeIndexBuffer(rdrPass.PBlock);
@@ -1110,7 +1110,7 @@ void	CMeshMRMGeom::render(IDriver *drv, CTransformShape *trans, float polygonCou
 void	CMeshMRMGeom::renderSkin(CTransformShape *trans, float alphaMRM)
 {
 	H_AUTO( NL3D_MeshMRMGeom_renderSkin );
-	
+
 	if(_Lods.size()==0)
 		return;
 
@@ -1236,7 +1236,7 @@ void	CMeshMRMGeom::renderSkin(CTransformShape *trans, float alphaMRM)
 		// really ok if success to begin VP
 		useMeshVP= _MeshVertexProgram->begin(drv, mi->getOwnerScene(), mi, invertedObjectMatrix, renderTrav->CamPos);
 	}
-	
+
 
 	// Render the lod.
 	//===========
@@ -1284,7 +1284,7 @@ sint	CMeshMRMGeom::renderSkinGroupGeom(CMeshMRMInstance	*mi, float alphaMRM, uin
 	H_AUTO( NL3D_MeshMRMGeom_rdrSkinGrpGeom )
 
 	// NB: not need to test if _Lods.empty(), because already done through supportSkinGrouping()
-		
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -1332,15 +1332,15 @@ sint	CMeshMRMGeom::renderSkinGroupGeom(CMeshMRMInstance	*mi, float alphaMRM, uin
 	// Use RawSkin?. compute before morphing, cause of updateRawSkin
 	updateRawSkinNormal(true, mi, numLod);
 	nlassert(mi->_RawSkinCache);
-	
+
 	// Apply morph
 	if (bMorphApplied)
 	{
 		// No need to manage lod.OriginalSkinRestored, since in case of SkinGroupGeom, the VBuffer final is not modified.
-		
+
 		// copy directly from the original VB, and apply BlendShapes. Dest is directly the RawSkin
-		_MeshMorpher.updateRawSkin(&_VBufferFinal, 
-									mi->_RawSkinCache->VertexRemap, 
+		_MeshMorpher.updateRawSkin(&_VBufferFinal,
+									mi->_RawSkinCache->VertexRemap,
 									mi->getBlendShapeFactors());
 	}
 
@@ -1355,15 +1355,15 @@ sint	CMeshMRMGeom::renderSkinGroupGeom(CMeshMRMInstance	*mi, float alphaMRM, uin
 	// always RawSkin now in SkinGrouping, even with MeshMorpher
 	{
 		H_AUTO( NL3D_RawSkinning );
-		
+
 		// RawSkin do all the job in optimized way: Skinning, copy to VBHard and Geomorph.
 
 		// skinning with normal, but no tangent space
 		applyRawSkinWithNormal (lod, *(mi->_RawSkinCache), skeleton, vbDest, alphaLod);
 
 		// Vertices are packed in RawSkin mode (ie no holes due to MRM!)
-		return	mi->_RawSkinCache->Geomorphs.size() + 
-				mi->_RawSkinCache->TotalSoftVertices + 
+		return	mi->_RawSkinCache->Geomorphs.size() +
+				mi->_RawSkinCache->TotalSoftVertices +
 				mi->_RawSkinCache->TotalHardVertices;
 	}
 }
@@ -1372,7 +1372,7 @@ sint	CMeshMRMGeom::renderSkinGroupGeom(CMeshMRMInstance	*mi, float alphaMRM, uin
 void	CMeshMRMGeom::renderSkinGroupPrimitives(CMeshMRMInstance	*mi, uint baseVertex, std::vector<CSkinSpecularRdrPass> &specularRdrPasses, uint skinIndex)
 {
 	H_AUTO( NL3D_MeshMRMGeom_rdrSkinGrpPrimitives );
-	
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -1450,7 +1450,7 @@ void	CMeshMRMGeom::renderSkinGroupPrimitives(CMeshMRMInstance	*mi, uint baseVert
 void	CMeshMRMGeom::renderSkinGroupSpecularRdrPass(CMeshMRMInstance	*mi, uint rdrPassId)
 {
 	H_AUTO( NL3D_MeshMRMGeom_rdrSkinGrpSpecularRdrPass );
-	
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -1710,7 +1710,7 @@ sint	CMeshMRMGeom::loadHeader(NLMISC::IStream &f) throw(NLMISC::EStream)
 	// if >= version 5, serial Shadow Skin Information
 	if(ver>=5)
 	{
-		f.serialCont (_ShadowSkin.Vertices);		
+		f.serialCont (_ShadowSkin.Vertices);
 		f.serialCont (_ShadowSkin.Triangles);
 	}
 
@@ -1804,7 +1804,7 @@ void	CMeshMRMGeom::save(NLMISC::IStream &f) throw(NLMISC::EStream)
 	// if >= version 3, serial bones names
 	f.serialCont (_BonesName);
 
-	// Warning, if you have skinned this shape, you can't write it anymore because skinning id have been changed! 
+	// Warning, if you have skinned this shape, you can't write it anymore because skinning id have been changed!
 	nlassert (_BoneIdComputed==false);
 
 	// Mesh Vertex Program.
@@ -1868,7 +1868,7 @@ void	CMeshMRMGeom::save(NLMISC::IStream &f) throw(NLMISC::EStream)
 	vector<sint32>	lodOffsets;
 	lodOffsets.resize(_LodInfos.size(), 0);
 
-	// write all dummy offset. For now (since we don't know what to set), compute the offset of 
+	// write all dummy offset. For now (since we don't know what to set), compute the offset of
 	// the sint32 to come back in serial lod parts below.
 	for(i=0;i<_LodInfos.size(); i++)
 	{
@@ -2211,8 +2211,8 @@ void	CMeshMRMGeom::computeBonesId (CSkeletonModel *skeleton)
 			// **** For each bones, compute remap
 			std::vector<uint> remap;
 			skeleton->remapSkinBones(_BonesName, _BonesId, remap);
-			
-			
+
+
 			// **** Remap the vertices, and compute Bone Spheres.
 
 			// Find the Geomorph space: to process only real vertices, not geomorphed ones.
@@ -2272,7 +2272,7 @@ void	CMeshMRMGeom::computeBonesId (CSkeletonModel *skeleton)
 					}
 					else
 						break;
-				}				
+				}
 			}
 
 			// Compile spheres
@@ -2379,7 +2379,7 @@ void	CMeshMRMGeom::buildBoneUsageVer2 ()
 				{
 					maxBoneId= max(_SkinWeights[vert].MatrixId[weight], maxBoneId);
 				}
-			}				
+			}
 		}
 
 		// alloc an array of maxBoneId+1, reset to 0.
@@ -2398,7 +2398,7 @@ void	CMeshMRMGeom::buildBoneUsageVer2 ()
 					// mark this bone as used.
 					boneUsage[_SkinWeights[vert].MatrixId[weight]]= 1;
 				}
-			}				
+			}
 		}
 
 		// For each bone used
@@ -2460,7 +2460,7 @@ void	CMeshMRMGeom::compileRunTime()
 	// Support MeshBlockRendering only if not skinned/meshMorphed.
 	_SupportMeshBlockRendering= !_Skinned && _MeshMorpher.BlendShapes.size()==0;
 
-	// \todo yoyo: support later MeshVertexProgram 
+	// \todo yoyo: support later MeshVertexProgram
 	_SupportMeshBlockRendering= _SupportMeshBlockRendering && _MeshVertexProgram==NULL;
 }
 
@@ -2471,7 +2471,7 @@ void	CMeshMRMGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *tra
 	// if no _Lods, no draw
 	if(_Lods.empty())
 		return;
-	
+
 	// get the result of the Load Balancing.
 	float	alphaMRM= _LevelDetail.getLevelDetailFromPolyCount(polygonCount);
 
@@ -2502,7 +2502,7 @@ void	CMeshMRMGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *tra
 	if(triCount)
 	{
 		// tri per VBFormat
-		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshMRMProfileTriVBFormat, 
+		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshMRMProfileTriVBFormat,
 			_VBufferFinal.getVertexFormat(), triCount);
 
 		// VBHard
@@ -2573,7 +2573,7 @@ bool	CMeshMRMGeom::buildGeometryForLod(uint lodId, std::vector<CVector> &vertice
 			uint	idx= *src;
 			// Flag the vertex with its own index => used.
 			vertexRemap[idx]= idx;
-		}		
+		}
 
 		// total num indices
 		numTotalIndices+= pb.getNumIndexes();
@@ -2669,11 +2669,11 @@ bool	CMeshMRMGeom::buildGeometryForLod(uint lodId, std::vector<CVector> &vertice
 			nlassert(remapedIdx<vertices.size());
 			*pDstIndex= remapedIdx;
 			pDstIndex++;
-		}		
+		}
 	}
 	// should have filled the entire buffer
 	nlassert(uint(pDstIndex-(&triangles[0]))==numTotalIndices);
-		
+
 
 	return true;
 }
@@ -2708,19 +2708,19 @@ bool	CMeshMRMGeom::sortPerMaterial() const
 	return false;
 }
 // ***************************************************************************
-uint	CMeshMRMGeom::getNumRdrPassesForMesh() const 
+uint	CMeshMRMGeom::getNumRdrPassesForMesh() const
 {
 	// not used...
 	return 0;
 
 }
 // ***************************************************************************
-uint	CMeshMRMGeom::getNumRdrPassesForInstance(CMeshBaseInstance *inst) const 
+uint	CMeshMRMGeom::getNumRdrPassesForInstance(CMeshBaseInstance *inst) const
 {
 	return _Lods[_MBRCurrentLodId].RdrPass.size();
 }
 // ***************************************************************************
-void	CMeshMRMGeom::beginMesh(CMeshGeomRenderContext &rdrCtx) 
+void	CMeshMRMGeom::beginMesh(CMeshGeomRenderContext &rdrCtx)
 {
 	if(_Lods.empty())
 		return;
@@ -2739,11 +2739,11 @@ void	CMeshMRMGeom::beginMesh(CMeshGeomRenderContext &rdrCtx)
 
 	// force normalisation of normals..
 	_MBRBkupNormalize= drv->isForceNormalize();
-	drv->forceNormalize(true);			
+	drv->forceNormalize(true);
 
 }
 // ***************************************************************************
-void	CMeshMRMGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, void *vbDst) 
+void	CMeshMRMGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, void *vbDst)
 {
 	H_AUTO( NL3D_MeshMRMGeom_RenderNormal );
 
@@ -2773,7 +2773,7 @@ void	CMeshMRMGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInsta
 	inst->changeLightSetup(rdrCtx.RenderTrav);
 }
 // ***************************************************************************
-void	CMeshMRMGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *mi, float polygonCount, uint rdrPassId) 
+void	CMeshMRMGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *mi, float polygonCount, uint rdrPassId)
 {
 	if(_Lods.empty())
 		return;
@@ -2802,7 +2802,7 @@ void	CMeshMRMGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance 
 }
 
 // ***************************************************************************
-void	CMeshMRMGeom::endMesh(CMeshGeomRenderContext &rdrCtx) 
+void	CMeshMRMGeom::endMesh(CMeshGeomRenderContext &rdrCtx)
 {
 	if(_Lods.empty())
 		return;
@@ -2883,7 +2883,7 @@ CMeshMRM::CMeshMRM()
 {
 }
 // ***************************************************************************
-void			CMeshMRM::build (CMeshBase::CMeshBaseBuild &mBase, CMesh::CMeshBuild &m, 
+void			CMeshMRM::build (CMeshBase::CMeshBaseBuild &mBase, CMesh::CMeshBuild &m,
 								 std::vector<CMesh::CMeshBuild*> &listBS,
 								 const CMRMParameters &params)
 {
@@ -3052,12 +3052,12 @@ void	CMeshMRM::buildSystemGeometry()
 {
 	// clear any
 	_SystemGeometry.clear();
-	
+
 	// don't build a system copy if skinned. In this case, ray intersection is done through CSkeletonModel
 	// and intersectSkin() scheme
 	if(_MeshMRMGeom.isSkinned())
 		return;
-	
+
 	// Choose the best Lod available for system geometry
 	if(_MeshMRMGeom.getNbLodLoaded()==0)
 		return;
@@ -3208,7 +3208,7 @@ void		CMeshMRMGeom::updateRawSkinNormal(bool enabled, CMeshMRMInstance *mi, sint
 			skinLod.Vertices3.resize(lod.InfluencedVertices[2].size());
 			skinLod.Vertices4.resize(lod.InfluencedVertices[3].size());
 
-			// Remap for BlendShape. Lasts 2 bits tells what RawSkin Array to seek (1 to 4), 
+			// Remap for BlendShape. Lasts 2 bits tells what RawSkin Array to seek (1 to 4),
 			// low Bits indicate the number in them. 0xFFFFFFFF is a special value indicating "NotUsed in this lod"
 			static	vector<uint32>	vertexFinalRemap;
 			vertexFinalRemap.clear();
@@ -3329,7 +3329,7 @@ void		CMeshMRMGeom::updateRawSkinNormal(bool enabled, CMeshMRMInstance *mi, sint
 			skinLod.RdrPass.resize(lod.RdrPass.size());
 			for(i=0;i<skinLod.RdrPass.size();i++)
 			{
-				// NB: since RawSkin is possible only with SkinGrouping, and since SkniGrouping is 
+				// NB: since RawSkin is possible only with SkinGrouping, and since SkniGrouping is
 				// possible only with no Quads/Lines, we should have only Tris here.
 				// remap tris.
 				skinLod.RdrPass[i].setFormat(NL_DEFAULT_INDEX_BUFFER_FORMAT);
@@ -3412,7 +3412,7 @@ void		CMeshMRMGeom::updateRawSkinNormal(bool enabled, CMeshMRMInstance *mi, sint
 
 // ***************************************************************************
 // ***************************************************************************
-// CMeshMRMGeom Shadow Skin Rendering 
+// CMeshMRMGeom Shadow Skin Rendering
 // ***************************************************************************
 // ***************************************************************************
 
@@ -3446,7 +3446,7 @@ sint			CMeshMRMGeom::renderShadowSkinGeom(CMeshMRMInstance	*mi, uint remainingVe
 	// if no lods, there should be no verts, but still ensure no bug in skinning
 	if(_Lods.empty())
 		return 0;
-	
+
 	// If the Lod is too big to render in the VBufferHard
 	if(numVerts>remainingVertices)
 		// return Failure
@@ -3473,7 +3473,7 @@ sint			CMeshMRMGeom::renderShadowSkinGeom(CMeshMRMInstance	*mi, uint remainingVe
 	static	vector<CMatrix3x4>		boneMat3x4;
 	CLod	&lod= _Lods[_Lods.size()-1];
 	computeBoneMatrixes3x4(boneMat3x4, lod.MatrixInfluences, skeleton);
-	
+
 	_ShadowSkin.applySkin((CVector*)vbDest, boneMat3x4);
 
 
@@ -3504,17 +3504,17 @@ void			CMeshMRMGeom::renderShadowSkinPrimitives(CMeshMRMInstance	*mi, CMaterial 
 	{
 		shiftedTris.setFormat(NL_MESH_MRM_INDEX_FORMAT);
 		shiftedTris.setNumIndexes(_ShadowSkin.Triangles.size());
-	}	
-	shiftedTris.setPreferredMemory(CIndexBuffer::RAMVolatile, false);	
+	}
+	shiftedTris.setPreferredMemory(CIndexBuffer::RAMVolatile, false);
 	{
 		CIndexBufferReadWrite iba;
 		shiftedTris.lock(iba);
-		const uint32	*src= &_ShadowSkin.Triangles[0];				
+		const uint32	*src= &_ShadowSkin.Triangles[0];
 		TMeshMRMIndexType *dst= (TMeshMRMIndexType *) iba.getPtr();
 		for(uint n= _ShadowSkin.Triangles.size();n>0;n--, src++, dst++)
 		{
 			*dst= (TMeshMRMIndexType)(*src + baseVertex);
-		}		
+		}
 	}
 
 	// Render Triangles with cache
@@ -3549,18 +3549,18 @@ bool		CMeshMRMGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAABBox &b
 	{
 		nGeomSpace= max(nGeomSpace, (uint)_Lods[lod].Geomorphs.size());
 	}
-	
+
 	// Prepare Sphere compute
 	nlassert(_OriginalSkinVertices.size() == _SkinWeights.size());
 	bool	bbEmpty= true;
-	
+
 	// Remap the vertex, and compute the wanted bone bbox
 	// for true vertices
 	for (uint vert=nGeomSpace; vert<_SkinWeights.size(); vert++)
 	{
 		// get the vertex position.
 		CVector		vertex= _OriginalSkinVertices[vert];
-		
+
 		// For each weight
 		uint weight;
 		for (weight=0; weight<NL3D_MESH_SKINNING_MAX_MATRIX; weight++)
@@ -3587,7 +3587,7 @@ bool		CMeshMRMGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAABBox &b
 			}
 			else
 				break;
-		}				
+		}
 	}
 
 	// return true if some influence found
@@ -3606,7 +3606,7 @@ bool		CMeshMRMGeom::intersectSkin(CMeshMRMInstance	*mi, const CMatrix &toRaySpac
 	CSkeletonModel	*skeleton= mi->getSkeletonModel();
 	if(!skeleton)
 		return false;
-	
+
 	// Compute skinning with all matrix this Mesh use. (the shadow geometry cannot use other Matrix than the mesh use).
 	// NB: take the best lod (_Lods.back()) since the lower lods cannot use other Matrix than the higher one.
 	return _ShadowSkin.getRayIntersection(toRaySpace, *skeleton, _Lods.back().MatrixInfluences, dist2D, distZ, computeDist2D);

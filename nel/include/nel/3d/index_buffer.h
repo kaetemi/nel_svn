@@ -140,7 +140,7 @@ typedef	TIBDrvInfoPtrList::iterator		ItIBDrvInfoPtrList;
  * Once the index buffer is resident, the driver creates its proprietary index buffer and release the internal index buffer.
  * At this moment the index buffer can be in VRAM, AGP or system memory.
  *
- * The index buffers resident in AGP and VRAM are writeonly, i-e, you can't read them after a lock(). If you change the capacity 
+ * The index buffers resident in AGP and VRAM are writeonly, i-e, you can't read them after a lock(). If you change the capacity
  * of the format of a writeonly buffer, the content is lost.
  *
  * Volatile buffers must be completely filled at each pass. They are lost after each swapBuffers(). They are writeonly.
@@ -218,7 +218,7 @@ public:
 
 	/** Used by the driver implementation. The driver must first allocate its internal buffer and fill DrvInfos. Then it has to call setLocation(true).
 	  *
-	  * If newLocation!=NotResident, setLocation() will copy the non resident buffer in the choosed resident memory and 
+	  * If newLocation!=NotResident, setLocation() will copy the non resident buffer in the choosed resident memory and
 	  * untouch the buffer. If the buffer preferres RAM or AGP memory, it will release the non resident memory.
 	  *
 	  * If newLocation==NotResident, setLocation() will realloc the non resident buffer, copy the vertex data if the buffer was resident in RAM. Then
@@ -228,7 +228,7 @@ public:
 	/** Called by the driver implementation during the buffer activation */
 	void					fillBuffer ();
 	// @}
-	
+
 public:
 	/* ***********************************************
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
@@ -326,7 +326,7 @@ public:
 	  */
 	bool isResident () const { return (_Location != NotResident) && DrvInfos; }
 
-	/** 
+	/**
 	  * Set the number of active indexes. It enlarge capacity, if needed.
 	  * If the new size is bigger than capacity, reserve() will be called. see reserve().
 	  * If the new size is smaller than capacity, the data are keeped, the index buffer stay resident if it is resident.
@@ -336,13 +336,13 @@ public:
 	// Set format for indices. This discards previous indices
 	void					setFormat(TFormat format);
 
-	// Get format 
+	// Get format
 	TFormat					getFormat() const { return _Format; }
-	
+
 	// get number of bytes per index
 	uint					getIndexNumBytes() const { return _Format == Indices16 ? 2 : 4; }
 
-	/** 
+	/**
 	  * Get the number of active indexes.
 	  */
 	uint32					getNumIndexes(void) const  { return(_NbIndexes); }
@@ -366,7 +366,7 @@ public:
 	  * The index buffer must be unlocked before the call.
 	  */
 	void					reserve(uint32 nIndexes);
-	
+
 	/**
 	  * Return the number of indexes reserved.
 	  */
@@ -386,7 +386,7 @@ public:
 	  * Lock the index buffer and return and fill an accessor object. Once the object is destroyed, the buffer in unlocked.
 	  *
 	  * \param accessor is the accessor object to fill
-	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index, 
+	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index,
 	  * the indexices in the index buffer remain the same.
 	  * \param last is the last index to be accessed + 1. Put 0 to select all the indexes.
 	  */
@@ -400,7 +400,7 @@ public:
 	  * Readonly lock will fail if the buffer is resident in AGP or VRAM.
 	  *
 	  * \param accessor is the accessor object to fill
-	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index, 
+	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index,
 	  * the indexices in the index buffer remain the same.
 	  * \param last is the last index to be accessed + 1. Put 0 to select all the indexes.
 	  */
@@ -444,8 +444,8 @@ private:
 	// Convert current index from a serialized vector
 	void restoreFromSerialVector(const std::vector<uint32> &src);
 
-	
-private:	
+
+private:
 	// Internal flags
 	uint16					_InternalFlags;		// Offset 18 : aligned
 
@@ -453,7 +453,7 @@ private:
 	TFormat					_Format;
 
 	// Index count in the buffer
-	uint32					_NbIndexes;			// Offset 20 : aligned	
+	uint32					_NbIndexes;			// Offset 20 : aligned
 
 	// Capacity of the buffer
 	uint32					_Capacity;
@@ -497,12 +497,12 @@ private:
 	ItIBDrvInfoPtrList	_DriverIterator;
 
 public:
-	CRefPtr<CIndexBuffer>	IndexBufferPtr;	
+	CRefPtr<CIndexBuffer>	IndexBufferPtr;
 
 	IIBDrvInfos(IDriver	*drv, ItIBDrvInfoPtrList it, CIndexBuffer *ib) {_Driver= drv; _DriverIterator= it; IndexBufferPtr = ib;}
 
 	/** Lock method.
-	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index, 
+	  * \param first is the first index to be accessed. Put 0 to select all the indexes. What ever is this index,
 	  * the indexices in the index buffer remain the same.
 	  * \param last is the last index to be accessed + 1. Put 0 to select all the indexes.
 	  */
@@ -613,10 +613,10 @@ public:
 		}
 	}
 
-	// Get a pointer on an index. 
+	// Get a pointer on an index.
 	void *getPtr (uint idx=0)
 	{
-		nlassert (_Parent->checkLockedBuffer());		
+		nlassert (_Parent->checkLockedBuffer());
 		if (_Parent->getFormat() == CIndexBuffer::Indices16)
 		{
 			return &(((uint16 *) _Parent->_LockedBuffer)[idx]);
@@ -654,7 +654,7 @@ private:
 };
 
 /**
- * The index buffer read accessor 
+ * The index buffer read accessor
  */
 class CIndexBufferRead
 {
@@ -683,10 +683,10 @@ public:
 		}
 	}
 
-	// Get a pointer on an index. 
+	// Get a pointer on an index.
 	const void *getPtr (uint idx=0) const
 	{
-		nlassert (_Parent->checkLockedBuffer());		
+		nlassert (_Parent->checkLockedBuffer());
 		if (_Parent->getFormat() == CIndexBuffer::Indices16)
 		{
 			return &(((const uint16 *) _Parent->_LockedBuffer)[idx]);
@@ -697,15 +697,15 @@ public:
 		}
 		else
 		{
-			nlassert(0);			
+			nlassert(0);
 		}
 		return NULL;
-	}	
+	}
 	const CIndexBuffer *getParent() const { return _Parent; }
 	uint getIndexNumBytes() const { nlassert(_Parent); return _Parent->getIndexNumBytes(); }
 	CIndexBuffer::TFormat getFormat() const { nlassert(_Parent); return _Parent->getFormat(); }
 private:
-	
+
 	// No copy operators available
 	void		operator=(const CIndexBufferRead& other) {}
 	CIndexBufferRead(const CIndexBufferRead& other) {}
@@ -744,7 +744,7 @@ inline void CIndexBuffer::lock (CIndexBufferReadWrite &accessor, uint first, uin
 	}
 	else
 		nlassert ((first==0)&&(last==0));
-		
+
 	_LockCounter++;
 }
 
@@ -779,7 +779,7 @@ inline void CIndexBuffer::lock (CIndexBufferRead &accessor, uint first, uint las
 	}
 	else
 		nlassert ((first==0)&&(last==0));
-		
+
 	_LockCounter++;
 }
 

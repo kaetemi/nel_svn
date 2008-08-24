@@ -33,7 +33,7 @@
 #include "nel/3d/fast_ptr_list.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -70,7 +70,7 @@ public:
 	CSmartPtr<IShape>		Shape;
 
 
-	/** Get the untransformed AABBox of the mesh. NULL (gtSize()==0) if no mesh.	 
+	/** Get the untransformed AABBox of the mesh. NULL (gtSize()==0) if no mesh.
 	 */
 	virtual void		getAABBox(NLMISC::CAABBox &bbox) const;
 
@@ -93,7 +93,7 @@ public:
 	  *
 	  * \param distance is the distance of the shape from the eye.
 	  * \return the approximate number of triangles this instance will render at this distance. This
-	  * number can be a float. The function MUST be decreasing or constant with the distance but don't 
+	  * number can be a float. The function MUST be decreasing or constant with the distance but don't
 	  * have to be continus.
 	  */
 	virtual float		getNumTriangles (float distance);
@@ -124,9 +124,9 @@ public:
 	virtual void		stop()  {};
 	// For instance that have a start/stop caps
 	virtual bool		isStarted() const { return false; }
-	
+
 	// Get the model distmax. At startup it is setupped with the shape value
-	float               getDistMax() const { return _DistMax; }	
+	float               getDistMax() const { return _DistMax; }
 	// Set the model distmax.
 	void                setDistMax(float distMax) { _DistMax = distMax; }
 
@@ -181,7 +181,7 @@ private:
 	friend	class	CQuadGridClipClusterListDist;
 
 	// The max dist for this model.
-	float                   _DistMax;	
+	float                   _DistMax;
 
 
 	/// \name Clip Traversal

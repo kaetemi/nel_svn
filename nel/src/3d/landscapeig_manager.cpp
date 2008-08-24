@@ -46,7 +46,7 @@ H_AUTO_DECL ( NL3D_Unload_Zone_IG )
 #define	NL3D_HAUTO_LAND_MNGR_LOAD_ZONEIG	H_AUTO_USE( NL3D_Load_Zone_IG )
 #define	NL3D_HAUTO_LAND_MNGR_UNLOAD_ZONEIG	H_AUTO_USE( NL3D_Unload_Zone_IG )
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -80,7 +80,7 @@ CLandscapeIGManager::~CLandscapeIGManager()
 		throw Exception("CLandscapeIGManager not reseted");
 }
 // ***************************************************************************
-void	CLandscapeIGManager::initIG(UScene *scene, const std::string &igDesc, UDriver *driver, uint selectedTexture, 
+void	CLandscapeIGManager::initIG(UScene *scene, const std::string &igDesc, UDriver *driver, uint selectedTexture,
 									NLMISC::IProgressCallback *callBack)
 {
 	nlassert(scene);
@@ -98,7 +98,7 @@ void	CLandscapeIGManager::initIG(UScene *scene, const std::string &igDesc, UDriv
 
 	// Shape to add should be empty !
 	nlassert(_ShapeAdded.empty ());
-	
+
 	// if loading ok.
 	//if(file.is_open())
 	if (file.open (igFile))
@@ -186,7 +186,7 @@ UInstanceGroup *CLandscapeIGManager::loadZoneIG(const std::string &name)
 {
 	NL3D_HAUTO_LAND_MNGR_LOAD_ZONEIG
 
-	if(name=="") 
+	if(name=="")
 		return NULL;
 
 	// try to find this InstanceGroup.
@@ -333,12 +333,12 @@ void	CLandscapeIGManager::reset()
 		*smartPtr = NULL;
 		_scene.getShapeBank()->release(shapeToRelease);
 		delete smartPtr;
-	
+
 		// Next
 		ite++;
 	}
 	_ShapeAdded.clear ();
-	
+
 	_Scene=NULL;
 }
 
@@ -386,13 +386,13 @@ void	CLandscapeIGManager::reloadAllIgs()
 
 // ***************************************************************************
 void CLandscapeIGManager::getAllIG(std::vector<UInstanceGroup *> &dest) const
-{	
+{
 	dest.clear();
 	dest.reserve(_ZoneInstanceGroupMap.size());
 	// add the instances
 	for(TZoneInstanceGroupMap::const_iterator it = _ZoneInstanceGroupMap.begin(); it != _ZoneInstanceGroupMap.end(); ++it)
-	{			
-		dest.push_back(it->second.Ig);			
+	{
+		dest.push_back(it->second.Ig);
 	}
 }
 
@@ -403,8 +403,8 @@ void CLandscapeIGManager::getAllIGWithNames(std::vector<std::pair<UInstanceGroup
 	dest.reserve(_ZoneInstanceGroupMap.size());
 	// add the instances
 	for(TZoneInstanceGroupMap::const_iterator it = _ZoneInstanceGroupMap.begin(); it != _ZoneInstanceGroupMap.end(); ++it)
-	{			
-		dest.push_back(std::make_pair(it->second.Ig, it->second.FileName));			
+	{
+		dest.push_back(std::make_pair(it->second.Ig, it->second.FileName));
 	}
 }
 

@@ -36,7 +36,7 @@ class CSourceCommon : public USource
 {
 	friend class CAudioMixerUser;
 public:
-	
+
 	enum TSOURCE_TYPE
 	{
 		SOURCE_SIMPLE,
@@ -94,7 +94,7 @@ public:
 
 	virtual uint32					getTime();
 
-	NL3D::CCluster					*getCluster() const { return _Cluster; } 
+	NL3D::CCluster					*getCluster() const { return _Cluster; }
 
 	/** This method is called from backgroup sound to check if
 	 *	subsound need to be restarted (ie subsound in loop mode).

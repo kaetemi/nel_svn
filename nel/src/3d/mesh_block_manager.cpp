@@ -28,7 +28,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -69,7 +69,7 @@ void			CMeshBlockManager::addInstance(IMeshGeom *meshGeom, CMeshBaseInstance *in
 	// If the meshGeom has never been added to the manager, may do some precalc
 	if(meshGeom->_MeshBlockManager==NULL)
 	{
-		// Fill 
+		// Fill
 		meshGeom->_MeshBlockManager= this;
 		// try to fit the meshGeom in one of our VBHeap.
 		allocateMeshVBHeap(meshGeom);
@@ -79,7 +79,7 @@ void			CMeshBlockManager::addInstance(IMeshGeom *meshGeom, CMeshBaseInstance *in
 	/*extern uint	TEMP_Yoyo_NInstVBHeap;
 	extern uint	TEMP_Yoyo_NInstNoVBHeap;
 	if( meshGeom->_MeshVBHeapId & NL3D_MBM_VBHEAP_HEAP_MASK )
-		TEMP_Yoyo_NInstVBHeap++; 
+		TEMP_Yoyo_NInstVBHeap++;
 	else
 		TEMP_Yoyo_NInstNoVBHeap++;*/
 	// End TestYoyo
@@ -120,7 +120,7 @@ void			CMeshBlockManager::flush(IDriver *drv, CScene *scene, CRenderTrav *render
 	_RenderCtx.Driver= drv;
 	_RenderCtx.Scene= scene;
 	_RenderCtx.RenderTrav= renderTrav;
-	
+
 	// render
 	//==========
 
@@ -242,7 +242,7 @@ void			CMeshBlockManager::render(CVBHeapBlock	*vbHeapBlock, IMeshGeom *meshGeom,
 			{
 				// unlock only what vertices have changed (ATI problem)
 #if 0		// todo hulud remove / restore VBHeap
-				vbHeapBlock->VBHeap.unlock(meshGeom->_MeshVBHeapIndexStart, 
+				vbHeapBlock->VBHeap.unlock(meshGeom->_MeshVBHeapIndexStart,
 					meshGeom->_MeshVBHeapIndexStart + meshGeom->_MeshVBHeapNumVertices);
 #endif		// todo hulud remove / restore VBHeap
 			}
@@ -277,7 +277,7 @@ void			CMeshBlockManager::render(CVBHeapBlock	*vbHeapBlock, IMeshGeom *meshGeom,
 // ***************************************************************************
 void			CMeshBlockManager::allocateMeshVBHeap(IMeshGeom *mesh)
 {
-	// Get info from mesh. 
+	// Get info from mesh.
 	uint vertexFormat, numVertices;
 	// if the mesh do not support VBHeap, quit.
 	if( !mesh->getVBHeapInfo(vertexFormat, numVertices) )

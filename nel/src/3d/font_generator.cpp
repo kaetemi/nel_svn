@@ -56,7 +56,7 @@ const struct
 {
 int          err_code;
 const char*  err_msg;
-} ft_errors[] = 
+} ft_errors[] =
 
 #include <freetype/fterrors.h>
 
@@ -82,7 +82,7 @@ const char *CFontGenerator::getFT2Error(FT_Error fte)
 }
 
 
- 
+
 /*
  * Constructor
  */
@@ -272,7 +272,7 @@ uint32	 CFontGenerator::getCharIndex (ucchar c)
 using namespace NLMISC;
 
 namespace NL3D {
- 
+
 HBITMAP Dib;
 uint32 *Buffer;
 HDC hdcDib;
@@ -299,7 +299,7 @@ CFontGenerator::CFontGenerator (const std::string &fontFileName, const std::stri
 	info.bmiHeader.biWidth = Width;
 	info.bmiHeader.biHeight= -Height;
 	info.bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
-	info.bmiHeader.biPlanes = 1; 
+	info.bmiHeader.biPlanes = 1;
 	info.bmiHeader.biBitCount = 32;
 	info.bmiHeader.biCompression = BI_RGB;
 	info.bmiHeader.biSizeImage = 4*Width*Height;
@@ -321,7 +321,7 @@ CFontGenerator::CFontGenerator (const std::string &fontFileName, const std::stri
 	SetTextAlign (hdcDib, TA_TOP | TA_LEFT | TA_NOUPDATECP);
 	SetBkColor (hdcDib, RGB (0,0,0));
 	SetTextColor (hdcDib, RGB (255, 255, 255));
-	
+
 	/*FT_Error error;
 
 	if (!_LibraryInit)
@@ -483,7 +483,7 @@ uint8 *CFontGenerator::getBitmap (ucchar c, uint32 size, uint32 &width, uint32 &
 
 	SelectObject (hdcDib, hFont);
 	SelectObject (hdcDib, Dib);
-	
+
 	const ucchar cc = /*(char)*/ c;
 
 	// prevent outputing white glyph if char is not available in font
@@ -521,7 +521,7 @@ uint8 *CFontGenerator::getBitmap (ucchar c, uint32 size, uint32 &width, uint32 &
 
 	SIZE s;
 	GetTextExtentPoint32W (hdcDib, &cc, 1, &s);
-	
+
 	BOOL ret = LPtoDP (hdcDib, &point, 1);
 	nlassert (ret);
 
@@ -563,7 +563,7 @@ uint8 *CFontGenerator::getBitmap (ucchar c, uint32 size, uint32 &width, uint32 &
 	if (bottom - _top + 1 < 0) height = 0;
 	pitch = 100;
 	advx = point.x;
-	
+
 	WORD ag = 0;
 	/*uint t = GetGlyphIndices (hdcDib, &cc, 1, &ag, 0);
 	if (t == GDI_ERROR)

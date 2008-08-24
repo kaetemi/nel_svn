@@ -40,7 +40,7 @@ namespace NL3D {
  * Interface to manipulate a particle system. Particle system are created from a UScene.
  * A system can be tuned by its user params (when it makes use of them). It has several states
  * invalid : the system is invalid, this tells the user that he can destroy this instance
- * 
+ *
  * present : the system is available for modification. This may not be the case when the system has been temporarily remove because
  *           it is not visible anymore.
  * \author Nicolas Vizerie
@@ -50,11 +50,11 @@ namespace NL3D {
 class UParticleSystemInstance : public UInstance
 {
 public:
-	/** Tell wether the system is currently instanciated. This may not be the case when the system is not visible	  	  
+	/** Tell wether the system is currently instanciated. This may not be the case when the system is not visible
 	  * Unless specified otherwise, you must check this before you use any method that access the system.
-	  * If you don't, there will be an assertion when you'll try to access it	  
+	  * If you don't, there will be an assertion when you'll try to access it
 	  *
-	  * \see isValid()	  
+	  * \see isValid()
 	  */
 	bool		isSystemPresent		(void) const;
 
@@ -68,7 +68,7 @@ public:
 	bool		getSystemBBox(NLMISC::CAABBox &bbox);
 
 
-	
+
 	/// \name System parameters
 	//@{
 		/** Set the user color of the system. This color will be used to modulate the color of the whole system
@@ -76,10 +76,10 @@ public:
 		  */
 		void			setUserColor(NLMISC::CRGBA userColor);
 		NLMISC::CRGBA	getUserColor() const;
-		/** Set a user param of the system. Each user param must be >= 0 and <= 1		  
+		/** Set a user param of the system. Each user param must be >= 0 and <= 1
 		  * NB : even if the system is not instanciated, this will be taken in account the next time it is, so no need to call isSystemPresent() before calling that method.
 		  * \param index the index of the user param to modify. For now it ranges from 0 to 3
-		  * \value the new value of the parameter		  
+		  * \value the new value of the parameter
 		  */
 		void			setUserParam(uint index, float value);
 
@@ -93,9 +93,9 @@ public:
 		static  void			setGlobalVectorValue(const std::string &name, const NLMISC::CVector &v);
 		static  NLMISC::CVector	getGlobalVectorValue(const std::string &name);
 
-		/** Get the value of a user param		  
+		/** Get the value of a user param
 		  * \param index the index of the user param to get. For now it ranges from 0 to 3
-		  * \return the value of the user param (>= 0 and <= 1)		  
+		  * \return the value of the user param (>= 0 and <= 1)
 		  */
 		float		getUserParam(uint index) const;
 
@@ -113,22 +113,22 @@ public:
 			  * \return false if the id is invalid.
 			  */
 			bool   removeByID(uint32 id);
-			/// Return the number of objects in the system that are flagged with an ID, or 0 if the system is not present			  
+			/// Return the number of objects in the system that are flagged with an ID, or 0 if the system is not present
 			uint   getNumID() const;
-			/// Get the nth ID, or 0 if index is invalid.			  
+			/// Get the nth ID, or 0 if index is invalid.
 			uint32 getID(uint index) const;
-			/** Get all the IDs in the system. 
+			/** Get all the IDs in the system.
 			  * \warning As IDs are not stored in a vector, it is faster than several calls to getID
 			  *
 			  */
 			bool   getIDs(std::vector<uint32> &dest) const;
 
 			// Deactivate an object with the given ID
-			bool   setActive(uint32 id, bool active);			
-			/** special : Activate / Deactivate all emitters.			  
+			bool   setActive(uint32 id, bool active);
+			/** special : Activate / Deactivate all emitters.
 			  * If the system isn't instanciated, then emitters will be deactivated the next time it is
 			  */
-			void   activateEmitters(bool active);			
+			void   activateEmitters(bool active);
 			// test if there are active emitters in the system
 			bool	hasActiveEmitters() const;
 	 //@}

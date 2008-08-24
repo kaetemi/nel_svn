@@ -76,8 +76,8 @@ public:
 		_Flags=NL3D_CTILE_FREE_FLAG;
 	}
 	const std::string& getRelativeFileName (TBitmap bitmapType) const
-	{ 
-		return _BitmapName[bitmapType]; 
+	{
+		return _BitmapName[bitmapType];
 	}
 	bool isFree () const
 	{
@@ -85,7 +85,7 @@ public:
 	}
 	void    serial(class NLMISC::IStream &f) throw(NLMISC::EStream);
 	void setFileName (TBitmap bitmapType, const std::string& name)
-	{ 
+	{
 		// not free
 		_Flags&=~NL3D_CTILE_FREE_FLAG;
 
@@ -164,9 +164,9 @@ class CTileLand
 private:
 	// Class CTileLand;
 public:
-	const std::string& getName () const 
-	{ 
-		return _Name; 
+	const std::string& getName () const
+	{
+		return _Name;
 	};
 	void setName (const std::string& name);
 	void addTileSet (const std::string& name);
@@ -214,7 +214,7 @@ private:
 };
 
 /**
- * This class is a tile set. It handles all the tile of the same material. 
+ * This class is a tile set. It handles all the tile of the same material.
  * \author Cyril Corvazier
  * \author Nevrax France
  * \date 2000
@@ -267,7 +267,7 @@ private:
 };
 
 /**
- * This class is a tile set. It handles all the tile of the same material. 
+ * This class is a tile set. It handles all the tile of the same material.
  * \author Cyril Corvazier
  * \author Nevrax France
  * \date 2000
@@ -278,7 +278,7 @@ class CTileSet
 public:
 
 	enum TError { ok=0, topInterfaceProblem, bottomInterfaceProblem, leftInterfaceProblem,
-		rightInterfaceProblem, addFirstA128128, topBottomNotTheSame, rightLeftNotTheSame, 
+		rightInterfaceProblem, addFirstA128128, topBottomNotTheSame, rightLeftNotTheSame,
 		sizeInvalide, errorCount };
 	enum TTransition { first=0, last=47, count=48, notfound=-1 };
 	enum TDisplacement { FirstDisplace=0, LastDisplace=15, CountDisplace=16 };
@@ -366,7 +366,7 @@ public:
 	}
 	const std::string& getTileVegetableDescFileName () const;
 
-	/** 
+	/**
 	  * Return the file name of the displacement map for the map nb displacement.
 	  * This file name is relative at the absolute path.
 	  */
@@ -391,7 +391,7 @@ public:
 		return _ErrorMessage[error];
 	}
 	static TTransition getTransitionTile (TFlagBorder top, TFlagBorder bottom, TFlagBorder left, TFlagBorder right);
-	TTransition getExistingTransitionTile (TFlagBorder _top, TFlagBorder _bottom, TFlagBorder _left, 
+	TTransition getExistingTransitionTile (TFlagBorder _top, TFlagBorder _bottom, TFlagBorder _left,
 		TFlagBorder _right, int reject, CTile::TBitmap type);
 	static TTransition getComplementaryTransition (TTransition transition);
 	static TFlagBorder getInvertBorder (TFlagBorder border);
@@ -476,14 +476,14 @@ public:
 
 	// Empty the tile noise
 	void reset();
-private: 
+private:
 	class CTileNoiseMap		*_TileNoiseMap;
 	std::string				_FileName;
 };
 
 
 /**
- * This class manage tile texture. It can load banktile description file 
+ * This class manage tile texture. It can load banktile description file
  * (*.bank), and then gives access to land infos.
  * \author Cyril Corvazier
  * \author Nevrax France
@@ -494,46 +494,46 @@ class CTileBank
 	friend class CTileSet;
 public:
 	enum TTileType { _128x128=0, _256x256, transition, undefined };
-	
+
 	// Ctor
 	CTileBank ();
 
 	// Get
-	sint getLandCount () const 
-	{ 
-		return _LandVector.size(); 
+	sint getLandCount () const
+	{
+		return _LandVector.size();
 	};
 	const CTileLand* getLand (int landIndex) const
-	{ 
-		return &_LandVector[landIndex]; 
+	{
+		return &_LandVector[landIndex];
 	};
-	CTileLand* getLand (int landIndex) 
-	{ 
-		return &_LandVector[landIndex]; 
+	CTileLand* getLand (int landIndex)
+	{
+		return &_LandVector[landIndex];
 	};
-	sint getTileSetCount () const 
-	{ 
-		return _TileSetVector.size(); 
+	sint getTileSetCount () const
+	{
+		return _TileSetVector.size();
 	};
 	const CTileSet* getTileSet (int tileIndex) const
-	{ 
-		return &_TileSetVector[tileIndex]; 
+	{
+		return &_TileSetVector[tileIndex];
 	};
 	CTileSet* getTileSet (int tileIndex)
-	{ 
-		return &_TileSetVector[tileIndex]; 
+	{
+		return &_TileSetVector[tileIndex];
 	};
-	sint getTileCount () const 
-	{ 
-		return _TileVector.size(); 
+	sint getTileCount () const
+	{
+		return _TileVector.size();
 	};
 	const CTile* getTile (int tileIndex) const
-	{ 
-		return &_TileVector[tileIndex]; 
+	{
+		return &_TileVector[tileIndex];
 	};
 	CTile* getTile (int tileIndex)
-	{ 
-		return &_TileVector[tileIndex]; 
+	{
+		return &_TileVector[tileIndex];
 	};
 	sint addLand (const std::string& name);
 	void removeLand (sint landIndex);
@@ -543,7 +543,7 @@ public:
 	void clear ();
 	sint getNumBitmap (CTile::TBitmap bitmap) const;
 	void computeXRef ();
-	
+
 	// Remove data unused in realtime
 	void cleanUnusedData ();
 
@@ -582,12 +582,12 @@ public:
 	/// \name Vegetable
 	// @{
 
-	/** 
+	/**
 	  * Return the tilenoisemap pointer for this tile and subnoise tile
 	  */
 	CTileNoiseMap *getTileNoiseMap (uint tileNumber, uint tileSubNoise);
 
-	/** 
+	/**
 	  * return the TileVegetable desc for this tile
 	  */
 	const CTileVegetableDesc	&getTileVegetableDesc(uint tileNumber) const;
@@ -618,13 +618,13 @@ public:
 	{
 		return _AbsPath;
 	}
-	
+
 	/// Postfix tile filename
 	void	postfixTileFilename (const char *filename);
-	
+
 	/// Postfix tile vegetable desc
 	void	postfixTileVegetableDesc (const char *filename);
-	
+
 	void    serial(class NLMISC::IStream &f) throw(NLMISC::EStream);
 private:
 	sint	createTile ();

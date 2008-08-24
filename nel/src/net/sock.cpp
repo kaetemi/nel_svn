@@ -128,7 +128,7 @@ void CSock::initNetwork()
 	if ( ! CSock::_Initialized )
 	{
 #ifdef NL_OS_WINDOWS
-		WORD winsock_version = MAKEWORD( 2, 0 ); 
+		WORD winsock_version = MAKEWORD( 2, 0 );
 		WSADATA wsaData;
 		if ( WSAStartup( winsock_version, &wsaData ) != 0 )
 		{
@@ -389,7 +389,7 @@ void CSock::connect( const CInetAddress& addr )
 	if ( _Logging )
 	{
 		LNETL0_DEBUG( "LNETL0: Socket %d connected to %s (local %s)", _Sock, addr.asString().c_str(), _LocalAddr.asString().c_str() );
-	}	
+	}
 	_RemoteAddr = addr;
 
 	_BytesReceived = 0;
@@ -480,7 +480,7 @@ CSock::TSockResult CSock::send( const uint8 *buffer, uint32& len, bool throw_exc
 		return Error;
 	}
 	_BytesSent += len;
-	
+
 	if (_Blocking)
 	{
 		//nldebug("SendWouldBlock - %s / %s Leaving snooze mode",_LocalAddr.asString().c_str(),_RemoteAddr.asString().c_str());
@@ -567,7 +567,7 @@ CSock::TSockResult CSock::receive( uint8 *buffer, uint32& len, bool throw_except
 			switch ( brecvd )
 			{
 				// Graceful disconnection
-				case 0 : 
+				case 0 :
 				{
 					/*{
 						CSynchronized<bool>::CAccessor sync( &_SyncConnected );
@@ -576,7 +576,7 @@ CSock::TSockResult CSock::receive( uint8 *buffer, uint32& len, bool throw_except
 					_Connected = false;
 					len = total;
 					_BytesReceived += len;
-					
+
 					if ( throw_exception )
 					{
 						throw ESocketConnectionClosed();
@@ -589,7 +589,7 @@ CSock::TSockResult CSock::receive( uint8 *buffer, uint32& len, bool throw_except
 				{
 					len = total;
 					_BytesReceived += len;
-					
+
 					if ( throw_exception )
 					{
 						throw ESocket( "Unable to receive data" );

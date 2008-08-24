@@ -78,7 +78,7 @@ void CSourceAL::setStaticBuffer( IBuffer *buffer )
 
 		// Set relative mode if the buffer is stereo
 		setSourceRelativeMode( bufferAL->isStereo() );
-		
+
 		_Buffer = buffer;
 	}
 }

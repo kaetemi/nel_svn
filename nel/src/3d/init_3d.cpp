@@ -1,5 +1,5 @@
 /** \file init_3d.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -27,7 +27,7 @@
 #include "nel/3d/init_3d.h"
 #include <cfloat>
 
-namespace NL3D 
+namespace NL3D
 {
 
 void init3d ()

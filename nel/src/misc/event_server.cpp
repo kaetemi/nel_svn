@@ -49,7 +49,7 @@ CEventServer::~CEventServer()
 		itev=_Events.erase (itev);
 	}
 }
-	
+
 
 /*------------------------------------------------------------------*\
 							postEvent()
@@ -69,10 +69,10 @@ void CEventServer::pump(bool allWindows)
 	// Avoid recurse (can arise if the process of an event decide to pump the server again....)
 	nlassert(!_Pumping);
 	_Pumping= true;
-	
+
 	// **** submit emitters events
 	std::list<IEventEmitter*>::iterator item = _Emitters.begin();
-	
+
 	// getting events from emitters
 	while(item!=_Emitters.end())
 	{

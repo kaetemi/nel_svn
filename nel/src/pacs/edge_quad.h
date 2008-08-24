@@ -35,7 +35,7 @@ namespace NLMISC
 	class	IStream;
 };
 
-namespace NLPACS 
+namespace NLPACS
 {
 class	CGlobalRetriever;
 

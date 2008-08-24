@@ -39,14 +39,14 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 
 // ******************************************************************
 
-CSourceFMod::CSourceFMod( uint sourcename ) 
-:	ISource(), 
+CSourceFMod::CSourceFMod( uint sourcename )
+:	ISource(),
 	_SourceName(sourcename)
 {
 	_Sample = NULL;
@@ -62,7 +62,7 @@ CSourceFMod::CSourceFMod( uint sourcename )
 	_MinDist= 1.f;
 	_MaxDist= FLT_MAX;
 	_Pitch= 1.0f;
-					
+
 
 	_FModChannel= -1;
 }
@@ -89,8 +89,8 @@ void CSourceFMod::release()
 }
 
 
-uint32	CSourceFMod::getTime() 
-{ 
+uint32	CSourceFMod::getTime()
+{
 	if (_Sample == 0 || _FModChannel==-1)
 		return 0;
 
@@ -177,7 +177,7 @@ bool CSourceFMod::play()
 			if(listener)
 				updateVolume(listener->getPos());
 #endif
-			
+
 			// unpause
 			FSOUND_SetPaused(_FModChannel, false);
 		}
@@ -195,7 +195,7 @@ void CSourceFMod::stop()
 		_Sample= _NextSample;
 		_NextSample= NULL;
 	}
-	
+
 	_State= source_stoped;
 
 	// Stop the FMod channel
@@ -429,7 +429,7 @@ void CSourceFMod::updateVolume( const NLMISC::CVector& listener )
 #if MANUAL_ROLLOFF == 0
 	nlstopex("no updateVolume() if MANUAL_ROLLOFF==0");
 #else
-	
+
 	// only if channel active
 	if(_FModChannel==-1)
 		return;
@@ -448,7 +448,7 @@ void CSourceFMod::updateVolume( const NLMISC::CVector& listener )
 
 	// attenuate the volume according to distance and alpha
 	volumeDB= ISource::computeManualRollOff(volumeDB, dbMin, dbMax, _Alpha, sqrdist);
-	
+
 	// retransform to linear form
 	double	attGain= pow((double)10.0, double(volumeDB)/2000.0);
 	clamp(attGain, 0.f, 1.f);

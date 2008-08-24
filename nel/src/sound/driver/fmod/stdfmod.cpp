@@ -1,5 +1,5 @@
 /** \file stdfmod.cpp
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -24,11 +24,11 @@
 #include "stdfmod.h"
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
-	
+
 void	dummyToAvoidStupidVCWarning_stdfmod_cpp()
 {
 }
-	
+
 } // NLSOUND

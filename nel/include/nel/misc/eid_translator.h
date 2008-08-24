@@ -35,7 +35,7 @@
 
 namespace	NLMISC
 {
-	
+
 class CEntityIdTranslator
 {
 	NLMISC_SAFE_SINGLETON_DECL_PTR(CEntityIdTranslator);
@@ -44,24 +44,24 @@ public:
 	/** Descritor for an entity in the translator */
 	struct CEntity
 	{
-		CEntity () 
-			:	EntityNameStringId(0), 
-				EntitySlot(-1), 
+		CEntity ()
+			:	EntityNameStringId(0),
+				EntitySlot(-1),
 				ShardId(0),
-				UId(~0), 
+				UId(~0),
 				Online(false)
 		{ }
-		
-		CEntity (const ucstring &entityName, uint32 uid, const std::string &userName, sint8 entitySlot, uint32 shardId =0) 
-			:	EntityName(entityName), 
-				EntityNameStringId(0), 
-				EntitySlot(entitySlot), 
+
+		CEntity (const ucstring &entityName, uint32 uid, const std::string &userName, sint8 entitySlot, uint32 shardId =0)
+			:	EntityName(entityName),
+				EntityNameStringId(0),
+				EntitySlot(entitySlot),
 				ShardId(shardId),
-				UId(uid), 
-				UserName(userName), 
+				UId(uid),
+				UserName(userName),
 				Online(false)
 		{ }
-		
+
 		/// The display name of the entity
 		ucstring	EntityName;
 		/// The mapped name of the entity (used to store IOS generated string id)
@@ -70,7 +70,7 @@ public:
 		sint8		EntitySlot;
 		/// Shard id of the entity (for multi shard systems)
 		uint32		ShardId;
-		
+
 		/// User id the character owner (aka account id)
 		uint32		UId;
 		/// User name of the character owner (aka account name)
@@ -106,16 +106,16 @@ public:
 	uint32				getEntityNameStringId(const CEntityId &eid);
 	// get the shard id of an entity
 	uint32				getEntityShardId(const CEntityId &eid);
-	
+
 	// set an eid to online or not
-	void				setEntityOnline (const CEntityId &eid, bool online);	
+	void				setEntityOnline (const CEntityId &eid, bool online);
 
 	// is an entity in online
 	bool				isEntityOnline (const CEntityId &eid);
 
 	// check if parameters are coherent with the content of the class, if not, set with the parameters and warn
 	void				checkEntity (const CEntityId &eid, const ucstring &entityName, uint32 uid, const std::string &userName);
-	
+
 	// the first param is the file where are all entities information, the second is a text file (one line per pattern using * and ?) with invalid entity name
 	void				load (const std::string &fileName, const std::string &invalidEntityNamesFilename);
 
@@ -135,10 +135,10 @@ public:
 
 	/// return a vector of invalid names
 	const std::vector<std::string> & getInvalidNames(){ return InvalidEntityNames; }
-	
+
 
 	const TEntityCont	&getRegisteredEntities () { return RegisteredEntities; }
-	
+
 	static const uint Version;
 
 	uint FileVersion;
@@ -156,7 +156,7 @@ private:
 	// get all eid for a user using the user name or the user id
 	void				getByUser (uint32 uid, std::vector<NLMISC::CEntityId> &res);
 	void				getByUser (const std::string &userName, std::vector<NLMISC::CEntityId> &res, bool exact=true);
-	
+
 	void				getByEntity (const ucstring &entityName, std::vector<NLMISC::CEntityId> &res, bool exact);
 
 	// return the user id and 0 if not found

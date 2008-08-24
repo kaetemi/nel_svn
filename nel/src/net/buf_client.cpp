@@ -45,7 +45,7 @@ namespace NLNET {
 
 
 uint32 	NbClientReceiveTask = 0;
-	
+
 
 /***************************************************************************************************
  * User main thread (initialization)
@@ -169,7 +169,7 @@ bool CBufClient::dataAvailable()
 			// Test if it the next block is a system event
 			switch ( val )
 			{
-				
+
 			// Normal message available
 			case CBufNetBase::User:
 				return true; // return immediatly, do not extract the message
@@ -407,7 +407,7 @@ CBufClient::~CBufClient()
 
 
 /***************************************************************************************************
- * Receive thread 
+ * Receive thread
  **************************************************************************************************/
 
 
@@ -454,7 +454,7 @@ void CClientReceiveTask::run()
 				// Push message into receive queue
 				_Client->pushMessageIntoReceiveQueue( _NBBufSock->receivedBuffer() );
 			}
-			
+
 			NbLoop++;
 		}
 		catch ( ESocket& )

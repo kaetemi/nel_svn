@@ -1,5 +1,5 @@
 /** \file retriever_instance.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -309,9 +309,9 @@ public:
 		This only works for interior instances !!
 		see also testCollision() in CLocalRetriever
 	*/
-	void								testExteriorCollision(CCollisionSurfaceTemp &cst, 
-															  const NLMISC::CAABBox &bboxMoveLocal, 
-															  const NLMISC::CVector2f &transBase, 
+	void								testExteriorCollision(CCollisionSurfaceTemp &cst,
+															  const NLMISC::CAABBox &bboxMoveLocal,
+															  const NLMISC::CVector2f &transBase,
 															  const CLocalRetriever &localRetriever) const;
 
 	// @}

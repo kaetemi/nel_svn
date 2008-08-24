@@ -26,7 +26,7 @@
 #include "nel/3d/zone_smoother.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -117,7 +117,7 @@ void			CZoneSmoother::smoothTangents(CZoneInfo zones[5], float angleThreshold, b
 
 						// a. First tangent.
 						//==================
-						if(smoothTangent(pat0.Patch.Tangents[edge0*2], pat0.Patch.Interiors[edge0], 
+						if(smoothTangent(pat0.Patch.Tangents[edge0*2], pat0.Patch.Interiors[edge0],
 							pat1.Patch.Interiors[(edge1+1)%4], tgtRes))
 						{
 							// Set the result on the 2 patchs.
@@ -127,7 +127,7 @@ void			CZoneSmoother::smoothTangents(CZoneInfo zones[5], float angleThreshold, b
 
 						// b. Second tangent.
 						//==================
-						if(smoothTangent(pat0.Patch.Tangents[edge0*2+1], pat0.Patch.Interiors[(edge0+1)%4], 
+						if(smoothTangent(pat0.Patch.Tangents[edge0*2+1], pat0.Patch.Interiors[(edge0+1)%4],
 							pat1.Patch.Interiors[edge1], tgtRes))
 						{
 							// Set the result on the 2 patchs.

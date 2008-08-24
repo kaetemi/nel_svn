@@ -50,12 +50,12 @@ using namespace std;
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
-/* 
+/*
 	Target is 20K faces  in frustum.
 	So 80K faces at same time
 	So 160K elements (bin tree).
@@ -106,11 +106,11 @@ const float			CLandscape::_PatchQuadGridEltSize= 16;
 class CTextureCross : public ITexture
 {
 public:
-	/** 
+	/**
 	 * Generate the texture
 	 * \author Stephane Coutelas
 	 * \date 2000
-	 */	
+	 */
 	virtual void doGenerate(bool async)
 	{
 		// Resize
@@ -120,22 +120,22 @@ public:
 		static const uint32 cross[16*16]=
 		{
 			//  0			1			2			3			4			5			6			7			8			9			10			11			12			13			14			15
-			0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 
-			0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 
+			0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xffffffff,
+			0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
 		};
 
 		// Null
@@ -167,18 +167,18 @@ const char	*EBadBind::what() const throw()
 			_Output+= "\n";
 		_Output+= tmp;
 	}
-	return _Output.c_str(); 
+	return _Output.c_str();
 }
 
 
 // ***************************************************************************
 // Init BlockAllcoator with standard BlockMemory.
-CLandscape::CLandscape() : 
-	TessFaceAllocator(NL3D_TESS_ALLOC_BLOCKSIZE), 
-	TessVertexAllocator(NL3D_TESS_ALLOC_BLOCKSIZE), 
-	TessNearVertexAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE), 
-	TessFarVertexAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE), 
-	TileMaterialAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE), 
+CLandscape::CLandscape() :
+	TessFaceAllocator(NL3D_TESS_ALLOC_BLOCKSIZE),
+	TessVertexAllocator(NL3D_TESS_ALLOC_BLOCKSIZE),
+	TessNearVertexAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE),
+	TessFarVertexAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE),
+	TileMaterialAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE),
 	TileFaceAllocator(NL3D_TESSRDR_ALLOC_BLOCKSIZE),
 	_Far0VB(CLandscapeVBAllocator::Far0, "LandscapeFar0VB"),
 	_Far1VB(CLandscapeVBAllocator::Far1, "LandscapeFar1VB"),
@@ -191,7 +191,7 @@ CLandscape::CLandscape() :
 
 	// Far texture not initialized till initTileBanks is not called
 	_FarInitialized=false;
-	
+
 	// Init far lighting with White/black
 	setupStaticLight (CRGBA(255,255,255), CRGBA(0,0,0), 1.f);
 	// Default material for pointLights
@@ -257,8 +257,8 @@ CLandscape::CLandscape() :
 	_TextureDLM= new CTextureDLM(NL3D_LANDSCAPE_DLM_WIDTH, NL3D_LANDSCAPE_DLM_HEIGHT);
 	_PatchDLMContextList= new CPatchDLMContextList;
 	_DLMMaxAttEnd= 30.f;
-	
-	CLandscapeGlobals::PassTriArray.setFormat(NL_LANDSCAPE_INDEX_FORMAT);	
+
+	CLandscapeGlobals::PassTriArray.setFormat(NL_LANDSCAPE_INDEX_FORMAT);
 
 	// Alloc some global space for tri rendering.
 	if( CLandscapeGlobals::PassTriArray.getNumIndexes() < 1000 )
@@ -531,7 +531,7 @@ void			CLandscape::buildZoneName(sint zoneId, std::string &zoneName)
 }
 // ***************************************************************************
 void			CLandscape::clear()
-{	
+{
 	// Build the list of zoneId.
 	vector<uint16>	zoneIds;
 	getZoneList(zoneIds);
@@ -547,7 +547,7 @@ void			CLandscape::clear()
 	_PatchQuadGrid.clear();
 
 	releaseAllTiles();
-	
+
 	// If not done, delete all VBhards allocated.
 	_Far0VB.clear();
 	_Far1VB.clear();
@@ -667,9 +667,9 @@ void			CLandscape::refine(const CVector &refineCenter)
 	NLMISC::OptFastFloorBegin();
 
 	/* While there is still face in list, update them
-		NB: updateRefine() always insert the face in _***PriorityList, so face is removed from 
+		NB: updateRefine() always insert the face in _***PriorityList, so face is removed from
 		root***TessFaceToUpdate list.
-		NB: it is possible ( with enforced merge() ) that faces dissapears from root***TessFaceToUpdate list 
+		NB: it is possible ( with enforced merge() ) that faces dissapears from root***TessFaceToUpdate list
 		before they are traversed here. It is why we must use a Circular list system, and not an array of elements.
 		Basically. TessFaces are ALWAYS in a list, either in one of the entry list in _***PriorityList, or in
 		root***TessFaceToUpdate list.
@@ -682,7 +682,7 @@ void			CLandscape::refine(const CVector &refineCenter)
 		// Get the face.
 		CTessFace	*face= static_cast<CTessFace*>(rootMergeTessFaceToUpdate.nextInPList());
 
-		// update the refine of this face. This may lead in deletion (merge) of other faces which are still in 
+		// update the refine of this face. This may lead in deletion (merge) of other faces which are still in
 		// root***TessFaceToUpdate, but it's work.
 		face->updateRefineMerge();
 	}
@@ -933,31 +933,31 @@ void			CLandscape::updateTessBlocksFaceVector()
 // ***************************************************************************
 static inline void	initPassTriArray(CPatchRdrPass &pass, uint32 numIndex)
 {
-	
-	//uint	numIndices= pass.getMaxRenderedFaces()*3;	
+
+	//uint	numIndices= pass.getMaxRenderedFaces()*3;
 	// realloc if necessary
-	// We use 	
+	// We use
 	/*if( CLandscapeGlobals::PassTriArray.getNumIndexes() < numIndices )
-		CLandscapeGlobals::PassTriArray.setNumIndexes( numIndices );*/			
+		CLandscapeGlobals::PassTriArray.setNumIndexes( numIndices );*/
 	CLandscapeGlobals::PassTriArray.setFormat(NL_LANDSCAPE_INDEX_FORMAT);
 	CLandscapeGlobals::PassTriArray.setNumIndexes(numIndex);
 	// reset ptr.
 	nlassert (!CLandscapeGlobals::PassTriArray.isLocked());
 	CLandscapeGlobals::PassTriArray.lock (CLandscapeGlobals::PassTriArrayIBA);
-	NL3D_LandscapeGlobals_PassTriCurPtr= CLandscapeGlobals::PassTriArrayIBA.getPtr();	
+	NL3D_LandscapeGlobals_PassTriCurPtr= CLandscapeGlobals::PassTriArrayIBA.getPtr();
 	NL3D_LandscapeGlobals_PassTriFormat = CLandscapeGlobals::PassTriArrayIBA.getFormat();
 
 }
 
 
 // ***************************************************************************
-static 
+static
 #ifndef NL_DEBUG
-	inline 
+	inline
 #endif
 void	drawPassTriArray(CMaterial &mat)
-{	
-	nlassert (CLandscapeGlobals::PassTriArray.isLocked());	
+{
+	nlassert (CLandscapeGlobals::PassTriArray.isLocked());
 	CLandscapeGlobals::PassTriArrayIBA.unlock();
 	if(NL3D_LandscapeGlobals_PassNTri>0)
 	{
@@ -972,7 +972,7 @@ void	drawPassTriArray(CMaterial &mat)
 
 // ***************************************************************************
 static inline uint32 countNumWantedIndex(CRdrTileId	*tileToRdr, uint rdrPass)
-{	
+{
 	uint32		numIndex = 0;
 	while(tileToRdr)
 	{
@@ -988,10 +988,10 @@ static inline uint32 countNumWantedIndex(CRdrTileId	*tileToRdr, uint rdrPass)
 
 // ***************************************************************************
 static inline uint32 countNumWantedIndexFar0(CPatch	*patch)
-{	
+{
 	uint32		numTri = 0;
 	while(patch)
-	{		
+	{
 		// renderSimpleTriangles() with the material setuped.
 		numTri += patch->countNumTriFar0();
 		patch = patch->getNextFar0ToRdr();
@@ -1001,11 +1001,11 @@ static inline uint32 countNumWantedIndexFar0(CPatch	*patch)
 
 // ***************************************************************************
 static inline uint32 countNumWantedIndexFar1(CPatch	*patch)
-{	
+{
 	uint32		numTri = 0;
 	while(patch)
-	{	
-		numTri += patch->countNumTriFar1();		
+	{
+		numTri += patch->countNumTriFar1();
 		patch = patch ->getNextFar1ToRdr();
 	}
 	return 3 * numTri;
@@ -1015,7 +1015,7 @@ static inline uint32 countNumWantedIndexFar1(CPatch	*patch)
 
 // ***************************************************************************
 void			CLandscape::render(const CVector &refineCenter, const CVector &frontVector, const CPlane	pyramid[NL3D_TESSBLOCK_NUM_CLIP_PLANE], bool doTileAddPass)
-{	
+{
 	IDriver *driver= _Driver;
 	nlassert(driver);
 
@@ -1176,9 +1176,9 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 		}
 
 		/*
-			Optim note: here, lot of vertices are 
+			Optim note: here, lot of vertices are
 				1/ geomorphed twice (vertices on edges of patchs)
-				2/ vertices are geomorphed, but not used (because o the Tessblock clip), 
+				2/ vertices are geomorphed, but not used (because o the Tessblock clip),
 					because lot of vertices used by faces in small TessBlocks are still in MasterBlock.
 
 			Some tries have been made to solve this, but result are even worse (2 times or more), because:
@@ -1297,7 +1297,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 		TileMaterial.texEnvArg0RGB(0, CMaterial::Texture, CMaterial::SrcColor);
 		TileMaterial.texEnvOpAlpha(0, CMaterial::Replace);
 		TileMaterial.texEnvArg0Alpha(0, CMaterial::Texture, CMaterial::SrcAlpha);
-		// NB: important to set Replace and not modulate, because in case of VerexProgram enabled, 
+		// NB: important to set Replace and not modulate, because in case of VerexProgram enabled,
 		// Diffuse o[COL0] is undefined.
 
 		// Copy from stage 0 to stage 1.
@@ -1314,8 +1314,8 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 			TileMaterial.setBlend(true);
 			switch(passOrder)
 			{
-				case NL3D_TILE_PASS_RGB1: 
-				case NL3D_TILE_PASS_RGB2: 
+				case NL3D_TILE_PASS_RGB1:
+				case NL3D_TILE_PASS_RGB2:
 					// alpha blending.
 					TileMaterial.setBlendFunc(CMaterial::srcalpha, CMaterial::invsrcalpha);
 
@@ -1327,7 +1327,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 					TileMaterial.texEnvOpAlpha(1, CMaterial::Replace);
 					TileMaterial.texEnvArg0Alpha(1, CMaterial::Texture, CMaterial::SrcAlpha);
 					break;
-				case NL3D_TILE_PASS_LIGHTMAP: 
+				case NL3D_TILE_PASS_LIGHTMAP:
 					// modulate alpha blending.
 					TileMaterial.setBlendFunc(CMaterial::zero, CMaterial::srccolor);
 
@@ -1337,7 +1337,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 					TileMaterial.texEnvArg1RGB(1, CMaterial::Previous, CMaterial::SrcColor);
 
 					break;
-				case NL3D_TILE_PASS_ADD: 
+				case NL3D_TILE_PASS_ADD:
 					// Use srcalpha for src (and not ONE), since additive are blended with alpha Cte/AlphaTexture
 					TileMaterial.setBlendFunc(CMaterial::srcalpha, CMaterial::one);
 
@@ -1358,7 +1358,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 					TileMaterial.texEnvArg1Alpha(1, CMaterial::Previous, CMaterial::SrcAlpha);
 
 					break;
-				default: 
+				default:
 					nlstop;
 			};
 		}
@@ -1380,17 +1380,17 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 			ItTileRdrPassSet	itTile;
 			for(itTile= TileRdrPassSet.begin(); itTile!= TileRdrPassSet.end(); itTile++)
 			{
-				// Get a ref on the render pass. Const cast work because we only modify attribut from CPatchRdrPass 
+				// Get a ref on the render pass. Const cast work because we only modify attribut from CPatchRdrPass
 				// that don't affect the operator< of this class
 				CPatchRdrPass	&pass= const_cast<CPatchRdrPass&>(*itTile);
 				// Enlarge PassTriArray as needed
-				CRdrTileId	*tileToRdr= pass.getRdrTileRoot(passOrder);												
-				uint32 numWantedIndex =  countNumWantedIndex(tileToRdr, NL3D_TILE_PASS_RGB0);								
+				CRdrTileId	*tileToRdr= pass.getRdrTileRoot(passOrder);
+				uint32 numWantedIndex =  countNumWantedIndex(tileToRdr, NL3D_TILE_PASS_RGB0);
 				if (numWantedIndex)
 				{
 					initPassTriArray(pass, numWantedIndex);
 					// Setup Diffuse texture of the tile.
-					TileMaterial.setTexture(0, pass.TextureDiffuse);				
+					TileMaterial.setTexture(0, pass.TextureDiffuse);
 					// Add triangles to array
 					while(tileToRdr)
 					{
@@ -1406,10 +1406,10 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 		}
 		else if(passOrder==NL3D_TILE_PASS_LIGHTMAP)
 		{
-			// for Lightmap pass (modulate blend), setup a White fogColor. This is not 
+			// for Lightmap pass (modulate blend), setup a White fogColor. This is not
 			// mathematically correct but works fine
 			driver->setupFog(driver->getFogStart(), driver->getFogEnd(), CRGBA::White);
-			
+
 			// Lightmap Pass.
 			/* \todo yoyo: TODO_CLOUD: setup stage2, and setup texcoord generation. COMPLEX because of interaction
 			 with Dynamic LightMap
@@ -1433,10 +1433,10 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 				CPatchRdrPass	&pass= *_TextureNears[lightRdrPass];
 
 				// Enlarge PassTriArray as needed
-				CRdrTileId		*tileToRdr= pass.getRdrTileRoot(passOrder);					
-				uint32 numWantedIndex = countNumWantedIndex(tileToRdr, NL3D_TILE_PASS_RGB0);								
+				CRdrTileId		*tileToRdr= pass.getRdrTileRoot(passOrder);
+				uint32 numWantedIndex = countNumWantedIndex(tileToRdr, NL3D_TILE_PASS_RGB0);
 				if (numWantedIndex)
-				{				
+				{
 					initPassTriArray(pass, numWantedIndex);
 					// Setup Lightmap into stage1. Because we share UV with pass RGB0. So we use UV1.
 					// Also, now stage0 is used for DynamicLightmap
@@ -1469,20 +1469,20 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 			// else setup the standard color (std blend)
 			else
 				driver->setupFog(driver->getFogStart(), driver->getFogEnd(), fogColor);
-			
+
 			// Render Base, Transitions or Additives.
 			ItTileRdrPassSet	itTile;
 			for(itTile= TileRdrPassSet.begin(); itTile!= TileRdrPassSet.end(); itTile++)
 			{
-				// Get a ref on the render pass. Const cast work because we only modify attribut from CPatchRdrPass 
+				// Get a ref on the render pass. Const cast work because we only modify attribut from CPatchRdrPass
 				// that don't affect the operator< of this class
 				CPatchRdrPass	&pass= const_cast<CPatchRdrPass&>(*itTile);
 
 				// Enlarge PassTriArray as needed
-				CRdrTileId		*tileToRdr= pass.getRdrTileRoot(passOrder);				
-				uint32 numWantedIndex = countNumWantedIndex(tileToRdr, passOrder);								
+				CRdrTileId		*tileToRdr= pass.getRdrTileRoot(passOrder);
+				uint32 numWantedIndex = countNumWantedIndex(tileToRdr, passOrder);
 				if (numWantedIndex)
-				{				
+				{
 					initPassTriArray(pass, numWantedIndex);
 
 					// Add triangles to array
@@ -1499,7 +1499,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 						// Setup material.
 						// Setup Diffuse texture of the tile.
 						TileMaterial.setTexture(0, pass.TextureDiffuse);
-						
+
 						// If transition tile, must enable the alpha for this pass.
 						// NB: Additive pass may have pass.TextureAlpha==NULL
 						TileMaterial.setTexture(1, pass.TextureAlpha);
@@ -1571,10 +1571,10 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 		// Enlarge PassTriArray as needed
 		CPatch		*patchToRdr= pass.getRdrPatchFar0();
 		if (patchToRdr)
-		{							
-			uint32 numWantedIndex = countNumWantedIndexFar0(patchToRdr);						
+		{
+			uint32 numWantedIndex = countNumWantedIndexFar0(patchToRdr);
 			if (numWantedIndex)
-			{		
+			{
 				initPassTriArray(pass, numWantedIndex);
 				// Setup the material.
 				FarMaterial.setTexture(0, pass.TextureDiffuse);
@@ -1631,13 +1631,13 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 		CPatchRdrPass	&pass= **itFar;
 
 		// Enlarge PassTriArray as needed
-		CPatch		*patchToRdr= pass.getRdrPatchFar1();		
+		CPatch		*patchToRdr= pass.getRdrPatchFar1();
 		if (patchToRdr)
-		{		
-			//uint32 numWantedIndex = countNumWantedIndexFar1(patchToRdr);			
-			uint32 numWantedIndex = countNumWantedIndexFar1(patchToRdr);						
+		{
+			//uint32 numWantedIndex = countNumWantedIndexFar1(patchToRdr);
+			uint32 numWantedIndex = countNumWantedIndexFar1(patchToRdr);
 			if (numWantedIndex)
-			{		
+			{
 				initPassTriArray(pass, numWantedIndex);
 
 				// Setup the material.
@@ -1705,7 +1705,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 			We prefer using a constant to simulate the "global vegetable color", which is a big trick.
 
 			Additionally, the vegetable take the diffuse lighting of landscape, which is
-			false because it replaces the diffuse lighting it should have (ie with his own Normal and 
+			false because it replaces the diffuse lighting it should have (ie with his own Normal and
 			his own "global vegetable color")
 
 			We can't do anything for "correct normal vegetable", but it is possible to replace landscape
@@ -1969,7 +1969,7 @@ void			CLandscape::getTileUvScaleBiasRot(uint16 tileId, CTile::TBitmap bitmapTyp
 		case CTile::additive:
 			uvScaleBias= tile->AdditiveUvScaleBias; break;
 		case CTile::alpha:
-			uvScaleBias= tile->AlphaUvScaleBias; 
+			uvScaleBias= tile->AlphaUvScaleBias;
 			rotAlpha= tile->RotAlpha;
 			break;
 		default: break;
@@ -2022,7 +2022,7 @@ void			CLandscape::flushTiles(IDriver *drv, uint32 tileStart, uint32 nbTiles)
 {
 	nlassert(nbTiles<=65536);
 	nlassert(tileStart+nbTiles<=65536);
-	
+
 	// Load tile rdrpass, force setup the texture.
 	for(sint tileId= tileStart; tileId<(sint)(tileStart+nbTiles); tileId++)
 	{
@@ -2062,7 +2062,7 @@ void			CLandscape::releaseTiles(uint32 tileStart, uint32 nbTiles)
 {
 	nlassert(nbTiles<=65536);
 	nlassert(tileStart+nbTiles<=65536);
-	
+
 	// release tiles.
 	for(sint tileId= tileStart; tileId<(sint)(tileStart+nbTiles); tileId++)
 	{
@@ -2087,7 +2087,7 @@ void			CLandscape::releaseTiles(uint32 tileStart, uint32 nbTiles)
 			it++;
 	}
 
-	// Textures are automaticly deleted by smartptr, but not their entry int the map (TileTextureMap). 
+	// Textures are automaticly deleted by smartptr, but not their entry int the map (TileTextureMap).
 	// => doesn't matter since findTileTexture() manages this case.
 	// And the memory overhead is not a problem (we talk about pointers).
 }
@@ -2098,7 +2098,7 @@ uint		CLandscape::getTileLightMap(CRGBA  map[NL_TILE_LIGHTMAP_SIZE*NL_TILE_LIGHT
 {
 	sint	textNum;
 	uint	lightMapId;
-	/* 
+	/*
 		NB: TextureNear are a grow only Array... TextureNear are never deleted. Why? :
 		2/ Unused near texture may be uncahced by opengl (and maybe by windows, to disk).
 
@@ -2658,10 +2658,10 @@ CVector			CLandscape::getTesselatedPos(const CPatchIdent &patchId, const CUV &uv
 	if( CLandscapeGlobals::VertexProgramEnabled )
 	{
 		/* because VertexProgram enabled, CTessVertex::Pos (geomorphed Pos) are not computed each frame
-		   Hence, CTessFace::computeTesselatedPos() will call CTessVertex::computeGeomPos() to have correct 
+		   Hence, CTessFace::computeTesselatedPos() will call CTessVertex::computeGeomPos() to have correct
 		   CTessVertex::Pos. ThereFore we must setup globals so CTessVertex::computeGeomPos() works properly.
 		*/
-		
+
 		// see copy in updateGlobalsAndLockBuffers(). NB: Just copy what needed here!!!!
 
 		// Tile subdivsion part.
@@ -2788,7 +2788,7 @@ bool			CLandscape::initTileBanks ()
 				bCompatibility&=eraseTileFarIfNotGood (tileNumber, NL_TILE_FAR_SIZE_ORDER0, NL_TILE_FAR_SIZE_ORDER1, NL_TILE_FAR_SIZE_ORDER2);
 			}
 		}
-		
+
 		// Far actived!
 		_FarInitialized=true;
 	}
@@ -2807,7 +2807,7 @@ void			CLandscape::setupStaticLight (const CRGBA &diffuse, const CRGBA &ambiant,
 	for (int i=0; i<256; i++)
 	{
 		sint max=0;
-		sint r=(((nMultiply*diffuse.R*i)>>8)+ambiant.R*(256-i))>>8; 
+		sint r=(((nMultiply*diffuse.R*i)>>8)+ambiant.R*(256-i))>>8;
 		if (r>max)
 			max=r;
 		sint g=(((nMultiply*diffuse.G*i)>>8)+ambiant.G*(256-i))>>8;
@@ -2913,23 +2913,23 @@ float		CLandscape::CBezierPatchZ::eval(float ps, float pt) const
 	float t2 = 3.0f * pt2 * pt1;
 	float t3 = pt2 * pt;
 
-	p = Vertices[0]	* s0 * t0	+ 
-		Tangents[7] * s1 * t0	+ 
-		Tangents[6] * s2 * t0	+ 
+	p = Vertices[0]	* s0 * t0	+
+		Tangents[7] * s1 * t0	+
+		Tangents[6] * s2 * t0	+
 		Vertices[3] * s3 * t0;
-	p+= Tangents[0] * s0 * t1	+ 
-		Interiors[0]* s1 * t1	+ 
-		Interiors[3]* s2 * t1	+ 
+	p+= Tangents[0] * s0 * t1	+
+		Interiors[0]* s1 * t1	+
+		Interiors[3]* s2 * t1	+
 		Tangents[5] * s3 * t1;
-	p+=	Tangents[1] * s0 * t2	+ 
-		Interiors[1]* s1 * t2	+ 
-		Interiors[2]* s2 * t2	+ 
+	p+=	Tangents[1] * s0 * t2	+
+		Interiors[1]* s1 * t2	+
+		Interiors[2]* s2 * t2	+
 		Tangents[4] * s3 * t2;
-	p+=	Vertices[1] * s0 * t3	+ 
-		Tangents[2] * s1 * t3	+ 
-		Tangents[3] * s2 * t3	+ 
+	p+=	Vertices[1] * s0 * t3	+
+		Tangents[2] * s1 * t3	+
+		Tangents[3] * s2 * t3	+
 		Vertices[2] * s3 * t3;
-	
+
 	return p;
 }
 
@@ -3107,8 +3107,8 @@ void		CLandscape::profileRender()
 
 		// Info
 		uint	memUsage= textureFar->getPatchWidth()*textureFar->getPatchHeight()*NL_NUM_FAR_PATCHES_BY_TEXTURE*2;
-		nlinfo("  * Patch Texture Size: (%d,%d) => :%d bytes for %d patchs", 
-			textureFar->getPatchWidth(), textureFar->getPatchHeight(), 
+		nlinfo("  * Patch Texture Size: (%d,%d) => :%d bytes for %d patchs",
+			textureFar->getPatchWidth(), textureFar->getPatchHeight(),
 			memUsage, NL_NUM_FAR_PATCHES_BY_TEXTURE);
 		totalMemUsage+= memUsage;
 
@@ -3143,10 +3143,10 @@ void		CLandscape::profileRender()
 	std::map<CVector2f, CTextureFarLevelInfo >::iterator	itLevelFar= levelFarMap.begin();
 	while(itLevelFar!=levelFarMap.end())
 	{
-		nlinfo("  * Level PatchSize: (%d, %d). Total NumberOf Patch: %d. Use Percentage: %d %%", 
-			(uint)itLevelFar->first.x, (uint)itLevelFar->first.y, itLevelFar->second.NumUsedPatchs, 
+		nlinfo("  * Level PatchSize: (%d, %d). Total NumberOf Patch: %d. Use Percentage: %d %%",
+			(uint)itLevelFar->first.x, (uint)itLevelFar->first.y, itLevelFar->second.NumUsedPatchs,
 			100*itLevelFar->second.NumUsedPatchs/(itLevelFar->second.NumTextures*NL_NUM_FAR_PATCHES_BY_TEXTURE) );
-		
+
 		itLevelFar++;
 	}
 	*/
@@ -3418,7 +3418,7 @@ void		CLandscape::setVegetableDensity(float density)
 				// then recreate vegetable Igs of this patch
 				pa->recreateAllVegetableIgs();
 			}
-			
+
 		}
 	}
 
@@ -3457,7 +3457,7 @@ uint8		CLandscape::getLumel(const CPatchIdent &patchId, const CUV &uv) const
 }
 
 // ***************************************************************************
-void		CLandscape::appendTileLightInfluences(const CPatchIdent &patchId, const CUV &uv, 
+void		CLandscape::appendTileLightInfluences(const CPatchIdent &patchId, const CUV &uv,
 	std::vector<CPointLightInfluence> &pointLightList) const
 {
 	// \todo yoyo: TODO_ZONEID: change ZoneId in 32 bits...
@@ -3724,7 +3724,7 @@ void			CLandscape::computeDynamicLighting(const std::vector<CPointLight*>	&pls)
 			// get the patch
 			const CPatch	*pa= (*it).Patch;
 
-			// More precise clipping: 
+			// More precise clipping:
 			if( pa->getZone()->getPatchBSphere(pa->getPatchId()).intersect( pl.BSphere ) )
 			{
 				// Ok, light the patch with this spotLight
@@ -3853,10 +3853,10 @@ void			CLandscape::removeFromShadowPolyReceiver(CTessFace *face)
 // ***************************************************************************
 void			CLandscape::receiveShadowMap(IDriver *drv, CShadowMap *shadowMap, const CVector &casterPos, const CMaterial &shadowMat, const CVector &pzb)
 {
-	/*  substract the PZB from all coordinates. 
-	
-		Must add a small zbias because 
-		The rendered Triangles may be computed with VertexProgram, but _ShadowPolyReceiver 
+	/*  substract the PZB from all coordinates.
+
+		Must add a small zbias because
+		The rendered Triangles may be computed with VertexProgram, but _ShadowPolyReceiver
 		does not. => there is a small float difference at the end
 		Even if same vertex is produced in theory, VertexProgram may cause 2 precision problems:
 		1/ On NVidia, even with a simple matrix mul VP, the precision result is not the same
@@ -3879,34 +3879,34 @@ void			CLandscape::setZFunc(CMaterial::ZFunc val)
 // ***************************************************************************
 void CLandscape::invalidateAllTiles()
 {
-	
-	updateGlobalsAndLockBuffers(CVector::Null);								
+
+	updateGlobalsAndLockBuffers(CVector::Null);
 	for(TZoneMap::iterator it = Zones.begin(); it != Zones.end(); ++it)
 	{
 		if (it->second->Compiled)
 		{
 			for(uint k = 0; k < it->second->Patchs.size(); ++k)
-			{																			
+			{
 				it->second->Patchs[k].deleteTileUvs();
 				it->second->Patchs[k].recreateTileUvs();
 			}
 		}
-	}	
+	}
 	unlockBuffers();
-	updateTessBlocksFaceVector();	
+	updateTessBlocksFaceVector();
 }
 
 // ***************************************************************************
 float CLandscape::getCameraCollision(const CVector &start, const CVector &end, float radius, bool cone)
 {
-	return _ShadowPolyReceiver.getCameraCollision(start, end, 
+	return _ShadowPolyReceiver.getCameraCollision(start, end,
 		cone?CShadowPolyReceiver::CameraColCone:CShadowPolyReceiver::CameraColCylinder, radius);
 }
 
 // ***************************************************************************
 float CLandscape::getRayCollision(const CVector &start, const CVector &end)
 {
-	return _ShadowPolyReceiver.getCameraCollision(start, end, 
+	return _ShadowPolyReceiver.getCameraCollision(start, end,
 		CShadowPolyReceiver::CameraColSimpleRay, 0.f);
 }
 

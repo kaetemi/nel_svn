@@ -34,7 +34,7 @@ void CPSAttribMakerMemory<uint32>::serial(NLMISC::IStream &f) throw(NLMISC::EStr
 	if (f.isReading())
 	{
 		if (_T.getSize() != 0)
-		{		
+		{
 			_MinValue = _MaxValue = _T[0];
 			for(uint k = 1; k < _T.getSize(); ++k)
 			{
@@ -50,13 +50,13 @@ void CPSAttribMakerMemory<uint32>::newElement(const CPSEmitterInfo &info)
 {
 	CPSAttribMakerMemoryBase<uint32>::newElement(info);
 	if (_T.getSize() > 1)
-	{	
+	{
 		_MinValue = std::min(_MinValue, _T.back());
 		_MaxValue = std::max(_MaxValue, _T.back());
 	}
 	else
 	{
-		_MinValue = _MaxValue = _T[0];		
+		_MinValue = _MaxValue = _T[0];
 	}
 }
 
@@ -67,7 +67,7 @@ void CPSAttribMakerMemory<sint32>::serial(NLMISC::IStream &f) throw(NLMISC::EStr
 	if (f.isReading())
 	{
 		if (_T.getSize() != 0)
-		{		
+		{
 			_MinValue = _MaxValue = _T[0];
 			for(uint k = 1; k < _T.getSize(); ++k)
 			{
@@ -83,13 +83,13 @@ void CPSAttribMakerMemory<sint32>::newElement(const CPSEmitterInfo &info)
 {
 	CPSAttribMakerMemoryBase<sint32>::newElement(info);
 	if (_T.getSize() > 1)
-	{	
+	{
 		_MinValue = std::min(_MinValue, _T.back());
 		_MaxValue = std::max(_MaxValue, _T.back());
 	}
 	else
 	{
-		_MinValue = _MaxValue = _T[0];		
+		_MinValue = _MaxValue = _T[0];
 	}
 }
 
@@ -100,7 +100,7 @@ void CPSAttribMakerMemory<float>::serial(NLMISC::IStream &f) throw(NLMISC::EStre
 	if (f.isReading())
 	{
 		if (_T.getSize() != 0)
-		{		
+		{
 			_MinValue = _MaxValue = _T[0];
 			for(uint k = 1; k < _T.getSize(); ++k)
 			{
@@ -116,13 +116,13 @@ void CPSAttribMakerMemory<float>::newElement(const CPSEmitterInfo &info)
 {
 	CPSAttribMakerMemoryBase<float>::newElement(info);
 	if (_T.getSize() > 1)
-	{	
+	{
 		_MinValue = std::min(_MinValue, _T.back());
 		_MaxValue = std::max(_MaxValue, _T.back());
 	}
 	else
 	{
-		_MinValue = _MaxValue = _T[0];		
+		_MinValue = _MaxValue = _T[0];
 	}
 }
 

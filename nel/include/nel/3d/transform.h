@@ -106,7 +106,7 @@ public:
 public:
 
 	/// \name Model updating/traversing features
-	// @{ 
+	// @{
 
 	/** This function update the model (called by CScene::updateModels())
 	 * Deriver Must :
@@ -122,7 +122,7 @@ public:
 	 *	Warning! if the model is a CTransformShape, then when initModel() is called, Shape and other related member/setup
 	 *	of IShape::createInstance() are not yet done (because createModel() is called at the begining in createInstance()).
 	 *
-	 *	Because initModel() is called at the very end, deriver could implement anything like creating other models, 
+	 *	Because initModel() is called at the very end, deriver could implement anything like creating other models,
 	 *	but not deleting this model...
 	 *
 	 *	Default behavior is to do nothing.
@@ -151,7 +151,7 @@ public:
 	virtual void	traverseRender();
 
 	/// clip method called by traverseClip(). deafult is always visible
-	virtual	bool	clip() 
+	virtual	bool	clip()
 	{
 		return true;
 	}
@@ -171,8 +171,8 @@ public:
 	 */
 	void			setTransparency(bool v);
 	void			setOpacity(bool v);
-	// no op for non multi-lod object, else, force the opacity / 
-	void			setBypassLODOpacityFlag(bool bypass);	
+	// no op for non multi-lod object, else, force the opacity /
+	void			setBypassLODOpacityFlag(bool bypass);
 	bool			getBypassLODOpacityFlag() const{ return getStateFlag(BypassLODOpacity) != 0;  }
 	// return a non-zero value if true
 	uint32			isOpaque() { return getStateFlag(IsOpaque); }
@@ -195,15 +195,15 @@ public:
 	//  an object with distance 10 and priority 1 will be displayed before any object with distance 1 and priority 0.
 	// IMPORTANT : priority is clamped by the number of priorities defined in the scene. By default there's only one priority of 0
 	// that is possible, so priority ordering doesn't actually occurs.
-	void			setTransparencyPriority(uint8 priority) { _TransparencyPriority = priority; }	
-	uint8			getTransparencyPriority() const { return _TransparencyPriority; }	
+	void			setTransparencyPriority(uint8 priority) { _TransparencyPriority = priority; }
+	uint8			getTransparencyPriority() const { return _TransparencyPriority; }
 
 	/// Hide the object and his sons.
 	void			hide();
 	/// Show the objet and his sons.
 	void			show();
 	/*
-	 *	Enable / disable user clipping. If enable, the transform is not clipped into the engine. 
+	 *	Enable / disable user clipping. If enable, the transform is not clipped into the engine.
 	 *  The user has to use show / hide to clip or not the transform.
 	 */
 	void			setUserClipping(bool enable);
@@ -215,7 +215,7 @@ public:
 	CHrcTrav::TVisibility	getVisibility() {return Visibility;}
 	/// Get the skeleton model. Returnr NULL in normal mode.
 	CSkeletonModel*			getSkeletonModel () const {return _FatherSkeletonModel;}
-	// Get the ancestor skeleton, (father skeleton that has the least depth in the model tree), or NULL if none	
+	// Get the ancestor skeleton, (father skeleton that has the least depth in the model tree), or NULL if none
 	CSkeletonModel			*getAncestorSkeletonModel() const { return _AncestorSkeletonModel; }
 
 	/// \name Hierarchy linking
@@ -267,7 +267,7 @@ public:
 	  */
 	void			setChannelMixerOwnerShip(bool enable = true)	{ setStateFlag(IsDeleteChannelMixer, enable); }
 	bool			getChannelMixerOwnerShip() const { return getStateFlag(IsDeleteChannelMixer)!=0; }
-	  
+
 
 	/** freeze the preceding position of the model. Do not use, special code for cluster.
 	 *	This inform the scene that preceding position setuped by user is "frozen". ie at next render(), this
@@ -280,13 +280,13 @@ public:
 	void			setDontUnfreezeChildren(bool val);
 
 
-	/** freeze the HRC so the WorldMatrix computed at next render() will be kept for long, and the model won't 
+	/** freeze the HRC so the WorldMatrix computed at next render() will be kept for long, and the model won't
 	 *	either be tested in HRC (which is still expensive, even if the worldmatrix doesn't need to be recomputed).
 	 *	The model won't either be validated. It is suposed to not change at all. Also, if it is not a son of a CCluster,
 	 *	it may be accelerated during Cliping (with CQuadGridClipManager).
 	 *
 	 *	NB: the model won't be tested in HRC anymore.
-	 *	calling freezeHRC() on a model in a hierarchy without calling it to the root of the hierarchy 
+	 *	calling freezeHRC() on a model in a hierarchy without calling it to the root of the hierarchy
 	 *	will result in that the model won't be validated nor be HRC traversed.
 	 *	To be simplier, you should freezeHRC() all the models of a hierarchy, from base root to leaves.
 	 *
@@ -320,7 +320,7 @@ public:
 		return _WorldVis;
 	}
 
-	/** tells if the transform has been clipped in the clip traversal. 
+	/** tells if the transform has been clipped in the clip traversal.
 	 */
 	bool	isClipVisible() const
 	{
@@ -338,7 +338,7 @@ public:
 	/** reset lights which influence this models. NB: the model is removed from all lights's list (except
 	 *	FrozenStaticLightSetup). Called by light rendering.
 	 *
-	 *	NB: the model is NOT removed from LightingManager (with eraseStaticLightedModel()). 
+	 *	NB: the model is NOT removed from LightingManager (with eraseStaticLightedModel()).
 	 */
 	void				resetLighting();
 
@@ -363,7 +363,7 @@ public:
 	 *	NB: it calls resetLighting() first.
 	 *	NB: nlassert(numPointLights<=NL3D_MAX_LIGHT_CONTRIBUTION)
 	 */
-	void				freezeStaticLightSetup(CPointLight *pointLight[NL3D_MAX_LIGHT_CONTRIBUTION], 
+	void				freezeStaticLightSetup(CPointLight *pointLight[NL3D_MAX_LIGHT_CONTRIBUTION],
 		uint numPointLights, uint8 sunContribution, CPointLight *frozenAmbientlight);
 
 	/** unFreeze the Static Light Setup. Must be called if static pointLights are deleted.
@@ -383,8 +383,8 @@ public:
 
 	/** Return the current light contribution of this model
 	  */
-	const CLightContribution &getLightContribution() const { return _LightContribution; }	
-	
+	const CLightContribution &getLightContribution() const { return _LightContribution; }
+
 
 	/** get the HotSpot of the model for Light computation. For models with global attenuation, this is
 	 *	the point taken for attenuation computes. NB: should return the current world position.
@@ -416,7 +416,7 @@ public:
 	 *
 	 *	By default, models lies in the "Default" group, but Skeletons for skinning and ParticlesSystems which
 	 *	are in "Skin" and "Fx" group respectively.
-	 *	The "Default" group is special because it is not balanced (ie models are only degraded from 
+	 *	The "Default" group is special because it is not balanced (ie models are only degraded from
 	 *	their distance to camera)
 	 */
 	void				setLoadBalancingGroup(const std::string &group);
@@ -435,7 +435,7 @@ public:
 	/// non-zero if the model is skinned onto a skeleton.
 	uint32				isSkinned() const {return getStateFlag(IsSkinned);}
 	/** Called for edition purpose (slow call O(NVertex))
-	 *	It return the BBox (local to the Bone at its bind pos) of all of the vertices 
+	 *	It return the BBox (local to the Bone at its bind pos) of all of the vertices
 	 *	of this mesh that are bound to this bone
 	 *	NB: the instance must be skinned to the skeleton instance, BUT the result is not modified
 	 *	by current bone world matrix (eg: no current scale influence)
@@ -474,14 +474,14 @@ public:
 	uint32				isCluster() const {return getStateFlag(IsCluster);}
 
 	/** true if the transform support fast intersection (fastIntersect() works)
-	 *	For now, supports 
+	 *	For now, supports
 	 *		- skeleton with ALL skins that are shadowSkined (w or wo MRM)
-	 *		- mesh that are not skinned (Standard/MRM/MultiLod), and that have been flagged through 
+	 *		- mesh that are not skinned (Standard/MRM/MultiLod), and that have been flagged through
 	 *			CShapeBank::buildSystemGeometryForshape()
 	 */
 	bool				supportFastIntersect() const {return _SupportFastIntersect;}
-	/** test if the transform intersect the ray (p0, dir). 
-	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!) 
+	/** test if the transform intersect the ray (p0, dir).
+	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!)
 	 *	if intersect, dist2D=0, and distZ= Depth Distance
 	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
@@ -502,7 +502,7 @@ public:
 	 *	if it supports CastShadowMaping
 	 */
 	// @{
-	/** By default, map shadow casting is disabled. This enabled shadow for this model. 
+	/** By default, map shadow casting is disabled. This enabled shadow for this model.
 	 *	Fails if the model don't support dynamic Map Shadow Casting (eg landscape)
 	 *	Dervier note: createShadowMap() and deleteShadowMap() is called here.
 	 */
@@ -510,7 +510,7 @@ public:
 	/// true if the instance cast shadow. By default false
 	bool				canCastShadowMap() const {return getStateFlag(IsFinalShadowMapCaster)!=0;}
 
-	/** By default, map shadow receiving is disabled. This enabled shadow for this model. 
+	/** By default, map shadow receiving is disabled. This enabled shadow for this model.
 	 *	Fails if the model don't support dynamic Map Shadow Receiving (eg Particle system)
 	 */
 	void				enableReceiveShadowMap(bool state) {if(modelCanReceiveShadowMap()) setStateFlag(IsFinalShadowMapReceiver, state);}
@@ -523,7 +523,7 @@ public:
 	uint32				modelCanReceiveShadowMap() const {return getStateFlag(IsShadowMapReceiver);}
 
 	/** For Casters. Display the Shadow to the "Auxiliary Driver".
-	 *	This method should only write to AlphaBuffer (since RGB may be the current rendered scene!), 
+	 *	This method should only write to AlphaBuffer (since RGB may be the current rendered scene!),
 	 *	with Alpha==1 when pixel is shadowed.
 	 *	The ShadowMapManager has already cleared the AlphaBuffer to black, and has already enabled alpha write only.
 	 *	The ShadowMapManager has already setuped Viewport/Scissor as its convenience.
@@ -556,11 +556,11 @@ public:
 	bool				isGeneratingShadowMap() const {return getStateFlag(IsGeneratingShadowMap)!=0;}
 
 	/** Special For Skeleton Caster. When Skeletons cast shadows, they first compute the WorldBBox.
-	 *	The model should compute its bbox in World (best fit). 
+	 *	The model should compute its bbox in World (best fit).
 	 *	\return false if the model don't support it (default), or if hidden in HRC!!
 	 */
 	virtual bool		computeWorldBBoxForShadow(NLMISC::CAABBox &worldBB) {return false;}
-	/** Special For Skeleton Caster. Render into the AuxDriver the mesh, within the current 
+	/** Special For Skeleton Caster. Render into the AuxDriver the mesh, within the current
 	 *	setuped Frustum/ViewMatrix.
 	 *	no-op by default, or if hidden in HRC!!
 	 *	\param rootSkeleton the skeleton which is currently rendering its shadowMap
@@ -570,7 +570,7 @@ public:
 	/** To limit some problems when the light direction is too on the XY axis.
 	 *	This method set an "angle" threshold for the shadow direction
 	 *	Actually, you give the minimum negative Z (not ang angle) the normalized shadow direction must have
-	 *	\param zthre possible values are in [-1,1]. 
+	 *	\param zthre possible values are in [-1,1].
 	 *		-1 force the direction to be (0,0,-1) in all case
 	 *		0 means the z may be 0 (the direction is totaly XY), but at least the direction must go downward
 	 *		1 means there is no restriction, the shadow direction can either be upward
@@ -586,7 +586,7 @@ public:
 	 */
 	void				setShadowMapMaxDepth(float depth);
 	float				getShadowMapMaxDepth() const {return _ShadowMapMaxDepth;}
-	
+
 	// @}
 
 	/** Force the transform to always be attached to the root
@@ -596,11 +596,11 @@ public:
 	  * NB : any call to hrcUnlink will cause an assertion when the flag is set (must remain linked to the root)
       */
 	void				setForceClipRoot(bool forceClipRoot);
-	bool				getForceClipRoot() const { return getStateFlag(ForceClipRoot) != 0; }	
+	bool				getForceClipRoot() const { return getStateFlag(ForceClipRoot) != 0; }
 
 
 	// test if the model is a flare
-	virtual	bool isFlare() const { return false; }	
+	virtual	bool isFlare() const { return false; }
 
 
 	/// Don't use, used by CSkeletonSpawnScript to indicate that the WorldMatrix of this object is special
@@ -660,12 +660,12 @@ protected:
 	virtual void			renderSkin(float alphaMRM) {}
 
 
-	/** Deriver may support SkinGrouping if isSkinnable(). 
+	/** Deriver may support SkinGrouping if isSkinnable().
 	 *	It renders the skin with current ctx of the skeletonModel, but torn in 2 pass: fillVB,a nd renderPrimitives
 	 *	Deriver may check NL3D_MESH_SKIN_MANAGER_VERTEXFORMAT and NL3D_MESH_SKIN_MANAGER_MAXVERTICES
 	 */
 	virtual	bool			supportSkinGrouping() const {return false;}
-	/** if supportSkinGrouping(), called to transform the VBuffer, and store it into dest. 
+	/** if supportSkinGrouping(), called to transform the VBuffer, and store it into dest.
 	 *	\return number of vertices added to the VBuffer, or -1 if > reaminingVertices
 	 */
 	virtual	sint			renderSkinGroupGeom(float alphaMRM, uint remainingVertices, uint8 *dest) {return 0;}
@@ -674,7 +674,7 @@ protected:
 	 *	\param baseVertex value to add to each PBlock index.
 	 */
 	virtual	void			renderSkinGroupPrimitives(uint baseVertex, std::vector<CSkinSpecularRdrPass> &specularRdrPasses, uint skinIndex) {}
-	/// Render a specific specular renderPass returned by renderSkinGroupPrimitives 
+	/// Render a specific specular renderPass returned by renderSkinGroupPrimitives
 	virtual	void			renderSkinGroupSpecularRdrPass(uint rdrPass) {}
 
 	/// Special Skinning For ShadowMapping
@@ -682,15 +682,15 @@ protected:
 	virtual	sint			renderShadowSkinGeom(uint remainingVertices, uint8 *vbDest) {return 0;}
 	virtual	void			renderShadowSkinPrimitives(CMaterial &castMat, IDriver *drv, uint baseVertex) {}
 
-	/** Special use of skinning to compute intersection of a ray with it. 
-	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!) 
+	/** Special use of skinning to compute intersection of a ray with it.
+	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!)
  	 *	if intersect, dist2D=0, and distZ= Depth Distance
  	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
 	 */
 	virtual	bool			supportIntersectSkin() const {return false;}
 	virtual	bool			intersectSkin(const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D) {return false;}
-	
+
 	// The SkeletonModel, root of us (skinning or sticked object). NULL , if normal mode.
 	CSkeletonModel	*_FatherSkeletonModel;
 	// If sticked object, id of the bone in the _FatherSkeletonModel.
@@ -735,7 +735,7 @@ protected:
 	void				setIsBigLightable(bool val);
 	/// For CSkeletonModel only.
 	void				setIsSkeleton(bool val);
-	/** Deriver must use this method with true if the model must be AnimDetail-ed whatever 
+	/** Deriver must use this method with true if the model must be AnimDetail-ed whatever
 	 *	registerToChannelMixer() has been called or not
 	 */
 	void				setIsForceAnimDetail(bool val);
@@ -759,7 +759,7 @@ protected:
 	bool				getShowWhenLODSticked() const { return _ForceCLodSticked; }
 
 	// force to compute that transform matrix (useful if matrix needed but clipped because sticked to a clipped skeleton for example)
-	void				forceCompute();	
+	void				forceCompute();
 
 private:
 	static CTransform	*creator() {return new CTransform;}
@@ -768,12 +768,12 @@ private:
 	friend class	CClipTrav;
 	friend class	CAnimDetailTrav;
 	friend class	CRenderTrav;
-	
+
 	// The Scene which owns us
 	CScene			*_OwnerScene;
 
 	/// \name Hrc / Clip hierarchy.
-	// @{ 
+	// @{
 	// Hrc hierarchy. One parent and possible multiple sons
 	CFastPtrListNode			_HrcNode;
 	CFastPtrList<CTransform>	_HrcSons;
@@ -796,7 +796,7 @@ private:
 	// @}
 
 	/// \name Model updating/traversing features
-	// @{ 
+	// @{
 	// linked list of models to update.
 	CTransform		*_PrecModelToUpdate;
 	CTransform		*_NextModelToUpdate;
@@ -841,7 +841,7 @@ private:
 
 	/// For Shadow Caster registration to list
 	std::list<CTransform*>::iterator		_ItShadowCasterInScene;
-	
+
 	/// For Shadow Casters
 	float						_ShadowMapDirectionZThreshold;
 	float						_ShadowMapMaxDepth;
@@ -866,7 +866,7 @@ private:
 		IsFinalLightable=		0x0100,		// IsLightable && IsUserLightable
 		IsBigLightable=			0x0200,
 		IsNeedUpdateLighting=	0x0400,
-		IsNeedUpdateFrozenStaticLightSetup= 
+		IsNeedUpdateFrozenStaticLightSetup=
 								0x0800,
 		// Skinning
 		IsSkeleton=				0x1000,		// set if the model is a skeleton (faster than dynamic_cast)
@@ -971,13 +971,13 @@ protected:
 	// Used by CRenderTrav. see CRenderTrav::removeRenderModel() implementation
 	uint8		_IndexLSBInRenderList;
 	// @}
-	
+
 	/// \name AnimDetail Traversal
 	// @{
 
 	/** For Skeleton Object Stick.
 	 *	update the wolrd matrix. no-op if skinned. no-op if no AcnestorSkeletonModel.
-	 *	use standard father WorldMatrix if !_FatherSkeletonModel else get the correct boneId 
+	 *	use standard father WorldMatrix if !_FatherSkeletonModel else get the correct boneId
 	 *	WorldMatrix from _FatherSkeletonModel
 	 */
 	void			updateWorldMatrixFromFather();

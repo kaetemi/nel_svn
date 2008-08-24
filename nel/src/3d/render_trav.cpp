@@ -71,7 +71,7 @@ CRenderTrav::CRenderTrav()
 	_CurrentNumVisibleModels= 0;
 	_MaxTransparencyPriority = 0;
 	OrderOpaqueList.init(1024);
-	setupTransparencySorting();	
+	setupTransparencySorting();
 	Driver = NULL;
 	_CurrentPassOpaque = true;
 
@@ -90,8 +90,8 @@ CRenderTrav::CRenderTrav()
 	_MeshSkinManager= NULL;
 	_ShadowMeshSkinManager= NULL;
 
-	_LayersRenderingOrder= true;		
-	_FirstWaterModel = NULL;		
+	_LayersRenderingOrder= true;
+	_FirstWaterModel = NULL;
 }
 
 
@@ -104,8 +104,8 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 	#ifdef NL_DEBUG_RENDER_TRAV
 		nlwarning("Render trave begin");
 	#endif
-	H_AUTO( NL3D_TravRender );				
-	if (getDriver()->isLost()) return; // device is lost so no need to render anything		
+	H_AUTO( NL3D_TravRender );
+	if (getDriver()->isLost()) return; // device is lost so no need to render anything
 	CTravCameraScene::update();
 	// Bind to Driver.
 	setupDriverCamera();
@@ -114,7 +114,7 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 	// reset the light setup, and set global ambient.
 	resetLightSetup();
 	if (newRender)
-	{					
+	{
 
 		// reset the Skin manager, if needed
 		if(_MeshSkinManager)
@@ -122,10 +122,10 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 			if(Driver!=_MeshSkinManager->getDriver())
 			{
 				_MeshSkinManager->release();
-				_MeshSkinManager->init(Driver, 
-					NL3D_MESH_SKIN_MANAGER_VERTEXFORMAT, 
-					NL3D_MESH_SKIN_MANAGER_MAXVERTICES, 
-					NL3D_MESH_SKIN_MANAGER_NUMVB, 
+				_MeshSkinManager->init(Driver,
+					NL3D_MESH_SKIN_MANAGER_VERTEXFORMAT,
+					NL3D_MESH_SKIN_MANAGER_MAXVERTICES,
+					NL3D_MESH_SKIN_MANAGER_NUMVB,
 					"MRMSkinVB", true);
 			}
 		}
@@ -136,8 +136,8 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 			if(getAuxDriver()!=_ShadowMeshSkinManager->getDriver())
 			{
 				_ShadowMeshSkinManager->release();
-				_ShadowMeshSkinManager->init(getAuxDriver(), 
-					NL3D_SHADOW_MESH_SKIN_MANAGER_VERTEXFORMAT, 
+				_ShadowMeshSkinManager->init(getAuxDriver(),
+					NL3D_SHADOW_MESH_SKIN_MANAGER_VERTEXFORMAT,
 					NL3D_SHADOW_MESH_SKIN_MANAGER_MAXVERTICES,
 					NL3D_SHADOW_MESH_SKIN_MANAGER_NUMVB,
 					"ShadowSkinVB", true);
@@ -153,17 +153,17 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 		// the transparency flag (multi lod for instance)
 
 		// clear the OTs, and prepare to allocate max element space
-		OrderOpaqueList.reset(_CurrentNumVisibleModels);		
+		OrderOpaqueList.reset(_CurrentNumVisibleModels);
 		for(uint k = 0; k <= (uint) _MaxTransparencyPriority; ++k)
-		{	
-			_OrderTransparentListByPriority[k].reset(_CurrentNumVisibleModels);	// all table share the same allocator (CLayeredOrderingTable::shareAllocator has been called) 
+		{
+			_OrderTransparentListByPriority[k].reset(_CurrentNumVisibleModels);	// all table share the same allocator (CLayeredOrderingTable::shareAllocator has been called)
 																			// and an object can be only inserted in one table, so we only need to init the main allocator
 		}
 
 		// fill the OTs.
 		CTransform			**itRdrModel= NULL;
 		uint32				nNbModels = _CurrentNumVisibleModels;
-		if(nNbModels)	
+		if(nNbModels)
 			itRdrModel= &RenderList[0];
 		float	rPseudoZ, rPseudoZ2;
 
@@ -205,17 +205,17 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 				rPseudoZ2 = rPseudoZ * transparentOtSize;
 				otId= NLMISC::OptFastFloor(rPseudoZ2);
 				otId= min(otId, transparentOtMax);
-				// must invert id, because transparent, sort from back to front			
+				// must invert id, because transparent, sort from back to front
 				_OrderTransparentListByPriority[std::min(pTransform->getTransparencyPriority(), _MaxTransparencyPriority)].insert( pTransform->getOrderingLayer(), pTransform, transparentOtMax-otId );
 			}
 
 		}
 		// fast floor
-		NLMISC::OptFastFloorEnd();		
+		NLMISC::OptFastFloorEnd();
 	}
-	
+
 	if (renderPart & UScene::RenderOpaque)
-	{			
+	{
 		// Render Opaque stuff.
 		// =============================
 
@@ -232,11 +232,11 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 			clodMngr->beginRender(getDriver(), CamPos);
 
 		// Render the opaque materials
-		_CurrentPassOpaque = true;		
+		_CurrentPassOpaque = true;
 		OrderOpaqueList.begin();
 		while( OrderOpaqueList.get() != NULL )
-		{						
-			CTransform	*tr= OrderOpaqueList.get();			
+		{
+			CTransform	*tr= OrderOpaqueList.get();
 			#ifdef NL_DEBUG_RENDER_TRAV
 				CTransformShape *trShape = dynamic_cast<CTransformShape *>(tr);
 				if (trShape)
@@ -248,13 +248,13 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 					}
 				}
 			#endif
-			tr->traverseRender();			
-			OrderOpaqueList.next();			
-		}		
+			tr->traverseRender();
+			OrderOpaqueList.next();
+		}
 
-		/* Render MeshBlock Manager. 
+		/* Render MeshBlock Manager.
 			Some Meshs may be render per block. Interesting to remove VertexBuffer and Material setup overhead.
-			Faster if rendered before lods, for ZBuffer optimisation: render first near objects then far. 
+			Faster if rendered before lods, for ZBuffer optimisation: render first near objects then far.
 			Lods are usually far objects.
 		*/
 		MeshBlockManager.flush(Driver, Scene, this);
@@ -265,7 +265,7 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 			clodMngr->endRender();
 
 
-		/* Render Scene CoarseMeshManager. 
+		/* Render Scene CoarseMeshManager.
 			Important to render them at end of Opaque rendering, because coarses instances are created/removed during
 			this model opaque rendering pass.
 		*/
@@ -279,7 +279,7 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 
 			NB: Split in 2 calls and interleave Landscape Rendering between the 2. WHY???
 			Because it is far more efficient for VBLock (but not for ZBuffer optim...) because in renderGenerate()
-			the ShadowMeshSkinManager do lot of VBLocks that really stall (because only 2 VBHard with swap scheme). 
+			the ShadowMeshSkinManager do lot of VBLocks that really stall (because only 2 VBHard with swap scheme).
 
 			Therefore the first Lock that stall will wait not only for the first MeshSkin to finish but also for the
 			preceding landscape render to finish too! => big STALL.
@@ -287,9 +287,9 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 
 		// Generate ShadowMaps
 		_ShadowMapManager.renderGenerate(Scene);
-		
-		// Render the Landscape	
-		renderLandscapes();	
+
+		// Render the Landscape
+		renderLandscapes();
 
 		// Project ShadowMaps.
 		if(Scene->getLandscapePolyDrawingCallback() != NULL)
@@ -311,14 +311,14 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 				OrderOpaqueList.get()->profileRender();
 				OrderOpaqueList.next();
 			}
-		}		
+		}
 	}
 
-	
+
 	if (renderPart & UScene::RenderTransparent)
-	{		
+	{
 		if (_FirstWaterModel) // avoid a lock if no water is to be rendered
-		{		
+		{
 			// setup water models
 			CWaterModel *curr = _FirstWaterModel;
 			uint numWantedVertices = 0;
@@ -331,11 +331,11 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 			{
 				CWaterModel::setupVertexBuffer(Scene->getWaterVB(), numWantedVertices, getDriver());
 				//
-				{						
+				{
 					CVertexBufferReadWrite vbrw;
 					Scene->getWaterVB().lock(vbrw);
 					CWaterModel *curr = _FirstWaterModel;
-					void *datas = vbrw.getVertexCoordPointer(0);			
+					void *datas = vbrw.getVertexCoordPointer(0);
 					//
 					uint tri = 0;
 					while (curr)
@@ -343,28 +343,28 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 						tri = curr->fillVB(datas, tri, *getDriver());
 						nlassert(tri <= numWantedVertices);
 						curr = curr->_Next;
-					}	
+					}
 					nlassert(tri * 3 == numWantedVertices);
 				}
 			}
 			// Unlink all water model
 			clearWaterModelList();
-		}		
+		}
 	}
 
-	if ((renderPart & UScene::RenderTransparent) && 
+	if ((renderPart & UScene::RenderTransparent) &&
 		(renderPart & UScene::RenderFlare)
 	   )
-	{		
+	{
 		// Render all transparent stuffs including flares.
 		// =============================
 		 // Render transparent materials (draw higher priority last, because their appear in front)
 		_CurrentPassOpaque = false;
 		for(std::vector<CLayeredOrderingTable<CTransform> >::iterator it = _OrderTransparentListByPriority.begin(); it != _OrderTransparentListByPriority.end(); ++it)
-		{		
-			it->begin(_LayersRenderingOrder);	
+		{
+			it->begin(_LayersRenderingOrder);
 			while( it->get() != NULL )
-			{			
+			{
 				#ifdef NL_DEBUG_RENDER_TRAV
 					CTransformShape *trShape = dynamic_cast<CTransformShape *>(it->get());
 					if (trShape)
@@ -376,10 +376,10 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 						}
 					}
 				#endif
-				it->get()->traverseRender();				
+				it->get()->traverseRender();
 				it->next();
 			}
-		}	
+		}
 
 		// Profile this frame?
 		if(Scene->isNextRenderProfile())
@@ -393,20 +393,20 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 					it->next();
 				}
 			}
-		}		
+		}
 	}
 	else if (renderPart & UScene::RenderTransparent)
-	{		
+	{
 		// Render all transparent stuffs, don't render flares
 		// =============================
 		_CurrentPassOpaque = false;
 		for(std::vector<CLayeredOrderingTable<CTransform> >::iterator it = _OrderTransparentListByPriority.begin(); it != _OrderTransparentListByPriority.end(); ++it)
-		{		
-			it->begin(_LayersRenderingOrder);	
+		{
+			it->begin(_LayersRenderingOrder);
 			while( it->get() != NULL )
-			{			
+			{
 				if (!it->get()->isFlare())
-				{		
+				{
 					#ifdef NL_DEBUG_RENDER_TRAV
 						CTransformShape *trShape = dynamic_cast<CTransformShape *>(it->get());
 						if (trShape)
@@ -418,11 +418,11 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 							}
 						}
 					#endif
-					it->get()->traverseRender();					
+					it->get()->traverseRender();
 				}
 				it->next();
 			}
-		}	
+		}
 
 		// Profile this frame?
 		if(Scene->isNextRenderProfile())
@@ -439,20 +439,20 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 					it->next();
 				}
 			}
-		}		
+		}
 	}
 	else if (renderPart & UScene::RenderFlare)
-	{		
+	{
 		// Render flares only
 		// =============================
 		_CurrentPassOpaque = false;
 		for(std::vector<CLayeredOrderingTable<CTransform> >::iterator it = _OrderTransparentListByPriority.begin(); it != _OrderTransparentListByPriority.end(); ++it)
-		{		
-			it->begin(_LayersRenderingOrder);	
+		{
+			it->begin(_LayersRenderingOrder);
 			while( it->get() != NULL )
-			{			
+			{
 				if (it->get()->isFlare())
-				{			
+				{
 					#ifdef NL_DEBUG_RENDER_TRAV
 						CTransformShape *trShape = dynamic_cast<CTransformShape *>(it->get());
 						if (trShape)
@@ -464,11 +464,11 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 							}
 						}
 					#endif
-					it->get()->traverseRender();					
+					it->get()->traverseRender();
 				}
 				it->next();
 			}
-		}	
+		}
 
 		// Profile this frame?
 		if(Scene->isNextRenderProfile())
@@ -485,8 +485,8 @@ void		CRenderTrav::traverse(UScene::TRenderPart renderPart, bool newRender)
 					it->next();
 				}
 			}
-		}		
-	}	
+		}
+	}
 
 	// END!
 	// =============================
@@ -689,9 +689,9 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 					inf= lightContribution->AttFactor[plId];
 
 				// different PointLight setup than in cache??
-				// NB: pointLight setup can't change during renderPass, so need only to test pointer, 
+				// NB: pointLight setup can't change during renderPass, so need only to test pointer,
 				// attenuation mode and factor.
-				if( pl!=_LastPointLight[plId] || 
+				if( pl!=_LastPointLight[plId] ||
 					inf!=_LastPointLightFactor[plId] ||
 					useLocalAttenuation!=_LastPointLightLocalAttenuation[plId] )
 				{
@@ -722,7 +722,7 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 			//-----------
 			// count new number of light enabled.
 			uint	newNumLightEnabled;
-			// number of pointLight + the sun 
+			// number of pointLight + the sun
 			newNumLightEnabled= plId + 1;
 
 			// enable lights which are used now and were not before.
@@ -770,20 +770,20 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 
 // ***************************************************************************
 void		CRenderTrav::beginVPLightSetup(uint ctStart, bool supportSpecular, const CMatrix &invObjectWM)
-{	
-	uint	i;		 
+{
+	uint	i;
 	nlassert(MaxVPLight==4);
 	_VPNumLights= min(_NumLightEnabled, (uint)MaxVPLight);
 	_VPCurrentCtStart= ctStart;
 	_VPSupportSpecular= supportSpecular;
-	
+
 	// Prepare Colors (to be multiplied by material)
 	//================
 	// Ambient. _VPCurrentCtStart+0
 	_VPFinalAmbient= AmbientGlobal;
 	for(i=0; i<_VPNumLights; i++)
 	{
-		_VPFinalAmbient+= _DriverLight[i].getAmbiant();		
+		_VPFinalAmbient+= _DriverLight[i].getAmbiant();
 	}
 	// Diffuse. _VPCurrentCtStart+1 to 4
 	for(i=0; i<_VPNumLights; i++)
@@ -822,7 +822,7 @@ void		CRenderTrav::beginVPLightSetup(uint ctStart, bool supportSpecular, const C
 	// in objectSpace.
 	lightDir= invObjectWM.mulVector(_DriverLight[0].getDirection());
 	lightDir.normalize();
-	lightDir= -lightDir; 
+	lightDir= -lightDir;
 	if(supportSpecular)
 	{
 		// Setup lightDir.
@@ -900,14 +900,14 @@ void		CRenderTrav::changeVPLightSetupMaterial(const CMaterial &mat, bool exclude
 	CRGBAF	matDiff= mat.getDiffuse();
 	CRGBAF	matSpec= mat.getSpecular();
 	float	specExp= mat.getShininess();
-	
+
 	uint strongestLightIndex = excludeStrongest ? getStrongestLightIndex() : _VPNumLights;
 
 	// setup Ambient + Emissive
 	color= _VPFinalAmbient * mat.getAmbient();
 	color+= mat.getEmissive();
 	Driver->setConstant(_VPCurrentCtStart+0, 1, &color.R);
-	
+
 
 	// is the strongest light is not excluded, its index should have been setup to _VPNumLights
 
@@ -918,7 +918,7 @@ void		CRenderTrav::changeVPLightSetupMaterial(const CMaterial &mat, bool exclude
 		Driver->setConstant(_VPCurrentCtStart+1+i, 1, &color.R);
 	}
 
-	
+
 	if (i != _VPNumLights)
 	{
 		color= _VPLightDiffuse[i] * matDiff;
@@ -995,12 +995,12 @@ void	CRenderTrav::getStrongestLightColors(NLMISC::CRGBA &diffuse, NLMISC::CRGBA 
 	sint strongestLightIndex = getStrongestLightIndex();
 	if (strongestLightIndex == -1)
 	{
-		diffuse = specular = NLMISC::CRGBA::Black;		
+		diffuse = specular = NLMISC::CRGBA::Black;
 	}
 	else
 	{
 		diffuse = _StrongestLightDiffuse;
-		specular = _StrongestLightSpecular;		
+		specular = _StrongestLightSpecular;
 	}
 }
 
@@ -1266,7 +1266,7 @@ void			CRenderTrav::renderLandscapes()
 
 // ***************************************************************************
 void CRenderTrav::setupTransparencySorting(uint8 maxPriority /*=0*/,uint NbDistanceEntries /*=1024*/)
-{		
+{
 	NLMISC::contReset(_OrderTransparentListByPriority); // avoid useless object copy when vector is resized (every element is reseted anyway)
 	_OrderTransparentListByPriority.resize((uint) maxPriority + 1);
 	for(uint k = 0; k < _OrderTransparentListByPriority.size(); ++k)
@@ -1274,7 +1274,7 @@ void CRenderTrav::setupTransparencySorting(uint8 maxPriority /*=0*/,uint NbDista
 		_OrderTransparentListByPriority[k].init(NbDistanceEntries);
 		if (k != 0) _OrderTransparentListByPriority[k].shareAllocator(_OrderTransparentListByPriority[0]); // node allocator is shared between all layers
 	}
-	_MaxTransparencyPriority = maxPriority;	
+	_MaxTransparencyPriority = maxPriority;
 }
 
 // ***************************************************************************
@@ -1318,7 +1318,7 @@ void CRenderTrav::debugWaterModelMemory(const char *tag, bool dumpList)
 			// crash (assert not stop for clearness)
 			nlassert(dmp.ClippedPolyBegin!=dmp.ClippedPolyEnd);
 		}
-		
+
 		// bkup infos for future log
 		if(dumpList)
 			_DebugWaterModelList.push_back(dmp);

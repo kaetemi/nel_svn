@@ -66,7 +66,7 @@ public:
 	float getCropedValue (float value) const;
 
 public:
-	
+
 	/// Display string
 	std::string		DisplayString;
 

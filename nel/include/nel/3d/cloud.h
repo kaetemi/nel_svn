@@ -55,7 +55,7 @@ public:
 	void init (uint32 nVoxelW, uint32 nVoxelH, uint32 nVoxelD, float rBaseFreq, uint32 nNbOctave);
 	void generate (CNoise3d &noise);
 	void light ();
-	
+
 	void reset (NL3D::CCamera *pViewer);
 
 	void anim (double dt, double dt2);
@@ -67,7 +67,7 @@ public:
 
 	// Create the billboard (in the screen at pos (NbW*Width, 0)
 	void genBill (NL3D::CCamera *pViewer, uint32 nBillSize=128);
-	
+
 	// Display billboard to the screen
 	void dispBill (NL3D::CCamera *pViewer);
 
@@ -97,7 +97,7 @@ public:
 
 	uint32 getBillSize() { return _BillSize; }
 
-	uint32 getMemSize () 
+	uint32 getMemSize ()
 	{
 		return _OldBillSize*_OldBillSize*4 + _BillSize*_BillSize*4;
 	}
@@ -120,7 +120,7 @@ private:
 	void calcBill (const NLMISC::CVector &Viewer, const NLMISC::CVector &Center, const NLMISC::CVector &Size,
 					NLMISC::CVector &I, NLMISC::CVector &J, NLMISC::CVector &K,
 					float &Left, float &Right, float &Top, float &Bottom, float &Near, float &Far);
-	
+
 private:
 
 	uint32 _Width, _Height, _Depth;
@@ -153,7 +153,7 @@ public:
 	uint8 _WaitState;
 
 	// Accel for calc bill
-	
+
 	NLMISC::CVector _BillViewer, _BillCenter, _BillOldCenter;
 
 private:

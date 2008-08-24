@@ -45,7 +45,7 @@ const NLMISC::CClassId		VegetableBlendLayerModelId=NLMISC::CClassId(0x77375163, 
 // ***************************************************************************
 /**
  * A CVegetableBlendLayerModel does not have to be created by user. It is an internal class of CVegetableManager.
- *	It is used to draw AlphaBlend ZSort rdrPass vegetables. Thoses vegetables are rendered in separate Z ordered 
+ *	It is used to draw AlphaBlend ZSort rdrPass vegetables. Thoses vegetables are rendered in separate Z ordered
  *	layer, so transparency with other transparents objects is well performed (as best as it can).
  *
  * \author Lionel Berenguier

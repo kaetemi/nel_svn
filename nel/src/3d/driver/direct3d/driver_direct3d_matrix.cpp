@@ -39,7 +39,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -82,7 +82,7 @@ void CDriverD3D::updateProjectionMatrix ()
 	// In D3D, the center of the first screen pixel is [0.0,0.0]. Is NeL it is [0.5,0.5]
 	const float addW = (right-left)/(2*(_Viewport.getWidth() * (float)clientWidth));
 	const float addH = (bottom-top)/(2*(_Viewport.getHeight() * (float)clientHeight));
-	
+
 	left += addW;
 	right += addW;
 	top += addH;
@@ -126,7 +126,7 @@ void CDriverD3D::setFrustum(float left, float right, float bottom, float top, fl
 void CDriverD3D::setFrustumMatrix(CMatrix &frustumMatrix)
 {
 	H_AUTO_D3D(CDriverD3D_setFrustum)
-	
+
 	frustumMatrix.transpose();
 	setMatrix (D3DTS_PROJECTION, D3DXMATRIX(frustumMatrix.get()));
 }
@@ -137,7 +137,7 @@ CMatrix CDriverD3D::getFrustumMatrix()
 {
 	H_AUTO_D3D(CDriverD3D_getFrustum)
 
-	CMatrix frustumMatrix;			
+	CMatrix frustumMatrix;
 	frustumMatrix.set((float *)_MatrixCache[D3DTS_PROJECTION].Matrix.m);
 	frustumMatrix.transpose();
 
@@ -278,14 +278,14 @@ bool CDriverD3D::isForceNormalize() const
 void CDriverD3D::setupScissor (const class CScissor& scissor)
 {
 	H_AUTO_D3D(CDriverD3D_setupScissor )
-	if (!_ScissorTouched && 
-		_Scissor.X == scissor.X && 
-		_Scissor.Y == scissor.Y && 
-		_Scissor.Width == scissor.Width && 
+	if (!_ScissorTouched &&
+		_Scissor.X == scissor.X &&
+		_Scissor.Y == scissor.Y &&
+		_Scissor.Width == scissor.Width &&
 		_Scissor.Height == scissor.Height
 		) return;
 	nlassert (_DeviceInterface);
-		
+
 	// Get viewport
 	_ScissorTouched = false;
 	float x= scissor.X;
@@ -293,7 +293,7 @@ void CDriverD3D::setupScissor (const class CScissor& scissor)
 	float height= scissor.Height;
 
 	if(x==0 && x==0 && width==1 && height==1)
-	{		
+	{
 		setRenderState (D3DRS_SCISSORTESTENABLE, FALSE);
 	}
 	else
@@ -326,13 +326,13 @@ void CDriverD3D::setupScissor (const class CScissor& scissor)
 			else
 				rect.bottom=(int)floor((float)clientHeight* (1-y) + 0.5f);
 			clamp (rect.bottom, 0, (int)clientHeight);
-			
-			{			
-				H_AUTO_D3D(CDriverD3D_setupScissorDevice )				
+
+			{
+				H_AUTO_D3D(CDriverD3D_setupScissorDevice )
 				_DeviceInterface->SetScissorRect (&rect);
 			}
-			setRenderState (D3DRS_SCISSORTESTENABLE, TRUE);						
-			
+			setRenderState (D3DRS_SCISSORTESTENABLE, TRUE);
+
 		}
 	}
 
@@ -345,7 +345,7 @@ void CDriverD3D::setupScissor (const class CScissor& scissor)
 void CDriverD3D::setupViewport (const class CViewport& viewport)
 {
 	H_AUTO_D3D(CDriverD3D_setupViewport )
-	if (_HWnd == NULL) 
+	if (_HWnd == NULL)
 		return;
 
 	// Get the render target size
@@ -374,7 +374,7 @@ void CDriverD3D::setupViewport (const class CViewport& viewport)
 	int iheight=(int)((float)clientHeight*height);
 	clamp (iheight, 0, (int)clientHeight-iy);
 
-	// Setup D3D viewport	
+	// Setup D3D viewport
 	_D3DViewport.X = ix;
 	_D3DViewport.Y = iy;
 	_D3DViewport.Width = iwidth;
@@ -394,7 +394,7 @@ void CDriverD3D::setDepthRange(float znear, float zfar)
 {
 	H_AUTO_D3D(CDriverD3D_setDepthRange)
 	nlassert(znear != zfar);
-	if (_HWnd == NULL) 
+	if (_HWnd == NULL)
 		return;
 #ifdef NL_D3D_USE_RENDER_STATE_CACHE
 	NL_D3D_CACHE_TEST(CacheTest_DepthRange, znear != _DepthRangeNear || zfar != _DepthRangeFar)

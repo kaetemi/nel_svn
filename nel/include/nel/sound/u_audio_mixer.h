@@ -49,7 +49,7 @@ namespace NLLIGO
 
 namespace NLSOUND {
 
-	
+
 class UEnvSound;
 class UListener;
 
@@ -90,13 +90,13 @@ public:
 		DriverDSound,
 		NumDrivers
 	};
-	
-	
+
+
 	/** Structure that contain the background flags.*/
 	struct TBackgroundFlags
 	{
 		// pseudo enum to build constant in class def :)
-		enum 
+		enum
 		{
 			/// Number of filter flags in the background.
 			NB_BACKGROUND_FLAGS = 32
@@ -134,7 +134,7 @@ public:
 	/// Create the audio mixer singleton and return a pointer to its instance
 	static UAudioMixer	*createAudioMixer();
 	/** Set the global path to the sample banks
-	 *	If you have specified some sample bank to load in the 
+	 *	If you have specified some sample bank to load in the
 	 *	mixer config file, you MUST set the sample path
 	 *	BEFORE calling init.
 	 */
@@ -150,8 +150,8 @@ public:
 	 * ESoundDriverNotFound, ESoundDriverCorrupted, ESoundDriverOldVersion, ESoundDriverUnknownVersion.
 	 *
 	 * You can ask for EAX support. If EAX support is requested, then the mixer will try to allocate
-	 * hardware accelerated audio tracks. 
-	 * If the total of available hardware track is less than 10, then EAX is automatically 
+	 * hardware accelerated audio tracks.
+	 * If the total of available hardware track is less than 10, then EAX is automatically
 	 * deactivated.
 	 * autoLoadSample is used for tools like georges or object viewer where you don't bother to
 	 * specified each sample bank to load, you just want to ear the sound.
@@ -170,7 +170,7 @@ public:
 	 *	Each priority channel can be assign a restrictive reserve value.
 	 *	This value is used when the number free track available for playing drop
 	 *	under the low water mark value (see setLowWaterMark).
-	 *	The mixer count the number of playing source in each priority channel. 
+	 *	The mixer count the number of playing source in each priority channel.
 	 *	A priority channel can overflow it's reserve value only if the low water
 	 *	mark is not reach.
 	 *	In other word, when the number of played source increase, you can control
@@ -196,7 +196,7 @@ public:
 	 *	Any playing sources of such deleted track will be stopped
 	 */
 	virtual	void		changeMaxTrack(uint maxTrack) = 0;
-	
+
 	//@}
 
 
@@ -317,7 +317,7 @@ public:
 	//@name User controlled variable
 	/** Set the value of a user variable.
 	 *	User variable are variable that can be used to control
-	 *	the gain or transpose of all the instance (source) of a 
+	 *	the gain or transpose of all the instance (source) of a
 	 *	given sound.
 	 *	This has been initially design to control the gain of any
 	 *	source playing some atmospheric sound (like rain) according
@@ -346,10 +346,10 @@ public:
 	 *
 	 *	\param fileName a CPath::lookup is done (the file can be in a BNP)
 	 *	\param xFadeTime if not 0 the old music played is not stopped immediately but a cross-fade of xFadeTime (in ms) is made between the 2.
-	 *	\param async if false, the music is entirely loaded in memory. Interesting for instance for music played 
+	 *	\param async if false, the music is entirely loaded in memory. Interesting for instance for music played
 	 *		during loading (to not overload HardDrive). NB: The File is loaded in memory, but decompressed by FMod in a thread
 	 *		Hence if the mp3 fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
-	 *	\param loop must be true to play the music in loop. 
+	 *	\param loop must be true to play the music in loop.
 	 */
 	virtual bool	playMusic(const std::string &fileName, uint xFadeTime= 0, bool async= true, bool loop=true) =0;
 	/** Stop the music previously loaded and played (the Memory is also freed)
@@ -372,7 +372,7 @@ public:
 	 *	NB: the volume of music is NOT affected by IListener::setGain()
 	 */
 	virtual void	setMusicVolume(float gain) =0;
-	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
+	/** Get the song title. Returns false if the song is not found or the function is not implemented.
 	 * If the song as no name, result is filled with the filename.
 	 */
 	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0) =0;

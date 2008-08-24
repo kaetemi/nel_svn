@@ -1,5 +1,5 @@
 /** \file logic_variable.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -35,7 +35,7 @@ namespace NLLOGIC
 
 //---------------------------------------------------
 // CLogicVariable :
-// 
+//
 //---------------------------------------------------
 CLogicVariable::CLogicVariable()
 {
@@ -49,12 +49,12 @@ CLogicVariable::CLogicVariable()
 
 //---------------------------------------------------
 // setValue :
-// 
+//
 //---------------------------------------------------
-void CLogicVariable::setValue( sint64 value ) 
-{ 
+void CLogicVariable::setValue( sint64 value )
+{
 	_Value = value;
-	
+
 	if( _Verbose )
 	{
 		nlinfo("variable \"%s\" value is now %f",_Name.c_str(),(double)_Value);
@@ -66,7 +66,7 @@ void CLogicVariable::setValue( sint64 value )
 
 //---------------------------------------------------
 // applyModification :
-// 
+//
 //---------------------------------------------------
 void CLogicVariable::applyModification( string op, sint64 value )
 {
@@ -110,7 +110,7 @@ void CLogicVariable::applyModification( string op, sint64 value )
 
 //---------------------------------------------------
 // processLogic :
-// 
+//
 //---------------------------------------------------
 void CLogicVariable::processLogic()
 {
@@ -121,7 +121,7 @@ void CLogicVariable::processLogic()
 
 //---------------------------------------------------
 // serial :
-// 
+//
 //---------------------------------------------------
 /*void CLogicVariable::serial( IStream &f )
 {
@@ -153,7 +153,7 @@ void CLogicVariable::read (xmlNodePtr node)
 
 //---------------------------------------------------
 // CLogicCounter :
-// 
+//
 //---------------------------------------------------
 CLogicCounter::CLogicCounter()
 {
@@ -163,22 +163,22 @@ CLogicCounter::CLogicCounter()
 
 	Period.setValue( 10 );
 	Period.setName("Period");
-	
+
 	Phase.setValue( 0 );
 	Phase.setName("Phase");
-	
+
 	Step.setValue( 1 );
 	Step.setName("Step");
-	
+
 	LowLimit.setValue( 0 );
 	LowLimit.setName("LowLimit");
-	
+
 	HighLimit.setValue( 100 );
 	HighLimit.setName("HighLimit");
-	
+
 	Mode.setValue( STOP_AT_LIMIT );
 	Mode.setName("Mode");
-	
+
 	Control.setValue( RUN );
 	Control.setName("Control");
 
@@ -187,7 +187,7 @@ CLogicCounter::CLogicCounter()
 
 //---------------------------------------------------
 // update :
-// 
+//
 //---------------------------------------------------
 void CLogicCounter::update()
 {
@@ -228,7 +228,7 @@ void CLogicCounter::update()
 			Control.setValue( RUN );
 		}
 		break;
-		
+
 	}
 
 	if( _Verbose )
@@ -241,7 +241,7 @@ void CLogicCounter::update()
 
 //---------------------------------------------------
 // manageRunningMode :
-// 
+//
 //---------------------------------------------------
 void CLogicCounter::manageRunningMode()
 {
@@ -348,7 +348,7 @@ void CLogicCounter::manageRunningMode()
 
 //---------------------------------------------------
 // serial :
-// 
+//
 //---------------------------------------------------
 /*void CLogicCounter::serial( IStream &f )
 {

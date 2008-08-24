@@ -27,7 +27,7 @@
 #include "nel/3d/camera.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 const float		UCamera::DefLx=0.26f;
@@ -45,7 +45,7 @@ void UCamera::setFrustum(const CFrustum &f)
 
 // ***************************************************************************
 
-const CFrustum &UCamera::getFrustum() const 
+const CFrustum &UCamera::getFrustum() const
 {
 	CCamera	*object = getObjectPtr();
 	return object->getFrustum();
@@ -69,7 +69,7 @@ void UCamera::setFrustum(float width, float height, float znear, float zfar, boo
 
 // ***************************************************************************
 
-void UCamera::getFrustum(float &left, float &right, float &bottom, float &top, float &znear, float &zfar) const 
+void UCamera::getFrustum(float &left, float &right, float &bottom, float &top, float &znear, float &zfar) const
 {
 	CCamera	*object = getObjectPtr();
 	object->getFrustum(left, right, bottom, top, znear, zfar);
@@ -77,7 +77,7 @@ void UCamera::getFrustum(float &left, float &right, float &bottom, float &top, f
 
 // ***************************************************************************
 
-bool UCamera::isOrtho() const 
+bool UCamera::isOrtho() const
 {
 	CCamera	*object = getObjectPtr();
 	return object->isOrtho();
@@ -85,7 +85,7 @@ bool UCamera::isOrtho() const
 
 // ***************************************************************************
 
-bool UCamera::isPerspective() const 
+bool UCamera::isPerspective() const
 {
 	CCamera	*object = getObjectPtr();
 	return object->isPerspective();
@@ -93,7 +93,7 @@ bool UCamera::isPerspective() const
 
 // ***************************************************************************
 
-void UCamera::setPerspective(float fov, float aspectRatio, float znear, float zfar) 
+void UCamera::setPerspective(float fov, float aspectRatio, float znear, float zfar)
 {
 	CCamera	*object = getObjectPtr();
 	object->setPerspective(fov, aspectRatio, znear, zfar);

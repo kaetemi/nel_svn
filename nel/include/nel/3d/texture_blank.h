@@ -34,8 +34,8 @@ namespace NL3D {
 /**
  * This texture does generate nothing, and it is releasable. There's no particular reason to use it,
  * unless you want to copy the frame buffer in a texture. You may use that texture so that the device memory
- * will only be allocated once, and the system memory (needed to create the texture, at least with open gl) will be released after that. 
- * A texture_mem could have been used, but it doesn't release memory by itself (added : hmm, well it does since 2/2002 ...). 
+ * will only be allocated once, and the system memory (needed to create the texture, at least with open gl) will be released after that.
+ * A texture_mem could have been used, but it doesn't release memory by itself (added : hmm, well it does since 2/2002 ...).
  */
 class CTextureBlank : public ITexture
 {
@@ -44,7 +44,7 @@ NLMISC_DECLARE_CLASS(CTextureBlank);
 protected:
 
 	/// inherited from ITexture. Does nothing ...
-	void doGenerate(bool async) ;	
+	void doGenerate(bool async) ;
 public:
 	virtual ~CTextureBlank() {}
 };

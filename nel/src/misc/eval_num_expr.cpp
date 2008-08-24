@@ -84,7 +84,7 @@ void CEvalNumExpr::readIntegerNumberDecimal (double &value)
 			currentChar = *_ExprPtr;
 		}
 	}
-	
+
 	// Store value
 	value = regValue;
 }
@@ -342,7 +342,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::getNextToken (TToken &token)
 					_ExprPtr++;
 					currentChar = *_ExprPtr;
 				}
-				
+
 				// Store value
 				_Value = regValue;
 
@@ -382,7 +382,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::getNextToken (TToken &token)
 					_ExprPtr++;
 					currentChar = *_ExprPtr;
 				}
-				
+
 				// Store value
 				_Value = regValue;
 
@@ -450,7 +450,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::getNextToken (TToken &token)
 				_ExprPtr++;
 				currentChar = *_ExprPtr;
 			}
-			
+
 			// End reached ?
 			if (currentChar == 0)
 				return MustBeDoubleQuote;
@@ -581,7 +581,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::getNextToken (TToken &token)
 
 // ***************************************************************************
 
-CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (const char *expression, double &result, 
+CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (const char *expression, double &result,
 														 int *errorIndex, uint32 userData)
 {
 	// Init the ptr
@@ -633,7 +633,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 		uint unaryOpCount = 0;
 		TOperator resultUnaryOp[InternalOperator];
 		vector<TOperator> resultUnaryOpSup;
-		
+
 		// Current value
 		double value;
 
@@ -662,7 +662,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 			{
 				if (nextToken != Close)
 					return MustBeClose;
-			}	
+			}
 			else
 				return error;
 
@@ -727,7 +727,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 									default:
 										// Can't be hear after getToken
 										nlstop;
-									}										
+									}
 								}
 								else
 									return MustBeClose;
@@ -976,7 +976,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 				resultOpSup.push_back (_Op);
 			opCount++;
 		}
-		else 
+		else
 		{
 			// Exit the evaluate loop
 			break;
@@ -1090,7 +1090,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 				// Copy
 				if (i<InternalOperator)
 					result[i] = (i+1<InternalOperator)?result[i+1]:resultSup[i+1-InternalOperator];
-				else 
+				else
 					resultSup[i-InternalOperator] = (i+1<InternalOperator)?result[i+1]:resultSup[i+1-InternalOperator];
 			}
 			exprCount--;
@@ -1102,9 +1102,9 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 				// Copy
 				if (i<InternalOperator)
 					resultOp[i] = (i+1<InternalOperator)?resultOp[i+1]:resultOpSup[i+1-InternalOperator];
-				else 
+				else
 					resultOpSup[i-InternalOperator] = (i+1<InternalOperator)?resultOp[i+1]:resultOpSup[i+1-InternalOperator];
-					
+
 			}
 			opCount--;
 
@@ -1138,19 +1138,19 @@ bool CEvalNumExpr::internalCheck ()
 // ASCII TABLE
 
 /*
-0 NUL	SOH		STX		ETX		EOT		ENQ		ACK		BEL		BS		TAB		LF		VT		FF		CR		SO		SI 
-1 DLE	DC1		DC2		DC3		DC4		NAK		SYN		ETB		CAN		EM		SUB		ESC		FS		GS		RS		US 
-2		!		"		#		$		%		&		'		(		)		*		+		,		-		.		/ 
-3 0		1		2		3		4		5		6		7		8		9		:		;		<		=		>		? 
-4 @		A		B		C		D		E		F		G		H		I		J		K		L		M		N		O 
-5 P		Q		R		S		T		U		V		W		X		Y		Z		[		\		]		^		_ 
-6 `		a		b		c		d		e		f		g		h		i		j		k		l		m		n		o 
+0 NUL	SOH		STX		ETX		EOT		ENQ		ACK		BEL		BS		TAB		LF		VT		FF		CR		SO		SI
+1 DLE	DC1		DC2		DC3		DC4		NAK		SYN		ETB		CAN		EM		SUB		ESC		FS		GS		RS		US
+2		!		"		#		$		%		&		'		(		)		*		+		,		-		.		/
+3 0		1		2		3		4		5		6		7		8		9		:		;		<		=		>		?
+4 @		A		B		C		D		E		F		G		H		I		J		K		L		M		N		O
+5 P		Q		R		S		T		U		V		W		X		Y		Z		[		\		]		^		_
+6 `		a		b		c		d		e		f		g		h		i		j		k		l		m		n		o
 7 p		q		r		s		t		u		v		w		x		y		z		{		|		}		~
 */
 
 // ***************************************************************************
 
-const CEvalNumExpr::TOperator	CEvalNumExpr::_OperatorArray[128] = 
+const CEvalNumExpr::TOperator	CEvalNumExpr::_OperatorArray[128] =
 {
 	NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator,
 	NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator, NotOperator,
@@ -1164,7 +1164,7 @@ const CEvalNumExpr::TOperator	CEvalNumExpr::_OperatorArray[128] =
 
 // ***************************************************************************
 
-const bool CEvalNumExpr::_StringChar[128] = 
+const bool CEvalNumExpr::_StringChar[128] =
 {
 	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
 	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,

@@ -33,7 +33,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -147,7 +147,7 @@ void	CMeshBase::CMeshBaseBuild::serial(NLMISC::IStream &f) throw(NLMISC::EStream
 {
 	/*
 	Version 1:
-		- Cut in version because of badly coded ITexture* serialisation. throw an exception if 
+		- Cut in version because of badly coded ITexture* serialisation. throw an exception if
 			find a version < 1.
 	Version 0:
 		- 1st version.
@@ -193,7 +193,7 @@ void	CMeshBase::serialMeshBase(NLMISC::IStream &f) throw(NLMISC::EStream)
 	Version 2:
 		- Added Blend Shapes factors
 	Version 1:
-		- Cut in version because of badly coded ITexture* serialisation. throw an exception if 
+		- Cut in version because of badly coded ITexture* serialisation. throw an exception if
 			find a version < 1.
 	Version 0:
 		- 1st version.
@@ -314,7 +314,7 @@ void	CMeshBase::instanciateMeshBase(CMeshBaseInstance *mi, CScene *ownerScene)
 		CAnimatedMorph am(&_AnimatedMorph[i]);
 		mi->_AnimatedMorphFactor.push_back (am);
 	}
-	
+
 	// setup materials.
 	//=================
 	// Copy material. Textures are referenced only
@@ -347,7 +347,7 @@ void	CMeshBase::instanciateMeshBase(CMeshBaseInstance *mi, CScene *ownerScene)
 
 	// Misc
 	//==========================
-	
+
 	// Setup position with the default value
 	mi->ITransformable::setPos( _DefaultPos.getDefaultValue() );
 	mi->ITransformable::setRotQuat( _DefaultRotQuat.getDefaultValue() );
@@ -452,7 +452,7 @@ void	CMeshBase::computeIsLightable()
 	// Mat count
 	uint matCount=_Materials.size();
 
-	// for each material 
+	// for each material
 	for (uint mat=0; mat<matCount; mat++)
 	{
 		// if this one is not a lightmap, then OK, the mesh is lightable

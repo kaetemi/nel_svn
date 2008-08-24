@@ -43,8 +43,8 @@ class CTextContext
 {
 public:
 
-	/** 
-	 * Constructor 
+	/**
+	 * Constructor
 	 * defaults : fontsize=12, color=(0,0,0,255), hotspot=bottomleft, scale=1, shaded=false, shadeExtent=0.001f
 	 *			  shadecolor=(0,0,0,255), 800x600ratio=true
 	 */
@@ -213,7 +213,7 @@ public:
 		// draw
 		_TempString.render2D (*_Driver, x, z, _HotSpot, _ScaleX, _ScaleZ);
 	}
-	
+
 	/// Directly print a string
 	void printfAt (float x, float z, const char * format, ...)
 	{
@@ -237,7 +237,7 @@ public:
 		// draw
 		_TempString.render2D (*_Driver, x, z, _HotSpot, _ScaleX, _ScaleZ);
 	}
-	
+
 	/// Get computed string from index
 	CComputedString& operator[](uint32 index)
 	{
@@ -290,7 +290,7 @@ public:
 	/// In single line mode you can assign several color to letters
 	void setLetterColors(CLetterColors * letterColors, uint index);
 	bool isSameLetterColors(CLetterColors * letterColors, uint index);
-	
+
 private:
 
   	/// Driver
@@ -298,7 +298,7 @@ private:
 
 	/// Font manager
 	NL3D::CFontManager	*_FontManager;
-	
+
 	/// Font generator
 	NL3D::CFontGenerator * _FontGen;
 
@@ -308,16 +308,16 @@ private:
 
 	/// Font size;
 	uint32						_FontSize;
-	
+
 	/// Current text color
 	NLMISC::CRGBA				_Color;
 
 	/// Hotspot
 	CComputedString::THotSpot	_HotSpot;
 
-	/// X scale 
+	/// X scale
 	float						_ScaleX;
-	
+
 	/// Z scale
 	float						_ScaleZ;
 

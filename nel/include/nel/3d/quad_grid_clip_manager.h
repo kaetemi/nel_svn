@@ -32,7 +32,7 @@
 #include "nel/3d/transform.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using	NLMISC::CVector;

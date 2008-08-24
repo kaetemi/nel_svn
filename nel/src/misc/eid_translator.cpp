@@ -62,7 +62,7 @@ void CEntityIdTranslator::CEntity::serial (NLMISC::IStream &s)
 {
 	H_AUTO(EIdTrans_serial);
 	s.serial (EntityName);
-	
+
 	if (CEntityIdTranslator::getInstance()->FileVersion >= 1)
 		s.serial (EntitySlot);
 	else
@@ -107,7 +107,7 @@ void CEntityIdTranslator::getByUser (const string &userName, vector<CEntityId> &
 {
 	H_AUTO(EIdTrans_getByUser2);
 	string lowerName = toLower(userName);
-	
+
 	for (TEntityCont::iterator it = RegisteredEntities.begin(); it != RegisteredEntities.end(); it++)
 	{
 		if (exact)
@@ -214,7 +214,7 @@ bool CEntityIdTranslator::isValidEntityName (const ucstring &entityName,CLog *lo
 			// starting from shard name, allow alphanumeric character
 			allowNumeric = true;
 		}
-		// only accept name with alphabetic and numeric value [a-zA-Z] and parenthesis 
+		// only accept name with alphabetic and numeric value [a-zA-Z] and parenthesis
 		if (!allowNumeric && !isalpha (entityName[i]) && entityName[i] != '(' && entityName[i] != ')')
 		{
 			log->displayNL("Bad entity name '%s' (only char and num)", entityName.toString().c_str());
@@ -256,7 +256,7 @@ bool CEntityIdTranslator::entityNameExists (const ucstring &entityName )
 {
 	// Names are stored in case dependant, so we have to test them without case.
 	ucstring registerable = getRegisterableString (entityName);
-	
+
 	return NameIndex.find(registerable) !=NameIndex.end();
 /*	for (TEntityCont::iterator it = RegisteredEntities.begin(); it != RegisteredEntities.end(); it++)
 	{
@@ -291,7 +291,7 @@ void CEntityIdTranslator::registerEntity (const CEntityId &eid, const ucstring &
 			nlwarning ("EIT: Can't register EId %s EntityName '%s' UId %d UserName '%s' because EntityName is invalid", reid.toString().c_str(), entityName.toString().c_str(), uid, userName.c_str());
 		return;
 	}
-	
+
 	nlinfo ("EIT: Register EId %s EntityName '%s' UId %d UserName '%s'", reid.toString().c_str(), entityName.toString().c_str(), uid, userName.c_str());
 	RegisteredEntities.insert (make_pair(reid, CEntityIdTranslator::CEntity(entityName, uid, userName, entitySlot, shardId)));
 	NameIndex.insert(make_pair(toLower(entityName), reid));
@@ -318,10 +318,10 @@ void CEntityIdTranslator::updateEntity (const CEntityId &eid, const ucstring &en
 		{
 			if (!checkEntityName(entityName))
 			{
-				nlwarning ("EIT: Can't update EId %s EntityName '%s' UId %d UserName '%s' with new name '%s' because EntityName is already in the map", 
-					reid.toString().c_str(), 
-					entity.EntityName.toString().c_str(), 
-					uid, 
+				nlwarning ("EIT: Can't update EId %s EntityName '%s' UId %d UserName '%s' with new name '%s' because EntityName is already in the map",
+					reid.toString().c_str(),
+					entity.EntityName.toString().c_str(),
+					uid,
 					userName.c_str(),
 					entityName.toString().c_str());
 				return;
@@ -349,7 +349,7 @@ void CEntityIdTranslator::unregisterEntity (const CEntityId &eid)
 	reid.setDynamicId(0);
 
 	TEntityCont::iterator it = RegisteredEntities.find (reid);
-	
+
 	if (it == RegisteredEntities.end ())
 	{
 		nlwarning ("EIT: Can't unregister EId %s because EId is not in the map", reid.toString().c_str());
@@ -372,7 +372,7 @@ bool CEntityIdTranslator::isEntityRegistered(const CEntityId &eid)
 	reid.setDynamicId(0);
 
 	TEntityCont::iterator it = RegisteredEntities.find (reid);
-	
+
 	return it != RegisteredEntities.end ();
 }
 
@@ -386,13 +386,13 @@ void CEntityIdTranslator::checkEntity (const CEntityId &eid, const ucstring &ent
 	reid.setDynamicId(0);
 
 	map<CEntityId, CEntityIdTranslator::CEntity>::iterator it = RegisteredEntities.find (reid);
-	
+
 	nlinfo ("EIT: Checking EId %s EntityName '%s' UId %d UserName '%s'", reid.toString().c_str(), entityName.toString().c_str(), uid, userName.c_str());
-	
+
 	if (it == RegisteredEntities.end ())
 	{
 		nlwarning ("EIT: Check failed because EId is not in the CEntityIdTranslator map for EId %s EntityName '%s' UId %d UserName '%s'", reid.toString().c_str(), entityName.toString().c_str(), uid, userName.c_str());
-		
+
 		if (checkEntityName(entityName))
 		{
 			nlwarning ("EIT: Check failed because entity name already exist '%s' for EId %s EntityName '%s' UId %d UserName '%s'", getByEntity(entityName).toString().c_str(), reid.toString().c_str(), entityName.toString().c_str(), uid, userName.c_str());
@@ -460,7 +460,7 @@ void cbInvalidEntityNamesFilename(const std::string &invalidEntityNamesFilename)
 			CEntityIdTranslator::getInstance()->InvalidEntityNames.push_back(str);
 		}
 	}
-	
+
 	fclose (fp);
 }
 
@@ -478,7 +478,7 @@ void CEntityIdTranslator::load (const string &fileName, const string &invalidEnt
 		nlwarning ("EIT: Can't load file '%s' for EntityIdTranslator because we already load the file '%s'", fileName.c_str(), FileName.c_str());
 		return;
 	}
-	
+
 	nlinfo ("EIT: CEntityIdTranslator: load '%s'", fileName.c_str());
 
 	FileName = fileName;
@@ -491,7 +491,7 @@ void CEntityIdTranslator::load (const string &fileName, const string &invalidEnt
 			FileVersion = Version;
 			ifile.serialVersion (FileVersion);
 			ifile.serialCont (RegisteredEntities);
-			
+
 			ifile.close ();
 
 			// fill the entity name index container
@@ -639,7 +639,7 @@ uint32 CEntityIdTranslator::getEntityNameStringId(const CEntityId &eid)
 	CEntityId reid(eid);
 	reid.setCreatorId(0);
 	reid.setDynamicId(0);
-	
+
 	const TEntityCont::iterator it = RegisteredEntities.find (reid);
 	if (it == RegisteredEntities.end ())
 	{
@@ -659,7 +659,7 @@ uint32	CEntityIdTranslator::getEntityShardId(const CEntityId &eid)
 	CEntityId reid(eid);
 	reid.setCreatorId(0);
 	reid.setDynamicId(0);
-	
+
 	const TEntityCont::iterator it = RegisteredEntities.find (reid);
 	if (it == RegisteredEntities.end ())
 	{
@@ -745,13 +745,13 @@ NLMISC_CATEGORISED_COMMAND(nel,findEIdByUser,"Find entity ids using the user nam
 		CEntityIdTranslator::getInstance()->getByUser(userName, res);
 		CEntityIdTranslator::getInstance()->getUId(userName);
 	}
-	
+
 	log.displayNL("User Name '%s' (uid=%d) has %d entities:", userName.c_str(), uid, res.size());
 	for (uint i = 0 ; i < res.size(); i++)
 	{
 		log.displayNL(">  %s '%s'", res[i].toString().c_str(), CEntityIdTranslator::getInstance()->getByEntity (res[i]).c_str());
 	}
-	
+
 	return true;
 }
 
@@ -759,7 +759,7 @@ NLMISC_CATEGORISED_COMMAND(nel,findEIdByEntity,"Find entity id using the entity 
 {
 	if (args.size () != 1)
 		return false;
-	
+
 	CEntityId eid (args[0].c_str());
 
 	if (eid == CEntityId::Unknown)
@@ -783,7 +783,7 @@ NLMISC_CATEGORISED_COMMAND(nel,findEIdByEntity,"Find entity id using the entity 
 	CEntityIdTranslator::getInstance()->getEntityIdInfo(eid, entityName, entitySlot, uid, userName, online, &extinf);
 
 	log.displayNL("UId %d UserName '%s' EId %s EntityName '%s' EntitySlot %hd %s%s%s", uid, userName.c_str(), eid.toString().c_str(), entityName.toString().c_str(), (sint16)entitySlot, (extinf.c_str()), (extinf.empty() ? "" : " "), (online?"Online":"Offline"));
-	
+
 	return true;
 }
 
@@ -836,7 +836,7 @@ NLMISC_CATEGORISED_COMMAND(nel,playerInfo,"Get informations about a player or al
 			// we have to remove the crea and dyna because it can changed dynamically and will not be found in the storage array
 			eid.setCreatorId(0);
 			eid.setDynamicId(0);
-			
+
 			res.push_back(eid);
 		}
 		else if (uid != 0)
@@ -847,10 +847,10 @@ NLMISC_CATEGORISED_COMMAND(nel,playerInfo,"Get informations about a player or al
 		else
 		{
 			CEntityIdTranslator::getInstance()->getByUser (args[0], res, false);
-			
+
 			CEntityIdTranslator::getInstance()->getByEntity (args[0], res, false);
 		}
-		
+
 		log.displayNL("%d result(s) for '%s'", res.size(), args[0].c_str());
 		for (uint i = 0; i < res.size(); i++)
 		{

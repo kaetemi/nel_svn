@@ -227,7 +227,7 @@ CCameraInfo::CCameraInfo ()
 void CCameraInfo::serial (NLMISC::IStream &s)
 {
 	s.serialVersion (0);
-	
+
 	s.serial (Pos);
 	s.serial (TargetPos);
 	s.serial (Roll);
@@ -248,17 +248,17 @@ void CCamera::buildCameraPyramid(std::vector<CPlane>	&pyramid, bool useWorldMatr
 	CVector		lt(_Frustum.Left,  _Frustum.Near, _Frustum.Top    );
 	CVector		rb(_Frustum.Right, _Frustum.Near, _Frustum.Bottom );
 	CVector		rt(_Frustum.Right, _Frustum.Near, _Frustum.Top    );
-	
+
 	CVector		lbFar(_Frustum.Left,  _Frustum.Far, _Frustum.Bottom);
 	CVector		ltFar(_Frustum.Left,  _Frustum.Far, _Frustum.Top   );
 	CVector		rbFar(_Frustum.Right, _Frustum.Far, _Frustum.Bottom);
 	CVector		rtFar(_Frustum.Right, _Frustum.Far, _Frustum.Top   );
-	
+
 	// near
 	pyramid[0].make(lt, lb, rt);
 	// far
 	pyramid[1].make(lbFar, ltFar, rtFar);
-	
+
 	if(_Frustum.Perspective)
 	{
 		// left
@@ -281,7 +281,7 @@ void CCamera::buildCameraPyramid(std::vector<CPlane>	&pyramid, bool useWorldMatr
 		// bottom
 		pyramid[5].make(lb, lbFar, rbFar);
 	}
-	
+
 	// get invCamMatrix
 	CMatrix		invCamMatrix;
 	if(useWorldMatrix)
@@ -305,13 +305,13 @@ void CCamera::buildCameraPyramidCorners(std::vector<NLMISC::CVector>	&pyramidCor
 	pyramidCorners[0].set(_Frustum.Left,  _Frustum.Near, _Frustum.Bottom );
 	pyramidCorners[1].set(_Frustum.Left,  _Frustum.Near, _Frustum.Top    );
 	pyramidCorners[2].set(_Frustum.Right, _Frustum.Near, _Frustum.Bottom );
-	pyramidCorners[3].set(_Frustum.Right, _Frustum.Near, _Frustum.Top    );	
-	float f = _Frustum.Perspective ? (_Frustum.Far / _Frustum.Near) : 1.f;	
+	pyramidCorners[3].set(_Frustum.Right, _Frustum.Near, _Frustum.Top    );
+	float f = _Frustum.Perspective ? (_Frustum.Far / _Frustum.Near) : 1.f;
 	pyramidCorners[4].set(f * _Frustum.Left,  _Frustum.Far, f * _Frustum.Bottom);
 	pyramidCorners[5].set(f * _Frustum.Left,  _Frustum.Far, f * _Frustum.Top   );
 	pyramidCorners[6].set(f * _Frustum.Right, _Frustum.Far, f * _Frustum.Bottom);
 	pyramidCorners[7].set(f * _Frustum.Right, _Frustum.Far, f * _Frustum.Top   );
-	
+
 	const CMatrix &camMatrix = useWorldMatrix ? getWorldMatrix() : getMatrix();
 	for(uint k = 0; k < 8; ++k)
 	{

@@ -44,8 +44,8 @@ class CSoundAnimation
 {
 public:
 
-	enum 
-	{ 
+	enum
+	{
 		NoId = -1
 	};
 
@@ -78,8 +78,8 @@ public:
 
 	/** Return the filename of the animation */
 	virtual std::string&		getFilename()							{ return _Filename; }
-	
-	/** Set the filename of the animation 
+
+	/** Set the filename of the animation
 	 */
 	virtual void				setFilename(std::string& name)			{ _Filename = name; }
 

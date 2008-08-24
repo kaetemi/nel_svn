@@ -28,7 +28,7 @@
 #include "nel/misc/vector.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 

@@ -225,11 +225,11 @@ void	CShadowMapProjector::applyToMaterial(const CMatrix &receiverWorldMatrix, CM
 	CMatrix		osTextMat;
 	osTextMat.setMulMatrix(_WsTextMat, receiverWorldMatrix);
 
-	/* Set the TextureMatrix for ShadowMap projection so that UVW= mat * XYZ. 
+	/* Set the TextureMatrix for ShadowMap projection so that UVW= mat * XYZ.
 		its osTextMat but must rotate so Z map to V
 	*/
 	material.setUserTexMat(0, _XYZToUWVMatrix * osTextMat);
-	/* Set the TextureMatrix for ClampMap projection so that UVW= mat * XYZ. 
+	/* Set the TextureMatrix for ClampMap projection so that UVW= mat * XYZ.
 		its osTextMat but must rotate so Y map to U
 	*/
 	material.setUserTexMat(1, _XYZToWUVMatrix * osTextMat);

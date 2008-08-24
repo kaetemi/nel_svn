@@ -40,7 +40,7 @@ class IStream;
 struct EStream;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 class ITrack;
@@ -75,7 +75,7 @@ public:
 	  */
 	uint getIdTrackByName (const std::string& name) const;
 
-	/** 
+	/**
 	  * Fill the set of string with the name of the channels.
 	  *
 	  * \return the count of track in this animation
@@ -83,11 +83,11 @@ public:
 	void getTrackNames (std::set<std::string>& setString) const;
 
 	/** see applyAnimHeaderCompression()
-	  * \return CAnimation::NotFound if the track doesn't exist (or anim header not compressed) 
+	  * \return CAnimation::NotFound if the track doesn't exist (or anim header not compressed)
 	  *		else return the the id of the track.
 	  */
 	uint getIdTrackByChannelId (uint16 channelId) const;
-		
+
 	/** Get a const track pointer
 	  *
 	  * \param channelId is the id of the desired channel.
@@ -109,7 +109,7 @@ public:
 	}
 
 	/** Add a track at the end of the track list.
-	  * 
+	  *
 	  * This method is used to insert tracks in the animation.
 	  * Tracks must be allocated with new. The pointer is then handeled
 	  * by the CAnimation.
@@ -138,7 +138,7 @@ public:
 	 *	Add manualy the shapes that can be spawned by the channel "spawn_script" in this animation
 	 *	This add into a vector (avoid duplicates)
 	 *
-	 *	Then CAnimationSet::preloadSSSShapes() can be used after CAnimationSet::build() to force loading 
+	 *	Then CAnimationSet::preloadSSSShapes() can be used after CAnimationSet::build() to force loading
 	 *	into the ShapeBank/Texture of thoses shapes, so there is no problem of shape loading during animation
 	 */
 	void							addSSSShape(const std::string &shape);
@@ -147,7 +147,7 @@ public:
 
 	/// \name CAnimationSet private
 	// @{
-	/** For each track that support it (CTrackSampled for instance), divide its number of sampled keys, 
+	/** For each track that support it (CTrackSampled for instance), divide its number of sampled keys,
 	  * to lower the memory lod. Used typically by CAnimationSet
 	  */
 	void	applySampleDivisor(uint sampleDivisor);
@@ -157,15 +157,15 @@ public:
 	  */
 	void	applyTrackQuatHeaderCompression();
 
-	/** Used by CAnimationSet to lower the memory Size. After This, you can 
+	/** Used by CAnimationSet to lower the memory Size. After This, you can
 	  *	(and should for better performance) use getIdTrackByChannelId()
 	  *	Does not support more than 65536 channels (nlassert)
 	  */
 	void	applyAnimHeaderCompression(CAnimationSet *animationSetOwner, const std::map <std::string, uint32> &channelMap);
-	
+
 	// @}
 
-	
+
 private:
 	/// \name Members
 	typedef std::map<std::string, uint32> TMapStringUInt;
@@ -185,7 +185,7 @@ private:
 
 	/// \name Anim time caching
 	// @{
-		mutable TAnimationTime		_BeginTime;	
+		mutable TAnimationTime		_BeginTime;
 		mutable TAnimationTime		_EndTime;
 		mutable bool				_AnimLoop;
 		mutable bool				_BeginTimeTouched;
@@ -203,7 +203,7 @@ private:
 
 	// see addSSSShape()
 	std::vector<std::string>		_SSSShapes;
-	
+
 };
 
 

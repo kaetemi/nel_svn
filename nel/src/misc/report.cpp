@@ -40,7 +40,7 @@
 
 using namespace std;
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 #ifdef NL_OS_WINDOWS
@@ -313,7 +313,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	while (ShowCursor(TRUE) < 0) {};
 
 	SetWindowPos (dialog, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-	
+
 	SetFocus(dialog);
 	SetForegroundWindow(dialog);
 
@@ -334,7 +334,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	ignoreNextTime = IgnoreNextTime;
 
 	ShowWindow(dialog, SW_HIDE);
-	
+
 
 
 	DELETE_OBJECT(sendReport)

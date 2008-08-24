@@ -1,5 +1,5 @@
 /** \file global_retriever.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -84,7 +84,7 @@ public:
 		 * Constuctor.
 		 * Creates a CGlobalPosition from an instanceId and a local position.
 		 */
-		CGlobalPosition(sint32 instanceId=-1, 
+		CGlobalPosition(sint32 instanceId=-1,
 					   const CLocalRetriever::CLocalPosition &localPosition=CLocalRetriever::CLocalPosition::CLocalPosition())
 		{
 			InstanceId=instanceId;
@@ -124,13 +124,13 @@ protected:
 
 		/// Loading buffer
 		NLMISC::CMemStream					_Buffer;
-		
+
 		// valid states are:
 		// Idle==true && Finished==true
 		// Idle==false && Finished==false
 		// Idle==false && Finished==true
 
-		CLrLoader(const NLMISC::CVector &position) : Finished(true) 
+		CLrLoader(const NLMISC::CVector &position) : Finished(true)
 		{
 			Position = position;
 		}
@@ -140,7 +140,7 @@ protected:
 	};
 
 	std::list<CLrLoader>					_LrLoaderList;
-	
+
 private:
 	///
 	mutable CCollisionSurfaceTemp			_InternalCST;
@@ -173,11 +173,11 @@ public:
 	 * Constructor.
 	 * Creates a global retriever with given width, height and retriever bank.
 	 */
-	CGlobalRetriever(const CRetrieverBank *bank=NULL) 
+	CGlobalRetriever(const CRetrieverBank *bank=NULL)
 		: _RetrieverBank(bank)
 	{ }
 	virtual ~CGlobalRetriever();
-	
+
 
 	/// Setup an empty global retriever
 	void							init();
@@ -398,7 +398,7 @@ public:
 
 	// ensure all load tasks end. called at dtor
 	void							waitEndOfAsyncLoading();
-		
+
 	// @}
 
 	/// \name  Collisions part.
@@ -411,7 +411,7 @@ public:
 	 * \return list of collision against surface, ordered by increasing time. this is a synonym for
 	 * cst.CollisionDescs. NB: this array may be modified by CGlobalRetriever on any collision call.
 	 */
-	const TCollisionSurfaceDescVector	*testCylinderMove(const UGlobalPosition &start, const NLMISC::CVector &delta, 
+	const TCollisionSurfaceDescVector	*testCylinderMove(const UGlobalPosition &start, const NLMISC::CVector &delta,
 		float radius, CCollisionSurfaceTemp &cst) const;
 	/** Test a movement of a bbox against surface world.
 	 * \param start is the start position of the movement.
@@ -422,7 +422,7 @@ public:
 	 * \return list of collision against surface, ordered by increasing time. this is a synonym for
 	 * cst.CollisionDescs. NB: this array may be modified by CGlobalRetriever on any collision call.
 	 */
-	const TCollisionSurfaceDescVector	*testBBoxMove(const UGlobalPosition &start, const NLMISC::CVector &delta, 
+	const TCollisionSurfaceDescVector	*testBBoxMove(const UGlobalPosition &start, const NLMISC::CVector &delta,
 		const NLMISC::CVector &locI, const NLMISC::CVector &locJ, CCollisionSurfaceTemp &cst) const;
 	/** apply a movement of a point against surface world. This should be called after test???Move().
 	 * NB: It's up to you to give good t, relative to result of test???Move(). Else, undefined results...
@@ -450,7 +450,7 @@ public:
 	 * \return list of collision against surface (ContactTime and ContactNormal has no means). this is a synonym for
 	 * cst.CollisionDescs. NB: this array may be modified by CGlobalRetriever on any collision call.
 	 */
-	const TCollisionSurfaceDescVector	&testBBoxRot(const CGlobalPosition &start, 
+	const TCollisionSurfaceDescVector	&testBBoxRot(const CGlobalPosition &start,
 		const NLMISC::CVector &locI, const NLMISC::CVector &locJ, CCollisionSurfaceTemp &cst) const;
 
 	/** return the mean height of the surface under pos..

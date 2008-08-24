@@ -135,11 +135,11 @@ inline	void	CVectorD::set(double _x, double _y, double _z)
 {
 	x=_x; y=_y; z=_z;
 }
-inline	bool	CVectorD::operator==(const CVectorD &v) const 
+inline	bool	CVectorD::operator==(const CVectorD &v) const
 {
 	return x==v.x && y==v.y && z==v.z;
 }
-inline	bool	CVectorD::operator!=(const CVectorD &v) const 
+inline	bool	CVectorD::operator!=(const CVectorD &v) const
 {
 	return !(*this==v);
 }

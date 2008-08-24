@@ -27,7 +27,7 @@
 #include "nel/3d/ps_ribbon_base.h"
 #include "nel/3d/particle_system.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 ////////////////////////////////////
@@ -40,16 +40,16 @@ static inline void BuildHermiteVector(const NLMISC::CVector &P0,
 							   const NLMISC::CVector &P1,
 							   const NLMISC::CVector &T0,
 							   const NLMISC::CVector &T1,
-									 NLMISC::CVector &dest,									 
+									 NLMISC::CVector &dest,
 							   float lambda
 							   )
 {
 	NL_PS_FUNC(BuildHermiteVector)
 	const float lambda2 = lambda * lambda;
 	const float lambda3 = lambda2 * lambda;
-	const float h1 = 2 * lambda3 - 3 * lambda2 + 1; 
-	const float h2 = - 2 * lambda3 + 3 * lambda2; 
-	const float h3 = lambda3 - 2 * lambda2 + lambda; 
+	const float h1 = 2 * lambda3 - 3 * lambda2 + 1;
+	const float h2 = - 2 * lambda3 + 3 * lambda2;
+	const float h3 = lambda3 - 2 * lambda2 + lambda;
 	const float h4 = lambda3 - lambda2;
 	/// just avoid some ctor calls here...
 	dest.set (h1 * P0.x + h2 * P1.x + h3 * T0.x + h4 * T1.x,
@@ -60,8 +60,8 @@ static inline void BuildHermiteVector(const NLMISC::CVector &P0,
 
 /// for test
 static inline void BuildLinearVector(const NLMISC::CVector &P0,
-									 const NLMISC::CVector &P1,							   
-									 NLMISC::CVector &dest,									 
+									 const NLMISC::CVector &P1,
+									 NLMISC::CVector &dest,
 									 float lambda,
 									 float oneMinusLambda
 							        )
@@ -69,7 +69,7 @@ static inline void BuildLinearVector(const NLMISC::CVector &P0,
 	NL_PS_FUNC(BuildLinearVector)
 	dest.set (lambda * P1.x + oneMinusLambda * P0.x,
 			  lambda * P1.y + oneMinusLambda * P0.y,
-			  lambda * P1.z + oneMinusLambda * P0.z);			  		
+			  lambda * P1.z + oneMinusLambda * P0.z);
 }
 
 
@@ -105,7 +105,7 @@ void CPSRibbonBase::setMatrixMode(TMatrixMode matrixMode)
 
 //=======================================================
 void	CPSRibbonBase::setRibbonLength(float length)
-{ 
+{
 	NL_PS_FUNC(CPSRibbonBase_setRibbonLength)
 	nlassert(length > 0.f);
 	_RibbonLength = length;
@@ -133,18 +133,18 @@ void	CPSRibbonBase::setInterpolationMode(TInterpolationMode mode)
 void	CPSRibbonBase::setTailNbSeg(uint32 nbSegs)
 {
 	NL_PS_FUNC(CPSRibbonBase_setTailNbSeg)
-	nlassert(nbSegs >= 1);	
-	_NbSegs = nbSegs;	
+	nlassert(nbSegs >= 1);
+	_NbSegs = nbSegs;
 	_RibbonIndex = 0;
 	if (_Owner)
-	{	
+	{
 		resize(_Owner->getMaxSize());
 	}
 	initDateVect();
 }
 
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::setSegDuration(TAnimationTime ellapsedTime)
 {
 	NL_PS_FUNC(CPSRibbonBase_setSegDuration)
@@ -152,12 +152,12 @@ void	CPSRibbonBase::setSegDuration(TAnimationTime ellapsedTime)
 
 }
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::updateGlobals()
 {
 	NL_PS_FUNC(CPSRibbonBase_updateGlobals)
 	nlassert(!_Parametric);
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	const uint size = _Owner->getSize();
 	if (!size) return;
 	const TAnimationTime currDate = _Owner->getOwner()->getSystemDate() + CParticleSystem::RealEllapsedTime;
@@ -165,16 +165,16 @@ void	CPSRibbonBase::updateGlobals()
 	{
 		if (_RibbonIndex == 0) _RibbonIndex = _NbSegs + EndRibbonStorage;
 		else --_RibbonIndex;
-		
+
 		/// decal date
 		::memmove(&_SamplingDate[1], &_SamplingDate[0], sizeof(float) * (_NbSegs + EndRibbonStorage));
 		_LastUpdateDate = currDate;
 	}
-	
+
 	/// save current date
 	_SamplingDate[0] = currDate;
 
-	/// updating ribbons positions	
+	/// updating ribbons positions
 	TPSMatrixMode mm = convertMatrixMode();
 	if (mm == _Owner->getMatrixMode())
 	{
@@ -192,7 +192,7 @@ void	CPSRibbonBase::updateGlobals()
 		}
 	}
 	else
-	{		
+	{
 		nlassert(_Owner->getOwner());
 		const CMatrix &mat = CPSLocated::getConversionMatrix(*_Owner->getOwner(), mm, _Owner->getMatrixMode());
 		TPSAttribVector::iterator posIt = _Owner->getPos().begin();
@@ -210,20 +210,20 @@ void	CPSRibbonBase::updateGlobals()
 }
 
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::computeHermitteRibbon(uint index, NLMISC::CVector *dest, uint stride /* = sizeof(NLMISC::CVector)*/)
-{	
+{
 	NL_PS_FUNC(CPSRibbonBase_CVector )
-	nlassert(!_Parametric);	
+	nlassert(!_Parametric);
 	NLMISC::CVector *startIt = &_Ribbons[(_NbSegs + 1 + EndRibbonStorage) * index];
 	NLMISC::CVector *endIt   = startIt + (_NbSegs + 1 + EndRibbonStorage);
-	NLMISC::CVector *currIt  = startIt + _RibbonIndex;	
+	NLMISC::CVector *currIt  = startIt + _RibbonIndex;
 	const NLMISC::CVector *firstIt = currIt;
 	NLMISC::CVector *nextIt  = currIt + 1;
 	if (nextIt == endIt) nextIt = startIt;
-	NLMISC::CVector *nextNextIt = nextIt + 1;	
-	if (nextNextIt == endIt) nextNextIt = startIt;	
-	float *date = &_SamplingDate[0];			
+	NLMISC::CVector *nextNextIt = nextIt + 1;
+	if (nextNextIt == endIt) nextNextIt = startIt;
+	float *date = &_SamplingDate[0];
 
 	NLMISC::CVector t0 = (*nextIt - *currIt);
 	NLMISC::CVector t1 = 0.5f * (*nextNextIt - *currIt);
@@ -232,10 +232,10 @@ void	CPSRibbonBase::computeHermitteRibbon(uint index, NLMISC::CVector *dest, uin
 
 	float lambda = 0.f;
 	float lambdaStep = 1.f;
-	
+
 
 	for (;;)
-	{		
+	{
 		float dt = date[0] - date[1];
 
 		if (dt < 10E-6f) // we reached the start of ribbon
@@ -251,7 +251,7 @@ void	CPSRibbonBase::computeHermitteRibbon(uint index, NLMISC::CVector *dest, uin
 				#endif
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			}
-			while (--leftToDo);			
+			while (--leftToDo);
 			return;
 		}
 
@@ -271,8 +271,8 @@ void	CPSRibbonBase::computeHermitteRibbon(uint index, NLMISC::CVector *dest, uin
 			#endif
 			dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			-- leftToDo;
-			if (!leftToDo) return;												
-			lambda += lambdaStep;			
+			if (!leftToDo) return;
+			lambda += lambdaStep;
 		}
 
 		++date;
@@ -289,33 +289,33 @@ void	CPSRibbonBase::computeHermitteRibbon(uint index, NLMISC::CVector *dest, uin
 			t1 = *nextIt - *currIt;
 		}
 		else
-		{		
+		{
 			t1 = 0.5f * (*nextNextIt - *currIt);
-		}		
+		}
 	}
 }
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint stride)
-{	
+{
 	NL_PS_FUNC(CPSRibbonBase_computeLinearRibbon)
-	nlassert(!_Parametric);	
+	nlassert(!_Parametric);
 	NLMISC::CVector *startIt = &_Ribbons[(_NbSegs + 1 + EndRibbonStorage) * index];
 	NLMISC::CVector *endIt   = startIt + (_NbSegs + 1 + EndRibbonStorage);
-	NLMISC::CVector *currIt  = startIt + _RibbonIndex;	
+	NLMISC::CVector *currIt  = startIt + _RibbonIndex;
 	NLMISC::CVector *nextIt  = currIt + 1;
 	if (nextIt == endIt) nextIt = startIt;
-	NLMISC::CVector *nextNextIt = nextIt + 1;	
-	if (nextNextIt == endIt) nextNextIt = startIt;	
-	float *date = &_SamplingDate[0];				
+	NLMISC::CVector *nextNextIt = nextIt + 1;
+	if (nextNextIt == endIt) nextNextIt = startIt;
+	float *date = &_SamplingDate[0];
 
 	uint leftToDo = _UsedNbSegs + 1;
 
 	float lambda = 0.f;
 	float lambdaStep = 1.f;
-	
+
 	for (;;)
-	{		
+	{
 		float dt = date[0] - date[1];
 
 		if (dt < 10E-6f) // we reached the start of ribbon
@@ -329,13 +329,13 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 					nlassert(NLMISC::isValidDouble(dest->z));
 				#endif
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
-				
+
 			}
-			while (--leftToDo);			
+			while (--leftToDo);
 			return;
 		}
-		
-		
+
+
 		float newLambdaStep = _UsedSegDuration / dt;
 		// readapt lambda
 		lambda *= newLambdaStep / lambdaStep;
@@ -351,44 +351,44 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 				nlassert(NLMISC::isValidDouble(dest->x));
 				nlassert(NLMISC::isValidDouble(dest->y));
 				nlassert(NLMISC::isValidDouble(dest->z));
-			#endif			
-			dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);			
+			#endif
+			dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			-- leftToDo;
-			if (!leftToDo) return;												
+			if (!leftToDo) return;
 			lambda += lambdaStep;
 			oneMinusLambda -= lambdaStep;
 		}
-		
+
 		++date;
 		lambda -= 1.f;
-		
+
 		currIt = nextIt;
 		nextIt = nextNextIt;
 		++nextNextIt;
-		if (nextNextIt == endIt) nextNextIt = startIt;		
-		
+		if (nextNextIt == endIt) nextNextIt = startIt;
+
 	}
 }
 
 /*
 void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint stride)
-{	
-	nlassert(!_Parametric);	
+{
+	nlassert(!_Parametric);
 	NLMISC::CVector *startIt = &_Ribbons[(_NbSegs + 1 + EndRibbonStorage) * index];
 	NLMISC::CVector *endIt   = startIt + (_NbSegs + 1 + EndRibbonStorage);
-	NLMISC::CVector *currIt  = startIt + _RibbonIndex;	
+	NLMISC::CVector *currIt  = startIt + _RibbonIndex;
 	NLMISC::CVector *nextIt  = currIt + 1;
 	if (nextIt == endIt) nextIt = startIt;
-	NLMISC::CVector *nextNextIt = nextIt + 1;	
-	if (nextNextIt == endIt) nextNextIt = startIt;	
-	float *date = &_SamplingDate[0];				
-	
-	uint leftToDo = _UsedNbSegs + 1;
-	
-	float lambda = 0.f;	
-	
+	NLMISC::CVector *nextNextIt = nextIt + 1;
+	if (nextNextIt == endIt) nextNextIt = startIt;
+	float *date = &_SamplingDate[0];
 
-	float dt = date[0] - date[1];		
+	uint leftToDo = _UsedNbSegs + 1;
+
+	float lambda = 0.f;
+
+
+	float dt = date[0] - date[1];
 	if (dt < 10E-6f) // we reached the start of ribbon
 	{
 		do
@@ -396,17 +396,17 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 			*dest = *currIt;
 			dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 		}
-		while (--leftToDo);			
+		while (--leftToDo);
 		return;
 	}
 	float lambdaStep = _UsedSegDuration / dt;
 	BuildLinearVector(*currIt, *nextIt, *dest, 0.f, 1.f);
 	dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 	-- leftToDo;
-	// snap lambda to nearest time step	
+	// snap lambda to nearest time step
 	lambda = lambdaStep * fmodf(date[0], _UsedSegDuration) / _UsedSegDuration;
 	for (;;)
-	{														
+	{
 		float oneMinusLambda = 1.f - lambda;
 		for(;;)
 		{
@@ -415,19 +415,19 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 			BuildLinearVector(*currIt, *nextIt, *dest, lambda, oneMinusLambda);
 			dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			-- leftToDo;
-			if (!leftToDo) return;												
+			if (!leftToDo) return;
 			lambda += lambdaStep;
 			oneMinusLambda -= lambdaStep;
 		}
-		
+
 		++date;
 		lambda -= 1.f;
-		
+
 		currIt = nextIt;
 		nextIt = nextNextIt;
 		++nextNextIt;
-		if (nextNextIt == endIt) nextNextIt = startIt;		
-		float dt = date[0] - date[1];		
+		if (nextNextIt == endIt) nextNextIt = startIt;
+		float dt = date[0] - date[1];
 		if (dt < 10E-6f) // we reached the start of ribbon
 		{
 			do
@@ -435,7 +435,7 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 				*dest = *currIt;
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			}
-			while (--leftToDo);			
+			while (--leftToDo);
 			return;
 		}
 		float newLambdaStep = _UsedSegDuration / dt;
@@ -443,38 +443,38 @@ void CPSRibbonBase::computeLinearRibbon(uint index, NLMISC::CVector *dest, uint 
 		lambda *= newLambdaStep / lambdaStep;
 		lambdaStep = newLambdaStep;
 	}
-	
+
 }
 */
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::computeLinearCstSizeRibbon(uint index, NLMISC::CVector *dest, uint stride /* = sizeof(NLMISC::CVector)*/)
-{	
+{
 	NL_PS_FUNC(CPSRibbonBase_CVector )
-	nlassert(!_Parametric);	
+	nlassert(!_Parametric);
 	CVector *startIt = &_Ribbons[(_NbSegs + 1 + EndRibbonStorage) * index];
 	NLMISC::CVector *endIt   = startIt + (_NbSegs + 1 + EndRibbonStorage);
-	NLMISC::CVector *currIt  = startIt + _RibbonIndex;	
-	NLMISC::CVector *firstIt = currIt;	
+	NLMISC::CVector *currIt  = startIt + _RibbonIndex;
+	NLMISC::CVector *firstIt = currIt;
 	NLMISC::CVector *nextIt  = currIt + 1;
 	if (nextIt == endIt) nextIt = startIt;
-	NLMISC::CVector *nextNextIt = nextIt + 1;	
-	if (nextNextIt == endIt) nextNextIt = startIt;		
+	NLMISC::CVector *nextNextIt = nextIt + 1;
+	if (nextNextIt == endIt) nextNextIt = startIt;
 
 	uint leftToDo = _UsedNbSegs + 1;
 
 	float lambda = 0.f;
-	float lambdaStep = 1.f;	
+	float lambdaStep = 1.f;
 
-	
+
 	/// Our goal here is to match the length of the ribbon, But if it isn't moving fast enough, we must truncate it
 	for (;;)
-	{	
+	{
 		/// compute length between the 2 sampling points
-		const float sampleLength = (*nextIt - *currIt).norm();		
+		const float sampleLength = (*nextIt - *currIt).norm();
 		if (sampleLength > 10E-6f)
-		{					
+		{
 			/// compute lambda so that it match the length needed for each segment
 			float newLambdaStep = _UsedSegLength / sampleLength;
 			// readapt lambda
@@ -491,16 +491,16 @@ void CPSRibbonBase::computeLinearCstSizeRibbon(uint index, NLMISC::CVector *dest
 					nlassert(NLMISC::isValidDouble(dest->x));
 					nlassert(NLMISC::isValidDouble(dest->y));
 					nlassert(NLMISC::isValidDouble(dest->z));
-				#endif				
+				#endif
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 				-- leftToDo;
-				if (!leftToDo) return;												
+				if (!leftToDo) return;
 				lambda += lambdaStep;
 				oneMinusLambda -= lambdaStep;
 			}
 			lambda -= 1.f;
 		}
-		
+
 		/// go to next sampling pos
 		currIt = nextIt;
 		nextIt = nextNextIt;
@@ -518,7 +518,7 @@ void CPSRibbonBase::computeLinearCstSizeRibbon(uint index, NLMISC::CVector *dest
 					nlassert(NLMISC::isValidDouble(dest->x));
 					nlassert(NLMISC::isValidDouble(dest->y));
 					nlassert(NLMISC::isValidDouble(dest->z));
-				#endif				
+				#endif
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 			}
 			return;
@@ -526,18 +526,18 @@ void CPSRibbonBase::computeLinearCstSizeRibbon(uint index, NLMISC::CVector *dest
 	}
 }
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::computeHermitteCstSizeRibbon(uint index, NLMISC::CVector *dest, uint stride /* = sizeof(NLMISC::CVector)*/)
-{	
+{
 	NL_PS_FUNC(CPSRibbonBase_CVector )
-	nlassert(!_Parametric);	
+	nlassert(!_Parametric);
 	NLMISC::CVector *startIt = &_Ribbons[(_NbSegs + 1 + EndRibbonStorage) * index];
 	NLMISC::CVector *endIt   = startIt + (_NbSegs + 1 + EndRibbonStorage);
-	NLMISC::CVector *currIt  = startIt + _RibbonIndex;	
-	NLMISC::CVector *firstIt = currIt;	
+	NLMISC::CVector *currIt  = startIt + _RibbonIndex;
+	NLMISC::CVector *firstIt = currIt;
 	NLMISC::CVector *nextIt  = currIt + 1;
 	if (nextIt == endIt) nextIt = startIt;
-	NLMISC::CVector *nextNextIt = nextIt + 1;	
+	NLMISC::CVector *nextNextIt = nextIt + 1;
 	if (nextNextIt == endIt) nextNextIt = startIt;
 
 	NLMISC::CVector t0 = (*nextIt - *currIt);
@@ -546,23 +546,23 @@ void CPSRibbonBase::computeHermitteCstSizeRibbon(uint index, NLMISC::CVector *de
 	uint leftToDo = _UsedNbSegs + 1;
 
 	float lambda = 0.f;
-	float lambdaStep = 1.f;	
+	float lambdaStep = 1.f;
 
-	
+
 	/// Our goal here is to match the length of the ribbon, But if it isn't moving fast enough, we must truncate it
 	/// Having a constant speed over a hermite curve is expensive, so we make a (very) rough approximation...
 	for (;;)
-	{	
+	{
 		/// compute length between the 2 sampling points
-		const float sampleLength = (*nextIt - *currIt).norm();		
+		const float sampleLength = (*nextIt - *currIt).norm();
 		if (sampleLength > 10E-6f)
-		{					
+		{
 			/// compute lambda so that it match the length needed for each segment
 			float newLambdaStep = _UsedSegLength / sampleLength;
 			// readapt lambda
 			lambda *= newLambdaStep / lambdaStep;
 			lambdaStep = newLambdaStep;
-			
+
 			for(;;)
 			{
 				if (lambda >= 1.f) break;
@@ -573,15 +573,15 @@ void CPSRibbonBase::computeHermitteCstSizeRibbon(uint index, NLMISC::CVector *de
 					nlassert(NLMISC::isValidDouble(dest->y));
 					nlassert(NLMISC::isValidDouble(dest->z));
 				#endif
-				
+
 				dest  = (NLMISC::CVector *) ((uint8 *) dest + stride);
 				-- leftToDo;
-				if (!leftToDo) return;												
-				lambda += lambdaStep;				
+				if (!leftToDo) return;
+				lambda += lambdaStep;
 			}
 			lambda -= 1.f;
 		}
-		
+
 		/// go to next sampling pos
 		currIt = nextIt;
 		nextIt = nextNextIt;
@@ -611,7 +611,7 @@ void CPSRibbonBase::computeHermitteCstSizeRibbon(uint index, NLMISC::CVector *de
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::computeRibbon(uint index, NLMISC::CVector *dest, uint stride /* = sizeof(NLMISC::CVector)*/)
 {
 	NL_PS_FUNC(CPSRibbonBase_CVector )
@@ -620,32 +620,32 @@ void CPSRibbonBase::computeRibbon(uint index, NLMISC::CVector *dest, uint stride
 		case Linear:
 			if (_RibbonMode == VariableSize)
 			{
-				computeLinearRibbon(index, dest, stride);				
+				computeLinearRibbon(index, dest, stride);
 			}
 			else
 			{
-				computeLinearCstSizeRibbon(index, dest, stride);				
+				computeLinearCstSizeRibbon(index, dest, stride);
 			}
 		break;
 		case Hermitte:
 			if (_RibbonMode == VariableSize)
 			{
-				computeHermitteRibbon(index, dest, stride);					
-				
+				computeHermitteRibbon(index, dest, stride);
+
 			}
 			else
 			{
-				computeHermitteCstSizeRibbon(index, dest, stride);					
+				computeHermitteCstSizeRibbon(index, dest, stride);
 			}
 		break;
 		default:
 			nlassert(0);
 		break;
-	}	
+	}
 }
 
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::dupRibbon(uint dest, uint src)
 {
 	NL_PS_FUNC(CPSRibbonBase_dupRibbon)
@@ -656,7 +656,7 @@ void	CPSRibbonBase::dupRibbon(uint dest, uint src)
 	::memcpy(&_Ribbons[dest * (_NbSegs + EndRibbonStorage + 1)], &_Ribbons[src * (_NbSegs + EndRibbonStorage + 1)], sizeof(NLMISC::CVector) * (_NbSegs + 1 + EndRibbonStorage));
 }
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::newElement(const CPSEmitterInfo &info)
 {
 	NL_PS_FUNC(CPSRibbonBase_newElement)
@@ -667,7 +667,7 @@ void	CPSRibbonBase::newElement(const CPSEmitterInfo &info)
 	resetSingleRibbon(index, pos);
 }
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::deleteElement(uint32 index)
 {
 	NL_PS_FUNC(CPSRibbonBase_deleteElement)
@@ -677,7 +677,7 @@ void	CPSRibbonBase::deleteElement(uint32 index)
 	dupRibbon(index, size - 1);
 }
 
-//=======================================================	
+//=======================================================
 void	CPSRibbonBase::resize(uint32 size)
 {
 	NL_PS_FUNC(CPSRibbonBase_resize)
@@ -688,28 +688,28 @@ void	CPSRibbonBase::resize(uint32 size)
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::resetSingleRibbon(uint index, const NLMISC::CVector &pos)
 {
 	NL_PS_FUNC(CPSRibbonBase_resetSingleRibbon)
 	nlassert(!_Parametric);
 	TPSMatrixMode mm = convertMatrixMode();
-	NLMISC::CVector *it = &_Ribbons[(index * (_NbSegs + 1 + EndRibbonStorage))];	
+	NLMISC::CVector *it = &_Ribbons[(index * (_NbSegs + 1 + EndRibbonStorage))];
 	if (mm == _Owner->getMatrixMode())
 	{
-		std::fill(it, it + (_NbSegs + 1 + EndRibbonStorage), pos);		
+		std::fill(it, it + (_NbSegs + 1 + EndRibbonStorage), pos);
 	}
 	else
-	{		
+	{
 		nlassert(_Owner->getOwner());
 		const CMatrix &mat = CPSLocated::getConversionMatrix(*_Owner->getOwner(), mm, _Owner->getMatrixMode());
 		std::fill(it, it + (_NbSegs + 1 + EndRibbonStorage), mat * pos);
-	}	
+	}
 }
 
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::resetFromOwner()
 {
 	NL_PS_FUNC(CPSRibbonBase_resetFromOwner)
@@ -722,26 +722,26 @@ void CPSRibbonBase::resetFromOwner()
 	}
 }
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::motionTypeChanged(bool parametric)
 {
 	NL_PS_FUNC(CPSRibbonBase_motionTypeChanged)
 	_Parametric = parametric;
 	if (parametric)
 	{
-		NLMISC::contReset(_Ribbons); // kill the vector		
+		NLMISC::contReset(_Ribbons); // kill the vector
 	}
 	else
 	{
 		nlassert(_Owner);
 		resize(_Owner->getMaxSize());
-		initDateVect();		
-		resetFromOwner();		
-	}	
+		initDateVect();
+		resetFromOwner();
+	}
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::initDateVect()
 {
 	NL_PS_FUNC(CPSRibbonBase_initDateVect)
@@ -750,7 +750,7 @@ void CPSRibbonBase::initDateVect()
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSRibbonBase_serial)
@@ -759,7 +759,7 @@ void CPSRibbonBase::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	sint ver = f.serialVersion(2);
 	f.serialEnum(_RibbonMode);
 	f.serialEnum(_InterpolationMode);
-	f.serial(_NbSegs, _SegDuration);	
+	f.serial(_NbSegs, _SegDuration);
 	if (_RibbonMode == FixedSize)
 	{
 		f.serial(_RibbonLength);
@@ -771,9 +771,9 @@ void CPSRibbonBase::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	if (f.isReading())
 	{
 		if (_Owner)
-		{				
+		{
 			resize(_Owner->getMaxSize());
-			initDateVect();		
+			initDateVect();
 			resetFromOwner();
 		}
 	}
@@ -788,31 +788,31 @@ void CPSRibbonBase::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 }
 
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::updateLOD()
 {
 	NL_PS_FUNC(CPSRibbonBase_updateLOD)
 	nlassert(_Owner);
-	float ratio = _Owner->getOwner()->getOneMinusCurrentLODRatio();	
+	float ratio = _Owner->getOwner()->getOneMinusCurrentLODRatio();
 	float squaredRatio = ratio * ratio;
 	float lodRatio = _LODDegradation + (1.f - _LODDegradation ) * squaredRatio * squaredRatio * squaredRatio;
-	
+
 	_UsedNbSegs = (uint) (_NbSegs * lodRatio);
 	NLMISC::clamp(_UsedNbSegs, 0u, _NbSegs);
-	const float epsilon = 10E-4f;	
+	const float epsilon = 10E-4f;
 	_UsedSegDuration =  _SegDuration / std::max(epsilon, lodRatio);
 	_UsedSegLength   =  _SegLength / std::max(epsilon, lodRatio);
 
 }
 
-//=======================================================	
+//=======================================================
 void CPSRibbonBase::systemDateChanged()
 {
 	NL_PS_FUNC(CPSRibbonBase_systemDateChanged)
 	nlassert(_Owner->getOwner());
 	_Owner->getOwner()->getSystemDate();
 	float date = _Owner->getOwner()->getSystemDate();
-	std::fill(_SamplingDate.begin(), _SamplingDate.end(), date);	
+	std::fill(_SamplingDate.begin(), _SamplingDate.end(), date);
 	_LastUpdateDate = date;
 }
 

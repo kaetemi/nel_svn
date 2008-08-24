@@ -100,10 +100,10 @@ protected:
 
 	virtual	bool			supportIntersectSkin() const;
 	virtual	bool			intersectSkin(const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	/// Called for edition purpose (slow call O(NVertex))
 	virtual bool			getSkinBoneBBox(NLMISC::CAABBox &bbox, uint boneId);
-	
+
 	// @}
 
 

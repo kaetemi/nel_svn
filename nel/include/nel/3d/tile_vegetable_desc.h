@@ -31,7 +31,7 @@
 #include "nel/3d/vegetable_def.h"
 #include <vector>
 
-namespace NL3D 
+namespace NL3D
 {
 
 

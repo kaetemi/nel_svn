@@ -88,7 +88,7 @@ protected:
 	/// Skin intersection?
 	virtual	bool			supportIntersectSkin() const;
 	virtual	bool			intersectSkin(const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	// @}
 
 	/// \name Special Traverse Feature.

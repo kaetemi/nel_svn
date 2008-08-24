@@ -152,7 +152,7 @@ template<class A, class B, class C, class D, class E, class F, class G, class H,
 template<class A, class B, class C, class D, class E, class F, class G, class H, class I, class J, class K, class L, class M, class N, class O, class P, class Q, class R, class S, class T, class U, class V, class W, class X, class Y, class Z> __a(const char *fmt, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o, P p, Q q, R r, S s, T t, U u, V v, W w, X x, Y y, Z z) { _check(a); _check(b); _check(c); _check(d); _check(e); _check(f); _check(g); _check(h); _check(i); _check(j); _check(k); _check(l); _check(m); _check(n); _check(o); _check(p); _check(q); _check(r); _check(s); _check(t); _check(u); _check(v); _check(w); _check(x); _check(y); _check(z); __b(fmt, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z); }
 
 #endif
-	
+
 #ifdef NL_OS_WINDOWS
 	inline std::string _toString(const char *format, ...)
 #else
@@ -175,7 +175,7 @@ template<class T> std::string toStringEnum(const T &val) { return toString("%u",
 /**
  * Template Object toString.
  * \param obj any object providing a "std::string toString()" method. The object doesn't have to derive from anything.
- * 
+ *
  * the VC++ error "error C2228: left of '.toString' must have class/struct/union type" means you don't provide
  * a toString() method to your object.
  */
@@ -217,7 +217,7 @@ inline std::string toString(const uint &val) { return toString("%u", val); }
 inline std::string toString(const sint &val) { return toString("%d", val); }
 #endif // NL_COMP_VC6
 
-template<class T> 
+template<class T>
 void fromString(const std::string &str, T &obj)
 {
 	obj.fromString(str);

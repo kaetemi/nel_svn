@@ -29,7 +29,7 @@
 #include "nel/misc/vector.h"
 #include "nel/3d/matrix_3x4.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -45,11 +45,11 @@ public:
 	void		serial(NLMISC::IStream &f)
 	{
 		(void)f.serialVersion(0);
-		
+
 		f.serial(Vertex);
 		f.serial(MatrixId);
 	}
-	
+
 	// operator for sort
 	bool		operator==(const CShadowVertex &v) const
 	{
@@ -77,14 +77,14 @@ class CShadowSkin
 public:
 	std::vector<CShadowVertex>		Vertices;
 	std::vector<uint32>				Triangles;
-	
+
 public:
 
 	// skinning
 	void		applySkin(NLMISC::CVector *dst, std::vector<CMatrix3x4> &boneMat3x4);
 
-	/** return ray intersection. 
- 	 *	\return false if no triangles, true if can do the test (even if don't intersect!) 
+	/** return ray intersection.
+ 	 *	\return false if no triangles, true if can do the test (even if don't intersect!)
 	 *	if intersect, dist2D=0, and distZ= Depth Distance
 	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
@@ -94,7 +94,7 @@ public:
 
 private:
 	static  uint	NumCacheVertexShadow;
-	
+
 };
 
 

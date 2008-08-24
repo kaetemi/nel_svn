@@ -28,9 +28,9 @@
 #include <cmath>
 
 namespace NLMISC
-{					  
+{
 
-// fastFloor function. 
+// fastFloor function.
 // Actually, it seems to be bugged on VC7 (functions returns bad values)
 // TODO: fix that
 #if defined(NL_OS_WINDOWS)
@@ -39,7 +39,7 @@ namespace NLMISC
 #include <cfloat>
 
 // The magic constant value. support both positive and negative numbers.
-extern double	OptFastFloorMagicConst ; 
+extern double	OptFastFloorMagicConst ;
 const uint		OptFastFloorCWStackSize = 10;
 extern int      OptFastFloorCWStack[OptFastFloorCWStackSize];
 extern int      *OptFastFloorCWStackPtr;
@@ -61,7 +61,7 @@ inline void OptFastFloorPopCW()
 
 // init float CW.
 inline void  OptFastFloorBegin()
-{	
+{
 	OptFastFloorPushCW(_RC_DOWN|_PC_53);
 }
 
@@ -73,13 +73,13 @@ inline void  OptFastFloorEnd()
 
 // Force __stdcall to not pass parameters in registers.
 inline sint32 __stdcall OptFastFloor(float x)
-{	
+{
 	static __int64	res;
 	__asm
 	{
 		fld		x
-		fadd	qword ptr OptFastFloorMagicConst		
-		fstp	qword ptr res		
+		fadd	qword ptr OptFastFloorMagicConst
+		fstp	qword ptr res
 	}
 
 	return (sint32) (res&0xFFFFFFFF);
@@ -96,7 +96,7 @@ inline float __stdcall OptFastFractionnalPart(float x)
 		fld     st(0)
 		fadd	qword ptr OptFastFloorMagicConst
 		fstp	qword ptr res
-		fisub   dword ptr res		
+		fisub   dword ptr res
 		fstp    dword ptr res
 	}
 
@@ -105,7 +105,7 @@ inline float __stdcall OptFastFractionnalPart(float x)
 
 
 // The magic constant value, for 24 bits precision support positive numbers only
-extern float	OptFastFloorMagicConst24 ; 
+extern float	OptFastFloorMagicConst24 ;
 // init float CW. Init with float 24 bits precision, for faster float operation.
 inline void  OptFastFloorBegin24()
 {
@@ -121,13 +121,13 @@ inline void  OptFastFloorEnd24()
 // Force __stdcall to not pass parameters in registers.
 /// Same method as OptFastFloor, but result are always positive and should never be bigger than 2^23-1
 inline uint32 __stdcall OptFastFloor24(float x)
-{	
+{
 	static uint32	res;
 	__asm
 	{
 		fld		x
 		fadd	dword ptr OptFastFloorMagicConst24
-		fstp	dword ptr res		
+		fstp	dword ptr res
 	}
 
 	return res;

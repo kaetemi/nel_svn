@@ -28,17 +28,17 @@
 //
 #include "nel/misc/traits_nl.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 struct CPlaneBasisPair
-{		
+{
 	CPlaneBasis Basis;
 	CVector		Axis; // an axis for rotation
 	float		AngularVelocity; // an angular velocity
 };
 
-	
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,17 +61,17 @@ struct CPlaneBasisPair
  * there are batch of particle that share the same orientation. The users must give the number of various phase
  * This is the fastest.
  * Other cases need an attribute maker that produce a couple of vectors
- * , giving the x & y direction of the local basis (plane particle) 
- * 
+ * , giving the x & y direction of the local basis (plane particle)
+ *
  */
 
 
-class CPSFace       : public CPSQuad					
+class CPSFace       : public CPSQuad
 					, public CPSRotated3DPlaneParticle
 					, public CPSHintParticleRotateTheSame
 {
 public:
-	/** Create the face 
+	/** Create the face
 	 *  you can give a non-animated texture here
 	 */
 	CPSFace(CSmartPtr<ITexture> tex = NULL);
@@ -82,10 +82,10 @@ public:
 	/** Tells that all faces are turning in the same manner, and only have a rotationnal bias
 	 *  This is faster then other method. Any previous set scheme for 3d rotation is kept.
 	 *	\param: the number of rotation configuration we have. The more high it is, the slower it'll be
-	 *          If this is too low, a lot of particles will have the same orientation	           	 
+	 *          If this is too low, a lot of particles will have the same orientation
 	 *          If it is 0, then the hint is disabled
- 	 *  \param  minAngularVelocity : the maximum angular velocity for particle rotation	 
-	 *  \param  maxAngularVelocity : the maximum angular velocity for particle rotation	 
+ 	 *  \param  minAngularVelocity : the maximum angular velocity for particle rotation
+	 *  \param  maxAngularVelocity : the maximum angular velocity for particle rotation
 	 *  \see    CPSRotated3dPlaneParticle
 	 */
 	void hintRotateTheSame(uint32 nbConfiguration
@@ -111,7 +111,7 @@ public:
 	{
 		min = _MinAngularVelocity;
 		max = _MaxAngularVelocity;
-		return _PrecompBasis.size(); 
+		return _PrecompBasis.size();
 	}
 
 	/// from CPSParticle : return true if there are lightable faces in the object
@@ -123,22 +123,22 @@ protected:
 	friend class CPSFaceHelper; /// for private use only
 
 	virtual void	step(TPSProcessPass pass);
-	virtual void	newElement(const CPSEmitterInfo &info);	
+	virtual void	newElement(const CPSEmitterInfo &info);
 	virtual void	deleteElement(uint32 index);
 	virtual void	resize(uint32 size);
 	/// fill _IndexInPrecompBasis with index in the range [0.. nb configurations[
 	void fillIndexesInPrecompBasis(void);
 	virtual CPSLocated *getPlaneBasisOwner(void) { return _Owner; }
-		
+
 	// we must store them for serialization
 	float			_MinAngularVelocity;
 	float			_MaxAngularVelocity;
-	
+
 	/// a set of precomp basis, before and after transfomation in world space, used if the hint 'RotateTheSame' has been called
 	CPSVector<CPlaneBasisPair>::V _PrecompBasis;
 
 	/// this contain an index in _PrecompBasis for each particle
-	CPSVector<uint32>::V _IndexInPrecompBasis;	
+	CPSVector<uint32>::V _IndexInPrecompBasis;
 };
 
 

@@ -64,7 +64,7 @@ void			*CSharedMemory::createSharedMemory( TSharedMemId sharedMemId, uint32 size
 	}
 	//else
 	//	nldebug( "SHDMEM: Creating smid %s --> mapFile %p", sharedMemId, hMapFile );
-	
+
 
 	// Map the file into memory address space
 	void *accessAddress = MapViewOfFile( hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, 0 );
@@ -110,7 +110,7 @@ void			*CSharedMemory::accessSharedMemory( TSharedMemId sharedMemId )
 	void *accessAddress = MapViewOfFile( hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, 0 );
 	AccessAddressesToHandles.insert( make_pair( accessAddress, hMapFile ) );
 	return accessAddress;
-	
+
 #else
 
 	// Open an existing shared memory segment
@@ -164,7 +164,7 @@ bool			CSharedMemory::closeSharedMemory( void *accessAddress )
 
 	// Detach the shared memory segment
 	return ( shmdt( accessAddress ) != -1 );
-	
+
 #endif
 }
 
@@ -175,7 +175,7 @@ bool			CSharedMemory::closeSharedMemory( void *accessAddress )
  * "Rescue feature": set "force" to true if a segment was created and left out of
  * control (meaning a new createSharedMemory() with the same sharedMemId fails), but
  * before, make sure the segment really belongs to you!
- * 
+ *
  * Note: this method does nothing under Windows, destroying is automatic.
  * Under Unix, the segment will actually be destroyed after the last detach
  * (quoting shmctl man page). It means after calling destroySharedMemory(), the

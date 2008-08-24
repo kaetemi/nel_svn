@@ -32,7 +32,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -42,7 +42,7 @@ void CBlendShape::serial (NLMISC::IStream &f) throw(NLMISC::EStream)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// version 1 : added tangent space support
 	sint ver = f.serialVersion (1);
 
@@ -65,7 +65,7 @@ CMeshMorpher::CMeshMorpher()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	_VBOri = NULL;
 	_VBDst = NULL;
 
@@ -136,7 +136,7 @@ void CMeshMorpher::update (std::vector<CAnimatedMorph> *pBSFactor)
 	_VBDst->lock (dstvba);
 	const uint8 *pOri = (const uint8*)srcvba.getVertexCoordPointer ();
 	uint8 *pDst = (uint8*)dstvba.getVertexCoordPointer ();
-	
+
 	for (i= 0; i < _Flags.size(); ++i)
 	if (_Flags[i] >= Modified)
 	{
@@ -263,13 +263,13 @@ void CMeshMorpher::updateSkinned (std::vector<CAnimatedMorph> *pBSFactor)
 	_VBDst->lock (dstvba);
 	const uint8 *pOri = (const uint8*)srcvba.getVertexCoordPointer ();
 	uint8 *pDst = (uint8*)dstvba.getVertexCoordPointer ();
-	
+
 	for (i= 0; i < _Flags.size(); ++i)
 	if (_Flags[i] >= Modified)
 	{
 		for(j = 0; j < VBVertexSize; ++j)
 			pDst[j+i*VBVertexSize] = pOri[j+i*VBVertexSize];
-		
+
 		if (_Vertices != NULL)
 			_Vertices->operator[](i) = ((CVector*)(pOri+i*VBVertexSize))[0];
 
@@ -278,7 +278,7 @@ void CMeshMorpher::updateSkinned (std::vector<CAnimatedMorph> *pBSFactor)
 
 		if (_TgSpace != NULL)
 			(*_TgSpace)[i] = * (CVector*)(pOri + i * VBVertexSize + tgSpaceOff);
-			
+
 		_Flags[i] = OriginalVBDst;
 	}
 
@@ -355,7 +355,7 @@ void CMeshMorpher::serial (NLMISC::IStream &f) throw(NLMISC::EStream)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	(void)f.serialVersion (0);
 
 	f.serialCont (BlendShapes);
@@ -368,7 +368,7 @@ void CMeshMorpher::serial (NLMISC::IStream &f) throw(NLMISC::EStream)
 #define	NL3D_RAWSKIN_VERTEX_SIZE	32
 
 void CMeshMorpher::updateRawSkin (CVertexBuffer *vbOri,
-					NLMISC::CObjectVector<CRawSkinVertex*, false>	&vertexRemap, 
+					NLMISC::CObjectVector<CRawSkinVertex*, false>	&vertexRemap,
 					std::vector<CAnimatedMorph> *pBSFactor)
 {
 	uint32 i, j;
@@ -382,14 +382,14 @@ void CMeshMorpher::updateRawSkin (CVertexBuffer *vbOri,
 	nlassert(NL3D_RAWSKIN_VERTEX_SIZE == vbOri->getVertexSize());
 	nlassert(NL3D_RAWSKIN_NORMAL_OFF == vbOri->getNormalOff());
 	nlassert(NL3D_RAWSKIN_UV_OFF == vbOri->getTexCoordOff(0));
-	
+
 	// Cleaning with original vertex buffer
 	CVertexBufferRead srcvba;
 	vbOri->lock (srcvba);
 	const uint8			*pOri = (const uint8*)srcvba.getVertexCoordPointer ();
 	CRawSkinVertex	**vRemap= vertexRemap.getPtr();
 	uint			numVertices= vbOri->getNumVertices();
-	
+
 	// Update only the vertices of this lod
 	for (i= 0; i < numVertices; ++i)
 	{
@@ -413,7 +413,7 @@ void CMeshMorpher::updateRawSkin (CVertexBuffer *vbOri,
 		{
 			rFactor*= 0.01f;
 			uint32		numVertices= rBS.VertRefs.size();
-			// don't know why, but cases happen where deltaNorm not empty while deltaPos is 
+			// don't know why, but cases happen where deltaNorm not empty while deltaPos is
 			bool		hasPos= rBS.deltaPos.size()>0;
 			bool		hasNorm= rBS.deltaNorm.size()>0;
 			bool		hasUV= rBS.deltaUV.size()>0;
@@ -421,7 +421,7 @@ void CMeshMorpher::updateRawSkin (CVertexBuffer *vbOri,
 			{
 				// Get the vertex Index in the VBufferFinal
 				uint	vid= rBS.VertRefs[j];
-				// Then get the RawSkin vertex to modify 
+				// Then get the RawSkin vertex to modify
 				CRawSkinVertex	*rsVert= vertexRemap[vid];
 
 				// If exist in this Lod RawSkin, apply

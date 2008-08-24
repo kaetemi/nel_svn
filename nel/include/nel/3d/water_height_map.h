@@ -65,7 +65,7 @@ const uint NumWaterMap = 3; // number of water maps
 class CWaterHeightMap : public UWaterHeightMap
 {
 public:
-	
+
 	/** Animate this water pool.
 	  * Usually called by CWaterModel before the display, if this height map date is not the same as the current date.
 	  */
@@ -94,12 +94,12 @@ public:
 	  */
 	void					getUserPos(sint &x, sint &y) const;
 
-	
+
 
 	/// create a perturbation in the height map.
 	void					perturbate(sint x, sint y, sint radius, float intensity);
 
-	/** Inherited from UWaterHeightMap. This version takes a location in world space	  
+	/** Inherited from UWaterHeightMap. This version takes a location in world space
 	  */
 	virtual void	perturbate(const NLMISC::CVector2f &pos, float strenght, float radius) ;
 
@@ -107,14 +107,14 @@ public:
 	/// create a point perturbation in the height map.
 	void					perturbatePoint(sint x, sint y, float intensity);
 
-	/** Inherited from UWaterHeightMap. This version takes a location in world space	  
+	/** Inherited from UWaterHeightMap. This version takes a location in world space
 	  */
 	virtual void	perturbatePoint(const NLMISC::CVector2f &pos, float strenght);
 
 	/** Inherited from UWaterHeightMap. Get the height of water at the given location.
 	  */
 	virtual float	getHeight(const NLMISC::CVector2f &pos);
-	
+
 
 	/// get a pointer on the current buffer.
 	float					*getPointer(void) { return &(_Map[_CurrMap][0]); }
@@ -127,7 +127,7 @@ public:
 
 	/// get a pointer on the gradient buffer
 	//NLMISC::CVector2f		*getGradPointer(void) { return &_Grad[0]; }
-	
+
 
 	/// enable automatic waves generation
 	void					enableWaves(bool enabled = true) { _WavesEnabled = enabled; }
@@ -204,7 +204,7 @@ private:
 	  * \param damping The attenuation factor used for propagation.
 	  */
 	void					propagate(uint startLine, uint endLine);
-	
+
 
 	/// apply a filter on the height field
 	void					filter(uint startLine, uint endLine);
@@ -215,7 +215,7 @@ private:
 
 	friend class CWaterPoolManager;
 
-	std::string                _Name;	
+	std::string                _Name;
 	bool					   _WavesEnabled;
 	float					   _Damping;
 	float					   _FilterWeight;
@@ -229,17 +229,17 @@ private:
 	TAnimationTime             _PropagationTime; // the time needed to perform a propagation, this allow split the propagation computation over time.
 
 
-	uint					   _X, _Y;	
-	uint					   _NewX, _NewY;	
+	uint					   _X, _Y;
+	uint					   _NewX, _NewY;
 	typedef std::vector<float>				TFloatVect;
 	typedef std::vector<NLMISC::CVector2f > TFloat2Vect;
 
 	TFloatVect				   _Map[NumWaterMap]; // the 2 maps used for propagation
-	//TFloat2Vect				   _Grad;   // used to store the gradient 
-	uint8					   _CurrMap;	
-	uint32					   _Size;	
+	//TFloat2Vect				   _Grad;   // used to store the gradient
+	uint8					   _CurrMap;
+	uint32					   _Size;
 
-	/// clear an area of the water height map (has clipping, but no wrapping)	
+	/// clear an area of the water height map (has clipping, but no wrapping)
 	void						clearArea(uint8 currMap, sint x, sint y, sint width, sint height);
 	// same than clearArea, but perform on both maps
 	void						clearZone(sint x, sint y, sint width, sint height);

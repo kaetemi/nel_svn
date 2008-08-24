@@ -56,7 +56,7 @@ public:
 	virtual void submitEvents(CEventServer &server, bool allWindows);
 private:
 	typedef std::vector<std::pair<IEventEmitter *, bool> > TEmitterCont;
-	TEmitterCont	_Emitters;	
+	TEmitterCont	_Emitters;
 };
 
 

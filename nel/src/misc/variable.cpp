@@ -77,5 +77,5 @@ void CCommandRegistry::initVariables(NLMISC::CConfigFile &configFile)
 		}
 	}
 }
-	
+
 } // NLMISC

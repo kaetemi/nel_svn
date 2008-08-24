@@ -48,7 +48,7 @@ class UWaterEnvMap;
 class CSceneUser : public UScene
 {
 private:
-	/// update async loading during a call to render	  
+	/// update async loading during a call to render
 	virtual void			updateWaitingInstances();
 protected:
 	/// The driver which owns this scene.
@@ -82,7 +82,7 @@ protected:
 		IAsyncLoadCallback *Callback;
 		CWaitingIG(UInstanceGroup **callerPtr, const NLMISC::CVector &pos, const NLMISC::CQuat &rot, uint selectedTexture, IAsyncLoadCallback *pCB)	: IGToLoad(NULL), CallerPtr(callerPtr), Pos(pos), Rot(rot), SelectedTexture(selectedTexture), Callback(pCB)
 		{}
-	};	
+	};
 	//
 	typedef std::list<CWaitingIG> TWaitingIGList;
 	TWaitingIGList		  _WaitingIGs;
@@ -105,10 +105,10 @@ public:
 	virtual	void			beginPartRender();
 	virtual	void			renderPart(TRenderPart rp);
 	virtual	void			endPartRender(bool updateWaitingInstances = true, bool restoreMatrixContextAfterRender = true);
-	
+
 	// update async loading whithout a call to render
 	virtual void			updateWaitingInstances(double ellapsedTime);
-	virtual	void			animate(TGlobalAnimationTime time);	
+	virtual	void			animate(TGlobalAnimationTime time);
 	//@}
 
 
@@ -133,12 +133,12 @@ public:
 	virtual	void			createInstanceAsync(const std::string &shapeName, UInstance *ppInstance, const NLMISC::CVector &position, uint selectedTexture);
 	virtual	void			deleteInstance(UInstance &inst);
 
-	virtual	void createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup, UInstanceGroup **pIG, const NLMISC::CVector &pos, 
+	virtual	void createInstanceGroupAndAddToSceneAsync (const std::string &instanceGroup, UInstanceGroup **pIG, const NLMISC::CVector &pos,
 														const NLMISC::CQuat &rot, uint selectedTexture, IAsyncLoadCallback *pCB = NULL);
 
 	virtual	void stopCreatingAndAddingIG(UInstanceGroup **pIG);
 	virtual void deleteInstanceGroup(UInstanceGroup *pIG);
-	
+
 	/// should be called at each render
 	void	updateWaitingIG();
 
@@ -171,7 +171,7 @@ public:
 	// @{
 	/** Set the automatic animation set used by the scene.
 	  */
-	virtual void				setAutomaticAnimationSet(UAnimationSet *as);	
+	virtual void				setAutomaticAnimationSet(UAnimationSet *as);
 	/// Create a new PlayListManager.
 	virtual	UPlayListManager	*createPlayListManager() ;
 	/// Delete a PlayListManager.
@@ -269,10 +269,10 @@ public:
 	virtual void				profileQuadGridClipManager();
 	// @}
 
-	/// \name Flare contexts	  
+	/// \name Flare contexts
 	// @{
-		virtual uint	getNumFlareContexts() const;		
-		virtual void	setFlareContext(uint context);		
+		virtual uint	getNumFlareContexts() const;
+		virtual void	setFlareContext(uint context);
 		virtual uint    getFlareContext() const;
 	// @}
 
@@ -305,8 +305,8 @@ public:
 
 	/// \name Water envmaps
 	// @{
-	virtual void		  setWaterEnvMap(UWaterEnvMap *waterEnvMap);	
-	virtual UWaterEnvMap *getWaterEnvMap() const { return _WaterEnvMap; }	
+	virtual void		  setWaterEnvMap(UWaterEnvMap *waterEnvMap);
+	virtual UWaterEnvMap *getWaterEnvMap() const { return _WaterEnvMap; }
 	virtual void		  updateWaterEnvMaps(TGlobalAnimationTime time);
 	// @}
 

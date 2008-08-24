@@ -60,7 +60,7 @@ namespace NLMISC {
 static vector<string> CommandHistory;
 static uint32 CommandHistoryPos = 0;
 static CLog *Log = 0;
-	
+
 static GtkWidget *RootWindow = NULL, *OutputText = NULL, *InputText = NULL;
 static GtkWidget *hrootbox = NULL, *scrolled_win2 = NULL;
 
@@ -78,7 +78,7 @@ CGtkDisplayer::~CGtkDisplayer ()
 gint ButtonClicked(GtkWidget *Widget, gpointer *Data)
 {
 	CGtkDisplayer *disp = (CGtkDisplayer *) Data;
-	
+
 	// find the button and execute the command
 	CSynchronized<std::vector<CGtkDisplayer::CLabelEntry> >::CAccessor access (&(disp->_Labels));
 	for (uint i = 0; i < access.value().size(); i++)
@@ -97,7 +97,7 @@ gint ButtonClicked(GtkWidget *Widget, gpointer *Data)
 				string str;
 				nlassert (!access.value()[i].Value.empty());
 				nlassert (access.value()[i].Value[0] == '@');
-				
+
 				string::size_type pos = access.value()[i].Value.find ("|");
 				if (pos != string::npos)
 				{
@@ -126,7 +126,7 @@ void CGtkDisplayer::updateLabels ()
 			if (access.value()[i].NeedUpdate && !access.value()[i].Value.empty())
 			{
 				string n;
-				
+
 				if (access.value()[i].Value[0] != '@')
 					n = access.value()[i].Value;
 				else
@@ -141,7 +141,7 @@ void CGtkDisplayer::updateLabels ()
 						n = access.value()[i].Value.substr (1);
 					}
 				}
-				
+
 				if (access.value()[i].Hwnd == NULL)
 				{
 					// create a button for command and label for variables
@@ -325,7 +325,7 @@ void CGtkDisplayer::open (std::string titleBar, bool iconified, sint x, sint y, 
 	PangoFontDescription *fontDesc = pango_font_description_from_string("Monospace 10");
   	gtk_widget_modify_font(OutputText, fontDesc);
   	pango_font_description_free(fontDesc);
-	
+
 	GtkTextBuffer *textBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
 	GtkTextIter endIter;
 	gtk_text_buffer_get_end_iter(textBuffer, &endIter);
@@ -344,7 +344,7 @@ void CGtkDisplayer::open (std::string titleBar, bool iconified, sint x, sint y, 
 //	gtk_widget_show (button);
 	gtk_widget_show (OutputText);
 	gtk_widget_show (InputText);
-	
+
 	gtk_widget_show (hrootbox);
 	gtk_widget_show (vrootbox);
     gtk_widget_show (RootWindow);
@@ -358,7 +358,7 @@ void CGtkDisplayer::clear ()
 {
 	GtkTextBuffer *buffer;
 	GtkTextIter    start, end;
-	
+
 	// who is taking care of the iterators?
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
 	gtk_text_buffer_get_bounds(buffer, &start, &end);
@@ -385,7 +385,7 @@ gint updateInterf (gpointer data)
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(OutputText));
 	GtkTextIter    end_iter;
 	gtk_text_buffer_get_end_iter(buffer, &end_iter);
-	
+
 	std::list<std::pair<uint32, std::string> >::iterator it;
 	{
 		CSynchronized<std::list<std::pair<uint32, std::string> > >::CAccessor access (&disp->_Buffer);
@@ -424,7 +424,7 @@ void CGtkDisplayer::display_main ()
 	//
 
 	gtk_timeout_add (10, updateInterf, this);
-	gtk_main ();	
+	gtk_main ();
 }
 
 

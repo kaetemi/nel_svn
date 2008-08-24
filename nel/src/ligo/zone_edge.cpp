@@ -36,7 +36,7 @@ namespace NLLIGO
 
 // ***************************************************************************
 
-bool CZoneEdge::build (const std::vector<NLMISC::CVector> &theEdge, const std::vector<uint32> &theId, uint rotation, 
+bool CZoneEdge::build (const std::vector<NLMISC::CVector> &theEdge, const std::vector<uint32> &theId, uint rotation,
 				sint32 offsetX, sint32 offsetY, const CLigoConfig &config, CLigoError &errors)
 {
 	// Some checks

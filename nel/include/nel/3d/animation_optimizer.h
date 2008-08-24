@@ -29,7 +29,7 @@
 #include "nel/misc/vectord.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using	NLMISC::CQuat;
@@ -76,7 +76,7 @@ public:
 	 */
 	void		setVectorThreshold(double lowPrecThre, double highPrecThre);
 
-	/** see setQuaternionThreshold(). Any track which contains this name will be considered as a 
+	/** see setQuaternionThreshold(). Any track which contains this name will be considered as a
 	 *	Low precision track. Default setup is empty, so all track are "high precision" track.
 	 *	A good setup is  for example addLowPrecisionTrack("Finger") and addLowPrecisionTrack("Ponytail")
 	 *	Warning: case sensitive
@@ -138,7 +138,7 @@ private:
 	/// Quaternion optimisation.
 	// @{
 
-	/** sample the track from beginTime to endTime, sample to numSamples, such that 
+	/** sample the track from beginTime to endTime, sample to numSamples, such that
 	 *	key[0].Time==beginTime and key[numSamples-1].Time==endTime.
 	 *	NB: quaternion are normalized, and are makeClosest()-ed from sample to the next.
 	 */
@@ -164,7 +164,7 @@ private:
 	/// Vector optimisation.
 	// @{
 
-	/** sample the track from beginTime to endTime, sample to numSamples, such that 
+	/** sample the track from beginTime to endTime, sample to numSamples, such that
 	 *	key[0].Time==beginTime and key[numSamples-1].Time==endTime.
 	 */
 	void		sampleVectorTrack(const ITrack *trackIn, float beginTime, float endTime, uint numSamples);

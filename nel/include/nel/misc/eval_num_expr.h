@@ -61,7 +61,7 @@ public:
 	  * Evaluate a numerical expression.
 	  *
 	  * Doesn't allocate heap memory for common complexity expression.
-	  * 
+	  *
 	  * \param expression is an expression string. See the expression grammar.
 	  * \param result is filled with the result if the function returns "NoError".
 	  * \param errorIndex is a pointer on an integer value filled with the index
@@ -121,11 +121,11 @@ public:
 	  *				| mantissa	// Calculates the mantissa of a floating point value
 	  *				| round		// Calculates the nearest integer value ( round(-1.6) = -2, round(1.1) = 1 )
 	  *				| sin		// Calculate sines
-	  *				| sinh		// Calculate hyperbolic sines 
+	  *				| sinh		// Calculate hyperbolic sines
 	  *				| sq		// Calculates the square
 	  *				| sqrt		// Calculates the square root
-	  *				| tan		// Calculates the tangent 
-	  *				| tanh		// Calculates the hyperbolic tangent 
+	  *				| tan		// Calculates the tangent
+	  *				| tanh		// Calculates the hyperbolic tangent
 	  *				| string	// User defined one arg function, evaluated by the evalfunction() callback
 	  *
 	  * function2:	max			// Returns the larger of two values
@@ -151,7 +151,7 @@ public:
 	  *
 	  *  0 - unary operator (-, ~, !)
 	  *  1 - *, /, %
-	  *	 2 - +, -, 
+	  *	 2 - +, -,
 	  *  3 - <<, >>, <-, ->
 	  *  4 - <, <=, >, >=
 	  *	 5 - ==, !=
@@ -174,20 +174,20 @@ protected:
 
 	/**
 	  * Eval a user defined value. Default implementation returns UnkownValue.
-	  * The user can parse the value and fill the result double and return NoError, UnkownValue or 
+	  * The user can parse the value and fill the result double and return NoError, UnkownValue or
 	  * ValueError.
 	  *
 	  * \param value is the value to parse.
 	  * \param result is the result to fill if the value has been succesfully parsed.
 	  * \param userData is a user data used by user eval function.
-	  * \return UnkownValue if the value is not known, ValueError is the value evaluation failed or NoError 
+	  * \return UnkownValue if the value is not known, ValueError is the value evaluation failed or NoError
 	  * if it has been parsed.
 	  */
 	virtual TReturnState evalValue (const char *value, double &result, uint32 userData);
 
 	/**
 	  * Eval a user defined function. Default implementation returns UnkownFunction.
-	  * The user can parse the function name and fill the result double and return NoError, UnkownFunction 
+	  * The user can parse the function name and fill the result double and return NoError, UnkownFunction
 	  * or FunctionError.
 	  *
 	  * To convert double argu in boolean argu, use (round (value) != 0.0) ? true : false
@@ -196,7 +196,7 @@ protected:
 	  * \param arg0 is the first parameter passed to the function.
 	  * \param arg1 is the second parameter passed to the function.
 	  * \param result is the result to fill if the value has been succesfully parsed.
-	  * \return UnkownFunction if the function doesn't exist, FunctionError if the function evaluation 
+	  * \return UnkownFunction if the function doesn't exist, FunctionError if the function evaluation
 	  * failed, NoError if it has been parsed.
 	  */
 	virtual TReturnState evalFunction (const char *funcName, double arg0, double &result);
@@ -246,7 +246,7 @@ private:
 		LogicalAnd,		// &&
 		LogicalOr,		// ||
 		LogicalXor,		// ^^
-		OperatorCount,	// 
+		OperatorCount,	//
 		NotOperator, // This is not an operator
 		ExtOperator, // This is a 2 charcters operator
 	};
@@ -284,7 +284,7 @@ private:
 	};
 
 	// Some constant
-	enum 
+	enum
 	{
 		InternalStringLen = 32,
 		InternalOperator = 4,

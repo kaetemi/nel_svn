@@ -69,7 +69,7 @@ public:
 	ISource			*DrvSource;
 
 private:
-	
+
 	/// The current logical source
 	CSimpleSource		*_SimpleSource;
 

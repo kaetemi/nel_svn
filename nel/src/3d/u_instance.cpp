@@ -36,7 +36,7 @@
 
 using	namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -108,7 +108,7 @@ void		UInstance::selectTextureSet(uint id)
 
 
 // ***************************************************************************
-void		UInstance::enableAsyncTextureMode(bool enable) 
+void		UInstance::enableAsyncTextureMode(bool enable)
 {
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
@@ -118,7 +118,7 @@ void		UInstance::enableAsyncTextureMode(bool enable)
 	}
 }
 // ***************************************************************************
-bool		UInstance::getAsyncTextureMode() const 
+bool		UInstance::getAsyncTextureMode() const
 {
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
@@ -126,11 +126,11 @@ bool		UInstance::getAsyncTextureMode() const
 		CMeshBaseInstance *mbi  = static_cast<CMeshBaseInstance *>(object);
 		return mbi->getAsyncTextureMode() ;
 	}
-	else 
+	else
 		return false;
 }
 // ***************************************************************************
-void		UInstance::startAsyncTextureLoading() 
+void		UInstance::startAsyncTextureLoading()
 {
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
@@ -140,7 +140,7 @@ void		UInstance::startAsyncTextureLoading()
 	}
 }
 // ***************************************************************************
-bool		UInstance::isAsyncTextureReady() 
+bool		UInstance::isAsyncTextureReady()
 {
 	CTransformShape	*object = getObjectPtr();
 	if(object->isMeshBaseInstance())
@@ -239,7 +239,7 @@ bool UInstance::supportMaterialRendering(UDriver &drv, bool forceBaseCaps)
 	uint i;
 	for (i=0; i<count; i++)
 	{
-		if (!object->getMaterial (i)->isSupportedByDriver(*driver, forceBaseCaps)) 
+		if (!object->getMaterial (i)->isSupportedByDriver(*driver, forceBaseCaps))
 			return false;
 	}
 	return true;
@@ -269,35 +269,35 @@ UInstanceMaterial UInstance::getMaterial(uint materialId)
 
 // ***************************************************************************
 
-bool UInstance::canStartStop() 
-{ 
+bool UInstance::canStartStop()
+{
 	CTransformShape	*object = getObjectPtr();
-	return object->canStartStop(); 
-}	
+	return object->canStartStop();
+}
 
 // ***************************************************************************
 
-void UInstance::start() 
-{ 
+void UInstance::start()
+{
 	CTransformShape	*object = getObjectPtr();
-	object->start(); 
-}	
+	object->start();
+}
 
 // ***************************************************************************
 
-void UInstance::stop()  
-{ 
+void UInstance::stop()
+{
 	CTransformShape	*object = getObjectPtr();
-	object->stop(); 
-}	
+	object->stop();
+}
 
 // ***************************************************************************
 
-bool UInstance::isStarted() const 
-{ 
+bool UInstance::isStarted() const
+{
 	CTransformShape	*object = getObjectPtr();
-	return object->isStarted(); 
-}	
+	return object->isStarted();
+}
 
 // ***************************************************************************
 
@@ -305,7 +305,7 @@ float UInstance::getDistMax() const
 {
 	CTransformShape	*object = getObjectPtr();
 	return object->getDistMax();
-}	
+}
 
 // ***************************************************************************
 
@@ -318,11 +318,11 @@ void UInstance::setDistMax(float distMax)
 // ***************************************************************************
 UShape		UInstance::getShape() const
 {
-		
+
 	CTransformShape	*object = getObjectPtr();
 	if(!object)
 		return UShape();
-	
+
 	// get the shape name
 	return UShape(object->Shape);
 }
@@ -332,7 +332,7 @@ const std::string &UInstance::getShapeName() const
 {
 
 	static std::string emptyStr;
-	
+
 	CTransformShape	*object = getObjectPtr();
 	if(!object)
 		return emptyStr;

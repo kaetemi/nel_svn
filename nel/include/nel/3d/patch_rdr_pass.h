@@ -32,7 +32,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -57,7 +57,7 @@ public:
 
 
 	/// \name The Patch/Tile List for this pass.. updated at each render(), (in CPatch::preRender() and CLandscape::render()).
-	/**	
+	/**
 	 *	maxRenderedFaces is used to over-estimate the number of faces that will be rendered in this pass.
 	 *	Since all Far0/Far1/Tiles are added, this is REALLY over-estimated because in CLandscape::render(),
 	 *	Far0/Far1/Tiles render are split.
@@ -103,7 +103,7 @@ public:
 	}
 
 private:
-	/* NB: for faster Cache Access during preRender(), you must leave those variables packed like this 
+	/* NB: for faster Cache Access during preRender(), you must leave those variables packed like this
 		_MaxRenderedFaces, _Far0ListRoot, _Far1ListRoot, _TileListRoot
 	*/
 	uint				_MaxRenderedFaces;

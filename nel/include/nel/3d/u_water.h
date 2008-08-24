@@ -59,11 +59,11 @@ public:
 	uint32	getWaterHeightMapID() const;
 
 	/** When displaying the water height field, the value in the height field is actually multiplied
-	  * by a factor to get the height in world space. This returns this factor	  
+	  * by a factor to get the height in world space. This returns this factor
 	  */
 	float	getHeightFactor() const;
 
-	/// Get the height of the water in world space at the given location. 
+	/// Get the height of the water in world space at the given location.
 	float   getHeight(const NLMISC::CVector2f &pos);
 
 	/** Get the attenuated height of the water in world space at the given location.
@@ -99,8 +99,8 @@ public:
 	  * The blend factor if clamped to [0, 1]
 	  * NB : when transition has finished, one should call releaseBlendTexture to eventually release textures from system memory
 	  */
-	static void		setBlendFactor(UDriver *driver, float value);		  
-	/** release blend textures from memory	  
+	static void		setBlendFactor(UDriver *driver, float value);
+	/** release blend textures from memory
 	  */
 	static void		releaseBlendTextures();
 
@@ -115,26 +115,26 @@ public:
 	/// get the size in meter of a heightmap texel
 	virtual float	getUnitSize() const =0;
 
-	/** Apply a perturbation on this heightmap at the given location.	  
+	/** Apply a perturbation on this heightmap at the given location.
 	  * \param pos, The x and y coords of the perturbation.
 	  * \param strenght Strenght of the impulsion
 	  * \param radius   Radius of the impulsion
 	  */
 	virtual void	perturbate(const NLMISC::CVector2f &pos, float strenght, float radius) =0;
 
-	/** Apply a point perturbation on this heightmap at the given location.	  
+	/** Apply a point perturbation on this heightmap at the given location.
 	  * \param pos, The x and y coords of the perturbation.
-	  * \param strenght Strenght of the impulsion	  
+	  * \param strenght Strenght of the impulsion
 	  */
 	virtual void	perturbatePoint(const NLMISC::CVector2f &pos, float strenght) =0;
 
 	/** Get the value of the height map at the given location. To get the height in world coordinate,
-	  * You should use getHeight	  
+	  * You should use getHeight
 	  */
 	virtual float	getHeight(const NLMISC::CVector2f &pos) =0;
 };
 
-  
+
 
 
 

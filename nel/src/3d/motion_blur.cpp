@@ -62,7 +62,7 @@ void CMotionBlur::performMotionBlur(IDriver *driver, float motionBlurAmount)
 	nlassert(_Tex) ;  //start motion blur has not been called !!
 	nlassert(driver) ;
 	nlassert(motionBlurAmount >= 0.f && motionBlurAmount <= 1.f) ;
-	
+
 	static CVertexBuffer  vb ;
 	vb.setVertexFormat(CVertexBuffer::PositionFlag | CVertexBuffer::TexCoord0Flag ) ;
 	vb.setNumVertices(4) ;
@@ -81,10 +81,10 @@ void CMotionBlur::performMotionBlur(IDriver *driver, float motionBlurAmount)
 		vb.lock (vba);
 		for (uint sn = 0 ; sn < 2 ; ++sn)
 		{
-			vba.setTexCoord(0, sn, CUV(0, 0)) ; 
-			vba.setTexCoord(1, sn, CUV(widthRatio, 0)) ; 
-			vba.setTexCoord(2, sn, CUV(widthRatio, heightRatio)) ; 
-			vba.setTexCoord(3, sn, CUV(0, heightRatio)) ; 
+			vba.setTexCoord(0, sn, CUV(0, 0)) ;
+			vba.setTexCoord(1, sn, CUV(widthRatio, 0)) ;
+			vba.setTexCoord(2, sn, CUV(widthRatio, heightRatio)) ;
+			vba.setTexCoord(3, sn, CUV(0, heightRatio)) ;
 		}
 
 
@@ -92,22 +92,22 @@ void CMotionBlur::performMotionBlur(IDriver *driver, float motionBlurAmount)
 		if (!matSetup)
 		{
 			mbMat.setBlend(true) ;
-			mbMat.setBlendFunc(CMaterial::srcalpha, CMaterial::invsrcalpha) ;	
+			mbMat.setBlendFunc(CMaterial::srcalpha, CMaterial::invsrcalpha) ;
 			mbMat.setZWrite(false) ;
-			mbMat.setZFunc(CMaterial::always) ;	
-			// stage 0	    
+			mbMat.setZFunc(CMaterial::always) ;
+			// stage 0
 			mbMat.setTexture(0, _Tex) ;
 			mbMat.texEnvOpRGB(0, CMaterial::Replace );
 
 			mbMat.texEnvArg0Alpha(0, CMaterial::Diffuse, CMaterial::SrcAlpha);
 			mbMat.texEnvOpAlpha(0, CMaterial::Replace);
-			
+
 			mbMat.setDoubleSided(true) ;
 			matSetup = true ;
 		}
 
 
-		mbMat.setColor(CRGBA(255, 255, 255, (uint8) (255.f * motionBlurAmount) ) ) ;		
+		mbMat.setColor(CRGBA(255, 255, 255, (uint8) (255.f * motionBlurAmount) ) ) ;
 
 
 		vba.setVertexCoord(0, CVector((float) _X, 0, 0) ) ;
@@ -118,7 +118,7 @@ void CMotionBlur::performMotionBlur(IDriver *driver, float motionBlurAmount)
 
 	driver->setupViewMatrix(CMatrix::Identity) ;
 	driver->setupModelMatrix(CMatrix::Identity) ;
-	
+
 
 	driver->activeVertexBuffer(vb) ;
 	driver->renderRawQuads(mbMat, 0, 1) ;

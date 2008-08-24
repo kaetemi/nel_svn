@@ -38,13 +38,13 @@
 #include "nel/3d/ig_surface_light_build.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
 /**
- * A class to precompute "StaticSetup" lighting for instances in an InstanceGroup. 
+ * A class to precompute "StaticSetup" lighting for instances in an InstanceGroup.
  *	Class "inspired" from CZoneLighter :)
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -134,14 +134,14 @@ public:
 	/** Light an InstanceGroup
 	 *	igOut has different PointLights than igIn. eg: if a pointLight do not light anything, then it is not
 	 *	present in igOut.
-	 *	NB: shapes are used to retrieve usefull info on them (center of AABBox ...) . They are taken from 
+	 *	NB: shapes are used to retrieve usefull info on them (center of AABBox ...) . They are taken from
 	 *	lightDesc.UserShapeMap, or loaded from lightDesc.ShapePath if not found.
-	 *	\param landscape if !NULL use this Landscape SunContribution, looking landscape faces under each instance, 
+	 *	\param landscape if !NULL use this Landscape SunContribution, looking landscape faces under each instance,
 	 *	for faster computing, and to get influence of Sky. NB: this landscape does not have to be tesselated,
 	 *	but all Zones that lies under igIn should be loaded in.
 	 *	\param igSurfaceLightBuild if !NULL, light() will compute igOut.IGSurfaceLight, else it is just cleared.
 	 */
-	void light (const CInstanceGroup &igIn, CInstanceGroup &igOut, const CLightDesc &lightDesc, std::vector<CTriangle>& obstacles, 
+	void light (const CInstanceGroup &igIn, CInstanceGroup &igOut, const CLightDesc &lightDesc, std::vector<CTriangle>& obstacles,
 		CLandscape *landscape= NULL, CIGSurfaceLightBuild *igSurfaceLightBuild= NULL);
 
 

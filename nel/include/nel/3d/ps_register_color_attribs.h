@@ -1,5 +1,5 @@
 /** \file ps_register_color_attribs.h
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

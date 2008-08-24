@@ -1889,8 +1889,6 @@ bool CDriverGL::setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width
 			CViewport newVP;
 			newVP.init(0, 0, ((float)width/(float)w), ((float)height/(float)h));
 			setupViewport(newVP);
-//			if (!tex->TextureDrvShare)
-//				setupTexture(*tex);
 
 			_RenderTargetFBO = true;
 

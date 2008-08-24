@@ -105,7 +105,7 @@ CIndexBuffer::CIndexBuffer(const char *name)
 // ***************************************************************************
 
 CIndexBuffer::~CIndexBuffer()
-{	
+{
 	/* ***********************************************
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
@@ -123,7 +123,7 @@ CIndexBuffer::~CIndexBuffer()
 
 CIndexBuffer	&CIndexBuffer::operator=(const CIndexBuffer &vb)
 {
-	nlassertex (!isLocked(), ("The index buffer is locked."));	
+	nlassertex (!isLocked(), ("The index buffer is locked."));
 	// Single value
 	_InternalFlags = vb._InternalFlags;
 	_NbIndexes = vb._NbIndexes;
@@ -190,9 +190,9 @@ void CIndexBuffer::setNumIndexes(uint32 n)
 
 void CIndexBuffer::setFormat(TFormat format)
 {
-	if (format == _Format) return;	
+	if (format == _Format) return;
 	uint numIndexes = getNumIndexes();
-	deleteAllIndexes();	
+	deleteAllIndexes();
 	_Format = format;
 	setNumIndexes(numIndexes);
 }
@@ -287,7 +287,7 @@ void CIndexBuffer::setLocation (TLocation newLocation)
 void CIndexBuffer::restaureNonResidentMemory()
 {
 	setLocation (NotResident);
-	
+
 	if (DrvInfos)
 		DrvInfos->IndexBufferPtr = NULL;	// Tell the driver info to not restaure memory when it will die
 
@@ -311,7 +311,7 @@ void CIndexBuffer::buildSerialVector(std::vector<uint32> &dest) const
 	}
 	else
 	{
-		// direct copy				
+		// direct copy
 		memcpy(&dest[0], &_NonResidentIndexes[0], sizeof(uint32) * getNumIndexes());
 	}
 }
@@ -368,7 +368,7 @@ void CIndexBuffer::serial(NLMISC::IStream &f)
 		std::vector<uint32> nonResidentIndexes;
 		if (!f.isReading())
 		{
-			buildSerialVector(nonResidentIndexes);			
+			buildSerialVector(nonResidentIndexes);
 		}
 		f.serial(nb, capacity);
 		_NbIndexes = nb*3;
@@ -392,7 +392,7 @@ void CIndexBuffer::serial(NLMISC::IStream &f)
 		std::vector<uint32> nonResidentIndexes;
 		if (!f.isReading())
 		{
-			buildSerialVector(nonResidentIndexes);			
+			buildSerialVector(nonResidentIndexes);
 		}
 		f.serial(_NbIndexes, _Capacity);
 		f.serialCont(nonResidentIndexes);

@@ -49,7 +49,7 @@ CPThread CurrentThread(NULL, 0);
 IThread *IThread::getCurrentThread ()
 {
 	return &CurrentThread;
-} 
+}
 
 /*
  * Thread beginning
@@ -74,9 +74,9 @@ static void *ProxyFunc( void *arg )
 /*
  * Constructor
  */
-CPThread::CPThread(IRunnable *runnable, uint32 stackSize) 
+CPThread::CPThread(IRunnable *runnable, uint32 stackSize)
 	:	Runnable(runnable),
-		_State(0), 
+		_State(0),
 		_StackSize(stackSize)
 {}
 
@@ -88,7 +88,7 @@ CPThread::~CPThread()
 {
 	if(_State == 1)
 		terminate(); // force the end of the thread if not already ended
-	
+
 	if(_State > 0)
 		pthread_detach(_ThreadHandle); // free allocated resources only if it was created
 }

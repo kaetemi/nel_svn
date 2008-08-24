@@ -45,7 +45,7 @@ IThread *IThread::create (IRunnable *runnable, uint32 stackSize)
 
 IThread *IThread::getCurrentThread ()
 {
-	// TLS alloc must have been done	
+	// TLS alloc must have been done
 	nlassert (TLSThreadPointer != 0xffffffff);
 
 	// Get the thread pointer
@@ -54,12 +54,12 @@ IThread *IThread::getCurrentThread ()
 	// Return current thread
 	return thread;
 }
- 
+
 static unsigned long __stdcall ProxyFunc (void *arg)
 {
 	CWinThread *parent = (CWinThread *) arg;
 
-	// TLS alloc must have been done	
+	// TLS alloc must have been done
 	nlassert (TLSThreadPointer != 0xffffffff);
 
 	// Set the thread pointer in TLS memory
@@ -67,7 +67,7 @@ static unsigned long __stdcall ProxyFunc (void *arg)
 
 	// Run the thread
 	parent->Runnable->run();
-	
+
 	return 0;
 }
 
@@ -77,7 +77,7 @@ CWinThread::CWinThread (IRunnable *runnable, uint32 stackSize)
 	this->Runnable = runnable;
 	ThreadHandle = NULL;
 	_SuspendCount = -1;
-	_MainThread = false;	
+	_MainThread = false;
 }
 
 CWinThread::CWinThread (void* threadHandle, uint32 threadId)
@@ -88,13 +88,13 @@ CWinThread::CWinThread (void* threadHandle, uint32 threadId)
 	ThreadHandle = threadHandle;
 	ThreadId = threadId;
 
-	// TLS alloc must have been done	
+	// TLS alloc must have been done
 	TLSThreadPointer = TlsAlloc ();
 	nlassert (TLSThreadPointer!=0xffffffff);
- 
+
 	// Set the thread pointer in TLS memory
 	nlverify (TlsSetValue (TLSThreadPointer, (void*)this) != 0);
-	
+
 	if (GetCurrentThreadId() == threadId)
 	{
 		_SuspendCount = 0; // is calling thread call this itself, well, if we reach this place
@@ -103,7 +103,7 @@ CWinThread::CWinThread (void* threadHandle, uint32 threadId)
 	else
 	{
 		// initialized from another thread (very unlikely ...)
-		nlassert(0); // WARNING: following code has not tested! don't know if it work fo real ...							 
+		nlassert(0); // WARNING: following code has not tested! don't know if it work fo real ...
 					 // This is just a suggestion of a possible solution, should this situation one day occur ...
 		// Ensure that this thread don't get deleted, or we could suspend the main thread
 		CRITICAL_SECTION cs;
@@ -111,7 +111,7 @@ CWinThread::CWinThread (void* threadHandle, uint32 threadId)
 		EnterCriticalSection(&cs);
 		// the 2 following statement must be executed atomicaly among the threads of the current process !
 		SuspendThread(threadHandle);
-		_SuspendCount = ResumeThread(threadHandle); 
+		_SuspendCount = ResumeThread(threadHandle);
 		LeaveCriticalSection(&cs);
 		DeleteCriticalSection(&cs);
 	}
@@ -207,7 +207,7 @@ bool CWinThread::isRunning()
 	DWORD exitCode;
 	if (!GetExitCodeThread(ThreadHandle, &exitCode))
 		return false;
-	
+
 	return exitCode == STILL_ACTIVE;
 }
 
@@ -215,9 +215,9 @@ bool CWinThread::isRunning()
 void CWinThread::terminate ()
 {
 	BOOL i = TerminateThread((HANDLE)ThreadHandle, 0);
-	if(!i) 
+	if(!i)
 	{
-		DWORD e = GetLastError();		
+		DWORD e = GetLastError();
 	}
 	i = CloseHandle((HANDLE)ThreadHandle);
 	ThreadHandle = NULL;
@@ -327,7 +327,7 @@ public:
 	typedef DWORD (WINAPI *GetModuleFileNameExAFunPtr)(HANDLE hProcess, HMODULE hModule, LPTSTR lpFilename, DWORD nSize);
 	typedef BOOL  (WINAPI *EnumProcessModulesFunPtr)(HANDLE hProcess, HMODULE *lphModule, DWORD cb, LPDWORD lpcbNeeded);
 	EnumProcessesFunPtr		  EnumProcesses;
-	GetModuleFileNameExAFunPtr GetModuleFileNameExA;	
+	GetModuleFileNameExAFunPtr GetModuleFileNameExA;
 	EnumProcessModulesFunPtr  EnumProcessModules;
 public:
 	CPSAPILib();
@@ -344,7 +344,7 @@ CPSAPILib::CPSAPILib()
 	_LoadFailed = false;
 	_PSAPILibHandle     = NULL;
 	EnumProcesses       = NULL;
-	GetModuleFileNameExA = NULL;	
+	GetModuleFileNameExA = NULL;
 	EnumProcessModules  = NULL;
 }
 
@@ -374,7 +374,7 @@ bool CPSAPILib::init()
 		EnumProcesses		= (EnumProcessesFunPtr)		  GetProcAddress(_PSAPILibHandle, "EnumProcesses");
 		GetModuleFileNameExA = (GetModuleFileNameExAFunPtr) GetProcAddress(_PSAPILibHandle, "GetModuleFileNameExA");
 		EnumProcessModules  = (EnumProcessModulesFunPtr)  GetProcAddress(_PSAPILibHandle, "EnumProcessModules");
-		if (!EnumProcesses || 
+		if (!EnumProcesses ||
 			!GetModuleFileNameExA ||
 			!EnumProcessModules
 		   )
@@ -395,7 +395,7 @@ static CPSAPILib PSAPILib;
 //****************************************************************************************************************
 bool CWinProcess::enumProcessesId(std::vector<uint32> &processesId)
 {
-	if (!PSAPILib.init()) return false;	
+	if (!PSAPILib.init()) return false;
 	// list of processes
 	std::vector<uint32> prcIds(16);
 	for (;;)
@@ -421,7 +421,7 @@ bool CWinProcess::enumProcessesId(std::vector<uint32> &processesId)
 //****************************************************************************************************************
 bool CWinProcess::enumProcessModules(uint32 processId, std::vector<std::string> &moduleNames)
 {
-	if (!PSAPILib.init()) return false;	
+	if (!PSAPILib.init()) return false;
 	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION|PROCESS_VM_READ, FALSE, (DWORD) processId);
 	if (!hProcess) return false;
 	// list of modules
@@ -451,7 +451,7 @@ bool CWinProcess::enumProcessModules(uint32 processId, std::vector<std::string> 
 		{
 			moduleNames.push_back(moduleName);
 		}
-	}	    
+	}
 	CloseHandle(hProcess);
 	return true;
 }
@@ -511,7 +511,7 @@ public:
 	HANDLE HProcess;
 public:
 	CProcessWatchTask(HANDLE hProcess) : HProcess(hProcess)
-	{		
+	{
 	}
 	virtual void run()
 	{
@@ -531,7 +531,7 @@ public:
 	}
 	~CProcessWatchImpl()
 	{
-		reset();		
+		reset();
 	}
 	void reset()
 	{
@@ -550,7 +550,7 @@ public:
 	}
 	bool launch(const std::string &programName, const std::string &arguments)
 	{
-		if (isRunning()) return false;		
+		if (isRunning()) return false;
 		PROCESS_INFORMATION processInfo;
 		STARTUPINFO startupInfo = {0};
 		startupInfo.cb = sizeof(STARTUPINFO);
@@ -570,8 +570,8 @@ public:
 		nlassert(WatchThread);
 		nlassert(WatchTask);
 		if (WatchThread->isRunning()) return true;
-		reset();		
-		return false;		
+		reset();
+		return false;
 	}
 };
 

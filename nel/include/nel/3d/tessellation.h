@@ -69,7 +69,7 @@ public:
 	CParamCoord() {}
 	CParamCoord(uint16 s, uint16 t) {S=s; T=t;}
 	// Create at middle.
-	CParamCoord(CParamCoord a, CParamCoord b) 
+	CParamCoord(CParamCoord a, CParamCoord b)
 	{
 		S= (uint16) (((uint16)a.S + (uint16)b.S)>>1);
 		T= (uint16) (((uint16)a.T + (uint16)b.T)>>1);
@@ -316,7 +316,7 @@ public:
 	bool			merge();
 	/// refine the node, and his sons. Refine all nodes.
 	void			refineAll();
-	// update the refinement of the node, split if necessary (and then updateRefine() his splitted sons), 
+	// update the refinement of the node, split if necessary (and then updateRefine() his splitted sons),
 	// Then re-insert this face in the appropriate CLandscape priority list.
 	void			updateRefineSplit();
 	// Same for merge.
@@ -363,7 +363,7 @@ public:
 
 private:
 	// Faces have the same tile???
-	static bool		sameTile(const CTessFace *a, const CTessFace *b) 
+	static bool		sameTile(const CTessFace *a, const CTessFace *b)
 	{
 		// WE CANNOT do this test, testing TileMaterial, because this one may be releleased by releaseMaterial() !!
 		return (a->Patch==b->Patch && a->TileId==b->TileId);

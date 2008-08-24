@@ -172,7 +172,7 @@ bool operator<( const CInetAddress& a1, const CInetAddress& a2 )
 	{
 		return ( a1._SockAddr->sin_addr.s_addr < a2._SockAddr->sin_addr.s_addr );
 	}
-#endif	
+#endif
 }
 
 
@@ -182,7 +182,7 @@ bool operator<( const CInetAddress& a1, const CInetAddress& a2 )
 void CInetAddress::init()
 {
 	CSock::initNetwork();
-	
+
 	_Valid = false;
 
 	_SockAddr = new sockaddr_in;
@@ -439,7 +439,7 @@ void CInetAddress::serial( NLMISC::IStream& s )
 			// retreive the fullname
 			setSockAddr (_SockAddr);
 		}
-	
+
 	}
 }
 
@@ -499,11 +499,11 @@ std::vector<CInetAddress> CInetAddress::localAddresses()
 	{
 		throw ESocket( (string("No network card detected for ")+string(localhost)).c_str() );
 	}
-	
+
 	return vect;
 }
 
-bool CInetAddress::is127001 () const 
+bool CInetAddress::is127001 () const
 {
 	return (internalIPAddress () == htonl(0x7F000001));
 }

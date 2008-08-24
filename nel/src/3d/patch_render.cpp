@@ -37,7 +37,7 @@ using	namespace	std;
 using	namespace	NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -269,7 +269,7 @@ void			CPatch::preRender(const NLMISC::CBSphere &patchSphere)
 	// In this case, major change: delete all VB, then recreate after.
 	if(changeTileMode)
 	{
-		// delete the old VB (NB: isRenderClipped()==false here). 
+		// delete the old VB (NB: isRenderClipped()==false here).
 		// NB: Far0 and Far1 are still unmodified, so deleteVB() will do the good job.
 		deleteVBAndFaceVector();
 	}
@@ -379,7 +379,7 @@ void			CPatch::preRender(const NLMISC::CBSphere &patchSphere)
 						// add it to the renderList
 						tblock.RdrTileRoot[j]->appendTileToEachRenderPass(NumRenderableFaces);
 				}
-			}	
+			}
 		}
 
 		// If change of clip in tessBlock, must update the tessBlock
@@ -512,7 +512,7 @@ static	inline	void	renderFaceVector(TLandscapeIndexType *fv)
 				mov		NL3D_LandscapeGlobals_PassTriCurPtr, edi
 				mov		NL3D_LandscapeGlobals_PassNTri, edx
 			}
-		#else		
+		#else
 			__asm
 			{
 				mov		ebx, fv
@@ -526,15 +526,15 @@ static	inline	void	renderFaceVector(TLandscapeIndexType *fv)
 
 				mov		eax, ecx				// eax= bkup NumTris
 				lea		ecx, [ecx + ecx*2]		// ecx= nTriIndex= NumTris*3
-				
+
 				test	ecx, 1
-				jne		odd_number				
+				jne		odd_number
 				shr     ecx, 1
 				// for alignment, first copy a single word
 				movsw
-				dec	ecx				
+				dec	ecx
 				rep movsd
-				movsw							
+				movsw
 				jmp		even_number_done
 	odd_number:
 				shr ecx, 1
@@ -556,7 +556,7 @@ static	inline	void	renderFaceVector(TLandscapeIndexType *fv)
 		#ifndef NL_LANDSCAPE_INDEX16
 			memcpy( NL3D_LandscapeGlobals_PassTriCurPtr, fv+1, nTriIndex * sizeof(uint32) );
 			NL3D_LandscapeGlobals_PassTriCurPtr= (uint32*)NL3D_LandscapeGlobals_PassTriCurPtr + nTriIndex;
-		#else		
+		#else
 			memcpy( NL3D_LandscapeGlobals_PassTriCurPtr, fv+1, nTriIndex * sizeof(uint16) );
 			NL3D_LandscapeGlobals_PassTriCurPtr= (uint16*)NL3D_LandscapeGlobals_PassTriCurPtr + nTriIndex;
 		#endif
@@ -1532,7 +1532,7 @@ void		CPatch::computeSoftwareGeomorphAndAlpha()
 // VB clip Allocate/Filling.
 // ***************************************************************************
 // ***************************************************************************
-		
+
 
 // ***************************************************************************
 void		CPatch::updateClipPatchVB(bool renderClipped)

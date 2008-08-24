@@ -28,12 +28,12 @@
 #include "nel/3d/channel_mixer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 /**
- * This class 
+ * This class
  * \author Cyril 'Hulud' Corvazier
  * \author Nevrax France
  * \date 2001
@@ -41,21 +41,21 @@ namespace NL3D
 class CAnimationPlaylist : public NLMISC::CRefCount
 {
 public:
-	enum 
-	{ 
-		// 
+	enum
+	{
+		//
 		empty=0xffffffff
 	};
 
 	/// Wrap mode for the play list
 	enum TWrapMode
-	{ 
+	{
 		/// Clamp the animation time. (default)
 		Clamp=0,
 
 		/// Repeat the animation.
 		Repeat,
-		
+
 		/// Disable the animation.
 		Disable,
 
@@ -181,8 +181,8 @@ public:
 	float getEndWeight (uint8 slot, TGlobalAnimationTime& time) const;
 
 	/**
-	  * Set weight smoothness. 
-	  * This is the smoothness of the weight interpolation. 
+	  * Set weight smoothness.
+	  * This is the smoothness of the weight interpolation.
 	  * Must be between 0.f and 1.f. 0.f is a sharp interpolation (linear), 1.f is a smooth interpolation (quadratic).
 	  * Default value is 0.f.
 	  *
@@ -192,8 +192,8 @@ public:
 	void setWeightSmoothness (uint8 slot, float smoothness);
 
 	/**
-	  * Get weight smoothness. 
-	  * This is the smoothness of the weight interpolation. 
+	  * Get weight smoothness.
+	  * This is the smoothness of the weight interpolation.
 	  * Must be between 0.f and 1.f. 0.f is a sharp interpolation (linear), 1.f is a smooth interpolation (quadratic).
 	  * Default value is 0.f.
 	  *
@@ -295,7 +295,7 @@ private:
 	// End weight time
 	TGlobalAnimationTime	_EndWeightTime[CChannelMixer::NumAnimationSlot];
 
-	// Smoothness of the 
+	// Smoothness of the
 	float				_Smoothness[CChannelMixer::NumAnimationSlot];
 
 	// Wrap mode

@@ -31,7 +31,7 @@ void	dummyToAvoidStupidCompilerWarning_misc_uv_cpp()
 {
 }
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

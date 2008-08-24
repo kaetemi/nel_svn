@@ -38,7 +38,7 @@ using namespace NLMISC;
 bool	TESTYOYO_VCM_RedShadow= false;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -46,14 +46,14 @@ namespace NL3D
 #define		NL3D_VCM_SHADOW_NUM_CLIP_PLANE			7
 #define		NL3D_VCM_SHADOW_NUM_CLIP_PLANE_SHIFT	(1<<NL3D_VCM_SHADOW_NUM_CLIP_PLANE)
 #define		NL3D_VCM_SHADOW_NUM_CLIP_PLANE_MASK		(NL3D_VCM_SHADOW_NUM_CLIP_PLANE_SHIFT-1)
-	
+
 
 // ***************************************************************************
 // ***************************************************************************
 // CStaticGrid
 // ***************************************************************************
 // ***************************************************************************
-	
+
 
 // ***************************************************************************
 void	CVisualCollisionMesh::CStaticGrid::create(uint nbQuads, uint nbElts, const NLMISC::CAABBox &gridBBox)
@@ -172,7 +172,7 @@ void	CVisualCollisionMesh::CStaticGrid::compile()
 	// create the temp array used for intersection test
 	_Sessions.resize(_EltBuild.size());
 	_Sessions.fill(0);
-	
+
 	// clear no more needed data
 	_EltBuild.clear();
 }
@@ -227,7 +227,7 @@ uint	CVisualCollisionMesh::CStaticGrid::select(const NLMISC::CAABBox &bbox, std:
 			}
 		}
 	}
-	
+
 	// return the number of selected elements
 	return numSel;
 }
@@ -267,21 +267,21 @@ bool					CVisualCollisionMesh::build(const std::vector<CVector> &vertices, const
 	// vertices and triangles id are stored in uint16 form. so their should not be more than 65535*3 indices
 	if(vertices.size()>65535 || triangles.size()>65535*3)
 		return false;
-	
+
 	// copy
 	_Vertices= vertices;
-	
+
 	// compress indexes to 16 bits
 	_Triangles.resize(triangles.size());
 	for(i=0;i<_Triangles.size();i++)
 		_Triangles[i]= (uint16)triangles[i];
-	
+
 	// Build the Local bbox for this col mesh
 	CAABBox		localBBox;
 	localBBox.setCenter(vertices[0]);
 	for(i=1;i<vertices.size();i++)
 		localBBox.extend(vertices[i]);
-	
+
 	// Build the Static Grid
 	uint	numTris= triangles.size()/3;
 	_QuadGrid.create(16, numTris, localBBox);
@@ -296,7 +296,7 @@ bool					CVisualCollisionMesh::build(const std::vector<CVector> &vertices, const
 	}
 	// compile
 	_QuadGrid.compile();
-	
+
 
 	// Keep a RefPtr on the AGP vertex Buffer for shadow receiving
 	_VertexBuffer= &vbForShadowRender;
@@ -316,7 +316,7 @@ float					CVisualCollisionMesh::getCameraCollision(const CMatrix &instanceMatrix
 	// Select triangles
 	static std::vector<uint16>		selection;
 	uint	numSel= _QuadGrid.select(camColLocal.getBBox(), selection);
-	
+
 	// **** For all triangles, test if intersect the camera collision
 	float		sqrMinDist= FLT_MAX;
 	for(uint i=0;i<numSel;i++)
@@ -329,7 +329,7 @@ float					CVisualCollisionMesh::getCameraCollision(const CMatrix &instanceMatrix
 			_Vertices[_Triangles[triId*3+2]],
 			sqrMinDist);
 	}
-	
+
 	// **** return the collision found, between [0,1]
 	if(sqrMinDist == FLT_MAX)
 		return 1;
@@ -385,7 +385,7 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 	// no intersection at all? quit
 	if(numTrisInQuadGrid==0)
 		return;
-	
+
 
 	// **** prepare more precise Clip with shadow pyramid
 	// enlarge temp flag array
@@ -397,7 +397,7 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 
 	// Compute the "LocalToInstance" shadow Clip Volume
 	static	std::vector<CPlane>		localClipPlanes;
-	/*	We want to apply to plane this matrix: IM-1 * MCasterPos, 
+	/*	We want to apply to plane this matrix: IM-1 * MCasterPos,
 		where IM=instanceMatrix and MCasterPos= matrix translation of "shadowContext.CasterPos"
 		BUT, since to transform a plane, we must do plane * M-1, then compute this matrix:
 		localMat= MCasterPos-1 * IM
@@ -412,7 +412,7 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 	{
 		localClipPlanes[i]= shadowContext.ShadowMap->LocalClipPlanes[i] * localMat;
 	}
-	
+
 
 	// **** Clip and fill the triangles
 	uint	currentTriIdx= 0;
@@ -436,13 +436,13 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 				triId[1]= _Triangles[uint(triInQuadGrid[triq])*3+1];
 				triId[2]= _Triangles[uint(triInQuadGrid[triq])*3+2];
 				uint			triFlag= NL3D_VCM_SHADOW_NUM_CLIP_PLANE_MASK;
-				
+
 				// for all vertices, clip them
 				for(uint i=0;i<3;i++)
 				{
 					uint	vid= triId[i];
 					uint	vf= vertexFlags[vid];
-					
+
 					// if this vertex is still not computed
 					if(!vf)
 					{
@@ -451,21 +451,21 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 						{
 							// out if in front
 							bool	out= localClipPlanes[j]*_Vertices[vid] > 0;
-							
+
 							vf|= ((uint)out)<<j;
 						}
-						
+
 						// add the bit flag to say "computed".
 						vf|= NL3D_VCM_SHADOW_NUM_CLIP_PLANE_SHIFT;
-						
+
 						// store
 						vertexFlags[vid]= vf;
 					}
-					
+
 					// And all vertex bits.
 					triFlag&= vf;
 				}
-				
+
 				// if triangle not clipped, add the triangle
 				if( (triFlag & NL3D_VCM_SHADOW_NUM_CLIP_PLANE_MASK)==0 )
 				{
@@ -488,13 +488,13 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 				triId[1]= _Triangles[uint(triInQuadGrid[triq])*3+1];
 				triId[2]= _Triangles[uint(triInQuadGrid[triq])*3+2];
 				uint			triFlag= NL3D_VCM_SHADOW_NUM_CLIP_PLANE_MASK;
-				
+
 				// for all vertices, clip them
 				for(uint i=0;i<3;i++)
 				{
 					uint	vid= triId[i];
 					uint	vf= vertexFlags[vid];
-					
+
 					// if this vertex is still not computed
 					if(!vf)
 					{
@@ -503,21 +503,21 @@ void		CVisualCollisionMesh::receiveShadowMap(const NLMISC::CMatrix &instanceMatr
 						{
 							// out if in front
 							bool	out= localClipPlanes[j]*_Vertices[vid] > 0;
-							
+
 							vf|= ((uint)out)<<j;
 						}
-						
+
 						// add the bit flag to say "computed".
 						vf|= NL3D_VCM_SHADOW_NUM_CLIP_PLANE_SHIFT;
-						
+
 						// store
 						vertexFlags[vid]= vf;
 					}
-					
+
 					// And all vertex bits.
 					triFlag&= vf;
 				}
-				
+
 				// if triangle not clipped, add the triangle
 				if( (triFlag & NL3D_VCM_SHADOW_NUM_CLIP_PLANE_MASK)==0 )
 				{

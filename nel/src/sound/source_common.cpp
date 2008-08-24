@@ -29,7 +29,7 @@
 
 using namespace NLMISC;
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 CSourceCommon::CSourceCommon(TSoundId id, bool spawn, TSpawnEndCallback cb, void *cbUserParam, NL3D::CCluster *cluster)
@@ -146,7 +146,7 @@ const NLMISC::CVector &CSourceCommon::getPos() const
 	{
 		return *_3DPosition;
 	}
-	
+
 }
 
 /* Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift

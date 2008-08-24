@@ -27,7 +27,7 @@
 #include "nel/3d/channel_mixer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************

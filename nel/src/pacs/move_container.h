@@ -33,7 +33,7 @@
 
 #define NELPACS_CONTAINER_TRIGGER_DEFAULT_SIZE 100
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class CMovePrimitive;
@@ -45,7 +45,7 @@ class CPrimitiveWorldImage;
  * A container for movable objects
  * Some constraints:
  * * The move bounding box must be lower than the cell size
- * 
+ *
  * \author Cyril 'Hulud' Corvazier
  * \author Nevrax France
  * \date 2001
@@ -57,14 +57,14 @@ class CMoveContainer: public UMoveContainer
 	friend class CPrimitiveWorldImage;
 public:
 	/// Constructor
-	CMoveContainer (double xmin, double ymin, double xmax, double ymax, uint widthCellCount, uint heightCellCount, double primitiveMaxSize, 
+	CMoveContainer (double xmin, double ymin, double xmax, double ymax, uint widthCellCount, uint heightCellCount, double primitiveMaxSize,
 		uint8 numWorldImage, uint maxIteration, uint otSize)
 	{
 		init (xmin, ymin, xmax, ymax, widthCellCount, heightCellCount, primitiveMaxSize, numWorldImage, maxIteration, otSize);
 	}
 
 	/// Init the container with a global retriever
-	CMoveContainer (CGlobalRetriever* retriever, uint widthCellCount, uint heightCellCount, double primitiveMaxSize, 
+	CMoveContainer (CGlobalRetriever* retriever, uint widthCellCount, uint heightCellCount, double primitiveMaxSize,
 		uint8 numWorldImage, uint maxIteration, uint otSize)
 	{
 		init (retriever, widthCellCount, heightCellCount, primitiveMaxSize, numWorldImage, maxIteration, otSize);
@@ -74,11 +74,11 @@ public:
 	virtual ~CMoveContainer ();
 
 	/// Init the container without global retriever
-	void init (double xmin, double ymin, double xmax, double ymax, uint widthCellCount, uint heightCellCount, double primitiveMaxSize, 
+	void init (double xmin, double ymin, double xmax, double ymax, uint widthCellCount, uint heightCellCount, double primitiveMaxSize,
 		uint8 numWorldImage, uint maxIteration, uint otSize);
 
 	/// Init the container with a global retriever
-	void init (CGlobalRetriever* retriever, uint widthCellCount, uint heightCellCount, double primitiveMaxSize, 
+	void init (CGlobalRetriever* retriever, uint widthCellCount, uint heightCellCount, double primitiveMaxSize,
 		uint8 numWorldImage, uint maxIteration, uint otSize);
 
 	/// Add a collisionable primitive in the container. Return the pointer on the primitive.
@@ -135,7 +135,7 @@ public:
 	{
 		// check
 		nlassert (id<_Triggers.size());
-		
+
 		return _Triggers[id];
 	}
 
@@ -183,7 +183,7 @@ private:
 	double						_CellWidth;
 	double						_CellHeight;
 
-	/// Cells count 
+	/// Cells count
 	uint						_CellCountWidth;
 	uint						_CellCountHeight;
 
@@ -221,20 +221,20 @@ private:
 	void						checkOT ();
 
 	// Eval one terrain collision
-	bool						evalOneTerrainCollision (double beginTime, CMovePrimitive *primitive, uint8 primitiveWorldImage, 
-															bool testMove, bool &testMoveValid, CCollisionOTStaticInfo *staticColInfo, 
+	bool						evalOneTerrainCollision (double beginTime, CMovePrimitive *primitive, uint8 primitiveWorldImage,
+															bool testMove, bool &testMoveValid, CCollisionOTStaticInfo *staticColInfo,
 															NLMISC::CVectorD *contactNormal);
 
 	// Eval one primitive collision
-	bool						evalOnePrimitiveCollision (double beginTime, CMovePrimitive *primitive, uint8 worldImage, 
-													uint8 primitiveWorldImage, bool testMove, bool secondIsStatic, 
+	bool						evalOnePrimitiveCollision (double beginTime, CMovePrimitive *primitive, uint8 worldImage,
+													uint8 primitiveWorldImage, bool testMove, bool secondIsStatic,
 													bool &testMoveValid, CCollisionOTDynamicInfo *dynamicColInfo,
 													NLMISC::CVectorD *contactNormal);
 
 	// Eval final step
-	bool						evalPrimAgainstPrimCollision (double beginTime, CMovePrimitive *primitive, CMovePrimitive *otherPrimitive, 
+	bool						evalPrimAgainstPrimCollision (double beginTime, CMovePrimitive *primitive, CMovePrimitive *otherPrimitive,
 													CPrimitiveWorldImage *wI, CPrimitiveWorldImage *otherWI, bool testMove,
-													uint8 firstWorldImage, uint8 secondWorldImage, bool secondIsStatic, 
+													uint8 firstWorldImage, uint8 secondWorldImage, bool secondIsStatic,
 													CCollisionOTDynamicInfo *dynamicColInfo,
 													NLMISC::CVectorD *contactNormal);
 
@@ -242,12 +242,12 @@ private:
 	void						evalAllCollisions (double beginTime, uint8 worldImage);
 
 	// Add a collision in the time ordered table
-	void						newCollision (CMovePrimitive* first, CMovePrimitive* second, const CCollisionDesc& desc, 
-												bool collision, bool enter, bool exit, bool inside, uint firstWorldImage, uint secondWorldImage, 
+	void						newCollision (CMovePrimitive* first, CMovePrimitive* second, const CCollisionDesc& desc,
+												bool collision, bool enter, bool exit, bool inside, uint firstWorldImage, uint secondWorldImage,
 												bool secondIsStatic, CCollisionOTDynamicInfo *dynamicColInfo);
 
 	// Add a collision in the time ordered table
-	void						newCollision (CMovePrimitive* first, const CCollisionSurfaceDesc& desc, uint8 worldImage, double beginTime, 
+	void						newCollision (CMovePrimitive* first, const CCollisionSurfaceDesc& desc, uint8 worldImage, double beginTime,
 												CCollisionOTStaticInfo *staticColInfo);
 
 	// Add a trigger in the trigger array

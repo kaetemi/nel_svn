@@ -215,7 +215,7 @@ public:
 	bool							getEntryByName			(const std::string &name, CFormDfn::CEntry **entry);
 	bool							getEntryDfnByName		(const std::string &name, UFormDfn **dfn);
 	bool							isAnArrayEntryByName	(const std::string &name)	const;
-	
+
 	bool							getEntryType (uint entry, UType **type);
 	uint							getNumParents () const;
 	bool							getParent (uint parent, UFormDfn **parentRet);

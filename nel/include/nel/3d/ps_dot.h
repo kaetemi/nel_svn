@@ -41,11 +41,11 @@ namespace NL3D {
 
 class CPSDot : public CPSParticle, public CPSColoredParticle, public CPSMaterial
 {
-public:					
+public:
 	/// ctor
-	CPSDot() 
-	{ 
-		init(); 
+	CPSDot()
+	{
+		init();
 		CParticleSystem::getSerializeIdentifierFlag();
 		_Name = std::string("point");
 	}
@@ -62,7 +62,7 @@ public:
 	virtual bool hasOpaqueFaces(void);
 
 	/// from CPSParticle : return true if there are lightable faces in the object
-	virtual bool hasLightableFaces() { 	return false; }	
+	virtual bool hasLightableFaces() { 	return false; }
 
 	/// return the max number of faces needed for display. This is needed for LOD balancing
 	virtual uint32 getNumWantedTris() const;
@@ -74,20 +74,20 @@ public:
 	virtual bool supportGlobalColorLighting() const { return true; }
 
 	// from CPSParticle
-	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }	
-	virtual float getZBias() const { return CPSMaterial::getZBias(); }	
+	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }
+	virtual float getZBias() const { return CPSMaterial::getZBias(); }
 
-protected:	
+protected:
 	virtual void draw(bool opaque);
 	virtual CPSLocated *getColorOwner(void) { return _Owner; }
-	void	init(void);				
+	void	init(void);
 	static CVertexBuffer _DotVb;
 	static CVertexBuffer _DotVbColor;
 
 	/// update the material and the vb so that they match the color scheme
 	virtual void updateMatAndVbForColor(void);
-	
-	/** Set the max number of dot		
+
+	/** Set the max number of dot
 	*/
 	void resize(uint32 size);
 

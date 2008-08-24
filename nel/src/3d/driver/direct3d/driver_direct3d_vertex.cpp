@@ -44,7 +44,7 @@ using namespace NLMISC;
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -53,7 +53,7 @@ CVBDrvInfosD3D::CVBDrvInfosD3D(CDriverD3D *drv, ItVBDrvInfoPtrList it, CVertexBu
 {
 	H_AUTO_D3D(CVBDrvInfosD3D_CVBDrvInfosD3D)
 	CDriverD3D *driver = static_cast<CDriverD3D*>(_Driver);
-	VertexDecl = NULL;	
+	VertexDecl = NULL;
 	VertexDeclAliasDiffuseToSpecular = NULL;
 	ColorOffset = 0;
 	VertexBuffer = NULL;
@@ -93,7 +93,7 @@ CVBDrvInfosD3D::~CVBDrvInfosD3D()
 			}
 		}
 		vertexCount--;
-		VertexBuffer->Release();		
+		VertexBuffer->Release();
 	}
 
 	// Stats
@@ -115,13 +115,13 @@ CVBDrvInfosD3D::~CVBDrvInfosD3D()
 // ***************************************************************************
 
 uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
-{	
+{
 	H_AUTO_D3D(CVBDrvInfosD3D_lock)
 	nlassert (begin != end);
 	CDriverD3D *driver = static_cast<CDriverD3D*>(_Driver);
 	//nlinfo("lock from %s", VertexBufferPtr->getName().c_str());
 	#ifdef NL_DEBUG
-		nlassert(!Locked);		
+		nlassert(!Locked);
 		driver->_LockedBuffers.insert(this);
 		Locked = true;
 		static volatile bool dumpLockedBuffers = false;
@@ -135,12 +135,12 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 					nlinfo("Empty buffer");
 				}
 				else
-				{				
+				{
 					nlinfo("Buffer %s at %x is Locked", (*it)->VertexBufferPtr->getName().c_str(), (int) *it);
 				}
 			}
 		}
-	#endif	
+	#endif
 	if (Volatile)
 	{
 		// Lock the good buffer
@@ -148,10 +148,10 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 				(driver->_VolatileVertexBufferAGP[driver->_CurrentRenderPass&1]);
 		uint8 *ptr = (uint8*)buffer->lock (end-begin, Stride, Offset);
 		if (!ptr)
-		{			
-			// buffer full, swap them			
+		{
+			// buffer full, swap them
 			CVolatileVertexBuffer *&bufferOther = VolatileRAM ? (driver->_VolatileVertexBufferRAM[(driver->_CurrentRenderPass + 1) &1]):
-			(driver->_VolatileVertexBufferAGP[(driver->_CurrentRenderPass + 1) &1]);			
+			(driver->_VolatileVertexBufferAGP[(driver->_CurrentRenderPass + 1) &1]);
 			std::swap(buffer, bufferOther);
 			buffer->reset();
 			ptr = (uint8*)buffer->lock (end-begin, Stride, Offset);
@@ -179,7 +179,7 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 		{
 			beforeLock= CTime::getPerformanceTime();
 		}
-		
+
 		void *pbData;
 		if (VertexBuffer->Lock ( begin, end-begin, &pbData, readOnly?D3DLOCK_READONLY:0) != D3D_OK)
 			return false;
@@ -192,7 +192,7 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 			driver->appendVBHardLockProfile(afterLock-beforeLock, VertexBufferPtr);
 		}
 		return (uint8*)pbData;
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -202,19 +202,19 @@ void	CVBDrvInfosD3D::unlock (uint begin, uint end)
 	H_AUTO_D3D(CVBDrvInfosD3D_unlock )
 	CDriverD3D *drv = NLMISC::safe_cast<CDriverD3D *>(_Driver);
 	#ifdef NL_DEBUG
-		nlassert(Locked);		
+		nlassert(Locked);
 		drv->_LockedBuffers.erase(this);
 		Locked = false;
 	#endif
-	//nlinfo("unlock from %s", VertexBufferPtr->getName().c_str());	
+	//nlinfo("unlock from %s", VertexBufferPtr->getName().c_str());
 	if (Volatile)
-	{	
+	{
 		nlassert(VolatileVertexBuffer);
 		VolatileVertexBuffer->unlock ();
 		VolatileVertexBuffer = NULL;
 	}
 	else
-		VertexBuffer->Unlock ();	
+		VertexBuffer->Unlock ();
 }
 
 // ***************************************************************************
@@ -310,14 +310,14 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 	// Must not be empty
 	if (VB.capacity() == 0)
 		return false;
-	
+
 
 	const bool touched = (VB.getTouchFlags() & (CVertexBuffer::TouchedReserve|CVertexBuffer::TouchedVertexFormat)) != 0;
-	
+
 	CVBDrvInfosD3D *info = static_cast<CVBDrvInfosD3D*>(static_cast<IVBDrvInfos*>(VB.DrvInfos));
 
-	// Volatile buffers must be filled at each pass	
-	nlassertex (!info || !info->Volatile || VB.getKeepLocalMemory() || (info->VolatileLockTime == _CurrentRenderPass), ("Volatile buffers must be filled at each pass"));	
+	// Volatile buffers must be filled at each pass
+	nlassertex (!info || !info->Volatile || VB.getKeepLocalMemory() || (info->VolatileLockTime == _CurrentRenderPass), ("Volatile buffers must be filled at each pass"));
 
 	// Build the driver info
 	if (touched)
@@ -342,22 +342,22 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 		info->UseVertexColor = (VB.getVertexFormat()&CVertexBuffer::PrimaryColorFlag) != 0;
 		info->Stride = (uint8)VB.getVertexSize();
 
-		// Create the vertex declaration		
+		// Create the vertex declaration
 		if (!createVertexDeclaration (VB.getVertexFormat(), VB.getValueTypePointer(), &(info->VertexDecl), info->ColorOffset, false, false))
-			return false;			
+			return false;
 		info->VertexDeclAliasDiffuseToSpecular = NULL;
 		info->VertexDeclNoDiffuse = NULL;
 		if (VB.hasValueEx(CVertexBuffer::PrimaryColor) && !VB.hasValueEx(CVertexBuffer::SecondaryColor))
 		{
-			uint colorOffset2;			
+			uint colorOffset2;
 			if (!createVertexDeclaration (VB.getVertexFormat(), VB.getValueTypePointer(), &(info->VertexDeclAliasDiffuseToSpecular), colorOffset2, true, false))
 			return false;
 			nlassert(colorOffset2 == info->ColorOffset); // should be the same value
-		}		
+		}
 		if (_NbNeLTextureStages == 3 && info->UseVertexColor)
 		{
-			// Fix for radeon 7xxx -> if vertex color is not used it should not be declared (example : lighted material + vertex color but, no vertexColorLighted)	
-			uint colorOffset2;			
+			// Fix for radeon 7xxx -> if vertex color is not used it should not be declared (example : lighted material + vertex color but, no vertexColorLighted)
+			uint colorOffset2;
 			if (!createVertexDeclaration (VB.getVertexFormat(), VB.getValueTypePointer(), &(info->VertexDeclNoDiffuse), colorOffset2, false, true))
 			return false;
 		}
@@ -399,7 +399,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 				break;
 			}
 		}
-		
+
 		// Volatile vertex buffer
 		if (info->Volatile)
 		{
@@ -413,7 +413,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 			info->Offset = 0;
 
 			bool sucess;
-			do	
+			do
 			{
 				if (sucess =(_DeviceInterface->CreateVertexBuffer(size, RemapVertexBufferUsage[preferredMemory],
 					0, RemapVertexBufferPool[preferredMemory], &(info->VertexBuffer), NULL) == D3D_OK))
@@ -432,7 +432,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 			if (info->Hardware)
 				_VertexBufferHardSet.insert(info);
 		}
-		
+
 		// Release the local vertex buffer
 		VB.DrvInfos = info;
 		VB.setLocation ((CVertexBuffer::TLocation)preferredMemory);
@@ -443,15 +443,15 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 	}
 
 	// Set the current vertex buffer
-	nlassert (info);	
+	nlassert (info);
 
 	// Fill the buffer if in local memory
 	VB.fillBuffer ();
-	
-	setVertexDecl (info->VertexDecl, info->VertexDeclAliasDiffuseToSpecular, info->VertexDeclNoDiffuse, info->Stride);	
-	//setVertexBuffer (info->VertexBuffer, info->Offset, info->Stride, info->UseVertexColor, VB.getNumVertices(), VB.getPreferredMemory(), info->Usage, info->ColorOffset);	
+
+	setVertexDecl (info->VertexDecl, info->VertexDeclAliasDiffuseToSpecular, info->VertexDeclNoDiffuse, info->Stride);
+	//setVertexBuffer (info->VertexBuffer, info->Offset, info->Stride, info->UseVertexColor, VB.getNumVertices(), VB.getPreferredMemory(), info->Usage, info->ColorOffset);
 	setVertexBuffer (info->VertexBuffer, info->Offset, info->Stride, info->UseVertexColor, VB.getNumVertices(), VB.getPreferredMemory(), info->Usage, info->ColorOffset);
-	
+
 
 	// Set UVRouting
 	const uint8 *uvRouting = VB.getUVRouting();
@@ -470,7 +470,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 	CVBDrvInfosD3D *info = static_cast<CVBDrvInfosD3D*>(static_cast<IVBDrvInfos*>(VB.DrvInfos));
 	static vector<uint8> temp;
 	uint size = VB.capacity()*VB.getVertexSize();
-	
+
 	// No special flag for the lock, the driver should return a valid vertex buffer pointer with previous values.
 	uint8 *out = info->lock (0, 0, false);
 	nlassert (out);
@@ -485,7 +485,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 		memcpy (out, &(temp[0]), size);
 	}
 	info->unlock (0, 0);
-*/	
+*/
 
 	return true;
 }
@@ -493,8 +493,8 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 
 // ***************************************************************************
 bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *typeArray,
-										IDirect3DVertexDeclaration9 **vertexDecl, 										
-										uint &colorOffset,							
+										IDirect3DVertexDeclaration9 **vertexDecl,
+										uint &colorOffset,
 										bool aliasDiffuseToSpecular,
 										bool bypassDiffuse,
 										uint *stride)
@@ -506,19 +506,19 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 	{
 		// there should be a single color stream : diffuse
 		nlassert(vertexFormat & CVertexBuffer::PrimaryColorFlag);       // diffuse required
-		nlassert(!(vertexFormat & CVertexBuffer::SecondaryColorFlag)); // specular should not be used		
+		nlassert(!(vertexFormat & CVertexBuffer::SecondaryColorFlag)); // specular should not be used
 	}
 
 	// Set the vertex format
 	uint i;
 	uint j = 0;
-	uint offset = 0;	
-	colorOffset = 0;	
+	uint offset = 0;
+	colorOffset = 0;
 	for (i=0; i<CVertexBuffer::NumValue; i++)
 	{
 		// Slot used ?
 		if (vertexFormat & (1<<i))
-		{			
+		{
 			if ((i != CVertexBuffer::Weight && i != CVertexBuffer::PaletteSkin) || _PixelShaderVersion != D3DPS_VERSION(1, 4)) // fix for radeon 8500/9000/9200 : hand when this is declared and not used
 																															   // don't let gap for other cards else render bug on some ...
 			{
@@ -526,7 +526,7 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 				vertexElement.Stream = 0;
 				vertexElement.Type = RemapVertexBufferTypeNeL2D3D[(uint)typeArray[i]];
 				vertexElement.Offset = offset;
-				vertexElement.Method = D3DDECLMETHOD_DEFAULT;						
+				vertexElement.Method = D3DDECLMETHOD_DEFAULT;
 				vertexElement.Usage = RemapVertexBufferUsageNeL2D3D[(uint)i];
 				if (aliasDiffuseToSpecular && i == CVertexBuffer::PrimaryColor)
 				{
@@ -549,11 +549,11 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 				// - When vertex color are used, second stream contains Diffuse/Specular vertex component(s)
 				// In fact the 2 streams map to the same vertex buffer, but the 2nd stream has an added offset to point on the color component
 				// I tried to add this offset directly into the vertex declaration, but D3D complains about it...
-				// If the following field contains a non 0 value, then a second stream must be used for diffuse/specular with the given offset	
+				// If the following field contains a non 0 value, then a second stream must be used for diffuse/specular with the given offset
 				if (_NbNeLTextureStages == 3)
 				{
 					if (vertexElement.Usage == D3DDECLUSAGE_COLOR)
-					{	
+					{
 						if (bypassDiffuse)
 						{
 							continue;
@@ -562,19 +562,19 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 						if (colorOffset == 0)
 						{
 							vertexElement.Offset = 0;
-							colorOffset = offset;						
+							colorOffset = offset;
 						}
 						else
 						{
 							vertexElement.Offset = 4;
 						}
-					}				
-				}				
+					}
+				}
 				j++;
-			}			
+			}
 			offset += CVertexBuffer::SizeType[typeArray[i]];
 		}
-	}		
+	}
 
 	// Set the stride ?
 	if (stride)
@@ -634,7 +634,7 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 
 // ***************************************************************************
 
-bool CDriverD3D::supportVertexBufferHard() const 
+bool CDriverD3D::supportVertexBufferHard() const
 {
 	H_AUTO_D3D(CDriverD3D_supportVertexBufferHard)
 	return !_DisableHardwareVertexArrayAGP;
@@ -701,7 +701,7 @@ bool CDriverD3D::initVertexBufferHard(uint agpMem, uint vramMem)
 		while(_AGPMemoryAllocated >= NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE)
 		{
 			IDirect3DVertexBuffer9 *vb;
-			if (_DeviceInterface->CreateVertexBuffer (_AGPMemoryAllocated, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, 0, 
+			if (_DeviceInterface->CreateVertexBuffer (_AGPMemoryAllocated, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, 0,
 				D3DPOOL_DEFAULT, &vb, NULL) == D3D_OK)
 			{
 				D3DVERTEXBUFFER_DESC desc;
@@ -742,7 +742,7 @@ bool CDriverD3D::initVertexBufferHard(uint agpMem, uint vramMem)
 		while(_VRAMMemoryAllocated>= NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE)
 		{
 			IDirect3DVertexBuffer9 *vb;
-			if (_DeviceInterface->CreateVertexBuffer (_VRAMMemoryAllocated, D3DUSAGE_WRITEONLY, 0, 
+			if (_DeviceInterface->CreateVertexBuffer (_VRAMMemoryAllocated, D3DUSAGE_WRITEONLY, 0,
 				D3DPOOL_DEFAULT, &vb, NULL) == D3D_OK)
 			{
 				vb->Release();
@@ -806,7 +806,7 @@ void CVolatileVertexBuffer::release ()
 void CVolatileVertexBuffer::init (CVertexBuffer::TLocation	location, uint size, uint maxSize, CDriverD3D *driver)
 {
 	H_AUTO_D3D(CVolatileVertexBuffer_init )
-	release();	
+	release();
 	if (maxSize < size) maxSize = size;
 	MaxSize = maxSize;
 	// Init the buffer
@@ -837,7 +837,7 @@ void CVolatileVertexBuffer::init (CVertexBuffer::TLocation	location, uint size, 
 
 
 void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
-{	
+{
 	nlassertex(!Locked, ("Volatile buffer usage should follow an atomic lock/unlock/render sequence"));
 	H_AUTO_D3D(CVolatileVertexBuffer_lock)
 	/* If not enough room to allocate this buffer, resise the buffer to Size+Size/2 but do not reset CurrentIndex
@@ -851,11 +851,11 @@ void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
 	uint mod = CurrentIndex / stride;
 	if (CurrentIndex != (mod*stride))
 		CurrentIndex = (mod+1)*stride;
-	
-	
+
+
 	// Enough room for this vertex ?
 	if (CurrentIndex+size+stride > Size)
-	{		
+	{
 		if (CurrentIndex+size > MaxSize && CurrentIndex != 0)
 		{
 			reset();
@@ -863,7 +863,7 @@ void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
 			{
 				init (Location, std::max (std::min(Size+Size/2, MaxSize),  size), MaxSize, Driver);
 			}
-		}	
+		}
 		else
 		{
 			// Max size not reached, so reallocate
@@ -879,7 +879,7 @@ void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
 		beforeLock= CTime::getPerformanceTime();
 	}
 	// Lock the buffer, noblocking lock here if not the first allocation since a reset
-	
+
 	VOID *pbData;
 	if (CurrentIndex==0)
 	{
@@ -902,7 +902,7 @@ void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
 	// New buffer position
 	CurrentIndex += size;
 	Locked = true;
-	return pbData;	
+	return pbData;
 }
 
 // ***************************************************************************
@@ -912,7 +912,7 @@ void CVolatileVertexBuffer::unlock ()
 	H_AUTO_D3D(CVolatileVertexBuffer_unlock )
 	nlassertex(Locked, ("Volatile buffer usage should follow an atomic lock/unlock/render sequence"));
 	nlverify (VertexBuffer->Unlock () == D3D_OK);
-	Locked = false;	
+	Locked = false;
 }
 
 // ***************************************************************************

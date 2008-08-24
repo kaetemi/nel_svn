@@ -58,7 +58,7 @@ void warning (bool exception, const char *format, ... )
 		throw EXmlParsingError (tmp);
 	}
 	else
-	{	
+	{
 		nlwarning ("NeL::Georges %s", buffer);
 	}
 }
@@ -195,7 +195,7 @@ void CForm::read (xmlNodePtr node, CFormLoader &loader, CFormDfn *dfn, const cha
 	if ( ((const char*)node->name == NULL) || (strcmp ((const char*)node->name, "FORM") != 0) )
 	{
 		// Make an error message
-		warning (true, "read", "XML Syntax error in block line %d, node (%s) should be FORM.", 
+		warning (true, "read", "XML Syntax error in block line %d, node (%s) should be FORM.",
 			(ptrdiff_t)node->content, node->name);
 	}
 
@@ -204,7 +204,7 @@ void CForm::read (xmlNodePtr node, CFormLoader &loader, CFormDfn *dfn, const cha
 	if (child == NULL)
 	{
 		// Throw exception
-		warning (true, "read", "Syntax error in block line %d, node (%s) should have a STRUCT child node.", 
+		warning (true, "read", "Syntax error in block line %d, node (%s) should have a STRUCT child node.",
 			(ptrdiff_t)node->content, node->name);
 	}
 

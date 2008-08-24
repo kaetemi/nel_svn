@@ -31,7 +31,7 @@
 #include <list>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -61,9 +61,9 @@ public:
 		Cache optim:
 		Important to store them here for better Cache access in CPatch::MasterBlock (near too TessBlocks)
 	*/
-	// FaceVectors.	
+	// FaceVectors.
 	TLandscapeIndexType	*Far0FaceVector;
-	TLandscapeIndexType	*Far1FaceVector;	
+	TLandscapeIndexType	*Far1FaceVector;
 	// tiles one are stored in material.
 
 private:

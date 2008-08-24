@@ -54,7 +54,7 @@ void CVisualCollisionManagerUser::getMeshs(const NLMISC::CAABBox &aabbox, std::v
 	}
 }
 
-	
+
 } // NL3D
 
 

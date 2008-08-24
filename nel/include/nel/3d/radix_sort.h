@@ -49,7 +49,7 @@ template<class T> class CRadixSort
 public:
 
 	/** Constructor
-	 *	\param keyDepth default is 32 bits, but if as example you're sure that you 
+	 *	\param keyDepth default is 32 bits, but if as example you're sure that you
 	 *		just use 14 bits, you can set keyDepth=14. Clamped to 1,32.
 	 *	\param digitDepth default is 8 bits. The sort will do ceil(keyDepth/digitDepth) pass in Sort.
 	 *		But be aware that a CRadixSort object has a size of (1<<digitDepth) * 8 bytes. (2K for digitDepth=8).
@@ -75,7 +75,7 @@ public:
 	 *	\param array0 ptr on elements to be sorted.
 	 *	\param array1 an array of T which must be allocated with same size.
 	 *	\param size the number of elements.
-	 *	\return the array which have sorted elements. Actually return array0 if 
+	 *	\return the array which have sorted elements. Actually return array0 if
 	 *		ceil(keyDepth/digitDepth) is pair, else return array1.
 	 *		The other array has elements in undefined order.
 	 */
@@ -154,7 +154,7 @@ private:
 			}
 			else
 			{
-				// reverse order of copy for digits, so the biggest one will 
+				// reverse order of copy for digits, so the biggest one will
 				// copy in the beginning of the array
 				for(i=_DigitSize-1; i>=0; i--)
 				{

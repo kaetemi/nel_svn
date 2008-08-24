@@ -32,7 +32,7 @@
 #include "nel/3d/u_3d_mouse_listener.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -53,18 +53,18 @@ public:
 	/**
 	  * Mouse mode.
 	  * There is two move modes: 3d editor style and NeL style. Default mode is NeL style.
-	  * 
+	  *
 	  * (nelStyle) NeL style is:
 	  * MouseRotateHotSpot:			CTRL + RIGHTMOUSE
 	  * MouseTranslateXYHotSpot:	CTRL + LEFTMOUSE
 	  * MouseTranslateZHotSpot:		CTRL + SHIFT + LEFTMOUSE
 	  * MouseZoomHotSpot:			ALT + LEFTMOUSE
-	  * 
+	  *
 	  * (edit3dStyle) 3d editor style is:
 	  * MouseRotateHotSpot:			ALT + MIDDLEMOUSE
 	  * MouseTranslateXYHotSpot:	MIDDLEMOUSE
 	  * MouseTranslateZHotSpot:		CTRL + MIDDLEMOUSE
-	  * 
+	  *
 	  * (firstPerson) First person shooter style is:
 	  * MouseRotateView:			MOUSE MOVE
 	  * KeyUp:						MOVE FORWARD
@@ -76,10 +76,10 @@ public:
 	  */
 	//enum TMouseMode { nelStyle, edit3d, firstPerson };
 
-	/** 
-	  * Constructor. 
+	/**
+	  * Constructor.
 	  * You should call setMatrix, setFrustrum, setViewport, setHotStop and setMouseMode to initialize
-	  * the whole object. By default, the viewmatrix is identity, the frustrum is (-1,1,-1,1,1,-1), the hot spot is (0,0,0) 
+	  * the whole object. By default, the viewmatrix is identity, the frustrum is (-1,1,-1,1,1,-1), the hot spot is (0,0,0)
 	  * and the viewport is fullscreen. The mouse mode is set to the NelStyle.
 	  */
 	CEvent3dMouseListener();
@@ -87,18 +87,18 @@ public:
 
 	/// \name Setup
 
-	/** 
+	/**
 	  * Set both the current view matrix to use.
 	  * \param matrix is the matrix to set.
 	  * \see getViewMatrix()
 	  */
 	void setMatrix (const NLMISC::CMatrix& matrix)
 	{
-		_Matrix=matrix;	
+		_Matrix=matrix;
 	}
 
 	/** Set the model matrix only
-	  *  
+	  *
 	  * param matrix is the matrix to set.
 	  * getModelMatrix()
 	  */
@@ -107,7 +107,7 @@ public:
 		_ModelMatrix = matrix ;
 	}
 
-	/** 
+	/**
 	  * Set the current frustrum to use.
 	  * \param frustrum is the frustrum.
 	  */
@@ -116,7 +116,7 @@ public:
 		_Frustrum=frustrum;
 	}
 
-	/** 
+	/**
 	  * Set the viewport in use in the window. By default, the viewport is fullwindow.
 	  * \param viewport is the viewport to use. All events outside the viewport are ignored.
 	  */
@@ -125,7 +125,7 @@ public:
 		_Viewport=viewport;
 	}
 
-	/** 
+	/**
 	  * Set the current hot spot.
 	  * \param hotSpot is the target to use when the mouse move. It can be for exemple the center.
 	  * of the selected object. The hotspot is not modified by mouse events.
@@ -136,7 +136,7 @@ public:
 		_HotSpot=hotSpot;
 	}
 
-	/** 
+	/**
 	  * Set the mouse mode.
 	  * \param mouseMode is the mode you want to use.
 	  * \see TMouseMode
@@ -147,11 +147,11 @@ public:
 	}
 
 	/// enable / disable model matrix edition mode. (the default deals with the with matrix)
-	void enableModelMatrixEdition(bool enable = true) 
-	{ 
+	void enableModelMatrixEdition(bool enable = true)
+	{
 		_EnableModelMatrixEdition = enable ;
 	}
-	  
+
 	enum TAxis { xAxis = 0, yAxis = 1, zAxis = 2 } ;
 
 	/// set the current axe of rotation for the model matrix
@@ -160,7 +160,7 @@ public:
 	/// get the current axe of rotation for the model matrix
 	TAxis getModelMatrixRotationAxis(void) const  { return _CurrentModelRotationAxis ;}
 
-	
+
 
 	/** enable / disable an axe for translation (model matrix)
 	  * \param axis the axis to enable / diable
@@ -192,7 +192,7 @@ public:
 	 */
 	bool isTranslateXYInWorldEnabled() const {return _TranslateXYInWorld;}
 
-	/** 
+	/**
 	  * Set the speed for first person mode. Default 10.f;
 	  * \param speed is in unit per second.
 	  * \see TMouseMode
@@ -205,7 +205,7 @@ public:
 	/// \name Get
 
 	/**
-	  * Get the current view matrix.	  
+	  * Get the current view matrix.
 	  * \return The current view matrix.
 	  * \see setMatrix()
 	  */
@@ -219,12 +219,12 @@ public:
 	  */
 	const NLMISC::CMatrix& getModelMatrix()
 	{
-		return _ModelMatrix ;	
+		return _ModelMatrix ;
 	}
 
 
 
-	/** 
+	/**
 	  * Get the current hot spot.
 	  * \return the target used when the mouse move. It can be for exemple the center.
 	  * of the selected object. The hotspot is not modified by mouse events.
@@ -235,12 +235,12 @@ public:
 		return _HotSpot;
 	}
 
-	/** 
+	/**
 	  * Register the listener to the server.
 	  */
 	void addToServer (NLMISC::CEventServer& server);
 
-	/** 
+	/**
 	  * Unregister the listener to the server.
 	  */
 	void removeFromServer (NLMISC::CEventServer& server);
@@ -282,7 +282,7 @@ private:
 
 	virtual NLMISC::IEventListener &getEventListenerInterface() { return *this; }
 
-	
+
 }; // NL3D
 
 }

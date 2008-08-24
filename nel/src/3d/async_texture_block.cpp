@@ -26,7 +26,7 @@
 #include "nel/3d/async_texture_block.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

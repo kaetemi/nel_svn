@@ -1,5 +1,5 @@
 /** \file ps_register_int_attribs.h
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *

@@ -69,47 +69,47 @@ public:
 		uint							_Offset;
 	};
 
-	/**  
+	/**
 	  *  Create a tileLumel with precompressed data.
-	  *  
+	  *
 	  *  \param interpolated is the bilinear interpolated value at this lumel.
 	  *  \param _4bits is the 4 bits compressed shadow.
 	  */
 	void createCompressed (uint8 interpolated, uint8 _4bits);
 
-	/**  
+	/**
 	  *  Create a tileLumel from uncompressed data.
-	  *  
+	  *
 	  *  \param interpolated is the bilinear interpolated value at this lumel.
 	  *  \param shaded is the reel shading value at this lumel.
 	  */
 	void createUncompressed (uint8 interpolated, uint8 shaded);
 
-	/**  
+	/**
 	  *  Unpack the lumel from a bit stream.
-	  *  
+	  *
 	  *  \param interpolated is the bilinear interpolated value at this lumel.
 	  *  \param stream is the bit stream used to unpack the lumel.
 	  */
 	void unpack (CStreamBit& stream, uint8 interpolated);
 
-	/**  
+	/**
 	  *  Skip the lumel from a bit stream.
-	  *  
+	  *
 	  *  \param stream is the bit stream used to skip the lumel.
 	  */
 	static void skip (CStreamBit& stream);
 
-	/**  
+	/**
 	  *  Pack the lumel from a bit stream.
-	  *  
+	  *
 	  *  \param stream is the bit stream used to pack the lumel.
 	  */
 	void pack (CStreamBit& stream) const;
 
-	/**  
+	/**
 	  *  Is shadow are present? return true if this lumel is shadowed, else false.
-	  *  
+	  *
 	  *  \param stream is the bit stream used to pack the lumel.
 	  */
 	bool isShadowed () const

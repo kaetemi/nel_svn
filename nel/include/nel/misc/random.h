@@ -30,7 +30,7 @@
 namespace NLMISC
 {
 
-/** A simple, os-independant random generator.  
+/** A simple, os-independant random generator.
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2002
@@ -69,7 +69,7 @@ inline CRandom::CRandom() : _Seed(1)
 // NB : In fact this random generator has the same behaviour than the VC6 one
 inline sint32 CRandom::rand()
 {
-	return ((_Seed = _Seed * 214013L + 2531011L) >> 16) & RandMax;	
+	return ((_Seed = _Seed * 214013L + 2531011L) >> 16) & RandMax;
 }
 
 //===========================================================================
@@ -91,7 +91,7 @@ inline float CRandom::frand(double mod)
 {
 	double	r = (double) rand();
 	r /= (double) RandMax;
-	return (float)(r * mod);	
+	return (float)(r * mod);
 }
 
 //===========================================================================

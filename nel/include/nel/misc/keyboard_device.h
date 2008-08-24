@@ -30,7 +30,7 @@
 
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 /** Gives access to low level keyboard parameters
@@ -39,7 +39,7 @@ namespace NLMISC
   * - 'Menu' (alternate) messages are replaced by 'RMenu' and 'LMenu' msg.
   */
 struct IKeyboardDevice	: public IInputDevice
-{	
+{
 	/// Max number of supported keys
 	enum { NumKeys = 256 };
 	/// Get the delay before key repeat, in milliseconds

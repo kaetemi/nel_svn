@@ -106,7 +106,7 @@ void CTextureCube::doGenerate(bool async)
 		// The texture must have the same UpLoadFormat
 		if( _Textures[i]->getUploadFormat()!=pRefTex->getUploadFormat() )
 		{
-			nlwarning("Bad TextureCube: different UpLoad format: %s and %s", 
+			nlwarning("Bad TextureCube: different UpLoad format: %s and %s",
 				_Textures[i]->getShareName().c_str(), pRefTex->getShareName().c_str() );
 			// => replace the texture with the reference
 			_Textures[i] = pRefTex;
@@ -114,20 +114,20 @@ void CTextureCube::doGenerate(bool async)
 		// if Auto format, must have the same PixelFormat
 		else if( _Textures[i]->getUploadFormat()==ITexture::Auto && _Textures[i]->getPixelFormat()!=pRefTex->getPixelFormat() )
 		{
-			nlwarning("Bad TextureCube: different Pixel format: %s and %s", 
+			nlwarning("Bad TextureCube: different Pixel format: %s and %s",
 				_Textures[i]->getShareName().c_str(), pRefTex->getShareName().c_str() );
 			// => replace the texture with the reference
 			_Textures[i] = pRefTex;
 		}
 
 		// The textures must have the same size.
-		if( ( _Textures[i]->getWidth()  != pRefTex->getWidth()  ) || 
+		if( ( _Textures[i]->getWidth()  != pRefTex->getWidth()  ) ||
 			( _Textures[i]->getHeight() != pRefTex->getHeight() ) )
 		{
 			// If can't resample the bitmap
 			if( _Textures[i]->getPixelFormat()!=CBitmap::RGBA )
 			{
-				nlwarning("Bad TextureCube: different Size (not RGBA): %s and %s", 
+				nlwarning("Bad TextureCube: different Size (not RGBA): %s and %s",
 					_Textures[i]->getShareName().c_str(), pRefTex->getShareName().c_str() );
 				// => replace the texture with the reference
 				_Textures[i] = pRefTex;
@@ -178,7 +178,7 @@ void	CTextureCube::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 
 // ***************************************************************************
 void CTextureCube::selectTexture(uint index)
-{	
+{
 	for( uint i = 0; i < 6; ++i )
 	{
 		if (_Textures[i]) _Textures[i]->selectTexture(index);

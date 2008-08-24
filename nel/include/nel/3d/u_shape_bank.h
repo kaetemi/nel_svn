@@ -33,7 +33,7 @@ namespace NLMISC
 	class IProgressCallback;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 /**
@@ -69,7 +69,7 @@ public:
 	  */
 	virtual void setShapeCacheSize(const std::string &shapeCacheName, sint32 maxSize) = 0;
 
-	/** 
+	/**
 	  * Link a shape to a ShapeCache. The ShapeCache must exist and must not contains the shape.
 	  */
 	virtual void linkShapeToShapeCache(const std::string &shapeName, const std::string &shapeCacheName) = 0;
@@ -83,7 +83,7 @@ public:
 	 *	\param wildcard a filter string like: "*.shape", "??_HOM*.shape". NB: toLower-ed internally
 	 *	\param recurs true if want to recurs in sub directory
 	 */
-	virtual void	preLoadShapesFromDirectory(const std::string &shapeCacheName, 
+	virtual void	preLoadShapesFromDirectory(const std::string &shapeCacheName,
 		const std::string &path, const std::string &wildCard, bool recurs= false, NLMISC::IProgressCallback *progress = NULL, bool flushTextures = false) =0;
 
 	/** PreLoad all shapes (.shape, .ps, .skel...) files from a directory into a shapeCache.
@@ -92,7 +92,7 @@ public:
 	 *	\param bnpName eg: "characters.bnp" (NB: set the bigFileNAme without any path).
 	 *  \param flushTex : true to flush the texture of each shape when it is loaded
 	 */
-	virtual void	preLoadShapesFromBNP(const std::string &shapeCacheName, 
+	virtual void	preLoadShapesFromBNP(const std::string &shapeCacheName,
 		const std::string &bnpName, const std::string &wildCard, NLMISC::IProgressCallback *progress = NULL, bool flushTextures = false) =0;
 
 	/** Return a UShape proxy from this name. NB: if not found the mesh is not loaded, and the proxy

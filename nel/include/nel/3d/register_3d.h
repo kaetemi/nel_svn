@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -39,7 +39,7 @@ namespace NL3D
  * \date 2000
  */
 void	registerSerial3d();
-	
+
 
 } // NL3D
 

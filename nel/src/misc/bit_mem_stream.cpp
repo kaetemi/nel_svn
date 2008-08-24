@@ -73,7 +73,7 @@ void CBitMemStream::swap(CBitMemStream &other)
 	std::swap(_FreeBits, other._FreeBits);
 	_DbgInfo.swap(other._DbgInfo);
 }
-	
+
 
 /*
  * Serialize a buffer
@@ -303,7 +303,7 @@ void	CBitMemStream::reserveBits( uint nbits )
 {
 #ifdef LOG_ALL_TRAFFIC
 	if ( VerboseAllTraffic )
-		nldebug( "TRAFFIC/%p/%s: Reserving %u bits at bitpos %d", this, isReading()?"I":"O", nbits, getPosInBit() );	
+		nldebug( "TRAFFIC/%p/%s: Reserving %u bits at bitpos %d", this, isReading()?"I":"O", nbits, getPosInBit() );
 #endif
 
 	uint32 v = 0;
@@ -504,7 +504,7 @@ void	CBitMemStream::serial(float &b)
 /*
  * Serial string
  */
-void	CBitMemStream::serial(std::string &b) 
+void	CBitMemStream::serial(std::string &b)
 {
 #ifdef LOG_ALL_TRAFFIC
 	sint32 bitpos = getPosInBit();
@@ -544,7 +544,7 @@ void	CBitMemStream::serial(std::string &b)
 /*
  * Serial string
  */
-inline	void		CBitMemStream::serial(ucstring &b) 
+inline	void		CBitMemStream::serial(ucstring &b)
 {
 #ifdef LOG_ALL_TRAFFIC
 	sint32 bitpos = getPosInBit();
@@ -696,7 +696,7 @@ void CBitMemStream::serialCont(std::vector<bool> &cont)
 void	CBitMemStream::displayLastBits( sint nbits, sint bitpos, NLMISC::CLog *log )
 {
 	if ( bitpos == -1 )
-		bitpos = getPosInBit();	
+		bitpos = getPosInBit();
 	displayBitStream( *this, max(bitpos-nbits, 0), bitpos-1, log );
 }
 
@@ -764,7 +764,7 @@ void		CBitMemStream::displayStream( const char *title, CLog *log )
 			s += _DbgInfo.getEventIdAtBitPos( bitpos, &eventId );
 			s += ( ((*p) >> i) & 1 ) ? '1' : '0';
 			sLegend += _DbgInfo.getEventLegendAtBitPos( *this, eventId );
-			++bitpos; 
+			++bitpos;
 		}
 
 		s += ' '; // a blank char between each byte
@@ -777,7 +777,7 @@ void		CBitMemStream::displayStream( const char *title, CLog *log )
 	if ( bitpos % 64 != 0 )
 		log->displayRawNL( s.c_str() );
 	_DbgInfo.endEventBrowsing();
-	
+
 	// Display legend
 	string::size_type lineStart = 0;
 	string::size_type crp = sLegend.find( '\n', lineStart );

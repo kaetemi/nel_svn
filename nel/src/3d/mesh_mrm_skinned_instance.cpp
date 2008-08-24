@@ -35,7 +35,7 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -150,10 +150,10 @@ bool			CMeshMRMSkinnedInstance::getSkinBoneBBox(NLMISC::CAABBox &bbox, uint bone
 {
 	// Get a pointer on the shape
 	CMeshMRMSkinned *pMesh = NLMISC::safe_cast<CMeshMRMSkinned *>((IShape*)Shape);
-	
+
 	// Recompute the id, and skin spheres, if needed
 	pMesh->computeBonesId (_FatherSkeletonModel);
-	
+
 	// get it.
 	return pMesh->getMeshGeom().getSkinBoneBBox(_FatherSkeletonModel, bbox, boneId);
 }

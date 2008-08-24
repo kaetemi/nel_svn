@@ -1,5 +1,5 @@
 /** \file speaker_listener.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.

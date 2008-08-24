@@ -61,9 +61,9 @@ void CSheetId::cbFileChange (const std::string &filename)
 //	CSheetId
 //
 //-----------------------------------------------
-CSheetId::CSheetId( uint32 sheetRef) 
-{ 
-	_Id.Id = sheetRef; 
+CSheetId::CSheetId( uint32 sheetRef)
+{
+	_Id.Id = sheetRef;
 
 #ifdef NL_DEBUG_SHEET_ID
 	// Yoyo: don't access the static map, because of order of static ctor call.
@@ -146,7 +146,7 @@ bool CSheetId::buildSheetId(const std::string& sheetName)
 			return true;
 		}
 	}
-	return false;			
+	return false;
 }
 
 void CSheetId::loadSheetId ()
@@ -172,12 +172,12 @@ void CSheetId::loadSheetId ()
 		contReset(tempMap);
 		file.serialCont(tempMap);
 		file.close();
-		
+
 		if (_RemoveUnknownSheet)
 		{
 			uint32 removednbfiles = 0;
 			uint32 nbfiles = tempMap.size();
-			
+
 			// now we remove all files that not available
 			map<uint32,string>::iterator itStr2;
 			for( itStr2 = tempMap.begin(); itStr2 != tempMap.end(); )
@@ -196,7 +196,7 @@ void CSheetId::loadSheetId ()
 				}
 			}
 			nlinfo ("SHEETID: Removed %d files on %d from CSheetId because these files doesn't exists", removednbfiles, nbfiles);
-		}		
+		}
 
 		// Convert the map to one big string and 1 static map (id to name)
 		{
@@ -258,7 +258,7 @@ void CSheetId::loadSheetId ()
 				TSheetId sheetId;
 				sheetId.Id=(*itStr).first;
 				uint32 type = sheetId.IdInfos.Type;
- 
+
 				// check whether we need to add an entry to the file extensions vector
 				if (_FileExtensions[type].empty())
 				{
@@ -377,7 +377,7 @@ CSheetId& CSheetId::operator=( uint32 sheetRef )
 	if (!_Initialised) init(false);
 
 	_Id.Id = sheetRef;
-	
+
 	return *this;
 
 } // operator= //
@@ -396,7 +396,7 @@ bool CSheetId::operator < (const CSheetId& sheetRef ) const
 	{
 		return true;
 	}
-			
+
 	return false;
 
 } // operator< //
@@ -481,7 +481,7 @@ void CSheetId::display(uint32 type)
 		// work out the type value for this entry in the map
 		TSheetId sheetId;
 		sheetId.Id=(*itStr).first;
- 
+
 		// decide whether or not to display the entry
 		if (type==sheetId.IdInfos.Type)
 		{
@@ -526,7 +526,7 @@ void CSheetId::buildIdVector(std::vector <CSheetId> &result, uint32 type)
 		// work out the type value for this entry in the map
 		TSheetId sheetId;
 		sheetId.Id=(*itStr).first;
- 
+
 		// decide whether or not to use the entry
 		if (type==sheetId.IdInfos.Type)
 		{
@@ -551,7 +551,7 @@ void CSheetId::buildIdVector(std::vector <CSheetId> &result, std::vector <std::s
 		// work out the type value for this entry in the map
 		TSheetId sheetId;
 		sheetId.Id=(*itStr).first;
- 
+
 		// decide whether or not to use the entry
 		if (type==sheetId.IdInfos.Type)
 		{

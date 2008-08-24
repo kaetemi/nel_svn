@@ -48,7 +48,7 @@ bool				UInstanceMaterial::isTextureFile(uint stage) const
 
 // ***************************************************************************
 std::string			UInstanceMaterial::getTextureFileName(uint stage) const
-{		
+{
 	if (stage >= IDRV_MAT_MAXTEXTURES)
 	{
 		nlwarning("UInstanceMaterialUser::getTextureFileName : invalid stage");
@@ -119,9 +119,9 @@ void UInstanceMaterial::emptyTexture(uint stage /*=0*/)
 
 // ***************************************************************************
 /*bool UInstanceMaterial::isSupportedByDriver(UDriver &drv, bool forceBaseCaps)
-{	
+{
 	IDriver *idrv = NLMISC::safe_cast<CDriverUser *>(&drv)->getDriver();
-	return _Object->isSupportedByDriver(*idrv, forceBaseCaps);	
+	return _Object->isSupportedByDriver(*idrv, forceBaseCaps);
 }*/
 
 // ***************************************************************************
@@ -131,12 +131,12 @@ void UInstanceMaterial::setTextureMem(uint stage, uint8 *data, uint32 length, bo
 	{
 		nlwarning("UInstanceMaterialUser::emptyTexture : invalid stage");
 		return;
-	}	
+	}
 	_Object->setTexture((uint8) stage, new CTextureMem(data, length, _delete, isFile, width, height, texType));
 }
 
 // ***************************************************************************
-bool				UInstanceMaterial::isLighted() const 
+bool				UInstanceMaterial::isLighted() const
 {
 	return _Object->isLighted();
 }
@@ -154,7 +154,7 @@ void UInstanceMaterial::setLighting(bool active,
 
 // ***************************************************************************
 
-bool				UInstanceMaterial::isUserColor() const 
+bool				UInstanceMaterial::isUserColor() const
 {
 	return _Object->getShader()==CMaterial::UserColor;
 }
@@ -203,56 +203,56 @@ void				UInstanceMaterial::setShininess( float shininess )
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getEmissive() const 
+CRGBA				UInstanceMaterial::getEmissive() const
 {
 	return _Object->getEmissive();
 }
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getAmbient() const 
+CRGBA				UInstanceMaterial::getAmbient() const
 {
 	return _Object->getAmbient();
 }
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getDiffuse() const 
+CRGBA				UInstanceMaterial::getDiffuse() const
 {
 	return _Object->getDiffuse();
 }
 
 // ***************************************************************************
 
-uint8				UInstanceMaterial::getOpacity() const 
+uint8				UInstanceMaterial::getOpacity() const
 {
 	return _Object->getOpacity();
 }
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getSpecular() const 
+CRGBA				UInstanceMaterial::getSpecular() const
 {
 	return _Object->getSpecular();
 }
 
 // ***************************************************************************
 
-float				UInstanceMaterial::getShininess() const 
+float				UInstanceMaterial::getShininess() const
 {
 	return _Object->getShininess();
 }
 
 // ***************************************************************************
 
-void				UInstanceMaterial::setColor(CRGBA rgba) 
+void				UInstanceMaterial::setColor(CRGBA rgba)
 {
 	_Object->setColor(rgba) ;
 }
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getColor(void) const 
+CRGBA				UInstanceMaterial::getColor(void) const
 {
 	return _Object->getColor();
 }
@@ -267,7 +267,7 @@ void				UInstanceMaterial::setUserColor(CRGBA userColor)
 
 // ***************************************************************************
 
-CRGBA				UInstanceMaterial::getUserColor() const 
+CRGBA				UInstanceMaterial::getUserColor() const
 {
 	if(isUserColor())
 		return _Object->getUserColor();
@@ -317,28 +317,28 @@ sint				UInstanceMaterial::getLastTextureStage() const
 
 // ***************************************************************************
 
-void			UInstanceMaterial::setBlend(bool active) 
+void			UInstanceMaterial::setBlend(bool active)
 {
 	_Object->setBlend(active);
 }
 
 // ***************************************************************************
 
-void			UInstanceMaterial::setBlendFunc(TBlend src, TBlend dst) 
+void			UInstanceMaterial::setBlendFunc(TBlend src, TBlend dst)
 {
 	_Object->setBlendFunc((CMaterial::TBlend)(uint32)src, (CMaterial::TBlend)(uint32)dst);
 }
 
 // ***************************************************************************
 
-void			UInstanceMaterial::setSrcBlend(TBlend val) 
+void			UInstanceMaterial::setSrcBlend(TBlend val)
 {
 	_Object->setSrcBlend((CMaterial::TBlend)(uint32)val);
 }
 
 // ***************************************************************************
 
-void			UInstanceMaterial::setDstBlend(TBlend val) 
+void			UInstanceMaterial::setDstBlend(TBlend val)
 {
 	_Object->setDstBlend((CMaterial::TBlend)(uint32)val);
 }
@@ -377,21 +377,21 @@ void UInstanceMaterial::setZFunc(ZFunc val)
 
 // ***************************************************************************
 
-bool			UInstanceMaterial::getBlend() const 
+bool			UInstanceMaterial::getBlend() const
 {
 	return _Object->getBlend();
 }
 
 // ***************************************************************************
 
-UInstanceMaterial::TBlend			UInstanceMaterial::getSrcBlend(void)  const 
+UInstanceMaterial::TBlend			UInstanceMaterial::getSrcBlend(void)  const
 {
 	return (UInstanceMaterial::TBlend)(uint32)_Object->getSrcBlend();
 }
 
 // ***************************************************************************
 
-UInstanceMaterial::TBlend			UInstanceMaterial::getDstBlend(void)  const 
+UInstanceMaterial::TBlend			UInstanceMaterial::getDstBlend(void)  const
 {
 	return (UInstanceMaterial::TBlend)(uint32)_Object->getDstBlend();
 }

@@ -30,7 +30,7 @@ namespace NLMISC
 class CVector2f;
 
 /** Utility class for incremental grid traversal
-  * 
+  *
   * \author Nicolas Vizerie
   * \author Nevrax France
   * \date 2005

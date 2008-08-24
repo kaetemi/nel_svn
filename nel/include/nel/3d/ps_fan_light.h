@@ -31,7 +31,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -45,7 +45,7 @@ class CPSFanLight : public CPSParticle, public CPSColoredParticle
 				  , public CPSSizedParticle, public CPSRotated2DParticle
 				  , public CPSMaterial, public CPSTexturedParticleNoAnim
 {
-public:	
+public:
 	NLMISC_DECLARE_CLASS(CPSFanLight);
 	virtual bool		completeBBox(NLMISC::CAABBox &box) const;
 	///\name Object
@@ -64,10 +64,10 @@ public:
 	  * n mean that the phase will be linearly interpolated between each n + 1 fans
 	  * It ranges from 0 to 31
 	  */
-	void				setPhaseSmoothness(uint32 smoothNess) 
-	{ 
+	void				setPhaseSmoothness(uint32 smoothNess)
+	{
 		nlassert(smoothNess < 32);
-		_PhaseSmoothness = smoothNess; 
+		_PhaseSmoothness = smoothNess;
 	}
 
 	/// retrieve the phase smoothness
@@ -100,7 +100,7 @@ public:
 
 	/// must call this at least if you intend to use fanlight
 	static void			initFanLightPrecalc(void);
-	
+
 	/// return true if there are transparent faces in the object
 	virtual bool		hasTransparentFaces(void);
 
@@ -114,17 +114,17 @@ public:
 	/// Set a texture. NULL remove it
 	void setTexture(CSmartPtr<ITexture> tex)
 	{
-		_Tex = tex;		
+		_Tex = tex;
 	}
-	
+
 	/// get the texture used
 	ITexture *getTexture(void)
 	{
-		return _Tex; 
+		return _Tex;
 	}
 	const ITexture *getTexture(void) const
 	{
-		return _Tex; 
+		return _Tex;
 	}
 
 	/// from CPSParticle : return true if there are lightable faces in the object
@@ -136,26 +136,26 @@ public:
 	virtual	void			enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv);
 
 	// from CPSParticle
-	virtual void			setZBias(float value) { CPSMaterial::setZBias(value); }	
-	virtual float			getZBias() const { return CPSMaterial::getZBias(); }	
-	
+	virtual void			setZBias(float value) { CPSMaterial::setZBias(value); }
+	virtual float			getZBias() const { return CPSMaterial::getZBias(); }
+
 protected:
 	void				newElement(const CPSEmitterInfo &info);
 	void				deleteElement(uint32);
-	virtual void resize(uint32 size); 
+	virtual void resize(uint32 size);
 	virtual CPSLocated *getColorOwner(void) { return _Owner; }
 	virtual CPSLocated *getSizeOwner(void) { return _Owner; }
-	virtual CPSLocated *getAngle2DOwner(void) { return _Owner; }	
+	virtual CPSLocated *getAngle2DOwner(void) { return _Owner; }
 private:
 	friend class CPSFanLightHelper;
 	typedef CHashMap<uint, CVertexBuffer>  TVBMap;
 	typedef CHashMap<uint, CIndexBuffer >  TIBMap;
 private:
 	uint32						_NbFans;
-	uint32						_PhaseSmoothness;	
-	float						_MoveIntensity;		
+	uint32						_PhaseSmoothness;
+	float						_MoveIntensity;
 	NLMISC::CSmartPtr<ITexture> _Tex;
-	float						_PhaseSpeed;	
+	float						_PhaseSpeed;
 	//
 	static uint8				_RandomPhaseTab[32][128];
 
@@ -168,8 +168,8 @@ private:
 	static bool _RandomPhaseTabInitialized;
 private:
 	/// initialisations
-	virtual void init(void);		
-	virtual void draw(bool opaque);	
+	virtual void init(void);
+	virtual void draw(bool opaque);
 	// setup and get the needed vb for display
 	void getVBnIB(CVertexBuffer *&vb, CIndexBuffer *&ib);
 	uint getNumFanlightsInVB() const;

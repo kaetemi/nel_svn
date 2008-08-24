@@ -28,7 +28,7 @@
 #include "nel/misc/rgba.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using NLMISC::CRGBA;
@@ -58,14 +58,14 @@ public:
 	 * Modulate:		out= arg0 * arg1
 	 * Add:				out= arg0 + arg1
 	 * AddSigned:		out= arg0 + arg1 -0.5
-	 * Interpolate*:	out= arg0*As + arg1*(1-As),  where As is taken from the SrcAlpha of 
+	 * Interpolate*:	out= arg0*As + arg1*(1-As),  where As is taken from the SrcAlpha of
 	 *		Texture/Previous/Diffuse/Constant, respectively if operator is
 	 *		InterpolateTexture/InterpolatePrevious/InterpolateDiffuse/InterpolateConstant.
-	 * Multiply-Add (Mad) out= arg0 * arg1 + arg2. Must be supported by driver	 
+	 * Multiply-Add (Mad) out= arg0 * arg1 + arg2. Must be supported by driver
 	 * EMBM : apply to both color and alpha : the current texture, whose format is DSDT, is used to offset the texture in the next stage.
 	 *  NB : for EMBM and InterpolateConstant, this must be supported by driver.
 	 */
-	enum TTexOperator		{ Replace=0, Modulate, Add, AddSigned, 
+	enum TTexOperator		{ Replace=0, Modulate, Add, AddSigned,
 							  InterpolateTexture, InterpolatePrevious, InterpolateDiffuse, InterpolateConstant, EMBM, Mad };
 
 	/** Source argument.
@@ -86,7 +86,7 @@ public:
 	enum TTexOperand		{ SrcColor=0, InvSrcColor, SrcAlpha, InvSrcAlpha };
 	// @}
 
-public:	
+public:
 	/// \name Texture.
 	// @{
 	// Set a texture in a stage
@@ -156,7 +156,7 @@ public:
 	void			setColor(CRGBA rgba);
 
 	CRGBA			getColor(void) const;
-	
+
 
 	// @}
 
@@ -172,7 +172,7 @@ public:
 	CRGBA				getSpecular() const;
 	float				getShininess() const;
 	// @}
-	
+
 
 	/// \name Culling
 	// @{

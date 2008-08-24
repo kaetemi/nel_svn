@@ -39,7 +39,7 @@
 struct CHashKey
 {
 	CHashKey () { HashKeyString.resize(20); }
-	
+
 	CHashKey (const unsigned char Message_Digest[20])
 	{
 		HashKeyString = "";
@@ -48,7 +48,7 @@ struct CHashKey
 			HashKeyString += Message_Digest[i];
 		}
 	}
-	
+
 	// Init the hash key with a binary key format or a text key format
 	CHashKey (const std::string &str)
 	{

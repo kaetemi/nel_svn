@@ -32,14 +32,14 @@ namespace NLMISC
 
 
 static LRESULT CALLBACK nlDefaultWinProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{		
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);	
+{
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
 
 //***************************************************************
 CDummyWindow::CDummyWindow() : _HWnd(NULL)
-{	
+{
 }
 
 //***************************************************************
@@ -51,7 +51,7 @@ bool CDummyWindow::init(HINSTANCE hInstance, WNDPROC winProc)
 	wc.cbSize = sizeof(WNDCLASSEX);
 	if (!GetClassInfoEx(hInstance, INVISIBLE_WINDOW_CLASS, &wc))
 	{
-		wc.cbSize = sizeof(WNDCLASSEX); 
+		wc.cbSize = sizeof(WNDCLASSEX);
 		wc.style			= CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
 		wc.lpfnWndProc		= nlDefaultWinProc;
 		wc.cbClsExtra		= 0;
@@ -64,10 +64,10 @@ bool CDummyWindow::init(HINSTANCE hInstance, WNDPROC winProc)
 		wc.lpszClassName	= INVISIBLE_WINDOW_CLASS;
 		wc.hIconSm			= 0;
 		RegisterClassEx(&wc);
-	}	
-    _HWnd = CreateWindow(INVISIBLE_WINDOW_CLASS, "", WS_POPUP, 
-                         CW_USEDEFAULT,CW_USEDEFAULT, 
-                         CW_USEDEFAULT,CW_USEDEFAULT, 
+	}
+    _HWnd = CreateWindow(INVISIBLE_WINDOW_CLASS, "", WS_POPUP,
+                         CW_USEDEFAULT,CW_USEDEFAULT,
+                         CW_USEDEFAULT,CW_USEDEFAULT,
                          NULL, 0,
                          hInstance, 0);
 	if (_HWnd)

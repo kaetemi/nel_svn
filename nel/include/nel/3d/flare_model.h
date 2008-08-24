@@ -50,20 +50,20 @@ public:
 	// dtor
 	~CFlareModel();
 	// register this model
-	static void registerBasic();	
+	static void registerBasic();
 	static CTransform *creator() { return new CFlareModel; }
 	/// \name CTransform traverse specialisation
 	// @{
 	virtual void	traverseRender();
-	// @}		
+	// @}
 	// From CTransform
 	virtual	bool isFlare() const { return true; }
 	// Debugging aid : if an occlusion test mesh is used, display it using the current material
 	void renderOcclusionTestMesh(IDriver &drv);
 private:
 	friend class CFlareShape;
-	float					 _Intensity[MaxNumContext];	
-	CScene					 *_Scene;	
+	float					 _Intensity[MaxNumContext];
+	CScene					 *_Scene;
 	IOcclusionQuery			 *_OcclusionQuery[MaxNumContext][OcclusionTestFrameDelay]; // delay real test by a whole frame to avoid any stall
 	IOcclusionQuery			 *_DrawQuery[MaxNumContext][OcclusionTestFrameDelay]; // querries to retrieve the surface that would have been drawned if there were no occlusion
 	NLMISC::CRefPtr<IDriver> _LastDrv; // last driver used for render
@@ -85,7 +85,7 @@ public:
 	static void updateOcclusionQueryBegin(IDriver *drv);
 	static void updateOcclusionQueryEnd(IDriver *drv);
 	/** Update state of occlusion query at the end of the frame. For private use by the CScene class
-	  * updateOcclusionQueryBegin() should have been called	  
+	  * updateOcclusionQueryBegin() should have been called
 	  */
 	void updateOcclusionQuery(IDriver *drv);
 	/** Render all primitives of a mesh using the current material / metrix etc ...

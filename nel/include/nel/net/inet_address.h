@@ -100,17 +100,17 @@ public:
 	 * It also retrieves the host name if CInetAddress::RetrieveNames is true.
 	 */
 	void				setSockAddr( const sockaddr_in* saddr );
-	 
+
 	/// Returns if object (address and port) is valid
 	bool				isValid() const;
-	
+
 	/// Returns internal socket address (read only)
 	const sockaddr_in	 *sockAddr() const;
 
 	/// Returns internal IP address
 	uint32				internalIPAddress() const;
 
-	/// Returns the internal network address (it s the network address for example 192.168.0.0 for a C class) 
+	/// Returns the internal network address (it s the network address for example 192.168.0.0 for a C class)
 	uint32				internalNetAddress () const;
 
 	/// Returns readable IP address. (ex: "195.68.21.195")

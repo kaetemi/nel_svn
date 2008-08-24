@@ -117,23 +117,23 @@ public:
 	  */
 	void			release ();
 
-	/** Get the root node pointer 
+	/** Get the root node pointer
 	  */
 	xmlNodePtr		getRootNode () const;
 
-	/** Get the first child node pointer named childName. NULL if no node named childName. 
+	/** Get the first child node pointer named childName. NULL if no node named childName.
 	  */
 	static xmlNodePtr getFirstChildNode (xmlNodePtr parent, const char *childName);
 
-	/** Get the next child node pointer name childName, brother of previous. NULL if no node named childName. 
+	/** Get the next child node pointer name childName, brother of previous. NULL if no node named childName.
 	  */
 	static xmlNodePtr getNextChildNode (xmlNodePtr last, const char *childName);
 
-	/** Get the first child node pointer of type. NULL if no node of type. 
+	/** Get the first child node pointer of type. NULL if no node of type.
 	  */
 	static xmlNodePtr getFirstChildNode (xmlNodePtr parent, xmlElementType type);
 
-	/** Get the next child node pointer of type. NULL if no node of type. 
+	/** Get the next child node pointer of type. NULL if no node of type.
 	  */
 	static xmlNodePtr getNextChildNode (xmlNodePtr last, xmlElementType type);
 
@@ -144,30 +144,30 @@ public:
 	/** Count number of sub node of type for a given node.
 	  */
 	static uint		countChildren (xmlNodePtr node, xmlElementType type);
-	
-	/** 
+
+	/**
 	  * Read a property string
 	  *
 	  * Returns true and the result if the property has been found, else false.
 	  */
 	static bool		getPropertyString (std::string &result, xmlNodePtr node, const char *property);
-	
+
 	/**
 	  *	Read an integer property - if the property is not found the default value is returned
 	  */
-	static int		getIntProperty(xmlNodePtr node, const char *property, int defaultValue); 
+	static int		getIntProperty(xmlNodePtr node, const char *property, int defaultValue);
 
 	/**
 	  *	Read a floating point property - if the property is not found the default value is returned
 	  */
-	static double	getFloatProperty(xmlNodePtr node, const char *property, float defaultValue); 
+	static double	getFloatProperty(xmlNodePtr node, const char *property, float defaultValue);
 
 	/**
 	  *	Read a string property - if the property is not found the default value is returned
 	  */
-	static std::string getStringProperty(xmlNodePtr node, const char *property, const std::string& defaultValue); 
+	static std::string getStringProperty(xmlNodePtr node, const char *property, const std::string& defaultValue);
 
-	/** 
+	/**
 	  * Read the content of the node as a string
 	  *
 	  * Returns true and the result if some text has been found, else false.

@@ -46,7 +46,7 @@ public:
 	CPSIntBlender(sint32 startInt = 0 , sint32 endInt = 10, float nbCycles = 1.0f) : CPSValueBlender<sint32>(nbCycles)
 	{
 		_F.setValues(startInt, endInt);
-	}	
+	}
 	CPSAttribMakerBase *clone() const { return new CPSIntBlender(*this); }
 };
 
@@ -68,7 +68,7 @@ class CPSIntGradient : public CPSValueGradient<sint32>
 public:
 	NLMISC_DECLARE_CLASS(CPSIntGradient);
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a float table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
@@ -85,7 +85,7 @@ class CPSUIntGradient : public CPSValueGradient<uint32>
 public:
 	NLMISC_DECLARE_CLASS(CPSUIntGradient);
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a float table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
@@ -94,7 +94,7 @@ public:
 	CPSUIntGradient(const uint32 *intTab = CPSUIntGradient::_DefaultGradient
 						, uint32 nbValues = 2, uint32 nbStages = 10, float nbCycles = 1.0f);
 	CPSAttribMakerBase *clone() const { return new CPSUIntGradient(*this); }
-	static uint32 _DefaultGradient[];	
+	static uint32 _DefaultGradient[];
 };
 
 /** this memorize value by applying some function on the emitter. For a particle's attribute, each particle has its

@@ -1,5 +1,5 @@
 /** \file logic_variable.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -95,19 +95,19 @@ public:
 	 */
 	void setVerbose( bool b ) { _Verbose = b; }
 
-	/** 
+	/**
 	 * Apply modifications on a variable
 	 *
 	 * \param op can be one of these operators :"SET"("set"),"ADD"("add"),"SUB"("sub"),"MUL"("mul"),"DIV"("div")
 	 * \param value is the value to use along with the modificator
 	 */
 	void applyModification( std::string op, sint64 value );
-	
-	/** 
+
+	/**
 	 * update the variable
 	 */
 	virtual void processLogic();
-	
+
 	/**
 	 * serial
 	 */
@@ -134,8 +134,8 @@ class CLogicCounter : public CLogicVariable
 public:
 
 	/// counter running mode
-	enum TLogicCounterRule 
-	{ 
+	enum TLogicCounterRule
+	{
 		STOP_AT_LIMIT = 0,
 		LOOP,
 		SHUTTLE,
@@ -145,11 +145,11 @@ public:
 
 	/// counter running state
 	enum TLogicCounterRunningMode
-	{ 
+	{
 		STOPPED = 0,
 		RUN,
 		REWIND,
-		FAST_FORWARD, 
+		FAST_FORWARD,
 	};
 
 
@@ -180,7 +180,7 @@ public:
 	 */
 	CLogicCounter();
 
-	/** 
+	/**
 	 * update the counter
 	 */
 	void update();

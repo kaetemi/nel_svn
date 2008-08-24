@@ -36,7 +36,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -46,7 +46,7 @@ void	CQuadGridClipManager::registerBasic()
 	CScene::registerModel(QuadGridClipManagerId, TransformId, CQuadGridClipManager::creator);
 }
 
-	
+
 // ***************************************************************************
 CQuadGridClipManager::CQuadGridClipManager()
 {
@@ -129,11 +129,11 @@ void				CQuadGridClipManager::updateClustersFromCamera(const CVector &camPos)
 
 	// keep an histeresis of one cluster: do not delete "young" clusters created before.
 	if(newX0>= oldX0+1)		// NB: if newX0==oldX0+1, then newX0= _X => no change.
-		newX0--;	
+		newX0--;
 	if(newY0>= oldY0+1)		// same reasoning.
-		newY0--;	
+		newY0--;
 	if(newX1<= oldX1-1)		// NB: if newX1==oldX1-1, then newX1= oldX1 => no change.
-		newX1++;	
+		newX1++;
 	if(newY1<= oldY1-1)		// same reasoning.
 		newY1++;
 
@@ -173,8 +173,8 @@ void				CQuadGridClipManager::updateClustersFromCamera(const CVector &camPos)
 					// build the 2D bbox where the models should fit.
 					CAABBox		pivotBBox;
 					pivotBBox.setMinMax(
-						CVector(x*_ClusterSize,y*_ClusterSize,0), 
-						CVector((x+1)*_ClusterSize,(y+1)*_ClusterSize,0) ); 
+						CVector(x*_ClusterSize,y*_ClusterSize,0),
+						CVector((x+1)*_ClusterSize,(y+1)*_ClusterSize,0) );
 					// build new case. Clusters are empty.
 					newCaseModels(newCase, pivotBBox);
 				}

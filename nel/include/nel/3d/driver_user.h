@@ -43,7 +43,7 @@
 #include "nel/3d/lod_character_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -178,7 +178,7 @@ public:
 	virtual	void			clearBuffers(CRGBA col= CRGBA(255,255,255,255));
 	/// This swap the back and front buffer (ALL the buffer :) ).
 	virtual	void			swapBuffers();
-	virtual void            finish();	
+	virtual void            finish();
 	virtual void            flush();
 
 	virtual void			setSwapVBLInterval(uint interval);
@@ -204,7 +204,7 @@ public:
 	// @}
 
 	/// \name Cull mode
-	// @{	
+	// @{
 	virtual void			setCullMode(TCullMode cullMode);
 	virtual	TCullMode       getCullMode() const;
 	// @}
@@ -236,7 +236,7 @@ public:
 	/// Delete a AnimationSet.
 	virtual	void			deleteAnimationSet(UAnimationSet *animationSet);
 	// @}
-	
+
 
 	/// \name Components gestion for Interface 2D/3D.
 	// @{
@@ -282,7 +282,7 @@ public:
 	 */
 	virtual	void			setViewport(const CViewport &);
 	virtual	CViewport		getViewport();
-	/** Set the active Frustum for rendering. 
+	/** Set the active Frustum for rendering.
 	 */
 	virtual	void			setFrustum(const CFrustum &frust);
 	virtual	CFrustum		getFrustum();
@@ -358,9 +358,9 @@ public:
 	virtual	void			drawQuads(const std::vector<NLMISC::CQuadColorUV2> &quad, UMaterial &mat);
 	virtual	void			drawTriangles(const std::vector<NLMISC::CTriangleColorUV> &tris, UMaterial &mat);
 	virtual	void			drawQuads(const NLMISC::CQuadColorUV *quads, uint32 nbQuads, UMaterial &mat);
-	virtual	void			drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads, UMaterial &mat);	
-	virtual	void			drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbTris, UMaterial &mat);	
-	
+	virtual	void			drawQuads(const NLMISC::CQuadColorUV2 *quads, uint32 nbQuads, UMaterial &mat);
+	virtual	void			drawTriangles(const NLMISC::CTriangleColorUV *tris, uint32 nbTris, UMaterial &mat);
+
 	// @}
 
 
@@ -438,7 +438,7 @@ public:
 	  * \param icon This is the icon of the message box should use like warning, error etc...
 	  */
 	virtual TMessageBoxId	systemMessageBox (const char* message, const char* title, TMessageBoxType type=okType, TMessageBoxIcon icon=noIcon);
-	
+
 
 	/** Set the global polygon mode. Can be filled, line or point. The implementation driver must
 	  * call IDriver::setPolygonMode and active this mode.
@@ -458,7 +458,7 @@ public:
 
 	/// \name Shape Bank
 	// @{
-	/// 
+	///
 	virtual	UShapeBank*		getShapeBank()
 	{
 		return &_ShapeBank;
@@ -478,7 +478,7 @@ public:
 	virtual	uint32			profileSetupedModelMatrix() const;
 
 	virtual void			enableUsedTextureMemorySum (bool enable);
-	
+
 	virtual uint32			getUsedTextureMemory() const;
 
 	virtual	void			startProfileVBHardLock();
@@ -488,13 +488,13 @@ public:
 	virtual	void			profileVBHardAllocation(std::vector<std::string> &result);
 
 	virtual	void			startProfileIBLock();
-	
+
 	virtual	void			endProfileIBLock(std::vector<std::string> &result);
-		 
+
 	virtual	void			profileIBAllocation(std::vector<std::string> &result);
 
 	virtual	void			profileTextureUsage(std::vector<std::string> &result);
-		
+
 	// @}
 
 
@@ -522,24 +522,24 @@ public:
 	// @}
 
 	/// \name Water envmap
-	// @{	
-	virtual UWaterEnvMap *createWaterEnvMap();	
+	// @{
+	virtual UWaterEnvMap *createWaterEnvMap();
 	virtual void		  deleteWaterEnvMap(UWaterEnvMap *map);
 	// @}
-	
+
 
 	virtual uint64	getSwapBufferCounter();
 
 	// copy the first texture in a second one of different dimensions
-	virtual bool stretchRect(UScene * scene, class UTexture & srcUText, NLMISC::CRect &srcRect, 
+	virtual bool stretchRect(UScene * scene, class UTexture & srcUText, NLMISC::CRect &srcRect,
 		class UTexture & destUText, NLMISC::CRect &destRect);
 
-	virtual bool setRenderTarget(class UTexture & uTex, 
-		uint32 x = 0, 
-		uint32 y = 0, 
-		uint32 width = 0, 
-		uint32 height = 0, 
-		uint32 mipmapLevel = 0, 
+	virtual bool setRenderTarget(class UTexture & uTex,
+		uint32 x = 0,
+		uint32 y = 0,
+		uint32 width = 0,
+		uint32 height = 0,
+		uint32 mipmapLevel = 0,
 		uint32 cubeFace = 0);
 
 
@@ -557,7 +557,7 @@ public:
 	}
 	// same as restoreMatrixContext(), but don't reset Viewport/Scissor
 	void		restoreMatrixContextMatrixOnly();
-	
+
 	// @}
 
 };

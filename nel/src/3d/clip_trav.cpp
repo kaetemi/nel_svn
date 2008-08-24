@@ -71,7 +71,7 @@ CClipTrav::~CClipTrav()
 bool CClipTrav::fullSearch (vector<CCluster*>& vCluster, const CVector& pos)
 {
 	CQuadGrid<CCluster*>::CIterator itAcc;
-	
+
 	// search with help of Accel
 	bool bInWorld = true;
 	Accel.select (pos, pos);
@@ -86,7 +86,7 @@ bool CClipTrav::fullSearch (vector<CCluster*>& vCluster, const CVector& pos)
 		}
 		++itAcc;
 	}
-	
+
 	// if not found at all
 	if (bInWorld)
 	{
@@ -211,7 +211,7 @@ void CClipTrav::traverse()
 		ViewPyramid[NL3D_CLIP_PLANE_RIGHT].make(rt, rbFar, rtFar);
 		ViewPyramid[NL3D_CLIP_PLANE_BOTTOM].make(lb, lbFar, rbFar);
 	}
-	
+
 	// Compute pyramid in World basis.
 	// The vector transformation M of a plane p is computed as p*M-1.
 	// Here, ViewMatrix== CamMatrix-1. Hence the following formula.
@@ -246,7 +246,7 @@ void CClipTrav::traverse()
 	/* For all objects marked visible in preceding render, reset _Visible state here.
 		NB: must reset _Visible State to false because sometimes traverseClip() are even not executed
 		(Cluster clip, QuadGridClipManager clip...).
-		And somes models read this _Visible state. eg: Skins/StickedObjects test the Visible state of 
+		And somes models read this _Visible state. eg: Skins/StickedObjects test the Visible state of
 		their _AncestorSkeletonModel.
 	*/
 	for (i=0;i<_CurrentNumVisibleModels;i++)
@@ -354,7 +354,7 @@ void CClipTrav::traverse()
 
 		// NB: only the SonsOfAncestorSkeletonModelGroup may still be here.
 	}
-	
+
 	// Affect the moving objects to their clusters
 	for (i = 0; i < hrcTrav._MovingObjects.size(); ++i)
 	{
@@ -426,7 +426,7 @@ void CClipTrav::traverse()
 
 	H_AFTER( NL3D_TravClip_Traverse);
 
-	// Load Balance the Skeleton CLod state here. 
+	// Load Balance the Skeleton CLod state here.
 	// =========================
 	/* Can't do it in LoadBalancingTrav because sons with _AncestorSkeletonModel!=NULL may be hiden if a skeleton
 		is displayed in CLod mode.
@@ -447,7 +447,7 @@ void CClipTrav::traverse()
 	// For All Shadow Casters (skeletons + others), clip their ShadowMap possible projection against the frustum only.
 	// =========================
 	/*
-		Done here, because can't do in clip() in case of a Model in a cluster 
+		Done here, because can't do in clip() in case of a Model in a cluster
 		(We insert in cluster with the Model BBox, not the Model + Shadow BBox).
 	*/
 	clipShadowCasters();
@@ -455,9 +455,9 @@ void CClipTrav::traverse()
 	// Update Here the Skin render Lists of All visible Skeletons
 	// =========================
 	/*
-		Done here, because AnimDetail and Render need correct lists. NB: important to do it 
+		Done here, because AnimDetail and Render need correct lists. NB: important to do it
 		before Render Traversal, because updateSkinRenderLists() may change the transparency flag!!
-		NB: can't do it in any traverse() because must be sure that it is done 
+		NB: can't do it in any traverse() because must be sure that it is done
 		(traverseHRC not called if SonOfAncestorSkeletonModel, and traverseClip not called if in a cluster).
 		NB: must do even if clipped because:
 			1/ maybe used for generateShadow() (through the ancestorSkeletonModel)
@@ -536,7 +536,7 @@ void CClipTrav::loadBalanceSkeletonCLod()
 		sort(_TmpSortSkeletons.begin(), _TmpSortSkeletons.end());
 	}
 
-	// **** set CLod flag 
+	// **** set CLod flag
 	uint	n= min(nMaxSkelsInNotCLodForm, (uint)_TmpSortSkeletons.size());
 	uint	i;
 	// The lowest priority are displayed in std form
@@ -621,14 +621,14 @@ void	CClipTrav::clipShadowCasters()
 			// else do a bigger test
 			else
 			{
-				// TODO_SHADOW: Select a better "Caster Sphere". 
+				// TODO_SHADOW: Select a better "Caster Sphere".
 				// If the model "sc" is a CSkeletonModel, It depends also on Sticked objects/Skeletons.
 				// Build the sphere around the caster that can receive shadow.
 				CBSphere	sphere;
 				// Suppose an Object sphere of 3 meter radius, centered on caster Pos.
 				const	float	objectRadius= 3.f;
 				sphere.Center= sc->getWorldMatrix().getPos();
-				// Add to this sphere the max Depth extent. 
+				// Add to this sphere the max Depth extent.
 				// NB: works because suppose that the Shadow BBox include the model Center.
 				sphere.Radius= objectRadius + sc->getShadowMapMaxDepth();
 
@@ -669,7 +669,7 @@ void	CClipTrav::clipShadowCasters()
 		// If the model is not visible, or if temporary bound to a AncestorSkeletonModel
 		else
 		{
-			// Increment the TemporalFadeOut. Because since will be hidden (or sticked) 
+			// Increment the TemporalFadeOut. Because since will be hidden (or sticked)
 			// for a long time, allow the process to free texture.
 			shadowMap->TemporalOutScreenFade+= dFade;
 			// Since not visible, increment the InScreenFadeAccum
@@ -677,7 +677,7 @@ void	CClipTrav::clipShadowCasters()
 		}
 	}
 
-	// **** Load Balance Models that cast ShadowMaps around, 
+	// **** Load Balance Models that cast ShadowMaps around,
 
 	sort(aroundCasters.begin(), aroundCasters.end());
 	sort(screenCasters.begin(), screenCasters.end());
@@ -729,10 +729,10 @@ void	CClipTrav::clipShadowCasters()
 	Scene->getRenderTrav().getShadowMapManager().selectShadowMapsToGenerate(Scene);
 
 
-	/* **** Then for All ShadowCasters not visibles but that will generate their shadowMap, 
+	/* **** Then for All ShadowCasters not visibles but that will generate their shadowMap,
 		- we must compute the LightTraversal(for ShadowLight direction)
 		- for skeleton models only, we must compute the AnimDetailTraversal (for bone animation)
-		We MUST NOT flag the skeleton as Visible, and we MUST NOT insert in LoadBalancing 
+		We MUST NOT flag the skeleton as Visible, and we MUST NOT insert in LoadBalancing
 		(since won't be rendered)
 		NB: Do nothing for Sons of the Ancestor Skeleton because:
 			1/ light do nothing with them (see std clip)

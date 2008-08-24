@@ -88,7 +88,7 @@ public:
 	virtual void setNbCloudToUpdateIn80ms (uint32 n) = 0;
 
 	virtual bool isDebugQuadEnabled () = 0;
-	
+
 	virtual void setDebugQuad (bool b) = 0;
 
 };

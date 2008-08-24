@@ -66,7 +66,7 @@ public:
 
 
 	/** Animate all the playlist. Only the globals channels are animated.
-	 * NB: all objects registered to the playLists (see registerTransform) are updated, BUT the detail channels 
+	 * NB: all objects registered to the playLists (see registerTransform) are updated, BUT the detail channels
 	 * (like materials channels) which may be updated during UScene::render(), only if they are visibles...
 	 *
 	 * \param time the effective currentTime in second.

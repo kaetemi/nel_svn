@@ -135,7 +135,7 @@ void		CMusicSoundManager::update()
 						/* NB: here, bestSound can be != from _CurrentMusicPlaying in the following cases:
 							- _CurrentMusicPlaying= NULL
 							- bestSound was assigned to a higher priority sound than _CurrentMusicPlaying
-								thereFore snd should be different from _CurrentMusicPlaying, since this one is of 
+								thereFore snd should be different from _CurrentMusicPlaying, since this one is of
 								lower priority...
 						 */
 						// compare name to avoid full random jitter
@@ -223,7 +223,7 @@ void	CMusicSoundManager::startMusic(CMusicSound *newMs, CMusicSource *newSrc)
 	// update markers
 	_CurrentMusicPlaying= newMs;
 	_PlayStartTime= CTime::getLocalTime();
-	
+
 	// The source is played this time. Avoid replay it for infinite time if the player stay in the zone
 	if(!newMs->getLooping())
 		_AlreadyPlayedSources.insert(newSrc);

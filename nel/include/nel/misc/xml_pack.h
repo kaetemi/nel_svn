@@ -13,7 +13,7 @@
  *	So, it is possible to easily edit the file by hand, compare it
  *	and add or remove file.
  *
- *	NB : we use xml pack file as an intermediate format between the 
+ *	NB : we use xml pack file as an intermediate format between the
  *	level design team and the runtime data (that are ganarated by
  *	the loadForm function of george) that are a binary extraction of
  *	the content of the xml files.
@@ -28,7 +28,7 @@
 
 namespace NLMISC
 {
-	
+
 	/** the singleton class in charge of xml_pack files.
 	 *	Is work in the same manner as the big file singleton.
 	 */
@@ -45,9 +45,9 @@ namespace NLMISC
 
 		// List all files in an xml_pack file
 		void list (const std::string &xmlPackFileName, std::vector<std::string> &allFiles);
-		
+
 		// Used by CIFile to get information about the files within the xml pack
-		FILE* getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rFileOffset, 
+		FILE* getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rFileOffset,
 						bool &rCacheFileOnOpen, bool &rAlwaysOpened);
 
 	private:
@@ -63,7 +63,7 @@ namespace NLMISC
 		/// Advance up to the begining of the next line, incrementing the in/out param lineCount
 		void skipLine(std::string::iterator &it, std::string::iterator end, uint32 &lineCount);
 		///@}
-		
+
 
 		/// the name of the xml_pack file
 		std::string		XMLPackFileName;

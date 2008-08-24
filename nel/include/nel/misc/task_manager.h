@@ -73,23 +73,23 @@ public:
 	void sleepTask(void) { nlSleep(10); }
 
 	/// Task list size
-	uint taskListSize(void); 
+	uint taskListSize(void);
 
 	/// return false if exit() is required. task added with addTask() should test this flag.
 	bool	isThreadRunning() const {return _ThreadRunning;}
 
 	/// Dump task list
 	void	dump (std::vector<std::string> &result);
-	
+
 	/// Clear the dump of Done files
 	void	clearDump();
 
 	/// Get number of waiting task
 	uint	getNumWaitingTasks();
-	
+
 	/// Is there a current task ?
 	bool	isTaskRunning() const {return _IsTaskRunning;}
-	
+
 	/// A callback to modify the task priority
 	class IChangeTaskPriority
 	{
@@ -105,12 +105,12 @@ private:
 
 	/// Register task priority callback
 	void	changeTaskPriority ();
-	
+
 	/// The callback
 	IChangeTaskPriority		*_ChangePriorityCallback;
 
 protected:
-	
+
 	/** If any, wait the current running task to complete
 	 *	this function MUST be called in a 'accessor to the _TaskQueue' statement because a mutex is required
 	 *	eg:
@@ -148,7 +148,7 @@ protected:
 	CSynchronized<std::string>				_RunningTask;
 	CSynchronized<std::list<CWaitingTask> >	_TaskQueue;
 	CSynchronized<std::deque<std::string> >	_DoneTaskQueue;
-	
+
 	/// thread pointer
 	IThread *_Thread;
 

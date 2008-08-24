@@ -1,5 +1,5 @@
 /** \file logic_event.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -49,7 +49,7 @@ class CLogicStateMachine;
 class CLogicEventMessage
 {
 public:
-	
+
 	/// true if the message has to be sent
 	bool ToSend;
 
@@ -103,7 +103,7 @@ public:
 class CLogicEventAction
 {
 public:
-	
+
 	/// true if this action consist in a state change, false if it's a message
 	bool IsStateChange;
 
@@ -150,10 +150,10 @@ class CLogicEvent
 	CLogicStateMachine * _LogicStateMachine;
 
 public:
-	
+
 	/// condition name
 	std::string ConditionName;
-	
+
 	/// event action
 	CLogicEventAction EventAction;
 
@@ -179,7 +179,7 @@ public:
 	void setLogicStateMachine( CLogicStateMachine * logicStateMachine );
 
 	/**
-	 * Test the condition 
+	 * Test the condition
 	 *
 	 * \return true if condition is fulfiled
 	 */

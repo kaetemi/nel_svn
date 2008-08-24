@@ -28,7 +28,7 @@
 #include "nel/3d/u_ps_sound_interface.h"
 #include "nel/3d/ps_attrib_maker.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -78,7 +78,7 @@ void	CPSSound::stopSound()
 void	CPSSound::reactivateSound()
 {
 	NL_PS_FUNC(CPSSound_reactivateSound)
-	//if (!_SoundStopped) return;	
+	//if (!_SoundStopped) return;
 	_SoundReactivated  = true;
 }
 
@@ -87,7 +87,7 @@ void CPSSound::removeAllSources(void)
 {
 	NL_PS_FUNC(CPSSound_removeAllSources)
 	const sint32 size = _Sounds.getSize();
-	// delete all sounds, and rebuild them all						
+	// delete all sounds, and rebuild them all
 	for (sint32 k = size - 1; k >= 0; --k)
 	{
 		deleteElement(k);
@@ -99,15 +99,15 @@ CPSSound::~CPSSound()
 {
 	NL_PS_FUNC(CPSSound_CPSSound)
 	removeAllSources();
-	delete _GainScheme;	
-	delete _PitchScheme;	
+	delete _GainScheme;
+	delete _PitchScheme;
 }
 
 //***************************************************************************************************
 uint32			CPSSound::getType(void) const
-{ 
+{
 	NL_PS_FUNC(CPSSound_getType)
-	return PSSound; 
+	return PSSound;
 }
 
 
@@ -117,12 +117,12 @@ void			CPSSound::step(TPSProcessPass pass)
 {
 	NL_PS_FUNC(CPSSound_step)
 	if (pass != PSMotion) return;
-	const uint32 size = _Owner->getSize();	
-	if (!size) return;	
+	const uint32 size = _Owner->getSize();
+	if (!size) return;
 	if (_SoundStopped && !_SoundReactivated)
 	{
 		return;
-	}	
+	}
 	if (_SoundReactivated)
 	{
 		_SoundStopped = false;
@@ -130,19 +130,19 @@ void			CPSSound::step(TPSProcessPass pass)
 		if (!_Mute)
 		{
 			sint32 k;
-			// delete all sounds, and rebuild them all						
-			removeAllSources();			
+			// delete all sounds, and rebuild them all
+			removeAllSources();
 			for (k = 0; k < (sint32) size; ++k)
 			{
 				CPSEmitterInfo ei;
-				ei.setDefaults();				
+				ei.setDefaults();
 				newElement(ei);
-			}			
+			}
 		}
 		// don't need to reupdate sound
 		return;
 	}
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	uint32 toProcess, leftToDo = size;
 
 	float   Gains[SoundBufSize];
@@ -151,7 +151,7 @@ void			CPSSound::step(TPSProcessPass pass)
 	uint	GainPtInc    = _GainScheme ? 1 : 0;
 	uint	pitchPtInc = _PitchScheme ? 1 : 0;
 	float   *currVol, *currPitch;
-	
+
 
 	CPSAttrib<UPSSoundInstance *>::iterator it = _Sounds.begin(),
 												 endIt;
@@ -161,29 +161,29 @@ void			CPSSound::step(TPSProcessPass pass)
 	do
 	{
 		toProcess = leftToDo > SoundBufSize ? SoundBufSize : leftToDo;
-		// compute Gain		
+		// compute Gain
 		currVol = _GainScheme ? (float *) _GainScheme->make(getOwner(), size - leftToDo, Gains, sizeof(float), toProcess, true)
 							  : &_Gain;
 		if (!_UseOriginalPitch)
-		{		
+		{
 			// compute pitch
 			currPitch = _PitchScheme ? (float *) _PitchScheme->make(getOwner(), size - leftToDo, frequencies, sizeof(float), toProcess, true)
-										 : &_Pitch;		
+										 : &_Pitch;
 			endIt = it + toProcess;
-			const CMatrix &localToWorld = _Owner->getLocalToWorldMatrix();		
+			const CMatrix &localToWorld = _Owner->getLocalToWorldMatrix();
 			do
 			{
 				if (*it) // was this sound instanciated?
-				{							
+				{
 					(*it)->setSoundParams(*currVol,
 										  localToWorld * *posIt,
 										  localToWorld.mulVector(*speedIt),
-										  *currPitch);  										
+										  *currPitch);
 					if ((*it)->isLooping() && !(*it)->isPlaying())
 					{
 						// looping sources do not play when they are clipped, so "reminds" the source to play when possible.
 						(*it)->play();
-					}					
+					}
 				}
 				currVol += GainPtInc;
 				currPitch += pitchPtInc;
@@ -197,17 +197,17 @@ void			CPSSound::step(TPSProcessPass pass)
 		{
 			// keep original pitch
 			endIt = it + toProcess;
-			const CMatrix &localToWorld = _Owner->getLocalToWorldMatrix();		
+			const CMatrix &localToWorld = _Owner->getLocalToWorldMatrix();
 			do
 			{
 				if (*it) // was this sound instanciated?
-				{							
+				{
 					(*it)->setSoundParams(*currVol,
 						localToWorld * *posIt,
 						localToWorld.mulVector(*speedIt),
-						(*it)->getPitch());					
+						(*it)->getPitch());
 				}
-				currVol += GainPtInc;				
+				currVol += GainPtInc;
 				++posIt;
 				++speedIt;
 				++it;
@@ -225,7 +225,7 @@ void	CPSSound::setGain(float Gain)
 	NL_PS_FUNC(CPSSound_setGain)
 	delete _GainScheme;
 	_GainScheme = NULL;
-	_Gain = Gain;	
+	_Gain = Gain;
 }
 
 //***************************************************************************************************
@@ -233,9 +233,9 @@ void	CPSSound::setGainScheme(CPSAttribMaker<float> *Gain)
 {
 	NL_PS_FUNC(CPSSound_setGainScheme)
 	delete _GainScheme;
-	_GainScheme = Gain;	
+	_GainScheme = Gain;
 	if (_Owner)
-	{	
+	{
 		if (_GainScheme && _GainScheme->hasMemory()) _GainScheme->resize(_Owner->getMaxSize(), _Owner->getSize());
 	}
 }
@@ -253,10 +253,10 @@ void	CPSSound::setPitch(float pitch)
 void	CPSSound::setPitchScheme(CPSAttribMaker<float> *pitch)
 {
 	NL_PS_FUNC(CPSSound_setPitchScheme)
-	delete _PitchScheme;	
+	delete _PitchScheme;
 	_PitchScheme = pitch;
 	if (_Owner)
-	{	
+	{
 		if (_PitchScheme && _PitchScheme->hasMemory()) _PitchScheme->resize(_Owner->getMaxSize(), _Owner->getSize());
 	}
 }
@@ -279,11 +279,11 @@ void			CPSSound::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		std::string soundName = NLMISC::CStringMapper::unmap(_SoundName);
 		f.serial(soundName);
 	}
-		
+
 	sint32 nbSounds;
 	bool hasScheme;
 	if (f.isReading())
-	{		
+	{
 		f.serial(nbSounds); // we are very unlikely to save a system with sounds being played in it,
 							// but we need to keep datas coherency.
 		if (_Owner)
@@ -294,7 +294,7 @@ void			CPSSound::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	else
 	{
 		nbSounds = _Sounds.getSize(); // number of used sound
-		f.serial(nbSounds);		
+		f.serial(nbSounds);
 	}
 
 
@@ -338,7 +338,7 @@ void			CPSSound::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		}
 	}
 	else
-	{	
+	{
 		hasScheme = _PitchScheme != NULL;
 		f.serial(hasScheme);
 		if (hasScheme)
@@ -349,16 +349,16 @@ void			CPSSound::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		{
 			f.serial(_Pitch);
 		}
-	}			
+	}
 
 	if (ver > 1)
 	{
 		f.serial(_EmissionPercent);
 		f.serial(_SpawnSounds);
-	}	
+	}
 
 	if (f.isReading())
-	{				
+	{
 		_SoundStopped = true;
 		// insert blank sources
 		for (sint k = 0; k < nbSounds; ++k)
@@ -371,7 +371,7 @@ void			CPSSound::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		_SoundReactivated = true;
 	}
 }
-	
+
 
 //***************************************************************************************************
 void			CPSSound::newElement(const CPSEmitterInfo &info)
@@ -387,12 +387,12 @@ void			CPSSound::newElement(const CPSEmitterInfo &info)
 		{
 			uint32 index = _Sounds.insert(CParticleSystem::getSoundServer()->createSound(_SoundName, _SpawnSounds));
 
-			
+
 
 			/// set position and activate the sound
 			if (_Sounds[index])
-			{			
-				const NLMISC::CMatrix &mat = getLocalToWorldMatrix();				
+			{
+				const NLMISC::CMatrix &mat = getLocalToWorldMatrix();
 				float pitch;
 				if (_UseOriginalPitch)
 				{
@@ -403,8 +403,8 @@ void			CPSSound::newElement(const CPSEmitterInfo &info)
 					pitch = _PitchScheme ? _PitchScheme->get(getOwner(), 0) : _Pitch;
 				}
 				_Sounds[index]->setSoundParams(_GainScheme ? _GainScheme->get(getOwner(), 0) : _Gain,
-											   mat * _Owner->getPos()[index], 
-											   _Owner->getSpeed()[index], 
+											   mat * _Owner->getPos()[index],
+											   _Owner->getSpeed()[index],
 											   pitch
 											  );
 				_Sounds[index]->play();
@@ -451,7 +451,7 @@ void	CPSSound::resize(uint32 size)
 			{
 				_Sounds[k]->setLooping(false);
 				_Sounds[k]->release();
-			}	
+			}
 		}
 	}
 	_Sounds.resize(size);

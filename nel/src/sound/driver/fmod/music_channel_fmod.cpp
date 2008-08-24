@@ -33,7 +33,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 
@@ -53,14 +53,14 @@ signed char F_CALLBACKAPI streamEndCallBack(
 
 	return true;
 }
-	
+
 
 // ***************************************************************************
 CMusicChannelFMod::CMusicChannelFMod()
 {
 	_ActiveMusicFader= 0;
 	_FModMusicVolume= 1.f;
-}			
+}
 
 // ***************************************************************************
 void	CMusicChannelFMod::playMusicStartCrossFade(uint xFadeTime)
@@ -78,19 +78,19 @@ void	CMusicChannelFMod::playMusicStartCrossFade(uint xFadeTime)
 	{
 		// setup fade out for old music channel (don't modify previous XFadeVolume, if for instance previous XFade not ended)
 		_MusicFader[_ActiveMusicFader].XFadeDVolume= -1000.f/xFadeTime;
-		
+
 		// get new active channel
 		_ActiveMusicFader++;
 		_ActiveMusicFader= _ActiveMusicFader%MaxMusicFader;
-		
+
 		// stop this channel if was still played (eg: playMusic() of a third music comes in while old XFade not ended)
 		stopMusicFader(_ActiveMusicFader);
-		
+
 		// setup fade in for new music channel
 		_MusicFader[_ActiveMusicFader].XFadeVolume= 0.f;
 		_MusicFader[_ActiveMusicFader].XFadeDVolume= 1000.f/xFadeTime;
 	}
-	
+
 }
 
 // ***************************************************************************
@@ -139,7 +139,7 @@ void	CMusicChannelFMod::stopMusicFader(uint musicFader)
 		_FModMusicStreamWaitingForClose.push_back(fader.FModMusicStream);
 		// force stop now (succeed in 99% of case, and if not succeed, it means the play has not yet begun, so no problem)
 		updateMusicFModStreamWaitingForClose();
-		
+
 		// reset
 		fader.FModMusicChannel= -1;
 		fader.FModMusicStream= NULL;
@@ -157,7 +157,7 @@ void	CMusicChannelFMod::updateMusicVolumeFader(uint musicFader)
 {
 	nlassert(musicFader<MaxMusicFader);
 	CMusicFader	&fader= _MusicFader[musicFader];
-	
+
 	// the channel must be really playing (may not be the case for async play)
 	if(fader.FModMusicStream && fader.FModMusicChannel!=-1)
 	{
@@ -173,18 +173,18 @@ bool	CMusicChannelFMod::playMusic(NLMISC::CIFile &fileIn, uint xFadeTime, bool l
 {
 	// Stop old channels, according to cross fade or not
 	playMusicStartCrossFade(xFadeTime);
-	
+
 	// start trying to play the corresponding channel
 	nlassert(_ActiveMusicFader<MaxMusicFader);
 	CMusicFader	&fader= _MusicFader[_ActiveMusicFader];
 	// should be stoped in playMusicStartCrossFade()
 	nlassert(fader.FModMusicStream==NULL);
-	
+
 	// try to load the new one in memory
 	uint32	fs= fileIn.getFileSize();
 	if(fs==0)
 		return false;
-	
+
 	// read Buffer
 	fader.FModMusicBuffer= new uint8 [fs];
 	try
@@ -198,9 +198,9 @@ bool	CMusicChannelFMod::playMusic(NLMISC::CIFile &fileIn, uint xFadeTime, bool l
 		fader.FModMusicBuffer= NULL;
 		return false;
 	}
-	
+
 	// Load to a stream FMOD sample
-	fader.FModMusicStream= FSOUND_Stream_Open((const char*)fader.FModMusicBuffer, 
+	fader.FModMusicStream= FSOUND_Stream_Open((const char*)fader.FModMusicBuffer,
 		FSOUND_2D|FSOUND_LOADMEMORY|(loop?FSOUND_LOOP_NORMAL:FSOUND_LOOP_OFF), 0, fs);
 	// not succeed?
 	if(!fader.FModMusicStream)
@@ -210,37 +210,37 @@ bool	CMusicChannelFMod::playMusic(NLMISC::CIFile &fileIn, uint xFadeTime, bool l
 		fader.FModMusicBuffer= NULL;
 		return false;
 	}
-	
+
 	// start to play this stream (if ok)
 	playMusicStartFader(_ActiveMusicFader);
-	
+
 	return true;
 }
-	
+
 // ***************************************************************************
 bool	CMusicChannelFMod::playMusicAsync(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
 {
 	// Stop old channels, according to cross fade or not
 	playMusicStartCrossFade(xFadeTime);
-	
+
 	// start trying to play the corresponding channel
 	nlassert(_ActiveMusicFader<MaxMusicFader);
 	CMusicFader	&fader= _MusicFader[_ActiveMusicFader];
 	// should be stoped in playMusicStartCrossFade()
 	nlassert(fader.FModMusicStream==NULL);
-	
+
 	// Start FMod
-	fader.FModMusicStream= FSOUND_Stream_Open((const char*)path.c_str(), 
+	fader.FModMusicStream= FSOUND_Stream_Open((const char*)path.c_str(),
 		FSOUND_2D|(loop?FSOUND_LOOP_NORMAL:FSOUND_LOOP_OFF)|FSOUND_NONBLOCKING, fileOffset, fileSize);
 	// with FSOUND_NONBLOCKING, should always succeed
 	nlassert(fader.FModMusicStream);
-	
+
 	// with FSOUND_NONBLOCKING, the file is surely not ready, but still try now (will retry to replay at each updateMusic())
 	playMusicStartFader(_ActiveMusicFader);
-	
+
 	return true;
 }
-	
+
 // ***************************************************************************
 void	CMusicChannelFMod::stopMusic(uint xFadeTime)
 {
@@ -258,11 +258,11 @@ void	CMusicChannelFMod::stopMusic(uint xFadeTime)
 		for(uint i=0;i<MaxMusicFader;i++)
 		{
 			CMusicFader	&fader= _MusicFader[i];
-			
+
 			// if playing, setup fade out (don't modify previous XFadeVolume, if for instance previous XFade not ended)
 			if(fader.FModMusicStream)
 				fader.XFadeDVolume= -1000.f/xFadeTime;
-		}	
+		}
 	}
 }
 
@@ -273,11 +273,11 @@ void	CMusicChannelFMod::pauseMusic()
 	for(uint i=0;i<MaxMusicFader;i++)
 	{
 		CMusicFader	&fader= _MusicFader[i];
-		
+
 		// If playing and not fading out
 		if(fader.FModMusicChannel != -1 && fader.XFadeDVolume >= 0.f)
 			FSOUND_SetPaused(fader.FModMusicChannel, true);
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -287,11 +287,11 @@ void	CMusicChannelFMod::resumeMusic()
 	for(uint i=0;i<MaxMusicFader;i++)
 	{
 		CMusicFader	&fader= _MusicFader[i];
-		
+
 		// If paused, resume
 		if(fader.FModMusicChannel != -1 && FSOUND_GetPaused(fader.FModMusicChannel))
 			FSOUND_SetPaused(fader.FModMusicChannel, false);
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -303,7 +303,7 @@ bool	CMusicChannelFMod::isMusicEnded()
 	for(uint i=0;i<MaxMusicFader;i++)
 	{
 		CMusicFader	&fader= _MusicFader[i];
-		
+
 		// If playing and not fading out
 		if(fader.FModMusicStream && fader.FModMusicChannel != -1)
 		{
@@ -321,7 +321,7 @@ bool	CMusicChannelFMod::isMusicEnded()
 		// if playing, but not starting because of async, not ended (because not even really started)
 		else if(fader.FModMusicStream)
 			channelEnded= false;
-	}	
+	}
 
 	return channelEnded;
 }
@@ -347,7 +347,7 @@ void	CMusicChannelFMod::setMusicVolume(float gain)
 	// bkup the volume
 	clamp(gain, 0.f, 1.f);
 	_FModMusicVolume= gain;
-	
+
 	// update volume of all music channels
 	for(uint i=0;i<MaxMusicFader;i++)
 		updateMusicVolumeFader(i);
@@ -359,7 +359,7 @@ void	CMusicChannelFMod::updateMusic(float dt)
 	for(uint i=0;i<MaxMusicFader;i++)
 	{
 		CMusicFader	&fader= _MusicFader[i];
-		
+
 		// **** may start now the play (async playing)
 		// if this channel is playing an async music, may retry to start the music each frame
 		if(fader.FModMusicStream && fader.FModMusicBuffer==NULL)
@@ -369,14 +369,14 @@ void	CMusicChannelFMod::updateMusic(float dt)
 				playMusicStartFader(i);
 			}
 		}
-		
+
 		// **** update fading
 		// if playing and some fadein/fadeout
 		if(fader.FModMusicStream && fader.XFadeDVolume)
 		{
 			// update volume
 			fader.XFadeVolume+= fader.XFadeDVolume*dt;
-			
+
 			// if fade in and max reached, stop fade in
 			if(fader.XFadeDVolume>0 && fader.XFadeVolume>1.f)
 			{
@@ -390,7 +390,7 @@ void	CMusicChannelFMod::updateMusic(float dt)
 				fader.XFadeDVolume= 0;
 				stopMusicFader(i);
 			}
-			
+
 			// update the actual volume (NB: if just stoped, will work, see updateMusicVolumeFader)
 			updateMusicVolumeFader(i);
 		}

@@ -49,7 +49,7 @@ class CBufferFMod;
 	- ADPCM is not supported (decompressed and the format change internaly )
 	- deffered param on ISource::setPos() etc... does not work. Always deffered.
 	- No cooperative level change in FMod as in DSOUND (default???)
-	
+
 */
 
 
@@ -117,25 +117,25 @@ public:
 
 	// play the music
 	virtual bool	playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
-	
+
 	// play the music async
 	virtual bool	playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
-	
+
 	// stop the music
 	virtual void	stopMusic(uint channel, uint xFadeTime);
-	
+
 	// pause the music
 	virtual void	pauseMusic(uint channel);
-	
+
 	// resume the music
 	virtual void	resumeMusic(uint channel);
-	
+
 	// is the music playing
 	virtual bool	isMusicEnded(uint channel);
 
 	// music length
 	virtual float	getMusicLength(uint channel);
-	
+
 	// set music volume
 	virtual void	setMusicVolume(uint channel, float gain);
 
@@ -187,7 +187,7 @@ private:
 	/// If want to create buffer in software (no hardware)
 	bool					_ForceSoftwareBuffer;
 
-	
+
 	/// \name Music
 	// @{
 	/// A music channel play one music // to other channels
@@ -196,7 +196,7 @@ private:
 	sint64					_LastXFadeTime;
 	void	updateMusic();
 	// @}
-	
+
 };
 
 

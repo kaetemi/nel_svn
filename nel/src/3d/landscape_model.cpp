@@ -33,7 +33,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -110,7 +110,7 @@ void	CLandscapeModel::traverseClip()
 		{
 			/* If the current pyramid is different from the last stored pyramid, this mean per exemple
 			 that the player is in a room and look the landscape from 2 windows through portals.
-			 The other case is that the camera is in 2 clusters, so the clusterSystem start from this 2, and so we arrive 
+			 The other case is that the camera is in 2 clusters, so the clusterSystem start from this 2, and so we arrive
 			 here 2 times (but through the same portal => same pyramid obviously...)
 			 */
 			if( ClusteredPyramid!=clipTrav.WorldPyramid )
@@ -142,10 +142,10 @@ void	CLandscapeModel::clipAndRenderLandscape()
 		NB: For best Optimisation, it is important that the Clip act at same time as the Render.
 		Why? For complex GPU/CPU synchronisation.
 
-		Since the landscape is rendered at end of the opaque pass, the next clip of the next frame will arise 
+		Since the landscape is rendered at end of the opaque pass, the next clip of the next frame will arise
 		too early (if we assume no transparent or out-scene rendering), RESULTING IN A LOCK => A CPU STALL!!
 
-		In a "landscape only" program, this is not easily avoidable. But in common programs with other 
+		In a "landscape only" program, this is not easily avoidable. But in common programs with other
 		opaque meshs, skinning etc... we'll have lot of CPU/GPU Work between this clip and the Landscape Render.
 		And since the clip() lock the VB, and stall, all those tasks won't be parralelized.
 
@@ -230,8 +230,8 @@ void	CLandscapeModel::clipAndRenderLandscape()
 		{
 			H_AUTO( NL3D_Landscape_DynamicLighting );
 
-			// For vegetable, set the lighting 
-			Landscape.setupVegetableLighting(scene->getSunAmbient(), scene->getSunDiffuse(), 
+			// For vegetable, set the lighting
+			Landscape.setupVegetableLighting(scene->getSunAmbient(), scene->getSunDiffuse(),
 				scene->getSunDirection());
 
 			// current visible Dynamic light list are registered in LightTrav::LightingManager

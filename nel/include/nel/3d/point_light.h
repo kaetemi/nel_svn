@@ -30,7 +30,7 @@
 #include "nel/misc/stl_block_list.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -72,10 +72,10 @@ public:
 	typedef	std::list<CTransform*>	TTransformList;
 	typedef	TTransformList::iterator			ItTransformList;
 
-	enum	TType 
+	enum	TType
 	{
 		// The light is a point.
-		PointLight= 0, 
+		PointLight= 0,
 
 		// The light is a spotlight with a cone.
 		SpotLight,
@@ -205,7 +205,7 @@ public:
 	// Specific For Ambient light
 	bool			getAddAmbientWithSun() const {return _AddAmbientWithSun;}
 	void			setAddAmbientWithSun(bool state);
-	
+
 // ******************
 private:
 

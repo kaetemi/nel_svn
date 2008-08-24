@@ -32,7 +32,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -141,7 +141,7 @@ void CPolygon::getBestTriplet(uint &index0,uint &index1,uint &index2)
 					if (k != i && k != j)
 					{
 						CVector v0 = Vertices[j] - Vertices[i];
-						CVector v1 = Vertices[k] - Vertices[i];						
+						CVector v1 = Vertices[k] - Vertices[i];
 						float area = (v0 ^ v1).norm();
 						if (area > bestArea)
 						{
@@ -208,8 +208,8 @@ bool CPolygon::toConvexPolygonsEdgeIntersect (const CVector2f& a0, const CVector
 	if(a0.x - a1.x==0)
 	{
 		float Ab = (b0.y - b1.y) / (b0.x - b1.x);
-		
-		// Intersection 
+
+		// Intersection
 		intersection.x = a0.x;
 		intersection.y = b0.y + (a0.x-b0.x) * Ab;
 	}
@@ -217,8 +217,8 @@ bool CPolygon::toConvexPolygonsEdgeIntersect (const CVector2f& a0, const CVector
 	else if(b0.x - b1.x==0)
 	{
 		float Aa = (a0.y - a1.y) / (a0.x - a1.x);
-		
-		// Intersection 
+
+		// Intersection
 		intersection.x = b0.x;
 		intersection.y = a0.y + (b0.x-a0.x) * Aa;
 	}
@@ -234,7 +234,7 @@ bool CPolygon::toConvexPolygonsEdgeIntersect (const CVector2f& a0, const CVector
 		if(Aa==Ab)
 			return false;
 
-		// Intersection 
+		// Intersection
 		intersection.x = (Bb - Ba) / (Aa - Ab);
 		intersection.y = Aa * intersection.x + Ba;
 	}
@@ -248,7 +248,7 @@ bool CPolygon::toConvexPolygonsEdgeIntersect (const CVector2f& a0, const CVector
 class CBSPNode2v
 {
 public:
-	CBSPNode2v () 
+	CBSPNode2v ()
 	{
 		Back = NULL;
 		Front = NULL;
@@ -453,7 +453,7 @@ void CPolygon::toConvexPolygonsLocalAndBSP (std::vector<CVector> &localVertices,
 	TCConcavePolygonsVertexMap vertexMap;
 	localVertices.resize (vertexCount);
 	uint i, j;
-	
+
 	// Transform the vertex
 	for (i=0; i<vertexCount; i++)
 	{
@@ -534,10 +534,10 @@ again:;
 			while (last != current)
 			{
 				// Is a diagonal ?
-				if ( 
+				if (
 					(toConvexPolygonsDiagonal (localVertices, root, *lastPreviousPrevious, *last)) &&
 					(toConvexPolygonsDiagonal (localVertices, root, *currentNext, *last)) &&
-					(toConvexPolygonsDiagonal (localVertices, root, *last, *current)) 
+					(toConvexPolygonsDiagonal (localVertices, root, *last, *current))
 					)
 				{
 					// Find one
@@ -595,7 +595,7 @@ again:;
 					if (
 						(toConvexPolygonsDiagonal (localVertices, root, *firstNextNext, *first)) &&
 						(toConvexPolygonsDiagonal (localVertices, root, *lastPrevious, *first)) &&
-						(toConvexPolygonsDiagonal (localVertices, root, *last, *first)) 
+						(toConvexPolygonsDiagonal (localVertices, root, *last, *first))
 						)
 					{
 						// Find one
@@ -838,7 +838,7 @@ bool CPolygon::chain (const std::vector<CPolygon> &other, const CMatrix& basis)
 // ***************************************************************************
 CPolygon2D::CPolygon2D(const CPolygon &src, const CMatrix &projMat)
 {
-	fromPolygon(src, projMat);	
+	fromPolygon(src, projMat);
 }
 
 // ***************************************************************************
@@ -856,15 +856,15 @@ void CPolygon2D::fromPolygon(const CPolygon &src, const CMatrix &projMat /*=CMat
 // ***************************************************************************
 bool		CPolygon2D::isConvex()
 {
-	bool Front  = true, Back = false;	
-	// we apply a dummy algo for now : check wether every vertex is in the same side 
+	bool Front  = true, Back = false;
+	// we apply a dummy algo for now : check wether every vertex is in the same side
 	// of every plane defined by a segment of this poly
 	uint numVerts = Vertices.size();
 	if (numVerts < 3) return true;
 	CVector		segStart, segEnd;
 	CPlane		clipPlane;
 	for (TVec2fVect::const_iterator it = Vertices.begin(); it != Vertices.end(); ++it)
-	{		
+	{
 		segStart.set(it->x, it->y, 0);	          // segment start
 		segEnd.set((it + 1)->x, (it + 1)->y, 0);  // segment end
 		float n = (segStart - segEnd).norm();     // segment norm
@@ -880,7 +880,7 @@ bool		CPolygon2D::isConvex()
 					float dist  = clipPlane * CVector(it2->x, it2-> y, 0);
 					if (dist != 0) // midlle pos
 					{
-						if (dist > 0) Front = true; else Back = true;					
+						if (dist > 0) Front = true; else Back = true;
 						if (Front && Back) return false; // there are both front end back vertices -> failure
 					}
 				}
@@ -902,7 +902,7 @@ void		CPolygon2D::buildConvexHull(CPolygon2D &dest) const
 		return;
 	}
 	uint k, l;
-	uint numVerts = Vertices.size();	
+	uint numVerts = Vertices.size();
 	CVector2f p, curr, prev;
 	uint      pIndex, p1Index, p2Index, pCurr, pPrev;
 	// this is not optimized, but not used in realtime.. =)
@@ -915,7 +915,7 @@ void		CPolygon2D::buildConvexHull(CPolygon2D &dest) const
 	{
 		leftIndex.insert(k);
 	}
-	
+
 
 	// 1) find the highest point p of the set. We are sure it belongs to the hull
 	pIndex = 0;
@@ -963,7 +963,7 @@ void		CPolygon2D::buildConvexHull(CPolygon2D &dest) const
 
 	leftIndex.erase(p2Index);
 
-	
+
 
 	// start from the given triplet, and complete the poly until we reach the first point
 	pCurr = p2Index;
@@ -975,32 +975,32 @@ void		CPolygon2D::buildConvexHull(CPolygon2D &dest) const
 	// create the first triplet vertices
 	dest.Vertices.push_back(Vertices[p1Index]);
 	dest.Vertices.push_back(prev);
-	dest.Vertices.push_back(curr); 
+	dest.Vertices.push_back(curr);
 
 	uint step = 0;
 
 	for(;;)
-	{		
-		bestCP = 1.1f;		
+	{
+		bestCP = 1.1f;
 		CVector2f seg2 = (prev - curr).normed();
 		TIndexSet::iterator bestIt = leftIndex.end();
 		for (TIndexSet::iterator it =  leftIndex.begin(); it != leftIndex.end(); ++it)
-		{	
+		{
 			if (step == 0 && *it == p1Index) continue;
-			CVector2f seg1 = (Vertices[*it] - curr).normed();							
+			CVector2f seg1 = (Vertices[*it] - curr).normed();
 			float n = seg1 * seg2;
 			if (n < bestCP)
-			{				
+			{
 				bestCP = n;
-				bestIt = it;				
-			}			
+				bestIt = it;
+			}
 		}
 
-		nlassert(bestIt != leftIndex.end());		
+		nlassert(bestIt != leftIndex.end());
 		if (*bestIt == p1Index)
-		{			
+		{
 			return; // if we reach the start point we have finished
-		}				
+		}
 		prev = curr;
 		curr = Vertices[*bestIt];
 		pPrev = pCurr;
@@ -1040,7 +1040,7 @@ void		CPolygon2D::getBestTriplet(uint &index0, uint &index1, uint &index2)
 					if (k != i && k != j)
 					{
 						CVector2f v0 = Vertices[j] - Vertices[i];
-						CVector2f v1 = Vertices[k] - Vertices[i];						
+						CVector2f v1 = Vertices[k] - Vertices[i];
 						float area = fabsf((CVector(v0.x, v0.y, 0) ^ CVector(v1.x, v1.y, 0)).norm());
 						if (area > bestArea)
 						{
@@ -1077,32 +1077,32 @@ static void ScanEdge(CPolygon2D::TRasterVect &outputVect, sint topY, const CVect
 	 deltaX = v2.x - v1.x;
 	 fInverseSlope = deltaX / deltaY;
 
-	 
+
 	 CPolygon2D::TRasterVect::iterator  outputIt = outputVect.begin() + (ceilY1 - topY);
 
 	 // slope with ints
-	 iInverseSlope = (sint) (rol16 * fInverseSlope);	 
+	 iInverseSlope = (sint) (rol16 * fInverseSlope);
 
 	 // sub-pixel accuracy
-	 iPosX = (int) (rol16 * (v1.x + fInverseSlope * (ceilY1 - v1.y))); 
+	 iPosX = (int) (rol16 * (v1.x + fInverseSlope * (ceilY1 - v1.y)));
 
 	 const CPolygon2D::TRasterVect::iterator endIt = outputIt + height;
 	 if (rightEdge)
-	 {		
+	 {
 		 do
 		 {
-		   outputIt->second =  iPosX >> 16;	
+		   outputIt->second =  iPosX >> 16;
 		   iPosX += iInverseSlope;
 		   ++outputIt;
 		 }
 		 while (outputIt != endIt);
 	 }
 	 else
-	 {	
+	 {
 		 iPosX += (rol16 - 1);
 		 do
 		 {
-		   outputIt->first =  iPosX >> 16;	
+		   outputIt->first =  iPosX >> 16;
 		   iPosX += iInverseSlope;
 		   ++outputIt;
 		 }
@@ -1133,18 +1133,18 @@ static inline CPolygon2D::TVec2fVect::const_iterator Prev(const CPolygon2D::TVec
 
 // *******************************************************************************
 bool CPolygon2D::isCCWOriented() const
-{	         
+{
 	const TVec2fVect &V = Vertices;
 	nlassert(Vertices.size() >= 3);
 	// compute highest and lowest pos of the poly
 	float fHighest = V[0].y;
 	float fLowest = fHighest;
-	// iterators to the highest and lowest vertex	
+	// iterators to the highest and lowest vertex
 	TVec2fVect::const_iterator it = V.begin() ;
 	const TVec2fVect::const_iterator endIt = V.end();
 	TVec2fVect::const_iterator pHighest = V.begin();
 	do
-	{		
+	{
 		if (it->y < fHighest)
 		{
 			fHighest = it->y;
@@ -1153,12 +1153,12 @@ bool CPolygon2D::isCCWOriented() const
 		fLowest = std::max(fLowest, it->y);
 		++it;
 	}
-	while (it != endIt);				
-	// we seek this vertex	
-	TVec2fVect::const_iterator pHighestRight = pHighest; 
+	while (it != endIt);
+	// we seek this vertex
+	TVec2fVect::const_iterator pHighestRight = pHighest;
 	if (fLowest == fHighest)
 	{
-		// special case : degenerate poly		
+		// special case : degenerate poly
 		while (pHighestRight->x == pHighest->x)
 		{
 			pHighestRight = Next(pHighestRight, V);
@@ -1170,7 +1170,7 @@ bool CPolygon2D::isCCWOriented() const
 	while (Next(pHighestRight, V)->y == fHighest)
 	{
 		pHighestRight = Next(pHighestRight, V);
-	}	
+	}
 
 	// iterator to the first vertex after pHighestRight, that has the same y than the highest vertex
 	TVec2fVect::const_iterator pHighestLeft = Next(pHighestRight, V);
@@ -1179,22 +1179,22 @@ bool CPolygon2D::isCCWOriented() const
 	{
 		pHighestLeft = Next(pHighestLeft, V);
 	}
-	TVec2fVect::const_iterator pPrevHighestLeft = Prev(pHighestLeft, V);  
+	TVec2fVect::const_iterator pPrevHighestLeft = Prev(pHighestLeft, V);
 	// we need to get the orientation of the polygon
 	// There are 2 case : flat, and non-flat top
 	// check for flat top
 	if (pHighestLeft->x != pHighestRight->x)
 	{
 		// compare right and left side
-		return pHighestLeft->x <= pHighestRight->x;		
-	}	
+		return pHighestLeft->x <= pHighestRight->x;
+	}
 	// The top of the poly is sharp
 	// We perform a cross product of the 2 highest vect to get its orientation
 	 float deltaXN = Next(pHighestRight, V)->x - pHighestRight->x;
 	 float deltaYN = Next(pHighestRight, V)->y - pHighestRight->y;
 	 float deltaXP = pPrevHighestLeft->x - pHighestLeft->x;
 	 float deltaYP = pPrevHighestLeft->y - pHighestLeft->y;
-	 return (deltaXN * deltaYP - deltaYN * deltaXP) >= 0;	
+	 return (deltaXN * deltaYP - deltaYN * deltaXP) >= 0;
 }
 
 // *******************************************************************************
@@ -1211,7 +1211,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		return;
 	}
 	bool    ccw;  // set to true when it has a counter clock wise orientation
-                   
+
 	// compute highest and lowest pos of the poly
 	float fHighest = V[0].y;
 	float fLowest  = fHighest;
@@ -1236,7 +1236,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		++it;
 	}
 	while (it != endIt);
-	
+
 
 	sint iHighest = (sint) ceilf(fHighest) ;
 	sint iLowest  = (sint) ceilf(fLowest) ;
@@ -1255,12 +1255,12 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 	borders.resize(polyHeight);
 
 	// iterator to the first vertex that has an y different from the top vertex
-	TVec2fVect::const_iterator pHighestRight = pHighest; 
-	// we seek this vertex	
+	TVec2fVect::const_iterator pHighestRight = pHighest;
+	// we seek this vertex
 	while (Next(pHighestRight, V)->y == fHighest)
 	{
 		pHighestRight = Next(pHighestRight, V);
-	}	
+	}
 
 	// iterator to the first vertex after pHighestRight, that has the same y than the highest vertex
 	TVec2fVect::const_iterator pHighestLeft = Next(pHighestRight, V);
@@ -1271,7 +1271,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 	}
 
 	TVec2fVect::const_iterator pPrevHighestLeft = Prev(pHighestLeft, V);
-  
+
 	// we need to get the orientation of the polygon
 	// There are 2 case : flat, and non-flat top
 
@@ -1282,11 +1282,11 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		if (pHighestLeft->x > pHighestRight->x)
 		{
 			ccw = true;  // the list is CCW oriented
-			std::swap(pHighestLeft, pHighestRight);		
+			std::swap(pHighestLeft, pHighestRight);
 		}
 		else
 		{
-			ccw = false; // the list is CW oriented	
+			ccw = false; // the list is CW oriented
 		}
 	}
 	else
@@ -1301,7 +1301,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		 if ((deltaXN * deltaYP - deltaYN * deltaXP) < 0)
 		 {
 			ccw = true;  // the list is CCW oriented
-			std::swap(pHighestLeft, pHighestRight);				   
+			std::swap(pHighestLeft, pHighestRight);
 		 }
 		 else
 		 {
@@ -1320,7 +1320,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		{
 			nextV = Next(currV, V);
 			ScanEdge(borders, iHighest, *currV, *nextV, true);
-            currV = nextV;            
+            currV = nextV;
 		}
 		while (currV != pLowest); // repeat until we reach the bottom vertex
 
@@ -1334,7 +1334,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 		while (currV != pHighestLeft);
 	}
 	else // ccw order
-	{	 
+	{
 		currV = pHighestLeft;
 		// compute left edge from top to bottom
 		do
@@ -1359,7 +1359,7 @@ void	CPolygon2D::computeBorders(TRasterVect &borders, sint &highestY) const
 //=========================================================================
 // scan outer right edge of a poly
 static void ScanOuterEdgeRight(CPolygon2D::TRaster *r, float x1, float y1, float x2, float y2, sint minY)
-{		
+{
 	CPolygon2D::TRaster *currRaster;
 	float deltaX, deltaY;
 	float inverseSlope;
@@ -1369,15 +1369,15 @@ static void ScanOuterEdgeRight(CPolygon2D::TRaster *r, float x1, float y1, float
 	height = (sint) (ceilf(y2) - floorf(y1)) ;
 	if (height <= 0) return;
 	if (deltaX >= 0.f)
-	{							
+	{
 		if (height == 1)
 		{
 			currRaster = r + ((sint) floorf(y1) - minY);
 			currRaster->second = std::max((sint) floorf(x2), currRaster->second);
 		}
 		else
-		{		
-			deltaY = y2 - y1;		
+		{
+			deltaY = y2 - y1;
 			if(deltaY)
 				inverseSlope = deltaX / deltaY;
 			else
@@ -1396,14 +1396,14 @@ static void ScanOuterEdgeRight(CPolygon2D::TRaster *r, float x1, float y1, float
 				++ currRaster;
 				-- height;
 			}
-			while (height != 1);	
+			while (height != 1);
 			// correction for last line
 			currRaster->second = std::max((sint) floorf(x2), currRaster->second);
 		}
 	}
 	else
 	{
-		deltaY = y2 - y1;		
+		deltaY = y2 - y1;
 		if(deltaY)
 			inverseSlope = deltaX / deltaY;
 		else
@@ -1418,18 +1418,18 @@ static void ScanOuterEdgeRight(CPolygon2D::TRaster *r, float x1, float y1, float
 			iposx += iInverseSlope;
 		}
 		while (--height)
-		{			
+		{
 			currRaster->second = std::max((sint) (iposx >> 16), currRaster->second);
 			iposx += iInverseSlope;
-			++ currRaster;			
-		}		
+			++ currRaster;
+		}
 	}
 }
 
 //=========================================================================
 // scan outer left edge of a poly
 static void ScanOuterEdgeLeft(CPolygon2D::TRaster *r, float x1, float y1, float x2, float y2, sint minY)
-{	
+{
 	CPolygon2D::TRaster *currRaster;
 	float deltaX, deltaY;
 	float inverseSlope;
@@ -1439,15 +1439,15 @@ static void ScanOuterEdgeLeft(CPolygon2D::TRaster *r, float x1, float y1, float 
 	height = (sint) (ceilf(y2) - floorf(y1)) ;
 	if (height <= 0) return;
 	if (deltaX < 0.f)
-	{							
+	{
 		if (height == 1)
 		{
 			currRaster = r + ((sint) floorf(y1) - minY);
 			currRaster->first = std::min((sint) floorf(x2), currRaster->first);
 		}
 		else
-		{		
-			deltaY = y2 - y1;		
+		{
+			deltaY = y2 - y1;
 			if(deltaY)
 				inverseSlope = deltaX / deltaY;
 			else
@@ -1466,14 +1466,14 @@ static void ScanOuterEdgeLeft(CPolygon2D::TRaster *r, float x1, float y1, float 
 				++ currRaster;
 				-- height;
 			}
-			while (height != 1);	
+			while (height != 1);
 			// correction for last line
 			currRaster->first = std::min((sint) floorf(x2), currRaster->first);
 		}
 	}
 	else
 	{
-		deltaY = y2 - y1;		
+		deltaY = y2 - y1;
 		if(deltaY)
 			inverseSlope = deltaX / deltaY;
 		else
@@ -1484,16 +1484,16 @@ static void ScanOuterEdgeLeft(CPolygon2D::TRaster *r, float x1, float y1, float 
 		++ currRaster;
 		iposx = (sint32) (65536.0 * (x1 + inverseSlope * (ceilf(y1) - y1))); // sub-pixel accuracy
 		if (ceilf(y1) == y1)
-		{		
+		{
 			iposx += iInverseSlope;
 		}
 		while (--height)
-		{			
+		{
 			currRaster->first = std::min((sint) (iposx >> 16), currRaster->first);
 			iposx += iInverseSlope;
-			++ currRaster;			
-		}		
-	}	
+			++ currRaster;
+		}
+	}
 }
 
 
@@ -1507,9 +1507,9 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 	// NB : this version is not much optimized, because of the min/max test
 	// during rasterization.
 	// TODO : optimize if needed ...
-	
+
 	if (Vertices.empty())
-	{		
+	{
 		minimumY = -1;
 		return;
 	}
@@ -1522,8 +1522,8 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 	double		    deltaXN, deltaYN, deltaXP, deltaYP;
 	bool		    ccw;  // true if CCW oriented
 	sint            polyHeight;
-	sint            highest, lowest;					   
-	
+	sint            highest, lowest;
+
 	float fright   = curr->x;
 	float fleft    = curr->x;
 	float fhighest = curr->y;
@@ -1532,7 +1532,7 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 
 	// compute highest and lowest pos of the poly
 	do
-	{		
+	{
 		fright = std::max(fright, curr->x);
 		fleft  = std::min(fleft, curr->x);
 		if (curr->y > flowest)
@@ -1548,8 +1548,8 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 		++curr;
 	}
 	while (curr != last);
-	
-		
+
+
 	highest = (sint) floorf(fhighest);
 	lowest = (sint) floorf(flowest);
 
@@ -1564,7 +1564,7 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 	minimumY = highest;
 	if (flowest == fhighest) // special case : degenerate poly
 	{
-		
+
 		borders.resize(1);
 		borders.front().first =  ileft;
 		borders.front().second =  ileft;
@@ -1578,32 +1578,32 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 	}
 
 
-	
+
 	pHighestRight = phighest;
 	for (;;)
-	{	
+	{
 		pHighestRightNext  = pHighestRight + 1;
 		if (pHighestRightNext == last) pHighestRightNext = first;
 		if (pHighestRightNext->y != pHighestRight->y) break;
 		pHighestRight = pHighestRightNext;
-	}	
+	}
 
 	pPrevHighestLeft = pHighestRight;
 	pHighestLeft = pHighestRight;
 	++pHighestLeft;
 	if (pHighestLeft == last) pHighestLeft = first;
-	
+
 	while (pHighestLeft->y != fhighest)
 	{
 		pPrevHighestLeft = pHighestLeft;
 		++pHighestLeft;
 		if (pHighestLeft == last) pHighestLeft = first;
 	}
-	
+
 
 	// we need to get the orientation of the polygon
 	// There are 2 case : flat, and non-flat top
-	
+
 	// check for flat top
 	if (pHighestLeft->x != pHighestRight->x)
 	{
@@ -1611,7 +1611,7 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 		if (pHighestLeft->x > pHighestRight->x)
 		{
 			ccw = true;  // the list is CCW oriented
-			std::swap(pHighestLeft, pHighestRight);		
+			std::swap(pHighestLeft, pHighestRight);
 		}
 		else
 		{
@@ -1619,7 +1619,7 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 		}
 	}
 	else
-	{		
+	{
 		pHighestRightNext = pHighestRight + 1;
 		if (pHighestRightNext == last) pHighestRightNext = first;
 		 deltaXN = pHighestRightNext->x - pHighestRight->x;
@@ -1629,26 +1629,26 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 		 if ((deltaXN * deltaYP - deltaYN * deltaXP) < 0)
 		 {
 			ccw = true;
-			std::swap(pHighestLeft, pHighestRight);				   
+			std::swap(pHighestLeft, pHighestRight);
 		 }
 		 else
 		 {
 			ccw = false;
 		 }
 	}
-	
+
 	if (!ccw)
 	{
-		// clock wise oriented list		
-		curr = pHighestRight;		
+		// clock wise oriented list
+		curr = pHighestRight;
 		do
 		{
 			next = curr + 1;
 			if (next == last) next = first;
-			ScanOuterEdgeRight(&borders[0], curr->x, curr->y, next->x, next->y, minimumY); 
-			curr = next;			
+			ScanOuterEdgeRight(&borders[0], curr->x, curr->y, next->x, next->y, minimumY);
+			curr = next;
 		}
-		while (curr != plowest);		
+		while (curr != plowest);
 		do
 		{
 			next = curr + 1;
@@ -1660,16 +1660,16 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 	}
 	else
 	{
-		// ccw oriented		
-		curr = pHighestLeft;		
+		// ccw oriented
+		curr = pHighestLeft;
 		do
 		{
 			next = curr + 1;
-			if (next == last) next = first;					
+			if (next == last) next = first;
 			ScanOuterEdgeLeft(&borders[0], curr->x, curr->y, next->x, next->y, minimumY);
 			curr = next;
 		}
-		while (curr != plowest);		
+		while (curr != plowest);
 		do
 		{
 			next = curr + 1;
@@ -1685,7 +1685,7 @@ void CPolygon2D::computeOuterBorders(TRasterVect &borders, sint &minimumY) const
 //=========================================================================
 // scan inner right edge of a poly
 static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, float y2, sint minY, bool rightEdge)
-{		
+{
 	const uint rol16 = 65536;
 	CPolygon2D::TRaster *currRaster;
 	float deltaX, deltaY;
@@ -1695,23 +1695,23 @@ static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, 
 	deltaX = x2 - x1;
 	height = (sint) (ceilf(y2) - floorf(y1));
 	if (height <= 0) return;
-	deltaY = y2 - y1;		
+	deltaY = y2 - y1;
 	if(deltaY)
 		inverseSlope = deltaX / deltaY;
 	else
 		inverseSlope = 0;
-	iInverseSlope = (sint32) (rol16 * inverseSlope);	
-	currRaster = r + ((sint) floorf(y1) - minY);	
+	iInverseSlope = (sint32) (rol16 * inverseSlope);
+	currRaster = r + ((sint) floorf(y1) - minY);
 	//
-	iposx = (sint32) (rol16 * (x1 + inverseSlope * (ceilf(y1) - y1))); // sub-pixel accuracy	
+	iposx = (sint32) (rol16 * (x1 + inverseSlope * (ceilf(y1) - y1))); // sub-pixel accuracy
 	if (rightEdge)
-	{	
-		iposx -= rol16 - 1;					
+	{
+		iposx -= rol16 - 1;
 		if (deltaX >= 0.f)
-		{	
-			// start of segment		
+		{
+			// start of segment
 			if (floorf(y1) != y1)
-			{			
+			{
 				currRaster->second = std::min((sint) floorf(x1) - 1, currRaster->second);
 				++ currRaster;
 				-- height;
@@ -1721,15 +1721,15 @@ static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, 
 			{
 				currRaster->second = std::min((sint) (iposx >> 16), currRaster->second);
 				iposx += iInverseSlope;
-				++ currRaster;			
+				++ currRaster;
 			}
-			while (--height);			
+			while (--height);
 		}
 		else
 		{
-			// start of segment		
+			// start of segment
 			if (floorf(y1) != y1)
-			{	
+			{
 				currRaster->second = std::min((sint) (iposx >> 16), currRaster->second);
 				++ currRaster;
 				-- height;
@@ -1739,20 +1739,20 @@ static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, 
 			{
 				iposx += iInverseSlope;
 				currRaster->second = std::min((sint) (iposx >> 16), currRaster->second);
-				++ currRaster;			
-			}			
-			// fill bottom of segment			
-			currRaster->second = std::min((sint) floorf(x2) - 1, currRaster->second);			
-		}								
+				++ currRaster;
+			}
+			// fill bottom of segment
+			currRaster->second = std::min((sint) floorf(x2) - 1, currRaster->second);
+		}
 	}
 	else
-	{	
-		iposx += rol16 - 1;					
+	{
+		iposx += rol16 - 1;
 		if (deltaX < 0.f)
-		{				
-			// start of segment		
+		{
+			// start of segment
 			if (floorf(y1) != y1)
-			{			
+			{
 				currRaster->first = std::max((sint) ceilf(x1), currRaster->first);
 				++ currRaster;
 				-- height;
@@ -1762,15 +1762,15 @@ static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, 
 			{
 				currRaster->first = std::max((sint) (iposx >> 16), currRaster->first);
 				iposx += iInverseSlope;
-				++ currRaster;			
+				++ currRaster;
 			}
-			while (--height);			
+			while (--height);
 		}
 		else
 		{
-			// start of segment		
+			// start of segment
 			if (floorf(y1) != y1)
-			{		
+			{
 				currRaster->first = std::max((sint) (iposx >> 16), currRaster->first);
 				++ currRaster;
 				-- height;
@@ -1780,11 +1780,11 @@ static void ScanInnerEdge(CPolygon2D::TRaster *r, float x1, float y1, float x2, 
 			{
 				iposx += iInverseSlope;
 				currRaster->first = std::max((sint) (iposx >> 16), currRaster->first);
-				++ currRaster;			
-			}			
-			// fill bottom of segment			
-			currRaster->first = std::max((sint) ceilf(x2), currRaster->first);			
-		}										
+				++ currRaster;
+			}
+			// fill bottom of segment
+			currRaster->first = std::max((sint) ceilf(x2), currRaster->first);
+		}
 	}
 }
 
@@ -1796,7 +1796,7 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 	#endif
 	borders.clear();
 	if (Vertices.empty())
-	{		
+	{
 		minimumY = -1;
 		return;
 	}
@@ -1809,8 +1809,8 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 	double		    deltaXN, deltaYN, deltaXP, deltaYP;
 	bool		    ccw;  // true if CCW oriented
 	sint            polyHeight;
-	sint            highest, lowest;					   
-	
+	sint            highest, lowest;
+
 	float fright   = curr->x;
 	float fleft    = curr->x;
 	float fhighest = curr->y;
@@ -1819,7 +1819,7 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 
 	// compute highest (with lowest y) and lowest (with highest y) points of the poly
 	do
-	{		
+	{
 		fright = std::max(fright, curr->x);
 		fleft  = std::min(fleft, curr->x);
 		if (curr->y > flowest)
@@ -1835,16 +1835,16 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 		++curr;
 	}
 	while (curr != last);
-	if (flowest == fhighest) 
+	if (flowest == fhighest)
 	{
 		minimumY = -1;
-		return;	
+		return;
 	}
 	highest = (sint) floorf(fhighest);
 	lowest = (sint) ceilf(flowest);
 
 	polyHeight = lowest - highest;
-	minimumY = highest;	
+	minimumY = highest;
 	if (polyHeight == 0)
 	{
 		minimumY = -1;
@@ -1862,29 +1862,29 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 	}
 	pHighestRight = phighest;
 	for (;;)
-	{	
+	{
 		pHighestRightNext  = pHighestRight + 1;
 		if (pHighestRightNext == last) pHighestRightNext = first;
 		if (pHighestRightNext->y != pHighestRight->y) break;
 		pHighestRight = pHighestRightNext;
-	}	
+	}
 
 	pPrevHighestLeft = pHighestRight;
 	pHighestLeft = pHighestRight;
 	++pHighestLeft;
 	if (pHighestLeft == last) pHighestLeft = first;
-	
+
 	while (pHighestLeft->y != fhighest)
 	{
 		pPrevHighestLeft = pHighestLeft;
 		++pHighestLeft;
 		if (pHighestLeft == last) pHighestLeft = first;
 	}
-	
+
 
 	// we need to get the orientation of the polygon
 	// There are 2 case : flat, and non-flat top
-	
+
 	// check for flat top
 	if (pHighestLeft->x != pHighestRight->x)
 	{
@@ -1892,7 +1892,7 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 		if (pHighestLeft->x > pHighestRight->x)
 		{
 			ccw = true;  // the list is CCW oriented
-			std::swap(pHighestLeft, pHighestRight);		
+			std::swap(pHighestLeft, pHighestRight);
 		}
 		else
 		{
@@ -1900,7 +1900,7 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 		}
 	}
 	else
-	{		
+	{
 		pHighestRightNext = pHighestRight + 1;
 		if (pHighestRightNext == last) pHighestRightNext = first;
 		 deltaXN = pHighestRightNext->x - pHighestRight->x;
@@ -1910,26 +1910,26 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 		 if ((deltaXN * deltaYP - deltaYN * deltaXP) < 0)
 		 {
 			ccw = true;
-			std::swap(pHighestLeft, pHighestRight);				   
+			std::swap(pHighestLeft, pHighestRight);
 		 }
 		 else
 		 {
 			ccw = false;
 		 }
 	}
-	
+
 	if (!ccw)
-	{		
+	{
 		// cw oriented
-		curr = pHighestRight;		
+		curr = pHighestRight;
 		do
 		{
 			next = curr + 1;
 			if (next == last) next = first;
-			ScanInnerEdge(&borders[0], curr->x, curr->y, next->x, next->y, minimumY, true); 
-			curr = next;			
+			ScanInnerEdge(&borders[0], curr->x, curr->y, next->x, next->y, minimumY, true);
+			curr = next;
 		}
-		while (curr != plowest);		
+		while (curr != plowest);
 		do
 		{
 			next = curr + 1;
@@ -1942,15 +1942,15 @@ void CPolygon2D::computeInnerBorders(TRasterVect &borders, sint &minimumY) const
 	else
 	{
 		// ccw oriented
-		curr = pHighestLeft;		
+		curr = pHighestLeft;
 		do
 		{
 			next = curr + 1;
-			if (next == last) next = first;					
+			if (next == last) next = first;
 			ScanInnerEdge(&borders[0], curr->x, curr->y, next->x, next->y, minimumY, false);
 			curr = next;
 		}
-		while (curr != plowest);		
+		while (curr != plowest);
 		do
 		{
 			next = curr + 1;
@@ -2000,7 +2000,7 @@ float		CPolygon2D::sumDPAgainstLine(float a, float b, float c) const
 }
 
 
-// *******************************************************************************	
+// *******************************************************************************
 bool  CPolygon2D::getNonNullSeg(uint &index) const
 {
 	nlassert(Vertices.size() > 0);
@@ -2016,8 +2016,8 @@ bool  CPolygon2D::getNonNullSeg(uint &index) const
 		}
 	}
 	float norm2 = (Vertices[Vertices.size() - 1] - Vertices[0]).sqrnorm();
-	if ( norm2 > bestLength) 
-	{ 
+	if ( norm2 > bestLength)
+	{
 		index = Vertices.size() - 1;
 		return true;
 	}
@@ -2030,17 +2030,17 @@ bool  CPolygon2D::getNonNullSeg(uint &index) const
 	else
 	{
 		return false;
-	}	
+	}
 }
 
 
-// *******************************************************************************	
+// *******************************************************************************
 void  CPolygon2D::getLineEquation(uint index, float &a, float &b, float &c) const
 {
 	nlassert(index < Vertices.size());
 	const CVector2f &v0 = getSegRef0(index);
 	const CVector2f &v1 = getSegRef1(index);
-	
+
 	NLMISC::CVector2f seg = v0 - v1;
 	a = seg.y;
 	b = - seg.x;
@@ -2088,13 +2088,13 @@ bool        CPolygon2D::intersect(const CPolygon2D &other) const
 
 // *******************************************************************************
 bool		CPolygon2D::contains(const CVector2f &p, bool hintIsConvex /*= true*/) const
-{	
+{
 	if (hintIsConvex)
 	{
 		uint numVerts = Vertices.size();
 		nlassert(numVerts >= 0.f);
 		for (uint k = 0; k < numVerts; ++k)
-		{		
+		{
 			if (getSegRef0(k) != getSegRef1(k))
 			{
 				float a, b, c; /// contains the seg 2d equation
@@ -2120,7 +2120,7 @@ bool		CPolygon2D::contains(const CVector2f &p, bool hintIsConvex /*= true*/) con
 		for(uint k = 0; k < Vertices.size(); ++k)
 		{
 			const CVector2f &p0 = getSegRef0(k);
-			const CVector2f &p1 = getSegRef1(k);		
+			const CVector2f &p1 = getSegRef1(k);
 			if (p0.y == p1.y)
 			{
 				if (p.y == p0.y)
@@ -2136,10 +2136,10 @@ bool		CPolygon2D::contains(const CVector2f &p, bool hintIsConvex /*= true*/) con
 				(p.y >= p1.y && p.y < p0.y)
 			   )
 			{
-									
+
 				float inter = p0.x + (p.y - p0.y) * (p1.x - p0.x) / (p1.y- p0.y);
-				xInter.push_back(inter);					
-			}			
+				xInter.push_back(inter);
+			}
 		}
 		if (xInter.size() < 2) return false;
 		std::sort(xInter.begin(), xInter.end());
@@ -2200,7 +2200,7 @@ bool operator < (const CPolygon2D &lhs, const CPolygon2D &rhs)
 // *******************************************************************************
 static inline bool testSegmentIntersection(const CVector2f &a, const CVector2f &b,
 										   const CVector2f &c, const CVector2f &d)
-{			
+{
 	double denom = a.x * double(d.y - c.y) +
 			b.x * double(c.y - d.y) +
 			d.x * double(b.y - a.y) +
@@ -2208,7 +2208,7 @@ static inline bool testSegmentIntersection(const CVector2f &a, const CVector2f &
 
 	if (denom == 0) return false;
 	//
-	double num = a.x * double(d.y - c.y) + 
+	double num = a.x * double(d.y - c.y) +
 				 c.x * double(a.y - d.y) +
 				 d.x * double(c.y - a.y);
 
@@ -2216,7 +2216,7 @@ static inline bool testSegmentIntersection(const CVector2f &a, const CVector2f &
 	double lambda = num / denom;
 	if (lambda <= 0 || lambda >= 1) return false;
 	//
-	num = - (a.x * double(c.y - b.y) + 
+	num = - (a.x * double(c.y - b.y) +
 		  b.x * double(a.y - c.y) +
 		  c.x * double(b.y - a.y));
 
@@ -2236,13 +2236,13 @@ bool CPolygon2D::selfIntersect() const
 	{
 		// test intersection with all other edges that don't share a vertex with this one
 		const CVector2f &p0 = getSegRef0(k);
-		const CVector2f &p1 = getSegRef1(k);	
+		const CVector2f &p1 = getSegRef1(k);
 		for(uint l = 0; l < k; ++l)
-		{			
+		{
 			const CVector2f &v0 = getSegRef0(l);
 			const CVector2f &v1 = getSegRef1(l);
 			if (v0 == p0 || v0 == p1 || v1 == p0 || v1 == p1) continue;
-			// 						
+			//
 			if (testSegmentIntersection(p0, p1, v0, v1)) return true;
 		}
 	}

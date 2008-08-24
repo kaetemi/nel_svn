@@ -46,35 +46,35 @@ namespace NL3D {
 class CTextureMultiFile : public ITexture
 {
 public:
-	
+
 	CTextureMultiFile(uint numTexs = 0);
-	
+
 	/// set the number of textures that are encoded in that texture
 	void setNumTextures(uint numTexs);
-	/** 
+	/**
 	 * Set the name of the file containing the i-th texture
-	 * \param name of the file	
+	 * \param name of the file
 	 * \param index index of the texture
-	 */	
+	 */
 	void					setFileName(uint index, const char *);
 	//
 	uint					getNumFileName() const { return _FileNames.size(); }
-	/** 
+	/**
 	 * get the name of the file containing the texture for the given index
-	 * \return name of the file	 
-	 */	
-	const std::string		&getFileName(uint index) const { return _FileNames[index]; } 
-	
+	 * \return name of the file
+	 */
+	const std::string		&getFileName(uint index) const { return _FileNames[index]; }
 
 
-	virtual bool			supportSharing() const { return true; }	
-	virtual std::string		getShareName() const;	
+
+	virtual bool			supportSharing() const { return true; }
+	virtual std::string		getShareName() const;
 	virtual void			selectTexture(uint index);
 	virtual bool			isSelectable() const { return true; }
 	virtual ITexture		*buildNonSelectableVersion(uint index);
 
 
-	/// Generate the current selected texture, looking in CPath if necessary.	
+	/// Generate the current selected texture, looking in CPath if necessary.
 	virtual void			doGenerate(bool async = false);
 	/// Serial this object
 	virtual void			serial(NLMISC::IStream &f) throw(NLMISC::EStream);

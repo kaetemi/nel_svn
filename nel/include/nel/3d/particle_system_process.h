@@ -60,7 +60,7 @@ public:
 
 namespace NL3D {
 
-	
+
 
 
 class CParticleSystem ;
@@ -74,17 +74,17 @@ class CFontManager ;
  *  PSBlendRender : render transparency (no z-buffer write)
  *  PSToolRender  : for edition purpose, show representations for forces, emitters...
  */
-enum TPSProcessPass 
+enum TPSProcessPass
 { PSMotion, PSSolidRender, PSBlendRender, PSToolRender } ;
 
 
-/** Objects of particle systems can be local to various matrixs defined by the following enum  
+/** Objects of particle systems can be local to various matrixs defined by the following enum
   */
 enum TPSMatrixMode
 {
 	PSFXWorldMatrix = 0,
 	PSIdentityMatrix,
-	PSUserMatrix,	
+	PSUserMatrix,
 	PSMatrixModeCount
 };
 
@@ -96,12 +96,12 @@ enum TPSMatrixMode
 class CParticleSystemProcess : public NLMISC::IStreamable
 {
 	public:
-	
+
 		/// \name Object
 		/// @{
 			/// ctor
 			CParticleSystemProcess() : _Owner(NULL), _MatrixMode(PSFXWorldMatrix), _Index(0) {}
-			
+
 			/// dtor
 			virtual ~CParticleSystemProcess()  {}
 
@@ -109,10 +109,10 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 			* Everything is saved, except for the fontManager and the fontGenerator.
 			* They must be set again if the PSToolRender pass is used.
 			*/
-			virtual void			serial(NLMISC::IStream &f) throw(NLMISC::EStream) ;					
+			virtual void			serial(NLMISC::IStream &f) throw(NLMISC::EStream) ;
 		/// @}
 
-		
+
 		/**
 		* execute this process, telling how much time ellapsed must be used for motion, and the real time ellapsed
 		* (for lifetime managment)
@@ -162,13 +162,13 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 		//@}
 
 		// get matrix used for that object
-		TPSMatrixMode getMatrixMode() const { return _MatrixMode; }			
-			
+		TPSMatrixMode getMatrixMode() const { return _MatrixMode; }
+
 		/** Choose the basis for this process. NB: This won't change any existing coordinate
-		 *  By default, all process are expressed in the world basis		 
+		 *  By default, all process are expressed in the world basis
 		 */
 		virtual void			setMatrixMode(TPSMatrixMode matrixMode);
-	
+
 		/// tells wether there are alive entities / particles in the system
 		virtual bool			hasParticles(void) const { return false ; }
 
@@ -181,13 +181,13 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 		virtual uint			getNumWantedTris() const = 0 ;
 
 
-		
+
 		/// test wether parametric motion is enabled
 		virtual bool			isParametricMotionEnabled(void) const { return false;}
 
 		/// perform parametric motion if enabled
 		virtual void			performParametricMotion(TAnimationTime date) { nlassert(0);}
-				
+
 
 		// Called by the system when its date has been manually changed
 		virtual void			systemDateChanged() {}
@@ -197,15 +197,15 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 
 		// returns the number of sub-objects (including this one, that requires the user matrix for its computations)
 		virtual uint			getUserMatrixUsageCount() const;
-                                
+
 		// append all tex in the given vector
 		virtual void enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv) = 0;
 
 		// Force z-bias for all material.
 		virtual void setZBias(float value) = 0;
-			
+
 		// get the index of the process in the system
-		uint		 getIndex() const { return _Index; }		
+		uint		 getIndex() const { return _Index; }
 
 		// called by owner miodel when the show / hide flag has changed
 		virtual void onShow(bool shown) = 0;
@@ -220,7 +220,7 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 		uint			_Index;
 	public:
 		// for use by CParticleSystem only
-		void	setIndex(uint32 index) { _Index = index; }	
+		void	setIndex(uint32 index) { _Index = index; }
 } ;
 
 

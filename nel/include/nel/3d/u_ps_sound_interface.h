@@ -33,7 +33,7 @@ namespace NLMISC
 	class CVector;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 struct UPSSoundInstance;
@@ -41,7 +41,7 @@ struct UPSSoundInstance;
 
 /**
  * This class is an interface which allow the particle system to create a sound. When a sound is created,
- * the system get an interface on a sound instance. The interface must be registered to the particle system. 
+ * the system get an interface on a sound instance. The interface must be registered to the particle system.
  * when it has been created.
  * \author Nicolas Vizerie
  * \author Nevrax France
@@ -50,11 +50,11 @@ struct UPSSoundInstance;
 struct UPSSoundServer
 {
 	virtual ~UPSSoundServer() {}
-	
+
 	/** Querry the implementer to create a sound instance, and retrieve an interface to it.
 	  * NULL means that the server can't create the sound, so it is ignored
 	  * \param soundName the name of the sound in the sound bank
-	  * \param spawn     true if the sound must be spawned e.g it continues after this interface is removed 
+	  * \param spawn     true if the sound must be spawned e.g it continues after this interface is removed
 	  * \param cb		 useful only for spawned sound, it tells when a spawned sound has been removed
 	  */
 	virtual UPSSoundInstance *createSound(const NLMISC::TStringId &soundName, bool spawn = false) = 0;
@@ -69,8 +69,8 @@ struct UPSSoundServer
 struct UPSSoundInstance
 {
 	virtual ~UPSSoundInstance() {}
-	
-	/** The system will call this method to set the parameters of the sound	  
+
+	/** The system will call this method to set the parameters of the sound
 	  * Values are clamped
 	  */
 	virtual void setSoundParams(float gain,
@@ -89,7 +89,7 @@ struct UPSSoundInstance
 	virtual void stop(void) = 0;
 
 	/// when this method is called, the sound is not needed anymore by the system
-	virtual void release(void) = 0;	
+	virtual void release(void) = 0;
 
 	/// get pitch
 	virtual float getPitch() const = 0;

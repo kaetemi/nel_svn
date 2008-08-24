@@ -254,23 +254,23 @@ UTransform::TVisibility UTransform::getVisibility()
 
 // ***************************************************************************
 
-void UTransform::setOrderingLayer(uint layer) 
-{ 
+void UTransform::setOrderingLayer(uint layer)
+{
 	CTransform	*object = getObjectPtr();
-	object->setOrderingLayer(layer); 
+	object->setOrderingLayer(layer);
 }
 
 // ***************************************************************************
 
-uint UTransform::getOrderingLayer() const 
-{ 
+uint UTransform::getOrderingLayer() const
+{
 	CTransform	*object = getObjectPtr();
-	return object->getOrderingLayer(); 
+	return object->getOrderingLayer();
 }
 
 // ***************************************************************************
 
-void UTransform::setUserLightable(bool enable) 
+void UTransform::setUserLightable(bool enable)
 {
 	CTransform	*object = getObjectPtr();
 	object->setUserLightable(enable);
@@ -278,7 +278,7 @@ void UTransform::setUserLightable(bool enable)
 
 // ***************************************************************************
 
-bool UTransform::getUserLightable() const  
+bool UTransform::getUserLightable() const
 {
 	CTransform	*object = getObjectPtr();
 	return  object->getUserLightable();
@@ -286,7 +286,7 @@ bool UTransform::getUserLightable() const
 
 // ***************************************************************************
 
-void UTransform::setLogicInfo(ILogicInfo *logicInfo) 
+void UTransform::setLogicInfo(ILogicInfo *logicInfo)
 {
 	CTransform	*object = getObjectPtr();
 	object->setLogicInfo(logicInfo);
@@ -302,7 +302,7 @@ bool UTransform::getLastWorldVisState() const
 
 // ***************************************************************************
 
-bool UTransform::getLastClippedState() const 
+bool UTransform::getLastClippedState() const
 {
 	CTransform	*object = getObjectPtr();
 	return object->isClipVisible();

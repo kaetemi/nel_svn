@@ -28,7 +28,7 @@
 #include "nel/misc/vector_2f.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 
@@ -135,12 +135,12 @@ public:
 	{
 		if(den>0)
 		{
-			Numerator= num; 
+			Numerator= num;
 			Denominator= den;
 		}
 		else
 		{
-			Numerator= -num; 
+			Numerator= -num;
 			Denominator= -den;
 		}
 	}

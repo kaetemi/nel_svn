@@ -101,7 +101,7 @@ float		CContextSound::getMaxDistance() const
 }
 
 /// Return the length of the sound in ms
-uint32		CContextSound::getDuration() 
+uint32		CContextSound::getDuration()
 {
 	std::vector<std::pair<std::string, CSound*> > sounds;
 	getSubSoundList(sounds);
@@ -117,7 +117,7 @@ uint32		CContextSound::getDuration()
 }
 
 /// Used by the george sound plugin to check sound recursion (ie sound 'toto' use sound 'titi' witch also use sound 'toto' ...).
-void		CContextSound::getSubSoundList(std::vector<std::pair<std::string, CSound*> > &subsounds) const 
+void		CContextSound::getSubSoundList(std::vector<std::pair<std::string, CSound*> > &subsounds) const
 {
 	if (_ContextSounds == 0)
 	{
@@ -281,7 +281,7 @@ void CContextSound::init()
 				}
 				if (i == _BaseName.size())
 				{
-					// The base name is ok, check that the next char is a digit (avoid conflit if some 
+					// The base name is ok, check that the next char is a digit (avoid conflit if some
 					// sound have a longeur base name with same begining)
 					if (soundName[i] >= '0' && soundName[i] <= '9')
 						_ContextSounds->addSound(CAudioMixerUser::instance()->getSoundId(*first), _BaseName);

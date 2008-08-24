@@ -113,7 +113,7 @@ private:
 	double _DTRest;
 	NLMISC::CValueSmoother _AverageFrameRate;
 	bool _Generate; // or light ?
-	CCloud *_CurrentCloudInProcess; // Current cloud that is processing 
+	CCloud *_CurrentCloudInProcess; // Current cloud that is processing
 	double _CurrentCloudInProcessFuturTime;
 
 	std::vector<uint8> _CloudPower;
@@ -126,7 +126,7 @@ private:
 
 	bool				_IsIncomingCSS;
 	SCloudScapeSetup	_IncomingCSS;
-	
+
 	CNoise3d	_Noise3D;
 
 	std::vector<CCloud>		_AllClouds;
@@ -192,7 +192,7 @@ private:
 
 	friend class CCloud;
 
-	double					_LastAnimRenderTime;	
+	double					_LastAnimRenderTime;
 	double					_MaxDeltaTime;
 };
 

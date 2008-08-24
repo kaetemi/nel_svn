@@ -77,7 +77,7 @@ namespace NLMISC
 		}
 		TXMLPackInfo &packInfo = _XMLPacks[packId];
 
-		// open the xml pack for later access 
+		// open the xml pack for later access
 //		packInfo.FileHandler = fopen(xmlPackFileName.c_str(), "rb");
 
 		// open the xml pack for parsing
@@ -104,7 +104,7 @@ namespace NLMISC
 		skipLine(it, end, lineCount);
 
 		// now enter the sub file loop
-		do 
+		do
 		{
 			TXMLFileInfo fileInfo;
 			// match a sub file header
@@ -206,12 +206,12 @@ namespace NLMISC
 			}
 		}
 	}
-		
+
 	// Used by CIFile to get information about the files within the xml pack
-	FILE* CXMLPack::getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rFileOffset, 
+	FILE* CXMLPack::getFile (const std::string &sFileName, uint32 &rFileSize, uint32 &rFileOffset,
 						bool &rCacheFileOnOpen, bool &rAlwaysOpened)
 	{
-		// split the name appart from the '@@' separator to get the pack file name 
+		// split the name appart from the '@@' separator to get the pack file name
 		// and subfile name
 		vector<string>	parts;
 		explode(sFileName, string("@@"), parts, true);
@@ -236,7 +236,7 @@ namespace NLMISC
 		TXMLPackInfo::TFileList::iterator fileIt = packInfo._XMLFiles.find(fileId);
 		if (fileIt == packInfo._XMLFiles.end())
 		{
-			nlwarning("CXMLPack::getFile : Can't find xml file named '%s' in pack '%s'", 
+			nlwarning("CXMLPack::getFile : Can't find xml file named '%s' in pack '%s'",
 				parts[1].c_str(), parts[0].c_str());
 			return NULL;
 		}

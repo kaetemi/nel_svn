@@ -93,7 +93,7 @@ CShadowMapManager::CShadowMapManager()
 		_BlurMaterial[i].setZWrite(false);
 		_BlurMaterial[i].setZFunc(CMaterial::always);
 		_BlurMaterial[i].setDoubleSided(true);
-		// Setup The Blur. NB: it will take advantage of Max 4 texture driver support, but will still 
+		// Setup The Blur. NB: it will take advantage of Max 4 texture driver support, but will still
 		// work with 2 or 3 (less beautifull).
 		uint j;
 		for(j=1;j<4;j++)
@@ -183,10 +183,10 @@ CShadowMapManager::CShadowMapManager()
 	_ReceiveShadowMaterial.setTexCoordGenMode(0, CMaterial::TexCoordGenObjectSpace);
 	// Setup the stage so we interpolate ShadowColor and White (according to shadowmap alpha)
 	// nico : with D3D driver, limitation of the number of per stage constant (Only 1 if diffuse is used), so do a blend between inv diffuse & black (instead of diffuse & white), which resolve to a modulate between
-	// source alpha & inverse diffuse.  then invert result at subsequent stage	
+	// source alpha & inverse diffuse.  then invert result at subsequent stage
 	_ReceiveShadowMaterial.texEnvOpRGB(0, CMaterial::Modulate);
 	_ReceiveShadowMaterial.texEnvArg0RGB(0, CMaterial::Diffuse, CMaterial::InvSrcColor);
-	_ReceiveShadowMaterial.texEnvArg1RGB(0, CMaterial::Texture, CMaterial::SrcAlpha);	
+	_ReceiveShadowMaterial.texEnvArg1RGB(0, CMaterial::Texture, CMaterial::SrcAlpha);
 	// Take Alpha for AlphaTest only.
 	_ReceiveShadowMaterial.texEnvOpAlpha(0, CMaterial::Replace);
 	_ReceiveShadowMaterial.texEnvArg0Alpha(0, CMaterial::Texture, CMaterial::SrcAlpha);
@@ -198,9 +198,9 @@ CShadowMapManager::CShadowMapManager()
 	_ReceiveShadowMaterial.setTexCoordGenMode(1, CMaterial::TexCoordGenObjectSpace);
 	_ReceiveShadowMaterial.setTexture(1, _ClampTexture);
 	// Setup the stage so we interpolate Shadow and White (according to clamp alpha)
-	_ReceiveShadowMaterial.texEnvOpRGB(1, CMaterial::Modulate);	
+	_ReceiveShadowMaterial.texEnvOpRGB(1, CMaterial::Modulate);
 	_ReceiveShadowMaterial.texEnvArg0RGB(1, CMaterial::Previous, CMaterial::SrcColor); // Color is inverted before the blend
-	_ReceiveShadowMaterial.texEnvArg1RGB(1, CMaterial::Texture, CMaterial::SrcAlpha);	
+	_ReceiveShadowMaterial.texEnvArg1RGB(1, CMaterial::Texture, CMaterial::SrcAlpha);
 	// Take Alpha for AlphaTest only. (take 1st texture alpha...)
 	_ReceiveShadowMaterial.texEnvOpAlpha(0, CMaterial::Replace);
 	_ReceiveShadowMaterial.texEnvArg0Alpha(0, CMaterial::Previous, CMaterial::SrcAlpha);
@@ -269,7 +269,7 @@ void			CShadowMapManager::renderGenerate(CScene *scene)
 	uint32	textDestH= min(wndH, (uint32)NL3D_SMM_MAX_TEXTDEST_SIZE);
 
 	// if not needed or if not possible, exit. test for wndSize is also important when window is minimized
-	if( _ShadowCasters.empty() || 
+	if( _ShadowCasters.empty() ||
 		textDestW<baseTextureSize || textDestH<baseTextureSize)
 	{
 		clearAllShadowCasters();
@@ -298,7 +298,7 @@ void			CShadowMapManager::renderGenerate(CScene *scene)
 	float	vpHeight= (float)baseTextureSize / (float)(numTextH*baseTextureSize);
 
 
-	// Create / Update the Blur Texture 
+	// Create / Update the Blur Texture
 	updateBlurTexture(*driverForShadowGeneration, numTextW * baseTextureSize, numTextH * baseTextureSize);
 
 
@@ -461,7 +461,7 @@ void			CShadowMapManager::renderGenerate(CScene *scene)
 						sic.initFullScreen();
 						// TODO_SHADOW: optim: need scissor?
 						driverForShadowGeneration->setupScissor(sic);
-						
+
 						driverForShadowGeneration->setupViewMatrix(CMatrix::Identity);
 						driverForShadowGeneration->setupModelMatrix(CMatrix::Identity);
 
@@ -533,12 +533,12 @@ void			CShadowMapManager::renderProject(CScene *scene)
 
 	/* Fog Case: Since we do a modulate, we don't want to modulate the fog color with himself.
 		Instead, if the shadowed pixel is in full fog, we have to modulate him with Blac (modulate with INVERSE-source color, actually ...)
-		=> replace fog color with black temporarily 
+		=> replace fog color with black temporarily
 	*/
 	IDriver	*driver= scene->getRenderTrav().getDriver();
 	CRGBA	bkupFogColor= driver->getFogColor();
 
-	
+
 	driver->setupFog(driver->getFogStart(), driver->getFogEnd(), CRGBA::Black);
 
 	/* Light case: CVisualCollisionManager use a fakeLight to avoid ShadowMapping on backFaces of meshs
@@ -591,7 +591,7 @@ void			CShadowMapManager::renderProject(CScene *scene)
 			clamp(R, 1U, 256U);
 			clamp(G, 1U, 256U);
 			clamp(B, 1U, 256U);
-			/* screen= text*(a+d*0.5) (mean value). if we do shadowColor= a/(a+d*0.5f), 
+			/* screen= text*(a+d*0.5) (mean value). if we do shadowColor= a/(a+d*0.5f),
 				then we'll have "in theory"  screen= text*a
 			*/
 			R= (uint)(256 * ambient.R / (float)R);
@@ -633,7 +633,7 @@ void			CShadowMapManager::renderProject(CScene *scene)
 				receiver->receiveShadowMap(sm, casterPos, _ReceiveShadowMaterial);
 			}
 
-			// Additionaly, the VisualCollisionManager may manage some shadow receiving 
+			// Additionaly, the VisualCollisionManager may manage some shadow receiving
 			CVisualCollisionManager		*shadowVcm= scene->getVisualCollisionManagerForShadow();
 			if(shadowVcm)
 			{
@@ -647,7 +647,7 @@ void			CShadowMapManager::renderProject(CScene *scene)
 
 	// Leave Light Setup in a clean State
 	scene->getRenderTrav().resetLightSetup();
-	
+
 
 	// TestYoyo. Display Projection BBox.
 	/*{
@@ -664,7 +664,7 @@ void			CShadowMapManager::renderProject(CScene *scene)
 
 				drv.setupModelMatrix(CMatrix::Identity);
 
-				CDRU::drawWiredBox(p0, sm->LocalProjectionMatrix.getI(), sm->LocalProjectionMatrix.getJ(), 
+				CDRU::drawWiredBox(p0, sm->LocalProjectionMatrix.getI(), sm->LocalProjectionMatrix.getJ(),
 					sm->LocalProjectionMatrix.getK(), CRGBA::White, drv);
 			}
 		}
@@ -951,7 +951,7 @@ void			CShadowMapManager::updateBlurTexture(IDriver &drv, uint w, uint h)
 		for (j=0; j<maxNumCstUnlighted; j++)
 		{
 			_BlurMaterial[i].setTexture(j, _BlurTexture[i]);
-		}		
+		}
 	}
 
 	// compute values for texturing
@@ -1185,7 +1185,7 @@ ITexture		*CShadowMapManager::allocateTexture(uint textSize)
 	text->setRenderTarget (true);
 	// For Texture Profiling
 	text->setTextureCategory(_TextureCategory);
-	
+
 	// Setup in the map.
 	_ShadowTextureMap[text]= text;
 

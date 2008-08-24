@@ -32,7 +32,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -113,7 +113,7 @@ void		CVegetableShape::build(CVegetableShapeBuild &vbuild)
 	CVertexBufferReadWrite vbaOut;
 	VB.lock (vbaOut);
 
-	// if no vertex color, 
+	// if no vertex color,
 	float	maxZ= 0;
 	bool	bendFromColor= true;
 	if(! (vbuild.VB.getVertexFormat() & CVertexBuffer::PrimaryColorFlag) )
@@ -195,7 +195,7 @@ bool		CVegetableShape::loadShape(const std::string &shape)
 void		CVegetableShape::serial(NLMISC::IStream &f)
 {
 	/*
-	Version 1: 
+	Version 1:
 		- BestSidedPreComputeLighting
 	*/
 	sint	ver= f.serialVersion(1);

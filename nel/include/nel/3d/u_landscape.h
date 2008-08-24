@@ -54,10 +54,10 @@ struct CTileAddedInfo
 	NLMISC::CVector	Normal;
 };
 
-/** Callback to know when a tile of a landscape has been added/removed  
+/** Callback to know when a tile of a landscape has been added/removed
   */
 struct ULandscapeTileCallback
-{	
+{
 	virtual ~ULandscapeTileCallback() {}
 	virtual void tileAdded(const CTileAddedInfo &infos) = 0;
 	virtual void tileRemoved(uint64 id) = 0;
@@ -113,7 +113,7 @@ public:
 	 */
 	virtual	void	refreshZonesAround(const CVector &pos, float radius, std::string &zoneAdded, std::string &zoneRemoved, const std::vector<uint16> *validZoneIds = NULL) =0;
 	/// Delete old zones, or load new zones, around a position, until it is finished. This is a blocking call.
-	virtual	void	refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, 
+	virtual	void	refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded,
 		std::vector<std::string> &zonesRemoved, NLMISC::IProgressCallback &progress, const std::vector<uint16> *validZoneIds = NULL) =0;
 	/** Get list of zones currently loaded in landscape.
 	 *	\zonesLoaded array of name of the zones added, without extension (eg: "150_EM").
@@ -223,7 +223,7 @@ public:
 	virtual	CVector		getHeightFieldDeltaZ(float x, float y) const =0;
 	/** set the HeightField data. NB: take lot of place in memory.
 	 * only one is possible. You should setup this heightfield around the zones which will be loaded.
-	 * It is applied only when a zone is loaded, so you should setup it 2km around the user, each time you move too far 
+	 * It is applied only when a zone is loaded, so you should setup it 2km around the user, each time you move too far
 	 * from a previous place (eg 160m from last setup).
 	 */
 	virtual	void		setHeightField(const CHeightMap &hf) =0;
@@ -251,7 +251,7 @@ public:
 	 *	\param windDir is the direction of the wind. NB: only XY direction is kept.
 	 *	\param windFreq is the frequency for the animation (speed)
 	 *	\param windPower is the power of the wind, and is a factor (0..1) of Bend
-	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum 
+	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum
 	 *	(for very powerfull wind)
 	 */
 	virtual	void		setVegetableWind(const CVector &windDir, float windFreq, float windPower, float windBendMin) =0;
@@ -289,7 +289,7 @@ public:
 
 	/// \name ShadowMapping
 	// @{
-	/** By default, map shadow receiving is disabled. This enabled shadow for this model. 
+	/** By default, map shadow receiving is disabled. This enabled shadow for this model.
 	 *	Fails if the model don't support dynamic Map Shadow Receiving (eg Particle system)
 	 */
 	virtual void			enableReceiveShadowMap(bool state) =0;

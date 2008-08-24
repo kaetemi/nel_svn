@@ -28,7 +28,7 @@
 #include "nel/3d/landscapevb_allocator.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -61,7 +61,7 @@ void		CFarVertexBufferInfo::setupPointersForVertexProgram()
 
 	TexCoordPointer0= vcoord + TexCoordOff0;
 	TexCoordPointer1= vcoord + TexCoordOff1;
-	GeomInfoPointer= vcoord + GeomInfoOff;			
+	GeomInfoPointer= vcoord + GeomInfoOff;
 	DeltaPosPointer= vcoord + DeltaPosOff;
 	AlphaInfoPointer= vcoord + AlphaInfoOff;
 }
@@ -144,7 +144,7 @@ void		CNearVertexBufferInfo::setupPointersForVertexProgram()
 	TexCoordPointer0= vcoord + TexCoordOff0;
 	TexCoordPointer1= vcoord + TexCoordOff1;
 	TexCoordPointer2= vcoord + TexCoordOff2;
-	GeomInfoPointer= vcoord + GeomInfoOff;			
+	GeomInfoPointer= vcoord + GeomInfoOff;
 	DeltaPosPointer= vcoord + DeltaPosOff;
 
 }

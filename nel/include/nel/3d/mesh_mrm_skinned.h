@@ -47,7 +47,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -216,7 +216,7 @@ public:
 
 	/// Called for edition purpose (slow  O(NVertex) ). computeBonesId must has been called before.
 	bool			getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAABBox &bbox, uint boneId) const;
-	
+
 	// @}
 
 
@@ -256,7 +256,7 @@ public:
 
 	/// \name ShadowMap Skin rendering
 	// @{
-	/// Setup the ShadowMesh 
+	/// Setup the ShadowMesh
 	void			setShadowMesh(const std::vector<CShadowVertex> &shadowVertices, const std::vector<uint32> &triangles);
 
 	/// Get the num of shadow skin vertices
@@ -272,7 +272,7 @@ public:
  	 */
 	bool			supportIntersectSkin() const {return supportShadowSkinGrouping();}
 	bool			intersectSkin(CMeshMRMSkinnedInstance	*mi, const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D);
-	
+
 	// @}
 
 // ************************
@@ -335,7 +335,7 @@ private:
 		/// List of rdr pass, for this LOD.
 		std::vector<CRdrPass>		RdrPass;
 
-		/** Skinning: list of influenced vertices to compute, for this lod only. There is 4 array, 0th 
+		/** Skinning: list of influenced vertices to compute, for this lod only. There is 4 array, 0th
 		 *	is for vertices which have only one matrix. 1st if for vertices which have only 2 matrix ....
 		 */
 		std::vector<uint32>				InfluencedVertices[NL3D_MESH_SKINNING_MAX_MATRIX];
@@ -372,7 +372,7 @@ private:
 		bool								Skinned;
 
 		// This is the array of SkinWeights, same size as the VB.
-		std::vector<CMesh::CSkinWeight>		SkinWeights;		
+		std::vector<CMesh::CSkinWeight>		SkinWeights;
 
 		// This VB is computed with CMRMBuilder and is ready to used
 		CVertexBuffer			VBuffer;
@@ -399,7 +399,7 @@ private:
 
 
 public:
-		
+
 	/// The packed vertex buffer
 	class CPackedVertexBuffer
 	{
@@ -501,7 +501,7 @@ public:
 		/// Decompact position values
 		float						_DecompactScale;
 
-		// 
+		//
 		std::vector<CPackedVertex>	_PackedBuffer;
 	};
 
@@ -595,13 +595,13 @@ private:
 	void		dirtMeshDataId();
 
 	// ApplySkin method
-	void		applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
-	void		applyArrayRawSkinNormal4(CRawVertexNormalSkinned4 *src, uint8 *destVertexPtr, 
+	void		applyArrayRawSkinNormal4(CRawVertexNormalSkinned4 *src, uint8 *destVertexPtr,
 		CMatrix3x4 *boneMat3x4, uint nInf);
 
 

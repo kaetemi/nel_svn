@@ -1,5 +1,5 @@
 /** \file ligo_config.cpp
- * Ligo config file 
+ * Ligo config file
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -62,7 +62,7 @@ bool CLigoConfig::readConfigFile (const char *fileName, bool parsePrimitiveCombo
 	ZoneSnapShotRes = (uint)snapShot.asInt ();
 	CConfigFile::CVar &primitiveClassFilename = cf.getVar ("primitive_class_filename");
 	PrimitiveClassFilename= primitiveClassFilename.asString ();
-	
+
 	// Clear the previous classes
 	_Contexts.clear();
 	_Contexts.push_back ("default");
@@ -103,7 +103,7 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 			// Get the root node
 			xmlNodePtr root = xml.getRootNode ();
 			nlassert (root);
-			
+
 			// Check the header
 			if (strcmp ((const char*)root->name, "NEL_LIGO_PRIMITIVE_CLASS") == 0)
 			{
@@ -118,7 +118,7 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 					}
 					else
 						return false;
-					
+
 				}
 				else
 				{
@@ -161,7 +161,7 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 						if (getPropertyString (name, filename.c_str(), primitive, "CLASS_NAME"))
 						{
 							// Add the primitive
-							pair<std::map<std::string, CPrimitiveClass>::iterator, bool> insertResult = 
+							pair<std::map<std::string, CPrimitiveClass>::iterator, bool> insertResult =
 								_PrimitiveClasses.insert (std::map<std::string, CPrimitiveClass>::value_type (name, CPrimitiveClass ()));
 							if (insertResult.second)
 							{
@@ -178,7 +178,7 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 					}
 					while ((primitive = CIXml::getNextChildNode (primitive, "PRIMITIVE")));
 				}
-					
+
 				// Add the context strings
 				{
 					set<string>::iterator ite = contextStrings.begin ();
@@ -283,7 +283,7 @@ bool CLigoConfig::reloadIndexFile(const std::string &indexFileName)
 				{
 					nlwarning("CLigoConfig::reloadIndexFile: the mapping for the file '%s' as changed from %u to %u in the config file, the change is ignored",
 						fileName.c_str(),
-						index, 
+						index,
 						getFileStaticAliasMapping(fileName));
 				}
 			}
@@ -345,7 +345,7 @@ const NLLIGO::IPrimitive *CLigoConfig::getLinkedPrimitive (const NLLIGO::IPrimit
 		if (parent->getChildId (childId, &primitive))
 		{
 			// Test the next primitive
-			
+
 			// Get the primitive class
 			string className;
 			if (primitive.getPropertyByName ("class", className))
@@ -470,7 +470,7 @@ bool CLigoConfig::canBeChild (const NLLIGO::IPrimitive &child, const NLLIGO::IPr
 		// Only if it is a root node or parent class doesn't exist
 		string parentClassName;
 		return ( (parent.getParent () == NULL) || (!parent.getPropertyByName ("class", parentClassName) ) );
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -503,7 +503,7 @@ bool CLigoConfig::canBeRoot (const NLLIGO::IPrimitive &child)
 	{
 		// Root class doesn't exist
 		return ( !getPrimitiveClass ("root") );
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -637,7 +637,7 @@ bool CLigoConfig::isStaticChild (const NLLIGO::IPrimitive &primitive)
 }
 
 // ***************************************************************************
-	
+
 /// Get the dynamic bit size for alias
 uint32 CLigoConfig::getDynamicAliasSize() const
 {
@@ -648,7 +648,7 @@ uint32 CLigoConfig::getDynamicAliasSize() const
 /// Get the dynamic bit mask for alias
 uint32 CLigoConfig::getDynamicAliasMask() const
 {
-	// this 'strange' test because VC fail to generate a correct shift if 
+	// this 'strange' test because VC fail to generate a correct shift if
 	// _DynamicAliasBitCount is 32 bits.
 	// The generated code lead to no shift at all and return 0 instead of 0xffffffff
 	if (_DynamicAliasBitCount >= 32)
@@ -719,7 +719,7 @@ void CLigoConfig::registerFileToStaticAliasTranslation(const std::string &fileNa
 			getStaticAliasMask(),
 			staticPart & getStaticAliasMask(),
 			staticPart & getStaticAliasMask());
-	
+
 		staticPart = (staticPart & getStaticAliasMask());
 	}
 
@@ -790,9 +790,9 @@ uint32 CLigoConfig::aliasFromString(std::string fullAlias)
 	uint32 staticPart;
 	uint32 dynPart;
 	sscanf(fullAlias.c_str(), "(A:%u:%u)", &staticPart, &dynPart);
-	
+
 	return ((staticPart<<getDynamicAliasSize()) & getStaticAliasMask()) | (dynPart & getDynamicAliasMask());
-	
+
 }
 
 

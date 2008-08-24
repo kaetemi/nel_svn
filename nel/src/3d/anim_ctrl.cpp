@@ -25,7 +25,7 @@
 #include "nel/3d/anim_ctrl.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

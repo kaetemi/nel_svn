@@ -57,8 +57,8 @@ IClassable	*CClassRegistry::create(const string &className)  throw(ERegistry)
 {
 	init();
 
-	TClassMap::iterator	it;	
-	
+	TClassMap::iterator	it;
+
 	it=RegistredClasses->find(className);
 
 	if(it==RegistredClasses->end())
@@ -80,7 +80,7 @@ void		CClassRegistry::registerClass(const string &className, IClassable* (*creat
 {
 	init();
 
-	CClassNode	node;	
+	CClassNode	node;
 	node.Creator=creator;
 	node.TypeIdCheck= typeidCheck;
 	std::pair<TClassMap::iterator, bool> result;
@@ -89,7 +89,7 @@ void		CClassRegistry::registerClass(const string &className, IClassable* (*creat
 	{
 		nlstop;
 		throw ERegisteredClass();
-	}	
+	}
 }
 
 // ======================================================================================================
@@ -97,10 +97,10 @@ bool		CClassRegistry::checkObject(IClassable* obj)
 {
 	init();
 
-	TClassMap::iterator	it;	
+	TClassMap::iterator	it;
 	it=RegistredClasses->find(obj->getClassName());
 	if(it==RegistredClasses->end())
-		return false;	
+		return false;
 
 	if( it->second.TypeIdCheck != string(typeid(*obj).name()) )
 		return false;

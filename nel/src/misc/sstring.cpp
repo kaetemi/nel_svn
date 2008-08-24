@@ -1,7 +1,7 @@
 /** \file sstring.cpp
  *
  * This file contains a string class derived from the STL string
- * The string compare functions of the class are case insensitive 
+ * The string compare functions of the class are case insensitive
  *
  * The coding style is not CPU efficient - the routines are not designed for performance
  */
@@ -21,7 +21,7 @@ namespace NLMISC
 		if (useSmartExtensions)
 		{
 			CSString token;
-			
+
 			// split to the first non empty token, or until the this string is empty
 			while (!empty() && token.empty())
 				token = splitToOneOfSeparators(separators,true,useAngleBrace,useSlashStringEscape,useRepeatQuoteStringEscape,true);
@@ -350,7 +350,7 @@ namespace NLMISC
 		return result;
 	}
 
-	CSString CSString::splitToStringSeparator(	
+	CSString CSString::splitToStringSeparator(
 												char separator,
 												bool truncateThis,
 												bool useSlashStringEscape,			// treat '\' as escape char so "\"" == '"'
@@ -786,12 +786,12 @@ namespace NLMISC
 		for (i=0;i<size() && isWhiteSpace((*this)[i]);++i)
 		{}
 
-		if ( ((*this)[i]>='A' && (*this)[i]<='Z') || ((*this)[i]>='a' && (*this)[i]<='z') || 
+		if ( ((*this)[i]>='A' && (*this)[i]<='Z') || ((*this)[i]>='a' && (*this)[i]<='z') ||
 			 ((*this)[i]>='0' && (*this)[i]<='9') || (*this)[i]=='_')
 		{
 			// copy out an alpha-numeric string
-			for (;i<(*this).size() && 
-				( ((*this)[i]>='A' && (*this)[i]<='Z') || ((*this)[i]>='a' && (*this)[i]<='z') || 
+			for (;i<(*this).size() &&
+				( ((*this)[i]>='A' && (*this)[i]<='Z') || ((*this)[i]>='a' && (*this)[i]<='z') ||
 				  ((*this)[i]>='0' && (*this)[i]<='9') || (*this)[i]=='_')
 				;++i)
 				result+=(*this)[i];
@@ -896,7 +896,7 @@ namespace NLMISC
 	CSString CSString::wordOrWords(unsigned idx,bool useSlashStringEscape,bool useRepeatQuoteStringEscape) const
 	{
 		CSString hold=strip();
-		
+
 		for (unsigned count=0;count<idx;++count)
 			hold=hold.tailFromFirstWordOrWords(useSlashStringEscape,useRepeatQuoteStringEscape).strip();
 
@@ -936,7 +936,7 @@ namespace NLMISC
 	CSString CSString::line(unsigned idx) const
 	{
 		CSString hold=strip();
-		
+
 		for (unsigned count=0;count<idx;++count)
 			hold= hold.tailFromFirstLine().strip();
 
@@ -947,13 +947,13 @@ namespace NLMISC
 	CSString CSString::quote(bool useSlashStringEscape,bool useRepeatQuoteStringEscape) const
 	{
 		CSString result;
-		
+
 		result+='\"';
 		for (uint32 i=0;i<size();++i)
 		{
 			switch ((*this)[i])
 			{
-			case '\"': 
+			case '\"':
 				if (useSlashStringEscape)
 				{
 					result+="\\\"";
@@ -974,7 +974,7 @@ namespace NLMISC
 			case '\t':	if (useSlashStringEscape)	{	result+="\\t";	continue;	}	break;
 			case '\v':	if (useSlashStringEscape)	{	result+="\\v";	continue;	}	break;
 				break;
-			default: 
+			default:
 				if ((signed char)(*this)[i]<32 && useSlashStringEscape)
 				{
 					result+=NLMISC::toString("\\x%02x",(unsigned char)(*this)[i]);
@@ -1009,7 +1009,7 @@ namespace NLMISC
 				if ((*this)[i]<'0' || (*this)[i]>'9')
 					break;
 		}
-		else if ( CSString::isValidKeywordFirstChar((*this)[0]) ) 
+		else if ( CSString::isValidKeywordFirstChar((*this)[0]) )
 		{
 			for (i=1;i<size();++i)
 				if (!CSString::isValidFileNameChar((*this)[i]))
@@ -1046,9 +1046,9 @@ namespace NLMISC
 					case 't': result[i]='\t'; break;
 					case 'v': result[i]='\v'; break;
 
-					case '0': 
-					case '1': 
-					case '2': 
+					case '0':
+					case '1':
+					case '2':
 					case '3':
 						{
 							char hold=result[i]-'0';
@@ -1068,10 +1068,10 @@ namespace NLMISC
 						}
 						break;
 
-					case '4': 
-					case '5': 
-					case '6': 
-					case '7': 
+					case '4':
+					case '5':
+					case '6':
+					case '7':
 						{
 							char hold=result[i]-'0';
 							++i;

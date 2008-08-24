@@ -54,7 +54,7 @@ public:
 	CViewport ();
 
 	/**
-	  * Constructor 
+	  * Constructor
 	  *
 	  * \param x coordinate of the left edge of the viewport in the window coordinate system . Must be between 0.f and 1.f.
 	  * \param y coordinate of the bottom edge of the viewport in the window coordinate system . Must be between 0.f and 1.f.
@@ -70,7 +70,7 @@ public:
 	void init16_9 ();
 
 	/** Get a 3d ray with a 2d point
-	  * 
+	  *
 	  * \param x is the x coordinate in the window coordinate system of the 2d point.
 	  * \param y is the y coordinate in the window coordinate system of the 2d point.
 	  * \param pos gets the position of a 3d point on the ray. It is also the position of the camera
@@ -81,7 +81,7 @@ public:
 	void getRayWithPoint (float x, float y, CVector& pos, CVector& dir, const CMatrix& camMatrix, const CFrustum& camFrust) const;
 
 	/** Get the viewport values
-	  * 
+	  *
 	  * \param x get the x coordinate of the left edge of the viewport in the window coordinate system . Must be between 0.f and 1.f.
 	  * \param y get the y coordinate of the bottom edge of the viewport in the window coordinate system . Must be between 0.f and 1.f.
 	  * \param width get the width of the view port. Must be between 0.f and 1.f-x.
@@ -95,10 +95,10 @@ public:
 		height=_Height;
 	}
 
-	float getX() const { return _X; }	
-	float getY() const { return _Y; }	
-	float getWidth() const { return _Width; }	
-	float getHeight() const { return _Height; }	
+	float getX() const { return _X; }
+	float getY() const { return _Y; }
+	float getWidth() const { return _Width; }
+	float getHeight() const { return _Height; }
 
 
 private:

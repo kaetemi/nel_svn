@@ -32,7 +32,7 @@
 using	namespace std;
 using	namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -94,7 +94,7 @@ CAsyncTextureManager::~CAsyncTextureManager()
 	}
 
 	// there must be no waitting textures, nor map, nor current upload texture
-	nlassert(_WaitingTextures.empty() && _TextureEntryMap.empty() && _CurrentUploadTexture==NULL 
+	nlassert(_WaitingTextures.empty() && _TextureEntryMap.empty() && _CurrentUploadTexture==NULL
 		&& _CurrentTextureLodLoaded==NULL);
 }
 
@@ -512,7 +512,7 @@ bool			CAsyncTextureManager::uploadTexturePart(ITexture *pText, IDriver *pDriver
 		{
 			// We cannot upload the whole mipmap -> we have to cut it
 			uint nSizeToUpload = _MaxUploadPerFrame - nTotalUploaded ;
-			// DXTC => min block of 4x4 
+			// DXTC => min block of 4x4
 			uint nLineWeight = (max(pText->getWidth(nMM), (uint32)4)*CBitmap::bitPerPixels[pText->getPixelFormat()])/8;
 			uint nNbLineToUpload = nSizeToUpload / nLineWeight;
 			// Upload 4 line by 4 line, and upload at leat one 4*line.
@@ -538,7 +538,7 @@ bool			CAsyncTextureManager::uploadTexturePart(ITexture *pText, IDriver *pDriver
 			_CurrentUploadTextureLine= 0;
 		}
 
-		// upload the texture 
+		// upload the texture
 		pDriver->uploadTexture (*pText, zeRect, (uint8)nMM);
 
 		nTotalUploaded += nWeight;
@@ -653,7 +653,7 @@ void			CAsyncTextureManager::updateTextureLodSystem(IDriver *pDriver)
 			for(uint j=0;j<text.Instances.size();j++)
 			{
 				float	instDist= text.Instances[j]->getAsyncTextureDistance();
-				
+
 				if (instDist<text.MinDistance)
 				{
 					text.MinPosition = text.Instances[j]->getPos();

@@ -34,7 +34,7 @@
 
 
 namespace NL3D {
- 
+
 class CPSEmitterInfo;
 
 /**
@@ -65,11 +65,11 @@ public:
 	virtual bool		doesProduceBBox(void) const { return false; }
 
 	/**
-	 * process one pass for the force 
+	 * process one pass for the force
 	 */
 	virtual void		step(TPSProcessPass pass);
 
-	
+
 	/// Compute the force on the targets. To be called inside the sim loop
 	virtual void		computeForces(CPSLocated &target) = 0;
 
@@ -98,7 +98,7 @@ public:
 							bool accumulate = false,
 							uint posStride = sizeof(NLMISC::CVector), uint speedStride = sizeof(NLMISC::CVector)
 							) const
-	 { 
+	 {
 		 nlassert(0); // not an integrable force
 	 }
 
@@ -107,21 +107,21 @@ public:
 	  * If the start date is lower than the creation date, the initial position is used
 	  * NB : works only with integrable forces
 	  */
-	virtual void integrateSingle(float startDate, float deltaT, uint numStep,								 
+	virtual void integrateSingle(float startDate, float deltaT, uint numStep,
 								 const CPSLocated *src, uint32 indexInLocated,
 								 NLMISC::CVector *destPos,
 								 bool accumulate = false,
 								 uint posStride = sizeof(NLMISC::CVector)) const
-	{ 
+	{
 		 nlassert(0); // not an integrable force
 	}
 
 
-	 
-	    
 
-	
-protected:	
+
+
+
+protected:
 	friend class CPSLocated;
 	friend class CPSForceIntensity;
 
@@ -134,13 +134,13 @@ protected:
 	/// if this force has become integrable again, this method tells it to the target
 	void				 renewIntegrable(void);
 
-	/** inherited from	 CPSLocatedBindable. When we deal with integrable forces, 
-	  * they must be in the same basis than their target. If this change, we must notify the target of it.	  
+	/** inherited from	 CPSLocatedBindable. When we deal with integrable forces,
+	  * they must be in the same basis than their target. If this change, we must notify the target of it.
 	  */
 	virtual void		 basisChanged(TPSMatrixMode systemBasis);
 
 	virtual void newElement(const CPSEmitterInfo &info) = 0;
-	
+
 	/** Delete an element given its index
 	 *  Attributes of the located that hold this bindable are still accessible for of the index given
 	 *  index out of range -> nl_assert
@@ -150,7 +150,7 @@ protected:
 	/** Resize the bindable attributes containers DERIVERS SHOULD CALL THEIR PARENT VERSION
 	 * should not be called directly. Call CPSLOcated::resize instead
 	 */
-	virtual void resize(uint32 size) = 0;	
+	virtual void resize(uint32 size) = 0;
 };
 
 
@@ -165,7 +165,7 @@ public:
 	}
 
 	virtual ~CPSForceIntensity();
-	
+
 
 	/// get the constant intensity that was set for the force
 	float getIntensity(void) const  { return _K; }
@@ -197,7 +197,7 @@ protected:
 	void newForceIntensityElement(const CPSEmitterInfo &info)
 	{
 		if (_IntensityScheme && _IntensityScheme->hasMemory()) _IntensityScheme->newElement(info);
-	}	
+	}
 	void deleteForceIntensityElement(uint32 index)
 	{
 		if (_IntensityScheme && _IntensityScheme->hasMemory()) _IntensityScheme->deleteElement(index);
@@ -217,19 +217,19 @@ class CPSForceIntensityHelper : public CPSForce, public CPSForceIntensity
 {
 public:
 	void serial(NLMISC::IStream &f) throw(NLMISC::EStream) ;
-	
+
 protected:
 	virtual CPSLocated *getForceIntensityOwner(void) { return _Owner; }
 	virtual void newElement(const CPSEmitterInfo &info) { newForceIntensityElement(info); }
 	virtual void deleteElement(uint32 index) { deleteForceIntensityElement(index); }
 	virtual void resize(uint32 size) { resizeForceIntensity(size); }
-	
+
 };
 
 
 
 
-/** a helper class to create isotropic force : they are independant of the basis, and have no position 
+/** a helper class to create isotropic force : they are independant of the basis, and have no position
  *  (fluid friction for example)
  *  To use this class you should provide to it a functor class that define the () operator with 3 parameters
  *  param1 = a const reference to the position of the particle
@@ -245,7 +245,7 @@ protected:
  *      {
  *			// perform the speed update there
  *		}
- *		
+ *
  *      // you can provide a serialization method. Note that that if the functor parameters are set before each use,
  *      // it useless to serial something ...
  *		void serial(NLMISC::IStream &f) throw(NLMISC::EStream)
@@ -270,12 +270,12 @@ protected:
  *  };
  *
  *
- *  not that each functor may have its own parameter. the setupFunctor method will be called each time 
+ *  not that each functor may have its own parameter. the setupFunctor method will be called each time
  */
 
 template <class T> class CIsotropicForceT : public CPSForce
 {
-public: 
+public:
 
 	/// Compute the force on the targets
 	virtual void computeForces(CPSLocated &target);
@@ -289,7 +289,7 @@ public:
 		f.serial(_F); // serial the functor object 5does nothing most of the time ...)
 	}
 
-	
+
 	/** Show the force (edition mode). The default does nothing
 	 *  TODO later
 	 */
@@ -302,14 +302,14 @@ public:
 	 virtual void setupFunctor(uint32 index) {};
 
 protected:
-	
+
 	/// the functor object
 	T _F;
 
-	
-		
+
+
 	virtual void newElement(const CPSEmitterInfo &info) { };
-	virtual void deleteElement(uint32 index) {};	
+	virtual void deleteElement(uint32 index) {};
 	virtual void resize(uint32 size) {};
 
 
@@ -324,16 +324,16 @@ template <class T> void CIsotropicForceT<T>::computeForces(CPSLocated &target)
 {
 	nlassert(CParticleSystem::InsideSimLoop);
 	for (uint32 k = 0; k < _Owner->getSize(); ++k)
-	{	
-		setupFunctor(k);								
+	{
+		setupFunctor(k);
 		TPSAttribVector::iterator speedIt = target.getSpeed().begin(), endSpeedIt = target.getSpeed().end();
 		TPSAttribVector::const_iterator posIt = target.getPos().begin();
 		TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
-		
+
 		for (; speedIt != endSpeedIt; ++speedIt, ++posIt, ++invMassIt)
 		{
-			_F(*posIt, *speedIt, *invMassIt);				
-		}		
+			_F(*posIt, *speedIt, *invMassIt);
+		}
 	}
 }
 
@@ -351,12 +351,12 @@ class CPSDirectionnalForce : public CPSForceIntensityHelper, public CPSDirection
 	/// Show the force (edition mode)
 	virtual void show();
 
-	
 
-	CPSDirectionnalForce(float i = 1.f) 
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("DirectionnalForce"); 
-		setIntensity(i); 
+
+	CPSDirectionnalForce(float i = 1.f)
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("DirectionnalForce");
+		setIntensity(i);
 		_Dir = NLMISC::CVector(0, 0, -1);
 	}
 
@@ -364,7 +364,7 @@ class CPSDirectionnalForce : public CPSForceIntensityHelper, public CPSDirection
 	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 
-	NLMISC_DECLARE_CLASS(CPSDirectionnalForce); 
+	NLMISC_DECLARE_CLASS(CPSDirectionnalForce);
 
 	///\name From CPSDirection
 	//@{
@@ -379,8 +379,8 @@ class CPSDirectionnalForce : public CPSForceIntensityHelper, public CPSDirection
 		// See if the direction is bound to a global variable. Return an empty string if not
 		virtual std::string         getGlobalVectorValueName() const;
 	//@}
-protected:	
-	NLMISC::CVector								_Dir;	
+protected:
+	NLMISC::CVector								_Dir;
 	CParticleSystem::CGlobalVectorValueHandle   _GlobalValueHandle; // a global vector value may override the value of _Dir (example of use : global direction for wind)
 };
 
@@ -395,12 +395,12 @@ public:
 	/// Show the force (edition mode)
 	virtual void show();
 
-	
 
-	CPSGravity(float g = 9.8f) 
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Gravity"); 
-		setIntensity(g); 
+
+	CPSGravity(float g = 9.8f)
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Gravity");
+		setIntensity(g);
 	}
 
 	/// serialization
@@ -408,7 +408,7 @@ public:
 
 	NLMISC_DECLARE_CLASS(CPSGravity);
 
-	
+
 	virtual bool		 isIntegrable(void) const;
 
 	/// inherited from CPSForce
@@ -417,7 +417,7 @@ public:
 							uint posStride = sizeof(NLMISC::CVector), uint speedStride = sizeof(NLMISC::CVector)
 							) const;
 
-	virtual void integrateSingle(float startDate, float deltaT, uint numStep,								 
+	virtual void integrateSingle(float startDate, float deltaT, uint numStep,
 								 const CPSLocated *src, uint32 indexInLocated,
 								 NLMISC::CVector *destPos,
 								 bool accumulate = false,
@@ -441,19 +441,19 @@ public:
 	/// Show the force (edition mode)
 	virtual void show();
 
-	
 
-	CPSCentralGravity(float i = 1.f) 
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("CentralGravity"); 
-		setIntensity(i); 
+
+	CPSCentralGravity(float i = 1.f)
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("CentralGravity");
+		setIntensity(i);
 	}
 
 	/// serialization
 	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 
-	NLMISC_DECLARE_CLASS(CPSCentralGravity); 
+	NLMISC_DECLARE_CLASS(CPSCentralGravity);
 };
 
 
@@ -461,11 +461,11 @@ public:
 class CPSSpring : public CPSForceIntensityHelper
 {
 public:
-	
+
 	/// ctor : k is the coefficient of the spring
 	CPSSpring(float k = 1.0f)
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Spring"); 
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Spring");
 		setIntensity(k);
 	}
 
@@ -481,7 +481,7 @@ public:
 	virtual void show();
 
 
-	NLMISC_DECLARE_CLASS(CPSSpring); 
+	NLMISC_DECLARE_CLASS(CPSSpring);
 
 };
 
@@ -491,10 +491,10 @@ public:
 class CPSFluidFrictionFunctor
 {
 public:
-	CPSFluidFrictionFunctor() : _K(1.f) 
-	{		
+	CPSFluidFrictionFunctor() : _K(1.f)
+	{
 	}
-	
+
 	virtual ~CPSFluidFrictionFunctor() {}
 
 	#ifdef NL_OS_WINDOWS
@@ -524,7 +524,7 @@ protected:
 
 /** the fluid friction force. We don't derive from CPSForceIntensityHelper (which derives from CPSForce
   * , because CIsotropicForceT also derives from CPSForce, and we don't want to use virtual inheritance
-  */  
+  */
 
 
 class CPSFluidFriction : public CIsotropicForceT<CPSFluidFrictionFunctor>, public CPSForceIntensity
@@ -542,7 +542,7 @@ public:
 	{
 		_F.setK(_IntensityScheme ? _IntensityScheme->get(_Owner, index) : _K);
 	}
-	
+
 	NLMISC_DECLARE_CLASS(CPSFluidFriction)
 
 
@@ -556,7 +556,7 @@ public:
 			registerToTargets();
 		}
 	}
-	
+
 
 protected:
 	virtual CPSLocated *getForceIntensityOwner(void) { return _Owner; }
@@ -566,19 +566,19 @@ protected:
 };
 
 
-/** A Brownian motion  
-  */  
+/** A Brownian motion
+  */
 
 
 class CPSBrownianForce : public CPSForceIntensityHelper
 {
 public:
 	// create the force with a friction coefficient
-	CPSBrownianForce(float intensity = 1.f);		
-	
+	CPSBrownianForce(float intensity = 1.f);
+
 	NLMISC_DECLARE_CLASS(CPSBrownianForce)
 
-	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 	/// We provide a kind of integration on a predefined sequence
 	virtual bool		 isIntegrable(void) const;
@@ -588,7 +588,7 @@ public:
 							uint posStride = sizeof(NLMISC::CVector), uint speedStride = sizeof(NLMISC::CVector)
 							) const;
 
-	virtual void integrateSingle(float startDate, float deltaT, uint numStep,								 
+	virtual void integrateSingle(float startDate, float deltaT, uint numStep,
 								 const CPSLocated *src, uint32 indexInLocated,
 								 NLMISC::CVector *destPos,
 								 bool accumulate = false,
@@ -606,7 +606,7 @@ public:
 	void show()  {}
 
 
-	/** When used with parametric integration, this tells factor tells how fast the force acts on particle 
+	/** When used with parametric integration, this tells factor tells how fast the force acts on particle
 	  * (how fast it go through the lookup table in fact)
 	  */
 	void	setParametricFactor(float factor) {  _ParametricFactor = factor; }
@@ -631,9 +631,9 @@ protected:
 /// a turbulence force functor
 
 struct CPSTurbulForceFunc
-{	
+{
 	virtual ~CPSTurbulForceFunc() {}
-	
+
 	#ifdef NL_OS_WINDOWS
 		__forceinline
 	#endif
@@ -647,7 +647,7 @@ struct CPSTurbulForceFunc
 		static const NLMISC::CVector v2(-0.35f, 7.77f, 220.77f);
 
 
-		speed += ellapsedTime * _Intensity 
+		speed += ellapsedTime * _Intensity
 			   * NLMISC::CVector(2.f * (-0.5f + CPSUtil::buildPerlinNoise(_Scale * pos, _NumOctaves))
 						 , 2.f * (-0.5f +  CPSUtil::buildPerlinNoise(_Scale * (pos +  v1) , _NumOctaves))
 						 , 2.f * (-0.5f +  CPSUtil::buildPerlinNoise(_Scale * (pos +  v2) , _NumOctaves))
@@ -677,18 +677,18 @@ public:
 	CPSTurbul(float scale = 1.f , uint numOctaves = 4)
 	{
 		nlassert(numOctaves > 0);
-		setScale(scale);	
+		setScale(scale);
 		setNumOctaves(numOctaves);
 		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Turbulence");
 	}
 
-	
-	float getScale(void) const { return _F._Scale; }
-	void setScale(float scale) { _F._Scale = scale; } 
 
-	
+	float getScale(void) const { return _F._Scale; }
+	void setScale(float scale) { _F._Scale = scale; }
+
+
 	uint getNumOctaves(void) const { return _F._NumOctaves; }
-	void setNumOctaves(uint numOctaves) { _F._NumOctaves = numOctaves; } 
+	void setNumOctaves(uint numOctaves) { _F._NumOctaves = numOctaves; }
 
 
 	NLMISC_DECLARE_CLASS(CPSTurbul)
@@ -720,7 +720,7 @@ protected:
 
 
 
-/** a cylindric vortex. It has a limited extend 
+/** a cylindric vortex. It has a limited extend
   * It has unlimited extension in the z direction
   * The model is aimed at tunability rather than realism
   */
@@ -734,26 +734,26 @@ public:
 	/// Show the force (edition mode)
 	virtual void show();
 
-	
-	CPSCylindricVortex(float intensity = 1.f) : _RadialViscosity(.1f), _TangentialViscosity(.1f) 
+
+	CPSCylindricVortex(float intensity = 1.f) : _RadialViscosity(.1f), _TangentialViscosity(.1f)
 	{
 		setIntensity(intensity);
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Cylindric Vortex"); 
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("Cylindric Vortex");
 	}
 
 	// inherited from IPSMover
 	virtual bool supportUniformScaling(void) const { return true; }
-	virtual bool supportNonUniformScaling(void) const { return false; }		
+	virtual bool supportNonUniformScaling(void) const { return false; }
 	virtual void setScale(uint32 k, float scale) { _Radius[k] = scale; }
 	virtual NLMISC::CVector getScale(uint32 k) const { return NLMISC::CVector(_Radius[k], _Radius[k], _Radius[k]); }
-	virtual bool onlyStoreNormal(void) const { return true; }	
-	virtual NLMISC::CVector getNormal(uint32 index) { return _Normal[index]; }	
+	virtual bool onlyStoreNormal(void) const { return true; }
+	virtual NLMISC::CVector getNormal(uint32 index) { return _Normal[index]; }
 	virtual void setNormal(uint32 index, NLMISC::CVector n) { _Normal[index] = n; }
 
 	virtual void setMatrix(uint32 index, const NLMISC::CMatrix &m);
 	virtual NLMISC::CMatrix getMatrix(uint32 index) const;
-	
-	
+
+
 	void setRadialViscosity(float v) { _RadialViscosity = v; }
 	float getRadialViscosity(void) const { return _RadialViscosity; }
 
@@ -769,7 +769,7 @@ public:
 
 
 
-	
+
 
 protected:
 
@@ -786,7 +786,7 @@ protected:
 
 	// tangential viscosity : when set to 1, the tangential speed immediatly reach what it would be in a real vortex (w = 1 / r2)
 	float _TangentialViscosity;
-	
+
 	virtual void newElement(const CPSEmitterInfo &info);
 	virtual void deleteElement(uint32 index);
 	virtual void resize(uint32 size);
@@ -801,15 +801,15 @@ protected:
  */
 class CPSMagneticForce : public CPSDirectionnalForce
 {
-	public:	
+	public:
 	CPSMagneticForce(float i = 1.f)  : CPSDirectionnalForce(i)
-	{ 
-		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("MagneticForce");	
+	{
+		if (CParticleSystem::getSerializeIdentifierFlag()) _Name = std::string("MagneticForce");
 	}
 	virtual void computeForces(CPSLocated &target);
 	/// serialization
 	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	NLMISC_DECLARE_CLASS(CPSMagneticForce); 
+	NLMISC_DECLARE_CLASS(CPSMagneticForce);
 };
 
 

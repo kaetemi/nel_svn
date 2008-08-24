@@ -91,7 +91,7 @@ public:
 
 	/// exchange memory data
 	void swap(CMessage &other);
-	
+
 	/// Sets the message type as a string and put it in the buffer if we are in writing mode
 	void setType (const std::string &name, TMessageType type=OneWay);
 
@@ -99,7 +99,7 @@ public:
 
 	/// Returns the size, in byte of the header that contains the type name of the message or the type number
 	uint32 getHeaderSize () const;
-	
+
 	/** The message was filled with an CMemStream, Now, we'll get the message type on this buffer.
 	 * This method updates _LengthR with the actual size of the buffer (it calls resetLengthR()).
 	 */
@@ -165,7 +165,7 @@ public:
 	 * callback, without copying each sub message to a new message. If you need to perform some actions
 	 * that are not allowed with a locked message (see postconditions), use assignFromSubMessage():
 	 * the locked sub message in M1 can be copied to a new message M2 with 'M2.assignFromSubMessage( M1 )'.
-	 * 
+	 *
 	 * Preconditions:
 	 * - The message is an input message (isReading())
 	 * - msgEndPos <= length()
@@ -201,7 +201,7 @@ public:
 	 * Postconditions:
 	 * - The current pos is the next byte after the sub message
 	 */
-	void			unlockSubMessage() const 
+	void			unlockSubMessage() const
 	{
 		nlassert( isReading() && hasLockedSubMessage() );
 		nlassertex( getPos() <= sint32(_SubMessagePosR+_LengthR), ("The callback for msg %s read more data than there is in the message (pos=%d len=%u)", getName().c_str(), getPos(), _LengthR) );
@@ -226,7 +226,7 @@ public:
 //			return _Buffer.getPtr() + _SubMessagePosR;
 			return _Buffer.getBuffer().getPtr() + _SubMessagePosR;
 		}
-		else 
+		else
 			return CMemStream::buffer();
 	}
 
@@ -257,7 +257,7 @@ public:
 
 		if ( isReading() )
 		{
-			// Write -> Read: skip the header 
+			// Write -> Read: skip the header
 			_TypeSet = false;
 //			if ( _Buffer.size() != 0 )
 			if ( _Buffer.getBuffer().size() != 0 )
@@ -277,7 +277,7 @@ public:
 	/** Return the type of the message.
 	 */
 	TMessageType getType() const;
-	
+
 	/** Returns a readable string to display it to the screen. It's only for debugging purpose!
 	 * Don't use it for anything else than to debugging, the string format could change in the future.
 	 * \param hexFormat If true, display all bytes in hexadecimal
@@ -311,7 +311,7 @@ private:
 	std::string							_Name;
 
 	mutable TMessageType				_Type;
-	
+
 	// When sub message lock mode is enabled, beginning position of sub message to read (before header)
 	mutable uint32						_SubMessagePosR;
 

@@ -50,11 +50,11 @@ public:
 	enum ZFunc				{ always=0,never,equal,notequal,less,lessequal,greater,greaterequal, zfuncCount };
 	enum TBlend				{ one=0, zero, srcalpha, invsrcalpha, srccolor, invsrccolor, blendCount };
 
-	// This enums MUST be the same than in ITexture!!	
+	// This enums MUST be the same than in ITexture!!
 	enum	TWrapMode
 	{
 		Repeat= 0,
-		Clamp,			
+		Clamp,
 		WrapModeCount
 	};
 public:
@@ -62,10 +62,10 @@ public:
 	/// \name Modes.
 	// @{
 	bool				isLighted() const;
-	void					setLighting(bool active, 
-										CRGBA emissive=CRGBA(0,0,0), 
-										CRGBA ambient=CRGBA(0,0,0), 
-										CRGBA diffuse=CRGBA(0,0,0), 
+	void					setLighting(bool active,
+										CRGBA emissive=CRGBA(0,0,0),
+										CRGBA ambient=CRGBA(0,0,0),
+										CRGBA diffuse=CRGBA(0,0,0),
 										CRGBA specular=CRGBA(0,0,0),
 										float shininess= 10);
 	bool				isUserColor() const;
@@ -146,7 +146,7 @@ public:
 	// Empty the texture at the given stage
 	void				emptyTexture(uint stage = 0);
 	/** Set the fileName used by the n-th texture file. (must be a texture file or an assertion is raised)
-	 *	NB: if success and if instanceOwner->getAsyncTextureMode()==true, then instanceOwner->setAsyncTextureDirty(true) 
+	 *	NB: if success and if instanceOwner->getAsyncTextureMode()==true, then instanceOwner->setAsyncTextureDirty(true)
 	 *	is called
 	 */
 	void				setTextureFileName(const std::string &fileName, uint stage = 0);
@@ -168,9 +168,9 @@ public:
 	void				setWrapT(uint stage, TWrapMode mode);
 	TWrapMode			getWrapS(uint stage) const;
 	TWrapMode			getWrapT(uint stage) const;
-	
 
-	// set 
+
+	// set
 
 	/// \name Texture matrix
 	// @{
@@ -178,9 +178,9 @@ public:
 	void                    enableUserTexMat(uint stage, bool enabled = true);
 	// Test wether a user texture is enabled for the n-th stage
 	bool                    isUserTexMatEnabled(uint stage) const;
-	/// Set a new texture matrix for the given stage.	
+	/// Set a new texture matrix for the given stage.
 	void					setUserTexMat(uint stage, const NLMISC::CMatrix &m);
-	/** Get a const ref. on the texture matrix of the n-th stage.	  
+	/** Get a const ref. on the texture matrix of the n-th stage.
 	  */
 	const NLMISC::CMatrix  &getUserTexMat(uint stage) const;
 	// @}
@@ -188,26 +188,26 @@ public:
 	/// Proxy interface
 
 	/// Constructors
-	UInstanceMaterial() 
-	{ 
-		_Object = NULL; 
+	UInstanceMaterial()
+	{
+		_Object = NULL;
 	}
 	UInstanceMaterial(class CMeshBaseInstance	*mbi, class CMaterial *object, class CAsyncTextureBlock *asyncTextureBlock)
-	{ 
+	{
 		_MBI = mbi;
 		_Object = object;
 		_AsyncTextureBlock = asyncTextureBlock;
 	};
 	/// Attach an object to this proxy
-	void			attach(class CMeshBaseInstance	*mbi, class CMaterial *object, class CAsyncTextureBlock *asyncTextureBlock) 
-	{ 
+	void			attach(class CMeshBaseInstance	*mbi, class CMaterial *object, class CAsyncTextureBlock *asyncTextureBlock)
+	{
 		_MBI = mbi;
 		_Object = object;
 		_AsyncTextureBlock = asyncTextureBlock;
 	}
 	/// Detach the object
-	void			detach() 
-	{ 
+	void			detach()
+	{
 		_MBI = NULL;
 		_Object = NULL;
 		_AsyncTextureBlock = NULL;

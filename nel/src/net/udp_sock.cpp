@@ -115,7 +115,7 @@ void CUdpSock::bind( const CInetAddress& addr )
  */
 void CUdpSock::sendTo( const uint8 *buffer, uint len, const CInetAddress& addr )
 {
-	
+
 	//  Send
 	if ( ::sendto( _Sock, (const char*)buffer, len, 0, (sockaddr*)(addr.sockAddr()), sizeof(sockaddr) ) != (sint32)len )
 	{

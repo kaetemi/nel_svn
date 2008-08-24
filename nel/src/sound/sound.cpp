@@ -86,7 +86,7 @@ CSound *CSound::createSound(const std::string &filename, NLGEORGES::UFormElm& fo
 		{
 			nlassertex(false, ("SoundType unsuported : %s", dfnName.c_str()));
 		}
-			
+
 	}
 
 	return ret;
@@ -97,12 +97,12 @@ CSound *CSound::createSound(const std::string &filename, NLGEORGES::UFormElm& fo
 /*
  * Constructor
  */
-CSound::CSound() : 
-	_Gain(1.0f), 
+CSound::CSound() :
+	_Gain(1.0f),
 	_Pitch(1.0f),
-	_Priority(MidPri), 
-	_ConeInnerAngle(6.283185f), 
-	_ConeOuterAngle(6.283185f), 
+	_Priority(MidPri),
+	_ConeInnerAngle(6.283185f),
+	_ConeOuterAngle(6.283185f),
 	_ConeOuterGain( 1.0f ),
 	_Looping(false),
 	_MaxDist(1000000.0f),
@@ -143,7 +143,7 @@ void	CSound::serial(NLMISC::IStream &s)
 void				CSound::importForm(const std::string& filename, NLGEORGES::UFormElm& root)
 {
 	// Name
-	_Name = CStringMapper::map(CFile::getFilenameWithoutExtension(filename));	
+	_Name = CStringMapper::map(CFile::getFilenameWithoutExtension(filename));
 
 	// InternalConeAngle
 	uint32 inner;
@@ -210,19 +210,19 @@ void				CSound::importForm(const std::string& filename, NLGEORGES::UFormElm& roo
  	root.getValueByName(prio, ".Priority");
 	switch (prio)
 	{
-	case 0:		
-		_Priority = LowPri; 
+	case 0:
+		_Priority = LowPri;
 		break;
-	case 1:		
-		_Priority = MidPri; 
+	case 1:
+		_Priority = MidPri;
 		break;
-	case 2:		
-		_Priority = HighPri; 
+	case 2:
+		_Priority = HighPri;
 		break;
-	case 3:		
-		_Priority = HighestPri;	
+	case 3:
+		_Priority = HighestPri;
 		break;
-	default:	
+	default:
 		_Priority = MidPri;
 	}
 }

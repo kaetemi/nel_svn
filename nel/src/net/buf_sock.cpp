@@ -84,9 +84,9 @@ CBufSock::~CBufSock()
 	nlassert (this != InvalidSockId);	// invalid bufsock
 
 	nlnettrace( "CBufSock::~CBufSock" );
-	
+
 	delete Sock; // the socket disconnects automatically if needed
-	
+
 	// destroy the structur to be sure that other people will not access to this anymore
 	AuthorizedCallback = "";
 	Sock = NULL;
@@ -181,7 +181,7 @@ bool CBufSock::flush( uint *nbBytesRemaining )
 		// Actual sending of _ReadyToSendBuffer
 		//if ( ! _ReadyToSendBuffer.empty() )
 		if ( _ReadyToSendBuffer.size() != 0 )
-		{		
+		{
 			// Send
 			CSock::TSockResult res;
 			TBlockSize len = _ReadyToSendBuffer.size() - _RTSBIndex;
@@ -199,8 +199,8 @@ bool CBufSock::flush( uint *nbBytesRemaining )
 				}
 				_FlushTrigger = FTManual;
 				LNETL1_DEBUG( "LNETL1: %s sent effectively a buffer (%d on %d B)", asString().c_str(), len, _ReadyToSendBuffer.size() );
-*/			
-				
+*/
+
 				// TODO OPTIM remove the nldebug for speed
 				//commented for optimisation LNETL1_DEBUG( "LNETL1: %s sent effectively %u/%u bytes (pos %u wantedsend %u)", asString().c_str(), len, _ReadyToSendBuffer.size(), _RTSBIndex, realLen/*, stringFromVectorPart(_ReadyToSendBuffer,_RTSBIndex,len).c_str()*/ );
 
@@ -368,7 +368,7 @@ string CBufSock::asString() const
 		// because the object is destroyed.
 		str += typeStr();
 		str += NLMISC::toStringPtr(this) + " (socket ";
-		
+
 		if (Sock == NULL)
 			str += "<null>";
 		else

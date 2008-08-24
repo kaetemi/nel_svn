@@ -30,7 +30,7 @@
 #include "nel/pacs/u_collision_desc.h"
 #include <vector>
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 /**

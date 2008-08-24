@@ -51,7 +51,7 @@
 #define NL_MAX_SIZE_OF_TEXTURE_EDGE (1<<NL_MAX_SIZE_OF_TEXTURE_EDGE_SHIFT)		// Size max of a far texture edge in pixel
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -163,14 +163,14 @@ public:
 	 * \return true if OK, false otherwise. As example, Fail if newZone is already connected.
 	 */
 	bool			addZone(const CZone	&newZone);
-	
+
 	/** remove a zone by its unique Id.
 	 * The zone is release()-ed (disconnected), then deleted.
 	 * \param zoneId the zone to be removed.
 	 * \return true if OK, false otherwise. As example, Fail if zone is not connected.
 	 */
 	bool			removeZone(uint16 zoneId);
-	
+
 	/// Disconnect, and Delete all zones.
 	void			clear();
 
@@ -181,13 +181,13 @@ public:
 
 	/**
 	  *  Build tileBank. Call this after loading the near and far tile banks.
-	  *  
+	  *
 	  *  \return true if ok, false else. If false, far texture will be desactived.
 	  */
 	bool			initTileBanks ();
 	// @}
 
-	
+
 	/// \name Landscape Parameters.
 	// @{
 	/// Set tile near distance. Default 50.f. maximized to length of Far alpha transition).
@@ -210,7 +210,7 @@ public:
 	bool			getNoiseMode() const;
 
 	// invalidate all the tiles (force the tiles callbakc to be called again)
-	void invalidateAllTiles();	
+	void invalidateAllTiles();
 
 	// Store it by landscape, and not only globally in CLandscapeGlobals statics.
 	// @}
@@ -224,14 +224,14 @@ public:
 	 *	call setDriver() before any clip().
 	 */
 	void			setDriver(IDriver *drv);
-	/** Clip the landscape according to frustum. 
+	/** Clip the landscape according to frustum.
 	 *	Planes must be normalized.
 	 */
 	void			clip(const CVector &refineCenter, const std::vector<CPlane>	&pyramid);
 	/** Refine/Geomorph the tesselation of the landscape.
 	 */
 	void			refine(const CVector &refineCenter);
-	/** Render the landscape. 
+	/** Render the landscape.
 	 *	A more precise clip is made on TessBlocks. pyramid should be the same as one passed to clip().
 	 *	For optimisation, this pyramid should contains only the Left/Right and Top/Bottom clip planes, in this order.
 	 *	\param refineCenter should be the position of the camera
@@ -270,27 +270,27 @@ public:
 	 * on patch level. Worst, but faster.
 	 */
 	void			buildCollideFaces(const CAABBoxExt &bbox, std::vector<CTriangle> &faces, bool faceSplit);
-	/** Build the set of faces of landscape, from a certain patch. Usefull for collisions. Triangles are built first in S 
+	/** Build the set of faces of landscape, from a certain patch. Usefull for collisions. Triangles are built first in S
 	 *  then T order. There is two triangles by tiles. So the number of triangles for a patch is 2*OrderS*OrderT.
 	 */
 	void			buildCollideFaces(sint zoneId, sint patch, std::vector<CTriangle> &faces);
 
 	/** method relatively identical than buildCollideFaces(bbox....). Differences below:
-	 * NB: this method use first a quadgrid to locate patchs of interest, then for each patch, it uses a 
+	 * NB: this method use first a quadgrid to locate patchs of interest, then for each patch, it uses a
 	 * convex hull subdivion to search in O(logn) what part of the patch to insert.
 	 * \param bbox the bbox to test against. NB: you should modify your bbox according to heighfield.
 	 * \param triangles array to be filled (array first cleared, then elements added).
 	 * \param tileTessLevel 0,1 or 2  size of the triangles (2*2m, 1*1m or 0.5*0.5m). Level of subdivision of a tile.
-	 */ 
+	 */
 	void			buildTrianglesInBBox(const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tileTessLevel);
 
 
 	/** Same as buildTrianglesInBBox(), but fill blockId instead of raw triangles.
-	 * NB: this method use first a quadgrid to locate patchs of interest, then for each patch, it uses a 
+	 * NB: this method use first a quadgrid to locate patchs of interest, then for each patch, it uses a
 	 * convex hull subdivion to search in O(logn) what part of the patch to insert.
 	 * \param bbox the bbox to test against. NB: you should modify your bbox according to heighfield.
 	 * \param paBlockIds array to be filled (no clear performed, elements added).
-	 */ 
+	 */
 	void			buildPatchBlocksInBBox(const CAABBox &bbox, std::vector<CPatchBlockIdent> &paBlockIds);
 	/** Fill a CPatchQuadBlock, from its required PatchId.
 	 * nlassert(PatchId size is less than NL_PATCH_BLOCK_MAX_QUAD)
@@ -328,13 +328,13 @@ public:
 	/// \name Accessors.
 	// @{
 	/** Get a zone pointer.
-	 * 
+	 *
 	 * \param zoneId the zone of the update.
 	 * \return Return a zone pointer. NULL if the zone doesn't exist or isn't loaded.
 	 */
 	CZone*			getZone (sint zoneId);
 	/** Get a zone pointer.
-	 * 
+	 *
 	 * \param zoneId the zone of the update.
 	 * \return Return a zone pointer. NULL if the zone doesn't exist or isn't loaded.
 	 */
@@ -351,7 +351,7 @@ public:
 	// @{
 	/// Force a range of tiles to be loaded in the driver...
 	void			flushTiles(IDriver *drv, uint32 tileStart, uint32 nbTiles);
-	/** Force a range of tiles to be unloaded. You should call changePatchTextureAndColor() on all patch 
+	/** Force a range of tiles to be unloaded. You should call changePatchTextureAndColor() on all patch
 	 *	or ensure that all zones are deleted.
 	 */
 	void			releaseTiles(uint32 tileStart, uint32 nbTiles);
@@ -440,7 +440,7 @@ public:
 	CVector		getHeightFieldDeltaZ(float x, float y) const;
 	/** set the HeightField data. NB: take lot of place in memory.
 	 * only one is possible. You should setup this heightfield around the zones which will be loaded.
-	 * It is applied only when a zone is loaded, so you should setup it 2km around the user, each time you move too far 
+	 * It is applied only when a zone is loaded, so you should setup it 2km around the user, each time you move too far
 	 * from a previous place (eg 160m from last setup).
 	 */
 	void		setHeightField(const CHeightMap &hf);
@@ -471,7 +471,7 @@ public:
 	 */
 	void		enableVegetable(bool enable);
 
-	/** return if the vegetable management is actually activated: 
+	/** return if the vegetable management is actually activated:
 	 *	actually return _VerexShaderOk && _VegetableEnabled.
 	 */
 	bool		isVegetableActive() const;
@@ -490,7 +490,7 @@ public:
 	 *	\param windDir is the direction of the wind. NB: only XY direction is kept.
 	 *	\param windFreq is the frequency for the animation (speed)
 	 *	\param windPower is the power of the wind, and is a factor (0..1) of Bend
-	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum 
+	 *	\param windBendMin is a value in (0..1) which indicate how much the vegetables are bended at minimum
 	 *	(for very powerfull wind)
 	 */
 	void		setVegetableWind(const CVector &windDir, float windFreq, float windPower, float windBendMin);
@@ -537,7 +537,7 @@ public:
 	uint8		getLumel(const CPatchIdent &patchId, const CUV &uv) const;
 
 	/// Append lights under the position to pointLightList. Do nothing if invalid patchId.
-	void		appendTileLightInfluences(const CPatchIdent &patchId, const CUV &uv, 
+	void		appendTileLightInfluences(const CPatchIdent &patchId, const CUV &uv,
 		std::vector<CPointLightInfluence> &pointLightList) const;
 
 	// @}
@@ -546,10 +546,10 @@ public:
 	/// \name Precision ZBuffer mgt.
 	// @{
 
-	/** Set the ModelPosition (for Precision ZBuffer purpose). NB: the model Pos may be floor-ed 
+	/** Set the ModelPosition (for Precision ZBuffer purpose). NB: the model Pos may be floor-ed
 	  *	(for greater float precision). Should be setup to the camera position each frame.
 	  *
-	  *	NB: if vertexProgram is used, it is as faster as before (because of geomorph done each frame, 
+	  *	NB: if vertexProgram is used, it is as faster as before (because of geomorph done each frame,
 	  *	and because of VP MAD instruction).
 	  *	NB: if vertexProgram is not used, it is a little slower, because of the substraction.
 	  */
@@ -628,10 +628,10 @@ public:
 
 	/// \name Tile added/removed callback
 	// @{
-	void										 addTileCallback(ULandscapeTileCallback *cb);	
+	void										 addTileCallback(ULandscapeTileCallback *cb);
 	void										 removeTileCallback(ULandscapeTileCallback *cb);
 	bool										 isTileCallback(ULandscapeTileCallback *cb) const;
-	const std::vector<ULandscapeTileCallback *> &getTileCallbacks() const { return _TileCallbacks; }		
+	const std::vector<ULandscapeTileCallback *> &getTileCallbacks() const { return _TileCallbacks; }
 	// @}
 
 	// lockBuffers(), called by updateGlobalsAndLockBuffers().
@@ -792,7 +792,7 @@ private:
 	CMaterial		FarMaterial;
 
 
-	// *** Far texture	
+	// *** Far texture
 
 	// ** Some types
 
@@ -844,11 +844,11 @@ private:
 	struct	CBezierPatchZ
 	{
 		/// The vertices a,b,c,d of the quad patch.
-		float		Vertices[4];		
+		float		Vertices[4];
 		/// The tangents ab, ba, bc, cb, cd, dc, da, ad. NB: tangents are points, not vectors.
-		float		Tangents[8];		
+		float		Tangents[8];
 		/// The interiors, ia,ib,ic,id. NB: interiors are points, not vectors.
-		float		Interiors[4];		
+		float		Interiors[4];
 
 		/// make default Interiors, according to Vertices and Tangents.
 		void		makeInteriors();
@@ -876,7 +876,7 @@ private:
 	/// \name Visual Collision system.
 	// @{
 
-	// A CPatchIdent, with a ptr to the compiled CPatch 
+	// A CPatchIdent, with a ptr to the compiled CPatch
 	struct	CPatchIdentEx : public CPatchIdent
 	{
 		const CPatch	*Patch;
@@ -892,7 +892,7 @@ private:
 	 * \param bbox the bbox to test against.
 	 * \param triangles array to be filled (no clear performed, elements added).
 	 * \param tileTessLevel 0,1 or 2  size of the triangles (2*2m, 1*1m or 0.5*0.5m). Level of subdivision of a tile.
-	 */ 
+	 */
 	void			addTrianglesInBBox(const CPatchIdentEx &paIdEx, const CAABBox &bbox, std::vector<CTrianglePatch> &triangles, uint8 tileTessLevel) const;
 
 	/** private version of buildPatchBlocksInBBox, searching only for one patch.
@@ -1020,7 +1020,7 @@ private:
 	void						appendToShadowPolyReceiver(CTessFace *face);
 	void						removeFromShadowPolyReceiver(CTessFace *face);
 	// @}
-	
+
 	/// \name Texture Profiling
 	// @{
 	NLMISC::CSmartPtr<ITexture::CTextureCategory>	_TextureTileCategory;

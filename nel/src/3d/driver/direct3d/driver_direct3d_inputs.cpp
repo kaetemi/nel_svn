@@ -96,7 +96,7 @@ void CDriverD3D::setCapture (bool b)
 NLMISC::IMouseDevice	*CDriverD3D::enableLowLevelMouse(bool enable, bool exclusive)
 {
 	H_AUTO_D3D(CDriverD3D_enableLowLevelMouse);
-	if (_EventEmitter.getNumEmitters() < 2) 
+	if (_EventEmitter.getNumEmitters() < 2)
 		return NULL;
 	NLMISC::CDIEventEmitter *diee = NLMISC::safe_cast<CDIEventEmitter *>(_EventEmitter.getEmitter(1));
 	if (enable)
@@ -161,18 +161,18 @@ uint CDriverD3D::getDoubleClickDelay(bool hardwareMouse)
 	H_AUTO_D3D(CDriverD3D_getDoubleClickDelay);
 	NLMISC::IMouseDevice *md = NULL;
 	if (_EventEmitter.getNumEmitters() >= 2)
-	{		
-		NLMISC::CDIEventEmitter *diee = NLMISC::safe_cast<CDIEventEmitter *>(_EventEmitter.getEmitter(1));					
+	{
+		NLMISC::CDIEventEmitter *diee = NLMISC::safe_cast<CDIEventEmitter *>(_EventEmitter.getEmitter(1));
 		if (diee->isMouseCreated())
-		{			
+		{
 			try
 			{
-				md = diee->getMouseDevice(hardwareMouse);					
+				md = diee->getMouseDevice(hardwareMouse);
 			}
 			catch (EDirectInput &)
 			{
-				// could not get device ..					
-			}			
+				// could not get device ..
+			}
 		}
 	}
 	if (md)

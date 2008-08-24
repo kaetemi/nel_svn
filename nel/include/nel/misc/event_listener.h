@@ -52,17 +52,17 @@ public:
 	/** Called by CServer::pumpEvent(). The default calls the () operator, unless a hook has been set.
 	  * In this case processEvent is called on the hook instead (the hook can forward the call to that listener afterwards).
 	  */
-	virtual void process(const CEvent& event) 
-	{ 
+	virtual void process(const CEvent& event)
+	{
 		if (_Hook)
 		{
 			_Hook->process(event);
 		}
 		else
-		{		
-			(*this)(event); 
+		{
+			(*this)(event);
 		}
-	}	
+	}
 
 	/**
 	  * Call back of the listener.
@@ -70,7 +70,7 @@ public:
 	  */
 	virtual void operator ()(const CEvent& event)=0;
 
-	// Set a hook which can intercept msgs. 
+	// Set a hook which can intercept msgs.
     void			setHook(IEventListener *hook) { _Hook = hook; }
 	IEventListener *getHook() const  { return _Hook; }
 private:
@@ -92,12 +92,12 @@ public:
 	CEventListenerAsync();
 	virtual ~CEventListenerAsync() {}
 
-	/** 
+	/**
 	  * Register the listener to the server.
 	  */
 	void addToServer (CEventServer& server);
 
-	/** 
+	/**
 	  * Unregister the listener to the server.
 	  */
 	void removeFromServer (CEventServer& server);
@@ -122,7 +122,7 @@ public:
 	  * Clear all the Down states to false. Usefull sometimes when you don't bother what have been pushed before.
 	  * e.g.: your app listen/test to the key 'A' and 'B' for a certain long period. Then, it test 'C' and 'D' later.
 	  * If the user has press (by error) the key 'C' during the first period, this API has record it, and then, at the
-	  * second period, isKeyDown(KeyC) will return true the first time the key is tested, unless if you do a 
+	  * second period, isKeyDown(KeyC) will return true the first time the key is tested, unless if you do a
 	  * reset() at the beggining of the second period.
 	  * Clear all the pushed states to false too.
 	  * \see isKeyDown()

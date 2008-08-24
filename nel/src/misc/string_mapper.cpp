@@ -73,7 +73,7 @@ TStringId CStringMapper::localMap(const std::string &str)
 	{
 		delete pStr;
 		pStr = (*it);
-	}	
+	}
 	return (TStringId)pStr;
 }
 
@@ -97,7 +97,7 @@ void CStringMapper::localSerialString(NLMISC::IStream &f, TStringId &id)
 void CStringMapper::localClear()
 {
 	CAutoFastMutex	automutex(&_Mutex);
-	
+
 	std::set<string*,CCharComp>::iterator it = _StringTable.begin();
 	while (it != _StringTable.end())
 	{
@@ -150,7 +150,7 @@ void CStaticStringMapper::memoryUncompress()
 	}
 	delete [] _AllStrings;
 	_AllStrings = NULL;
-	contReset(_IdToStr);	
+	contReset(_IdToStr);
 	_TempStringTable.swap(tempStringTable);
 	_TempIdTable.swap(tempIdTable);
 	_MemoryCompressed = false;
@@ -170,7 +170,7 @@ void CStaticStringMapper::memoryCompress()
 		nNbStrings++;
 		it++;
 	}
-	
+
 	_AllStrings = new char[nTotalSize];
 	_IdToStr.resize(nNbStrings);
 	nNbStrings = 0;
@@ -225,7 +225,7 @@ void CStaticStringMapper::serial(IStream &f, TSStringId &strId) throw(EStream)
 {
 	std::string tmp;
 	if (f.isReading())
-	{		
+	{
 		f.serial(tmp);
 		strId = add(tmp);
 	}
@@ -243,19 +243,19 @@ void CStaticStringMapper::serial(IStream &f, std::vector<TSStringId> &strIdVect)
 	std::string sTmp;
 	// Serialize class components.
 	if (f.isReading())
-	{				
+	{
 		f.serialCont(vsTmp);
 		strIdVect.resize(vsTmp.size());
 		for(uint i = 0; i < vsTmp.size(); ++i)
 			strIdVect[i] = add(vsTmp[i]);
 			}
 	else
-	{		
+	{
 		vsTmp.resize(strIdVect.size());
 		for (uint i = 0; i < vsTmp.size(); ++i)
 			vsTmp[i] = get(strIdVect[i]);
 		f.serialCont(vsTmp);
-				
+
 	}
 }
 

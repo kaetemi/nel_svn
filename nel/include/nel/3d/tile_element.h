@@ -28,7 +28,7 @@
 #include "nel/misc/stream.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 #define NL_TILE_ELM_MASK_ROTATE				0x03
@@ -73,12 +73,12 @@ public:
 	 * Else cross are drawn...
 	 */
 	uint16	Tile[3];
-	
+
 	/** Set the tile orientation of pass i, to "orient".
 	 * orient E [0,3]. The rotation is CCW.
 	 */
 	void	setTileOrient(sint i, uint8 orient);
-	
+
 	/** Get the tile orientation of pass i.
 	 * orient E [0,3]. The rotation is CCW.
 	 */
@@ -99,7 +99,7 @@ public:
 	 *
 	 */
 	void	setTile256Info(bool is256x256, uint8 uvOff=0);
-	
+
 	/** Get the tile 256x256 information.
 	 */
 	void	getTile256Info(bool &is256x256, uint8 &uvOff) const;
@@ -108,7 +108,7 @@ public:
 	/** Set the tile SubNoise. subNoise E [0, 15].
 	 */
 	void	setTileSubNoise(uint8 subNoise);
-	
+
 	/** Get the tile SubNoise information.
 	 */
 	uint8	getTileSubNoise() const
@@ -126,8 +126,8 @@ public:
 	void	setVegetableState(TVegetableInfo state);
 
 	/// Get the micro vegetable state for this tile
-	TVegetableInfo	getVegetableState() const 
-	{ 
+	TVegetableInfo	getVegetableState() const
+	{
 		return (TVegetableInfo) ((Flags >> NL_TILE_ELM_OFFSET_VEGETABLE) & NL_TILE_ELM_MASK_VEGETABLE);
 	}
 

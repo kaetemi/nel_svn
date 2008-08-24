@@ -29,7 +29,7 @@
 #include "collision_desc.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 
@@ -87,7 +87,7 @@ public:
 	/// test if 2 CCollisionChain have same surface neighbors.
 	bool		sameSurfacesThan(const CCollisionChain &o) const
 	{
-		return (LeftSurface==o.LeftSurface  && RightSurface==o.RightSurface) 
+		return (LeftSurface==o.LeftSurface  && RightSurface==o.RightSurface)
 			|| (LeftSurface==o.RightSurface && RightSurface==o.LeftSurface);
 	}
 
@@ -303,7 +303,7 @@ public:
 
 	/// result of testRotWithCollisionChains().
 	std::vector<CRotSurfaceDesc>	RotDescs;
-	
+
 
 	/// Result of collision testMove().
 	TCollisionSurfaceDescVector		CollisionDescs;

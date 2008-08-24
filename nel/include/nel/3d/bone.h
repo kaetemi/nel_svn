@@ -157,7 +157,7 @@ public:
 	/// enable the channels (lodEnable) associated to this bone in the channelMixer.
 	void			lodEnableChannels(CChannelMixer *chanMixer, bool enable);
 
-	/** Force to eval the animation of that bone 
+	/** Force to eval the animation of that bone
 	  * Useful when a bone position is needed, and if the father skeleton has been clipped (and thus not detail-animated)
 	  * \param chanMixer the channel mixer to which that bone has been registered
 	  */
@@ -208,7 +208,7 @@ private:
 /////////////
 inline void	CBone::forceAnimate(CChannelMixer &chanMixer)
 {
-	sint ids[] = 
+	sint ids[] =
 	{
 		_PosChannelId,
 		_RotEulerChannelId,

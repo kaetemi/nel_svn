@@ -15,7 +15,7 @@ namespace NLMISC
 		/** replace all occurence of 'uiIdentifier' in a window with their localized versions
 		  * (from CI18N)
 		  */
-		static void localizeWindow(HWND wnd);	
+		static void localizeWindow(HWND wnd);
 		// Append all child windows of a parent window into a vector
 		static void appendChildWindows(HWND parentWnd, std::vector<HWND> &childWindows);
 	};

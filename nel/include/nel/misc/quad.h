@@ -50,7 +50,7 @@ public:
 	CQuad() {}
 
 	/// Constructor
-	CQuad(const NLMISC::CVector &v0, const NLMISC::CVector &v1, const NLMISC::CVector &v2, const NLMISC::CVector &v3) 
+	CQuad(const NLMISC::CVector &v0, const NLMISC::CVector &v1, const NLMISC::CVector &v2, const NLMISC::CVector &v3)
 		: V0(v0), V1(v1), V2(v2), V3(v3)
 	{}
 
@@ -63,14 +63,14 @@ public:
 	}
 
 	const CQuad &operator = ( const CQuad& q)
-	{ 
+	{
 		V0 = q.V0;
 		V1 = q.V1;
 		V2 = q.V2;
 		V3 = q.V3;
 		return *this;
 	}
-	
+
 };
 
 

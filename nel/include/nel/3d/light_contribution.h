@@ -29,12 +29,12 @@
 #include "nel/3d/point_light.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
-/** This is the maximum possible contribution of light. NB: actual max may be less 
+/** This is the maximum possible contribution of light. NB: actual max may be less
  *	because of setup in CLightingManager.
  */
 #define	NL3D_MAX_LIGHT_CONTRIBUTION		6
@@ -45,12 +45,12 @@ namespace NL3D
  * light contribution on a model. Owned by a CTransform
  *	computed by lighting manager. result CLight is computed at render.
  *
- * if FrozenStaticLightSetup, then the SunContribution won't never be recomputed, and 
+ * if FrozenStaticLightSetup, then the SunContribution won't never be recomputed, and
  *	the first NumFrozenStaticLight PointLight are considered always valid and their setup
  *	won't be recomputed too. It's means also that CTransform::resetLighting() do not affect those
- *	NumFrozenStaticLight. 
+ *	NumFrozenStaticLight.
  *
- *	Typically, FrozenStaticLightSetup is setup for models and lights THAT ARE IN SAME IG, and 
+ *	Typically, FrozenStaticLightSetup is setup for models and lights THAT ARE IN SAME IG, and
  *	are deleted together. This last point is important because the first NumFrozenStaticLight PointLight
  *	pointers are never updated, so delete a light which is in this setup will cause memory failure.
  *
@@ -84,8 +84,8 @@ public:
 	uint8				SunContribution;
 	// True if this contribution use the MergedPointLight.
 	bool				UseMergedPointLight;
-	/** if FrozenStaticLightSetup, this is the frozen AmbientLight in ig. 
-	 *	can't be stored as RGBA, because the ambient color may change. 
+	/** if FrozenStaticLightSetup, this is the frozen AmbientLight in ig.
+	 *	can't be stored as RGBA, because the ambient color may change.
 	 *	NULL means take full Sun ambient
 	 */
 	CPointLight			*FrozenAmbientLight;

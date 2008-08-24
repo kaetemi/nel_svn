@@ -118,18 +118,18 @@ public:
 	///\name Geometry setup
 	//@{
 		/// all water shape that have the same weter id will share the same height map for wave propagations
-		void			setWaterPoolID(uint32 id) { _WaterPoolID = id; }		
+		void			setWaterPoolID(uint32 id) { _WaterPoolID = id; }
 		uint32			getWaterPoolID() const    { return _WaterPoolID; }
 		/// set the resolution for the grid that is used for tesselation
 		static void		setScreenGridSize(uint32 x, uint32 y);
 		/// set the size of borders. This is needed when water move is high, to avoid hole on the border of the screen
-		static void		setGridBorderSize(uint32 x, uint32 y);		
+		static void		setGridBorderSize(uint32 x, uint32 y);
 		static uint32	getScreenXGridSize()  { return _XScreenGridSize; }
 		static uint32	getScreenYGridSize()  { return _YScreenGridSize; }
 		static uint32	getXGridBorder()  { return _XGridBorder; }
 		static uint32	getYGridBorder()  { return _YGridBorder; }
 
-	
+
 		// set a polygon that represent this shape. It must be a 2d polygon, with z kept to 0 everywhere
 		void					setShape(const NLMISC::CPolygon2D &poly);
 
@@ -141,7 +141,7 @@ public:
 
 		/// get the polygon of this shape, in world space, according to a user matrix
 		void getShapeInWorldSpace(NLMISC::CPolygon &poly, const NLMISC::CMatrix &objMat) const;
-		
+
 		/// Set a factor that is applied to waves height when they are displayed. default is 1
 		void	setWaveHeightFactor(float f) { _WaveHeightFactor = f; }
 
@@ -167,7 +167,7 @@ public:
 		void				setHeightMapScale(uint k, const NLMISC::CVector2f &scale);
 		NLMISC::CVector2f	getHeightMapScale(uint k) const;
 		void			    setHeightMapSpeed(uint k, const NLMISC::CVector2f &speed);	// speed given in texture units
-		NLMISC::CVector2f   getHeightMapSpeed(uint k) const;	
+		NLMISC::CVector2f   getHeightMapSpeed(uint k) const;
 
 
 
@@ -182,8 +182,8 @@ public:
 
 	///\name LOD
 	//@{
-		void	setTransitionRatio(float percent) { _TransitionRatio = percent; }		
-		float   getTransitionRatio() const		   {  return _TransitionRatio; }		
+		void	setTransitionRatio(float percent) { _TransitionRatio = percent; }
+		float   getTransitionRatio() const		   {  return _TransitionRatio; }
 	//@}
 
 	/// \name access default tracks.
@@ -198,7 +198,7 @@ public:
 	// @{
 		/// Tells this shape that it can replace its colormap by a lightmap during the zone lighting
 	void				enableLightMapping(bool enable = true) { _ComputeLightmap = enable; }
-	bool				isLightMappingEnabled() const  { return _ComputeLightmap; }	
+	bool				isLightMappingEnabled() const  { return _ComputeLightmap; }
 	//@}
 
 	/// \name Misc flags
@@ -208,49 +208,49 @@ public:
 	bool				isSplashEnabled() const { return _SplashEnabled; }
 	// Use envmap computed from scene instead of user envmap
 	void				setUseSceneWaterEnvMap(uint index, bool enable) { nlassert(index < 2); _UsesSceneWaterEnvMap[index] = enable; }
-	bool				getUseSceneWaterEnvMap(uint index) const { nlassert(index < 2); return _UsesSceneWaterEnvMap[index]; }	
+	bool				getUseSceneWaterEnvMap(uint index) const { nlassert(index < 2); return _UsesSceneWaterEnvMap[index]; }
 	//@}
 	// TMP : get mean color of over envmap
 	CRGBA				computeEnvMapMeanColor();
 private:
-	friend class	CWaterModel;	
+	friend class	CWaterModel;
 	void								computeBBox();
 	void								envMapUpdate();
 	void								updateHeightMapNormalizationFactors();
-	static void							initVertexProgram();	
+	static void							initVertexProgram();
 private:
 	NLMISC::CAABBox						_BBox;	// computed from the poly
 	NLMISC::CPolygon2D					_Poly;
-	uint32								_WaterPoolID;	
+	uint32								_WaterPoolID;
 	NLMISC::CSmartPtr<ITexture>			_EnvMap[2];
-	bool								_UsesSceneWaterEnvMap[2];	
-	NLMISC::CSmartPtr<ITexture>			_BumpMap[2];	
+	bool								_UsesSceneWaterEnvMap[2];
+	NLMISC::CSmartPtr<ITexture>			_BumpMap[2];
 	NLMISC::CSmartPtr<ITexture>			_ColorMap;
-	// 
+	//
 	NLMISC::CRGBA						_EnvMapMeanColor;
 	bool								_EnvMapMeanColorComputed;
 	//
-	NLMISC::CVector2f					_HeightMapScale[2];		
-	NLMISC::CVector2f					_HeightMapSpeed[2];		
-	NLMISC::CVector2f					_ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos;	
+	NLMISC::CVector2f					_HeightMapScale[2];
+	NLMISC::CVector2f					_HeightMapSpeed[2];
+	NLMISC::CVector2f					_ColorMapMatColumn0, _ColorMapMatColumn1, _ColorMapMatPos;
 
 	CTrackDefaultVector					_DefaultPos;
 	CTrackDefaultVector					_DefaultScale;
 	CTrackDefaultQuat					_DefaultRotQuat;
-	float								_TransitionRatio;	
+	float								_TransitionRatio;
 	float								_WaveHeightFactor;
-	bool								_ComputeLightmap;	
+	bool								_ComputeLightmap;
 	bool								_SplashEnabled;
 	bool								_HeightMapTouch[2];
-	float								_HeightMapNormalizationFactor[2];	
-		
+	float								_HeightMapNormalizationFactor[2];
+
 	static uint32							_XScreenGridSize; // size with y rotation = 0
 	static uint32							_YScreenGridSize;
 	static uint32							_MaxGridSize; // size with max rotation around y (without borders)
 	static uint32							_XGridBorder;
 	static uint32							_YGridBorder;
 
-	
+
 	static bool								_GridSizeTouched;
 
 	//
@@ -271,7 +271,7 @@ private:
 /// A wave maker. It can generate waves where it is located
 class CWaveMakerShape : public IShape
 {
-public:	
+public:
 	NLMISC_DECLARE_CLASS(CWaveMakerShape);
 	///\name Object
 	//@{

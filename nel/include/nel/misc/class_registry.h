@@ -91,7 +91,7 @@ public:
 
 	/// release memory
 	static void			release();
-	
+
 	///	Register your class for future Instanciation.
 	static	void		registerClass(const std::string &className, IClassable* (*creator)(), const std::string &typeidCheck) throw(ERegistry);
 
@@ -104,9 +104,9 @@ public:
 
 private:
 	struct	CClassNode
-	{		
+	{
 		std::string			TypeIdCheck;
-		IClassable*	(*Creator)();		
+		IClassable*	(*Creator)();
 	};
 	typedef CHashMap<std::string, CClassNode> TClassMap;
 	static	TClassMap	*RegistredClasses;

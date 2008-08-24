@@ -38,7 +38,7 @@ namespace NLMISC
 	class CMatrix;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 	class UInstance;
 	class UDriver;
@@ -46,7 +46,7 @@ namespace NL3D
 
 
 
-/** Callback to know when an instance group begin to be added  
+/** Callback to know when an instance group begin to be added
   */
 struct IIGAddBegin
 {
@@ -81,7 +81,7 @@ public:
 	virtual ~ITransformName() {}
 	/**
 	 * transformName is called at the addToScene(Async) moment to transform the name of an
-	 * instance to another name. This should be useful to replace various shapes by others 
+	 * instance to another name. This should be useful to replace various shapes by others
 	 * like in a shape-template. The function is called with the name of the shape and the
 	 * user must return the new name of the shape.
 	 * NB: This is called after the 'startAddingIG' calls in the IIGAddBegin callback
@@ -144,7 +144,7 @@ public:
 	 *	remove this instance group from the given scene
 	 */
 	virtual void removeFromScene(class UScene& scene)=0;
-	
+
 	/**
 	 *	This is the static function create a stand alone instance group.
 	 */
@@ -228,7 +228,7 @@ public:
 
 	/**
 	 * Create the link between scene and instance group before the addToScene
-	 * to allow the instance group to be moved without being linked to a father 
+	 * to allow the instance group to be moved without being linked to a father
 	 * cluster system.
 	 */
 	virtual void createRoot (class UScene &scene)=0;
@@ -325,12 +325,12 @@ public:
 	/// For debug purpose, display clusters as poly/lines. The matrixs and frustum should have been setuped
 	virtual void			displayDebugClusters(UDriver *drv, class UTextContext *txtCtx) = 0;
 
-	/** return the DontCastShadowForInterior flag of an instance. 
+	/** return the DontCastShadowForInterior flag of an instance.
 	  *	Warning: if DontCastShadow=true, and DontCastShadowForInterior=false, false is still returned
 	  */
 	virtual bool			dontCastShadowForInterior(uint instance) const =0;
 
-	/** return the DontCastShadowForExterior flag of an instance. 
+	/** return the DontCastShadowForExterior flag of an instance.
 	  *	Warning: if DontCastShadow=true, and DontCastShadowForExterior=false, false is still returned
 	  */
 	virtual bool			dontCastShadowForExterior(uint instance) const =0;

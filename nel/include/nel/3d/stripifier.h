@@ -33,7 +33,7 @@ namespace NL3D {
 
 // ***************************************************************************
 /**
- * Wrapper to NVidia(tm) Stripifier 
+ * Wrapper to NVidia(tm) Stripifier
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2001

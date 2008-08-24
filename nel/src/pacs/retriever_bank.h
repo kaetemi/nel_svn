@@ -1,5 +1,5 @@
 /** \file retriever_bank.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

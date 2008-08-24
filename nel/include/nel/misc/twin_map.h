@@ -34,7 +34,7 @@ namespace NLMISC
   * Behaves like a map, but key can be used as value and vice-versa
   *
   * Association must be bijective or assertions are raised
-  *         
+  *
   *
   * Example of use :
   *
@@ -51,15 +51,15 @@ namespace NLMISC
   *
   * \author Nicolas Vizerie
   * \author Nevrax France
-  * \date 2004  
+  * \date 2004
   */
 template <class TypeA, class TypeB>
-class CTwinMap 
+class CTwinMap
 {
 public:
 	typedef std::map<TypeA, TypeB> TAToBMap;
 	typedef std::map<TypeB, TypeA> TBToAMap;
-public:	
+public:
 	// add a couple in the twin map. An assertion is raised if either valueA or valueB were already present in the map
 	inline void			add(const TypeA &valueA, const TypeB &valueB);
 	// retrieves value of type 'TypeB' associated with 'valueA', or NULL if not found
@@ -69,7 +69,7 @@ public:
 	// removes a couple from its TypeA value
 	inline void			removeWithA(const TypeA &valueA);
 	// removes a couple from its TypeB value
-	inline void			removeWithB(const TypeB &valueB);	
+	inline void			removeWithB(const TypeB &valueB);
 	// Direct read access to 'TypeA to TypeB' map
 	const TAToBMap	   &getAToBMap() const { return _AToB; }
 	// Direct read access to 'TypeB to TypeA' map
@@ -77,9 +77,9 @@ public:
 	// clear the twin map
 	inline	void		clear();
 
-private:	
+private:
 	TAToBMap _AToB;
-	TBToAMap _BToA;	 
+	TBToAMap _BToA;
 };
 
 ////////////////////
@@ -137,7 +137,7 @@ inline void	CTwinMap<TypeA, TypeB>::removeWithA(const TypeA &valueA)
 //==================================================================================================
 template <class TypeA, class TypeB>
 inline void	CTwinMap<TypeA, TypeB>::removeWithB(const TypeB &valueB)
-{	
+{
 	typename TBToAMap::iterator itB = _BToA.find(valueB);
 	nlassert(itB != _BToA.end());
 	typename TAToBMap::iterator itA = _AToB.find(itB->second);

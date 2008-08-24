@@ -49,7 +49,7 @@ public:
 	CWinThread (void* threadHandle, uint32 threadId);
 
 	virtual ~CWinThread();
-	
+
 	virtual void start();
 	virtual bool isRunning();
 	virtual void terminate();
@@ -65,7 +65,7 @@ public:
 
 	// Win32 specific
 	// Get the suspend count. Will be -1 is the thread hasn't been started yet
-	int getSuspendCount() const { return _SuspendCount; }	
+	int getSuspendCount() const { return _SuspendCount; }
 	// Increment the suspend count, a suspend count >= 1 means the thread is suspended
 	void incSuspendCount();
 	/** Descrement the suspend count. Reaching 0 will resume the thread
@@ -124,7 +124,7 @@ private:
 
 /*
 //  I didn't use and test that code, enventually, but maybe useful in the future
-// 
+//
 // Utility class to launch a process and check if it is still running.
 // Implemented under windows only for now
 //

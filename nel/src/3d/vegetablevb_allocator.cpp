@@ -31,12 +31,12 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 /*
-	Once a reallocation of a VB occurs, how many vertices we add to the re-allocation, to avoid 
+	Once a reallocation of a VB occurs, how many vertices we add to the re-allocation, to avoid
 	as possible reallocations.
 */
 #define	NL3D_VEGETABLE_VERTEX_ALLOCATE_SECURITY		1024
@@ -272,7 +272,7 @@ void			CVegetableVBAllocator::activate()
 	nlassert(_Driver);
 	nlassert(!_VBHard.isLocked());
 	nlassert(!_VBSoft.isLocked());
-	
+
 	// Activate VB.
 	if(_VBHard.getNumVertices())
 		_Driver->activeVertexBuffer(_VBHard);
@@ -318,11 +318,11 @@ void				CVegetableVBAllocator::allocateVertexBufferAndFillVBHard(uint32 numVerti
 
 	// resize the Soft VB.
 	_VBSoft.setNumVertices(numVertices);
-	
+
 	// try to allocate a vbufferhard if possible.
 	if( _VBHardOk )
 	{
-		/* Prefer allocate the VBHard with the Max Vertex count only ONCE, 
+		/* Prefer allocate the VBHard with the Max Vertex count only ONCE,
 			to avoid problems with AGP allocation
 			The problem is with 50000 AGP vertices, it costs 3 Mo. If we do iterative allocation
 			(500 Ko, 600 Ko, 700 Ko,.....)
@@ -337,7 +337,7 @@ void				CVegetableVBAllocator::allocateVertexBufferAndFillVBHard(uint32 numVerti
 				nlassert(_Driver!=NULL);
 				_VBHard.deleteAllVertices();
 			}
-			
+
 			// try to create new one, in AGP Ram
 			// If too many vertices wanted, abort VBHard.
 			if(numVertices <= _MaxVertexInBufferHard)
@@ -353,7 +353,7 @@ void				CVegetableVBAllocator::allocateVertexBufferAndFillVBHard(uint32 numVerti
 				// if fails, abort VBHard.
 				if (_VBHard.getLocation() == CVertexBuffer::RAMResident)
 					_VBHard.deleteAllVertices();
-				
+
 				// Set Name For lock Profiling.
 				if(_VBHard.getNumVertices()!=0)
 					_VBHard.setName("VegetableVB");
@@ -373,15 +373,15 @@ void				CVegetableVBAllocator::allocateVertexBufferAndFillVBHard(uint32 numVerti
 		// else, fill this AGP VBuffer Hard.
 		// lock before the AGP buffer
 		lockBuffer();
-		
+
 		// copy all the vertices to AGP.
 		memcpy(_AGPBufferPtr, _RAMBufferPtr, _VBSoft.getVertexSize() * numVertices);
-		
+
 		// If was not locked before, unlock this VB
 		if(!wasLocked)
 			unlockBuffer();
 	}
-	
+
 	//nlinfo("VEGET: Alloc %d verts. %s", numVertices, _VBHardOk?"VBHard":"VBSoft");
 }
 

@@ -81,10 +81,10 @@ public:
 	 */
 	virtual bool		fillMore( void *src, uint32 srcsize )	{ throw ESoundDriverNotSupp(); }
 
-	
+
 	/// Return the buffer name (as an int)
 	ALuint				bufferName()							{ return _BufferName; }
-	
+
 	/// Return the name of the buffer (as a string)
 	virtual const NLMISC::TStringId& getName()							{ return _Name; }
 
@@ -101,7 +101,7 @@ public:
 	 *	Return the number of sample in the buffer.
 	 */
 	virtual uint32		getBufferMono16(std::vector<sint16> &result);
-	
+
 private:
 
 	// Buffer name
@@ -115,10 +115,10 @@ private:
 
 	// Frequency
 	ALuint				_Frequency;
-	
+
 	// Buffer data (as OpenAL keeps it's own data and doesn't publish it back)
 	uint8*				_Data;
-	
+
 	// (original) buffer size
 	uint32				_Size;
 };

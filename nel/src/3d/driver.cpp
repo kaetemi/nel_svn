@@ -57,7 +57,7 @@ IDriver::~IDriver()
 {
 	// Must clean up everything before closing driver.
 	// Must doing this in release(), so assert here if not done...
-	{		
+	{
 		CSynchronized<TTexDrvInfoPtrMap>::CAccessor access(&_SyncTexDrvInfos);
 		TTexDrvInfoPtrMap &rTexDrvInfos = access.value();
 		nlassert( rTexDrvInfos.size() == 0 );
@@ -293,7 +293,7 @@ bool			IDriver::invalidateShareTexture (ITexture &texture)
 				shareIte++;
 				delete (*toRemove);
 			}
-			else 
+			else
 				shareIte++;
 		}
 
@@ -323,17 +323,17 @@ void			IDriver::getTextureShareName (const ITexture& tex, string &output)
 // ***************************************************************************
 
 void			IDriver::setStaticMemoryToVRAM (bool staticMemoryToVRAM)
-{ 
-	_StaticMemoryToVRAM=staticMemoryToVRAM; 
+{
+	_StaticMemoryToVRAM=staticMemoryToVRAM;
 }
 
 // ***************************************************************************
-class CTextureDebugInfo 
+class CTextureDebugInfo
 {
 public:
 	uint	MemoryCost;
 	string	Line;
-	
+
 	bool	operator<(const CTextureDebugInfo &o) const {return Line<o.Line;}
 };
 
@@ -343,7 +343,7 @@ public:
 	ITexture::TUploadFormat			UpLoadFormat;
 	ITexture::CTextureCategory		*Category;
 
-	bool	operator<(const CTextureDebugKey &o) const 
+	bool	operator<(const CTextureDebugKey &o) const
 	{
 		const	string	&s0= Category?Category->Name:_EmptyString;
 		const	string	&s1= o.Category?o.Category->Name:_EmptyString;
@@ -364,10 +364,10 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 {
 	std::set<ITextureDrvInfos	*>		texSet;
 //	uint	i;
-	
+
 	// reserve result, sort by UploadFormat
 	map<CTextureDebugKey, vector<CTextureDebugInfo> >	tempInfo;
-	
+
 	// Parse all the DrvShare list
 	uint	totalSize= 0;
 	ItTexDrvSharePtrList	it= _TexDrvShares.begin();
@@ -377,7 +377,7 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 		ITextureDrvInfos	*gltext= (ITextureDrvInfos*)(ITextureDrvInfos*)(*it)->DrvTexture;
 		ITexture			*text= (*it)->getOwnerTexture();
 		nlassert(gltext && text);
-		
+
 		// sort by upload format and texture category
 		CTextureDebugKey	infoKey;
 		infoKey.UpLoadFormat= text->getUploadFormat();
@@ -390,7 +390,7 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 			shareName= toLower(text->getShareName());
 		else
 			shareName= "Not Shared";
-		
+
 		// only if not already append to the set
 		if(texSet.insert(gltext).second)
 		{
@@ -399,19 +399,19 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 			string	typeStr= typeid(*text).name();
 			strFindReplace(typeStr, "class NL3D::", string());
 			tempInfo[infoKey].push_back(CTextureDebugInfo());
-			tempInfo[infoKey].back().Line= toString("Type: %15s. ShareName: %s. Size: %d Ko", 
+			tempInfo[infoKey].back().Line= toString("Type: %15s. ShareName: %s. Size: %d Ko",
 				typeStr.c_str(),
 				shareName.c_str(),
 				memCost/1024);
 			tempInfo[infoKey].back().MemoryCost= memCost;
 		}
 	}
-	
+
 	// For convenience, sort
 	map<CTextureDebugKey, vector<CTextureDebugInfo> >::iterator		itCat;
 	for(itCat= tempInfo.begin();itCat!= tempInfo.end();itCat++)
 		sort(itCat->second.begin(), itCat->second.end());
-	
+
 	// Store into result, appending Tag for each Mo reached. +10* is for extra lines and security
 	result.clear();
 	result.reserve(texSet.size() + 10*(tempInfo.size()) + totalSize/(1024*1024));
@@ -443,9 +443,9 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 		}
 
 		// header info
-		result.push_back(toString("**** %s. %s ****", infoKey.Category?infoKey.Category->Name.c_str():"", 
+		result.push_back(toString("**** %s. %s ****", infoKey.Category?infoKey.Category->Name.c_str():"",
 			strUploadFormat.c_str()) );
-		
+
 		// display stats for this format
 		uint	tagTotal= 0;
 		uint	curTotal= 0;
@@ -464,7 +464,7 @@ void IDriver::profileTextureUsage(std::vector<std::string> &result)
 		if(tagTotal!=0)
 			result.push_back(toString("---- %.1f Mo", float(curTotal)/(1024*1024)));
 	}
-	
+
 	// append the total
 	result.push_back(toString("**** Total ****"));
 	result.push_back(toString("Total: %d Ko", totalSize/1024));

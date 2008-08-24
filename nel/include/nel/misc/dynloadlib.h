@@ -35,7 +35,7 @@
 #	include <dlfcn.h>
 #endif
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 /// Define the os specific type for dynamic library module handler
@@ -93,7 +93,7 @@ class CLibrary
 	/** This point to the 'pure' nel library interface.
 	 *	This mean that the library export an entry point called
 	 *	'NeLLibraryEntry' that point to a INelLibrary interface.
-	 *	This interface is used by the CLibrary class to 
+	 *	This interface is used by the CLibrary class to
 	 *	management efficiently the library and to give
 	 *	library implementors some hooks on library management.
 	 */
@@ -107,7 +107,7 @@ class CLibrary
 
 	// Private assignment operator
 	CLibrary &operator =(const CLibrary &other);
-	
+
 public:
 	CLibrary();
 	/** Assign a existing module handler to a new dynamic library instance
@@ -121,9 +121,9 @@ public:
 
 	/** Load the specified library.
 	*	The method assert if a module is already assigned or loaded
-	*	If addNelDecoration is true, the standard Nel suffix and library extention or prefix are 
+	*	If addNelDecoration is true, the standard Nel suffix and library extention or prefix are
 	*	added to the lib name (with is just a base name).
-	*	If tryLibPath is true, then the method will try to find the required 
+	*	If tryLibPath is true, then the method will try to find the required
 	*	library in the added library files (in order of addition).
 	*	Return true if the library load ok.
 	*/
@@ -197,15 +197,15 @@ class INelLibrary
 	/// The library context
 	class CLibraryContext		*_LibContext;
 
-	/** Called by CLibrary after a succesful loadLibrary 
+	/** Called by CLibrary after a succesful loadLibrary
 	 *	Note : this methods MUST be virtual to ensure
-	 *	that the code executed is the one from 
+	 *	that the code executed is the one from
 	 *	the loaded library.
 	 */
 	virtual void _onLibraryLoaded(class INelContext &nelContext);
 	/** Called by the CLibrary class before unloading the library.
 	 *	Note : this methods MUST be virtual to ensure
-	 *	that the code executed is the one from 
+	 *	that the code executed is the one from
 	 *	the loaded library.
 	 */
 	virtual void _onLibraryUnloaded();
@@ -233,8 +233,8 @@ public:
 	/** Called after before each unloading of the library.
 	 *	lastTime is true if the library will be effectively
 	 *	unmapped from the process memory.
-	 *	If the library have been loaded more than once, 
-	 *	then lastTime is false, indicating that the 
+	 *	If the library have been loaded more than once,
+	 *	then lastTime is false, indicating that the
 	 *	library will still be in the process memory
 	 *	space after the call.
 	 */

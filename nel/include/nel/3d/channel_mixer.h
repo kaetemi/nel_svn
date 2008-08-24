@@ -32,7 +32,7 @@
 #include <map>
 #include <vector>
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CAnimation;
@@ -42,12 +42,12 @@ class ITrack;
 class CAnimationSet;
 
 /**
- * A channel mixer. Animated value are registred in it. 
+ * A channel mixer. Animated value are registred in it.
  * Each animated value create a channel in the mixer. Then, mixer animates
  * all those channels with 1 to CChannelMixer::NumAnimationSlot animations.
  *
  * Animation are referenced in an animation slot (CSlot).
- * 
+ *
  * Each slot have an IAnimation pointer, a weight for this animation
  * between [0.f ~ 1.f] and a time for this animation.
  *
@@ -65,10 +65,10 @@ public:
 
 	/// \name Const values
 
-	enum 
-	{ 
+	enum
+	{
 		/// Number of animation slot in the CChannelMixer
-		NumAnimationSlot=8 
+		NumAnimationSlot=8
 	};
 
 private:
@@ -133,7 +133,7 @@ private:
 	};
 
 	/**
-	 * An animated channel of the CChannelMixer. This class is used internaly in the 
+	 * An animated channel of the CChannelMixer. This class is used internaly in the
 	 * CChannelMixer.
 	 *
 	 * \author Cyril 'Hulud' Corvazier
@@ -187,14 +187,14 @@ private:
 		/// The default track pointer used when track are missing in the animation. Can't be NULL.
 		const ITrack*		_DefaultTracks;
 
-		/** 
-		  * A track pointer on each slot CAnimation. Can't be NULL. If no track found for this 
+		/**
+		  * A track pointer on each slot CAnimation. Can't be NULL. If no track found for this
 		  * channel, the pointer is _DefaultTracks.
 		  */
 		const ITrack*		_Tracks[NumAnimationSlot];
 
 		/**
-		  * A weight array for to blend each slot. 
+		  * A weight array for to blend each slot.
 		  * This value must be between 0.f and 1.f. If it is 0.f, the slot is not used. If it is 1.f,
 		  * the slot is used at 100%. This weight can be set using a "skeleton template weight".
 		  * Default value is 1.f.
@@ -214,7 +214,7 @@ public:
 	/// Constructor. The default constructor resets the slots and the channels.
 	CChannelMixer();
 	~CChannelMixer();
-	
+
 	/// \name Setup the mixer
 
 	/**
@@ -229,7 +229,7 @@ public:
 	  */
 	const CAnimationSet* getAnimationSet () const;
 
-	/** 
+	/**
 	  * Launch evaluation of all channels.
 	  *
 	  * This is the main method. It evals animations selected in the slots for listed
@@ -241,17 +241,17 @@ public:
 	  * Others are initialized with the default channel value.
 	  *
 	  * \param detail true if eval the detail part of animation. (done after clipping).
-	  * \param evalDetailDate chann mixer store the last date of anim detail evaluated. if same, do nothing, 
+	  * \param evalDetailDate chann mixer store the last date of anim detail evaluated. if same, do nothing,
 	  *	else if < or >, compute the anim. ingored if detail is false.
 	  */
 	void eval (bool detail, uint64 evalDetailDate=0);
 
-	/** 
+	/**
 	  * Launch evaluation of some channels.
-	  * 
+	  *
 	  * \param channelIdArray array that contains the id of the channel to eval.
 	  * \param numID number of ids in the array
-	  * 
+	  *
       */
 	void evalChannels(sint *channelIdArray, uint numID);
 
@@ -262,21 +262,21 @@ public:
 
 	/// \name Channel access
 
-	/** 
+	/**
 	  * Add a channel for a specific value of an IAnimatable object.
 	  * Warning: this method will assign the default value in the animated value.
-	  * 
+	  *
 	  * \param channelName is the name of the channel.
 	  * \param animatable is a pointer on the IAnimatable object in which the value is stored. It will be kept
 	  * by the CChannelMixer until it is removed from the channel.
 	  * \param value is a pointer on the value the channel works with. It will be kept
 	  * by the CChannelMixer until it is removed from the channel.
-      * \param defaultValue is a track used by default if a track is not presents in the animation for this channel. 
+      * \param defaultValue is a track used by default if a track is not presents in the animation for this channel.
 	  * It will be kept by the CChannelMixer until it is removed from the channel.
 	  * \param valueId is the value ID in the IAnimatable object.
 	  * \param ownerId is the owner Bit of the animated vlaue, in the IAnimatable object. touched when the animatedvalue is touched.
 	  * \param detail true if this channel must be evaluated in detail mode (see eval()).
-	  * \return -1 if the track was not found in the animationSet, else it return the channelId 
+	  * \return -1 if the track was not found in the animationSet, else it return the channelId
 	  *	as if returned by CAnimationSet::getChannelIdByName(channelName).
 	  */
 	sint addChannel (const std::string& channelName, IAnimatable* animatable, IAnimatedValue* value, ITrack* defaultValue, uint32 valueId, uint32 ownerValueId, bool detail);
@@ -285,7 +285,7 @@ public:
 	void resetChannels ();
 
 
-	/** disabling a channel means it is no more modified during animation. Default is enabled. 
+	/** disabling a channel means it is no more modified during animation. Default is enabled.
 	 *	NB: this channel must have been added (via addChannel()....).
 	 *	\param channelId channelId get from CAnimationSet::getChannelIdByName() or addChannel()
 	 */
@@ -311,15 +311,15 @@ public:
 
 	/// \name Slots acces
 
-	/** 
+	/**
 	  * Set slot animation.
 	  *
 	  * You must set an animationSet in the channel mixer before calling this.
 	  *
-	  * Calling this method will dirt the mixer, ie, all the mixer's channels will 
+	  * Calling this method will dirt the mixer, ie, all the mixer's channels will
 	  * be visited to check if they are used by the new animation. If they are, they
 	  * will be linked in the internal CChannel list.
-	  * 
+	  *
 	  * \param slot is the slot number to change the animation. Must be >= 0 and < NumAnimationSlot.
 	  * \param animation is the new animation index in the animationSet use by this slot.
 	  * \see CAnimationSet, CAnimation
@@ -329,14 +329,14 @@ public:
 	/// Get the animation used by a given slot
 	const CAnimation	*getSlotAnimation(uint slot) const;
 
-	/** 
+	/**
 	  * Set time of a slot.
 	  *
 	  * This time will be used to eval the animation set in this slot.
 	  * Each slot can have different time.
 	  *
 	  * Calling this method won't dirt the mixer.
-	  * 
+	  *
 	  * \param slot is the slot number to change the time. Must be >= 0 and < NumAnimationSlot.
 	  * \param time is the new time to use in the slot.
 	  * \see TAnimationTime
@@ -350,7 +350,7 @@ public:
 		_SlotArray[slot]._Time=time;
 	}
 
-	/** 
+	/**
 	  * Set slot weight.
 	  *
 	  * This weight will be used to eval the animation set in this slot.
@@ -359,7 +359,7 @@ public:
 	  *	By default the weight of the slot is 1.0f.
 	  *
 	  * \param slot is the slot number to change the weight.
-	  * \param weight is the new weight to use in the slot. No range for this weight. If the weight == 0.f, 
+	  * \param weight is the new weight to use in the slot. No range for this weight. If the weight == 0.f,
 	  * the slot have no effect on the final mix.
 	  */
 	void setSlotWeight (uint slot, float weight)
@@ -371,26 +371,26 @@ public:
 		_SlotArray[slot]._Weight=weight;
 	}
 
-	/** 
+	/**
 	  * Empty a slot.
-	  * 
-	  * Calling this method will dirt the mixer, ie, all the mixer's channels will 
+	  *
+	  * Calling this method will dirt the mixer, ie, all the mixer's channels will
 	  * be visited to check if they are used by the old animation. If they are, they
 	  * will be linked in the internal CChannel list.
 	  *
 	  * Warning: this method will assign the default value in the animated value that are removed from the active channel queue.
-	  * 
+	  *
 	  * \param slot is the slot number to empty. Must be >= 0 and < NumAnimationSlot.
 	  */
 	void emptySlot (uint slot);
 
 	/**
 	  * Reset the slot of the mixer. All slot will be empty.
-	  * 
-	  * Calling this method will dirt the mixer, ie, all the mixer's channels will 
+	  *
+	  * Calling this method will dirt the mixer, ie, all the mixer's channels will
 	  * be visited to check if they are used by the old animation. If they are, they
 	  * will be linked in the internal CChannel list.
-	  * 
+	  *
 	  */
 	void resetSlots ();
 
@@ -401,7 +401,7 @@ public:
 	  *
 	  * \param slot is the slot number to empty. Must be >= 0 and < NumAnimationSlot.
 	  * \param skeleton is the index of a skeleton in the animationSet.
-	  * \param invert is true if the weights to attach to the channels are the weights of the skeleton template. 
+	  * \param invert is true if the weights to attach to the channels are the weights of the skeleton template.
 	  * false if the weights to attach to the channels are the 1.f-weights of the skeleton template.
 	  */
 	void applySkeletonWeight (uint slot, uint skeleton, bool invert=false);
@@ -419,12 +419,12 @@ public:
 	void resetEvalDetailDate();
 
 private:
-	
+
 	/// /name Iternal methods
-	
+
 	/// Clean the mixer
 	void cleanAll ();
-	
+
 	/// Dirt all slots
 	void dirtAll ();
 

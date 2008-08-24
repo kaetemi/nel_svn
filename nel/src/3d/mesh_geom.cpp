@@ -27,7 +27,7 @@
 #include "nel/3d/mesh_block_manager.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

@@ -55,7 +55,7 @@ TNetworkEvent StringToEvent( string& s );
 
 
 /*
- * TMessageRecord 
+ * TMessageRecord
  */
 struct TMessageRecord
 {
@@ -70,7 +70,7 @@ struct TMessageRecord
 	void serial( NLMISC::CMemStream& stream )
 	{
 		nlassert( stream.stringMode() );
-		
+
 		uint32 len;
 		string s_event;
 		stream.serial( UpdateCounter );

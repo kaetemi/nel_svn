@@ -61,7 +61,7 @@ class CPSPlaneBasisGradient : public CPSValueGradient<CPlaneBasis>
 public:
 	NLMISC_DECLARE_CLASS(CPSPlaneBasisGradient);
 
-	/**	
+	/**
 	 *	Construct the value gradient blender by passing a pointer to a float table.
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
@@ -73,7 +73,7 @@ public:
 		_F.setValues(basisTab, nbValues, nbStages);
 	}
 	CPSAttribMakerBase *clone() const { return new CPSPlaneBasisGradient(*this); }
-	static CPlaneBasis DefaultPlaneBasisTab[];	
+	static CPlaneBasis DefaultPlaneBasisTab[];
 };
 
 
@@ -129,7 +129,7 @@ class CPSPlaneBasisFollowSpeed : public CPSAttribMaker<CPlaneBasis>
 						   uint32 stride,
 						   uint32 numAttrib,
 						   uint32 nbReplicate,
-						   uint32 srcStep = (1 << 16)						   
+						   uint32 srcStep = (1 << 16)
 						  ) const;
 
 		NLMISC_DECLARE_CLASS(CPSPlaneBasisFollowSpeed);
@@ -199,7 +199,7 @@ public:
 	/// get the number of samples for the rotation
 	const uint32 getNumSamples(void) const;
 	/// serial this object
-	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 protected:
 	CPSVector<CPlaneBasis>::V   _PBTab;
 	uint32						_NbSamples;

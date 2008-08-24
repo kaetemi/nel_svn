@@ -28,14 +28,14 @@
 #include <list>
 #include <vector>
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
 /**
  * Pool memory allocation
  *
- * This memory manager allocates bloc of elements and free all the 
+ * This memory manager allocates bloc of elements and free all the
  * elements at the same time. Useful for temporary allocation.
  *
  * \author Cyril 'Hulud' Corvazier

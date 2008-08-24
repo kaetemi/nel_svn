@@ -29,7 +29,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -136,30 +136,30 @@ If the state is Goofy, the rotation of this tile after symmetrisation will by gi
 	- C) Then, for each patches on the zone border, we need to know if they are Goofy or Regular.
 
 		Y
-  
+
 		/\
-		| 
+		|
 		|  0     3
 		|   *****
 		|   *   *   This patch is regular
 		|   *   *
 		|   *****
 		|  1     2
-		| 
+		|
 		|  2     1
 		|   *****
 		|   *   *   This patch is regular
 		|   *   *
 		|   *****
 		|  3     0
-		| 
+		|
 		|  3     2
 		|   *****
 		|   *   *   This patch is goofy
 		|   *   *
 		|   *****
 		|  0     1
-		| 
+		|
 		|  1     4
 		|   *****
 		|   *   *   This patch is goofy
@@ -187,7 +187,7 @@ bool CZoneSymmetrisation::build (const std::vector<CPatchInfo> &patchInfo, float
 	errorDesc.Errors.clear ();
 
 	// * Build the patches state
-	
+
 	// A) Resize arrays
 	_TilesLayerStates.resize (patchInfo.size ());
 
@@ -315,7 +315,7 @@ bool CZoneSymmetrisation::setTileState (const NL3D::CPatchInfo &patch, uint patc
 	// Vertices position
 	sint32 vertPosU[4];
 	sint32 vertPosV[4];
-	
+
 	// For each vertices
 	uint i;
 	for (i=0; i<4; i++)
@@ -352,7 +352,7 @@ bool CZoneSymmetrisation::setTileState (const NL3D::CPatchInfo &patch, uint patc
 			// Snapped on U or V ?
 			bool snapU = (vertPosU[i] == vertPosU[(i+1)&3]) && ((uint32) vertPosU[i] != 0x80000000);
 			bool snapV = (vertPosV[i] == vertPosV[(i+1)&3]) && ((uint32) vertPosV[i] != 0x80000000);
-			
+
 			// If snapped on one, continue
 			if (snapU || snapV)
 			{
@@ -479,7 +479,7 @@ bool CZoneSymmetrisation::setOrientedTileState (const NL3D::CPatchInfo &patch, u
 	// Vertices position
 	sint32 vertPosU[4];
 	sint32 vertPosV[4];
-	
+
 	// For each vertices
 	uint i;
 	for (i=0; i<4; i++)
@@ -516,7 +516,7 @@ bool CZoneSymmetrisation::setOrientedTileState (const NL3D::CPatchInfo &patch, u
 			// Snapped on U or V ?
 			bool snapU = (vertPosU[i] == vertPosU[(i+1)&3]) && ((uint32) vertPosU[i] != 0x80000000);
 			bool snapV = (vertPosV[i] == vertPosV[(i+1)&3]) && ((uint32) vertPosV[i] != 0x80000000);
-			
+
 			// If snapped on one, continue
 			if (snapU || snapV)
 			{
@@ -612,7 +612,7 @@ bool CZoneSymmetrisation::setOrientedTileState (const NL3D::CPatchInfo &patch, u
 			}
 		}
 	}
-	
+
 	// For each corners
 	for (i=0; i<4; i++)
 	{
@@ -638,7 +638,7 @@ bool CZoneSymmetrisation::setOrientedTileState (const NL3D::CPatchInfo &patch, u
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -733,7 +733,7 @@ bool CZoneSymmetrisation::propagateTileState (uint patch, uint s, uint t, const 
 
 						// While people in the stack
 						while (!stack.empty ())
-						{		
+						{
 							// Pop last element
 							currentNode = stack.back ();
 							stack.pop_back ();
@@ -789,7 +789,7 @@ bool CZoneSymmetrisation::propagateTileState (uint patch, uint s, uint t, const 
 									uint patchOut;
 									sint sOut;
 									sint tOut;
-									if (patchInfo[currentNode.Patch].getNeighborTile (currentNode.Patch, currentNode.Edge, position, 
+									if (patchInfo[currentNode.Patch].getNeighborTile (currentNode.Patch, currentNode.Edge, position,
 										patchOut, sOut, tOut, patchInfo))
 									{
 										// Should be another patch
@@ -843,7 +843,7 @@ bool CZoneSymmetrisation::propagateTileState (uint patch, uint s, uint t, const 
 
 								// Get the tile index
 								uint neighborTile = neighborNode.S+neighborNode.T*neighborPatchPtr->OrderS;
-								
+
 								// Look for the same tile set in the new tile
 								uint neighborLayer;
 								for (neighborLayer=0; neighborLayer<3; neighborLayer++)
@@ -867,7 +867,7 @@ bool CZoneSymmetrisation::propagateTileState (uint patch, uint s, uint t, const 
 										bank.getTileXRef (neighborTileIndex, neighborTileSet, neighborNumber, neighborType);
 
 										// Same tileset ? Stop!
-										if (	(neighborTileSet == tileSetToPropagate) && 
+										if (	(neighborTileSet == tileSetToPropagate) &&
 												(neighborNode.Rotate == neighborPatchPtr->Tiles[neighborTile].getTileOrient(neighborLayer)) )
 											break;
 									}

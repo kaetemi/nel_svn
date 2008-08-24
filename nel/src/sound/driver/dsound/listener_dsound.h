@@ -48,7 +48,7 @@ namespace NLSOUND {
  */
 class CListenerDSound : public IListener
 {
-friend class CSoundDriverDSound;  
+friend class CSoundDriverDSound;
 
 public:
 
@@ -105,7 +105,7 @@ public:
     /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 	virtual void			setRolloffFactor( float f );
 
-    /// Return the rolloff factor 
+    /// Return the rolloff factor
 	virtual float			getRolloffFactor();
 
     /// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)

@@ -297,7 +297,7 @@ void CLoginServer::setListenAddress(const string &la)
 	{
 		ListenAddr = la;
 	}
-	
+
 	// check that listen address is valid
 	if (ListenAddr.empty())
 	{
@@ -322,7 +322,7 @@ void cfcbDefaultUserPriv(CConfigFile::CVar &var)
 {
 	// set the new ListenAddr
 	DefaultUserPriv = var.asString();
-	
+
 	nlinfo("LS: The default user priv is '%s'", DefaultUserPriv.c_str());
 }
 
@@ -330,7 +330,7 @@ void cfcbAcceptInvalidCookie(CConfigFile::CVar &var)
 {
 	// set the new ListenAddr
 	AcceptInvalidCookie = var.asInt() == 1;
-	
+
 	nlinfo("LS: This service %saccept invalid cookie", AcceptInvalidCookie?"":"doesn't ");
 }
 
@@ -338,7 +338,7 @@ void cfcbTimeBeforeEraseCookie(CConfigFile::CVar &var)
 {
 	// set the new ListenAddr
 	TimeBeforeEraseCookie = var.asInt();
-	
+
 	nlinfo("LS: This service will remove cookie after %d seconds", TimeBeforeEraseCookie);
 }
 
@@ -353,12 +353,12 @@ void CLoginServer::init (const string &listenAddress)
 {
 	// connect to the welcome service
 	connectToWS ();
-	
+
 	try {
 		cfcbDefaultUserPriv(IService::getInstance()->ConfigFile.getVar("DefaultUserPriv"));
 		IService::getInstance()->ConfigFile.setCallback("DefaultUserPriv", cfcbDefaultUserPriv);
 	} catch(Exception &) { }
-	
+
 	try {
 		cfcbAcceptInvalidCookie (IService::getInstance()->ConfigFile.getVar("AcceptInvalidCookie"));
 		IService::getInstance()->ConfigFile.setCallback("AcceptInvalidCookie", cfcbAcceptInvalidCookie);
@@ -372,7 +372,7 @@ void CLoginServer::init (const string &listenAddress)
 	// setup the listen address
 
 	string la;
-	
+
 	if (IService::getInstance()->haveArg('D'))
 	{
 		// use the command line param if set
@@ -395,7 +395,7 @@ void CLoginServer::init (const string &listenAddress)
 void CLoginServer::init (CCallbackServer &server, TNewClientCallback ncl)
 {
 	init (server.listenAddress ().asIPString());
-	
+
 	// add callback to the server
 	server.addCallbackArray (ClientCallbackArray, sizeof (ClientCallbackArray) / sizeof (ClientCallbackArray[0]));
 	server.setConnectionCallback (ClientConnection, NULL);
@@ -464,7 +464,7 @@ string CLoginServer::isValidCookie (const CLoginCookie &lc, string &userName, st
 
 			// ok, it was validate, remove it
 			PendingUsers.erase (it);
-			
+
 			return "";
 		}
 	}

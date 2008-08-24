@@ -33,7 +33,7 @@ namespace NLMISC
 
 class CEventServer;
 struct IInputDevice;
-struct IInputDeviceEvent;	
+struct IInputDeviceEvent;
 
 
 /** Base class for an input device server. Unlike an event server, it manages several devices, and can sort their events (by date for example).
@@ -75,7 +75,7 @@ private:
 /** An event from an input device.
   */
 struct IInputDeviceEvent
-{	
+{
 	IInputDevice    *Emitter;	// the input device that emitted that event
 	// Used to sort events by time stamp.
 	virtual bool	operator < (const IInputDeviceEvent &IInputDeviceEvent) const = 0;

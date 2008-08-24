@@ -44,7 +44,7 @@ class CBufferFMod;
  *
 
  * For arguments as 3D vectors, use the NeL vector coordinate system
- * 
+ *
  * \author Peter Hanappe
  * \author Nevrax France
  * \date 2002
@@ -52,7 +52,7 @@ class CBufferFMod;
 class CSourceFMod : public ISource
 {
 
-friend class CSoundDriverFMod;  
+friend class CSoundDriverFMod;
 
 public:
 
@@ -79,7 +79,7 @@ public:
 
 	//@}
 
-	
+
 	/// \name Playback control
 	//@{
 
@@ -191,19 +191,19 @@ public:
 	// Reset the source before reuse
 	void					reset();
 
-	/** Update the source's volume according to its distance and fade out curve. 
+	/** Update the source's volume according to its distance and fade out curve.
 	 *  It takes the current position of the listener as argument.
 	 *	Called only if MANUAL_ROLLOFF==1
 	 */
 	void					updateVolume( const NLMISC::CVector& listener );
 
 	/** Set the alpha value for the volume-distance curve
-	 * 
+	 *
 	 *  alpha = 0.0: the volume will decrease linearly between 0dB and -100 dB
 	 *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
 	 *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
 	 *                is the default used by DirectSound/OpenAL
-	 * 
+	 *
 	 *  For any other value of alpha, an interpolation is be done between the two
 	 *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
 	 *  the linear dB curve and the linear amplitude curve.
@@ -214,7 +214,7 @@ public:
 	bool	needsUpdate();
 
 	void	updateFModPosIfRelative();
-	
+
 private:
 
 	void copySampleTo16BitsTrack(void *dst, void *src, uint nbSample, TSampleFormat sourceFormat);
@@ -238,7 +238,7 @@ private:
 	IBuffer					*_Sample;
 	IBuffer					*_NextSample;
 	sint					_FModChannel;
-	
+
     // States
 	bool					_PosRelative;
     bool					_Loop;
@@ -251,7 +251,7 @@ private:
 	float					_MinDist, _MaxDist;
 
 	void	updateFModPos();
-	
+
 };
 
 

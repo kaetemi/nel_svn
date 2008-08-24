@@ -107,7 +107,7 @@ class IServiceUpdatable;
  * -T followed by the IP address where the login service is (WS only)
  * -W followed by the path where to save all shard data (SaveFilesDirectory)
  * -Z[u] to just init the config file then return (used for test), use Zu to not release the service
- * 
+ *
  *
  */
 
@@ -272,7 +272,7 @@ public:
 	{
 		return NLMISC::CEntityId::getNewEntityId( type ).getRawId();
 	}*/
-	
+
 	/// Returns the recording state (don't needed if you use layer5)
 	CCallbackNetBase::TRecordingState	getRecordingState() const { return _RecordingState; }
 
@@ -300,7 +300,7 @@ public:
 	 *
 	 * The default value is 100 (100ms) or the value found in the config file (UpdateTimeout)
 	 */
-	void					setUpdateTimeout (NLMISC::TTime timeout) { /*if (timeout>1.0) nlerror ("IServer::setUpdateTimeout is now a double in SECOND and not ms");*/ _UpdateTimeout = timeout; } 
+	void					setUpdateTimeout (NLMISC::TTime timeout) { /*if (timeout>1.0) nlerror ("IServer::setUpdateTimeout is now a double in SECOND and not ms");*/ _UpdateTimeout = timeout; }
 
 	//@}
 
@@ -369,11 +369,11 @@ public:
 	/// Directory where to store files that the services will write but are the same for all shard instance (for example: packet_sheets)
 	/// Use .toString() to access to the value
 	NLMISC::CVariable<std::string>		WriteFilesDirectory;
-	
+
 	/// Directory where to store files that the services will write during the exploitation of the game (for example: player backup, string cache)
 	/// Use .toString() to access to the value
 	NLMISC::CVariable<std::string>		SaveFilesDirectory;
-	
+
 	/// If true (default), the provided SaveFilesDirectory will be converted to a full path (ex: "saves" -> "/home/dir/saves")
 	NLMISC::CVariable<bool>				ConvertSavesFilesDirectoryToFullPath;
 
@@ -389,7 +389,7 @@ public:
 
 	// Warning: can take a moment to be received from the WS. The default value (when not received yet) is DEFAULT_SHARD_ID.
 	uint32								getShardId() const { return _ShardId; }
-	
+
 	const NLMISC::CCPUTimeStat&			getCPUUsageStats() const	{ return _CPUUsageStats; }
 
 	/// Allow the service to return a status string with important value
@@ -400,7 +400,7 @@ public:
 	 * Then, when the service will be asked to quit, this callback will be called. Then you can
 	 * either return true to allow immediate closure, or false to delay the closure. The closure
 	 * will then happen after you call clearForClosure().
-	 * 
+	 *
 	 * If you don't provide a callback here, or if you call with NULL, the service will exit
 	 * immediately when asked to quit.
 	 */
@@ -470,10 +470,10 @@ private:
 
 	/// The directory where the configfile is
 	NLMISC::CVariable<std::string>		ConfigDirectory;
-	
+
 	/// The directory where the logfiles are
 	NLMISC::CVariable<std::string>		LogDirectory;
-	
+
 	/// The directory where the service is running
 	NLMISC::CVariable<std::string>		RunningDirectory;
 
@@ -562,14 +562,14 @@ public:
 
 inline IService *IService::getInstance()
 {
-	if (_Instance == NULL) 
-	{ 
-		/* the nel context MUST be initialised */ 
-		nlassertex(NLMISC::INelContext::isContextInitialised(), ("You are trying to access a safe singleton without having initialized a NeL context. The simplest correction is to add 'NLMISC::CApplicationContext myApplicationContext;' at the very begining of your application.")); 
+	if (_Instance == NULL)
+	{
+		/* the nel context MUST be initialised */
+		nlassertex(NLMISC::INelContext::isContextInitialised(), ("You are trying to access a safe singleton without having initialized a NeL context. The simplest correction is to add 'NLMISC::CApplicationContext myApplicationContext;' at the very begining of your application."));
 		// try to retrieve the safe singleton pointer
 		_Instance = reinterpret_cast<IService*>(NLMISC::INelContext::getInstance().getSingletonPointer("IService"));
-	} 
-	return _Instance; 
+	}
+	return _Instance;
 }
 
 

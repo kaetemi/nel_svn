@@ -48,7 +48,7 @@ class CWindowDisplayer : public NLMISC::IDisplayer
 public:
 
 	CWindowDisplayer (const char *displayerName = "") :
-	  IDisplayer(displayerName), 
+	  IDisplayer(displayerName),
 		_Buffer("CWindowDisplayer::_Buffer"), _Labels("CWindowDisplayer::_Labels"), _CommandsToExecute("CWindowDisplayer::_CommandsToExecute"),
 		_Continue(true), _PosInHistory(0), _Init(false), _HistorySize(0), _ToolBarHeight(22), _InputEditHeight(25), _Thread(0), Log(0)
 	  { }

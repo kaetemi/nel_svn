@@ -55,10 +55,10 @@ public:
 public:
 	CRenderStringBuffer();
 	virtual ~CRenderStringBuffer();
-	
+
 	/// render and make empty the render string buffer. see CComputedString::render2DClip()
 	void	flush(IDriver& driver, CMaterial *fontMat);
-	
+
 	/** render and make empty the render string buffer. see CComputedString::render2DProjected()
 	 *  The driver view and model matrices have to be setuped as material zbuffer flags by the user.
 	 *	This method only render string quads.
@@ -89,11 +89,11 @@ public:
 			return (Index==lc.Index && Color==lc.Color);
 		}
 	};
-	
+
 	CLetterColors() {}
 	virtual ~CLetterColors() {}
 
-	void clear() 
+	void clear()
 	{
 		_indexedColors.clear();
 	}
@@ -153,7 +153,7 @@ public:
 		return sameLetterColors;
 	}
 
-	void pushLetterColor(uint index, const NLMISC::CRGBA & color) 
+	void pushLetterColor(uint index, const NLMISC::CRGBA & color)
 	{
 		_indexedColors.push_back(SLetterColor(index, color));
 	}
@@ -168,7 +168,7 @@ private:
  * CComputedString
  * A CComputedString is a structure which permits to render a string
  * in a driver. It computes 4 vertices per char the renderer draw quads from them.
- * 
+ *
  * \author Stephane Coutelas
  * \author Nevrax France
  * \date 2000
@@ -193,28 +193,28 @@ public:
 	 *	is under the b, under the loop of the p but over the leg of the p. So StringLine
 	 *	is a positive value in this case. It may be a negative value for the string "^" for example.
 	 */
-	float StringLine; 
+	float StringLine;
 
 	/// Optionnal: each render*() method can draw a subset of letters. Default is 0/FFFFFFFF
 	uint32	SelectStart;
 	uint32	SelectSize;
 
-	CLetterColors LetterColors; 
+	CLetterColors LetterColors;
 
 	/**
 	 * Hotspot positions (origine for the string placement)
 	 * You should take care that for vertical hotspot, an imaginary line is defined under
 	 * letters with no leg (like m,b,c etc..) between the leg of p and the loop of the p.
 	 */
-	enum THotSpot 
+	enum THotSpot
 	{
 		BottomLeft=0,
-		MiddleLeft, 
+		MiddleLeft,
 		TopLeft,
-		MiddleBottom, 
-		MiddleMiddle, 
-		MiddleTop, 
-		BottomRight, 
+		MiddleBottom,
+		MiddleMiddle,
+		MiddleTop,
+		BottomRight,
 		MiddleRight,
 		TopRight,
 
@@ -244,7 +244,7 @@ public:
 	 */
 	CVector getHotSpotVector (THotSpot hotspot);
 
-	/** 
+	/**
 	 * Render the unicode string in a driver.
 	 * \param driver the driver where to render the primitives
 	 * \param x abscissa
@@ -253,13 +253,13 @@ public:
 	 * \param scaleX abscissa scale
 	 * \param scaleY ordinate scale
 	 * \param rotateY rotation angle (axe perpendicular to screen)
-	 * \param useScreenAR43 if false then string is displayed with a pixel Ratio 1:1 (independent of window resolution). 
-	 *	if true, the string is scaled according to window width and height, to support 4:3 aspect ratio even on weird 
+	 * \param useScreenAR43 if false then string is displayed with a pixel Ratio 1:1 (independent of window resolution).
+	 *	if true, the string is scaled according to window width and height, to support 4:3 aspect ratio even on weird
 	 *	screen resolution such as 640*240 (ie the char still look square, but the pixel ratio is 2:1)
-	 * \param roundToNearestPixel if true, snap the final string position to the nearest pixel. if set to true, and if 
+	 * \param roundToNearestPixel if true, snap the final string position to the nearest pixel. if set to true, and if
 	 *	useScreenAR43= false, you are sure that texels of the fonts fit exactly on centers of pixels (no apparent bi-linear).
-	 */	
-	void render2D (IDriver& driver, 
+	 */
+	void render2D (IDriver& driver,
 					float x, float z,
 					THotSpot hotspot = BottomLeft,
 					float scaleX = 1, float scaleZ = 1,
@@ -274,7 +274,7 @@ public:
 	 *	Additionnaly, this method don't render directly to the driver but add primitives to a CRenderStringBuffer
 	 *	Use the method CRenderStringBuffer::flush() to flush it all.
 	 */
-	void render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuffer,  
+	void render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuffer,
 					float x, float z,
 					float xmin=0, float ymin=0, float xmax=1, float ymax=1
 					);
@@ -283,16 +283,16 @@ public:
 	 *	Use the method CRenderStringBuffer::flush() to flush it all.
 	 */
 	void render2DUnProjected (IDriver& driver, CRenderStringBuffer &rdrBuffer, class NL3D::CFrustum &frustum,
-					const NLMISC::CMatrix &scaleMatrix, 
+					const NLMISC::CMatrix &scaleMatrix,
 					float x, float z, float depth, float xmin=0, float ymin=0, float xmax=1, float ymax=1);
 
-	/** 
+	/**
 	 * Render the unicode string in a driver, in 3D with a user matrix.
 	 *	NB: size of the string is first scaled by 1/windowHeight.
 	 * \param driver the driver where to render the primitives
 	 * \param matrix transformation matrix
 	 * \param hotspot position of string origine
-	 */	
+	 */
 	void render3D (IDriver& driver,CMatrix matrix,THotSpot hotspot = MiddleMiddle);
 
 };

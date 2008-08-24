@@ -150,45 +150,45 @@ public:
 	// ** Internal node access
 
 	// Create for a node by name. If the node already exist, return it
-	bool	createNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	bool	createNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, bool &created);
 
 	/**
 	  * Delete a node by name. If the node already exist, return it
-	  *Delete its parent if not used 
+	  *Delete its parent if not used
 	  */
-	bool	deleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	bool	deleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array);
 
 	// Search for a node by name
-	bool	getNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	bool	getNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, bool &parentVDfnArray, bool verbose, uint32 round) const;
 
-	/** 
+	/**
 	  * Insert an array node by name
 	  * The index asked must be < the size of the array.
 	  */
-	bool	arrayInsertNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	bool	arrayInsertNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, bool verbose, uint arrayIndex) const;
 
-	/** 
+	/**
 	  * Delete an array node by name
 	  * The index asked must be < the size of the array.
 	  */
-	bool	arrayDeleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	bool	arrayDeleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, bool verbose, uint arrayIndex) const;
 protected:
-	
+
 	// Action to perform
 	enum TNodeAction
 	{
@@ -201,13 +201,13 @@ protected:
 	  * Is createNode == Create, (*node)->Form must be == to the form argument.
 	  * Is createNode == Return, form argument is not used, can be undefined.
 	  *
-	  * Only form, name, and action, must be defined. 
+	  * Only form, name, and action, must be defined.
 	  * Then, else (*parentDfn / indexDfn ) or *node must be defined.
 	  * Others value are for result only.
 	  */
-	static bool	getInternalNodeByName (CForm *form, const char *name, const CFormDfn **parentDfn, uint &indexDfn, 
-										const CFormDfn **nodeDfn, const CType **nodeType, 
-										CFormElm **node, UFormDfn::TEntryType &type, 
+	static bool	getInternalNodeByName (CForm *form, const char *name, const CFormDfn **parentDfn, uint &indexDfn,
+										const CFormDfn **nodeDfn, const CType **nodeType,
+										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, TNodeAction action, bool &created, bool &parentVDfnArray, bool verbose, uint32 round);
 
 	/**
@@ -301,7 +301,7 @@ public:
 	bool				getStructNode (uint element, const UFormElm **result) const;
 	bool				getStructNode (uint element, UFormElm **result);
 	UFormDfn			*getStructDfn ();
-	
+
 	// From CFormElm
 	bool				isUsed (const CForm *form) const;
 	xmlNodePtr			write (xmlNodePtr node, const CForm *form, const char *structName, bool forceWrite = false) const;
@@ -645,7 +645,7 @@ inline bool CFormElm::convertValue (bool &result, const char *value) const
 
 	// Error message
 	warning (false, "convertValue", "Can't convert the string \"%s\" in boolean.", value);
-	
+
 	return false;
 }
 
@@ -667,7 +667,7 @@ inline bool CFormElm::convertValue (NLMISC::CRGBA &result, const char *value) co
 
 	// Error message
 	warning (false, "convertValue", "Can't convert the string \"%s\" in RGB color.", value);
-	
+
 	return false;
 }
 

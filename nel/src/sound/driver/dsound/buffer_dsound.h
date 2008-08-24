@@ -34,7 +34,7 @@ namespace NLSOUND {
 /**
  *  Buffer for the DSound implementation of the audio driver.
  *
- * A buffer represents a sound file loaded in RAM. 
+ * A buffer represents a sound file loaded in RAM.
  *
  * \author Peter Hanappe, Olivier Cado
  * \author Nevrax France
@@ -61,7 +61,7 @@ public:
     virtual uint32			getSize() const				{ return _Size; }
 
 	/// Return the duration (in ms) of the sample in the buffer
-    virtual float			getDuration() const; 
+    virtual float			getDuration() const;
 
     /// Return true if the buffer is stereo, false if mono
     virtual bool			isStereo() const			{ return (_Format == Stereo8) || (_Format == Stereo16); }
@@ -85,7 +85,7 @@ public:
 	 */
 	//virtual bool		fillMore( void *src, uint32 srcsize )	{ throw ESoundDriverNotSupp(); }
 
-	
+
 	bool					readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize);
 
 	bool					readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
@@ -108,7 +108,7 @@ private:
 
     uint8*			_Data;
 
-    uint32			_Size; 
+    uint32			_Size;
 
     TSampleFormat	_Format;
 

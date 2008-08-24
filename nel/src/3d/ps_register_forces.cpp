@@ -1,5 +1,5 @@
 /** \file ps_register_forces.cpp
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *
@@ -30,10 +30,10 @@ namespace NL3D
 	void CPSUtil::registerForces()
 	{
 			NLMISC_REGISTER_CLASS(CPSSpring);
-		NLMISC_REGISTER_CLASS(CPSDirectionnalForce); 
-		NLMISC_REGISTER_CLASS(CPSGravity); 
+		NLMISC_REGISTER_CLASS(CPSDirectionnalForce);
+		NLMISC_REGISTER_CLASS(CPSGravity);
 		NLMISC_REGISTER_CLASS(CPSBrownianForce);
-		NLMISC_REGISTER_CLASS(CPSCentralGravity); 
+		NLMISC_REGISTER_CLASS(CPSCentralGravity);
 		NLMISC_REGISTER_CLASS(CPSFluidFriction);
 		NLMISC_REGISTER_CLASS(CPSTurbul);
 		NLMISC_REGISTER_CLASS(CPSCylindricVortex);

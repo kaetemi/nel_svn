@@ -34,7 +34,7 @@
 #include <set>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

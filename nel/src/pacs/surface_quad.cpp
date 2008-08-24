@@ -252,7 +252,7 @@ void	NLPACS::CQuadBranch::serial(NLMISC::IStream &f)
 
 		if (f.isReading())
 		{
-			CQuadLeaf	*leaf; 
+			CQuadLeaf	*leaf;
 			CQuadBranch	*branch;
 			f.serial(childType);
 			switch (childType)
@@ -261,7 +261,7 @@ void	NLPACS::CQuadBranch::serial(NLMISC::IStream &f)
 				_Children[child] = NULL;
 				break;
 			case LeafChild:
-				leaf = new CQuadLeaf(); 
+				leaf = new CQuadLeaf();
 				_Children[child] = leaf;
 				leaf->serial(f);
 				break;
@@ -338,7 +338,7 @@ void	NLPACS::CSurfaceQuadTree::serial(NLMISC::IStream &f)
 	f.serial(_BBox);
 	if (f.isReading())
 	{
-		CQuadLeaf	*leaf; 
+		CQuadLeaf	*leaf;
 		CQuadBranch	*branch;
 
 		f.serial(childType);

@@ -28,7 +28,7 @@
 #include "nel/3d/track_sampled_quat.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -41,14 +41,14 @@ public:
 	// Param of animation
 	bool					LoopMode;
 	float					BeginTime;
-	float					EndTime; 
+	float					EndTime;
 	float					TotalRange;
 	float					OOTotalRange;
 	// The frame Time == (EndTime-BeginTime)/NumKeys
 	float					DeltaTime;
 	float					OODeltaTime;
 };
-	
+
 
 // ***************************************************************************
 /** Used to build a CTrackSamplePack from CTrackSampledQuat
@@ -97,7 +97,7 @@ public:
 	// not designed to be serialized
 	CTrackSampledQuatSmallHeader() {nlstop;}
 	NLMISC_DECLARE_CLASS (CTrackSampledQuatSmallHeader);
-	
+
 	/// From UTrack/ITrack.
 	// @{
 	virtual bool					getLoopMode() const;
@@ -110,7 +110,7 @@ public:
 	// @}
 
 protected:
-	// Ptr on global data. only one in CAnimation 
+	// Ptr on global data. only one in CAnimation
 	CTrackSamplePack				*_TrackSamplePack;
 	// The index of misc Anim header data in _TrackSamplePack->TrackHeaders
 	uint8							_IndexTrackHeader;
@@ -122,8 +122,8 @@ protected:
 	// same code than CTrackSampledCommon
 	enum	TEvalType	{EvalDiscard, EvalKey0, EvalInterpolate};
 	TEvalType						evalTime (const TAnimationTime& date, uint &keyId0, uint &keyId1, float &interpValue);
-	
-};	
+
+};
 
 
 } // NL3D

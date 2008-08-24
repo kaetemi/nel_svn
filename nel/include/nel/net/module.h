@@ -101,7 +101,7 @@ namespace NLNET
 	 *	It describe interaction with the module itself,
 	 *	with the module manager, and the module socket.
 	 */
-	class IModule : 
+	class IModule :
 		public NLMISC::CRefCount,
 		public IInterceptorRegistrar,
 		public IModuleInterceptable
@@ -131,21 +131,21 @@ namespace NLNET
 		virtual ~IModule() {}
 
 		/** Module initialization.
-		 *	If the initialization return false, then the module manager deleted 
+		 *	If the initialization return false, then the module manager deleted
 		 *	the module immediately.
 		 */
 		virtual bool			initModule(const TParsedCommandLine &initInfo) =0;
 
 		//@name Basic module information
 		//@{
-		/** Return the module ID. Each module has a local unique ID assigned 
+		/** Return the module ID. Each module has a local unique ID assigned
 		 *	by the manager during module creation.
 		 *	This ID is local because it is only valid inside a given process.
-		 *	When module are declared in another process, they receive a 
+		 *	When module are declared in another process, they receive a
 		 *	local ID that is different than the ID in their host process.
 		 */
 		virtual TModuleId			getModuleId() const =0;
-		/** Return the module name. Each module instance must have a unique 
+		/** Return the module name. Each module instance must have a unique
 		 *	name in the host process.
 		 *	If no mane is given during module creation, the module manager
 		 *	build a unique name from the module class and a number.
@@ -155,7 +155,7 @@ namespace NLNET
 		virtual const std::string	&getModuleClassName() const =0;
 		/** Return the module fully qualified name.
 		 *	the MFQN is the identifier that is used across process to identify
-		 *	each module. 
+		 *	each module.
 		 *	The MDQNis composed from the computer host name, the process ID and
 		 *	the module name.
 		 *	Format : <hostname>:<pid>:<moduleName>
@@ -179,11 +179,11 @@ namespace NLNET
 		virtual std::string	getModuleManifest() const =0;
 
 		/** Tell if the module implementation support immediate dispatching.
-		 *	Immediate dispatching is when a message is send between 
+		 *	Immediate dispatching is when a message is send between
 		 *	collocated module (i.e module on the same gateway). In that case,
 		 *	the gateway forward the module immediately to the addressee module.
 		 *	In some case, this is not the expected behavior because it give
-		 *	different result depending if the communicating modules are 
+		 *	different result depending if the communicating modules are
 		 *	collocated or not.
 		 *	It you module didn't support collocation optimisation, you must
 		 *	override this method and return false.
@@ -192,7 +192,7 @@ namespace NLNET
 		 */
 		virtual bool isImmediateDispatchingSupported() const { return true; }
 		//@}
-			
+
 		//@name Callback from the module manager
 		//@{
 		/// A Nel layer 5 service has started.
@@ -200,7 +200,7 @@ namespace NLNET
 		/// A Nel layer 5 service has stopped.
 		virtual void				onServiceDown(const std::string &serviceName, NLNET::TServiceId serviceId) = 0;
 		/** Regular update from application.
-		 *	If the application is a service, then it call CModuleManager::updateModules at each 
+		 *	If the application is a service, then it call CModuleManager::updateModules at each
 		 *	service loop.
 		 *	If the application is a regular application, then you have to call manually
 		 *	CModuleManager::updateModules at regular intervals.
@@ -229,7 +229,7 @@ namespace NLNET
 		 *	Throw an exception if the socket is not currently plug into
 		 *	the specified socket.
 		 */
-		virtual void				unplugModule(IModuleSocket *moduleSocket) 
+		virtual void				unplugModule(IModuleSocket *moduleSocket)
 			throw (EModuleNotPluggedHere)
 			=0;
 		/** Fill resultList vector with the list of socket into
@@ -272,7 +272,7 @@ namespace NLNET
 		 *	The call is blocking until receptions of the operation
 		 *	result message (or detection of the dest module module is down)
 		 */
-		virtual void		invokeModuleOperation(IModuleProxy *destModule, const NLNET::CMessage &opMsg, NLNET::CMessage &resultMsg) 
+		virtual void		invokeModuleOperation(IModuleProxy *destModule, const NLNET::CMessage &opMsg, NLNET::CMessage &resultMsg)
 			throw (EInvokeFailed)
 			=0;
 
@@ -323,14 +323,14 @@ namespace NLNET
 		};
 		/// An application defined identifier
 		uint8			DataTag;
-	
+
 		/// Pointer to next security data item (or NULL)
 		TSecurityData	*NextItem;
 
 		TSecurityData(const TCtorParam &params)
 			: DataTag(params.DataTag),
 			NextItem(NULL)
-			
+
 		{
 		}
 
@@ -349,13 +349,13 @@ namespace NLNET
 		uint8				RealDataTag;
 		std::vector<uint8>	Data;
 
-		TUnknownSecurityData(uint8 realDataTag, uint32 size) 
+		TUnknownSecurityData(uint8 realDataTag, uint32 size)
 			: TSecurityData(TSecurityData::TCtorParam(0xff)),
 			RealDataTag(realDataTag),
 			Data(size)
 		{
 		}
-		
+
 		void serial(NLMISC::CMemStream &s)
 		{
 			for (uint i=0; i<Data.size(); ++i)
@@ -367,13 +367,13 @@ namespace NLNET
 
 //	NLMISC_REGISTER_OBJECT(TSecurityData, TUnknownSecurityData, uint8, 0xff);
 
-	/** This interface is implemented by the system 
+	/** This interface is implemented by the system
 	 *	and it give convenient access to distant module information
 	 *	like module name or id,
 	 *	it also provide a helper to send module message
 	 *	without knowing the gateway.
-	 *	Note that even collocated module (i.e. module created in the 
-	 *	same process) must be accessed by module proxy or message 
+	 *	Note that even collocated module (i.e. module created in the
+	 *	same process) must be accessed by module proxy or message
 	 *	send by through the socket interface.
 	 */
 	class IModuleProxy : public NLMISC::CRefCount
@@ -381,10 +381,10 @@ namespace NLNET
 	public:
 		virtual ~IModuleProxy() {}
 
-		/** Return the module ID. Each module has a local unique ID assigned 
+		/** Return the module ID. Each module has a local unique ID assigned
 		 *	by the manager during module creation.
 		 *	This ID is local because it is only valid inside a given process.
-		 *	When module are declared in another process, they receive a 
+		 *	When module are declared in another process, they receive a
 		 *	local ID that is different than the ID in their host process.
 		 */
 		virtual TModuleId		getModuleProxyId() const =0;
@@ -425,11 +425,11 @@ namespace NLNET
 		 */
 		virtual CGatewayRoute		*getGatewayRoute() const =0;
 
-		/** Return the module name. Each module instance must have a unique 
+		/** Return the module name. Each module instance must have a unique
 		 *	name in the host process.
 		 *	If no mane is given during module creation, the module manager
 		 *	build a unique name from the module class and a number.
-		 *	Distant module name are always the FQMN, ie, it is the same as 
+		 *	Distant module name are always the FQMN, ie, it is the same as
 		 *	getModuleFullyQualifiedName()
 		 */
 		virtual const std::string &getModuleName() const =0;
@@ -561,7 +561,7 @@ namespace NLNET
 	} \
 
 	/** Interface for module factory.
-	 *	Each module MUST provide a factory and 
+	 *	Each module MUST provide a factory and
 	 *	register an instance of the factory in
 	 *	the module manager.
 	 */
@@ -596,7 +596,7 @@ namespace NLNET
 		 *	The destructor while unregister the module factory from the
 		 *	factory registry and ALL module factored
 		 *	will also be deleted.
-		 */	
+		 */
 		virtual ~IModuleFactory();
 
 		/** Called by concrete factory to initialise the factored object */
@@ -764,7 +764,7 @@ namespace NLNET
 				if (it != _ModuleInterceptors.end())
 					++it;
 			}
-			
+
 			while (it != _ModuleInterceptors.end())
 			{
 				IModuleInterceptable *mi = *it;
@@ -778,14 +778,14 @@ namespace NLNET
 
 				++it;
 			}
-			
+
 			dummy = NULL;
 			return NULL;
 		}
 	protected:
 		// Init base module, init module name
 		bool				initModule(const TParsedCommandLine &initInfo);
-		
+
 		void				plugModule(IModuleSocket *moduleSocket) throw (EModuleAlreadyPluggedHere);
 		void				unplugModule(IModuleSocket *moduleSocket)  throw (EModuleNotPluggedHere);
 		void				getPluggedSocketList(std::vector<IModuleSocket*> &resultList);
@@ -850,10 +850,10 @@ namespace NLNET
 			return _Route;
 		}
 
-		/** Return the module ID. Each module has a local unique ID assigned 
+		/** Return the module ID. Each module has a local unique ID assigned
 		 *	by the manager during module creation.
 		 *	This ID is local because it is only valid inside a given process.
-		 *	When module are declared in another process, they receive a 
+		 *	When module are declared in another process, they receive a
 		 *	local ID that is different than the ID in their host process.
 		 */
 		virtual TModuleId	getModuleProxyId() const;
@@ -867,11 +867,11 @@ namespace NLNET
 
 		CGatewayRoute		*getGatewayRoute() const;
 
-		/** Return the module name. Each module instance must have a unique 
+		/** Return the module name. Each module instance must have a unique
 		 *	name in the host process.
 		 *	If no mane is given during module creation, the module manager
 		 *	build a unique name from the module class and a number.
-		 *	Distant module name are always the FQMN, ie, it is the same as 
+		 *	Distant module name are always the FQMN, ie, it is the same as
 		 *	getModuleFullyQualifiedName()
 		 */
 		virtual const std::string &getModuleName() const;
@@ -888,8 +888,8 @@ namespace NLNET
 		 */
 		virtual void		sendModuleMessage(IModule *senderModule, const NLNET::CMessage &message)
 			throw (EModuleNotReachable);
-		
-		virtual const TSecurityData *getFirstSecurityData() const 
+
+		virtual const TSecurityData *getFirstSecurityData() const
 		{
 			return _SecurityData;
 		}
@@ -911,7 +911,7 @@ namespace NLNET
 			for (; first != last; ++first)
 			{
 				IModuleProxy *proxy = static_cast<IModuleProxy*>(*first);
-				
+
 				proxy->sendModuleMessage(sender, message);
 			}
 		}

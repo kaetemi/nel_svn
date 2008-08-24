@@ -49,7 +49,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -61,7 +61,7 @@ H_AUTO_DECL( NL3D_MeshMRMGeom_RenderShadow )
 // ***************************************************************************
 // ***************************************************************************
 
-	
+
 // ***************************************************************************
 void		CMeshMRMSkinnedGeom::CLod::serial(NLMISC::IStream &f)
 {
@@ -212,7 +212,7 @@ void			CMeshMRMSkinnedGeom::changeMRMDistanceSetup(float distanceFinest, float d
 	_LevelDetail.DistanceMiddle= distanceMiddle;
 	_LevelDetail.DistanceCoarsest= distanceCoarsest;
 
-	// compile 
+	// compile
 	_LevelDetail.compileDistanceSetup();
 }
 
@@ -235,7 +235,7 @@ void			CMeshMRMSkinnedGeom::build(CMesh::CMeshBuild &m,
 
 	/// 0. First, make bbox.
 	//======================
-	// NB: this is equivalent as building BBox from MRM VBuffer, because CMRMBuilder create new vertices 
+	// NB: this is equivalent as building BBox from MRM VBuffer, because CMRMBuilder create new vertices
 	// which are just interpolation of original vertices.
 	_BBox= makeBBox(m.Vertices);
 
@@ -311,11 +311,11 @@ void			CMeshMRMSkinnedGeom::build(CMesh::CMeshBuild &m,
 	}
 
 	// No Blend Shapes
-	//================================================	
+	//================================================
 	nlassert (meshBuildMRM.BlendShapes.size() == 0);
 
 	// Compact bone id and build a bone id names
-	//================================================	
+	//================================================
 
 	// Remap
 	std::map<uint, uint> remap;
@@ -333,7 +333,7 @@ void			CMeshMRMSkinnedGeom::build(CMesh::CMeshBuild &m,
 	{
 		// Found one ?
 		bool found=false;
-		
+
 		// For each weight
 		uint weight;
 		for (weight=0; weight<NL3D_MESH_MRM_SKINNED_MAX_MATRIX; weight++)
@@ -645,7 +645,7 @@ void	CMeshMRMSkinnedGeom::render(IDriver *drv, CTransformShape *trans, float pol
 
 	// force normalisation of normals..
 	bool	bkupNorm= drv->isForceNormalize();
-	drv->forceNormalize(true);			
+	drv->forceNormalize(true);
 
 
 	// Setup meshVertexProgram
@@ -754,7 +754,7 @@ sint	CMeshMRMSkinnedGeom::renderSkinGroupGeom(CMeshMRMSkinnedInstance	*mi, float
 	// since not tested in supportSkinGrouping(), must test _Lods.empty(): no lod, no draw
 	if(_Lods.empty())
 		return 0;
-		
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -807,15 +807,15 @@ sint	CMeshMRMSkinnedGeom::renderSkinGroupGeom(CMeshMRMSkinnedInstance	*mi, float
 	nlassert(mi->_RawSkinCache);
 
 	H_AUTO( NL3D_RawSkinning );
-	
+
 	// RawSkin do all the job in optimized way: Skinning, copy to VBHard and Geomorph.
 
 	// skinning with normal, but no tangent space
 	applyRawSkinWithNormal (lod, *(mi->_RawSkinCache), skeleton, vbDest, alphaLod);
 
 	// Vertices are packed in RawSkin mode (ie no holes due to MRM!)
-	return	mi->_RawSkinCache->Geomorphs.size() + 
-			mi->_RawSkinCache->TotalSoftVertices + 
+	return	mi->_RawSkinCache->Geomorphs.size() +
+			mi->_RawSkinCache->TotalSoftVertices +
 			mi->_RawSkinCache->TotalHardVertices;
 }
 
@@ -823,7 +823,7 @@ sint	CMeshMRMSkinnedGeom::renderSkinGroupGeom(CMeshMRMSkinnedInstance	*mi, float
 void	CMeshMRMSkinnedGeom::renderSkinGroupPrimitives(CMeshMRMSkinnedInstance	*mi, uint baseVertex, std::vector<CSkinSpecularRdrPass> &specularRdrPasses, uint skinIndex)
 {
 	H_AUTO( NL3D_MeshMRMGeom_rdrSkinGrpPrimitives );
-	
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -901,7 +901,7 @@ void	CMeshMRMSkinnedGeom::renderSkinGroupPrimitives(CMeshMRMSkinnedInstance	*mi,
 void	CMeshMRMSkinnedGeom::renderSkinGroupSpecularRdrPass(CMeshMRMSkinnedInstance	*mi, uint rdrPassId)
 {
 	H_AUTO( NL3D_MeshMRMGeom_rdrSkinGrpSpecularRdrPass );
-	
+
 	// get a ptr on scene
 	CScene				*ownerScene= mi->getOwnerScene();
 	// get a ptr on renderTrav
@@ -999,13 +999,13 @@ void	CMeshMRMSkinnedGeom::updateShiftedTriangleCache(CMeshMRMSkinnedInstance *mi
 				// index, and fill
 				CIndexBufferRead ibaRead;
 				pbList[i]->lock (ibaRead);
-				#ifndef NL_SKINNED_MESH_MRM_INDEX16				
+				#ifndef NL_SKINNED_MESH_MRM_INDEX16
 					nlassert(iba.getFormat() == CIndexBuffer::Indices32);
 					const uint32	*pSrcTri= (const uint32 *) ibaRead.getPtr();
 					uint32	*pDstTri= (uint32 *) iba.getPtr() + dstRdrPass.Triangles;
 					for(;nIds>0;nIds--,pSrcTri++,pDstTri++)
 						*pDstTri= *pSrcTri + baseVertex;
-				#else				
+				#else
 					nlassert(iba.getFormat() == CIndexBuffer::Indices16);
 					const uint16	*pSrcTri= (const uint16 *) ibaRead.getPtr();
 					uint16	*pDstTri= (uint16 *) iba.getPtr() + dstRdrPass.Triangles;
@@ -1169,7 +1169,7 @@ void	CMeshMRMSkinnedGeom::computeBonesId (CSkeletonModel *skeleton)
 					}
 					else
 						break;
-				}				
+				}
 			}
 
 			// Compile spheres
@@ -1297,7 +1297,7 @@ void	CMeshMRMSkinnedGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformSha
 	// if no _Lods, no draw
 	if(_Lods.empty())
 		return;
-	
+
 	// get the result of the Load Balancing.
 	float	alphaMRM= _LevelDetail.getLevelDetailFromPolyCount(polygonCount);
 
@@ -1328,7 +1328,7 @@ void	CMeshMRMSkinnedGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformSha
 	if(triCount)
 	{
 		// tri per VBFormat
-		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshMRMProfileTriVBFormat, 
+		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshMRMProfileTriVBFormat,
 			NL3D_MESH_SKIN_MANAGER_VERTEXFORMAT, triCount);
 
 		rdrTrav->Scene->BenchRes.NumMeshMRMVBufferStd++;
@@ -1343,15 +1343,15 @@ bool	CMeshMRMSkinnedGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAAB
 {
 	bbox.setCenter(CVector::Null);
 	bbox.setHalfSize(CVector::Null);
-	
+
 	if(!skeleton)
 		return false;
-	
+
 	// get the bindpos of the wanted bone
 	nlassert(boneId<skeleton->Bones.size());
 	const CMatrix		&invBindPos= skeleton->Bones[boneId].getBoneBase().InvBindPos;
-	
-	
+
+
 	// Find the Geomorph space: to process only real vertices, not geomorphed ones.
 	uint	nGeomSpace= 0;
 	uint	lod;
@@ -1359,10 +1359,10 @@ bool	CMeshMRMSkinnedGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAAB
 	{
 		nGeomSpace= max(nGeomSpace, (uint)_Lods[lod].Geomorphs.size());
 	}
-	
+
 	// Prepare BBox compute
 	bool	bbEmpty= true;
-	
+
 	// Remap the vertex, and compute the wanted bone bbox
 	// for true vertices
 	const uint vertexCount = _VBufferFinal.getNumVertices();
@@ -1372,7 +1372,7 @@ bool	CMeshMRMSkinnedGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAAB
 		// get the vertex position.
 		CVector	vertex;
 		_VBufferFinal.getPos (vertex, vertices[vert]);
-		
+
 		// For each weight
 		uint weight;
 		for (weight=0; weight<NL3D_MESH_SKINNING_MAX_MATRIX; weight++)
@@ -1399,9 +1399,9 @@ bool	CMeshMRMSkinnedGeom::getSkinBoneBBox(CSkeletonModel *skeleton, NLMISC::CAAB
 			}
 			else
 				break;
-		}				
+		}
 	}
-	
+
 	// return true if some influence found
 	return !bbEmpty;
 }
@@ -1469,7 +1469,7 @@ bool			CMeshMRMSkinned::isCompatible(const CMesh::CMeshBuild &m)
 }
 
 // ***************************************************************************
-void			CMeshMRMSkinned::build (CMeshBase::CMeshBaseBuild &mBase, CMesh::CMeshBuild &m, 
+void			CMeshMRMSkinned::build (CMeshBase::CMeshBaseBuild &mBase, CMesh::CMeshBuild &m,
 								 const CMRMParameters &params)
 {
 	nlassert (isCompatible(m));
@@ -1882,7 +1882,7 @@ void		CMeshMRMSkinnedGeom::updateRawSkinNormal(bool enabled, CMeshMRMSkinnedInst
 				CIndexBufferReadWrite ibaWrite;
 				skinLod.RdrPass[i].lock (ibaWrite);
 				#ifndef NL_SKINNED_MESH_MRM_INDEX16
-					nlassert(ibaWrite.getFormat() == CIndexBuffer::Indices32)									
+					nlassert(ibaWrite.getFormat() == CIndexBuffer::Indices32)
 					uint32	*dstTriPtr= (uint32	*) ibaWrite.getPtr();
 					uint32	numIndices= lod.RdrPass[i].PBlock.size();
 					for(uint j=0;j<numIndices;j++, srcTriPtr++, dstTriPtr++)
@@ -1894,7 +1894,7 @@ void		CMeshMRMSkinnedGeom::updateRawSkinNormal(bool enabled, CMeshMRMSkinnedInst
 						else
 							*dstTriPtr= vertexRemap[vid] + numGeoms;
 					}
-				#else				
+				#else
 					nlassert(ibaWrite.getFormat() == CIndexBuffer::Indices16);
 					uint16	*dstTriPtr= (uint16 *) ibaWrite.getPtr();
 					uint32	numIndices= lod.RdrPass[i].PBlock.size();
@@ -1916,7 +1916,7 @@ void		CMeshMRMSkinnedGeom::updateRawSkinNormal(bool enabled, CMeshMRMSkinnedInst
 
 // ***************************************************************************
 // ***************************************************************************
-// CMeshMRMSkinnedGeom Shadow Skin Rendering 
+// CMeshMRMSkinnedGeom Shadow Skin Rendering
 // ***************************************************************************
 // ***************************************************************************
 
@@ -1950,7 +1950,7 @@ sint			CMeshMRMSkinnedGeom::renderShadowSkinGeom(CMeshMRMSkinnedInstance	*mi, ui
 	// if no lods, there should be no verts, but still ensure no bug in skinning
 	if(_Lods.empty())
 		return 0;
-	
+
 	// If the Lod is too big to render in the VBufferHard
 	if(numVerts>remainingVertices)
 		// return Failure
@@ -1976,7 +1976,7 @@ sint			CMeshMRMSkinnedGeom::renderShadowSkinGeom(CMeshMRMSkinnedInstance	*mi, ui
 	static	vector<CMatrix3x4>		boneMat3x4;
 	CLod	&lod= _Lods[_Lods.size()-1];
 	computeBoneMatrixes3x4(boneMat3x4, lod.MatrixInfluences, skeleton);
-	
+
 	_ShadowSkin.applySkin((CVector*)vbDest, boneMat3x4);
 
 
@@ -2402,7 +2402,7 @@ uint	CMeshMRMSkinnedGeom::NumCacheVertexNormal3= NL_BlockByteL1 / sizeof(CRawVer
 uint	CMeshMRMSkinnedGeom::NumCacheVertexNormal4= NL_BlockByteL1 / sizeof(CRawVertexNormalSkinned4);
 
 
-/* Old School template: include the same file with define switching, 
+/* Old School template: include the same file with define switching,
 	Was used before to reuse same code for and without SSE.
 	Unuseful now because SSE removed, but keep it for possible future work on it.
 */

@@ -33,7 +33,7 @@ namespace NLMISC
 }
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -88,7 +88,7 @@ private:
 	/// Constructor
 	CFastHLSModifier();
 	~CFastHLSModifier();
-	
+
 	void		convertDDSBitmapDXTC1Or1A(NLMISC::CBitmap &dst, const NLMISC::CBitmap &src, uint8 dh, uint dLum, uint dSat);
 	void		convertDDSBitmapDXTC3Or5(NLMISC::CBitmap &dst, const NLMISC::CBitmap &src, uint8 dh, uint dLum, uint dSat);
 };

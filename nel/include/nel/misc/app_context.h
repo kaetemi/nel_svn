@@ -1,5 +1,5 @@
 /** \file app_context.h
- * Classes for managing NeL context in order to support multi module NeL 
+ * Classes for managing NeL context in order to support multi module NeL
  * application.
  */
 
@@ -139,7 +139,7 @@ namespace NLMISC
 		virtual void setNoAssert(bool noAssert);
 		virtual bool getAlreadyCreateSharedAmongThreads();
 		virtual void setAlreadyCreateSharedAmongThreads(bool b);
-	
+
 	private:
 		/// Singleton registry
 		typedef std::map<std::string, void*>	TSingletonRegistry;
@@ -155,7 +155,7 @@ namespace NLMISC
 		bool DebugNeedAssert;
 		bool NoAssert;
 		bool AlreadyCreateSharedAmongThreads;
-	
+
 	};
 
 	/** This class implement the context interface for the a library module.
@@ -271,7 +271,7 @@ namespace NLMISC
 	private:
 
 	 /** This macro is the complement of the previous one.
-	 *	It must be put in a cpp file to implement the static 
+	 *	It must be put in a cpp file to implement the static
 	 *	property of the singleton.
 	 */
 #define NLMISC_SAFE_SINGLETON_IMPL(className) className *className::_Instance = NULL;

@@ -29,7 +29,7 @@
 #include "nel/3d/vegetable_def.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

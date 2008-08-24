@@ -1,5 +1,5 @@
 /** \file ps_register_emitters.cpp
- * 
+ *
  */
 /* Copyright, 2002 Nevrax Ltd.
  *
@@ -39,6 +39,6 @@ namespace NL3D
 		NLMISC_REGISTER_CLASS(CPSEmitterConic);
 		NLMISC_REGISTER_CLASS(CPSSphericalEmitter);
 		NLMISC_REGISTER_CLASS(CPSRadialEmitter);
-		
+
 	}
 } // NL3D

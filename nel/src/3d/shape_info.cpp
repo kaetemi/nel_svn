@@ -41,7 +41,7 @@ namespace NL3D
 
 // ***************************************************************************
 void CShapeInfo::swap(CShapeInfo &other)
-{	
+{
 	Tris.swap(other.Tris);
 	std::swap(LocalBBox, (other.LocalBBox));
 }
@@ -92,7 +92,7 @@ void CShapeInfo::build(const IShape &shape)
 		// Get the first lod mesh geom
 		build(*meshMRM, meshMRM->getMeshGeom ());
 	}
-	// compute bbox	
+	// compute bbox
 	if (Tris.empty())
 	{
 		LocalBBox.setMinMax(CVector::Null, CVector::Null);
@@ -108,7 +108,7 @@ void CShapeInfo::build(const IShape &shape)
 			LocalBBox.extend(Tris[k].V1);
 			LocalBBox.extend(Tris[k].V2);
 		}
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -129,19 +129,19 @@ void CShapeInfo::build(const CMeshBase &meshBase, const CMeshGeom &meshGeom)
 		{
 			// Get the material
 			const CMaterial &material = meshBase.getMaterial (meshGeom.getRdrPassMaterial ( block, pass));
-			
+
 			if (material.getBlend()) continue; // don't test against transparent materials
 			//if (material.getAlphaTest()) continue; // don't test against transparent materials
-			
+
 
 
 			// Get the primitive block
-			const CIndexBuffer &primitive=meshGeom.getRdrPassPrimitiveBlock ( block, pass);			
+			const CIndexBuffer &primitive=meshGeom.getRdrPassPrimitiveBlock ( block, pass);
 			// Copy triangles
 			CIndexBufferRead iba;
 			primitive.lock (iba);
 			if (iba.getFormat() == CIndexBuffer::Indices32)
-			{			
+			{
 				const uint32* triIndex= (const uint32*) iba.getPtr ();
 				uint numTri=primitive.getNumIndexes ()/3;
 				uint tri;
@@ -187,14 +187,14 @@ void CShapeInfo::build(const CMeshBase &meshBase, const CMeshMRMGeom &meshGeom)
 	{
 		// Get the material
 		const CMaterial &material = meshBase.getMaterial (meshGeom.getRdrPassMaterial ( 0, pass));
-		
+
 		if (material.getBlend()) continue; // don't test against transparent materials
 		//if (material.getAlphaTest()) continue; // don't test against transparent materials
-		
+
 
 		// Get the primitive block
 		const CIndexBuffer &primitive=meshGeom.getRdrPassPrimitiveBlock ( 0, pass);
-		
+
 		// Copy triangles
 		CIndexBufferRead iba;
 		primitive.lock (iba);

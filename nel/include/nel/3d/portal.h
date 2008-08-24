@@ -56,7 +56,7 @@ class CPortal
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 
 public:
 
@@ -76,7 +76,7 @@ public:
 
 	/// set all link to clusters to NULL.
 	void resetClusterLinks();
-	
+
 	/// return false if more than 2 clusters added
 	bool setCluster (CCluster *cluster);
 
@@ -97,7 +97,7 @@ public:
 	void serial (NLMISC::IStream& f);
 
 	void setWorldMatrix (const NLMISC::CMatrix &WM);
-	
+
 
 	void setName (std::string &name) { _Name = name; }
 

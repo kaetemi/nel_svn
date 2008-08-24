@@ -37,7 +37,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -170,7 +170,7 @@ private:
 // ***************************************************************************
 /**
  *	Mirror struct of CVegetableInstanceGroup, for reserveIg system in CVegetableManager.
- *	Internal to VegetableManager. 
+ *	Internal to VegetableManager.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2001

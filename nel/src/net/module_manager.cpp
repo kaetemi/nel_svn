@@ -56,7 +56,7 @@ NLMISC_CATEGORISED_COMMAND(net, initModuleManager, "force the initialisation of 
 
 
 namespace NLNET
-{		
+{
 	/// Implementation class for module manager
 	class CModuleManager : public IModuleManager, public ICommandsHandler
 	{
@@ -70,7 +70,7 @@ namespace NLNET
 				delete _Instance;
 			_Instance = NULL;
 		}
-				
+
 		struct TModuleLibraryInfo : public CRefCount
 		{
 			/// The file name of the library with access path
@@ -89,7 +89,7 @@ namespace NLNET
 		 *	generation system if not empty
 		 */
 		string _UniqueNameRoot;
-			
+
 		typedef	map<std::string, CSmartPtr<TModuleLibraryInfo> >	TModuleLibraryInfos;
 		/// Module library registry
 		TModuleLibraryInfos		_ModuleLibraryRegistry;
@@ -122,7 +122,7 @@ namespace NLNET
 		TModuleGateways			_ModuleGatewaysRegistry;
 
 		///////////////////////////////////////////////////////////////////
-		// Methods 
+		// Methods
 		///////////////////////////////////////////////////////////////////
 
 		static bool		isInitialized()
@@ -333,18 +333,18 @@ namespace NLNET
 			}
 			else if (it->second != moduleFactory)
 			{
-				nlinfo("The module factory @%p for class '%s' is not the registered one, ignoring.", 
+				nlinfo("The module factory @%p for class '%s' is not the registered one, ignoring.",
 					moduleFactory,
 					moduleFactory->getModuleClassName().c_str());
 				return;
 			}
 
 			nlinfo("ModuleManager : unregistering factory for module class '%s'", moduleFactory->getModuleClassName().c_str());
-				
+
 			// remove the factory
 			_ModuleFactoryRegistry.erase(it);
 		}
-		
+
 
 		/** Fill the vector with the list of available module.
 		 *	Note that the vector is not cleared before being filled.
@@ -357,7 +357,7 @@ namespace NLNET
 				moduleClassList.push_back(first->first);
 			}
 		}
-		
+
 		/** Create a new module instance.
 		 *	The method create a module of the specified class with the
 		 *	specified local name.
@@ -380,7 +380,7 @@ namespace NLNET
 			{
 				// we need to generate a name
 				uint i=0;
-				do 
+				do
 				{
 					moduleName = className+toString(i++);
 				} while (_ModuleInstances.getB(moduleName) != NULL);
@@ -613,11 +613,11 @@ namespace NLNET
 //		}
 
 		virtual IModuleProxy *createModuleProxy(
-			IModuleGateway *gateway, 
+			IModuleGateway *gateway,
 			CGatewayRoute *route,
 			uint32 distance,
 			IModule *localModule,
-			const std::string &moduleClassName, 
+			const std::string &moduleClassName,
 			const std::string &moduleFullyQualifiedName,
 			const std::string &moduleManifest,
 			TModuleId foreignModuleId)
@@ -647,14 +647,14 @@ namespace NLNET
 			nlassert(it != _ModuleProxyIds.getAToBMap().end());
 			CRefPtr<IModuleProxy> sanityCheck(it->second.getPtr());
 
-			nldebug("Releasing module proxy ('%s', ID : %u)", 
-				it->second->getModuleName().c_str(), 
+			nldebug("Releasing module proxy ('%s', ID : %u)",
+				it->second->getModuleName().c_str(),
 				moduleProxyId);
 
 			// remove the smart ptr, must delete the proxy
 //			_ModuleProxyInstances.removeWithB(it->second);
 			_ModuleProxyIds.removeWithB(it->second);
-			
+
 			nlassertex(sanityCheck == NULL, ("Someone has kept a smart pointer on the proxy '%s' of class '%s'", sanityCheck->getModuleName().c_str(), sanityCheck->getModuleClassName().c_str()));
 		}
 
@@ -800,7 +800,7 @@ namespace NLNET
 				for (; first != last; ++first)
 				{
 					IModule *module = first->second;
-					log.displayNL("    ID:%5u : \tname = '%s' \tclass = '%s'", 
+					log.displayNL("    ID:%5u : \tname = '%s' \tclass = '%s'",
 						module->getModuleId(),
 						module->getModuleName().c_str(),
 						module->getModuleClassName().c_str());
@@ -814,7 +814,7 @@ namespace NLNET
 					IModuleProxy *modProx = first->second;
 					if (modProx->getGatewayRoute() != NULL)
 					{
-						log.displayNL("    ID:%5u (Foreign ID : %u) : \tname = '%s' \tclass = '%s'", 
+						log.displayNL("    ID:%5u (Foreign ID : %u) : \tname = '%s' \tclass = '%s'",
 							modProx->getModuleProxyId(),
 							modProx->getForeignModuleId(),
 							modProx->getModuleName().c_str(),
@@ -822,7 +822,7 @@ namespace NLNET
 					}
 					else
 					{
-						log.displayNL("    ID:%5u (Local proxy for module ID : %u) : \tname = '%s' \tclass = '%s'", 
+						log.displayNL("    ID:%5u (Local proxy for module ID : %u) : \tname = '%s' \tclass = '%s'",
 							modProx->getModuleProxyId(),
 							modProx->getForeignModuleId(),
 							modProx->getModuleName().c_str(),
@@ -849,7 +849,7 @@ namespace NLNET
 	{
 		CModuleManager::releaseInstance();
 	}
-	
+
 	NLMISC_SAFE_SINGLETON_IMPL(CModuleManager);
 
 

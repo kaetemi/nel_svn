@@ -26,7 +26,7 @@
 #include "nel/3d/vegetable_instance_group.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

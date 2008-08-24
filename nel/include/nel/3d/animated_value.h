@@ -30,7 +30,7 @@
 #include "nel/misc/rgba.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -47,7 +47,7 @@ class IAnimatedValue
 public:
 	virtual ~IAnimatedValue() {}
 
-	/** 
+	/**
 	  * The blend method. This method blend two the animated values and store the result
 	  * in the object. The two first args can be reference on the object itself.
 	  * Idealy, it performs the operation this->value=(this->value*blendFactor + value*(1.f-blendFactor))
@@ -57,8 +57,8 @@ public:
 	  */
 	virtual void blend (const IAnimatedValue& value, float blendFactor) =0;
 
-	/** 
-	  * An assignation method. This method assign a values in the object. 
+	/**
+	  * An assignation method. This method assign a values in the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -92,9 +92,9 @@ public:
 		// Blend
 		Value=(T) (Value*blendFactor+pValue->Value*(1.f-blendFactor));
 	}
-	
-	/** 
-	  * An assignation method. This method assign a values in the object. 
+
+	/**
+	  * An assignation method. This method assign a values in the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -146,8 +146,8 @@ public:
 
 	}
 
-	/** 
-	  * An assignation method. This method assign a values in the object. 
+	/**
+	  * An assignation method. This method assign a values in the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -195,8 +195,8 @@ public:
 		Value.blendFromui (pValue->Value, this->Value, (uint)(256.f*blendFactor));
 	}
 
-	/** 
-	  * An assignation method. This method assign a values in the object. 
+	/**
+	  * An assignation method. This method assign a values in the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -245,9 +245,9 @@ public:
 		if (blendFactor<0.5f)
 			Value=pValue->Value;
 	}
-	
-	/** 
-	  * An assignation method. This method assign a values in the object. 
+
+	/**
+	  * An assignation method. This method assign a values in the object.
 	  *
 	  * \param value is the new value.
 	  */

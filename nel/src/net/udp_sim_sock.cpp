@@ -118,7 +118,7 @@ void CUdpSimSock::sendUDP (const uint8 *buffer, uint32& len, const CInetAddress 
 	if ((float)rand()/(float)(RAND_MAX)*100.0f >= _OutPacketLoss)
 	{
 		sint32 lag = _OutLag /*+ (rand()%40) - 20*/;// void disordering
-		
+
 		if (lag > 100)
 		{
 			// send the packet later
@@ -205,7 +205,7 @@ void				CUdpSimSock::setSimValues (NLMISC::CConfigFile &cf)
 	cf.setCallback ("SimOutPacketLost", cbSimVar);
 	cf.setCallback ("SimOutPacketDuplication", cbSimVar);
 	cf.setCallback ("SimOutPacketDisordering", cbSimVar);
-	
+
 	CConfigFile::CVar *pv;
 	pv = cf.getVarPtr("SimInLag");
 	if( pv )
@@ -279,7 +279,7 @@ bool				CUdpSimSock::dataAvailable ()
 				uint len = 10000;
 				UdpSock.receivedFrom (buffer, len, addr);
 			}
-			
+
 			// packet lost
 			return false;
 		}
@@ -296,7 +296,7 @@ bool				CUdpSimSock::receive (uint8 *buffer, uint32& len, bool throw_exception)
 				throw Exception ("no data available");
 			return false;
 		}
-		
+
 		CBufferizedOutPacket *bp = _BufferizedInPackets.front ();
 		uint32 s = min (len, bp->PacketSize);
 		memcpy (buffer, bp->Packet, s);
@@ -317,7 +317,7 @@ CSock::TSockResult	CUdpSimSock::send (const uint8 *buffer, uint32& len, bool thr
 	sendUDP (buffer, len);
 	return CSock::Ok;
 }
-	
+
 void CUdpSimSock::sendTo (const uint8 *buffer, uint32& len, const CInetAddress& addr)
 {
 	sendUDP (buffer, len, &addr);

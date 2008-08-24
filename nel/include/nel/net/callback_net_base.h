@@ -98,7 +98,7 @@ public:
 	virtual void displaySendQueueStat (NLMISC::CLog *log = NLMISC::InfoLog, TSockId destid = InvalidSockId) = 0;
 
 	virtual void displayThreadStat (NLMISC::CLog *log = NLMISC::InfoLog) = 0;
-	
+
 	/** Force to send all data pending in the send queue.
 	 * On a client, the hostid isn't used and must be InvalidSockId
 	 * On a server, you must provide a hostid.
@@ -107,7 +107,7 @@ public:
 	 * non-blocking flush attempt.
 	 */
 	virtual bool	flush (TSockId hostid = InvalidSockId, uint *nbBytesRemaining=NULL) = 0;
-	
+
 	/**	Appends callback array with the specified array. You can add callback only *after* adding the server or the client.
 	 * \param arraysize is the number of callback items.
 	 */
@@ -180,7 +180,7 @@ protected:
 
 	// contains callbacks
 	std::vector<TCallbackItem>	_CallbackArray;
-	
+
 	// called if the received message is not found in the callback array
 	TMsgCallback				_DefaultCallback;
 
@@ -209,7 +209,7 @@ private:
 
 	NLMISC::TTime		_LastUpdateTime;
 	NLMISC::TTime		_LastMovedStringArray;
-	
+
 	TNetCallback		 _DisconnectionCallback;
 	void				*_DisconnectionCbArg;
 

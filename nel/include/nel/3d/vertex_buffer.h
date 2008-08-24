@@ -34,13 +34,13 @@
 #include <vector>
 #include <list>
 
-namespace NLMISC 
+namespace NLMISC
 {
 	class CUV;
 }
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using NLMISC::CRefCount;
@@ -86,7 +86,7 @@ struct	CPaletteSkin
  * Once the vertex buffer is resident, the driver creates its proprietary vertex buffer and release the internal vertex buffer.
  * At this moment the vertex buffer can be in VRAM, AGP or system memory.
  *
- * The vertex buffers resident in AGP and VRAM are writeonly, i-e, you can't read them after a lock(). If you change the capacity 
+ * The vertex buffers resident in AGP and VRAM are writeonly, i-e, you can't read them after a lock(). If you change the capacity
  * of the format of a writeonly buffer, the content is lost.
  *
  */
@@ -130,76 +130,76 @@ public:
 	  * Value ID, there is 16 value id
 	  */
 	enum TValue
-	{ 
-		Position		=0, 
-		Normal			=1, 
+	{
+		Position		=0,
+		Normal			=1,
 		TexCoord0		=2,
-		TexCoord1		=3, 
+		TexCoord1		=3,
 		TexCoord2		=4,
-		TexCoord3		=5, 
-		TexCoord4		=6, 
-		TexCoord5		=7, 
-		TexCoord6		=8, 
+		TexCoord3		=5,
+		TexCoord4		=6,
+		TexCoord5		=7,
+		TexCoord6		=8,
 		TexCoord7		=9,
-		PrimaryColor	=10, 
-		SecondaryColor	=11, 
+		PrimaryColor	=10,
+		SecondaryColor	=11,
 		Weight			=12,
 		PaletteSkin		=13,
-		Fog				=14, 
+		Fog				=14,
 		Empty			=15,
 		NumValue		=16
 	};
 
-	/** 
+	/**
 	  * Misc infos
 	  */
 	enum
 	{
 		FirstTexCoordValue = TexCoord0,
-		LastTexCoordValue  = TexCoord7,		
+		LastTexCoordValue  = TexCoord7,
 	};
 
 	/**
 	  * Value flags
 	  */
-	enum 
+	enum
 	{
-		PositionFlag		=	1<<Position, 
-		NormalFlag			=	1<<Normal, 
-		TexCoord0Flag		=	1<<TexCoord0, 
-		TexCoord1Flag		=	1<<TexCoord1, 
-		TexCoord2Flag		=	1<<TexCoord2, 
-		TexCoord3Flag		=	1<<TexCoord3, 
-		TexCoord4Flag		=	1<<TexCoord4, 
-		TexCoord5Flag		=	1<<TexCoord5, 
-		TexCoord6Flag		=	1<<TexCoord6, 
+		PositionFlag		=	1<<Position,
+		NormalFlag			=	1<<Normal,
+		TexCoord0Flag		=	1<<TexCoord0,
+		TexCoord1Flag		=	1<<TexCoord1,
+		TexCoord2Flag		=	1<<TexCoord2,
+		TexCoord3Flag		=	1<<TexCoord3,
+		TexCoord4Flag		=	1<<TexCoord4,
+		TexCoord5Flag		=	1<<TexCoord5,
+		TexCoord6Flag		=	1<<TexCoord6,
 		TexCoord7Flag		=	1<<TexCoord7,
-		PrimaryColorFlag	=	1<<PrimaryColor, 
-		SecondaryColorFlag	=	1<<SecondaryColor, 
+		PrimaryColorFlag	=	1<<PrimaryColor,
+		SecondaryColorFlag	=	1<<SecondaryColor,
 		WeightFlag			=	1<<Weight,
 		PaletteSkinFlag		=	(1<<PaletteSkin)|(1<<Weight),
-		FogFlag				=	1<<Fog, 
+		FogFlag				=	1<<Fog,
 		EmptyFlag			=	1<<Empty,
 	};
 
-	
+
 
 	/**
 	  * Value type, there is 13 kind of value type as in DirectX8 and gl_vertex_program used in exteneded mode
 	  */
 	enum TType
-	{ 
+	{
 		Double1=0,	// Deprecated
-		Float1, 
+		Float1,
 		Short1,		// Deprecated
 		Double2,	// Deprecated
-		Float2, 
+		Float2,
 		Short2,		// Deprecated
 		Double3,	// Deprecated
-		Float3, 
+		Float3,
 		Short3,		// Deprecated
 		Double4,	// Deprecated
-		Float4, 
+		Float4,
 		Short4,		// Deprecated
 		UChar4,
 		NumType
@@ -220,8 +220,8 @@ public:
 	/**
 	  * Vertex color format
 	  */
-	enum TVertexColorType 
-	{ 
+	enum TVertexColorType
+	{
 		TRGBA = 0,
 		TBGRA = 1
 	};
@@ -268,7 +268,7 @@ public:
 
 	/** Used by the driver implementation. The driver must first allocate its internal buffer and fill DrvInfos. Then it has to call setLocation(true).
 	  *
-	  * If newLocation!=NotResident, setLocation() will copy the non resident buffer in the choosed resident memory and 
+	  * If newLocation!=NotResident, setLocation() will copy the non resident buffer in the choosed resident memory and
 	  * untouch the buffer. If the buffer preferres RAM or AGP memory, it will release the non resident memory.
 	  *
 	  * If newLocation==NotResident, setLocation() will realloc the non resident buffer, copy the vertex data if the buffer was resident in RAM. Then
@@ -320,7 +320,7 @@ public:
 	  * May be slow if there's agp / vram readback.
 	  * Initial content of the destination vertex buffer is lost.
 	  * Use this to retrieve content of a write-only buffer.
-	  * Using lock with CVertexBufferRead won't work (used as a foolkeeper to prevent 
+	  * Using lock with CVertexBufferRead won't work (used as a foolkeeper to prevent
 	  * reading of a resident buffer that is not in ram)
 	  * NB : will assert when used with volatile vb
 	  */
@@ -394,8 +394,8 @@ public:
 		/**
 		  * Setup the vertex format using standard values. Do it before any other standard methods.
 		  *
-		  * Use one or several flag between : PositionFlag, WeightFlag, NormalFlag, PrimaryColorFlag, 
-		  * SecondaryColorFlag, FogFlag, TexCoord0Flag, TexCoord1Flag, TexCoord2Flag, 
+		  * Use one or several flag between : PositionFlag, WeightFlag, NormalFlag, PrimaryColorFlag,
+		  * SecondaryColorFlag, FogFlag, TexCoord0Flag, TexCoord1Flag, TexCoord2Flag,
 		  * TexCoord3Flag, TexCoord4Flag, TexCoord5Flag, TexCoord6Flag, TexCoord7Flag, PaletteSkinFlag
 		  *
 		  * If the buffer preferres AGP memory, the data are lost.
@@ -410,8 +410,8 @@ public:
 		/**
 		  * Return the vertex format used by the vertex buffer.
 		  *
-		  * Return one or several flags between : PositionFlag, WeightFlag, NormalFlag, PrimaryColorFlag, 
-		  * SecondaryColorFlag, FogFlag, TexCoord0Flag, TexCoord1Flag, TexCoord2Flag, 
+		  * Return one or several flags between : PositionFlag, WeightFlag, NormalFlag, PrimaryColorFlag,
+		  * SecondaryColorFlag, FogFlag, TexCoord0Flag, TexCoord1Flag, TexCoord2Flag,
 		  * TexCoord3Flag, TexCoord4Flag, TexCoord5Flag, TexCoord6Flag, TexCoord7Flag, PaletteSkinFlag
 		  *
 		  * If WeightFlag is specified, 4 float are used to setup the skinning value on 4 bones.
@@ -461,7 +461,7 @@ public:
 		  * The vertex buffer is invalidated.
 		  * The vertex buffer must be unlocked before the call.
 		  */
-		void				clearValueEx ();		
+		void				clearValueEx ();
 
 		/**
 		  * Add a value in the vertex buffer. After this call, call initEx() to init the vertex buffer.
@@ -477,7 +477,7 @@ public:
 		void				addValueEx (TValue valueId, TType type);
 
 		/// Test if the given value is present in the vertex buffer
-		bool				hasValueEx(TValue valueId) const;		
+		bool				hasValueEx(TValue valueId) const;
 
 		/**
 		  * Init the vertex buffer in extended mode.
@@ -496,14 +496,14 @@ public:
 
 	// @}
 
-	/** 
+	/**
 	  * Set the number of active vertices. It enlarge capacity, if needed.
 	  * If the new size is bigger than capacity, reserve() will be called. see reserve().
 	  * If the new size is smaller than capacity, the data are keeped, the vertex buffer stay resident if it is resident.
 	  */
 	void					setNumVertices(uint32 n);
-	
-	/** 
+
+	/**
 	  * Get the number of active vertices.
 	  */
 	uint32					getNumVertices(void) const  { return(_NbVerts); }
@@ -527,7 +527,7 @@ public:
 	  * The vertex buffer must be unlocked before the call.
 	  */
 	void					reserve(uint32 nVerts);
-	
+
 	/**
 	  * Return the number of vertices reserved.
 	  */
@@ -567,7 +567,7 @@ public:
 	  * Lock the vertex buffer and return and fill an accessor object. Once the object is destroyed, the buffer in unlocked.
 	  *
 	  * \param accessor is the accessor object to fill
-	  * \param first is the first vertex to be accessed. Put 0 to select all the vertices. What ever is this index, 
+	  * \param first is the first vertex to be accessed. Put 0 to select all the vertices. What ever is this index,
 	  * the indexices in the vertex buffer remain the same.
 	  * \param last is the last vertex to be accessed + 1. Put 0 to select all the vertices.
 	  */
@@ -581,7 +581,7 @@ public:
 	  * Readonly lock will fail if the buffer is resident in AGP or VRAM.
 	  *
 	  * \param accessor is the accessor object to fill
-	  * \param first is the first vertex to be accessed. Put 0 to select all the vertices. What ever is this index, 
+	  * \param first is the first vertex to be accessed. Put 0 to select all the vertices. What ever is this index,
 	  * the indexices in the vertex buffer remain the same.
 	  * \param last is the last vertex to be accessed + 1. Put 0 to select all the vertices.
 	  */
@@ -594,7 +594,7 @@ public:
 	// @{
 	/// just read/write the VertexFormat of the VB, number of vertices .... If read, VB is resized to numVertices.
 	void		serialHeader(NLMISC::IStream &f);
-	/** just read/write a subset of the vertex buffer. NB: because a version is serialised by subset, you must read 
+	/** just read/write a subset of the vertex buffer. NB: because a version is serialised by subset, you must read
 	 * same subset of vertices you have saved. (can't write 0-10, 10-20, and after load 0-5, 5-20).
 	 */
 	void		serialSubset(NLMISC::IStream &f, uint vertexStart, uint vertexEnd);
@@ -604,9 +604,9 @@ public:
 	const uint8	*getUVRouting () const { return _UVRouting; }
 	void		setUVRouting (uint8 uvChannel, uint newUVRouting) { _UVRouting[uvChannel] = newUVRouting; }
 
-	/** 
-	  * Set the vertex color format. If the vertex buffer is not in this format, the colors will be converted 
-	  * See getColorPointer() 
+	/**
+	  * Set the vertex color format. If the vertex buffer is not in this format, the colors will be converted
+	  * See getColorPointer()
 	  *
 	  * The vertex buffer must not be resident.
 	  *
@@ -616,8 +616,8 @@ public:
 	  */
 	bool		setVertexColorFormat (TVertexColorType format);
 
-	/** 
-	  * Get the vertex color format. See getColorPointer() 
+	/**
+	  * Get the vertex color format. See getColorPointer()
 	  */
 	TVertexColorType	getVertexColorFormat () const
 	{
@@ -649,7 +649,7 @@ private:
 	  * \param last the last vertex that as been modified + 1.
 	  */
 	inline void	unlock () const;
-	
+
 	/// Old version serialisation. V0 and V1.
 	void		serialOldV1Minus(NLMISC::IStream &f, sint ver);
 
@@ -694,7 +694,7 @@ private:
 
 	// The UV routing table
 	uint8					_UVRouting[MaxStage];
-	
+
 	// The vertex buffer is locked n times
 	mutable uint			_LockCounter;
 
@@ -730,7 +730,7 @@ public:
 	IVBDrvInfos(IDriver	*drv, ItVBDrvInfoPtrList it, CVertexBuffer *vb) {_Driver= drv; _DriverIterator= it; VertexBufferPtr=vb;}
 
 	/** Lock method. Lock the region between begin and end (in bytes).
-	  * What ever begin is, the returned pointer always points on the index 0. 
+	  * What ever begin is, the returned pointer always points on the index 0.
 	  */
 	virtual uint8	*lock (uint begin, uint end, bool readOnly) =0;
 
@@ -790,7 +790,7 @@ public:
 	inline void				setValueFloat4Ex (CVertexBuffer::TValue valueId, uint idx, float x, float y, float z, float w);
 	inline void				setValueUChar4Ex (CVertexBuffer::TValue valueId, uint idx, CRGBA rgba);
 
-	/** Get a pointer on a value. 
+	/** Get a pointer on a value.
 	 *
 	 *  For Color pointers :
 	 *  This method returns a (CRGBA*) or a (CBGRA*) regarding the vertex color format returned by CVertexBufferReadWrite::getVertexColorFormat().
@@ -825,7 +825,7 @@ private:
 };
 
 /**
- * The vertex buffer read accessor 
+ * The vertex buffer read accessor
  */
 class CVertexBufferRead
 {
@@ -854,7 +854,7 @@ public:
 		}
 	}
 
-	/** Get a pointer on a value. 
+	/** Get a pointer on a value.
 	 *
 	 *  For Color pointers :
 	 *  This method returns a (CRGBA*) or a (CBGRA*) regarding the vertex color format returned by CVertexBufferRead::getVertexColorFormat().
@@ -873,7 +873,7 @@ public:
 	const CVertexBuffer *getParent() const { return _Parent; }
 
 private:
-	
+
 	// No copy operators available
 	void		operator=(const CVertexBufferRead& other) {}
 	CVertexBufferRead(const CVertexBufferRead& other) {}
@@ -1185,7 +1185,7 @@ inline void CVertexBuffer::lock (CVertexBufferReadWrite &accessor, uint first, u
 	}
 	else
 		nlassert ((first==0)&&(last==0));
-		
+
 	_LockCounter++;
 }
 
@@ -1220,7 +1220,7 @@ inline void CVertexBuffer::lock (CVertexBufferRead &accessor, uint first, uint l
 	}
 	else
 		nlassert ((first==0)&&(last==0));
-		
+
 	_LockCounter++;
 }
 

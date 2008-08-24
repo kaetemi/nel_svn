@@ -35,7 +35,7 @@ namespace NLMISC
 class IProgressCallback;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 class	UInstanceGroup;
 class	UScene;
@@ -116,7 +116,7 @@ private:
 		std::string		FileName;
 
 		CInstanceGroupElement(UInstanceGroup	*ig= NULL, const char *fileName= NULL);
-		
+
 		// delete the ig.
 		void	release();
 	};

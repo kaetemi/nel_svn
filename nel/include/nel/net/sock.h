@@ -177,7 +177,7 @@ public:
 
 	//@}
 
-	
+
 	/// @name Receiving data
 	//@{
 
@@ -205,7 +205,7 @@ public:
 
 	//@}
 
-	
+
 	/// @name Sending data
 	//@{
 
@@ -224,13 +224,13 @@ public:
 
 	//@}
 
-	
+
 	/// @name Properties
 	//@{
 
 	/// Returns if the socket is connected (volatile)
 	bool				connected() { return _Connected; }
-	
+
 	/// Returns a const reference on the local address
 	const CInetAddress&	localAddr() const {	return _LocalAddr; }
 
@@ -256,7 +256,7 @@ public:
 
 	/// Gets the send buffer size
 	sint32				getSendBufferSize();
-	
+
 	/// Returns true if the network engine is initialized
 	static bool			initialized() { return CSock::_Initialized; }
 
@@ -276,7 +276,7 @@ protected:
 
 	/// Sets the local address
 	void			setLocalAddress();
-	
+
 	/// Socket descriptor
 	SOCKET			_Sock;
 

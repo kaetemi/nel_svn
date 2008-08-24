@@ -46,7 +46,7 @@ class CVisualCollisionManagerUser : public UVisualCollisionManager
 public:
 
 	/// Constructor
-	CVisualCollisionManagerUser() 
+	CVisualCollisionManagerUser()
 	{
 	}
 
@@ -75,24 +75,24 @@ public:
 	{
 		_Manager.setPlayerInside(state);
 	}
-	
+
 	virtual float					getCameraCollision(const CVector &start, const CVector &end, float radius, bool cone)
 	{
 		return _Manager.getCameraCollision (start, end, radius, cone);
 	}
-	
+
 	virtual bool					getRayCollision(const NLMISC::CVector &start, const NLMISC::CVector &end, bool landscapeOnly)
 	{
 		return _Manager.getRayCollision (start, end, landscapeOnly);
 	}
-	
+
 	virtual uint					addMeshInstanceCollision(const UVisualCollisionMesh &mesh, const NLMISC::CMatrix &instanceMatrix, bool avoidCollisionWhenInside, bool avoidCollisionWhenOutside);
 
 	virtual void					removeMeshCollision(uint id)
 	{
 		_Manager.removeMeshCollision(id);
 	}
-	virtual	void					getMeshs(const NLMISC::CAABBox &aabbox, std::vector<CMeshInstanceColInfo> &dest);	
+	virtual	void					getMeshs(const NLMISC::CAABBox &aabbox, std::vector<CMeshInstanceColInfo> &dest);
 
 
 public:

@@ -113,7 +113,7 @@ public:
 		CFifoAccessor syncfifo( &_RecvFifo );
 		syncfifo.value().displayStats(log);
 	}
-	
+
 	/**
 	 * Sets the max size of the received messages.
 	 * If receiving a message bigger than the limit, the connection will be dropped.

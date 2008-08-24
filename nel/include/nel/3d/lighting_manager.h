@@ -88,18 +88,18 @@ public:
 	void		setNoAttLightRadius(float noAttLightRadius);
 	float		getNoAttLightRadius() const {return _NoAttLightRadius;}
 
-	/** Advanced. When a model is out of [AttBegin, AttEnd] of a light, the computed influence of the light 
+	/** Advanced. When a model is out of [AttBegin, AttEnd] of a light, the computed influence of the light
 	 *	used to choose "best lights" is not constant, and is a function of distance multiplied by a factor you can
 	 *	setup here. Default is 0.1f and is good for lights with att like (50, 100) (arbitrary).
 	 */
 	void		setOutOfAttLightInfFactor(float outOfAttLightInfFactor);
 	float		getOutOfAttLightInfFactor() const {return _OutOfAttLightInfFactor;}
 
-	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits 
+	/** Advanced. When a model is influenced by more light than allowed, or when it reach the limits
 	 *	of the light (attenuationEnd), the light can be darkened according to some threshold.
 	 *	The resultLightColor begin to fade when distModelToLight== attEnd- threshold*(attEnd-attBegin).
 	 *	when distModelToLight== 0, resultLightColor==Black.
-	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will 
+	 *	By default, this value is 0.1f. Setting higher values will smooth transition but will
 	 *	generally darken the global effects of lights.
 	 *	NB: clamp(value, 0, 1);
 	 */
@@ -127,7 +127,7 @@ public:
 
 	/// \name Static Lighted Objects Localisation. Used for lights to touch nearest static models.
 	// @{
-	/** erase a lighted object to the _StaticLightedModelQuadGrid. must do it at deletion of the model or when it 
+	/** erase a lighted object to the _StaticLightedModelQuadGrid. must do it at deletion of the model or when it
 	 *	leaves freeHRC state.
 	 *	NB: default CQGItLightedModel (ie NULL) can be passed in.
 	 *	\return quadgrid.end(), ie NULL iterator.
@@ -149,7 +149,7 @@ public:
 	 *	NB: model is append to the _LightedModelList of each contributed light
 	 *	NB: this list is valid until model->isNeedUpdateLighting() is true.
 	 */
-	void		computeModelLightContributions(NLMISC::CRGBA sunAmbient, CTransform *model, CLightContribution &lightContrib, 
+	void		computeModelLightContributions(NLMISC::CRGBA sunAmbient, CTransform *model, CLightContribution &lightContrib,
 		ILogicInfo *logicInfo= NULL);
 
 

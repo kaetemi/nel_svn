@@ -28,7 +28,7 @@
 #include "nel/3d/quad_grid.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -92,9 +92,9 @@ private:
 		T				*Nodes;
 		uint			NumNodes;
 
-		CQuadNode() 
+		CQuadNode()
 		{
-			Nodes= NULL; NumNodes=0; 
+			Nodes= NULL; NumNodes=0;
 		}
 	};
 
@@ -140,7 +140,7 @@ private:// Atttributes.
 
 
 // ***************************************************************************
-template<class T>	
+template<class T>
 CStaticQuadGrid<T>::CStaticQuadGrid()
 {
 	_SizePower=4;
@@ -150,7 +150,7 @@ CStaticQuadGrid<T>::CStaticQuadGrid()
 	_Grid.resize(_Size * _Size);
 }
 // ***************************************************************************
-template<class T>	
+template<class T>
 CStaticQuadGrid<T>::~CStaticQuadGrid()
 {
 	clear();
@@ -158,7 +158,7 @@ CStaticQuadGrid<T>::~CStaticQuadGrid()
 
 
 // ***************************************************************************
-template<class T>	
+template<class T>
 void			CStaticQuadGrid<T>::clear()
 {
 	// Just clear all vectors
@@ -175,7 +175,7 @@ void			CStaticQuadGrid<T>::clear()
 
 
 // ***************************************************************************
-template<class T>	
+template<class T>
 void			CStaticQuadGrid<T>::build(CQuadGrid<T> &quadGrid)
 {
 	clear();
@@ -263,7 +263,7 @@ void			CStaticQuadGrid<T>::build(CQuadGrid<T> &quadGrid)
 
 
 // ***************************************************************************
-template<class T>	
+template<class T>
 const T			*CStaticQuadGrid<T>::select(const NLMISC::CVector &pointIn, uint &numElts)
 {
 	CVector		point= _ChangeBasis * pointIn;

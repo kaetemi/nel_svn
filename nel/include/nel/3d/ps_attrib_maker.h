@@ -55,7 +55,7 @@ struct CPSInputType
 		attrSpeed = 3,
 		attrUniformRandom = 4,
 		attrUserParam = 5, // a parameter user that was set in the system
-		attrLOD = 6,	
+		attrLOD = 6,
 		attrSquareLOD = 7,
 		attrClampedLOD = 8,
 		attrClampedSquareLOD = 9,
@@ -119,22 +119,22 @@ public:
  */
 
 template <typename T> class CPSAttribMaker : public CPSAttribMakerBase
-{	
+{
 public:
 	/// \name Object
 	//@{
 		/** construct the attrib maker specifying the number of cycles to do.
 		 *  \see setNbCycles()
-		 */	 
+		 */
 		CPSAttribMaker(float nbCycles = 1.f) : _NbCycles(nbCycles), _HasMemory(false)
-		{		
+		{
 		}
 
 		/// serialisation of the object. Derivers MUST call this, (if they use the attribute of this class at least)
 		virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		{
 			f.serialVersion(1);
-			f.serial(_NbCycles);	
+			f.serial(_NbCycles);
 		}
 
 		/// inherited from CPSAttribMakerBase. Template specialization will do the job
@@ -163,12 +163,12 @@ public:
 		 *  \param stride the stride, in byte, between each value to write
 		 *  \param numAttrib the number of attributes to compute
 		 *  \param allowNoCopy data may be already present in memory, and may not need computation. When set to true, this allow no computation to be made
-		 *         the return parameter is then le location of the datas. this may be tab (if recomputation where needed), or another value 
+		 *         the return parameter is then le location of the datas. this may be tab (if recomputation where needed), or another value
 		 *         for this to work, the stride must most of the time be sizeof(T). This is intended to be used with derivers of CPSAttribMaker
 		 *         that store values that do not depend on the input. The make method then just copy the data, we is sometime useless
-		 *  \param srcStep A fixed-point 16:16 value that gives the step for the source iterator		 
+		 *  \param srcStep A fixed-point 16:16 value that gives the step for the source iterator
 		 *  \return where the data have been copied, this is always tab, unless allowNoCopy is set to true, in which case this may be different
-		 *                                         
+		 *
 		 */
 
 		  virtual void *make(CPSLocated *loc,
@@ -192,7 +192,7 @@ public:
 							 uint32 srcStep = (1 << 16)
 							) const = 0;
 
-		/** The same as make4, but with n replication instead of 4	 
+		/** The same as make4, but with n replication instead of 4
 		 *  \see make4
 		 */
 		 virtual void makeN(CPSLocated *loc,
@@ -205,7 +205,7 @@ public:
 						   ) const = 0;
 	//@}
 
-	
+
 
 	/// get the max value, or an evalution that is guaranteed to be > to it (meaningful for ordered set only)
 	virtual T getMinValue(void) const { return T(); /* no mean by default */ }
@@ -220,10 +220,10 @@ public:
 		 * the input used by this attribute maker
 		 * It must be >= 0
 		 */
-		void setNbCycles(float nbCycles) 
-		{ 
+		void setNbCycles(float nbCycles)
+		{
 			nlassert(nbCycles >= 0);
-			_NbCycles = nbCycles; 
+			_NbCycles = nbCycles;
 		}
 
 		/** Retrieve the number of cycles
@@ -233,7 +233,7 @@ public:
 
 		/// tells wether one may choose one attribute from a CPSLocated to use as an input. If false, the input(s) is fixed
 		virtual bool hasCustomInput(void) { return false; }
-			
+
 
 		/** set a new input type (if supported). The default does nothing
 		 *  \see hasCustomInput()
@@ -245,7 +245,7 @@ public:
 		 *  \see hasCustomInput()
 		 */
 		virtual CPSInputType getInput(void) const { return CPSInputType(); }
-		
+
 
 
 		/** tells wether clamping is supported for the input (value can't go above MaxInputValue)
@@ -280,7 +280,7 @@ public:
 		/// delete an element, given its index. this must be called  only if memory management is used.
 		virtual void deleteElement(uint32 index) { nlassert(false); }
 
-		/** create a new element, and provides the emitter, 
+		/** create a new element, and provides the emitter,
 		  *	this must be called only if this attribute maker has its own memory
 		  */
 		virtual void newElement(const CPSEmitterInfo &info) { nlassert(false); }
@@ -296,7 +296,7 @@ public:
 
 	// used by colors only : set the internal color format. useful to write in vertex buffer (format differs between D3D & OpenGL)
 	virtual void setColorType(CVertexBuffer::TVertexColorType type) {}
-protected:	
+protected:
 
 	float _NbCycles;
 

@@ -29,7 +29,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -72,7 +72,7 @@ public:
 	/// if linked, unlink this node from his list.
 	void		unlinkInPList();
 
-	/** append a list just after this node. root is the root of the list. It is not inserted in the result. 
+	/** append a list just after this node. root is the root of the list. It is not inserted in the result.
 	 *	After this, the list pointed by "root" is empty.
 	 */
 	void		appendPList(CTessFacePListNode	&root);

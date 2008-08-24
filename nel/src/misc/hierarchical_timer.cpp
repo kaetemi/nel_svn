@@ -63,39 +63,39 @@ bool			CHTimer::_AfterStopEstimateTimeDone= false;
 
 //=================================================================
 void CSimpleClock::init()
-{	
+{
 	if (_InitDone) return;
 	const uint numSamples = 10000;
 
 	CSimpleClock observedClock;
 	CSimpleClock measuringClock;
-	
+
 	measuringClock.start();
 	for(uint l = 0; l < numSamples; ++l)
-	{		
+	{
 		observedClock.start();
 		observedClock.stop();
 	}
 	measuringClock.stop();
 
-	_StartStopNumTicks = (measuringClock.getNumTicks() >> 1) / numSamples;	
+	_StartStopNumTicks = (measuringClock.getNumTicks() >> 1) / numSamples;
 	_InitDone = true;
 }
 
 
 
 //=================================================================
-/** Do simple statistics on a list of values (mean value, standard deviation) 
-  */ 
+/** Do simple statistics on a list of values (mean value, standard deviation)
+  */
 /*static void PerformStatistics(const std::vector<double> &values, double &standardDeviation)
 {
 	nlassert(!values.empty());
-	double total = 0;	
+	double total = 0;
 	double variance = 0;
 	uint k;
 	for(k = 0; k < values.size(); ++k)
 	{
-		total += (double) values[k];		
+		total += (double) values[k];
 	}
 	meanValue = total / values.size();
 	if (values.size() <= 1)
@@ -143,7 +143,7 @@ void CHTimer::CNode::getPath(std::string &path) const
 	const CNode *currNode = this;
 	do
 	{
-		path = path.empty() ? currNode->Owner->getName() 
+		path = path.empty() ? currNode->Owner->getName()
 			: currNode->Owner->getName() + std::string("::") + path;
 		currNode = currNode->Parent;
 	}
@@ -166,7 +166,7 @@ uint CHTimer::CNode::getNumNodes() const
 //=================================================================
 void CHTimer::walkTreeToCurrent()
 {
-	if (_IsRoot) return;	
+	if (_IsRoot) return;
 	bool found = false;
 	for(uint k = 0; k < _CurrNode->Sons.size(); ++k)
 	{
@@ -197,7 +197,7 @@ void	CHTimer::estimateAfterStopTime()
 
 	// Do as in startBench, reset and init
 	clear();
-	
+
 	{
 #ifdef NL_CPU_INTEL
 		double freq = (double) CSystemInfo::getProcessorFrequency(false);
@@ -207,14 +207,14 @@ void	CHTimer::estimateAfterStopTime()
 #endif
 		CSimpleClock::init();
 	}
-	
+
 	// start
 	_Benching = true;
 	_BenchStartedOnce = true;
 	_RootNode.Owner = &_RootTimer;
 	_WantStandardDeviation = false;
 	_RootTimer.before();
-	
+
 	for(uint i=0;i<numSamples;i++)
 	{
 		static NLMISC::CHTimer		estimateSampleTimer("sampleTimer");
@@ -242,7 +242,7 @@ void	CHTimer::startBench(bool wantStandardDeviation /*= false*/, bool quick, boo
 
 	// if not done, estimate the AfterStopTime
 	estimateAfterStopTime();
-	
+
 	if(reset)
 		clear();
 
@@ -319,7 +319,7 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 		nodeLeft.insert(nodeLeft.end(), currNode->Sons.begin(), currNode->Sons.end());
 	}
 
-	// 2 ) build statistics	
+	// 2 ) build statistics
 	typedef std::vector<CTimerStat> TTimerStatVect;
 	typedef std::vector<CTimerStat *> TTimerStatPtrVect;
 	TTimerStatVect		stats(nodeMap.size());
@@ -338,7 +338,7 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 	if (criterion != NoSort)
 	{
 		CStatSorter sorter(criterion);
-		std::sort(statsPtr.begin(), statsPtr.end(), sorter);		
+		std::sort(statsPtr.begin(), statsPtr.end(), sorter);
 	}
 
 	// 4 ) get root total time.
@@ -363,9 +363,9 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 	for(TTimerStatPtrVect::iterator statIt = statsPtr.begin(); statIt != statsPtr.end(); ++statIt)
 	{
 		if (!displayInline)
-		{		
+		{
 			log->displayRawNL("HTIMER: =================================");
-			log->displayRawNL("HTIMER: Node %s", (*statIt)->Timer->_Name);		
+			log->displayRawNL("HTIMER: Node %s", (*statIt)->Timer->_Name);
 			(*statIt)->display(log, displayEx, _WantStandardDeviation);
 		}
 		else
@@ -373,34 +373,34 @@ void	CHTimer::display(CLog *log, TSortCriterion criterion, bool displayInline /*
 			(*statIt)->getStats(statsInline, displayEx, rootStats.TotalTime, _WantStandardDeviation);
 			char out[4096];
 			NLMISC::smprintf(out, 2048, format.c_str(), (*statIt)->Timer->_Name, statsInline.c_str());
-			log->displayRawNL(out);					
+			log->displayRawNL(out);
 		}
-	}	
+	}
 	benchClock.stop();
 	_CurrNode->SonsPreambule += benchClock.getNumTicks();
 }
 
 //================================================================================================
 void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool displayInline, bool alignPaths, bool displayEx)
-{	
+{
 	CSimpleClock	benchClock;
 	benchClock.start();
 	log->displayRawNL("HTIMER: =========================================================================");
 	log->displayRawNL("HTIMER: Bench by execution path");
-	nlassert(_BenchStartedOnce); // should have done at least one bench	
+	nlassert(_BenchStartedOnce); // should have done at least one bench
 	//
 	typedef std::vector<CNodeStat>   TNodeStatVect;
 	typedef std::vector<CNodeStat *> TNodeStatPtrVect;
 
 	TNodeStatVect nodeStats;
 	nodeStats.reserve(_RootNode.getNumNodes());
-	TNodeVect nodeLeft;	
+	TNodeVect nodeLeft;
 	nodeLeft.push_back(&_RootNode);
-	/// 1 ) walk the tree to build the node map (well, in a not very optimal way..)		  
+	/// 1 ) walk the tree to build the node map (well, in a not very optimal way..)
 	while (!nodeLeft.empty())
-	{	
+	{
 		CNode *currNode = nodeLeft.back();
-		
+
 		nodeStats.push_back(CNodeStat());
 		nodeStats.back().buildFromNode(currNode, _MsPerTick);
 		nodeStats.back().Node = currNode;
@@ -458,7 +458,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 	for(TNodeStatPtrVect::iterator it = nodeStatsPtrs.begin(); it != nodeStatsPtrs.end(); ++it)
 	{
 		if (!displayInline)
-		{		
+		{
 			log->displayRawNL("HTIMER: =================================");
 			(*it)->Node->displayPath(log);
 			(*it)->display(log, displayEx, _WantStandardDeviation);
@@ -487,11 +487,11 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 	nlassert(_BenchStartedOnce); // should have done at least one bench
 	typedef std::map<CHTimer *, TNodeVect> TNodeMap;
 	TNodeMap nodeMap;
-	TNodeVect nodeLeft;	
+	TNodeVect nodeLeft;
 	nodeLeft.push_back(&_RootNode);
-	/// 1 ) walk the execution tree to build the node map (well, in a not very optimal way..)		  
+	/// 1 ) walk the execution tree to build the node map (well, in a not very optimal way..)
 	while (!nodeLeft.empty())
-	{	
+	{
 		CNode *currNode = nodeLeft.back();
 		nodeMap[currNode->Owner].push_back(currNode);
 		nodeLeft.pop_back();
@@ -514,13 +514,13 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 	std::string resultName;
 	std::string resultStats;
 	while (!sonsIndex.empty())
-	{		
+	{
 		if (displayStat)
 		{
 			resultName.resize(labelNumChar);
 			std::fill(resultName.begin(), resultName.end(), '.');
 			uint startIndex = depth * indentationStep;
-			uint endIndex = std::min(startIndex + (uint)::strlen(currTimer->_Name), labelNumChar);			
+			uint endIndex = std::min(startIndex + (uint)::strlen(currTimer->_Name), labelNumChar);
 			if ((sint) (endIndex - startIndex) >= 1)
 			{
 				std::copy(currTimer->_Name, currTimer->_Name + (endIndex - startIndex), resultName.begin() + startIndex);
@@ -528,7 +528,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 			TNodeVect &execNodes = nodeMap[currTimer];
 			if (execNodes.size() > 0)
 			{
-				currNodeStats.buildFromNodes(&execNodes[0], execNodes.size(), _MsPerTick);			
+				currNodeStats.buildFromNodes(&execNodes[0], execNodes.size(), _MsPerTick);
 				currNodeStats.getStats(resultStats, displayEx, rootStats.TotalTime, _WantStandardDeviation);
 				log->displayRawNL("HTIMER: %s", (resultName + resultStats).c_str());
 			}
@@ -544,11 +544,11 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 		{
 			currTimer = currTimer->_Sons[sonsIndex.back()];
 			++ sonsIndex.back();
-			sonsIndex.push_back(0);			
+			sonsIndex.push_back(0);
 			displayStat = true;
 			++ depth;
 		}
-	}	
+	}
 	benchClock.stop();
 	_CurrNode->SonsPreambule += benchClock.getNumTicks();
 }
@@ -601,7 +601,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 		{
 			// Build Sons Infos.
 			// ==============
-			
+
 			// resize array
 			children.resize(node->Sons.size());
 
@@ -631,7 +631,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 				// sort.
 				CStatSorter	sorter;
 				sorter.Criterion= criterion;
-				std::sort(ptrStats.begin(), ptrStats.end(), sorter);		
+				std::sort(ptrStats.begin(), ptrStats.end(), sorter);
 
 				// fill children.
 				for(i=0; i<children.size(); i++)
@@ -647,14 +647,14 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 			resultName.resize(labelNumChar);
 			std::fill(resultName.begin(), resultName.end(), '.');
 			uint startIndex = (examStack.size()-1) * indentationStep;
-			uint endIndex = std::min(startIndex + (uint)::strlen(node->Owner->_Name), labelNumChar);			
+			uint endIndex = std::min(startIndex + (uint)::strlen(node->Owner->_Name), labelNumChar);
 			if ((sint) (endIndex - startIndex) >= 1)
 			{
 				std::copy(node->Owner->_Name, node->Owner->_Name + (endIndex - startIndex), resultName.begin() + startIndex);
 			}
 
 			// build the stats string.
-			currNodeStats.buildFromNode(node, _MsPerTick);			
+			currNodeStats.buildFromNode(node, _MsPerTick);
 			currNodeStats.getStats(resultStats, displayEx, rootStats.TotalTime, _WantStandardDeviation);
 
 			// display
@@ -721,7 +721,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 		{
 			// Build Sons Infos.
 			// ==============
-			
+
 			// resize array
 			children.resize(node->Sons.size());
 
@@ -751,7 +751,7 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 				// sort.
 				CStatSorter	sorter;
 				sorter.Criterion= criterion;
-				std::sort(ptrStats.begin(), ptrStats.end(), sorter);		
+				std::sort(ptrStats.begin(), ptrStats.end(), sorter);
 
 				// fill children.
 				for(i=0; i<children.size(); i++)
@@ -767,14 +767,14 @@ void		CHTimer::displayByExecutionPath(CLog *log, TSortCriterion criterion, bool 
 			resultName.resize(labelNumChar);
 			std::fill(resultName.begin(), resultName.end(), '.');
 			uint startIndex = (examStack.size()-1) * indentationStep;
-			uint endIndex = std::min(startIndex + (uint)::strlen(node->Owner->_Name), labelNumChar);			
+			uint endIndex = std::min(startIndex + (uint)::strlen(node->Owner->_Name), labelNumChar);
 			if ((sint) (endIndex - startIndex) >= 1)
 			{
 				std::copy(node->Owner->_Name, node->Owner->_Name + (endIndex - startIndex), resultName.begin() + startIndex);
 			}
 
 			// build the stats string.
-			currNodeStats.buildFromNode(node, _MsPerTick);			
+			currNodeStats.buildFromNode(node, _MsPerTick);
 			currNodeStats.getStats(resultStats, displayEx, rootStats.TotalTime, _WantStandardDeviation);
 
 			// display
@@ -808,7 +808,7 @@ void	CHTimer::clear()
 	nlassert(_CurrNode == &_RootNode);
 	_RootNode.releaseSons();
 	_CurrNode = &_RootNode;
-	_RootNode.reset();	
+	_RootNode.reset();
 }
 
 //=================================================================
@@ -823,14 +823,14 @@ void CHTimer::CStats::buildFromNodes(CNode **nodes, uint numNodes, double msPerT
 	TotalTime = 0;
 	TotalTimeWithoutSons = 0;
 	NumVisits = 0;
-	
+
 	uint64 minTime = (uint64) -1;
 	uint64 maxTime = 0;
 	uint64 sessionMaxTime = 0;
-	
+
 	uint k, l;
 	for(k = 0; k < numNodes; ++k)
-	{		
+	{
 		TotalTime += nodes[k]->TotalTime * msPerTick;
 		TotalTimeWithoutSons += (nodes[k]->TotalTime -  nodes[k]->LastSonsTotalTime) * msPerTick;
 		NumVisits += nodes[k]->NumVisits;
@@ -838,7 +838,7 @@ void CHTimer::CStats::buildFromNodes(CNode **nodes, uint numNodes, double msPerT
 		maxTime = std::max(maxTime, nodes[k]->MaxTime);
 		sessionMaxTime = std::max(sessionMaxTime, nodes[k]->SessionMax);
 	}
-	if (minTime == (uint64) -1) 
+	if (minTime == (uint64) -1)
 	{
 		minTime = 0;
 	}
@@ -860,7 +860,7 @@ void CHTimer::CStats::buildFromNodes(CNode **nodes, uint numNodes, double msPerT
 		for(l = 0; l < nodes[k]->Measures.size(); ++l)
 		{
 			varianceSum += NLMISC::sqr(nodes[k]->Measures[l] - MeanTime);
-		}		
+		}
 	}
 	TimeStandardDeviation = numMeasures == 0 ? 0
 											 : ::sqrt(varianceSum / (numMeasures +1));
@@ -871,7 +871,7 @@ void CHTimer::CStats::display(CLog *log, bool displayEx, bool wantStandardDeviat
 {
 	log->displayRawNL("HTIMER: Total time                = %.3f ms", (float) TotalTime);
 	log->displayRawNL("HTIMER: Total time without sons   = %.3f ms", (float) TotalTimeWithoutSons);
-	log->displayRawNL(("HTIMER: Num visits                = " + NLMISC::toString(NumVisits)).c_str());	
+	log->displayRawNL(("HTIMER: Num visits                = " + NLMISC::toString(NumVisits)).c_str());
 	if (displayEx)
 	{
 			log->displayRawNL("HTIMER: Min time                  = %.3f ms", (float) MinTime);
@@ -892,16 +892,16 @@ void CHTimer::CStats::getStats(std::string &dest, bool statEx, double rootTotalT
 {
 	char buf[1024];
 	if (!wantStandardDeviation)
-	{	
+	{
 		if (!statEx)
-		{	
+		{
 			NLMISC::smprintf(buf, 1024, " | %10.3f | %10.3f | %12s ", (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str());
 		}
 		else
 		{
 			NLMISC::smprintf(buf, 1024, " | %10.3f | %10.3f | %12s | %5.1f/%5.1f | %9.3f | %9.3f | %9.3f | %9.3f",
-					  (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str(), 
-					  float(100*TotalTimeWithoutSons/rootTotalTime), float(100*TotalTime/rootTotalTime), 
+					  (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str(),
+					  float(100*TotalTimeWithoutSons/rootTotalTime), float(100*TotalTime/rootTotalTime),
 					  (float) SessionMaxTime,
 					  (float) MinTime, (float) MaxTime, (float) MeanTime
 					 );
@@ -910,14 +910,14 @@ void CHTimer::CStats::getStats(std::string &dest, bool statEx, double rootTotalT
 	else
 	{
 		if (!statEx)
-		{	
+		{
 			NLMISC::smprintf(buf, 1024, " | %10.3f | %10.3f | %12s | std deviation %9.3f", (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str(), (float) TimeStandardDeviation);
 		}
 		else
 		{
 			NLMISC::smprintf(buf, 1024, " | %10.3f | %10.3f | %12s | %5.1f/%5.1f | %9.3f | %9.3f | %9.3f | %9.3f | std deviation %9.3f",
-							  (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str(), 
-							  float(100*TotalTimeWithoutSons/rootTotalTime), float(100*TotalTime/rootTotalTime), 
+							  (float) TotalTime, (float) TotalTimeWithoutSons, toString(NumVisits).c_str(),
+							  float(100*TotalTimeWithoutSons/rootTotalTime), float(100*TotalTime/rootTotalTime),
 							  (float) SessionMaxTime,
 							  (float) MinTime, (float) MaxTime, (float) MeanTime,
 							  (float) TimeStandardDeviation
@@ -938,7 +938,7 @@ bool CHTimer::CStatSorter::operator()(const CHTimer::CStats *lhs, const CHTimer:
 		case CHTimer::MeanTime:					return lhs->MeanTime >= rhs->MeanTime;
 		case CHTimer::NumVisits:				return lhs->NumVisits >= rhs->NumVisits;
 		case CHTimer::MaxTime:					return lhs->MaxTime >= rhs->MaxTime;
-		case CHTimer::MinTime:					return lhs->MinTime < rhs->MinTime;	
+		case CHTimer::MinTime:					return lhs->MinTime < rhs->MinTime;
 		case CHTimer::MaxSession:				return lhs->SessionMaxTime > rhs->SessionMaxTime;
 		default:
 			nlassert(0); // not a valid criterion
@@ -950,21 +950,21 @@ bool CHTimer::CStatSorter::operator()(const CHTimer::CStats *lhs, const CHTimer:
 
 //===============================================
 void	CHTimer::doBefore()
-{	
-	_PreambuleClock.start();	
-	walkTreeToCurrent();			
+{
+	_PreambuleClock.start();
+	walkTreeToCurrent();
 	++ _CurrNode->NumVisits;
 	_CurrNode->SonsPreambule = 0;
 	if (!_Parent && _CurrTimer != this)
 	{
 		_Parent = _CurrTimer;
 		// register as a son of the parent
-		_Parent->_Sons.push_back(this); 
+		_Parent->_Sons.push_back(this);
 	}
 	_CurrTimer = this;
 	_PreambuleClock.stop();
 	if (_CurrNode->Parent)
-	{	
+	{
 		_CurrNode->Parent->SonsPreambule += _PreambuleClock.getNumTicks();
 	}
 	_CurrNode->Clock.start();
@@ -973,18 +973,18 @@ void	CHTimer::doBefore()
 //===============================================
 void	CHTimer::doAfter(bool displayAfter)
 {
-	_CurrNode->Clock.stop();		
+	_CurrNode->Clock.stop();
 	_PreambuleClock.start();
 	/* Remove my Son preambule, and remove only ONE StartStop
 		It is because between the start and the end, only ONE rdtsc time is counted:
 	*/
 	sint64 numTicks = _CurrNode->Clock.getNumTicks()  - _CurrNode->SonsPreambule - (CSimpleClock::getStartStopNumTicks());
-	// Case where the SonPreambule is overestimated, 
+	// Case where the SonPreambule is overestimated,
 	numTicks= std::max((sint64)0, numTicks);
 	// In case where the SonPreambule is overestimated, the TotalTime must not be < of the SonTime
 	if(_CurrNode->TotalTime + numTicks < _CurrNode->SonsTotalTime)
 		numTicks= _CurrNode->SonsTotalTime - _CurrNode->TotalTime;
-	
+
 	_CurrNode->TotalTime += numTicks;
 	_CurrNode->MinTime = std::min(_CurrNode->MinTime, (uint64)numTicks);
 	_CurrNode->MaxTime = std::max(_CurrNode->MaxTime, (uint64)numTicks);
@@ -993,7 +993,7 @@ void	CHTimer::doAfter(bool displayAfter)
 	_CurrNode->SessionCurrent += (uint64)numTicks;
 
 	if (displayAfter)
-	{		
+	{
 		nlinfo("HTIMER: %s %.3fms loop number %d", _Name, numTicks * _MsPerTick, _CurrNode->NumVisits);
 	}
 	//
@@ -1005,7 +1005,7 @@ void	CHTimer::doAfter(bool displayAfter)
 	if (_Parent)
 	{
 		_CurrTimer = _Parent;
-	}	
+	}
 	//
 	if (_CurrNode->Parent)
 	{
@@ -1014,10 +1014,10 @@ void	CHTimer::doAfter(bool displayAfter)
 		parent->SonsTotalTime += numTicks;
 		_PreambuleClock.stop();
 		/*
-			The SonPreambule of my parent is 
+			The SonPreambule of my parent is
 				+ my BeforePreambule (counted in doBefore)
 				+ my Afterpreambule (see below)
-				+ my Sons Preambule 
+				+ my Sons Preambule
 				+ some constant time due to the Start/Stop of the _CurrNode->Clock, the 2* Start/Stop
 					of the PreabmuleClock, the function call time of doBefore and doAfter
 		*/

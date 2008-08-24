@@ -104,7 +104,7 @@ void CSoundBank::bufferLoaded(const NLMISC::TStringId &bufferName, IBuffer *buff
 
 }
 
-void CSoundBank::registerBufferAssoc(CSimpleSound *sound, IBuffer *buffer) 
+void CSoundBank::registerBufferAssoc(CSimpleSound *sound, IBuffer *buffer)
 {
 	if (buffer != NULL)
 	{
@@ -113,7 +113,7 @@ void CSoundBank::registerBufferAssoc(CSimpleSound *sound, IBuffer *buffer)
 	}
 }
 
-void CSoundBank::unregisterBufferAssoc(CSimpleSound *sound, IBuffer * buffer) 
+void CSoundBank::unregisterBufferAssoc(CSimpleSound *sound, IBuffer * buffer)
 {
 	if (buffer != NULL)
 	{
@@ -321,7 +321,7 @@ void				CSoundBank::unload()
 		// We can't delete directly second because the map is based on second->getName()
 		vec.push_back( (*map_iter).second );
 	}
-	
+
 	_Sounds.clear();
 
 	vector<CSound*>::iterator vec_iter;
@@ -362,8 +362,8 @@ CSound*			CSoundBank::getSound(const NLMISC::TStringId &name)
 }
 
 /**
- *  Return the names of the sounds 
- */ 
+ *  Return the names of the sounds
+ */
 void				CSoundBank::getNames( std::vector<NLMISC::TStringId> &names )
 {
 	TSoundTable::const_iterator iter;

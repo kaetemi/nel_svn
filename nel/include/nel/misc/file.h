@@ -134,22 +134,22 @@ public:		// Advanced Usage.
 	virtual void		serialBuffer(uint8 *buf, uint len)throw(EReadError);
 
 	/// \name Statistics
-	
+
 	/// Get the number of file open from the begining of the application. Files can be in a big file.
 	static uint32	getNumFileOpen() {return _FileOpened;}
-	
+
 	/// Get the number of read acces to a file.
 	static uint32	getNumFileRead() {return _FileRead;}
-	
+
 	/// Get the number of byte read from the file system since the application start.
 	static uint32	getReadFromFile() {return _ReadFromFile;}
-	
+
 	/// Get the number of byte being reading from the file system at the moment.
 	static uint32	getReadingFromFile() {return _ReadingFromFile;}
-	
+
 	/// Get the last 40 files opened. The files can be in a big file.
 	static void		dump (std::vector<std::string> &result);
-	
+
 	/// clear the dump of the last 40 files opened
 	static void		clearDump ();
 
@@ -157,8 +157,8 @@ protected:
 	virtual void		serialBit(bool &bit) throw(EReadError);
 
 	virtual uint		getDbgStreamSize() const;
-	
-	
+
+
 private:
 	FILE		*_F;
 	std::string _FileName;
@@ -173,10 +173,10 @@ private:
 	static uint32 _ReadFromFile;
 	static uint32 _ReadingFromFile;
 	static CSynchronized<std::deque<std::string> > _OpenedFiles;
-	
+
 	bool _IsAsyncLoading;
 
-	// Cache 
+	// Cache
 	bool			_CacheFileOnOpen;
 	bool			_AllowBNPCacheFileOnOpen;
 	uint8			*_Cache;
@@ -222,7 +222,7 @@ public:		// Basic Usage.
 	{
 		return	_F!=NULL;
 	}
-	
+
 public:		// Advanced Usage.
 	/// Explicit close.
 	void	close();

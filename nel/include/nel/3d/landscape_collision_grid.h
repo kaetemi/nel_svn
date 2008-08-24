@@ -30,7 +30,7 @@
 #include <vector>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -61,7 +61,7 @@ public:
 
 	/// clear the chainlist in the quadgrid.
 	void			clear();
-	/** Build the quadgrid with a array of patchblock. delta is the vector to apply to tiles coordinate, 
+	/** Build the quadgrid with a array of patchblock. delta is the vector to apply to tiles coordinate,
 	 * before insertion in the quadgrid (for precision consideration).
 	 */
 	void			build(const std::vector<CPatchQuadBlock*> &quadBlocks, const CVector &delta);

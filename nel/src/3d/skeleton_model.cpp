@@ -78,7 +78,7 @@ const char	*CSkeletonModel::getValueName (uint valueId) const
 	{
 	case SpawnScriptValue: return getSpawnScriptValueName();
 	}
-	
+
 	return CTransformShape::getValueName(valueId);
 }
 
@@ -90,7 +90,7 @@ ITrack		*CSkeletonModel::getDefaultTrack (uint valueId)
 	{
 	case SpawnScriptValue: return &_DefaultSpawnScript;
 	}
-	
+
 	return CTransformShape::getDefaultTrack(valueId);
 }
 
@@ -99,14 +99,14 @@ void		CSkeletonModel::registerToChannelMixer(CChannelMixer *chanMixer, const std
 {
 	/* add the Spawn Script value. The animation is evaluated at detail time, as the script evaluation.
 		This seems dangerous (create and delete models at evalDetail time) but works because:
-		- deletedModels() in a current CScene::render() are delayed to end of render() 
+		- deletedModels() in a current CScene::render() are delayed to end of render()
 			and are "temp removed" from the render trav
 		- createdModels() in CSkeletonSpawnScript are delayed to the end of CScene::render()
 		- if a skeleton is not visible, or in LOD form, then its sticked SpawnedModels are not visible too,
 			wether or not they are too old regarding the animation time
 	*/
 	_SpawnScriptChannelId= addValue(chanMixer, SpawnScriptValue, OwnerBit, prefix, true);
-	
+
 	// add standard
 	CTransformShape::registerToChannelMixer(chanMixer, prefix);
 
@@ -133,7 +133,7 @@ CSkeletonModel::CSkeletonModel()
 	_SkinToRenderDirty= false;
 
 	_CLodVertexAlphaDirty= true;
-	
+
 	_LodEmit= CRGBA::Black;
 
 	// Inform the transform that I am a skeleton
@@ -174,7 +174,7 @@ CSkeletonModel::CSkeletonModel()
 	_SpawnScriptChannelId= -1;
 }
 
-	
+
 // ***************************************************************************
 CSkeletonModel::~CSkeletonModel()
 {
@@ -398,7 +398,7 @@ void		CSkeletonModel::updateBoneToCompute()
 				// Lod interpolation on this bone ?? only if at next lod, the bone is disabled.
 				// And only if it is not enabed because of a "Forced reason"
 				// Must also have a father, esle can't interpolate.
-				if(lodNext->ActiveBones[i]==0 && _BoneUsage[i].ForcedUsage==0 && _BoneUsage[i].CLodForcedUsage==0 
+				if(lodNext->ActiveBones[i]==0 && _BoneUsage[i].ForcedUsage==0 && _BoneUsage[i].CLodForcedUsage==0
 					&& bc.Father)
 					bc.MustInterpolate= true;
 			}
@@ -451,7 +451,7 @@ struct CForceComputeBoneInfo
 // ***************************************************************************
 bool CSkeletonModel::forceComputeBone(uint boneId)
 {
-	if(boneId >= _BoneUsage.size()) return false;		
+	if(boneId >= _BoneUsage.size()) return false;
 	// build list of ancestor, then must build
 	std::vector<CForceComputeBoneInfo> ancestors;
 	// count the number of ancestors (to avoid unwanted alloc with vector)
@@ -473,7 +473,7 @@ bool CSkeletonModel::forceComputeBone(uint boneId)
 		if (currTransform->isSkeleton())
 		{
 			if (_ChannelMixer)
-			{			
+			{
 				CSkeletonModel *skel = static_cast<CSkeletonModel *>(currTransform);
 				nlassert(boneId < skel->_BoneUsage.size());
 				nlassert(currStickBone < skel->Bones.size());
@@ -497,16 +497,16 @@ bool CSkeletonModel::forceComputeBone(uint boneId)
 		fcbi.Transform   = currTransform;
 		ancestors.push_back(fcbi);
 		currTransform = currTransform->_HrcParent ? currTransform->_HrcParent : currTransform->_FatherSkeletonModel; // find father transform (maybe a skeleton or a std transform)
-		if (!currTransform) break; // root reached ?		
+		if (!currTransform) break; // root reached ?
 	}
 	// bones must be recomputed from father bone to sons, so must traverse bones until root is reached to retrieve correct ordering
 	CBone *OrderedBone[MaxNumBones];
 	//
 	const CMatrix *parentWorldMatrix = &CMatrix::Identity;
 	for(std::vector<CForceComputeBoneInfo>::reverse_iterator it = ancestors.rbegin(); it != ancestors.rend(); ++it)
-	{					
+	{
 		// update world matrix (NB : the call to getmatrix will update the local matrix)
-		it->Transform->setWorldMatrix(*parentWorldMatrix * it->Transform->getMatrix());		
+		it->Transform->setWorldMatrix(*parentWorldMatrix * it->Transform->getMatrix());
 		if (it->Transform->isSkeleton())
 		{
 			CSkeletonModel *skel = static_cast<CSkeletonModel *>(it->Transform);
@@ -514,7 +514,7 @@ bool CSkeletonModel::forceComputeBone(uint boneId)
 			uint numBones = 0;
 			nlassert(it->StickBoneID < skel->Bones.size());
 			sint currBoneIndex = it->StickBoneID;
-			nlassert(currBoneIndex != -1);			
+			nlassert(currBoneIndex != -1);
 			do
 			{
 				nlassert(numBones < MaxNumBones);
@@ -720,7 +720,7 @@ void	CSkeletonModel::traverseAnimDetail()
 {
 	CSkeletonShape	*skeShape= ((CSkeletonShape*)(IShape*)Shape);
 
-	/* NB: If "this" skeleton has an AncestorSkeletonModel displayed but "this" skeleton is clipped, 
+	/* NB: If "this" skeleton has an AncestorSkeletonModel displayed but "this" skeleton is clipped,
 		it will be still animDetailed.
 		So its possible sticked sons will be displayed with correct WorldMatrix (if not themselves clipped).
 	*/
@@ -748,7 +748,7 @@ void	CSkeletonModel::traverseAnimDetail()
 	//===============
 
 	/*
-		CTransformShape::traverseAnimDetail() is torn in 2 here because 
+		CTransformShape::traverseAnimDetail() is torn in 2 here because
 		channels may be enabled/disabled by updateBoneToCompute()
 	*/
 
@@ -767,7 +767,7 @@ void	CSkeletonModel::traverseAnimDetail()
 		_BoneToComputeDirty= true;
 	}
 
-	// If needed, let's know which bone has to be computed, and enable / disable (lod) channels in channelMixer.	
+	// If needed, let's know which bone has to be computed, and enable / disable (lod) channels in channelMixer.
 	updateBoneToCompute();
 
 	// Animate skeleton.
@@ -806,9 +806,9 @@ void	CSkeletonModel::traverseAnimDetail()
 
 	// Compute bones
 	//===============
-	
 
-	// test if bones must be updated. either if animation change or if BoneUsage change.	
+
+	// test if bones must be updated. either if animation change or if BoneUsage change.
 	// Retrieve the WorldMatrix of the current CTransformShape.
 	const CMatrix		&modelWorldMatrix= getWorldMatrix();
 
@@ -831,9 +831,9 @@ void	CSkeletonModel::traverseAnimDetail()
 		}
 	}
 
-	IAnimatable::clearFlag(CSkeletonModel::OwnerBit);	
+	IAnimatable::clearFlag(CSkeletonModel::OwnerBit);
 
-	// Sticked Objects: 
+	// Sticked Objects:
 	// they will update their WorldMatrix after, because of the AnimDetail traverse scheme:
 	// traverse visible Clip models, and if skeleton, traverse Hrc sons.
 
@@ -1211,7 +1211,7 @@ void			CSkeletonModel::updateSkinRenderLists()
 			// if transparent, then must fill in transparent list.
 			if(skin->isTransparent())
 				transparentSize++;
-			// else may fill in opaquelist. NB: for optimisation, don't add in opaqueList 
+			// else may fill in opaquelist. NB: for optimisation, don't add in opaqueList
 			// if added to the transperent list (all materials are rendered)
 			else if(skin->isOpaque())
 				opaqueSize++;
@@ -1239,7 +1239,7 @@ void			CSkeletonModel::updateSkinRenderLists()
 						_LevelDetail.DistanceFinest= max(_LevelDetail.DistanceFinest, skinLevelDetail->DistanceFinest);
 					}
 				}
-			}			
+			}
 
 			// Enlarge Bone BBox
 			const std::vector<sint32>			*boneUsage= skin->getSkinBoneUsage();
@@ -1254,7 +1254,7 @@ void			CSkeletonModel::updateSkinRenderLists()
 					nlassert(boneId<(sint)Bones.size());
 					// if valid boneId, and sphere not empty (ie not -1 radius)
 					if(boneId>-1 && sphere.Radius>=0)
-					{						
+					{
 						if(sphereEmpty[boneId])
 						{
 							sphereEmpty[boneId]= false;
@@ -1268,7 +1268,7 @@ void			CSkeletonModel::updateSkinRenderLists()
 				}
 			}
 
-			// Whole skeleton model Support Fast intersection only if all 
+			// Whole skeleton model Support Fast intersection only if all
 			// displayed skins support skin intersection
 			_SupportFastIntersect= _SupportFastIntersect && skin->supportIntersectSkin();
 		}
@@ -1310,7 +1310,7 @@ void			CSkeletonModel::updateSkinRenderLists()
 				nlassert(transparentId<transparentSize);
 				_TransparentSkins[transparentId++]= skin;
 			}
-			// else may fill in opaquelist. NB: for optimisation, don't add in opaqueList 
+			// else may fill in opaquelist. NB: for optimisation, don't add in opaqueList
 			// if added to the transperent list (all materials are rendered)
 			else if(skin->isOpaque())
 			{
@@ -1424,8 +1424,8 @@ void			CSkeletonModel::renderCLod()
 	nlassert(mngr->isRendering());
 
 
-	// add the instance to the manager. 
-	if(!mngr->addRenderCharacterKey(_CLodInstance, getWorldMatrix(), 
+	// add the instance to the manager.
+	if(!mngr->addRenderCharacterKey(_CLodInstance, getWorldMatrix(),
 		mainAmbient, mainDiffuse, mainLightDir) )
 	{
 		// If failed to add it because no more vertex space in the manager, retry.
@@ -1436,7 +1436,7 @@ void			CSkeletonModel::renderCLod()
 		mngr->beginRender(drv, renderTrav.CamPos);
 
 		// retry. but no-op if refail.
-		mngr->addRenderCharacterKey(_CLodInstance, getWorldMatrix(), 
+		mngr->addRenderCharacterKey(_CLodInstance, getWorldMatrix(),
 			mainAmbient, mainDiffuse, mainLightDir);
 	}
 }
@@ -1457,13 +1457,13 @@ void			CSkeletonModel::renderSkins()
 
 	// force normalisation of normals..
 	bool	bkupNorm= drv->isForceNormalize();
-	drv->forceNormalize(true);			
+	drv->forceNormalize(true);
 
 
 	// rdr good pass
 	if(rdrTrav.isCurrentPassOpaque())
 	{
-		// Compute in Pass Opaque only the light contribution. 
+		// Compute in Pass Opaque only the light contribution.
 		// Easier for skeleton: suppose lightable, no local attenuation
 
 		// the std case is to take my model lightContribution
@@ -1545,7 +1545,7 @@ void			CSkeletonModel::renderSkinList(NLMISC::CObjectVector<CTransform*, false> 
 		}
 
 		H_AUTO( NL3D_Skin_Grouped );
-		
+
 		// For each skin, have an index which gives the decal of the vertices in the buffer
 		baseVertices.resize(skinsToGroup.size());
 
@@ -1562,13 +1562,13 @@ void			CSkeletonModel::renderSkinList(NLMISC::CObjectVector<CTransform*, false> 
 			//------------
 			// lock buffer
 			uint8	*vbDest= meshSkinManager.lock();
-			
+
 			// For all skins until the buffer is full
 			uint	startSkinId= skinId;
 			while(skinId<skinsToGroup.size())
 			{
 				// if success to fill the AGP
-				sint	numVerticesAdded= skinsToGroup[skinId]->renderSkinGroupGeom(alphaMRM, remainingVertices, 
+				sint	numVerticesAdded= skinsToGroup[skinId]->renderSkinGroupGeom(alphaMRM, remainingVertices,
 					vbDest + vertexSize*currentBaseVertex );
 				// -1 means that this skin can't render because no space left for her. Then stop for this block
 				if(numVerticesAdded==-1)
@@ -1585,11 +1585,11 @@ void			CSkeletonModel::renderSkinList(NLMISC::CObjectVector<CTransform*, false> 
 
 			// release buffer. ATI: release only vertices used.
 			meshSkinManager.unlock(currentBaseVertex);
-			
+
 			// Second pass, render the primitives.
 			//------------
 			meshSkinManager.activate();
-			
+
 			/* Render any primitives that are not specular. Group specular ones into specularRdrPasses.
 				NB: this speed a lot (specular setup is heavy)!
 			*/
@@ -1606,10 +1606,10 @@ void			CSkeletonModel::renderSkinList(NLMISC::CObjectVector<CTransform*, false> 
 			{
 				// Sort by Specular Map. HTimerInfo: take 0.0% time
 				sort(specularRdrPasses.begin(), specularRdrPasses.end());
-				
+
 				// Batch Specular! HTimerInfo: take 0.2%
 				rdrTrav.getDriver()->startSpecularBatch();
-				
+
 				// Render all of them
 				for(uint i=0;i<specularRdrPasses.size();i++)
 				{
@@ -1654,7 +1654,7 @@ void			CSkeletonModel::changeMRMDistanceSetup(float distanceFinest, float distan
 	_LevelDetail.DistanceMiddle= distanceMiddle;
 	_LevelDetail.DistanceCoarsest= distanceCoarsest;
 
-	// compile 
+	// compile
 	_LevelDetail.compileDistanceSetup();
 
 	// Never more use MAX skin setup.
@@ -1722,13 +1722,13 @@ void CSkeletonModel::getWorldMaxBoneSpheres(std::vector<NLMISC::CBSphere> &dest)
 	dest.clear();
 	// Not visible => empty bbox
 	if(!isClipVisible())
-		return;	
+		return;
 	dest.resize(_BoneToCompute.size());
 	for(uint i=0;i<_BoneToCompute.size();i++)
 	{
-		CBone			*bone= _BoneToCompute[i].Bone;		
-		bone->_MaxSphere.applyTransform(bone->getWorldMatrix(), dest[i]);		
-	}	
+		CBone			*bone= _BoneToCompute[i].Bone;
+		bone->_MaxSphere.applyTransform(bone->getWorldMatrix(), dest[i]);
+	}
 }
 
 // ***************************************************************************
@@ -1743,32 +1743,32 @@ bool		CSkeletonModel::computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, b
 
 	if (_Skins.empty())
 		return false;
-	
+
 	updateSkinRenderLists();
 
 	// **** Compute The BBox with Bones of the skeleton
-	CVector		minBB, maxBB;	
+	CVector		minBB, maxBB;
 	for(uint i=0;i<_BoneToCompute.size();i++)
 	{
 		CBone			*bone= _BoneToCompute[i].Bone;
-		// compute the world / local sphere		
+		// compute the world / local sphere
 		const	CMatrix	&boneMat = computeInWorld ? bone->getWorldMatrix() : bone->getLocalSkeletonMatrix();
-		CBSphere		sphere;		
+		CBSphere		sphere;
 		bone->_MaxSphere.applyTransform(boneMat, sphere);
 		// compute bone min max bounding cube.
 		CVector		minBone, maxBone;
 		minBone= maxBone= sphere.Center;
 		float	r= sphere.Radius;
-		
-		
+
+
 		minBone.x-= r;
 		minBone.y-= r;
 		minBone.z-= r;
 		maxBone.x+= r;
 		maxBone.y+= r;
 		maxBone.z+= r;
-			
-		
+
+
 		// set or extend
 		if(i==0)
 		{
@@ -1781,7 +1781,7 @@ bool		CSkeletonModel::computeRenderedBBoxWithBoneSphere(NLMISC::CAABBox &bbox, b
 			maxBB.maxof(maxBB, maxBone);
 		}
 	}
-	
+
 	// build the bbox
 	bbox.setMinMax(minBB, maxBB);
 	return true;
@@ -1794,7 +1794,7 @@ bool			CSkeletonModel::computeCurrentBBox(NLMISC::CAABBox &bbox, bool forceCompu
 	// animate all bones channels (detail only channels). don't bother cur lod state.
 	CChannelMixer	*chanmix= getChannelMixer();
 	if (chanmix)
-	{	
+	{
 		// Force detail evaluation.
 		chanmix->resetEvalDetailDate();
 		chanmix->eval(true, 0);
@@ -1857,7 +1857,7 @@ void		CSkeletonModel::getLightHotSpotInWorld(CVector &modelPos, float &modelRadi
 	{
 		/* Else return the skeleton pos. NB: this seems unusefull since bone 0 not computed means no Skins.
 			But lighting computation is still done and may use a VisualCollisionEntity.
-			This system cache some infos according to position. This is why we must return a position 
+			This system cache some infos according to position. This is why we must return a position
 			near the skeleton (else cache crash each frame => slowdown...)
 		*/
 		modelPos= _WorldMatrix.getPos();
@@ -1906,7 +1906,7 @@ bool		CSkeletonModel::fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVe
 	// no intersection by default
 	dist2D= FLT_MAX;
 	distZ= FLT_MAX;
-	
+
 	// The skinning must be done in final RaySpace.
 	CMatrix		toRaySpace;
 	// compute the ray matrix
@@ -1919,7 +1919,7 @@ bool		CSkeletonModel::fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVe
 	// The skinning must be done in ray space: (RayMat-1)*skelWorldMatrix;
 	toRaySpace.invert();
 	toRaySpace*= getWorldMatrix();
-	
+
 	// displayed as a CLod?
 	if(isDisplayedAsLodCharacter())
 	{
@@ -1943,7 +1943,7 @@ bool		CSkeletonModel::fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVe
 			// If the skin is hidden, don't test intersection!
 			if(skin->getVisibility()==CHrcTrav::Hide)
 				continue;
-			
+
 			if(!skin->supportIntersectSkin())
 				continue;
 
@@ -1965,7 +1965,7 @@ bool		CSkeletonModel::fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVe
 			}
 		}
 	}
-		
+
 	// no intersection found? set Z to 0 (to be clean)
 	if(dist2D>0)
 		distZ= 0;
@@ -1979,16 +1979,16 @@ void		CSkeletonModel::remapSkinBones(const std::vector<string> &bonesName, std::
 	// Resize boneId to the good size.
 	bonesId.resize(bonesName.size());
 	remap.resize(bonesName.size());
-	
+
 	// **** For each bones, compute remap
 	for (uint bone=0; bone<remap.size(); bone++)
 	{
 		// Look for the bone
 		sint32 boneId = getBoneIdByName (bonesName[bone]);
-		
+
 		// Setup the _BoneId.
 		bonesId[bone]= boneId;
-		
+
 		// Bones found ?
 		if (boneId != -1)
 		{
@@ -1999,7 +1999,7 @@ void		CSkeletonModel::remapSkinBones(const std::vector<string> &bonesName, std::
 		{
 			// Put id 0
 			remap[bone] = 0;
-			
+
 			// Error
 			nlwarning ("Bone %s not found in the skeleton.", bonesName[bone].c_str());
 		}
@@ -2060,7 +2060,7 @@ void		CSkeletonModel::generateShadowMap(const CVector &lightDir)
 	// Infos.
 	// ****
 
-	// Compute the BackPoint: the first point to be shadowed. 
+	// Compute the BackPoint: the first point to be shadowed.
 	CVector		backPoint= bbWorld.getCenter();
 	// get the 3/4 bottom of the shape
 	backPoint.z-= bbWorld.getHalfSize().z/2;
@@ -2133,7 +2133,7 @@ void		CSkeletonModel::renderShadowSkins(CMaterial &castMat)
 	{
 		// can occurs?????
 		// ABORT!! ...  avoid Mesh Shadowing (free shadowMap)? Replace with a dummy Shadow?
-		// For now, no-op... 
+		// For now, no-op...
 	}
 	else
 	{
@@ -2185,7 +2185,7 @@ void		CSkeletonModel::renderShadowSkins(CMaterial &castMat)
 			while(skinId<skinsToGroup.size())
 			{
 				// if success to fill the AGP
-				sint	numVerticesAdded= skinsToGroup[skinId]->renderShadowSkinGeom(remainingVertices, 
+				sint	numVerticesAdded= skinsToGroup[skinId]->renderShadowSkinGeom(remainingVertices,
 					vbDest + vertexSize*currentBaseVertex );
 				// -1 means that this skin can't render because no space left for her. Then stop for this block
 				if(numVerticesAdded==-1)

@@ -27,7 +27,7 @@
 // remove stupid VC6 warnings
 void foo_input_device_cpp() {}
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

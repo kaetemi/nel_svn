@@ -30,7 +30,7 @@
 #include "u_transformable.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 using NLMISC::CVector;
@@ -76,7 +76,7 @@ public:
 	void			parent(UTransform newFather);
 
 
-	void			setClusterSystem (UInstanceGroup *pIG); 
+	void			setClusterSystem (UInstanceGroup *pIG);
 	UInstanceGroup	*getClusterSystem () const;
 // @}
 
@@ -88,7 +88,7 @@ public:
 	/// Show the objet and his sons.
 	void			show();
 	/*
-	 *	Enable / disable user clipping. If enable, the transform is not clipped into the engine. 
+	 *	Enable / disable user clipping. If enable, the transform is not clipped into the engine.
 	 *  The user has to use show / hide to clip or not the transform.
 	 */
 	void			setUserClipping(bool enable);
@@ -103,7 +103,7 @@ public:
 
 	/// \name freezeHRC
 	// @{
-	/** Optimisation: freeze the HRC so the WorldMatrix computed at next render() will be kept for long, and 
+	/** Optimisation: freeze the HRC so the WorldMatrix computed at next render() will be kept for long, and
 	 *	the model won't either be tested in HRC.
 	 *
 	 *	NB: the model won't be tested in HRC only if this model is a "root"
@@ -180,7 +180,7 @@ public:
 	 *
 	 *	By default, models lies in the "Default" group, but Skeletons for skinning and ParticlesSystems which
 	 *	are in "Skin" and "Fx" group respectively.
-	 *	The "Default" group is special because it is not balanced (ie models are only degraded from 
+	 *	The "Default" group is special because it is not balanced (ie models are only degraded from
 	 *	their distance to camera)
 	 */
 	void			setLoadBalancingGroup(const std::string &group);
@@ -208,8 +208,8 @@ public:
 	 *	For now, only supports skeleton with ALL skins that are shadowSkined and MRM
 	 */
 	bool		supportFastIntersect() const;
-	/** test if the transform intersect the ray (p0, dir). 
-	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!) 
+	/** test if the transform intersect the ray (p0, dir).
+	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!)
 	 *	if intersect, dist2D=0, and distZ= Depth Distance
 	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
@@ -219,9 +219,9 @@ public:
 	// @}
 
 	/// name Accessors for opacity/transparency
-	// @{	
+	// @{
 	void			setTransparency(bool v);
-	void			setOpacity(bool v);	
+	void			setOpacity(bool v);
 	// return a non-zero value if true
 	uint32			isOpaque();
 	uint32			isTransparent();
@@ -242,14 +242,14 @@ public:
 
 	/// \name ShadowMapping
 	// @{
-	/** By default, map shadow casting is disabled. This enabled shadow for this model. 
+	/** By default, map shadow casting is disabled. This enabled shadow for this model.
 	 *	Fails if the model don't support dynamic Map Shadow Casting (eg landscape)
 	 */
 	void			enableCastShadowMap(bool state);
 	/// true if the instance cast shadow. By default false
 	bool			canCastShadowMap() const;
 
-	/** By default, map shadow receiving is disabled. This enabled shadow for this model. 
+	/** By default, map shadow receiving is disabled. This enabled shadow for this model.
 	 *	Fails if the model don't support dynamic Map Shadow Receiving (eg Particle system)
 	 */
 	void			enableReceiveShadowMap(bool state);
@@ -259,7 +259,7 @@ public:
 	/** To limit some problems when the light direction is too on the XY axis.
 	 *	This method set an "angle" threshold for the shadow direction
 	 *	Actually, you give the minimum negative Z (not ang angle) the normalized shadow direction must have
-	 *	\param zthre possible values are in [-1,1]. 
+	 *	\param zthre possible values are in [-1,1].
 	 *		-1 force the direction to be (0,0,-1) in all case
 	 *		0 means the z may be 0 (the direction is totaly XY), but at least the direction must go downward
 	 *		1 means there is no restriction, the shadow direction can either be upward
@@ -277,7 +277,7 @@ public:
 	float				getShadowMapMaxDepth() const;
 
 	// @}
-	
+
 	/** Force the transform to always be attached to the root
 	  * As a consequence, it can't be inserted into a cluster system (even the root cluster)
 	  * and is thus always visible when in the frustum (not clusterized)

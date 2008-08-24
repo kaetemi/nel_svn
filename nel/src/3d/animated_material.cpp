@@ -109,13 +109,13 @@ void	CMaterialBase::copyFromMaterial(CMaterial *pMat)
 		if (pMat->isUserTexMatEnabled(k))
 		{
 			float uTrans, vTrans, uScale, vScale, wRot;
-			pMat->decompUserTexMat(k, uTrans, vTrans, wRot, uScale, vScale);			
+			pMat->decompUserTexMat(k, uTrans, vTrans, wRot, uScale, vScale);
 			DefaultTexAnimTracks[k].DefaultUTrans.setDefaultValue(uTrans);
 			DefaultTexAnimTracks[k].DefaultVTrans.setDefaultValue(vTrans);
 			DefaultTexAnimTracks[k].DefaultUScale.setDefaultValue(uScale);
 			DefaultTexAnimTracks[k].DefaultVScale.setDefaultValue(vScale);
 			DefaultTexAnimTracks[k].DefaultWRot.setDefaultValue(wRot);
-		}      
+		}
 	}
 }
 
@@ -196,7 +196,7 @@ void	CAnimatedMaterial::update()
 {
 	if(isTouched(OwnerBit) && _Material!=NULL /*&& _Material->isLighted()*/)
 	{
-		
+
 		// well, just update all...  :)
 
 		// diffuse part.
@@ -207,7 +207,7 @@ void	CAnimatedMaterial::update()
 
 		// setup material.
 		if (_Material->isLighted())
-		{		
+		{
 			_Material->setLighting(true, _Emissive.Value, _Ambient.Value, diff, _Specular.Value, _Shininess.Value);
 		}
 		else
@@ -244,7 +244,7 @@ void	CAnimatedMaterial::update()
 			if (_Material->isUserTexMatEnabled(k))
 			{
 				const CTexAnimatedMatValues &texMatAV = _TexAnimatedMatValues[k];
-		
+
 				CMatrix convMat; // exported v are already inverted (todo : optim this if needed, this matrix shouldn't be necessary)
 				convMat.setRot(CVector::I, -CVector::J, CVector::K);
 				convMat.setPos(CVector::J);
@@ -289,10 +289,10 @@ IAnimatedValue* CAnimatedMaterial::getValue (uint valueId)
 				case 0:	return &_TexAnimatedMatValues[texNum]._UTrans;
 				case 1:	return &_TexAnimatedMatValues[texNum]._VTrans;
 				case 2:	return &_TexAnimatedMatValues[texNum]._UScale;
-				case 3:	return &_TexAnimatedMatValues[texNum]._VScale;				
-				case 4:	return &_TexAnimatedMatValues[texNum]._WRot;				
+				case 3:	return &_TexAnimatedMatValues[texNum]._VScale;
+				case 4:	return &_TexAnimatedMatValues[texNum]._WRot;
 			}
-		}		
+		}
 	break;
 	};
 
@@ -326,7 +326,7 @@ const char *CAnimatedMaterial::getValueName (uint valueId) const
 				case 3:	return getTexMatVScaleName(texNum);
 				case 4:	return getTexMatWRotName(texNum);
 			}
-		}		
+		}
 	break;
 	};
 
@@ -362,7 +362,7 @@ ITrack*	CAnimatedMaterial::getDefaultTrack (uint valueId)
 				case 3:	return 	&_MaterialBase->DefaultTexAnimTracks[texNum].DefaultVTrans;
 				case 4:	return 	&_MaterialBase->DefaultTexAnimTracks[texNum].DefaultWRot;
 			}
-		}		
+		}
 	break;
 	};
 

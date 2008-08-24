@@ -25,7 +25,7 @@
 #include "nel/misc/event_emitter_multi.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 // a predicate to find an emitter in a list
@@ -94,13 +94,13 @@ IEventEmitter *CEventEmitterMulti::getEmitter(uint index)
 }
 
 ///============================================================
-const IEventEmitter *CEventEmitterMulti::getEmitter(uint index) const 
+const IEventEmitter *CEventEmitterMulti::getEmitter(uint index) const
 {
 	nlassert(index < _Emitters.size());
 	return _Emitters[index].first;
 }
 
-	
+
 
 
 } // NLMISC

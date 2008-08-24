@@ -117,7 +117,7 @@ public:
 	std::string CategoryName;
 	std::string HelpString;
 	std::string CommandArgs;
-	
+
 	// is it a variable or a classic command?
 	enum TType { Unknown, Command, Variable };
 	TType Type;
@@ -152,7 +152,7 @@ public:
 
 	/// Retrieve the interface over command object for the given command name.
 	static ICommand *getCommand(const std::string &commandName);
-	
+
 	const std::string &getName () const { return _CommandName; }
 
 	/** declare a command to "enable control char". By default all commands "enable control char"
@@ -170,7 +170,7 @@ public:
 
 	/// see enableControlCharForCommand()
 	static bool	isControlCharForCommandEnabled(const std::string &commandName);
-	
+
 protected:
 
 	std::string _CommandName;
@@ -222,7 +222,7 @@ struct TCommandHandlerClassInfo
  *	Command handler are a mean to build object that support NeL commands
  *	_Commands are associated to object class and invoked to named instance.
  *	Each named instance must have a unique name (whatever it's class).
- *	Unlike NeL global commands, object commands are invoked in the context 
+ *	Unlike NeL global commands, object commands are invoked in the context
  *	of the object instance.
  *
  *	In order to write an object that support commands, you must devive from
@@ -257,25 +257,25 @@ public:
 
 	virtual const std::string &getCommandHandlerClassName() const =0;
 
-	/** This methods implemented by CCommandHandler is used by the 
+	/** This methods implemented by CCommandHandler is used by the
 	 *	command registry to retrieve the name of the object instance.
 	 */
 	virtual const std::string &getCommandHandlerName() const =0;
 
-	/** This methods implemented by CCommandHandler is used by the 
+	/** This methods implemented by CCommandHandler is used by the
 	 *	command registry to build the list of available commands
 	 *	on the object class.
 	 */
 	virtual void fillCommandsHandlerList(TCommandHandlerClassInfo::TCommandsInfo &commandList) =0;
 
 	/** Virtual destructor to unregister the object instance.
-	 *	When all the instance of a given class are deleted, 
+	 *	When all the instance of a given class are deleted,
 	 *	the associated command an class information are
 	 *	removed from the command registry.
 	 */
 	virtual ~ICommandsHandler();
 
-	/** This methods implemented by CCommandHandler is used by the 
+	/** This methods implemented by CCommandHandler is used by the
 	 *	command registry to start a command execution.
 	 */
 	virtual bool execute(const std::string &rawCommandString, const std::string &commandName, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human = true) =0;
@@ -293,7 +293,7 @@ struct TCommandHandler : public TCommandHandlerInfo
 /** Template class used as base for derivation of object that support commands.
  *	To declare your object supporting commands, you must
  *	derive from this class with your class type as template parameter.
- *	
+ *
  *	e.g :
  *	class CMyClass : public CCommandsHandler<CMyClass>
  *	{
@@ -304,7 +304,7 @@ struct TCommandHandler : public TCommandHandlerInfo
  *	class CMyClass : public CCommandsHandler<CMyClass>
  *	{
  *	public:
- *	
+ *
  *		NLMISC_COMMAND_HANDLER_TABLE_BEGIN(CMyClass)
  *			NLMISC_COMMAND_HANDLER_ADD(CMyClass, theCommand1, "help", "args")
  *			NLMISC_COMMAND_HANDLER_ADD(CMyClass, theCommand2, "other help", "other args")
@@ -314,14 +314,14 @@ struct TCommandHandler : public TCommandHandlerInfo
  *		{
  *			// put yout code here
  *		}
- *		
+ *
  *		NLMISC_CLASS_COMMAND_DECL(theCommand2)
  *		{
  *			// put yout code here
  *		}
  *	};
  *
- *	You can also derive a class and add some more commands in the 
+ *	You can also derive a class and add some more commands in the
  *	derived class by using NLMISC_COMMAND_HANDLER_TABLE_EXTEND_BEGIN:
  *
  *	class CMyDerivedClass : public CMyClass
@@ -351,7 +351,7 @@ struct TCommandHandler : public TCommandHandlerInfo
 ////	}
 ////
 //	/** Virtual pure method used by execute to retrieve the method pointer.
-//	 *	This method will be automatically implemented by the NLMISC_COMMAND_HANDLER_TABLE_BEGIN 
+//	 *	This method will be automatically implemented by the NLMISC_COMMAND_HANDLER_TABLE_BEGIN
 //	 *	macro utility.
 //	 */
 ////	virtual TCommand getCommandHandler(const std::string &commandName) =0;
@@ -470,7 +470,7 @@ struct TCommandHandler : public TCommandHandlerInfo
 		}	\
 		return commandsTable; \
 	}	\
-	
+
 /** Macro to add commands in a class that derive from a class
  *	that already declare a command handler table.
  *	the most derivative class will override base class commands
@@ -554,7 +554,7 @@ struct TCommandHandler : public TCommandHandlerInfo
  *	All the legacy static call made on ICommand are now forwarded
  *	directly to this class (e.g. IService::execute)
  *
- *	This class is modeled after the safe singlton pattern, 
+ *	This class is modeled after the safe singlton pattern,
  *	so it is safe to use in a dynamicaly loaded library
  *	program.
  *

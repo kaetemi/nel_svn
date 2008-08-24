@@ -32,7 +32,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -84,7 +84,7 @@ public:
 	enum	TAnimValues
 	{
 		OwnerBit= IAnimatable::AnimValueLast,
-		FactorValue, 
+		FactorValue,
 		AnimValueLast
 	};
 
@@ -104,7 +104,7 @@ public:
 
 	float	getFactor() const { return _Factor.Value; }
 	void	setFactor (float rFactor) { _Factor.Value = rFactor; }
-	
+
 	const std::string& getName() const { return _MorphBase->Name; }
 
 // ********************

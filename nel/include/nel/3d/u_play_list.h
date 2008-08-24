@@ -58,21 +58,21 @@ protected:
 	virtual	~UPlayList() {}
 
 public:
-	enum 
-	{ 
-		// 
+	enum
+	{
+		//
 		empty=0xffffffff
 	};
 
 	/// Wrap mode for the play list
 	enum TWrapMode
-	{ 
+	{
 		/// Clamp the animation time. (default)
 		Clamp=0,
 
 		/// Repeat the animation.
 		Repeat,
-		
+
 		/// Disable the animation.
 		Disable,
 
@@ -87,7 +87,7 @@ public:
 	// @{
 
 	/** register an Animatable object (UTransform, UCamera, UInstance...) to the playlist.
-	 * Before deleting this Animatable object, you SHOULD UPlayList::resetAllChannels() or delete 
+	 * Before deleting this Animatable object, you SHOULD UPlayList::resetAllChannels() or delete
 	 * the playlist from the playlistmanager.
 	 *
 	 * \param object is the object which will be affected by this animation playlist.
@@ -228,8 +228,8 @@ public:
 	virtual	float getEndWeight (uint8 slot, TGlobalAnimationTime& time) const=0;
 
 	/**
-	  * Set weight smoothness. 
-	  * This is the smoothness of the weight interpolation. 
+	  * Set weight smoothness.
+	  * This is the smoothness of the weight interpolation.
 	  * Must be between 0.f and 1.f. 0.f is a sharp interpolation (linear), 1.f is a smooth interpolation (quadratic).
 	  * Default value is 0.f.
 	  *
@@ -239,8 +239,8 @@ public:
 	virtual	void setWeightSmoothness (uint8 slot, float smoothness)=0;
 
 	/**
-	  * Get weight smoothness. 
-	  * This is the smoothness of the weight interpolation. 
+	  * Get weight smoothness.
+	  * This is the smoothness of the weight interpolation.
 	  * Must be between 0.f and 1.f. 0.f is a sharp interpolation (linear), 1.f is a smooth interpolation (quadratic).
 	  * Default value is 0.f.
 	  *
@@ -250,7 +250,7 @@ public:
 	virtual	float getWeightSmoothness (uint8 slot) const=0;
 
 	/**
-	  * Setup a constant animation weight. 
+	  * Setup a constant animation weight.
 	  * NB: this is equivalent as following code:
 	  *		- setStartWeight(slot, weight, 0);
 	  *		- setEndWeight(slot, weight, 0);
@@ -309,7 +309,7 @@ public:
 	/// \name Special channel operation.
 	// @{
 
-	/** disabling a channel means it is no more modified during animation. Default is enabled. 
+	/** disabling a channel means it is no more modified during animation. Default is enabled.
 	 *	NB: this channel must have been added (via registerTransform()....).
 	 *	\param channelId channelId get from UAnimationSet::getChannelIdByName().
 	 */

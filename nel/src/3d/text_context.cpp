@@ -47,7 +47,7 @@ CTextContext::CTextContext()
 	_ScaleZ = 1.0f;
 
 	_Shaded = false;
-	_ShadeExtent = 0.001f;	
+	_ShadeExtent = 0.001f;
 	_ShadeColor = NLMISC::CRGBA(0,0,0);
 
 	_Keep800x600Ratio= true;
@@ -66,7 +66,7 @@ CTextContext::~CTextContext()
 
 // ------------------------------------------------------------------------------------------------
 uint32 CTextContext::textPush (const char *format, ...)
-{ 
+{
 	nlassert(_FontGen);
 
 	// convert the string.
@@ -96,7 +96,7 @@ uint32 CTextContext::textPush (const char *format, ...)
 
 // ------------------------------------------------------------------------------------------------
 uint32 CTextContext::textPush (const ucstring &str)
-{ 
+{
 	nlassert(_FontGen);
 
 	if (_CacheNbFreePlaces == 0)

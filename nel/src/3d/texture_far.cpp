@@ -303,7 +303,7 @@ void	CTextureFar::allocatePatch (CPatch *pPatch, uint farIndex, float& farUScale
 	nlassert( _PatchToPosMap.find(pid) == _PatchToPosMap.end() );
 	_PatchToPosMap[pid]= pos;
 	_PosToPatchMap[pos]= pid;
-	
+
 	// remove from free list.
 	_FreeSpaces[freeListId].pop_front();
 
@@ -519,7 +519,7 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 		// Goofy deltaY, to the right
 		dstDeltaY=1;
 	}
-		
+
 	// Compute the order of the patch
 	CTileFarBank::TFarOrder orderX=CTileFarBank::order0;
 	uint tileSize=0;
@@ -566,7 +566,7 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 
 	// ** Build expand lightmap..
 	NL3D_CExpandLightmap lightMap;
-	
+
 	// Fill the structure
 	lightMap.MulFactor=tileSize;
 	lightMap.ColorTile=&patch->TileColors[0];
@@ -762,10 +762,10 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 					// Stop, no more layer
 					break;
 			}
-						
+
 			// Next tile
 			nTileInPatch++;
-			
+
 			// Next tile on the line
 			nBaseDstTilePixels+=dstDeltaX*tileSize;
 		}
@@ -847,7 +847,7 @@ inline	void	NL3D_asmExpandLineColor565(const uint16 *src, CRGBA *dst, uint du, u
 		mov		ax, [esi + ebx*2]
 		shl		eax, 16
 		mov		ax, [esi + ebx*2 +2]
-		
+
 		// store and unpack in mm2: Hmm2= color0, Lmm2= color1
 		movd	mm2, eax
 		punpcklwd	mm2, mm7
@@ -1077,7 +1077,7 @@ inline	void	NL3D_asmBlendLines(CRGBA *dst, const CRGBA *src0, const CRGBA *src1,
 /**	Lightmap Combining for Far level 2 (farthest)
  *	Average 16 lumels, and deals with UserColor and TLI
  */
-static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint lineWidth, uint nbTexel)
 {
 	static	uint64 blank = 0;
@@ -1106,7 +1106,7 @@ static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorM
 		mov			ebx, colorMap
 		mov			edx, lineWidth
 
-		// read and accumulate shade 
+		// read and accumulate shade
 		xor			eax,eax			// avoid partial stall
 		// add with line 0
 		mov			al, [esi + 0]
@@ -1184,7 +1184,7 @@ static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorM
 /**	Lightmap Combining for Far level 1 (middle)
  *	Average 4 lumels, and deals with UserColor and TLI
  */
-static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint lineWidth, uint nbTexel)
 {
 	static	uint64 blank = 0;
@@ -1213,7 +1213,7 @@ static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorM
 		mov			ebx, colorMap
 		mov			edx, lineWidth
 
-		// read and accumulate shade 
+		// read and accumulate shade
 		xor			eax,eax			// avoid partial stall
 		mov			al, [esi]		// read lumel
 		// add with nbors
@@ -1264,7 +1264,7 @@ static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorM
 /**	Lightmap Combining for Far level 0 (nearest)
  *	read 1 lumel, and deals with UserColor and TLI
  */
-static void		NL3D_asmAssembleShading4x4(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading4x4(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint nbTexel)
 {
 	static	uint64 blank = 0;
@@ -1337,15 +1337,15 @@ inline	void	NL3D_asmEndMMX() {}
 inline	void	NL3D_asmExpandLineColor565(const uint16 *src, CRGBA *dst, uint du, uint len) {}
 inline	void	NL3D_asmExpandLineColor8888(const CRGBA *src, CRGBA *dst, uint du, uint len) {}
 inline	void	NL3D_asmBlendLines(CRGBA *dst, const CRGBA *src0, const CRGBA *src1, uint index, uint len) {}
-static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading1x1(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint lineWidth, uint nbTexel)
 {
 }
-static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading2x2(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint lineWidth, uint nbTexel)
 {
 }
-static void		NL3D_asmAssembleShading4x4(const uint8 *lumels, const CRGBA *colorMap, 
+static void		NL3D_asmAssembleShading4x4(const uint8 *lumels, const CRGBA *colorMap,
 	const CRGBA *srcTLIs, const CRGBA *srcUSCs, CRGBA *dst, uint nbTexel)
 {
 }
@@ -1374,9 +1374,9 @@ extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap)
 	static CRGBA expandedTLIColorLine[ (NL_MAX_TILES_BY_PATCH_EDGE+1)*
 		(NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE ];
 	// Second pass, expand on V.
-	static CRGBA expandedUserColor[ (NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE * 
+	static CRGBA expandedUserColor[ (NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE *
 		(NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE ];
-	static CRGBA expandedTLIColor[ (NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE * 
+	static CRGBA expandedTLIColor[ (NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE *
 		(NL_MAX_TILES_BY_PATCH_EDGE+1)*NL_LUMEL_BY_TILE ];
 
 
@@ -1691,7 +1691,7 @@ extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap)
 
 					// Mul by the userColor
 					lineDestPtr[u].modulateFromColorRGBOnly(col, lineUSCPtr[u]);
-					
+
 					lineDestPtr[u].R = min(((uint)lineDestPtr[u].R)*2, 255U);
 					lineDestPtr[u].G = min(((uint)lineDestPtr[u].G)*2, 255U);
 					lineDestPtr[u].B = min(((uint)lineDestPtr[u].B)*2, 255U);
@@ -1718,7 +1718,7 @@ extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap)
 
 
 // ***************************************************************************
-inline	void	NL3D_asmModulateLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1, 
+inline	void	NL3D_asmModulateLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1,
 	uint len, uint	src0DeltaX, uint dstDeltaX)
 {
 	static	uint64	blank= 0;
@@ -1766,7 +1766,7 @@ inline	void	NL3D_asmModulateLineColors(CRGBA *dst, const CRGBA *src0, const CRGB
 
 
 // ***************************************************************************
-inline	void	NL3D_asmModulateAndBlendLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1, 
+inline	void	NL3D_asmModulateAndBlendLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1,
 	uint len, uint	src0DeltaX, uint dstDeltaX)
 {
 	static	uint64	blank= 0;
@@ -1836,11 +1836,11 @@ inline	void	NL3D_asmModulateAndBlendLineColors(CRGBA *dst, const CRGBA *src0, co
 #else // NL_OS_WINDOWS
 
 // Dummy for non-windows platforms
-inline	void	NL3D_asmModulateLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1, 
+inline	void	NL3D_asmModulateLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1,
 	uint len, uint	src0DeltaX, uint dstDeltaX)
 {
 }
-inline	void	NL3D_asmModulateAndBlendLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1, 
+inline	void	NL3D_asmModulateAndBlendLineColors(CRGBA *dst, const CRGBA *src0, const CRGBA *src1,
 	uint len, uint	src0DeltaX, uint dstDeltaX)
 {
 }
@@ -1867,7 +1867,7 @@ void NL3D_drawFarTileInFarTexture (const NL3D_CComputeTileFar* pTileFar)
 		//---------
 		if(pTileFar->AsmMMX)
 		{
-			NL3D_asmModulateLineColors(pDstPixels, pSrcPixels, pSrcLightPixels, 
+			NL3D_asmModulateLineColors(pDstPixels, pSrcPixels, pSrcLightPixels,
 				pTileFar->Size, pTileFar->SrcDeltaX, pTileFar->DstDeltaX);
 		}
 		// C Implementation.
@@ -1879,7 +1879,7 @@ void NL3D_drawFarTileInFarTexture (const NL3D_CComputeTileFar* pTileFar)
 
 			// Pointer of the source lighting line
 			const CRGBA* pSrcLightingLine=pSrcLightPixels;
-			
+
 			// Pointer of the destination line
 			CRGBA* pDstLine=pDstPixels;
 
@@ -1930,7 +1930,7 @@ void NL3D_drawFarTileInFarTextureAlpha (const NL3D_CComputeTileFar* pTileFar)
 		//---------
 		if(pTileFar->AsmMMX)
 		{
-			NL3D_asmModulateAndBlendLineColors(pDstPixels, pSrcPixels, pSrcLightPixels, 
+			NL3D_asmModulateAndBlendLineColors(pDstPixels, pSrcPixels, pSrcLightPixels,
 				pTileFar->Size, pTileFar->SrcDeltaX, pTileFar->DstDeltaX);
 		}
 		// C Implementation.
@@ -2081,7 +2081,7 @@ void NL3D_drawFarTileInFarTextureAdditiveAlpha (const NL3D_CComputeTileFar* pTil
 			// Read and write a pixel
 			register uint alpha=pSrcLine->A;
 			register uint oneLessAlpha=255-pSrcLine->A;
-			
+
 			// Read and write a pixel
 			uint nTmp=(((uint)pSrcLine->R*(uint)pSrcLightingLine->R)>>8)+(uint)pSrcAddLine->R;
 			if (nTmp>255)

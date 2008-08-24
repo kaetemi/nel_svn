@@ -100,7 +100,7 @@ void CFontManager::computeString (const ucstring &s,
 		driver->getWindowSize (width, height);
 		if ((height == 0) || (width == 0))
 			return;
-		
+
 		// keep the 800*600 ratio
 		fontSize = (uint32)floor(fontSize*height/600.f);
 		fontSize = max(fontSize, (uint32)2);
@@ -180,14 +180,14 @@ void CFontManager::computeString (const ucstring &s,
 					vba.setTexCoord		(j, 0, u2, v2);
 					++j;
 
-					vba.setVertexCoord	(j, x2, 0, z2); 
+					vba.setVertexCoord	(j, x2, 0, z2);
 					vba.setTexCoord		(j, 0, u2, v1);
 					++j;
 
-					vba.setVertexCoord	(j, x1, 0, z2); 
+					vba.setVertexCoord	(j, x1, 0, z2);
 					vba.setTexCoord		(j, 0, u1, v1);
 					++j;
-					
+
 					// String Bound
 					output.XMin= min(output.XMin, x1);
 					output.XMin= min(output.XMin, x2);
@@ -201,7 +201,7 @@ void CFontManager::computeString (const ucstring &s,
 					// String info
 					sint32	nZ1 = (sint32)pLI->Top-(sint32)pLI->CharHeight;
 					sint32	nZ2 = pLI->Top;
-					
+
 					if (nZ1 < nMinZ) nMinZ = nZ1;
 					if (nZ2 > nMaxZ) nMaxZ = nZ2;
 				}
@@ -251,7 +251,7 @@ void CFontManager::computeStringInfo (	const ucstring &s,
 		fontSize = (uint32)floor(fontSize*height/600.f);
 		fontSize = max(fontSize, (uint32)2);
 	}
-	
+
 	sint32 penx = 0;
 	sint32 nMaxZ = -1000000, nMinZ = 1000000;
 	CMaterial		*pMatFont = getFontMaterial();
@@ -274,7 +274,7 @@ void CFontManager::computeStringInfo (	const ucstring &s,
 				// String info
 				sint32	nZ1 = (sint32)pLI->Top-(sint32)pLI->CharHeight;
 				sint32	nZ2 = pLI->Top;
-				
+
 				if (nZ1 < nMinZ) nMinZ = nZ1;
 				if (nZ2 > nMaxZ) nMaxZ = nZ2;
 			}

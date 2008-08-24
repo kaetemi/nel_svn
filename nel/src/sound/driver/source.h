@@ -42,12 +42,12 @@ class ILoader;
  * as 3D vectors, use the NeL vector coordinate system:
  * \verbatim
  *     (top)
- *       z    
+ *       z
  *       |  y (front)
  *       | /
  *       -----x (right)
  * \endverbatim
- * 
+ *
  * - If the buffer is stereo, the source is played in stereo mode.
  *
  * \author Olivier Cado
@@ -74,7 +74,7 @@ public:
 	virtual void					setStreamLoader( ILoader *loader )	{ _Loader = loader; }
 	//@}
 
-	
+
 	/// \name Playback control
 	//@{
 	/// Set looping on/off for future playbacks (default: off)
@@ -151,24 +151,24 @@ public:
 	/** Set the alpha value for the volume-distance curve
 	 *
 	 *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
-	 * 
+	 *
 	 *  alpha = 0.0: the volume will decrease linearly between 0dB and -100 dB
 	 *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
 	 *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
 	 *                is the default used by DirectSound/OpenAL
-	 * 
+	 *
 	 *  For any other value of alpha, an interpolation is be done between the two
 	 *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
 	 *  the linear dB curve and the linear amplitude curve.
 	 */
-	/// 
+	///
 	virtual void					setAlpha(double a) {  }
 	//@}
 
-	
+
 	/// Constructor
 	ISource() : /*_Buffer(NULL),*/ _Loader(NULL) {}
-	
+
 	/// Destructor
 	virtual							~ISource() { /*_Buffer=NULL;*/ _Loader=NULL; }
 
@@ -182,7 +182,7 @@ protected:
 
 	// common method used only if MANUAL_ROLLOFF==1. return the volume in 1/100th DB modified
 	sint32		computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const;
-	
+
 };
 
 

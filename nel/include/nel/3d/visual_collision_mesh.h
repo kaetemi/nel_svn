@@ -32,7 +32,7 @@
 #include "nel/3d/index_buffer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -66,14 +66,14 @@ public:
 		CIndexBuffer		&IndexBuffer;
 
 	public:
-		CShadowContext(CMaterial &mat, CIndexBuffer &ib, CShadowMapProjector &smp) : 
+		CShadowContext(CMaterial &mat, CIndexBuffer &ib, CShadowMapProjector &smp) :
 		  ShadowMapProjector(smp), ShadowMaterial(mat), IndexBuffer(ib)
 		{
 			Driver= NULL;
 			ShadowMap= NULL;
 		}
 	};
-	
+
 public:
 	/* ***********************************************
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
@@ -103,8 +103,8 @@ public:
 
 	// get triangles of the mesh
 	const std::vector<uint16> &getTriangles() const { return _Triangles; }
-	
-		
+
+
 // *********************
 private:
 
@@ -119,16 +119,16 @@ private:
 	public:
 		// create
 		void	create(uint nbQuads, uint nbElts, const NLMISC::CAABBox &gridBBox);
-		
+
 		// add an element (bbox shoudl be included in gridBBox from create() )
 		void	add(uint16 id, const NLMISC::CAABBox &bbox);
-		
+
 		// compile
 		void	compile();
-		
+
 		// return the list of elements intersected. NB: the vector is enlarged to max, but real selection size is in the  return value
 		uint	select(const NLMISC::CAABBox &bbox, std::vector<uint16> &res);
-		
+
 	private:
 		struct CEltBuild
 		{
@@ -136,7 +136,7 @@ private:
 			uint32	X1,Y1;
 		};
 		// point to GridData
-		struct CCase 
+		struct CCase
 		{
 			uint32	Start, NumElts;
 		};
@@ -151,7 +151,7 @@ private:
 		// Used at build only
 		NLMISC::CObjectVector<CEltBuild, false>		_EltBuild;
 		uint32										_GridDataSize;
-		
+
 		// For Fast selection
 		uint32										_ItSession;
 		// For each element the session id. if same than _ItSession, then already inserted

@@ -44,7 +44,7 @@ using namespace NLMISC;
 
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -231,7 +231,7 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 		_MatrixBlocks.clear();
 		// build matrix blocks, and link faces to good matrix blocks.
 		buildSkin(m, tmpFaces);
-	}	
+	}
 
 	/// 2. Then, for all faces, resolve continuities, building VBuffer.
 	//================================================
@@ -261,7 +261,7 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 	}
 	else // setup extended format
 	{
-		_VBuffer.clearValueEx();		
+		_VBuffer.clearValueEx();
 		if (vbFlags & CVertexBuffer::PositionFlag) _VBuffer.addValueEx(CVertexBuffer::Position, CVertexBuffer::Float3);
 		if (vbFlags & CVertexBuffer::NormalFlag) _VBuffer.addValueEx(CVertexBuffer::Normal, CVertexBuffer::Float3);
 		if (vbFlags & CVertexBuffer::PrimaryColorFlag) _VBuffer.addValueEx(CVertexBuffer::PrimaryColor, CVertexBuffer::UChar4);
@@ -275,7 +275,7 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 			if (vbFlags & (CVertexBuffer::TexCoord0Flag << k))
 			{
 				switch(m.NumCoords[k])
-				{	
+				{
 					case 2:
 						_VBuffer.addValueEx((CVertexBuffer::TValue) (CVertexBuffer::TexCoord0 + k), CVertexBuffer::Float2);
 					break;
@@ -337,9 +337,9 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 			// for build, force 32 bit indices
 			_MatrixBlocks[mb].RdrPass[i].PBlock.setFormat(CIndexBuffer::Indices32);
 		}
-	}	
+	}
 
-	
+
 	/// 4. Then, for all faces, build the RdrPass PBlock.
 	//===================================================
 	pFace= &(*tmpFaces.begin());
@@ -386,7 +386,7 @@ void	CMeshGeom::build (CMesh::CMeshBuild &m, uint numMaxMaterial)
 	this->_MeshVertexProgram= m.MeshVertexProgram;
 
 	/// 7. Compact bones id and build bones name array.
-	//=================================================	
+	//=================================================
 
 	// If skinned
 	if(_Skinned)
@@ -618,7 +618,7 @@ void	CMeshGeom::render(IDriver *drv, CTransformShape *trans, float polygonCount,
 				{
 					CMatrixBlock	&mBlock= _MatrixBlocks[mb];
 					for(uint i=0;i<mBlock.RdrPass.size();i++)
-					{	
+					{
 						CMaterial &mat=mi->Materials[mBlock.RdrPass[i].MaterialId];
 						mat.setLighting(true, mat.getEmissive(), mat.getAmbient(), mat.getDiffuse(), mat.getSpecular());
 					}
@@ -627,8 +627,8 @@ void	CMeshGeom::render(IDriver *drv, CTransformShape *trans, float polygonCount,
 			mi->_VPWindTreeFixed = true;
 		}
 	}
-	
-	
+
+
 
 	// Render the mesh.
 	//===========
@@ -700,7 +700,7 @@ void	CMeshGeom::render(IDriver *drv, CTransformShape *trans, float polygonCount,
 					if (useMeshVP)
 					{
 						_MeshVertexProgram->setupForMaterial(material, drv, ownerScene, &_VBuffer);
-					}									
+					}
 
 					// render primitives
 					drv->activeIndexBuffer(rdrPass.PBlock);
@@ -785,7 +785,7 @@ void	CMeshGeom::renderSkin(CTransformShape *trans, float alphaMRM)
 		// really ok if success to begin VP
 		useMeshVP= _MeshVertexProgram->begin(drv, ownerScene, mi, invertedObjectMatrix, renderTrav->CamPos);
 	}
-	
+
 
 	// Render the mesh.
 	//===========
@@ -812,7 +812,7 @@ void	CMeshGeom::renderSkin(CTransformShape *trans, float alphaMRM)
 			if (useMeshVP)
 			{
 				_MeshVertexProgram->setupForMaterial(material, drv, ownerScene, &_VBuffer);
-			}									
+			}
 
 			// render primitives
 			drv->activeIndexBuffer(rdrPass.PBlock);
@@ -911,7 +911,7 @@ void	CMeshGeom::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	}
 	else
 	{
-		// Warning, if you have skinned this shape, you can't write it anymore because skinning id have been changed! 
+		// Warning, if you have skinned this shape, you can't write it anymore because skinning id have been changed!
 		nlassert (_BoneIdComputed==false);
 	}
 
@@ -1006,10 +1006,10 @@ void	CMeshGeom::compileRunTime()
 
 	// Support MeshBlockRendering only if not skinned/meshMorphed.
 	bool	supportMeshBlockRendering= !_Skinned && _MeshMorpher->BlendShapes.size()==0;
-	
+
 	// true only if one matrix block, and at least one rdrPass.
 	supportMeshBlockRendering= supportMeshBlockRendering && _MatrixBlocks.size()==1 && _MatrixBlocks[0].RdrPass.size()>0;
-	if (supportMeshBlockRendering && _MeshVertexProgram) 
+	if (supportMeshBlockRendering && _MeshVertexProgram)
 	{
 		supportMeshBlockRendering = supportMeshBlockRendering && _MeshVertexProgram->supportMeshBlockRendering();
 	}
@@ -1041,7 +1041,7 @@ bool	CMeshGeom::retrieveVertices(std::vector<NLMISC::CVector> &vertices) const
 	 * ***********************************************/
 
 	uint	i;
-	
+
 	// if resident, fails!!! cannot read!
 	const CVertexBuffer	&vb= getVertexBuffer();
 	if(vb.isResident())
@@ -1075,7 +1075,7 @@ bool	CMeshGeom::retrieveTriangles(std::vector<uint32> &indices) const
 	uint	i;
 
 	indices.clear();
-	
+
 	// count numTris
 	uint	numTris= 0;
 	for(i=0;i<getNbMatrixBlock();i++)
@@ -1090,7 +1090,7 @@ bool	CMeshGeom::retrieveTriangles(std::vector<uint32> &indices) const
 		}
 	}
 	indices.resize(numTris*3);
-	
+
 	// build indices
 	uint	triIdx= 0;
 	for(i=0;i<getNbMatrixBlock();i++)
@@ -1256,14 +1256,14 @@ void	CMeshGeom::buildSkin(CMesh::CMeshBuild &m, std::vector<CFaceTmp>	&tmpFaces)
 					if(!remainingBones[boneUse[i]].Inserted)
 						newBoneAdded++;
 				}
-				
-				
+
+
 				// ii/ insert/reject face.
 				//------------------------
 
 				// If this face do not add any more bone, we can insert it into the current matrixblock.
 				// If it use the currentBoneId, and do not explode max count, we allow insert it too in the current matrixblock.
-				if( newBoneAdded==0 || 
+				if( newBoneAdded==0 ||
 					(useCurrentBoneId && newBoneAdded+matrixBlock.NumMatrix < IDriver::MaxModelMatrix) )
 				{
 					// Insert this face in the current matrix block
@@ -1310,7 +1310,7 @@ void	CMeshGeom::buildSkin(CMesh::CMeshBuild &m, std::vector<CFaceTmp>	&tmpFaces)
 
 					// to Which matrixblock this face is inserted.
 					face.MatrixBlockId= _MatrixBlocks.size()-1;
-					
+
 					// remove the face from remain face list.
 					itFace= remainingFaces.erase(itFace);
 
@@ -1490,8 +1490,8 @@ void	CMeshGeom::computeBonesId (CSkeletonModel *skeleton)
 			// **** For each bones, compute remap
 			std::vector<uint> remap;
 			skeleton->remapSkinBones(_BonesName, _BonesId, remap);
-			
-			
+
+
 			// **** Remap matrix blocks
 			for (uint matrixBlock=0; matrixBlock<_MatrixBlocks.size(); matrixBlock++)
 			{
@@ -1516,7 +1516,7 @@ void	CMeshGeom::computeBonesId (CSkeletonModel *skeleton)
 			boneBBEmpty.clear();
 			boneBBoxes.resize(_BonesId.size());
 			boneBBEmpty.resize(_BonesId.size(), true);
-			
+
 			// For simplicity, use the shadow skin info only, to compute bone sphere
 			for(uint vert=0;vert<_ShadowSkin.Vertices.size();vert++)
 			{
@@ -1526,7 +1526,7 @@ void	CMeshGeom::computeBonesId (CSkeletonModel *skeleton)
 				nlassert ( srcId < remap.size());
 				// remap
 				v.MatrixId= remap[srcId];
-				
+
 				// if the boneId is valid (ie found)
 				if(_BonesId[srcId]>=0)
 				{
@@ -1544,7 +1544,7 @@ void	CMeshGeom::computeBonesId (CSkeletonModel *skeleton)
 					}
 				}
 			}
-			
+
 			// Compile spheres
 			_BonesSphere.resize(_BonesId.size());
 			for(uint bone=0;bone<_BonesSphere.size();bone++)
@@ -1560,8 +1560,8 @@ void	CMeshGeom::computeBonesId (CSkeletonModel *skeleton)
 					_BonesSphere[bone].Radius= boneBBoxes[bone].getRadius();
 				}
 			}
-			
-			
+
+
 			// Computed
 			_BoneIdComputed = true;
 		}
@@ -1656,7 +1656,7 @@ void	CMeshGeom::buildBoneUsageVer3 ()
 		CBSphere	sphere(CVector::Null, 0.f);
 		_BonesSphere.clear();
 		_BonesSphere.resize(_BonesId.size(), sphere);
-		
+
 	}
 }
 
@@ -1915,7 +1915,7 @@ void	CMeshGeom::flagSkinVerticesForMatrixBlock(uint8 *skinFlags, CMatrixBlock &m
 	for(uint i=0; i<mb.RdrPass.size(); i++)
 	{
 		CIndexBuffer	&PB= mb.RdrPass[i].PBlock;
-		
+
 		uint	nIndex;
 
 		// This may be better to flags in 2 pass (first traverse primitives, then test vertices).
@@ -1996,7 +1996,7 @@ void	CMeshGeom::computeSkinMatrixes(CSkeletonModel *skeleton, CMatrix3x4 *matrix
 		if(prevBlock && idMat<prevBlock->NumMatrix && prevBlock->MatrixId[idMat]== curBoneId)
 			continue;
 
-		// Else, we must setup the matrix 
+		// Else, we must setup the matrix
 		matrixes[idMat].set(skeleton->getActiveBoneSkinMatrix(curBoneId));
 	}
 }
@@ -2031,7 +2031,7 @@ void	CMeshGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *trans,
 	if(triCount)
 	{
 		// tri per VBFormat
-		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshProfileTriVBFormat, 
+		rdrTrav->Scene->incrementProfileTriVBFormat(rdrTrav->Scene->BenchRes.MeshProfileTriVBFormat,
 			_VBuffer.getVertexFormat(), triCount);
 
 		// VBHard
@@ -2066,14 +2066,14 @@ void	CMeshGeom::profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *trans,
 bool	CMeshGeom::intersectSkin(CTransformShape	*mi, const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D)
 {
 	// for Mesh, Use the Shadow Skinning (simple version).
-	
+
 	// get skeleton
 	if(!mi || _OriginalSkinVertices.empty())
 		return false;
 	CSkeletonModel	*skeleton= mi->getSkeletonModel();
 	if(!skeleton)
 		return false;
-	
+
 	// Compute skinning with all matrix this Mesh use. (the shadow geometry cannot use other Matrix than the mesh use).
 	static std::vector<uint32>	matInfs;
 	matInfs.resize(_BonesId.size());
@@ -2096,7 +2096,7 @@ void	CMeshGeom::buildShadowSkin()
 	// reset
 	contReset(_ShadowSkin.Vertices);
 	contReset(_ShadowSkin.Triangles);
-	
+
 	nlassert(_Skinned && (_VBuffer.getVertexFormat() & CVertexBuffer::PaletteSkinFlag)
 		&& (_VBuffer.getVertexFormat() & CVertexBuffer::PositionFlag) );
 
@@ -2112,7 +2112,7 @@ void	CMeshGeom::buildShadowSkin()
 		uint8		*srcPal= (uint8*)vba.getPaletteSkinPointer(0);
 		uint8		*srcVert= (uint8*)vba.getVertexCoordPointer(0);
 		uint32		srcVertSize= _VBuffer.getVertexSize();
-		
+
 		// copy vertices from VBuffer
 		_ShadowSkin.Vertices.resize(numVertices);
 		for(uint i=0; i<numVertices;i++)
@@ -2131,7 +2131,7 @@ void	CMeshGeom::buildShadowSkin()
 
 	// But _ShadowSkin.Vertices[i].MatrixId is incorrect, since < IDriver::MaxModelMatrix
 
-	
+
 	// *** Count number of triangles, and get start index of each matrix block in the final Tri list
 	uint	numIndices= 0;
 	uint	mb;
@@ -2160,7 +2160,7 @@ void	CMeshGeom::buildShadowSkin()
 	nlverify(retrieveTriangles(_ShadowSkin.Triangles));
 	nlassert(numIndices==_ShadowSkin.Triangles.size());
 
-	
+
 	// *** Reindex correctly MatrixId, (ie unpack matrix blocks)
 	// can't be static cause of ThreadSafe
 	vector<bool>	vertReIndexed;
@@ -2213,17 +2213,17 @@ bool	CMeshGeom::sortPerMaterial() const
 	return (_SupportMBRFlags & MBRSortPerMaterial)!=0;
 }
 // ***************************************************************************
-uint	CMeshGeom::getNumRdrPassesForMesh() const 
+uint	CMeshGeom::getNumRdrPassesForMesh() const
 {
 	return _MatrixBlocks[0].RdrPass.size();
 }
 // ***************************************************************************
-uint	CMeshGeom::getNumRdrPassesForInstance(CMeshBaseInstance *inst) const 
+uint	CMeshGeom::getNumRdrPassesForInstance(CMeshBaseInstance *inst) const
 {
 	return _MatrixBlocks[0].RdrPass.size();
 }
 // ***************************************************************************
-void	CMeshGeom::beginMesh(CMeshGeomRenderContext &rdrCtx) 
+void	CMeshGeom::beginMesh(CMeshGeomRenderContext &rdrCtx)
 {
 	if(rdrCtx.RenderThroughVBHeap)
 	{
@@ -2247,7 +2247,7 @@ void	CMeshGeom::beginMesh(CMeshGeomRenderContext &rdrCtx)
 	}
 }
 // ***************************************************************************
-void	CMeshGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, void *vbDst) 
+void	CMeshGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, void *vbDst)
 {
 	// setup instance matrix
 	rdrCtx.Driver->setupModelMatrix(inst->getWorldMatrix());
@@ -2264,8 +2264,8 @@ void	CMeshGeom::activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance
 	}
 }
 // ***************************************************************************
-void	CMeshGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *mi, float polygonCount, uint rdrPassId) 
-{	
+void	CMeshGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *mi, float polygonCount, uint rdrPassId)
+{
 	CMatrixBlock	&mBlock= _MatrixBlocks[0];
 
 	CRdrPass		&rdrPass= mBlock.RdrPass[rdrPassId];
@@ -2295,7 +2295,7 @@ void	CMeshGeom::renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *mi
 	}
 }
 // ***************************************************************************
-void	CMeshGeom::endMesh(CMeshGeomRenderContext &rdrCtx) 
+void	CMeshGeom::endMesh(CMeshGeomRenderContext &rdrCtx)
 {
 	// MeshVertexProgram ?
 	if( _SupportMBRFlags & MBRCurrentUseVP )
@@ -2381,7 +2381,7 @@ CMesh::CCorner::CCorner()
 	Normal= CVector::Null;
 	for(i=0;i<CVertexBuffer::MaxStage;i++)
 	{
-		Uvws[i]= CUVW(0, 0, 0);	
+		Uvws[i]= CUVW(0, 0, 0);
 	}
 	Color.set(255,255,255,255);
 	Specular.set(0,0,0,0);
@@ -2402,7 +2402,7 @@ void CMesh::CCorner::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 // ***************************************************************************
 void CMesh::CFace::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
-	for(int i=0;i<3;++i) 
+	for(int i=0;i<3;++i)
 		f.serial(Corner[i]);
 	f.serial(MaterialId);
 	f.serial(SmoothGroup);
@@ -2644,19 +2644,19 @@ const NLMISC::CAABBoxExt& CMesh::getBoundingBox() const
 	return _MeshGeom->getBoundingBox();
 }
 // ***************************************************************************
-const CVertexBuffer &CMesh::getVertexBuffer() const 
-{ 
-	return _MeshGeom->getVertexBuffer() ; 
+const CVertexBuffer &CMesh::getVertexBuffer() const
+{
+	return _MeshGeom->getVertexBuffer() ;
 }
 // ***************************************************************************
-uint CMesh::getNbMatrixBlock() const 
-{ 
-	return _MeshGeom->getNbMatrixBlock(); 
+uint CMesh::getNbMatrixBlock() const
+{
+	return _MeshGeom->getNbMatrixBlock();
 }
 // ***************************************************************************
-uint CMesh::getNbRdrPass(uint matrixBlockIndex) const 
-{ 
-	return _MeshGeom->getNbRdrPass(matrixBlockIndex) ; 
+uint CMesh::getNbRdrPass(uint matrixBlockIndex) const
+{
+	return _MeshGeom->getNbRdrPass(matrixBlockIndex) ;
 }
 // ***************************************************************************
 const CIndexBuffer &CMesh::getRdrPassPrimitiveBlock(uint matrixBlockIndex, uint renderingPassIndex) const
@@ -2763,14 +2763,14 @@ void	CMesh::buildSystemGeometry()
 {
 	// clear any
 	_SystemGeometry.clear();
-	
+
 	// don't build a system copy if skinned. In this case, ray intersection is done through CSkeletonModel
 	// and intersectSkin() scheme
 	if(_MeshGeom->isSkinned())
 		return;
 
 	// retrieve geometry (if VB/IB not resident)
-	if( !_MeshGeom->retrieveVertices(_SystemGeometry.Vertices) || 
+	if( !_MeshGeom->retrieveVertices(_SystemGeometry.Vertices) ||
 		!_MeshGeom->retrieveTriangles(_SystemGeometry.Triangles))
 	{
 		_SystemGeometry.clear();

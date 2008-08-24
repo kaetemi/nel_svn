@@ -36,13 +36,13 @@ namespace NL3D {
 class IDriver;
 
 /**
- * This class allow to create a sequence of small quads that tesselate a poly. 
+ * This class allow to create a sequence of small quads that tesselate a poly.
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
  */
 class CQuadEffect
-{	
+{
 public:
 	/// a vector of 2d points
 	typedef std::vector<NLMISC::CVector2f> TPoint2DVect;
@@ -54,7 +54,7 @@ public:
 	/** Make raters from the given clipped polygon.
 	  * \param poly a polygon that describe the area where datas are taken from.
 	  * \param quadWidth width of the quad
-	  * \param quadHeight height of the quad	  
+	  * \param quadHeight height of the quad
 	  * \param dest a vector that will be filled with the given rasters
 	  * \param startY will be filled with the start y position on screen
 	  */
@@ -63,11 +63,11 @@ public:
 							, TRasters &dest, float &startY
 						   );
 
-	/** Tesselate the given clipped polygon ,  by using the given quad dimensions	  
-	  * The coordinates of the poly are given in screen coordinate.	  
+	/** Tesselate the given clipped polygon ,  by using the given quad dimensions
+	  * The coordinates of the poly are given in screen coordinate.
 	  * \param poly a polygon that describe the area where datas are taken from.
 	  * \param quadWidth width of the quad
-	  * \param quadHeight height of the quad	  
+	  * \param quadHeight height of the quad
 	  * \param dest a vector that will contains the pos of all the quads that cover the poly
 	  */
 	static void processPoly(const TPoint2DVect &poly

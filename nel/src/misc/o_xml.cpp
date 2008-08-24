@@ -32,7 +32,7 @@
 
 using namespace std;
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 // ***************************************************************************
@@ -218,7 +218,7 @@ void COXml::serialSeparatedBufferOut( const char *value )
 					// Set the attribute
 					xmlSetProp (_CurrentNode, (const xmlChar*)_AttribName.c_str(), (const xmlChar*)value);
 
-					// The attribute has been used 
+					// The attribute has been used
 					_AttribPresent = false;
 				}
 				else
@@ -294,35 +294,35 @@ void COXml::serial(uint32 &b)
 
 // ***************************************************************************
 
-void COXml::serial(sint32 &b) 
+void COXml::serial(sint32 &b)
 {
 	writenumber( b, "%d", 11 );
 }
 
 // ***************************************************************************
 
-void COXml::serial(uint64 &b) 
+void COXml::serial(uint64 &b)
 {
 	writenumber( b, "%"NL_I64"u", 20 );
 }
 
 // ***************************************************************************
 
-void COXml::serial(sint64 &b) 
+void COXml::serial(sint64 &b)
 {
 	writenumber( b, "%"NL_I64"d", 20 );
 }
 
 // ***************************************************************************
 
-void COXml::serial(float &b) 
+void COXml::serial(float &b)
 {
 	writenumber( (double)b, "%f", 128 );
 }
 
 // ***************************************************************************
 
-void COXml::serial(double &b) 
+void COXml::serial(double &b)
 {
 	writenumber( b, "%f", 128 );
 }
@@ -345,7 +345,7 @@ void COXml::serialBit(bool &bit)
 // ***************************************************************************
 
 #ifndef NL_OS_CYGWIN
-void COXml::serial(char &b) 
+void COXml::serial(char &b)
 {
 	char tmp[2] = {b , 0};
 	serialSeparatedBufferOut( tmp );

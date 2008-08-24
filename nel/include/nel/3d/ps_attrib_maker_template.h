@@ -34,7 +34,7 @@
 namespace NL3D {
 
 /*
- *	In this file, we define several template that helps to create attributes maker such as gradient (of float, int, vector etc) 
+ *	In this file, we define several template that helps to create attributes maker such as gradient (of float, int, vector etc)
  * attributes maker are used in the particle system to generate values, such as size, color etc. see ps_attrib_maker.h
  * for more informations
  */
@@ -56,7 +56,7 @@ inline T PSValueBlend(const T &t1, const T &t2, float alpha)
 
 /// NLMISC::CRGBA specialization of the PSValueBlend function
 inline NLMISC::CRGBA PSValueBlend(const NLMISC::CRGBA &t1, const NLMISC::CRGBA &t2, float alpha)
-{	
+{
 	NLMISC::CRGBA result;
 	result.blendFromui(t1, t2, (uint) (255.0f * alpha));
 	return result;
@@ -65,7 +65,7 @@ inline NLMISC::CRGBA PSValueBlend(const NLMISC::CRGBA &t1, const NLMISC::CRGBA &
 
 /// CPlaneBasis specilization of the PSValueBlend function
 inline CPlaneBasis PSValueBlend(const CPlaneBasis &t1, const CPlaneBasis &t2, float alpha)
-{	
+{
 	return CPlaneBasis(PSValueBlend(t1.getNormal(), t2.getNormal(), alpha));
 }
 
@@ -83,7 +83,7 @@ template <typename T> struct CPSValueBlendFuncBase
 /**
  * This temlate functor blend exactly between 2 value (no samples)
  * To accomplish blending, it use the template function PSValueBlend
- * It is used by CPSValueBlend 
+ * It is used by CPSValueBlend
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
@@ -115,7 +115,7 @@ public:
 		#ifdef NL_DEBUG
 			nlassert(time >= 0.f && time <= 1.f);
 		#endif
-		return PSValueBlend(_StartValue, _EndValue, time);	// a cast to T is necessary, because 
+		return PSValueBlend(_StartValue, _EndValue, time);	// a cast to T is necessary, because
 														// the specialization could be done with integer
 	}
 
@@ -126,7 +126,7 @@ public:
 		{
 			startValue = (*this)(0);
 			endValue = (*this)(1);
-		}	
+		}
 
 		/// Set the Values between which to blend.
 		virtual void setValues(T startValue, T endValue)
@@ -135,7 +135,7 @@ public:
 			_EndValue = endValue;
 		}
 
-		/// 
+		///
 		T getMaxValue(void) const
 		{
 			return std::max((*this)(0), (*this)(1));
@@ -147,29 +147,29 @@ public:
 	//@}
 
 protected:
-	T _StartValue, _EndValue;	
+	T _StartValue, _EndValue;
 };
 
 
 /** This is a Value blender class. The blending between value is not sampled with this class.
   *  So it may be slow, but it is exact.
-  *  It work with most type, but some of them may need special  blending between value : 
+  *  It work with most type, but some of them may need special  blending between value :
   *  if so you must specialize the template function PSValueBlend defined in this file
   *  to do the job...
-  *  To use this, just derive a class, create a ctor, and declare it to the class registry 
-  *  
+  *  To use this, just derive a class, create a ctor, and declare it to the class registry
+  *
   *  in the ctor, you should call _F.setValue to init the functor object.
   */
 
 template <typename T> class CPSValueBlender : public CPSAttribMakerT<T, CPSValueBlendFunc<T> >
 {
-public:	
+public:
 	/** ctor
 	 *  With nbCycles, you can set the pattern frequency. It is usually one. See ps_attrib_maker.h
 	 *  For further details
 	 */
 	CPSValueBlender(float nbCycles) : CPSAttribMakerT<T, CPSValueBlendFunc<T> >(nbCycles)
-	{	
+	{
 	}
 
 	virtual T getMaxValue(void) const { return this->_F.getMaxValue(); }
@@ -185,7 +185,7 @@ public:
  * This temlate functor blend between 2 values by performing n samples (n = template parameter)
  * It may be faster that the CPSValueBlendFunc in some cases.
  * To accomplish blending, it use the template function PSValueBlend
- * It is used by CPSValueBlend 
+ * It is used by CPSValueBlend
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
@@ -204,7 +204,7 @@ public:
 		#ifdef NL_DEBUG
 			nlassert(time >= 0.f && time <= 1.f);
 		#endif
-		return _Values[NLMISC::OptFastFloor(time * n)];	
+		return _Values[NLMISC::OptFastFloor(time * n)];
 	}
 
 	/// restrieve the start and end Value
@@ -213,7 +213,7 @@ public:
 	{
 		startValue = _Values[0];
 		endValue = _Values[n];
-	}	
+	}
 
 	/// set the Values
 
@@ -302,7 +302,7 @@ public:
 		__forceinline
 	#endif
 	T operator()(TAnimationTime time) const
-	{	
+	{
 		#ifdef NL_DEBUG
 			nlassert(time >= 0.f && time <= 1.f);
 		#endif
@@ -323,8 +323,8 @@ public:
 
 	/// get one value
 	virtual T getValue(uint index)	const
-	{		
-		nlassert(index < getNumValues());		
+	{
+		nlassert(index < getNumValues());
 		return _Tab[index * _NbStages];
 	}
 
@@ -335,7 +335,7 @@ public:
 
 	/** set the colors
 	 *  \param numValue number of Values, must be >= 2
-	 *  \ValueTab a table containing the Values. Value will be blended, so you must only provide keyframe Values	 
+	 *  \ValueTab a table containing the Values. Value will be blended, so you must only provide keyframe Values
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 *  WARNING : for integer types, some specilization exist that ensure correct interpolation. see below
 	 */
@@ -345,16 +345,16 @@ public:
 
 	// the same, but value gradient has already been computed, so ValueTab must contains numValues * nbStages + 1 values
 	virtual void setValuesUnpacked(const T *ValueTab, uint32 numValues, uint32 nbStages);
-	
+
 	/// get the number of stages between each value
 	uint32 getNumStages(void) const { return _NbStages; }
 
 	/// change the number of stages between each value
 	void setNumStages(uint32 numStages)
-	{				
-		std::vector<T> v(getNumValues());			
+	{
+		std::vector<T> v(getNumValues());
 		getValues(&v[0]);
-		setValues(&v[0], getNumValues(), numStages);		
+		setValues(&v[0], getNumValues(), numStages);
 	}
 
 	/// serialization
@@ -379,7 +379,7 @@ public:
 	virtual ~CPSValueGradientFunc() {}
 
 
-	
+
 protected:
 	// a table of Values that interpolate the values given
 	typename CPSVector<T>::V _Tab;
@@ -430,27 +430,27 @@ public:
 
 
 // tool function used by CPSValueGradientFunc<T>::setValues(
-template <typename T> 
+template <typename T>
 inline void computeGradient(const T *valueTab, uint32 numValues, uint32 nbStages, typename CPSVector<T>::V &grad, T &minValue, T &maxValue)
 {
 	minValue = maxValue = valueTab[0];
 	float step = 1.0f / float(nbStages);
-	float alpha; 
+	float alpha;
 
 	uint nbValues = (numValues - 1) * nbStages;
 	grad.resize(nbValues + 1);
-	
+
 	T *dest = &grad[0];
 	// copy the tab performing linear interpolation between values given in parameter
 	for (uint32 k = 0; k  < (numValues - 1); ++k)
-	{	
+	{
 		maxValue = std::max(maxValue, valueTab[k]);
 		minValue = std::min(minValue, valueTab[k]);
-		
+
 		alpha = 0;
-		
+
 		for(uint32 l = 0; l < nbStages; ++l)
-		{			
+		{
 			// use the right version of the template function PSValueBlend
 			// to do the job
 			*dest++ = PSValueBlend(valueTab[k], valueTab[k + 1], alpha);
@@ -463,24 +463,24 @@ inline void computeGradient(const T *valueTab, uint32 numValues, uint32 nbStages
 // special optimisation for rgba
 void computeGradient(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbStages, CPSVector<CRGBA>::V &grad, NLMISC::CRGBA &minValue, NLMISC::CRGBA &maxValue);
 
-	
-template <typename T> 
+
+template <typename T>
 void CPSValueGradientFunc<T>::setValues(const T *valueTab, uint32 numValues, uint32 nbStages)
-{	
+{
 	nlassert(numValues > 1);
 	nlassert(nbStages > 0);
 
 	computeGradient(valueTab, numValues, nbStages, _Tab, _MinValue, _MaxValue);
 	//
 	_NbStages = nbStages;
-	_NbValues = _Tab.size() - 1;	
-	
+	_NbValues = _Tab.size() - 1;
+
 }
 
 
 
 
-template <typename T> 
+template <typename T>
 void CPSValueGradientFunc<T>::setValuesUnpacked(const T *valueTab, uint32 numValues, uint32 nbStages)
 {
 	_NbStages = nbStages;
@@ -492,24 +492,24 @@ void CPSValueGradientFunc<T>::setValuesUnpacked(const T *valueTab, uint32 numVal
 
 
 
-	
-template <typename T> 
+
+template <typename T>
 void CPSValueGradientFunc<T>::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	f.serialVersion(1);
 	f.serial(_NbStages);
 	if (f.isReading())
 	{
-	
-		// reload the number of keys 
+
+		// reload the number of keys
 
 		uint32 numVal;
-		f.serial(numVal);		
+		f.serial(numVal);
 		_NbValues = (numVal - 1) * _NbStages;
 
-		// create the table on the stack for small gradient		
+		// create the table on the stack for small gradient
 		if (NLMISC::CTraits<T>::HasTrivialCtor && NLMISC::CTraits<T>::HasTrivialDtor && numVal < 256)
-		{			
+		{
 			uint8 tab[sizeof(T) * 256]; // avoid empty ctor calls
 			T *tabT = (T *) tab;
 			for (uint32 k = 0; k < numVal; ++k)
@@ -517,15 +517,15 @@ void CPSValueGradientFunc<T>::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 				f.serial(tabT[k]);
 			}
 			setValues(tabT, numVal, _NbStages);
-		}	
+		}
 		else
-		{			
+		{
 			std::vector<T> tab(numVal);
 			for (uint32 k = 0; k < numVal; ++k)
 			{
 				f.serial(tab[k]);
 			}
-			setValues(&tab[0], numVal, _NbStages);			
+			setValues(&tab[0], numVal, _NbStages);
 		}
 	}
 	else
@@ -535,10 +535,10 @@ void CPSValueGradientFunc<T>::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		f.serial(numKeyValues);
 
 
-		// save each key		
+		// save each key
 		for (uint32 k = 0; k < numKeyValues; ++k)
 		{
-			f.serial(_Tab[k * _NbStages]);			
+			f.serial(_Tab[k * _NbStages]);
 		}
 	}
 }

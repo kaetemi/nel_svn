@@ -50,7 +50,7 @@ const NLMISC::CClassId	ClusterId=NLMISC::CClassId(0x13f37e46, 0x3e880780);
 
 /**
  * CCluster
- *	
+ *
  * The objects are in the MOT clip traversal
  *
  * \author Matthieu Besson
@@ -63,12 +63,12 @@ class CCluster : public CTransform
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 
 public:
 
 	static void registerBasic ();
-	
+
 public:
 
 	CCluster();
@@ -81,8 +81,8 @@ public:
 	 * return false if the plane we want to add make the volume concave
 	 */
 	bool makeVolume (const NLMISC::CVector& p1, const NLMISC::CVector& p2, const NLMISC::CVector& p3);
-	
-	
+
+
 	/// Apply the given matrix to this cluster local / world volume & bbox
 	void applyMatrix(const NLMISC::CMatrix &m);
 
@@ -109,7 +109,7 @@ public:
 
 
 	NLMISC::CAABBox& getBBox() { return _BBox; }
-	
+
 	/// Linking
 
 	// reset all links to portals.
@@ -140,7 +140,7 @@ public:
 	const std::string	&getEnvironmentFx();
 	NLMISC::TStringId	getEnvironmentFxId();
 	//@}
-	
+
 
 	/// \name CTransform Specialisation
 	// @{

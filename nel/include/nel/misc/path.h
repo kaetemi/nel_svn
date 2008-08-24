@@ -79,7 +79,7 @@ public:
 
 	/** Same as AddSearchPath but with a path file "c:/test.pth" all files name contain in this file will be included (the extention is used to know that it's a path file) */
 	void			addSearchListFile (const std::string &filename, bool recurse, bool alternative);
-	
+
 	/** Same as AddSearchPath but with a big file "c:/test.nbf" all files name contained in the big file will be included  (the extention (Nel Big File) is used to know that it's a big file) */
 	void			addSearchBigFile (const std::string &filename, bool recurse, bool alternative, class NLMISC::IProgressCallback *progressCallBack = NULL);
 
@@ -219,14 +219,14 @@ public:
 	 */
 	void addIgnoredDoubleFile(const std::string &ignoredFile);
 
-	/** For the moment after memoryCompress you cant addsearchpath anymore 
+	/** For the moment after memoryCompress you cant addsearchpath anymore
 	*/
 	void memoryCompress();
 
 	void memoryUncompress();
 
 	bool isMemoryCompressed()	{ return _MemoryCompressed; }
-	
+
 	/** Get the ms windows directory (in standardized way with end slash), or returns an empty string on other os
 	*/
 	std::string getWindowsDirectory();
@@ -361,7 +361,7 @@ public:
 
 	/** Same as AddSearchPath but with a path file "c:/test.pth" all files name contain in this file will be included (the extention is used to know that it's a path file) */
 	static void			addSearchListFile (const std::string &filename, bool recurse, bool alternative);
-	
+
 	/** Same as AddSearchPath but with a big file "c:/test.nbf" all files name contained in the big file will be included  (the extention (Nel Big File) is used to know that it's a big file) */
 	static void			addSearchBigFile (const std::string &filename, bool recurse, bool alternative, class NLMISC::IProgressCallback *progressCallBack = NULL);
 
@@ -501,14 +501,14 @@ public:
 	 */
 	static void addIgnoredDoubleFile(const std::string &ignoredFile);
 
-	/** For the moment after memoryCompress you cant addsearchpath anymore 
+	/** For the moment after memoryCompress you cant addsearchpath anymore
 	*/
 	static void memoryCompress();
 
 	static void memoryUncompress();
 
 	static bool isMemoryCompressed()	{ return getInstance()->_FileContainer.isMemoryCompressed(); }
-	
+
 	/** Get the ms windows directory (in standardized way with end slash), or returns an empty string on other os
 	*/
 	static std::string getWindowsDirectory();
@@ -690,7 +690,7 @@ struct CFile
 	/**
 	 * Return the size of the file (in bytes).
 	 *
-	 * You have to provide the full path of the file (the function doesn't lookup) 
+	 * You have to provide the full path of the file (the function doesn't lookup)
 	 */
 	static uint32	getFileSize (const std::string &filename);
 
@@ -702,7 +702,7 @@ struct CFile
 	/**
 	 * Return Time of last modification of file. 0 if not found.
 	 *
-	 * You have to provide the full path of the file (the function doesn't lookup) 
+	 * You have to provide the full path of the file (the function doesn't lookup)
 	 * The time is mesured in second since 01-01-1970 0:0:0 UTC
 	 */
 	static uint32	getFileModificationDate(const std::string &filename);
@@ -710,7 +710,7 @@ struct CFile
 	/**
 	 * Set the time of last modification of file.
 	 *
-	 * You have to provide the full path of the file (the function doesn't lookup) 
+	 * You have to provide the full path of the file (the function doesn't lookup)
 	 * The time is mesured in second since 01-01-1970 0:0:0 UTC
 	 * Return 'true' if the file date has been changed or false in case of error.
 	 */
@@ -719,7 +719,7 @@ struct CFile
 	/**
 	 * Return creation Time of the file. 0 if not found.
 	 *
-	 * You have to provide the full path of the file (the function doesn't lookup) 
+	 * You have to provide the full path of the file (the function doesn't lookup)
 	 */
 	static uint32	getFileCreationDate(const std::string &filename);
 
@@ -735,12 +735,12 @@ struct CFile
 	 *
 	 */
 	static void addFileChangeCallback (const std::string &filename, void (*)(const std::string &filename));
-	
+
 	/**
 	 * Remove a file that was previously added by addFileChangeCallback
 	 */
 	static void removeFileChangeCallback (const std::string &filename);
-	
+
 	/**
 	 * You have to call this function evenly (each frame for example) to enable the file change callback system.
 	 * If the file not exists and is created in the run time, the callback will be called.
@@ -750,7 +750,7 @@ struct CFile
 	 */
 	static void checkFileChange (TTime frequency = 1000);
 
-	/** Copy a file 
+	/** Copy a file
 	  * NB this keeps file attributes
 	  * \param failIfExists If the destination file exists, nothing is done, and it returns false.
 	  * \return true if the copy succeeded
@@ -802,7 +802,7 @@ struct CFile
 	static bool deleteDirectory(const std::string &filename);
 
 
-	
+
 	/** Get temporary output filename.
 	*	Call this method to get a temporary output filename. If you have successfuly saved your data, delete the old filename and move the new one.
 	*/

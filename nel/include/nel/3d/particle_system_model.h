@@ -45,7 +45,7 @@ namespace NL3D {
 /////////////////////////////////////////////////////////
 // THE FOLLOWING CLASS IS FOR INSERTION OF A PARTICLE  //
 // SYSTEM IN A MOT MODEL							   //
-// SEE also CParticleSystemshape, CParticleSystem	   //	
+// SEE also CParticleSystemshape, CParticleSystem	   //
 /////////////////////////////////////////////////////////
 
 class CParticleSystem;
@@ -57,7 +57,7 @@ class CParticleSystemShape;
   * You should forgot to call the animate() method of the CScene it is part of
   * if you want motion to be performed
   */
- 
+
 class CParticleSystemModel : public CTransformShape
 {
 public:
@@ -84,26 +84,26 @@ public:
 			return _ParticleSystem;
 		}
 
-		/** Get the particle system (NB : This is shared by a smart ptr) contained in this transform shape. 
-		  * This may be null if the model is not visible. 
+		/** Get the particle system (NB : This is shared by a smart ptr) contained in this transform shape.
+		  * This may be null if the model is not visible.
 		  */
 		const CParticleSystem		*getPS(void) const
-		{		
+		{
 			return _ParticleSystem;
 		}
-		
+
 		/** Set the particle system for this transform shape after it has been instanciated (from a memory stream, or by sharing)
 		 *  see CParticleSystemShape
 		 */
 		void						setParticleSystem(CParticleSystem *ps)
 		{
 			nlassert(!_ParticleSystem);
-			_ParticleSystem = ps;	
+			_ParticleSystem = ps;
 			updateOpacityInfos();
 		}
 	//@}
 
-	///\name Life managment 
+	///\name Life managment
 		//@{
 		/**
 		 * test wether the system has become invalid. The condition for a system to be invalid
@@ -118,7 +118,7 @@ public:
 			/// called when a system has been invalidated
 			virtual void invalidPS(CParticleSystemModel *psm) = 0;
 		};
-						
+
 		/// register an observer that will be notified when this model becomes invalid
 		void registerPSModelObserver(IPSModelObserver *obs);
 
@@ -129,7 +129,7 @@ public:
 		/// test wether obs observe this model
 		bool isPSModelObserver(IPSModelObserver *obs);
 	//@}
-					
+
 
 	//\name Time managment
 	//@{
@@ -137,9 +137,9 @@ public:
 		/** when called with true, this force the model to querry himself the ellapsed time to the scene.
 		  * This is the default. Otherwise, setEllapsedTime must be called
 		  */
-		void						enableAutoGetEllapsedTime(bool enable = true) 
-		{ 
-			_AutoGetEllapsedTime = enable; 
+		void						enableAutoGetEllapsedTime(bool enable = true)
+		{
+			_AutoGetEllapsedTime = enable;
 		}
 		/** This apply a ratio on the ellapsed time. This can be used to slow down a system
 		  * This must be in the >= 0.
@@ -151,55 +151,55 @@ public:
 			_EllapsedTimeRatio = value;
 		}
 		//
-		float						getEllapsedTimeRatio() const { return _EllapsedTimeRatio; }			
+		float						getEllapsedTimeRatio() const { return _EllapsedTimeRatio; }
 		/// tells wether the model will querry himself for the ellapsed time
-		bool						isAutoGetEllapsedTimeEnabled(void) const 
-		{ 
-			return _AutoGetEllapsedTime; 
+		bool						isAutoGetEllapsedTimeEnabled(void) const
+		{
+			return _AutoGetEllapsedTime;
 		}
-		/// set the ellapsed time (in second) used for animation. 		  
-		void						setEllapsedTime(TAnimationTime ellapsedTime) 
-		{ 
-			_EllapsedTime = ellapsedTime; 
-		}		
+		/// set the ellapsed time (in second) used for animation.
+		void						setEllapsedTime(TAnimationTime ellapsedTime)
+		{
+			_EllapsedTime = ellapsedTime;
+		}
 		/// get the ellapsed time used for animation
-		TAnimationTime				getEllapsedTime(void) const 
-		{ 
-			return _EllapsedTime; 
+		TAnimationTime				getEllapsedTime(void) const
+		{
+			return _EllapsedTime;
 		}
 	//@}
-	
+
 	///\name Edition related methods
 	//@{
 		/// activate the display of tool (for edition purpose)
 		void						enableDisplayTools(bool enable = true);
-		
+
 		// check wether the display of tools is enabled
-		bool						isToolDisplayEnabled(void) const 
-		{ 
-			return _ToolDisplayEnabled; 
-		}			
+		bool						isToolDisplayEnabled(void) const
+		{
+			return _ToolDisplayEnabled;
+		}
 		/** force the edition mode : this will prevent the system from being removed when it is out of range.
 		 * When the model is first allocated, the system resource are not allocated until it becomes visible.
 		 * This also forces the resources to be allocated.
 		 * when there are no more particles in it etc. (this also mean that you can safely keep a pointer on it)
 		 * This flag is not saved.
 		 */
-		void						setEditionMode(bool enable = true) ;		
+		void						setEditionMode(bool enable = true) ;
 		/// test if edition mode is activated
-		bool						getEditionMode(void) const 
-		{ 
-			return _EditionMode; 
+		bool						getEditionMode(void) const
+		{
+			return _EditionMode;
 		}
 		/// edition purpose : touch the system to tell that the transparency state of the system has changed (added/removed opaque/tansparent faces )
-		void						touchTransparencyState(void) 
-		{ 
-			_TransparencyStateTouched = true; 
+		void						touchTransparencyState(void)
+		{
+			_TransparencyStateTouched = true;
 		}
 		/// edition purpose : touch the system to tell that the lightable state of the system has changed (added/removed lightable faces )
-		void						touchLightableState(void) 
-		{ 
-			_LightableStateTouched = true; 
+		void						touchLightableState(void)
+		{
+			_LightableStateTouched = true;
 		}
 	//@}
 
@@ -217,14 +217,14 @@ public:
 			AnimValueLast,
 		};
 		virtual IAnimatedValue		*getValue (uint valueId);
-		virtual const char			*getValueName (uint valueId) const; 
-		static const char			*getPSParamName (uint valueId);			
-		virtual ITrack				*getDefaultTrack (uint valueId);		
+		virtual const char			*getValueName (uint valueId) const;
+		static const char			*getPSParamName (uint valueId);
+		virtual ITrack				*getDefaultTrack (uint valueId);
 		virtual	void				registerToChannelMixer(CChannelMixer *chanMixer,
 														   const std::string &prefix = "");
 		// Bypass a global user param.
 		void  bypassGlobalUserParamValue(uint userParamIndex, bool byPass = true);
-		bool  isGlobalUserParamValueBypassed(uint userParamIndex) const;		
+		bool  isGlobalUserParamValueBypassed(uint userParamIndex) const;
 	//@}
 
 	/** This update the infos about opacity (e.g are there solid faces and / or transparent faces in the system).
@@ -238,7 +238,7 @@ public:
 	/// inherited from CTransformShape. Returns the number of triangles wanted depeneding on the distance
 	virtual float				getNumTriangles (float distance);
 	/// create an instance of this class
-	static CTransform				*creator() 
+	static CTransform				*creator()
 	{
 		return new CParticleSystemModel;
 	}
@@ -267,7 +267,7 @@ public:
 
 	// user color
 	void			setUserColor(NLMISC::CRGBA userColor);
-	NLMISC::CRGBA	getUserColor() const { return _UserColor; }	
+	NLMISC::CRGBA	getUserColor() const { return _UserColor; }
 
 	/** Set user matrix of the system.
 	   *
@@ -275,7 +275,7 @@ public:
 	   * - in world (identity matrix)
 	   * - local to the particle system (matrix of the particle system)
 	   * - local to the coord. sys. defined by the user matrix
-	   *	   	   
+	   *
 	   */
 	void setUserMatrix(const NLMISC::CMatrix &userMatrix) { _UserMatrix = userMatrix; }
 	// Set the user matrix, with instant update of the CParticleSystem pointed by that model (if instanciated)
@@ -303,7 +303,7 @@ private:
 
 	/// Called when the resource (attached system) for this system must be reallocated
 	void reallocRsc();
-	/// Called by the particle system manager to release this model resources (if it is too far for example)	
+	/// Called by the particle system manager to release this model resources (if it is too far for example)
 	void refreshRscDeletion(const std::vector<CPlane>	&worldFrustumPyramid,  const NLMISC::CVector &viewerPos);
 	// Release the resources (attached system) of this model, but doesn't make it invalid.
 	void releaseRsc();
@@ -315,11 +315,11 @@ private:
 	void releasePSPointer();
 
 	void invalidateAutoAnimatedHandle();
-	
+
 
 	// insert the model in the Clip/AnimDetail/LoadBalacing visible list.
 	void				insertInVisibleList()
-	{		
+	{
 		// if not already not inserted
 		if (!_InsertedInVisibleList)
 		{
@@ -328,17 +328,17 @@ private:
 			// add to clip/load Trav.
 			getOwnerScene()->getClipTrav().addVisibleModel(this);
 			getOwnerScene()->getLoadBalancingTrav().addVisibleModel(this);
-			
+
 			// Add only if no ancestor skeleton model
 			if( _AncestorSkeletonModel==NULL )
 			{
 				// need to test isLightable(), because most of PS are not lightable
-				// NB: don't insert if has an _AncestorSkeletonModel, because in this case, 
+				// NB: don't insert if has an _AncestorSkeletonModel, because in this case,
 				// result is driven by the _LightContribution of the _AncestorSkeletonModel.
 				if( isLightable() )
 					getOwnerScene()->getLightTrav().addLightedModel(this);
 				// no need to test isAnimDetailable()... for PS, always add them
-				// NB: don't insert if has an _AncestorSkeletonModel, because in this case, this ancestor will 
+				// NB: don't insert if has an _AncestorSkeletonModel, because in this case, this ancestor will
 				// animDetail through the hierarchy...
 				getOwnerScene()->getAnimDetailTrav().addVisibleModel(this);
 			}
@@ -346,13 +346,13 @@ private:
 	}
 	bool checkDestroyCondition(CParticleSystem *ps);
 	// perform actual animation of the particles
-	void	doAnimate();	
+	void	doAnimate();
 
-private:		
+private:
 	CParticleSystemManager::TModelHandle    _ModelHandle; /** a handle to say when the resources
 															* of the model (_ParticleSystem) are deleted
 															*/
-	CParticleSystemManager::TAlwaysAnimatedModelHandle    _AnimatedModelHandle; // handle for permanenlty animated models																
+	CParticleSystemManager::TAlwaysAnimatedModelHandle    _AnimatedModelHandle; // handle for permanenlty animated models
 	NLMISC::CSmartPtr<CParticleSystem>		_ParticleSystem;
 	CScene							  	   *_Scene;
 	TAnimationTime						    _EllapsedTime;
@@ -360,8 +360,8 @@ private:
 
 	// old animation mode for the system
 	CParticleSystem::TAnimType				_AnimType;
-	
-	bool									_AutoGetEllapsedTime        : 1;		
+
+	bool									_AutoGetEllapsedTime        : 1;
 	bool									_ToolDisplayEnabled         : 1;
 	bool									_TransparencyStateTouched   : 1;
 	bool									_LightableStateTouched      : 1;
@@ -372,13 +372,13 @@ private:
 	bool                                    _EmitterActive			    : 1;
 	bool									_SoundActive				: 1;
 
-	std::vector<IPSModelObserver *>			_Observers;		
+	std::vector<IPSModelObserver *>			_Observers;
 	CAnimatedValueBool						_TriggerAnimatedValue;
 	/// user params of the system
 	CAnimatedValueFloat						_UserParam[MaxPSUserParam];
 	uint8                                   _BypassGlobalUserParam;  // mask to bypass a global user param. This state is not serialized
 	NLMISC::CRGBA							_UserColor;
-	NLMISC::CMatrix							_UserMatrix;	
+	NLMISC::CMatrix							_UserMatrix;
 	float									_ZBias;
 	CHrcTrav::TVisibility					_LastVisibility;
 
@@ -396,15 +396,15 @@ public:
 	NLMISC::CSimpleClock SC;
 	uint64 &Target;
 	uint64 StartDate;
-	CMiniTimer(uint64 &target) : Target(target) 
+	CMiniTimer(uint64 &target) : Target(target)
 	{
-		SC.start();		
+		SC.start();
 	}
 	~CMiniTimer()
 	{
 		SC.stop();
 		Target += SC.getNumTicks();
-	}	
+	}
 };
 
 #define MINI_TIMER(name)

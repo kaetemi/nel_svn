@@ -37,10 +37,10 @@
 // The number of different Level to allocate. only possible to allocate 16, 8, 4 or 2 tiles patch (1x? is impossible)
 #define	NL_NUM_FAR_PATCH_EDGE_LEVEL		(4+NL_NUM_PIXELS_ON_FAR_TILE_EDGE_SHIFT)
 
-// Define the max number of pixel per edge for a far texture 
+// Define the max number of pixel per edge for a far texture
 #define NL_MAX_FAR_PATCH_EDGE (16*NL_NUM_PIXELS_ON_FAR_TILE_EDGE)					// Max is 16x16 tiles for 4 pix/tiles.
 
-// Define the min number of pixel per edge for a far texture 
+// Define the min number of pixel per edge for a far texture
 #define NL_MIN_FAR_PATCH_EDGE 2														// Min is 2x2 tiles for 1 pix/tile
 
 // The max Difference of level between Height and Width
@@ -61,7 +61,7 @@ namespace NLMISC
 	class CRGBA;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CPatch;
@@ -103,7 +103,7 @@ public:
 	 *  \param farUVScale will receive the scale to use to compute the UV coordinates
 	 *  \param farUBias will receive the U Bias to use to compute the UV coordinates
 	 *  \param farVBias will receive the V Bias to use to compute the UV coordinates
-	 *  \param bRot will receive true if the texture is rotated of 90deg to the left or false. 
+	 *  \param bRot will receive true if the texture is rotated of 90deg to the left or false.
 	 *         You should take care of this value to compute UV coordinates.
 	 */
 	void						allocatePatch (CPatch *pPatch, uint farIndex, float& farUScale, float& farVScale, float& farUBias, float& farVBias, bool& bRot);
@@ -150,7 +150,7 @@ private:
 
 		bool operator < (const CPatchIdent &rhs) const
 		{
-			return (Patch != rhs.Patch) ? Patch < rhs.Patch : FarIndex < rhs.FarIndex;	
+			return (Patch != rhs.Patch) ? Patch < rhs.Patch : FarIndex < rhs.FarIndex;
 		}
 	};
 
@@ -163,7 +163,7 @@ private:
 
 		bool operator < (const CVector2s &rhs) const
 		{
-			return (x != rhs.x) ? x < rhs.x : y < rhs.y;	
+			return (x != rhs.x) ? x < rhs.x : y < rhs.y;
 		}
 	};
 
@@ -276,7 +276,7 @@ public:
 	// Destination array
 	NLMISC::CRGBA*				DstPixels;
 };
-	
+
 // Extern ASM functions
 extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap);
 extern "C" void NL3D_drawFarTileInFarTexture (const NL3D_CComputeTileFar* pTileFar);

@@ -33,7 +33,7 @@ namespace NLMISC {
 // ***************************************************************************
 // The conversion table
 static const CStringConversion<TKey>::CPair stringTable [] =
-{ 
+{
 	// BUFFER
 	{ "Key0", Key0 },
 	{ "Key1", Key1 },

@@ -46,13 +46,13 @@ struct IMouseDevice : public IInputDevice
 		/** Tells what messages should be sent :
 		  * DEFAULT is 'raw' messages
 		  * Raw messages : - no clamping nor frames applied
-		  *                - no speed apllied 
+		  *                - no speed apllied
 		  *				   - no factor applied
 		  *                - CGDMouseMove messages are sent
 		  *				   - Move expressed in mickeys
 		  * Normal messages : - CEventMouseMove messages are sent
 		  *					  - A frame may clamp one or both axis
-		  *                   - The mouse speed can be changed	  
+		  *                   - The mouse speed can be changed
 		  */
 		virtual	void					setMessagesMode(TMessageMode mode) = 0;
 		/// retrieve what kinds of messages are sent
@@ -88,12 +88,12 @@ struct IMouseDevice : public IInputDevice
 		  * NB do not forget to call setMouseFactors if you want the results to be reported in the 0-1 range.
   		  * NB : invalid in raw message mode.
 		  * \see setMouseFactors
-		  */	  	
+		  */
 		virtual void					setMouseFrame(const CRect &rect)  = 0;
 		/** Gives factor by which the mouse coordinates must be multiplied before an event is sent.
 		  * The default factor is 1.
   		  * NB : invalid in raw message mode.
-		  * 
+		  *
 		  * Example : this set a frame of 800x600 and reports event in the [0, 1] range.
 		  * \code
 		  * mouse->setMouseFrame(800, 600);
@@ -106,12 +106,12 @@ struct IMouseDevice : public IInputDevice
 		/** Get the x factor, use to multiply the mouse position before an event is sent.
 		  * NB : invalid in raw message mode.
 		  * \see setFactors()
-		  */	
+		  */
 		virtual float					getXFactor() const = 0;
 		/** Get the y factor, use to multiply the mouse position before an event is sent.
 		  * NB : invalid in raw message mode.
 		  * \see setFactors()
-		  */	
+		  */
 		virtual float					getYFactor() const = 0;
 	//@}
 
@@ -120,7 +120,7 @@ struct IMouseDevice : public IInputDevice
 	// Set the maximum delay for a double click to be taken in account (in ms).
 	virtual void					setDoubleClickDelay(uint ms) = 0;
 	// Get the maximum delay for double click (in ms)
-	virtual uint					getDoubleClickDelay() const = 0;	
+	virtual uint					getDoubleClickDelay() const = 0;
 	// Force the position of the mouse, expressed in pixels
 	virtual void					setMousePos(float x, float y) = 0;
 

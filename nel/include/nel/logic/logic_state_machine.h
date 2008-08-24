@@ -1,5 +1,5 @@
 /** \file logic_state_machine.h
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -70,9 +70,9 @@ class CLogicStateMachine
 
 	/// name of this sate machine
 	std::string _Name;
-	
+
 public:
-	
+
 	const std::map<std::string, CLogicVariable> &getVariables () { return _Variables; }
 	const std::map<std::string, CLogicCounter> &getCounters () { return _Counters; }
 	const std::map<std::string, CLogicCondition> &getConditions () { return _Conditions; }
@@ -120,7 +120,7 @@ public:
 	/**
 	 * Get the self-addressed message
 	 *
-	 * \param msgs is the list used to store the self-addressed messages 
+	 * \param msgs is the list used to store the self-addressed messages
 	 */
 	void getSelfAddressedMessages( std::list<NLNET::CMessage>& msgs );
 
@@ -170,7 +170,7 @@ public:
 	 */
 	void getMessagesToSend( std::multimap<NLMISC::CEntityId,NLNET::CMessage>& msgs );
 
-	/** 
+	/**
 	 * Add a state to the state machine
 	 *
 	 * \param state is the new state to add in this state machine
@@ -184,7 +184,7 @@ public:
 	 * \param modifOperator can be one of these operators :"SET"("set"),"ADD"("add"),"SUB"("sub"),"MUL"("mul"),"DIV"("div")
 	 * \param value is the value to use along with the modificator
 	 */
-	void modifyVariable( std::string varName, std::string modifOperator, sint64 value ); 
+	void modifyVariable( std::string varName, std::string modifOperator, sint64 value );
 
 	/**
 	 * serial

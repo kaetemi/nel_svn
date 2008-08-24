@@ -31,7 +31,7 @@ void	dummyToAvoidStupidCompilerWarning_misc_vector_2d_cpp()
 {
 }
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

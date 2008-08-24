@@ -108,7 +108,7 @@ void	CTargetAnimCtrl::execute(CSkeletonModel *model, CBone *bone)
 	/* Get the Skeleton default WorldMatrix (bind pos). used later
 		TRICK: to get the default Skeleton WorldMatrix, get it from Bone[0] (ie "Bip01")
 		We cannot use the Default Pos/Rot of the skeleton model because of export bug (not exported...)
-		So, since Bip01 as no Local Rot (yes, its true, exporter report all Bip01 rots on Skeleton), 
+		So, since Bip01 as no Local Rot (yes, its true, exporter report all Bip01 rots on Skeleton),
 		we are sure that Bip01 BindPos is the default Skeleton World Matrix.
 	*/
 	CQuat		rootInvBP= model->Bones[0].getBoneBase().InvBindPos.getRot();
@@ -120,7 +120,7 @@ void	CTargetAnimCtrl::execute(CSkeletonModel *model, CBone *bone)
 	}
 	else
 	{
-		// Get the wanted direction in LocalSkeleton Space. 
+		// Get the wanted direction in LocalSkeleton Space.
 		CQuat		currentLSDirection;
 
 		// Get the current wanted WorldDirection into LocalSkeleton space (hence using current skeleton WorldMatrix).
@@ -130,9 +130,9 @@ void	CTargetAnimCtrl::execute(CSkeletonModel *model, CBone *bone)
 		// Get the default WorldDirection into LocalSkeleton space (hence using default skeleton WorldMatrix).
 		CQuat		defaultLSDirection= rootInvBP * DefaultWorldDirection;
 
-		/* get the rotation to apply to the bone when it is in bind Pos. If this quat is identity, 
+		/* get the rotation to apply to the bone when it is in bind Pos. If this quat is identity,
 			then the bone will be in default (or bind) pos.
-			It is in essence the "rotation to apply to defaultDirection in LS space, in order to get 
+			It is in essence the "rotation to apply to defaultDirection in LS space, in order to get
 			the wanted current direction in LS space".
 			The makeClosest() is here just to ensure that the resulting angle<Pi (for clamp direction later)
 		*/
@@ -176,7 +176,7 @@ void	CTargetAnimCtrl::execute(CSkeletonModel *model, CBone *bone)
 		}
 	}
 
-	// if the rotation has not been clamped for speed consideration, and if !Enabed, it's mean we have ended 
+	// if the rotation has not been clamped for speed consideration, and if !Enabed, it's mean we have ended
 	// the transition => no more compute next time
 	if(!Enabled && !rotSpeedClamped)
 		_EnableToDisableTransition= false;

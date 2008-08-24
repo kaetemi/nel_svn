@@ -28,7 +28,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -55,7 +55,7 @@ void	CPatchUVLocator::build(const CPatch *patchCenter, sint edgeCenter, CPatch::
 		_NeighborPatch[i]= paNeighbor;
 
 
-		// Find uvI, uvJ, uvP such that: 
+		// Find uvI, uvJ, uvP such that:
 		// uvOut= uvIn.x * uvI + uvIn.y * uvJ + uvP.
 		CVector2f		&uvI= _NeighborBasis[i].UvI;
 		CVector2f		&uvJ= _NeighborBasis[i].UvJ;

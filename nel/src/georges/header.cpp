@@ -129,7 +129,7 @@ void CFileHeader::read (xmlNodePtr root)
 			xmlFree ((void*)value);
 
 			// Throw exception
-			warning (true, "read", "XML Syntax error in TYPE block line %d, the Version argument is invalid.", 
+			warning (true, "read", "XML Syntax error in TYPE block line %d, the Version argument is invalid.",
 				(ptrdiff_t)root->content);
 		}
 
@@ -173,13 +173,13 @@ void CFileHeader::read (xmlNodePtr root)
 		{
 			State = Checked;
 		}
-		else 
+		else
 		{
 			// Delete the value
 			xmlFree ((void*)value);
 
 			// Throw exception
-			warning (true, "read", "XML Syntax error in TYPE block line %d, the State argument is invalid.", 
+			warning (true, "read", "XML Syntax error in TYPE block line %d, the State argument is invalid.",
 				(ptrdiff_t)root->content);
 		}
 

@@ -32,7 +32,7 @@
 #include "nel/misc/vector.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 /** 'Ribbon' particle : a shape is extruded while it follows the particle.
@@ -45,10 +45,10 @@ class CPSRibbon : public CPSRibbonBase,
 				  public CPSMaterial,
 				  public CPSTexturedParticleNoAnim
 {
-public:		
+public:
 	// Orientation mode
 	enum TOrientation { FollowPath = 0, FollowPathXY, Identity, OrientationCount };
-	
+
 	///\name Object
 	///@{
 
@@ -58,7 +58,7 @@ public:
 		 *         and be located in the x-y plane. This will be copied
 		 *  \param nbPointsInShape : the number of points in the shape
 		 */
-		CPSRibbon();		
+		CPSRibbon();
 		/// dtor
 		~CPSRibbon();
 		/// serialisation. Derivers must override this, and call their parent version
@@ -67,36 +67,36 @@ public:
 		NLMISC_DECLARE_CLASS(CPSRibbon);
 	///@}
 
-	
+
 	///\name Behaviour
 	///@{
 			/** (de)activate color fading
-			* when its done, colors fades to black along the ribbon.			
+			* when its done, colors fades to black along the ribbon.
 			*/
-			virtual void setColorFading(bool onOff = true) 
+			virtual void setColorFading(bool onOff = true)
 			{
 				_ColorFading = onOff;
 				touch();
 			}
 
-			/** Test wether color fading is activated.			  
+			/** Test wether color fading is activated.
 			  */
 			virtual bool getColorFading(void) const
 			{
 				return _ColorFading;
-			}		
-			
+			}
+
 			// Set orienation of slices
 			void		 setOrientation(TOrientation orientation) { _Orientation = orientation; }
-			TOrientation getOrientation() const { return _Orientation; }			
-		
+			TOrientation getOrientation() const { return _Orientation; }
+
 		//void setPersistAfterDeath(bool persit = true);
 
-		/** return true if the ribbon light persist after death 
+		/** return true if the ribbon light persist after death
 		 *  \see _PersistAfterDeath()
 		 */
 		//bool getPersistAfterDeath(void) const { return _DyingRibbons != NULL; }
-		
+
 	///@}
 
 	/// inherited from CPSParticle
@@ -115,7 +115,7 @@ public:
 	void setTexture(NLMISC::CSmartPtr<ITexture> tex) { _Tex = tex; touch(); }
 	/// Set texture factors.
 	void setTexFactor(float uFactor = 1.f, float vFactor = 1.f)
-	{			
+	{
 		_UFactor = uFactor;
 		_VFactor = vFactor;
 		touch();
@@ -128,7 +128,7 @@ public:
 	ITexture *getTexture(void) { return _Tex; }
 	const ITexture *getTexture(void) const { return _Tex; }
 
-	/** set a new shape for the ribbon	  
+	/** set a new shape for the ribbon
 	  *  \param points A list of points that define the shape of the slice of the ribbon
 	  *         These points must be located in the x-y plane (z can be used for effects).
 	  *  \param nbPointsInShape The number of points in the shape
@@ -137,10 +137,10 @@ public:
 	  */
 	void setShape(const NLMISC::CVector *shape, uint32 nbPointsInShape, bool braceMode = false);
 	// See if shape is in brace mode (rather then in closed loop mode)
-	bool getBraceMode() const { return _BraceMode; }	
+	bool getBraceMode() const { return _BraceMode; }
 	/// get the number of vertice in the shape used for ribbons
 	uint32 getNbVerticesInShape(void) const { return _Shape.size(); }
-	
+
 	/** Get a copy of the shape used for ribbon
 	 *  \param dest a table of cvector that has the right size, it will be filled with vertices
 	 *  \see getNbVerticesInShape()
@@ -164,7 +164,7 @@ public:
 		static const uint NbVerticesInPentagram;
 		/// Predifined shape : triangle
 		static const NLMISC::CVector Triangle[];
-		static const uint NbVerticesInTriangle;	
+		static const uint NbVerticesInTriangle;
 		// Simple segments
 		static const NLMISC::CVector SimpleSegmentX[];
 		static const uint NbVerticesInSimpleSegmentX;
@@ -190,9 +190,9 @@ public:
 	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }
 	virtual float getZBias() const { return CPSMaterial::getZBias(); }
 
-protected:		
+protected:
 /// interface to derived classes
-	
+
 	// the number of dying ribbons that are present
 	//uint32							_NbDyingRibbons;
 	// a counter to tell how much frame is left for each ribbon
@@ -202,18 +202,18 @@ protected:
 	virtual void					newElement(const CPSEmitterInfo &info) ;
 	/// inherited from CPSLocatedBindable
 	virtual void					deleteElement(uint32 index);
-	/// inherited from CPSLocatedBindable	
+	/// inherited from CPSLocatedBindable
 	virtual void					resize(uint32 size);
 	/// From CPSSizedParticle
 	virtual CPSLocated				*getSizeOwner(void) { return _Owner; }
 	/// From CPSColoredParticle
-	virtual CPSLocated				*getColorOwner(void) { return _Owner; }	
+	virtual CPSLocated				*getColorOwner(void) { return _Owner; }
 
-private:		
-	
+private:
+
 
 	/// update the material and the vb so that they match the color scheme. Inherited from CPSColoredParticle
-	virtual void					updateMatAndVbForColor(void);	
+	virtual void					updateMatAndVbForColor(void);
 
 	/// display a set of ribbons
 	void							displayRibbons(uint32 nbRibbons, uint32 srcStep);
@@ -221,7 +221,7 @@ private:
 	/**\name Vertex buffers & their corresponding index buffers. We keep a map of pretextured vertex buffer (with or without colors).
 	  * Vb for ribbons that have the same size are shared.
 	  */
-		
+
 	//@{
 			/** a struct containing a vertex buffer and the matching primitive block
 			  * The number of slice is encoded in the upper word of the vb index (the int used to lookup in the map)
@@ -241,7 +241,7 @@ private:
 			};
 			typedef CHashMap<uint, CVBnPB> TVBMap;
 			//
-			static TVBMap _VBMaps[16];  // 4 bits defines the display mode : 
+			static TVBMap _VBMaps[16];  // 4 bits defines the display mode :
 			                            // - color / no color
 			                            // - faded / not faded
 			                            // - textured / not textured
@@ -251,14 +251,14 @@ private:
 
 			/// get the number of ribbons contained in a vb for a given length. (e.g the number of ribbons that can be batched)
 			uint	getNumRibbonsInVB() const;
-	//@}	
+	//@}
 
 	CSmartPtr<ITexture>				_Tex;
 	CPSVector<NLMISC::CVector>::V	_Shape;
 	float							_UFactor, _VFactor;
 	TOrientation					_Orientation;
-	
-	
+
+
 	bool _BraceMode				: 1; // the ribbon mesh is shaped like a brace
 	bool _ColorFading           : 1;
 	bool _GlobalColor		    : 1; // to see wether the system uses global color
@@ -278,8 +278,8 @@ private:
 
 	/// Get the number of vertices in each slices (depends on wether the ribbon is textured or not)
 	uint 		getNumVerticesInSlice() const;
-	
-	  
+
+
 };
 
 

@@ -287,7 +287,7 @@ namespace STRING_MANAGER
 					rowIndex = first - Data.begin();
 					return true;
 				}
-					
+
 			}
 			return false;
 		}
@@ -374,7 +374,7 @@ namespace STRING_MANAGER
 	};
 
 	template<class ItemType>
-	struct TGetIdentifier 
+	struct TGetIdentifier
 	{
 		std::string operator()(const std::vector<ItemType> &container, uint index) const
 		{
@@ -441,7 +441,7 @@ namespace STRING_MANAGER
 			}
 			else
 			{
-				addCount = 0; 
+				addCount = 0;
 				refCount=0;
 			}
 
@@ -456,20 +456,20 @@ namespace STRING_MANAGER
 //				vector<ItemType>::iterator it;
 
 				if (addCount == context.Addition.size()
-					|| 
+					||
 						(
 							!equal
 						&&	find_if(context.Addition.begin(), context.Addition.end(), TestItem(getIdentifier(context.Reference, refCount))) == context.Addition.end()
 						)
 					)
-				{	
+				{
 					// this can only be removal
 					callback->onRemove(addCount, refCount, context);
 					context.Reference.erase(context.Reference.begin()+refCount);
 //					++refCount;
 				}
 				else if (refCount == context.Reference.size()
-					|| 
+					||
 						(
 							!equal
 						&&	find_if(context.Reference.begin(), context.Reference.end(), TestItem(getIdentifier(context.Addition, addCount))) == context.Reference.end()
@@ -489,8 +489,8 @@ namespace STRING_MANAGER
 //					if (it == context.Reference.end())
 
 					if (find_if(
-							context.Reference.begin(), 
-							context.Reference.end(), 
+							context.Reference.begin(),
+							context.Reference.end(),
 							TestItem(getIdentifier(context.Addition, addCount)))
 							== context.Reference.end())
 					{

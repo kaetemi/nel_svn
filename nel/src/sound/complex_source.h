@@ -68,7 +68,7 @@ public:
 	virtual uint32					getTime();
 	//@}
 
-	
+
 	/// \name Source properties
 	//@{
 	/** Set the position vector (default: (0,0,0)).

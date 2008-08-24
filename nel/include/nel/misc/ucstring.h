@@ -42,7 +42,7 @@ class ucstring : public ucstringbase
 public:
 
 	ucstring () {}
-	
+
 	ucstring (const ucstringbase &str) : ucstringbase (str) {}
 
 	ucstring (const std::string &str) : ucstringbase ()
@@ -51,7 +51,7 @@ public:
 	}
 
 	~ucstring () {}
-	
+
 	ucstring &operator= (ucchar c)
 	{
 		resize (1);
@@ -114,7 +114,7 @@ public:
 		resize (s + str.size());
 		for (uint i = 0; i < str.size(); i++)
 		{
-			operator[](s+i) = uint8(str[i]);		
+			operator[](s+i) = uint8(str[i]);
 		}
 		return *this;
 	}
@@ -186,7 +186,7 @@ public:
 				ucchar	c = *first;
 				c = c >> ((nbLoop - i - 1) * 6);
 				c = c & 0x3F;
-				res += char(c) | 0x80; 
+				res += char(c) | 0x80;
 			}
 		}
 		return res;

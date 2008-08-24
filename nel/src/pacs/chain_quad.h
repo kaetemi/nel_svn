@@ -34,7 +34,7 @@
 class NLMISC::IStream;
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 using	NLMISC::CVector;

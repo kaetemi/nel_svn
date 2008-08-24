@@ -31,7 +31,7 @@
 #include "nel/3d/texture_mem.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -40,7 +40,7 @@ using	NLMISC::CSmartPtr;
 
 // ***************************************************************************
 /**
- * UTexture implementation. This Texture must keep a SmartPtr on the real ITexture. Because CMaterial attach texture 
+ * UTexture implementation. This Texture must keep a SmartPtr on the real ITexture. Because CMaterial attach texture
  * with SmartPtr too!!
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -77,47 +77,47 @@ public:
 	}
 	// @}
 
-	virtual	void			setWrapS(TWrapMode mode) 
+	virtual	void			setWrapS(TWrapMode mode)
 	{
 		_Texture->setWrapS((ITexture::TWrapMode)(uint32)mode);
 	}
-	virtual	void			setWrapT(TWrapMode mode) 
+	virtual	void			setWrapT(TWrapMode mode)
 	{
 		_Texture->setWrapT((ITexture::TWrapMode)(uint32)mode);
 	}
-	virtual	TWrapMode		getWrapS() const 
+	virtual	TWrapMode		getWrapS() const
 	{
 		return (UTexture::TWrapMode)(uint32)_Texture->getWrapS();
 	}
-	virtual	TWrapMode		getWrapT() const 
+	virtual	TWrapMode		getWrapT() const
 	{
 		return (UTexture::TWrapMode)(uint32)_Texture->getWrapT();
 	}
-	virtual	void			setUploadFormat(TUploadFormat pf) 
+	virtual	void			setUploadFormat(TUploadFormat pf)
 	{
 		_Texture->setUploadFormat((ITexture::TUploadFormat)(uint32)pf);
 	}
-	virtual	TUploadFormat	getUploadFormat() const 
+	virtual	TUploadFormat	getUploadFormat() const
 	{
 		return (UTexture::TUploadFormat)(uint32)_Texture->getUploadFormat();
 	}
-	virtual	void			setFilterMode(TMagFilter magf, TMinFilter minf) 
+	virtual	void			setFilterMode(TMagFilter magf, TMinFilter minf)
 	{
 		_Texture->setFilterMode((ITexture::TMagFilter)(uint32)magf, (ITexture::TMinFilter)(uint32)minf);
 	}
-	virtual	TMagFilter		getMagFilter() const 
+	virtual	TMagFilter		getMagFilter() const
 	{
 		return (UTexture::TMagFilter)(uint32)_Texture->getMagFilter();
 	}
-	virtual	TMinFilter		getMinFilter() const 
+	virtual	TMinFilter		getMinFilter() const
 	{
 		return (UTexture::TMinFilter)(uint32)_Texture->getMinFilter();
 	}
-	virtual	bool			mipMapOff() const 
+	virtual	bool			mipMapOff() const
 	{
 		return _Texture->mipMapOff();
 	}
-	virtual	bool			mipMapOn() const 
+	virtual	bool			mipMapOn() const
 	{
 		return _Texture->mipMapOn();
 	}
@@ -131,7 +131,7 @@ public:
 	}
 
 	/// Accessor for UMaterial imp.
-	ITexture*				getITexture() 
+	ITexture*				getITexture()
 	{
 		return _Texture;
 	}
@@ -198,13 +198,13 @@ public:
 	{
 		((CTextureFile*)(ITexture*)_Texture)->setAllowDegradation(allow);
 	}
-	virtual void	setEnlargeCanvasNonPOW2Tex(bool dontStretch) 
-	{ 
-		((CTextureFile*)(ITexture*)_Texture)->setEnlargeCanvasNonPOW2Tex(dontStretch); 
+	virtual void	setEnlargeCanvasNonPOW2Tex(bool dontStretch)
+	{
+		((CTextureFile*)(ITexture*)_Texture)->setEnlargeCanvasNonPOW2Tex(dontStretch);
 	}
-	virtual bool	getEnlargeCanvasNonPOW2Tex() const 
-	{ 
-		return ((CTextureFile*)(ITexture*)_Texture)->getEnlargeCanvasNonPOW2Tex(); 
+	virtual bool	getEnlargeCanvasNonPOW2Tex() const
+	{
+		return ((CTextureFile*)(ITexture*)_Texture)->getEnlargeCanvasNonPOW2Tex();
 	}
 };
 
@@ -241,11 +241,11 @@ public:
 	}
 
 	uint8* getPointer() const
-	{ 
+	{
 		return ((CTextureMem*)(ITexture*)_Texture)->getPointer();
 	}
 
-	void touch() 
+	void touch()
 	{
 		((CTextureMem*)(ITexture*)_Texture)->touch();
 	}

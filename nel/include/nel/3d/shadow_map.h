@@ -30,7 +30,7 @@
 #include "nel/misc/aabbox.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -140,7 +140,7 @@ public:
 	 */
 	void			processFades();
 
-	/// return compiled max of DistanceFade and TemporalOutScreenFade. 
+	/// return compiled max of DistanceFade and TemporalOutScreenFade.
 	float			getFadeAround() const {return _FadeAround;}
 	/// same but maximize with the TemporalInScreenFade;
 	float			getFinalFade() const {return _FinalFade;}
@@ -159,7 +159,7 @@ private:
 // ***************************************************************************
 /** Used to recompute the projection matrix, according to the receiver worldMatrix
  *  The problem is material don't support WorldSpace Coordinate Generation, but ObjectSpace ones.
- *	Hence must take back the coordinate in ObjectSpace before set textMat. 
+ *	Hence must take back the coordinate in ObjectSpace before set textMat.
  */
 class CShadowMapProjector
 {

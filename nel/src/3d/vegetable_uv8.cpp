@@ -26,7 +26,7 @@
 #include "nel/3d/vegetable_uv8.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

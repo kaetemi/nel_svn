@@ -34,7 +34,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -89,7 +89,7 @@ static CAnimatedValueBlock	TempAnimatedValueBlock;
 
 // ***************************************************************************
 void CChannelMixer::evalSingleChannel(CChannel &chan, uint numActive, uint activeSlot[NumAnimationSlot])
-{	
+{
 	// If the refPtr of the object handled has been deleted, then no-op
 	if(!chan._Object)
 	{
@@ -157,7 +157,7 @@ void CChannelMixer::evalSingleChannel(CChannel &chan, uint numActive, uint activ
 
 		// NB: if all weights are 0, the AnimatedValue is not modified...
 	}
-	
+
 	// Touch the animated value and its owner to recompute them later.
 	chan._Object->touch (chan._ValueId, chan._OwnerValueId);
 }
@@ -208,7 +208,7 @@ void CChannelMixer::eval (bool detail, uint64 evalDetailDate)
 		else
 			return;
 	}
-	
+
 	// Setup an array of animation that are not empty and stay. HTimer: 0.0% (because CLod skeletons not parsed here)
 	uint numActive=0;
 	uint activeSlot[NumAnimationSlot];
@@ -232,18 +232,18 @@ void CChannelMixer::eval (bool detail, uint64 evalDetailDate)
 		uint			slot=activeSlot[0];
 		// Slot time
 		TAnimationTime	slotTime= _SlotArray[slot]._Time;
-		
+
 		// For all channels
 		for(;numChans>0; numChans--, channelArrayPtr++)
 		{
 			CChannel	&chan= **channelArrayPtr;
-			
+
 			// If the refPtr of the object handled has been deleted, then no-op
 			if(!chan._Object)
 			{
 				continue;
 			}
-			
+
 			// if Current blend factor is not 0
 			if(chan._Weights[slot]!=0.0f)
 			{
@@ -271,12 +271,12 @@ void CChannelMixer::eval (bool detail, uint64 evalDetailDate)
 // ***************************************************************************
 void CChannelMixer::evalChannels(sint *channelIdArray, uint numID)
 {
-	if (!channelIdArray) return;	
+	if (!channelIdArray) return;
 	if (numID == 0) return;
 
 	// Setup an array of animation that are not empty and stay
 	uint numActive=0;
-	uint activeSlot[NumAnimationSlot];	
+	uint activeSlot[NumAnimationSlot];
 
 	// clean list according to anim setup
 	if(_Dirt)
@@ -312,7 +312,7 @@ void CChannelMixer::evalChannels(sint *channelIdArray, uint numID)
 		{
 			evalSingleChannel(it->second, numActive, activeSlot);
 		}
-	}		
+	}
 }
 
 
@@ -681,7 +681,7 @@ void CChannelMixer::refreshList ()
 		{
 			uint iDTrack;
 
-			// If the animation set is header compressed, 
+			// If the animation set is header compressed,
 			if(_AnimationSet->isAnimHeaderOptimized())
 				// can retrieve the animation trough the channel id (faster)
 				iDTrack= _SlotArray[addSlot[s]]._Animation->getIdTrackByChannelId(channelId);

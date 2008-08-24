@@ -33,7 +33,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -275,7 +275,7 @@ CTrackSampledCommon::TEvalType	CTrackSampledCommon::evalTime (const TAnimationTi
 	// get the key in this timeBlock.
 	uint	keyIdRel;
 	keyIdRel= searchLowerBound(timeBlock.Times.getPtr(), timeBlock.Times.size(), (uint8)frameRel);
-	
+
 	// Get the Frame and Value of Key0.
 	uint		frameKey0= timeBlock.TimeOffset + timeBlock.Times[keyIdRel];
 	// this is the key to evaluate
@@ -330,7 +330,7 @@ void	CTrackSampledCommon::applySampleDivisorCommon(uint sampleDivisor, std::vect
 {
 	nlassert(sampleDivisor>=2);
 	uint	i,j;
-	
+
 	/*
 		NB: to be faster, if we have multiple timeblock (rare, cause implies the anim>8.5 sec), the
 		number of time block is kept after this process, either if it could be lowered.
@@ -340,13 +340,13 @@ void	CTrackSampledCommon::applySampleDivisorCommon(uint sampleDivisor, std::vect
 
 	// clear
 	keepKeys.clear();
-	
+
 	// **** build the key indices to keep
 	static std::vector<uint32>		blockKeepStart;
 	static std::vector<uint32>		blockKeepEnd;
 	blockKeepStart.resize(_TimeBlocks.size());
 	blockKeepEnd.resize(_TimeBlocks.size());
-	// must Keep the first and last key. 
+	// must Keep the first and last key.
 	uint	lastKeyTime= 0;
 	for(i=0;i<_TimeBlocks.size();i++)
 	{
@@ -372,7 +372,7 @@ void	CTrackSampledCommon::applySampleDivisorCommon(uint sampleDivisor, std::vect
 		// keep track of the end (not included) new key for this block
 		blockKeepEnd[i]= keepKeys.size();
 	}
-	
+
 	// **** rebuild the TimeBlocks
 	for(i=0;i<_TimeBlocks.size();i++)
 	{
@@ -391,7 +391,7 @@ void	CTrackSampledCommon::applySampleDivisorCommon(uint sampleDivisor, std::vect
 		// change the key offset!
 		timeBlock.KeyOffset= keepStart;
 	}
-		
+
 }
 
 

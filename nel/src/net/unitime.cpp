@@ -188,7 +188,7 @@ void _CUniTime::syncUniTimeFromService (CCallbackNetBase::TRecordingState rec, c
 	while (!GetUniversalTime)
 	{
 		if (!server.connected()) goto error;
-			
+
 		server.update ();
 
 		nlSleep( 0 );
@@ -205,7 +205,7 @@ void _CUniTime::syncUniTimeFromService (CCallbackNetBase::TRecordingState rec, c
 	// get the second
 	firstsecond = CTime::getSecondsSince1970 ();
 	nextsecond = firstsecond+1;
-	
+
 	// wait the next start of the second (take 100% of CPU to be more accurate)
 	while (nextsecond != CTime::getSecondsSince1970 ())
 		nlassert (CTime::getSecondsSince1970 () <= nextsecond);
@@ -222,7 +222,7 @@ void _CUniTime::syncUniTimeFromService (CCallbackNetBase::TRecordingState rec, c
 			nlerror ("the time delta (between me and the Time Service) is too big (more than 10s), servers aren't NTP synchronized");
 			goto error;
 		}
-		
+
 		// compute the delta between the other side and our side number of second since 1970
 		deltaAdjust = ((TTime) nextsecond - (TTime) GetUniversalTimeSecondsSince1970) * 1000;
 
@@ -264,7 +264,7 @@ static void cbServerAskUniversalTime (CMessage& msgin, TSockId from, CCallbackNe
 
 	// afficher l adresse de celui qui demande
 	nlinfo("UT: Send the universal time %"NL_I64"d to '%s'", ut, netbase.hostAddress(from).asString().c_str());
-	
+
 	CMessage msgout ("GUT");
 	msgout.serial (ut);
 	netbase.send (msgout, from);
@@ -347,7 +347,7 @@ void _CUniTime::syncUniTimeFromServer (CCallbackClient *client)
 		while (!GetClientUniversalTime)
 		{
 			if (!client->connected()) goto error;
-				
+
 			client->update ();
 		}
 

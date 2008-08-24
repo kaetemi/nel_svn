@@ -50,10 +50,10 @@ CPSForce::CPSForce()
 
 void CPSForce::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
-	NL_PS_FUNC(CPSForce_serial)	
-	f.serialVersion(1);	
-	CPSTargetLocatedBindable::serial(f);	
-	CPSLocatedBindable::serial(f);	
+	NL_PS_FUNC(CPSForce_serial)
+	f.serialVersion(1);
+	CPSTargetLocatedBindable::serial(f);
+	CPSLocatedBindable::serial(f);
 }
 
 
@@ -63,7 +63,7 @@ void CPSForce::registerToTargets(void)
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
 	{
 		if (this->isIntegrable())
-		{						
+		{
 			(*it)->registerIntegrableForce(this);
 		}
 		else
@@ -78,7 +78,7 @@ void CPSForce::step(TPSProcessPass pass)
 {
 	NL_PS_FUNC(CPSForce_step)
 	switch(pass)
-	{		
+	{
 		case PSToolRender:
 			show();
 			break;
@@ -91,7 +91,7 @@ void CPSForce::step(TPSProcessPass pass)
 void	CPSForce::attachTarget(CPSLocated *ptr)
 {
 	NL_PS_FUNC(CPSForce_attachTarget)
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	CPSTargetLocatedBindable::attachTarget(ptr);
 	// check wether we are integrable, and if so, add us to the list
 	if (this->isIntegrable())
@@ -114,7 +114,7 @@ void	CPSForce::releaseTargetRsc(CPSLocated *target)
 	else
 	{
 		target->releaseNonIntegrableForceRef();
-	}	
+	}
 }
 
 
@@ -124,16 +124,16 @@ void	CPSForce::basisChanged(TPSMatrixMode matrixMode)
 	NL_PS_FUNC(CPSForce_basisChanged)
 	if (!this->isIntegrable()) return;
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
-	{	
+	{
 		(*it)->integrableForceBasisChanged(matrixMode);
-	}		
+	}
 }
 
 
 void	CPSForce::cancelIntegrable(void)
 {
 	NL_PS_FUNC(CPSForce_cancelIntegrable)
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
 	{
 		if ((*it)->getMatrixMode() == _Owner->getMatrixMode())
@@ -148,7 +148,7 @@ void	CPSForce::cancelIntegrable(void)
 void	CPSForce::renewIntegrable(void)
 {
 	NL_PS_FUNC(CPSForce_renewIntegrable)
-	nlassert(_Owner);	
+	nlassert(_Owner);
 	for (TTargetCont::iterator it = _Targets.begin(); it != _Targets.end(); ++it)
 	{
 		if ((*it)->getMatrixMode() == _Owner->getMatrixMode())
@@ -174,7 +174,7 @@ void CPSForceIntensity::setIntensity(float value)
 		_IntensityScheme = NULL;
 	}
 	_K = value;
-	
+
 }
 
 CPSForceIntensity::~CPSForceIntensity()
@@ -193,7 +193,7 @@ void CPSForceIntensity::setIntensityScheme(CPSAttribMaker<float> *scheme)
 }
 
 void CPSForceIntensity::serialForceIntensity(NLMISC::IStream &f) throw(NLMISC::EStream)
-{	
+{
 	NL_PS_FUNC(CPSForceIntensity_IStream )
 	f.serialVersion(1);
 	if (!f.isReading())
@@ -223,7 +223,7 @@ void CPSForceIntensity::serialForceIntensity(NLMISC::IStream &f) throw(NLMISC::E
 		{
 			f.serialPolyPtr(_IntensityScheme);
 		}
-	}	
+	}
 }
 
 
@@ -257,29 +257,29 @@ void CPSDirectionnalForce::computeForces(CPSLocated &target)
 	// perform the operation on each target
 	CVector toAdd;
 	for (uint32 k = 0; k < _Owner->getSize(); ++k)
-	{	
+	{
 		CVector toAddLocal;
 		CVector dir;
-		
+
 		if (_GlobalValueHandle.isValid()) // is direction a global variable ?
-		{		
-			dir = _GlobalValueHandle.get(); // takes direction from global variable instead			
+		{
+			dir = _GlobalValueHandle.get(); // takes direction from global variable instead
 		}
 		else
 		{
 			dir = _Dir;
-		}		
-		toAddLocal = CParticleSystem::EllapsedTime * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K ) * dir;					
+		}
+		toAddLocal = CParticleSystem::EllapsedTime * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K ) * dir;
 		toAdd = CPSLocated::getConversionMatrix(&target, this->_Owner).mulVector(toAddLocal); // express this in the target basis
 		TPSAttribVector::iterator it = target.getSpeed().begin(), itend = target.getSpeed().end();
 		// 1st case : non-constant mass
 		if (target.getMassScheme())
 		{
-			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();			
+			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
 			for (;it != itend; ++it, ++invMassIt)
 			{
-				(*it) += *invMassIt * toAdd;				
-				
+				(*it) += *invMassIt * toAdd;
+
 			}
 		}
 		else
@@ -288,9 +288,9 @@ void CPSDirectionnalForce::computeForces(CPSLocated &target)
 			toAdd /= target.getInitialMass();
 			for (; it != itend; ++it)
 			{
-				(*it) += toAdd;									
+				(*it) += toAdd;
 			}
-		}		
+		}
 	}
 }
 
@@ -305,16 +305,16 @@ void CPSDirectionnalForce::show()
 
 	setupDriverModelMatrix();
 
-	CVector dir;		
+	CVector dir;
 	if (_GlobalValueHandle.isValid()) // is direction a global variable ?
-	{		
-		dir = _GlobalValueHandle.get(); // takes direction from global variable instead			
+	{
+		dir = _GlobalValueHandle.get(); // takes direction from global variable instead
 	}
 	else
 	{
 		dir = _Dir;
 	}
-	
+
 	// for each element, see if it is the selected element, and if yes, display in red
 	for (uint k = 0; k < _Owner->getSize(); ++k)
 	{
@@ -328,10 +328,10 @@ void CPSDirectionnalForce::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 	NL_PS_FUNC(CPSDirectionnalForce_serial)
 	// Version 2 : added link to a global vector value
 	//
-	sint ver = f.serialVersion(2);		
-	CPSForceIntensityHelper::serial(f);	
+	sint ver = f.serialVersion(2);
+	CPSForceIntensityHelper::serial(f);
 	if (ver == 1)
-	{	
+	{
 		f.serial(_Dir);
 		_GlobalValueHandle.reset();
 	}
@@ -383,41 +383,41 @@ std::string CPSDirectionnalForce::getGlobalVectorValueName() const
 // gravity implementation //
 ////////////////////////////
 void CPSGravity::computeForces(CPSLocated &target)
-{	
+{
 	NL_PS_FUNC(CPSGravity_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
 	// perform the operation on each target
 	CVector toAdd;
 	for (uint32 k = 0; k < _Owner->getSize(); ++k)
-	{	
-		CVector toAddLocal = CParticleSystem::EllapsedTime * CVector(0, 0, _IntensityScheme ? - _IntensityScheme->get(_Owner, k) : - _K);		
+	{
+		CVector toAddLocal = CParticleSystem::EllapsedTime * CVector(0, 0, _IntensityScheme ? - _IntensityScheme->get(_Owner, k) : - _K);
 		toAdd = CPSLocated::getConversionMatrix(&target, this->_Owner).mulVector(toAddLocal); // express this in the target basis
 		TPSAttribVector::iterator it = target.getSpeed().begin(), itend = target.getSpeed().end();
-		
+
 		if (toAdd.x && toAdd.y)
 		{
 			for (; it != itend; ++it)
 			{
-				(*it) += toAdd;				
-				
+				(*it) += toAdd;
+
 			}
 		}
 		else // only the z component is not null, which should be the majority of cases ...
 		{
 			for (; it != itend; ++it)
 			{
-				it->z += toAdd.z;				
-				
+				it->z += toAdd.z;
+
 			}
-		}		
+		}
 	}
 }
 
-void CPSGravity::show() 
-{	
+void CPSGravity::show()
+{
 	NL_PS_FUNC(CPSGravity_show)
 	CVector I = computeI();
-	CVector K = CVector(0,0,1);	    
+	CVector K = CVector(0,0,1);
 
 	// this is not designed for efficiency (target : edition code)
 	CIndexBuffer	 pb;
@@ -425,7 +425,7 @@ void CPSGravity::show()
 	CMaterial material;
 	IDriver *driver = getDriver();
 	const float toolSize = 0.2f;
-	
+
 	vb.setVertexFormat(CVertexBuffer::PositionFlag);
 	vb.setNumVertices(6);
 	{
@@ -448,54 +448,54 @@ void CPSGravity::show()
 		ibaWrite.setLine(4, 4, 3);
 		ibaWrite.setLine(6, 3, 5);
 	}
-		
+
 	material.setColor(CRGBA(127, 127, 127));
 	material.setLighting(false);
 	material.setBlendFunc(CMaterial::one, CMaterial::one);
 	material.setZWrite(false);
 	material.setBlend(true);
 
-	
+
 	CMatrix mat;
 
 	for (TPSAttribVector::const_iterator it = _Owner->getPos().begin(); it != _Owner->getPos().end(); ++it)
 	{
 		mat.identity();
-		mat.translate(*it);		
-		mat = getLocalToWorldMatrix() * mat;		
-		
+		mat.translate(*it);
+		mat = getLocalToWorldMatrix() * mat;
+
 		driver->setupModelMatrix(mat);
 		driver->activeVertexBuffer(vb);
 		driver->activeIndexBuffer(pb);
 		driver->renderLines(material, 0, pb.getNumIndexes()/2);
-	
+
 
 
 		// affiche un g a cote de la force
 
 		CVector pos = *it + CVector(1.5f * toolSize, 0, -1.2f * toolSize);
-		
+
 		pos = getLocalToWorldMatrix() * pos;
-		
+
 
 		// must have set this
 		nlassert(getFontGenerator() && getFontGenerator());
-		
+
 		CPSUtil::print(driver, std::string("G")
 							, *getFontGenerator()
 							, *getFontManager()
 							, pos
-							, 80.0f * toolSize );								
+							, 80.0f * toolSize );
 	}
 
-	
+
 }
 
 void CPSGravity::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSGravity_IStream )
-	f.serialVersion(1);	
-	CPSForceIntensityHelper::serial(f);	
+	f.serialVersion(1);
+	CPSForceIntensityHelper::serial(f);
 }
 
 
@@ -519,43 +519,43 @@ void CPSGravity::integrate(float date, CPSLocated *src, uint32 startIndex, uint3
 	if (!destPos && !destSpeed) return;
 
 	CPSLocated::TPSAttribParametricInfo::const_iterator it = src->_PInfo.begin() + startIndex,
-														endIt = src->_PInfo.begin() + startIndex + numObjects;	
+														endIt = src->_PInfo.begin() + startIndex + numObjects;
 	if (!accumulate) // compute coords from initial condition, and applying this force
 	{
 		if (destPos && !destSpeed) // fills dest pos only
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;				
-				destPos->x = it->Pos.x + deltaT * it->Speed.x;				
+				deltaT = date - it->Date;
+				destPos->x = it->Pos.x + deltaT * it->Speed.x;
 				destPos->y = it->Pos.y + deltaT * it->Speed.y;
 				destPos->z = it->Pos.z + deltaT * it->Speed.z - 0.5f * deltaT * deltaT * _K;
 				++it;
-				NEXT_POS;	
+				NEXT_POS;
 			}
 		}
 		else if (!destPos && destSpeed) // fills dest speed only
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;				
-				destSpeed->x = it->Speed.x;				
+				deltaT = date - it->Date;
+				destSpeed->x = it->Speed.x;
 				destSpeed->y = it->Speed.y;
 				destSpeed->z = it->Speed.z - deltaT * _K;
 				++it;
-				NEXT_SPEED;	
+				NEXT_SPEED;
 			}
 		}
 		else // fills both speed and pos
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;				
-				destPos->x = it->Pos.x + deltaT * it->Speed.x;				
+				deltaT = date - it->Date;
+				destPos->x = it->Pos.x + deltaT * it->Speed.x;
 				destPos->y = it->Pos.y + deltaT * it->Speed.y;
 				destPos->z = it->Pos.z + deltaT * it->Speed.z - 0.5f * deltaT * deltaT * _K;
 
-				destSpeed->x = it->Speed.x;				
+				destSpeed->x = it->Speed.x;
 				destSpeed->y = it->Speed.y;
 				destSpeed->z = it->Speed.z - deltaT * _K;
 
@@ -571,27 +571,27 @@ void CPSGravity::integrate(float date, CPSLocated *src, uint32 startIndex, uint3
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;								
-				destPos->z -= 0.5f * deltaT * deltaT * _K;				
+				deltaT = date - it->Date;
+				destPos->z -= 0.5f * deltaT * deltaT * _K;
 				++it;
-				NEXT_POS;	
+				NEXT_POS;
 			}
 		}
 		else if (!destPos && destSpeed) // fills dest speed only
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;								
-				destSpeed->z -= deltaT * _K;				
+				deltaT = date - it->Date;
+				destSpeed->z -= deltaT * _K;
 				++it;
-				NEXT_SPEED;	
+				NEXT_SPEED;
 			}
 		}
 		else // fills both speed and pos
 		{
 			while (it != endIt)
 			{
-				deltaT = date - it->Date;								
+				deltaT = date - it->Date;
 				destPos->z -= 0.5f * deltaT * deltaT * _K;
 				destSpeed->z -= deltaT * _K;
 				++it;
@@ -600,17 +600,17 @@ void CPSGravity::integrate(float date, CPSLocated *src, uint32 startIndex, uint3
 			}
 		}
 	}
-	
+
 }
 
 
 
-void CPSGravity::integrateSingle(float startDate, float deltaT, uint numStep,								 
+void CPSGravity::integrateSingle(float startDate, float deltaT, uint numStep,
 								 const CPSLocated *src, uint32 indexInLocated,
 								 NLMISC::CVector *destPos,
 								 bool accumulate /*= false*/,
 								 uint stride/* = sizeof(NLMISC::CVector)*/) const
-{		
+{
 	NL_PS_FUNC(CPSGravity_CVector )
 	nlassert(src->isParametricMotionEnabled());
 	//nlassert(deltaT > 0);
@@ -619,17 +619,17 @@ void CPSGravity::integrateSingle(float startDate, float deltaT, uint numStep,
 		NLMISC::CVector *endPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride * numStep);
 	#endif
 	const CPSLocated::CParametricInfo &pi = src->_PInfo[indexInLocated];
-	const NLMISC::CVector &startPos   = pi.Pos;	
+	const NLMISC::CVector &startPos   = pi.Pos;
 	if (numStep != 0)
 	{
 		if (!accumulate)
-		{				
+		{
 			destPos = FillBufUsingSubdiv(startPos, pi.Date, startDate, deltaT, numStep, destPos, stride);
 			if (numStep != 0)
 			{
 				float currDate = startDate - pi.Date;
 				nlassert(currDate >= 0);
-				const NLMISC::CVector &startSpeed = pi.Speed;			
+				const NLMISC::CVector &startSpeed = pi.Speed;
 				do
 				{
 					#ifdef NL_DEBUG
@@ -647,7 +647,7 @@ void CPSGravity::integrateSingle(float startDate, float deltaT, uint numStep,
 		}
 		else
 		{
-			uint numToSkip = ScaleFloatGE(startDate, deltaT, pi.Date, numStep);		
+			uint numToSkip = ScaleFloatGE(startDate, deltaT, pi.Date, numStep);
 			if (numToSkip < numStep)
 			{
 				numStep -= numToSkip;
@@ -657,13 +657,13 @@ void CPSGravity::integrateSingle(float startDate, float deltaT, uint numStep,
 					#ifdef NL_DEBUG
 						nlassert(destPos < endPos);
 					#endif
-					float halfTimeSquare  = 0.5f * currDate * currDate;				
+					float halfTimeSquare  = 0.5f * currDate * currDate;
 					destPos->z -=  _K * halfTimeSquare;
 					currDate += deltaT;
 					destPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride);
 				}
 				while (--numStep);
-			}				
+			}
 		}
 	}
 }
@@ -682,15 +682,15 @@ void CPSGravity::setIntensity(float value)
 		CPSForceIntensityHelper::setIntensity(value);
 	}
 }
-	
+
 void CPSGravity::setIntensityScheme(CPSAttribMaker<float> *scheme)
 {
 	NL_PS_FUNC(CPSGravity_setIntensityScheme)
 	if (!_IntensityScheme)
 	{
 		cancelIntegrable(); // not integrable anymore
-	}			
-	CPSForceIntensityHelper::setIntensityScheme(scheme);	
+	}
+	CPSForceIntensityHelper::setIntensityScheme(scheme);
 }
 
 
@@ -703,20 +703,20 @@ void CPSCentralGravity::computeForces(CPSLocated &target)
 	NL_PS_FUNC(CPSCentralGravity_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
 	// for each central gravity, and each target, we check if they are in the same basis
-	// if not, we need to transform the central gravity attachment pos into the target basis	
+	// if not, we need to transform the central gravity attachment pos into the target basis
 	uint32 size = _Owner->getSize();
 	// a vector that goes from the gravity to the object
 	CVector centerToObj;
 	float dist;
-	
+
 	for (uint32 k = 0; k < size; ++k)
-	{	
-		const float ellapsedTimexK = CParticleSystem::EllapsedTime  * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);		
+	{
+		const float ellapsedTimexK = CParticleSystem::EllapsedTime  * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);
 		const CMatrix &m = CPSLocated::getConversionMatrix(&target, this->_Owner);
-		const CVector center = m * (_Owner->getPos()[k]);						
+		const CVector center = m * (_Owner->getPos()[k]);
 		TPSAttribVector::iterator it2 = target.getSpeed().begin(), it2End = target.getSpeed().end();
 		TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
-		TPSAttribVector::const_iterator posIt = target.getPos().begin();		
+		TPSAttribVector::const_iterator posIt = target.getPos().begin();
 		for (; it2 != it2End; ++it2, ++invMassIt, ++posIt)
 		{
 			// our equation does 1 / r attenuation, which is not realistic, but fast ...
@@ -724,10 +724,10 @@ void CPSCentralGravity::computeForces(CPSLocated &target)
 
 			dist = centerToObj * centerToObj;
 			if (dist > 10E-6f)
-			{				
-				(*it2) += (*invMassIt) * ellapsedTimexK * (1.f / dist) *  centerToObj;				
+			{
+				(*it2) += (*invMassIt) * ellapsedTimexK * (1.f / dist) *  centerToObj;
 			}
-		}		
+		}
 	}
 }
 
@@ -748,13 +748,13 @@ void CPSCentralGravity::show()
 
 	const float sSize = 0.08f;
 	displayIcon2d(tab, tabSize, sSize);
-}	
+}
 
 void CPSCentralGravity::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSCentralGravity_IStream )
-	f.serialVersion(1);	
-	CPSForceIntensityHelper::serial(f);	
+	f.serialVersion(1);
+	CPSForceIntensityHelper::serial(f);
 }
 
 
@@ -769,21 +769,21 @@ void CPSSpring::computeForces(CPSLocated &target)
 	NL_PS_FUNC(CPSSpring_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
 	// for each spring, and each target, we check if they are in the same basis
-	// if not, we need to transform the spring attachment pos into the target basis	
-	uint32 size = _Owner->getSize();	
+	// if not, we need to transform the spring attachment pos into the target basis
+	uint32 size = _Owner->getSize();
 	for (uint32 k = 0; k < size; ++k)
-	{	
+	{
 		const float ellapsedTimexK = CParticleSystem::EllapsedTime  * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);
 		const CMatrix &m = CPSLocated::getConversionMatrix(&target, this->_Owner);
-		const CVector center = m * (_Owner->getPos()[k]);						
+		const CVector center = m * (_Owner->getPos()[k]);
 		TPSAttribVector::iterator it = target.getSpeed().begin(), itEnd = target.getSpeed().end();
 		TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
-		TPSAttribVector::const_iterator posIt = target.getPos().begin();		
+		TPSAttribVector::const_iterator posIt = target.getPos().begin();
 		for (; it != itEnd; ++it, ++invMassIt, ++posIt)
 		{
 			// apply the spring equation
-			(*it) += (*invMassIt) * ellapsedTimexK * (center - *posIt);								
-		}		
+			(*it) += (*invMassIt) * ellapsedTimexK * (center - *posIt);
+		}
 	}
 }
 
@@ -791,8 +791,8 @@ void CPSSpring::computeForces(CPSLocated &target)
 void CPSSpring::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSSpring_serial)
-	f.serialVersion(1);	
-	CPSForceIntensityHelper::serial(f);	
+	f.serialVersion(1);
+	CPSForceIntensityHelper::serial(f);
 }
 
 
@@ -802,8 +802,8 @@ void CPSSpring::show()
 	NL_PS_FUNC(CPSSpring_show)
 	CVector I = CVector::I;
 	CVector J = CVector::J;
-	static const CVector tab[] = 
-	{ 
+	static const CVector tab[] =
+	{
 	   -I + 2 * J,
 	   I + 2 * J,
 	   I + 2 * J, -I + J,
@@ -830,21 +830,21 @@ void CPSCylindricVortex::computeForces(CPSLocated &target)
 {
 	NL_PS_FUNC(CPSCylindricVortex_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
-	uint32 size = _Owner->getSize();		
+	uint32 size = _Owner->getSize();
 	for (uint32 k = 0; k < size; ++k) // for each vortex
-	{							
+	{
 		const float invR = 1.f  / _Radius[k];
 		const float radius2 = _Radius[k] * _Radius[k];
 		// intensity for this vortex
 		nlassert(_Owner);
-		float intensity =  (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);		
+		float intensity =  (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);
 		// express the vortex position and plane normal in the located basis
 		const CMatrix &m = CPSLocated::getConversionMatrix(&target, this->_Owner);
 		const CVector center = m * (_Owner->getPos()[k]);
 		const CVector n = m.mulVector(_Normal[k]);
 		TPSAttribVector::iterator speedIt = target.getSpeed().begin(), speedItEnd = target.getSpeed().end();
 		TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
-		TPSAttribVector::const_iterator posIt = target.getPos().begin();			
+		TPSAttribVector::const_iterator posIt = target.getPos().begin();
 		// projection of the current located pos on the vortex axis
 		CVector p;
 		// a vector that go from the vortex center to the point we're dealing with
@@ -852,30 +852,30 @@ void CPSCylindricVortex::computeForces(CPSLocated &target)
 		// the square of the dist of the projected pos
 		float d2 , d;
 		CVector realTangentialSpeed;
-		CVector tangentialSpeed;			
+		CVector tangentialSpeed;
 		CVector radialSpeed;
 		for (; speedIt != speedItEnd; ++speedIt, ++invMassIt, ++posIt)
 		{
 			v2p = *posIt - center;
 			p = v2p - (v2p * n) * n;
-			d2 = p * p;				
+			d2 = p * p;
 			if (d2 < radius2) // not out of range ?
 			{
 				if (d2 > 10E-6)
 				{
 					d = sqrtf(d2);
 					p *= 1.f / d;
-					// compute the speed vect that we should have (normalized) 
+					// compute the speed vect that we should have (normalized)
 					realTangentialSpeed = n ^ p;
 					tangentialSpeed = (*speedIt * realTangentialSpeed) * realTangentialSpeed;
-					radialSpeed =  (p * *speedIt) * p;						
+					radialSpeed =  (p * *speedIt) * p;
 					// update radial speed;
-					*speedIt -= _RadialViscosity * CParticleSystem::EllapsedTime * radialSpeed;						
-					// update tangential speed					
+					*speedIt -= _RadialViscosity * CParticleSystem::EllapsedTime * radialSpeed;
+					// update tangential speed
 					*speedIt -= _TangentialViscosity * intensity * CParticleSystem::EllapsedTime * (tangentialSpeed - (1.f - d * invR) * realTangentialSpeed);
 				}
-			}				
-		}		
+			}
+		}
 	}
 }
 
@@ -892,7 +892,7 @@ void CPSCylindricVortex::show()
 	// must have set this
 	nlassert(getFontGenerator() && getFontGenerator());
 	setupDriverModelMatrix();
-	
+
 	for (uint k = 0; k < _Owner->getSize(); ++k)
 	{
 		const CRGBA col = ((lb == NULL || this == lb) && loc == _Owner && index == k  ? CRGBA::Red : CRGBA(127, 127, 127));
@@ -911,7 +911,7 @@ void CPSCylindricVortex::setMatrix(uint32 index, const CMatrix &m)
 	NL_PS_FUNC(CPSCylindricVortex_setMatrix)
 	nlassert(index < _Normal.getSize());
 	_Normal[index] = m.getK();
-	_Owner->getPos()[index] = m.getPos();	
+	_Owner->getPos()[index] = m.getPos();
 }
 
 CMatrix CPSCylindricVortex::getMatrix(uint32 index) const
@@ -919,7 +919,7 @@ CMatrix CPSCylindricVortex::getMatrix(uint32 index) const
 	NL_PS_FUNC(CPSCylindricVortex_getMatrix)
 	CMatrix m;
 	CPSUtil::buildSchmidtBasis(_Normal[index], m);
-	m.setPos(_Owner->getPos()[index] ); 
+	m.setPos(_Owner->getPos()[index] );
 	return m;
 }
 
@@ -927,33 +927,33 @@ CMatrix CPSCylindricVortex::getMatrix(uint32 index) const
 void CPSCylindricVortex::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSCylindricVortex_IStream )
-	f.serialVersion(1);	
-	CPSForceIntensityHelper::serial(f);	
+	f.serialVersion(1);
+	CPSForceIntensityHelper::serial(f);
 	f.serial(_Normal);
 	f.serial(_Radius);
 	f.serial(_RadialViscosity);
 	f.serial(_TangentialViscosity);
 }
 
-void CPSCylindricVortex::newElement(const CPSEmitterInfo &info) 
-{ 
+void CPSCylindricVortex::newElement(const CPSEmitterInfo &info)
+{
 	NL_PS_FUNC(CPSCylindricVortex_newElement)
-	CPSForceIntensityHelper::newElement(info); 
+	CPSForceIntensityHelper::newElement(info);
 	_Normal.insert(CVector::K);
-	_Radius.insert(1.f); 
+	_Radius.insert(1.f);
 }
-void CPSCylindricVortex::deleteElement(uint32 index) 
-{ 
+void CPSCylindricVortex::deleteElement(uint32 index)
+{
 	NL_PS_FUNC(CPSCylindricVortex_deleteElement)
 	CPSForceIntensityHelper::deleteElement(index);
-	_Normal.remove(index); 
+	_Normal.remove(index);
 	_Radius.remove(index);
 }
-void CPSCylindricVortex::resize(uint32 size) 
-{ 
+void CPSCylindricVortex::resize(uint32 size)
+{
 	NL_PS_FUNC(CPSCylindricVortex_resize)
 	nlassert(size < (1 << 16));
-	CPSForceIntensityHelper::resize(size); 
+	CPSForceIntensityHelper::resize(size);
 	_Normal.resize(size);
 	_Radius.resize(size);
 }
@@ -971,22 +971,22 @@ void CPSMagneticForce::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 }
 
 void CPSMagneticForce::computeForces(CPSLocated &target)
-{	
+{
 	NL_PS_FUNC(CPSMagneticForce_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
 	// perform the operation on each target
 	for (uint32 k = 0; k < _Owner->getSize(); ++k)
-	{	
-		float intensity = CParticleSystem::EllapsedTime * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);		
-		NLMISC::CVector toAdd = CPSLocated::getConversionMatrix(&target, this->_Owner).mulVector(_Dir); // express this in the target basis			
+	{
+		float intensity = CParticleSystem::EllapsedTime * (_IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K);
+		NLMISC::CVector toAdd = CPSLocated::getConversionMatrix(&target, this->_Owner).mulVector(_Dir); // express this in the target basis
 		TPSAttribVector::iterator it = target.getSpeed().begin(), itend = target.getSpeed().end();
 		// 1st case : non-constant mass
 		if (target.getMassScheme())
 		{
-			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();			
+			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
 			for (; it != itend; ++it, ++invMassIt)
 			{
-				(*it) += intensity * *invMassIt * (*it ^ toAdd);					
+				(*it) += intensity * *invMassIt * (*it ^ toAdd);
 			}
 		}
 		else
@@ -996,7 +996,7 @@ void CPSMagneticForce::computeForces(CPSLocated &target)
 			{
 				(*it) += i * (*it ^ toAdd);
 			}
-		}		
+		}
 	}
 }
 
@@ -1006,7 +1006,7 @@ void CPSMagneticForce::computeForces(CPSLocated &target)
  */
 
 const uint BFNumPredefinedPos    = 8192;	// should be a power of 2
-const uint BFPredefinedNumInterp = 256;	    /** this should divide BFNumPredefinedPos. This define the number 
+const uint BFPredefinedNumInterp = 256;	    /** this should divide BFNumPredefinedPos. This define the number
 											  * of values used to interpolate between 2 position of the npose
 											  * (because we don't filter values when we access them)
 											  */
@@ -1044,7 +1044,7 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 							    ) const
 {
 	NL_PS_FUNC(CPSBrownianForce_integrate)
-	/// MASS DIFFERENT FROM 1 IS NOT SUPPORTED		
+	/// MASS DIFFERENT FROM 1 IS NOT SUPPORTED
 	float deltaT;
 	if (!destPos && !destSpeed) return;
 	CPSLocated::TPSAttribParametricInfo::const_iterator it = src->_PInfo.begin() + startIndex,
@@ -1063,7 +1063,7 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 							 it->Pos.y + deltaT * it->Speed.y + _K * PrecomputedPos[index].y,
 							 it->Pos.z + deltaT * it->Speed.z + _K * PrecomputedPos[index].z );
 				++it;
-				NEXT_POS;	
+				NEXT_POS;
 			}
 		}
 		else if (!destPos && destSpeed) // fills dest speed only
@@ -1072,11 +1072,11 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 			{
 				deltaT = date - it->Date;
 				uint index = (uint) (lookUpFactor * deltaT) & (BFNumPredefinedPos - 1);
-				destSpeed->x = it->Speed.x  + speedFactor * PrecomputedSpeed[index].x;				
+				destSpeed->x = it->Speed.x  + speedFactor * PrecomputedSpeed[index].x;
 				destSpeed->y = it->Speed.y  + speedFactor * PrecomputedSpeed[index].y;
 				destSpeed->z = it->Speed.z  + speedFactor * PrecomputedSpeed[index].z;
 				++it;
-				NEXT_SPEED;	
+				NEXT_SPEED;
 			}
 		}
 		else // fills both speed and pos
@@ -1085,11 +1085,11 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 			{
 				deltaT = date - it->Date;
 				uint index = (uint) (lookUpFactor * deltaT) & (BFNumPredefinedPos - 1);
-				destPos->x = it->Pos.x + deltaT * it->Speed.x + _K * PrecomputedPos[index].x;				
+				destPos->x = it->Pos.x + deltaT * it->Speed.x + _K * PrecomputedPos[index].x;
 				destPos->y = it->Pos.y + deltaT * it->Speed.y + _K * PrecomputedPos[index].y;
 				destPos->z = it->Pos.z + deltaT * it->Speed.z + _K * PrecomputedPos[index].z;
 
-				destSpeed->x = it->Speed.x + speedFactor * PrecomputedSpeed[index].x;				
+				destSpeed->x = it->Speed.x + speedFactor * PrecomputedSpeed[index].x;
 				destSpeed->y = it->Speed.y + speedFactor * PrecomputedSpeed[index].y;
 				destSpeed->z = it->Speed.z + speedFactor * PrecomputedSpeed[index].z;
 
@@ -1111,7 +1111,7 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 							 destPos->y + _K * PrecomputedPos[index].y,
 							 destPos->z + _K * PrecomputedPos[index].z);
 				++it;
-				NEXT_POS;	
+				NEXT_POS;
 			}
 		}
 		else if (!destPos && destSpeed) // fills dest speed only
@@ -1124,7 +1124,7 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 							   destSpeed->y + speedFactor * PrecomputedSpeed[index].y,
 							   destSpeed->z + speedFactor * PrecomputedSpeed[index].z);
 				++it;
-				NEXT_SPEED;	
+				NEXT_SPEED;
 			}
 		}
 		else // fills both speed and pos
@@ -1138,18 +1138,18 @@ void CPSBrownianForce::integrate(float date, CPSLocated *src,
 							 destPos->z + _K * PrecomputedPos[index].z);
 				destSpeed->set(destSpeed->x + speedFactor * PrecomputedSpeed[index].x,
 							   destSpeed->y + speedFactor * PrecomputedSpeed[index].y,
-							   destSpeed->z + speedFactor * PrecomputedSpeed[index].z);	
+							   destSpeed->z + speedFactor * PrecomputedSpeed[index].z);
 				++it;
 				NEXT_POS;
 				NEXT_SPEED;
 			}
 		}
-	}	
+	}
 }
 
 
 ///==========================================================
-void CPSBrownianForce::integrateSingle(float startDate, float deltaT, uint numStep,								 
+void CPSBrownianForce::integrateSingle(float startDate, float deltaT, uint numStep,
 								 const CPSLocated *src, uint32 indexInLocated,
 								 NLMISC::CVector *destPos,
 								 bool accumulate,
@@ -1163,19 +1163,19 @@ void CPSBrownianForce::integrateSingle(float startDate, float deltaT, uint numSt
 		NLMISC::CVector *endPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride * numStep);
 	#endif
 	const CPSLocated::CParametricInfo &pi = src->_PInfo[indexInLocated];
-	const NLMISC::CVector &startPos   = pi.Pos;	
+	const NLMISC::CVector &startPos   = pi.Pos;
 	if (numStep != 0)
 	{
 		float lookUpFactor = _ParametricFactor * BFPredefinedNumInterp;
 		if (!accumulate)
-		{				
+		{
 			/// fill start of datas (particle didn't exist at that time, so we fill by the start position)
 			destPos = FillBufUsingSubdiv(startPos, pi.Date, startDate, deltaT, numStep, destPos, stride);
 			if (numStep != 0)
 			{
 				float currDate = startDate - pi.Date;
-				nlassert(currDate >= 0);				
-				const NLMISC::CVector &startSpeed = pi.Speed;			
+				nlassert(currDate >= 0);
+				const NLMISC::CVector &startSpeed = pi.Speed;
 				do
 				{
 					#ifdef NL_DEBUG
@@ -1193,10 +1193,10 @@ void CPSBrownianForce::integrateSingle(float startDate, float deltaT, uint numSt
 		}
 		else
 		{
-			uint numToSkip = ScaleFloatGE(startDate, deltaT, pi.Date, numStep);		
+			uint numToSkip = ScaleFloatGE(startDate, deltaT, pi.Date, numStep);
 			if (numToSkip < numStep)
 			{
-				numStep -= numToSkip;				
+				numStep -= numToSkip;
 				float currDate = startDate + deltaT * numToSkip - pi.Date;
 				do
 				{
@@ -1210,20 +1210,20 @@ void CPSBrownianForce::integrateSingle(float startDate, float deltaT, uint numSt
 					currDate += deltaT;
 					destPos = (NLMISC::CVector *) ( (uint8 *) destPos + stride);
 				}
-				while (--numStep);				
+				while (--numStep);
 			}
 		}
-	}	
+	}
 }
 
 
 ///==========================================================
 void CPSBrownianForce::initPrecalc()
-{	
+{
 	NL_PS_FUNC(CPSBrownianForce_initPrecalc)
 	/// create the pos table
 	nlassert(BFNumPredefinedPos % BFPredefinedNumInterp == 0);
-	
+
 	NLMISC::CVector p0(0, 0, 0), p1;
 	const uint numStep = BFNumPredefinedPos / BFPredefinedNumInterp;
 	NLMISC::CVector *dest = PrecomputedPos;
@@ -1247,7 +1247,7 @@ void CPSBrownianForce::initPrecalc()
 			*dest++ = lambda * p1 + (1.f - lambda) * p0;
 			lambda += lambdaStep;
 		}
-		p0 = p1;				
+		p0 = p1;
 	}
 
 	// now, filter the table several time to get something more smooth
@@ -1273,7 +1273,7 @@ void CPSBrownianForce::initPrecalc()
 		static double divRand = (2.f / RAND_MAX);
 		PrecomputedImpulsions[k].set( (float) (rand() * divRand - 1),
 									  (float) (rand() * divRand - 1),
-									  (float) (rand() * divRand - 1) 
+									  (float) (rand() * divRand - 1)
 									);
 	}
 }
@@ -1301,8 +1301,8 @@ void CPSBrownianForce::setIntensityScheme(CPSAttribMaker<float> *scheme)
 	if (!_IntensityScheme)
 	{
 		cancelIntegrable(); // not integrable anymore
-	}			
-	CPSForceIntensity::setIntensityScheme(scheme);	
+	}
+	CPSForceIntensity::setIntensityScheme(scheme);
 }
 
 ///==========================================================
@@ -1310,10 +1310,10 @@ void CPSBrownianForce::computeForces(CPSLocated &target)
 {
 	NL_PS_FUNC(CPSBrownianForce_computeForces)
 	nlassert(CParticleSystem::InsideSimLoop);
-	// perform the operation on each target	
+	// perform the operation on each target
 	for (uint32 k = 0; k < _Owner->getSize(); ++k)
-	{		
-		float intensity = _IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K;		
+	{
+		float intensity = _IntensityScheme ? _IntensityScheme->get(_Owner, k) : _K;
 		uint32 size = target.getSize();
 		if (!size) continue;
 		TPSAttribVector::iterator it2 = target.getSpeed().begin(), it2End;
@@ -1324,9 +1324,9 @@ void CPSBrownianForce::computeForces(CPSLocated &target)
 		if (target.getMassScheme())
 		{
 			float intensityXtime = intensity * CParticleSystem::EllapsedTime;
-			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();						
+			TPSAttribFloat::const_iterator invMassIt = target.getInvMass().begin();
 			do
-			{			
+			{
 				uint toProcess = std::min((uint) (BFNumPrecomputedImpulsions - startPos), (uint) size);
 				it2End = it2 + toProcess;
 				do
@@ -1341,47 +1341,47 @@ void CPSBrownianForce::computeForces(CPSLocated &target)
 				}
 				while (it2 != it2End);
 				startPos = 0;
-				imp = PrecomputedImpulsions;	
+				imp = PrecomputedImpulsions;
 				size -= toProcess;
 			}
 			while (size != 0);
 		}
 		else
-		{				
+		{
 			do
-			{			
+			{
 				uint toProcess = std::min((uint) (BFNumPrecomputedImpulsions - startPos) , (uint) size);
 				it2End = it2 + toProcess;
 				float factor = intensity * CParticleSystem::EllapsedTime / target.getInitialMass();
 				do
-				{						
+				{
 					it2->set(it2->x + factor * imp->x,
 							it2->y + factor * imp->y,
-							it2->z + factor * imp->x);						
+							it2->z + factor * imp->x);
 					++imp;
 					++it2;
 				}
 				while (it2 != it2End);
 				startPos = 0;
-				imp = PrecomputedImpulsions;	
+				imp = PrecomputedImpulsions;
 				size -= toProcess;
 			}
 			while (size != 0);
-		}					
-	}	
+		}
+	}
 }
 
 ///=======================================================================
 void CPSBrownianForce::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 {
 	NL_PS_FUNC(CPSBrownianForce_serial)
-	sint ver = f.serialVersion(3);		
+	sint ver = f.serialVersion(3);
 	if (ver <= 2)
 	{
 		uint8 dummy;
-		f.serial(dummy); // old data in version 2 not used anymore	
+		f.serial(dummy); // old data in version 2 not used anymore
 		CPSForce::serial(f);
-		f.serial(dummy); // old data in version 2 not used anymore	
+		f.serial(dummy); // old data in version 2 not used anymore
 		serialForceIntensity(f);
 		if (f.isReading())
 		{

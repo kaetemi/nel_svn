@@ -38,7 +38,7 @@ class IStream;
 struct EStream;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 class IDriver;
@@ -60,7 +60,7 @@ public:
 
 	/**
 	  * \param headerOptim if true, the animationSet cannot be serialized (nlassert), but could save
-	  *	lot of memory load: CTrackSampleQuat memory are optimized (48 bytes to 12) and map<string, id> 
+	  *	lot of memory load: CTrackSampleQuat memory are optimized (48 bytes to 12) and map<string, id>
 	  *	per animation is replaced with a (IdChannelInAnimSet, IdTrackInAnim) association
 	  */
 	CAnimationSet (bool headerOptim= false);
@@ -228,7 +228,7 @@ public:
 	void serial (NLMISC::IStream& f);
 
 	/**
-	  * Helper method.	  
+	  * Helper method.
 	  * Load an animation set from animation files in a directory, then call build().
 	  * \param path Path to look at for animations
 	  * \param recurse wether to recurse to load animation in sub folders
@@ -238,7 +238,7 @@ public:
 	  */
 	bool			loadFromFiles
 					(
-						const std::string &path, 
+						const std::string &path,
 						bool recurse = true,
 						const char *ext = "anim",
 						bool wantWarningMessage = true
@@ -259,7 +259,7 @@ public:
 	bool	isAnimHeaderOptimized() const {return _AnimHeaderOptimisation;}
 
 	/** For SkeletonSpawnScript (SSS) animation.
-	 *	call this after build(). This method preload ALL the shapes/texture 
+	 *	call this after build(). This method preload ALL the shapes/texture
 	 *	that can be spawned due to any animation
 	 */
 	void	preloadSSSShapes(IDriver &drv, CShapeBank &shapeBank);
@@ -282,7 +282,7 @@ private:
 
 
 	void	buildChannelNameFromMap();
-	
+
 };
 
 

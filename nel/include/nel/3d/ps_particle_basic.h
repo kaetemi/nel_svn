@@ -32,7 +32,7 @@
 #include "nel/3d/material.h"
 #include "nel/3d/ps_attrib_maker.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -65,7 +65,7 @@ public:
 
 	/// return true if this located bindable derived class holds alive particles
 	virtual bool hasParticles(void) const { nlassert(_Owner); return _Owner->getSize() != 0; }
-	
+
 	/**
 	* process one pass for the particles. The default behaviour shows the particles
 	*/
@@ -78,9 +78,9 @@ public:
 		{
 			draw(pass == PSSolidRender);
 		}
-		else 
+		else
 		if (pass == PSToolRender) // edition mode only
-		{			
+		{
 			showTool();
 		}
 	}
@@ -91,31 +91,31 @@ public:
 	/// return true if there are Opaque faces in the object
 	virtual bool hasOpaqueFaces(void)  = 0;
 
-	/** Returns true if there are lightable faces in the object	  
+	/** Returns true if there are lightable faces in the object
 	  */
 	virtual bool hasLightableFaces() = 0;
 
-	/** Returns true if the object can use global lighting color. (example : 'lookat' particle do not have 
+	/** Returns true if the object can use global lighting color. (example : 'lookat' particle do not have
 	  * normals, so they use global lighting color instead
 	  */
 	bool usesGlobalColorLighting() { return _UsesGlobalColorLighting; }
 	// active / deactive global color lighting
-	void enableGlobalColorLighting(bool enabled) { _UsesGlobalColorLighting = enabled; } 	
+	void enableGlobalColorLighting(bool enabled) { _UsesGlobalColorLighting = enabled; }
 	// is global color lighting supported ?
 	virtual bool supportGlobalColorLighting() const = 0;
 
 	/// derivers draw the particles here
 	virtual void draw(bool opaque) {}
 
-	/// draw the particles for edition mode. The default behaviour just draw a wireframe model 	 
+	/// draw the particles for edition mode. The default behaviour just draw a wireframe model
 	virtual void showTool();
 
 	/// return the max number of faces needed for display. This is needed for LOD balancing
 	virtual uint32 getNumWantedTris() const = 0;
-	
+
 	/// serialisation. Derivers must override this, and call their parent version
 	virtual void serial(NLMISC::IStream &f) throw(NLMISC::EStream)
-	{ 	
+	{
 		/// version 3 : global color lighting
 		/// version 2 : auto-lod saved
 		sint ver = f.serialVersion(3);
@@ -127,7 +127,7 @@ public:
 		if (ver >= 2)
 		{
 			f.serial(_DisableAutoLOD);
-		}		
+		}
 	}
 
 
@@ -135,7 +135,7 @@ public:
 	void	disableAutoLOD(bool disable = true) { _DisableAutoLOD = disable; }
 
 	/// Test wether Auto-LOD is disabled.
-	bool    isAutoLODDisabled() const { return _DisableAutoLOD; }	
+	bool    isAutoLODDisabled() const { return _DisableAutoLOD; }
 
 	// Change z-bias of material. this must be redefined for all renderable particles
 	virtual void			setZBias(float value) = 0;
@@ -156,10 +156,10 @@ protected:
 		}
 	}*/
 
-	/**	Generate a new element for this bindable. They are generated according to the properties of the class		 
+	/**	Generate a new element for this bindable. They are generated according to the properties of the class
 	 */
 	virtual void newElement(const CPSEmitterInfo &info) = 0;
-	
+
 	/** Delete an element given its index
 	 *  Attributes of the located that hold this bindable are still accessible for the index given
 	 *  index out of range -> nl_assert
@@ -216,16 +216,16 @@ class CPSColoredParticle
 		/// dtor
 		virtual ~CPSColoredParticle();
 
-		/// serialization. 
-		void serialColorScheme(NLMISC::IStream &f) throw(NLMISC::EStream);		
+		/// serialization.
+		void serialColorScheme(NLMISC::IStream &f) throw(NLMISC::EStream);
 
-	protected:		
+	protected:
 
 		/// deriver must return their owner there
-		virtual CPSLocated *getColorOwner(void) = 0;		
+		virtual CPSLocated *getColorOwner(void) = 0;
 		CRGBA _Color;
-		
-		CPSAttribMaker<CRGBA> *_ColorScheme; 						
+
+		CPSAttribMaker<CRGBA> *_ColorScheme;
 
 		/// Update the material and the vb and the like so that they match the color scheme
 		virtual void updateMatAndVbForColor(void) = 0;
@@ -233,7 +233,7 @@ class CPSColoredParticle
 		void newColorElement(const CPSEmitterInfo &info)
 		{
 			if (_ColorScheme && _ColorScheme->hasMemory()) _ColorScheme->newElement(info);
-		}	
+		}
 		void deleteColorElement(uint32 index)
 		{
 			if (_ColorScheme && _ColorScheme->hasMemory()) _ColorScheme->deleteElement(index);
@@ -282,16 +282,16 @@ class CPSSizedParticle
 		/// serialization. We choose a different name because of multiple-inheritance
 		void serialSizeScheme(NLMISC::IStream &f) throw(NLMISC::EStream);
 
-	protected:	
-		
+	protected:
+
 		/// deriver must return their owner there
-		virtual CPSLocated *getSizeOwner(void) = 0;		
+		virtual CPSLocated *getSizeOwner(void) = 0;
 		float _ParticleSize;
 		CPSAttribMaker<float> *_SizeScheme;
 		void newSizeElement(const CPSEmitterInfo &info)
 		{
 			if (_SizeScheme && _SizeScheme->hasMemory()) _SizeScheme->newElement(info);
-		}	
+		}
 		void deleteSizeElement(uint32 index)
 		{
 			if (_SizeScheme && _SizeScheme->hasMemory()) _SizeScheme->deleteElement(index);
@@ -332,7 +332,7 @@ class CPSRotated2DParticle
 		 */
 		void setAngle2D(float angle);
 
-		/// get the constant 
+		/// get the constant
 		float getAngle2D(void) const { return _Angle2D; }
 
 		/// ctor : default are unrotated particles (angle = 0.0f)
@@ -348,7 +348,7 @@ class CPSRotated2DParticle
 
 		/** this return a float table used to speed up rotations of face look at and the like
 		 * for each angle, there are 4 float : 2 couple of float : a1, b1, a2, b2
-		 * a1 * I + b1 * K = up left corner, a2 * I + b2 * K = up right corner, 
+		 * a1 * I + b1 * K = up left corner, a2 * I + b2 * K = up right corner,
 		 * This table must have been initialized with initRotTable
 		 */
 		static inline const float *getRotTable(void)
@@ -360,10 +360,10 @@ class CPSRotated2DParticle
 		/// init the rotation table
 		static void initRotTable(void);
 
-	protected:	
+	protected:
 		/// deriver must return their owner there
 		virtual CPSLocated *getAngle2DOwner(void) = 0;
-				
+
 		float _Angle2D;
 		CPSAttribMaker<float> *_Angle2DScheme;
 		static float _RotTable[4 * 256];
@@ -376,7 +376,7 @@ class CPSRotated2DParticle
 		void newAngle2DElement(const CPSEmitterInfo &info)
 		{
 			if (_Angle2DScheme && _Angle2DScheme->hasMemory()) _Angle2DScheme->newElement(info);
-		}	
+		}
 		void deleteAngle2DElement(uint32 index)
 		{
 			if (_Angle2DScheme && _Angle2DScheme->hasMemory()) _Angle2DScheme->deleteElement(index);
@@ -415,7 +415,7 @@ class CPSTexturedParticle
 
 		/** Set an attribute maker that produce a sint32
 		 *  It must have been allocated by new
-		 *  It will be deleted by this object		
+		 *  It will be deleted by this object
 		 *  a texture group must have been set before this, an assertion occurs otherwise
 		 *  The integer is used as an index in a grouped texture. It tells which frame to use
 		 */
@@ -431,7 +431,7 @@ class CPSTexturedParticle
 		void setTextureIndex(sint32 index);
 
 		/// get the animated texture index. MeaningFul only if a texture group was set
-		sint32 getTextureIndex(void) const { return _TextureIndex; } 		
+		sint32 getTextureIndex(void) const { return _TextureIndex; }
 
 		/// set the texture group being used. It toggles animation on
 		virtual void setTextureGroup(NLMISC::CSmartPtr<CTextureGrouped> texGroup);
@@ -460,21 +460,21 @@ class CPSTexturedParticle
 		virtual ~CPSTexturedParticle();
 
 		/// serialization. We choose a different name because of multiple-inheritance
-		void serialTextureScheme(NLMISC::IStream &f) throw(NLMISC::EStream);		
+		void serialTextureScheme(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 		void			enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest);
-		
-		
-	protected:			
+
+
+	protected:
 		/// deriver must return their owner there
 		virtual CPSLocated *getTextureIndexOwner(void) = 0;
-		
+
 		// a single texture
 		CSmartPtr<ITexture> _Tex;
 
 		// a grouped texture
-		CSmartPtr<CTextureGrouped> _TexGroup;		
-		
+		CSmartPtr<CTextureGrouped> _TexGroup;
+
 		CPSAttribMaker<sint32> *_TextureIndexScheme;
 
 		// a texture index. Most of the time, a scheme of index will be used instead of that
@@ -486,7 +486,7 @@ class CPSTexturedParticle
 		void newTextureIndexElement(const CPSEmitterInfo &info)
 		{
 			if (_TextureIndexScheme && _TextureIndexScheme->hasMemory()) _TextureIndexScheme->newElement(info);
-		}	
+		}
 		void deleteTextureIndexElement(uint32 index)
 		{
 			if (_TextureIndexScheme && _TextureIndexScheme->hasMemory()) _TextureIndexScheme->deleteElement(index);
@@ -521,7 +521,7 @@ public:
 	bool						isMultiTextureEnabled() const	{ return (_MultiTexState & (uint8) MultiTextureEnabled) != 0; }
 
 	/// Set the main texture for multitexturing. Convert the texture to / from a bumpmap if needed (so you just provide its heightmap)
-	void						setTexture2(ITexture *tex);	
+	void						setTexture2(ITexture *tex);
 
 	/// Get the main texture for multitexturing
 	const ITexture				*getTexture2() const { return _Texture2; }
@@ -530,14 +530,14 @@ public:
 	/** Set the operation for the main texture. When EnvBumpMap is used, setTexture2 must be called with a bump map,
 	  * and the primary texture must be convertible to rgba. Convert the texture to / from a bumpmap if needed
 	  */
-	void						setMainTexOp(TOperator op);	
+	void						setMainTexOp(TOperator op);
 
 	TOperator					getMainTexOp() const	   { return _MainOp; }
 
 	// Enable the use of an alternate texture for multitexturing. When disabled, this discard the textures that may have been set.
 	void						enableAlternateTex(bool enabled = true);
 	bool						isAlternateTexEnabled() const { return (_MultiTexState & (uint8) AlternateTextureEnabled) != 0; }
-	
+
 	/// Set the alternate texture for multitexturing. It is used when the main operator is not supported by the gfx board.
 	// Convert the texture to / from a bumpmap if needed. (so you just provide its heightmap)
 	void						setTexture2Alternate(ITexture *tex);
@@ -547,20 +547,20 @@ public:
 	ITexture					*getTexture2Alternate() { return _AlternateTexture2; }
 
 	/// Set the operation for the alternate texture. Convert the texture to / from a bumpmap if needed.
-	void						setAlternateTexOp(TOperator op); 
-	
-	TOperator					getAlternateTexOp() const	    
-	{ 		
-		return _AlternateOp; 
+	void						setAlternateTexOp(TOperator op);
+
+	TOperator					getAlternateTexOp() const
+	{
+		return _AlternateOp;
 	}
 
 	/** set the scroll speed for tex 1 & 2 when the main op is used
 	  * \param stage can be set to 0 or one
 	  */
-	void						setScrollSpeed(uint stage, const NLMISC::CVector2f &sp) 
+	void						setScrollSpeed(uint stage, const NLMISC::CVector2f &sp)
 	{
 		nlassert(stage < 2);
-		_TexScroll[stage] = sp;		
+		_TexScroll[stage] = sp;
 	}
 	const NLMISC::CVector2f		&getScrollSpeed(uint stage) const
 	{
@@ -571,7 +571,7 @@ public:
 	/** set the scroll speed for tex 1 & 2 when the alternate op is used
 	  * \param stage can be set to 0 or one
 	  */
-	void						setAlternateScrollSpeed(uint stage, const NLMISC::CVector2f &sp) 
+	void						setAlternateScrollSpeed(uint stage, const NLMISC::CVector2f &sp)
 	{
 		nlassert(stage < 2);
 		_TexScrollAlternate[stage] = sp;
@@ -583,7 +583,7 @@ public:
 	}
 
 	/// serial this object
-	void serialMultiTex(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	void serialMultiTex(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 	/** setup a material from this object and a primary texture
 	  * drv is used to check the device caps.
@@ -613,26 +613,26 @@ public:
 	float	getBumpFactor() const { return _BumpFactor; }
 
 	void			enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv);
-	
 
-protected:	
-	void						setupMultiTexEnv(TOperator op, ITexture *tex1, ITexture *tex2, CMaterial &mat, IDriver &drv);	
+
+protected:
+	void						setupMultiTexEnv(TOperator op, ITexture *tex1, ITexture *tex2, CMaterial &mat, IDriver &drv);
 	TOperator					_MainOp, _AlternateOp;
 	NLMISC::CSmartPtr<ITexture> _Texture2;
-	NLMISC::CSmartPtr<ITexture> _AlternateTexture2;	
+	NLMISC::CSmartPtr<ITexture> _AlternateTexture2;
 
-	/// texture scrolling 
+	/// texture scrolling
 	NLMISC::CVector2f _TexScroll[2];
 	/// alternate texture scrollMultiTextureEnabled
 	NLMISC::CVector2f _TexScrollAlternate[2];
-	
+
 	enum TMultiTexState {  TouchFlag = 0x01, MultiTextureEnabled = 0x02, AlternateTextureEnabled = 0x04, AlternateTextureUsed = 0x08, EnvBumpMapUsed = 0x10, BasicCapsForced = 0x20,
 							ScrollUseLocalDate = 0x40, ScrollUseLocalDateAlternate = 0x80
 						};
 	uint8   _MultiTexState;
 
 	/// test wether the alternate texture is used
-	bool	isAlternateTextureUsed(IDriver &driver) const;	
+	bool	isAlternateTextureUsed(IDriver &driver) const;
 	bool	isEnvBumpMapUsed() const { return (_MultiTexState & EnvBumpMapUsed) != 0; }
 
 
@@ -640,17 +640,17 @@ protected:
 	virtual void updateTexWrapMode(IDriver &drv) = 0;
 	void touch()		{ _MultiTexState |= (uint8) TouchFlag; }
 	void unTouch()		{ _MultiTexState &= ~ (uint8) TouchFlag; }
-	bool isTouched()	const { return (_MultiTexState & TouchFlag) != 0; }	
+	bool isTouched()	const { return (_MultiTexState & TouchFlag) != 0; }
 	bool areBasicCapsForcedLocal() const { return (_MultiTexState & BasicCapsForced) != 0; }
-	void forceBasicCapsLocal(bool force) 
-	{ 
+	void forceBasicCapsLocal(bool force)
+	{
 		if (force) _MultiTexState |= BasicCapsForced;
 		else _MultiTexState &= ~BasicCapsForced;
 	}
 	float		_BumpFactor;
-	static bool _ForceBasicCaps;	
+	static bool _ForceBasicCaps;
 };
- 
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -664,7 +664,7 @@ class CPSRotated3DPlaneParticle
 
 		/** Set an attribute maker that produce a basis
 		 *  It must have been allocated by new
-		 *  It will be deleted by this object				
+		 *  It will be deleted by this object
 		 */
 		void setPlaneBasisScheme(CPSAttribMaker<CPlaneBasis> *basisMaker);
 
@@ -692,20 +692,20 @@ class CPSRotated3DPlaneParticle
 		/// serialization. We choose a different name because of multiple-inheritance
 		void serialPlaneBasisScheme(NLMISC::IStream &f) throw(NLMISC::EStream);
 
-	protected:		
+	protected:
 		/// if this is false, constant size will be used instead of a scheme
 
 		/// deriver must return their owner there
-		virtual CPSLocated *getPlaneBasisOwner(void) = 0;		
-		
+		virtual CPSLocated *getPlaneBasisOwner(void) = 0;
+
 		CPSAttribMaker<CPlaneBasis> *_PlaneBasisScheme;
-		
+
 		CPlaneBasis _PlaneBasis; // constant basis..
 
 		void newPlaneBasisElement(const CPSEmitterInfo &info)
 		{
 			if (_PlaneBasisScheme && _PlaneBasisScheme->hasMemory()) _PlaneBasisScheme->newElement(info);
-		}	
+		}
 		void deletePlaneBasisElement(uint32 index)
 		{
 			if (_PlaneBasisScheme && _PlaneBasisScheme->hasMemory()) _PlaneBasisScheme->deleteElement(index);
@@ -721,7 +721,7 @@ class CPSRotated3DPlaneParticle
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** This add a hint to rotated particle : only a few one are rotated, and the other are duplcated
- * 
+ *
  */
 
 struct CPSHintParticleRotateTheSame
@@ -731,10 +731,10 @@ struct CPSHintParticleRotateTheSame
 	/** Tells that all particles are turning in the same manner, and only have a rotationnal bias
 	 *  This is faster then other method. Any previous set scheme for 3d rotation is kept.
 	 *	\param: the number of rotation configuration we have. The more high it is, the slower it'll be
-	 *          If this is too low, a lot of particles will have the same orientation	           	 
+	 *          If this is too low, a lot of particles will have the same orientation
 	 *          If it is 0, then the hint is disabled
- 	 *  \param  minAngularVelocity : the maximum angular velocity for particle rotation	 
-	 *  \param  maxAngularVelocity : the maximum angular velocity for particle rotation	 
+ 	 *  \param  minAngularVelocity : the maximum angular velocity for particle rotation
+	 *  \param  maxAngularVelocity : the maximum angular velocity for particle rotation
 	 *  \see    CPSRotated3dPlaneParticle
 	 */
 	virtual void hintRotateTheSame(uint32 nbConfiguration
@@ -747,7 +747,7 @@ struct CPSHintParticleRotateTheSame
 	 *  \see hintRotateTheSame(), CPSRotated3dPlaneParticle
 	 */
 	virtual void disableHintRotateTheSame(void) = 0;
-	
+
 
 	/** check wether a call to hintRotateTheSame was performed
 	 *  \return 0 if the hint is disabled, the number of configurations else
@@ -771,15 +771,15 @@ struct CPSTailParticle
 
 	/// test wether color fading is activated
 	virtual bool getColorFading(void) const = 0;
-		
-		
-	/// there may be a maximum with some particles	
+
+
+	/// there may be a maximum with some particles
 	virtual void setTailNbSeg(uint32 nbSeg) = 0;
 
 	// get the number of segments in the tail
 	virtual	uint32 getTailNbSeg(void) const = 0;
 
-		
+
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -793,14 +793,14 @@ struct CPSShapeParticle
 	/// set a new shape
 	virtual void setShape(const std::string &shape) = 0;
 
-	/// get the shape used for those particles	
+	/// get the shape used for those particles
 	virtual std::string getShape(void) const = 0;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** this contains material of a particle, this doesn't initiliaze anything, this just give the abylity to 
+/** this contains material of a particle, this doesn't initiliaze anything, this just give the abylity to
   * change the blending mode
   */
 class CPSMaterial
@@ -810,16 +810,16 @@ public:
 	CPSMaterial();
 
 	/// this enum summarize the useful modes for blending to the framebuffer
-	enum TBlendingMode { add, modulate, alphaBlend, alphaTest };	
+	enum TBlendingMode { add, modulate, alphaBlend, alphaTest };
 
 	/// serialization (not named 'serial' because it will be used via multiple-inheritance)
-	void serialMaterial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	void serialMaterial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 	/// set the blending mode. The default is ass
 	void setBlendingMode(CPSMaterial::TBlendingMode mode);
 
 	/// return the blending mode currently used
-	CPSMaterial::TBlendingMode getBlendingMode(void) const;	
+	CPSMaterial::TBlendingMode getBlendingMode(void) const;
 
 
 	/** Force the material to have one texture that is modulated by diffuse, and a constant color
@@ -828,7 +828,7 @@ public:
 	  */
 	void forceModulateConstantColor(bool force, const NLMISC::CRGBA &col = NLMISC::CRGBA::White);
 
-	/** This setup n stage of a material with at least texture. 
+	/** This setup n stage of a material with at least texture.
 	 * - If a texture was present for a given stage it still is
 	 * - If a texture wasn't present, it create a dummy white texture there
 	 * - Above numStages, textures are disabled.
@@ -842,17 +842,17 @@ public:
 	bool isZTestEnabled() const;
 
 	// set z-bias
-	void setZBias(float value) { _Mat.setZBias(value); }	
-	float getZBias() const { return _Mat.getZBias(); }	
+	void setZBias(float value) { _Mat.setZBias(value); }
+	float getZBias() const { return _Mat.getZBias(); }
 
-	
+
 
 protected:
-	CMaterial _Mat;		
+	CMaterial _Mat;
 };
 
 
-//==========================================================================	
+//==========================================================================
 /// setup a stage as modulate, by specifying the source and destination
 inline void SetupModulatedStage(CMaterial &m, uint stage, CMaterial::TTexSource src1, CMaterial::TTexSource src2)
 {

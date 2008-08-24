@@ -1,7 +1,7 @@
 /** \file sstring.h
  *
  * This file contains a string class derived from the STL string
- * The string compare functions of the class are case insensitive 
+ * The string compare functions of the class are case insensitive
  *
  * The coding style is not CPU efficient - the routines are not designed for performance
  */
@@ -110,7 +110,7 @@ public:
 	CSString tailFromFirstWord() const;
 	/// Count the number of words in a string
 	unsigned countWords() const;
-	/// Extract the given word 
+	/// Extract the given word
 	CSString word(unsigned idx) const;
 
 	/// Return first word or quote-encompassed sub-string - can remove extracted sub-string from source string
@@ -136,7 +136,7 @@ public:
 	CSString line(unsigned idx) const;
 
 	/// A handy utility routine for knowing if a character is a white space character or not (' ','\t','\n','\r',26)
-	static bool isWhiteSpace(char c); 
+	static bool isWhiteSpace(char c);
 	///	Test whether character matches '{', '(','[' or '<' (the '<' test depends on the useAngleBrace parameter
 	static bool isOpeningDelimiter(char c,bool useAngleBrace=false);
 	///	Test whether character matches '}', ')',']' or '>' (the '>' test depends on the useAngleBrace parameter
@@ -144,14 +144,14 @@ public:
 	///	Test whether character matches '\'' or '\"'
 	static bool isStringDelimiter(char c);
 	///	Tests whether the character 'b' is the closing delimiter or string delimiter corresponding to character 'a'
-	static bool isMatchingDelimiter(char a,char b); 
+	static bool isMatchingDelimiter(char a,char b);
 
 	/// A handy utility routine for knowing if a character is a valid component of a file name
-	static bool isValidFileNameChar(char c); 
+	static bool isValidFileNameChar(char c);
 	/// A handy utility routine for knowing if a character is a valid first char for a keyword (a..z, '_')
-	static bool isValidKeywordFirstChar(char c); 
+	static bool isValidKeywordFirstChar(char c);
 	/// A handy utility routine for knowing if a character is a valid subsequent char for a keyword (a..z, '_', '0'..'9')
-	static bool isValidKeywordChar(char c); 
+	static bool isValidKeywordChar(char c);
 	/// A handy utility routine for knowing if a character is printable (isValidFileNameChar + more basic punctuation)
 	static bool isPrintable(char c);
 
@@ -163,7 +163,7 @@ public:
 	// a handy routine that tests whether a given string contains binary characters or not. Only characters>32 + isWhiteSpace() are valid
 	bool isValidText();
 	// a handy routine that tests whether a given string is a valid file name or not
-	// "\"hello there\\bla\""	is valid 
+	// "\"hello there\\bla\""	is valid
 	// "hello there\\bla"		is not valid - missing quotes
 	// "\"hello there\"\\bla"	is not valid - text after quotes
 	bool isValidFileName() const;
@@ -202,7 +202,7 @@ public:
 
 	/// copy out section of string up to separator character, respecting quotes, brackets, etc
 	/// on error tail after returned string doesn't begin with valid separator character
-	/// eg: splitToSeparator(','); - this might be used to split some sort of ',' separated input 
+	/// eg: splitToSeparator(','); - this might be used to split some sort of ',' separated input
 	CSString splitToSeparator(	char separator,
 								bool truncateThis=false,
 								bool useAngleBrace=false,				// treat '<' and '>' as brackets
@@ -425,7 +425,7 @@ public:
 
 		return *this;
 	}
-	
+
 	// specialisation for C string
 	CSString &operator <<(const char *value)
 	{
@@ -498,17 +498,17 @@ CVectorSString &operator = (CVectorSString &left, const std::vector<CSString> &r
 //public:
 //	// cast to and convert from std::vector<std::string>
 //	operator std::vector<std::string>& ()
-//	{ 
-//		return reinterpret_cast<std::vector<std::string>&>(*this); 
+//	{
+//		return reinterpret_cast<std::vector<std::string>&>(*this);
 //	}
 //	operator const std::vector<std::string>& () const
-//	{ 
-//		return reinterpret_cast<const std::vector<std::string>&>(*this); 
-//	}
-//	CVectorSString&	operator= ( const std::vector<std::string>& v ) 
 //	{
-//		*this = reinterpret_cast<const CVectorSString&>(v); 
-//		return *this; 
+//		return reinterpret_cast<const std::vector<std::string>&>(*this);
+//	}
+//	CVectorSString&	operator= ( const std::vector<std::string>& v )
+//	{
+//		*this = reinterpret_cast<const CVectorSString&>(v);
+//		return *this;
 //	}
 //
 //	// simple ctors
@@ -640,31 +640,31 @@ inline CSString CSString::splitToWithIterator(char c,uint32& iterator) const
 	return result;
 }
 
-inline bool CSString::isWhiteSpace(char c) 
+inline bool CSString::isWhiteSpace(char c)
 {
-	return c==' ' || c=='\t' || c=='\n' || c=='\r' || c==26; 
+	return c==' ' || c=='\t' || c=='\n' || c=='\r' || c==26;
 }
 
 inline bool CSString::isOpeningDelimiter(char c,bool useAngleBrace)
 {
-	return c=='(' || c=='[' || c=='{' || (useAngleBrace && c=='<'); 
+	return c=='(' || c=='[' || c=='{' || (useAngleBrace && c=='<');
 }
 
 inline bool CSString::isClosingDelimiter(char c,bool useAngleBrace)
 {
-	return c==')' || c==']' || c=='}' || (useAngleBrace && c=='>'); 
+	return c==')' || c==']' || c=='}' || (useAngleBrace && c=='>');
 }
 
 inline bool CSString::isStringDelimiter(char c)
 {
-	return c=='\"' || c=='\''; 
+	return c=='\"' || c=='\'';
 }
 
-inline bool CSString::isMatchingDelimiter(char a,char b) 
+inline bool CSString::isMatchingDelimiter(char a,char b)
 {
-	return	(a=='(' && b==')') || (a=='[' && b==']') || 
-			(a=='{' && b=='}') || (a=='<' && b=='>') || 
-			(a=='\"' && b=='\"') || (a=='\'' && b=='\''); 
+	return	(a=='(' && b==')') || (a=='[' && b==']') ||
+			(a=='{' && b=='}') || (a=='<' && b=='>') ||
+			(a=='\"' && b=='\"') || (a=='\'' && b=='\'');
 }
 
 inline bool CSString::isValidFileNameChar(char c)
@@ -736,7 +736,7 @@ inline bool CSString::isValidKeywordChar(char c)
 	return false;
 }
 
-inline bool CSString::isHexDigit(char c) 
+inline bool CSString::isHexDigit(char c)
 {
 	if (c>='0' && c<='9') return true;
 	if (c>='A' && c<='F') return true;
@@ -744,7 +744,7 @@ inline bool CSString::isHexDigit(char c)
 	return false;
 }
 
-inline char CSString::convertHexDigit(char c) 
+inline char CSString::convertHexDigit(char c)
 {
 	if (c>='0' && c<='9') return c-'0';
 	if (c>='A' && c<='F') return c-'A'+10;
@@ -974,21 +974,21 @@ inline CSString operator+(const std::string& s0,const CSString& s1)
 //} // std
 //_STLP_END_NAMESPACE
 
-/** 
-  * Instead of overriding std::less, please use the following predicate. 
-  * For example, declare your map as: 
-  *   std::map<NLMISC::CSString, CMyDataClass, NLMISC::CUnsensitiveSStringLessPred> MyMap; 
-  * Caution: a map declared without CUnsensitiveSStringLessPred will behave as a 
-  * standard string map. 
-  * 
-  * \see also CUnsensitiveStrLessPred in misc/string_conversion.h 
-  * for a similar predicate with std::string. 
-  */ 
-struct CUnsensitiveSStringLessPred : public std::less<NLMISC::CSString> 
-{ 
-	bool operator()(const NLMISC::CSString& x, const NLMISC::CSString& y) const { return x < y; /*.icompare(y);*/ } 
-}; 
- 
+/**
+  * Instead of overriding std::less, please use the following predicate.
+  * For example, declare your map as:
+  *   std::map<NLMISC::CSString, CMyDataClass, NLMISC::CUnsensitiveSStringLessPred> MyMap;
+  * Caution: a map declared without CUnsensitiveSStringLessPred will behave as a
+  * standard string map.
+  *
+  * \see also CUnsensitiveStrLessPred in misc/string_conversion.h
+  * for a similar predicate with std::string.
+  */
+struct CUnsensitiveSStringLessPred : public std::less<NLMISC::CSString>
+{
+	bool operator()(const NLMISC::CSString& x, const NLMISC::CSString& y) const { return x < y; /*.icompare(y);*/ }
+};
+
 
 #endif // NL_SSTRING_H
 

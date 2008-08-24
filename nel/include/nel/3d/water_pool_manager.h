@@ -40,7 +40,7 @@ class CWaterHeightMap;
 class IDriver;
 
 /**
- * This class helps managing various waters pools 
+ * This class helps managing various waters pools
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
@@ -75,19 +75,19 @@ public:
 
 	/// remove the pool of the given ID
 	void						removePool(uint32 ID);
-	
+
 	/// Get the number of pools
 	uint						getNumPools() const;
 
 	/// get the id of the i-th pool (O(n) lookup)
 	uint						getPoolID(uint i) const;
-	
 
 
-	
+
+
 	/// delete all heightmaps
 	void reset();
-	
+
 	// dtor
 	~CWaterPoolManager() { reset(); }
 
@@ -106,13 +106,13 @@ public:
 	/// serial the pools data's
 	void serial(NLMISC::IStream &f)  throw(NLMISC::EStream);
 
-private:		
+private:
 	friend class CWaterShape;
-	friend CWaterPoolManager				  &GetWaterPoolManager();	
+	friend CWaterPoolManager				  &GetWaterPoolManager();
 	CWaterPoolManager() {}	// private ctor needed to use the singleton pattern
 	typedef std::map<uint32, CWaterHeightMap *> TPoolMap;
 	TPoolMap _PoolMap;
-	
+
 	/// register a water height map. The water height map will be notified when a setBlend is applied
 	void	registerWaterShape(CWaterShape *shape);
 	void	unRegisterWaterShape(CWaterShape *shape);

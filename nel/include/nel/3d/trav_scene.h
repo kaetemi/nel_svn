@@ -48,7 +48,7 @@ using NLMISC::CMatrix;
  * \date 2000
  */
 class CTraversal
-{	
+{
 public:
 	CScene	*Scene; // the scene owning this traversal (if any)
 public:

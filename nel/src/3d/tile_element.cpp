@@ -27,7 +27,7 @@
 #include "nel/misc/debug.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -80,7 +80,7 @@ void	CTileElement::setTileSubNoise(uint8 subNoise)
 void	CTileElement::serial(NLMISC::IStream &f)
 {
 	f.xmlSerial (Flags, "FLAGS");
-	f.xmlSerial (Tile[0], Tile[1], Tile[2], "TILES_ID");		
+	f.xmlSerial (Tile[0], Tile[1], Tile[2], "TILES_ID");
 }
 
 

@@ -103,7 +103,7 @@ static const char* NegFiltersNames[] =
    "NegFiltersError",
    0
 };
-	
+
 
 //
 // Variables
@@ -121,7 +121,7 @@ CVariable<sint32> UserSpeedLoop ("nel", "UserSpeedLoop", "duration of the last u
 CVariable<sint32> NetSpeedLoop ("nel", "NetSpeedLoop", "duration of the last network loop (in ms)", 10, false);
 /// The time passed in callback during the loop
 CVariable<uint32> L5CallbackTime("nel", "L5CallbackTime", "Time passed in the L5 callback function in the last loop (in ms)", 0, 100 );
-/// The number of L5 callback treated 
+/// The number of L5 callback treated
 CVariable<uint32> L5CallbackCount("nel", "L5CallbackCount", "The number of layer 5 callback received in the last loop", 0, 100 );
 
 extern uint32 TotalCallbackCalled;
@@ -414,8 +414,8 @@ string IService::getArg (char argName) const
 		{
 			if (_Args[i][1] == argName)
 			{
-				/* Remove the first and last '"' : 
-				-c"C:\Documents and Settings\toto.tmp" 
+				/* Remove the first and last '"' :
+				-c"C:\Documents and Settings\toto.tmp"
 				will return :
 				C:\Documents and Settings\toto.tmp
 				*/
@@ -553,7 +553,7 @@ void cbLogFilter (CConfigFile::CVar &var)
 	}
 
 	nlinfo ("SERVICE: Updating %s from config file", var.Name.c_str());
-	
+
 	// remove all old filters from config file
 	CConfigFile::CVar &oldvar = IService::getInstance()->ConfigFile.getVar (var.Name);
 	for (uint j = 0; j < oldvar.size(); j++)
@@ -615,7 +615,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 		_ShortName = serviceShortName;
 		CLog::setProcessName (_ShortName);
-		
+
 		// get the path where to run the service if any in the command line
 		if (haveArg('A'))
 			RunningDirectory = CPath::standardizePath(getArg('A'));
@@ -637,11 +637,11 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		//
 		// Load the config file
 		//
-		
+
 		// get the config file dir if any in the command line
 		if (haveArg('C'))
 			ConfigDirectory = CPath::standardizePath(getArg('C'));
-		
+
 		string cfn = ConfigDirectory.c_str() + _LongName + ".cfg";
 		if (!CFile::fileExists(ConfigDirectory.c_str() + _LongName + ".cfg"))
 		{
@@ -662,13 +662,13 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 				fprintf(fp, "RootConfigFilename = \"%s_default.cfg\";\n", _LongName.c_str());
 				fclose (fp);
 			}
-		}	
-		
+		}
+
 		ConfigFile.load (cfn);
-		
+
 		// setup variable with config file variable
 		IVariable::init (ConfigFile);
-		
+
 		if (ConfigFile.exists("DefaultEmailSMTP") && ConfigFile.exists("DefaultEmailTo"))
 			NLNET::setDefaultEmailParams(
 				ConfigFile.getVar("DefaultEmailSMTP").asString(),
@@ -676,7 +676,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 				? ConfigFile.getVar("DefaultEmailFrom").asString()
 				: "service@opennel.org",
 				ConfigFile.getVar("DefaultEmailTo").asString());
-		
+
 		//
 		// Set the shard Id
 		//
@@ -706,7 +706,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 			return 0;
 		}
-		
+
 		// we have to call this again because the config file can changed this variable but the cmd line is more prioritary
 		if (haveArg('A'))
 			RunningDirectory = CPath::standardizePath(getArg('A'));
@@ -841,7 +841,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 			if ((var = ConfigFile.getVarPtr("FontSize")) != NULL) fs = var->asInt();
 			if ((var = ConfigFile.getVarPtr("FontName")) != NULL) fn = var->asString();
 			if ((var = ConfigFile.getVarPtr("WordWrap")) != NULL) ww = var->asInt() == 1;
-			
+
 			if (haveArg('I')) iconified = true;
 
 			WindowDisplayer->create (string("*INIT* ") + _ShortName + " " + _LongName, iconified, x, y, w, h, history, fs, fn, ww, &CommandLog);
@@ -857,7 +857,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 			displayedVariables.push_back(make_pair(string("NetLop|NetSpeedLoop"), WindowDisplayer->createLabel ("NetLop")));
 			displayedVariables.push_back(make_pair(string("UsrLop|UserSpeedLoop"), WindowDisplayer->createLabel ("UsrLop")));
 			displayedVariables.push_back(make_pair(string("|Scroller"), WindowDisplayer->createLabel ("NeL Rulez")));
-			
+
 			CConfigFile::CVar *v = ConfigFile.getVarPtr("DisplayedVariables");
 			if (v != NULL)
 			{
@@ -870,7 +870,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 		nlinfo ("SERVICE: Starting Service '%s' using NeL ("__DATE__" "__TIME__") compiled %s", _ShortName.c_str(), CompilationDate.c_str());
 		nlinfo ("SERVICE: On OS: %s", CSystemInfo::getOS().c_str());
-		
+
 		setExitStatus (EXIT_SUCCESS);
 
 		//
@@ -930,7 +930,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		//
 		// Initialize the network system
 		//
-		
+
 		string localhost;
 		try
 		{
@@ -948,7 +948,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		// Set the localhost name and service name to the logger
 		CLog::setProcessName (localhost+"/"+_ShortName);
 		nlinfo ("SERVICE: Host: %s", localhost.c_str());
-		
+
 		//
 		// Initialize server parameters
 		//
@@ -1210,7 +1210,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 				CPath::addSearchPath (var->asString(i), false, false);
 			}
 		}
-		
+
 		// if we can, try to setup where to save files
 		if (IService::getInstance()->haveArg('W'))
 		{
@@ -1291,10 +1291,10 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		//
 		// Activate the timeout assertion thread
 		//
-		
+
 		timeoutThread = IThread::create(&MyTAT, 1024*4);
 		timeoutThread->start();
-		
+
 		//
 		// Set service ready
 		//
@@ -1335,13 +1335,13 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 					break;
 				}
 			}
-			
+
 			// deal with any input waiting from stdin
 			{
 				H_AUTO(NLNETStdinMonitorUpdate);
 				IStdinMonitorSingleton::getInstance()->update();
 			}
-			
+
 			// if the launching mode is 'quit after the first update' we set the exit signal
 			if (haveArg('Q'))
 			{
@@ -1420,7 +1420,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 				IServiceUpdatable *updatable = *first;
 				updatable->serviceLoopUpdate();
 			}
-			
+
 			// get and manage layer 5 messages
 			CUnifiedNetwork::getInstance()->update (_UpdateTimeout);
 
@@ -1453,10 +1453,10 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 			if (WindowDisplayer != NULL)
 			{
-				static TTime lt = 0; 
-				TTime ct = CTime::getLocalTime(); 
-				if(ct > lt+100) 
-				{ 
+				static TTime lt = 0;
+				TTime ct = CTime::getLocalTime();
+				if(ct > lt+100)
+				{
 					lt = ct;
 					uint64 rcv, snd, rcvq, sndq;
 					rcv = CUnifiedNetwork::getInstance()->getBytesReceived ();
@@ -1487,7 +1487,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 							str = "";
 						else
 							str = dispName + ": ";
-						
+
 						mdDisplayVars.clear ();
 						ICommand::execute(varName, logDisplayVars, true);
 						const std::deque<std::string>	&strs = mdDisplayVars.lockStrings();
@@ -1510,7 +1510,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 			// nldebug ("SYNC: updatetimeout must be %d and is %d, sleep the rest of the time", _UpdateTimeout, delta);
 
 			CHTimer::endBench();
-			
+
 			// Resetting the hierarchical timer must be done outside the top-level timer
 			if ( _ResetMeasures )
 			{

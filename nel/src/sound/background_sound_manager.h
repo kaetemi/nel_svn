@@ -58,8 +58,8 @@ const uint32	BACKGROUND_LAYER = 5;	// 3 layer
  *	background sound to filter the sub sounds of a background sound.
  *  Each filter can be assigned at run time a fade in and fade out delay
  *	that is used when sound are muted/unmuted according to filter status.
- *	
- *	 
+ *
+ *
  *
  * Sounds can be put in three separate layer (named a, b and c). In each
  * layer, sounds patatoid are concurent and the smaller in surface muffle the

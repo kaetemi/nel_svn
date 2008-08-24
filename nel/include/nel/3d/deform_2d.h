@@ -29,7 +29,7 @@
 #include "nel/misc/vector_2f.h"
 #include "nel/3d/vertex_buffer.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 class IDriver ;
@@ -68,10 +68,10 @@ public:
 										, uint xQuad, uint yQuad) ;
 
 
-	
 
 
-	
+
+
 
 protected:
 	static uint _Width;
@@ -80,8 +80,8 @@ protected:
 	static uint _YGranularity;
 	static uint _XQuad;
 	static uint _YQuad;
-	static NLMISC::CSmartPtr<ITexture> _Tex ; // the texture used to get back datas from the framebuffer	
-	
+	static NLMISC::CSmartPtr<ITexture> _Tex ; // the texture used to get back datas from the framebuffer
+
 };
 
 

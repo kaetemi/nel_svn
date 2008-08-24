@@ -28,7 +28,7 @@
 #include "nel/misc/matrix.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 #define EPSILON 0.0001f

@@ -31,7 +31,7 @@
 #include "nel/3d/mesh_geom.h"
 #include "nel/3d/mrm_parameters.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CMeshMultiLodInstance;
@@ -68,9 +68,9 @@ public:
 		class CBuildSlot
 		{
 		public:
-			/** 
+			/**
 			  * Flags for the build of a slot
-			  * 
+			  *
 			  * BlendIn:	if this flag is specified, this mesh will blend before be displayed.
 			  * BlendOut:	if this flag is specified, this mesh will blend before disapear.
 			  * CoarseMesh: if this flag is specified, this mesh is a coarse mesh.
@@ -106,7 +106,7 @@ public:
 		/// The mesh base build structure
 		CMeshBase::CMeshBaseBuild	BaseMesh;
 
-		/// An array of basic mesh build 
+		/// An array of basic mesh build
 		std::vector<CBuildSlot>		LodMeshes;
 	};
 
@@ -125,7 +125,7 @@ public:
 
 	/// render() this mesh in a driver.
 	virtual void	render(IDriver *drv, CTransformShape *trans, bool passOpaque);
-	
+
 	/// Get bbox.
 	virtual void	getAABBox(NLMISC::CAABBox &bbox) const;
 
@@ -140,7 +140,7 @@ public:
 
 	/// System Mem Geometry Copy, built at load time
 	virtual void	buildSystemGeometry();
-	
+
 	// @}
 
 	/// Geometry accessor
@@ -193,10 +193,10 @@ public:
 
 private:
 
-	/** 
+	/**
 	  * This is a slot of the mesh base list
-	  * 
-	  * A LOD "currentLOD" is displayed between distances:  
+	  *
+	  * A LOD "currentLOD" is displayed between distances:
 	  *
 	  *    [previousLOD->DistMax - currentLOD->BlendLength   ;   currentLOD->DistMax]
 	  */
@@ -272,7 +272,7 @@ private:
 
 	/// compile misc things, like distMax, Coarse meshes, collision mesh at load time...
 	void	compileRunTime();
-	
+
 	/// copileDistMax called by compileRunTime
 	void	compileDistMax();
 

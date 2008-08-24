@@ -1,5 +1,5 @@
 /** \file texture_bloom.h
- * 
+ *
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -38,7 +38,7 @@ class CTextureBloom : public CTextureBlank
 {
 public:
 NLMISC_DECLARE_CLASS(CTextureBloom);
-	
+
 	CTextureBloom() {Mode2D=false;}
 	virtual ~CTextureBloom() {}
 

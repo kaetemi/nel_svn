@@ -27,7 +27,7 @@
 #include "nel/3d/transformable.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -74,7 +74,7 @@ void UTransformable::setMatrix(const CMatrix &mat)
 
 // ***************************************************************************
 
-const CMatrix &UTransformable::getMatrix() const	
+const CMatrix &UTransformable::getMatrix() const
 {
 	return _Object->getMatrix();
 }

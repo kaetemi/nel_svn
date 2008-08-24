@@ -45,7 +45,7 @@ class CLigoConfig;
 
 /**
  * A ZoneEdge descriptor
- * 
+ *
  * \author Cyril 'Hulud' Corvazier
  * \author Nevrax France
  * \date 2001
@@ -55,7 +55,7 @@ class CZoneEdge
 public:
 
 	/// Build a edge zone
-	bool build (const std::vector<NLMISC::CVector> &theEdge, const std::vector<uint32> &theId, uint rotation, 
+	bool build (const std::vector<NLMISC::CVector> &theEdge, const std::vector<uint32> &theId, uint rotation,
 				sint32 offsetX, sint32 offsetY, const CLigoConfig &config, CLigoError &errors);
 
 	/// Serial

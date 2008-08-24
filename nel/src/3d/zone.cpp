@@ -38,7 +38,7 @@ using namespace std;
 //#define	NL3D_DEBUG_DONT_BIND_PATCH
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -126,7 +126,7 @@ void			CZone::build(const CZoneInfo &zoneInfo, uint32 numVertices)
 	uint16		zoneId= zoneInfo.ZoneId;
 	const std::vector<CPatchInfo> &patchs= zoneInfo.Patchs;
 	const std::vector<CBorderVertex> &borderVertices= zoneInfo.BorderVertices;
-	
+
 
 	ZoneId= zoneId;
 	BorderVertices= borderVertices;
@@ -192,7 +192,7 @@ void			CZone::build(const CZoneInfo &zoneInfo, uint32 numVertices)
 		pa.TileColors= pi.TileColors;
 		/* Copy TileLightInfluences. It is possible that pi.TileLightInfluences.size()!= 0
 			and pi.TileLightInfluences.size()!= (uint)(pi.OrderS/2+1)*(pi.OrderT/2+1)
-			Because of a preceding bug where pa.OrderS and pa.OrderT were not initialized before the 
+			Because of a preceding bug where pa.OrderS and pa.OrderT were not initialized before the
 			pa.resetTileLightInfluences();
 		*/
 		if( pi.TileLightInfluences.size()!= (uint)(pi.OrderS/2+1)*(pi.OrderT/2+1) )
@@ -503,7 +503,7 @@ void			CZone::serial(NLMISC::IStream &f)
 
 	// If read and version 0, must init default TileColors of patchs.
 	//===============================================================
-	// if(f.isReading() && ver<2) ... 
+	// if(f.isReading() && ver<2) ...
 	// Deprecated, because ver<3 not supported
 }
 
@@ -525,7 +525,7 @@ void			CZone::compile(CLandscape *landscape, TZoneMap &loadedZones)
 	//============================
 	nlassert(loadedZones.find(ZoneId)==loadedZones.end());
 	loadedZones[ZoneId]= this;
-	
+
 	// Create/link the base vertices according to present neigbor zones.
 	//============================
 	BaseVertices.clear();
@@ -545,7 +545,7 @@ void			CZone::compile(CLandscape *landscape, TZoneMap &loadedZones)
 			nlassert(zone!=this);
 			// insert the zone in the neigborood (if not done...).
 			neighborZones[zoneto]= zone;
-			// Doesn't matter if BaseVertices is already linked to an other zone... 
+			// Doesn't matter if BaseVertices is already linked to an other zone...
 			// This should be the same pointer in this case...
 			BaseVertices[cur]=  zone->getBaseVertex(vertto);
 		}
@@ -598,8 +598,8 @@ void			CZone::compile(CLandscape *landscape, TZoneMap &loadedZones)
 		// bind the patch. This is the original bind, not a rebind.
 		bindPatch(loadedZones, pa, pc, false);
 	}
-	
-	
+
+
 	// rebindBorder() on neighbor zones.
 	//==================================
 	ItZoneMap		zoneIt;
@@ -661,7 +661,7 @@ void			CZone::release(TZoneMap &loadedZones)
 	// Traverse the neighborood.
 	for(zoneIt= neighborZones.begin(); zoneIt!=neighborZones.end(); zoneIt++)
 	{
-		// Since 
+		// Since
 		(*zoneIt).second->rebindBorder(loadedZones);
 	}
 
@@ -680,7 +680,7 @@ void			CZone::release(TZoneMap &loadedZones)
 	//=================================
 	// Just release the smartptrs (easy!!). Do it after patchs released...
 	BaseVertices.clear();
-	
+
 
 	// End!!
 	Compiled= false;
@@ -752,11 +752,11 @@ void		CZone::buildBindInfo(uint patchId, uint edge, CZone *neighborZone, CPatch:
 		paBind.NPatchs= 1;
 		paBind.Next[0]= neighborZone->getPatch(pcBind.Next[0]);
 		paBind.Edge[0]= pcBind.Edge[0];
-		
+
 		// Get the twin bindInfo of pcBind.
-		const CPatchInfo::CBindInfo	&pcBindNeighbor= 
+		const CPatchInfo::CBindInfo	&pcBindNeighbor=
 			neighborZone->getPatchConnect(pcBind.Next[0])->BindEdges[pcBind.Edge[0]];
-		// must have a multiple bind.	
+		// must have a multiple bind.
 		nlassert(pcBindNeighbor.NPatchs == 2 || pcBindNeighbor.NPatchs == 4);
 
 		// number of bind is stored on the twin bindInfo.
@@ -1278,7 +1278,7 @@ void			CZone::changePatchTextureAndColor (sint numPatch, const std::vector<CTile
 {
 	nlassert(numPatch>=0);
 	nlassert(numPatch<getNumPatchs());
-	
+
 
 	// Update the patch texture.
 	if (tiles)
@@ -1368,7 +1368,7 @@ void CZone::setTileColor(bool monochrome, float factor)
 				float fB = ((rTC[j].Color565 >> 11) & 31) / 32.0f;
 
 				fR = 0.28f * fR + 0.59f * fG + 0.13f * fB;
-				
+
 				nlassert(fR < 0.99f);
 
 				fR *= factor;
@@ -1398,7 +1398,7 @@ void CZone::setTileColor(bool monochrome, float factor)
 					fR *= factor;
 					fG *= factor;
 					fB *= factor;
-					
+
 					if (fR > 0.99f) fR = 0.99f;
 					if (fG > 0.99f) fG = 0.99f;
 					if (fB > 0.99f) fB = 0.99f;
@@ -1540,13 +1540,13 @@ void CZone::setupColorsFromTileFlags(const NLMISC::CRGBA colors[4])
 void CZone::copyTilesFlags(sint destPatchId, const CPatch *srcPatch)
 {
 	CPatch *destPatch = getPatch(destPatchId);
-	
+
 	destPatch->copyTileFlagsFromPatch(srcPatch);
 }
 
 
 // ***************************************************************************
-bool CPatchInfo::getNeighborTile (uint patchId, uint edge, sint position, uint &patchOut, sint &sOut, sint &tOut, 
+bool CPatchInfo::getNeighborTile (uint patchId, uint edge, sint position, uint &patchOut, sint &sOut, sint &tOut,
 								  const vector<CPatchInfo> &patchInfos) const
 {
 	nlassert (edge<4);
@@ -1601,7 +1601,7 @@ bool CPatchInfo::getNeighborTile (uint patchId, uint edge, sint position, uint &
 			}
 		}
 		break;
-	
+
 	case 5:
 		{
 			// Find in the neighbor where we are
@@ -1732,8 +1732,8 @@ bool CPatchInfo::transformTile (const CTileBank &bank, uint &tile, uint &tileRot
 				const CTileSet *pTileSet = bank.getTileSet (tileSet);
 
 				// Get border desc
-				CTileSet::TFlagBorder oriented[4] = 
-				{	
+				CTileSet::TFlagBorder oriented[4] =
+				{
 					pTileSet->getOrientedBorder (CTileSet::left, CTileSet::getEdgeType ((CTileSet::TTransition)number, CTileSet::left)),
 					pTileSet->getOrientedBorder (CTileSet::bottom, CTileSet::getEdgeType ((CTileSet::TTransition)number, CTileSet::bottom)),
 					pTileSet->getOrientedBorder (CTileSet::right, CTileSet::getEdgeType ((CTileSet::TTransition)number, CTileSet::right)),
@@ -1830,13 +1830,13 @@ bool CPatchInfo::transform (std::vector<CPatchInfo> &patchInfo, NL3D::CZoneSymme
 
 	// For each patches
 	NL3D::CZoneSymmetrisation::CError error;
-	
+
 	// Build the structure
 	if (!zoneSymmetry.build (patchInfo, snapCell, weldThreshold, bank, error, toOriginalSpace))
 	{
 		return false;
 	}
-	
+
 	// Symmetry ?
 	if (symmetry)
 	{

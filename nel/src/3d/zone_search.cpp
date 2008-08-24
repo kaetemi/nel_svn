@@ -46,7 +46,7 @@ CZoneSearch::CZoneSearch()
 
 	/// Number zones on Y axis of landscape
 	_NbZoneY = 297;
-	
+
 	/// Size X of one zone (in meters)
 	_SizeZoneX = 160;
 
@@ -144,14 +144,14 @@ uint16 CZoneSearch::getZoneId (uint x, uint y) const
 {
 	uint zoneY = y / _SizeZoneY;
 	uint zoneX = x / _SizeZoneX;
-	
+
 	return (zoneX&255)+(zoneY<<8);
 }
 
 void CZoneSearch::getZonePos (uint16 zoneId, uint &x, uint &y) const
 {
 	x = _SizeZoneY*(zoneId&255);
-	y = _SizeZoneY*(zoneId>>8);	
+	y = _SizeZoneY*(zoneId>>8);
 }
 
 void CZoneSearch::getListZoneId (uint x, uint y, uint sizeArea, vector<uint16> &l, const std::vector<uint16> *validZoneIds)

@@ -41,7 +41,7 @@ using	namespace	std;
 using	namespace	NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -355,7 +355,7 @@ void		CPatch::getTileTileColors(uint ts, uint tt, CRGBA corners[4])
 // bilinear at center of the pixels. x E [0, 3], y E [0, 3].
 inline void		bilinearColor(CRGBA	corners[4], uint x, uint y, uint &R, uint &G, uint &B)
 {
-	// Fast bilinear and modulate. 
+	// Fast bilinear and modulate.
 	// hardcoded for 4 pixels.
 	nlassert(NL_LUMEL_BY_TILE==4);
 
@@ -983,7 +983,7 @@ void		CPatch::computeNearBlockLightmap(uint uts, uint utt, CRGBA	*lightText)
 				case 2: src= dest - 1; break;
 				case 3: src= dest + NL_TILE_LIGHTMAP_SIZE; break;
 				};
-				
+
 				// fill the NL_LUMEL_BY_TILE*2 (8) pixels.
 				for(uint n=NL_LUMEL_BY_TILE*2; n>0; n--, src+=stride, dest+=stride)
 					*dest= *src;
@@ -1087,7 +1087,7 @@ void		CPatch::computeNearBlockLightmap(uint uts, uint utt, CRGBA	*lightText)
 			case 2: src= dest - 1 - NL_TILE_LIGHTMAP_SIZE; break;
 			case 3: src= dest - 1 + NL_TILE_LIGHTMAP_SIZE; break;
 			};
-			
+
 			// fill the pixel.
 			*dest= *src;
 
@@ -1169,7 +1169,7 @@ void		CPatch::computeNearBlockLightmap(uint uts, uint utt, CRGBA	*lightText)
 						patchId= uvLocator.selectPatch(stIn);
 						uvLocator.locateUV(stIn, patchId, patchOut, stOut);
 
-						// same reasoning as in computeDisplaceCornerSmooth(), must find the pixel on the neighbor 
+						// same reasoning as in computeDisplaceCornerSmooth(), must find the pixel on the neighbor
 						// of our neighbor. But the current corner may be a corner on a bind X/1. All is managed by doing
 						// this way.
 						patchOut->computeTileLightmapPixelAroundCorner(stOut, dest, true);
@@ -1338,7 +1338,7 @@ void		CPatch::packShadowMap (const uint8 *pLumelSrc)
 
 			// Blcok uncompressed
 			uint8 uncompressedBlock[4*4];
-	
+
 			// Pack the block
 			packLumelBlock (compressedData, originalBlock, alphaMin, alphaMax);
 
@@ -1467,17 +1467,17 @@ void	NL3D_bilinearTileLightMap(CRGBA *tex)
 	a11.avg2(a01, a21);
 	a31.avg2(a21, a41);
 
-	// Fill Line 2. 
+	// Fill Line 2.
 	a22.avg2(a02, a42);
 	a12.avg2(a02, a22);
 	a32.avg2(a22, a42);
 
-	// Fill Line 3. 
+	// Fill Line 3.
 	a23.avg2(a03, a43);
 	a13.avg2(a03, a23);
 	a33.avg2(a23, a43);
 
-	// Fill Line 4. 
+	// Fill Line 4.
 	a24.avg2(a04, a44);
 	a14.avg2(a04, a24);
 	a34.avg2(a24, a44);
@@ -1508,7 +1508,7 @@ uint8		CPatch::getLumel(const CUV &uv) const
 	clamp(tt, 0, h-1);
 	// get the lumel
 	uint8	ret;
-	getTileLumelmapPixelPrecomputed(ts>>NL_LUMEL_BY_TILE_SHIFT, tt>>NL_LUMEL_BY_TILE_SHIFT, 
+	getTileLumelmapPixelPrecomputed(ts>>NL_LUMEL_BY_TILE_SHIFT, tt>>NL_LUMEL_BY_TILE_SHIFT,
 		ts&(NL_LUMEL_BY_TILE-1), tt&(NL_LUMEL_BY_TILE-1), ret);
 
 	return ret;
@@ -1537,7 +1537,7 @@ void		CPatch::resetTileLightInfluences()
 
 
 // ***************************************************************************
-void		CPatch::appendTileLightInfluences(const CUV &uv, 
+void		CPatch::appendTileLightInfluences(const CUV &uv,
 	std::vector<CPointLightInfluence> &pointLightList) const
 {
 	/*
@@ -1573,7 +1573,7 @@ void		CPatch::appendTileLightInfluences(const CUV &uv,
 	CPointLightNamed	*zonePointLights= NULL;
 	if( getZone()->_PointLightArray.getPointLights().size() >0 )
 	{
-		// const_cast, because will only change _IdInfluence, and 
+		// const_cast, because will only change _IdInfluence, and
 		// also because CLightingManager will call appendLightedModel()
 		zonePointLights= const_cast<CPointLightNamed*>(&(getZone()->_PointLightArray.getPointLights()[0]));
 	}
@@ -1685,7 +1685,7 @@ void		CPatch::getCurrentTileTLIColors(uint ts, uint tt, NLMISC::CRGBA corners[4]
 		tbEdges[3].avg2RGBOnly(tbCorners[0], tbCorners[1]);
 		// middle.
 		tbMiddle.avg2RGBOnly(tbEdges[0], tbEdges[2]);
-		
+
 		// just copy result according to tile pos in tessBlock.
 		if(tlt==0)
 		{
@@ -1957,7 +1957,7 @@ void				CPatch::addRefDLMContext()
 		// init now the context.
 		_DLMContext->generate(this, getLandscape()->getTextureDLM(), getLandscape()->getPatchDLMContextList());
 
-		// If the patch is visible, it may have Far Vertices created, 
+		// If the patch is visible, it may have Far Vertices created,
 		// hence, we must refill them with good DLM Uvs.
 		if(!isRenderClipped())
 		{
@@ -1987,7 +1987,7 @@ void				CPatch::decRefDLMContext(uint count)
 		delete _DLMContext;
 		_DLMContext= NULL;
 
-		// If the patch is visible, it may have Far Vertices created, 
+		// If the patch is visible, it may have Far Vertices created,
 		// hence, we must reset their DLM Uvs (to point to black pixel)
 		if(!isRenderClipped())
 		{

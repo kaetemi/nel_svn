@@ -32,7 +32,7 @@
 #include "nel/3d/index_buffer.h"
 #include "nel/3d/vertex_buffer.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -95,7 +95,7 @@ public:
 	  *	\param vBuffer the VertexBuffer pre-transformed / Colored. Size MUST be numVertices*NL3D_COARSEMESH_VERTEX_FORMAT_MGR
 	  *	\param indexBuffer containing triangles that will be inserted.
 	  *	\return false if the mesh can't be added to this pass BECAUSE OF TOO MANY VERTICES or TOO MANY PRIMITIVES reason
-	  *	You may call flushRender(), then restart a block. 
+	  *	You may call flushRender(), then restart a block.
 	  *	NB: if numVertices>NL3D_COARSEMESH_VERTEXBUFFER_SIZE or if numTriangles>NL3D_COARSEMESH_TRIANGLE_SIZE, it will always
 	  *	NB: the color of vbUffer must already be correct against IDriver::getVertexColorFormat()
 	  *	return false
@@ -134,7 +134,7 @@ private:
 	NLMISC::CSmartPtr<ITexture::CTextureCategory>		_TextureCategory;
 	//
 	CIndexBufferReadWrite				_IBA;
-	CVertexBufferReadWrite				_VBA;	
+	CVertexBufferReadWrite				_VBA;
 
 	struct CMeshInfo
 	{

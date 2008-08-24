@@ -39,7 +39,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -58,7 +58,7 @@ typedef	std::map<uint16, CZone*>::iterator	ItZoneMap;
 
 // ***************************************************************************
 /**
- * The struct for connectivity of zone vertices. 
+ * The struct for connectivity of zone vertices.
  */
 struct	CBorderVertex
 {
@@ -80,7 +80,7 @@ struct	CBorderVertex
 
 // ***************************************************************************
 /**
- * The struct for building a patch. 
+ * The struct for building a patch.
  * NB: Different from the one which is stored.
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -101,7 +101,7 @@ public:
 	 */
 	struct	CBindInfo
 	{
-		/** The number of patchs on this edge. 0,1, 2 or 4.  0 means no neigbor on this edge. \b 5 is a special code, 
+		/** The number of patchs on this edge. 0,1, 2 or 4.  0 means no neigbor on this edge. \b 5 is a special code,
 		 * which means the same thing than NPatchs==1, but "I am one of the little patch connected to the bigger neigbor".
 		 * Like when NPatchs==1, ZoneId, Next[0] and Edge[0] must be valid.
 		 */
@@ -119,7 +119,7 @@ public:
 		CBindInfo() {NPatchs=0;}
 	};
 
-	
+
 public:
 	/// \name Patch geometry.
 	// @{
@@ -155,7 +155,7 @@ public:
 	 */
 	std::vector<CTileElement>	Tiles;
 
-	/** The Tile colors for this patch. There must be (OrderS+1)*(OrderT+1) tile colors. Those are the colors at 
+	/** The Tile colors for this patch. There must be (OrderS+1)*(OrderT+1) tile colors. Those are the colors at
 	 * the corners of the tiles.
 	 * They are stored in line first order, from S=0 to 1, and T=0 to 1.
 	 */
@@ -170,7 +170,7 @@ public:
 	/** There is (OrderS/2+1) * (OrderT/2+1) tiles light influence.
 	 *	It indicates which static pointLight influence each corner of a TessBlock (block of 2*2 tiles).
 	 *
-	 *	If size()==0, suppose no light influence. but CZone::retrieve() always return a 
+	 *	If size()==0, suppose no light influence. but CZone::retrieve() always return a
 	 *	size() == (OrderS/2+1) * (OrderT/2+1).
 	 *
 	 * They are stored in line first order, from S=0 to 1, and T=0 to 1.
@@ -188,7 +188,7 @@ public:
 	{
 		// Erase it
 		Flags&=~(1<<edge);
-		
+
 		// Set it
 		Flags|=(((uint)flag)<<edge);
 	}
@@ -202,8 +202,8 @@ public:
 		return ((Flags&(1<<edge))!=0);
 	}
 
-	/** Get neighbor tile across a edge 
-	  * 
+	/** Get neighbor tile across a edge
+	  *
 	  * \param patchid is the id of this patch
 	  * \param edge is the edge shared with the neigbor
 	  * \param position is the position over the edge in CCW across the patch.
@@ -262,7 +262,7 @@ private:
 
 // ***************************************************************************
 /**
- * The struct for building a zone. 
+ * The struct for building a zone.
  * NB: Different from the one which is stored.
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -274,8 +274,8 @@ struct	CZoneInfo
 	uint16						ZoneId;
 	/// patchs the PatchInfo of this zone.
 	std::vector<CPatchInfo>		Patchs;
-	/** borderVertices vertices connectivity for this zone. NB: borderVertices must contains the connectivity 
-	 *	across zones. It is VERY IMPORTANT to setup zone corner connectivity too. A "corner borderVertex" may appear 
+	/** borderVertices vertices connectivity for this zone. NB: borderVertices must contains the connectivity
+	 *	across zones. It is VERY IMPORTANT to setup zone corner connectivity too. A "corner borderVertex" may appear
 	 *	3 times here. One for each other zone of the corner.
 	 */
 	std::vector<CBorderVertex>	BorderVertices;
@@ -343,7 +343,7 @@ public:
 	void			build(const CZoneInfo &zoneInfo, uint32 numVertices=0);
 
 
-	/** Build a zone. Deprecated. 
+	/** Build a zone. Deprecated.
 	 *	Should use build(CZoneInfo &) instead. see this method
 	 */
 	void			build(uint16 zoneId, const std::vector<CPatchInfo> &patchs, const std::vector<CBorderVertex> &borderVertices, uint32 numVertices=0);
@@ -412,7 +412,7 @@ public:
 	void			serial(NLMISC::IStream &f);
 
 
-	/** 
+	/**
 	 * Update and refresh a patch texture.
 	 * Usefull for Tile edition. Even if patch is in tile mode, it is refreshed...
 	 * \param numPatch the index of patch in this zone which will receive his new texture. assert if bad id.
@@ -422,7 +422,7 @@ public:
 	void			changePatchTextureAndColor (sint numPatch, const std::vector<CTileElement> *tiles, const std::vector<CTileColor> *colors);
 
 
-	/** 
+	/**
 	 * refresh the geometry (re-compute vertices).
 	 * Usefull for Tile Noise edition. Do it after calling changePatchTextureAndColor().
 	 *	NB: a refreshTesselationGeometry() should be done on All patchs, and all direct neighbors of this patch (including
@@ -436,27 +436,27 @@ public:
 	void			refreshTesselationGeometry(sint numPatch);
 
 
-	/** 
+	/**
 	 * Get a patch texture.
 	 * Return the tile array.
 	 * \param numPatch the index of patch in this zone which will get his texture. assert if bad id.
-	 * \param 
+	 * \param
 	 * \return The tiles the patch texture. The size should be OrderS*OrderT.
 	 * \see getPatch()
 	 */
 	const std::vector<CTileElement> &getPatchTexture(sint numPatch) const;
 
-	/** 
+	/**
 	 * Get a patch colors
 	 * Return the color array.
 	 * \param numPatch the index of patch in this zone which will get his colors. assert if bad id.
-	 * \param 
+	 * \param
 	 * \return The tiles the patch colors. The size should be (OrderS+1)*(OrderT+1).
 	 * \see getPatch()
 	 */
 	const std::vector<CTileColor> &getPatchColor(sint numPatch) const;
 
-	/** 
+	/**
 	 * Set the zone tile color to monochrome or not and apply multiplier factor
 	 * Set all tile colors of all patch of this zone to monochrome or not and apply a multiplier factor
 	 * convertion to monochrome is done by that formula : newR = newG = newB = 0.28 * R + 0.59 * G + 0.13 * B;
@@ -501,7 +501,7 @@ public:
 	// Return the Bounding Box of the zone.
 	const CAABBoxExt	&getZoneBB() const {return ZoneBB;}
 
-	/** 
+	/**
 	 * Get a read only patch pointer.
 	 *
 	 * \param patch the index of patch to get.
@@ -509,13 +509,13 @@ public:
 	 */
 	const CPatch	*getPatch(sint patch) const {nlassert(patch>=0 && patch<(sint)Patchs.size()); return &(Patchs[patch]);}
 
-	/** 
+	/**
 	 * Get a read only patch connect pointer.
 	 *
 	 * \param patch the index of patch to get.
 	 * \return A patch pointer in read only.
 	 */
-	const CPatchConnect	*getPatchConnect(sint patch) const 
+	const CPatchConnect	*getPatchConnect(sint patch) const
 		{nlassert(patch>=0 && patch<(sint)Patchs.size()); return &(PatchConnects[patch]);}
 
 
@@ -534,7 +534,7 @@ public:
 	  * color 3 = vegetable disabled
 	  */
 	void setupColorsFromTileFlags(const NLMISC::CRGBA colors[4]);
-	
+
 	/** Copy the tiles flags from a src patch to a patch of this zone.
 	  * the patch must match of course...
 	  */
@@ -596,7 +596,7 @@ private:
 	 */
 	CPointLightNamedArray			_PointLightArray;
 
-	
+
 private:
 	friend	class CLandscape;
 	friend	class CTessFace;

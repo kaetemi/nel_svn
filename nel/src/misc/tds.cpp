@@ -30,7 +30,7 @@
 #	include <windows.h>
 #endif // NL_OS_WINDOWS
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 // *********************************************************
@@ -71,7 +71,7 @@ void *CTDS::getPointer () const
 //	nldebug("CTDS::getPointer for key %u...", _Key);
 	void *ret = pthread_getspecific (_Key);
 //	nldebug("CTDS::getPointer returing value %p", ret);
-	return ret; 
+	return ret;
 #endif // NL_OS_WINDOWS
 }
 

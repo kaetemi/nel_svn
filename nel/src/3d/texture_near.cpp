@@ -27,7 +27,7 @@
 #include "nel/3d/texture_near.h"
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 

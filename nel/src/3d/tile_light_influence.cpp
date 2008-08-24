@@ -27,7 +27,7 @@
 #include "nel/misc/debug.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

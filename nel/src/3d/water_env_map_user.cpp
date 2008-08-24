@@ -29,7 +29,7 @@ namespace NL3D
 {
 //////////////////////
 // CWaterEnvMapUser //
-//////////////////////	
+//////////////////////
 
 //***********************************************************************************
 void CWaterEnvMapUser::init(uint cubeMapSize, uint projection2DSize, TGlobalAnimationTime updateTime)
@@ -45,11 +45,11 @@ void CWaterEnvMapUser::init(uint cubeMapSize, uint projection2DSize, TGlobalAnim
 //***********************************************************************************
 void CWaterEnvMapRenderHelper::render(TFace face, TGlobalAnimationTime time, UDriver &drv)
 {
-	CMatrix mat;	
+	CMatrix mat;
 	using NLMISC::CVector;
 	switch(face)
-	{	
-		case IWaterEnvMapRender::positive_x: mat.setRot(CVector::J, -CVector::I, -CVector::K); break;  					
+	{
+		case IWaterEnvMapRender::positive_x: mat.setRot(CVector::J, -CVector::I, -CVector::K); break;
 		case IWaterEnvMapRender::negative_x: mat.setRot(-CVector::J, CVector::I, -CVector::K); break;
 		case IWaterEnvMapRender::positive_y: mat.setRot(CVector::I, CVector::J, -CVector::K); break;
 		case IWaterEnvMapRender::negative_y: mat.setRot(-CVector::I, -CVector::J, -CVector::K); break;
@@ -57,7 +57,7 @@ void CWaterEnvMapRenderHelper::render(TFace face, TGlobalAnimationTime time, UDr
 		case IWaterEnvMapRender::negative_z: mat.setRot(-CVector::I, -CVector::K, CVector::J); break;
 		default:
 			nlassert(0);
-			break;		
+			break;
 	}
 	doRender(mat, time, drv);
 }
@@ -91,26 +91,26 @@ void CWaterEnvMapRenderFromUScene::setScene(UScene *scene, UCamera cam)
 //***********************************************************************************
 void CWaterEnvMapRenderFromUScene::doRender(const CMatrix &camMatrix, TGlobalAnimationTime time, UDriver &drv)
 {
-	if (!_Scene) return;		
-	preRender(time, drv);		
+	if (!_Scene) return;
+	preRender(time, drv);
 	UCamera oldCam = _Scene->getCam();
 	if (_Cam.empty()) return;
-	_Scene->setCam(_Cam);	
+	_Scene->setCam(_Cam);
 	_Cam.setTransformMode(UTransformable::DirectMatrix);
 	nlassert(!_Cam.empty());
-	_Cam.setFrustum(-_ZNear, _ZNear, -_ZNear, _ZNear, _ZNear, _ZFar);		
-	drv.setCullMode(drv.getCullMode() == UDriver::CCW ? UDriver::CW : UDriver::CCW);		
+	_Cam.setFrustum(-_ZNear, _ZNear, -_ZNear, _ZNear, _ZNear, _ZFar);
+	drv.setCullMode(drv.getCullMode() == UDriver::CCW ? UDriver::CW : UDriver::CCW);
 	CMatrix mat = camMatrix;
 	mat.setPos(_CamPos);
-	_Cam.setMatrix(mat);	
+	_Cam.setMatrix(mat);
 	CViewport old = _Scene->getViewport();
 	_Scene->setViewport(CViewport());
 	_Scene->beginPartRender();
 	_Scene->renderPart(_RenderPart);
 	_Scene->endPartRender();
 	_Scene->setViewport(old);
-	drv.setCullMode(drv.getCullMode() == UDriver::CCW ? UDriver::CW : UDriver::CCW);	
-	_Scene->setCam(oldCam);	
+	drv.setCullMode(drv.getCullMode() == UDriver::CCW ? UDriver::CW : UDriver::CCW);
+	_Scene->setCam(oldCam);
 	postRender(time, drv);
 }
 

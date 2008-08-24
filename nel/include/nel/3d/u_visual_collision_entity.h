@@ -30,7 +30,7 @@
 #include "point_light_influence.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

@@ -187,7 +187,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 		str += NLMISC::toString(args.Line);
 		needSpace = true;
 	}
-	
+
 	if (args.FuncName != NULL)
 	{
 		//if (needSpace) { ss << " "; needSpace = false; }
@@ -208,10 +208,10 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 
 	//if (needSpace) { ss << " : "; needSpace = false; }
 	if (needSpace) { str += " : "; needSpace = false; }
-	
+
 	//ss << message;
 	str += message;
-	
+
 //	string s = ss.str();
 
 	static bool consoleMode = true;
@@ -234,10 +234,10 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 		// we don't use cout because sometimes, it crashs because cout isn't already init, printf doesn t crash.
 		if (!str.empty())
 			printf ("%s", str.c_str());
-		
+
 		if (!args.CallstackAndLog.empty())
 			printf (args.CallstackAndLog.c_str());
-		
+
 		fflush(stdout);
 	}
 
@@ -293,21 +293,21 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			OutputDebugString(&message[strlen(message) - 1024]);
 			OutputDebugString("\n");*/
 
-			sint count = 0;	
+			sint count = 0;
 			uint n = strlen(message);
 			std::string s(&str2.c_str()[0], (str2.size() - n));
 			OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
-			
+
 			while(true)
-			{												
-				
+			{
+
 				if((n - count) < maxOutString )
 				{
 					s = std::string(&message[count], (n - count));
 					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
 					OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8("\n").c_str());
 					break;
-				}	
+				}
 				else
 				{
 					s = std::string(&message[count] , count + maxOutString);
@@ -387,13 +387,13 @@ void CFileDisplayer::setParam (const std::string &filename, bool eraseLastLog)
 		bool fileExist = true;
 		while (fileExist)
 		{
-			string fileToDelete = CFile::getPath (filename) + CFile::getFilenameWithoutExtension (filename) + 
+			string fileToDelete = CFile::getPath (filename) + CFile::getFilenameWithoutExtension (filename) +
 				toString ("%03d.", i) + CFile::getExtension (filename);
 			fileExist = CFile::isExists (fileToDelete);
 			if (fileExist)
 				CFile::deleteFile (fileToDelete);
 			i++;
-		}		
+		}
 	}
 
 	if (_FilePointer > (FILE*)1)
@@ -458,7 +458,7 @@ void CFileDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mes
 		str += NLMISC::toString(args.Line);
 		needSpace = true;
 	}
-	
+
 	if (args.FuncName != NULL && !_Raw)
 	{
 		if (needSpace) { str += " "; needSpace = false; }
@@ -492,7 +492,7 @@ void CFileDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mes
 		if (_FilePointer == NULL)
 			printf ("Can't open log file '%s': %s\n", _FileName.c_str(), strerror (errno));
 	}
-	
+
 	if (_FilePointer != 0)
 	{
 		if (_NeedHeader)
@@ -501,7 +501,7 @@ void CFileDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mes
 			fwrite (hs, strlen (hs), 1, _FilePointer);
 			_NeedHeader = false;
 		}
-		
+
 		if(!str.empty())
 			fwrite (str.c_str(), str.size(), 1, _FilePointer);
 
@@ -546,7 +546,7 @@ void CMsgBoxDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *m
 		str += args.ProcessName;
 		needSpace = true;
 	}
-	
+
 	if (args.FileName != NULL)
 	{
 		//if (needSpace) { ss << " "; needSpace = false; }
@@ -588,7 +588,7 @@ void CMsgBoxDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *m
 		}
 		CloseClipboard ();
 	}
-	
+
 	// create the string on the screen
 	needSpace = false;
 //	stringstream ss2;
@@ -601,7 +601,7 @@ void CMsgBoxDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *m
 		str2 += args.ProcessName;
 		needSpace = true;
 	}
-	
+
 	if (args.FileName != NULL)
 	{
 		if (needSpace) { str2 += " "; needSpace = false; }
@@ -685,7 +685,7 @@ void CMsgBoxDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *m
 		// Check the envvar NEL_IGNORE_ASSERT
 		if (getenv ("NEL_IGNORE_ASSERT") == NULL)
 		{
-			// yoyo: allow only to send the crash report once. Because users usually click ignore, 
+			// yoyo: allow only to send the crash report once. Because users usually click ignore,
 			// which create noise into list of bugs (once a player crash, it will surely continues to do it).
 			if  (ReportDebug == report (args.ProcessName + " NeL " + toString(logTypeToString(args.LogType, true)), "", subject, body, true, 2, true, 1, !isCrashAlreadyReported(), IgnoreNextTime, NL_CRASH_DUMP_FILE))
 			{
@@ -755,7 +755,7 @@ void CFileDisplayer::display (const std::string& str)
 //	if (fp == NULL) return;
 
 //	fprintf (fp, "%s", str.c_str ());
-	
+
 //	fclose (fp);
 }
 
@@ -778,7 +778,7 @@ void CMsgBoxDisplayer::display (const std::string& str)
 		}
 		CloseClipboard ();
 	}
-	
+
 	string strf = str;
 	strf += "\n\n(this message was copied in the clipboard)";
 	MessageBox (NULL, strf.c_str (), "", MB_OK | MB_ICONEXCLAMATION);

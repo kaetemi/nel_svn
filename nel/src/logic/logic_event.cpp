@@ -1,5 +1,5 @@
 /** \file logic_event.cpp
- * 
+ *
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -158,7 +158,7 @@ void CLogicEventAction::read (xmlNodePtr node)
 //
 //-------------------------------------------------
 void CLogicEvent::reset()
-{ 
+{
 	EventAction.EventMessage.Sent = false;
 	EventAction.EventMessage.ToSend = false;
 
@@ -171,7 +171,7 @@ void CLogicEvent::reset()
 //
 //-------------------------------------------------
 void CLogicEvent::setLogicStateMachine( CLogicStateMachine * logicStateMachine )
-{ 
+{
 	if( logicStateMachine == 0 )
 	{
 		nlwarning("(LOGIC)<CLogicEvent::setLogicStateMachine> The state machine is null");
@@ -203,13 +203,13 @@ bool CLogicEvent::testCondition()
 			}
 			else
 			{
-				nlwarning("(LOGIC)<CLogicEvent::testCondition> Condition %s not found in the state machine",ConditionName.c_str());	
+				nlwarning("(LOGIC)<CLogicEvent::testCondition> Condition %s not found in the state machine",ConditionName.c_str());
 				return false;
 			}
 		}
 		else
 		{
-			nlwarning("(LOGIC)<CLogicEvent::testCondition> Condition undefined");	
+			nlwarning("(LOGIC)<CLogicEvent::testCondition> Condition undefined");
 			return false;
 		}
 	}
@@ -217,8 +217,8 @@ bool CLogicEvent::testCondition()
 	{
 		nlwarning("(LOGIC)<CLogicEvent::testCondition> The state machine managing this event is Null");
 	}
-	
-	return false;	
+
+	return false;
 
 } // testCondition //
 
@@ -230,10 +230,10 @@ bool CLogicEvent::testCondition()
 /*void CLogicEvent::serial( IStream &f )
 {
 	f.xmlPush("EVENT");
-	
+
 	f.serial( ConditionName );
 	f.serial( EventAction );
-	
+
 	f.xmlPop();
 
 } // serial //*/

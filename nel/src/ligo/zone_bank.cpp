@@ -109,7 +109,7 @@ void CZoneBankElement::convertSize()
 void CZoneBankElement::serial (NLMISC::IStream &f)
 {
 	f.xmlPush ("LIGOZONE");
-	
+
 	sint version = 1;
 	f.serialVersion (version);
 	string check = "LIGOZONE";
@@ -118,7 +118,7 @@ void CZoneBankElement::serial (NLMISC::IStream &f)
 	f.xmlPush ("CATEGORIES");
 		f.serialCont (_CategoriesMap);
 	f.xmlPop ();
-	
+
 	f.xmlPush ("MASK");
 		f.serialCont (_Mask);
 	f.xmlPop ();
@@ -170,7 +170,7 @@ void CZoneBank::debugInit(const std::string &sPath) // \ todo trap remove this
 	debugSaveInit (zbeTmp, sPath + "Zone001.ligozone");
 	zbeTmp._CategoriesMap.clear ();
 	zbeTmp._Mask.clear ();
-	
+
 
 	zbeTmp.addCategory ("zone", "Zone002");
 	zbeTmp.addCategory ("size", "1x1");
@@ -511,7 +511,7 @@ bool CZoneBank::initFromPath(const string &sPathName, std::string &error)
 	WIN32_FIND_DATA findData;
 	HANDLE hFind;
 	hFind = FindFirstFile ("*.ligozone", &findData);
-	
+
 	while (hFind != INVALID_HANDLE_VALUE)
 	{
 		// If the name of the file is not . or .. then its a valid entry in the DataBase
@@ -680,7 +680,7 @@ void CZoneBank::addAndSwitch (const std::string &CategoryType, const std::string
 			_Selection[i] = NULL; // Mark this item to be removed
 		}
 	}
-	// Remove all unused items	
+	// Remove all unused items
 	for (i = 0, j = 0; i < _Selection.size(); ++i)
 	{
 		if (_Selection[i] != NULL)

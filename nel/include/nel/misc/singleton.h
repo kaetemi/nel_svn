@@ -29,16 +29,16 @@
 #include "nel/misc/thread.h"
 #include "nel/misc/app_context.h"
 
-namespace NLMISC 
+namespace NLMISC
 {
-		
+
 	/**
 	 * Example:
 	 * \code
 		struct CFooSingleton : public CSingleton<CFooSingleton>
 		{
 			void foo() { nlinfo("foo!"); }
-		};	
+		};
 
 		// call the foo function:
 		CFooSingleton::getInstance().foo();
@@ -107,7 +107,7 @@ namespace NLMISC
 		struct CFooSingleton : public CManualSingleton<CFooSingleton>
 		{
 			void foo() { nlinfo("foo!"); }
-		};	
+		};
 
 		// create an instance by any mean
 		CFooSingleton	mySingleton
@@ -156,7 +156,7 @@ namespace NLMISC
 		{
 			return _instance() != NULL;
 		}
-		
+
 		static T* getInstance()
 		{
 			nlassert(_instance() != NULL);
@@ -169,7 +169,7 @@ namespace NLMISC
 	/** A macro for safe global variable value.
 	 *	Concept : global initialized variable value are inherently unsafe because the order of
 	 *	initialisation if undefined. If some init code use static value, you
-	 *	may encounter hazardous error, depending on you compiler will, when you 
+	 *	may encounter hazardous error, depending on you compiler will, when you
 	 *	read the value of a global, you may read it before it is initialized.
 	 *	This little class is a workaround that allow a safe global value.
 	 *	A drawback is that the value is enclosed inside a function and thus not

@@ -1,5 +1,5 @@
 /** \file retrievable_surface.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -196,7 +196,7 @@ public:
 		_Center += translation;
 		_Quad.translate(translation);
 	}
-	
+
 	/// Serialises the CRetrievableSurface.
 	void								serial(NLMISC::IStream &f);
 };

@@ -28,7 +28,7 @@
 #include "nel/3d/vertex_buffer.h"
 #include "nel/3d/index_buffer.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CPSShockWave : public CPSParticle, public CPSSizedParticle
@@ -73,7 +73,7 @@ public:
 
 	/// return true if there are Opaque faces in the object
 	virtual bool hasOpaqueFaces(void);
-	
+
 	/// return the max number of faces needed for display. This is needed for LOD balancing
 	virtual uint32 getNumWantedTris() const;
 
@@ -93,7 +93,7 @@ public:
 	virtual void enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv);
 
 	// from CPSParticle
-	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }	
+	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }
 	virtual float getZBias() const { return CPSMaterial::getZBias(); }
 
 protected:
@@ -101,7 +101,7 @@ protected:
 	/** calculate current color and texture coordinate before any rendering
 	 *  size can't be higher that shockWaveBufSize ...
 	 */
-	void			updateVbColNUVForRender(uint32 startIndex, uint32 size, uint32 srcStep, CVertexBuffer &vb, IDriver &drv);	
+	void			updateVbColNUVForRender(uint32 startIndex, uint32 size, uint32 srcStep, CVertexBuffer &vb, IDriver &drv);
 
 	/// update the material and the vb so that they match the color scheme. Inherited from CPSColoredParticle
 	virtual void	updateMatAndVbForColor(void);
@@ -109,10 +109,10 @@ protected:
 	/// update the material and the vb so that they match the texture scheme.
 	virtual void	updateMatAndVbForTexture(void);
 
-	/**	Generate a new element for this bindable. They are generated according to the properties of the class		 
+	/**	Generate a new element for this bindable. They are generated according to the properties of the class
 	 */
 	virtual void	newElement(const CPSEmitterInfo &info);
-	
+
 	/** Delete an element given its index
 	 *  Attributes of the located that hold this bindable are still accessible for the index given
 	 *  index out of range -> nl_assert
@@ -140,22 +140,22 @@ private:
 	static TVBMap _ColoredVBMap; // vb ith unanimated texture
 	static TVBMap _ColoredAnimTexVBMap; // vb ith unanimated texture
 	// the number of seg in the shockwave
-	uint32 _NbSeg; 
+	uint32 _NbSeg;
 	// ratio to get the inner circle radius from the outter circle radius
 	float _RadiusCut;
 	// texture factor
 	float		 _UFactor;
-private:		
+private:
 	friend class CPSShockWaveHelper;
 	// setup and get the needed vb for display
 	void getVBnPB(CVertexBuffer *&vb, CIndexBuffer *&pb);
 	// get the number of shockwave that can be stored in the current vb
 	uint getNumShockWavesInVB() const;
-	//	
-	void setupUFactor();	
+	//
+	void setupUFactor();
 	virtual void draw(bool opaque);
 	/// initialisations
-	virtual void	init(void);	
+	virtual void	init(void);
 
 };
 

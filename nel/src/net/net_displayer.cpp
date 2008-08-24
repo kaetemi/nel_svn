@@ -81,7 +81,7 @@ void CNetDisplayer::setLogServer (const CInetAddress& logServerAddr)
 		_Server = new CCallbackClient();
 		_ServerAllocated = true;
 	}
-	
+
 	try
 	{
 		_Server->connect (_ServerAddr);
@@ -150,7 +150,7 @@ void CNetDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			str += args.ProcessName;
 			needSpace = true;
 		}
-		
+
 		if (needSpace) { str += ": "; needSpace = false; }
 
 		str += message;

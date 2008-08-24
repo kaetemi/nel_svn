@@ -27,7 +27,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/misc/smart_ptr.h"
 
-namespace NLGEORGES 
+namespace NLGEORGES
 {
 
 /**
@@ -91,7 +91,7 @@ public:
 	  * If the method returns true, label will be filled with
 	  * the definition label and value will be filled with the
 	  * defnition value.
-	  * The method returns false if the index is invalid. In this 
+	  * The method returns false if the index is invalid. In this
 	  * case, label and value are not changed.
 	  */
 	virtual bool				getDefinition (uint index, std::string &label, std::string &value) const = 0;

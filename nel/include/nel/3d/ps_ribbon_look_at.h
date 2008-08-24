@@ -29,7 +29,7 @@
 #include "nel/3d/vertex_buffer.h"
 #include "nel/3d/index_buffer.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 /** A ribbon look at particle. It is like a ribbon, but textured (with no animation), and it always faces the user
@@ -37,7 +37,7 @@ namespace NL3D
 class CPSRibbonLookAt : public  CPSRibbonBase, public CPSSizedParticle, public CPSColoredParticle,
 						public  CPSMaterial, public CPSTexturedParticleNoAnim
 {
-public:	
+public:
 	///\name Object
 	///@{
 		/// ctor
@@ -57,7 +57,7 @@ public:
 		/// get the texture used for this particle
 		ITexture *getTexture(void) { return _Tex;}
 		const ITexture		*getTexture(void) const { return _Tex;}
-	///@}		
+	///@}
 
 	///\name Behaviour
 	///@{
@@ -77,17 +77,17 @@ public:
 	  	    *  The default is false. With that you can control if a rotation of the system will rotate the tail
 			*/
 			virtual void setSystemBasis(bool yes) {}
-		
+
 			/// return true if the tails are in the system basis
 			virtual bool isInSystemBasis(void) const { return true; }
-		
+
 		//void setPersistAfterDeath(bool persit = true);
 
-		/** return true if the ribbon light persist after death 
+		/** return true if the ribbon light persist after death
 		 *  \see _PersistAfterDeath()
 		 */
 		//bool getPersistAfterDeath(void) const { return _DyingRibbons != NULL; }
-		
+
 	///@}
 
 	/// inherited from CPSParticle
@@ -104,15 +104,15 @@ public:
 	/// from CPSParticle : return true if there are lightable faces in the object
 	virtual bool hasLightableFaces() { 	return false; }
 	//
-	virtual bool					supportGlobalColorLighting() const { return true; }	
+	virtual bool					supportGlobalColorLighting() const { return true; }
 	// from CPSLocatedBindable
 	virtual void enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv);
 
 	// from CPSParticle
-	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }	
+	virtual void setZBias(float value) { CPSMaterial::setZBias(value); }
 	virtual float getZBias() const { return CPSMaterial::getZBias(); }
 
-protected:		
+protected:
 
 	CSmartPtr<ITexture>				_Tex;
 
@@ -124,14 +124,14 @@ protected:
 	virtual void					newElement(const CPSEmitterInfo &info);
 	/// inherited from CPSLocatedBindable
 	virtual void					deleteElement(uint32 index);
-	/// inherited from CPSLocatedBindable	
+	/// inherited from CPSLocatedBindable
 	virtual void					resize(uint32 size);
 	virtual CPSLocated				*getSizeOwner(void) { return _Owner; }
-	virtual CPSLocated				*getColorOwner(void) { return _Owner; }	
-private:	
+	virtual CPSLocated				*getColorOwner(void) { return _Owner; }
+private:
 
 	/// update the material and the vb so that they match the color scheme. Inherited from CPSColoredParticle
-	virtual void					updateMatAndVbForColor(void);	
+	virtual void					updateMatAndVbForColor(void);
 
 	/// display a set of ribbons
 	void							displayRibbons(uint32 nbRibbons, uint32 srcStep);
@@ -139,7 +139,7 @@ private:
 	/**\name Vertex buffers & their corresponding index buffers. We keep a map of pretextured vertex buffer (with or without colors).
 	  * Vb for ribbons that have the same size are shared.
 	  */
-		
+
 	//@{
 
 			/** a struct containing a vertex buffer and a primitive block
@@ -159,14 +159,14 @@ private:
 			typedef CHashMap<uint, CVBnPB> TVBMap;
 
 			static TVBMap					_VBMap;			  // index buffers with no color
-			static TVBMap					_ColoredVBMap;    // index buffer + colors			
+			static TVBMap					_ColoredVBMap;    // index buffer + colors
 
 			/// get a vertex buffer and a primitive suited for the current ribbon
 			CVBnPB &getVBnPB();
 
 			/// get the number of ribbons contained in a vb for a given length. (e.g the number of ribbons that can be batched)
 			uint	getNumRibbonsInVB() const;
-	//@}		
+	//@}
 };
 
 

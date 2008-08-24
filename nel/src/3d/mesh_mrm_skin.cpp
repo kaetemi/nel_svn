@@ -42,7 +42,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -321,7 +321,7 @@ uint	CMeshMRMGeom::NumCacheVertexNormal3= NL_BlockByteL1 / sizeof(CRawVertexNorm
 uint	CMeshMRMGeom::NumCacheVertexNormal4= NL_BlockByteL1 / sizeof(CRawVertexNormalSkin4);
 
 
-/* Old School template: include the same file with define switching, 
+/* Old School template: include the same file with define switching,
 	Was used before to reuse same code for and without SSE.
 	Unuseful now because SSE removed, but keep it for possible future work on it.
 */

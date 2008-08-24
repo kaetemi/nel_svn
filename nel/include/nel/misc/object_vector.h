@@ -55,11 +55,11 @@ struct	EReallocationFailed : public Exception
  *	some of the speed/memory problems involved:
  *		- size of a vector<T> is 16 bytes typically. size of a CObjectVector is 8 bytes (only a ptr and a size).
  *		- CObjectVector<T>::size() is faster than vector::size()
- *		- CObjectVector<T>::resize() is faster because it do not copy from a default value, it just call the 
+ *		- CObjectVector<T>::resize() is faster because it do not copy from a default value, it just call the
  *			default constructor of the objects.
  *		- clear() actually free memory (no reserve scheme)
  *
- *	Object contructors, destructors, operator= are correctly called, unless 
+ *	Object contructors, destructors, operator= are correctly called, unless
  *	EnableObjectBehavior template argument is set to false (default is true)
  *	In this case: ctor, dtor are not called, and operator=() use memcpy.
  *

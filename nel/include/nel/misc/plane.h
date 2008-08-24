@@ -37,9 +37,9 @@ class CUV;
 // ======================================================================================================
 /**
  * Class CPlane. a 3D Plane.
- * 
+ *
  * A vector v is said "front" of a plane p if p*v>0.
- * 
+ *
  * A "front segment" or a "front polygon" have all their vertices in front of the plane.
  * \author Lionel Berenguier
  * \author Nevrax France
@@ -75,7 +75,7 @@ public:
 	 * NB: the plane normal is normalized by make().
 	 */
 	void	make(const CVector &p0, const CVector &p1, const CVector &p2);
-	/** 
+	/**
 	 * Return the normal vector of the plane.
 	 * Since the normal of the plane may not be normalized (if setuped without make()), the returned normal
 	 * may NOT be normalized.
@@ -94,13 +94,13 @@ public:
 
 	/// \name Projection / clipping.
 	//@{
-	/** 
+	/**
 	 * Return the distance of p from the plane. Hence, the result is >=0.
 	 * Since the plane normal may not be normalized, distance() compute the distance with the normalized normal
 	 * of plane. If you are sure that your plane has a normalized normal, it is much faster to do a \c fabs(p*v).
 	 */
 	float	distance(const CVector &p) const;
-	/// Return plane*vector. 
+	/// Return plane*vector.
 	inline float	operator*(const CVector &p) const;
 	/// Intersect a line onto a plane. p1 is returned if line // to plane.
 	CVector intersect(const CVector &p0,const CVector &p1) const;

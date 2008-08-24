@@ -93,7 +93,7 @@ void CNetManager::createConnection(CBaseStruct &Base, const CInetAddress &Addr, 
 		CCallbackClient *cc = new CCallbackClient( _RecordingState, name+string(".nmr") );
 		Base.NetBase.push_back (cc);
 	}
-	
+
 	CCallbackClient *cc = dynamic_cast<CCallbackClient *>(Base.NetBase[i]);
 
 	cc->CCallbackNetBase::setDisconnectionCallback (nmNewDisconnection, (void*) &Base);
@@ -195,14 +195,14 @@ void CNetManager::addServer (const std::string &serviceName, uint16 servicePort,
 
 	// check if it's a new server
 	nlassert ((*itbm).second.NetBase.empty());
-	
+
 	CCallbackServer *cs = new CCallbackServer( _RecordingState, serviceName+string(".nmr") );
 	(*itbm).second.NetBase.push_back (cs);
 
 	(*itbm).second.Type = CBaseStruct::Server;
 
 	// install the server
-	
+
 	cs->setConnectionCallback (nmNewConnection, (void*) &((*itbm).second));
 	cs->CCallbackNetBase::setDisconnectionCallback (nmNewDisconnection, (void*) &((*itbm).second));
 
@@ -241,7 +241,7 @@ void CNetManager::addClient (const std::string &serviceName, const std::string &
 {
 	nldebug ("HNETL4: Adding client '%s' with addr '%s' in CNetManager", serviceName.c_str (), addr.c_str());
 	ItBaseMap itbm = find (serviceName);
-	
+
 	// it's a new client, add the connection
 	(*itbm).second.Type = CBaseStruct::ClientWithAddr;
 	(*itbm).second.AutoRetry = autoRetry;
@@ -266,7 +266,7 @@ void CNetManager::addClient (const std::string &serviceName)
 	nlassert (CNamingClient::connected ());
 	nldebug ("HNETL4: Adding client '%s' in CNetManager", serviceName.c_str ());
 	ItBaseMap itbm = find (serviceName);
-	
+
 	// check if it's a new client
 	nlassert ((*itbm).second.NetBase.empty());
 
@@ -351,12 +351,12 @@ void CNetManager::update (TTime timeout)
 				err -= timeout;
 				_NextUpdateTime += timeout;
 			}
-			
+
 			timeout -= err;
 			if (timeout < 0) timeout = 0;
 		}
 	}
-	
+
 //	sint64 p2 = CTime::getPerformanceTime ();
 
 	while (true)
@@ -398,14 +398,14 @@ void CNetManager::update (TTime timeout)
 							}
 						}
 					}
-				}	
+				}
 			}
 		}
 
 		// If it's the end, don't nlSleep()
 		if (CTime::getLocalTime() - t0 > timeout)
 			break;
-		
+
 		// Enable windows multithreading before rescanning all connections
 		// slow down the layer H_BEFORE (CNetManager_update_nlSleep);
 		nlSleep (1);

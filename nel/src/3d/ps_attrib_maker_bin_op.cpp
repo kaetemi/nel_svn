@@ -36,13 +36,13 @@ namespace NL3D
 			case CPSBinOp::modulate:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride);				
+				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride);
 			}
 			break;
 			case CPSBinOp::add:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride);				
+				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride);
 			}
 			break;
 			case CPSBinOp::subtract:
@@ -56,19 +56,19 @@ namespace NL3D
 	}
 
 	void Make4Private(uint8 * dest, const NLMISC::CRGBA *src1, const NLMISC::CRGBA *src2, uint32 stride, uint32 numAttrib, CPSBinOp::BinOp op)
-	{		
+	{
 		switch (op)
 		{
 			case CPSBinOp::modulate:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, 4);				
+				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, 4);
 			}
 			break;
 			case CPSBinOp::add:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, 4);				
+				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, 4);
 			}
 			break;
 			case CPSBinOp::subtract:
@@ -81,7 +81,7 @@ namespace NL3D
 		}
 	}
 
-	
+
 	void MakeNPrivate(uint8 * dest, const NLMISC::CRGBA *src1, const NLMISC::CRGBA *src2, uint32 stride, uint32 numAttrib, CPSBinOp::BinOp op, uint nbReplicate)
 	{
 		switch (op)
@@ -89,13 +89,13 @@ namespace NL3D
 			case CPSBinOp::modulate:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, nbReplicate);				
+				NLMISC::CRGBA::modulateColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, nbReplicate);
 			}
 			break;
 			case CPSBinOp::add:
 			{
 				// CRGBA OPTIMISATION
-				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, nbReplicate);				
+				NLMISC::CRGBA::addColors((NLMISC::CRGBA *) dest, src1, src2, numAttrib, sizeof(NLMISC::CRGBA), stride, nbReplicate);
 			}
 			break;
 			case CPSBinOp::subtract:
@@ -105,6 +105,6 @@ namespace NL3D
 			}
 			break;
 			default: break;
-		}		
+		}
 	}
 } // NL3D

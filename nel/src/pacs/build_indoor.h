@@ -1,5 +1,5 @@
 /** \file build_indoor.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

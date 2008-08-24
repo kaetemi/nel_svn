@@ -34,7 +34,7 @@ namespace NLMISC
  * CAsyncFileManager is a class that manage file loading in a seperate thread
  * \author Matthieu Besson
  * \author Nevrax France
- * \date 2002 
+ * \date 2002
  */
 class CAsyncFileManager : public CTaskManager
 {
@@ -44,7 +44,7 @@ public:
 
 	// Must be called instead of constructing the object
 //	static CAsyncFileManager &getInstance ();
-	// NB: release the singleton, but assert it there is any pending loading tasks. 
+	// NB: release the singleton, but assert it there is any pending loading tasks.
 	// Each systems that use the async file manager should ensure it has no more pending task in it
 	static void terminate ();
 
@@ -52,7 +52,7 @@ public:
 	void loadFile (const std::string &fileName, uint8 **pPtr);
 	void loadFiles (const std::vector<std::string> &vFileNames, const std::vector<uint8**> &vPtrs);
 
-	
+
 	void signal (bool *pSgn); // Signal a end of loading for a group of "mesh or file" added
 	void cancelSignal (bool *pSgn);
 
@@ -77,7 +77,7 @@ public:
 	 *	\return False if the task either already ended or running.
 	 */
 	bool cancelLoadTask(const ICancelCallback &cancelCallBack);
-	
+
 private:
 
 //	CAsyncFileManager (); // Singleton mode -> access it with the getInstance function
@@ -86,7 +86,7 @@ private:
 
 	// All the tasks
 	// -------------
-	
+
 	// Load a file
 	class CFileLoad : public IRunnable
 	{

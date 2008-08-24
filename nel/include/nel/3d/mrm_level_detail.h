@@ -28,7 +28,7 @@
 #include "nel/misc/common.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -86,7 +86,7 @@ public:
 			return (float)MinFaceUsed;
 		else
 		{
-			/* over-estimate the number of poly rendered 
+			/* over-estimate the number of poly rendered
 				because this is always the higher Lod which is rendered, geomorphing to the coarser one.
 				NB: still need to over-estimate if ld==1, because getLevelDetailFromPolyCount() remove the shift...
 			*/

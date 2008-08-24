@@ -29,14 +29,14 @@
 #include "nel/3d/driver.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
 /**
  * A vertex buffer used to group lot of static VB in it.
- *	Work with VBHard where available. 
+ *	Work with VBHard where available.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2002

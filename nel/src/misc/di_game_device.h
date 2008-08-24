@@ -31,7 +31,7 @@
 #include "nel/misc/di_event_emitter.h"
 #include "nel/misc/game_device.h"
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 //
@@ -49,7 +49,7 @@ struct EDirectInputGameDeviceNotCreated : EDirectInput
 
 
 /**
- * Direct input implementation of a game device. 
+ * Direct input implementation of a game device.
  */
 
 class CDIGameDevice : public IGameDevice
@@ -71,11 +71,11 @@ public:
 
 	///\name From IGameDevice
 	//@{
-		virtual const		CGameDeviceDesc &getDescription()  const { return _Desc; }							
-		//	
-		virtual	uint		getNumButtons() const;		
-		virtual bool		hasAxis(TAxis axis) const;		
-		virtual uint		getNumSliders() const;		
+		virtual const		CGameDeviceDesc &getDescription()  const { return _Desc; }
+		//
+		virtual	uint		getNumButtons() const;
+		virtual bool		hasAxis(TAxis axis) const;
+		virtual uint		getNumSliders() const;
 		virtual	uint		getNumPOV() const;
 		//
 		virtual const char *getButtonName(uint index) const;
@@ -92,24 +92,24 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
-private:	
+private:
 
 	// base class for controls
 	struct CCtrl
-	{		
+	{
 		std::string Name;
 	};
 
 	// a button
 	struct CButton	: public CCtrl
-	{		
+	{
 		bool		Pushed;
 		CButton() : Pushed(false) {}
 	};
 
 	// an axis. Its value either gives its position (-1 .. 1) or its angle (CCW in radians)
 	struct CAxis	: public CCtrl
-	{	
+	{
 		bool		Present; // is this axis used ?
 		// min and max values from Direct Input
 		sint        Min, Max;
@@ -132,21 +132,21 @@ private:
 		float Angle;
 		CPOV() : Angle(0.f), Centered(true) {}
 	};
-		
-	
+
+
 private:
 	// ctor
 	CDIGameDevice();
 	///\name From IInputDevice
 	//@{
 		virtual void begin(CEventServer *server);
-		virtual void poll(CInputDeviceServer *dev);		
-		virtual void submit(IInputDeviceEvent *deviceEvent, CEventServer *server);		
+		virtual void poll(CInputDeviceServer *dev);
+		virtual void submit(IInputDeviceEvent *deviceEvent, CEventServer *server);
 	//@}
-	/**	 Get the controls (buttons, slider..) of this device from the Direct Input interface to build this object infos.	  
+	/**	 Get the controls (buttons, slider..) of this device from the Direct Input interface to build this object infos.
 	  */
 	void	querryControls();
-	
+
 	/// Called during EnumObject
 	BOOL	processEnumObject(LPCDIDEVICEOBJECTINSTANCE lpddoi);
 	friend  BOOL CALLBACK DIEnumDeviceObjectsCallback(LPCDIDEVICEOBJECTINSTANCE lpddoi,  LPVOID pvRef);
@@ -154,16 +154,16 @@ private:
 	LPDIRECTINPUTDEVICE8	_Device;
 	CGameDeviceDesc			_Desc;
 	CDIEventEmitter			*_EventEmitter;
-	
+
 	///\name Device infos
-	//@{		
+	//@{
 		CAxis					_Axis[MaxNumAxis];
 		std::vector<CButton>	_Buttons;
 		std::vector<CSlider>	_Sliders;
 		std::vector<CPOV>		_POVs;
 	//@}
 	CDIJoyState					_CurrentState;
-	
+
 };
 
 

@@ -29,7 +29,7 @@
 #include "nel/3d/patch.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 struct CPatchInfo;
@@ -94,8 +94,8 @@ public:
 	  */
 	bool getOrientedTileCorner (uint patch, uint tile);
 
-	/** 
-	  * Build symmetry informations 
+	/**
+	  * Build symmetry informations
 	  *
 	  * \param zone is the zone to build symmetry informations
 	  * \param snapCell is the unit size of the zones
@@ -141,7 +141,7 @@ private:
 	  */
 	void setOrientedTileCorner (uint patch, uint tile, bool corner);
 
-	/** 
+	/**
 	  * Set tile state of a patch
 	  */
 	bool setTileState (const NL3D::CPatchInfo &patch, uint patchId, float snapCell, float weldThreshold, TState &state, const NLMISC::CMatrix &toOriginalSpace, const CTileBank &bank);

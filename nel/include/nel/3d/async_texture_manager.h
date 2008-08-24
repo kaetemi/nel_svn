@@ -32,7 +32,7 @@
 #include "nel/misc/bitmap.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -60,7 +60,7 @@ public:
 	CAsyncTextureManager();
 	~CAsyncTextureManager();
 
-	/** setup the mipMap levels. 
+	/** setup the mipMap levels.
 	 *	\baseLevel When the texture is first added, it is loaded skipping the baseLevel
 	 *	first mipmap
 	 *	\maxLevel During time, furhter mipmap are loaded, according to instance position etc... maxLevel
@@ -77,7 +77,7 @@ public:
 
 	/** Add a reference to a texture owned by an instance.
 	 *	If the texture still exist, only the refcount is incremented
-	 *	Else If texture is found in the HLSTextureManager, it is builded (async) from it, else Begin Async loading 
+	 *	Else If texture is found in the HLSTextureManager, it is builded (async) from it, else Begin Async loading
 	 *
 	 *	ThereFore, only CTextureFile are possible. Note also that the texture is uploaded with mipmap by default, and
 	 *	UpLoadFormat is also default (say ITexture::Auto)
@@ -101,7 +101,7 @@ public:
 	const NLMISC::CBitmap	*getCoarseBitmap(uint id) const;
 
 
-	/** update the manager. New loaded texture are uploaded. Instances are updated to know if all their 
+	/** update the manager. New loaded texture are uploaded. Instances are updated to know if all their
 	 *	pending textures have been uploaded.
 	 */
 	void			update(IDriver *pDriver);
@@ -132,7 +132,7 @@ private:
 		bool	IsTextureEntry;
 	};
 
-	
+
 	class	CTextureEntry;
 
 	// A Lod version of a texture entry.
@@ -165,7 +165,7 @@ private:
 			return Lod->Weight<other.Lod->Weight;
 		}
 	};
-	
+
 	// A texture entry
 	class	CTextureEntry : public CTextureBase
 	{

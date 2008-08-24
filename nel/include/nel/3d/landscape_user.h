@@ -86,7 +86,7 @@ public:
 	virtual	void	refreshZonesAround(const CVector &pos, float radius);
 	virtual	void	refreshZonesAround(const CVector &pos, float radius, std::string &zoneAdded, std::string &zoneRemoved, const std::vector<uint16> *validZoneIds = NULL);
 	/// Delete old zones, or load new zones, around a position, until it is finished. This is a blocking call.
-	virtual	void	refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, std::vector<std::string> &zonesRemoved, 
+	virtual	void	refreshAllZonesAround(const CVector &pos, float radius, std::vector<std::string> &zonesAdded, std::vector<std::string> &zonesRemoved,
 		NLMISC::IProgressCallback &progress, const std::vector<uint16> *validZoneIds = NULL);
 	virtual	void	getAllZoneLoaded(std::vector<std::string>	&zoneLoaded) const;
 	virtual void    invalidateAllTiles();
@@ -157,7 +157,7 @@ public:
 	virtual bool			getRefineCenterAuto() const;
 	virtual void			setRefineCenterUser(const CVector &refineCenter);
 	virtual const CVector	&getRefineCenterUser() const;
-	
+
 	// @}
 
 
@@ -193,8 +193,8 @@ public:
 
 	/// \name TileCallback
 	// @{
-	virtual	void					addTileCallback(ULandscapeTileCallback *cb);	
-	virtual	void					removeTileCallback(ULandscapeTileCallback *cb);	
+	virtual	void					addTileCallback(ULandscapeTileCallback *cb);
+	virtual	void					removeTileCallback(ULandscapeTileCallback *cb);
 	virtual	bool					isTileCallback(ULandscapeTileCallback *cb);
 	// @}
 

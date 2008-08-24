@@ -43,7 +43,7 @@ namespace NLSOUND {
  *
  * For arguments as 3D vectors, use the NeL vector coordinate system
  * (not OpenAL/OpenGL's one).
- * 
+ *
  * \author Olivier Cado
  * \author Nevrax France
  * \date 2001
@@ -57,7 +57,7 @@ public:
 	/// Destructor
 	virtual					~CSourceAL();
 
-	
+
 	/// \name Initialization
 	//@{
 	/** Set the buffer that will be played (no streaming)

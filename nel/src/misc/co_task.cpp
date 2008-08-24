@@ -59,7 +59,7 @@
 #	define NOMINMAX
 #	include <windows.h>
 #elif defined (NL_OS_UNIX)
-#	define NL_WIN_CALLBACK 
+#	define NL_WIN_CALLBACK
 #	include <ucontext.h>
 #else
 #	error "Coroutine task are not supported yet by your platform, do it ?"
@@ -135,7 +135,7 @@ namespace NLMISC
 		ucontext_t	_ParentCtx;
 #endif
 #endif //NL_USE_THREAD_COTASK
-		
+
 #if !defined(NL_USE_THREAD_COTASK)
 		/** task bootstrap function
 		 *	NB : this function is in this structure because of the
@@ -217,7 +217,7 @@ namespace NLMISC
 			_ThreadMainFiber.setPointer(fiber);
 		}
 
-		/** Return the main fiber for the calling thread. Return NULL if 
+		/** Return the main fiber for the calling thread. Return NULL if
 		 *	the thread has not been converted to fiber.
 		 */
 		LPVOID getMainFiber()
@@ -272,7 +272,7 @@ namespace NLMISC
 
 #if defined(NL_USE_THREAD_COTASK)
 
-#else //NL_USE_THREAD_COTASK 
+#else //NL_USE_THREAD_COTASK
 #if defined (NL_OS_WINDOWS)
 		if (_PImpl->_Fiber)
 		{
@@ -282,7 +282,7 @@ namespace NLMISC
 		// free the stack
 		delete [] _PImpl->_Stack;
 #endif
-#endif //NL_USE_THREAD_COTASK 
+#endif //NL_USE_THREAD_COTASK
 
 		// free platform specific storage
 		delete _PImpl;
@@ -300,7 +300,7 @@ namespace NLMISC
 		// create the thread
 		_PImpl->_TaskThread = IThread::create(_PImpl);
 
-		NL_CT_DEBUG("CoTask : start() task %p entering mutex", this);  
+		NL_CT_DEBUG("CoTask : start() task %p entering mutex", this);
 		// get the mutex
 		_PImpl->_TaskMutex.enter();
 		NL_CT_DEBUG("CoTask : start() task %p mutex entered", this);
@@ -320,7 +320,7 @@ namespace NLMISC
 		{
 			// give up the time slice to the co task
 			nlSleep(0);
-			NL_CT_DEBUG("CoTask : start() task %p entering mutex", this);  
+			NL_CT_DEBUG("CoTask : start() task %p entering mutex", this);
 			// get the mutex
 			_PImpl->_TaskMutex.enter();
 			NL_CT_DEBUG("CoTask : start() task %p mutex entered", this);
@@ -430,7 +430,7 @@ namespace NLMISC
 		// clear the resume flag
 		_PImpl->_ResumeTask = false;
 
-#else //NL_USE_THREAD_COTASK 
+#else //NL_USE_THREAD_COTASK
 		CCurrentCoTask::getInstance().setCurrentTask(NULL);
 #if defined (NL_OS_WINDOWS)
 		SwitchToFiber(_PImpl->_ParentFiber);
@@ -438,7 +438,7 @@ namespace NLMISC
 		// swap to the parent context
 		nlverify(swapcontext(&_PImpl->_Ctx, &_PImpl->_ParentCtx) == 0);
 #endif
-#endif //NL_USE_THREAD_COTASK 
+#endif //NL_USE_THREAD_COTASK
 
 		NL_CT_DEBUG("CoTask : task %p have been resumed", this);
 	}

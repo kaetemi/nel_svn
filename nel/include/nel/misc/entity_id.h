@@ -54,7 +54,7 @@ protected:
 	// ---------------------------------------------------------------------------------
 	// instantiated data
 
-	union 
+	union
 	{
 		struct
 		{
@@ -99,7 +99,7 @@ public:
 	static void					setServiceId( uint8 sid )
 	{
 		_NextEntityId.setDynamicId( sid );
-		_NextEntityId.setCreatorId( sid ); 
+		_NextEntityId.setCreatorId( sid );
 		_ServerId = sid;
 	}
 
@@ -148,7 +148,7 @@ public:
 	}
 
 	explicit CEntityId (uint64 p)
-	{	
+	{
 		FullId = p;
 		/*
 		DynamicId = (p & 0xff);
@@ -157,7 +157,7 @@ public:
 		p >>= 8;
 		Type = (p & 0xff);
 		p >>= 8;
-		Id = (p);			
+		Id = (p);
 		*/
 	}
 
@@ -166,7 +166,7 @@ public:
 		FullId = a.FullId;
 		/*
 		DynamicId = a.DynamicId;
-		CreatorId = a.CreatorId;			
+		CreatorId = a.CreatorId;
 		Type = a.Type;
 		Id = a.Id;
 		*/
@@ -194,14 +194,14 @@ public:
 	{
 		fromString(str.c_str());
 	}
-		
+
 	explicit CEntityId (const char *str)
 	{
 		CEntityId ();
 		fromString(str);
 	}
-	//@}	
-	
+	//@}
+
 
 	// ---------------------------------------------------------------------------------
 	// accessors
@@ -321,7 +321,7 @@ public:
 			{
 				return (CreatorId < a.CreatorId);
 			}
-		}		
+		}
 		return false;
 		*/
 	}
@@ -379,7 +379,7 @@ public:
 	}
 
 	const CEntityId &operator = (uint64 p)
-	{			
+	{
 		FullId = p;
 		/*
 		DynamicId = (uint64)(p & 0xff);
@@ -396,7 +396,7 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	// other methods...
-	uint64 asUint64()const 
+	uint64 asUint64()const
 	{
 		return FullId;
 	}
@@ -465,7 +465,7 @@ public:
 			load (f);
 		}
 		else
-		{				
+		{
 			save (f);
 		}
 	}
@@ -505,11 +505,11 @@ public:
 		DetailedId.CreatorId = creatorId;
 		DetailedId.DynamicId = dynamicId;
 	}
-	
+
 	/// Have a debug string.
 	void getDebugString(std::string &str) const
 //	virtual void getDebugString(std::string &str) const
-	{			
+	{
 		str.reserve(str.size()+24);
 		char b[256];
 		memset(b,0,255);
@@ -527,7 +527,7 @@ public:
 
 		x = DetailedId.Type;
 		for(n = 7; n < 9; n ++)
-		{				
+		{
 			b[19 - n] = baseTable[(x & 15)];
 			x >>= 4;
 		}
@@ -535,7 +535,7 @@ public:
 
 		x = DetailedId.CreatorId;
 		for(n = 4; n < 6; n ++)
-		{				
+		{
 			b[19 - n] = baseTable[(x & 15)];
 			x >>= 4;
 		}
@@ -543,7 +543,7 @@ public:
 
 		x = DetailedId.DynamicId;
 		for(n = 1; n < 3; n ++)
-		{							
+		{
 			b[19 - n] = baseTable[(x & 15)];
 			x >>= 4;
 		}
@@ -563,7 +563,7 @@ public:
 */
 
 //	friend std::stringstream &operator << (std::stringstream &__os, const CEntityId &__t);
-};	
+};
 
 /**
  * a generic hasher for entities
@@ -571,11 +571,11 @@ public:
 /*class CEidHash
 {
 public:
-	size_t	operator () ( const NLMISC::CEntityId & id ) const 
-	{ 		
+	size_t	operator () ( const NLMISC::CEntityId & id ) const
+	{
 		uint64 hash64 = id.getUniqueId();
 		return size_t(hash64) ^ size_t( hash64 >> 32 );
-		return (uint32)id.getShortId(); 
+		return (uint32)id.getShortId();
 	}
 };*/
 

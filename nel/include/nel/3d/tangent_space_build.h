@@ -34,11 +34,11 @@ namespace NL3D
 
 class CVertexBuffer;
 class CIndexBuffer;
-	
+
 /** This add tangent space information to a vertex buffer. The result is an added 3d texture coordinate
   * that contains the T vector of the tangent space basis (T is oriented toward increasing s coordinates). The binormal can be computed in a vertex program
   * by doing B = N ^ T. The input mesh build must provide a normal component.
-  * Moreover it must have at least one texture coordinate applied (this is needed to build coherent tangent space basis)    
+  * Moreover it must have at least one texture coordinate applied (this is needed to build coherent tangent space basis)
   * \return true if the conversion was possible
   */
 

@@ -104,7 +104,7 @@ public:		// Methods.
 	bool	operator==(const CVectorD &v) const;
 	bool	operator!=(const CVectorD &v) const;
 	bool	isNull() const;
-	/** 
+	/**
 	 * Setup the vector with spheric coordinates.
 	 * sphericToCartesian(1,0,0) build the I vector  ((1,0,0)).
 	 * the formula is:  \n

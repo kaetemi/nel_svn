@@ -28,7 +28,7 @@
 #include "vector.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 

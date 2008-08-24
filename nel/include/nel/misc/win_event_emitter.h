@@ -51,11 +51,11 @@ public:
 		resetButtonFlagState ();
 	}
 
-	/** 
+	/**
 	 * sends all events to server
-	 * (should call CEventServer method postEvent() ) 
+	 * (should call CEventServer method postEvent() )
 	 * \param server
-	 */	
+	 */
 	virtual void submitEvents(CEventServer & server, bool allWindows);
 
 	/// Build the flags of the current buttons state
@@ -79,7 +79,7 @@ public:
 	// Test wether keyboard events are enabled.
 	bool areKeyboardEventsEnabled() const { return _KeyboardEventsEnabled; }
 private:
-	
+
 
 	// Private internal server message
 	class CWinEventServer : CEventServer

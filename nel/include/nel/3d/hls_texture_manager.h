@@ -28,7 +28,7 @@
 #include "nel/3d/hls_texture_bank.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

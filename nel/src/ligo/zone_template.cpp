@@ -185,7 +185,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 					{
 						// Error, two times the same vertex
 						errors.MainError = CLigoError::VertexAlreadyUsed;
-						
+
 						if (first)
 							errors.pushVertexError (CLigoError::VertexAlreadyUsed, theEdge.first, 0);
 
@@ -340,7 +340,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 			// Opened edge
 			errors.pushVertexError (CLigoError::OpenedEdge, first, edgeIndex);
 			errors.pushVertexError (CLigoError::OpenedEdge, last, edgeIndex);
-	
+
 			// Main error
 			errors.MainError = CLigoError::OpenedEdge;
 
@@ -402,7 +402,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 						errors.pushVertexError (CLigoError::VertexList, previous, 0);
 					if (errored.insert (next).second)
 						errors.pushVertexError (CLigoError::VertexList, next, 0);
-			
+
 					// Main error
 					errors.MainError = CLigoError::VertexList;
 				}
@@ -412,7 +412,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 			previous = next;
 			vertIte++;
 		}
-		
+
 		// No error ?
 		if (errored.empty())
 		{
@@ -434,7 +434,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 					// Yes, exit
 					break;
 
-				// Next 
+				// Next
 				firstIte++;
 			}
 
@@ -456,7 +456,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 			// Push the first
 			edge.push_back (*vertIte);
 
-			// Next 
+			// Next
 			vertIte++;
 
 			// End ?
@@ -512,7 +512,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 							rotation = 0;
 					}
 					else if ((endX-startX)==-1)
-					{					
+					{
 						if ((endY-startY)==0)
 							rotation = 2;
 					}
@@ -526,7 +526,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 
 					// Checks
 					nlassert (rotation != 4);
-					
+
 					// Build the vertex array
 					vector<CVector> vertexArray;
 					vertexArray.resize (edge.size());
@@ -580,7 +580,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 					// Start
 					vertIte = listVert.begin();
 			}
-			
+
 			sint32 bestX = 0x7fffffff;
 			sint32 bestY = 0x80000000;
 			uint bestEdge = 0xffffffff;
@@ -609,7 +609,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 					bestEdge = edgeId;
 				}
 			}
-			
+
 			// Check
 			nlassert (bestEdge!=0xffffffff);
 
@@ -632,7 +632,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 			return true;
 		}
 	}
-	
+
 	// Errors.
 	return false;
 }
@@ -694,7 +694,7 @@ void CZoneTemplate::getMask (std::vector<bool> &mask, uint &width, uint &height)
 		if (y > yMax)
 			yMax = y;
 	}
-	
+
 	// Build the array
 	width = (uint32) xMax;
 	height = (uint32) yMax;

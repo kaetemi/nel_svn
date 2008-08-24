@@ -35,7 +35,7 @@ namespace NLMISC
 	class CQuat;
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 class UScene;
@@ -55,7 +55,7 @@ class CInstanceGroupUser : public UInstanceGroup
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 public:
 	CInstanceGroupUser ();
 	virtual ~CInstanceGroupUser ();
@@ -71,7 +71,7 @@ private:
 	void setAddRemoveInstanceCallback(IAddRemoveInstance *callback);
 	void setIGAddBeginCallback(IIGAddBegin *callback);
 
-	
+
 	void addToScene (class UScene& scene, UDriver *driver, uint selectedTexture);
 	void addToScene (class CScene& scene, IDriver *driver, uint selectedTexture);
 
@@ -80,8 +80,8 @@ private:
 	void stopAddToSceneAsync ();
 
 	virtual UInstance		getInstance (uint instanceNb) const;
-	virtual void			setDistMax(uint instance, float dist);	
-	virtual float			getDistMax(uint instance) const;	
+	virtual void			setDistMax(uint instance, float dist);
+	virtual float			getDistMax(uint instance) const;
 	virtual void		    setCoarseMeshDist(uint instance, float dist);
 	virtual float           getCoarseMeshDist(uint instance) const;
 
@@ -96,7 +96,7 @@ private:
 	const NLMISC::CVector& getInstanceScale (uint instanceNb) const;
 	UInstance getByName (const std::string& name) const;
 	sint	  getIndexByName(const std::string &name) const;
-	
+
 
 	void setBlendShapeFactor (const std::string &bsName, float rFactor);
 
@@ -112,7 +112,7 @@ private:
 	void setPos (const NLMISC::CVector &pos);
 	void setRotQuat (const NLMISC::CQuat &q);
 
-	bool getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const NLMISC::CVector &localPos, 
+	bool getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const NLMISC::CVector &localPos,
 		std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient);
 
 	NLMISC::CVector getPos ();
@@ -131,7 +131,7 @@ private:
 	virtual void			unfreezeHRC();
 
 	virtual void			displayDebugClusters(UDriver *drv, UTextContext *txtCtx);
-	
+
 	virtual bool			dontCastShadowForInterior(uint instance) const;
 	virtual bool			dontCastShadowForExterior(uint instance) const;
 
@@ -139,10 +139,10 @@ private:
 	friend class CSceneUser;
 
 	void		removeInstancesUser();
-	
+
 public:
 	// Debug purpose only.
-	CInstanceGroup	&getInternalIG() 
+	CInstanceGroup	&getInternalIG()
 	{
 		return _InstanceGroup;
 	}

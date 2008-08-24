@@ -14,7 +14,7 @@ pixelshader water_no_diffuse_2_0 = asm
 	dcl t2.xy;
 	dcl_2d s0;
 	dcl_2d s1;
-	dcl_2d s2;	
+	dcl_2d s2;
 	//read bump map 0
 	texld   r0, t0, s0;
 	//bias result (include scaling)
@@ -34,7 +34,7 @@ pixelshader water_no_diffuse_2_0 = asm
 technique technique_water_no_diffuse_2_0
 {
 	pass p0
-	{		
+	{
 		Texture[0] = <texture0>;
 		Texture[1] = <texture1>;
 		Texture[2] = <texture2>;
@@ -84,7 +84,7 @@ technique technique_water_no_diffuse_1_1
 	pass p0
 	{
 		Texture[1] = <texture1>;
-		Texture[2] = <texture2>;		
+		Texture[2] = <texture2>;
 		PixelShaderConstant[0] = <factor0>;
 		PixelShaderConstant[1] = <factor1>;
 		PixelShader = (water_no_diffuse_1_1);

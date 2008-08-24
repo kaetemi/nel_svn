@@ -24,9 +24,9 @@ namespace NLMISC
   * Only works on microsoft windows os for now
   *
   * The implementation relies on the WM_COPYDATA message to enable communication, but create a separate thread
-  * to enable non blocking exchange. (The WM_COPYDATA message require the use of SendMessage, which is blocking until the 
+  * to enable non blocking exchange. (The WM_COPYDATA message require the use of SendMessage, which is blocking until the
   * target window receive the message and respond)
-  * 
+  *
   * Identifier should be agreed on for the 2 windows that are to communicate (windows handles are transparently
   * exchanged through shared memory based on this name)
   *
@@ -39,7 +39,7 @@ namespace NLMISC
   * Additionnaly, an internal, invisible window will be create if no one is given (second form of 'init'). This avoid having to worry
   * about order of init / release of subclassing.
   *
-  * FIXME : In fact, creating an invisible, internal window (that is required to have a message queue), should be the default, 
+  * FIXME : In fact, creating an invisible, internal window (that is required to have a message queue), should be the default,
   * this would hide the internal communication mean, and we simply would have something called like 'CInterProcessMsgQueue'.
   * Alternatives have been considered, but this one seemed simpler at first because of the facility offered by WM_COPYDATA
   * Other possible implementations include shared memory (would require additionnal synchronisation & possible splitting of messages then), sockets (would make the firewall complain then ...) etc.
@@ -50,8 +50,8 @@ class CInterWindowMsgQueue
 {
 public:
 	CInterWindowMsgQueue();
-	~CInterWindowMsgQueue();	
-	/** Create a 2-way inter process message queue. 
+	~CInterWindowMsgQueue();
+	/** Create a 2-way inter process message queue.
 	  * Each ownerWindow / localId / foreignId triplet should be unique, repeated call with the same value will return false
 	  * as long as the message queue created from them is alive
 	  * IMPORTANT: 'ownerWindow' will be subclassed to handle the messages. If multiple subclassing are done on that window,
@@ -59,7 +59,7 @@ public:
 	  * which will create an internal invisible window, thusavoiding this concern.
 	  */
 	bool init(HINSTANCE hInstance, uint32 localId, uint32 foreignId);
-	/** Create a 2-way message queue between 2 windows. 
+	/** Create a 2-way message queue between 2 windows.
 	  * Each ownerWindow / localId / foreignId triplet should be unique, repeated call with the same value will return false
 	  * as long as the message queue created from them is alive
 	  * IMPORTANT: 'ownerWindow' will be subclassed to handle the messages. If multiple subclassing are done on that window,
@@ -72,9 +72,9 @@ public:
 	/** Release the msg queue
 	  * This will unhook the window, restoring its previous message procedure
 	  * Note than if the window was hooked by someone else, an assert will be raised
-	  * Hooks on windows msg proc should thus be 'unhooked' in reverse order 
-	  */ 
-	void release();	
+	  * Hooks on windows msg proc should thus be 'unhooked' in reverse order
+	  */
+	void release();
 	/** Send a new message
 	  * The msg is guaranteed to be received by the other window as long as it remains alive
 	  */
@@ -82,12 +82,12 @@ public:
 	// See if a message has arrived from foreign window, return true if so
 	bool pumpMessage(CMemStream &dest);
 	// Test if other window is present
-	bool connected() const;	
-	// 
+	bool connected() const;
+	//
 	uint getSendQueueSize() const;
 	uint getReceiveQueueSize() const;
 
-	
+
 //**************************************************************************************************
 private:
 	struct CMsg
@@ -101,16 +101,16 @@ private:
 	};
 
 	typedef std::list<CMsg> TMsgList;
-	CSynchronized<TMsgList> _OutMessageQueue; // outgoing messages : filled by main thread, pumped by 
+	CSynchronized<TMsgList> _OutMessageQueue; // outgoing messages : filled by main thread, pumped by
 													  // this 'CInterWindowMsgQueue' internal thread to hide latency of SendMessage
 													  // to the main thread
 
-	TMsgList						_InMessageQueue;  // Incoming messages : not synchronised here, because the wnd 
+	TMsgList						_InMessageQueue;  // Incoming messages : not synchronised here, because the wnd
 												      // message proc that receive foreign window messages (through WM_COPYDATA)
 													  // belong to the same thread than the reader (that calls 'pumpMessage')
 
 	CDummyWindow					_DummyWindow;
-	
+
 
 	// internal send thread
 	class CSendTask : public IRunnable
@@ -118,7 +118,7 @@ private:
 	public:
 		CSendTask(CInterWindowMsgQueue *parent);
 		// from IRunnable
-		virtual void run();	
+		virtual void run();
 		// parent should call this to ask the thread to terminate
 		void stop();
 	private:
@@ -134,23 +134,23 @@ private:
 	  * Window handle is needed by the send thread when it need to call SendMessage
 	  */
 	class CProtagonist
-	{			
+	{
 	public:
 		CProtagonist();
 		~CProtagonist();
-		void release();		
-		// init this 'protagonist' 
+		void release();
+		// init this 'protagonist'
 		bool init(uint32 id);
 		// set handle for foreign window
-		void setWnd(HWND wnd);		
+		void setWnd(HWND wnd);
 		// get local or foreign window handle
 		HWND getWnd();
 		uint32 getId() const { return _Id; }
 	private:
 		uint32					_Id;
 		HWND					_Wnd;
-		HANDLE					_SharedMemMutex;			// system-wide mutex for access to window handle in shared memory		
-		void					*_SharedWndHandle; // no need for mutex here as the value will be written atomically (a single memory word) 
+		HANDLE					_SharedMemMutex;			// system-wide mutex for access to window handle in shared memory
+		void					*_SharedWndHandle; // no need for mutex here as the value will be written atomically (a single memory word)
 	private:
 		// shared memory mutex
 		void acquireSMMutex();
@@ -160,7 +160,7 @@ private:
 	CProtagonist		_LocalWindow;
 	CProtagonist		_ForeignWindow;
 	CSendTask			*_SendTask;
-	IThread				*_SendThread;	
+	IThread				*_SendThread;
 	static const uint   _CurrentVersion; // for messages serialisation
 
 
@@ -168,7 +168,7 @@ private:
 
 	// Unique identifier for a 2-way message queue (that is, a CInterWindowMsgQueue object after it has been
 	// initialized)
-	// This is required since the window message proc 'ListenerProc' is static so we must be 
+	// This is required since the window message proc 'ListenerProc' is static so we must be
 	// retrieve the associated 'CInterWindowMsgQueue' object from the (local id, foreign id) pair
 	class CMsgQueueIdent
 	{
@@ -176,8 +176,8 @@ private:
 		HWND Wnd;
 		uint32 LocalId;
 		uint32 ForeignId;
-	public:		
-		CMsgQueueIdent(HWND wnd, uint32 localId, uint32 foreignId) 
+	public:
+		CMsgQueueIdent(HWND wnd, uint32 localId, uint32 foreignId)
 					 : Wnd(wnd), LocalId(localId), ForeignId(foreignId) {}
 		bool operator < (const CMsgQueueIdent &other) const
 		{
@@ -185,8 +185,8 @@ private:
 			if (LocalId != other.LocalId) return LocalId < other.LocalId;
 			return LocalId < other.LocalId;
 		}
-	};	
-	typedef std::map<CMsgQueueIdent, CInterWindowMsgQueue *> TMessageQueueMap; 
+	};
+	typedef std::map<CMsgQueueIdent, CInterWindowMsgQueue *> TMessageQueueMap;
 	static CSynchronized<TMessageQueueMap> _MessageQueueMap;
 
 	// map window handle to old message queue
@@ -205,12 +205,12 @@ private:
 
 	bool initInternal(HINSTANCE hInstance, HWND ownerWindow, uint32 localId, uint32 foreignId = NULL);
 
-private:	
+private:
 	static	LRESULT CALLBACK listenerProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static	LRESULT CALLBACK invisibleWindowListenerProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static  LRESULT			 handleWMCopyData(HWND hwnd, COPYDATASTRUCT *cds);
 	void updateTargetWindow();
-	void clearOutQueue();	
+	void clearOutQueue();
 };
 
 

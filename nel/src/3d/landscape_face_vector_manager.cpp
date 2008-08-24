@@ -31,7 +31,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -40,7 +40,7 @@ namespace NL3D
 
 // ***************************************************************************
 CLandscapeFaceVectorManager::CLandscapeFaceVectorManager()
-{	
+{
 	// Allow 2^32 triangles at max. each list has at max 2^i triangles.
 	_Blocks.resize(NL3D_FACE_VECTOR_NUMBLOCK, NULL);
 }
@@ -67,7 +67,7 @@ void					CLandscapeFaceVectorManager::purge()
 		}
 		// list is empty.
 		_Blocks[i]= NULL;
-	}	
+	}
 }
 
 // ***************************************************************************
@@ -80,7 +80,7 @@ uint	CLandscapeFaceVectorManager::getBlockIdFromNumTri(uint numTris)
 TLandscapeIndexType	*CLandscapeFaceVectorManager::createFaceVector(uint numTri)
 {
 	// get the BlockId from the number of tri in this fv
-	uint	blockId= getBlockIdFromNumTri(numTri);	
+	uint	blockId= getBlockIdFromNumTri(numTri);
 
 	// If no more free FaceVector, allocate.
 	if(_Blocks[blockId]==NULL)
@@ -97,7 +97,7 @@ TLandscapeIndexType	*CLandscapeFaceVectorManager::createFaceVector(uint numTri)
 	// Pop a FaceVector from the free list.
 	TLandscapeIndexType		*ret= _Blocks[blockId];
 	// Make the head list point to next
-	_Blocks[blockId]= *(TLandscapeIndexType**)ret;	
+	_Blocks[blockId]= *(TLandscapeIndexType**)ret;
 
 	// There is numTri triangles.
 	*ret= numTri;

@@ -30,7 +30,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -65,19 +65,19 @@ public:
 
 
 	/**
-	 * Smooth the tangents of those zones. Zones must be correclty welded. 
+	 * Smooth the tangents of those zones. Zones must be correclty welded.
 	 * Only all patchs of zones[0] are parsed. But other zones may be modified on their edge (so you must save them).
 	 *
 	 * NB: tangent smoothing is only done on bind 1/1.
 	 *
 	 * \param zones The 0 is the center zone to be computed. Other are the 4 zones around (no special order needed).
-	 *	Doesn't matter if zones[i].Patchs is NULL. Also, if a neighbor patch is not found on a edge, then no error is 
+	 *	Doesn't matter if zones[i].Patchs is NULL. Also, if a neighbor patch is not found on a edge, then no error is
 	 *  generated: this patch edge is not modified.
 	 *	nlstop if zones[0]==NULL.
-	 * \param angleThreshold if angle beetween (patch_interior - tangent) and (neighbor_patch_interior - tangent) is 
+	 * \param angleThreshold if angle beetween (patch_interior - tangent) and (neighbor_patch_interior - tangent) is
 	 *	above angleThreshold, no smooth is done on this tangent. Default: 30deg.
-	 * \param continuityC1. when a smooth is done on a tangent, tangent is forced such that the 2 interiors and the 
-	 *	tangent are colinear, so continuity G1 is assured. if continuityC1 is true, then tangent is set to the middle of 
+	 * \param continuityC1. when a smooth is done on a tangent, tangent is forced such that the 2 interiors and the
+	 *	tangent are colinear, so continuity G1 is assured. if continuityC1 is true, then tangent is set to the middle of
 	 *	the interiors (continuity C1). If false, tangent is setup so that previous distance ratio are kept.
 	 *
 	 */

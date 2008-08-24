@@ -31,7 +31,7 @@
 #include <vector>
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 
@@ -62,8 +62,8 @@ public:
 	sint			getNumVertices() const {return Vertices.size();}
 
 	// build a triangle fan from this polygon, appending resulting tris to 'dest'
-	void		toTriFan(std::vector<NLMISC::CTriangle> &dest) const;	
-	
+	void		toTriFan(std::vector<NLMISC::CTriangle> &dest) const;
+
 	/// Clip a polygon with a set of planes. Cohen-sutherland... clipPolygonBack() is used on planes.
 	void			clip(const CPlane *planes, uint nPlanes);
 	/// Clip a polygon with a set of planes. Cohen-sutherland clipping... clipPolygonBack() is used on planes.
@@ -72,7 +72,7 @@ public:
 	float			computeArea() const;
 
 	/// Serial this polygon
-	void			serial(NLMISC::IStream &f) throw(NLMISC::EStream);	
+	void			serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
 	/**
 	  * Convert a concave polygon into a list of convex polygons using a 2d projection.
@@ -87,7 +87,7 @@ public:
 	  * \return true if the polygon has been subdivided. false if the polygon overlap itself in the XY plane of the basis
 	  * or if the polygon is not direct (clock wise).
 	  */
-	bool			toConvexPolygons (std::list<CPolygon>& outputPolygons, const CMatrix& basis) const;	
+	bool			toConvexPolygons (std::list<CPolygon>& outputPolygons, const CMatrix& basis) const;
 
 	/**
 	  * Chain the arg polygons with this polygon testing 2d intersections.
@@ -102,7 +102,7 @@ public:
 	bool			chain (const std::vector<CPolygon> &other, const CMatrix& basis);
 
 	/// get the best triplet from this poly (the one that has the highest area)
-	void		getBestTriplet(uint &index0, uint &index1, uint &index2);	
+	void		getBestTriplet(uint &index0, uint &index1, uint &index2);
 
 	/** Takes the best triplet from this poly to build a normal.
 	  * From this normal and a points, build a basis (the normal is the K vector of the basis)
@@ -129,11 +129,11 @@ public:
 	TVec2fVect Vertices;
 public:
 	/// default ctor
-	CPolygon2D() {}	
+	CPolygon2D() {}
 
 	// swap this poly content with another poly content
-	void swap(CPolygon2D &other) { Vertices.swap(other.Vertices); }	
-	
+	void swap(CPolygon2D &other) { Vertices.swap(other.Vertices); }
+
 	/** Build a 2D polygon from this 3D polygon, by using the given projection matrix
 	  * The x and y components of projected vertices are used to create the 2D polygon
 	  */
@@ -142,12 +142,12 @@ public:
 	/** Reinit a 2D polygon from this 3D polygon, by using the given projection matrix
 	  * The x and y components of projected vertices are used to create the 2D polygon
 	  */
-	void fromPolygon(const CPolygon &src, const CMatrix &projMat = CMatrix::Identity);	
+	void fromPolygon(const CPolygon &src, const CMatrix &projMat = CMatrix::Identity);
 
 	/** Build a 2D polygon from the given triangle, by using the given projection matrix
 	  * The x and y components of projected vertices are used to create the 2D polygon
 	  */
-	CPolygon2D(const CTriangle &tri, const CMatrix &projMat = CMatrix::Identity);	
+	CPolygon2D(const CTriangle &tri, const CMatrix &projMat = CMatrix::Identity);
 
 	/// Check wether this polygon is convex;
 	bool		isConvex();
@@ -159,8 +159,8 @@ public:
 	void		buildConvexHull(CPolygon2D &dest) const;
 
 	/// get the best triplet of vector. e.g the triplet that has the best surface
-	void		getBestTriplet(uint &index0, uint &index1, uint &index2);	
-	
+	void		getBestTriplet(uint &index0, uint &index1, uint &index2);
+
 	/// Serial this polygon
 	void		serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
@@ -168,7 +168,7 @@ public:
 	typedef std::vector<TRaster>  TRasterVect;
 
 	/** Compute the borders of this poly with sub-pixel accuracy. No clipping is performed.
-	  * Only points exactly inside or exactly on the left border of the polygon are kept. 
+	  * Only points exactly inside or exactly on the left border of the polygon are kept.
 	  * This means that pixels are seen as points, not as surfaces.
 	  * The output is in a vector of sint pairs. minimumY is filled with the minimum y value of the poly.
 	  * Each pairs gives [xmin, xmax] for the current segment. if xmin > xmax, then no point is valid for this segment.
@@ -178,12 +178,12 @@ public:
 	void		computeBorders(TRasterVect &borders, sint &minimumY) const;
 	/** The same as compute borders, but pixel are seen as surfaces and not as points.
 	   * Any pixel that is touched by the poly will be selected
-	   * IMPORTANT: coordinates must be in the -32000, 32000 range. This is checked in debug	   
+	   * IMPORTANT: coordinates must be in the -32000, 32000 range. This is checked in debug
 	   */
 	void		computeOuterBorders(TRasterVect &borders, sint &minimumY) const;
 	/** The same as compute borders, but pixel are seen as surfaces and not as points
 	  * In this version, only pixels that are entirely INSIDE the poly are kept
-	  * IMPORTANT: coordinates must be in the -32000, 32000 range. This is checked in debug	   
+	  * IMPORTANT: coordinates must be in the -32000, 32000 range. This is checked in debug
 	  */
 	void		computeInnerBorders(TRasterVect &borders, sint &minimumY) const;
 	/// Test wether this polygon intersect another convex polygon. Currently not optimized.
@@ -214,21 +214,21 @@ private:
 	float sumDPAgainstLine(float a, float b, float c) const;
 
 	/// Get ref to the first vertex that start at index
-	const CVector2f &getSegRef0(uint index) const 
-	{ 
-		nlassert(index < Vertices.size()); return Vertices[index]; 
+	const CVector2f &getSegRef0(uint index) const
+	{
+		nlassert(index < Vertices.size()); return Vertices[index];
 	}
-	const CVector2f &getSegRef1(uint index) const 
-	{ 
-		nlassert(index < Vertices.size()); 		
+	const CVector2f &getSegRef1(uint index) const
+	{
+		nlassert(index < Vertices.size());
 		return index == Vertices.size() - 1 ?
 			   Vertices[0]                 :
 		       Vertices[index + 1];
-	}	
+	}
 	void checkValidBorders() const;
 };
 
-// comparison of 2D polygon 
+// comparison of 2D polygon
 bool operator == (const CPolygon2D &lhs, const CPolygon2D &rhs);
 bool operator < (const CPolygon2D &lhs, const CPolygon2D &rhs);
 

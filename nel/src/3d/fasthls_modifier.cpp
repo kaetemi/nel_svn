@@ -34,7 +34,7 @@ using	namespace std;
 using	namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -83,7 +83,7 @@ CFastHLSModifier::CFastHLSModifier()
 CFastHLSModifier::~CFastHLSModifier()
 {
 }
-	
+
 // ***************************************************************************
 CFastHLSModifier	&CFastHLSModifier::getInstance()
 {
@@ -290,7 +290,7 @@ void		CFastHLSModifier::convertDDSBitmapDXTC1Or1A(CBitmap &dst, const CBitmap &s
 		need to swap color and bits for DXTC1 or DXTC1A.
 	*/
 
-	static uint32	bitLUT[8]= { 
+	static uint32	bitLUT[8]= {
 		1,0,3,2,			// reverse std order
 		1,0,2,3,			// reverse order for "special 0/black packing"
 	};
@@ -357,7 +357,7 @@ void		CFastHLSModifier::convertDDSBitmapDXTC1Or1A(CBitmap &dst, const CBitmap &s
 			}
 #endif
 
-			// store 
+			// store
 			((uint32*)dstPix)[1]= dstBits;
 		}
 		else

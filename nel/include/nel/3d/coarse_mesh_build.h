@@ -30,7 +30,7 @@
 #include <vector>
 #include <map>
 
-namespace NL3D 
+namespace NL3D
 {
 
 class CMeshGeom;
@@ -86,7 +86,7 @@ public:
 	{
 	public:
 		/**
-		  * Ratio of texture used. Between 0~1. 0, the texture is empty, 1 
+		  * Ratio of texture used. Between 0~1. 0, the texture is empty, 1
 		  * the texture is totaly used.
 		  */
 		float	TextureUsed;

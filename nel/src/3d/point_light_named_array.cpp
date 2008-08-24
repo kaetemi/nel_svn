@@ -143,7 +143,7 @@ void			CPointLightNamedArray::setPointLightFactor(const CScene &scene)
 	{
 		// Ref
 		CPointLightGroup &lightGroup = _PointLightGroupMap[i];
-		
+
 		// Get the factor
 		CRGBA factorAnimated=	 scene.getAnimatedLightFactor (lightGroup.AnimationLightIndex, lightGroup.LightGroup);
 		CRGBA factorNotAnimated= scene.getLightmapGroupColor (lightGroup.LightGroup);;

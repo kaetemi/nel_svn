@@ -30,7 +30,7 @@ using namespace NLMISC;
 using namespace std;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -67,7 +67,7 @@ void					CTrackSampledVector::serial(NLMISC::IStream &f)
 }
 
 // ***************************************************************************
-void	CTrackSampledVector::build(const std::vector<uint16> &timeList, const std::vector<CVector> &keyList, 
+void	CTrackSampledVector::build(const std::vector<uint16> &timeList, const std::vector<CVector> &keyList,
 	float beginTime, float endTime)
 {
 	nlassert( endTime>beginTime || (beginTime==endTime && keyList.size()<=1) );
@@ -103,7 +103,7 @@ const IAnimatedValue	&CTrackSampledVector::eval (const TAnimationTime& date, CAn
 	float	interpValue;
 	TEvalType	evalType= evalTime(date, _Keys.size(), keyId0, keyId1, interpValue);
 
-	// Discard? 
+	// Discard?
 	if( evalType==EvalDiscard )
 		return avBlock.ValVector;
 	// One Key? easy, and quit.
@@ -134,11 +134,11 @@ void CTrackSampledVector::applySampleDivisor(uint sampleDivisor)
 {
 	if(sampleDivisor<=1)
 		return;
-	
+
 	// **** build the key indices to keep, and rebuild the timeBlocks
 	static	std::vector<uint32>		keepKeys;
 	applySampleDivisorCommon(sampleDivisor, keepKeys);
-	
+
 	// **** rebuild the keys
 	NLMISC::CObjectVector<CVector, false>		newKeys;
 	newKeys.resize(keepKeys.size());
@@ -150,7 +150,7 @@ void CTrackSampledVector::applySampleDivisor(uint sampleDivisor)
 	_Keys= newKeys;
 
 	// TestYoyo
-	/*nlinfo("ANIMQUAT:\t%d\t%d\t%d\t%d", sizeof(*this), _TimeBlocks.size(), 
+	/*nlinfo("ANIMQUAT:\t%d\t%d\t%d\t%d", sizeof(*this), _TimeBlocks.size(),
 		_TimeBlocks.size()?_TimeBlocks[0].Times.size():0,
 		_Keys.size() * sizeof(CVector));*/
 }

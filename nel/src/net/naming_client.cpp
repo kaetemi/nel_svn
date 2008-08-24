@@ -64,12 +64,12 @@ NLMISC::CMutex CNamingClient::RegisteredServicesMutex("CNamingClient::Registered
 
 void CNamingClient::setRegistrationBroadcastCallback (TBroadcastCallback cb)
 {
-	_RegistrationBroadcastCallback = cb;	
+	_RegistrationBroadcastCallback = cb;
 }
 
 void CNamingClient::setUnregistrationBroadcastCallback (TBroadcastCallback cb)
 {
-	_UnregistrationBroadcastCallback = cb;	
+	_UnregistrationBroadcastCallback = cb;
 }
 
 //
@@ -172,7 +172,7 @@ void cbRegisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netba
 
 	//CNamingClient::displayRegisteredServices ();
 }
-	
+
 //
 
 void cbUnregisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
@@ -253,7 +253,7 @@ void CNamingClient::connect( const CInetAddress &addr, CCallbackNetBase::TRecord
 	CMessage msgout ("RS");
 	msgout.serialCont (const_cast<vector<CInetAddress>&>(addresses));
 	_Connection->send (msgout);
-	
+
 	// wait the message that contains all already connected services
 	FirstRegisteredBroadcast = false;
 	while (!FirstRegisteredBroadcast && _Connection->connected ())
@@ -449,7 +449,7 @@ bool CNamingClient::lookup (TServiceId sid, CInetAddress &addr)
 
 	nlassert (addrs.size()==1);
 	addr = addrs[0];
-	
+
 	return true;
 }
 
@@ -458,7 +458,7 @@ bool CNamingClient::lookupAlternate (const std::string &name, CInetAddress &addr
 	nlassert (_Connection != NULL && _Connection->connected ());
 
 	// remove it from his local list
-	
+
 	RegisteredServicesMutex.enter ();
 	for (std::list<CServiceEntry>::iterator it = RegisteredServices.begin(); it != RegisteredServices.end (); it++)
 	{
@@ -495,7 +495,7 @@ bool CNamingClient::lookupAndConnect (const std::string &name, CCallbackClient &
 
 	// look up for service
 	CInetAddress servaddr;
-	
+
 	// if service not found, return false
 	if (!CNamingClient::lookup (name, servaddr))
 		return false;

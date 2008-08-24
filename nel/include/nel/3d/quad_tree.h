@@ -40,18 +40,18 @@ namespace	NL3D
 
 /**
   * class:	CQuadTree.
-  * 
-  * 
+  *
+  *
   * A template CQuadTree.
-  * 
-  * 
+  *
+  *
   * This first implementation support real-time quad node split, but never merge the quad node.
   * The possibility to merge (delete) empty quads, when an element erase occurs, will be added later.
-  * 
+  *
   * The quadtree is geometrically delimited. By default, his size is 1*1, centered on (0,0,0). If an element
   * which is out this zone is inserted, then it will ALWAYS be considered selected in select*() methods.
   * By default, the quad tree is aligned on XZ.
-  * 
+  *
   * Sample code using CQuadTree:
   * \code
   * // My quad tree
@@ -60,10 +60,10 @@ namespace	NL3D
   * // My min and max BoundingBox corner of each element
   * CVector minPoint[elementCount]=...;
   * CVector maxPoint[elementCount]=...;
-  * 
+  *
   * // My values
   * myType value[elementCount]=...;
-  * 
+  *
   * // Init the quadTree with recursions depth = 6 (so max 64*64 cells)
   * // centered in (0,0,0) with a max size of 10 in the plane XZ
   * quadTree.create (6, CVector (0.f, 0.f, 0.f), 10.f);
@@ -73,19 +73,19 @@ namespace	NL3D
   *		quadTree.insert (minPoint[i], maxPoint[i], value[i]);
   *
   * // [...]
-  * 
+  *
   * // Clear the selection
   * quadTree.clearSelection ();
-  * 
+  *
   * // Select an element with the X axis as a 3d ray
   * quadTree.selectRay (CVector (0,0,0), CVector (1,0,0));
-  * 
+  *
   *	// Get first selected nodes..
   * CQuadTree<myType>::CIterator it=quadTree.begin();
   * while (it!=quadTree.end())
   * {
   * 	// Check what you want...
-  * 		
+  *
   *		// Next selected element
   * 	it++;
   * }
@@ -119,12 +119,12 @@ public:
 	  * NLMISC::CVector		I(1,0,0);
 	  * NLMISC::CVector		J(0,0,-1);
 	  * NLMISC::CVector		K(0,1,0);
-	  * 
+	  *
 	  * tmp.identity();
 	  * tmp.setRot(I,J,K, true);
 	  * quadTree.changeBase (tmp);
 	  * \endcode
-	  * 
+	  *
 	  * \param base Base of the quad tree
 	  */
 	void changeBase(const NLMISC::CMatrix& base);
@@ -181,7 +181,7 @@ public:
 	  */
 	void		select(const NLMISC::CVector &bboxmin, const NLMISC::CVector &bboxmax);
 
-	/** Select element with multiple planes. Intersect with a polytope convex made of planes. 
+	/** Select element with multiple planes. Intersect with a polytope convex made of planes.
 	  * The normals of planes must be directed outwards the polytope.
 	  *
 	  * \param BVolume is a plane vector
@@ -301,7 +301,7 @@ private:// Classes.
 			|  |
 			2--3
 		*/
-		
+
 
 	public:
 		// ============================================================================================
@@ -359,9 +359,9 @@ private:// Classes.
 			Middle.x   = MidTop.x; Middle.z = MidLeft.z;
 			// Sons compute.
 			// Don't care of Y.
-			Sons[0]->BBoxMin = BBoxMin; Sons[0]->BBoxMax = Middle; 
-			Sons[1]->BBoxMin = MidTop ; Sons[1]->BBoxMax = MidRight; 
-			Sons[2]->BBoxMin = MidLeft; Sons[2]->BBoxMax = MidBottom; 
+			Sons[0]->BBoxMin = BBoxMin; Sons[0]->BBoxMax = Middle;
+			Sons[1]->BBoxMin = MidTop ; Sons[1]->BBoxMax = MidRight;
+			Sons[2]->BBoxMin = MidLeft; Sons[2]->BBoxMax = MidBottom;
 			Sons[3]->BBoxMin = Middle;  Sons[3]->BBoxMax = BBoxMax;
 
 		}
@@ -371,7 +371,7 @@ private:// Classes.
 		// This is a quadtree, so those tests just test against x/z. (the base of the box).
 		bool	includeBoxQuad(const NLMISC::CVector &boxmin, const NLMISC::CVector &boxmax)
 		{
-			if( BBoxMin.x<= boxmin.x && BBoxMax.x>= boxmax.x && 
+			if( BBoxMin.x<= boxmin.x && BBoxMax.x>= boxmax.x &&
 				BBoxMin.z<= boxmin.z && BBoxMax.z>= boxmax.z)
 				return true;
 			else
@@ -499,7 +499,7 @@ private:// Classes.
 
 		}
 
-		
+
 		// ============================================================================================
 		// Selection.
 		void	selectLocalNodes(CBaseNode	&selroot)
@@ -651,7 +651,7 @@ public:
 // ============================================================================================
 // ============================================================================================
 
-		
+
 // ============================================================================================
 template<class T>	CQuadTree<T>::CQuadTree()
 {
@@ -827,7 +827,7 @@ template<class T>	void		CQuadTree<T>::selectRay(const NLMISC::CVector& source, c
 	// Get the planes..
 	std::vector<NLMISC::CPlane> BVolume;
 	BVolume.reserve (4);
-	
+
 	// Setup the planes
 	NLMISC::CPlane plane;
 	plane.make (mat.getJ(), source);
@@ -859,7 +859,7 @@ template<class T>	void		CQuadTree<T>::selectSegment(const NLMISC::CVector& sourc
 	// Get the planes..
 	std::vector<NLMISC::CPlane> BVolume;
 	BVolume.reserve (4);
-	
+
 	// Setup the planes
 	NLMISC::CPlane plane;
 	plane.make (mat.getJ(), source);

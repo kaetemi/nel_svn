@@ -41,9 +41,9 @@
 
 
 /* Speed Feature test.
-	Don't use precaching for now, cause its seems to be slower on some configs (P4-2.4Ghz), 
+	Don't use precaching for now, cause its seems to be slower on some configs (P4-2.4Ghz),
 	but maybe faster on other (P3-800)
-	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm 
+	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm
 	saves 27% of execution time in the applyRawSkinNormal*() loop (ie 1 ms)
 */
 #ifdef NL_OS_WINDOWS
@@ -53,13 +53,13 @@
 
 
 // ***************************************************************************
-void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *src, uint8 *destVertexPtr, 
+void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
 	nlctassert(NL3D_RAWSKIN_NORMAL_OFF==12);
 	nlctassert(NL3D_RAWSKIN_UV_OFF==24);
-	
+
 	/*extern	uint TESTYOYO_NumRawSkinVertices1;
 	TESTYOYO_NumRawSkinVertices1+= nInf;
 	H_AUTO( TestYoyo_RawSkin1 );*/
@@ -71,7 +71,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *sr
 		uint	nBlockInf= min(NumCacheVertexNormal1, nInf);
 		// next block.
 		nInf-= nBlockInf;
-		
+
 		// cache the data in L1 cache.
 		CFastMem::precache(src, nBlockInf * sizeof(CRawVertexNormalSkinned1));
 #else
@@ -162,7 +162,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *sr
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -213,8 +213,8 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *sr
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 36								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -232,7 +232,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal1(CRawVertexNormalSkinned1 *sr
 }
 
 // ***************************************************************************
-void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *src, uint8 *destVertexPtr, 
+void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -242,7 +242,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 	/*extern	uint TESTYOYO_NumRawSkinVertices2;
 	TESTYOYO_NumRawSkinVertices2+= nInf;
 	H_AUTO( TestYoyo_RawSkin2 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 
@@ -280,7 +280,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 #else
 		// ASM harcoded for 48
 		nlctassert(sizeof(CRawVertexNormalSkinned2)==48);
-		
+
 		/*  154 cycles / loop typical
 			124 cycles / loop in theory (no memory problem)
 		*/
@@ -304,7 +304,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 			lea		ebx, [ebx*2+ebx]
 			shl		ebx, 4
 			add		ebx, edx							// uop: 1/0
-				
+
 			// load x y z
 			fld		[esi]src.Vertex.x					// uop: 0/1
 			fld		[esi]src.Vertex.y					// uop: 0/1
@@ -411,7 +411,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -517,8 +517,8 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 48								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -535,7 +535,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal2(CRawVertexNormalSkinned2 *sr
 }
 
 // ***************************************************************************
-void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *src, uint8 *destVertexPtr, 
+void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -545,7 +545,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 	/*extern	uint TESTYOYO_NumRawSkinVertices3;
 	TESTYOYO_NumRawSkinVertices3+= nInf;
 	H_AUTO( TestYoyo_RawSkin3 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 
@@ -585,8 +585,8 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 #else
 		// ASM hard coded for 56
 		nlctassert(sizeof(CRawVertexNormalSkinned3)==56);
-		
-		
+
+
 		/*  226 cycles / loop typical
 			192 cycles / loop in theory (no memory problem)
 			148 optimal
@@ -615,7 +615,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			lea		edx, [edx*2+edx]
 			shl		edx, 4
 			add		edx, boneMat3x4						// uop: 1/0
-			
+
 			// load x y z
 			fld		[esi]src.Vertex.x					// uop: 0/1
 			fld		[esi]src.Vertex.y					// uop: 0/1
@@ -650,7 +650,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a11
 			fmul	st, st(4)
@@ -665,7 +665,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi]						// uop: 0/0/1/1
 
@@ -697,7 +697,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a21
 			fmul	st, st(4)
@@ -712,7 +712,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi+4]
 
@@ -744,7 +744,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+4]src.Weights
 			faddp	st(1), st
-			
+
 			// 3rd matrix
 			fld		[edx]CMatrix3x4.a31
 			fmul	st, st(4)
@@ -759,7 +759,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			// mul by scale, and append
 			fmul	[esi+8]src.Weights
 			faddp	st(1), st
-			
+
 			// store
 			fstp	dword ptr[edi+8]
 
@@ -767,7 +767,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
 			fstp	st									// uop: 1/0
-			
+
 
 			// Normal
 			// **** boneMat3x4[ src->MatrixId[0] ].mulSetVector( src->Normal, *(CVector*)(destVertexPtr + NL3D_RAWSKIN_NORMAL_OFF) );
@@ -911,8 +911,8 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 			mov		dword ptr[edi+24], eax				// uop: 0/0/1/1
 			mov		eax, [esi]src.UV.V					// uop: 0/1
 			mov		dword ptr[edi+28], eax				// uop: 0/0/1/1
-			
-			
+
+
 			// **** next
 			add		esi, 56								// uop: 1/0
 			add		edi, NL3D_RAWSKIN_VERTEX_SIZE		// uop: 1/0
@@ -929,7 +929,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal3(CRawVertexNormalSkinned3 *sr
 }
 
 // ***************************************************************************
-void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkinned4 *src, uint8 *destVertexPtr, 
+void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkinned4 *src, uint8 *destVertexPtr,
 	CMatrix3x4 *boneMat3x4, uint nInf)
 {
 	// must write contigously in AGP, and ASM is hardcoded...
@@ -939,7 +939,7 @@ void		CMeshMRMSkinnedGeom::applyArrayRawSkinNormal4(CRawVertexNormalSkinned4 *sr
 	/*extern	uint TESTYOYO_NumRawSkinVertices4;
 	TESTYOYO_NumRawSkinVertices4+= nInf;
 	H_AUTO( TestYoyo_RawSkin4 );*/
-	
+
 	// Since VertexPtr may be a AGP Ram, MUST NOT read into it! (mulAdd*() do it!)
 	CVector	tmpVert;
 

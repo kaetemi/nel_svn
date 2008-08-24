@@ -27,7 +27,7 @@
 #include "nel/misc/hierarchical_timer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 H_AUTO_DECL( NL3D_Render_TextContext_3D )
@@ -42,25 +42,25 @@ NLMISC::CVector UTextContext::CStringInfo::getHotSpotVector(UTextContext::THotSp
 
 	if(hotspot==UTextContext::MiddleLeft)
 		hotspotVector = CVector(0,0,-StringHeight/2);
-	
+
 	if(hotspot==UTextContext::TopLeft)
 		hotspotVector = CVector(0,0,StringHeight);
-	
+
 	if(hotspot==UTextContext::MiddleBottom)
 		hotspotVector = CVector(-StringWidth/2,0,0);
-	
+
 	if(hotspot==UTextContext::MiddleMiddle)
 		hotspotVector = CVector(-StringWidth/2,0,-StringHeight/2);
-	
+
 	if(hotspot==UTextContext::MiddleTop)
 		hotspotVector = CVector(-StringWidth/2,0,-StringHeight);
-	
+
 	if(hotspot==UTextContext::BottomRight)
 		hotspotVector = CVector(-StringWidth,0,0);
-	
+
 	if(hotspot==UTextContext::MiddleRight)
 		hotspotVector = CVector(-StringWidth,0,-StringHeight/2);
-	
+
 	if(hotspot==UTextContext::TopRight)
 		hotspotVector = CVector(-StringWidth,0,-StringHeight);
 
@@ -95,67 +95,67 @@ void CTextContextUser::setColor(NLMISC::CRGBA color)
 
 	_TextContext.setColor(color);
 }
-void CTextContextUser::setFontSize(uint32 fontSize) 
+void CTextContextUser::setFontSize(uint32 fontSize)
 {
 	H_AUTO2;
 
 	_TextContext.setFontSize(fontSize);
 }
-uint32 CTextContextUser::getFontSize() const  
+uint32 CTextContextUser::getFontSize() const
 {
 	H_AUTO2;
 
 	return _TextContext.getFontSize();
 }
-void CTextContextUser::setHotSpot(THotSpot hotSpot)  
+void CTextContextUser::setHotSpot(THotSpot hotSpot)
 {
 	H_AUTO2;
 
 	_TextContext.setHotSpot((CComputedString::THotSpot)(uint32)hotSpot) ;
 }
-UTextContext::THotSpot CTextContextUser::getHotSpot() const 
+UTextContext::THotSpot CTextContextUser::getHotSpot() const
 {
 	H_AUTO2;
 
 	return (THotSpot)(uint32)_TextContext.getHotSpot();
 }
-void CTextContextUser::setScaleX(float scaleX)  
+void CTextContextUser::setScaleX(float scaleX)
 {
 	H_AUTO2;
 
 	_TextContext.setScaleX(scaleX);
 }
-void CTextContextUser::setScaleY(float scaleY)  
+void CTextContextUser::setScaleY(float scaleY)
 {
 	H_AUTO2;
 
 	_TextContext.setScaleZ(scaleY);
 }
-float CTextContextUser::getScaleX() const 
+float CTextContextUser::getScaleX() const
 {
 	H_AUTO2;
 
 	return _TextContext.getScaleX();
 }
-float CTextContextUser::getScaleY() const 
+float CTextContextUser::getScaleY() const
 {
 	H_AUTO2;
 
 	return _TextContext.getScaleZ();
 }
-void CTextContextUser::setShaded(bool b) 
+void CTextContextUser::setShaded(bool b)
 {
 	H_AUTO2;
 
 	_TextContext.setShaded(b);
 }
-bool CTextContextUser::getShaded() const  
+bool CTextContextUser::getShaded() const
 {
 	H_AUTO2;
 
 	return _TextContext.getShaded();
 }
-void CTextContextUser::setShadeExtent(float shext) 
+void CTextContextUser::setShadeExtent(float shext)
 {
 	H_AUTO2;
 
@@ -187,7 +187,7 @@ bool			CTextContextUser::getKeep800x600Ratio() const
 }
 
 // ***************************************************************************
-uint32 CTextContextUser::textPush(const char *format, ...)  
+uint32 CTextContextUser::textPush(const char *format, ...)
 {
 	H_AUTO2;
 
@@ -196,7 +196,7 @@ uint32 CTextContextUser::textPush(const char *format, ...)
 
 	return _TextContext.textPush(ucstring(str)) ;
 }
-uint32 CTextContextUser::textPush(const ucstring &str)  
+uint32 CTextContextUser::textPush(const ucstring &str)
 {
 	H_AUTO2;
 
@@ -228,7 +228,7 @@ void CTextContextUser::resetStringSelection(uint32 i)
 		str->SelectSize= ~0;
 	}
 }
-void CTextContextUser::erase(uint32 i)  
+void CTextContextUser::erase(uint32 i)
 {
 	H_AUTO2;
 
@@ -251,13 +251,13 @@ UTextContext::CStringInfo		CTextContextUser::getStringInfo(const ucstring &str)
 	_TextContext.computeStringInfo(str, _CacheString);
 	return CStringInfo (_CacheString.StringWidth, _CacheString.StringHeight, _CacheString.StringLine);
 }
-void CTextContextUser::clear()  
+void CTextContextUser::clear()
 {
 	H_AUTO2;
 
 	_TextContext.clear();
 }
-void CTextContextUser::printAt(float x, float y, uint32 i) 
+void CTextContextUser::printAt(float x, float y, uint32 i)
 {
 	H_AUTO2;
 
@@ -274,7 +274,7 @@ void CTextContextUser::printClipAt(URenderStringBuffer &renderBuffer, float x, f
 void CTextContextUser::printClipAtUnProjected(URenderStringBuffer &renderBuffer, class NL3D::CFrustum &frustum, const NLMISC::CMatrix &scaleMatrix, float x, float y, float depth, uint32 i, float xmin, float ymin, float xmax, float ymax)
 {
 	H_AUTO2;
-	
+
 	_TextContext.printClipAtUnProjected(static_cast<CRenderStringBuffer&>(renderBuffer), frustum, scaleMatrix, x, y, depth, i, xmin, ymin, xmax, ymax);
 	// Don't need to restore Matrix context here since no driver change
 }
@@ -284,14 +284,14 @@ void CTextContextUser::printClipAtOld (float x, float y, uint32 i, float xmin, f
 	printClipAt(rdrBuffer, x, y ,i, xmin, ymin, xmax, ymax);
 	flushRenderBuffer(&rdrBuffer);
 }
-void CTextContextUser::printAt(float x, float y, const ucstring &ucstr) 
+void CTextContextUser::printAt(float x, float y, const ucstring &ucstr)
 {
 	H_AUTO2;
 
 	_TextContext.printAt(x, y, ucstr);
 	_DriverUser->restoreMatrixContext();
 }
-void CTextContextUser::printfAt(float x, float y, const char * format, ...) 
+void CTextContextUser::printfAt(float x, float y, const char * format, ...)
 {
 	H_AUTO2;
 
@@ -302,18 +302,18 @@ void CTextContextUser::printfAt(float x, float y, const char * format, ...)
 	_DriverUser->restoreMatrixContext();
 }
 
-void CTextContextUser::render3D(const CMatrix &mat, const ucstring &ucstr) 
+void CTextContextUser::render3D(const CMatrix &mat, const ucstring &ucstr)
 {
 	NL3D_HAUTO_RENDER_3D_TEXTCONTEXT;
 
 	CComputedString computedStr;
 	_TextContext.computeString(ucstr,computedStr);
-	
+
 	computedStr.render3D(*_Driver,mat);
 
 	_DriverUser->restoreMatrixContext();
 }
-void CTextContextUser::render3D(const CMatrix &mat, const char *format, ...) 
+void CTextContextUser::render3D(const CMatrix &mat, const char *format, ...)
 {
 	NL3D_HAUTO_RENDER_3D_TEXTCONTEXT;
 
@@ -326,7 +326,7 @@ void CTextContextUser::render3D(const CMatrix &mat, const char *format, ...)
 }
 
 
-float CTextContextUser::getLastXBound() const 
+float CTextContextUser::getLastXBound() const
 {
 	H_AUTO2;
 
@@ -360,7 +360,7 @@ void					CTextContextUser::flushRenderBuffer(URenderStringBuffer *buffer)
 	if(rdrBuffer->NumQuads)
 	{
 		rdrBuffer->flush(*_Driver, _TextContext.getFontManager()->getFontMaterial());
-		
+
 		// must restore the Matrix context if some display done. Need just for Frustum/Matrixes
 		_DriverUser->restoreMatrixContextMatrixOnly();
 	}
@@ -383,7 +383,7 @@ void CTextContextUser::setLetterColors(ULetterColors * letterColors, uint index)
 {
 	H_AUTO2;
 
-	_TextContext.setLetterColors(static_cast<CLetterColors*>(letterColors), index);	
+	_TextContext.setLetterColors(static_cast<CLetterColors*>(letterColors), index);
 }
 
 // ***************************************************************************
@@ -391,14 +391,14 @@ ULetterColors * CTextContextUser::createLetterColors()
 {
 	H_AUTO2;
 
-	ULetterColors * uLetterColors = new CLetterColors();	
+	ULetterColors * uLetterColors = new CLetterColors();
 	return uLetterColors;
 }
 
-bool CTextContextUser::isSameLetterColors(ULetterColors * letterColors, uint index) 
+bool CTextContextUser::isSameLetterColors(ULetterColors * letterColors, uint index)
 {
 	H_AUTO2;
-	
+
 	return _TextContext.isSameLetterColors(static_cast<CLetterColors*>(letterColors), index);
 }
 

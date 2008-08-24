@@ -35,7 +35,7 @@ namespace NL3D
 
 // ***************************************************************************
 
-void CDriverD3D::profileRenderedPrimitives(CPrimitiveProfile &pIn, CPrimitiveProfile &pOut) 
+void CDriverD3D::profileRenderedPrimitives(CPrimitiveProfile &pIn, CPrimitiveProfile &pOut)
 {
 	pIn= _PrimitiveProfileIn;
 	pOut= _PrimitiveProfileOut;
@@ -43,28 +43,28 @@ void CDriverD3D::profileRenderedPrimitives(CPrimitiveProfile &pIn, CPrimitivePro
 
 // ***************************************************************************
 
-uint32 CDriverD3D::profileAllocatedTextureMemory() 
+uint32 CDriverD3D::profileAllocatedTextureMemory()
 {
 	return _AllocatedTextureMemory;
 }
 
 // ***************************************************************************
 
-uint32 CDriverD3D::profileSetupedMaterials() const 
+uint32 CDriverD3D::profileSetupedMaterials() const
 {
 	return _NbSetupMaterialCall;
 }
 
 // ***************************************************************************
 
-uint32 CDriverD3D::profileSetupedModelMatrix() const 
+uint32 CDriverD3D::profileSetupedModelMatrix() const
 {
 	return _NbSetupModelMatrixCall;
 }
 
 // ***************************************************************************
 
-void CDriverD3D::enableUsedTextureMemorySum (bool enable) 
+void CDriverD3D::enableUsedTextureMemorySum (bool enable)
 {
 	if (enable)
 		nlinfo ("PERFORMANCE INFO: enableUsedTextureMemorySum has been set to true in CDriverD3D\n");
@@ -73,7 +73,7 @@ void CDriverD3D::enableUsedTextureMemorySum (bool enable)
 
 // ***************************************************************************
 
-uint32 CDriverD3D::getUsedTextureMemory() const 
+uint32 CDriverD3D::getUsedTextureMemory() const
 {
 	// Sum memory used
 	uint32 memory=0;
@@ -98,7 +98,7 @@ uint32 CDriverD3D::getUsedTextureMemory() const
 }
 
 // ***************************************************************************
-void CDriverD3D::startProfileVBHardLock() 
+void CDriverD3D::startProfileVBHardLock()
 {
 	if(_VBHardProfiling)
 		return;
@@ -114,7 +114,7 @@ void CDriverD3D::startProfileVBHardLock()
 
 // ***************************************************************************
 
-void CDriverD3D::endProfileVBHardLock(std::vector<std::string> &result) 
+void CDriverD3D::endProfileVBHardLock(std::vector<std::string> &result)
 {
 	if(!_VBHardProfiling)
 		return;
@@ -147,7 +147,7 @@ void CDriverD3D::endProfileVBHardLock(std::vector<std::string> &result)
 	result[_VBHardProfiles.size()]= toString("Total: %2.3f", total);
 	float	volatileVBTimeLock = (float)CTime::ticksToSecond(_VolatileVBLockTime)*1000 / max(_NumVBHardProfileFrame,1U);
 	result[_VBHardProfiles.size() + 1]= toString("Volatile Vertex Buffer lock time = %2.3f", _VolatileVBLockTime);
-	
+
 	// clear.
 	_VBHardProfiling= false;
 	contReset(_VBHardProfiles);
@@ -180,27 +180,27 @@ void CDriverD3D::appendVBHardLockProfile(NLMISC::TTicks time, CVertexBuffer *vb)
 }
 
 // ***************************************************************************
-void CDriverD3D::startProfileIBLock() 
-{		
+void CDriverD3D::startProfileIBLock()
+{
 	if(_IBProfiling)
 		return;
-	
+
 	// start
 	_IBProfiles.clear();
 	_IBProfiles.reserve(50);
 	_IBProfiling= true;
 	_CurIBLockCount= 0;
-	_NumIBProfileFrame= 0;	
+	_NumIBProfileFrame= 0;
 	_VolatileIBLockTime = 0;
 }
 
 // ***************************************************************************
 
-void CDriverD3D::endProfileIBLock(std::vector<std::string> &result) 
-{		
+void CDriverD3D::endProfileIBLock(std::vector<std::string> &result)
+{
 	if(!_IBProfiling)
 		return;
-	
+
 	// Fill infos.
 	result.clear();
 	result.resize(_IBProfiles.size() + 2);
@@ -223,7 +223,7 @@ void CDriverD3D::endProfileIBLock(std::vector<std::string> &result)
 		float	timeLock= (float)CTime::ticksToSecond(ibProf.AccumTime)*1000 / max(_NumIBProfileFrame,1U);
 		smprintf(tmp, tmpSize, "%16s%c: %2.3f ms", ibName, ibProf.Change?'*':' ', timeLock );
 		total+= timeLock;
-		
+
 		result[i]= tmp;
 	}
 	result[_IBProfiles.size()]= toString("Total: %2.3f", total);
@@ -231,23 +231,23 @@ void CDriverD3D::endProfileIBLock(std::vector<std::string> &result)
 	result[_IBProfiles.size() + 1]= toString("Volatile Index Buffer lock time = %2.3f", volatileIBTimeLock);
 	nlwarning("IB lock time = %2.3f", total);
 	nlwarning("Volatile IB lock time = %2.3f", volatileIBTimeLock);
-	
+
 	// clear.
 	_IBProfiling= false;
-	contReset(_IBProfiles);	
+	contReset(_IBProfiles);
 }
 
 // ***************************************************************************
 
 void CDriverD3D::appendIBLockProfile(NLMISC::TTicks time, CIndexBuffer *ib)
-{		
+{
 	// must allocate a new place?
 	if(_CurIBLockCount>=_IBProfiles.size())
 	{
-		_IBProfiles.resize(_IBProfiles.size()+1);		
+		_IBProfiles.resize(_IBProfiles.size()+1);
 		_IBProfiles[_CurIBLockCount].IB= ib;
 	}
-	
+
 	// Accumulate.
 	_IBProfiles[_CurIBLockCount].AccumTime+= time;
 	// if change of VBHard for this chrono place
@@ -257,9 +257,9 @@ void CDriverD3D::appendIBLockProfile(NLMISC::TTicks time, CIndexBuffer *ib)
 		_IBProfiles[_CurIBLockCount].IB= ib;
 		_IBProfiles[_CurIBLockCount].Change= true;
 	}
-	
+
 	// next!
-	_CurIBLockCount++;		
+	_CurIBLockCount++;
 }
 
 // ***************************************************************************
@@ -267,7 +267,7 @@ void CDriverD3D::profileVBHardAllocation(std::vector<std::string> &result)
 {
 	result.clear();
 	result.reserve(1000);
-	result.push_back(toString("Memory Allocated: %4d Ko in AGP / %4d Ko in VRAM", 
+	result.push_back(toString("Memory Allocated: %4d Ko in AGP / %4d Ko in VRAM",
 		getAvailableVertexAGPMemory()/1000, getAvailableVertexVRAMMemory()/1000 ));
 	result.push_back(toString("Num VBHard: %d", _VertexBufferHardSet.size()));
 
@@ -284,7 +284,7 @@ void CDriverD3D::profileVBHardAllocation(std::vector<std::string> &result)
 		}
 	}
 	result.push_back(toString("Mem Used: %4d Ko", totalMemUsed/1000) );
-	
+
 	for(it= _VertexBufferHardSet.begin(); it!=_VertexBufferHardSet.end(); it++)
 	{
 		CVBDrvInfosD3D	*vbHard= *it;
@@ -292,7 +292,7 @@ void CDriverD3D::profileVBHardAllocation(std::vector<std::string> &result)
 		{
 			uint	vSize= vbHard->VertexBufferPtr->getVertexSize();
 			uint	numVerts= vbHard->VertexBufferPtr->getNumVertices();
-			result.push_back(toString("  %16s: %4d ko (format: %d / numVerts: %d)", 
+			result.push_back(toString("  %16s: %4d ko (format: %d / numVerts: %d)",
 				vbHard->VertexBufferPtr->getName().c_str(), vSize*numVerts/1000, vSize, numVerts ));
 		}
 	}
@@ -300,35 +300,35 @@ void CDriverD3D::profileVBHardAllocation(std::vector<std::string> &result)
 
 // ***************************************************************************
 void CDriverD3D::profileIBAllocation(std::vector<std::string> &result)
-{	
+{
 	result.clear();
 	result.reserve(1000);
-	result.push_back(toString("Memory Allocated: %4d Ko in AGP / %4d Ko in VRAM", 
+	result.push_back(toString("Memory Allocated: %4d Ko in AGP / %4d Ko in VRAM",
 		getAvailableVertexAGPMemory()/1000, getAvailableVertexVRAMMemory()/1000 ));
 	result.push_back(toString("Num Index buffers : %d", _IBDrvInfos.size()));
-	
+
 	uint	totalMemUsed= 0;
 	for(TIBDrvInfoPtrList::iterator it = _IBDrvInfos.begin(); it != _IBDrvInfos.end(); ++it)
 	{
 		CIBDrvInfosD3D	*ib =  NLMISC::safe_cast<CIBDrvInfosD3D	*>(*it);
 		if(ib)
-		{			
+		{
 			uint	numIndex= ib->IndexBufferPtr->getNumIndexes();
 			totalMemUsed+= sizeof(uint32)*numIndex;
 		}
 	}
 	result.push_back(toString("Mem Used: %4d Ko", totalMemUsed/1000) );
-	
+
 	for(TIBDrvInfoPtrList::iterator it = _IBDrvInfos.begin(); it != _IBDrvInfos.end(); ++it)
-	{		
+	{
 		CIBDrvInfosD3D	*ib =  NLMISC::safe_cast<CIBDrvInfosD3D	*>(*it);
-		if(ib)		
-		{			
-			uint	numIndex= ib->IndexBufferPtr->getNumIndexes();			
-			result.push_back(toString("  %16s: %4d ko ", 
+		if(ib)
+		{
+			uint	numIndex= ib->IndexBufferPtr->getNumIndexes();
+			result.push_back(toString("  %16s: %4d ko ",
 				ib->IndexBufferPtr->getName().c_str(), sizeof(uint32) * numIndex));
 		}
-	}	
+	}
 }
 
 // ***************************************************************************

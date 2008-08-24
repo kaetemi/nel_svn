@@ -36,7 +36,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -108,7 +108,7 @@ void	CLodCharacterShapeBuild::compile(const std::vector<bool> &triangleSelection
 		triangleUV.V0= CVector(UVs[idx[0]].U*wOver, UVs[idx[0]].V*hOver, 0);
 		triangleUV.V1= CVector(UVs[idx[1]].U*wOver, UVs[idx[1]].V*hOver, 0);
 		triangleUV.V2= CVector(UVs[idx[2]].U*wOver, UVs[idx[2]].V*hOver, 0);
-		// compute corners pixelInfos 
+		// compute corners pixelInfos
 		CPixelInfo		pInf[3];
 		for(uint corner=0; corner<3; corner++)
 		{
@@ -283,8 +283,8 @@ void	CLodCharacterShapeBuild::serial(NLMISC::IStream &f)
 
 	f.serialCont(Vertices);
 	f.serialCont(SkinWeights);
-	f.serialCont(BonesNames);	
-	#ifdef NL_LOD_CHARACTER_INDEX16	
+	f.serialCont(BonesNames);
+	#ifdef NL_LOD_CHARACTER_INDEX16
 		// must serial 16 bits index as 32 bits
 		if (f.isReading())
 		{
@@ -303,7 +303,7 @@ void	CLodCharacterShapeBuild::serial(NLMISC::IStream &f)
 			std::copy(TriangleIndices.begin(), TriangleIndices.end(), saveVect.begin()); //  copy will do the job
 			f.serialCont(saveVect);
 		}
-	#else	
+	#else
 		f.serialCont(TriangleIndices);
 	#endif
 	if(ver>=1)
@@ -548,9 +548,9 @@ void			CLodCharacterShape::serial(NLMISC::IStream &f)
 	f.serialCont(_Bones);
 	f.serialCont(_BoneMap);
 	// nb : indices are always saved in 32 bits for compatibility
-	#ifndef NL_LOD_CHARACTER_INDEX16	
+	#ifndef NL_LOD_CHARACTER_INDEX16
 		f.serialCont(_TriangleIndices);
-	#else	
+	#else
 		if (f.isReading())
 		{
 			std::vector<uint32> savedIndices;
@@ -558,7 +558,7 @@ void			CLodCharacterShape::serial(NLMISC::IStream &f)
 			_TriangleIndices.resize(savedIndices.size());
 			for(uint k = 0; k < savedIndices.size(); ++k)
 			{
-				nlassert(savedIndices[k] <= 0xffff); 
+				nlassert(savedIndices[k] <= 0xffff);
 				_TriangleIndices[k] = (uint16) savedIndices[k];
 			}
 		}

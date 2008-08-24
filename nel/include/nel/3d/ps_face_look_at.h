@@ -28,7 +28,7 @@
 #include "nel/3d/ps_quad.h"
 #include "nel/3d/ps_iterator.h"
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -46,16 +46,16 @@ public:
      * animation must be set later by using setTextureScheme
 	 */
 	CPSFaceLookAt(CSmartPtr<ITexture> tex = NULL);
-	
+
 	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
-	
+
 	NLMISC_DECLARE_CLASS(CPSFaceLookAt);
-			
+
 	/** activate 'fake' motion blur (its done by deforming the quad)
 	 *  This is slower, however. This has no effect with rotated particles.
 	 *  \param coeff a coefficient for motion blur (too high value may give unrealistic result)
 	 *         0 deactivate the motion blur
-	 *  \param threshold : speed will be clamped below this value	 
+	 *  \param threshold : speed will be clamped below this value
 	 */
 	void activateMotionBlur(float coeff = 1.f, float threshold = 1.f)
 	{
@@ -89,15 +89,15 @@ public:
 	bool hasIndependantSizes(void) const { return _IndependantSizes; }
 
 	/// retrieve an interface to set the second size
-	CPSSizedParticle &getSecondSize(void) 
-	{ 
+	CPSSizedParticle &getSecondSize(void)
+	{
 		nlassert(_IndependantSizes);
 		return _SecondSize;
 	}
 
 	/// retrieve an interface to set the second size const version
 	const CPSSizedParticle &getSecondSize(void) const
-	{ 
+	{
 		nlassert(_IndependantSizes);
 		return _SecondSize;
 	}
@@ -113,7 +113,7 @@ public:
 	bool					getAlignOnZAxis() const { return _AlignOnZAxis; }
 protected:
 	friend class			CPSFaceLookAtHelper;	/// used for implementation only
-	float					_MotionBlurCoeff;	
+	float					_MotionBlurCoeff;
 	float					_Threshold; // motion blur theshold
 	// in this struct we defines the getSizeOwner method, which is abstract in the CPSSizedParticle clas
 	struct					CSecondSize : public CPSSizedParticle

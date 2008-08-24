@@ -37,7 +37,7 @@ using namespace std;
 using namespace NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -128,7 +128,7 @@ CTrianglePatch		*CVisualCollisionEntity::getPatchTriangleUnderUs(const CVector &
 
 	// find possible faces under the entity.
 	// =================
-	CVisualTileDescNode		*ptr= _LandscapeQuadGrid.select(pos); 
+	CVisualTileDescNode		*ptr= _LandscapeQuadGrid.select(pos);
 
 
 	// find the better face under the entity.
@@ -308,7 +308,7 @@ bool		CVisualCollisionEntity::triangleIntersect2DGround(CTriangle &tri, const CV
 	}*/
 
 	// Test if the face enclose the pos in X/Y plane.
-	// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will 
+	// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will
 	// add an overhead which is NOT negligeable compared to the following test.
 	float		a,b,c;		// 2D cartesian coefficients of line in plane X/Y.
 	// Line p0-p1.
@@ -338,7 +338,7 @@ bool		CVisualCollisionEntity::triangleIntersect2DCeil(CTriangle &tri, const CVec
 	CVector		&p2= tri.V2;
 
 	// Test if the face enclose the pos in X/Y plane.
-	// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will 
+	// NB: compute and using a BBox to do a rapid test is not a very good idea, since it will
 	// add an overhead which is NOT negligeable compared to the following test.
 	float		a,b,c;		// 2D cartesian coefficients of line in plane X/Y.
 	// Line p0-p1.
@@ -522,7 +522,7 @@ void		CVisualCollisionEntity::doComputeLandscape(const CVector &pos)
 
 
 // ***************************************************************************
-bool		CVisualCollisionEntity::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos, 
+bool		CVisualCollisionEntity::getStaticLightSetup(NLMISC::CRGBA sunAmbient, const CVector &pos,
 	std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient)
 {
 	// Get Patch Triangle Under Us
@@ -543,7 +543,7 @@ bool		CVisualCollisionEntity::getStaticLightSetup(NLMISC::CRGBA sunAmbient, cons
 		sunContribution= _Owner->_Landscape->getLumel(tri->PatchId, uv);
 		// see getStaticLightSetup.
 		sunContribution= _Owner->_SunContributionLUT[sunContribution];
-		
+
 		// append any lights of interest.
 		_Owner->_Landscape->appendTileLightInfluences(tri->PatchId, uv, pointLightList);
 

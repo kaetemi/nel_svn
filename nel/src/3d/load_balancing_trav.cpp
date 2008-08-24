@@ -39,7 +39,7 @@ using namespace NLMISC;
 #define	NL3D_DEFAULT_LOADBALANCING_VALUE_SMOOTHER	50
 #define	NL3D_LOADBALANCING_SMOOTHER_MAX_RATIO		1.1f
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************

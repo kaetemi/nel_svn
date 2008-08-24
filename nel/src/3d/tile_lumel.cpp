@@ -27,14 +27,14 @@
 
 using namespace NLMISC;
 
-namespace NL3D 
+namespace NL3D
 {
 
 
 // ***************************************************************************
 void CTileLumel::createUncompressed (uint8 interpolated, uint8 shaded)
 {
-	// Shading 
+	// Shading
 	Shaded=shaded;
 
 	// Same color ?

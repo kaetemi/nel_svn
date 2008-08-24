@@ -35,7 +35,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // 0.5 cm of precision
@@ -49,7 +49,7 @@ CCluster::CCluster ()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	FatherVisible = VisibleFromFather = false;
 	FatherAudible = AudibleFromFather = false;
 	Father = NULL;
@@ -76,7 +76,7 @@ CCluster::~CCluster()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	unlinkFromClusterTree();
 }
 
@@ -125,7 +125,7 @@ void CCluster::unlinkFromParent()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// unlink from father sons list
 	if (Father)
 	{
@@ -141,7 +141,7 @@ void CCluster::unlinkSons()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	// tells all sons that they have no more father
 	for(uint k = 0; k < Children.size(); ++k)
 	{
@@ -162,9 +162,9 @@ void CCluster::unlinkFromClusterTree()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	unlinkFromParent();
-	unlinkSons();	
+	unlinkSons();
 }
 
 
@@ -202,7 +202,7 @@ bool CCluster::makeVolume (const CVector& p1, const CVector& p2, const CVector& 
 	p.make (p1, p2, p3);
 	p.normalize();
 	_LocalVolume.push_back (p);
-	// Build BBox	
+	// Build BBox
 	if (_LocalVolume.size() == 1)
 		_LocalBBox.setCenter(p1);
 	else
@@ -287,12 +287,12 @@ void CCluster::serial (NLMISC::IStream&f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	sint version = f.serialVersion (3);
 
 	if (version >= 1)
 		f.serial (Name);
-	
+
 	f.serialCont (_LocalVolume);
 	f.serial (_LocalBBox);
 	f.serial (FatherVisible);
@@ -329,7 +329,7 @@ void CCluster::serial (NLMISC::IStream&f)
 				envFxName = "";
 			f.serial(envFxName);
 		}
-		
+
 //		nldebug("Cluster %s, sound group [%s]", Name.c_str(), CStringMapper::unmap(_SoundGroupId).c_str());
 	}
 
@@ -522,14 +522,14 @@ void CCluster::applyMatrix(const NLMISC::CMatrix &m)
 
 	// Transform the volume
 	for (i = 0; i < _LocalVolume.size(); ++i)
-	{	
+	{
 		_Volume[i] = _Volume[i] * invM;
 		_LocalVolume[i] = _LocalVolume[i] * invM;
 	}
 
-	// Transform the bounding boxes	
+	// Transform the bounding boxes
 	_BBox = NLMISC::CAABBox::transformAABBox(m, _BBox);
-	_LocalBBox = NLMISC::CAABBox::transformAABBox(m, _LocalBBox);	
+	_LocalBBox = NLMISC::CAABBox::transformAABBox(m, _LocalBBox);
 }
 
 

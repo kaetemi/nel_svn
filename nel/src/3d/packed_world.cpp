@@ -90,7 +90,7 @@ bool CPackedWorld::raytrace(const NLMISC::CVector &start, const NLMISC::CVector 
 {
 	if (_ZoneGrid.empty()) return false;
 	++_RaytraceCounter;
-	float bestDist = FLT_MAX;	
+	float bestDist = FLT_MAX;
 	NLMISC::CVector bestNormal;
 	CVector currEnd = end;
 	CVector currInter;
@@ -127,7 +127,7 @@ bool CPackedWorld::raytrace(const NLMISC::CVector &start, const NLMISC::CVector 
 						bestNormal = normalTmp;
 						bestDist = dist;
 						inter = currInter;
-						currEnd = currInter; // during search, just seek hit that are nearest						
+						currEnd = currInter; // during search, just seek hit that are nearest
 					}
 				}
 				_Zones[currZoneList[k]].RaytraceCounter = _RaytraceCounter;
@@ -142,7 +142,7 @@ bool CPackedWorld::raytrace(const NLMISC::CVector &start, const NLMISC::CVector 
 			return true;
 		}
 	}
-	while (CGridTraversal::traverse(start2f, dir2f, currX, currY));	
+	while (CGridTraversal::traverse(start2f, dir2f, currX, currY));
 	return false;
 }
 
@@ -166,12 +166,12 @@ void CPackedWorld::serialZoneNames(NLMISC::IStream &f) throw(NLMISC::EStream)
 
 //*************************************************************************************************
 void CPackedWorld::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
-{	
+{
 	serialZoneNames(f);
 	f.serialCont(_Zones);
 	f.serial(_ZoneGrid);
 	f.serial(_ZoneMinX);
-	f.serial(_ZoneMinY);	
+	f.serial(_ZoneMinY);
 }
 
 //*************************************************************************************************

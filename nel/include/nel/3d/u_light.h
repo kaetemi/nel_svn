@@ -29,7 +29,7 @@
 #include "nel/misc/vector.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 // ***************************************************************************
@@ -43,16 +43,16 @@ class ULight
 {
 public:
 	// Three modes for the light
-	enum TLightMode 
-	{ 
+	enum TLightMode
+	{
 		// The light is directional.
-		DirectionalLight, 
-		
+		DirectionalLight,
+
 		// The light is a point.
-		PointLight, 
+		PointLight,
 
 		// The light is a spotlight with a cone.
-		SpotLight 
+		SpotLight
 	};
 
 	/**
@@ -68,16 +68,16 @@ public:
 	/// Quick setup a directional light
 	virtual void setupDirectional (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& direction,
 							float constant=1, float linear=0, float quadratic=0) = 0;
-	
+
 	/// Quick setup a point light
-	virtual void setupPointLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position, 
+	virtual void setupPointLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position,
 						const NLMISC::CVector& direction, float constant=1, float linear=0, float quadratic=0) = 0;
 
 	/// Quick setup a spotlight
-	virtual void setupSpotLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position, 
+	virtual void setupSpotLight (const NLMISC::CRGBA& ambiant, const NLMISC::CRGBA& diffuse, const NLMISC::CRGBA& specular, const NLMISC::CVector& position,
 						const NLMISC::CVector& direction, float exponent, float cutoff, float constant=1, float linear=0, float quadratic=0) = 0;
 
-	/** 
+	/**
 	  * Setup attenuation with begin and end attenuation distance.
 	  *
 	  * \param farAttenuationBegin is the distance of the begin of the attenuation (attenuation == 0.9f)
@@ -85,7 +85,7 @@ public:
 	  */
 	virtual void setupAttenuation (float farAttenuationBegin, float farAttenuationEnd) = 0;
 
-	/** 
+	/**
 	  * Set no attenuation.
 	  *
 	  * The light will not use attenuation.
@@ -93,10 +93,10 @@ public:
 	  */
 	virtual void setNoAttenuation () = 0;
 
-	/** 
+	/**
 	  * Setup spot exponent with angle of the hotspot.
 	  *
-	  * \param hotSpotAngle is the angle in radian between the axis of the spot and the vector from light 
+	  * \param hotSpotAngle is the angle in radian between the axis of the spot and the vector from light
 	  * where attenuation is == 0.9.
 	  */
 	virtual void setupSpotExponent (float hotSpotAngle) = 0;
@@ -111,7 +111,7 @@ public:
 	  * Set the light mode.
 	  */
 	virtual void setMode (ULight::TLightMode mode) = 0;
-	
+
 	/**
 	  * Set the ambiant color of the light.
 	  */
@@ -151,7 +151,7 @@ public:
 	  * Set constant attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual void setConstantAttenuation (float constant) = 0;
@@ -160,7 +160,7 @@ public:
 	  * Set linear attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual void setLinearAttenuation (float linear) = 0;
@@ -169,7 +169,7 @@ public:
 	  * Set quadratic attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual void setQuadraticAttenuation (float quadratic) = 0;
@@ -223,7 +223,7 @@ public:
 	  * Get constant attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual float getConstantAttenuation () const = 0;
@@ -232,7 +232,7 @@ public:
 	  * Get linear attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual float getLinearAttenuation () const = 0;
@@ -241,7 +241,7 @@ public:
 	  * Get quadratic attenuation.
 	  *
 	  * The intensity of the light is attenuated this way:
-	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION + 
+	  * light_intensity = light_intensity / ( CONSTANT_ATTENUATION + vertex_light_distance * LINEAR_ATTENUATION +
 	  *	vertex_light_distance * vertex_light_distance * QUADRATIC_ATTENUATION );
 	  */
 	virtual float getQuadraticAttenuation () const = 0;

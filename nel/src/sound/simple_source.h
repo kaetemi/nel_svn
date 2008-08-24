@@ -57,15 +57,15 @@ public:
 	virtual ~CSimpleSource();
 
 /*	/// Static init (call at the very beginning)
-	static void						init() 
-	{ 
-		//NLMISC_REGISTER_CLASS(CSimpleSource); 
+	static void						init()
+	{
+		//NLMISC_REGISTER_CLASS(CSimpleSource);
 	}
 */
-	
+
 	/// Return the sound binded to the source (or NULL if there is no sound)
 	virtual TSoundId				getSound()									{ return _Sound; }
-	/// Return the simple sound bound to the source (or NULL). 
+	/// Return the simple sound bound to the source (or NULL).
 	CSimpleSound					*getSimpleSound();
 
 	/// \name Playback control
@@ -131,7 +131,7 @@ public:
 	//NLMISC_DECLARE_CLASS(CSimpleSource);
 
 	virtual IBuffer					*getBuffer();
-	
+
 private:
 	// Mixer event call when doing muted play
 	virtual void onEvent();

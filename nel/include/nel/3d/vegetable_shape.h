@@ -29,7 +29,7 @@
 #include "nel/3d/index_buffer.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -66,7 +66,7 @@ public:
 	bool				PreComputeLighting;
 	/// If this shape must be 2Sided
 	bool				DoubleSided;
-	/** If this shape must be AlphaBlended (and hence ZSorted). 
+	/** If this shape must be AlphaBlended (and hence ZSorted).
 	 *	NB: valid ONLY if (!Lighted || PreComputeLighting) && DoubleSided.
 	 */
 	bool				AlphaBlend;
@@ -132,7 +132,7 @@ public:
 	bool					BestSidedPreComputeLighting;
 	CVegetableShapeBuild::TBendCenterMode			BendCenterMode;
 	/** VertexBuffer of this Shape, ready to be transformed and copied into vegetable manager
-	 *	Format is Pos/Normal/Tex0/Tex1 (no Normal if !Lighted). where Tex1.U==BendWeigth 
+	 *	Format is Pos/Normal/Tex0/Tex1 (no Normal if !Lighted). where Tex1.U==BendWeigth
 	 */
 	CVertexBuffer			VB;
 	/// list of triangles index

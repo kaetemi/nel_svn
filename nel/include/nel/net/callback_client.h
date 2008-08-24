@@ -54,7 +54,7 @@ public:
 
 	/// Force to send all data pending in the send queue. hostid must be InvalidSockId here. See comment in CCallbackNetBase.
 	bool	flush (TSockId hostid = InvalidSockId, uint *nbBytesRemaining=NULL);
-	
+
 	/** Updates the network (call this method evenly).
 	 * More info about timeout and mintime in the code of CCallbackNetBase::baseUpdate().
 	 */
@@ -70,7 +70,7 @@ public:
 	 * event has reached the front of the receive queue, just before calling the disconnection callback
 	 * if there is one)
 	 */
-	virtual bool	connected () const { return CBufClient::connected (); } 
+	virtual bool	connected () const { return CBufClient::connected (); }
 
 	virtual const CInetAddress&	hostAddress( TSockId hostid ) { return remoteAddress(); }
 
@@ -93,7 +93,7 @@ public:
 	void displaySendQueueStat (NLMISC::CLog *log = NLMISC::InfoLog, TSockId destid = InvalidSockId) { CBufClient::displaySendQueueStat(log); }
 
 	void displayThreadStat (NLMISC::CLog *log = NLMISC::InfoLog) { CBufClient::displayThreadStat(log); }
-	
+
 private:
 
 	/// These function is public in the base class and put it private here because user cannot use it in layer 2
@@ -109,7 +109,7 @@ private:
 #ifdef USE_MESSAGE_RECORDER
 	virtual bool replaySystemCallbacks();
 #endif
-	
+
 	bool LockDeletion;
 };
 

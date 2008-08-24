@@ -36,7 +36,7 @@
 #include <map>
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -104,7 +104,7 @@ public:
  * Such a texture may return a Unique Name for sharing. If the driver already has this texture, it will reuse it.
  * As a direct impact, you cannot invalidate part of the textures with shared texture. This is logic, since the Unique
  * sharname of the texture must represent all of it.
- * 
+ *
  */
 /* *** IMPORTANT ********************
  * *** IF YOU MODIFY THE STRUCTURE OF THIS CLASS, PLEASE INCREMENT IDriver::InterfaceVersion TO INVALIDATE OLD DRIVER DLL
@@ -112,7 +112,7 @@ public:
  */
 class ITexture : public CBitmap, public NLMISC::CRefCount, public NLMISC::IStreamable
 {
-public:		
+public:
 	NL_USES_DEFAULT_ARENA_OBJECT_ALLOCATOR // for fast alloc
 	// Those enums MUST be the same than in UTexture!!
 	enum	TWrapMode
@@ -235,10 +235,10 @@ public:
      *
 	 * \see isAllInvalidated(), generate(), touchRect(), touched(), _ListInvalidRect
 	 */
-	void	touch() 
-	{ 
-		_ListInvalidRect.clear (); 
-		_Touched=true; 
+	void	touch()
+	{
+		_ListInvalidRect.clear ();
+		_Touched=true;
 		_GoodGenerate= false;
 	}
 
@@ -252,8 +252,8 @@ public:
      *
 	 * \see isAllInvalidated(), generate(), touch(), touched(), _ListInvalidRect
 	 */
-	void	touchRect(const NLMISC::CRect& rect) 
-	{ 
+	void	touchRect(const NLMISC::CRect& rect)
+	{
 		// The texture must not support sharing....
 		nlassert(!supportSharing());
 		nlassert(!isTextureCube());
@@ -261,52 +261,52 @@ public:
 		if (!isAllInvalidated ())
 		{
 			// Add the region to invalidate list
-			_ListInvalidRect.push_back (rect); 
+			_ListInvalidRect.push_back (rect);
 			// Touch flag
-			_Touched=true; 
+			_Touched=true;
 		}
 
 		_GoodGenerate= false;
 	}
 
-	
-	/** 
+
+	/**
 	 * Return whether texture can be released. If it returns true, the driver will release the texture
 	 * after generate it and upload it into the videomemory by calling release(). If it returns false,
 	 * the driver won't release the texture.
 	 *
 	 * \return true if texture can be released, false else
 	 * \see setReleasable(), generate()
-	 */	
+	 */
 	bool getReleasable() const { return _Releasable; }
 
 
-	/** 
+	/**
 	 * Set if texture can be released
-	 * If it is true, the driver will release the texture after generating it and upload it into the 
+	 * If it is true, the driver will release the texture after generating it and upload it into the
 	 * videomemory by calling release(). If it is false, the driver won't release the texture.
      *
 	 * \see getReleasable(), generate()
 	 * \param true if texture can be released, false else
-	 */	
+	 */
 	void setReleasable(bool r) { _Releasable = r; }
 
-	/** 
+	/**
 	 * Generate the texture pixels.
-	 * 
-	 * This method is called by the driver when it needs to generate pixels of the texture. If the 
+	 *
+	 * This method is called by the driver when it needs to generate pixels of the texture. If the
 	 * texture is used for the first time or if it is touched, the driver will call this method.
 	 * For exemple, a texture file will load the bitmap in this method.
 	 *
 	 * If the invalidate rect list is empty, generate() rebuild all the texture.
-	 * If the invalidate rect list is not empty, generate() rebuilds only the invalidate rectangles 
+	 * If the invalidate rect list is not empty, generate() rebuilds only the invalidate rectangles
 	 * in the list.
 	 *
-	 * Don't clear the touch flag or the invalid rectangle list until updating the texture in generate(). 
+	 * Don't clear the touch flag or the invalid rectangle list until updating the texture in generate().
 	 * It's the generate()'s caller jobs.
 	 *
 	 * After generation, if the texture is releasable, the driver will release the texture by calling
-	 * release(). 
+	 * release().
 	 *
 	 * NB: a flag is maintained to see if the generated bitmap is coherent with texture description (see touch*()).
 	 * So if you do {generate(); generate();}, you only get 1 real bitmap generation...
@@ -319,7 +319,7 @@ public:
 	 *
 	 * \see isAllInvalidated(), touch(), touched(), touchRect(), clearTouched(), _ListInvalidRect
 	 * \see getReleasable(), setReleasable()
-	 */	
+	 */
 	void generate(bool async = false)
 	{
 		if(!_GoodGenerate)
@@ -335,26 +335,26 @@ public:
 	 */
 	void validateGenerateFlag() {_GoodGenerate=true;}
 
-	/** 
+	/**
 	 * Release the texure (free memory)
-	 */	
+	 */
 	virtual void release() { reset(); _GoodGenerate= false; }
 
-	/** 
+	/**
 	 * Does this texture support sharing system.
-	 */	
+	 */
 	virtual bool			supportSharing() const {return false;}
 
-	/** 
+	/**
 	 * Return the Unique ident/name of the texture, used for Driver sharing caps.
 	 * Deriver should add a prefix for their texture type. eg "file::pipoland", "noise::4-4-2" etc....
-	 */	
+	 */
 	virtual std::string		getShareName() const {return std::string();}
 
-	/** 
+	/**
 	 * Tells if the texture has been setuped by the driver.
-	 */	
-	bool	setupedIntoDriver() const 
+	 */
+	bool	setupedIntoDriver() const
 	{
 		return TextureDrvShare!=NULL;
 	}
@@ -362,7 +362,7 @@ public:
 	/// Release the Driver info for this texture (if any). Call it with care.
 	void	releaseDriverSetup();
 
-	/// Does this texture allow the driver to degrade 
+	/// Does this texture allow the driver to degrade
 	virtual bool allowDegradation() const { return false; }
 
 	/// serial ITexture basic infos (clamp ...).
@@ -383,11 +383,11 @@ public:
 
 
 
-	
+
 	/// Cubic textures.
 	// @{
 		/// Does this texture is a cube texture
-		virtual bool isTextureCube() const { return false; }	
+		virtual bool isTextureCube() const { return false; }
 	// @}
 
 	// is this texture a bumpmap ?
@@ -395,7 +395,7 @@ public:
 
 	// is this texture a bloom texture ?
 	virtual bool isBloomTexture() const { return false; }
-	
+
 	// For Texture profiling. The smartPtr is kept (NULL default)
 	void	setTextureCategory(NLMISC::CSmartPtr<CTextureCategory> &textCat) {_TextureCategory= textCat;}
 
@@ -411,7 +411,7 @@ public:
 
 	// get the texture category
 	CTextureCategory	*getTextureCategory() const {return _TextureCategory;}
-	
+
 //****************************
 // Private part.
 protected:
@@ -420,16 +420,16 @@ protected:
 	bool		_FilterOrWrapModeTouched : 1;
 
 
-	/** 
+	/**
 	 * Generate the texture pixels.
-	 * 
+	 *
 	 * If the invalidate rect list is empty, generate() must rebuild all the texture.
-	 * If the invalidate rect list is not empty, generate() rebuilds only the invalidate rectangles 
+	 * If the invalidate rect list is not empty, generate() rebuilds only the invalidate rectangles
 	 * in the list.
 	 *
 	 * \see isAllInvalidated(), touch(), touched(), touchRect(), clearTouched(), _ListInvalidRect, generate()
 	 * \see getReleasable(), setReleasable()
-	 */	
+	 */
 	virtual void doGenerate(bool async = false) = 0;
 
 
@@ -457,9 +457,9 @@ public:
 	std::list<NLMISC::CRect>	_ListInvalidRect;
 
 
-	/** 
+	/**
 	 * Return true if ALL the texture is invalidate, else return false.
-	 */	
+	 */
 	bool					isAllInvalidated () const
 	{
 		return  _Touched&&(_ListInvalidRect.begin()==_ListInvalidRect.end());
@@ -486,9 +486,9 @@ public:
 	 *
 	 * \see isAllInvalidated(), generate(), touch(), touched(), touchRect(), _ListInvalidRect
 	 */
-	void	clearTouched(void) 
-	{ 
-		_Touched=false; 
+	void	clearTouched(void)
+	{
+		_Touched=false;
 		_ListInvalidRect.clear();
 	}
 
@@ -511,7 +511,7 @@ inline void	ITexture::setWrapT(TWrapMode mode)
 {
 	if (_WrapT == mode) return;
 	_WrapT = mode;
-	_FilterOrWrapModeTouched = true;	
+	_FilterOrWrapModeTouched = true;
 }
 
 } // NL3D

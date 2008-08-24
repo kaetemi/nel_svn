@@ -73,7 +73,7 @@ class CInstanceGroup : public NLMISC::CRefCount
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 public:
 
 	/// Should Never be changed
@@ -113,7 +113,7 @@ public:
 		/// If false, the shape is load but hid by default (NB: can be used for camera collision)
 		bool	Visible;
 
-		/// Precomputed Lighting. 
+		/// Precomputed Lighting.
 		// If true (false by default), then the instance don't cast shadow (used by ig_lighter.exe).
 		bool	DontCastShadow;
 		// If true (false by default), then the instance's lighting will not be precomputed.
@@ -127,7 +127,7 @@ public:
 		 *	If 0xFF => take Ambient of the sun.
 		 */
 		uint8	LocalAmbientId;
-		/** if true (false by default), the instance don't cast shadow, but ONLY FOR ig_lighter.exe (ig_lighter_lib) 
+		/** if true (false by default), the instance don't cast shadow, but ONLY FOR ig_lighter.exe (ig_lighter_lib)
 		 *	(zone_lighter and zone_ig_lighter ignore it).
 		 *	This is a special trick for the "Matis Serre" where the exterior mesh cast shadow in the interior, but
 		 *	is not visible in the interior in realTime because of cluster clipping.... omg :(
@@ -180,11 +180,11 @@ public:
 
 	// Get a mutable ref on the instance
 	CInstance				&getInstance(uint instanceNb);
-	
+
 	// Get the ig global pos
 	const NLMISC::CVector &getGlobalPos() const { return _GlobalPos; }
 
-	/** Get the instance added to the scene. NULL if instanceNb too big, if addToScene not called, 
+	/** Get the instance added to the scene. NULL if instanceNb too big, if addToScene not called,
 	 *	or if instance is DontAddToScene
 	 */
 	CTransformShape			*getTransformShape(uint instanceNb) const;
@@ -199,25 +199,25 @@ public:
 	/** Build the group
 	 *	Build with an empty list of light
 	 */
-	void build (const CVector &vGlobalPos, const TInstanceArray& array, 
-				const std::vector<CCluster>& Clusters, 
+	void build (const CVector &vGlobalPos, const TInstanceArray& array,
+				const std::vector<CCluster>& Clusters,
 				const std::vector<CPortal>& Portals);
 
 	/** Build the group
 	 *	Build also the list of light. NB: sort by LightGroupName the array.
 	 *	Give also a ptr on a retrieverGridMap to build surfaces (if not NULL).
 	 */
-	void build (const CVector &vGlobalPos, const TInstanceArray& array, 
-				const std::vector<CCluster>& Clusters, 
+	void build (const CVector &vGlobalPos, const TInstanceArray& array,
+				const std::vector<CCluster>& Clusters,
 				const std::vector<CPortal>& Portals,
 				const std::vector<CPointLightNamed> &pointLightList,
-				const CIGSurfaceLight::TRetrieverGridMap *retrieverGridMap= NULL, 
+				const CIGSurfaceLight::TRetrieverGridMap *retrieverGridMap= NULL,
 				float igSurfaceLightCellSize= 0);
 
 	/** Retreive group information. NB: data may have changed, eg: order of lights.
 	 */
-	void retrieve (CVector &vGlobalPos, TInstanceArray& array, 
-				std::vector<CCluster>& Clusters, 
+	void retrieve (CVector &vGlobalPos, TInstanceArray& array,
+				std::vector<CCluster>& Clusters,
 				std::vector<CPortal>& Portals,
 				std::vector<CPointLightNamed> &pointLightList) const;
 
@@ -280,7 +280,7 @@ public:
 	/// Get all lights (lightmaps) from an instance group
 	void getLights (std::set<std::string> &LightNames);
 
-	
+
 
 	/**
 	 * BlendShape part
@@ -328,7 +328,7 @@ public:
 
 	/// Get the position of the IG
 	CVector getPos ();
-	
+
 	/// Get the rotation of the IG
 	CQuat getRotQuat ();
 
@@ -351,19 +351,19 @@ public:
 	uint								 getNumPointLights() const { return _PointLightArray.getPointLights().size(); }
 
 	/// Get a mutable ref on a point light named
-	CPointLightNamed					&getPointLightNamed(uint index) 
-	{ 
-		return _PointLightArray.getPointLights()[index]; 
-	} 
+	CPointLightNamed					&getPointLightNamed(uint index)
+	{
+		return _PointLightArray.getPointLights()[index];
+	}
 
 	/// set the Light factor for all pointLights "lightGroupName".
 	void			setPointLightFactor(const CScene &scene);
 
 	/// See CIGSurfaceLight::getStaticLightSetup()
-	bool			getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos, 
+	bool			getStaticLightSetup(NLMISC::CRGBA sunAmbient, uint retrieverIdentifier, sint surfaceId, const CVector &localPos,
 		std::vector<CPointLightInfluence> &pointLightList, uint8 &sunContribution, NLMISC::CRGBA &localAmbient)
 	{
-		return _IGSurfaceLight.getStaticLightSetup(sunAmbient, retrieverIdentifier, surfaceId, localPos, 
+		return _IGSurfaceLight.getStaticLightSetup(sunAmbient, retrieverIdentifier, surfaceId, localPos,
 			pointLightList, sunContribution, localAmbient);
 	}
 
@@ -373,7 +373,7 @@ public:
 	/// Setuped at export, tells if the ig is touched by the sun. true by default.
 	void			enableRealTimeSunContribution(bool enable);
 	bool			getRealTimeSunContribution() const {return _RealTimeSunContribution;}
-	
+
 
 	// @}
 
@@ -401,7 +401,7 @@ public:
 	CInstanceGroup	*_ClusterSystemForInstances;
 	// The cluster system parent of us (linkToParent() call)
 	CInstanceGroup	*_ParentClusterSystem;
-	
+
 	NLMISC::CVector _GlobalPos;
 
 

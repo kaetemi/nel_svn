@@ -46,7 +46,7 @@ namespace NLMISC
   */
 class CDummyWindow
 {
-public:	
+public:
 	CDummyWindow();
 	/** Init a dummy window, with an optionnal message handling procedure
 	  * \return true on success

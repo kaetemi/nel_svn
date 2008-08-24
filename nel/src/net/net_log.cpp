@@ -105,7 +105,7 @@ void CNetLog::input( const char *srchost, uint8 msgnum, const char *desthost )
 /*	displayRawNL( "##%"NL_I64"d#%s#%hu#%s#%s#", (CUniTime::Sync?CUniTime::getUniTime():(TTime)0),
 		  srchost, msgnum, _ProcessName.c_str(), desthost );
 */
-	displayRawNL( "##0#%s#%hu#%s#%s#", 
+	displayRawNL( "##0#%s#%hu#%s#%s#",
 		  srchost, msgnum, (*_ProcessName).c_str(), desthost );
 }
 

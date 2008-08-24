@@ -80,10 +80,10 @@ inline CPlaneBasis PSBinOpSubtract(CPlaneBasis p1, CPlaneBasis p2)
 template <>
 inline uint32 PSBinOpSubtract(uint32 lhs, uint32 rhs)
 {
-	return rhs > lhs ? 0 : lhs - rhs; // avoid overflow	
+	return rhs > lhs ? 0 : lhs - rhs; // avoid overflow
 }
 
- 
+
 template <>
 inline NLMISC::CRGBA PSBinOpModulate(NLMISC::CRGBA t1, NLMISC::CRGBA t2)
 {
@@ -119,7 +119,7 @@ inline NLMISC::CRGBA PSBinOpSubtract(NLMISC::CRGBA t1, NLMISC::CRGBA t2)
   * They're useful to get the correct min / max values depending on the type
   */
 
-	
+
 //***********************************************************************
 template <>
 inline uint32 CPSAttribMakerBinOp<uint32>::getMinValue(void) const
@@ -187,9 +187,9 @@ inline sint32 CPSAttribMakerBinOp<sint32>::getMinValue(void) const
 			sint32 max0 = _Arg[0]->getMaxValue();
 			sint32 max1 = _Arg[1]->getMaxValue();
 			return NLMISC::minof(min0 * min1, min0 * max1, max0 * min1, max0 * max1);
-		}			
+		}
 		case	CPSBinOp::add:		  return _Arg[0]->getMinValue() + _Arg[1]->getMinValue();
-		case	CPSBinOp::subtract:   return _Arg[0]->getMinValue() - _Arg[1]->getMaxValue();				
+		case	CPSBinOp::subtract:   return _Arg[0]->getMinValue() - _Arg[1]->getMaxValue();
 		default:
 			nlassert(0);
 		break;
@@ -214,9 +214,9 @@ inline sint32 CPSAttribMakerBinOp<sint32>::getMaxValue(void) const
 			sint32 max0 = _Arg[0]->getMaxValue();
 			sint32 max1 = _Arg[1]->getMaxValue();
 			return NLMISC::maxof(min0 * min1, min0 * max1, max0 * min1, max0 * max1);
-		}			
+		}
 		case	CPSBinOp::add:		  return _Arg[0]->getMaxValue() + _Arg[1]->getMaxValue();
-		case	CPSBinOp::subtract:   return _Arg[0]->getMaxValue() - _Arg[1]->getMinValue();				
+		case	CPSBinOp::subtract:   return _Arg[0]->getMaxValue() - _Arg[1]->getMinValue();
 		default:
 			nlassert(0);
 		break;
@@ -241,9 +241,9 @@ inline float CPSAttribMakerBinOp<float>::getMinValue(void) const
 			float max0 = _Arg[0]->getMaxValue();
 			float max1 = _Arg[1]->getMaxValue();
 			return NLMISC::minof(min0 * min1, min0 * max1, max0 * min1, max0 * max1);
-		}			
+		}
 		case	CPSBinOp::add:		  return _Arg[0]->getMinValue() + _Arg[1]->getMinValue();
-		case	CPSBinOp::subtract:   return _Arg[0]->getMinValue() - _Arg[1]->getMaxValue();				
+		case	CPSBinOp::subtract:   return _Arg[0]->getMinValue() - _Arg[1]->getMaxValue();
 		default:
 			nlassert(0);
 		break;
@@ -268,9 +268,9 @@ inline float CPSAttribMakerBinOp<float>::getMaxValue(void) const
 			float max0 = _Arg[0]->getMaxValue();
 			float max1 = _Arg[1]->getMaxValue();
 			return NLMISC::maxof(min0 * min1, min0 * max1, max0 * min1, max0 * max1);
-		}			
+		}
 		case	CPSBinOp::add:		  return _Arg[0]->getMaxValue() + _Arg[1]->getMaxValue();
-		case	CPSBinOp::subtract:   return _Arg[0]->getMaxValue() - _Arg[1]->getMinValue();				
+		case	CPSBinOp::subtract:   return _Arg[0]->getMaxValue() - _Arg[1]->getMinValue();
 		default:
 			nlassert(0);
 		break;
@@ -288,14 +288,14 @@ inline float CPSAttribMakerBinOp<float>::getMaxValue(void) const
 /// copy ctor
 template <class T>
 inline CPSAttribMakerBinOp<T>::CPSAttribMakerBinOp(const CPSAttribMakerBinOp &other) : CPSAttribMaker<T>(other) // parent copy ctor
-{	
+{
 	std::auto_ptr<CPSAttribMaker<T> > a0(NLMISC::safe_cast<CPSAttribMaker<T> *>(other._Arg[0]->clone()))
-									, a1(NLMISC::safe_cast<CPSAttribMaker<T> *>(other._Arg[1]->clone()));	
+									, a1(NLMISC::safe_cast<CPSAttribMaker<T> *>(other._Arg[1]->clone()));
 	this->_Op =		other._Op;
 	this->_Size =   other._Size;
 	this->_MaxSize =  other._MaxSize;
 	this->_Arg[0] = a0.release();
-	this->_Arg[1] = a1.release();	
+	this->_Arg[1] = a1.release();
 }
 
 //=================================================================================================================
@@ -308,7 +308,7 @@ inline CPSAttribMakerBinOp<T>::CPSAttribMakerBinOp() : _Op(CPSBinOp::selectArg1)
 
 //=================================================================================================================
 template <class T>
-inline void CPSAttribMakerBinOp<T>::clean(void) 
+inline void CPSAttribMakerBinOp<T>::clean(void)
 {
 	delete _Arg[0];
 	delete _Arg[1];
@@ -316,7 +316,7 @@ inline void CPSAttribMakerBinOp<T>::clean(void)
 
 //=================================================================================================================
 template <class T>
-inline CPSAttribMakerBinOp<T>::~CPSAttribMakerBinOp() 
+inline CPSAttribMakerBinOp<T>::~CPSAttribMakerBinOp()
 {
 	clean();
 }
@@ -324,8 +324,8 @@ inline CPSAttribMakerBinOp<T>::~CPSAttribMakerBinOp()
 //=================================================================================================================
 /// cplane basis template specialization for supportOp
 template <>
-inline bool CPSAttribMakerBinOp<CPlaneBasis>::supportOp(CPSBinOp::BinOp op) 
-{ 
+inline bool CPSAttribMakerBinOp<CPlaneBasis>::supportOp(CPSBinOp::BinOp op)
+{
 	return  (op == CPSBinOp::selectArg1 || op == CPSBinOp::selectArg2 || op == CPSBinOp::modulate);
 }
 
@@ -381,7 +381,7 @@ inline T CPSAttribMakerBinOp<T>::get(const CPSEmitterInfo &info)
 		break;
 	default: break;
 	}
-	
+
 	nlstop;
 	return T();
 }
@@ -443,7 +443,7 @@ inline void   *CPSAttribMakerBinOp<T>::makePrivate(T *buf1,
 {
 	uint8 *dest = (uint8 *) tab;
 	uint leftToDo = numAttrib, toProcess;
-	nlassert(_Arg[0] && _Arg[1]);	
+	nlassert(_Arg[0] && _Arg[1]);
 	switch (_Op)
 	{
 		case CPSBinOp::selectArg1:
@@ -451,7 +451,7 @@ inline void   *CPSAttribMakerBinOp<T>::makePrivate(T *buf1,
 			break;
 		case CPSBinOp::selectArg2:
 			return _Arg[1]->make(loc, startIndex, tab, stride, numAttrib, allowNoCopy, srcStep, forceClampEntry);
-			break;		
+			break;
 		default: break;
 	}
 
@@ -462,7 +462,7 @@ inline void   *CPSAttribMakerBinOp<T>::makePrivate(T *buf1,
 		toProcess = leftToDo > PSBinOpBufSize ? PSBinOpBufSize : leftToDo;
 		T *src1 = (T *) _Arg[0]->make(loc, startIndex + (numAttrib - leftToDo), &buf1[0], sizeof(T), toProcess, true, srcStep, forceClampEntry);
 		T *src2 = (T *) _Arg[1]->make(loc, startIndex + (numAttrib - leftToDo), &buf2[0], sizeof(T), toProcess, true, srcStep, forceClampEntry);
-		MakePrivate(dest, src1, src2, stride, toProcess, _Op);		
+		MakePrivate(dest, src1, src2, stride, toProcess, _Op);
 		leftToDo -= toProcess;
 	}
 
@@ -498,7 +498,7 @@ void Make4Private(uint8 * dest, const NLMISC::CRGBA *src1, const NLMISC::CRGBA *
 template <class T>
 inline void Make4Private(uint8 * dest, const T *src1, const T *src2, uint32 stride, uint32 numAttrib, CPSBinOp::BinOp op)
 {
-	const uint stride2 = stride << 1, stride3 = stride + stride2, stride4 = stride2 << 1; 
+	const uint stride2 = stride << 1, stride3 = stride + stride2, stride4 = stride2 << 1;
 	uint8 *destEnd = dest + ((stride<<2) * numAttrib);
 	switch (op)
 	{
@@ -554,10 +554,10 @@ inline void    CPSAttribMakerBinOp<T>::make4Private(T *buf1,
 													uint32 numAttrib,
 													uint32 srcStep /* = (1 << 16)*/
 												   ) const
-{	
+{
 	uint8 *dest = (uint8 *) tab;
 	uint leftToDo = numAttrib, toProcess;
-	nlassert(_Arg[0] && _Arg[1]);	
+	nlassert(_Arg[0] && _Arg[1]);
 	switch (_Op)
 	{
 		case CPSBinOp::selectArg1:
@@ -567,7 +567,7 @@ inline void    CPSAttribMakerBinOp<T>::make4Private(T *buf1,
 		case CPSBinOp::selectArg2:
 			_Arg[1]->make4(loc, startIndex, tab, stride, numAttrib, srcStep);
 			return;
-			break;		
+			break;
 		default: break;
 	}
 
@@ -576,7 +576,7 @@ inline void    CPSAttribMakerBinOp<T>::make4Private(T *buf1,
 		toProcess = leftToDo > PSBinOpBufSize ? PSBinOpBufSize : leftToDo;
 		T *src1 = (T *) _Arg[0]->make(loc, startIndex + (numAttrib - leftToDo), &buf1[0], sizeof(T), toProcess, true, srcStep);
 		T *src2 = (T *) _Arg[1]->make(loc, startIndex + (numAttrib - leftToDo), &buf2[0], sizeof(T), toProcess, true, srcStep);
-		
+
 		Make4Private(dest, src1, src2, stride, toProcess, _Op);
 		leftToDo -= toProcess;
 	}
@@ -590,7 +590,7 @@ inline void    CPSAttribMakerBinOp<T>::make4	  (CPSLocated *loc,
 										   void *tab,
 										   uint32 stride,
 										   uint32 numAttrib,
-										   uint32  srcStep /*= (1 << 16) */										   
+										   uint32  srcStep /*= (1 << 16) */
 										  ) const
 
 {
@@ -627,7 +627,7 @@ inline void MakeNPrivate(uint8 * dest,
 		{
 			while (dest != destEnd)
 			{
-				* (T *) dest = PSBinOpModulate(*src1 ++, *src2 ++);					
+				* (T *) dest = PSBinOpModulate(*src1 ++, *src2 ++);
 				k = (nbReplicate - 1);
 				do
 				{
@@ -642,8 +642,8 @@ inline void MakeNPrivate(uint8 * dest,
 		case CPSBinOp::add:
 		{
 			while (dest != destEnd)
-			{					
-				* (T *) dest = PSBinOpAdd(*src1 ++, *src2 ++);					
+			{
+				* (T *) dest = PSBinOpAdd(*src1 ++, *src2 ++);
 				k = (nbReplicate - 1);
 				do
 				{
@@ -658,7 +658,7 @@ inline void MakeNPrivate(uint8 * dest,
 		case CPSBinOp::subtract:
 			while (dest != destEnd)
 			{
-				* (T *) dest = PSBinOpSubtract(*src1 ++, *src2 ++);					
+				* (T *) dest = PSBinOpSubtract(*src1 ++, *src2 ++);
 				k = (nbReplicate - 1);
 				do
 				{
@@ -683,12 +683,12 @@ inline void	CPSAttribMakerBinOp<T>::makeNPrivate(T *buf1,
 												 uint32 stride,
 												 uint32 numAttrib,
 												 uint32 nbReplicate,
-												 uint32 srcStep /*= (1 << 16)*/												 
+												 uint32 srcStep /*= (1 << 16)*/
 												) const
-{		
+{
 	uint8 *dest = (uint8 *) tab;
 	uint leftToDo = numAttrib, toProcess;
-	nlassert(_Arg[0] && _Arg[1]);	
+	nlassert(_Arg[0] && _Arg[1]);
 	switch (_Op)
 	{
 		case CPSBinOp::selectArg1:
@@ -698,16 +698,16 @@ inline void	CPSAttribMakerBinOp<T>::makeNPrivate(T *buf1,
 		case CPSBinOp::selectArg2:
 			_Arg[1]->makeN(loc, startIndex, tab, stride, numAttrib, nbReplicate, srcStep);
 			return;
-			break;		
+			break;
 		default: break;
 	}
-	
+
 	while (leftToDo)
 	{
 		toProcess = leftToDo > PSBinOpBufSize ? PSBinOpBufSize : leftToDo;
 		T *src1 = (T *) _Arg[0]->make(loc, startIndex + (numAttrib - leftToDo), &buf1[0], sizeof(T), toProcess, true, srcStep);
 		T *src2 = (T *) _Arg[1]->make(loc, startIndex + (numAttrib - leftToDo), &buf2[0], sizeof(T), toProcess, true, srcStep);
-		
+
 		MakeNPrivate(dest, src1, src2, stride, toProcess, _Op, nbReplicate);
 		leftToDo -= toProcess;
 	}
@@ -747,7 +747,7 @@ inline void    CPSAttribMakerBinOp<T>::serial		  (NLMISC::IStream &f) throw(NLMI
 	f.serialPolyPtr(_Arg[0]);
 	f.serialPolyPtr(_Arg[1]);
 	f.serial(_Size, _MaxSize);
-	
+
 }
 
 //=================================================================================================================

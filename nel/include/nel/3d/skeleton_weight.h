@@ -39,7 +39,7 @@ namespace NL3D {
   * A skeleton template is a set of couple value_name / float.
   *
   * The value name is used to find a channel in the CChannelMixer.
-  * The float is a weight used on a slot of the channel mixer by 
+  * The float is a weight used on a slot of the channel mixer by
   * the channel.
   *
   * \author Cyril 'Hulud' Corvazier

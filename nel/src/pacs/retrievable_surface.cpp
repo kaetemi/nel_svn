@@ -93,7 +93,7 @@ void	NLPACS::CRetrievableSurface::serial(NLMISC::IStream &f)
 }
 
 void	NLPACS::CRetrievableSurface::TLoop::serial(NLMISC::IStream &f)
-{ 
-	f.serialCont(*this); 
-	f.serial(Length); 
+{
+	f.serialCont(*this);
+	f.serial(Length);
 }

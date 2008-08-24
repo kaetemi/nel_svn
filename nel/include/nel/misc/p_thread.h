@@ -48,7 +48,7 @@ public:
 	CPThread( IRunnable *runnable, uint32 stackSize);
 
 	virtual ~CPThread();
-	
+
 	virtual void start();
 	virtual bool isRunning();
 	virtual void terminate();
@@ -67,7 +67,7 @@ public:
 
 private:
 	uint8		_State; // 0=not created, 1=started, 2=finished
-	uint32		_StackSize;	
+	uint32		_StackSize;
 	pthread_t	_ThreadHandle;
 
 };
@@ -84,7 +84,7 @@ public:
 	virtual ~CPProcess() {}
 	virtual uint64 getCPUMask();
 	virtual bool setCPUMask(uint64 mask);
-	
+
 };
 
 } // NLMISC

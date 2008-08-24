@@ -89,12 +89,12 @@ public:
 	  * \param index the index of the flare to set. Vaklue ranges from 0 to MaxFlareNum - 1
 	  * \param tex the texture to set. NULL removes the texture
 	  */
-	void						setTexture(uint index, ITexture *tex) 
-	{ 
+	void						setTexture(uint index, ITexture *tex)
+	{
 		nlassert(index < MaxFlareNum);
-		_Tex[index] = tex; 
+		_Tex[index] = tex;
 		if (tex)
-		{		
+		{
 			// clamp borders
 			_Tex[index]->setWrapS(ITexture::Clamp);
 			_Tex[index]->setWrapT(ITexture::Clamp);
@@ -104,37 +104,37 @@ public:
 	/** get the nth texture used by the flare.
 	  *  \param index the index of the flare to set. Value ranges from 0 to MaxFlareNum - 1
 	  */
-	ITexture					*getTexture(uint index) 
-	{ 
+	ITexture					*getTexture(uint index)
+	{
 		nlassert(index < MaxFlareNum);
 		return _Tex[index];
 	}
 
 	/// get the texture used by the flare (const version)
-	const ITexture				*getTexture(uint index) const 
-	{ 
+	const ITexture				*getTexture(uint index) const
+	{
 		nlassert(index < MaxFlareNum);
-		return _Tex[index]; 
+		return _Tex[index];
 	}
 
 	/** set the size of the nth flare flare
 	  * \param index the index of the flare to set. Value ranges from 0 to MaxFlareNum - 1
 	  */
-	void						setSize(uint index, float size) 
-	{ 
+	void						setSize(uint index, float size)
+	{
 		nlassert(index < MaxFlareNum);
-		_Size[index]  = size; 
+		_Size[index]  = size;
 	}
 
 	/** get the size of the nth flare
 	  * \param index the index of the flare to set. Value ranges from 0 to MaxFlareNum - 1
 	  */
-	float						getSize(uint index) const 
-	{ 
-		return _Size[index]; 
+	float						getSize(uint index) const
+	{
+		return _Size[index];
 	}
 
-	/** set the relative position of the nth flares. The default goes linearly from 0 (which appear at the position of the flare) 
+	/** set the relative position of the nth flares. The default goes linearly from 0 (which appear at the position of the flare)
 	  * to 1 (which appears at the center of the screen when the flare spaving is set to 1
 	  * \see setFlareSpacing()
 	  */
@@ -152,18 +152,18 @@ public:
 	}
 
 	/// set the color of flares
-	void						setColor(NLMISC::CRGBA col) 
-	{ 		
-		_Color = col; 
+	void						setColor(NLMISC::CRGBA col)
+	{
+		_Color = col;
 	}
 
 	/// get the color of flares
-	NLMISC::CRGBA				getColor(void) const 
-	{ 
-		return _Color; 
+	NLMISC::CRGBA				getColor(void) const
+	{
+		return _Color;
 	}
 
-	/// set the flares spacing 
+	/// set the flares spacing
 	void						setFlareSpacing(float spacing)
 	{
 		_Spacing = spacing;
@@ -178,17 +178,17 @@ public:
 	}
 
 	/// set the persistence of this shape, in second (the time it takes to fade from white to black)
-	void						setPersistence(TAnimationTime persistence) 
-	{ 	
-		_Persistence = persistence; 
+	void						setPersistence(TAnimationTime persistence)
+	{
+		_Persistence = persistence;
 	}
 
 	/** get the persistence of this shape
 	  * \see setPersistence
 	  */
-	TAnimationTime				getPersistence(void) const 
-	{ 
-		return _Persistence; 
+	TAnimationTime				getPersistence(void) const
+	{
+		return _Persistence;
 	}
 
 
@@ -213,7 +213,7 @@ public:
 
 	/// enable dazzle when the flare is near the center of the screen
 	void						enableDazzle(bool enable = true)		  { _DazzleEnabled = enable; }
-	
+
 	/// check wether dazzle is enabled
 	bool						hasDazzle(void) const	{  return _DazzleEnabled; }
 
@@ -276,8 +276,8 @@ public:
 	  * The mesh materials are ignored
 	  */
 	void					setOcclusionTestMeshName(const std::string &shapeName);
-	const std::string	   &getOcclusionTestMeshName() const { return _OcclusionTestMeshName; }	
-	/** Return the mesh that is used to perform the occlusion test. 
+	const std::string	   &getOcclusionTestMeshName() const { return _OcclusionTestMeshName; }
+	/** Return the mesh that is used to perform the occlusion test.
 	  * \return pointer to the mesh, or NULL if not used or not found
 	  */
 	CMesh				   *getOcclusionTestMesh(CShapeBank &sb);
@@ -296,7 +296,7 @@ public:
 	void	setLookAtMode(bool on) { _LookAtMode = on; }
 	bool	getLookAtMode() const {	return _LookAtMode; }
 protected:
-	friend class CFlareModel;	
+	friend class CFlareModel;
 	NLMISC::CSmartPtr<ITexture> _Tex[MaxFlareNum];
 	NLMISC::CRGBA				_Color;
 	NLMISC::CRGBA				_DazzleColor;
@@ -313,13 +313,13 @@ protected:
 	bool						_DazzleEnabled;
 	float						_DazzleAttenuationRange;
 	float						_MaxViewDist;
-	float						_MaxViewDistRatio;				
+	float						_MaxViewDistRatio;
 	bool						_InfiniteDist;
 	std::string					_OcclusionTestMeshName;
 	NLMISC::CSmartPtr<CMesh>	_OcclusionTestMesh;
 	bool						_OcclusionMeshNotFound;
 	bool						_OcclusionTestMeshInheritScaleRot;
-	bool						_LookAtMode; 
+	bool						_LookAtMode;
 };
 
 

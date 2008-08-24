@@ -74,7 +74,7 @@ uint32 CComplexSound::getDuration()
 		}
 		else
 			durations.push_back(0);
-			
+
 	}
 
 	_Duration = 0;
@@ -261,7 +261,7 @@ void	CComplexSound::importForm(const std::string& filename, NLGEORGES::UFormElm&
 
 	// Beat per second.
 	formRoot.getValueByName(_TicksPerSeconds, ".SoundType.Beat");
-	//beat can't be null or negative! 
+	//beat can't be null or negative!
 	if (_TicksPerSeconds <= 0.0f)
 		_TicksPerSeconds = 1.0f;
 
@@ -329,7 +329,7 @@ void	CComplexSound::importForm(const std::string& filename, NLGEORGES::UFormElm&
 	}
 	else
 		nlassertex(false, ("Unsupported mode : %s", mode.c_str()));
-	
+
 }
 
 }

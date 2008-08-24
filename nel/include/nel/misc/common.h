@@ -53,22 +53,22 @@
 namespace	NLMISC
 {
 
-/** Read the time stamp counter. Supports only Intel architectures for now  
-  */ 
+/** Read the time stamp counter. Supports only Intel architectures for now
+  */
 #ifdef NL_CPU_INTEL
 
 inline uint64 rdtsc()
 {
 	uint64 ticks;
 #	ifndef NL_OS_WINDOWS
-		__asm__ volatile(".byte 0x0f, 0x31" : "=a" (ticks.low), "=d" (ticks.high));				
+		__asm__ volatile(".byte 0x0f, 0x31" : "=a" (ticks.low), "=d" (ticks.high));
 #	else
 		// We should use the intrinsic code now. ticks = uint64(__rdtsc());
 		__asm	rdtsc
 		__asm	mov		DWORD PTR [ticks], eax
-		__asm	mov		DWORD PTR [ticks + 4], edx		
+		__asm	mov		DWORD PTR [ticks + 4], edx
 #	endif
-	return ticks;	
+	return ticks;
 }
 
 #endif	// NL_CPU_INTEL
@@ -558,7 +558,7 @@ operator<<(std::basic_ostream<_CharT, _Traits>& __os, const sint64& __z)
 	{
 		__res << '0';
 	}
-	else 
+	else
 	{
 		sint64	__z2 = __z;
 

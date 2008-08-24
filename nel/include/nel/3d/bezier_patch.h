@@ -30,7 +30,7 @@
 #include "nel/misc/matrix.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -63,7 +63,7 @@ using NLMISC::CMatrix;
  *    |                    |
  *    B---> bc ---- cb <---C
  *  1                         2
- * 
+ *
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -72,11 +72,11 @@ class CBezierPatch
 {
 public:
 	/// The vertices a,b,c,d of the quad patch.
-	CVector		Vertices[4];		
+	CVector		Vertices[4];
 	/// The tangents ab, ba, bc, cb, cd, dc, da, ad. NB: tangents are points, not vectors.
-	CVector		Tangents[8];		
+	CVector		Tangents[8];
 	/// The interiors, ia,ib,ic,id. NB: interiors are points, not vectors.
-	CVector		Interiors[4];		
+	CVector		Interiors[4];
 
 
 public:

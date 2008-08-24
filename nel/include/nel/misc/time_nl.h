@@ -66,7 +66,7 @@ public:
 
 	/** Return the number of second since midnight (00:00:00), January 1, 1970,
 	 * coordinated universal time, according to the system clock.
-	 * The time returned is UTC (aka GMT+0), ie it does not have the local time ajustement 
+	 * The time returned is UTC (aka GMT+0), ie it does not have the local time ajustement
 	 * nor it have the daylight saving ajustement.
 	 * This values is the same on all computer if computers are synchronized (with NTP for example).
 	 */

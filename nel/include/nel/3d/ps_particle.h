@@ -1,5 +1,5 @@
 /** \file ps_particle.h
- * 
+ *
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -26,12 +26,12 @@
 #include "nel/misc/cpu_info.h"
 
 
-namespace NLMISC 
+namespace NLMISC
 {
 
 static bool DetectMMX(void)
-{		
-#ifdef NL_OS_WINDOWS		
+{
+#ifdef NL_OS_WINDOWS
 	if (!CCpuInfo___::hasCPUID()) return false; // cpuid not supported ...
 
 	uint32 result = 0;
@@ -41,7 +41,7 @@ static bool DetectMMX(void)
 		 cpuid
 		 test edx,0x800000  // bit 23 = MMX instruction set
 		 je   noMMX
-		 mov result, 1	
+		 mov result, 1
 		noMMX:
 	}
 
@@ -56,15 +56,15 @@ static bool DetectMMX(void)
 
 
 static bool DetectSSE()
-{	
+{
 	#ifdef NL_OS_WINDOWS
 		if (!CCpuInfo___::hasCPUID()) return false; // cpuid not supported ...
 
 		uint32 result = 0;
 		__asm
-		{			
+		{
 			mov eax, 1   // request for feature flags
-			cpuid 							
+			cpuid
 			test EDX, 002000000h   // bit 25 in feature flags equal to 1
 			je noSSE
 			mov result, 1  // sse detected
@@ -75,7 +75,7 @@ static bool DetectSSE()
 		if (result)
 		{
 			// check OS support for SSE
-			try 
+			try
 			{
 				__asm
 				{
@@ -86,7 +86,7 @@ static bool DetectSSE()
 			{
 				return false;
 			}
-		
+
 			// printf("sse detected\n");
 
 			return true;
@@ -110,7 +110,7 @@ bool CCpuInfo___::hasCPUID()
 	 __asm
 	 {
 		 pushad
-		 pushfd						
+		 pushfd
 		 //	 If ID bit of EFLAGS can change, then cpuid is available
 		 pushfd
 		 pop  eax					// Get EFLAG
@@ -118,21 +118,21 @@ bool CCpuInfo___::hasCPUID()
 		 xor  eax,0x200000			// Flip ID bit
 		 push eax
 		 popfd						// Write EFLAGS
-		 pushfd      
+		 pushfd
 		 pop  eax					// read back EFLAG
-		 xor  eax,ecx				
+		 xor  eax,ecx
 		 je   noCpuid				// no flip -> no CPUID instr.
-		 
+
 		 popfd						// restore state
 		 popad
 		 mov  result, 1
 		 jmp  CPUIDPresent
-	
+
 		noCpuid:
 		 popfd					    // restore state
 		 popad
 		 mov result, 0
-		CPUIDPresent:	 
+		CPUIDPresent:
 	 }
 	 return result == 1;
 #else

@@ -37,7 +37,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NLGEORGES 
+namespace NLGEORGES
 {
 
 // ***************************************************************************

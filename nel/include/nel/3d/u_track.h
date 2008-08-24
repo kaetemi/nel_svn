@@ -36,7 +36,7 @@ class CVector;
 
 }
 
-namespace NL3D 
+namespace NL3D
 {
 
 /**
@@ -77,7 +77,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -90,7 +90,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -103,7 +103,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -116,7 +116,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -129,7 +129,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -142,7 +142,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -155,7 +155,7 @@ public:
 	  *
 	  * \param time is the time you want the evaluate the value. If time higher than the time
 	  * gived by getEndTime (), the value returned is the interpolation value at getEndTime ().
-	  * If time smaller than the time gived by getBeginTime (), the value returned is the 
+	  * If time smaller than the time gived by getBeginTime (), the value returned is the
 	  * interpolation value at getBeginTime ().
 	  * \param res is the reference on the value to get the result.
 	  * \return true if interplation is successful. false if the type asked is wrong.
@@ -211,7 +211,7 @@ public:
 	/** Retrieve the keys that are in the given range ]t1, t2] of the track. They can then be evaluated
 	  * \param result a vector that will be cleared, and filled with the date ofthe keys
 	  */
-	virtual void getKeysInRange(TAnimationTime t1, TAnimationTime t2, std::vector<TAnimationTime> &result)=0;	
+	virtual void getKeysInRange(TAnimationTime t1, TAnimationTime t2, std::vector<TAnimationTime> &result)=0;
 
 	/// Fail if not A Float Linear Keyframer
 	virtual	bool	addLinearFloatKey(const UKeyLinearFloat &key) {return false;}

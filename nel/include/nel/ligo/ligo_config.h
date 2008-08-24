@@ -1,5 +1,5 @@
 /** \file ligo_config.h
- * Ligo config file 
+ * Ligo config file
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -37,7 +37,7 @@ class IPrimitive;
 class CPrimitive;
 
 /**
- *  Ligo config file 
+ *  Ligo config file
  *
  * \author Cyril 'Hulud' Corvazier
  * \author Nevrax France
@@ -52,7 +52,7 @@ public:
 	virtual ~CLigoConfig() { }
 
 	/** Load the config file. Can throw some exception if file doesn't exist or is malformed.
-	  * 
+	  *
 	  * This file will try to open the file ligo class description file (XML) using the LigoClass as file name.
 	  * It will try first to load directly the file and then to lookup the file in NLMISC::CPath.
 	  */
@@ -108,7 +108,7 @@ public:
 	std::string			aliasToString(uint32 fullAlias);
 	/// Read a standard human readable alias string
 	uint32				aliasFromString(std::string fullAlias);
-		
+
 
 	// Get a primitive class
 	const CPrimitiveClass		*getPrimitiveClass (const NLLIGO::IPrimitive &primitive) const;

@@ -61,7 +61,7 @@ uint CDIEventEmitter::_NumCreatedInterfaces = 0;
 
 
 //======================================================
-CDIEventEmitter::CDIEventEmitter(HWND hwnd, CWinEventEmitter *we) 
+CDIEventEmitter::CDIEventEmitter(HWND hwnd, CWinEventEmitter *we)
 :
  _hWnd(hwnd),
  _WE(we),
@@ -69,11 +69,11 @@ CDIEventEmitter::CDIEventEmitter(HWND hwnd, CWinEventEmitter *we)
  _Keyboard(NULL),
  _Mouse(NULL),
  _ButtonsFlags(noButton)
-{		
+{
 }
 //======================================================
 CDIEventEmitter::~CDIEventEmitter()
-{	
+{
 	releaseMouse();
 	releaseKeyboard();
 	// release all devices
@@ -91,14 +91,14 @@ CDIEventEmitter::~CDIEventEmitter()
 //======================================================
 CDIEventEmitter *CDIEventEmitter::create(HINSTANCE hinst, HWND hwnd, CWinEventEmitter *we) throw(EDirectInput)
 {
-	if (!loadLib()) throw EDirectInputLibNotFound();	
+	if (!loadLib()) throw EDirectInputLibNotFound();
 	std::auto_ptr<CDIEventEmitter> dxee(new CDIEventEmitter(hwnd, we));
-	HRESULT result = _PDirectInput8Create(hinst, 
+	HRESULT result = _PDirectInput8Create(hinst,
 										  DIRECTINPUT_VERSION,
 										  IID_IDirectInput8A,
 										  (void **) &dxee->_DInput8,
 										  NULL);
-	if (result != DI_OK) throw EDirectInputInitFailed();	
+	if (result != DI_OK) throw EDirectInputInitFailed();
 
 	// ok, everything's fine, commit changes
 	++_NumCreatedInterfaces;
@@ -111,12 +111,12 @@ bool CDIEventEmitter::loadLib()
 {
 	if (_DirectInputLibHandle != 0) return true; // library already loaded ?
 	HMODULE handle = ::LoadLibrary(DirectInputLibName);
-	if (handle == 0) return false;	
+	if (handle == 0) return false;
 	//	try to get the creation function
 	TPDirectInput8Create cf = (TPDirectInput8Create) ::GetProcAddress(handle, "DirectInput8Create");
 	if (!cf)
 	{
-		::FreeLibrary(handle);		
+		::FreeLibrary(handle);
 		return false;
 	}
 	// commit changes
@@ -140,8 +140,8 @@ void CDIEventEmitter::poll(CEventServer *server)
 {
 	if (_WE) _ButtonsFlags = _WE->buildFlags();
 	if (!server)
-		server=&_InternalServer;	
-	_DeviceServer.poll(server);	
+		server=&_InternalServer;
+	_DeviceServer.poll(server);
 }
 
 
@@ -150,7 +150,7 @@ TMouseButton	CDIEventEmitter::buildButtonsFlags() const
 {
 	uint mouseFlags;
 	uint keybFlags;
-	// 
+	//
 	if (_Mouse) // takes the flags from the direct input mouse
 	{
 		mouseFlags = (_Mouse->getButton(0) ? leftButton		: 0)
@@ -185,7 +185,7 @@ IMouseDevice	*CDIEventEmitter::getMouseDevice(bool hardware) throw(EInputDevice)
 		std::auto_ptr<CDIMouse> mouse(CDIMouse::createMouseDevice(_DInput8, _hWnd, this, hardware, _WE));
 		// register to the device server
 		_DeviceServer.registerDevice(mouse.get());
-		_Mouse = mouse.get();	
+		_Mouse = mouse.get();
 		return mouse.release();
 	}
 	catch (...)
@@ -221,7 +221,7 @@ IKeyboardDevice	*CDIEventEmitter::getKeyboardDevice() throw(EInputDevice)
 		std::auto_ptr<CDIKeyboard> keyboard(CDIKeyboard::createKeyboardDevice(_DInput8, _hWnd, this, _WE));
 		// register to the device server
 		_DeviceServer.registerDevice(keyboard.get());
-		_Keyboard = keyboard.get();		
+		_Keyboard = keyboard.get();
 		return keyboard.release();
 	}
 	catch (...)
@@ -236,7 +236,7 @@ void	CDIEventEmitter::releaseKeyboard()
 {
 	if (!_Keyboard) return;
 	// reupdate the system keyboard flags
-	if (_WE)	
+	if (_WE)
 	{
 		_WE->resetButtonFlagState();
 		_WE->enableKeyboardEvents(true);
@@ -259,8 +259,8 @@ void	CDIEventEmitter::submitEvents(CEventServer &server, bool allWindows)
 /// Tool fct to retrieve the game devices.
 static BOOL CALLBACK DIEnumDevicesDescCallback
 (
-  LPCDIDEVICEINSTANCE lpddi,  
-  LPVOID pvRef  
+  LPCDIDEVICEINSTANCE lpddi,
+  LPVOID pvRef
 )
 {
 	CGameDeviceDesc	desc;
@@ -282,10 +282,10 @@ static BOOL CALLBACK DIEnumDevicesDescCallback
 /// Tool fct to retrieve the game devices GUID
 static BOOL CALLBACK DIEnumDevicesGUIDCallback
 (
-  LPCDIDEVICEINSTANCE lpddi,  
-  LPVOID pvRef  
+  LPCDIDEVICEINSTANCE lpddi,
+  LPVOID pvRef
 )
-{	
+{
 	std::vector<GUID> *gv = (std::vector<GUID> *) pvRef;
 	gv->push_back(lpddi->guidInstance);
 	return DIENUM_CONTINUE;
@@ -318,7 +318,7 @@ IGameDevice	*CDIEventEmitter::createGameDevice(const std::string &instanceName) 
 	static TDeviceDescVect		deviceDescs;
 	static std::vector<GUID>	deviceGUID;
 
-	nlassert(_DInput8);	
+	nlassert(_DInput8);
 	enumerateGameDevice(deviceDescs);
 	// get the ID for each device
 	deviceGUID.clear();
@@ -333,12 +333,12 @@ IGameDevice	*CDIEventEmitter::createGameDevice(const std::string &instanceName) 
 		{
 			std::auto_ptr<CDIGameDevice> gd(CDIGameDevice::createGameDevice(_DInput8, _hWnd, this, deviceDescs[k], deviceGUID[k]));
 			// insert in the device server
-			_DeviceServer.registerDevice(gd.get());			
+			_DeviceServer.registerDevice(gd.get());
 			return gd.release();
 		}
 	}
 	return NULL;
-}	
+}
 
 //==========================================================================
 void	CDIEventEmitter::releaseGameDevice(IGameDevice	*gd)

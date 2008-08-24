@@ -49,7 +49,7 @@ void	CSkeletonShape::CLod::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 CSkeletonShape::CSkeletonShape()
 {
 	// By default for now....
-	// Temp. Have a huge BBox, so clip badly. 
+	// Temp. Have a huge BBox, so clip badly.
 	_BBox.setCenter(CVector(0,0,1.5));
 	_BBox.setSize(CVector(3,3,3));
 }
@@ -130,7 +130,7 @@ void			CSkeletonShape::build(const std::vector<CBoneBase> &bones)
 		for(i=0;i<_Bones.size();i++)
 		{
 			float	dist= _Bones[i].LodDisableDistance;
-			// if the dist of the lod is greater (or equal) to the disableDist of the bone, 
+			// if the dist of the lod is greater (or equal) to the disableDist of the bone,
 			// and if the bone is not "always enabled", disable the bone
 			if(lodDist>=dist && dist!=0 )
 				_Lods[j].ActiveBones[i]= 0;

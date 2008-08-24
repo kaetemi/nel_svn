@@ -29,12 +29,12 @@
 #include "global_retriever.h"
 
 
-namespace NLPACS 
+namespace NLPACS
 {
 
 class CMovePrimitive;
 class CCollisionOTInfo;
-	
+
 /**
  * Odered table element
  *
@@ -195,19 +195,19 @@ public:
 	{
 		return _Enter;
 	}
-	
+
 	// Is exit
 	bool				isExit() const
 	{
 		return _Exit;
 	}
-	
+
 	// Is exit
 	bool				isInside() const
 	{
 		return _Inside;
 	}
-	
+
 	// Is second primitive is static ?
 	bool				isSecondStatic () const
 	{
@@ -388,7 +388,7 @@ public:
 	}
 
 	// Init the info
-	void				init (CMovePrimitive *primitive, const CCollisionSurfaceDesc& desc, 
+	void				init (CMovePrimitive *primitive, const CCollisionSurfaceDesc& desc,
 								const UGlobalPosition& nextGlobalPosition, double delta, uint8 worldImage)
 	{
 		_Primitive=primitive;

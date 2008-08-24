@@ -63,7 +63,7 @@ TNetworkEvent StringToEvent( string& s )
 		return Connecting;
 	else if ( s == "CNFL" )
 		return ConnFailing;
-	else 
+	else
 	{
 		nlstop;
 		return Error;
@@ -292,7 +292,7 @@ void CMessageRecorder::replayNextDataAvailable( sint64 updatecounter )
 		case ConnFailing :
 			_ConnectionAttempts.push_back( rec );
 			break;
-			
+
 		default :
 			nlstop;
 		}
@@ -325,7 +325,7 @@ TNetworkEvent CMessageRecorder::replayConnectionAttempt( const CInetAddress& add
 {
 	TNetworkEvent event;
 	deque<TMessageRecord>::iterator ipr;
-	
+
 	if ( ! _ConnectionAttempts.empty() )
 	{
 		// Search in the already processed connection attempts
@@ -343,7 +343,7 @@ TNetworkEvent CMessageRecorder::replayConnectionAttempt( const CInetAddress& add
 			}
 		}
 	}
-	
+
 	// Seek in the preloaded records
 	for ( ipr=_PreloadedRecords.begin(); ipr!=_PreloadedRecords.end(); ++ipr )
 	{
@@ -388,7 +388,7 @@ TNetworkEvent CMessageRecorder::replayConnectionAttempt( const CInetAddress& add
 			}
 		}
 		// Not found
-		nldebug( "MR: Connection attempt not found" );		
+		nldebug( "MR: Connection attempt not found" );
 		return Error;
 	}
 	nlstop;

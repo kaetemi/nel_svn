@@ -33,7 +33,7 @@ namespace NL3D
 {
 	class CCluster;
 }
-	
+
 namespace NLSOUND {
 
 
@@ -51,7 +51,7 @@ struct eqsndanim
 };
 */
 
-/// 
+///
 typedef sint32 TSoundAnimId;
 
 const TSoundAnimId CSoundAnimationNoId = -1;
@@ -80,20 +80,20 @@ public:
 	CSoundAnimManager(UAudioMixer* mixer);
 	virtual ~CSoundAnimManager();
 
-	/** Load the sound animation with the specified name. 
+	/** Load the sound animation with the specified name.
 	 *  Returns the id of the new animation, or CSoundAnimationNoId is the
 	 *  file could not be found.
 	 *  \param name The name of the animation to load.
 	 */
 	virtual TSoundAnimId			loadAnimation(std::string& name);
 
-	/** Create a new sound animation with the specified name. 
+	/** Create a new sound animation with the specified name.
 	 *  Returns CSoundAnimation::NoId if the creation fails (duplicate name).
 	 *  \param name The name of the animation to load.
 	 */
 	virtual TSoundAnimId			createAnimation(std::string& name);
 
-	/** Save the sound animation in the specified file. 
+	/** Save the sound animation in the specified file.
 	 *  \param filename The name of the file to save the animation in.
 	 */
 	virtual void					saveAnimation(CSoundAnimation* anim, std::string& filname);
@@ -121,7 +121,7 @@ public:
 	 */
 	virtual TSoundAnimPlayId		playAnimation(std::string& name, float time, NL3D::CCluster *cluster, CSoundContext &context);
 
-	/** Stop the playing of a sound animation. 
+	/** Stop the playing of a sound animation.
  	 *  \param name The playback id that was returned by playAnimation.
 	 */
 	virtual void					stopAnimation(TSoundAnimPlayId playbackId);
@@ -131,7 +131,7 @@ public:
 	 */
 	virtual bool					isPlaying(TSoundAnimPlayId playbackId);
 
-	/** Update all the sound animations during playback. 
+	/** Update all the sound animations during playback.
 	 */
 	virtual void					update(float lastTime, float curTime);
 

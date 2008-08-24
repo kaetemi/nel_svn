@@ -62,7 +62,7 @@ CAnimatedMorph::CAnimatedMorph (CMorphBase*mb)
 	IAnimatable::resize (AnimValueLast);
 
 	_MorphBase = mb;
-	
+
 	_Factor.Value= mb->DefaultFactor.getDefaultValue();
 }
 

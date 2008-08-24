@@ -29,7 +29,7 @@
 using namespace std;
 using namespace NLMISC;
 
-namespace NLSOUND 
+namespace NLSOUND
 {
 
 
@@ -49,7 +49,7 @@ TSoundId CBackgroundSource::getSound()
 {
 	return NULL;
 }
-	
+
 void CBackgroundSource::setGain( float gain )
 {
 	CSourceCommon::setGain(gain);
@@ -119,7 +119,7 @@ void CBackgroundSource::play()
 		stop();
 
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
-		
+
 	const vector<CBackgroundSound::TSoundInfo> &sounds = _BackgroundSound->getSounds();
 	vector<CBackgroundSound::TSoundInfo>::const_iterator first(sounds.begin()), last(sounds.end());
 
@@ -194,7 +194,7 @@ void CBackgroundSource::updateFilterValues(const float *filterValues)
 				ss.Source->setPitch(ss.Source->getSound()->getPitch() * _Pitch);
 				ss.Source->setPos(_Position);
 				ss.Source->play();
-				// some sub sound can be too far from the listener, 
+				// some sub sound can be too far from the listener,
 				// we must handle this in order to start them when the listener
 				// is closer
 				ss.Status = ss.Source->isPlaying() ? SUB_STATUS_PLAY : SUB_STATUS_PLAY_FAIL;
@@ -227,7 +227,7 @@ void CBackgroundSource::onUpdate()
 		if (ss.Status == SUB_STATUS_PLAY_FAIL)
 		{
 			ss.Source->play();
-			// some sub sound can be too far from the listener, 
+			// some sub sound can be too far from the listener,
 			// we must handle this in order to start them when the listener
 			// is closer
 			ss.Status = ss.Source->isPlaying() ? SUB_STATUS_PLAY : SUB_STATUS_PLAY_FAIL;

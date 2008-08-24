@@ -37,7 +37,7 @@ using	namespace	std;
 using	namespace	NLMISC;
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 
@@ -50,8 +50,8 @@ namespace NL3D
 	sTile =1.25 ....  NB: because of difference of mapping (rare case), we may have sometimes values with
 	precision < 1/4 (eg 1.125). Just use f*256 to compute the floor.
 
-  NB: using a fastFloor() (fistp changing the controlfp() is not very a good idea here, because 
-  computeNoise() are not "packed", so change on controlFp() would bee to frequent... 
+  NB: using a fastFloor() (fistp changing the controlfp() is not very a good idea here, because
+  computeNoise() are not "packed", so change on controlFp() would bee to frequent...
   And also because we need either floor() or ceil() here.
 */
 inline	sint noiseFloor(float f)
@@ -184,19 +184,19 @@ void		CPatch::computeDisplaceRawCoordinates(float sTile, float tTile, float s, f
 	CUV		uv;
 	switch(NoiseRotation & 3)
 	{
-		case 0: 
+		case 0:
 			uv.U= u;
 			uv.V= v;
 			break;
-		case 1: 
+		case 1:
 			uv.U= NL3D_TILE_NOISE_MAP_SIZE-v;
 			uv.V= u;
 			break;
-		case 2: 
+		case 2:
 			uv.U= NL3D_TILE_NOISE_MAP_SIZE-u;
 			uv.V= NL3D_TILE_NOISE_MAP_SIZE-v;
 			break;
-		case 3: 
+		case 3:
 			uv.U= v;
 			uv.V= NL3D_TILE_NOISE_MAP_SIZE-u;
 			break;
@@ -223,7 +223,7 @@ float		CPatch::computeDisplaceRaw(float sTile, float tTile, float s, float t) co
 }
 
 // ***************************************************************************
-static inline	void	computeDisplaceBilinear(float sTile, float tTile, 
+static inline	void	computeDisplaceBilinear(float sTile, float tTile,
 	float &sInc, float &tInc, float &sa, float &ta, float &sa1, float &ta1)
 {
 	float	sDecimal= sTile-noiseFloor(sTile);
@@ -264,7 +264,7 @@ float		CPatch::computeDisplaceInteriorSmooth(float s, float t) const
 	computeDisplaceBilinear(sTile, tTile, sInc, tInc, sa, ta, sa1, ta1);
 
 
-	// NB: to have smooth transition, must keep the same (s,t), so we do a transition with the noise tile of 
+	// NB: to have smooth transition, must keep the same (s,t), so we do a transition with the noise tile of
 	// our neigbhor, but under us.
 
 	// speed up, using just one computeDisplaceRawCoordinates(), and multiple computeDisplaceRawInteger().
@@ -334,7 +334,7 @@ float		CPatch::computeDisplaceEdgeSmooth(float s, float t, sint8 smoothBorderX, 
 			- if multiple bind, problem at limit (eg a bind 1/2 on edge 0 with OrdertT=8, when uv.v= 4).
 				because, selection of the patch is dependent of orientation too.
 			To avoid them, just take center of (sTile, tTile) to remove ambiguity.
-			This works because computeDisplaceRaw() use sTile, tTile to get the noiseMap, so the decimal part is not 
+			This works because computeDisplaceRaw() use sTile, tTile to get the noiseMap, so the decimal part is not
 			used.
 
 			Notice that we do this AFTER computeDisplaceBilinear() of course.

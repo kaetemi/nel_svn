@@ -32,9 +32,9 @@ namespace NLMISC
 #if defined (NL_OS_WINDOWS)
 # define NL_WIN_CALLBACK CALLBACK
 #elif defined (NL_OS_UNIX)
-# define NL_WIN_CALLBACK 
+# define NL_WIN_CALLBACK
 #endif
-	
+
 	// Default to 8KB stack for tasks
 	const unsigned int	NL_TASK_STACK_SIZE = 8*1024;
 
@@ -60,7 +60,7 @@ namespace NLMISC
 	 *
 	 *	If you don't know about coroutines, a short description follow :
 	 *		* Coroutines are some sort of multi-threading
-	 *		* Coroutines are not preemptive, it's the application code that choose 
+	 *		* Coroutines are not preemptive, it's the application code that choose
 	 *			task swapping point
 	 *		* thus, coroutines don't need heavy synchronization (like mutex)
 	 *		* coroutines are said to be lighter than thread during context switch
@@ -139,7 +139,7 @@ namespace NLMISC
 		void start();
 	public:
 
-		/** Get the current task object. 
+		/** Get the current task object.
 		 *	Return NULL if the current thread context is not in a CCoTask coroutine
 		 */
 		static CCoTask *getCurrentTask();
@@ -160,7 +160,7 @@ namespace NLMISC
 		virtual ~CCoTask();
 
 		/* Start or resume task execution.
-		 * If called from the current task context, do nothing (execution continue in the 
+		 * If called from the current task context, do nothing (execution continue in the
 		 * current task)
 		 */
 		void resume();
@@ -182,7 +182,7 @@ namespace NLMISC
 		}
 
 		/// parent task ask for task ending (run function should check this and terminate asap)
-		void requestTerminate();		
+		void requestTerminate();
 
 		/** check if termination request have been called (mainly used by task user code
 		 *	to check for terminating the task on request).
@@ -198,7 +198,7 @@ namespace NLMISC
 		void wait();
 
 		/** the run method to implement by the derived class. This is where
-		 *	you put the co routine code. 
+		 *	you put the co routine code.
 		 *	Coroutine terminate when this method return.
 		 */
 		virtual void run() =0;
@@ -206,11 +206,11 @@ namespace NLMISC
 		/** Wait (using 'yield') until some amount of time (in milliseconds) has ellapsed, or until termination is requested.
 		 *  This should be called inside this task 'run()', else an assertion is raised
 		 */
-		void sleep(uint milliseconds);		  
-		   
+		void sleep(uint milliseconds);
+
 
 	};
-	
+
 
 } // namespace NLMISC
 

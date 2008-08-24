@@ -64,7 +64,7 @@ void CCloud::init (uint32 nVoxelW, uint32 nVoxelH, uint32 nVoxelD, float rBaseFr
 {
 	if (_UStart != NULL)
 		return;
-	
+
 	_BaseFreq = rBaseFreq;
 	_BillSize = 0;
 	_OldBillSize = 0;
@@ -146,11 +146,11 @@ void CCloud::generate (CNoise3d &noise)
 		dW = (_BaseFreq*((float)_Depth)/noise.getDepth())*(1<<nOct);
 
 
-		noise.renderGrid (_NbW, _NbH, _Width, _Height, 
-						(float)_UStart[nOct], (float)_VStart[nOct], (float)_WStart[nOct], dU, dV, dW, 
+		noise.renderGrid (_NbW, _NbH, _Width, _Height,
+						(float)_UStart[nOct], (float)_VStart[nOct], (float)_WStart[nOct], dU, dV, dW,
 						1.0f/(2<<nOct));
 
-		/* This is the same thing as a renderGrid which is optimized to do that 
+		/* This is the same thing as a renderGrid which is optimized to do that
 		qc.Uv0 = CUV((float)_UStart[nOct],		(float)_VStart[nOct]);
 		qc.Uv1 = CUV((float)_UStart[nOct]+dU,	(float)_VStart[nOct]);
 		qc.Uv2 = CUV((float)_UStart[nOct]+dU,	(float)_VStart[nOct]+dV);
@@ -534,7 +534,7 @@ void CCloud::dispXYZ (CMaterial *pMat)
 void CCloud::calcBill (const CVector &Viewer, const CVector &Center, const CVector &Size, CVector &I, CVector &J, CVector &K,
 				float &Left, float &Right, float &Top, float &Bottom, float &Near, float &Far)
 {
-	
+
 	CVector ViewDir = Center - Viewer;
 	float ViewDist = ViewDir.norm();
 	ViewDir.normalize();
@@ -563,7 +563,7 @@ void CCloud::calcBill (const CVector &Viewer, const CVector &Center, const CVect
 	I.normalize();
 	J.normalize();
 	K.normalize();
-	
+
 	CMatrix mat;
 	mat.identity();
 	mat.setRot(I,J,K, true);
@@ -685,13 +685,13 @@ void CCloud::genBill (CCamera *pCam, uint32 nBillSize)
 	_Driver->activeVertexBuffer (rVB);
 	_Driver->renderRawQuads (_CloudScape->_MatClear, 0, 1);
 
-	// Render 
+	// Render
 	_Driver->setFrustum(Left, Right, Bottom, Top, Near, Far);
 	_Driver->setupViewMatrix(mat);
 	_Driver->setupModelMatrix (CMatrix::Identity);
 
 	_CloudTexTmp->ToBill.setColor (CloudAmbient);
-	
+
 	dispXYZ (&_CloudTexTmp->ToBill);
 
 	// Restaure render target
@@ -722,7 +722,7 @@ void CCloud::dispBill (CCamera *pCam)
 
 	// Prepare vertices.
 	CQuadUV qc;
-	
+
 	CVector I, J, K;
 	float Left, Right, Top, Bottom, Near, Far;
 
@@ -814,7 +814,7 @@ void CCloud::dispBill (CCamera *pCam)
 	_Driver->renderRawQuads (_CloudScape->_MatBill, 0, 1);
 
 	//nlinfo ("ok");
-	
+
 
 	// Debug
 	if (_CloudScape->isDebugQuadEnabled())

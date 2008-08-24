@@ -129,7 +129,7 @@ public:
  *
  * buffer() ----------------------------------- getPos() ------------------------- size()
  *              data already serialized in                   data not read yet      |
- *                                                                               length() = lengthR() 
+ *                                                                               length() = lengthR()
  *
  * \seealso CBitMemStream
  * \seealso NLNET::CMessage
@@ -188,16 +188,16 @@ public:
 	/// Method inherited from IStream
 	virtual void	serialBit(bool &bit);
 
-	/** 
+	/**
 	 * Moves the stream pointer to a specified location.
-	 * 
+	 *
 	 * Warning: in output mode, seek(end) does not point to the end of the serialized data,
 	 * but on the end of the whole allocated buffer (see size()).
 	 * If you seek back and want to return to the end of the serialized data, you have to
 	 * store the position (a better way is to use reserve()/poke()).
 	 *
 	 * NB: If the stream doesn't support the seek fonctionnality, it throws ESeekNotSupported.
-	 * Default implementation: 
+	 * Default implementation:
 	 * { throw ESeekNotSupported; }
 	 * \param offset is the wanted offset from the origin.
 	 * \param origin is the origin of the seek
@@ -206,11 +206,11 @@ public:
 	 */
 	virtual bool	seek (sint32 offset, TSeekOrigin origin) const throw(EStream);
 
-	/** 
+	/**
 	 * Get the location of the stream pointer.
-	 * 
+	 *
 	 * NB: If the stream doesn't support the seek fonctionnality, it throws ESeekNotSupported.
-	 * Default implementation: 
+	 * Default implementation:
 	 * { throw ESeekNotSupported; }
 	 * \param offset is the wanted offset from the origin.
 	 * \param origin is the origin of the seek
@@ -438,7 +438,7 @@ public:
 		//nldebug( "MEMSTREAM: Writing %u-byte value in %p at pos %u", sizeof(value), this, _BufPos - _Buffer.getPtr() );
 		increaseBufferIfNecessary (sizeof(T));
 		*(T*)(_Buffer.getBufferWrite().getPtr() + _Buffer.Pos) = value;
-		
+
 		_Buffer.Pos += sizeof (T);
 	}
 
@@ -477,28 +477,28 @@ public:
 	template<class K, class T>
 	void			serialCont(std::multimap<K, T> &cont) 	{IStream::serialCont(cont);}
 	/// Specialisation of serialCont() for vector<uint8>
-	virtual void			serialCont(std::vector<uint8> &cont) {IStream::serialCont(cont);} 
+	virtual void			serialCont(std::vector<uint8> &cont) {IStream::serialCont(cont);}
 	/// Specialisation of serialCont() for vector<sint8>
-	virtual void			serialCont(std::vector<sint8> &cont) {IStream::serialCont(cont);} 
+	virtual void			serialCont(std::vector<sint8> &cont) {IStream::serialCont(cont);}
 	/// Specialisation of serialCont() for vector<bool>
-	virtual void			serialCont(std::vector<bool> &cont) {IStream::serialCont(cont);} 
+	virtual void			serialCont(std::vector<bool> &cont) {IStream::serialCont(cont);}
 
 
 
 	template<class T0,class T1>
-	void			serial(T0 &a, T1 &b) 
+	void			serial(T0 &a, T1 &b)
 	{ serial(a); serial(b);}
 	template<class T0,class T1,class T2>
-	void			serial(T0 &a, T1 &b, T2 &c) 
+	void			serial(T0 &a, T1 &b, T2 &c)
 	{ serial(a); serial(b); serial(c);}
 	template<class T0,class T1,class T2,class T3>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d)
 	{ serial(a); serial(b); serial(c); serial(d);}
 	template<class T0,class T1,class T2,class T3,class T4>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e)
 	{ serial(a); serial(b); serial(c); serial(d); serial(e);}
 	template<class T0,class T1,class T2,class T3,class T4,class T5>
-	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e, T5 &f) 
+	void			serial(T0 &a, T1 &b, T2 &c, T3 &d, T4 &e, T5 &f)
 	{ serial(a); serial(b); serial(c); serial(d); serial(e); serial(f);}
 
 	/** \name Base types serialisation, redefined for string mode
@@ -561,7 +561,7 @@ protected:
 	virtual uint			getDbgStreamSize() const;
 
 	CMemStreamBuffer			_Buffer;
-	
+
 	mutable	bool				_StringMode;
 
 	uint32						_DefaultCapacity;
@@ -604,7 +604,7 @@ static const int SEP_SIZE = 1; // the code is easier to read with that
 
 
 // ======================================================================================================
-inline	void		CMemStream::serial(uint8 &b) 
+inline	void		CMemStream::serial(uint8 &b)
 {
 	if ( _StringMode )
 	{
@@ -624,7 +624,7 @@ inline	void		CMemStream::serial(uint8 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(sint8 &b) 
+inline	void		CMemStream::serial(sint8 &b)
 {
 	if ( _StringMode )
 	{
@@ -644,7 +644,7 @@ inline	void		CMemStream::serial(sint8 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(uint16 &b) 
+inline	void		CMemStream::serial(uint16 &b)
 {
 	if ( _StringMode )
 	{
@@ -665,7 +665,7 @@ inline	void		CMemStream::serial(uint16 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(sint16 &b) 
+inline	void		CMemStream::serial(sint16 &b)
 {
 	if ( _StringMode )
 	{
@@ -685,7 +685,7 @@ inline	void		CMemStream::serial(sint16 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(uint32 &b) 
+inline	void		CMemStream::serial(uint32 &b)
 {
 	if ( _StringMode )
 	{
@@ -706,7 +706,7 @@ inline	void		CMemStream::serial(uint32 &b)
 
 
 // ======================================================================================================
-inline	void		CMemStream::serial(sint32 &b) 
+inline	void		CMemStream::serial(sint32 &b)
 {
 	if ( _StringMode )
 	{
@@ -726,7 +726,7 @@ inline	void		CMemStream::serial(sint32 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(uint64 &b) 
+inline	void		CMemStream::serial(uint64 &b)
 {
 	if ( _StringMode )
 	{
@@ -746,7 +746,7 @@ inline	void		CMemStream::serial(uint64 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(sint64 &b) 
+inline	void		CMemStream::serial(sint64 &b)
 {
 	if ( _StringMode )
 	{
@@ -766,7 +766,7 @@ inline	void		CMemStream::serial(sint64 &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(float &b) 
+inline	void		CMemStream::serial(float &b)
 {
 	if ( _StringMode )
 	{
@@ -786,7 +786,7 @@ inline	void		CMemStream::serial(float &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(double &b) 
+inline	void		CMemStream::serial(double &b)
 {
 	if ( _StringMode )
 	{
@@ -806,7 +806,7 @@ inline	void		CMemStream::serial(double &b)
 }
 
 // ======================================================================================================
-inline	void		CMemStream::serial(bool &b) 
+inline	void		CMemStream::serial(bool &b)
 {
 	if ( _StringMode )
 	{
@@ -821,7 +821,7 @@ inline	void		CMemStream::serial(bool &b)
 
 #ifndef NL_OS_CYGWIN
 // ======================================================================================================
-inline	void		CMemStream::serial(char &b) 
+inline	void		CMemStream::serial(char &b)
 {
 	if ( _StringMode )
 	{
@@ -846,7 +846,7 @@ inline	void		CMemStream::serial(char &b)
 #endif
 
 // ======================================================================================================
-inline	void		CMemStream::serial(std::string &b) 
+inline	void		CMemStream::serial(std::string &b)
 {
 	if ( _StringMode )
 	{
@@ -868,7 +868,7 @@ inline	void		CMemStream::serial(std::string &b)
 				throw NLMISC::EInvalidDataStream( "CMemStream/str: Trying to write a string of %u bytes", len );
 			serial(len);
 		}
-		
+
 		// Read/Write the string.
 		for(uint i=0;i!=len;++i)
 			serialBuffer( (uint8*)&(b[i]), sizeof(b[i]) );
@@ -882,8 +882,8 @@ inline	void		CMemStream::serial(std::string &b)
 		{
 			nlctassert(sizeof(char) == 1);
 			if (!isXML())
-			{			
-				uint32	len=0;			
+			{
+				uint32	len=0;
 				fastSerial(len);
 				checkStreamSize((uint)len);
 				/*
@@ -892,7 +892,7 @@ inline	void		CMemStream::serial(std::string &b)
 				*/
 				b.resize(len);
 				if (len > 0)
-				{				
+				{
 					// can serial all in a single call to serialBuffer, since sizeof(char) == 1
 					serialBuffer((uint8 *) &b[0], len);
 				}
@@ -903,7 +903,7 @@ inline	void		CMemStream::serial(std::string &b)
 			}
 		}
 		else
-		{		
+		{
 			IStream::serial( b );
 		}
 	}
@@ -911,7 +911,7 @@ inline	void		CMemStream::serial(std::string &b)
 
 
 // ======================================================================================================
-inline	void		CMemStream::serial(ucstring &b) 
+inline	void		CMemStream::serial(ucstring &b)
 {
 	if ( _StringMode )
 	{

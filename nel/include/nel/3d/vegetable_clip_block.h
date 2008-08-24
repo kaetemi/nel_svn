@@ -31,7 +31,7 @@
 #include "nel/3d/vegetable_sort_block.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 

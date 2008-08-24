@@ -154,7 +154,7 @@ bool CWordsDictionary::init( const string& configFileName )
 			STRING_MANAGER::TWorksheet worksheet;
 			STRING_MANAGER::loadExcelSheet( filename, worksheet );
 			uint ck, cw = 0;
-			if ( worksheet.findId( ck ) && worksheet.findCol( ucstring(colTitle), cw ) ) // => 
+			if ( worksheet.findId( ck ) && worksheet.findCol( ucstring(colTitle), cw ) ) // =>
 			{
 				for ( std::vector<STRING_MANAGER::TWorksheet::TRow>::iterator ip = worksheet.begin(); ip!=worksheet.end(); ++ip )
 				{

@@ -31,7 +31,7 @@
 
 
 using namespace NLMISC;
-	
+
 
 namespace NL3D {
 
@@ -64,7 +64,7 @@ void	CPointLightModel::initModel()
 
 	// link me to the root of light.
 	getOwnerScene()->getLightTrav().addPointLightModel(this);
-	
+
 }
 
 
@@ -87,7 +87,7 @@ void	CPointLightModel::traverseLight()
 {
 	CLightTrav			&lightTrav= getOwnerScene()->getLightTrav();
 
-	// Note: any dynamic light is supposed to always move each frame, so they are re-inserted in the 
+	// Note: any dynamic light is supposed to always move each frame, so they are re-inserted in the
 	// quadGrid each frame.
 
 
@@ -163,10 +163,10 @@ void	CPointLightModel::traverseLight()
 
 			// setup position/type/direction/color
 			if(PointLight.getType()!=CPointLight::SpotLight)
-				vertexLight.setupPointLight(CRGBA::Black, PointLight.getDiffuse(), PointLight.getSpecular(), 
+				vertexLight.setupPointLight(CRGBA::Black, PointLight.getDiffuse(), PointLight.getSpecular(),
 					PointLight.getPosition(), CVector::K);
 			else
-				vertexLight.setupSpotLight(CRGBA::Black, PointLight.getDiffuse(), PointLight.getSpecular(), 
+				vertexLight.setupSpotLight(CRGBA::Black, PointLight.getDiffuse(), PointLight.getSpecular(),
 					PointLight.getPosition(), PointLight.getSpotDirection(), 1, float(Pi)/2);
 
 			// setup attenuation

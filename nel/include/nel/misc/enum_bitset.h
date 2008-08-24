@@ -53,24 +53,24 @@ namespace NLMISC
 	/** Utility to build 'ored' bit set from a 2 powered enum.
 	 *	The class give to user a conprehensive interface for
 	 *	dealing with 'ored' enum value.
-	 *	
+	 *
 	 *	The class not strictly check that the enum only contains
-	 *	power of 2 values because the enum can eventualy 
+	 *	power of 2 values because the enum can eventualy
 	 *	contains pre 'ored' values.
 	 *	For each access, the size in bit of the enumerated value
 	 *	passed to the class is checked to not oversize the
 	 *	BitsetType capacity.
 	 *	By default, the BitsetType is set to 32 bits, but you
-	 *	can provide your own type to narrow or expand the 
+	 *	can provide your own type to narrow or expand the
 	 *	capacity.
 	 *
-	 *	You can add an additional checking by setting the maxValue to 
+	 *	You can add an additional checking by setting the maxValue to
 	 *	the max value of the enumerated type.
-	 * 
+	 *
 	 *	For from/to string convertion, you can also provide a delimiter
 	 *	char (that is comma by default).
 	 *
-	 *	
+	 *
 	 *	usage:
 	 *	enum foo
 	 *	{
@@ -92,10 +92,10 @@ namespace NLMISC
 	 *	myset.checkEnumValue(value2);	// return false
 	 *	myset.checkEnumValue(value4);	// return false
 	 */
-	template <class EnumType, 
-				typename BitsetType = uint32, 
-				BitsetType maxValue = UINT_MAX, 
-				char Delimiter=',', 
+	template <class EnumType,
+				typename BitsetType = uint32,
+				BitsetType maxValue = UINT_MAX,
+				char Delimiter=',',
 				class EnumAccessor = TSimpleEnum<EnumType, BitsetType>,
 				class SimpleEnumType = EnumType
 				>
@@ -203,7 +203,7 @@ namespace NLMISC
 			s.serial(Bitset);
 		}
 
-		BitsetType		Bitset;	
+		BitsetType		Bitset;
 	};
 
 } // namespace NLMISC

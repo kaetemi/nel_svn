@@ -36,7 +36,7 @@
 using namespace NLMISC;
 using namespace std;
 
-namespace NL3D 
+namespace NL3D
 {
 
 // 0.5 cm of precision
@@ -49,7 +49,7 @@ CPortal::CPortal()
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	_Clusters[0] = _Clusters[1] = NULL;
 	_Opened = true;
 	_OcclusionModelId = CStringMapper::map("no occlusion");
@@ -222,7 +222,7 @@ void CPortal::serial (NLMISC::IStream& f)
 	 *	WARNING: This Class/Method must be thread-safe (ctor/dtor/serial): no static access for instance
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
-	
+
 	int version = f.serialVersion (1);
 
 	f.serialCont (_LocalPoly);
@@ -276,27 +276,27 @@ bool CPortal::clipRay(const NLMISC::CVector &startWorld, const NLMISC::CVector &
 	const	CVector		&refVert= _Poly[0];
 	CVector		start= startWorld - refVert;
 	CVector		end= endWorld - refVert;
-	
-	// compute the plane of this poly, local to polygon 
+
+	// compute the plane of this poly, local to polygon
 	CPlane	plane;
 	plane.make(CVector::Null, _Poly[1] - refVert, _Poly[2] - refVert);
 	CVector	normal = plane.getNormal();
 
 	float	np1 = normal*end;
 	float	np2 = np1-normal*start;
-	
+
 	if (np2 == 0.0f)
 		return false;
-	
+
 	float	lambda = (plane.d+np1)/np2;
-	
+
 	// Checks the intersection belongs to the segment
 	if (lambda < 0 || lambda > 1.0f)
 		return false;
-	
+
 	// The intersection on the plane
 	CVector	hit = start*lambda+end*(1.0f-lambda);
-	
+
 	// Do convex test on each border
 	sint	sign= 0;
 	uint	polySize= _Poly.size();

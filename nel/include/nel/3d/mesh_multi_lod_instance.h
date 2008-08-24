@@ -30,7 +30,7 @@
 #include "nel/3d/mesh_base_instance.h"
 
 
-namespace NL3D 
+namespace NL3D
 {
 
 class	CMeshGeom;
@@ -51,7 +51,7 @@ const NLMISC::CClassId		MeshMultiLodInstanceId=NLMISC::CClassId(0x1ade6ef8, 0x75
 class CMeshMultiLodInstance : public CMeshBaseInstance
 {
 public:
-	
+
 	/// Ctor
 	CMeshMultiLodInstance ();
 

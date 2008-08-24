@@ -56,7 +56,7 @@ public:
 	CNoiseValue();
 	CNoiseValue(float abs, float rand, float freq);
 
-	/** return Abs + Rand* noise(Pos*Frequency).  with noise() E [0..1]. 
+	/** return Abs + Rand* noise(Pos*Frequency).  with noise() E [0..1].
 	 *	Warning! Use OptFastFloor()! So call must be enclosed with a OptFastFloorBegin()/OptFastFloorEnd().
 	 */
 	float	eval(const CVector &posInWorld) const;
