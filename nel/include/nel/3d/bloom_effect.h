@@ -61,7 +61,23 @@ public:
 	// textures and materials.
 	// initBloomEffect = false => directx
 	// initBloomEffect = true => opengl
-	void init(bool initBloomEffect, UDriver *d, UScene *s);
+	void init(bool initBloomEffect);
+
+	// must be called before init
+	void setDriver(UDriver *driver) { _Driver = driver; }
+	UDriver* getDriver() const { return _Driver; }
+
+	// must be called before initBloom
+	void setScene(UScene *scene) { _Scene = scene; }
+	UScene* getScene() const { return _Scene; }
+
+	// enable or disable square bloom
+	void setSquareBloom(bool squareBloom) { _SquareBloom = squareBloom; }
+	bool getSquareBloom() const { return _SquareBloom; }
+
+	// set bloom density
+	void setDensityBloom(uint8 densityBloom) { _DensityBloom = densityBloom; }
+	uint8 getDensityBloom() const { return _DensityBloom; }
 
 	// Called at the beginning of renderAll method in the main loop, if window has been resized,
 	// reinitialize bloom textures according to new window size.
@@ -107,6 +123,15 @@ private:
 	// texture _InitText of scene and the blurred texture _BlurFinalTex.
 	void applyBlur();
 
+	// the driver to use
+	UDriver*	_Driver;
+	// the scene to use
+	UScene*		_Scene;
+
+	// use square bloom
+	bool		_SquareBloom;
+	// density of bloom
+	uint8		_DensityBloom;
 
 	// render target textures
 	// used to display scene

@@ -2228,6 +2228,14 @@
 				Name="2d"
 				>
 				<File
+					RelativePath=".\3d\bloom_effect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\include\nel\3d\bloom_effect.h"
+					>
+				</File>
+				<File
 					RelativePath="3d\deform_2d.cpp"
 					>
 				</File>
