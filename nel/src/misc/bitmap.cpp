@@ -1354,7 +1354,7 @@ bool CBitmap::decompressDXT5()
 			uint8 codeAlpha[16];
 			for(j=0; j<16; j++)
 			{
-				codeAlpha[j] = (uint8)bitsAlpha & 7;
+				codeAlpha[j] = (uint8)(bitsAlpha & 7);
 				bitsAlpha>>=3;
 			}
 
