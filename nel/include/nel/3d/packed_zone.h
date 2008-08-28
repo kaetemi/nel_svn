@@ -128,6 +128,7 @@ class CPackedZone32 : public CPackedZoneBase
 {
 public:
 	typedef uint32				TIndexType;
+	static uint32				UndefIndex; // used as value for undefined index
 	std::vector<CPackedVertex>  Verts;
 	std::vector<CPackedTri>		Tris;
 	std::vector<uint32>			TriLists; // lists of tri for each grid cell, all list are packed in a single vector. ~0 marks the end of a list
@@ -178,6 +179,7 @@ class CPackedZone16 : public CPackedZoneBase
 {
 public:
 	typedef uint16				TIndexType;
+	static uint16				UndefIndex; // used as value for undefined index
 	friend class CPackedZone32;
 	std::vector<CPackedVertex>  Verts;
 	std::vector<CPackedTri16>	Tris;

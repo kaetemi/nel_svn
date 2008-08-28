@@ -557,6 +557,7 @@ static void addQuadToSilhouette(const CVector &v0, const CVector &v1, const CVec
 	sil.swap(result);
 }
 
+uint16 CPackedZone16::UndefIndex = 0xffff;
 
 //***************************************************************************************
 CPackedZone16::CPackedZone16()
@@ -581,6 +582,7 @@ void CPackedZone32::unpackTri(const CPackedTri &src, CVector dest[3]) const
 
 }
 
+uint32 CPackedZone32::UndefIndex = 0xffffffff;
 
 //***************************************************************************************
 CPackedZone32::CPackedZone32()
@@ -695,7 +697,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 	uint height = (uint) ceilf((cornerMax.y - cornerMin.y) / cellSize);
 	float depth = cornerMax.z - cornerMin.z;
 	if (width == 0 || height == 0) return;
-	Grid.init(width, height, ~0);
+	Grid.init(width, height, UndefIndex);
 	//
 	TVertexGrid   vertexGrid; // grid for fast sharing of vertices
 	TTriListGrid  triListGrid; // grid for list of tris per grid cell (before packing in a single vector)
@@ -730,7 +732,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 			{
 				Grid(x, y) = TriLists.size();
 				std::copy(triListGrid(x, y).begin(), triListGrid(x, y).end(), std::back_inserter(TriLists));
-				TriLists.push_back(~0); // mark the end of the list
+				TriLists.push_back(UndefIndex); // mark the end of the list
 			}
 		}
 	}
@@ -851,7 +853,7 @@ void CPackedZone32::build(std::vector<const CTessFace*> &leaves,
 
 	while (currIt != lastIt)
 	{
-		if (*currIt == (uint32)(~0))
+		if (*currIt == UndefIndex)
 		{
 			std::sort(firstIt, currIt);
 			++ currIt;
@@ -991,11 +993,11 @@ void CPackedZone32::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 				if (x < 0) continue;
 				if (x >= (sint) Grid.getWidth()) break;
 				uint32 triRefIndex = Grid(x, gridY);
-				if (triRefIndex == (uint32)(~0)) continue;
+				if (triRefIndex == UndefIndex) continue;
 				for (;;)
 				{
 					uint32 triIndex = TriLists[triRefIndex];
-					if (triIndex == (uint32)(~0)) break; // end of list
+					if (triIndex == UndefIndex) break; // end of list
 					unpackTri(Tris[triIndex], dest);
 					dest += 3;
 					if (dest == endDest)
@@ -1214,11 +1216,11 @@ void CPackedZone16::render(CVertexBuffer &vb, IDriver &drv, CMaterial &material,
 				if (x < 0) continue;
 				if (x >= (sint) Grid.getWidth()) break;
 				uint32 triRefIndex = Grid(x, gridY);
-				if (triRefIndex == (uint16) ~0) continue;
+				if (triRefIndex == UndefIndex) continue;
 				for (;;)
 				{
 					uint16 triIndex = TriLists[triRefIndex];
-					if (triIndex == (uint16) ~0) break; // end of list
+					if (triIndex == UndefIndex) break; // end of list
 					unpackTri(Tris[triIndex], dest);
 					dest += 3;
 					if (dest == endDest)
@@ -1289,8 +1291,8 @@ template <class T> bool raytrace(T &packedZone, const NLMISC::CVector &start, co
 		if (x >= (sint) packedZone.Grid.getWidth()) continue;
 		if (y < 0) continue;
 		if (y >= (sint) packedZone.Grid.getHeight()) continue;
-		uint32 triListIndex = packedZone.Grid(x, y);
-		if (triListIndex != (uint32)(~0))
+		T::TIndexType triListIndex = packedZone.Grid(x, y);
+		if (triListIndex != T::UndefIndex)
 		{
 			CTriangle tri;
 			CPlane triPlane;
@@ -1317,7 +1319,7 @@ template <class T> bool raytrace(T &packedZone, const NLMISC::CVector &start, co
 				}
 				++ triListIndex;
 			}
-			while (packedZone.TriLists[triListIndex] != (typename T::TIndexType)~0);
+			while (packedZone.TriLists[triListIndex] != T::UndefIndex);
 			if (bestInterDist != FLT_MAX)
 			{
 				if (normal)
@@ -1368,10 +1370,10 @@ void CPackedZone16::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<
 		{
 			if (x < 0 || x >= (sint) Grid.getWidth()) continue;
 			{
-				if (Grid(x, y) != (uint16) ~0)
+				if (Grid(x, y) != UndefIndex)
 				{
 					uint16 currTriIndex = Grid(x, y);
-					while (TriLists[currTriIndex] != (uint16) ~0)
+					while (TriLists[currTriIndex] != UndefIndex)
 					{
 						if (!done[TriLists[currTriIndex]])
 						{
@@ -1413,10 +1415,10 @@ void CPackedZone32::appendSelection(const NLMISC::CPolygon2D &poly, std::vector<
 		{
 			if (x < 0 || x >= (sint) Grid.getWidth()) continue;
 			{
-				if (Grid(x, y) != (uint32) ~0)
+				if (Grid(x, y) != UndefIndex)
 				{
 					uint32 currTriIndex = Grid(x, y);
-					while (TriLists[currTriIndex] != (uint32) ~0)
+					while (TriLists[currTriIndex] != UndefIndex)
 					{
 						if (!done[TriLists[currTriIndex]])
 						{
