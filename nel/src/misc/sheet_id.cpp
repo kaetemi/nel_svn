@@ -94,7 +94,10 @@ CSheetId::CSheetId( const string& sheetName )
 {
 	if (!buildSheetId(sheetName))
 	{
-		nlwarning("SHEETID: The sheet '%s' is not in sheet_id.bin, setting it to Unknown",sheetName.c_str());
+		if(sheetName.empty())
+			nlwarning("SHEETID: Try to create an CSheetId with empty name. TODO: check why.");
+		else
+			nlwarning("SHEETID: The sheet '%s' is not in sheet_id.bin, setting it to Unknown",sheetName.c_str());
 		std::string stack;
 		NLMISC::getCallStack(stack);
 		std::vector<std::string> contexts;

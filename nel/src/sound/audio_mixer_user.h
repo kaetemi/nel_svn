@@ -366,7 +366,7 @@ public:
 		virtual void onUpdate() =0;
 		virtual ~IMixerUpdate()
 		{
-			nldebug("Destroying IMixerUpdate %p", this);
+			//nldebug("Destroying IMixerUpdate %p", this);
 		}
 	};
 

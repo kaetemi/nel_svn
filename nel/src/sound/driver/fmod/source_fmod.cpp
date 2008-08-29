@@ -72,7 +72,7 @@ CSourceFMod::CSourceFMod( uint sourcename )
 
 CSourceFMod::~CSourceFMod()
 {
-	nldebug("Destroying FMod source");
+	//nldebug("Destroying FMod source");
 
 	CSoundDriverFMod::instance()->removeSource(this);
 

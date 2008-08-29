@@ -155,7 +155,7 @@ CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
 
 CAudioMixerUser::~CAudioMixerUser()
 {
-	nldebug( "AM: Releasing..." );
+	//nldebug( "AM: Releasing..." );
 
 	if (_ClusteredSound != NULL)
 	{
@@ -198,7 +198,7 @@ CAudioMixerUser::~CAudioMixerUser()
 
 	_Instance = NULL;
 
-	nldebug( "AM: Released" );
+	//nldebug( "AM: Released" );
 }
 
 
@@ -1830,7 +1830,7 @@ uint32			CAudioMixerUser::loadSampleBank(bool async, const std::string &name, st
 //	string path = _SamplePath;
 //	path.append("/").append(filename);
 
-	nldebug( "Loading samples bank %s...", name.c_str() );
+	//nldebug( "Loading samples bank %s...", name.c_str() );
 
 	CSampleBank* bank = CSampleBank::findSampleBank(CStringMapper::map(name));
 	if (bank == NULL)
@@ -1862,7 +1862,7 @@ bool CAudioMixerUser::unloadSampleBank( const std::string &name)
 //	string path = _SamplePath;
 //	path.append("/").append(filename);
 
-	nldebug( "Unloading samples bank %s...", name.c_str() );
+	//nldebug( "Unloading samples bank %s...", name.c_str() );
 	CSampleBank *pbank = CSampleBank::findSampleBank(CStringMapper::map(name));
 
 	if (pbank != NULL)

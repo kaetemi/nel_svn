@@ -525,7 +525,10 @@ string CFileContainer::lookup (const string &filename, bool throwException, bool
 	// Not found
 	if (displayWarning)
 	{
-		nlwarning ("PATH: CPath::lookup(%s): file not found (%s)", str.c_str(), filename.c_str());
+		if(filename.empty())
+			nlwarning ("PATH: Try to lookup for an empty filename. TODO: check why.");
+		else
+			nlwarning ("PATH: File (%s) not found (%s)", str.c_str(), filename.c_str());
 	}
 
 	if (throwException)

@@ -220,22 +220,6 @@ class CContextSoundContainer : public IContextSoundContainer
 		// ok, now create the key and store the sound.
 		CContextMatcher<NbJoker, UseRandom, Shift>	cm(args, randomValue);
 
-#ifdef _DEBUG
-		char tmp[1024];
-		char tmp2[1024];
-
-		smprintf(tmp, 1024, "Adding sound : %s, args = ", patternName.c_str());
-
-		for (uint k=0; k<NbJoker; ++k)
-		{
-			sprintf(tmp2, "%u", args[k]);
-			strcat(tmp, tmp2);
-		}
-
-		nldebug(tmp);
-
-#endif
-
 		std::pair<typename THashContextSound::iterator, bool>	ret;
 		ret = _ContextSounds.insert(std::make_pair(cm, sound));
 		if (!ret.second)

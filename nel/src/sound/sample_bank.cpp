@@ -246,7 +246,7 @@ void				CSampleBank::load(bool async)
 		}
 	}
 
-	nlinfo("Loading sample bank %s %", CStringMapper::unmap(_Name).c_str(), async?"":"Asynchronously");
+	//nlinfo("Loading sample bank %s %", CStringMapper::unmap(_Name).c_str(), async?"":"Asynchronously");
 
 	vector<string> filenames;
 //	vector<string>::iterator iter;
@@ -512,7 +512,7 @@ bool				CSampleBank::unload()
 	if (!_LoadingDone)
 		return false;
 
-	nlinfo("Unloading sample bank %s", CStringMapper::unmap(_Name).c_str());
+	//nlinfo("Unloading sample bank %s", CStringMapper::unmap(_Name).c_str());
 
 	for (it = _Samples.begin(); it != _Samples.end(); ++it)
 	{
@@ -603,13 +603,13 @@ uint				CSampleBank::getSize()
 
 void				CSampleBank::releaseAll()
 {
-	nldebug( "SampleBanks: Releasing..." );
+	//nldebug( "SampleBanks: Releasing..." );
 
 	while (!_Banks.empty())
 	{
 		delete _Banks.begin()->second;
 	}
-	nldebug( "SampleBanks: Released" );
+	//nldebug( "SampleBanks: Released" );
 }
 
 

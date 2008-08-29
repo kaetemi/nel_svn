@@ -168,7 +168,7 @@ void CContextSound::init()
 	bool	parseArg = false;
 	_BaseName = "";
 
-	nldebug("Init the context sound %s", _PatternName.c_str());
+	//nldebug("Init the context sound %s", _PatternName.c_str());
 
 	string::iterator	first(_PatternName.begin()), last(_PatternName.end());
 	// 1st loop until the first joker

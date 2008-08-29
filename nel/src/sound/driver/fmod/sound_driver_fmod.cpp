@@ -197,7 +197,7 @@ void	CSoundDriverFMod::init(IStringMapperProvider *stringMapper, bool forceSoftw
 
 CSoundDriverFMod::~CSoundDriverFMod()
 {
-	nldebug("Destroying FMOD");
+	//nldebug("Destroying FMOD");
 
 	// Stop any played music
 	for(uint i= 0;i<NumMusicChannel;i++)

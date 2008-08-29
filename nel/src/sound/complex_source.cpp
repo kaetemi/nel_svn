@@ -514,7 +514,7 @@ void CComplexSource::onUpdate()
 
 			if (sound2 != NULL)
 			{
-				nldebug("CS : Chaining to sound %s", CStringMapper::unmap(sound2->getName()).c_str());
+				//nldebug("CS : Chaining to sound %s", CStringMapper::unmap(sound2->getName()).c_str());
 				CAudioMixerUser	*mixer = CAudioMixerUser::instance();
 
 				// determine the XFade lenght (if next sound is too short.
@@ -524,7 +524,7 @@ void CComplexSource::onUpdate()
 				{
 					_Source2->setPriority(_Priority);
 					// there is a next sound, add event for xfade.
-					nldebug("Seting event for sound %s in %u millisec (XFade = %u).", CStringMapper::unmap(_Source1->getSound()->getName()).c_str(), _Source1->getSound()->getDuration()-_FadeLength, _FadeLength);
+					//nldebug("Seting event for sound %s in %u millisec (XFade = %u).", CStringMapper::unmap(_Source1->getSound()->getName()).c_str(), _Source1->getSound()->getDuration()-_FadeLength, _FadeLength);
 					mixer->addEvent(this, _StartTime1 + _Source1->getSound()->getDuration() - _FadeLength);
 				}
 			}

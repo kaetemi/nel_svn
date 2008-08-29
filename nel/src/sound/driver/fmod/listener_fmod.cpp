@@ -72,7 +72,7 @@ CListenerFMod::CListenerFMod() //: IListener()
 // ***************************************************************************
 CListenerFMod::~CListenerFMod()
 {
-	nldebug("Destroying FMod listener");
+	//nldebug("Destroying FMod listener");
 
     release();
 	_Instance = NULL;
