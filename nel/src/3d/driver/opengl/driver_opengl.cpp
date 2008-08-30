@@ -2285,11 +2285,11 @@ void CDriverGL::showCursor(bool b)
 #ifdef NL_OS_WINDOWS
 	if (b)
 	{
-		while (ShowCursor(b) < 0) {};
+		while (ShowCursor(b) < 0);
 	}
 	else
 	{
-		while (ShowCursor(b) >= 0) {};
+		while (ShowCursor(b) >= 0);
 	}
 #elif defined (NL_OS_UNIX)
 
