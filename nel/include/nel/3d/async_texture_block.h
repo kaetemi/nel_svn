@@ -27,6 +27,7 @@
 #include "nel/misc/types_nl.h"
 #include "nel/3d/material.h"
 
+#include <limits>
 
 namespace NL3D
 {
@@ -52,7 +53,7 @@ public:
 	{
 		for(uint i=0;i<IDRV_MAT_MAXTEXTURES;i++)
 		{
-			TextIds[i]= UINT_MAX; //-1;
+			TextIds[i]= std::numeric_limits<uint>::max();
 			IsTextureFile[i]= false;
 		}
 	}
