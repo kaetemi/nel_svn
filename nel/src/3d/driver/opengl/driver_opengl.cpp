@@ -3992,7 +3992,7 @@ void CDriverGL::checkTextureOn() const
 	// tmp for debug
 	CDriverGLStates &dgs = const_cast<CDriverGLStates &>(_DriverGLStates);
 	uint currTexStage = dgs.getActiveTextureARB();
-	for(uint k = 0; k < this->getNbTextureStages(); ++k)
+	for(uint k = 0; k < getNbTextureStages(); ++k)
 	{
 		dgs.activeTextureARB(k);
 		GLboolean flag2D;
