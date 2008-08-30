@@ -40,9 +40,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../include"
 				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;LIBXML_STATIC;NL_STATIC"
-				StringPooling="false"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -109,12 +109,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../include"
 				PreprocessorDefinitions="_LIB;NL_RELEASE_DEBUG;WIN32;NDEBUG;NL_STATIC;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std$(ProjectName).h"
 				WarningLevel="3"
@@ -163,7 +167,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\anim_detail_trav.h"
+				RelativePath="..\include\nel\3d\anim_detail_trav.h"
 				>
 			</File>
 			<File
@@ -171,7 +175,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\clip_trav.h"
+				RelativePath="..\include\nel\3d\clip_trav.h"
 				>
 			</File>
 			<File
@@ -179,7 +183,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\hrc_trav.h"
+				RelativePath="..\include\nel\3d\hrc_trav.h"
 				>
 			</File>
 			<File
@@ -187,7 +191,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\light_trav.h"
+				RelativePath="..\include\nel\3d\light_trav.h"
 				>
 			</File>
 			<File
@@ -195,7 +199,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\load_balancing_trav.h"
+				RelativePath="..\include\nel\3d\load_balancing_trav.h"
 				>
 			</File>
 			<File
@@ -203,7 +207,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\render_trav.h"
+				RelativePath="..\include\nel\3d\render_trav.h"
 				>
 			</File>
 			<File
@@ -211,7 +215,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\trav_scene.h"
+				RelativePath="..\include\nel\3d\trav_scene.h"
 				>
 			</File>
 		</Filter>
@@ -223,7 +227,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\camera.h"
+				RelativePath="..\include\nel\3d\camera.h"
 				>
 			</File>
 			<File
@@ -231,7 +235,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\flare_model.h"
+				RelativePath="..\include\nel\3d\flare_model.h"
 				>
 			</File>
 			<File
@@ -239,7 +243,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_model.h"
+				RelativePath="..\include\nel\3d\landscape_model.h"
 				>
 			</File>
 			<File
@@ -247,7 +251,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_base_instance.h"
+				RelativePath="..\include\nel\3d\mesh_base_instance.h"
 				>
 			</File>
 			<File
@@ -255,7 +259,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_instance.h"
+				RelativePath="..\include\nel\3d\mesh_instance.h"
 				>
 			</File>
 			<File
@@ -263,7 +267,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_mrm_instance.h"
+				RelativePath="..\include\nel\3d\mesh_mrm_instance.h"
 				>
 			</File>
 			<File
@@ -271,7 +275,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_mrm_skinned_instance.h"
+				RelativePath="..\include\nel\3d\mesh_mrm_skinned_instance.h"
 				>
 			</File>
 			<File
@@ -279,7 +283,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_multi_lod_instance.h"
+				RelativePath="..\include\nel\3d\mesh_multi_lod_instance.h"
 				>
 			</File>
 			<File
@@ -287,7 +291,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\particle_system_model.h"
+				RelativePath="..\include\nel\3d\particle_system_model.h"
 				>
 			</File>
 			<File
@@ -295,7 +299,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\point_light_model.h"
+				RelativePath="..\include\nel\3d\point_light_model.h"
 				>
 			</File>
 			<File
@@ -303,7 +307,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\root_model.h"
+				RelativePath="..\include\nel\3d\root_model.h"
 				>
 			</File>
 			<File
@@ -311,7 +315,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\seg_remanence.h"
+				RelativePath="..\include\nel\3d\seg_remanence.h"
 				>
 			</File>
 			<File
@@ -319,7 +323,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\skeleton_model.h"
+				RelativePath="..\include\nel\3d\skeleton_model.h"
 				>
 			</File>
 			<File
@@ -327,7 +331,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\transform.h"
+				RelativePath="..\include\nel\3d\transform.h"
 				>
 			</File>
 			<File
@@ -335,7 +339,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\transform_shape.h"
+				RelativePath="..\include\nel\3d\transform_shape.h"
 				>
 			</File>
 			<File
@@ -343,7 +347,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_model.h"
+				RelativePath="..\include\nel\3d\water_model.h"
 				>
 			</File>
 		</Filter>
@@ -355,7 +359,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\bezier_patch.h"
+				RelativePath="..\include\nel\3d\bezier_patch.h"
 				>
 			</File>
 			<File
@@ -363,7 +367,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape.h"
+				RelativePath="..\include\nel\3d\landscape.h"
 				>
 			</File>
 			<File
@@ -371,7 +375,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_def.h"
+				RelativePath="..\include\nel\3d\landscape_def.h"
 				>
 			</File>
 			<File
@@ -379,15 +383,15 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_face_vector_manager.h"
+				RelativePath="..\include\nel\3d\landscape_face_vector_manager.h"
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_profile.cpp"
+				RelativePath="..\include\nel\3d\landscape_profile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_profile.h"
+				RelativePath="..\include\nel\3d\landscape_profile.h"
 				>
 			</File>
 			<File
@@ -395,7 +399,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_vegetable_block.h"
+				RelativePath="..\include\nel\3d\landscape_vegetable_block.h"
 				>
 			</File>
 			<File
@@ -403,7 +407,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscapevb_allocator.h"
+				RelativePath="..\include\nel\3d\landscapevb_allocator.h"
 				>
 			</File>
 			<File
@@ -411,7 +415,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscapevb_info.h"
+				RelativePath="..\include\nel\3d\landscapevb_info.h"
 				>
 			</File>
 			<File
@@ -419,7 +423,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\patch.h"
+				RelativePath="..\include\nel\3d\patch.h"
 				>
 			</File>
 			<File
@@ -435,7 +439,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\patch_rdr_pass.h"
+				RelativePath="..\include\nel\3d\patch_rdr_pass.h"
 				>
 			</File>
 			<File
@@ -451,7 +455,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\patchdlm_context.h"
+				RelativePath="..\include\nel\3d\patchdlm_context.h"
 				>
 			</File>
 			<File
@@ -459,7 +463,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\patchuv_locator.h"
+				RelativePath="..\include\nel\3d\patchuv_locator.h"
 				>
 			</File>
 			<File
@@ -467,7 +471,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tess_block.h"
+				RelativePath="..\include\nel\3d\tess_block.h"
 				>
 			</File>
 			<File
@@ -475,7 +479,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tess_face_priority_list.h"
+				RelativePath="..\include\nel\3d\tess_face_priority_list.h"
 				>
 			</File>
 			<File
@@ -483,7 +487,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tess_list.h"
+				RelativePath="..\include\nel\3d\tess_list.h"
 				>
 			</File>
 			<File
@@ -491,7 +495,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tessellation.h"
+				RelativePath="..\include\nel\3d\tessellation.h"
 				>
 			</File>
 			<File
@@ -499,7 +503,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_dlm.h"
+				RelativePath="..\include\nel\3d\texture_dlm.h"
 				>
 			</File>
 			<File
@@ -507,7 +511,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_far.h"
+				RelativePath="..\include\nel\3d\texture_far.h"
 				>
 			</File>
 			<File
@@ -515,7 +519,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_near.h"
+				RelativePath="..\include\nel\3d\texture_near.h"
 				>
 			</File>
 			<File
@@ -523,7 +527,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_color.h"
+				RelativePath="..\include\nel\3d\tile_color.h"
 				>
 			</File>
 			<File
@@ -531,7 +535,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_element.h"
+				RelativePath="..\include\nel\3d\tile_element.h"
 				>
 			</File>
 			<File
@@ -539,7 +543,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_light_influence.h"
+				RelativePath="..\include\nel\3d\tile_light_influence.h"
 				>
 			</File>
 			<File
@@ -547,7 +551,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_lumel.h"
+				RelativePath="..\include\nel\3d\tile_lumel.h"
 				>
 			</File>
 			<File
@@ -555,7 +559,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\zone.h"
+				RelativePath="..\include\nel\3d\zone.h"
 				>
 			</File>
 			<Filter
@@ -566,7 +570,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_manager.h"
+					RelativePath="..\include\nel\3d\zone_manager.h"
 					>
 				</File>
 				<File
@@ -574,7 +578,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_search.h"
+					RelativePath="..\include\nel\3d\zone_search.h"
 					>
 				</File>
 			</Filter>
@@ -586,7 +590,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\instance_lighter.h"
+					RelativePath="..\include\nel\3d\instance_lighter.h"
 					>
 				</File>
 				<File
@@ -594,7 +598,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_corner_smoother.h"
+					RelativePath="..\include\nel\3d\zone_corner_smoother.h"
 					>
 				</File>
 				<File
@@ -602,7 +606,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_lighter.h"
+					RelativePath="..\include\nel\3d\zone_lighter.h"
 					>
 				</File>
 				<File
@@ -610,7 +614,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_smoother.h"
+					RelativePath="..\include\nel\3d\zone_smoother.h"
 					>
 				</File>
 				<File
@@ -618,7 +622,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_symmetrisation.h"
+					RelativePath="..\include\nel\3d\zone_symmetrisation.h"
 					>
 				</File>
 				<File
@@ -626,7 +630,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\zone_tgt_smoother.h"
+					RelativePath="..\include\nel\3d\zone_tgt_smoother.h"
 					>
 				</File>
 			</Filter>
@@ -731,7 +735,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\computed_string.h"
+				RelativePath="..\include\nel\3d\computed_string.h"
 				>
 			</File>
 			<File
@@ -739,7 +743,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\font_generator.h"
+				RelativePath="..\include\nel\3d\font_generator.h"
 				>
 			</File>
 			<File
@@ -747,7 +751,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\font_manager.h"
+				RelativePath="..\include\nel\3d\font_manager.h"
 				>
 			</File>
 			<File
@@ -755,7 +759,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\text_context.h"
+				RelativePath="..\include\nel\3d\text_context.h"
 				>
 			</File>
 		</Filter>
@@ -763,7 +767,7 @@
 			Name="Container"
 			>
 			<File
-				RelativePath="3d\bsp_tree.h"
+				RelativePath="..\include\nel\3d\bsp_tree.h"
 				>
 			</File>
 			<File
@@ -771,7 +775,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cube_grid.h"
+				RelativePath="..\include\nel\3d\cube_grid.h"
 				>
 			</File>
 			<File
@@ -779,15 +783,15 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\fast_ptr_list.h"
+				RelativePath="..\include\nel\3d\fast_ptr_list.h"
 				>
 			</File>
 			<File
-				RelativePath="3d\layered_ordering_table.h"
+				RelativePath="..\include\nel\3d\layered_ordering_table.h"
 				>
 			</File>
 			<File
-				RelativePath="3d\ordering_table.h"
+				RelativePath="..\include\nel\3d\ordering_table.h"
 				>
 			</File>
 			<File
@@ -795,15 +799,15 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\ptr_set.h"
+				RelativePath="..\include\nel\3d\ptr_set.h"
 				>
 			</File>
 			<File
-				RelativePath=".\3d\quad_grid.cpp"
+				RelativePath="3d\quad_grid.cpp"
 				>
 			</File>
 			<File
-				RelativePath="3d\quad_grid.h"
+				RelativePath="..\include\nel\3d\quad_grid.h"
 				>
 			</File>
 			<File
@@ -811,7 +815,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\static_quad_grid.h"
+				RelativePath="..\include\nel\3d\static_quad_grid.h"
 				>
 			</File>
 		</Filter>
@@ -823,7 +827,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_bank.h"
+				RelativePath="..\include\nel\3d\tile_bank.h"
 				>
 			</File>
 			<File
@@ -831,7 +835,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_far_bank.h"
+				RelativePath="..\include\nel\3d\tile_far_bank.h"
 				>
 			</File>
 			<File
@@ -839,7 +843,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_noise_map.h"
+				RelativePath="..\include\nel\3d\tile_noise_map.h"
 				>
 			</File>
 			<File
@@ -847,7 +851,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tile_vegetable_desc.h"
+				RelativePath="..\include\nel\3d\tile_vegetable_desc.h"
 				>
 			</File>
 		</Filter>
@@ -859,7 +863,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\flare_shape.h"
+				RelativePath="..\include\nel\3d\flare_shape.h"
 				>
 			</File>
 			<File
@@ -867,7 +871,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh.h"
+				RelativePath="..\include\nel\3d\mesh.h"
 				>
 			</File>
 			<File
@@ -875,7 +879,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_base.h"
+				RelativePath="..\include\nel\3d\mesh_base.h"
 				>
 			</File>
 			<File
@@ -883,7 +887,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_blender.h"
+				RelativePath="..\include\nel\3d\mesh_blender.h"
 				>
 			</File>
 			<File
@@ -891,7 +895,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_block_manager.h"
+				RelativePath="..\include\nel\3d\mesh_block_manager.h"
 				>
 			</File>
 			<File
@@ -899,7 +903,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_geom.h"
+				RelativePath="..\include\nel\3d\mesh_geom.h"
 				>
 			</File>
 			<File
@@ -907,7 +911,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_morpher.h"
+				RelativePath="..\include\nel\3d\mesh_morpher.h"
 				>
 			</File>
 			<File
@@ -915,7 +919,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_mrm.h"
+				RelativePath="..\include\nel\3d\mesh_mrm.h"
 				>
 			</File>
 			<File
@@ -931,7 +935,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_mrm_skinned.h"
+				RelativePath="..\include\nel\3d\mesh_mrm_skinned.h"
 				>
 			</File>
 			<File
@@ -943,7 +947,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_multi_lod.h"
+				RelativePath="..\include\nel\3d\mesh_multi_lod.h"
 				>
 			</File>
 			<File
@@ -951,7 +955,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mesh_vertex_program.h"
+				RelativePath="..\include\nel\3d\mesh_vertex_program.h"
 				>
 			</File>
 			<File
@@ -959,7 +963,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\meshvp_per_pixel_light.h"
+				RelativePath="..\include\nel\3d\meshvp_per_pixel_light.h"
 				>
 			</File>
 			<File
@@ -967,7 +971,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\meshvp_wind_tree.h"
+				RelativePath="..\include\nel\3d\meshvp_wind_tree.h"
 				>
 			</File>
 			<File
@@ -975,7 +979,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mrm_level_detail.h"
+				RelativePath="..\include\nel\3d\mrm_level_detail.h"
 				>
 			</File>
 			<File
@@ -983,7 +987,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\particle_system_shape.h"
+				RelativePath="..\include\nel\3d\particle_system_shape.h"
 				>
 			</File>
 			<File
@@ -991,7 +995,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\raw_skin.h"
+				RelativePath="..\include\nel\3d\raw_skin.h"
 				>
 			</File>
 			<File
@@ -999,7 +1003,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\raw_skinned.h"
+				RelativePath="..\include\nel\3d\raw_skinned.h"
 				>
 			</File>
 			<File
@@ -1007,15 +1011,15 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\seg_remanence_shape.h"
+				RelativePath="..\include\nel\3d\seg_remanence_shape.h"
 				>
 			</File>
 			<File
-				RelativePath=".\3d\shadow_skin.cpp"
+				RelativePath="3d\shadow_skin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\3d\shadow_skin.h"
+				RelativePath="..\include\nel\3d\shadow_skin.h"
 				>
 			</File>
 			<File
@@ -1023,7 +1027,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shape.h"
+				RelativePath="..\include\nel\3d\shape.h"
 				>
 			</File>
 			<File
@@ -1031,7 +1035,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shape_bank.h"
+				RelativePath="..\include\nel\3d\shape_bank.h"
 				>
 			</File>
 			<File
@@ -1039,7 +1043,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shifted_triangle_cache.h"
+				RelativePath="..\include\nel\3d\shifted_triangle_cache.h"
 				>
 			</File>
 			<File
@@ -1047,7 +1051,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\skeleton_shape.h"
+				RelativePath="..\include\nel\3d\skeleton_shape.h"
 				>
 			</File>
 			<File
@@ -1055,7 +1059,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\tangent_space_build.h"
+				RelativePath="..\include\nel\3d\tangent_space_build.h"
 				>
 			</File>
 			<File
@@ -1063,7 +1067,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vertex_stream_manager.h"
+				RelativePath="..\include\nel\3d\vertex_stream_manager.h"
 				>
 			</File>
 			<File
@@ -1071,7 +1075,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_shape.h"
+				RelativePath="..\include\nel\3d\water_shape.h"
 				>
 			</File>
 		</Filter>
@@ -1083,7 +1087,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\async_texture_block.h"
+				RelativePath="..\include\nel\3d\async_texture_block.h"
 				>
 			</File>
 			<File
@@ -1091,7 +1095,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\async_texture_manager.h"
+				RelativePath="..\include\nel\3d\async_texture_manager.h"
 				>
 			</File>
 			<File
@@ -1099,7 +1103,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cube_map_builder.h"
+				RelativePath="..\include\nel\3d\cube_map_builder.h"
 				>
 			</File>
 			<File
@@ -1107,7 +1111,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\fasthls_modifier.h"
+				RelativePath="..\include\nel\3d\fasthls_modifier.h"
 				>
 			</File>
 			<File
@@ -1115,7 +1119,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\hls_color_texture.h"
+				RelativePath="..\include\nel\3d\hls_color_texture.h"
 				>
 			</File>
 			<File
@@ -1123,7 +1127,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\hls_texture_bank.h"
+				RelativePath="..\include\nel\3d\hls_texture_bank.h"
 				>
 			</File>
 			<File
@@ -1131,7 +1135,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\hls_texture_manager.h"
+				RelativePath="..\include\nel\3d\hls_texture_manager.h"
 				>
 			</File>
 			<File
@@ -1139,7 +1143,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_blank.h"
+				RelativePath="..\include\nel\3d\texture_blank.h"
 				>
 			</File>
 			<File
@@ -1147,7 +1151,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_blend.h"
+				RelativePath="..\include\nel\3d\texture_blend.h"
 				>
 			</File>
 			<File
@@ -1155,7 +1159,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_bump.h"
+				RelativePath="..\include\nel\3d\texture_bump.h"
 				>
 			</File>
 			<File
@@ -1163,7 +1167,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_cube.h"
+				RelativePath="..\include\nel\3d\texture_cube.h"
 				>
 			</File>
 			<File
@@ -1171,7 +1175,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_emboss.h"
+				RelativePath="..\include\nel\3d\texture_emboss.h"
 				>
 			</File>
 			<File
@@ -1179,7 +1183,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_file.h"
+				RelativePath="..\include\nel\3d\texture_file.h"
 				>
 			</File>
 			<File
@@ -1187,7 +1191,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_font.h"
+				RelativePath="..\include\nel\3d\texture_font.h"
 				>
 			</File>
 			<File
@@ -1195,7 +1199,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_grouped.h"
+				RelativePath="..\include\nel\3d\texture_grouped.h"
 				>
 			</File>
 			<File
@@ -1203,7 +1207,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_mem.h"
+				RelativePath="..\include\nel\3d\texture_mem.h"
 				>
 			</File>
 			<File
@@ -1211,7 +1215,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_multi_file.h"
+				RelativePath="..\include\nel\3d\texture_multi_file.h"
 				>
 			</File>
 		</Filter>
@@ -1223,7 +1227,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mrm_builder.h"
+				RelativePath="..\include\nel\3d\mrm_builder.h"
 				>
 			</File>
 			<File
@@ -1231,7 +1235,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mrm_internal.h"
+				RelativePath="..\include\nel\3d\mrm_internal.h"
 				>
 			</File>
 			<File
@@ -1239,7 +1243,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mrm_mesh.h"
+				RelativePath="..\include\nel\3d\mrm_mesh.h"
 				>
 			</File>
 			<File
@@ -1247,7 +1251,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\mrm_parameters.h"
+				RelativePath="..\include\nel\3d\mrm_parameters.h"
 				>
 			</File>
 		</Filter>
@@ -1463,7 +1467,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\animation_set_user.h"
+				RelativePath="..\include\nel\3d\animation_set_user.h"
 				>
 			</File>
 			<File
@@ -1471,7 +1475,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cloud_scape_user.h"
+				RelativePath="..\include\nel\3d\cloud_scape_user.h"
 				>
 			</File>
 			<File
@@ -1479,7 +1483,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\driver_user.h"
+				RelativePath="..\include\nel\3d\driver_user.h"
 				>
 			</File>
 			<File
@@ -1499,7 +1503,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\instance_group_user.h"
+				RelativePath="..\include\nel\3d\instance_group_user.h"
 				>
 			</File>
 			<File
@@ -1507,7 +1511,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_user.h"
+				RelativePath="..\include\nel\3d\landscape_user.h"
 				>
 			</File>
 			<File
@@ -1519,7 +1523,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\light_user.h"
+				RelativePath="..\include\nel\3d\light_user.h"
 				>
 			</File>
 			<File
@@ -1535,7 +1539,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\play_list_manager_user.h"
+				RelativePath="..\include\nel\3d\play_list_manager_user.h"
 				>
 			</File>
 			<File
@@ -1543,7 +1547,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\play_list_user.h"
+				RelativePath="..\include\nel\3d\play_list_user.h"
 				>
 			</File>
 			<File
@@ -1555,7 +1559,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\scene_user.h"
+				RelativePath="..\include\nel\3d\scene_user.h"
 				>
 			</File>
 			<File
@@ -1567,7 +1571,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shape_bank_user.h"
+				RelativePath="..\include\nel\3d\shape_bank_user.h"
 				>
 			</File>
 			<File
@@ -1575,7 +1579,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\text_context_user.h"
+				RelativePath="..\include\nel\3d\text_context_user.h"
 				>
 			</File>
 			<File
@@ -1583,7 +1587,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\texture_user.h"
+				RelativePath="..\include\nel\3d\texture_user.h"
 				>
 			</File>
 			<File
@@ -1647,7 +1651,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\visual_collision_entity_user.h"
+				RelativePath="..\include\nel\3d\visual_collision_entity_user.h"
 				>
 			</File>
 			<File
@@ -1655,7 +1659,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\visual_collision_manager_user.h"
+				RelativePath="..\include\nel\3d\visual_collision_manager_user.h"
 				>
 			</File>
 			<File
@@ -1663,7 +1667,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_env_map_user.h"
+				RelativePath="..\include\nel\3d\water_env_map_user.h"
 				>
 			</File>
 		</Filter>
@@ -1862,7 +1866,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\particle_system.h"
+					RelativePath="..\include\nel\3d\particle_system.h"
 					>
 				</File>
 				<File
@@ -1870,7 +1874,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\particle_system_manager.h"
+					RelativePath="..\include\nel\3d\particle_system_manager.h"
 					>
 				</File>
 				<File
@@ -1878,7 +1882,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\particle_system_process.h"
+					RelativePath="..\include\nel\3d\particle_system_process.h"
 					>
 				</File>
 				<File
@@ -1886,15 +1890,15 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_allocator.h"
+					RelativePath="..\include\nel\3d\ps_allocator.h"
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_edit.h"
+					RelativePath="..\include\nel\3d\ps_edit.h"
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_iterator.h"
+					RelativePath="..\include\nel\3d\ps_iterator.h"
 					>
 				</File>
 				<File
@@ -1902,19 +1906,19 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_located.h"
+					RelativePath="..\include\nel\3d\ps_located.h"
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_lod.h"
+					RelativePath="..\include\nel\3d\ps_lod.h"
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_misc.h"
+					RelativePath="..\include\nel\3d\ps_misc.h"
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_spawn_info.h"
+					RelativePath="..\include\nel\3d\ps_spawn_info.h"
 					>
 				</File>
 				<File
@@ -1922,7 +1926,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\ps_util.h"
+					RelativePath="..\include\nel\3d\ps_util.h"
 					>
 				</File>
 				<Filter
@@ -1933,7 +1937,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_dot.h"
+						RelativePath="..\include\nel\3d\ps_dot.h"
 						>
 					</File>
 					<File
@@ -1941,7 +1945,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_face.h"
+						RelativePath="..\include\nel\3d\ps_face.h"
 						>
 					</File>
 					<File
@@ -1949,7 +1953,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_face_look_at.h"
+						RelativePath="..\include\nel\3d\ps_face_look_at.h"
 						>
 					</File>
 					<File
@@ -1957,11 +1961,11 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_fan_light.h"
+						RelativePath="..\include\nel\3d\ps_fan_light.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_macro.h"
+						RelativePath="..\include\nel\3d\ps_macro.h"
 						>
 					</File>
 					<File
@@ -1969,7 +1973,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_mesh.h"
+						RelativePath="..\include\nel\3d\ps_mesh.h"
 						>
 					</File>
 					<File
@@ -1977,7 +1981,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_particle.h"
+						RelativePath="..\include\nel\3d\ps_particle.h"
 						>
 					</File>
 					<File
@@ -1985,7 +1989,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_particle2.h"
+						RelativePath="..\include\nel\3d\ps_particle2.h"
 						>
 					</File>
 					<File
@@ -1993,7 +1997,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_particle_basic.h"
+						RelativePath="..\include\nel\3d\ps_particle_basic.h"
 						>
 					</File>
 					<File
@@ -2001,7 +2005,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_quad.h"
+						RelativePath="..\include\nel\3d\ps_quad.h"
 						>
 					</File>
 					<File
@@ -2013,7 +2017,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_ribbon.h"
+						RelativePath="..\include\nel\3d\ps_ribbon.h"
 						>
 					</File>
 					<File
@@ -2021,7 +2025,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_ribbon_base.h"
+						RelativePath="..\include\nel\3d\ps_ribbon_base.h"
 						>
 					</File>
 					<File
@@ -2029,7 +2033,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_ribbon_look_at.h"
+						RelativePath="..\include\nel\3d\ps_ribbon_look_at.h"
 						>
 					</File>
 					<File
@@ -2037,7 +2041,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_shockwave.h"
+						RelativePath="..\include\nel\3d\ps_shockwave.h"
 						>
 					</File>
 					<File
@@ -2045,7 +2049,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_tail_dot.h"
+						RelativePath="..\include\nel\3d\ps_tail_dot.h"
 						>
 					</File>
 				</Filter>
@@ -2053,11 +2057,11 @@
 					Name="attribs"
 					>
 					<File
-						RelativePath="3d\ps_attrib.h"
+						RelativePath="..\include\nel\3d\ps_attrib.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_attrib_maker.h"
+						RelativePath="..\include\nel\3d\ps_attrib_maker.h"
 						>
 					</File>
 					<File
@@ -2065,11 +2069,11 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_attrib_maker_bin_op.h"
+						RelativePath="..\include\nel\3d\ps_attrib_maker_bin_op.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_attrib_maker_bin_op_inline.h"
+						RelativePath="..\include\nel\3d\ps_attrib_maker_bin_op_inline.h"
 						>
 					</File>
 					<File
@@ -2077,11 +2081,11 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_attrib_maker_helper.h"
+						RelativePath="..\include\nel\3d\ps_attrib_maker_helper.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_attrib_maker_iterators.h"
+						RelativePath="..\include\nel\3d\ps_attrib_maker_iterators.h"
 						>
 					</File>
 					<File
@@ -2097,11 +2101,11 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_color.h"
+						RelativePath="..\include\nel\3d\ps_color.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_direction.h"
+						RelativePath="..\include\nel\3d\ps_direction.h"
 						>
 					</File>
 					<File
@@ -2109,7 +2113,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_float.h"
+						RelativePath="..\include\nel\3d\ps_float.h"
 						>
 					</File>
 					<File
@@ -2117,11 +2121,11 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_int.h"
+						RelativePath="..\include\nel\3d\ps_int.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_plane_basis.h"
+						RelativePath="..\include\nel\3d\ps_plane_basis.h"
 						>
 					</File>
 					<File
@@ -2129,7 +2133,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_plane_basis_maker.h"
+						RelativePath="..\include\nel\3d\ps_plane_basis_maker.h"
 						>
 					</File>
 					<File
@@ -2137,19 +2141,19 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_register_color_attribs.h"
+						RelativePath="..\include\nel\3d\ps_register_color_attribs.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_register_float_attribs.h"
+						RelativePath="..\include\nel\3d\ps_register_float_attribs.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_register_int_attribs.h"
+						RelativePath="..\include\nel\3d\ps_register_int_attribs.h"
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_register_plane_basis_attribs.h"
+						RelativePath="..\include\nel\3d\ps_register_plane_basis_attribs.h"
 						>
 					</File>
 				</Filter>
@@ -2161,7 +2165,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_force.h"
+						RelativePath="..\include\nel\3d\ps_force.h"
 						>
 					</File>
 					<File
@@ -2181,7 +2185,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_zone.h"
+						RelativePath="..\include\nel\3d\ps_zone.h"
 						>
 					</File>
 				</Filter>
@@ -2193,7 +2197,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_emitter.h"
+						RelativePath="..\include\nel\3d\ps_emitter.h"
 						>
 					</File>
 					<File
@@ -2209,7 +2213,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_sound.h"
+						RelativePath="..\include\nel\3d\ps_sound.h"
 						>
 					</File>
 				</Filter>
@@ -2221,7 +2225,7 @@
 						>
 					</File>
 					<File
-						RelativePath="3d\ps_light.h"
+						RelativePath="..\include\nel\3d\ps_light.h"
 						>
 					</File>
 				</Filter>
@@ -2242,7 +2246,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\deform_2d.h"
+					RelativePath="..\include\nel\3d\deform_2d.h"
 					>
 				</File>
 				<File
@@ -2250,7 +2254,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\heat_haze.h"
+					RelativePath="..\include\nel\3d\heat_haze.h"
 					>
 				</File>
 				<File
@@ -2258,7 +2262,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\motion_blur.h"
+					RelativePath="..\include\nel\3d\motion_blur.h"
 					>
 				</File>
 				<File
@@ -2266,7 +2270,7 @@
 					>
 				</File>
 				<File
-					RelativePath="3d\quad_effect.h"
+					RelativePath="..\include\nel\3d\quad_effect.h"
 					>
 				</File>
 			</Filter>
@@ -2279,7 +2283,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\camera_col.h"
+				RelativePath="..\include\nel\3d\camera_col.h"
 				>
 			</File>
 			<File
@@ -2287,7 +2291,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\landscape_collision_grid.h"
+				RelativePath="..\include\nel\3d\landscape_collision_grid.h"
 				>
 			</File>
 			<File
@@ -2295,7 +2299,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\3d\packed_world.h"
+				RelativePath="..\include\nel\3d\packed_world.h"
 				>
 			</File>
 			<File
@@ -2303,7 +2307,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\3d\packed_zone.h"
+				RelativePath="..\include\nel\3d\packed_zone.h"
 				>
 			</File>
 			<File
@@ -2311,7 +2315,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\3d\ray_mesh.h"
+				RelativePath="..\include\nel\3d\ray_mesh.h"
 				>
 			</File>
 			<File
@@ -2319,7 +2323,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\3d\shape_info.h"
+				RelativePath="..\include\nel\3d\shape_info.h"
 				>
 			</File>
 			<File
@@ -2327,7 +2331,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\visual_collision_entity.h"
+				RelativePath="..\include\nel\3d\visual_collision_entity.h"
 				>
 			</File>
 			<File
@@ -2335,7 +2339,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\visual_collision_manager.h"
+				RelativePath="..\include\nel\3d\visual_collision_manager.h"
 				>
 			</File>
 			<File
@@ -2343,7 +2347,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\visual_collision_mesh.h"
+				RelativePath="..\include\nel\3d\visual_collision_mesh.h"
 				>
 			</File>
 		</Filter>
@@ -2355,7 +2359,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cluster.h"
+				RelativePath="..\include\nel\3d\cluster.h"
 				>
 			</File>
 			<File
@@ -2363,7 +2367,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\portal.h"
+				RelativePath="..\include\nel\3d\portal.h"
 				>
 			</File>
 			<File
@@ -2371,7 +2375,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\quad_grid_clip_cluster.h"
+				RelativePath="..\include\nel\3d\quad_grid_clip_cluster.h"
 				>
 			</File>
 			<File
@@ -2379,7 +2383,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\quad_grid_clip_manager.h"
+				RelativePath="..\include\nel\3d\quad_grid_clip_manager.h"
 				>
 			</File>
 		</Filter>
@@ -2391,7 +2395,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_env_map.h"
+				RelativePath="..\include\nel\3d\water_env_map.h"
 				>
 			</File>
 			<File
@@ -2399,7 +2403,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_height_map.h"
+				RelativePath="..\include\nel\3d\water_height_map.h"
 				>
 			</File>
 			<File
@@ -2407,7 +2411,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\water_pool_manager.h"
+				RelativePath="..\include\nel\3d\water_pool_manager.h"
 				>
 			</File>
 		</Filter>
@@ -2419,7 +2423,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\stripifier.h"
+				RelativePath="..\include\nel\3d\stripifier.h"
 				>
 			</File>
 		</Filter>
@@ -2431,7 +2435,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable.h"
+				RelativePath="..\include\nel\3d\vegetable.h"
 				>
 			</File>
 			<File
@@ -2439,7 +2443,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_blend_layer_model.h"
+				RelativePath="..\include\nel\3d\vegetable_blend_layer_model.h"
 				>
 			</File>
 			<File
@@ -2447,7 +2451,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_clip_block.h"
+				RelativePath="..\include\nel\3d\vegetable_clip_block.h"
 				>
 			</File>
 			<File
@@ -2455,7 +2459,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_def.h"
+				RelativePath="..\include\nel\3d\vegetable_def.h"
 				>
 			</File>
 			<File
@@ -2463,7 +2467,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_instance_group.h"
+				RelativePath="..\include\nel\3d\vegetable_instance_group.h"
 				>
 			</File>
 			<File
@@ -2471,7 +2475,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_light_ex.h"
+				RelativePath="..\include\nel\3d\vegetable_light_ex.h"
 				>
 			</File>
 			<File
@@ -2479,7 +2483,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_manager.h"
+				RelativePath="..\include\nel\3d\vegetable_manager.h"
 				>
 			</File>
 			<File
@@ -2487,7 +2491,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_quadrant.h"
+				RelativePath="..\include\nel\3d\vegetable_quadrant.h"
 				>
 			</File>
 			<File
@@ -2495,7 +2499,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_shape.h"
+				RelativePath="..\include\nel\3d\vegetable_shape.h"
 				>
 			</File>
 			<File
@@ -2503,7 +2507,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_sort_block.h"
+				RelativePath="..\include\nel\3d\vegetable_sort_block.h"
 				>
 			</File>
 			<File
@@ -2511,7 +2515,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetable_uv8.h"
+				RelativePath="..\include\nel\3d\vegetable_uv8.h"
 				>
 			</File>
 			<File
@@ -2519,7 +2523,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\vegetablevb_allocator.h"
+				RelativePath="..\include\nel\3d\vegetablevb_allocator.h"
 				>
 			</File>
 		</Filter>
@@ -2531,7 +2535,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\matrix_3x4.h"
+				RelativePath="..\include\nel\3d\matrix_3x4.h"
 				>
 			</File>
 			<File
@@ -2539,7 +2543,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\radix_sort.h"
+				RelativePath="..\include\nel\3d\radix_sort.h"
 				>
 			</File>
 		</Filter>
@@ -2551,7 +2555,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\ig_surface_light.h"
+				RelativePath="..\include\nel\3d\ig_surface_light.h"
 				>
 			</File>
 			<File
@@ -2559,7 +2563,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\ig_surface_light_build.h"
+				RelativePath="..\include\nel\3d\ig_surface_light_build.h"
 				>
 			</File>
 			<File
@@ -2567,7 +2571,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\light_contribution.h"
+				RelativePath="..\include\nel\3d\light_contribution.h"
 				>
 			</File>
 			<File
@@ -2575,7 +2579,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\light_influence_interpolator.h"
+				RelativePath="..\include\nel\3d\light_influence_interpolator.h"
 				>
 			</File>
 			<File
@@ -2583,7 +2587,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lighting_manager.h"
+				RelativePath="..\include\nel\3d\lighting_manager.h"
 				>
 			</File>
 			<File
@@ -2591,7 +2595,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\point_light.h"
+				RelativePath="..\include\nel\3d\point_light.h"
 				>
 			</File>
 			<File
@@ -2599,7 +2603,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\point_light_named.h"
+				RelativePath="..\include\nel\3d\point_light_named.h"
 				>
 			</File>
 			<File
@@ -2607,7 +2611,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\point_light_named_array.h"
+				RelativePath="..\include\nel\3d\point_light_named_array.h"
 				>
 			</File>
 			<File
@@ -2615,7 +2619,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\surface_light_grid.h"
+				RelativePath="..\include\nel\3d\surface_light_grid.h"
 				>
 			</File>
 		</Filter>
@@ -2627,7 +2631,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\coarse_mesh_build.h"
+				RelativePath="..\include\nel\3d\coarse_mesh_build.h"
 				>
 			</File>
 			<File
@@ -2635,7 +2639,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\coarse_mesh_manager.h"
+				RelativePath="..\include\nel\3d\coarse_mesh_manager.h"
 				>
 			</File>
 			<File
@@ -2643,7 +2647,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_builder.h"
+				RelativePath="..\include\nel\3d\lod_character_builder.h"
 				>
 			</File>
 			<File
@@ -2651,7 +2655,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_instance.h"
+				RelativePath="..\include\nel\3d\lod_character_instance.h"
 				>
 			</File>
 			<File
@@ -2659,7 +2663,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_manager.h"
+				RelativePath="..\include\nel\3d\lod_character_manager.h"
 				>
 			</File>
 			<File
@@ -2667,7 +2671,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_shape.h"
+				RelativePath="..\include\nel\3d\lod_character_shape.h"
 				>
 			</File>
 			<File
@@ -2675,7 +2679,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_shape_bank.h"
+				RelativePath="..\include\nel\3d\lod_character_shape_bank.h"
 				>
 			</File>
 			<File
@@ -2683,7 +2687,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\lod_character_texture.h"
+				RelativePath="..\include\nel\3d\lod_character_texture.h"
 				>
 			</File>
 		</Filter>
@@ -2695,7 +2699,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cloud.h"
+				RelativePath="..\include\nel\3d\cloud.h"
 				>
 			</File>
 			<File
@@ -2703,7 +2707,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\cloud_scape.h"
+				RelativePath="..\include\nel\3d\cloud_scape.h"
 				>
 			</File>
 			<File
@@ -2711,7 +2715,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\noise_3d.h"
+				RelativePath="..\include\nel\3d\noise_3d.h"
 				>
 			</File>
 		</Filter>
@@ -2723,7 +2727,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shadow_map.h"
+				RelativePath="..\include\nel\3d\shadow_map.h"
 				>
 			</File>
 			<File
@@ -2731,7 +2735,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shadow_map_manager.h"
+				RelativePath="..\include\nel\3d\shadow_map_manager.h"
 				>
 			</File>
 			<File
@@ -2739,7 +2743,7 @@
 				>
 			</File>
 			<File
-				RelativePath="3d\shadow_poly_receiver.h"
+				RelativePath="..\include\nel\3d\shadow_poly_receiver.h"
 				>
 			</File>
 		</Filter>
@@ -2748,7 +2752,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\async_file_manager_3d.h"
+			RelativePath="..\include\nel\3d\async_file_manager_3d.h"
 			>
 		</File>
 		<File
@@ -2756,7 +2760,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\debug_vb.h"
+			RelativePath="..\include\nel\3d\debug_vb.h"
 			>
 		</File>
 		<File
@@ -2764,7 +2768,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\event_mouse_listener.h"
+			RelativePath="..\include\nel\3d\event_mouse_listener.h"
 			>
 		</File>
 		<File
@@ -2772,7 +2776,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\init_3d.h"
+			RelativePath="..\include\nel\3d\init_3d.h"
 			>
 		</File>
 		<File
@@ -2780,7 +2784,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\mini_col.h"
+			RelativePath="..\include\nel\3d\mini_col.h"
 			>
 		</File>
 		<File
@@ -2788,7 +2792,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\nelu.h"
+			RelativePath="..\include\nel\3d\nelu.h"
 			>
 		</File>
 		<File
@@ -2796,7 +2800,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\register_3d.h"
+			RelativePath="..\include\nel\3d\register_3d.h"
 			>
 		</File>
 		<File
@@ -2804,7 +2808,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\scene.h"
+			RelativePath="..\include\nel\3d\scene.h"
 			>
 		</File>
 		<File
@@ -2812,7 +2816,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\scene_group.h"
+			RelativePath="..\include\nel\3d\scene_group.h"
 			>
 		</File>
 		<File
@@ -2844,7 +2848,7 @@
 			>
 		</File>
 		<File
-			RelativePath="3d\vertex_buffer_heap.h"
+			RelativePath="..\include\nel\3d\vertex_buffer_heap.h"
 			>
 		</File>
 	</Files>

@@ -42,9 +42,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../../include"
 				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;NL_STATIC"
-				StringPooling="false"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -111,11 +111,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../../include"
 				PreprocessorDefinitions="_LIB;NL_RELEASE_DEBUG;WIN32;NDEBUG;NL_STATIC;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
