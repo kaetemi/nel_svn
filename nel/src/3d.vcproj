@@ -387,7 +387,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\include\nel\3d\landscape_profile.cpp"
+				RelativePath=".\3d\landscape_profile.cpp"
 				>
 			</File>
 			<File
