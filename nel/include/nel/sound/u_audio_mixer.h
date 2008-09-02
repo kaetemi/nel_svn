@@ -88,6 +88,7 @@ public:
 		DriverFMod,
 		DriverOpenAl,
 		DriverDSound,
+		DriverXAudio2,
 		NumDrivers
 	};
 
