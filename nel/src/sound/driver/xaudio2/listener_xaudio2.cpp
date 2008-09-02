@@ -54,7 +54,7 @@ namespace NLSOUND {
 CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _SubmixVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), _DopplerScaler(1.0f), _DistanceScaler(1.0f)
 {
-	nlwarning("Initializing CListenerXAudio2");
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CListenerXAudio2");
 
 	HRESULT hr;
 	memset(&_Listener, 0, sizeof(_Listener));
@@ -87,7 +87,7 @@ CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
 
 CListenerXAudio2::~CListenerXAudio2()
 {
-	nlwarning("Destroying CListenerXAudio2");
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CListenerXAudio2");
 
 	release();
 }
@@ -176,27 +176,27 @@ float CListenerXAudio2::getGain() const
 /// Set the doppler factor (default: 1) to exaggerate or not the doppler effect
 void CListenerXAudio2::setDopplerFactor(float f)
 {
-	nlinfo("setDopplerFactor %f", f);
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "setDopplerFactor %f", f);
 	_DopplerScaler = f;
 }
 
 /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 void CListenerXAudio2::setRolloffFactor(float f)
 {
-	nlinfo("setRolloffFactor %f", f);
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
 	_DistanceScaler = f;
 }
 
 /// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
 void CListenerXAudio2::setEnvironment(uint env, float size)
 {
-	nlinfo("setEnvironment %u, %f", (uint32)env, (float)size);
+	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setEnvironment %u, %f", (uint32)env, (float)size);
 }
 
 /// Set any EAX listener property if EAX available
 void CListenerXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 {
-	nlinfo("setEAXProperty %u, %u, %u", (uint32)prop, (uint32)value, (uint32)valuesize);
+	//nlinfo(NLSOUND_XAUDIO2_PREFIX "setEAXProperty %u, %u, %u", (uint32)prop, (uint32)value, (uint32)valuesize);
 }
 
 //@}

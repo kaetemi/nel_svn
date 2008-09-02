@@ -60,7 +60,7 @@ int vorbisSeekFunc(void *datasource, ogg_int64_t offset, int whence)
 {
 	if (whence == SEEK_CUR && offset == 0)
 	{
-		// nlwarning("This seek call doesn't do a damn thing, wtf.");
+		// nlwarning(NLSOUND_XAUDIO2_PREFIX "This seek call doesn't do a damn thing, wtf.");
 		return 0; // ooookkaaaaaayyy
 	}
 
@@ -79,7 +79,7 @@ int vorbisSeekFunc(void *datasource, ogg_int64_t offset, int whence)
 		origin = NLMISC::IStream::end;
 		break;
 	default:
-		// nlwarning("Seeking to fake origin.");
+		// nlwarning(NLSOUND_XAUDIO2_PREFIX "Seeking to fake origin.");
 		return -1;
 	}
 
@@ -158,7 +158,7 @@ uint32 CMusicBufferVorbis::getRequiredBytes()
 uint32 CMusicBufferVorbis::getNextBytes(uint8 *buffer, uint32 minimum, uint32 maximum)
 {
 	int current_section = 0; // ???
-	nlassert(!_IsMusicEnded); // shouldn't be called anymore normally when ended
+	if (_IsMusicEnded) return 0;
 	nlassert(minimum <= maximum); // can't have this..
 	uint32 bytes_read = 0;
 	do
@@ -169,7 +169,7 @@ uint32 CMusicBufferVorbis::getNextBytes(uint8 *buffer, uint32 minimum, uint32 ma
 			getBitsPerSample() == 8 ? 1 : 2, 
 			getBitsPerSample() == 8 ? 0 : 1, // Signed or unsigned data. 0 for unsigned, 1 for signed. Typically 1.
 			&current_section);
-		// nlinfo("current_section: %i", current_section);
+		// nlinfo(NLSOUND_XAUDIO2_PREFIX "current_section: %i", current_section);
 		if (br <= 0) 
 		{ 
 			if (br == 0)
@@ -187,7 +187,7 @@ uint32 CMusicBufferVorbis::getNextBytes(uint8 *buffer, uint32 minimum, uint32 ma
 			}
 			else
 			{
-				nlwarning("ov_read: %i", br);
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "ov_read: %i", br);
 			}
 		}
 		else bytes_read += (uint32)br;

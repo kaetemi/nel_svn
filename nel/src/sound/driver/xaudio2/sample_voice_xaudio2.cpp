@@ -53,7 +53,7 @@ namespace NLSOUND {
 CSampleVoiceXAudio2::CSampleVoiceXAudio2(CSourceXAudio2 *owner, TSampleFormat format)
 : _Owner(owner), _Format(format), _Pitch(1.f), _Buffer(NULL)
 {
-	nlwarning("Initializing CSampleVoiceXAudio2 format %u", (uint32)format);
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSampleVoiceXAudio2 format %u", (uint32)format);
 
 	CSoundDriverXAudio2 *sound_driver = owner->getSoundDriver();
 	nlassert(owner->getSoundDriver()->getListener());
@@ -88,7 +88,7 @@ CSampleVoiceXAudio2::CSampleVoiceXAudio2(CSourceXAudio2 *owner, TSampleFormat fo
 
 CSampleVoiceXAudio2::~CSampleVoiceXAudio2()
 {
-	nlwarning("Destroying CSampleVoiceXAudio2");
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSampleVoiceXAudio2");
 
 	if (_SourceVoice) _SourceVoice->DestroyVoice();
 }

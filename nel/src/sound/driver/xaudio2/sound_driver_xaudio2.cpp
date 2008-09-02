@@ -134,18 +134,24 @@ __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 #ifdef NL_DEBUG
 
 static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED = {
-  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
+  0, 0, true, true, true, true
 };
 
-NLMISC_CATEGORISED_COMMAND(nlsound, xaDebugDisable, "", "")
+NLMISC_CATEGORISED_COMMAND(nlsound, xa2DebugDisable, "", "")
 {
 	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED);
 	return true;
 }
 
-//static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION = {
-//  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
-//};
+static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY = {
+  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
+};
+
+NLMISC_CATEGORISED_COMMAND(nlsound, xa2DebugHeavy, "", "")
+{
+	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY);
+	return true;
+}
 
 #endif /* NL_DEBUG */
 
@@ -185,7 +191,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 
 	UINT32 flags = 0;
 #ifdef NL_DEBUG
-	flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
+	//flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
 #endif
 
 	// XAudio2
@@ -279,7 +285,7 @@ CSampleVoiceXAudio2 *CSoundDriverXAudio2::createSampleVoice(CSourceXAudio2 *owne
 		if (!sample_voice->getSourceVoice())
 		{
 			// If sample voice broke while it was in the pool.
-			nlwarning("Erasing broken sample voice.");
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "Erasing broken sample voice.");
 			_SampleVoices.erase(it);
 			delete sample_voice;
 		}

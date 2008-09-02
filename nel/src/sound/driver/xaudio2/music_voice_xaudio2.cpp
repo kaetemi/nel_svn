@@ -70,7 +70,7 @@ void CMusicVoiceXAudio2::reset()
 
 void CMusicVoiceXAudio2::play(const std::string &streamName, NLMISC::IStream *stream, bool loop)
 {
-	nlinfo("play %s %u", streamName.c_str(), (uint32)loop);
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "play %s %u", streamName.c_str(), (uint32)loop);
 
 	HRESULT hr;
 
@@ -105,7 +105,7 @@ void CMusicVoiceXAudio2::play(const std::string &streamName, NLMISC::IStream *st
 	}
 	else
 	{
-		nlwarning("no _MusicBuffer");
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "no _MusicBuffer");
 	}
 }
 
@@ -128,7 +128,7 @@ void CMusicVoiceXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
 {    
 	if (BytesRequired > 0)
 	{
-		//nlwarning("Bytes Required: %u", BytesRequired); // byte req to not have disruption
+		//nlwarning(NLSOUND_XAUDIO2_PREFIX "Bytes Required: %u", BytesRequired); // byte req to not have disruption
 		
 		if (_MusicBuffer)
 		{

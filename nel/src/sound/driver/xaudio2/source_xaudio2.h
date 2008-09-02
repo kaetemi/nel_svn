@@ -81,7 +81,7 @@ protected:
 	bool _Relative; // sources relative to listener position (listener + source = actual source location)
 private:
 	// call only when entered mutex!
-	void startNextBuffer(); // MT
+	void startNextBuffer(bool flush); // MT
 
 public:
 	CSourceXAudio2(CSoundDriverXAudio2 *soundDriver);
@@ -216,7 +216,7 @@ public:
 	// *  the linear dB curve and the linear amplitude curve.
 	// */
 	///// 
-	//virtual void setAlpha(double a) {  }
+	virtual void setAlpha(double a);
 	//@}
 }; /* class CSourceXAudio2 */
 

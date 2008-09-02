@@ -71,7 +71,7 @@ bool IMusicBuffer::getSongTitle(const std::string &fileName, NLMISC::IStream *st
 	}
 	else
 	{
-		nlwarning("Music file extension unknown: '%s'", file_ext.c_str());
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Music file extension unknown: '%s'", file_ext.c_str());
 		result = fileName;
 		return false;
 	}
@@ -81,7 +81,7 @@ IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &streamName, NLM
 {
 	if (!stream)
 	{
-		nlwarning("Stream is NULL");
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Stream is NULL");
 		return NULL;
 	}
 	std::string file_ext = getFileExtension(streamName);
@@ -91,7 +91,7 @@ IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &streamName, NLM
 	}
 	else
 	{
-		nlwarning("Music file extension unknown: '%s'", file_ext.c_str());
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Music file extension unknown: '%s'", file_ext.c_str());
 		return NULL;
 	}
 }

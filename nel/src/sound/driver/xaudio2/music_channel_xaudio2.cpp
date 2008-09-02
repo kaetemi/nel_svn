@@ -72,7 +72,7 @@ void CMusicChannelXAudio2::switchVoice(uint fadeTime)
 
 void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
 {
-	nlinfo("play music preloaded");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music preloaded");
 
 	/*_Playing = true;*/
 	switchVoice(xFadeTime);
@@ -85,7 +85,7 @@ void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
 
 void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
 {
-	nlinfo("play music async");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music async");
 
 	// get real name instead of bnp stuff
 	string real_filename;
@@ -95,7 +95,7 @@ void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fi
 	if (toLower(filename[filename.size() - 1]) == "bnp")
 	{
 		// need to reverse stupid getFileInfo thingy from nlsound system ...
-		nlinfo("Looking for music file in %s %u %u", path.c_str(), fileOffset, fileSize);
+		nlinfo(NLSOUND_XAUDIO2_PREFIX "Looking for music file in %s %u %u", path.c_str(), fileOffset, fileSize);
 		vector<string> files;
 		CBigFile::getInstance().list(CFile::getFilename(path), files);
 		vector<string>::iterator it(files.begin()), end(files.end());
@@ -104,18 +104,18 @@ void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fi
 			uint32 file_offset;
 			uint32 file_size;
 			CBigFile::getInstance().getFileInfo(CFile::getFilename(path) + "@" + *it, file_size, file_offset); // todo: use correct stuff
-			// nlinfo("%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
+			// nlinfo(NLSOUND_XAUDIO2_PREFIX "%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
 			if (file_offset == fileOffset)
 			{
 				real_filename = *it;
-				nlinfo("Found music file %s in big file %s", real_filename.c_str(), path.c_str());
+				nlinfo(NLSOUND_XAUDIO2_PREFIX "Found music file %s in big file %s", real_filename.c_str(), path.c_str());
 				seekOffset = false;
 				break;
 			}
 		}
 		if (real_filename.empty()) 
 		{
-			nlwarning("Offset for music file not found in BNP");
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "Offset for music file not found in BNP");
 			real_filename = path;
 		}
 	}
