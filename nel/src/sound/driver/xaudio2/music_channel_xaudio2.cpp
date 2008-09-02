@@ -91,6 +91,7 @@ void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fi
 	string real_filename;
 	vector<std::string> filename;
 	explode<std::string>(path, ".", filename, true);
+	bool seekOffset = true;
 	if (toLower(filename[filename.size() - 1]) == "bnp")
 	{
 		// need to reverse stupid getFileInfo thingy from nlsound system ...
@@ -102,12 +103,13 @@ void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fi
 		{
 			uint32 file_offset;
 			uint32 file_size;
-			CBigFile::getInstance().getFileInfo(*it, file_size, file_offset); // todo: use correct stuff
+			CBigFile::getInstance().getFileInfo(CFile::getFilename(path) + "@" + *it, file_size, file_offset); // todo: use correct stuff
 			// nlinfo("%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
 			if (file_offset == fileOffset)
 			{
 				real_filename = *it;
 				nlinfo("Found music file %s in big file %s", real_filename.c_str(), path.c_str());
+				seekOffset = false;
 				break;
 			}
 		}
@@ -118,13 +120,17 @@ void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fi
 		}
 	}
 	else real_filename = path;
+	real_filename = CPath::lookup(real_filename);
 
 	/*_Playing = true;*/
 	switchVoice(xFadeTime);
 	
-	CIFile *ifile = new CIFile(path);
+	CIFile *ifile = new CIFile();
+	ifile->setCacheFileOnOpen(false);
+	ifile->allowBNPCacheFileOnOpen(false);
+	ifile->open(real_filename);
 	_Streams[_Active] = ifile;
-	ifile->seek(fileOffset, NLMISC::IStream::begin);	
+	if (seekOffset) ifile->seek(fileOffset, NLMISC::IStream::begin);	
 	_MusicVoices[_Active].play(real_filename, ifile, loop);
 }
 

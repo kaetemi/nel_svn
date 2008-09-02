@@ -69,7 +69,8 @@ protected:
 	OggVorbis_File _OggVorbisFile;
 	bool _Loop;
 	bool _IsMusicEnded;
-	uint32 _StreamSize;
+	sint32 _StreamOffset;
+	sint32 _StreamSize;
 public:
 	CMusicBufferVorbis(NLMISC::IStream *stream, bool loop);
 	virtual ~CMusicBufferVorbis();
@@ -77,7 +78,8 @@ public:
 	static bool getSongTitle(const std::string &fileName, NLMISC::IStream *stream, std::string &result);
 
 	inline NLMISC::IStream *getStream() { return _Stream; }
-	inline uint32 getStreamSize() { return _StreamSize; }
+	inline sint32 getStreamSize() { return _StreamSize; }
+	inline sint32 getStreamOffset() { return _StreamOffset; }
 
 	virtual uint32 getRequiredBytes();
 	virtual uint32 getNextBytes(uint8 *buffer, uint32 minimum, uint32 maximum);

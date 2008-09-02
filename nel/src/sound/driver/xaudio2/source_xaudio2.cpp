@@ -129,7 +129,7 @@ void CSourceXAudio2::commit3DChanges()
 		{
 			_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
 			_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler(); // might be just _MinDistance, not sure, compare with fmod driver
-			// _MaxDistance not implemented (basically cuts off sound beyond maxdistance)
+			// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
 
 			X3DAudioCalculate(_SoundDriver->getX3DAudio(), 
 				_Relative 
@@ -225,7 +225,8 @@ void CSourceXAudio2::cbVoiceError(CBufferXAudio2 *pBufferContext, HRESULT Error)
  */
 void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
-	nlinfo("setStaticBuffer %s", buffer->getName());
+	if (buffer) nlinfo("setStaticBuffer %s", buffer->getName());
+	else nlinfo("setStaticBuffer NULL");
 
 	_Mutex.enter(); // _NextBuffer, startNextBuffer, _HasBuffer
 	_NextBuffer = (CBufferXAudio2 *)buffer;
@@ -377,7 +378,7 @@ void CSourceXAudio2::pause()
 /// Return the playing state
 bool CSourceXAudio2::isPlaying() const
 {
-	nlinfo("isPlaying?");
+	// nlinfo("isPlaying?");
 
 	return _IsPlaying && _HasBuffer;// && !_IsPaused;
 }

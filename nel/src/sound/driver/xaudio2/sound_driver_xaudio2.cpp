@@ -54,6 +54,7 @@
 #include <nel/misc/path.h>
 #include <nel/misc/file.h>
 #include <nel/misc/dynloadlib.h>
+#include <nel/misc/command.h>
 
 // STL includes
 #include <cmath>
@@ -130,9 +131,25 @@ __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 
 // ******************************************************************
 
+#ifdef NL_DEBUG
+
+static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED = {
+  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
+};
+
+NLMISC_CATEGORISED_COMMAND(nlsound, xaDebugDisable, "", "")
+{
+	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED);
+	return true;
+}
+
 //static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION = {
 //  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
 //};
+
+#endif /* NL_DEBUG */
+
+// ******************************************************************
 
 CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax, 
 	ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer) 
@@ -167,15 +184,13 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 #endif
 
 	UINT32 flags = 0;
-	//flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
-	// todo: commands to set xaudio2 engine debug level
+#ifdef NL_DEBUG
+	flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
+#endif
 
 	// XAudio2
 	if (FAILED(hr = XAudio2Create(&_XAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
 		{ release(); nlerror(NLSOUND_XAUDIO2_PREFIX "XAudio2 failed to initialize. Please install the latest version of the DirectX End-User Runtimes. HRESULT: %u", (uint32)hr); return; }
-	
-	//_XAudio2->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION);
-
 	if (FAILED(hr = _XAudio2->CreateMasteringVoice(&_MasteringVoice, 0, 44100, 0, 0, NULL)))
 		{ release(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED(_XAudio2->CreateMasteringVoice(&_MasteringVoice)) HRESULT: %u", (uint32)hr); return; }
 	

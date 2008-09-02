@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="libogg.lib libvorbis.lib libvorbisfile.lib x3daudio.lib"
+				AdditionalDependencies="ogg_static.lib vorbis_static.lib vorbisfile_static.lib x3daudio.lib"
 				OutputFile="..\..\..\..\lib\$(ProjectName)_d.lib"
 			/>
 			<Tool
@@ -142,7 +142,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="libogg.lib libvorbis.lib libvorbisfile.lib x3daudio.lib"
+				AdditionalDependencies="ogg_static.lib vorbis_static.lib vorbisfile_static.lib x3daudio.lib"
 				OutputFile="..\..\..\..\lib\$(ProjectName)_r.lib"
 			/>
 			<Tool

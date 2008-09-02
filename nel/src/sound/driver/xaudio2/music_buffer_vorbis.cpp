@@ -83,7 +83,7 @@ int vorbisSeekFunc(void *datasource, ogg_int64_t offset, int whence)
 		return -1;
 	}
 
-	if (music_buffer_vorbis->getStream()->seek((sint32)offset, origin)) return 0;
+	if (music_buffer_vorbis->getStream()->seek(SEEK_SET ? music_buffer_vorbis->getStreamOffset() + (sint32)offset : (sint32)offset, origin)) return 0;
 	else return -1;
 }
 
@@ -95,7 +95,7 @@ int vorbisSeekFunc(void *datasource, ogg_int64_t offset, int whence)
 long vorbisTellFunc(void *datasource)
 {
 	CMusicBufferVorbis *music_buffer_vorbis = (CMusicBufferVorbis *)datasource;
-	return (long)music_buffer_vorbis->getStream()->getPos();
+	return (long)(music_buffer_vorbis->getStream()->getPos() - music_buffer_vorbis->getStreamOffset());
 }
 
 static ov_callbacks OV_CALLBACKS_NLMISC_STREAM = {
@@ -108,10 +108,10 @@ static ov_callbacks OV_CALLBACKS_NLMISC_STREAM = {
 CMusicBufferVorbis::CMusicBufferVorbis(NLMISC::IStream *stream, bool loop) 
 : _Stream(stream), _Loop(loop), _StreamSize(0), _IsMusicEnded(false)
 {
-	sint pos = stream->getPos();
+	_StreamOffset = stream->getPos();
 	stream->seek(0, NLMISC::IStream::end);
 	_StreamSize = stream->getPos();
-	stream->seek(pos, NLMISC::IStream::begin);
+	stream->seek(_StreamOffset, NLMISC::IStream::begin);
 	ov_open_callbacks(this, &_OggVorbisFile, NULL, 0, OV_CALLBACKS_NLMISC_STREAM);
 }
 

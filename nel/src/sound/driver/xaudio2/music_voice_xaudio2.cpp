@@ -70,6 +70,8 @@ void CMusicVoiceXAudio2::reset()
 
 void CMusicVoiceXAudio2::play(const std::string &streamName, NLMISC::IStream *stream, bool loop)
 {
+	nlinfo("play %s %u", streamName.c_str(), (uint32)loop);
+
 	HRESULT hr;
 
 	reset();
