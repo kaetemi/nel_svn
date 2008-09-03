@@ -72,7 +72,7 @@ void CMusicChannelXAudio2::switchVoice(uint fadeTime)
 
 void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music preloaded");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "play music preloaded");
 
 	/*_Playing = true;*/
 	switchVoice(xFadeTime);
@@ -85,8 +85,8 @@ void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
 
 void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music async, %s", path.c_str());
-
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "play music async, %s", path.c_str());
+	
 	// get real name instead of bnp stuff
 	string real_filename;
 	vector<std::string> filename;

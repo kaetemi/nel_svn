@@ -164,6 +164,8 @@ public:
 	virtual void endBench();
 	virtual void displayBench(NLMISC::CLog *log);
 
+	virtual bool playMusic(uint channel, const std::string &filepath, uint fadeTime, bool loop);
+
 		/** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)
 	 *	FMOD: The File is loaded synchronously in memory, but decompressed by FMod in a thread
 	 *	Hence if the ogg fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
@@ -173,7 +175,7 @@ public:
 	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
 	 */
 
-	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
+	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop); // -- OLD
 	/** Play some music asynchronously (.ogg etc...) (implemented in fmod only)
 	 *	FMOD: the file is load asynchronously
 	 *	NB: if an old music was played, it is first stop with stopMusic()
@@ -189,7 +191,7 @@ public:
 	 *	\param loop must be true to play the music in loop. 
 	 */
 
-	virtual bool playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
+	virtual bool playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop); // -- OLD
 	/** Stop the music previously loaded and played (the Memory is also freed)
 	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
 	 *	\param xFadeTime if not 0 the old music played is not stoped but faded out of xFadeTime (in ms)
@@ -209,7 +211,12 @@ public:
 	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
 	 * If the song as no name, result is filled with the filename.
 	 */
-	virtual bool getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0);
+	virtual bool getSongTitle(const std::string &filename, std::string &result);
+
+	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
+	 * If the song as no name, result is filled with the filename.
+	 */
+	virtual bool getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0); // -- OLD
 
 	/** Return true if a song is finished.
 	 *	NB: in case of cross fading, the channel is considered "ended" if all fading are done

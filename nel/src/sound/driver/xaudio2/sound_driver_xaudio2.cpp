@@ -307,10 +307,7 @@ IListener *CSoundDriverXAudio2::createListener()
 /// Return the maximum number of sources that can created
 uint CSoundDriverXAudio2::countMaxSources()
 {
-	return 0xC0FFEE;
-	// return I_HAVE_NO_FUCKING_IDEA;
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return NULL;
+	return 512; // there is no real limit, but this should be pretty heavy
 }
 
 /// Create a source

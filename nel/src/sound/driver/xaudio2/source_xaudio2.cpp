@@ -113,9 +113,9 @@ CSourceXAudio2::~CSourceXAudio2()
 void CSourceXAudio2::release() // called by driver :)
 {
 	_SoundDriver->removeSource(this);
-	stop();
 	destroySourceVoice(_SourceVoice);
 	_SourceVoice = NULL;
+	stop();
 }
 
 /// Commit all the changes made to 3D settings of listener and sources
@@ -238,8 +238,10 @@ void CSourceXAudio2::submitStaticBuffer()
  */
 void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
-	if (buffer) nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
-	else nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
+	// if (buffer) nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
+	// else nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
+
+	if (_IsPlaying) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called setStaticBuffer(IBuffer *buffer) while _IsPlaying == true!");
 	
 	_StaticBuffer = static_cast<CBufferXAudio2 *>(buffer);
 }
@@ -279,7 +281,7 @@ bool CSourceXAudio2::getLooping() const
  */
 bool CSourceXAudio2::play()
 {	
-	nldebug(NLSOUND_XAUDIO2_PREFIX "play");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "play");
 
 	if (_IsPaused)
 	{
@@ -292,7 +294,8 @@ bool CSourceXAudio2::play()
 		if (_IsPlaying)
 		{
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
-			stop(); // sets _IsPlaying = false;
+			if (_StaticBuffer->getFormat() == _Format) // cannot call stop directly before destroy voice, ms bug in xaudio2
+				stop(); // sets _IsPlaying = false;
 		}
 		if (_StaticBuffer)
 		{
@@ -327,7 +330,7 @@ bool CSourceXAudio2::play()
 /// Stop playing
 void CSourceXAudio2::stop()
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "stop");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "stop");
 
 	_IsPlaying = false;
 	_IsPaused = false;
@@ -343,7 +346,7 @@ void CSourceXAudio2::stop()
 /// Pause. Call play() to resume.
 void CSourceXAudio2::pause()
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "pause");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "pause");
 
 	if (_IsPaused) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called pause() while _IsPaused == true!");
 
@@ -451,7 +454,7 @@ void CSourceXAudio2::getVelocity(NLMISC::CVector& vel) const
 /// Set the direction vector (3D mode only, ignored in stereo mode) (default: (0,0,0) as non-directional)
 void CSourceXAudio2::setDirection(const NLMISC::CVector& dir)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setDirection %f %f %f", dir.x, dir.y, dir.z);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setDirection %f %f %f", dir.x, dir.y, dir.z);
 
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Emitter.OrientFront, dir);
 }
@@ -525,7 +528,7 @@ bool CSourceXAudio2::getSourceRelativeMode() const
 /// Set the min and max distances (default: 1, MAX_FLOAT) (3D mode only)
 void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool deferred)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setMinMaxDistances %f, %f", mindist, maxdist);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setMinMaxDistances %f, %f", mindist, maxdist);
 
 	_MinDistance = mindist;
 	_MaxDistance = maxdist;
@@ -543,7 +546,7 @@ void CSourceXAudio2::getMinMaxDistances(float& mindist, float& maxdist) const
 /// Set the cone angles (in radian) and gain (in [0 , 1]) (default: 2PI, 2PI, 0)
 void CSourceXAudio2::setCone(float innerAngle, float outerAngle, float outerGain)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setCone %f, %f ,%f", innerAngle, outerAngle, outerGain);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setCone %f, %f ,%f", innerAngle, outerAngle, outerGain);
 	
 	if (innerAngle >= 6.283185f && outerAngle >= 6.283185f)
 		_Emitter.pCone = NULL;
@@ -588,7 +591,7 @@ void CSourceXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 ///// 
 void CSourceXAudio2::setAlpha(double a) 
 {  
-	if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
+	// if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
 
 	_Alpha = a;
 }

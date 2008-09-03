@@ -176,14 +176,14 @@ float CListenerXAudio2::getGain() const
 /// Set the doppler factor (default: 1) to exaggerate or not the doppler effect
 void CListenerXAudio2::setDopplerFactor(float f)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "setDopplerFactor %f", f);
+	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setDopplerFactor %f", f);
 	_DopplerScaler = f;
 }
 
 /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 void CListenerXAudio2::setRolloffFactor(float f)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
+	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
 	_DistanceScaler = f;
 }
 
