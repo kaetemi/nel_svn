@@ -85,42 +85,51 @@ void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
 
 void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music async");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "play music async, %s", path.c_str());
 
 	// get real name instead of bnp stuff
 	string real_filename;
 	vector<std::string> filename;
 	explode<std::string>(path, ".", filename, true);
 	bool seekOffset = true;
-	if (toLower(filename[filename.size() - 1]) == "bnp")
+	try
 	{
-		// need to reverse stupid getFileInfo thingy from nlsound system ...
-		nlinfo(NLSOUND_XAUDIO2_PREFIX "Looking for music file in %s %u %u", path.c_str(), fileOffset, fileSize);
-		vector<string> files;
-		CBigFile::getInstance().list(CFile::getFilename(path), files);
-		vector<string>::iterator it(files.begin()), end(files.end());
-		for (; it != end; ++it)
+		if (toLower(filename[filename.size() - 1]) == "bnp")
 		{
-			uint32 file_offset;
-			uint32 file_size;
-			CBigFile::getInstance().getFileInfo(CFile::getFilename(path) + "@" + *it, file_size, file_offset); // todo: use correct stuff
-			// nlinfo(NLSOUND_XAUDIO2_PREFIX "%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
-			if (file_offset == fileOffset)
+			// need to reverse stupid getFileInfo thingy from nlsound system ...
+			nldebug(NLSOUND_XAUDIO2_PREFIX "Looking for music file in %s %u %u", path.c_str(), fileOffset, fileSize);
+			vector<string> files;
+			CBigFile::getInstance().list(CFile::getFilename(path), files);
+			vector<string>::iterator it(files.begin()), end(files.end());
+			for (; it != end; ++it)
 			{
-				real_filename = *it;
-				nlinfo(NLSOUND_XAUDIO2_PREFIX "Found music file %s in big file %s", real_filename.c_str(), path.c_str());
-				seekOffset = false;
-				break;
+				uint32 file_offset;
+				uint32 file_size;
+				CBigFile::getInstance().getFileInfo(CFile::getFilename(path) + "@" + *it, file_size, file_offset); // todo: use correct stuff
+				// nlinfo(NLSOUND_XAUDIO2_PREFIX "%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
+				if (file_offset == fileOffset)
+				{
+					real_filename = *it;
+					nldebug(NLSOUND_XAUDIO2_PREFIX "Found music file %s in big file %s", real_filename.c_str(), path.c_str());
+					seekOffset = false;
+					break;
+				}
+			}
+			if (real_filename.empty()) 
+			{
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "Offset %u for music file not found in BNP %s", (uint32)fileOffset, path.c_str());
+				real_filename = path;
 			}
 		}
-		if (real_filename.empty()) 
-		{
-			nlwarning(NLSOUND_XAUDIO2_PREFIX "Offset for music file not found in BNP");
-			real_filename = path;
-		}
+		else real_filename = path;
+		real_filename = CPath::lookup(real_filename);
 	}
-	else real_filename = path;
-	real_filename = CPath::lookup(real_filename);
+	catch (...)
+	{
+		nlwarning(" - - - - - - this code sucks - - - - - - fix music implementation - - - - - - ");
+		real_filename = CPath::lookup(real_filename);
+		seekOffset = true;
+	}
 
 	/*_Playing = true;*/
 	switchVoice(xFadeTime);

@@ -185,14 +185,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sample_voice_xaudio2.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\sample_voice_xaudio2.h"
-				>
-			</File>
-			<File
 				RelativePath=".\source_xaudio2.cpp"
 				>
 			</File>

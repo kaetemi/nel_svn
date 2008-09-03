@@ -44,7 +44,7 @@
 #include "source_xaudio2.h"
 
 // Project includes
-//#include "buffer_xaudio2.h"
+#include "buffer_xaudio2.h"
 #include "listener_xaudio2.h"
 
 // NeL includes
@@ -63,9 +63,11 @@ using namespace NLMISC;
 namespace NLSOUND {
 
 CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver) 
-: _SoundDriver(soundDriver), _SampleVoice(NULL), _NextBuffer(NULL), _HasBuffer(NULL), 
-_Doppler(1.0f), _Pitch(1.0f), _IsPlaying(false), _IsLooping(false), _Relative(false), _Gain(1.0f), 
-_MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max())
+: _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), 
+_Format(Mono16), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0), 
+_Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
+_IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
+_Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max())
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 
@@ -110,30 +112,28 @@ CSourceXAudio2::~CSourceXAudio2()
 
 void CSourceXAudio2::release() // called by driver :)
 {
-	if (_SampleVoice)
-	{
-		_SampleVoice->setOwner(NULL); // make sure no more callbacks arrive here while releasing
-		delete _SampleVoice; _SampleVoice = NULL; // delete instead of putting back into pool
-	}
 	_SoundDriver->removeSource(this);
+	stop();
+	destroySourceVoice(_SourceVoice);
+	_SourceVoice = NULL;
 }
 
 /// Commit all the changes made to 3D settings of listener and sources
 void CSourceXAudio2::commit3DChanges()
 {
-	if (_HasBuffer && _IsPlaying/* && _SampleVoice->getBuffer()*/)
+	if (_IsPlaying)
 	{
-		CSampleVoiceXAudio2 *sample_voice = _SampleVoice;
-		nlassert(sample_voice);
+		nlassert(_SourceVoice);
 		
 		// Only mono buffers get 3d sound, stereo buffers go directly to the speakers.
 		// Todo: stereo buffers calculate distance
-		if (sample_voice->getFormat() == Stereo16 || sample_voice->getFormat() == Stereo8)
+		if (_Format == Stereo16 || _Format == Stereo8)
 		{
 			_SoundDriver->getDSPSettings()->DstChannelCount = 1;
 			// calculate without doppler
 			// 1 result in matrix, use with setvolume
 			// todo: some more stuff...
+			_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
 		}
 		else
 		{
@@ -153,7 +153,7 @@ void CSourceXAudio2::commit3DChanges()
 				X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
 				_SoundDriver->getDSPSettings());
 
-			_SampleVoice->getSourceVoice()->SetOutputMatrix(
+			_SourceVoice->SetOutputMatrix(
 				// _SoundDriver->getMasteringVoice(),
 				_SoundDriver->getListener()->getSubmixVoice(), 
 				_SoundDriver->getDSPSettings()->SrcChannelCount, 
@@ -161,75 +161,73 @@ void CSourceXAudio2::commit3DChanges()
 				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
 			// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
 			_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
-			sample_voice->setPitch(_Doppler * _Pitch);
+			_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
 		}
 	}
 
 	// todo: reverb & delay? ^^
 }
 
-void CSourceXAudio2::cbVoiceProcessingPassStart(uint32 BytesRequired)
-{    
+IXAudio2SourceVoice *CSourceXAudio2::createSourceVoice(TSampleFormat format)
+{
+	nlassert(_SoundDriver->getListener());
+
+	HRESULT hr;
+
+	WAVEFORMATEX wfe; // todo: ADPCMWAVEFORMAT // wSamplesPerBlock // wNumCoef // aCoef
+	wfe.cbSize = 0;
+
+	nlassert(format == Mono16 || format == Mono16ADPCM || format == Mono16 || format == Stereo16 || format == Stereo8);
+
+	wfe.wFormatTag = (format == Mono16ADPCM) 
+		? WAVE_FORMAT_ADPCM
+		: WAVE_FORMAT_PCM;
+	wfe.nChannels = (format == Mono16 || format == Mono16ADPCM || format == Mono8)
+		? 1
+		: 2;
+	wfe.wBitsPerSample = (format == Mono8 || format == Stereo8)
+		? 8
+		: 16;
+
+	XAUDIO2_VOICE_DETAILS voice_details;
+	_SoundDriver->getListener()->getSubmixVoice()->GetVoiceDetails(&voice_details);
+	wfe.nSamplesPerSec = voice_details.InputSampleRate;
+
+	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
+	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
+
+	// note: 32.0f allows at lowest 1378.125hz audio samples, increase if you need even lower bitrate (or higher pitch)
+	// todo: callback for when error happens on voice, so we can restart it!
+	IXAudio2SourceVoice *source_voice = NULL;
+
+	if (FAILED(hr = _SoundDriver->getXAudio2()->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, NULL/*this*/, _SoundDriver->getListener()->getVoiceSends(), NULL)))
+	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
+
+	return source_voice;
+}
+
+void CSourceXAudio2::destroySourceVoice(IXAudio2SourceVoice *sourceVoice)
+{
+	if (sourceVoice) sourceVoice->DestroyVoice();
+}
+
+void CSourceXAudio2::submitStaticBuffer()
+{
+	nlassert(_SourceVoice);
+	nlassert(_Format == _StaticBuffer->getFormat());
 	
-}
-
-void CSourceXAudio2::cbVoiceProcessingPassEnd()
-{ 
+	XAUDIO2_BUFFER buffer;
+	buffer.AudioBytes = _StaticBuffer->getSize();
+	buffer.Flags = 0;
+	buffer.LoopBegin = 0;
+	buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
+	buffer.LoopLength = 0;
+	buffer.pAudioData = _StaticBuffer->getData();
+	buffer.pContext = _StaticBuffer;
+	buffer.PlayBegin = 0;
+	buffer.PlayLength = 0;
 	
-}
-
-void CSourceXAudio2::cbStreamEnd()
-{ 
-	
-}
-
-void CSourceXAudio2::cbBufferStart(CBufferXAudio2 *pBufferContext)
-{    
-	////// update buffer frequency :) todo: take into account other frequency modifiers!!
-	// done in sample voice class :)
-	////IBuffer *buffer = (IBuffer *)pBufferContext; // loool
-	////_SourceVoice->SetFrequencyRatio((double)((CBufferXAudio2 *)buffer)->getFreq() 
-	////	/ (double)NLSOUND_XAUDIO2_SOURCE_SAMPLES_PER_SEC);
-	////// check how SetFrequencyRatio can be used to change the pitch vs changing bitrate/speed!!!!
-	////// note: nel change pitch does change speed in other drivers too, so SetFreq is ok. :)
-}
-
-void CSourceXAudio2::cbBufferEnd(CBufferXAudio2 *pBufferContext)
-{ 
-	// if need to change format, call destroy with stop set to false !!!
-	_Mutex.enter(); // _NextBuffer, startNextBuffer, _HasBuffer
-	if (_NextBuffer) { startNextBuffer(false); }
-	else if (_IsLooping && pBufferContext == _HasBuffer) // loop was called after setting buffer without looping, resume buffer
-	{
-		XAUDIO2_BUFFER xbuffer;
-		xbuffer.AudioBytes = _HasBuffer->getSize();
-		xbuffer.Flags = 0;
-		xbuffer.LoopBegin = 0;
-		xbuffer.LoopCount = XAUDIO2_LOOP_INFINITE;
-		xbuffer.LoopLength = 0;
-		xbuffer.pAudioData = _HasBuffer->getData();
-		xbuffer.pContext = _HasBuffer;
-		xbuffer.PlayBegin = 0;
-		xbuffer.PlayLength = 0;
-
-		if (_SampleVoice) _SampleVoice->getSourceVoice()->SubmitSourceBuffer(&xbuffer);
-	}
-	else _HasBuffer = NULL;
-	_Mutex.leave();
-}
-
-void CSourceXAudio2::cbLoopEnd(CBufferXAudio2 *pBufferContext)
-{    
-	
-}
-
-void CSourceXAudio2::cbVoiceError(CBufferXAudio2 *pBufferContext, HRESULT Error)
-{ 
-	////nlwarning(NLSOUND_XAUDIO2_PREFIX "CSourceXAudio2::OnVoiceError");
-	////nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	////release();
-	////init();
-	////// todo: put everything back in as it should!
+	_SourceVoice->SubmitSourceBuffer(&buffer);
 }
 
 /// \name Initialization
@@ -242,72 +240,14 @@ void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
 	if (buffer) nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
 	else nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
-
-	_Mutex.enter(); // _NextBuffer, startNextBuffer, _HasBuffer
-	_NextBuffer = (CBufferXAudio2 *)buffer;
-	if (_SampleVoice) _SampleVoice->getSourceVoice()->ExitLoop();
-	if (!_HasBuffer) startNextBuffer(true);
-	_Mutex.leave();
-
 	
-	/*nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return;*/
-}
-
-void CSourceXAudio2::startNextBuffer(bool flush) // note: must call from mutexed! called from callback --> don't flush buffer (it already ended)!
-{
-	_HasBuffer = _NextBuffer;
-	if (!_NextBuffer) return;
-
-	bool change = false;
-	if (_SampleVoice)
-	{
-		if (_SampleVoice->getFormat() != _NextBuffer->getFormat())
-		{
-			// remove this debug info, or glitches may happen on sound
-			nlwarning(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getFormat() != _NextBuffer->getFormat()");
-			_SoundDriver->destroySampleVoice(_SampleVoice, flush); // don't set to null!
-			change = true;
-		}
-	}
-	else { change = true; }
-	if (change)
-	{
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Changing format!");
-		// update values to new voice
-		_SampleVoice = _SoundDriver->createSampleVoice(this, _NextBuffer->getFormat());
-		_SampleVoice->getSourceVoice()->SetVolume(_Gain);
-		if (_SampleVoice->getFormat() != Stereo16 && _SampleVoice->getFormat() != Stereo8)
-			_SampleVoice->setPitch(_Pitch * _Doppler);
-		else _SampleVoice->setPitch(_Pitch);
-		if (_IsPlaying) _SampleVoice->getSourceVoice()->Start(0);
-	}
-	else
-	{
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Reusing voice!");
-	}
-
-	XAUDIO2_BUFFER xbuffer;
-	xbuffer.AudioBytes = _NextBuffer->getSize();
-	xbuffer.Flags = 0;
-	xbuffer.LoopBegin = 0;
-	xbuffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
-	xbuffer.LoopLength = 0;
-	xbuffer.pAudioData = _NextBuffer->getData();
-	xbuffer.pContext = _NextBuffer; // neat :)
-	xbuffer.PlayBegin = 0;
-	xbuffer.PlayLength = 0;
-
-	_SampleVoice->getSourceVoice()->SubmitSourceBuffer(&xbuffer);
-
-	_NextBuffer = NULL;
-	// _HasBuffer = true; // is called from setStaticBuffer :)
+	_StaticBuffer = static_cast<CBufferXAudio2 *>(buffer);
 }
 
 /// Return the buffer, or NULL if streaming is used.
 IBuffer *CSourceXAudio2::getStaticBuffer()
 {
-	return _HasBuffer;
+	return _StaticBuffer;
 }
 
 ///** Set the sound loader that will be used to stream in the data to play
@@ -320,27 +260,12 @@ IBuffer *CSourceXAudio2::getStaticBuffer()
 
 /// \name Playback control
 //@{
-/// Set looping on/off for future playbacks (default: off) // doesn't seem to be future playbacks though >_>
+/// Set looping on/off for future playbacks (default: off)
 void CSourceXAudio2::setLooping(bool l)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
 	
-	if (_IsLooping != l)
-	{
-		if (l)
-		{
-			_Mutex.enter();
-			_IsLooping = true;
-			_Mutex.leave();
-		}
-		else
-		{
-			_Mutex.enter();
-			_IsLooping = false;
-			_Mutex.leave();
-			_SampleVoice->getSourceVoice()->ExitLoop();
-		}
-	}
+	_IsLooping = l;
 }
 
 /// Return the looping state
@@ -356,14 +281,47 @@ bool CSourceXAudio2::play()
 {	
 	nldebug(NLSOUND_XAUDIO2_PREFIX "play");
 
-	if (_SampleVoice)
+	if (_IsPaused)
 	{
-		nldebug(NLSOUND_XAUDIO2_PREFIX "play ok fmt %u", (uint32)_SampleVoice->getFormat());
-		_IsPlaying = true;
-		commit3DChanges(); // ensure awesomeness :)
-		return SUCCEEDED(_SampleVoice->getSourceVoice()->Start(0));
+		if (SUCCEEDED(_SourceVoice->Start(0))) _IsPaused = false;
+			else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play");
+		return !_IsPaused;
 	}
-	return false;
+	else
+	{
+		if (_IsPlaying)
+		{
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
+			stop(); // sets _IsPlaying = false;
+		}
+		if (_StaticBuffer)
+		{
+			if (_SourceVoice && _StaticBuffer->getFormat() != _Format)
+			{
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
+				destroySourceVoice(_SourceVoice);
+				_SourceVoice = NULL;
+			}
+			if (!_SourceVoice) 
+			{
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
+				_SourceVoice = createSourceVoice(_StaticBuffer->getFormat());
+				if (!_SourceVoice) return false; // fail
+				_Format = _StaticBuffer->getFormat();
+				XAUDIO2_VOICE_DETAILS voice_details;
+				_SourceVoice->GetVoiceDetails(&voice_details);
+				_FreqVoice = (float)voice_details.InputSampleRate;
+				_SourceVoice->SetVolume(_Gain);
+			}
+			_FreqRatio = (float)_StaticBuffer->getFreq() / _FreqVoice;
+			commit3DChanges(); // sets pitch etc
+			submitStaticBuffer();
+			_PlayStart = CTime::getLocalTime();
+			if (SUCCEEDED(_SourceVoice->Start(0))) _IsPlaying = true;
+			else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play");
+		}
+		return _IsPlaying;
+	}
 }
 
 /// Stop playing
@@ -372,15 +330,12 @@ void CSourceXAudio2::stop()
 	nldebug(NLSOUND_XAUDIO2_PREFIX "stop");
 
 	_IsPlaying = false;
-	if (_SampleVoice)
+	_IsPaused = false;
+	if (_SourceVoice)
 	{
-		_Mutex.enter();
-		_HasBuffer = NULL;
-		_NextBuffer = NULL;
-		_Mutex.leave();
-		if (FAILED(_SampleVoice->getSourceVoice()->Stop(0))) 
+		if (FAILED(_SourceVoice->Stop(0))) 
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
-		if (FAILED(_SampleVoice->getSourceVoice()->FlushSourceBuffers())) 
+		if (FAILED(_SourceVoice->FlushSourceBuffers())) 
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
 	}
 }
@@ -390,8 +345,15 @@ void CSourceXAudio2::pause()
 {
 	nldebug(NLSOUND_XAUDIO2_PREFIX "pause");
 
-	if (FAILED(_SampleVoice->getSourceVoice()->Stop(0))) 
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+	if (_IsPaused) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called pause() while _IsPaused == true!");
+
+	if (_IsPlaying)
+	{
+		_IsPaused = true;
+		if (FAILED(_SourceVoice->Stop(0))) 
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+	}
+	else nlwarning(NLSOUND_XAUDIO2_PREFIX "Called pause() while _IsPlaying == false!");
 }
 
 /// Return the playing state
@@ -399,30 +361,50 @@ bool CSourceXAudio2::isPlaying() const
 {
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "isPlaying?");
 
-	return _IsPlaying && _HasBuffer;// && !_IsPaused;
+	return _IsPlaying && !_IsPaused;
 }
 
 /// Return true if playing is finished or stop() has been called.
 bool CSourceXAudio2::isStopped() const
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "isStopped?");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "isStopped?");
+	
+	return !_IsPlaying;
+}
 
-	return !_IsPlaying || !_HasBuffer;
+/// Return the paused state
+bool CSourceXAudio2::isPaused() const
+{
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "isStopped?");
+
+	return _IsPaused;
 }
 
 /// Update the source (e.g. continue to stream the data in)
 bool CSourceXAudio2::update()
 {
-	return true; // nothing to do here :)
+	if (_IsPlaying)
+	{
+		XAUDIO2_VOICE_STATE voice_state;
+		_SourceVoice->GetState(&voice_state);
+		if (!voice_state.BuffersQueued)
+		{
+			if (FAILED(_SourceVoice->Stop(0))) 
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+			_IsPlaying = false;
+		}
+	}
+	return true;
 }
 
 /// Returns the number of milliseconds the source has been playing
 uint32 CSourceXAudio2::getTime()
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "getTime");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "getTime");
 
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return 0;
+	// ----------------------------- todo
+
+	return _IsPlaying ? (uint32)(CTime::getLocalTime() - _PlayStart) : 0;
 }
 //@}
 
@@ -438,7 +420,8 @@ void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool deffered) // note: 
 
 	_Pos = pos; // getPos() sucks
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Emitter.Position, pos);
-	if (!deffered) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deffered"); */ commit3DChanges(); }
+
+	// !! todo if threaded: if (!deffered) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deffered"); */ commit3DChanges(); }
 }
 
 /** Get the position vector.
@@ -455,7 +438,8 @@ void CSourceXAudio2::setVelocity(const NLMISC::CVector& vel, bool deferred)
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setVelocity %f %f %f", vel.x, vel.y, vel.z);
 
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Emitter.Velocity, vel);
-	if (!deferred) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deferred"); */ commit3DChanges(); }
+
+	// !! todo if threaded: if (!deferred) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deferred"); */ commit3DChanges(); }
 }
 
 /// Get the velocity vector
@@ -489,7 +473,7 @@ void CSourceXAudio2::setGain(float gain)
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setGain %f", gain);
 
 	_Gain = gain;
-	if (_SampleVoice) _SampleVoice->getSourceVoice()->SetVolume(gain);
+	if (_SourceVoice) _SourceVoice->SetVolume(gain);
 }
 
 /// Get the gain
@@ -506,11 +490,10 @@ void CSourceXAudio2::setPitch(float pitch)
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setPitch %f", pitch);
 
 	_Pitch = pitch;
-	if (_SampleVoice)
+	if (_SourceVoice)
 	{
-		if (_SampleVoice->getFormat() != Stereo16 && _SampleVoice->getFormat() != Stereo8)
-			_SampleVoice->setPitch(_Pitch * _Doppler);
-		else _SampleVoice->setPitch(_Pitch);
+		if (_Format == Stereo16 || _Format == Stereo8) _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
+		else _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
 	}
 }
 
@@ -523,7 +506,7 @@ float CSourceXAudio2::getPitch() const
 /// Set the source relative mode. If true, positions are interpreted relative to the listener position
 void CSourceXAudio2::setSourceRelativeMode(bool mode)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setSourceRelativeMode %u", (uint32)mode);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setSourceRelativeMode %u", (uint32)mode);
 
 	_Relative = mode;
 }
@@ -543,9 +526,11 @@ bool CSourceXAudio2::getSourceRelativeMode() const
 void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool deferred)
 {
 	nldebug(NLSOUND_XAUDIO2_PREFIX "setMinMaxDistances %f, %f", mindist, maxdist);
+
 	_MinDistance = mindist;
 	_MaxDistance = maxdist;
-	if (!deferred) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deferred"); */ commit3DChanges(); }
+
+	// !! todo if threaded: if (!deferred) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deferred"); */ commit3DChanges(); }
 }
 
 /// Get the min and max distances
@@ -555,28 +540,12 @@ void CSourceXAudio2::getMinMaxDistances(float& mindist, float& maxdist) const
 	maxdist = _MaxDistance;
 }
 
-//.\source_xaudio2.cpp(498) : NLSOUND::CSourceXAudio2::setMinMaxDistances INF  938: setMinMaxDistances 4.000000, 25.000000
-//.\source_xaudio2.cpp(514) : NLSOUND::CSourceXAudio2::setCone INF  938: setCone 6.283185, 6.283185 ,0.000010
-//******************************************************************************
-//*** XAPO ASSERT: iSrcOffset == (NWORD)uSrcSampleCount || iSrcOffset == (NWORD)uSrcSampleCount-1 || iSrcOffset == (NWORD)uSrcSampleCount-1*2, {ResampleLinearFromInt16MonoSse2, Line 1029}
-//******************************************************************************
-//XAUDIO2: WARNING: Spent 56970.19ms in audio thread; XAudio2 possibly overloaded
-//################################################################################
-//### XAUDIO2: src_fast.cpp:554: 
-//### ASSERT FAILED: m_SRCParameters.iSrcOffset == -m_SRCParameters.iChannelCount || m_SRCParameters.iSrcOffset == 0
-//################################################################################
-//******************************************************************************
-//*** XAPO ASSERT: pSRCParameters->iSrcOffset == -1 || pSRCParameters->iSrcOffset == 0, {ResampleLinearFromInt16MonoSse2, Line 917}
-//******************************************************************************
-
 /// Set the cone angles (in radian) and gain (in [0 , 1]) (default: 2PI, 2PI, 0)
 void CSourceXAudio2::setCone(float innerAngle, float outerAngle, float outerGain)
 {
 	nldebug(NLSOUND_XAUDIO2_PREFIX "setCone %f, %f ,%f", innerAngle, outerAngle, outerGain);
-	// X3DAUDIO_2PI 6.283185307f
-	//      setCone 6.283185, 6.283185 ,0.000010
-	//NLMISC_2
-	if (innerAngle >= 6.283185 && outerAngle >= 6.283185)
+	
+	if (innerAngle >= 6.283185f && outerAngle >= 6.283185f)
 		_Emitter.pCone = NULL;
 	else _Emitter.pCone = &_Cone;
 	if (innerAngle > outerAngle)
@@ -619,7 +588,9 @@ void CSourceXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 ///// 
 void CSourceXAudio2::setAlpha(double a) 
 {  
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
+	if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
+
+	_Alpha = a;
 }
 
 } /* namespace NLSOUND */

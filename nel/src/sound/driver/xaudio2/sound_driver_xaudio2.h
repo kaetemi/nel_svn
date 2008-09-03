@@ -103,8 +103,6 @@ protected:
 	CListenerXAudio2 *_Listener;
 	/// Array with the allocated sources
 	std::set<CSourceXAudio2 *> _Sources;
-	/// Array with the allocated unused "destroyed" sample voices only
-	std::set<CSampleVoiceXAudio2 *> _SampleVoices;
 	/// Array with the allocated music channels
 	std::vector<CMusicChannelXAudio2 *> _MusicChannels;
 
@@ -135,9 +133,6 @@ public:
 	inline X3DAUDIO_HANDLE &getX3DAudio() { return _X3DAudioHandle; }
 	inline X3DAUDIO_DSP_SETTINGS *getDSPSettings() { return &_DSPSettings; }
 	inline X3DAUDIO_LISTENER *getEmptyListener() { return &_EmptyListener; }
-
-	CSampleVoiceXAudio2 *createSampleVoice(CSourceXAudio2 *owner, TSampleFormat format); // checks pool
-	void destroySampleVoice(CSampleVoiceXAudio2 *sampleVoice, bool stop); // doesn't really destroy
 
 	///// Set the gain (volume value inside [0 , 1]). (default: 1), can't go over 1.0 on some systems
 	//void setGain(float gain);

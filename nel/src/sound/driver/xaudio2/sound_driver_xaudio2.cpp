@@ -42,7 +42,6 @@
 #include "sound_driver_xaudio2.h"
 
 // Project includes
-#include "sample_voice_xaudio2.h"
 #include "listener_xaudio2.h"
 #include "source_xaudio2.h"
 #include "music_channel_xaudio2.h"
@@ -191,7 +190,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 
 	UINT32 flags = 0;
 #ifdef NL_DEBUG
-	//flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
+	flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
 #endif
 
 	// XAudio2
@@ -273,52 +272,6 @@ void CSoundDriverXAudio2::release()
 #endif
 }
 
-CSampleVoiceXAudio2 *CSoundDriverXAudio2::createSampleVoice(CSourceXAudio2 *owner, TSampleFormat format) // checks pool
-{
-	nlassert(owner);
-	std::set<CSampleVoiceXAudio2 *>::iterator it(_SampleVoices.begin()), next, end(_SampleVoices.end());
-	while (it != end) if ((*it)->getFormat() == format)
-	{
-		next = it; ++next;
-		XAUDIO2_VOICE_STATE voice_state;
-		CSampleVoiceXAudio2 *sample_voice = *it;
-		if (!sample_voice->getSourceVoice())
-		{
-			// If sample voice broke while it was in the pool.
-			nlwarning(NLSOUND_XAUDIO2_PREFIX "Erasing broken sample voice.");
-			_SampleVoices.erase(it);
-			delete sample_voice;
-		}
-		else
-		{
-			sample_voice->getSourceVoice()->GetState(&voice_state);
-			if (!voice_state.pCurrentBufferContext) // make sure this buffer is done completely
-			{
-				_SampleVoices.erase(it);
-				sample_voice->setOwner(owner);
-				return sample_voice;
-			}
-		}
-		it = next;
-	}
-	return new CSampleVoiceXAudio2(owner, format);;
-}
-
-// note: if something's wrong with the sample voice while it has an owner, just delete it instead of using this
-void CSoundDriverXAudio2::destroySampleVoice(CSampleVoiceXAudio2 *sampleVoice, bool flush) // doesn't really destroy
-{
-	if (sampleVoice)
-	{
-		nlassert(sampleVoice->getSourceVoice()); // can also just delete if this fails, but keep this for now
-		sampleVoice->getSourceVoice()->Stop(0);
-		// cannot flush buffer when from callback! (also no need if from endbuffer callback)
-		if (flush) { sampleVoice->getSourceVoice()->FlushSourceBuffers(); }
-		// todo: nlassert check that no buffers exist anymore // maybe
-		sampleVoice->setOwner(NULL);
-		_SampleVoices.insert(sampleVoice);
-	}
-}
-
 ///** Set the gain (volume value inside [0 , 1]). (default: 1)
 // * 0.0 -> silence
 // * 0.5 -> -6dB
@@ -389,7 +342,7 @@ void CSoundDriverXAudio2::commit3DChanges()
 	// Sync up sources & listener 3d position.
 	{
 		std::set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
-		for (; it != end; ++it) (*it)->commit3DChanges();
+		for (; it != end; ++it) { (*it)->update(); (*it)->commit3DChanges(); }
 	}
 	// Update music faders
 	{
@@ -537,7 +490,9 @@ void CSoundDriverXAudio2::removeBuffer(IBuffer *buffer)
 /// Remove a source (should be called by the friend destructor of the source class)
 void CSoundDriverXAudio2::removeSource(ISource *source)
 {
-	_Sources.erase((CSourceXAudio2*)source); // note: IT DOESN'T DELETE
+	if (_Sources.find((CSourceXAudio2 *)source) != _Sources.end())
+		_Sources.erase((CSourceXAudio2 *)source); // note: IT DOESN'T DELETE
+	else nlwarning("removeSource already called");
 	// SOURCE ARE DELETED IN CTrack / mixing_track.h ...
 	// -> use delete to call this function ^^'
 }

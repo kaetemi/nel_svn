@@ -33,7 +33,6 @@
 #include "stdxaudio2.h"
 
 // Project includes
-#include "sample_voice_xaudio2.h"
 
 // NeL includes
 #include "../source.h"
@@ -44,6 +43,7 @@
 
 namespace NLSOUND {
 	class CSoundDriverXAudio2;
+	class CBufferXAudio2;
 
 /**
  * \brief CSourceXAudio2
@@ -54,66 +54,74 @@ namespace NLSOUND {
 class CSourceXAudio2 : public ISource
 {
 protected:
-	// far pointers
-	CSoundDriverXAudio2 *_SoundDriver; // not changed at runtime
-	CBufferXAudio2 *_NextBuffer; // MT
-	CBufferXAudio2 *_HasBuffer; // MT
-
-	// pointers
-	CSampleVoiceXAudio2 *_SampleVoice; // MT, once set never becomes NULL until destruct of class
+	// -- Far pointers --
+	/// The sound driver, cannot change at runtime
+	CSoundDriverXAudio2 *_SoundDriver;
+	/// Buffer that should be playing
+	CBufferXAudio2 *_StaticBuffer;
 	
-	// instances // dont need 3dchanged, remove
-	/*bool _SourceOk; */ //bool _3DChanged;
-	// bool _HasBuffer; // MT
-	NLMISC::CMutex _Mutex;/*, _IsPaused*/;
+	// -- Pointers --
+	/// Source voice, can be NULL!
+	IXAudio2SourceVoice *_SourceVoice;
+
+	// -- System vars 2d --
+	/// Format of the current source voice
+	TSampleFormat _Format;
+	/// Frequency of voice (should be 44100)
+	float _FreqVoice;
+	/// Rate of sample over rate of voice
+	float _FreqRatio;
+	/// Time when source started playing
+	NLMISC::TTime _PlayStart;
+	
+	// -- System vars 3d --
 	float _Doppler;
+	
+	// -- User vars 3d --
 	X3DAUDIO_EMITTER _Emitter;
 	X3DAUDIO_CONE _Cone;
-
-	// user vars
 	float _MinDistance;
 	float _MaxDistance;
-	float _Pitch;
-	float _Gain;
+	/// getPos sucks
+	NLMISC::CVector _Pos;
+	/// sources relative to listener position (listener + source = actual source location)
+	bool _Relative;
+	/// Alpha not implemented yet, something to do with manual rolloff
+	double _Alpha;
+	
+	// -- User vars 2d --
+	/// True if play() or pause(), false if stop()
 	bool _IsPlaying;
-	bool _IsLooping; // MT
-	NLMISC::CVector _Pos; // getPos sucks
-	bool _Relative; // sources relative to listener position (listener + source = actual source location)
-private:
-	// call only when entered mutex!
-	void startNextBuffer(bool flush); // MT
-
+	/// True if pause(), false if play() or stop()
+	bool _IsPaused;
+	/// True if setLooping(true)
+	bool _IsLooping;
+	/// Pitch set by user
+	float _Pitch;
+	/// Volume set by user
+	float _Gain;
+	
+	// -- Combined vars --
+	// _FreqRatio = (float)_StaticBuffer->getFreq() / _FreqVoice;
+	// 3D PITCH = (_FreqRatio * _Pitch * _Doppler)
+	// 2D PITCH = (_FreqRatio * _Pitch)
 public:
+	// Internal functions
 	CSourceXAudio2(CSoundDriverXAudio2 *soundDriver);
-	//void init();
 	virtual ~CSourceXAudio2();
 	void release();
 
-	void commit3DChanges();
-	inline CSoundDriverXAudio2 *getSoundDriver() { return _SoundDriver; }
+	void commit3DChanges(); 
+	void update(float dtf);
 
-	// XAudio2 Callbacks
-    // Called just before this voice's processing pass begins.
-    void cbVoiceProcessingPassStart(uint32 BytesRequired);
-    // Called just after this voice's processing pass ends.
-    void cbVoiceProcessingPassEnd();
-    // Called when this voice has just finished playing a buffer stream
-    // (as marked with the XAUDIO2_END_OF_STREAM flag on the last buffer).
-    void cbStreamEnd();
-    // Called when this voice is about to start processing a new buffer.
-    void cbBufferStart(CBufferXAudio2* pBufferContext);
-    // Called when this voice has just finished processing a buffer.
-    // The buffer can now be reused or destroyed.
-    void cbBufferEnd(CBufferXAudio2* pBufferContext);
-    // Called when this voice has just reached the end position of a loop.
-    void cbLoopEnd(CBufferXAudio2* pBufferContext);
-    // Called in the event of a critical error during voice processing,
-    // such as a failing XAPO or an error from the hardware XMA decoder.
-    // The voice may have to be destroyed and re-created to recover from
-    // the error.  The callback arguments report which buffer was being
-    // processed when the error occurred, and its HRESULT code.
-    void cbVoiceError(CBufferXAudio2* pBufferContext, HRESULT Error);
+	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format);
+	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
 
+	void submitStaticBuffer();
+	//inline void stopLooping() { _SourceVoice->FlushSourceBuffers(); _SourceVoice->ExitLoop(); } // must set _IsLooping = false first
+	//inline void startLooping() { submitStaticBuffer(); } // must set _IsLooping = true first
+
+	// ISource Functions
 	/// \name Initialization
 	//@{
 	/** Set the buffer that will be played (no streaming)
@@ -148,6 +156,8 @@ public:
 	virtual bool isPlaying() const;
 	/// Return true if playing is finished or stop() has been called.
 	virtual bool isStopped() const;
+	/// Return the paused state
+	virtual bool isPaused() const;
 	/// Update the source (e.g. continue to stream the data in)
 	virtual bool update();
 	/// Returns the number of milliseconds the source has been playing
