@@ -57,17 +57,6 @@ class CClusteredSound;
 class CBackgroundSoundManager;
 class CMusicSoundManager;
 
-/*
- * Max number of tracks (physical sources)
- *
- * Note: In the Windows implementation of OpenAL, AL_SOURCES_MAX is currently defined to 32
- * but seems unused. In alc.c (AL Context implementation), the function alcOpenDevice() contains:
- *     // Check how many Hardware 3D Streaming buffers can be created
- *     device->MaxNoOfSources = dsCaps.dwMaxHw3DStreamingBuffers;
- * and this value seems to be no more than 32 in DirectX8.
- */
-const uint MAX_TRACKS = 32;
-
 /// Hasher functor for hashed container with pointer key.
 template <class Pointer>
 struct THashPtr : public std::unary_function<const Pointer &, size_t>
@@ -244,7 +233,7 @@ public:
 	/// Return the names of the sounds (call this method after loadSounds())
 	virtual void				getSoundNames( std::vector<NLMISC::TStringId> &names ) const;
 	/// Return the number of mixing tracks (voices)
-	virtual uint				getPolyphony() const { return _NbTracks; }
+	virtual uint				getPolyphony() const { return _Tracks.size(); }
 	/// Return the number of sources instance.
 	virtual uint				getSourcesInstanceCount() const { return _Sources.size(); }
 	/// Return the number of playing sources (slow)
@@ -590,9 +579,7 @@ public:
 
 public: // Temp (EDIT)
 	/// Physical sources array
-	CTrack						*_Tracks [MAX_TRACKS];
-	/// Size of the physical sources array (must be <= MAX_TRACKS)
-	uint						_NbTracks;
+	std::vector<CTrack *>		_Tracks;
 	/// Flag set in destructor
 	bool						_Leaving;
 

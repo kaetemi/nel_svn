@@ -118,7 +118,6 @@ CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
 									 _BackgroundMusicManager(0),
 									 _PlayingSources(0),
 									 _PlayingSourcesMuted(0),
-									 _NbTracks(0),
 									 _Leaving(false)
 {
 	if ( _Instance == NULL )
@@ -186,9 +185,9 @@ CAudioMixerUser::~CAudioMixerUser()
 
 	// Tracks
 	uint i;
-	for ( i=0; i!=_NbTracks; i++ )
+	for (i = 0; i < _Tracks.size(); ++i)
 	{
-		if ( _Tracks[i] )
+		if (_Tracks[i])
 			delete _Tracks[i];
 	}
 
@@ -222,12 +221,12 @@ void CAudioMixerUser::initClusteredSound(NL3D::CScene *scene, float minGain, flo
 
 void CAudioMixerUser::setPriorityReserve(TSoundPriority priorityChannel, uint reserve)
 {
-	_PriorityReserve[priorityChannel] = min(_NbTracks, reserve);
+	_PriorityReserve[priorityChannel] = min(_Tracks.size(), reserve);
 }
 
 void CAudioMixerUser::setLowWaterMark(uint value)
 {
-	_LowWaterMark = min(_NbTracks, value);
+	_LowWaterMark = min(_Tracks.size(), value);
 }
 
 
@@ -272,7 +271,7 @@ void				CAudioMixerUser::writeProfile(std::string& out)
 	out += "\tHighPri:    " + toString ((int)_ReserveUsage[HighPri]) + " / " + toString ((int)_PriorityReserve[HighPri]) + "\n";
 	out += "\tMidPri:     " + toString ((int)_ReserveUsage[MidPri]) + " / " + toString ((int)_PriorityReserve[MidPri]) + " \n";
 	out += "\tLowPri:     " + toString ((int)_ReserveUsage[LowPri]) + " / " + toString ((int)_PriorityReserve[LowPri]) + " \n";
-	out += "\tFreeTracks: " + toString (_FreeTracks.size()) + " / " + toString (_NbTracks) + " \n";
+	out += "\tFreeTracks: " + toString (_FreeTracks.size()) + " / " + toString (_Tracks.size()) + " \n";
 	out += "\tAverage update time: " + toString (1000.0 * _UpdateTime / iavoid0(_UpdateCount)) + " msec\n";
 	out += "\tAverage create time: " + toString (1000.0 * _CreateTime / iavoid0(_CreateCount)) + " msec\n";
 	out += "\tEstimated CPU: " + toString ((100.0 * 1000.0 * (_UpdateTime + _CreateTime) / curTime())) + "%%\n";
@@ -302,9 +301,9 @@ void				CAudioMixerUser::reset()
 
 	// Stop tracks
 	uint i;
-	for ( i=0; i!=_NbTracks; i++ )
+	for (i = 0; i < _Tracks.size(); ++i)
 	{
-		if ( _Tracks[i] )
+		if (_Tracks[i])
 		{
 			CSimpleSource* src = _Tracks[i]->getSource();
 
@@ -395,7 +394,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	}
 	catch(...)
 	{
-		// TODO : is this logic to auto destruct this object in case of failing to create the driver ?
+		// TODO : is this logic to auto destruct this object in case of failing to create the driver ? no it isn't
 		delete this;
 		_Instance = NULL;
 		throw;
@@ -403,8 +402,11 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 
 	uint i;
 
-	maxTrack = min(maxTrack, MAX_TRACKS);
-
+	uint max_track_driver = _SoundDriver->countMaxSources();
+	_Tracks.resize(max_track_driver);
+	if (maxTrack > max_track_driver) nlwarning("MaxTrack limited from %u to %u", (uint32)maxTrack, (uint32)max_track_driver);
+	maxTrack = min(maxTrack, max_track_driver);
+	
 	// Init registrable classes
 	static bool initialized = false;
 	if (!initialized)
@@ -416,17 +418,13 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	_Listener.init( _SoundDriver );
 
 	// Init tracks (physical sources)
-	_NbTracks = maxTrack; // could be chosen by the user, or according to the capabilities of the sound card
-	for ( i=0; i<maxTrack; i++ )
-	{
-		_Tracks[i] = NULL;
-	}
+	_Tracks.resize(maxTrack, NULL); // could be chosen by the user, or according to the capabilities of the sound card
 	try
 	{
-		for ( i=0; i!=_NbTracks; i++ )
+		for (i = 0; i < _Tracks.size(); ++i)
 		{
 			_Tracks[i] = new CTrack();
-			_Tracks[i]->init( _SoundDriver );
+			_Tracks[i]->init(_SoundDriver);
 			// insert in front because the last inserted wan be sofware buffer...
 			_FreeTracks.insert(_FreeTracks.begin(), _Tracks[i]);
 		}
@@ -434,16 +432,15 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	catch ( ESoundDriver & )
 	{
 		delete _Tracks[i];
-		_Tracks[i] = 0;
 		// If the source generation failed, keep only the generated number of sources
-		_NbTracks = i;
+		_Tracks.resize(i);
 	}
 
 	// Init the reserve stuff.
 	_LowWaterMark = 0;
 	for (i=0; i<NbSoundPriorities; ++i)
 	{
-		_PriorityReserve[i] = _NbTracks;
+		_PriorityReserve[i] = _Tracks.size();
 		_ReserveUsage[i] = 0;
 	}
 
@@ -468,7 +465,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	// Load the sound bank singleton
 	CSoundBank::instance()->load();
 	nlinfo( "Initialized audio mixer with %u voices, %s and %s.",
-		_NbTracks,
+		_Tracks.size(),
 		useEax ? "with EAX support" : "WITHOUT EAX",
 		useADPCM ? "with ADPCM sample source" : "with 16 bits PCM sample source");
 
@@ -1076,10 +1073,10 @@ void	CAudioMixerUser::bufferUnloaded(IBuffer *buffer)
 {
 	// check all track to find a track playing this buffer.
 	uint i;
-	for ( i=0; i!=_NbTracks; ++i )
+	for (i = 0; i < _Tracks.size(); ++i)
 	{
-		CTrack	*track = _Tracks[i];
-		if ( track && track->getSource())
+		CTrack *track = _Tracks[i];
+		if (track && track->getSource())
 		{
 			if (track->getSource()->getBuffer() == buffer)
 			{
@@ -1087,7 +1084,6 @@ void	CAudioMixerUser::bufferUnloaded(IBuffer *buffer)
 			}
 		}
 	}
-
 }
 
 
@@ -1201,7 +1197,7 @@ CTrack *CAudioMixerUser::getFreeTrack(CSimpleSource *source)
 		d1 = (source->getPos() - _ListenPosition).norm();
 		t1 = max(0.0f, 1-((d1-source->getSimpleSound()->getMinDistance()) / (source->getSimpleSound()->getMaxDistance() - source->getSimpleSound()->getMinDistance())));
 
-		for (uint i=0; i<_NbTracks; ++i)
+		for (uint i=0; i<_Tracks.size(); ++i)
 		{
 			CSimpleSource *src2 = _Tracks[i]->getSource();
 			if (src2 != 0)
@@ -1400,7 +1396,7 @@ void				CAudioMixerUser::update()
 
 	uint i;
 	// Check all playing track and stop any terminated buffer.
-	for (i=0; i<_NbTracks; ++i)
+	for (i=0; i<_Tracks.size(); ++i)
 	{
 		if (!_Tracks[i]->isPlaying())
 		{
@@ -1432,7 +1428,7 @@ void				CAudioMixerUser::update()
 		_ClusteredSound->update(_ListenPosition, view, up);
 
 		// update all playng track according to there cluster status
-		for (i=0; i<_NbTracks; ++i)
+		for (i=0; i<_Tracks.size(); ++i)
 		{
 			if (_Tracks[i]->isPlaying())
 			{
@@ -1899,7 +1895,7 @@ uint			CAudioMixerUser::getAvailableTracksCount() const
 
 uint			CAudioMixerUser::getUsedTracksCount() const
 {
-	return _NbTracks - _FreeTracks.size();
+	return _Tracks.size() - _FreeTracks.size();
 }
 
 
@@ -2018,9 +2014,9 @@ NLMISC_CATEGORISED_COMMAND(nel, displaySoundInfo, "Display information about the
 		return true;
 	}
 
-	log.displayNL ("%d tracks, MAX_TRACKS = %d, contains:", CAudioMixerUser::instance()->_NbTracks, MAX_TRACKS);
+	log.displayNL ("%d tracks, MAX_TRACKS = %d, contains:", CAudioMixerUser::instance()->_Tracks.size(), CAudioMixerUser::instance()->getSoundDriver()->countMaxSources());
 
-	for (uint i = 0; i < CAudioMixerUser::instance()->_NbTracks; i++)
+	for (uint i = 0; i < CAudioMixerUser::instance()->_Tracks.size(); i++)
 	{
 		if (CAudioMixerUser::instance()->_Tracks[i] == NULL)
 		{
@@ -2189,26 +2185,28 @@ void CAudioMixerUser::displayDriverBench(CLog *log)
 // ***************************************************************************
 void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 {
-	maxTrack = min(maxTrack, MAX_TRACKS);
-
+	uint max_track_old = maxTrack;
+	maxTrack = min(maxTrack, _SoundDriver->countMaxSources());
+	if (maxTrack != max_track_old) nlwarning("MaxTrack limited from %u to %u", (uint32)max_track_old, (uint32)maxTrack);
+	
 	// if same, no op
-	if(maxTrack==_NbTracks)
+	if (maxTrack == _Tracks.size())
 		return;
-
+	
+	uint prev_track_nb = (uint)_Tracks.size();
 	// **** if try to add new tracks, easy
-	if(maxTrack>_NbTracks)
+	if (maxTrack > prev_track_nb)
 	{
-		uint	i;
-		for (i=_NbTracks; i<maxTrack; i++ )
-		{
-			_Tracks[i] = NULL;
-		}
+		uint i;
+		_Tracks.resize(maxTrack, NULL);
 		try
 		{
-			for (i=_NbTracks; i!=maxTrack; i++ )
+			for (i = prev_track_nb; i < maxTrack; ++i)
 			{
+				nlassert(!_Tracks[i]);
+
 				_Tracks[i] = new CTrack();
-				_Tracks[i]->init( _SoundDriver );
+				_Tracks[i]->init(_SoundDriver);
 				// insert in front because the last inserted wan be sofware buffer...
 				_FreeTracks.insert(_FreeTracks.begin(), _Tracks[i]);
 			}
@@ -2216,27 +2214,27 @@ void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 		catch ( ESoundDriver & )
 		{
 			delete _Tracks[i];
-			_Tracks[i] = NULL;
 			// If the source generation failed, keep only the generated number of sources
-			maxTrack= i;
+			maxTrack = i;
+			_Tracks.resize(maxTrack);
 		}
 	}
 	// **** else must delete some tracks
 	else
 	{
-		sint	i;
-		for (i=_NbTracks-1; i>=(sint)maxTrack; i-- )
+		sint i;
+		for (i = (sint)prev_track_nb - 1; i >= (sint)maxTrack; --i)
 		{
 			nlassert(_Tracks[i]);
 
 			// stop the track playing source if needed!
-			CSimpleSource	*source= _Tracks[i]->getSource();
-			if(source)
+			CSimpleSource *source= _Tracks[i]->getSource();
+			if (source)
 				source->stop();
 			// if fails (don't know why), abort reducing
-			if(_Tracks[i]->getSource())
+			if (_Tracks[i]->getSource())
 			{
-				maxTrack= i+1;
+				maxTrack = i + 1;
 				nlwarning("AM: Abort ChangeTrack, cant stop a track");
 				break;
 			}
@@ -2246,10 +2244,8 @@ void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 			delete _Tracks[i];
 			_Tracks[i] = NULL;
 		}
+		_Tracks.resize(maxTrack);
 	}
-
-	// Modified
-	_NbTracks = maxTrack;
 }
 
 // ***************************************************************************
