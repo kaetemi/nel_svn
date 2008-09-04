@@ -211,7 +211,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	// Windows
 #ifdef NL_OS_WINDOWS // CoInitializeEx not on xbox, lol
 	if (FAILED(hr = CoInitializeEx(NULL, COINIT_MULTITHREADED)))
-		{ release(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED)) HRESULT: %u", (uint32)hr); return; }
+		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED))"); return; }
 	_CoInitOk = true;
 #endif
 
@@ -222,9 +222,9 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 
 	// XAudio2
 	if (FAILED(hr = XAudio2Create(&_XAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
-		{ release(); nlerror(NLSOUND_XAUDIO2_PREFIX "XAudio2 failed to initialize. Please install the latest version of the DirectX End-User Runtimes. HRESULT: %u", (uint32)hr); return; }
+		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "XAudio2 failed to initialize. Please install the latest version of the DirectX End-User Runtimes."); return; }
 	if (FAILED(hr = _XAudio2->CreateMasteringVoice(&_MasteringVoice, 0, 44100, 0, 0, NULL)))
-		{ release(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED(_XAudio2->CreateMasteringVoice(&_MasteringVoice)) HRESULT: %u", (uint32)hr); return; }
+		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateMasteringVoice _MasteringVoice!"); return; }
 	
 	// X3DAudio
 	// speed of sound in meters per second for dry air at approximately 20C, used with X3DAudioInitialize
@@ -280,7 +280,7 @@ void CSoundDriverXAudio2::release()
 		}
 	}
 	// Stop the listener
-	_Listener->release(); // LISTENER AND SOURCES DELETED AT NLSOUND USER LEVEL
+	if (_Listener) _Listener->release(); // LISTENER AND SOURCES DELETED AT NLSOUND USER LEVEL
 
 	// X3DAudio
 	NLSOUND_XAUDIO2_RELEASE(_DSPSettings.pMatrixCoefficients);

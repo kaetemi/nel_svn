@@ -81,11 +81,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
 	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_OutputVoice, voice_details.InputChannels, voice_details.InputSampleRate)))
-	{ 
-		release(); 
-		nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _OutputVoice! HRESULT: %u", (uint32)hr); 
-		return; 
-	}
+		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _OutputVoice!"); return; }
 	XAUDIO2_VOICE_SENDS output_voice_sends;
 	output_voice_sends.OutputCount = 1;
 	output_voice_sends.pOutputVoices = (IXAudio2Voice **)(&_OutputVoice); // pointer to the pointer (pointer to array of pointers actually)
@@ -97,11 +93,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		flags |= XAUDIO2FX_DEBUG;
 #endif
 		if (FAILED(hr = XAudio2CreateReverb(&_ReverbApo, flags)))
-		{
-			release();
-			nlerror("Failed to create Reverb APO! HRESULT: %u", (uint32)hr); 
-			return;
-		}
+			{ release(); throw ESoundDriver("Failed to create Reverb APO!"); return; }
 
 		XAUDIO2_EFFECT_DESCRIPTOR effect_desc;
 		effect_desc.InitialState = TRUE;
@@ -111,13 +103,8 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		effect_chain.EffectCount = 1;
 		effect_chain.pEffectDescriptors = &effect_desc; // "array"
 		
-		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_ReverbVoice, voice_details.InputChannels, voice_details.InputSampleRate,
-			0, 0, &output_voice_sends, &effect_chain)))
-		{ 
-			release(); 
-			nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _ReverbVoice! HRESULT: %u", (uint32)hr); 
-			return; 
-		}
+		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_ReverbVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 0, &output_voice_sends, &effect_chain)))
+			{ release();  throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _ReverbVoice!");  return; }
 
 		IXAudio2Voice *reverb_output_array[2];
 		reverb_output_array[0] = _OutputVoice;
@@ -127,13 +114,8 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		reverb_output_voice_sends.OutputCount = 2;
 		reverb_output_voice_sends.pOutputVoices = (IXAudio2Voice **)reverb_output_array;
 
-		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SampleVoice, voice_details.InputChannels, voice_details.InputSampleRate,
-			0, 0, &reverb_output_voice_sends, NULL)))
-		{ 
-			release(); 
-			nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _SampleVoice! HRESULT: %u", (uint32)hr); 
-			return; 
-		}
+		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SampleVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 0, &reverb_output_voice_sends, NULL)))
+			{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _SampleVoice!"); return; }
 
 		_VoiceSends.OutputCount = 1;
 		_VoiceSends.pOutputVoices = (IXAudio2Voice **)(&_SampleVoice);
@@ -163,10 +145,10 @@ CListenerXAudio2::~CListenerXAudio2()
 	if (pointer) { command; pointer = NULL; }
 void CListenerXAudio2::release()
 {
-	NLSOUND_XAUDIO2_RELEASE_EX(_SampleVoice, _SampleVoice->DestroyVoice())
-	NLSOUND_XAUDIO2_RELEASE_EX(_ReverbVoice, _ReverbVoice->DestroyVoice())
+	if (_SampleVoice) { _SampleVoice->DestroyVoice(); _SampleVoice = NULL; }
+	if (_ReverbVoice) { _ReverbVoice->DestroyVoice(); _ReverbVoice = NULL; }
 	NLSOUND_XAUDIO2_RELEASE_EX(_OutputVoice, _OutputVoice->DestroyVoice())
-	NLSOUND_XAUDIO2_RELEASE_EX(_ReverbApo, _ReverbApo->Release())
+	if (_ReverbApo) { _ReverbApo->Release(); _ReverbApo = NULL; }
 
 	_ListenerOk = false;
 }
