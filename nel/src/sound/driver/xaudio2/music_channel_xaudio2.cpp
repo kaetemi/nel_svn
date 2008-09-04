@@ -248,9 +248,9 @@ void CMusicChannelXAudio2::OnVoiceError(void *pBufferContext, HRESULT Error)
 	
 }
 
-//void CMusicChannelXAudio2::switchVoice(uint fadeTime)
+//void CMusicChannelXAudio2::switchVoice(uint xFadeTime)
 //{
-//	if (fadeTime) { _Active = getInactive(); _Fading = true; _FadeTime = (float)fadeTime / 1000.f; }
+//	if (xFadeTime) { _Active = getInactive(); _Fading = true; _FadeTime = (float)xFadeTime / 1000.f; }
 //	else { _Fading = false; _Balance = _Active ? 1.0f : 0.0f; updateVolume(); }
 //	_MusicVoices[_Active].stop();
 //	delete _Streams[_Active]; _Streams[_Active] = NULL;
