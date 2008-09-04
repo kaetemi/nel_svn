@@ -251,6 +251,8 @@ private:
 	TClusterTravContextMap	_NextTraversalStep;
 	/// The last setted environement.
 	uint					_LastEnv;
+	/// The last set environment size.
+	float					_LastEnvSize;
 	/// The segment of all the audio path.
 	std::vector<std::pair<NLMISC::CVector, NLMISC::CVector> >	_AudioPath;
 

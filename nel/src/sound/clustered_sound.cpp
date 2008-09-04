@@ -221,7 +221,8 @@ std::map<std::string, CSoundGroupSerializer> Container;
 CClusteredSound::CClusteredSound()
 :	_Scene(0),
 	_RootCluster(0),
-	_LastEnv(0xffffffff)
+	_LastEnv(0xffffffff),
+	_LastEnvSize(-1.0f) // size goes from 0.0f to 100.0f
 {
 	// fill the env name table
 	uint i;
@@ -441,10 +442,11 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 		}
 
 		// only update environment if there is some change.
-		if (newEnv != _LastEnv)
+		if (newEnv != _LastEnv || size != _LastEnvSize)
 		{
 			drvListener->setEnvironment(newEnv, size);
 			_LastEnv = newEnv;
+			_LastEnvSize = size;
 		}
 	}
 }
