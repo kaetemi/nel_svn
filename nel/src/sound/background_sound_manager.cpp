@@ -948,25 +948,25 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 							else if (first->FxName == CStringMapper::map("CITY"))
 								envNum = 16;
 							else if (first->FxName == CStringMapper::map("MOUNTAINS"))
-								envNum = 16;
-							else if (first->FxName == CStringMapper::map("QUARRY"))
 								envNum = 17;
+							else if (first->FxName == CStringMapper::map("QUARRY"))
+								envNum = 18;
 							else if (first->FxName == CStringMapper::map("PLAIN"))
-								envNum = 18;
-							else if (first->FxName == CStringMapper::map("PARKINGLOT"))
 								envNum = 19;
-							else if (first->FxName == CStringMapper::map("SEWERPIPE"))
+							else if (first->FxName == CStringMapper::map("PARKINGLOT"))
 								envNum = 20;
-							else if (first->FxName == CStringMapper::map("UNDERWATER"))
+							else if (first->FxName == CStringMapper::map("SEWERPIPE"))
 								envNum = 21;
-							else if (first->FxName == CStringMapper::map("DRUGGED"))
+							else if (first->FxName == CStringMapper::map("UNDERWATER"))
 								envNum = 22;
-							else if (first->FxName == CStringMapper::map("DIZZY"))
+							else if (first->FxName == CStringMapper::map("DRUGGED"))
 								envNum = 23;
-							else if (first->FxName == CStringMapper::map("PSYCHOTIC"))
+							else if (first->FxName == CStringMapper::map("DIZZY"))
 								envNum = 24;
+							else if (first->FxName == CStringMapper::map("PSYCHOTIC"))
+								envNum = 25;
 							else
-								envNum = 18;
+								envNum = 19;
 
 							drvListener->setEnvironment(envNum, 10);
 						}
