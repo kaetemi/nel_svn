@@ -56,6 +56,7 @@ namespace NLSOUND {
  * \date 2008-08-30 11:38GMT
  * \author Jan Boon (Kaetemi)
  * CMusicBufferVorbis
+ * Create trough IMusicBuffer, type "ogg"
  */
 class CMusicBufferVorbis : public IMusicBuffer
 {
@@ -74,19 +75,32 @@ protected:
 public:
 	CMusicBufferVorbis(NLMISC::IStream *stream, bool loop);
 	virtual ~CMusicBufferVorbis();
-
-	static bool getSongTitle(const std::string &fileName, NLMISC::IStream *stream, std::string &result);
-
 	inline NLMISC::IStream *getStream() { return _Stream; }
 	inline sint32 getStreamSize() { return _StreamSize; }
 	inline sint32 getStreamOffset() { return _StreamOffset; }
 
+	/// Get information on a music file (only artist and title at the moment).
+	static bool getInfo(NLMISC::IStream *stream, std::string &artist, std::string &title);
+
+	/// Get how many bytes the music buffer requires for output minimum.
 	virtual uint32 getRequiredBytes();
+
+	/// Get an amount of bytes between minimum and maximum (can be lower than minimum if at end).
 	virtual uint32 getNextBytes(uint8 *buffer, uint32 minimum, uint32 maximum);
+
+	/// Get the amount of channels (2 is stereo) in output.
 	virtual uint16 getChannels();
+
+	/// Get the samples per second (often 44100) in output.
 	virtual uint32 getSamplesPerSec();
+
+	/// Get the bits per sample (often 16) in output.
 	virtual uint16 getBitsPerSample();
+
+	/// Get if the music has ended playing (never true if loop).
 	virtual bool isMusicEnded();
+
+	/// Get the total time in seconds.
 	virtual float getLength();
 }; /* class CMusicBufferVorbis */
 

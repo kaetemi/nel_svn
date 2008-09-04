@@ -50,6 +50,7 @@
 #include <nel/misc/file.h>
 
 // Project includes
+#include "sound_driver_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;

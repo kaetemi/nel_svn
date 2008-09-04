@@ -42,6 +42,7 @@
 // Project includes
 
 namespace NLSOUND {
+	class CSoundDriverXAudio2;
 
 /**
  * \brief CListenerXAudio2

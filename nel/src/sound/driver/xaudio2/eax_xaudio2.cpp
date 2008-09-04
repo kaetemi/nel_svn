@@ -37,6 +37,7 @@
 // #include <nel/misc/debug.h>
 
 // Project includes
+#include "sound_driver_xaudio2.h"
 
 using namespace std;
 // using namespace NLMISC;
@@ -101,7 +102,7 @@ void CEaxXAudio2::init()
 	ReverbConvertI3DL2ToNative(&I3DL2_DRUGGED, &_Environments[23]);
 	XAUDIO2FX_REVERB_I3DL2_PARAMETERS I3DL2_DIZZY = { 100.0f, -1000, -400, 0.0f, 17.23f, 0.56f, -1713, 0.020f, -613, 0.030f, 100.0f, 100.0f, 5000.0f };
 	ReverbConvertI3DL2ToNative(&I3DL2_DIZZY, &_Environments[24]);
-	XAUDIO2FX_REVERB_I3DL2_PARAMETERS I3DL2_PSYCHOTIC ={ 100.0f, -1000, -151, 0.0f, 7.56f, 0.91f, -626, 0.020f, 774, 0.030f, 100.0f, 100.0f, 5000.0f };
+	XAUDIO2FX_REVERB_I3DL2_PARAMETERS I3DL2_PSYCHOTIC = { 100.0f, -1000, -151, 0.0f, 7.56f, 0.91f, -626, 0.020f, 774, 0.030f, 100.0f, 100.0f, 5000.0f };
 	ReverbConvertI3DL2ToNative(&I3DL2_PSYCHOTIC, &_Environments[25]);
 }
 

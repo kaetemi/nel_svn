@@ -35,55 +35,95 @@
 // STL includes
 
 // NeL includes
+#include "../music_channel.h"
 
 // Project includes
-#include "music_voice_xaudio2.h"
 
 namespace NLSOUND {
+	class CSoundDriverXAudio2;
+	class IMusicBuffer;
 
 /**
  * \brief CMusicChannelXAudio2
  * \date 2008-08-30 13:31GMT
  * \author Jan Boon (Kaetemi)
  * CMusicChannelXAudio2
- * channel has 2 voices to fade between
  */
-class CMusicChannelXAudio2
+class CMusicChannelXAudio2 : public IMusicChannel, IXAudio2VoiceCallback
 {
 protected:
+	// far pointers
+	CSoundDriverXAudio2 *_SoundDriver;
+	
 	// pointers
-	// ...
+	IMusicBuffer *_MusicBuffer;
+	IXAudio2SourceVoice *_SourceVoice;
 	
 	// instances
-	bool _Fading;
-	//bool _Playing;
-	uint8 _Active; // 0 voice 0, 1 voice 1
-	float _Balance; // balance between two voices 0.0 voice 0, 1.0 voice 1
-	float _Gain; // 0.0 to 1.0
-	float _FadeTime; // total time for fade
-	CMusicVoiceXAudio2 _MusicVoices[2]; // two voices to fade between
-	NLMISC::IStream *_Streams[2]; // streams to delete
+	uint8 _Buffer[16 * 1024]; // no specific reason, lol
+	uint32 _BufferPos; // 0
+	float _Gain;
+
 public:
 	CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CMusicChannelXAudio2();
 
-	void play(NLMISC::CIFile &file, uint xFadeTime, bool loop);
-	void play(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
-	void stop(uint fadeTimeMs);
-	inline void pause() { /*_Playing = false; */_MusicVoices[0].pause(); _MusicVoices[1].pause(); };
-	inline void resume() {/* _Playing = true; */_MusicVoices[0].resume(); _MusicVoices[1].resume(); };
-	inline bool isEnded() { return _MusicVoices[_Active].isEnded(); }
-	inline float getLength() { return _MusicVoices[_Active].getLength(); } // in seconds
-	inline void setVolume(float gain) { _Gain = gain; updateVolume(); } // 1.0 normal
-	inline void setBalance(float balance) { _Balance = balance; updateVolume(); } // 0.0 0, 1.0 1
-	inline uint8 getActive() const { return _Active; }
-	inline uint8 getInactive() const { return _Active ? 0 : 1; }
-
-	void update(float dt);
-
 private:
-	inline void updateVolume() { _MusicVoices[0].setVolume((1.0f - _Balance) * _Gain); _MusicVoices[1].setVolume(_Balance * _Gain); };
-	void switchVoice(uint fadeTime);
+	// XAudio2 Callbacks
+    // Called just before this voice's processing pass begins.
+    STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 BytesRequired);
+    // Called just after this voice's processing pass ends.
+    STDMETHOD_(void, OnVoiceProcessingPassEnd) (THIS);
+    // Called when this voice has just finished playing a buffer stream
+    // (as marked with the XAUDIO2_END_OF_STREAM flag on the last buffer).
+    STDMETHOD_(void, OnStreamEnd) (THIS);
+    // Called when this voice is about to start processing a new buffer.
+    STDMETHOD_(void, OnBufferStart) (THIS_ void* pBufferContext);
+    // Called when this voice has just finished processing a buffer.
+    // The buffer can now be reused or destroyed.
+    STDMETHOD_(void, OnBufferEnd) (THIS_ void* pBufferContext);
+    // Called when this voice has just reached the end position of a loop.
+    STDMETHOD_(void, OnLoopEnd) (THIS_ void* pBufferContext);
+    // Called in the event of a critical error during voice processing,
+    // such as a failing XAPO or an error from the hardware XMA decoder.
+    // The voice may have to be destroyed and re-created to recover from
+    // the error.  The callback arguments report which buffer was being
+    // processed when the error occurred, and its HRESULT code.
+    STDMETHOD_(void, OnVoiceError) (THIS_ void* pBufferContext, HRESULT Error);
+
+public:
+	/** Play some music (.ogg etc...)
+	 *	NB: if an old music was played, it is first stop with stopMusic()
+	 *	\param filepath file path, CPath::lookup is done here
+	 *  \param async stream music from hard disk, preload in memory if false
+	 *	\param loop must be true to play the music in loop. 
+	 */
+	virtual bool play(const std::string &filepath, bool async, bool loop); 
+
+	/** Stop the music previously loaded and played (the Memory is also freed)
+	 */
+	virtual void stop();
+
+	/** Pause the music previously loaded and played (the Memory is not freed)
+	 */
+	virtual void pause();
+	
+	/** Resume the music previously paused
+	 */
+	virtual void resume();
+
+	/** Return true if a song is finished.
+	 */
+	virtual bool isEnded();
+	
+	/** Return the total length (in second) of the music currently played
+	 */
+	virtual float getLength();
+	
+	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
+	 *	NB: the volume of music is NOT affected by IListener::setGain()
+	 */
+	virtual void setVolume(float gain);
 }; /* class CMusicChannelXAudio2 */
 
 } /* namespace NLSOUND */

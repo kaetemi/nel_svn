@@ -36,6 +36,7 @@
 // NeL includes
 #include <nel/misc/stream.h>
 #include <nel/misc/file.h>
+#include <nel/misc/path.h>
 
 // Project includes
 #include "music_buffer_vorbis.h"
@@ -45,54 +46,78 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
-IMusicBuffer::IMusicBuffer()
+IMusicBuffer::IMusicBuffer() : _InternalStream(NULL)
 {
 	
 }
 
 IMusicBuffer::~IMusicBuffer()
 {
-	
+	if (_InternalStream) { delete _InternalStream; _InternalStream = NULL; }
 }
 
-std::string IMusicBuffer::getFileExtension(const std::string &fileName)
+IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &filepath, bool async, bool loop)
 {
-	vector<std::string> filename;
-	explode<std::string>(fileName, ".", filename, true);
-	return toLower(filename[filename.size() - 1]);
+	string type = CFile::getExtension(filepath);
+	string lookup = CPath::lookup(filepath);
+
+	if (!CFile::fileExists(lookup))
+	{ 
+		nlwarning("Music file %s -> %s does not exist!", filepath.c_str(), lookup.c_str());
+		return NULL; 
+	}
+
+	CIFile *ifile = new CIFile();
+	ifile->setCacheFileOnOpen(!async);
+	ifile->allowBNPCacheFileOnOpen(!async);
+	ifile->open(lookup);
+
+	IMusicBuffer *mb = createMusicBuffer(type, ifile, loop);
+
+	if (mb) mb->_InternalStream = ifile;
+	else delete ifile;
+
+	return mb;
 }
 
-bool IMusicBuffer::getSongTitle(const std::string &fileName, NLMISC::IStream *stream, std::string &result)
-{
-	std::string file_ext = getFileExtension(fileName);
-	if (file_ext == "ogg")
-	{
-		return CMusicBufferVorbis::getSongTitle(fileName, stream, result);
-	}
-	else
-	{
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Music file extension unknown: '%s'", file_ext.c_str());
-		result = fileName;
-		return false;
-	}
-}
-
-IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &streamName, NLMISC::IStream *stream, bool loop)
+IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &type, NLMISC::IStream *stream, bool loop)
 {
 	if (!stream)
 	{
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Stream is NULL");
+		nlwarning("Stream is NULL");
 		return NULL;
 	}
-	std::string file_ext = getFileExtension(streamName);
-	if (file_ext == "ogg")
+	string type_lower = toLower(type);
+	if (type_lower == "ogg")
 	{
 		return new CMusicBufferVorbis(stream, loop);
 	}
 	else
 	{
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Music file extension unknown: '%s'", file_ext.c_str());
+		nlwarning("Music file type unknown: '%s'", type_lower.c_str());
 		return NULL;
+	}
+}
+
+static bool getInfo(const std::string &filepath, std::string &artist, std::string &title)
+{
+	string type = CFile::getExtension(filepath);
+	string lookup = CPath::lookup(filepath);
+	string type_lower = toLower(type);
+
+	if (type_lower == "ogg")
+	{
+		CIFile ifile; 
+		ifile.setCacheFileOnOpen(false); 
+		ifile.allowBNPCacheFileOnOpen(false);
+		ifile.open(lookup);
+		return CMusicBufferVorbis::getInfo(&ifile, artist, title);
+	}
+	else
+	{
+		nlwarning("Music file type unknown: '%s'", type_lower.c_str());
+		artist.clear(); title.clear();
+		return false;
 	}
 }
 

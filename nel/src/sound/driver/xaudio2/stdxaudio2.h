@@ -39,7 +39,6 @@
 #include <x3daudio.h>
 
 // NeL includes
-#include "../sound_driver.h"
 #include <nel/misc/common.h>
 #include <nel/misc/time_nl.h>
 #include <nel/misc/fast_mem.h>
@@ -47,8 +46,6 @@
 #include <nel/misc/log.h>
 #include <nel/misc/vector.h>
 #include <nel/misc/singleton.h>
-
-// Project includes
-#include "sound_driver_xaudio2.h"
+#include "../sound_driver.h"
 
 /* end of file */

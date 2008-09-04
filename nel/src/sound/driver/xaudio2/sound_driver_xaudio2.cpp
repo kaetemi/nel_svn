@@ -237,10 +237,6 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	_DSPSettings.DstChannelCount = voice_details.InputChannels; // ?! // how many speakers do you have
 	_DSPSettings.pMatrixCoefficients = new FLOAT32[_DSPSettings.SrcChannelCount * _DSPSettings.DstChannelCount];
 
-	// Music Channels
-	_MusicChannels.push_back(new CMusicChannelXAudio2(this));
-	_MusicChannels.push_back(new CMusicChannelXAudio2(this));
-
 	// Time
 	_LastTime = NLMISC::CTime::getLocalTime();
 
@@ -264,16 +260,17 @@ void CSoundDriverXAudio2::release()
 	// Driver (listeners etc todo)
 	// Stop any played music
 	{
-		vector<CMusicChannelXAudio2*>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
+		set<CMusicChannelXAudio2*>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
 		for (; it != end; ++it)
 		{
+			nlwarning("CMusicChannelXAudio2 was not deleted by user, deleting now!");
 			delete *it;
 		}
 		_MusicChannels.clear();
 	}
 	// Assure that the remaining sources have released all their channels before closing
 	{
-		set<CSourceXAudio2*>::iterator it(_Sources.begin()), end(_Sources.end());
+		set<CSourceXAudio2*>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
 		for (; it != end; ++it)
 		{
 			(*it)->release(); // WARNING: The sources are NOT DELETED automagically!
@@ -328,7 +325,7 @@ IBuffer *CSoundDriverXAudio2::createBuffer()
 IListener *CSoundDriverXAudio2::createListener()
 {
 	if (!_Listener) _Listener = new CListenerXAudio2(this);
-	return _Listener;
+	return static_cast<IListener *>(_Listener);
 }
 
 /// Return the maximum number of sources that can created
@@ -341,8 +338,8 @@ uint CSoundDriverXAudio2::countMaxSources()
 ISource *CSoundDriverXAudio2::createSource()
 {
 	CSourceXAudio2* src = new CSourceXAudio2(this);
-	_Sources.insert(src);
-	return src;
+	_SourceChannels.insert(src);
+	return static_cast<ISource *>(src);
 }
 
 /// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
@@ -365,14 +362,14 @@ void CSoundDriverXAudio2::commit3DChanges()
 	float dtf = ((float)delta_time) / 1000.f;
 	// Sync up sources & listener 3d position.
 	{
-		std::set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
+		std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
 		for (; it != end; ++it) { (*it)->update(); (*it)->commit3DChanges(); }
 	}
-	// Update music faders
-	{
-		std::vector<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
-		for (; it != end; ++it) (*it)->update(dtf);
-	}
+	//// Update music faders
+	//{
+	//	std::set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
+	//	for (; it != end; ++it) (*it)->update(dtf);
+	//}
 	_LastTime = current_time;
 }
 
@@ -403,107 +400,73 @@ void CSoundDriverXAudio2::displayBench(NLMISC::CLog *log)
 	return;
 }
 
-/** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)
- *	FMOD: The File is loaded synchronously in memory, but decompressed by FMod in a thread
- *	Hence if the ogg fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
- *	NB: if an old music was played, it is first stop with stopMusic()
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- *	\param CIFile opened file (must use a CIFile if for instance you want to load from a BNP, and CBigFile is static....)
- *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
- */
-bool CSoundDriverXAudio2::playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop)
+/// Create a music channel
+IMusicChannel *CSoundDriverXAudio2::createMusicChannel()
 {
-	_MusicChannels[channel]->play(file, xFadeTime, loop);
-	return true; // todo
+	CMusicChannelXAudio2 *music_channel = new CMusicChannelXAudio2(this);
+	_MusicChannels.insert(music_channel);
+	return static_cast<IMusicChannel *>(music_channel);
 }
 
-/** Play some music asynchronously (.ogg etc...) (implemented in fmod only)
- *	FMOD: the file is load asynchronously
- *	NB: if an old music was played, it is first stop with stopMusic()
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently	 *	\param path full file path (no CPath::lookup is done since static)
- *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
- *	\param fileOffset and fileSize: if not 0, use it to load a .ogg that reside in a BNP. 
- *		the offset and size have to be retrieved with CBigFile methods. 
- *		e.g.: use either 
- *			playMusicAsync("C:/test/mymusic.ogg");
- *		or
- * 			playMusicAsync("C:/test/mydata.bnp", offsetOfOggInBnp, sizeOfOggInBnp);
- *		Notice that you must give the full path of the bnp (eg: "C:/test/mydata.bnp") in path.
- *	\param loop must be true to play the music in loop. 
- */
-bool CSoundDriverXAudio2::playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
+/// Destroy a music channel
+void CSoundDriverXAudio2::destroyMusicChannel(IMusicChannel *musicChannel)
 {
-	if (!CFile::fileExists(path)) { _MusicChannels[channel]->stop(xFadeTime); return false; }
-
-	_MusicChannels[channel]->play(path, xFadeTime, fileOffset, fileSize, loop);
-	return true;
+	_MusicChannels.erase(static_cast<CMusicChannelXAudio2 *>(musicChannel));
+	delete musicChannel;
 }
 
-/** Stop the music previously loaded and played (the Memory is also freed)
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- *	\param xFadeTime if not 0 the old music played is not stoped but faded out of xFadeTime (in ms)
- */
-void CSoundDriverXAudio2::stopMusic(uint channel, uint xFadeTime)
-{
-	_MusicChannels[channel]->stop(xFadeTime);
-}
-
-/** Pause the music previously loaded and played (the Memory is not freed)
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- */
-void CSoundDriverXAudio2::pauseMusic(uint channel)
-{
-	_MusicChannels[channel]->pause();
-}
-
-/** Resume the music previously paused
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- */
-void CSoundDriverXAudio2::resumeMusic(uint channel)
-{
-	_MusicChannels[channel]->resume();
-}
-
-/** Get the song title. Returns false if the song is not found or the function is not implemented. 
- * If the song as no name, result is filled with the filename.
- */
-bool CSoundDriverXAudio2::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize)
-{
-	std::string filepath = CPath::lookup(filename, false);
-	if (!CFile::fileExists(filepath)) return false;
-	
-	CIFile *ifile = new CIFile(filepath);
-	ifile->seek(fileOffset, NLMISC::IStream::begin);
-	bool res = IMusicBuffer::getSongTitle(CFile::getFilename(filepath), ifile, result);
-	delete ifile;
-	return res;
-}
-
-/** Return true if a song is finished.
- *	NB: in case of cross fading, the channel is considered "ended" if all fading are done
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- */
-bool CSoundDriverXAudio2::isMusicEnded(uint channel)
-{
-	return _MusicChannels[channel]->isEnded();
-}
-
-/** Return the total length (in second) of the music currently played
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- */
-float CSoundDriverXAudio2::getMusicLength(uint channel)
-{
-	return _MusicChannels[channel]->getLength();
-}
-
-/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
- *	NB: the volume of music is NOT affected by IListener::setGain()
- *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
- */
-void CSoundDriverXAudio2::setMusicVolume(uint channel, float gain)
-{
-	_MusicChannels[channel]->setVolume(gain);
-}
+///** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)
+// *	FMOD: The File is loaded synchronously in memory, but decompressed by FMod in a thread
+// *	Hence if the ogg fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
+// *	NB: if an old music was played, it is first stop with stopMusic()
+// *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
+// *	\param CIFile opened file (must use a CIFile if for instance you want to load from a BNP, and CBigFile is static....)
+// *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
+// */
+//bool CSoundDriverXAudio2::playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop)
+//{
+//	//_MusicChannels[channel]->play(file, xFadeTime, loop);
+//	//return true; // todo
+//	return false;
+//}
+//
+///** Play some music asynchronously (.ogg etc...) (implemented in fmod only)
+// *	FMOD: the file is load asynchronously
+// *	NB: if an old music was played, it is first stop with stopMusic()
+// *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently	 *	\param path full file path (no CPath::lookup is done since static)
+// *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
+// *	\param fileOffset and fileSize: if not 0, use it to load a .ogg that reside in a BNP. 
+// *		the offset and size have to be retrieved with CBigFile methods. 
+// *		e.g.: use either 
+// *			playMusicAsync("C:/test/mymusic.ogg");
+// *		or
+// * 			playMusicAsync("C:/test/mydata.bnp", offsetOfOggInBnp, sizeOfOggInBnp);
+// *		Notice that you must give the full path of the bnp (eg: "C:/test/mydata.bnp") in path.
+// *	\param loop must be true to play the music in loop. 
+// */
+//bool CSoundDriverXAudio2::playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
+//{
+//	//if (!CFile::fileExists(path)) { _MusicChannels[channel]->stop(xFadeTime); return false; }
+//
+//	//_MusicChannels[channel]->play(path, xFadeTime, fileOffset, fileSize, loop);
+//	//return true;
+//	return false;
+//}
+//
+///** Get the song title. Returns false if the song is not found or the function is not implemented. 
+// * If the song as no name, result is filled with the filename.
+// */
+//bool CSoundDriverXAudio2::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize)
+//{
+//	std::string filepath = CPath::lookup(filename, false);
+//	if (!CFile::fileExists(filepath)) return false;
+//	
+//	CIFile *ifile = new CIFile(filepath);
+//	ifile->seek(fileOffset, NLMISC::IStream::begin);
+//	bool res = IMusicBuffer::getSongTitle(CFile::getFilename(filepath), ifile, result);
+//	delete ifile;
+//	return res;
+//}
 
 /// Remove a buffer (should be called by the friend destructor of the buffer class)
 void CSoundDriverXAudio2::removeBuffer(IBuffer *buffer)
@@ -514,8 +477,8 @@ void CSoundDriverXAudio2::removeBuffer(IBuffer *buffer)
 /// Remove a source (should be called by the friend destructor of the source class)
 void CSoundDriverXAudio2::removeSource(ISource *source)
 {
-	if (_Sources.find((CSourceXAudio2 *)source) != _Sources.end())
-		_Sources.erase((CSourceXAudio2 *)source); // note: IT DOESN'T DELETE
+	if (_SourceChannels.find((CSourceXAudio2 *)source) != _SourceChannels.end())
+		_SourceChannels.erase((CSourceXAudio2 *)source); // note: IT DOESN'T DELETE
 	else nlwarning("removeSource already called");
 	// SOURCE ARE DELETED IN CTrack / mixing_track.h ...
 	// -> use delete to call this function ^^'

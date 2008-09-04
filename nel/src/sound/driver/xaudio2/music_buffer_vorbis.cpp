@@ -120,33 +120,33 @@ CMusicBufferVorbis::~CMusicBufferVorbis()
 	ov_clear(&_OggVorbisFile);
 }
 
-bool CMusicBufferVorbis::getSongTitle(const std::string &fileName, NLMISC::IStream *stream, std::string &result)
+/// Get information on a music file (only artist and title at the moment).
+bool CMusicBufferVorbis::getInfo(NLMISC::IStream *stream, std::string &artist, std::string &title)
 {
 	CMusicBufferVorbis mbv(stream, false); // just opens and closes the oggvorbisfile thing :)
 	vorbis_comment *vc = ov_comment(&mbv._OggVorbisFile, -1);
-	char *title, *artist;
 	title = vorbis_comment_query(vc, "title", 0);
 	artist = vorbis_comment_query(vc, "artist", 0);
-	if (title)
-	{
-		if (artist)
-		{
-			result = std::string(artist) + " - " + std::string(title);
-			
-		}
-		else
-		{
-			result = std::string(title);
-		}
-	}
-	else if (artist)
-	{
-		result = std::string(artist) + " - " + fileName;
-	}
-	else
-	{
-		result = fileName;
-	}
+	//if (title)
+	//{
+	//	if (artist)
+	//	{
+	//		result = std::string(artist) + " - " + std::string(title);
+	//		
+	//	}
+	//	else
+	//	{
+	//		result = std::string(title);
+	//	}
+	//}
+	//else if (artist)
+	//{
+	//	result = std::string(artist) + " - " + fileName;
+	//}
+	//else
+	//{
+	//	result = fileName;
+	//}
 	return true;
 }
 
@@ -187,7 +187,7 @@ uint32 CMusicBufferVorbis::getNextBytes(uint8 *buffer, uint32 minimum, uint32 ma
 			}
 			else
 			{
-				nlwarning(NLSOUND_XAUDIO2_PREFIX "ov_read: %i", br);
+				nlwarning("ov_read: %i", br);
 			}
 		}
 		else bytes_read += (uint32)br;

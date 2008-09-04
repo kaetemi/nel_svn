@@ -64,22 +64,11 @@
 namespace NLSOUND {
 	class IListener;
 	class ISource;
+	class IMusicChannel;
 	class IBuffer;
 	class CListenerXAudio2;
 	class CSampleVoiceXAudio2;
 	class CMusicChannelXAudio2;
-
-////// ***************************************************************************
-/////*
-////	DRIVER FMOD LIMITATIONS: *** from fmod ***
-////
-////	- EAX is not supported (setEnvironnement() / setEAXProperty() no-op)
-////	- ADPCM is not supported (decompressed and the format change internaly)
-////	- deffered param on ISource::setPos() etc... does not work. Always deffered.
-////	- No cooperative level change in FMod as in DSOUND (default???)
-////	
-////*/
-////// ***************************************************************************
 
 /**
  * \brief CSoundDriverXAudio2
@@ -93,18 +82,14 @@ protected:
 	// far pointers
 	/// The string mapper provided by client code
 	IStringMapperProvider *_StringMapper;
+	/// Listener, created by client code
+	CListenerXAudio2 *_Listener;
 
 	// pointers
 	/// Pointer to XAudio2
 	IXAudio2 *_XAudio2;
 	/// Pointer to XAudio2 Mastering Voice
 	IXAudio2MasteringVoice *_MasteringVoice;
-	/// Listener
-	CListenerXAudio2 *_Listener;
-	/// Array with the allocated sources
-	std::set<CSourceXAudio2 *> _Sources;
-	/// Array with the allocated music channels
-	std::vector<CMusicChannelXAudio2 *> _MusicChannels;
 
 	// instances
 	/// If XAudio2 is fully initialized.
@@ -117,6 +102,10 @@ protected:
 	X3DAUDIO_LISTENER _EmptyListener;
 	/// If eax is used
 	bool _UseEax;
+	/// Array with the allocated source channels
+	std::set<CSourceXAudio2 *> _SourceChannels;
+	/// Array with the allocated music channels
+	std::set<CMusicChannelXAudio2 *> _MusicChannels;
 
 	// other
 	/// Initialization Handle of X3DAudio
@@ -148,7 +137,7 @@ public:
 	virtual	IListener *createListener();
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources();
-	/// Create a source
+	/// Create a source channel
 	virtual	ISource *createSource();
 
 	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
@@ -167,85 +156,28 @@ public:
 	virtual void endBench();
 	virtual void displayBench(NLMISC::CLog *log);
 
-	/*virtual bool playMusic(uint channel, const std::string &filepath, uint fadeTime, bool loop);*/
+	/// Create a music channel, destroy with destroyMusicChannel
+	virtual IMusicChannel *createMusicChannel();
 
-		/** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)
-	 *	FMOD: The File is loaded synchronously in memory, but decompressed by FMod in a thread
-	 *	Hence if the ogg fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
-	 *	NB: if an old music was played, it is first stop with stopMusic()
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 *	\param CIFile opened file (must use a CIFile if for instance you want to load from a BNP, and CBigFile is static....)
-	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
-	 */
-
-	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop); // -- OLD
-	/** Play some music asynchronously (.ogg etc...) (implemented in fmod only)
-	 *	FMOD: the file is load asynchronously
-	 *	NB: if an old music was played, it is first stop with stopMusic()
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently	 *	\param path full file path (no CPath::lookup is done since static)
-	 *	\param xFadeTime if not 0 the old music played is not stoped imediatly but a cross-fade of xFadeTime (in ms) is made between the 2.
-	 *	\param fileOffset and fileSize: if not 0, use it to load a .ogg that reside in a BNP. 
-	 *		the offset and size have to be retrieved with CBigFile methods. 
-	 *		e.g.: use either 
-	 *			playMusicAsync("C:/test/mymusic.ogg");
-	 *		or
-	 * 			playMusicAsync("C:/test/mydata.bnp", offsetOfOggInBnp, sizeOfOggInBnp);
-	 *		Notice that you must give the full path of the bnp (eg: "C:/test/mydata.bnp") in path.
-	 *	\param loop must be true to play the music in loop. 
-	 */
-
-	virtual bool playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop); // -- OLD
-	/** Stop the music previously loaded and played (the Memory is also freed)
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 *	\param xFadeTime if not 0 the old music played is not stoped but faded out of xFadeTime (in ms)
-	 */
-
-	virtual void stopMusic(uint channel, uint xFadeTime);
-	/** Pause the music previously loaded and played (the Memory is not freed)
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 */
-	virtual void pauseMusic(uint channel);
+	/// Destroy a music channel
+	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
 	
-	/** Resume the music previously paused
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
+	/** Get music info. Returns false if the song is not found or the function is not implemented. 
+	 *  If the song has no name, result is filled with the filename.
+	 *  \param filepath path to file, CPath::lookup done by driver
+	 *  \param artist returns the song artist (empty if not available)
+	 *  \param title returns the title (empty if not available)
 	 */
-	virtual void resumeMusic(uint channel);
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
 
-	///** Get the song title. Returns false if the song is not found or the function is not implemented. 
-	// * If the song as no name, result is filled with the filename.
-	// */
-	//virtual bool getSongTitle(const std::string &filename, std::string &result);
-
-	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
-	 * If the song as no name, result is filled with the filename.
-	 */
-	virtual bool getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0); // -- OLD
-
-	/** Return true if a song is finished.
-	 *	NB: in case of cross fading, the channel is considered "ended" if all fading are done
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 */
-	virtual bool isMusicEnded(uint channel);
-	
-	/** Return the total length (in second) of the music currently played
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 */
-	virtual float getMusicLength(uint channel);
-	
-	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
-	 *	NB: the volume of music is NOT affected by IListener::setGain()
-	 *	\param channel up to 2 channels are available for now 0 and 1 (any other value will fail), so that 2 music can be played concurently
-	 */
-	virtual void setMusicVolume(uint channel, float gain);
-
-protected:
 	/// Remove a buffer (should be called by the friend destructor of the buffer class)
-	friend CBufferXAudio2::~CBufferXAudio2();
 	virtual void removeBuffer(IBuffer *buffer);
 
 	/// Remove a source (should be called by the friend destructor of the source class)
-	friend void CSourceXAudio2::release();
 	virtual void removeSource(ISource *source);
+
+	/// Remove the listener (called by destructor of listener class)
+	inline void removeListener(CListenerXAudio2 *listener) { nlassert(_Listener == listener); _Listener = NULL; }
 
 }; /* class CSoundDriverXAudio2 */
 

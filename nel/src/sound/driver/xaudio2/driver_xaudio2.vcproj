@@ -212,14 +212,6 @@
 				RelativePath=".\music_channel_xaudio2.h"
 				>
 			</File>
-			<File
-				RelativePath=".\music_voice_xaudio2.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\music_voice_xaudio2.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="nlsound"

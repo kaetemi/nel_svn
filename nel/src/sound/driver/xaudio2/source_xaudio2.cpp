@@ -54,6 +54,7 @@
 #include <nel/misc/variable.h>
 
 // Project includes
+#include "sound_driver_xaudio2.h"
 #include "buffer_xaudio2.h"
 #include "listener_xaudio2.h"
 

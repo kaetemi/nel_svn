@@ -45,6 +45,7 @@
 #include <nel/misc/debug.h>
 
 // Project includes
+#include "sound_driver_xaudio2.h"
 #include "eax_xaudio2.h"
 
 using namespace std;
@@ -80,7 +81,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
-	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_OutputVoice, voice_details.InputChannels, voice_details.InputSampleRate)))
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_OutputVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 9000, NULL, NULL)))
 		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _OutputVoice!"); return; }
 	XAUDIO2_VOICE_SENDS output_voice_sends;
 	output_voice_sends.OutputCount = 1;
@@ -103,7 +104,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		effect_chain.EffectCount = 1;
 		effect_chain.pEffectDescriptors = &effect_desc; // "array"
 		
-		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_ReverbVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 0, &output_voice_sends, &effect_chain)))
+		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_ReverbVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 7000, &output_voice_sends, &effect_chain)))
 			{ release();  throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _ReverbVoice!");  return; }
 
 		IXAudio2Voice *reverb_output_array[2];
@@ -114,7 +115,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		reverb_output_voice_sends.OutputCount = 2;
 		reverb_output_voice_sends.pOutputVoices = (IXAudio2Voice **)reverb_output_array;
 
-		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SampleVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 0, &reverb_output_voice_sends, NULL)))
+		if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SampleVoice, voice_details.InputChannels, voice_details.InputSampleRate,	0, 5000, &reverb_output_voice_sends, NULL)))
 			{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _SampleVoice!"); return; }
 
 		_VoiceSends.OutputCount = 1;
@@ -133,8 +134,9 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 CListenerXAudio2::~CListenerXAudio2()
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CListenerXAudio2");
-
+	
 	release();
+	_SoundDriver->removeListener(this);
 }
 
 #define NLSOUND_XAUDIO2_RELEASE(pointer) if (_ListenerOk) nlassert(pointer) \

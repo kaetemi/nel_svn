@@ -49,37 +49,51 @@ namespace NLSOUND {
  * \brief IMusicBuffer
  * \date 2008-08-30 11:38GMT
  * \author Jan Boon (Kaetemi)
- * IMusicBuffer
+ * IMusicBuffer is only used by the driver implementation to stream 
+ * music files into a readable format (it's a simple decoder interface).
+ * You should not call these functions (getSongTitle) on nlsound or user level, 
+ * as a driver might have additional music types implemented.
  */
 class IMusicBuffer
 {
-protected:
+private:
 	// pointers
-	// ...
-	
-	// instances
-	// ...
+	/// Stream from file created by IMusicBuffer
+	NLMISC::IStream *_InternalStream;
+
 public:
 	IMusicBuffer();
 	virtual ~IMusicBuffer();
 
+	/// Create a new music buffer, may return NULL if unknown type, destroy with delete. Filepath lookup done here.
+	static IMusicBuffer *createMusicBuffer(const std::string &filepath, bool async, bool loop);
+
+	/// Create a new music buffer from a stream, type is file extension like "ogg" etc.
+	static IMusicBuffer *createMusicBuffer(const std::string &type, NLMISC::IStream *stream, bool loop);
+
+	/// Get information on a music file (only artist and title at the moment).
+	static bool getInfo(const std::string &filepath, std::string &artist, std::string &title);
+
+	/// Get how many bytes the music buffer requires for output minimum.
 	virtual uint32 getRequiredBytes() =0;
+
+	/// Get an amount of bytes between minimum and maximum (can be lower than minimum if at end).
 	virtual uint32 getNextBytes(uint8 *buffer, uint32 minimum, uint32 maximum) =0;
+
+	/// Get the amount of channels (2 is stereo) in output.
 	virtual uint16 getChannels() =0;
+
+	/// Get the samples per second (often 44100) in output.
 	virtual uint32 getSamplesPerSec() =0;
+
+	/// Get the bits per sample (often 16) in output.
 	virtual uint16 getBitsPerSample() =0;
+
+	/// Get if the music has ended playing (never true if loop).
 	virtual bool isMusicEnded() =0;
-	virtual float getLength() =0; // total time in seconds
 
-	static bool getSongTitle(const std::string &fileName, NLMISC::IStream *stream, std::string &result);
-
-	/// create may return NULL if unknown extension
-	static IMusicBuffer *createMusicBuffer(const std::string &streamName, NLMISC::IStream *stream, bool loop);
-	inline static void destroyMusicBuffer(IMusicBuffer *musicBuffer) { musicBuffer->destroyMusicBuffer(); }
-	inline void destroyMusicBuffer() { delete this; }
-
-private:
-	static std::string getFileExtension(const std::string &fileName);
+	/// Get the total time in seconds.
+	virtual float getLength() =0;
 }; /* class IMusicBuffer */
 
 } /* namespace NLSOUND */
