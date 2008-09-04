@@ -32,12 +32,12 @@
 #define NLSOUND_MUSIC_VOICE_XAUDIO2_H
 #include "stdxaudio2.h"
 
-// Project includes
-#include "music_buffer.h" // ../
+// STL includes
 
 // NeL includes
 
-// STL includes
+// Project includes
+#include "music_buffer.h" // ../
 
 namespace NLMISC {
 	class CIFile;

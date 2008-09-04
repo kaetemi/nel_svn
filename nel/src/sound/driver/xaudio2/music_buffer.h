@@ -32,11 +32,11 @@
 #define NLSOUND_MUSIC_BUFFER_H
 #include "stdxaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 
-// STL includes
+// Project includes
 
 namespace NLMISC {
 	class IStream;

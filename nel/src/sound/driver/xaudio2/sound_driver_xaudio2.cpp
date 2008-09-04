@@ -41,10 +41,8 @@
 #include "stdxaudio2.h"
 #include "sound_driver_xaudio2.h"
 
-// Project includes
-#include "listener_xaudio2.h"
-#include "source_xaudio2.h"
-#include "music_channel_xaudio2.h"
+// STL includes
+#include <cmath>
 
 // NeL includes
 #include "../sound_driver.h"
@@ -55,8 +53,11 @@
 #include <nel/misc/dynloadlib.h>
 #include <nel/misc/command.h>
 
-// STL includes
-#include <cmath>
+// Project includes
+#include "listener_xaudio2.h"
+#include "source_xaudio2.h"
+#include "music_channel_xaudio2.h"
+#include "eax_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -90,7 +91,6 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
 {
 	CSoundDriverXAudio2 *driver = new CSoundDriverXAudio2(useEax, stringMapper, forceSoftwareBuffer);
-	// driver->init(stringMapper, forceSoftwareBuffer); // init in constructor lol ^^'
 	return driver;
 }
 
@@ -136,7 +136,7 @@ static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED 
   0, 0, true, true, true, true
 };
 
-NLMISC_CATEGORISED_COMMAND(nlsound, xa2DebugDisable, "", "")
+NLMISC_CATEGORISED_COMMAND(nel, xa2DebugDisable, "", "")
 {
 	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED);
 	return true;
@@ -146,7 +146,7 @@ static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY = {
   ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
 };
 
-NLMISC_CATEGORISED_COMMAND(nlsound, xa2DebugHeavy, "", "")
+NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 {
 	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY);
 	return true;
@@ -154,14 +154,29 @@ NLMISC_CATEGORISED_COMMAND(nlsound, xa2DebugHeavy, "", "")
 
 #endif /* NL_DEBUG */
 
+#if !FINAL_VERSION
+
+NLMISC_CATEGORISED_COMMAND(nel, setEaxEnvironment, "Set the id and size of the eax environment", "<id> <size>")
+{
+	if (args.size() != 1) return false;
+	CSoundDriverXAudio2::getInstance()->getListener()->setEnvironment((uint)atoi(args[0].c_str()), (float)atoi(args[0].c_str()));
+	return true;
+}
+
+#endif /* !FINAL_VERSION */
+
 // ******************************************************************
 
 CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax, 
 	ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer) 
 	: _StringMapper(stringMapper), _XAudio2(NULL), _MasteringVoice(NULL), 
-	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL)
+	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), _UseEax(useEax)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
+
+	// Initializes EAX environment presets if not initialized yet.
+	if (useEax) CEaxXAudio2::init();
+
 	HRESULT hr;
 
 	memset(&_X3DAudioHandle, 0, sizeof(_X3DAudioHandle));
@@ -188,7 +203,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	_CoInitOk = true;
 #endif
 
-	UINT32 flags = 0;
+	uint32 flags = 0;
 #ifdef NL_DEBUG
 	flags |= XAUDIO2_DEBUG_ENGINE; // comment when done using this :)
 #endif

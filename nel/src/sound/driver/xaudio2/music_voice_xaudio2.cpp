@@ -31,12 +31,12 @@
 #include "stdxaudio2.h"
 #include "music_voice_xaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include <nel/misc/file.h>
 
-// STL includes
+// Project includes
 
 using namespace std;
 using namespace NLMISC;

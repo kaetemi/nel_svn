@@ -31,7 +31,7 @@
 #include "stdxaudio2.h"
 #include "music_channel_xaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include <nel/misc/big_file.h>
@@ -40,7 +40,7 @@
 #include <nel/misc/mem_stream.h>
 #include <nel/misc/stream.h>
 
-// STL includes
+// Project includes
 
 using namespace std;
 using namespace NLMISC;

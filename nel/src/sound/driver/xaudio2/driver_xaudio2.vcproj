@@ -177,6 +177,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\eax_xaudio2.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\eax_xaudio2.h"
+				>
+			</File>
+			<File
 				RelativePath=".\listener_xaudio2.cpp"
 				>
 			</File>

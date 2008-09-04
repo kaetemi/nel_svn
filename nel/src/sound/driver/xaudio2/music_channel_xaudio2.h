@@ -32,12 +32,12 @@
 #define NLSOUND_MUSIC_CHANNEL_XAUDIO2_H
 #include "stdxaudio2.h"
 
-// Project includes
-#include "music_voice_xaudio2.h"
+// STL includes
 
 // NeL includes
 
-// STL includes
+// Project includes
+#include "music_voice_xaudio2.h"
 
 namespace NLSOUND {
 

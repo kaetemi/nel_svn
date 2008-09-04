@@ -43,19 +43,19 @@
 #include "stdxaudio2.h"
 #include "source_xaudio2.h"
 
-// Project includes
-#include "buffer_xaudio2.h"
-#include "listener_xaudio2.h"
+// STL includes
+#include <cfloat>
+#include <algorithm>
+#include <limits>
 
 // NeL includes
 #include <nel/misc/hierarchical_timer.h>
 #include <nel/misc/debug.h>
 #include <nel/misc/variable.h>
 
-// STL includes
-#include <cfloat>
-#include <algorithm>
-#include <limits>
+// Project includes
+#include "buffer_xaudio2.h"
+#include "listener_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;

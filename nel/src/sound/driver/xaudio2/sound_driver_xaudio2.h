@@ -32,16 +32,16 @@
 #define NLSOUND_SOUND_DRIVER_XAUDIO2_H
 #include "stdxaudio2.h"
 
-// Project includes
-#include "source_xaudio2.h"
-#include "buffer_xaudio2.h"
-//#include "music_channel_xaudio2.h"
+// STL includes
+#include <iostream>
 
 // NeL includes
 #include <nel/misc/time_nl.h>
 
-// STL includes
-#include <iostream>
+// Project includes
+#include "source_xaudio2.h"
+#include "buffer_xaudio2.h"
+//#include "music_channel_xaudio2.h"
 
 // Defines
 #define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"
@@ -115,6 +115,8 @@ protected:
 	NLMISC::TTime _LastTime;
 	/// Empty 3D Listener
 	X3DAUDIO_LISTENER _EmptyListener;
+	/// If eax is used
+	bool _UseEax;
 
 	// other
 	/// Initialization Handle of X3DAudio
@@ -133,6 +135,7 @@ public:
 	inline X3DAUDIO_HANDLE &getX3DAudio() { return _X3DAudioHandle; }
 	inline X3DAUDIO_DSP_SETTINGS *getDSPSettings() { return &_DSPSettings; }
 	inline X3DAUDIO_LISTENER *getEmptyListener() { return &_EmptyListener; }
+	inline bool useEax() { return _UseEax; }
 
 	///// Set the gain (volume value inside [0 , 1]). (default: 1), can't go over 1.0 on some systems
 	//void setGain(float gain);
@@ -164,7 +167,7 @@ public:
 	virtual void endBench();
 	virtual void displayBench(NLMISC::CLog *log);
 
-	virtual bool playMusic(uint channel, const std::string &filepath, uint fadeTime, bool loop);
+	/*virtual bool playMusic(uint channel, const std::string &filepath, uint fadeTime, bool loop);*/
 
 		/** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)
 	 *	FMOD: The File is loaded synchronously in memory, but decompressed by FMod in a thread
@@ -208,10 +211,10 @@ public:
 	 */
 	virtual void resumeMusic(uint channel);
 
-	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
-	 * If the song as no name, result is filled with the filename.
-	 */
-	virtual bool getSongTitle(const std::string &filename, std::string &result);
+	///** Get the song title. Returns false if the song is not found or the function is not implemented. 
+	// * If the song as no name, result is filled with the filename.
+	// */
+	//virtual bool getSongTitle(const std::string &filename, std::string &result);
 
 	/** Get the song title. Returns false if the song is not found or the function is not implemented. 
 	 * If the song as no name, result is filled with the filename.

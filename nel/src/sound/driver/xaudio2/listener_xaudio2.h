@@ -32,14 +32,14 @@
 #define NLSOUND_LISTENER_XAUDIO2_H
 #include "stdxaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include "../listener.h"
 #include "../sound_driver.h"
 #include <nel/misc/matrix.h>
 
-// STL includes
+// Project includes
 
 namespace NLSOUND {
 
@@ -56,7 +56,10 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers
-	IXAudio2SubmixVoice *_SubmixVoice; //I
+	/// Submix voice for volume change and effects
+	IXAudio2SubmixVoice *_SubmixVoice;
+	/// Reverb effect
+	IUnknown *_ReverbApo;
 	
 	// instances
 	X3DAUDIO_LISTENER _Listener; //R
@@ -64,6 +67,10 @@ protected:
 	bool _ListenerOk; //R
 	/// Reference to the Submix Voice
 	XAUDIO2_VOICE_SENDS _VoiceSends;
+	/// Parameters of the reverb effect;
+	XAUDIO2FX_REVERB_PARAMETERS _ReverbParams;
+	/// EAX Environment id
+	uint _EaxEnvironment;
 
 	// user vars
 	/// Doppler scaler, set by user

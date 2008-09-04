@@ -32,10 +32,7 @@
 #define NLSOUND_MUSIC_BUFFER_VORBIS_H
 #include "stdxaudio2.h"
 
-// Project includes
-#include "music_buffer.h"
-
-// NeL includes
+// STL includes
 
 // 3rd Party includes
 #ifdef NL_OS_WINDOWS
@@ -47,7 +44,10 @@
 #	pragma warning( pop )
 #endif
 
-// STL includes
+// NeL includes
+
+// Project includes
+#include "music_buffer.h"
 
 namespace NLSOUND {
 

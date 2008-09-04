@@ -31,14 +31,14 @@
 #include "stdxaudio2.h"
 #include "music_buffer.h"
 
-// Project includes
-#include "music_buffer_vorbis.h"
+// STL includes
 
 // NeL includes
 #include <nel/misc/stream.h>
 #include <nel/misc/file.h>
 
-// STL includes
+// Project includes
+#include "music_buffer_vorbis.h"
 
 using namespace std;
 using namespace NLMISC;

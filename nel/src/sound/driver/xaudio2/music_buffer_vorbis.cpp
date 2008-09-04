@@ -31,13 +31,13 @@
 #include "stdxaudio2.h"
 #include "music_buffer_vorbis.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include <nel/misc/stream.h>
 #include <nel/misc/file.h>
 
-// STL includes
+// Project includes
 
 using namespace std;
 using namespace NLMISC;
@@ -49,7 +49,7 @@ size_t vorbisReadFunc(void *ptr, size_t size, size_t nmemb, void *datasource)
 	CMusicBufferVorbis *music_buffer_vorbis = (CMusicBufferVorbis *)datasource;
 	NLMISC::IStream *stream = music_buffer_vorbis->getStream();
 	nlassert(stream->isReading());
-	uint32 length = size * nmemb;
+	sint32 length = (sint32)(size * nmemb);
 	if (length > music_buffer_vorbis->getStreamSize() - stream->getPos())
 		length = music_buffer_vorbis->getStreamSize() - stream->getPos();
 	stream->serialBuffer((uint8 *)ptr, length);

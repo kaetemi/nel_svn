@@ -32,14 +32,14 @@
 #define NLSOUND_SOURCE_XAUDIO2_H
 #include "stdxaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include "../source.h"
 #include "../sound_driver.h"
 #include "../buffer.h"
 
-// STL includes
+// Project includes
 
 namespace NLSOUND {
 	class CSoundDriverXAudio2;

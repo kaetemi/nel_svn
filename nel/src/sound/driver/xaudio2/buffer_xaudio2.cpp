@@ -42,14 +42,14 @@
 #include "stdxaudio2.h"
 #include "buffer_xaudio2.h"
 
-// Project includes
+// STL includes
 
 // NeL includes
 #include <nel/misc/debug.h>
 #include <nel/misc/path.h>
 #include <nel/misc/file.h>
 
-// STL includes
+// Project includes
 
 using namespace std;
 using namespace NLMISC;
