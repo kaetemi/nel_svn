@@ -155,7 +155,7 @@ void CSourceXAudio2::commit3DChanges()
 
 			_SourceVoice->SetOutputMatrix(
 				// _SoundDriver->getMasteringVoice(),
-				_SoundDriver->getListener()->getSubmixVoice(), 
+				_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 
 				_SoundDriver->getDSPSettings()->SrcChannelCount, 
 				_SoundDriver->getDSPSettings()->DstChannelCount, 
 				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
@@ -190,7 +190,7 @@ IXAudio2SourceVoice *CSourceXAudio2::createSourceVoice(TSampleFormat format)
 		: 16;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
-	_SoundDriver->getListener()->getSubmixVoice()->GetVoiceDetails(&voice_details);
+	_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0]->GetVoiceDetails(&voice_details);
 	wfe.nSamplesPerSec = voice_details.InputSampleRate;
 
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;

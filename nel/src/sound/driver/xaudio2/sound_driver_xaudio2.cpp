@@ -158,8 +158,20 @@ NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 
 NLMISC_CATEGORISED_COMMAND(nel, setEaxEnvironment, "Set the id and size of the eax environment", "<id> <size>")
 {
-	if (args.size() != 1) return false;
+	if (args.size() != 2) return false;
 	CSoundDriverXAudio2::getInstance()->getListener()->setEnvironment((uint)atoi(args[0].c_str()), (float)atoi(args[0].c_str()));
+	return true;
+}
+
+NLMISC_CATEGORISED_COMMAND(nel, enableEaxEnvironment, "Enable eax environment effect", "")
+{
+	CSoundDriverXAudio2::getInstance()->getListener()->getReverbVoice()->SetVolume(1.0f);
+	return true;
+}
+
+NLMISC_CATEGORISED_COMMAND(nel, disableEaxEnvironment, "Disable eax environment effect", "")
+{
+	CSoundDriverXAudio2::getInstance()->getListener()->getReverbVoice()->SetVolume(0.0f);
 	return true;
 }
 

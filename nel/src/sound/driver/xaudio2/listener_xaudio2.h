@@ -56,8 +56,12 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers
-	/// Submix voice for volume change and effects
-	IXAudio2SubmixVoice *_SubmixVoice;
+	/// Submix voice for volume change, also sample input if no effects used (see _VoiceSends)
+	IXAudio2SubmixVoice *_OutputVoice;
+	/// Submix voice for reverb effect if effects used
+	IXAudio2SubmixVoice *_ReverbVoice;
+	/// Submix voice for samples input if effects used
+	IXAudio2SubmixVoice *_SampleVoice;
 	/// Reverb effect
 	IUnknown *_ReverbApo;
 	
@@ -84,7 +88,9 @@ public:
 
 	inline CSoundDriverXAudio2 *getSoundDriver() { return _SoundDriver; }
 	inline X3DAUDIO_LISTENER *getListener() { return &_Listener; }
-	inline IXAudio2SubmixVoice *getSubmixVoice() { return _SubmixVoice; }
+	inline IXAudio2SubmixVoice *getOutputVoice() { return _OutputVoice; }
+	inline IXAudio2SubmixVoice *getReverbVoice() { return _ReverbVoice; }
+	inline IXAudio2SubmixVoice *getSampleVoice() { return _SampleVoice; }
 	inline XAUDIO2_VOICE_SENDS *getVoiceSends() { return &_VoiceSends; }
 	inline float getDopplerScaler() { return _DopplerScaler; }
 	inline float getDistanceScaler() { return _DistanceScaler; }
