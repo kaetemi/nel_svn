@@ -1,11 +1,15 @@
 #!/bin/sh -
 
-set -x
+WANT_AUTOMAKE="1.6"
 
-aclocal \
-&& libtoolize --force \
-&& autoheader \
-&& automake --gnu --add-missing \
-&& autoconf
-#&& ./configure \
-#&& make
+echo "Creating macros..." && \
+aclocal -I automacros/ && \
+echo "Creating library tools..." && \
+libtoolize --force && \
+echo "Creating header templates..." && \
+autoheader && \
+echo "Creating Makefile templates..." && \
+automake --gnu --add-missing && \
+echo "Creating 'configure'..." && \
+autoconf && \
+echo -e "\nRun: ./configure; make; make install\n"

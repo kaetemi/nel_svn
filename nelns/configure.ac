@@ -13,19 +13,33 @@
 # *and* AC_SUBST(LIBTOOL_VERSION)
 
 AC_PREREQ(2.57)
-AC_INIT([nelns],[0.4.0],[nel-all@nevrax.org])
-
+AC_INIT([nelns],[0.5.0],[nel-all@nevrax.org])
 
 AC_CANONICAL_TARGET
 
-AM_INIT_AUTOMAKE
-
+AM_INIT_AUTOMAKE([tar-ustar])
 
 AM_CONFIG_HEADER(config.h)
 
-AC_SUBST(LIBTOOL_VERSION, [0:4:0])
+AC_SUBST(LIBTOOL_VERSION, [0:5:0])
+
+# ====================================================================
+# Checks for programs.
+# ====================================================================
 
 
+AC_PROG_CXX
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_LIBTOOL
+AM_PROG_LIBTOOL
+AM_SANITY_CHECK
+
+AC_SYS_LARGEFILE
+
+AM_MAINTAINER_MODE
 
 # The following hack should ensure that configure doesn't add optimizing
 # or debugging flags to CFLAGS or CXXFLAGS
@@ -33,32 +47,14 @@ CFLAGS="$CFLAGS "
 CXXFLAGS="$CXXFLAGS "
 
 # Template needed to generate the config.h.in
-AH_TEMPLATE([NELNS_CONFIG],[Configuration files directory path])
-AH_TEMPLATE([NELNS_LOGS],[Log files directory path])
-AH_TEMPLATE([NELNS_STATE],[Local state files directory path])
+#AH_TEMPLATE([NELNS_CONFIG],[Configuration files directory path])
+#AH_TEMPLATE([NELNS_LOGS],[Log files directory path])
+#AH_TEMPLATE([NELNS_STATE],[Local state files directory path])
 AH_TEMPLATE([HAVE_MYSQL],[Define to 1 if mysql was found])
 
 
-# ====================================================================
-# Checks for programs.
-# ====================================================================
-
-AC_PROG_MAKE_SET
-
-AC_PROG_CC
-AC_PROG_CXX
-
-AM_SANITY_CHECK
-
-AC_PROG_INSTALL
-
-AC_PROG_LIBTOOL
-AM_PROG_LIBTOOL
-
-AM_PATH_CCACHE
-
-
-AM_PATH_MYSQL(3.23.40,,AC_MSG_ERROR([MySQL 3.23.40 or higher must be installed]))
+AX_LIB_MYSQL([3.23.40])
+#dnl AM_PATH_MYSQL(3.23.40,,AC_MSG_ERROR([MySQL 3.23.40 or higher must be installed]))
 
 AC_DEFINE(HAVE_MYSQL)
 
@@ -117,21 +113,10 @@ AC_CHECK_HEADERS(fcntl.h unistd.h)
 
 
 # ====================================================================
-# Checks compilation accelerator
-# ====================================================================
-
-AM_PATH_CCACHE
-
-# ====================================================================
 # Checks for libraries.
 # ====================================================================
 
 AC_CHECK_LIB(crypt, crypt)
-
-# ====================================================================
-# STLPort
-
-AM_PATH_STLPORT
 
 
 # ====================================================================
@@ -157,8 +142,8 @@ AC_ARG_WITH(sysconfdir,
     [pkgsysconfdir='${sysconfdir}/nelns'])
 AC_SUBST(pkgsysconfdir)
 
-eval eval NELNS_CONFIG=\"$pkgsysconfdir/\"
-AC_DEFINE_UNQUOTED(NELNS_CONFIG, "$NELNS_CONFIG")
+#eval eval NELNS_CONFIG=\"$pkgsysconfdir/\"
+#AC_DEFINE_UNQUOTED(NELNS_CONFIG, "$NELNS_CONFIG")
 
 AC_ARG_WITH(localstatedir,
     [  --with-localstatedir[=DIR]
@@ -167,8 +152,8 @@ AC_ARG_WITH(localstatedir,
     [pkglocalstatedir=${localstatedir}/game/nelns])
 AC_SUBST(pkglocalstatedir)
 
-eval eval NELNS_STATE=\"$pkglocalstatedir/\"
-AC_DEFINE_UNQUOTED(NELNS_STATE, "$NELNS_STATE")
+#eval eval NELNS_STATE=\"$pkglocalstatedir/\"
+#AC_DEFINE_UNQUOTED(NELNS_STATE, "$NELNS_STATE")
 
 AC_ARG_WITH(logdir,
     [  --with-logdir[=DIR]
@@ -177,8 +162,8 @@ AC_ARG_WITH(logdir,
     [logdir='${localstatedir}/log/nelns'])
 AC_SUBST(logdir)
 
-eval eval NELNS_LOGS=\"$logdir/\"
-AC_DEFINE_UNQUOTED(NELNS_LOGS, "$NELNS_LOGS")
+#eval eval NELNS_LOGS=\"$logdir/\"
+#AC_DEFINE_UNQUOTED(NELNS_LOGS, "$NELNS_LOGS")
 
 # ====================================================================
 # Output files to generate.
