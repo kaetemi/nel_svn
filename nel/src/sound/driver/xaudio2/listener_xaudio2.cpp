@@ -135,8 +135,7 @@ CListenerXAudio2::~CListenerXAudio2()
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CListenerXAudio2");
 	
-	release();
-	_SoundDriver->removeListener(this);
+	release();	
 }
 
 #define NLSOUND_XAUDIO2_RELEASE(pointer) if (_ListenerOk) nlassert(pointer) \
@@ -151,6 +150,7 @@ void CListenerXAudio2::release()
 	if (_ReverbVoice) { _ReverbVoice->DestroyVoice(); _ReverbVoice = NULL; }
 	NLSOUND_XAUDIO2_RELEASE_EX(_OutputVoice, _OutputVoice->DestroyVoice())
 	if (_ReverbApo) { _ReverbApo->Release(); _ReverbApo = NULL; }
+	if (_SoundDriver) { _SoundDriver->removeListener(this); _SoundDriver = NULL; }
 
 	_ListenerOk = false;
 }

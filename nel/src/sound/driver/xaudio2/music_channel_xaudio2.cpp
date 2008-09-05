@@ -52,11 +52,15 @@ namespace NLSOUND {
 CMusicChannelXAudio2::CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver) 
 : _MusicBuffer(NULL), _SourceVoice(NULL), _BufferPos(0), _SoundDriver(soundDriver), _Gain(1.0)
 {
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CMusicChannelXAudio2");
+
 	stop();
 }
 
 CMusicChannelXAudio2::~CMusicChannelXAudio2()
 {
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CMusicChannelXAudio2");
+
 	stop();
 }
 
@@ -247,128 +251,6 @@ void CMusicChannelXAudio2::OnVoiceError(void *pBufferContext, HRESULT Error)
 { 
 	
 }
-
-//void CMusicChannelXAudio2::switchVoice(uint xFadeTime)
-//{
-//	if (xFadeTime) { _Active = getInactive(); _Fading = true; _FadeTime = (float)xFadeTime / 1000.f; }
-//	else { _Fading = false; _Balance = _Active ? 1.0f : 0.0f; updateVolume(); }
-//	_MusicVoices[_Active].stop();
-//	delete _Streams[_Active]; _Streams[_Active] = NULL;
-//}
-
-////void CMusicChannelXAudio2::play(NLMISC::CIFile &file, uint xFadeTime, bool loop)
-////{
-////	// nldebug(NLSOUND_XAUDIO2_PREFIX "play music preloaded");
-////
-////	/*_Playing = true;*/
-////	switchVoice(xFadeTime);
-////	
-////	CMemStream *memstream = new CMemStream(true, false, file.getFileSize());
-////	_Streams[_Active] = memstream;
-////	file.serialBuffer(const_cast<uint8 *>(memstream->buffer()), file.getFileSize());
-////	_MusicVoices[_Active].play(file.getStreamName(), memstream, loop);
-////}
-
-////void CMusicChannelXAudio2::play(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
-////{
-////	// nldebug(NLSOUND_XAUDIO2_PREFIX "play music async, %s", path.c_str());
-////	
-////	// get real name instead of bnp stuff
-////	string real_filename;
-////	vector<std::string> filename;
-////	explode<std::string>(path, ".", filename, true);
-////	bool seekOffset = true;
-////	try
-////	{
-////		if (toLower(filename[filename.size() - 1]) == "bnp")
-////		{
-////			// need to reverse stupid getFileInfo thingy from nlsound system ...
-////			nldebug(NLSOUND_XAUDIO2_PREFIX "Looking for music file in %s %u %u", path.c_str(), fileOffset, fileSize);
-////			vector<string> files;
-////			CBigFile::getInstance().list(CFile::getFilename(path), files);
-////			vector<string>::iterator it(files.begin()), end(files.end());
-////			for (; it != end; ++it)
-////			{
-////				uint32 file_offset;
-////				uint32 file_size;
-////				CBigFile::getInstance().getFileInfo(CFile::getFilename(path) + "@" + *it, file_size, file_offset); // todo: use correct stuff
-////				// nlinfo(NLSOUND_XAUDIO2_PREFIX "%s %s %u %u %u %u", path.c_str(), real_filename.c_str(), fileOffset, file_offset, fileSize, file_size);
-////				if (file_offset == fileOffset)
-////				{
-////					real_filename = *it;
-////					nldebug(NLSOUND_XAUDIO2_PREFIX "Found music file %s in big file %s", real_filename.c_str(), path.c_str());
-////					seekOffset = false;
-////					break;
-////				}
-////			}
-////			if (real_filename.empty()) 
-////			{
-////				nlwarning(NLSOUND_XAUDIO2_PREFIX "Offset %u for music file not found in BNP %s", (uint32)fileOffset, path.c_str());
-////				real_filename = path;
-////			}
-////		}
-////		else real_filename = path;
-////		real_filename = CPath::lookup(real_filename);
-////	}
-////	catch (...)
-////	{
-////		nlwarning(" - - - - - - this code sucks - - - - - - fix music implementation - - - - - - ");
-////		real_filename = CPath::lookup(real_filename);
-////		seekOffset = true;
-////	}
-////
-////	/*_Playing = true;*/
-////	switchVoice(xFadeTime);
-////	
-////	CIFile *ifile = new CIFile();
-////	ifile->setCacheFileOnOpen(false);
-////	ifile->allowBNPCacheFileOnOpen(false);
-////	ifile->open(real_filename);
-////	_Streams[_Active] = ifile;
-////	if (seekOffset) ifile->seek(fileOffset, NLMISC::IStream::begin);	
-////	_MusicVoices[_Active].play(real_filename, ifile, loop);
-////}
-
-////void CMusicChannelXAudio2::update(float dt)
-////{
-////	//if (_Fading) 
-////	//{
-////	//	switch (_Active)
-////	//	{
-////	//	case 0:
-////	//		_Balance -= dt / _FadeTime;
-////	//		if (_Balance <= 0.0f)
-////	//		{
-////	//			_Balance = 0.0f;
-////	//			_Fading = false;
-////	//			_MusicVoices[getInactive()].stop();
-////	//			delete _Streams[getInactive()]; _Streams[getInactive()] = NULL;
-////	//		}
-////	//		break;
-////	//	case 1:
-////	//		_Balance += dt / _FadeTime;
-////	//		if (_Balance >= 1.0f)
-////	//		{
-////	//			_Balance = 1.0f;
-////	//			_Fading = false;
-////	//			_MusicVoices[getInactive()].stop();
-////	//			delete _Streams[getInactive()]; _Streams[getInactive()] = NULL;
-////	//		}
-////	//		break;
-////	//	}
-////	//	updateVolume();
-////	//}
-////	//if (_Streams[0]) if (_MusicVoices[0].isEnded())
-////	//{
-////	//	_MusicVoices[0].stop();
-////	//	delete _Streams[0]; _Streams[0] = NULL;
-////	//}
-////	//if (_Streams[1]) if (_MusicVoices[1].isEnded())
-////	//{
-////	//	_MusicVoices[1].stop();
-////	//	delete _Streams[1]; _Streams[1] = NULL;
-////	//}
-////}
 
 } /* namespace NLSOUND */
 

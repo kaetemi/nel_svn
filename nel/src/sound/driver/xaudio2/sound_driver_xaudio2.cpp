@@ -45,13 +45,14 @@
 #include <cmath>
 
 // NeL includes
-#include "../sound_driver.h"
 #include <nel/misc/debug.h>
 #include <nel/misc/hierarchical_timer.h>
 #include <nel/misc/path.h>
 #include <nel/misc/file.h>
 #include <nel/misc/dynloadlib.h>
 #include <nel/misc/command.h>
+#include "../sound_driver.h"
+#include "music_buffer.h" // ../
 
 // Project includes
 #include "listener_xaudio2.h"
@@ -413,6 +414,18 @@ void CSoundDriverXAudio2::destroyMusicChannel(IMusicChannel *musicChannel)
 {
 	_MusicChannels.erase(static_cast<CMusicChannelXAudio2 *>(musicChannel));
 	delete musicChannel;
+}
+
+/** Get music info. Returns false if the song is not found or the function is not implemented. 
+ *  If the song has no name, result is filled with the filename.
+ *  \param filepath path to file, CPath::lookup done by driver
+ *  \param artist returns the song artist (empty if not available)
+ *  \param title returns the title (empty if not available)
+ */
+bool CSoundDriverXAudio2::getMusicInfo(const std::string &filepath, std::string &artist, std::string &title)
+{
+	// add support for additional non-standard music file types info here
+	return IMusicBuffer::getInfo(filepath, artist, title);
 }
 
 ///** Play some music syncrhonously (.ogg etc...) (implemented in fmod only)

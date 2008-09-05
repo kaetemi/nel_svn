@@ -125,28 +125,10 @@ bool CMusicBufferVorbis::getInfo(NLMISC::IStream *stream, std::string &artist, s
 {
 	CMusicBufferVorbis mbv(stream, false); // just opens and closes the oggvorbisfile thing :)
 	vorbis_comment *vc = ov_comment(&mbv._OggVorbisFile, -1);
-	title = vorbis_comment_query(vc, "title", 0);
-	artist = vorbis_comment_query(vc, "artist", 0);
-	//if (title)
-	//{
-	//	if (artist)
-	//	{
-	//		result = std::string(artist) + " - " + std::string(title);
-	//		
-	//	}
-	//	else
-	//	{
-	//		result = std::string(title);
-	//	}
-	//}
-	//else if (artist)
-	//{
-	//	result = std::string(artist) + " - " + fileName;
-	//}
-	//else
-	//{
-	//	result = fileName;
-	//}
+	char *title_c = vorbis_comment_query(vc, "title", 0);
+	if (title_c) title = title_c; else title.clear();
+	char *artist_c = vorbis_comment_query(vc, "artist", 0);
+	if (artist_c) artist = artist_c; else artist.clear();
 	return true;
 }
 
