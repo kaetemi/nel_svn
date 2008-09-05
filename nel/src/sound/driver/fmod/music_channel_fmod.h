@@ -23,91 +23,90 @@
 
 #ifndef NL_MUSIC_CHANNEL_FMOD_H
 #define NL_MUSIC_CHANNEL_FMOD_H
+#include <nel/misc/types_nl.h>
 
-#include "nel/misc/types_nl.h"
+// STL includes
+
+// NeL includes
+#include "../music_channel.h"
+
+// Project includes
 
 struct FSOUND_STREAM;
 
 namespace NLSOUND {
+	class CSoundDriverFMod;
 
-// ***************************************************************************
 /**
- * A player of music in sound driver, allowing fade across music
+ * \brief CMusicChannelFMod
+ * \date 2004
  * \author Lionel Berenguier
  * \author Nevrax France
- * \date 2004
+ * A player of music in sound driver, allowing fade across music
+ * \date 2008-09-05 13:10GMT
+ * \author Jan Boon (Kaetemi)
+ * Stuff for fading moved into nlsound, and modified for new music interface
  */
-class CMusicChannelFMod
+class CMusicChannelFMod : public IMusicChannel
 {
+protected:
+	/// Volume set by user
+	float _Gain;
+	/// The FMod stream
+	FSOUND_STREAM *FModMusicStream;	
+	/// the RAM buffer (representation of a MP3 file, only for sync play)
+	uint8 *FModMusicBuffer;	
+	/// channel played for music. CAN BE -1 while FModMusicStream!=NULL in case of Async Loading
+	sint FModMusicChannel;
+	/// true if the fmod end callback said the stream is ended
+	bool CallBackEnded;	
+	/// see stopMusicFader()
+	std::list<FSOUND_STREAM*> _FModMusicStreamWaitingForClose;
+	/// Sound driver that created this
+	CSoundDriverFMod *_SoundDriver;
+
 public:
-
 	/// Constructor
-	CMusicChannelFMod();
+	CMusicChannelFMod(CSoundDriverFMod *soundDriver);
+	virtual ~CMusicChannelFMod();
 
-	// playing of a channel, with/wo fading
-	bool	playMusicAsync(const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
-	bool	playMusic(NLMISC::CIFile &fileIn, uint xFadeTime, bool loop);
+	/// From callback
+	void markMusicFaderEnded(void *stream, void *fader);
 
-	// stoping the channel with/wo fading
-	void	stopMusic(uint xFadeTime);
+	/** Play some music (.ogg etc...)
+	 *	NB: if an old music was played, it is first stop with stopMusic()
+	 *	\param filepath file path, CPath::lookup is done here
+	 *  \param async stream music from hard disk, preload in memory if false
+	 *	\param loop must be true to play the music in loop. 
+	 */
+	virtual bool play(const std::string &filepath, bool async, bool loop); 
 
-	// set the music volume
-	void	setMusicVolume(float volume);
+	/// Stop the music previously loaded and played (the Memory is also freed)
+	virtual void stop();
 
-	// extras
-	void	pauseMusic();
-	void	resumeMusic();
-	bool	isMusicEnded();
-	float	getMusicLength();
+	/// Pause the music previously loaded and played (the Memory is not freed)
+	virtual void pause();
+	
+	/// Resume the music previously paused
+	virtual void resume();
 
-	// update
-	void	updateMusic(float dt);
+	/// Return true if a song is finished.
+	virtual bool isEnded();
 
-	// From callback
-	void	markMusicFaderEnded(void *stream, void *fader);
+	/// Return true if the song is still loading asynchronously and hasn't started playing yet (false if not async), used to delay fading
+	virtual bool isLoadingAsync();
+	
+	/// Return the total length (in second) of the music currently played
+	virtual float getLength();
+	
+	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
+	 *	NB: the volume of music is NOT affected by IListener::setGain()
+	 */
+	virtual void setVolume(float gain);
+}; /* class CMusicChannelFMod */
 
-private:
+} /* namespace NLSOUND */
 
-	/// A music fader fade 2 musics
-	class CMusicFader
-	{
-	public:
-		FSOUND_STREAM		*FModMusicStream;	// The FMod stream
-		uint8				*FModMusicBuffer;	// the RAM buffer (representation of a MP3 file, only for sync play)
-		sint				FModMusicChannel;	// channel played for music. CAN BE -1 while FModMusicStream!=NULL in case of Async Loading
-		float				XFadeVolume;		// 0--1
-		float				XFadeDVolume;		// dt
-		bool				CallBackEnded;		// true if the fmod end callback said the stream is ended
+#endif /* #ifndef NL_MUSIC_CHANNEL_FMOD_H */
 
-	public:
-		CMusicFader()
-		{
-			FModMusicStream= NULL;
-			FModMusicBuffer= NULL;
-			FModMusicChannel= -1;
-			XFadeVolume= 0.f;
-			XFadeDVolume= 0.f;
-			CallBackEnded= false;
-		}
-	};
-
-	// 2 musics channels for XFade
-	enum	{MaxMusicFader= 2};
-	CMusicFader					_MusicFader[MaxMusicFader];
-	uint8						_ActiveMusicFader;
-	float						_FModMusicVolume;
-	std::list<FSOUND_STREAM*>	_FModMusicStreamWaitingForClose;	// see stopMusicFader()
-
-	void	playMusicStartCrossFade(uint xFadeTime);
-	void	playMusicStartFader(uint musicFader);
-	void	stopMusicFader(uint musicFader);
-	void	updateMusicVolumeFader(uint musicFader);
-	void	updateMusicFModStreamWaitingForClose();
-
-};
-
-}
-
-#endif // NL_MUSIC_CHANNEL_FMOD_H
-
-/* End of music_channel_fmod.h */
+/* end of file */

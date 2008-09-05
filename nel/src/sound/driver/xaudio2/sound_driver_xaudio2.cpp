@@ -261,7 +261,7 @@ void CSoundDriverXAudio2::release()
 	// Driver (listeners etc todo)
 	// Stop any played music
 	{
-		set<CMusicChannelXAudio2*>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
+		set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
 		for (; it != end; ++it)
 		{
 			nlwarning("CMusicChannelXAudio2 was not deleted by user, deleting now!");

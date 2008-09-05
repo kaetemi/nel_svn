@@ -1,9 +1,9 @@
 /**
- * \file music_fader.cpp
- * \brief CMusicFader
+ * \file music_channel_fader.cpp
+ * \brief CMusicChannelFader
  * \date 2008-09-04 21:49GMT
  * \author Jan Boon (Kaetemi)
- * CMusicFader roughly based on music_channel_fmod.cpp
+ * CMusicChannelFader roughly based on music_channel_fmod.cpp
  * 
  * $Id$
  */
@@ -28,7 +28,7 @@
  */
 
 #include "stdsound.h"
-#include "music_fader.h"
+#include "music_channel_fader.h"
 
 // STL includes
 
@@ -40,24 +40,59 @@
 #include "driver/music_channel.h"
 
 using namespace std;
-// using namespace NLMISC;
+using namespace NLMISC;
 
 namespace NLSOUND {
 
-CMusicFader::CMusicFader(ISoundDriver *soundDriver) : _SoundDriver(soundDriver), _ActiveMusicFader(0), _Gain(0.0f)
+CMusicChannelFader::CMusicChannelFader() : _SoundDriver(NULL), _ActiveMusicFader(0), _Gain(1.0f), _LastTime(0)
 {
-	for (uint i = 0; i < _MaxMusicFader; ++i)
-		_MusicFader[i].MusicChannel = soundDriver->createMusicChannel();
+
 }
 
-CMusicFader::~CMusicFader()
+CMusicChannelFader::~CMusicChannelFader()
 {
-	for (uint i = 0; i < _MaxMusicFader; ++i)
-		_SoundDriver->destroyMusicChannel(_MusicFader[i].MusicChannel);
+	
 }
 
-void CMusicFader::update()
+void CMusicChannelFader::init(ISoundDriver *soundDriver)
 {
+	nlassert(!_SoundDriver);
+	_SoundDriver = soundDriver;
+	_ActiveMusicFader = 0;
+	_Gain = 1.0f;
+	_LastTime = CTime::getLocalTime();
+	for (uint i = 0; i < _MaxMusicFader; ++i)
+	{
+		nlassert(!_MusicFader[i].MusicChannel);
+		_MusicFader[i].MusicChannel = _SoundDriver->createMusicChannel();
+		if (!_MusicFader[i].MusicChannel)
+		{
+			release();
+			nlwarning("No music channel available!");
+			return;
+		}
+	}
+}
+
+void CMusicChannelFader::release()
+{
+	if (_SoundDriver)
+	{
+		for (uint i = 0; i < _MaxMusicFader; ++i)
+			if (_MusicFader[i].MusicChannel) 
+			{
+				_SoundDriver->destroyMusicChannel(_MusicFader[i].MusicChannel);
+				_MusicFader[i].MusicChannel = NULL;
+			}
+		_SoundDriver = NULL;
+	}
+}
+
+void CMusicChannelFader::update()
+{
+	TTime current_time = CTime::getLocalTime();
+	float delta_time = (float)(current_time - _LastTime) / 1000.0f;
+	_LastTime = current_time;
 	for (uint i = 0; i < _MaxMusicFader; ++i)
 	{
 		_CMusicFader &fader = _MusicFader[i];
@@ -71,19 +106,23 @@ void CMusicFader::update()
 			}
 			else if (fader.Fade)
 			{
-				fader.XFadeVolume += fader.XFadeDVolume;
-				if (fader.XFadeVolume <= 0.f)
+				// wait with fading in until the song has started playing (at 0 volume)
+				if (!fader.MusicChannel->isLoadingAsync())
 				{
-					// fadeout complete
-					fader.MusicChannel->stop();
-					fader.Fade = false;
-					fader.Playing = false;
-				}
-				else if (_MusicFader[i].XFadeVolume >= 1.f)
-				{
-					// fadein complete
-					fader.Fade = false;
-					fader.XFadeVolume = 1.f;
+					fader.XFadeVolume += fader.XFadeDVolume * delta_time;
+					if (fader.XFadeVolume <= 0.f)
+					{
+						// fadeout complete
+						fader.MusicChannel->stop();
+						fader.Fade = false;
+						fader.Playing = false;
+					}
+					else if (_MusicFader[i].XFadeVolume >= 1.f)
+					{
+						// fadein complete
+						fader.Fade = false;
+						fader.XFadeVolume = 1.f;
+					}
 				}
 			}
 		}
@@ -91,7 +130,7 @@ void CMusicFader::update()
 	updateVolume();
 }
 
-void CMusicFader::updateVolume()
+void CMusicChannelFader::updateVolume()
 {
 	for (uint i = 0; i < _MaxMusicFader; ++i)
 		if (_MusicFader[i].Playing)
@@ -104,7 +143,7 @@ void CMusicFader::updateVolume()
  *  \param async stream music from hard disk, preload in memory if false
  *	\param loop must be true to play the music in loop. 
  */
-bool CMusicFader::play(const std::string &filepath, uint xFadeTime, bool async, bool loop)
+bool CMusicChannelFader::play(const std::string &filepath, uint xFadeTime, bool async, bool loop)
 {
 	stop(xFadeTime);
 
@@ -132,7 +171,7 @@ bool CMusicFader::play(const std::string &filepath, uint xFadeTime, bool async, 
 }
 
 /// Stop the music previously loaded and played (the Memory is also freed)
-void CMusicFader::stop(uint xFadeTime)
+void CMusicChannelFader::stop(uint xFadeTime)
 {
 	if (xFadeTime)
 	{
@@ -151,7 +190,7 @@ void CMusicFader::stop(uint xFadeTime)
 }
 
 /// Pause the music previously loaded and played (the Memory is not freed)
-void CMusicFader::pause()
+void CMusicChannelFader::pause()
 {
 	for (uint i = 0; i < _MaxMusicFader; ++i) 
 		if (_MusicFader[i].Playing)
@@ -159,7 +198,7 @@ void CMusicFader::pause()
 }
 
 /// Resume the music previously paused
-void CMusicFader::resume()
+void CMusicChannelFader::resume()
 {
 	for (uint i = 0; i < _MaxMusicFader; ++i) 
 		if (_MusicFader[i].Playing)
@@ -167,7 +206,7 @@ void CMusicFader::resume()
 }
 
 /// Return true if all songs are finished.
-bool CMusicFader::isEnded()
+bool CMusicChannelFader::isEnded()
 {
 	for (uint i = 0; i < _MaxMusicFader; ++i)
 	{
@@ -178,14 +217,14 @@ bool CMusicFader::isEnded()
 }
 
 /// Return the total length (in second) of the music currently played
-float CMusicFader::getLength()
+float CMusicChannelFader::getLength()
 {
 	return _MusicFader[_ActiveMusicFader].MusicChannel->getLength();
 }
 
 /// Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
 /// NB: the volume of music is NOT affected by IListener::setGain()
-void CMusicFader::setVolume(float gain)
+void CMusicChannelFader::setVolume(float gain)
 {
 	_Gain = gain;
 	updateVolume();

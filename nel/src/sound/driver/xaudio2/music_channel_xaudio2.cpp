@@ -117,8 +117,7 @@ bool CMusicChannelXAudio2::play(const std::string &filepath, bool async, bool lo
 	return true;
 }
 
-/** Stop the music previously loaded and played (the Memory is also freed)
- */
+/// Stop the music previously loaded and played (the Memory is also freed)
 void CMusicChannelXAudio2::stop()
 {
 	if (_SourceVoice) { _SourceVoice->DestroyVoice(); _SourceVoice = NULL; }
@@ -134,38 +133,42 @@ void CMusicChannelXAudio2::pause()
 	if (_SourceVoice) _SourceVoice->Stop(0);
 }
 
-/** Resume the music previously paused
- */
+/// Resume the music previously paused
 void CMusicChannelXAudio2::resume()
 {
 	if (_SourceVoice) _SourceVoice->Start(0);
 }
 
-/** Return true if a song is finished.
- */
+/// Return true if a song is finished.
 bool CMusicChannelXAudio2::isEnded()
 {
 	if (_MusicBuffer)
 	{
-		if (_MusicBuffer->isMusicEnded())
+		if (!_MusicBuffer->isMusicEnded())
+			return false;
+	}
+	if (_SourceVoice)
+	{
+		XAUDIO2_VOICE_STATE voice_state;
+		_SourceVoice->GetState(&voice_state);
+		if (voice_state.BuffersQueued)
 		{
-			nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> stop()");
-			stop();
-			return true;
-		}
-		else
-		{
+			nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> voice_state.BuffersQueued, wait ...");
 			return false;
 		}
 	}
-	else 
-	{
-		return true;
-	}
+	nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> stop()");
+	stop();
+	return true;
 }
 
-/** Return the total length (in second) of the music currently played
- */
+/// Return true if the song is still loading asynchronously and hasn't started playing yet (false if not async), used to delay fading
+bool CMusicChannelXAudio2::isLoadingAsync()
+{
+	return false;
+}
+
+/// Return the total length (in second) of the music currently played
 float CMusicChannelXAudio2::getLength()
 {
 	if (_MusicBuffer) return _MusicBuffer->getLength(); 
@@ -185,11 +188,11 @@ void CMusicChannelXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
 {    
 	if (BytesRequired > 0)
 	{
-		//nlwarning(NLSOUND_XAUDIO2_PREFIX "Bytes Required: %u", BytesRequired); // byte req to not have disruption
+		// nlwarning(NLSOUND_XAUDIO2_PREFIX "Bytes Required: %u", BytesRequired); // byte req to not have disruption
 		
 		if (_MusicBuffer)
 		{
-			uint32 minimum = BytesRequired;
+			uint32 minimum = BytesRequired * 2; // give some more than required :p
 			if (_MusicBuffer->getRequiredBytes() > minimum) minimum = _MusicBuffer->getRequiredBytes();
 			if (minimum > sizeof(_Buffer) - _BufferPos) _BufferPos = 0;
 			uint32 maximum = sizeof(_Buffer) - _BufferPos;
@@ -215,7 +218,9 @@ void CMusicChannelXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
 			else
 			{
 				nldebug(NLSOUND_XAUDIO2_PREFIX "!length -> delete _MusicBuffer");
-				delete _MusicBuffer; _MusicBuffer = NULL;
+				// set member var to null before deleting it to avoid crashing main thread
+				IMusicBuffer *music_buffer = _MusicBuffer;
+				_MusicBuffer = NULL; delete music_buffer;
 				_SourceVoice->Discontinuity();
 			}
 		}

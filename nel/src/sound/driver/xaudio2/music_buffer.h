@@ -65,7 +65,7 @@ public:
 	IMusicBuffer();
 	virtual ~IMusicBuffer();
 
-	/// Create a new music buffer, may return NULL if unknown type, destroy with delete. Filepath lookup done here.
+	/// Create a new music buffer, may return NULL if unknown type, destroy with delete. Filepath lookup done here. If async is true, it will stream from hd, else it will load in memory first.
 	static IMusicBuffer *createMusicBuffer(const std::string &filepath, bool async, bool loop);
 
 	/// Create a new music buffer from a stream, type is file extension like "ogg" etc.

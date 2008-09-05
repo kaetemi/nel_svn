@@ -163,7 +163,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="User"
+			Name="user"
 			>
 			<File
 				RelativePath="..\include\nel\sound\u_audio_mixer.h"
@@ -183,7 +183,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="UserImp"
+			Name="user_imp"
 			>
 			<File
 				RelativePath="sound\audio_mixer_user.cpp"
@@ -203,7 +203,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="SoundClass"
+			Name="sound_class"
 			>
 			<File
 				RelativePath="sound\background_sound.cpp"
@@ -255,7 +255,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Animation"
+			Name="animation"
 			>
 			<File
 				RelativePath="sound\sound_anim_manager.cpp"
@@ -283,7 +283,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Source"
+			Name="source"
 			>
 			<File
 				RelativePath="sound\background_source.cpp"
@@ -356,6 +356,14 @@
 		</File>
 		<File
 			RelativePath="sound\mixing_track.h"
+			>
+		</File>
+		<File
+			RelativePath=".\sound\music_channel_fader.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\sound\music_channel_fader.h"
 			>
 		</File>
 		<File

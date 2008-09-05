@@ -24,16 +24,19 @@
 #ifndef NL_AUDIO_MIXER_USER_H
 #define NL_AUDIO_MIXER_USER_H
 
-#include "nel/misc/stream.h"
-#include "nel/misc/types_nl.h"
-#include "nel/sound/u_audio_mixer.h"
-#include "nel/misc/time_nl.h"
-#include "nel/georges/u_form.h"
+#include <nel/misc/stream.h>
+#include <nel/misc/types_nl.h>
+#include <nel/sound/u_audio_mixer.h>
+#include <nel/misc/time_nl.h>
+#include <nel/georges/u_form.h>
+
 #include "driver/source.h"
 #include "listener_user.h"
 //#include "background_sound_manager.h"
 #include "mixing_track.h"
 #include "sound.h"
+#include "music_channel_fader.h"
+
 #include <vector>
 #include <list>
 #include <numeric>
@@ -327,7 +330,7 @@ public:
 	virtual bool	isMusicEnded();
 	virtual void	setMusicVolume(float gain);
 	virtual float	getMusicLength();
-	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0);
+	virtual bool	getSongTitle(const std::string &filename, std::string &result);
 	virtual void	enableBackgroundMusic(bool enable);
 	virtual void	enableBackgroundMusicTimeConstraint(bool enable);
 	CMusicSoundManager *getBackgroundMusicManager() const {return _BackgroundMusicManager;}
@@ -481,6 +484,12 @@ private:
 
 	/// The sound driver instance
 	ISoundDriver				*_SoundDriver;
+
+	/// The number of music fading channels
+	static const uint			_NbMusicChannelFaders = 2;
+
+	/// Music channel faders
+	CMusicChannelFader			_MusicChannelFaders[_NbMusicChannelFaders];
 
 	/// Intance of the background sound manager.
 	CBackgroundSoundManager		*_BackgroundSoundManager;

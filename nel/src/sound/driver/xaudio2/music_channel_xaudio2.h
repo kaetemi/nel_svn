@@ -58,6 +58,9 @@ protected:
 	// pointers
 	IMusicBuffer *_MusicBuffer;
 	IXAudio2SourceVoice *_SourceVoice;
+	// todo: thread for async loading of music buffer and source voice
+	// isasyncloading checks if thread exists
+	// isended checks if not async loading too
 	
 	// instances
 	uint8 _Buffer[16 * 1024]; // no specific reason, lol
@@ -100,24 +103,22 @@ public:
 	 */
 	virtual bool play(const std::string &filepath, bool async, bool loop); 
 
-	/** Stop the music previously loaded and played (the Memory is also freed)
-	 */
+	/// Stop the music previously loaded and played (the Memory is also freed)
 	virtual void stop();
 
-	/** Pause the music previously loaded and played (the Memory is not freed)
-	 */
+	/// Pause the music previously loaded and played (the Memory is not freed)
 	virtual void pause();
 	
-	/** Resume the music previously paused
-	 */
+	/// Resume the music previously paused
 	virtual void resume();
 
-	/** Return true if a song is finished.
-	 */
+	/// Return true if a song is finished.
 	virtual bool isEnded();
+
+	/// Return true if the song is still loading asynchronously and hasn't started playing yet (false if not async), used to delay fading
+	virtual bool isLoadingAsync();
 	
-	/** Return the total length (in second) of the music currently played
-	 */
+	/// Return the total length (in second) of the music currently played
 	virtual float getLength();
 	
 	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)

@@ -1,9 +1,9 @@
 /**
- * \file music_fader.h
- * \brief CMusicFader
+ * \file music_channel_fader.h
+ * \brief CMusicChannelFader
  * \date 2008-09-04 21:49GMT
  * \author Jan Boon (Kaetemi)
- * CMusicFader roughly based on music_channel_fmod.h
+ * CMusicChannelFader roughly based on music_channel_fmod.h
  * 
  * $Id$
  */
@@ -27,8 +27,8 @@
  * MA 02111-1307, USA.
  */
 
-#ifndef NLSOUND_MUSIC_FADER_H
-#define NLSOUND_MUSIC_FADER_H
+#ifndef NLSOUND_MUSIC_CHANNEL_FADER_H
+#define NLSOUND_MUSIC_CHANNEL_FADER_H
 #include "stdsound.h"
 
 // STL includes
@@ -42,16 +42,12 @@ namespace NLSOUND {
 	class IMusicChannel;
 
 /**
- * \brief CMusicFader
- * \date 2004
- * \author Lionel Berenguier
- * \author Nevrax France
- * A player of music in sound driver, allowing fade across music
+ * \brief CMusicChannelFader
  * \date 2008-09-04 21:49GMT
  * \author Jan Boon (Kaetemi)
  * Roughly based on stuff in old CMusicChannelFMod
  */
-class CMusicFader
+class CMusicChannelFader
 {
 private:
 	struct _CMusicFader
@@ -90,10 +86,15 @@ protected:
 	// instances
 	uint _ActiveMusicFader;
 	float _Gain;
+	NLMISC::TTime _LastTime;
 public:
-	CMusicFader(ISoundDriver *soundDriver);
-	virtual ~CMusicFader();
-	inline void update();
+	CMusicChannelFader();
+	virtual ~CMusicChannelFader();
+	void init(ISoundDriver *soundDriver);
+	void release();
+
+	void update(); // time in seconds
+	inline bool isInitOk() { return _SoundDriver != NULL; }
 
 private:
 	void updateVolume();
@@ -125,10 +126,10 @@ public:
 	/// Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
 	/// NB: the volume of music is NOT affected by IListener::setGain()
 	void setVolume(float gain);
-}; /* class CMusicFader */
+}; /* class CMusicChannelFader */
 
 } /* namespace NLSOUND */
 
-#endif /* #ifndef NLSOUND_MUSIC_FADER_H */
+#endif /* #ifndef NLSOUND_MUSIC_CHANNEL_FADER_H */
 
 /* end of file */

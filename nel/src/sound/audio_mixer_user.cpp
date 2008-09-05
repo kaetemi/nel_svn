@@ -191,6 +191,10 @@ CAudioMixerUser::~CAudioMixerUser()
 			delete _Tracks[i];
 	}
 
+	// Release music channels
+	for (i = 0; i < _NbMusicChannelFaders; ++i)
+		_MusicChannelFaders[i].release();
+
 	// Sound driver
 	if ( _SoundDriver != NULL )
 		delete _SoundDriver;
@@ -451,7 +455,11 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	{
 		buildSampleBankList();
 	}
+	
 
+	// Init music channels
+	for (i = 0; i < _NbMusicChannelFaders; ++i)
+		_MusicChannelFaders[i].init(_SoundDriver);
 
 
 	// Create the background sound manager.
@@ -1395,6 +1403,10 @@ void				CAudioMixerUser::update()
 	_BackgroundMusicManager->update();
 
 	uint i;
+	// update music channels
+	for (i = 0; i < _NbMusicChannelFaders; ++i)
+		_MusicChannelFaders[i].update();
+
 	// Check all playing track and stop any terminated buffer.
 	for (i=0; i<_Tracks.size(); ++i)
 	{
@@ -2277,51 +2289,8 @@ void CAudioMixerUser::debugLogEvent(const char *reason)
 // ***************************************************************************
 bool	CAudioMixerUser::playMusicChannel(TMusicChannel chan, const std::string &fileName, uint xFadeTime, bool async, bool loop)
 {
-	if(getSoundDriver())
-	{
-		bool	state= false;
-
-		// no file caching if async loading
-		string	pathName= CPath::lookup(fileName, false);
-		if(async)
-		{
-			// if the file is in a bnp
-			if(pathName.find('@')!=string::npos)
-			{
-				// get info for location in this bnp
-				uint32	fileOffset, fileSize;
-				if(CBigFile::getInstance().getFileInfo (pathName, fileSize, fileOffset))
-				{
-					// then play async this bnp file (with offset/size)
-					string	bnpName= pathName.substr(0, pathName.find('@'));
-					state= getSoundDriver()->playMusicAsync(chan, CPath::lookup(bnpName, false), xFadeTime, fileOffset, fileSize, loop);
-				}
-			}
-			// else standard file
-			else
-			{
-				// play it async
-				state= getSoundDriver()->playMusicAsync(chan, pathName, xFadeTime, 0, 0, loop);
-			}
-		}
-		else
-		{
-			NLMISC::CIFile		fileIn;
-			if(fileIn.open(pathName))
-			{
-				// fileIn handled and owned by the sound driver
-				state= getSoundDriver()->playMusic(chan, fileIn, xFadeTime, loop);
-			}
-		}
-
-		// failed?
-		if(!state)
-			nlwarning("Sound: Error While reading music file: %s", fileName.c_str());
-
-		return state;
-	}
-	else
-		return false;
+	if (_MusicChannelFaders[chan].isInitOk())
+		return _MusicChannelFaders[chan].play(fileName, xFadeTime, async, loop);
 }
 
 // ***************************************************************************
@@ -2333,51 +2302,70 @@ bool	CAudioMixerUser::playMusic(const std::string &fileName, uint xFadeTime, boo
 // ***************************************************************************
 void	CAudioMixerUser::stopMusic(uint xFadeTime)
 {
-	if(getSoundDriver())
-		getSoundDriver()->stopMusic(GeneralMusicChannel, xFadeTime);
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		_MusicChannelFaders[GeneralMusicChannel].stop(xFadeTime);
 }
 
 // ***************************************************************************
 void	CAudioMixerUser::pauseMusic()
 {
-	if(getSoundDriver())
-		getSoundDriver()->pauseMusic(GeneralMusicChannel);
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		_MusicChannelFaders[GeneralMusicChannel].pause();
 }
 
 // ***************************************************************************
 void	CAudioMixerUser::resumeMusic()
 {
-	if(getSoundDriver())
-		getSoundDriver()->resumeMusic(GeneralMusicChannel);
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		_MusicChannelFaders[GeneralMusicChannel].resume();
 }
 
 // ***************************************************************************
 bool	CAudioMixerUser::isMusicEnded()
 {
-	if(getSoundDriver())
-		return getSoundDriver()->isMusicEnded(GeneralMusicChannel);
-	return false;
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		return _MusicChannelFaders[GeneralMusicChannel].isEnded();
+	return true;
 }
 
 // ***************************************************************************
 void	CAudioMixerUser::setMusicVolume(float gain)
 {
-	if(getSoundDriver())
-		getSoundDriver()->setMusicVolume(GeneralMusicChannel, gain);
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		 _MusicChannelFaders[GeneralMusicChannel].setVolume(gain);
 }
 
 // ***************************************************************************
 float	CAudioMixerUser::getMusicLength()
 {
-	if(getSoundDriver())
-		getSoundDriver()->getMusicLength(GeneralMusicChannel);
-	return 0;
+	if (_MusicChannelFaders[GeneralMusicChannel].isInitOk())
+		return _MusicChannelFaders[GeneralMusicChannel].getLength();
+	return 0.0f;
 }
 
 // ***************************************************************************
-bool	CAudioMixerUser::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize)
+bool	CAudioMixerUser::getSongTitle(const std::string &filename, std::string &result)
 {
-	return getSoundDriver()->getSongTitle(filename, result, fileOffset, fileSize);
+	if (_SoundDriver)
+	{
+		std::string artist;
+		std::string title;
+		if (_SoundDriver->getMusicInfo(filename, artist, title))
+		{
+			if (!title.empty())
+			{
+				if (!artist.empty()) result = artist + " - " + title;
+				else result = title;
+			}
+			else if (!artist.empty())
+			{
+				result = artist + " - " + CFile::getFilename(filename);
+			}
+			else result = CFile::getFilename(filename);
+			return true;
+		}
+	}
+	return false;
 }
 
 // ***************************************************************************
@@ -2401,23 +2389,23 @@ bool	CAudioMixerUser::playEventMusic(const std::string &fileName, uint xFadeTime
 // ***************************************************************************
 void	CAudioMixerUser::stopEventMusic(uint xFadeTime)
 {
-	if(getSoundDriver())
-		getSoundDriver()->stopMusic(EventMusicChannel, xFadeTime);
+	if (_MusicChannelFaders[EventMusicChannel].isInitOk())
+		_MusicChannelFaders[EventMusicChannel].stop();
 }
 
 // ***************************************************************************
 void	CAudioMixerUser::setEventMusicVolume(float gain)
 {
-	if(getSoundDriver())
-		getSoundDriver()->setMusicVolume(EventMusicChannel, gain);
+	if (_MusicChannelFaders[EventMusicChannel].isInitOk())
+		_MusicChannelFaders[EventMusicChannel].setVolume(gain);
 }
 
 // ***************************************************************************
 bool	CAudioMixerUser::isEventMusicEnded()
 {
-	if(getSoundDriver())
-		return getSoundDriver()->isMusicEnded(EventMusicChannel);
-	return false;
+	if (_MusicChannelFaders[EventMusicChannel].isInitOk())
+		_MusicChannelFaders[EventMusicChannel].isEnded();
+	return true;
 }
 
 

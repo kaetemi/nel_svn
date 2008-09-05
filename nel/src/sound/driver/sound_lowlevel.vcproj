@@ -184,6 +184,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\music_channel.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\music_channel.h"
+			>
+		</File>
+		<File
 			RelativePath="sound_driver.cpp"
 			>
 		</File>

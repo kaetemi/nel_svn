@@ -49,6 +49,8 @@ namespace NLSOUND {
 class IMusicChannel
 {
 public:
+	IMusicChannel::IMusicChannel() { }
+	virtual IMusicChannel::~IMusicChannel() { }
 
 	/** Play some music (.ogg etc...)
 	 *	NB: if an old music was played, it is first stop with stopMusic()
@@ -58,24 +60,22 @@ public:
 	 */
 	virtual bool play(const std::string &filepath, bool async, bool loop) =0; 
 
-	/** Stop the music previously loaded and played (the Memory is also freed)
-	 */
+	/// Stop the music previously loaded and played (the Memory is also freed)
 	virtual void stop() =0;
 
-	/** Pause the music previously loaded and played (the Memory is not freed)
-	 */
+	/// Pause the music previously loaded and played (the Memory is not freed)
 	virtual void pause() =0;
 	
-	/** Resume the music previously paused
-	 */
+	/// Resume the music previously paused
 	virtual void resume() =0;
 
-	/** Return true if a song is finished.
-	 */
+	/// Return true if a song is finished.
 	virtual bool isEnded() =0;
+
+	/// Return true if the song is still loading asynchronously and hasn't started playing yet (false if not async), used to delay fading
+	virtual bool isLoadingAsync() =0;
 	
-	/** Return the total length (in second) of the music currently played
-	 */
+	/// Return the total length (in second) of the music currently played
 	virtual float getLength() =0;
 	
 	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)

@@ -1,5 +1,5 @@
 /** \file sound_driver_fmod.h
- * DirectSound sound source
+ * FMod driver
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -23,23 +23,26 @@
 
 #ifndef NL_SOUND_DRIVER_FMOD_H
 #define NL_SOUND_DRIVER_FMOD_H
+#include <nel/misc/types_nl.h>
 
-#include "nel/misc/log.h"
-#include "../sound_driver.h"
-#include "source_fmod.h"
-#include "buffer_fmod.h"
-#include "music_channel_fmod.h"
-#include "../sound_driver.h"
+// STL includes
 #include <iostream>
 
-namespace NLSOUND {
+// NeL includes
+#include <nel/misc/log.h>
 
-class IListener;
-class ISource;
-class IBuffer;
-class CListenerFMod;
-class CSourceFMod;
-class CBufferFMod;
+// Project includes
+#include "source_fmod.h"
+#include "buffer_fmod.h"
+
+namespace NLSOUND {
+	class IListener;
+	class ISource;
+	class IBuffer;
+	class CListenerFMod;
+	class CSourceFMod;
+	class CBufferFMod;
+	class CMusicChannelFMod;
 
 // ***************************************************************************
 /*
@@ -115,39 +118,26 @@ public:
 	/// Return the string mapper
 	IStringMapperProvider	*getStringMapper()	{return _StringMapper;}
 
-	// play the music
-	virtual bool	playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
-
-	// play the music async
-	virtual bool	playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
-
-	// stop the music
-	virtual void	stopMusic(uint channel, uint xFadeTime);
-
-	// pause the music
-	virtual void	pauseMusic(uint channel);
-
-	// resume the music
-	virtual void	resumeMusic(uint channel);
-
-	// is the music playing
-	virtual bool	isMusicEnded(uint channel);
-
-	// music length
-	virtual float	getMusicLength(uint channel);
-
-	// set music volume
-	virtual void	setMusicVolume(uint channel, float gain);
-
-	// get a song title
-	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0);
-
 	// Tool method to transform from Nel coords to FMod coords
 	static void	toFModCoord(const NLMISC::CVector &in, float out[3]);
 
 	bool	fmodOk() const {return _FModOk;}
 
 	bool	forceSofwareBuffer() const {return _ForceSoftwareBuffer;}
+
+	/// Create a music channel, destroy with destroyMusicChannel
+	virtual IMusicChannel *createMusicChannel();
+
+	/// Destroy a music channel
+	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
+	
+	/** Get music info. Returns false if the song is not found or the function is not implemented. 
+	 *  If the song has no name, result is filled with the filename.
+	 *  \param filepath path to file, CPath::lookup done by driver
+	 *  \param artist returns the song artist (empty if not available)
+	 *  \param title returns the title (empty if not available)
+	 */
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
 
 	// also check that the fader still exist (avoid any free problem)
 	void	markMusicFaderEnded(void *stream, void *fader);
@@ -172,30 +162,21 @@ private:
 	virtual void	displayBench(NLMISC::CLog *log);
 
 
-    // Array with the allocated sources
-	std::set<CSourceFMod*>	_Sources;
-
 	/// The string mapper provided by client code
-	IStringMapperProvider	*_StringMapper;
+	IStringMapperProvider *_StringMapper;
+
+    // Array with the allocated sources
+	std::set<CSourceFMod*> _Sources;
+	/// Array with the allocated music channels
+	std::set<CMusicChannelFMod *> _MusicChannels;
 
 	/// if correctly created
-	bool					_FModOk;
+	bool _FModOk;
+	/// If want to create buffer in software (no hardware)
+	bool _ForceSoftwareBuffer;
 
 	/// Master Volume [0,1]
-	float					_MasterGain;
-
-	/// If want to create buffer in software (no hardware)
-	bool					_ForceSoftwareBuffer;
-
-
-	/// \name Music
-	// @{
-	/// A music channel play one music // to other channels
-	enum	{NumMusicChannel= 2};
-	CMusicChannelFMod		_MusicChannel[NumMusicChannel];
-	sint64					_LastXFadeTime;
-	void	updateMusic();
-	// @}
+	float _MasterGain;
 
 };
 
