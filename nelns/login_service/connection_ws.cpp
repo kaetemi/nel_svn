@@ -64,7 +64,7 @@ static uint NbPlayers = 0;
 // Functions
 //
 
-void refuseShard (uint16 sid, const char *format, ...)
+void refuseShard (TServiceId sid, const char *format, ...)
 {
 	string reason;
 	NLMISC_CONVERT_VARGS (reason, format, NLMISC::MaxCStringSize);
@@ -74,7 +74,7 @@ void refuseShard (uint16 sid, const char *format, ...)
 	CUnifiedNetwork::getInstance ()->send (sid, msgout);
 }
 
-sint findShardWithSId (uint16 sid)
+sint findShardWithSId (TServiceId sid)
 {
 	for (sint i = 0; i < (sint) Shards.size (); i++)
 	{
@@ -100,7 +100,7 @@ sint32 findShard (uint32 shardId)
 	return -1;
 }
 
-static void cbWSConnection (const std::string &serviceName, uint16 sid, void *arg)
+static void cbWSConnection (const std::string &serviceName, TServiceId sid, void *arg)
 {
 	TSockId from;
 	CCallbackNetBase *cnb = CUnifiedNetwork::getInstance ()->getNetBase (sid, from);
@@ -137,7 +137,7 @@ static void cbWSConnection (const std::string &serviceName, uint16 sid, void *ar
 	}
 }
 
-static void cbWSDisconnection (const std::string &serviceName, uint16 sid, void *arg)
+static void cbWSDisconnection (const std::string &serviceName, TServiceId sid, void *arg)
 {
 	TSockId from;
 	CCallbackNetBase *cnb = CUnifiedNetwork::getInstance ()->getNetBase (sid, from);
@@ -152,7 +152,7 @@ static void cbWSDisconnection (const std::string &serviceName, uint16 sid, void 
 			// shard disconnected
 			nlinfo("ShardId %d with IP '%s' is offline!", Shards[i].ShardId, ia.asString ().c_str());
 			nlinfo("*** ShardId %3d NbPlayers %3d -> %3d", Shards[i].ShardId, Shards[i].NbPlayers, 0);
-			
+
 			string query = "update shard set Online=0, NbPlayers=NbPlayers-"+toString(Shards[i].NbPlayers)+" where ShardId="+toString(Shards[i].ShardId);
 			sint ret = mysql_query (DatabaseConnection, query.c_str ());
 			if (ret != 0)
@@ -172,7 +172,7 @@ static void cbWSDisconnection (const std::string &serviceName, uint16 sid, void 
 			{
 				nlwarning ("mysql_query (%s) failed: %s", query.c_str (),  mysql_error(DatabaseConnection));
 			}
-			
+
 			Shards.erase (Shards.begin () + i);
 
 			return;
@@ -270,8 +270,8 @@ void cbShardComesIn (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 }
 */
 
-// 
-static void cbWSIdentification (CMessage &msgin, const std::string &serviceName, uint16 sid)
+//
+static void cbWSIdentification (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	TSockId from;
 	CCallbackNetBase *cnb = CUnifiedNetwork::getInstance ()->getNetBase (sid, from);
@@ -373,11 +373,11 @@ static void cbWSIdentification (CMessage &msgin, const std::string &serviceName,
 		refuseShard (sid, "mysql problem, There's more than 1 shard with the shardId %d in the database", shardId);
 		return;
 	}
-	
+
 	nlstop;
 }
 
-static void cbWSClientConnected (CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbWSClientConnected (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	//
 	// S16: Receive "CC" message from WS
@@ -394,7 +394,7 @@ static void cbWSClientConnected (CMessage &msgin, const std::string &serviceName
 		nlinfo ("Received a validation that a client is connected on the frontend");
 	else
 		nlinfo ("Received a validation that a client is disconnected on the frontend");
-	
+
 	string query = "select * from user where UId="+toString(Id);
 	sint ret = mysql_query (DatabaseConnection, query.c_str ());
 	if (ret != 0)
@@ -513,7 +513,7 @@ static void cbWSClientConnected (CMessage &msgin, const std::string &serviceName
 		}
 		else
 			nlwarning ("user disconnected shard isn't in the shard list");
-			
+
 		nldebug ("Id %d is disconnected from the shard", Id);
 		Output->displayNL ("###: %3d User disconnected from the shard (%d)", Id, Shards[ShardPos].ShardId);
 
@@ -522,13 +522,13 @@ static void cbWSClientConnected (CMessage &msgin, const std::string &serviceName
 }
 
 
-static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	sint	shardPos = findShardWithSId (sid);
 
 	if (shardPos == -1)
 	{
-		nlwarning ("unknown WS %d reported state of a fs", sid);
+		nlwarning ("unknown WS %d reported state of a fs", sid.get());
 		return;
 	}
 
@@ -546,7 +546,7 @@ static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, u
 
 	if (!alive)
 	{
-		nlinfo("Shard %d frontend %d reported as offline", shard.ShardId, FSSId);
+		nlinfo("Shard %d frontend %d reported as offline", shard.ShardId, FSSId.get());
 		std::vector<CFrontEnd>::iterator	itfs;
 		for (itfs=shard.FrontEnds.begin(); itfs!=shard.FrontEnds.end(); ++itfs)
 		{
@@ -578,7 +578,7 @@ static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, u
 
 		if (itfs == shard.FrontEnds.end())
 		{
-			nlinfo("Shard %d frontend %d reported as online", shard.ShardId, FSSId);
+			nlinfo("Shard %d frontend %d reported as online", shard.ShardId, FSSId.get());
 			// unknown fs, create new entry
 			shard.FrontEnds.push_back(CFrontEnd(FSSId, patching, patchURI));
 
@@ -587,7 +587,7 @@ static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, u
 
 		if (updateFS != NULL)
 		{
-			nlinfo("Shard %d frontend %d status updated: patching=%s patchURI=%s", shard.ShardId, FSSId, (updateFS->Patching ? "yes" : "no"), updateFS->PatchURI.c_str());
+			nlinfo("Shard %d frontend %d status updated: patching=%s patchURI=%s", shard.ShardId, FSSId.get(), (updateFS->Patching ? "yes" : "no"), updateFS->PatchURI.c_str());
 		}
 	}
 
@@ -613,13 +613,13 @@ static void	cbWSReportFSState(CMessage &msgin, const std::string &serviceName, u
 	}
 }
 
-static void	cbWSReportNoPatch(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void	cbWSReportNoPatch(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	sint	shardPos = findShardWithSId (sid);
 
 	if (shardPos == -1)
 	{
-		nlwarning ("unknown WS %d reported state of a fs", sid);
+		nlwarning ("unknown WS %d reported state of a fs", sid.get());
 		return;
 	}
 
@@ -640,13 +640,13 @@ static void	cbWSReportNoPatch(CMessage &msgin, const std::string &serviceName, u
 	}
 }
 
-static void	cbWSSetShardOpen(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void	cbWSSetShardOpen(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	sint	shardPos = findShardWithSId (sid);
 
 	if (shardPos == -1)
 	{
-		nlwarning ("unknown WS %d reported shard open state", sid);
+		nlwarning ("unknown WS %d reported shard open state", sid.get());
 		return;
 	}
 
@@ -683,7 +683,7 @@ static const TUnifiedCallbackItem WSCallbackArray[] =
 void connectionWSInit ()
 {
 	CUnifiedNetwork::getInstance ()->addCallbackArray (WSCallbackArray, sizeof(WSCallbackArray)/sizeof(WSCallbackArray[0]));
-	
+
 	CUnifiedNetwork::getInstance ()->setServiceUpCallback ("WS", cbWSConnection);
 	CUnifiedNetwork::getInstance ()->setServiceDownCallback ("WS", cbWSDisconnection);
 }
@@ -701,8 +701,8 @@ void connectionWSRelease ()
 	{
 		cbWSDisconnection ("", Shards[0].SId, NULL);
 	}
-	
-/*	
+
+/*
 	// we remove all shards online from my list
 	for (uint32 i = 0; i < Shards.size (); i++)
 	{
@@ -712,7 +712,7 @@ void connectionWSRelease ()
 
 		// shard disconnected
 		nlinfo("Set ShardId %d with IP '%s' offline in the database and set %d players to offline", Shards[i].ShardId, ia.asString ().c_str());
-		
+
 		string query = "update shard set Online=Online-1, NbPlayers=NbPlayers-"+toString(Shards[i].NbPlayers)+" where ShardId="+toString(Shards[i].ShardId);
 		sint ret = mysql_query (DatabaseConnection, query.c_str ());
 		if (ret != 0)

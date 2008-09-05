@@ -158,7 +158,7 @@ public:
 			++_Instances[var.asString(i)].Expected;
 		}
 	}
-	
+
 	/// Add a service instance
 	void		addInstance( const std::string& serviceName )
 	{
@@ -166,7 +166,7 @@ public:
 	}
 
 	/// Remove a service instance
-	void		removeInstance( const std::string& serviceName ) 
+	void		removeInstance( const std::string& serviceName )
 	{
 		CInstances::iterator ici = _Instances.find( serviceName );
 		if ( ici != _Instances.end() )
@@ -247,7 +247,7 @@ void reportOnlineStatus( bool newStatus )
 			CUnifiedNetwork::getInstance()->send( "LS", msgout );
 		}
 
-		if (CWelcomeServiceMod::isInitialized() != NULL)
+		if (CWelcomeServiceMod::isInitialized())
 		{
 			// send a status report to welcome service client
 			CWelcomeServiceMod::getInstance()->reportWSOpenState(newStatus);
@@ -413,7 +413,7 @@ void cbFESShardChooseShard (CMessage &msgin, const std::string &serviceName, TSe
 	//
 	// S09: receive "SCS" message from FES and send the "SCS" message to the LS
 	//
-	
+
 	CMessage msgout ("SCS");
 
 	msgin.serial (reason);
@@ -421,7 +421,7 @@ void cbFESShardChooseShard (CMessage &msgin, const std::string &serviceName, TSe
 
 	msgin.serial (cookie);
 	msgout.serial (cookie);
-	
+
 	if (reason.empty())
 	{
 		msgin.serial (addr);
@@ -489,7 +489,7 @@ void cbFESShardChooseShard (CMessage &msgin, const std::string &serviceName, TSe
 			CUnifiedNetwork::getInstance()->send ("LS", msgout);
 		}
 	}
-	
+
 }
 
 // This function is call when a FES accepted a new client or lost a connection to a client
@@ -500,7 +500,7 @@ void cbFESClientConnected (CMessage &msgin, const std::string &serviceName, TSer
 	//
 
 	CMessage msgout ("CC");
-	
+
 	uint32 userid;
 	msgin.serial (userid);
 	msgout.serial (userid);
@@ -538,7 +538,7 @@ void cbFESClientConnected (CMessage &msgin, const std::string &serviceName, TSer
 		totalNbPendingUsers += (*it).NbPendingUsers;
 	}
 
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
 
 	if (con)
@@ -575,7 +575,7 @@ void	cbFESRemovedPendingCookie(CMessage &msgin, const std::string &serviceName, 
 		totalNbPendingUsers += (*it).NbPendingUsers;
 	}
 
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 	{
 		CWelcomeServiceMod::getInstance()->pendingUserLost(cookie);
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
@@ -650,7 +650,7 @@ void	cbFESNbPlayers(CMessage &msgin, const std::string &serviceName, TServiceId 
 		totalNbPendingUsers += (*it).NbPendingUsers;
 	}
 
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
 }
 
@@ -682,7 +682,7 @@ void	cbFESNbPlayers2(CMessage &msgin, const std::string &serviceName, TServiceId
 		totalNbPendingUsers += fes.NbPendingUsers;
 	}
 
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
 }
 
@@ -701,7 +701,7 @@ void	setShardOpenState(TShardOpenState state, bool writeInVar = true)
 			// send to LS current shard state
 			CMessage	msgout ("SET_SHARD_OPEN");
 			uint8		shardOpenState = (uint8)state;
-			
+
 			msgout.serial (shardOpenState);
 			CUnifiedNetwork::getInstance()->send ("LS", msgout);
 		}
@@ -809,7 +809,7 @@ void cbFESDisconnection (const std::string &serviceName, TServiceId  sid, void *
 		}
 	}
 
-	// Update the welcome service client with the new count of connection 
+	// Update the welcome service client with the new count of connection
 
 	uint32 totalNbOnlineUsers =0, totalNbPendingUsers = 0;
 	for (list<CFES>::iterator it = FESList.begin(); it != FESList.end(); it++)
@@ -819,7 +819,7 @@ void cbFESDisconnection (const std::string &serviceName, TServiceId  sid, void *
 		totalNbPendingUsers += fes.NbPendingUsers;
 	}
 
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
 
 	displayFES ();
@@ -1037,7 +1037,7 @@ std::string lsChooseShard (const std::string &userName,
 		totalNbOnlineUsers += (*it).NbUser;
 		totalNbPendingUsers += (*it).NbPendingUsers;
 	}
-	if (CWelcomeServiceMod::isInitialized() != NULL)
+	if (CWelcomeServiceMod::isInitialized())
 		CWelcomeServiceMod::getInstance()->updateConnectedPlayerCount(totalNbOnlineUsers, totalNbPendingUsers);
 
 	return "";
@@ -1085,7 +1085,7 @@ void cbLSDisconnectClient (CMessage &msgin, const std::string &serviceName, TSer
 void cbLSConnection (const std::string &serviceName, TServiceId  sid, void *arg)
 {
 	sint32 shardId;
-	
+
 	if (IService::getInstance()->haveArg('S'))
 	{
 		// use the command line param if set
@@ -1219,7 +1219,7 @@ void	cbUsePatchMode(IVariable &var)
 		nlinfo("UsePatchMode disabled, switch all patching servers to actual frontends");
 
 		list<CFES>::iterator	it;
-		
+
 		for (it=FESList.begin(); it!=FESList.end(); ++it)
 		{
 			if ((*it).State == PatchOnly)
@@ -1297,7 +1297,7 @@ public:
 
 		AllowDispatchMsgToLS = true;
 
-		if (ConfigFile.getVarPtr("DontUseLSService") == NULL 
+		if (ConfigFile.getVarPtr("DontUseLSService") == NULL
 			|| !ConfigFile.getVar("DontUseLSService").asBool())
 		{
 			// We are using NeL Login Service
@@ -1315,7 +1315,7 @@ public:
 
 		/*
 		 * read config variable ShardOpenStateFile to update
-		 * 
+		 *
 		 */
 		cbShardOpenStateFile(ShardOpenStateFile);
 
@@ -1325,8 +1325,8 @@ public:
 //		NLMISC::CCommandRegistry::getInstance().execute("ws.plug wg", InfoLog());
 	}
 
-	bool			update () 
-	{ 
+	bool			update ()
+	{
 		// update the service status
 
 		removeStatusTag("DEV_ONLY");
@@ -1340,7 +1340,7 @@ public:
 		else if (ShardOpen == 2)
 			addStatusTag("Open");
 
-		return true; 
+		return true;
 	}
 
 };
@@ -1373,7 +1373,7 @@ static const char* getShortServiceName(const IService* theService)
 	{
 		s= theService->getLongArg("shortwsname");
 	}
-	
+
 	return s.c_str();
 }
 
@@ -1382,7 +1382,7 @@ NLNET_SERVICE_MAIN( CWelcomeService, getShortServiceName(scn), getCompleteServic
 
 
 // welcome service module
-//class CWelcomeServiceMod : 
+//class CWelcomeServiceMod :
 //	public CEmptyModuleCommBehav<CEmptyModuleServiceBehav<CEmptySocketBehav<CModuleBase> > >,
 //	public WS::CWelcomeServiceSkel
 //{
@@ -1391,21 +1391,21 @@ NLNET_SERVICE_MAIN( CWelcomeService, getShortServiceName(scn), getCompleteServic
 //		if (CWelcomeServiceSkel::onDispatchMessage(sender, message))
 //			return;
 //
-//		nlwarning("Unknown message '%s' received by '%s'", 
+//		nlwarning("Unknown message '%s' received by '%s'",
 //			message.getName().c_str(),
 //			getModuleName().c_str());
 //	}
 //
 //
-//	////// CWelcomeServiceSkel implementation 
+//	////// CWelcomeServiceSkel implementation
 //
 //	// ask the welcome service to welcome a user
 //	virtual void welcomeUser(NLNET::IModuleProxy *sender, uint32 userId, const std::string &userName, const CLoginCookie &cookie, const std::string &priviledge, const std::string &exPriviledge, WS::TUserRole mode, uint32 instanceId)
 //	{
 //		string ret = lsChooseShard(userName,
 //			cookie,
-//			priviledge, 
-//			exPriviledge, 
+//			priviledge,
+//			exPriviledge,
 //			mode,
 //			instanceId);
 //
@@ -1423,7 +1423,7 @@ NLNET_SERVICE_MAIN( CWelcomeService, getShortServiceName(scn), getCompleteServic
 //	{
 //		nlstop;
 //	}
-//	
+//
 //};
 
 namespace WS
@@ -1476,15 +1476,15 @@ namespace WS
 		else if (_LoginService == proxy)
 			_LoginService = NULL;
 	}
-	
+
 
 	void CWelcomeServiceMod::welcomeUser(NLNET::IModuleProxy *sender, uint32 charId, const std::string &userName, const CLoginCookie &cookie, const std::string &priviledge, const std::string &exPriviledge, WS::TUserRole mode, uint32 instanceId)
 	{
 		nldebug( "ERLOG: welcomeUser(%u,%s,%s,%s,%s,%u,%u)", charId, userName.c_str(), cookie.toString().c_str(), priviledge.c_str(), exPriviledge.c_str(), (uint)mode.getValue(), instanceId );
 		string ret = lsChooseShard(userName,
 									cookie,
-									priviledge, 
-									exPriviledge, 
+									priviledge,
+									exPriviledge,
 									mode,
 									instanceId,
 									charId & 0xF);
@@ -1557,9 +1557,9 @@ NLMISC_COMMAND (frontends, "displays the list of all registered front ends", "")
 	log.displayNL ("Display the %d registered front end :", FESList.size());
 	for (list<CFES>::iterator it = FESList.begin(); it != FESList.end (); it++)
 	{
-//		log.displayNL ("> FE %u: nb estimated users: %u nb users: %u, nb pending users : %u", 
-		log.displayNL ("> FE %u: nb users: %u, nb pending users : %u", 
-			it->SId.get(), 
+//		log.displayNL ("> FE %u: nb estimated users: %u nb users: %u, nb pending users : %u",
+		log.displayNL ("> FE %u: nb users: %u, nb pending users : %u",
+			it->SId.get(),
 			it->NbUser,
 			it->NbPendingUsers);
 	}

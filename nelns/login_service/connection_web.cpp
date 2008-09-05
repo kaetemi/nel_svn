@@ -1,5 +1,5 @@
 /** \file connection_web.cpp
- * 
+ *
  *
  * $Id: connection_web.cpp,v 1.12 2007/06/11 12:53:21 boucher Exp $
  *
@@ -68,7 +68,7 @@ map<uint32, CLoginCookie> TempCookies;
 // Callbacks
 //
 
-static void cbWSShardChooseShard/* (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)*/ (CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbWSShardChooseShard/* (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)*/ (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	nlassert(WebServer != NULL);
 
@@ -83,7 +83,7 @@ static void cbWSShardChooseShard/* (CMessage &msgin, TSockId from, CCallbackNetB
 	string reason;
 	msgin.serial (reason);
 	msgout.serial (reason);
-	
+
 	CLoginCookie cookie;
 	msgin.serial (cookie);
 

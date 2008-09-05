@@ -18,11 +18,7 @@ login_service_LDADD		= @MYSQL_LDFLAGS@
 
 AM_CXXFLAGS			= -DNELNS_CONFIG="\"${pkgsysconfdir}\"" -DNELNS_STATE="\"${pkglocalstatedir}\"" -DNELNS_LOGS="\"${logdir}\"" @MYSQL_CFLAGS@
 
-login_service_SOURCES = mysql_helper.cpp		\
-			mysql_helper.h			\
-			connection_client.cpp		\
-			connection_client.h		\
-			connection_web.cpp              \
+login_service_SOURCES = connection_web.cpp              \
                         connection_web.h                \
                         connection_ws.cpp               \
                         connection_ws.h                 \
