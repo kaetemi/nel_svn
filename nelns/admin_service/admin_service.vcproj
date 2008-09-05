@@ -1,333 +1,474 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="admin_service"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{AA03E539-FE77-4B63-BE0E-DE637635E5A9}"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Debug/admin_service.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;__STL_DEBUG;WIN32;_WINDOWS"
-				StringPooling="TRUE"
+				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\Debug/admin_service.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"/>
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib libmySQL.lib"
 				OutputFile=".\Debug/admin_service.exe"
 				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="libcmtd.lib,libcd.lib"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/admin_service.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="DebugFast|Win32"
 			OutputDirectory=".\DebugFast"
 			IntermediateDirectory=".\DebugFast"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\DebugFast/admin_service.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="_WINDOWS;_DEBUG;WIN32"
-				StringPooling="TRUE"
+				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\DebugFast/admin_service.pch"
 				AssemblerListingLocation=".\DebugFast/"
 				ObjectFile=".\DebugFast/"
 				ProgramDataBaseFileName=".\DebugFast/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"/>
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib libmySQL.lib"
 				OutputFile=".\DebugFast/admin_service.exe"
 				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="libcmtd.lib,libcd.lib"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\DebugFast/admin_service.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
 			OutputDirectory=".\ReleaseDebug"
 			IntermediateDirectory=".\ReleaseDebug"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\ReleaseDebug/admin_service.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NL_RELEASE_DEBUG"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
+				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\ReleaseDebug/admin_service.pch"
 				AssemblerListingLocation=".\ReleaseDebug/"
 				ObjectFile=".\ReleaseDebug/"
 				ProgramDataBaseFileName=".\ReleaseDebug/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"/>
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib libmySQL.lib"
 				OutputFile=".\ReleaseDebug/admin_service.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				TargetMachine="1"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\ReleaseDebug/admin_service.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Release/admin_service.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\Release/admin_service.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib libmySQL.lib"
-				OutputFile=".\Release/admin_service.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release/admin_service.pdb"
-				SubSystem="2"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/admin_service.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
+				Culture="1036"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+				AdditionalDependencies="mysqlclient.lib zlib.lib"
+				OutputFile=".\Release/admin_service.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				ProgramDatabaseFile=".\Release/admin_service.pdb"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="admin_service.cfg">
+			RelativePath="admin_service.cfg"
+			>
 		</File>
 		<File
-			RelativePath="admin_service.cpp">
+			RelativePath="admin_service.cpp"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
+					BasicRuntimeChecks="3"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="DebugFast|Win32">
+				Name="DebugFast|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
+					BasicRuntimeChecks="3"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="ReleaseDebug|Win32">
+				Name="ReleaseDebug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions=""/>
+					PreprocessorDefinitions=""
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions=""/>
+					PreprocessorDefinitions=""
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="admin_service.h">
+			RelativePath="admin_service.h"
+			>
 		</File>
 		<File
-			RelativePath="connection_web.cpp">
+			RelativePath="connection_web.cpp"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
+					BasicRuntimeChecks="3"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="DebugFast|Win32">
+				Name="DebugFast|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
+					BasicRuntimeChecks="3"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="ReleaseDebug|Win32">
+				Name="ReleaseDebug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions=""/>
+					PreprocessorDefinitions=""
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="2"
-					PreprocessorDefinitions=""/>
+					PreprocessorDefinitions=""
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="connection_web.h">
+			RelativePath="connection_web.h"
+			>
 		</File>
 	</Files>
 	<Globals>

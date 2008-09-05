@@ -45,6 +45,7 @@
 #include <winsock.h>
 #endif
 #include <mysql.h>
+#include <mysql_version.h>
 
 #include "nel/misc/debug.h"
 #include "nel/misc/config_file.h"
@@ -54,8 +55,6 @@
 #include "nel/net/service.h"
 #include "nel/net/varpath.h"
 #include "nel/net/email.h"
-
-#include <mysql.h>
 
 #include "connection_web.h"
 
@@ -164,10 +163,10 @@ struct CRequest
 
 struct CAdminExecutorService
 {
-	CAdminExecutorService (const string &shard, const string &name, uint16 sid) : Shard(shard), SId(sid), Name(name) { }
+	CAdminExecutorService (const string &shard, const string &name, TServiceId sid) : Shard(shard), SId(sid), Name(name) { }
 
 	string  Shard;			/// Name of the shard
-	uint16	SId;			/// uniq number to identify the AES
+	TServiceId	SId;			/// uniq number to identify the AES
 	string	Name;			/// name of the admin executor service
 
 	vector<uint32>	WaitingRequestId;		/// contains all request that the server hasn't reply yet
@@ -198,7 +197,7 @@ sint32 AdminAlertAccumlationTime = 5;
 // Functions
 //
 
-AESIT findAES (uint16 sid, bool asrt = true)
+AESIT findAES (TServiceId sid, bool asrt = true)
 {
 	AESIT aesit;
 	for (aesit = AdminExecutorServices.begin(); aesit != AdminExecutorServices.end(); aesit++)
@@ -331,7 +330,8 @@ void updateSendAdminAlert ()
 	if(!Email.empty() && FirstEmailTime != 0 && AdminAlertAccumlationTime >=0 && CTime::getSecondsSince1970() > FirstEmailTime + AdminAlertAccumlationTime)
 	{
 		vector<string> lines;
-		explode (Email, "\n", lines, true);
+		explode (Email, string("\n"), lines, true);
+
 		if (!lines.empty())
 		{
 
@@ -361,10 +361,13 @@ void updateSendAdminAlert ()
 					subject = "Multiple problems";
 				}
 				
+				std::string from;
+				if(IService::getInstance()->ConfigFile.exists("AdminEmailFrom"))
+					from = IService::getInstance()->ConfigFile.getVar("AdminEmailFrom").asString();
 				CConfigFile::CVar &var = IService::getInstance()->ConfigFile.getVar("AdminEmail");
-				for (sint i = 0; i < var.size(); i++)
+				for (uint i = 0; i < var.size(); i++)
 				{
-					if (!sendEmail ("", CInetAddress::localHost().hostName()+"@admin.org", var.asString(i), subject, Email))
+					if (!sendEmail ("", from, var.asString(i), subject, Email))
 					{
 						nlwarning ("Can't send email to '%s'", var.asString(i).c_str());
 					}
@@ -382,14 +385,14 @@ void updateSendAdminAlert ()
 }
 
 
-static void cbAdminEmail (CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbAdminEmail (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	string str;
 	msgin.serial(str);
 	sendAdminAlert (str.c_str());
 }
 
-static void cbGraphUpdate (CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbGraphUpdate (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 CurrentTime;
 	msgin.serial (CurrentTime);
@@ -628,6 +631,15 @@ void sqlInit ()
 		nlerror ("mysql_init() failed");
 	}
 
+	my_bool opt = true;
+	if (mysql_options (DatabaseConnection, MYSQL_OPT_RECONNECT, &opt))
+	{
+		mysql_close(db);
+		DatabaseConnection = 0;
+		nlerror("mysql_options() failed for database connection to '%s'", IService::getInstance()->ConfigFile.getVar("DatabaseHost").asString().c_str());
+ 		return;
+	}
+
 	DatabaseConnection = mysql_real_connect(db,
 		IService::getInstance()->ConfigFile.getVar("DatabaseHost").asString().c_str(),
 		IService::getInstance()->ConfigFile.getVar("DatabaseLogin").asString().c_str(),
@@ -643,6 +655,17 @@ void sqlInit ()
 			(IService::getInstance()->ConfigFile.getVar("DatabasePassword").asString().empty()?"empty password":"password")
 			);
 	}
+
+#if MYSQL_VERSION_ID < 50019
+	opt = true;
+	if (mysql_options (DatabaseConnection, MYSQL_OPT_RECONNECT, &opt))
+	{
+		mysql_close(db);
+		DatabaseConnection = 0;
+		nlerror("mysql_options() failed for database connection to '%s'", IService::getInstance()->ConfigFile.getVar("DatabaseHost").asString().c_str());
+ 		return;
+	}
+#endif
 }
 
 
@@ -652,7 +675,7 @@ void sqlInit ()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void sendAESInformations (uint16 sid)
+void sendAESInformations (TServiceId sid)
 {
 	AESIT aesit = findAES (sid);
 
@@ -668,7 +691,7 @@ void sendAESInformations (uint16 sid)
 	while (row != NULL)
 	{
 		string service = row[0];
-		nlinfo ("Adding '%s' in registered services to AES-%hu", row[0], sid);
+		nlinfo ("Adding '%s' in registered services to AES-%hu", row[0], sid.get());
 		informations.push_back (service);
 		row = sqlNextRow ();
 	}
@@ -682,7 +705,7 @@ void sendAESInformations (uint16 sid)
 	row = sqlQuery ("select path, error_bound, alarm_order from variable where error_bound!=-1");
 	while (row != NULL)
 	{
-		nlinfo ("Adding '%s' '%s' '%s' in alarm to AES-%hu", row[0], row[1], row[2], sid);
+		nlinfo ("Adding '%s' '%s' '%s' in alarm to AES-%hu", row[0], row[1], row[2], sid.get());
 		informations.push_back (row[0]);
 		informations.push_back (row[1]);
 		informations.push_back (row[2]);
@@ -712,7 +735,7 @@ void sendAESInformations (uint16 sid)
 					string c  = varpath2.Destination[j].first, d = (*aesit).Name;
 					if(varpath2.Destination[j].first == "*" || varpath2.Destination[j].first == (*aesit).Name)
 					{
-						nlinfo ("Adding '%s' '%s' in graph to AES-%hu", row[0], row[1], sid);
+						nlinfo ("Adding '%s' '%s' in graph to AES-%hu", row[0], row[1], sid.get());
 						informations.push_back (row[0]);
 						informations.push_back (row[1]);
 					}
@@ -724,11 +747,11 @@ void sendAESInformations (uint16 sid)
 	sqlFlushResult();
 	msgout.serialCont (informations);
 	
-	nlinfo ("Sending all informations about %s AES-%hu (hostedservices, alarms,grapupdate)", (*aesit).Name.c_str(), (*aesit).SId);
+	nlinfo ("Sending all informations about %s AES-%hu (hostedservices, alarms,grapupdate)", (*aesit).Name.c_str(), (*aesit).SId.get());
 	CUnifiedNetwork::getInstance ()->send (sid, msgout);
 }
 
-void rejectAES(uint16 sid, const string &res)
+void rejectAES(TServiceId sid, const string &res)
 {
 	CMessage msgout("REJECTED");
 	msgout.serial ((string &)res);
@@ -736,7 +759,7 @@ void rejectAES(uint16 sid, const string &res)
 }
 
 // i'm connected to a new admin executor service
-static void cbNewAESConnection (const std::string &serviceName, uint16 sid, void *arg)
+static void cbNewAESConnection (const std::string &serviceName, TServiceId sid, void *arg)
 {
 	TSockId from;
 	CCallbackNetBase *cnb = CUnifiedNetwork::getInstance ()->getNetBase (sid, from);
@@ -782,14 +805,14 @@ static void cbNewAESConnection (const std::string &serviceName, uint16 sid, void
 	
 	AdminExecutorServices.push_back (CAdminExecutorService(shard, server, sid));
 
-	nlinfo ("%s-%hu, server name %s, for shard %s connected and added in the list", serviceName.c_str(), sid, server.c_str(), shard.c_str());
+	nlinfo ("%s-%hu, server name %s, for shard %s connected and added in the list", serviceName.c_str(), sid.get(), server.c_str(), shard.c_str());
 	
 	// send him services that should run on this server
 	sendAESInformations (sid);
 }
 
 // i'm disconnected from an admin executor service
-static void cbNewAESDisconnection (const std::string &serviceName, uint16 sid, void *arg)
+static void cbNewAESDisconnection (const std::string &serviceName, TServiceId sid, void *arg)
 {
 	TSockId from;
 	CCallbackNetBase *cnb = CUnifiedNetwork::getInstance ()->getNetBase (sid, from);
@@ -799,11 +822,11 @@ static void cbNewAESDisconnection (const std::string &serviceName, uint16 sid, v
 
 	if (aesit == AdminExecutorServices.end ())
 	{
-		nlwarning ("Disconnection of %s-%hu that is not in my list (%s)", serviceName.c_str (), sid, ia.asString ().c_str ());
+		nlwarning ("Disconnection of %s-%hu that is not in my list (%s)", serviceName.c_str (), sid.get(), ia.asString ().c_str ());
 		return;
 	}
 
-	nlinfo ("%s-%hu, shard name %s, disconnected and removed from the list", serviceName.c_str(), sid, (*aesit).Name.c_str ());
+	nlinfo ("%s-%hu, shard name %s, disconnected and removed from the list", serviceName.c_str(), sid.get(), (*aesit).Name.c_str ());
 
 	// we need to remove pending request
 
@@ -816,7 +839,7 @@ static void cbNewAESDisconnection (const std::string &serviceName, uint16 sid, v
 }
 
 // we receive an explicit registration message from an AES
-void cbRegisterAES(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbRegisterAES(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	if (!AllowExplicitAESRegistration)
 	{
@@ -839,13 +862,13 @@ void cbRegisterAES(CMessage &msgin, const std::string &serviceName, uint16 sid)
 
 	AdminExecutorServices.push_back (CAdminExecutorService(shard, server, sid));
 
-	nlinfo ("%s-%hu, server name %s, for shard %s connected and added in the list", serviceName.c_str(), sid, server.c_str(), shard.c_str());
+	nlinfo ("%s-%hu, server name %s, for shard %s connected and added in the list", serviceName.c_str(), sid.get(), server.c_str(), shard.c_str());
 	
 	// send him services that should run on this server
 	sendAESInformations (sid);
 }
 
-static void cbView (CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbView (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 rid;
 	msgin.serial (rid);
@@ -993,7 +1016,7 @@ void addRequest (const string &rawvarpath, TSockId from)
 					msgout.serial (rid);
 					msgout.serial (subvarpath.Destination[j].second);
 					CUnifiedNetwork::getInstance ()->send ((*aesit).SId, msgout);
-					nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId);
+					nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId.get());
 				}
 			}
 			else if (shard == "*" && server == "#")
@@ -1015,7 +1038,7 @@ void addRequest (const string &rawvarpath, TSockId from)
 						msgout.serial (rid);
 						msgout.serial (subvarpath.Destination[j].second);
 						CUnifiedNetwork::getInstance ()->send ((*aesit).SId, msgout);
-						nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId);
+						nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId.get());
 						
 					}
 					else if (server == "#")
@@ -1060,7 +1083,7 @@ void addRequest (const string &rawvarpath, TSockId from)
 						msgout.serial (rid);
 						msgout.serial (subvarpath.Destination[j].second);
 						CUnifiedNetwork::getInstance ()->send ((*aesit).SId, msgout);
-						nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId);
+						nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId.get());
 
 					}
 					else if (server == "#")
@@ -1100,7 +1123,7 @@ void addRequest (const string &rawvarpath, TSockId from)
 					msgout.serial (rid);
 					msgout.serial (subvarpath.Destination[j].second);
 					CUnifiedNetwork::getInstance ()->send ((*aesit).SId, msgout);
-					nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId);
+					nlinfo ("REQUEST: Sent view '%s' to shard name %s 'AES-%hu'", subvarpath.Destination[j].second.c_str(), (*aesit).Name.c_str(), (*aesit).SId.get());
 				}
 				else
 				{
@@ -1136,7 +1159,7 @@ public:
 	/// Init the service, load the universal time.
 	void init ()
 	{
-		setDefaultEmailParams (ConfigFile.getVar ("SMTPServer").asString (), "", "");
+		setDefaultEmailParams (ConfigFile.getVar ("SMTPServer").asString (), ConfigFile.getVar("DefaultEmailFrom").asString(), "");
 
 		sqlInit ();
 

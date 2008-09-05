@@ -64,7 +64,7 @@ void sortLogFiles( vector<std::string>& filenames )
 	{
 		// Ensure that a log file without number comes *after* the ones with a number
 		string name = string(filenames[i]);
-		unsigned int dotpos = name.find_last_of('.');
+		string::size_type dotpos = name.find_last_of('.');
 		if ( (dotpos!=string::npos) && (dotpos > 2) )
 		{
 			if ( ! (isNumberChar(name[dotpos-1]) && isNumberChar(name[dotpos-2]) && isNumberChar(name[dotpos-3])) )
@@ -79,7 +79,7 @@ void sortLogFiles( vector<std::string>& filenames )
 	{
 		// Set the original names back
 		string name = filenames[i];
-		unsigned int tokenpos = name.find( "ZZZ." );
+		string::size_type tokenpos = name.find( "ZZZ." );
 		if ( tokenpos != string::npos )
 		{
 			name = name.substr( 0, tokenpos ) + name.substr( tokenpos + 3 );
@@ -354,7 +354,8 @@ void	CLogReport::pushLine( const std::string& line, NLMISC::CLog::TLogType onlyT
 
 	// Decode standard log line
 	vector<string> lineTokens;
-	explode( line, " ", lineTokens );
+	explode( line, string(" "), lineTokens );
+
 	if ( lineTokens.size() < LH_NB_FIELDS )
 		return;
 

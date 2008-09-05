@@ -90,7 +90,7 @@ using namespace NLNET;
 
 struct CRequest
 {
-	CRequest(uint32 id, uint16 sid) : Id(id), NbWaiting(0), NbReceived(0), SId(sid)
+	CRequest(uint32 id, TServiceId sid) : Id(id), NbWaiting(0), NbReceived(0), SId(sid)
 	{
 		nldebug ("REQUEST: ++ NbWaiting %d NbReceived %d", NbWaiting, NbReceived);
 		Time = CTime::getSecondsSince1970 ();
@@ -99,7 +99,7 @@ struct CRequest
 	uint32			Id;
 	uint			NbWaiting;
 	uint32			NbReceived;
-	uint16			SId;
+	TServiceId		SId;
 	uint32			Time;	// when the request was ask
 
 	TAdminViewResult Answers;
@@ -114,7 +114,7 @@ struct CService
 
 	string			ShortName;		/// name of the service in short format ("NS" for example)
 	string			LongName;		/// name of the service in long format ("naming_service")
-	uint16			ServiceId;		/// service id of the service.
+	TServiceId		ServiceId;		/// service id of the service.
 	bool			Ready;			/// true if the service is ready
 	bool			Connected;		/// true if the service is connected to the AES
 	vector<CSerialCommand>	Commands;
@@ -131,7 +131,7 @@ struct CService
 		return getServiceUnifiedName();
 	}
 
-	void init(const string &shortName, uint16 serviceId)
+	void init(const string &shortName, TServiceId serviceId)
 	{
 		reset();
 
@@ -145,7 +145,7 @@ struct CService
 		AliasName.clear();
 		ShortName.clear();
 		LongName.clear();
-		ServiceId = 0;
+		ServiceId.set(0);
 		Ready = false;
 		Connected = false;
 		Commands.clear();
@@ -165,7 +165,7 @@ struct CService
 			res = AliasName+"/";
 		}
 		res += ShortName;
-		if(ServiceId != 0)
+		if(ServiceId.get() != 0)
 		{
 			res += "-";
 			res += NLMISC::toString(ServiceId);
@@ -215,7 +215,7 @@ uint32 LastPing = 0;		// contains the date of the last ping sent to the services
 // Alarms
 //
 
-void sendInformations(uint16 sid)
+void sendInformations(TServiceId sid)
 {
 	CMessage msgout("INFO");
 	msgout.serialCont(AllAdminAlarms);
@@ -247,14 +247,14 @@ void sendAdminEmail(const char *format, ...)
 	nlinfo("Forwarded email to AS with '%s'", text);
 }
 
-static void cbAdminEmail(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbAdminEmail(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	string str;
 	msgin.serial(str);
 	sendAdminEmail(str.c_str());
 }
 
-static void cbGraphUpdate(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbGraphUpdate(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	CMessage msgout("GRAPH_UPDATE");
 	uint32 CurrentTime;
@@ -273,9 +273,9 @@ static void cbGraphUpdate(CMessage &msgin, const std::string &serviceName, uint1
 }
 
 // decode a service in a form 'alias/shortname-sid'
-void decodeUnifiedName(const string &unifiedName, string &alias, string &shortName, uint16 &sid)
+void decodeUnifiedName(const string &unifiedName, string &alias, string &shortName, TServiceId &sid)
 {
-	uint pos1 = 0, pos2 = 0;
+	size_t pos1 = 0, pos2 = 0;
 	pos1 = unifiedName.find("/");
 	if (pos1 != string::npos)
 	{
@@ -291,12 +291,12 @@ void decodeUnifiedName(const string &unifiedName, string &alias, string &shortNa
 	if (pos2 != string::npos)
 	{
 		shortName = unifiedName.substr(pos1,pos2-pos1);
-		sid = atoi(unifiedName.substr(pos2+1).c_str());
+		sid.set(atoi(unifiedName.substr(pos2+1).c_str()));
 	}
 	else
 	{
 		shortName = unifiedName.substr(pos1);
-		sid = 0;
+		sid.set(0);
 	}
 
 	if (alias.empty())
@@ -309,7 +309,7 @@ void decodeUnifiedName(const string &unifiedName, string &alias, string &shortNa
 bool getServiceLaunchInfo(const string& unifiedName,string& alias,string& command,string& path,string& arg)
 {
 	string shortName;
-	uint16 sid;
+	TServiceId sid;
 	decodeUnifiedName(unifiedName, alias, shortName, sid);
 	try
 	{
@@ -386,7 +386,7 @@ bool writeServiceLaunchCtrl(const std::string& serviceAlias,const std::string& s
 	return true;
 }
 
-bool writeServiceLaunchCtrl(uint32 serviceId,bool delay,const std::string& txt)
+bool writeServiceLaunchCtrl(TServiceId serviceId,bool delay,const std::string& txt)
 {
 	// run trough the services container looking for a match for the service id that we've been given
 	for (TServices::iterator it= Services.begin(); it!=Services.end(); ++it)
@@ -406,7 +406,7 @@ bool writeServiceLaunchCtrl(uint32 serviceId,bool delay,const std::string& txt)
 	}
 
 	// we failed to find a match for the serviceId that we've been given so complain and return false
-	nlwarning("Failed to write launch_ctrl file for unknown service: %u",serviceId);
+	nlwarning("Failed to write launch_ctrl file for unknown service: %u",serviceId.get());
 	return false;
 }
 
@@ -535,7 +535,7 @@ static void checkPingPong()
 				allPonged = false;
 				if(d > Services[i].LastPing + PingTimeout)
 				{
-					nlwarning("Service %s-%hu seems dead, no answer for the last %d second, I kill it right now and relaunch it in few time", Services[i].LongName.c_str(), Services[i].ServiceId,(uint32)PingTimeout);
+					nlwarning("Service %s-%hu seems dead, no answer for the last %d second, I kill it right now and relaunch it in few time", Services[i].LongName.c_str(), Services[i].ServiceId.get(),(uint32)PingTimeout);
 					Services[i].AutoReconnect = false;
 					Services[i].Relaunch = true;
 					abortProgram(Services[i].PId);
@@ -591,7 +591,7 @@ static void checkShutdownRequest()
 	}
 }
 
-static void cbAdminPong(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbAdminPong(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	for(uint i = 0; i < Services.size(); i++)
 	{
@@ -599,13 +599,13 @@ static void cbAdminPong(CMessage &msgin, const std::string &serviceName, uint16 
 		{
 			nlinfo("receive pong");
 			if(Services[i].LastPing == 0)
-				nlwarning("Received a pong from service %s-%hu but we didn't expect a pong from it", serviceName.c_str(), sid);
+				nlwarning("Received a pong from service %s-%hu but we didn't expect a pong from it", serviceName.c_str(), sid.get());
 			else
 				Services[i].LastPing = 0;
 			return;
 		}
 	}
-	nlwarning("Received a pong from service %s-%hu that is not in my service list", serviceName.c_str(), sid);
+	nlwarning("Received a pong from service %s-%hu that is not in my service list", serviceName.c_str(), sid.get());
 }
 
 
@@ -781,7 +781,7 @@ void cleanRequests()
 				msgout.serialCont(Requests[i].Answers[j].Values);
 			}
 
-			if (Requests[i].SId == 0)
+			if (Requests[i].SId == TServiceId(0))
 			{
 				nlinfo("REQUEST: Receive an answer for the fake request %d with %d answers", Requests[i].Id, Requests[i].Answers.size());
 				for (uint j = 0; j < Requests[i].Answers.size(); j++)
@@ -826,7 +826,7 @@ void cleanRequests()
 void findServices(const string &name, vector<TServices::iterator> &services)
 {
 	string alias, shortName;
-	uint16 sid;
+	TServiceId sid;
 	decodeUnifiedName(name, alias, shortName, sid);
 
 	services.clear();
@@ -857,7 +857,7 @@ void findServices(const string &name, vector<TServices::iterator> &services)
 bool isRegisteredService(const string &name)
 {
 	string alias, shortName;
-	uint16 sid;
+	TServiceId sid;
 	decodeUnifiedName(name, alias, shortName, sid);
 
 	for (uint i = 0; i != RegisteredServices.size(); i++)
@@ -866,7 +866,7 @@ bool isRegisteredService(const string &name)
 	return false;
 }
 
-TServices::iterator findService(uint32 sid, bool asrt = true)
+TServices::iterator findService(TServiceId sid, bool asrt = true)
 {
 	TServices::iterator sit;
 	for (sit = Services.begin(); sit != Services.end(); sit++)
@@ -931,7 +931,7 @@ void treatRequestForRunnignService(uint32 rid, TServices::iterator sit, const st
 		CMessage msgout("GET_VIEW");
 		msgout.serial(rid);
 		msgout.serial(const_cast<string&>(viewStr));
-		nlassert(sit->ServiceId);
+		nlassert(sit->ServiceId.get());
 		CUnifiedNetwork::getInstance()->send(sit->ServiceId, msgout);
 		nlinfo("REQUEST: Sent view '%s' to service '%s'", viewStr.c_str(), sit->toString().c_str());
 	}
@@ -961,7 +961,7 @@ void treatRequestForOfflineService(uint32 rid, const string& serviceName, const 
 	
 	for (uint k = 0; k < subvarpath.Destination.size(); k++)
 	{
-		uint pos = subvarpath.Destination[k].first.find("=");
+		size_t pos = subvarpath.Destination[k].first.find("=");
 		if (pos != string::npos)
 			varNames.push_back(subvarpath.Destination[k].first.substr(0, pos));
 		else
@@ -1076,9 +1076,9 @@ void addRequestForNamedService(uint32 rid, const string& service, const string& 
 	}
 }							
 
-void addRequest(uint32 rid, const string &rawvarpath, uint16 sid)
+void addRequest(uint32 rid, const string &rawvarpath, TServiceId sid)
 {
-	nlinfo("REQUEST: addRequest from %hu: '%s'", sid, rawvarpath.c_str());
+	nlinfo("REQUEST: addRequest from %hu: '%s'", sid.get(), rawvarpath.c_str());
 
 	string str;
 	CLog logDisplayVars;
@@ -1121,47 +1121,47 @@ void addRequest(uint32 rid, const string &rawvarpath, uint16 sid)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void cbServiceIdentification(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbServiceIdentification(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
-	if (sid >= Services.size())
+	if (sid.get() >= Services.size())
 	{
-		nlwarning("Identification of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Identification of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
-	if (!Services[sid].Connected)
+	if (!Services[sid.get()].Connected)
 	{
-		nlwarning("Identification of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Identification of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
-	msgin.serial(Services[sid].AliasName, Services[sid].LongName, Services[sid].PId);
-	msgin.serialCont(Services[sid].Commands);
-	nlinfo("Received service identification: Sid=%-3i Alias='%s' LongName='%s' ShortName='%s' PId=%u",sid ,Services[sid].AliasName.c_str(),Services[sid].LongName.c_str(),serviceName.c_str(),Services[sid].PId);
+	msgin.serial(Services[sid.get()].AliasName, Services[sid.get()].LongName, Services[sid.get()].PId);
+	msgin.serialCont(Services[sid.get()].Commands);
+	nlinfo("Received service identification: Sid=%-3i Alias='%s' LongName='%s' ShortName='%s' PId=%u",sid.get(),Services[sid.get()].AliasName.c_str(),Services[sid.get()].LongName.c_str(),serviceName.c_str(),Services[sid.get()].PId);
 
 	// if there's an alias, it means that it s me that launch the services, autoreconnect it
-	if (!Services[sid].AliasName.empty())
-		Services[sid].AutoReconnect = true;
+	if (!Services[sid.get()].AliasName.empty())
+		Services[sid.get()].AutoReconnect = true;
 
-	nlinfo("*:*:%d is identified to be '%s' '%s' pid:%d", Services[sid].ServiceId, Services[sid].getServiceUnifiedName().c_str(), Services[sid].LongName.c_str(), Services[sid].PId);
+	nlinfo("*:*:%d is identified to be '%s' '%s' pid:%d", Services[sid.get()].ServiceId.get(), Services[sid.get()].getServiceUnifiedName().c_str(), Services[sid.get()].LongName.c_str(), Services[sid.get()].PId);
 }
 
-static void cbServiceReady(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbServiceReady(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
-	if (sid >= Services.size())
+	if (sid.get() >= Services.size())
 	{
-		nlwarning("Ready of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Ready of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
-	if (!Services[sid].Connected)
+	if (!Services[sid.get()].Connected)
 	{
-		nlwarning("Ready of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Ready of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
-	nlinfo("*:*:%d is ready '%s'", Services[sid].ServiceId, Services[sid].getServiceUnifiedName().c_str());
-	Services[sid].Ready = true;
+	nlinfo("*:*:%d is ready '%s'", Services[sid.get()].ServiceId.get(), Services[sid.get()].getServiceUnifiedName().c_str());
+	Services[sid.get()].Ready = true;
 }
 
 static void getRegisteredServicesFromCfgFile()
@@ -1171,14 +1171,14 @@ static void getRegisteredServicesFromCfgFile()
 	if (ptr!=NULL)
 	{
 		// the variable exists so extract the service list...
-		for (sint32 i=0;i<ptr->size();++i)
+		for (uint32 i=0;i<ptr->size();++i)
 		{
 			RegisteredServices.push_back(ptr->asString(i));
 		}
 	}
 }
 
-static void cbAESInfo(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbAESInfo(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	nlinfo("Updating all informations for AES and hosted service");
 
@@ -1212,7 +1212,7 @@ static void cbAESInfo(CMessage &msgin, const std::string &serviceName, uint16 si
 
 CVariable<string> ShardName("aes","ShardName","the shard name to send to the AS in explicit registration","local",0,true);
 CVariable<bool> UseExplicitAESRegistration("aes","UseExplicitAESRegistration","flag to allow AES services to register explicitly if automatic registration fails",false,0,true);
-static void cbRejected(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbRejected(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	if (!UseExplicitAESRegistration)
 	{
@@ -1241,7 +1241,7 @@ static void cbRejected(CMessage &msgin, const std::string &serviceName, uint16 s
 	}
 }
 
-static void cbView(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbView(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	// receive an view answer from the service
 	TServices::iterator sit = findService(sid);
@@ -1295,7 +1295,7 @@ static void cbView(CMessage &msgin, const std::string &serviceName, uint16 sid)
 }
 
 
-static void cbGetView(CMessage &msgin, const std::string &serviceName, uint16 sid)
+static void cbGetView(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 rid;
 	string rawvarpath;
@@ -1306,53 +1306,53 @@ static void cbGetView(CMessage &msgin, const std::string &serviceName, uint16 si
 	addRequest(rid, rawvarpath, sid);
 }
 
-void serviceConnection(const std::string &serviceName, uint16 sid, void *arg)
+void serviceConnection(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	// don't add AS
 	if (serviceName == "AS")
 		return;
 
-	if (sid >= Services.size())
+	if (sid.get() >= Services.size())
 	{
-		Services.resize(sid+1);
+		Services.resize(sid.get()+1);
 	}
 
-	Services[sid].init(serviceName, sid);
+	Services[sid.get()].init(serviceName, sid);
 
 	sendInformations(sid);
 
-	nlinfo("%s-%hu connected", Services[sid].ShortName.c_str(), Services[sid].ServiceId);
+	nlinfo("%s-%hu connected", Services[sid.get()].ShortName.c_str(), Services[sid.get()].ServiceId.get());
 
 }
 
-void serviceDisconnection(const std::string &serviceName, uint16 sid, void *arg)
+void serviceDisconnection(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	// don't remove AS
 	if (serviceName == "AS")
 		return;
 
-	if (sid >= Services.size())
+	if (sid.get() >= Services.size())
 	{
-		nlwarning("Disconnection of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Disconnection of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
-	if (!Services[sid].Connected)
+	if (!Services[sid.get()].Connected)
 	{
-		nlwarning("Disconnection of an unknown service %s-%hu", serviceName.c_str(), sid);
+		nlwarning("Disconnection of an unknown service %s-%hu", serviceName.c_str(), sid.get());
 		return;
 	}
 
 	// we need to remove pending request
 
-	for(uint i = 0; i < Services[sid].WaitingRequestId.size(); i++)
+	for(uint i = 0; i < Services[sid.get()].WaitingRequestId.size(); i++)
 	{
-		subRequestWaitingNb(Services[sid].WaitingRequestId[i]);
+		subRequestWaitingNb(Services[sid.get()].WaitingRequestId[i]);
 	}
 
-	nlinfo("%s-%hu disconnected", Services[sid].ShortName.c_str(), Services[sid].ServiceId);
+	nlinfo("%s-%hu disconnected", Services[sid.get()].ShortName.c_str(), Services[sid.get()].ServiceId.get());
 
-	if (Services[sid].Relaunch)
+	if (Services[sid.get()].Relaunch)
 	{
 		// we have to relaunch it in time because ADMIN asked it
 		sint32 delay = IService::getInstance()->ConfigFile.exists("RestartDelay")? IService::getInstance()->ConfigFile.getVar("RestartDelay").asInt(): 5;
@@ -1360,20 +1360,20 @@ void serviceDisconnection(const std::string &serviceName, uint16 sid, void *arg)
 		// must restart it so if delay is -1, set it by default to 5 seconds
 		if (delay == -1) delay = 5;
 
-		startService(delay, Services[sid].getServiceUnifiedName());
+		startService(delay, Services[sid.get()].getServiceUnifiedName());
 	}
-	else if (Services[sid].AutoReconnect)
+	else if (Services[sid.get()].AutoReconnect)
 	{
 		// we have to relaunch it
 		sint32 delay = IService::getInstance()->ConfigFile.exists("RestartDelay")? IService::getInstance()->ConfigFile.getVar("RestartDelay").asInt(): 5;
 		if (delay >= 0)
 		{
-			startService(delay, Services[sid].getServiceUnifiedName());
+			startService(delay, Services[sid.get()].getServiceUnifiedName());
 		}
 		else
 			nlinfo("Don't restart the service because RestartDelay is %d", delay);
 
-		sendAdminEmail("Server %s service '%s' : Stopped, auto reconnect in %d seconds", CInetAddress::localHost().hostName().c_str(), Services[sid].getServiceUnifiedName().c_str(), delay);
+		sendAdminEmail("Server %s service '%s' : Stopped, auto reconnect in %d seconds", CInetAddress::localHost().hostName().c_str(), Services[sid.get()].getServiceUnifiedName().c_str(), delay);
 	}
 
 	// if the appropriate cfg file variable is set then we kill the service brutally on disconnection - this
@@ -1381,10 +1381,10 @@ void serviceDisconnection(const std::string &serviceName, uint16 sid, void *arg)
 	// manual intervention on the machine
 	if (KillServicesOnDisconnect)
 	{
-		killProgram(Services[sid].PId);
+		killProgram(Services[sid.get()].PId);
 	}
 
-	Services[sid].reset();
+	Services[sid.get()].reset();
 }
 
 
@@ -1417,14 +1417,14 @@ static TUnifiedCallbackItem CallbackArray[] =
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void ASConnection(const string &serviceName, uint16 sid, void *arg)
+static void ASConnection(const string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Connected to %s-%hu", serviceName.c_str(), sid);
+	nlinfo("Connected to %s-%hu", serviceName.c_str(), sid.get());
 }
 
-static void ASDisconnection(const string &serviceName, uint16 sid, void *arg)
+static void ASDisconnection(const string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Disconnected to %s-%hu", serviceName.c_str(), sid);
+	nlinfo("Disconnected to %s-%hu", serviceName.c_str(), sid.get());
 }
 
 
@@ -1499,7 +1499,7 @@ NLMISC_COMMAND(getViewAES, "send a view and receive an array as result", "<varpa
 	}
 	
 	static uint32 requestId=0;
-	addRequest(requestId++, cmd, 0);
+	addRequest(requestId++, cmd, TServiceId(0));
 
 	return true;
 }
@@ -1528,7 +1528,7 @@ NLMISC_COMMAND(displayRequests, "display all pending requests", "")
 	log.displayNL("Display %d pending requests", Requests.size());
 	for (uint i = 0 ; i < Requests.size(); i++)
 	{
-		log.displayNL("id: %d wait: %d recv: %d sid: %hu", Requests[i].Id, Requests[i].NbWaiting, Requests[i].NbReceived, Requests[i].SId);
+		log.displayNL("id: %d wait: %d recv: %d sid: %hu", Requests[i].Id, Requests[i].NbWaiting, Requests[i].NbReceived, Requests[i].SId.get());
 	}
 	log.displayNL("End of display pending requests");
 
@@ -1741,17 +1741,17 @@ NLMISC_COMMAND( displayLogReport, "Display summary of a part of the log report b
 {
 	if ( MakingLogTask.isRunning() )
 	{
-		uint currentFile, totalFiles;
-		MainLogReport.getProgress( currentFile, totalFiles );
+		//uint currentFile, totalFiles;
+		//MainLogReport.getProgress( currentFile, totalFiles );
 		log.displayNL( "Please wait until the completion of the makeLogReport task, or stop it" );
-		log.displayNL( "Currently processing file %u of %u", currentFile, totalFiles );
+		//log.displayNL( "Currently processing file %u of %u", currentFile, totalFiles );
 		return true;
 	}
 	log.displayNL( MakingLogTask.isComplete() ? "Full stats:" : "Temporary stats" );
 	if ( args.empty() )
 	{
 		// Summary
-		MainLogReport.report( &log );
+		//MainLogReport.report( &log );
 	}
 	else if ( (! args[0].empty()) && (args[0] == "-p") )
 	{
@@ -1762,12 +1762,12 @@ NLMISC_COMMAND( displayLogReport, "Display summary of a part of the log report b
 			return false;
 		}
 		uint pageNum = atoi( args[1].substr( 1 ).c_str() );
-		MainLogReport.reportPage( pageNum, &log );
+		//MainLogReport.reportPage( pageNum, &log );
 	}
 	else
 	{
 		// By service
-		MainLogReport.reportByService( args[0], &log );
+		//MainLogReport.reportByService( args[0], &log );
 	}
 
 	return true;
