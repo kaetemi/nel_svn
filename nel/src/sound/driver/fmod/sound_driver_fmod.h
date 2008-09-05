@@ -131,16 +131,15 @@ public:
 	/// Destroy a music channel
 	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
 	
-	/** Get music info. Returns false if the song is not found or the function is not implemented. 
-	 *  If the song has no name, result is filled with the filename.
+	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
 	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
 
-	// also check that the fader still exist (avoid any free problem)
-	void	markMusicFaderEnded(void *stream, void *fader);
+	// also check that the channel still exist (avoid any free problem)
+	void markMusicChannelEnded(void *stream, CMusicChannelFMod *musicChannel);
 
 private:
 
@@ -160,6 +159,8 @@ private:
 	virtual void	startBench();
 	virtual void	endBench();
 	virtual void	displayBench(NLMISC::CLog *log);
+
+	void updateMusic();
 
 
 	/// The string mapper provided by client code

@@ -72,7 +72,7 @@ CMusicChannelXAudio2::~CMusicChannelXAudio2()
  */
 bool CMusicChannelXAudio2::play(const std::string &filepath, bool async, bool loop)
 {
-	nlinfo(NLSOUND_XAUDIO2_PREFIX "play %s %u", filepath.c_str(), (uint32)loop);
+	// nlinfo(NLSOUND_XAUDIO2_PREFIX "play %s %u", filepath.c_str(), (uint32)loop);
 
 	HRESULT hr;
 
@@ -94,10 +94,10 @@ bool CMusicChannelXAudio2::play(const std::string &filepath, bool async, bool lo
 		XAUDIO2_VOICE_DETAILS voice_details;
 		_SoundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
-		nlinfo(NLSOUND_XAUDIO2_PREFIX "Creating music voice with %u channels, %u bits per sample, %u samples per sec, "
-			"on mastering voice with %u channels, %u samples per sec", 
-			(uint32)wfe.nChannels, (uint32)wfe.wBitsPerSample, (uint32)wfe.nSamplesPerSec, 
-			(uint32)voice_details.InputChannels, (uint32)voice_details.InputSampleRate);
+		// nlinfo(NLSOUND_XAUDIO2_PREFIX "Creating music voice with %u channels, %u bits per sample, %u samples per sec, "
+		// 	"on mastering voice with %u channels, %u samples per sec", 
+		// 	(uint32)wfe.nChannels, (uint32)wfe.wBitsPerSample, (uint32)wfe.nSamplesPerSec, 
+		// 	(uint32)voice_details.InputChannels, (uint32)voice_details.InputSampleRate);
 
 		if (FAILED(hr = _SoundDriver->getXAudio2()->CreateSourceVoice(&_SourceVoice, &wfe, XAUDIO2_VOICE_NOPITCH, 1.0f, this, NULL, NULL)))
 		{ 
@@ -153,11 +153,11 @@ bool CMusicChannelXAudio2::isEnded()
 		_SourceVoice->GetState(&voice_state);
 		if (voice_state.BuffersQueued)
 		{
-			nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> voice_state.BuffersQueued, wait ...");
+			// nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> voice_state.BuffersQueued, wait ...");
 			return false;
 		}
 	}
-	nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> stop()");
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "isEnded() -> stop()");
 	stop();
 	return true;
 }
@@ -217,7 +217,7 @@ void CMusicChannelXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
 			}
 			else
 			{
-				nldebug(NLSOUND_XAUDIO2_PREFIX "!length -> delete _MusicBuffer");
+				// nldebug(NLSOUND_XAUDIO2_PREFIX "!length -> delete _MusicBuffer");
 				// set member var to null before deleting it to avoid crashing main thread
 				IMusicBuffer *music_buffer = _MusicBuffer;
 				_MusicBuffer = NULL; delete music_buffer;

@@ -529,43 +529,4 @@ bool CSoundDriverAL::readRawBuffer( IBuffer *destbuffer, const std::string &name
 	return true;
 }
 
-bool CSoundDriverAL::playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop) {
-	return false;
-}
-
-bool CSoundDriverAL::playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop) {
-	return false;
-}
-
-void CSoundDriverAL::stopMusic(uint channel, uint xFadeTime) {
-}
-
-
-void CSoundDriverAL::pauseMusic(uint channel) {
-}
-
-
-void CSoundDriverAL::resumeMusic(uint channel) {
-}
-
-
-bool CSoundDriverAL::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize) {
-	result = CFile::getFilenameWithoutExtension (filename);
-	return true;
-}
-
-
-bool CSoundDriverAL::isMusicEnded(uint channel) {
-	return true;
-}
-
-
-float CSoundDriverAL::getMusicLength(uint channel) {
-	return 0.0f;
-}
-
-
-void CSoundDriverAL::setMusicVolume(uint channel, float gain) {
-}
-
 } // NLSOUND

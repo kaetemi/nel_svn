@@ -111,15 +111,19 @@ public:
 	LPKSPROPERTYSET		createPropertySet(CSourceDSound *source);
 #endif
 
-	virtual bool	playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime= 0, bool loop=true);
-	virtual bool	playMusicAsync(uint channel, const std::string &path, uint xFadeTime= 0, uint fileOffset=0, uint fileSize= 0, bool loop=true);
-	virtual void	stopMusic(uint channel, uint xFadeTime);
-	virtual void	pauseMusic(uint channel);
-	virtual void	resumeMusic(uint channel);
-	virtual bool	isMusicEnded(uint channel);
-	virtual float	getMusicLength(uint channel);
-	virtual void	setMusicVolume(uint channel, float gain);
-	virtual bool	getSongTitle(const std::string &filename, std::string &result, uint fileOffset=0, uint fileSize=0);
+	/// Create a music channel, destroy with destroyMusicChannel
+	virtual IMusicChannel *createMusicChannel() { return NULL; }
+
+	/// Destroy a music channel
+	virtual void destroyMusicChannel(IMusicChannel *musicChannel) { }
+	
+	/** Get music info. Returns false if the song is not found or the function is not implemented. 
+	 *  If the song has no name, result is filled with the filename.
+	 *  \param filepath path to file, CPath::lookup done by driver
+	 *  \param artist returns the song artist (empty if not available)
+	 *  \param title returns the title (empty if not available)
+	 */
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 
 private:
 

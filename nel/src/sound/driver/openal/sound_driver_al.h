@@ -142,15 +142,19 @@ public:
 
 	/// \name Music
 	// @{
-	virtual bool playMusic(uint channel, NLMISC::CIFile &file, uint xFadeTime, bool loop);
-	virtual bool playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop);
-	virtual void stopMusic(uint channel, uint xFadeTime);
-	virtual void pauseMusic(uint channel);
-	virtual void resumeMusic(uint channel);
-	virtual bool getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize);
-	virtual bool isMusicEnded(uint channel);
-	virtual float getMusicLength(uint channel);
-	virtual void setMusicVolume(uint channel, float gain);
+	/// Create a music channel, destroy with destroyMusicChannel
+	virtual IMusicChannel *createMusicChannel() { return NULL; }
+
+	/// Destroy a music channel
+	virtual void destroyMusicChannel(IMusicChannel *musicChannel) { }
+	
+	/** Get music info. Returns false if the song is not found or the function is not implemented. 
+	 *  If the song has no name, result is filled with the filename.
+	 *  \param filepath path to file, CPath::lookup done by driver
+	 *  \param artist returns the song artist (empty if not available)
+	 *  \param title returns the title (empty if not available)
+	 */
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 	// @}
 
 public:

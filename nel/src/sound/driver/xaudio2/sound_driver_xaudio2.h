@@ -162,8 +162,7 @@ public:
 	/// Destroy a music channel
 	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
 	
-	/** Get music info. Returns false if the song is not found or the function is not implemented. 
-	 *  If the song has no name, result is filled with the filename.
+	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)

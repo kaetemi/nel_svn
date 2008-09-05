@@ -166,13 +166,12 @@ public:
 	/// Destroy a music channel
 	virtual void destroyMusicChannel(IMusicChannel *musicChannel) =0;
 	
-	/** Get music info. Returns false if the song is not found or the function is not implemented. 
-	 *  If the song has no name, result is filled with the filename.
+	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) =0;
 
 	/// Destructor
 	virtual	~ISoundDriver() {}

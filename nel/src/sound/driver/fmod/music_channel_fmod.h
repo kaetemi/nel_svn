@@ -53,15 +53,15 @@ protected:
 	/// Volume set by user
 	float _Gain;
 	/// The FMod stream
-	FSOUND_STREAM *FModMusicStream;	
+	FSOUND_STREAM *_MusicStream;	
 	/// the RAM buffer (representation of a MP3 file, only for sync play)
-	uint8 *FModMusicBuffer;	
-	/// channel played for music. CAN BE -1 while FModMusicStream!=NULL in case of Async Loading
-	sint FModMusicChannel;
+	uint8 *_MusicBuffer;	
+	/// channel played for music. CAN BE -1 while _MusicStream!=NULL in case of Async Loading
+	sint _MusicChannel;
 	/// true if the fmod end callback said the stream is ended
-	bool CallBackEnded;	
+	bool _CallBackEnded;	
 	/// see stopMusicFader()
-	std::list<FSOUND_STREAM*> _FModMusicStreamWaitingForClose;
+	std::list<FSOUND_STREAM *> _WaitingForClose;
 	/// Sound driver that created this
 	CSoundDriverFMod *_SoundDriver;
 
@@ -71,7 +71,22 @@ public:
 	virtual ~CMusicChannelFMod();
 
 	/// From callback
-	void markMusicFaderEnded(void *stream, void *fader);
+	void markMusicChannelEnded(void *stream);
+
+	/// Play async, if bnp give path of bnp and position and size of file inside, else just path to file.
+	bool playAsync(const std::string &filepath, bool loop, uint fileOffset = 0, uint fileSize = 0);
+
+	/// Play from memory.
+	bool playSync(const std::string &filepath, bool loop);
+
+	/// Play the stream
+	bool playStream();
+
+	/// updateWaitingForClose
+	void update();
+
+	/// Close async streams
+	void updateWaitingForClose();
 
 	/** Play some music (.ogg etc...)
 	 *	NB: if an old music was played, it is first stop with stopMusic()

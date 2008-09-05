@@ -58,7 +58,7 @@ IMusicBuffer::~IMusicBuffer()
 
 IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &filepath, bool async, bool loop)
 {
-	string lookup = CPath::lookup(filepath);
+	string lookup = CPath::lookup(filepath, false);
 	if (lookup.empty())
 	{ 
 		nlwarning("Music file %s does not exist!", filepath.c_str());
@@ -100,7 +100,7 @@ IMusicBuffer *IMusicBuffer::createMusicBuffer(const std::string &type, NLMISC::I
 
 bool IMusicBuffer::getInfo(const std::string &filepath, std::string &artist, std::string &title)
 {
-	string lookup = CPath::lookup(filepath);
+	string lookup = CPath::lookup(filepath, false);
 	if (lookup.empty())
 	{ 
 		nlwarning("Music file %s does not exist!", filepath.c_str());

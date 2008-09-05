@@ -35,6 +35,7 @@
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 #include "nel/misc/dynloadlib.h"
+#include "nel/misc/big_file.h"
 #include "sound_driver_fmod.h"
 #include "listener_fmod.h"
 #include "music_channel_fmod.h"
@@ -394,7 +395,7 @@ void CSoundDriverFMod::commit3DChanges()
 	update();
 
 	// update the music (XFade etc...)
-	//updateMusic();
+	updateMusic();
 
 	// update 3D change in FMod
 	FSOUND_Update();
@@ -484,184 +485,84 @@ void CSoundDriverFMod::destroyMusicChannel(IMusicChannel *musicChannel)
 	delete musicChannel;
 }
 
+bool getTag (std::string &result, const char *tag, FSOUND_STREAM *stream)
+{
+	void *name;
+	int size;
+	char tmp[512];
+	int types[]=
+	{
+		FSOUND_TAGFIELD_ID3V1,
+		FSOUND_TAGFIELD_ID3V2,
+		FSOUND_TAGFIELD_VORBISCOMMENT,
+	};
+	uint i;
+	for (i=0; i<sizeof(types)/sizeof(int); i++)
+	{
+		if (FSOUND_Stream_FindTagField(stream, types[i], tag, &name, &size))
+		{
+			strncpy (tmp, (const char*)name, min((int)sizeof(tmp),size));
+			result = trim(string(tmp));
+			return true;
+		}
+	}
+	return false;
+}
+
 /** Get music info. Returns false if the song is not found or the function is not implemented. 
- *  If the song has no name, result is filled with the filename.
  *  \param filepath path to file, CPath::lookup done by driver
  *  \param artist returns the song artist (empty if not available)
  *  \param title returns the title (empty if not available)
  */
 bool CSoundDriverFMod::getMusicInfo(const std::string &filepath, std::string &artist, std::string &title)
 {
-	// add support for additional non-standard music file types info here
+	/* Open a stream, get the tag if it exists, close the stream */
+	string pathName = CPath::lookup(filepath, false);
+	uint32 fileOffset = 0, fileSize = 0;
+	if (pathName.empty())
+	{
+		nlwarning("NLSOUND FMod Driver: Music file %s not found!", filepath.c_str());
+		return false;
+	}
+	// if the file is in a bnp
+	if (pathName.find('@') != string::npos)
+	{
+		if (CBigFile::getInstance().getFileInfo(pathName, fileSize, fileOffset))
+		{
+			// set pathname to bnp
+			pathName = pathName.substr(0, pathName.find('@'));			
+		}
+		else
+		{
+			nlwarning("NLSOUND FMod Driver: BNP BROKEN");
+			return false;
+		}
+	}
+
+	FSOUND_STREAM *stream = FSOUND_Stream_Open((const char *)CPath::lookup(filepath, false).c_str(), FSOUND_2D, (sint)fileOffset, (sint)fileSize);
+	if (stream)
+	{
+		getTag(artist, "ARTIST", stream);
+		getTag(title, "TITLE", stream);
+		FSOUND_Stream_Close(stream);
+		return true;
+	}
+	artist.clear();
+	title.clear();
 	return false;
 }
 
-//// ***************************************************************************
-//bool	CSoundDriverFMod::playMusic(uint channel, NLMISC::CIFile &fileIn, uint xFadeTime, bool loop)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return false;
-//
-//	return _MusicChannel[channel].playMusic(fileIn, xFadeTime, loop);
-//}
-//
-//// ***************************************************************************
-//bool	CSoundDriverFMod::playMusicAsync(uint channel, const std::string &path, uint xFadeTime, uint fileOffset, uint fileSize, bool loop)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return false;
-//
-//	return _MusicChannel[channel].playMusicAsync(path, xFadeTime, fileOffset, fileSize, loop);
-//}
-//
-//// ***************************************************************************
-//void	CSoundDriverFMod::stopMusic(uint channel, uint xFadeTime)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return;
-//
-//	_MusicChannel[channel].stopMusic(xFadeTime);
-//}
-//
-//// ***************************************************************************
-//void	CSoundDriverFMod::pauseMusic(uint channel)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return;
-//
-//	_MusicChannel[channel].pauseMusic();
-//}
-//
-//// ***************************************************************************
-//void	CSoundDriverFMod::resumeMusic(uint channel)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return;
-//
-//	_MusicChannel[channel].resumeMusic();
-//}
-//
-//// ***************************************************************************
-//bool	CSoundDriverFMod::isMusicEnded(uint channel)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return false;
-//
-//	return _MusicChannel[channel].isMusicEnded();
-//}
-//
-//// ***************************************************************************
-//float	CSoundDriverFMod::getMusicLength(uint channel)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return 0.f;
-//
-//	return _MusicChannel[channel].getMusicLength();
-//}
-//
-//// ***************************************************************************
-//void	CSoundDriverFMod::setMusicVolume(uint channel, float gain)
-//{
-//	if(!_FModOk || channel>=NumMusicChannel)
-//		return;
-//
-//	_MusicChannel[channel].setMusicVolume(gain);
-//}
-//
-//// ***************************************************************************
-//void	CSoundDriverFMod::updateMusic()
-//{
-//	// get the dt for fade
-//	sint64	t1= CTime::getLocalTime();
-//	float	dt;
-//	if(_LastXFadeTime==0)
-//		dt= 0;
-//	else
-//		dt= (t1-_LastXFadeTime)/1000.f;
-//	_LastXFadeTime= t1;
-//
-//	// update all channel
-//	for(uint i=0;i<NumMusicChannel;i++)
-//		_MusicChannel[i].updateMusic(dt);
-//}
-//
-//// ***************************************************************************
-//
-//bool getTag (std::string &result, const char *tag, FSOUND_STREAM *stream)
-//{
-//	void *name;
-//	int size;
-//	char tmp[512];
-//	int types[]=
-//	{
-//		FSOUND_TAGFIELD_ID3V1,
-//		FSOUND_TAGFIELD_ID3V2,
-//		FSOUND_TAGFIELD_VORBISCOMMENT,
-//	};
-//	uint i;
-//	for (i=0; i<sizeof(types)/sizeof(int); i++)
-//	{
-//		if (FSOUND_Stream_FindTagField(stream, types[i], tag, &name, &size))
-//		{
-//			strncpy (tmp, (const char*)name, min((int)sizeof(tmp),size));
-//			result = trim(string(tmp));
-//			return true;
-//		}
-//	}
-//	return false;
-//}
-//
-//bool	CSoundDriverFMod::getSongTitle(const std::string &filename, std::string &result, uint fileOffset, uint fileSize)
-//{
-//	/* Open a stream, get the tag if it exists, close the stream */
-//	FSOUND_STREAM *stream = FSOUND_Stream_Open (filename.c_str(), FSOUND_2D, fileOffset, fileSize);
-//	if (stream)
-//	{
-//		string artist;
-//		string title;
-//		getTag (artist, "ARTIST", stream);
-//		getTag (title, "TITLE", stream);
-//		if (title.empty())
-//			result = CFile::getFilenameWithoutExtension (filename);
-//		else
-//		{
-//			if (artist.empty())
-//				result = title;
-//			else
-//				result = artist+" - "+title;
-//		}
-//
-//		/*
-//		int size;
-//		if (FSOUND_Stream_GetNumTagFields(stream, &size))
-//		{
-//			int i;
-//			for (i=0; i<size; i++)
-//			{
-//				int type;
-//				char *name;
-//				void *value;
-//				int length;
-//				if (FSOUND_Stream_GetTagField(stream, i, &type, &name, &value, &length))
-//				{
-//					int toto = 0;
-//				}
-//			}
-//		}*/
-//
-//		FSOUND_Stream_Close(stream);
-//		return true;
-//	}
-//	result ="???";
-//	return false;
-//}
-
-// ***************************************************************************
-void	CSoundDriverFMod::markMusicFaderEnded(void *stream, void *fader)
+void CSoundDriverFMod::updateMusic()
 {
 	set<CMusicChannelFMod *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
-	for (; it != end; ++it) (*it)->markMusicFaderEnded(stream, fader);
+	for (; it != end; ++it) (*it)->update();
 }
 
+void CSoundDriverFMod::markMusicChannelEnded(void *stream, CMusicChannelFMod *musicChannel)
+{
+	// verify if it exists
+	set<CMusicChannelFMod *>::iterator it(_MusicChannels.find(musicChannel));
+	if (it != _MusicChannels.end()) musicChannel->markMusicChannelEnded(stream);
+}
 
 } // NLSOUND

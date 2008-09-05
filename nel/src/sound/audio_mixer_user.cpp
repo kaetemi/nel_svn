@@ -2291,6 +2291,7 @@ bool	CAudioMixerUser::playMusicChannel(TMusicChannel chan, const std::string &fi
 {
 	if (_MusicChannelFaders[chan].isInitOk())
 		return _MusicChannelFaders[chan].play(fileName, xFadeTime, async, loop);
+	return false;
 }
 
 // ***************************************************************************

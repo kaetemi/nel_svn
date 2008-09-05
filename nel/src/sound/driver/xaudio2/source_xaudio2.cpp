@@ -308,7 +308,7 @@ bool CSourceXAudio2::play()
 			}
 			if (!_SourceVoice) 
 			{
-				nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
+				// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
 				_SourceVoice = createSourceVoice(_StaticBuffer->getFormat());
 				if (!_SourceVoice) return false; // fail
 				_Format = _StaticBuffer->getFormat();
