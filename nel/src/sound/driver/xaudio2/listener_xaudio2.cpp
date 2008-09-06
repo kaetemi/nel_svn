@@ -54,9 +54,12 @@ namespace NLSOUND {
 
 CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _OutputVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), 
-_DopplerScaler(1.0f), _DistanceScaler(1.0f), _ReverbApo(NULL), 
+_DopplerScaler(1.0f), _ReverbApo(NULL), 
 _EaxEnvironment(CEaxXAudio2::getInvalidEnvironmentId()), 
 _ReverbVoice(NULL), _SampleVoice(NULL)
+#if MANUAL_ROLLOFF == 0
+, _DistanceScaler(1.0f)
+#endif
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CListenerXAudio2");
 
@@ -159,7 +162,7 @@ void CListenerXAudio2::release()
 /// Set the position vector (default: (0,0,0)) (3D mode only)
 void CListenerXAudio2::setPos(const NLMISC::CVector& pos)
 {
-	_Pos = pos; // getPos() sucks
+	_Pos = pos;
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Listener.Position, pos);
 }
 
@@ -182,14 +185,6 @@ void CListenerXAudio2::getVelocity(NLMISC::CVector& vel) const
 {
 	NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(vel, _Listener.Velocity);
 }
-
-//X3DAUDIO ERROR: Float value (-0.012000) not within [-0.000010, 0.000010], {IsBoundInclusive, Line 130}
-//X3DAUDIO ERROR: DotProduct(pOrientFront, pOrientTop) failed bounds validation against [-ORTHONORMAL_EPSILON,ORTHONORMAL_EPSILON], {TraceBool, Line 58}
-//X3DAUDIO ERROR: &pListener->OrientFront is not orthonormal with &pListener->OrientTop, {TraceBool, Line 58}
-//X3DAUDIO ERROR: pListener failed listener validation, {TraceBool, Line 58}
-//******************************************************************************
-//*** X3DAUDIO ASSERT: TraceBool(IsValidListener((pListener), (Flags)), "pListener" " failed listener validation"), {X3DAudioCalculate, Line 1447}
-//******************************************************************************
 
 /// Set the orientation vectors (3D mode only, ignored in stereo mode) (default: (0,1,0), (0,0,-1))
 void CListenerXAudio2::setOrientation(const NLMISC::CVector& front, const NLMISC::CVector& up)
@@ -242,10 +237,11 @@ void CListenerXAudio2::setRolloffFactor(float f)
 {
 #if MANUAL_ROLLOFF == 1
 	nlerror("MANUAL_ROLLOFF == 1");
-#endif
+#else
 
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
 	_DistanceScaler = f;
+#endif
 }
 
 /// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)

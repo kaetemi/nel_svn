@@ -346,7 +346,7 @@ void CSoundDriverXAudio2::commit3DChanges()
 	// Sync up sources & listener 3d position.
 	{
 		std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
-		for (; it != end; ++it) { (*it)->updateState(); (*it)->commit3DChanges(); }
+		for (; it != end; ++it) { (*it)->updateState(); (*it)->update3DChanges(); }
 	}
 }
 

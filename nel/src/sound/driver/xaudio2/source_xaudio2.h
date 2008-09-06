@@ -80,14 +80,18 @@ protected:
 	// -- User vars 3d --
 	X3DAUDIO_EMITTER _Emitter;
 	X3DAUDIO_CONE _Cone;
+	/// Minimum distance of sound at max volume
 	float _MinDistance;
+	/// Maximum distance of sound
 	float _MaxDistance;
-	/// getPos sucks
+	/// Position of the source
 	NLMISC::CVector _Pos;
-	/// sources relative to listener position (listener + source = actual source location)
+	/// Source relative to listener position (listener + source = actual source location)
 	bool _Relative;
-	/// Alpha not implemented yet, something to do with manual rolloff
+#if MANUAL_ROLLOFF == 1
+	/// Alpha for manual rolloff
 	double _Alpha;
+#endif
 	
 	// -- User vars 2d --
 	/// True if play() or pause(), false if stop()
@@ -112,6 +116,7 @@ public:
 	void release();
 
 	void commit3DChanges();
+	void update3DChanges();
 	void updateState();
 
 	// Initialize voice with this format.

@@ -80,8 +80,10 @@ protected:
 	// user vars
 	/// Doppler scaler, set by user
 	float _DopplerScaler;
+#if MANUAL_ROLLOFF == 0
 	/// Distance/Roloff scaler
 	float _DistanceScaler;
+#endif
 public:
 	CListenerXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CListenerXAudio2();
@@ -94,7 +96,9 @@ public:
 	inline IXAudio2SubmixVoice *getSampleVoice() { return _SampleVoice; }
 	inline XAUDIO2_VOICE_SENDS *getVoiceSends() { return &_VoiceSends; }
 	inline float getDopplerScaler() { return _DopplerScaler; }
+#if MANUAL_ROLLOFF == 0
 	inline float getDistanceScaler() { return _DistanceScaler; }
+#endif
 
 	/// \name Listener properties
 	//@{

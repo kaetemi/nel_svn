@@ -30,8 +30,6 @@
 
 /*
  * TODO:
- *  - Curve
- *    - _MaxDistance (silence sound after max distance, not required really)
  *  - EAX
  *    - setEAXProperty
  */
@@ -98,11 +96,7 @@ _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max())
 	_Emitter.InnerRadius = 0.0f;
 	_Emitter.InnerRadiusAngle = 0.0f;
 	_Emitter.ChannelRadius = 0.0f;
-#if MANUAL_ROLLOFF == 1
-	_Emitter.CurveDistanceScaler = numeric_limits<float>::max();
-#else
 	_Emitter.CurveDistanceScaler = 1.0f;
-#endif
 	_Emitter.DopplerScaler = 1.0f;
 }
 
@@ -124,74 +118,81 @@ void CSourceXAudio2::release() // called by driver :)
 /// Commit all the changes made to 3D settings of listener and sources
 void CSourceXAudio2::commit3DChanges()
 {
-	if (_IsPlaying)
+	nlassert(_SourceVoice);
+	
+	// Only mono buffers get 3d sound, stereo buffers go directly to the speakers (calculate rolloff too!!).
+	// Todo: stereo buffers calculate distance
+	if (_Format == Stereo16 || _Format == Stereo8)
 	{
-		nlassert(_SourceVoice);
-		
-		// Only mono buffers get 3d sound, stereo buffers go directly to the speakers.
-		// Todo: stereo buffers calculate distance
-		if (_Format == Stereo16 || _Format == Stereo8)
-		{
-			_SoundDriver->getDSPSettings()->DstChannelCount = 1;
-			// calculate without doppler
-			// 1 result in matrix, use with setvolume
-			// todo: some more stuff...
-			_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
-		}
-		else
-		{
-			// nldebug(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getBuffer() %u", (uint32)_SampleVoice->getBuffer());
+		_SoundDriver->getDSPSettings()->DstChannelCount = 1;
+		_Emitter.pVolumeCurve = NULL; // todo: everything
+		// calculate without doppler
+		// 1 result in matrix, use with setvolume
+		// todo: some more stuff...
+		// this isn't really used anyways
+		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
+		nlerror(NLSOUND_XAUDIO2_PREFIX "Stereo16 and Stereo8 not fully implemented, have fun! :)");
+	}
+	else
+	{
+		// nldebug(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getBuffer() %u", (uint32)_SampleVoice->getBuffer());
 
-			_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
+		_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
 
 #if MANUAL_ROLLOFF == 0
-			// might be just _MinDistance, not sure, compare with fmod driver
-			_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler();
-			// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
+		_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler();
+		// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
+#else
+		float sqrdist = _Relative 
+			? getPos().sqrnorm()
+			: (getPos() - _SoundDriver->getListener()->getPos()).sqrnorm();
+
+		static const sint32 dbMin = -10000;
+		static const sint32 dbMax = 0;
+
+		// calculate rolloff from alpha and distance
+		sint32 rolloff100thDb = ISource::computeManualRollOff(dbMax, dbMin, dbMax, _Alpha, sqrdist);
+
+		// decibels to amplitude ratio
+		float rolloff = (float)pow(10.0, double(rolloff100thDb) / 2000.0);
+		clamp(rolloff, 0.0f, 1.0f);
+
+		// apply rolloff
+		// i don't know why but this works (correctly!), heheh
+		X3DAUDIO_DISTANCE_CURVE_POINT curve_points[2] = { 0.0f, 1.0f, 1.0f, rolloff };
+		X3DAUDIO_DISTANCE_CURVE curve = { (X3DAUDIO_DISTANCE_CURVE_POINT *)&curve_points[0], 2 };
+		_Emitter.pVolumeCurve = &curve;
 #endif
 
-			_SoundDriver->getDSPSettings()->DstChannelCount = 2;
+		_SoundDriver->getDSPSettings()->DstChannelCount = 2;
 
-			X3DAudioCalculate(_SoundDriver->getX3DAudio(), 
-				_Relative 
-					? _SoundDriver->getEmptyListener() // position is relative to listener (we use 0pos listener)
-					: _SoundDriver->getListener()->getListener(), // position is absolute
-				&_Emitter, 
-				X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
-				_SoundDriver->getDSPSettings());
+		X3DAudioCalculate(_SoundDriver->getX3DAudio(), 
+			_Relative 
+				? _SoundDriver->getEmptyListener() // position is relative to listener (we use 0pos listener)
+				: _SoundDriver->getListener()->getListener(), // position is absolute
+			&_Emitter, 
+			X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
+			_SoundDriver->getDSPSettings());
 
-#if MANUAL_ROLLOFF == 1
-			float sqrdist = _SoundDriver->getDSPSettings()->EmitterToListenerDistance
-				* _SoundDriver->getDSPSettings()->EmitterToListenerDistance;
-
-			static const sint32 dbMin = -10000;
-			static const sint32 dbMax = 0;
-
-			// calculate rolloff from alpha and distance
-			sint32 rolloff100thDb = ISource::computeManualRollOff(dbMax, dbMin, dbMax, _Alpha, sqrdist);
-
-			// decibels to amplitude ratio
-			float rolloff = (float)pow(10.0, double(rolloff100thDb) / 2000.0);
-			clamp(rolloff, 0.0f, 1.0f);
-
-			// apply rolloff
-			for (uint i = 0; i < _SoundDriver->getDSPSettings()->DstChannelCount; ++i)
-				_SoundDriver->getDSPSettings()->pMatrixCoefficients[i] *= rolloff;
-#endif
-			
-			_SourceVoice->SetOutputMatrix(
-				// _SoundDriver->getMasteringVoice(),
-				_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 
-				_SoundDriver->getDSPSettings()->SrcChannelCount, 
-				_SoundDriver->getDSPSettings()->DstChannelCount, 
-				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
-			// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
-			_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
-			_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
-		}
+		_SourceVoice->SetOutputMatrix(
+			// _SoundDriver->getMasteringVoice(),
+			_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 
+			_SoundDriver->getDSPSettings()->SrcChannelCount, 
+			_SoundDriver->getDSPSettings()->DstChannelCount, 
+			_SoundDriver->getDSPSettings()->pMatrixCoefficients);
+		// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
+		_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
+		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
 	}
+	// todo: delay?
+}
 
-	// todo: reverb & delay? ^^
+void CSourceXAudio2::update3DChanges()
+{
+	if (_IsPlaying)
+	{
+		commit3DChanges();
+	}
 }
 
 void CSourceXAudio2::updateState()
@@ -467,7 +468,7 @@ void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool deffered) // note: 
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setPos %f %f %f", pos.x, pos.y, pos.z);
 
-	_Pos = pos; // getPos() sucks
+	_Pos = pos;
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Emitter.Position, pos);
 
 	// !! todo if threaded: if (!deffered) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deffered"); */ commit3DChanges(); }
@@ -639,10 +640,11 @@ void CSourceXAudio2::setAlpha(double a)
 {  
 #if MANUAL_ROLLOFF == 0
 	nlerror("MANUAL_ROLLOFF == 0");
-#endif
+#else
 	// if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
 
 	_Alpha = a;
+#endif
 }
 
 } /* namespace NLSOUND */
