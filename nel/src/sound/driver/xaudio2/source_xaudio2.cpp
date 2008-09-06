@@ -34,8 +34,6 @@
  *    - _MaxDistance (silence sound after max distance, not required really)
  *  - EAX
  *    - setEAXProperty
- *  - Time
- *    - getTime
  */
 
 // curve cone eax time
@@ -100,7 +98,11 @@ _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max())
 	_Emitter.InnerRadius = 0.0f;
 	_Emitter.InnerRadiusAngle = 0.0f;
 	_Emitter.ChannelRadius = 0.0f;
+#if MANUAL_ROLLOFF == 1
+	_Emitter.CurveDistanceScaler = numeric_limits<float>::max();
+#else
 	_Emitter.CurveDistanceScaler = 1.0f;
+#endif
 	_Emitter.DopplerScaler = 1.0f;
 }
 
@@ -141,8 +143,12 @@ void CSourceXAudio2::commit3DChanges()
 			// nldebug(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getBuffer() %u", (uint32)_SampleVoice->getBuffer());
 
 			_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
-			_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler(); // might be just _MinDistance, not sure, compare with fmod driver
+
+#if MANUAL_ROLLOFF == 0
+			// might be just _MinDistance, not sure, compare with fmod driver
+			_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler();
 			// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
+#endif
 
 			_SoundDriver->getDSPSettings()->DstChannelCount = 2;
 
@@ -154,6 +160,25 @@ void CSourceXAudio2::commit3DChanges()
 				X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
 				_SoundDriver->getDSPSettings());
 
+#if MANUAL_ROLLOFF == 1
+			float sqrdist = _SoundDriver->getDSPSettings()->EmitterToListenerDistance
+				* _SoundDriver->getDSPSettings()->EmitterToListenerDistance;
+
+			static const sint32 dbMin = -10000;
+			static const sint32 dbMax = 0;
+
+			// calculate rolloff from alpha and distance
+			sint32 rolloff100thDb = ISource::computeManualRollOff(dbMax, dbMin, dbMax, _Alpha, sqrdist);
+
+			// decibels to amplitude ratio
+			float rolloff = (float)pow(10.0, double(rolloff100thDb) / 2000.0);
+			clamp(rolloff, 0.0f, 1.0f);
+
+			// apply rolloff
+			for (uint i = 0; i < _SoundDriver->getDSPSettings()->DstChannelCount; ++i)
+				_SoundDriver->getDSPSettings()->pMatrixCoefficients[i] *= rolloff;
+#endif
+			
 			_SourceVoice->SetOutputMatrix(
 				// _SoundDriver->getMasteringVoice(),
 				_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 
@@ -592,6 +617,9 @@ void CSourceXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 ///// 
 void CSourceXAudio2::setAlpha(double a) 
 {  
+#if MANUAL_ROLLOFF == 0
+	nlerror("MANUAL_ROLLOFF == 0");
+#endif
 	// if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
 
 	_Alpha = a;

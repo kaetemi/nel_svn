@@ -31,7 +31,6 @@
 /*
  * TODO:
  *  - EAX
- *    - setEnvironment
  *    - setEAXProperty
  */
 
@@ -184,9 +183,19 @@ void CListenerXAudio2::getVelocity(NLMISC::CVector& vel) const
 	NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(vel, _Listener.Velocity);
 }
 
+//X3DAUDIO ERROR: Float value (-0.012000) not within [-0.000010, 0.000010], {IsBoundInclusive, Line 130}
+//X3DAUDIO ERROR: DotProduct(pOrientFront, pOrientTop) failed bounds validation against [-ORTHONORMAL_EPSILON,ORTHONORMAL_EPSILON], {TraceBool, Line 58}
+//X3DAUDIO ERROR: &pListener->OrientFront is not orthonormal with &pListener->OrientTop, {TraceBool, Line 58}
+//X3DAUDIO ERROR: pListener failed listener validation, {TraceBool, Line 58}
+//******************************************************************************
+//*** X3DAUDIO ASSERT: TraceBool(IsValidListener((pListener), (Flags)), "pListener" " failed listener validation"), {X3DAudioCalculate, Line 1447}
+//******************************************************************************
+
 /// Set the orientation vectors (3D mode only, ignored in stereo mode) (default: (0,1,0), (0,0,-1))
 void CListenerXAudio2::setOrientation(const NLMISC::CVector& front, const NLMISC::CVector& up)
 {
+	// nldebug("--- orientation --- %s --- %s ---", front.toString().c_str(), up.toString().c_str());
+
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Listener.OrientFront, front);
 	NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(_Listener.OrientTop, up);
 }
@@ -206,14 +215,12 @@ void CListenerXAudio2::getOrientation(NLMISC::CVector& front, NLMISC::CVector& u
  */
 void CListenerXAudio2::setGain(float gain)
 {
-	//CSoundDriverXAudio2::getInstance()->setGain(gain);
 	_OutputVoice->SetVolume(gain);
 }
 
 /// Get the gain
 float CListenerXAudio2::getGain() const
 {
-	//return CSoundDriverXAudio2::getInstance()->getGain();
 	float gain;
 	_OutputVoice->GetVolume(&gain);
 	return gain;
@@ -233,6 +240,10 @@ void CListenerXAudio2::setDopplerFactor(float f)
 /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 void CListenerXAudio2::setRolloffFactor(float f)
 {
+#if MANUAL_ROLLOFF == 1
+	nlerror("MANUAL_ROLLOFF == 1");
+#endif
+
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
 	_DistanceScaler = f;
 }
@@ -240,7 +251,7 @@ void CListenerXAudio2::setRolloffFactor(float f)
 /// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
 void CListenerXAudio2::setEnvironment(uint env, float size)
 {
-	nldebug(NLSOUND_XAUDIO2_PREFIX "setEnvironment %u, %f", (uint32)env, (float)size);
+	// nldebug(NLSOUND_XAUDIO2_PREFIX "setEnvironment %u, %f", (uint32)env, (float)size);
 
 	if (_ReverbApo)
 	{

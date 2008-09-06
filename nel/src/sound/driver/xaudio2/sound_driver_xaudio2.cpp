@@ -160,7 +160,7 @@ NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 NLMISC_CATEGORISED_COMMAND(nel, setEaxEnvironment, "Set the id and size of the eax environment", "<id> <size>")
 {
 	if (args.size() != 2) return false;
-	CSoundDriverXAudio2::getInstance()->getListener()->setEnvironment((uint)atoi(args[0].c_str()), (float)atoi(args[0].c_str()));
+	CSoundDriverXAudio2::getInstance()->getListener()->setEnvironment((uint)atoi(args[0].c_str()), (float)atoi(args[1].c_str()));
 	return true;
 }
 

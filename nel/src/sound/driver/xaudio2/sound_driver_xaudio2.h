@@ -43,24 +43,6 @@
 #include "buffer_xaudio2.h"
 //#include "music_channel_xaudio2.h"
 
-// Defines
-#define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"
-#define NLSOUND_XAUDIO2_PREFIX NLSOUND_XAUDIO2_NAME ": "
-
-// TEMP !!! check from device and stuff :)
-//#define NLSOUND_XAUDIO2_SOURCE_CHANNELS 1
-//#define NLSOUND_XAUDIO2_SOURCE_BITS_PER_SAMPLE 16
-//#define NLSOUND_XAUDIO2_SOURCE_SAMPLES_PER_SEC 44100
-//22050
-
-// swap y and z
-#define NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;
-#define NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;
-
-// no swap
-//#define NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(to, from) (to).x = (from).x; (to).y = (from).y; (to).z = (from).z;
-//#define NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(to, from) (to).x = (from).x; (to).y = (from).y; (to).z = (from).z;
-
 namespace NLSOUND {
 	class IListener;
 	class ISource;
