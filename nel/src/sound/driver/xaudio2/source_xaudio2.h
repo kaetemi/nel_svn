@@ -111,11 +111,16 @@ public:
 	virtual ~CSourceXAudio2();
 	void release();
 
-	void commit3DChanges(); 
-	void update(float dtf);
+	void commit3DChanges();
+	void updateState();
+
+	// Initialize voice with this format.
+	bool initFormat(TSampleFormat format);
 
 	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format);
 	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
+
+	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
 
 	void submitStaticBuffer();
 	//inline void stopLooping() { _SourceVoice->FlushSourceBuffers(); _SourceVoice->ExitLoop(); } // must set _IsLooping = false first

@@ -78,8 +78,6 @@ protected:
 	bool _SoundDriverOk;
 	/// If CoInitializeEx has been called.
 	bool _CoInitOk;
-	/// Last update time.
-	NLMISC::TTime _LastTime;
 	/// Empty 3D Listener
 	X3DAUDIO_LISTENER _EmptyListener;
 	/// If eax is used
@@ -98,6 +96,8 @@ public:
 	CSoundDriverXAudio2(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
 	virtual ~CSoundDriverXAudio2();
 	void release();
+
+	void initSourcesFormat(TSampleFormat format);
 
 	inline CListenerXAudio2 *getListener() { return _Listener; }
 	inline IXAudio2 *getXAudio2() { return _XAudio2; }

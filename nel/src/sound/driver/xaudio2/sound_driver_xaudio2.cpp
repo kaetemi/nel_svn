@@ -238,9 +238,6 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	_DSPSettings.DstChannelCount = voice_details.InputChannels; // ?! // how many speakers do you have
 	_DSPSettings.pMatrixCoefficients = new FLOAT32[_DSPSettings.SrcChannelCount * _DSPSettings.DstChannelCount];
 
-	// Time
-	_LastTime = NLMISC::CTime::getLocalTime();
-
 	_SoundDriverOk = true;
 }
 
@@ -297,24 +294,12 @@ void CSoundDriverXAudio2::release()
 #endif
 }
 
-///** Set the gain (volume value inside [0 , 1]). (default: 1)
-// * 0.0 -> silence
-// * 0.5 -> -6dB
-// * 1.0 -> no attenuation
-// * values > 1 (amplification) not supported by most drivers
-// */
-//void CSoundDriverXAudio2::setGain(float gain)
-//{
-//	_MasteringVoice->SetVolume(gain);
-//}
-//
-///// Get the gain
-//float CSoundDriverXAudio2::getGain() const
-//{
-//	float gain;
-//	_MasteringVoice->GetVolume(&gain);
-//	return gain;
-//}
+/// Tell sources without voice about a format
+void CSoundDriverXAudio2::initSourcesFormat(TSampleFormat format)
+{
+	std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
+	for (; it != end; ++it) { if (!(*it)->getSourceVoice()) { (*it)->initFormat(format); } }
+}
 
 /// Create a sound buffer
 IBuffer *CSoundDriverXAudio2::createBuffer()
@@ -358,20 +343,11 @@ bool CSoundDriverXAudio2::readRawBuffer(IBuffer *destbuffer, const std::string &
 /// Commit all the changes made to 3D settings of listener and sources
 void CSoundDriverXAudio2::commit3DChanges()
 {
-	TTime current_time = NLMISC::CTime::getLocalTime();
-	TTime delta_time = current_time - _LastTime;
-	float dtf = ((float)delta_time) / 1000.f;
 	// Sync up sources & listener 3d position.
 	{
 		std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
-		for (; it != end; ++it) { (*it)->update(); (*it)->commit3DChanges(); }
+		for (; it != end; ++it) { (*it)->updateState(); (*it)->commit3DChanges(); }
 	}
-	//// Update music faders
-	//{
-	//	std::set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
-	//	for (; it != end; ++it) (*it)->update(dtf);
-	//}
-	_LastTime = current_time;
 }
 
 /// Write information about the driver to the output stream.

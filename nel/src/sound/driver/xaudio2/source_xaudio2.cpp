@@ -194,6 +194,21 @@ void CSourceXAudio2::commit3DChanges()
 	// todo: reverb & delay? ^^
 }
 
+void CSourceXAudio2::updateState()
+{
+	if (_IsPlaying)
+	{
+		XAUDIO2_VOICE_STATE voice_state;
+		_SourceVoice->GetState(&voice_state);
+		if (!voice_state.BuffersQueued)
+		{
+			if (FAILED(_SourceVoice->Stop(0))) 
+				nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+			_IsPlaying = false;
+		}
+	}
+}
+
 IXAudio2SourceVoice *CSourceXAudio2::createSourceVoice(TSampleFormat format)
 {
 	nlassert(_SoundDriver->getListener());
@@ -302,6 +317,21 @@ bool CSourceXAudio2::getLooping() const
 	return _IsLooping;
 }
 
+bool CSourceXAudio2::initFormat(TSampleFormat format)
+{
+	// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
+
+	nlassert(!_SourceVoice)
+	_SourceVoice = createSourceVoice(format);
+	if (!_SourceVoice) return false; // fail
+	_Format = format;
+	XAUDIO2_VOICE_DETAILS voice_details;
+	_SourceVoice->GetVoiceDetails(&voice_details);
+	_FreqVoice = (float)voice_details.InputSampleRate;
+	_SourceVoice->SetVolume(_Gain);
+	return true;
+}
+
 /** Play the static buffer (or stream in and play).
  *	This method can return false if the sample for this sound is unloaded.
  */
@@ -331,16 +361,17 @@ bool CSourceXAudio2::play()
 				destroySourceVoice(_SourceVoice);
 				_SourceVoice = NULL;
 			}
-			if (!_SourceVoice) 
+			if (!_SourceVoice)
 			{
-				// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
-				_SourceVoice = createSourceVoice(_StaticBuffer->getFormat());
-				if (!_SourceVoice) return false; // fail
-				_Format = _StaticBuffer->getFormat();
-				XAUDIO2_VOICE_DETAILS voice_details;
-				_SourceVoice->GetVoiceDetails(&voice_details);
-				_FreqVoice = (float)voice_details.InputSampleRate;
-				_SourceVoice->SetVolume(_Gain);
+				if (!initFormat(_StaticBuffer->getFormat()))
+				{
+					nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
+					return false;
+				}
+				// notify other sources about this format, so they can make a voice in advance
+				// we know that there is a very high chance that all sources use same format
+				// so this gives better results at runtime (avoids sound clicks etc)
+				_SoundDriver->initSourcesFormat(_Format);
 			}
 			_FreqRatio = (float)_StaticBuffer->getFreq() / _FreqVoice;
 			commit3DChanges(); // sets pitch etc
@@ -412,17 +443,6 @@ bool CSourceXAudio2::isPaused() const
 /// Update the source (e.g. continue to stream the data in)
 bool CSourceXAudio2::update()
 {
-	if (_IsPlaying)
-	{
-		XAUDIO2_VOICE_STATE voice_state;
-		_SourceVoice->GetState(&voice_state);
-		if (!voice_state.BuffersQueued)
-		{
-			if (FAILED(_SourceVoice->Stop(0))) 
-				nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
-			_IsPlaying = false;
-		}
-	}
 	return true;
 }
 
