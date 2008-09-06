@@ -2366,6 +2366,7 @@ bool	CAudioMixerUser::getSongTitle(const std::string &filename, std::string &res
 			return true;
 		}
 	}
+	result = "???";
 	return false;
 }
 
