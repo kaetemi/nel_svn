@@ -1,7 +1,7 @@
 /** \file sound_sources/main.cpp
  * Simple example of NeL sound engine usage
  *
- * $Id: main.cpp,v 1.11 2005/04/04 09:49:45 cado Exp $
+ * $Id: main.cpp 150 2008-09-06 14:13:17Z Kaetemi $
  */
 
 /* Copyright, 2003 Nevrax Ltd.
@@ -30,23 +30,21 @@
  * (UListener).
  */
 
-
-#include "nel/misc/debug.h"
-#include "nel/misc/time_nl.h"
-#include "nel/misc/path.h"
-#include "nel/misc/vector.h"
-using namespace NLMISC;
-
-#include "nel/sound/u_audio_mixer.h"
-#include "nel/sound/u_listener.h"
-using namespace NLSOUND;
-
 #include <stdio.h>
+#include <conio.h>
 
+#include <nel/misc/debug.h>
+#include <nel/misc/time_nl.h>
+#include <nel/misc/path.h>
+#include <nel/misc/vector.h>
+#include <nel/sound/u_audio_mixer.h>
+#include <nel/sound/u_listener.h>
+
+using namespace NLSOUND;
+using namespace NLMISC;
 
 // Pointer to the audio mixer object
 UAudioMixer	*AudioMixer = NULL;
-
 
 /*
  * Initialization
@@ -149,6 +147,8 @@ void OnMove( const CVector& listenerpos )
  */
 int main()
 {
+	new CApplicationContext();
+
 	// Initialization
 	Init();
 
@@ -156,13 +156,13 @@ int main()
 	printf( "Press ENTER to start playing the two sources\n" );
 	printf( "One is 20 meters ahead, on the right\n" );
 	printf( "The other is 5 meters ahead, on the left\n" );
-	getchar();
+	while (!_kbhit()) { AudioMixer->update(); Sleep(10); } _getch();
 	USource *src1 = OnAddSource( "beep", 1.0f, 20.0f, 0.0f );  // Beep on the right, 20 meters ahead
 	USource *src2 = OnAddSource( "tuut", -2.0f, 5.0f, 0.0f ); // Tuut on the left, 5 meters ahead
 
 	// Second step: we will move the listener ahead
-	printf( "Press ENTER again to start moving the listener\n" );
-	getchar();
+	printf( "Press ANY key again to start moving the listener\n" );
+	while (!_kbhit()) { AudioMixer->update(); Sleep(10); } _getch();
 
 	// Listener orientation is constant in this example (see initialization)
 
