@@ -1,5 +1,4 @@
 /** \file ray_mesh.h
- * <File description>
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

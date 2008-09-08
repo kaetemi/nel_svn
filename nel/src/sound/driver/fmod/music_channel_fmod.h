@@ -1,5 +1,4 @@
 /** \file music_channel_fmod.h
- * <File description>
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

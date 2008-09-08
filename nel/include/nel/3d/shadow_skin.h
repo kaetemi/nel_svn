@@ -1,5 +1,4 @@
 /** \file shadow_skin.h
- * <File description>
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.
