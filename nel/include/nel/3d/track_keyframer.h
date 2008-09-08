@@ -825,10 +825,6 @@ public:
 	NL3D_TRACKKEYF_CHOOSE(ValRGBA)
 };
 
-
-
-
-
 } // NL3D
 
 

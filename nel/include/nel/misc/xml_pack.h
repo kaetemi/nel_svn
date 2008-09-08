@@ -1,5 +1,13 @@
-/**  */
 
+#ifndef XML_PACK_H
+#define XML_PACK_H
+
+#include "types_nl.h"
+#include "string_mapper.h"
+#include "sstring.h"
+
+namespace NLMISC
+{
 
 /** The xml pack is a data format to store a great number of XML file
  *	in a simple pseudo XML format.
@@ -18,20 +26,6 @@
  *	the loadForm function of george) that are a binary extraction of
  *	the content of the xml files.
  */
-
-#ifndef XML_PACK_H
-#define XML_PACK_H
-
-#include "types_nl.h"
-#include "string_mapper.h"
-#include "sstring.h"
-
-namespace NLMISC
-{
-
-	/** the singleton class in charge of xml_pack files.
-	 *	Is work in the same manner as the big file singleton.
-	 */
 	class CXMLPack
 	{
 		NLMISC_SAFE_SINGLETON_DECL(CXMLPack);
