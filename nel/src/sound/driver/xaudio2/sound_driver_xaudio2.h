@@ -4,6 +4,8 @@
  * \date 2008-08-20 10:52GMT
  * \author Jan Boon (Kaetemi)
  * CSoundDriverXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -54,92 +56,105 @@ namespace NLSOUND {
  * \brief CSoundDriverXAudio2
  * \date 2008-08-20 10:52GMT
  * \author Jan Boon (Kaetemi)
- * CSoundDriverXAudio2
+ * CSoundDriverXAudio2 is an implementation of the ISoundDriver interface to run on XAudio2.
  */
 class CSoundDriverXAudio2 : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverXAudio2>
 {
 protected:
 	// far pointers
-	/// The string mapper provided by client code
+	/// The string mapper provided by client code.
 	IStringMapperProvider *_StringMapper;
-	/// Listener, created by client code
+	/// Listener, created by client code.
 	CListenerXAudio2 *_Listener;
-
+	
 	// pointers
-	/// Pointer to XAudio2
+	/// Pointer to XAudio2.
 	IXAudio2 *_XAudio2;
-	/// Pointer to XAudio2 Mastering Voice
+	/// Pointer to XAudio2 Mastering Voice.
 	IXAudio2MasteringVoice *_MasteringVoice;
-
-	// instances
+	
+	// system vars
 	/// If XAudio2 is fully initialized.
 	bool _SoundDriverOk;
 	/// If CoInitializeEx has been called.
 	bool _CoInitOk;
-	/// Empty 3D Listener
+	/// Empty 3D Listener.
 	X3DAUDIO_LISTENER _EmptyListener;
-	/// If eax is used
-	bool _UseEax;
-	/// Array with the allocated source channels
+	/// Array with the allocated source channels.
 	std::set<CSourceXAudio2 *> _SourceChannels;
-	/// Array with the allocated music channels
+	/// Array with the allocated music channels.
 	std::set<CMusicChannelXAudio2 *> _MusicChannels;
-
-	// other
-	/// Initialization Handle of X3DAudio
+	/// Initialization Handle of X3DAudio.
 	X3DAUDIO_HANDLE _X3DAudioHandle; //I
-	/// X3DAudio DSP Settings structure for 1 channel to all channels
+	/// X3DAudio DSP Settings structure for 1 channel to all channels.
 	X3DAUDIO_DSP_SETTINGS _DSPSettings;
+	
+	// user init vars
+	/// If eax is used.
+	const bool _UseEax;
+	
 public:
+	/// (Internal) Constructor for CSoundDriverXAudio2.
 	CSoundDriverXAudio2(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
+	/// (Internal) Destructor for CSoundDriverXAudio2.
 	virtual ~CSoundDriverXAudio2();
+	/// (Internal) Release all resources owned by CSoundDriverXAudio2.
 	void release();
-
+	
+	/// (Internal) Initialize uninitialized sources with this format (so xaudio2 voices don't need to be created at runtime)
 	void initSourcesFormat(TSampleFormat format);
-
+	
+	/// (Internal) Returns the listener for this driver.
 	inline CListenerXAudio2 *getListener() { return _Listener; }
+	/// (Internal) Returns the XAudio2 interface.
 	inline IXAudio2 *getXAudio2() { return _XAudio2; }
+	/// (Internal) Returns the XAudio2 Mastering Voice interface.
 	inline IXAudio2MasteringVoice *getMasteringVoice() { return _MasteringVoice; }
+	/// (Internal) Returns the string mapper provided by client code.
 	inline IStringMapperProvider *getStringMapper() { return _StringMapper; }
+	/// (Internal) Returns the handle to X3DAudio.
 	inline X3DAUDIO_HANDLE &getX3DAudio() { return _X3DAudioHandle; }
+	/// (Internal) Returns the structure to receive X3DAudio calculations.
 	inline X3DAUDIO_DSP_SETTINGS *getDSPSettings() { return &_DSPSettings; }
+	/// (Internal) Returns an X3DAudio listener at 0 position.
 	inline X3DAUDIO_LISTENER *getEmptyListener() { return &_EmptyListener; }
+	/// (Internal) Returns if EAX is enabled.
 	inline bool useEax() { return _UseEax; }
-
-	///// Set the gain (volume value inside [0 , 1]). (default: 1), can't go over 1.0 on some systems
-	//void setGain(float gain);
-	///// Get the gain
-	//float getGain() const;
-
-	/// Create a sound buffer
+	
+	/// (Internal) Create an XAudio2 source voice of the specified format.
+	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format);
+	/// (Internal) Destroy an XAudio2 source voice.
+	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
+	
+	/// Create a sound buffer.
 	virtual	IBuffer *createBuffer();
-	/// Create the listener instance
+	/// Create the listener instance.
 	virtual	IListener *createListener();
-	/// Return the maximum number of sources that can created
+	/// Return the maximum number of sources that can created.
 	virtual uint countMaxSources();
-	/// Create a source channel
+	/// Create a source channel.
 	virtual	ISource *createSource();
-
-	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
+	
+	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8).
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
-	/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16)
+	/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16).
 	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
 	
-	/// Commit all the changes made to 3D settings of listener and sources
+	/// Commit all the changes made to 3D settings of listener and sources.
 	virtual void commit3DChanges();
-
+	
 	/// Write information about the driver to the output stream.
 	virtual void writeProfile(std::string& out) ;
-
-	// Does not create a sound loader
+	
+	/// Does not create a sound loader... that's really awesome but what does it do?
 	virtual void startBench();
 	virtual void endBench();
 	virtual void displayBench(NLMISC::CLog *log);
-
-	/// Create a music channel, destroy with destroyMusicChannel
+	
+	/// Create a music channel, destroy with destroyMusicChannel.
 	virtual IMusicChannel *createMusicChannel();
-
-	/// Destroy a music channel
+	
+	/// Destroy a music channel.
 	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented.
@@ -148,14 +163,14 @@ public:
 	 *  \param title returns the title (empty if not available)
 	 */
 	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
-
-	/// Remove a buffer (should be called by the friend destructor of the buffer class)
+	
+	/// (Internal) Remove a buffer (should be called by the friend destructor of the buffer class).
 	virtual void removeBuffer(IBuffer *buffer);
-
-	/// Remove a source (should be called by the friend destructor of the source class)
+	
+	/// (Internal) Remove a source (should be called by the friend destructor of the source class).
 	virtual void removeSource(ISource *source);
-
-	/// Remove the listener (called by destructor of listener class)
+	
+	/// (Internal) Remove the listener (called by destructor of listener class)
 	inline void removeListener(CListenerXAudio2 *listener) { nlassert(_Listener == listener); _Listener = NULL; }
 
 }; /* class CSoundDriverXAudio2 */

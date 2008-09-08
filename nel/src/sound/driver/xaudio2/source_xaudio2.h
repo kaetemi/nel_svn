@@ -4,6 +4,8 @@
  * \date 2008-08-20 15:53GMT
  * \author Jan Boon (Kaetemi)
  * CSourceXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -47,15 +49,15 @@ namespace NLSOUND {
  * \brief CSourceXAudio2
  * \date 2008-08-20 15:53GMT
  * \author Jan Boon (Kaetemi)
- * CSourceXAudio2
+ * CSourceXAudio2 is an implementation of the ISource interface to run on XAudio2.
  */
 class CSourceXAudio2 : public ISource
 {
 protected:
 	// -- Far pointers --
-	/// The sound driver, cannot change at runtime
+	/// The sound driver, cannot change at runtime.
 	CSoundDriverXAudio2 *_SoundDriver;
-	/// Buffer that should be playing
+	/// Buffer that should be playing.
 	CBufferXAudio2 *_StaticBuffer;
 	
 	// -- Pointers --
@@ -63,13 +65,13 @@ protected:
 	IXAudio2SourceVoice *_SourceVoice;
 
 	// -- System vars 2d --
-	/// Format of the current source voice
+	/// Format of the current source voice.
 	TSampleFormat _Format;
-	/// Frequency of voice (should be 44100)
+	/// Frequency of voice (should usually be 44100).
 	float _FreqVoice;
-	/// Rate of sample over rate of voice
+	/// Rate of sample over rate of voice.
 	float _FreqRatio;
-	/// Time when source started playing
+	/// Time when source started playing.
 	NLMISC::TTime _PlayStart;
 	
 	// -- System vars 3d --
@@ -78,29 +80,29 @@ protected:
 	// -- User vars 3d --
 	X3DAUDIO_EMITTER _Emitter;
 	X3DAUDIO_CONE _Cone;
-	/// Minimum distance of sound at max volume
+	/// Minimum distance of sound at max volume.
 	float _MinDistance;
-	/// Maximum distance of sound
+	/// Maximum distance of sound.
 	float _MaxDistance;
-	/// Position of the source
+	/// Position of the source.
 	NLMISC::CVector _Pos;
-	/// Source relative to listener position (listener + source = actual source location)
+	/// Source relative to listener position (listener + source = actual source location).
 	bool _Relative;
 #if MANUAL_ROLLOFF == 1
-	/// Alpha for manual rolloff
+	/// Alpha for manual rolloff.
 	double _Alpha;
 #endif
 	
 	// -- User vars 2d --
-	/// True if play() or pause(), false if stop()
+	/// True if play() or pause(), false if stop().
 	bool _IsPlaying;
-	/// True if pause(), false if play() or stop()
+	/// True if pause(), false if play() or stop().
 	bool _IsPaused;
-	/// True if setLooping(true)
+	/// True if setLooping(true).
 	bool _IsLooping;
-	/// Pitch set by user
+	/// Pitch set by user.
 	float _Pitch;
-	/// Volume set by user
+	/// Volume set by user.
 	float _Gain;
 	
 	// -- Combined vars --
@@ -117,17 +119,12 @@ public:
 	void update3DChanges();
 	void updateState();
 
-	// Initialize voice with this format.
+	/// (Internal) Initialize voice with this format, if no voice has been created yet.
 	bool initFormat(TSampleFormat format);
-
-	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format);
-	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
-
+	/// (Internal) Returns the XAudio2 source voice.
 	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
-
+	/// (Internal) Submit the static buffer to the XAudio2 source voice.
 	void submitStaticBuffer();
-	//inline void stopLooping() { _SourceVoice->FlushSourceBuffers(); _SourceVoice->ExitLoop(); } // must set _IsLooping = false first
-	//inline void startLooping() { submitStaticBuffer(); } // must set _IsLooping = true first
 
 	// ISource Functions
 	/// \name Initialization

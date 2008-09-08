@@ -4,6 +4,8 @@
  * \date 2008-08-20 12:32GMT
  * \author Jan Boon (Kaetemi)
  * STDXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -26,6 +28,8 @@
  * MA 02110-1301 USA.
  */
 
+#ifndef NLSOUND_STDPCH_XAUDIO2_H
+#define NLSOUND_STDPCH_XAUDIO2_H
 #include <nel/misc/types_nl.h>
 
 // STL includes
@@ -53,5 +57,7 @@
 // swap y and z
 #define NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;
 #define NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;
+
+#endif /* #ifndef NLSOUND_STDPCH_XAUDIO2_H */
 
 /* end of file */

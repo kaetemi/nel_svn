@@ -4,6 +4,8 @@
  * \date 2008-08-20 12:32GMT
  * \author Jan Boon (Kaetemi)
  * CListenerXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -46,7 +48,8 @@ namespace NLSOUND {
  * \brief CListenerXAudio2
  * \date 2008-08-20 12:32GMT
  * \author Jan Boon (Kaetemi)
- * CListenerXAudio2
+ * CListenerXAudio2 is an implementation of the IListener interface to run on XAudio2.
+ * TODO: For occlusion reverb output gain must be controllable per voice (source send with lower gain to reverb submix).
  */
 class CListenerXAudio2 : public IListener, public NLMISC::CManualSingleton<CListenerXAudio2>
 {
@@ -55,24 +58,27 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers
-	/// Submix voice for volume change, also sample input if no effects used (see _VoiceSends)
+	/// Submix voice for volume change, also direct sample input if no effects used (see _VoiceSends).
 	IXAudio2SubmixVoice *_OutputVoice;
-	/// Submix voice for reverb effect if effects used
+	/// Submix voice for reverb effect if effects used.
 	IXAudio2SubmixVoice *_ReverbVoice;
-	/// Submix voice for samples input if effects used
+	/// Submix voice for samples input if effects used.
 	IXAudio2SubmixVoice *_SampleVoice;
 	/// Reverb effect
 	IUnknown *_ReverbApo;
 	
 	// instances
-	X3DAUDIO_LISTENER _Listener; //R
-	NLMISC::CVector _Pos; //R
-	bool _ListenerOk; //R
-	/// Reference to the Submix Voice
+	/// X3DAudio data for listener position in space.
+	X3DAUDIO_LISTENER _Listener;
+	/// NeL Position used for manual rolloff calculation.
+	NLMISC::CVector _Pos;
+	/// If the listener initialized correctly.
+	bool _ListenerOk;
+	/// Reference to the Submix Voice sent to by samples.
 	XAUDIO2_VOICE_SENDS _VoiceSends;
-	/// Parameters of the reverb effect;
+	/// Parameters of the reverb (eax environment) effect.
 	XAUDIO2FX_REVERB_PARAMETERS _ReverbParams;
-	/// EAX Environment id
+	/// Current eax environment id.
 	uint _EaxEnvironment;
 
 	// user vars
@@ -80,7 +86,7 @@ protected:
 	float _DopplerScaler;
 #if MANUAL_ROLLOFF == 0
 	/// Distance/Roloff scaler
-	float _DistanceScaler;
+	float _RolloffScaler;
 #endif
 public:
 	CListenerXAudio2(CSoundDriverXAudio2 *soundDriver);
@@ -95,7 +101,7 @@ public:
 	inline XAUDIO2_VOICE_SENDS *getVoiceSends() { return &_VoiceSends; }
 	inline float getDopplerScaler() { return _DopplerScaler; }
 #if MANUAL_ROLLOFF == 0
-	inline float getDistanceScaler() { return _DistanceScaler; }
+	inline float getRolloffScaler() { return _RolloffScaler; }
 #endif
 
 	/// \name Listener properties

@@ -4,6 +4,8 @@
  * \date 2008-08-30 11:38GMT
  * \author Jan Boon (Kaetemi)
  * IMusicBuffer
+ * 
+ * $Id$
  */
 
 /* 

@@ -4,6 +4,8 @@
  * \date 2008-09-04 00:47GMT
  * \author Jan Boon (Kaetemi)
  * CEaxXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -42,7 +44,7 @@ namespace NLSOUND {
  * \brief CEaxXAudio2
  * \date 2008-09-04 00:47GMT
  * \author Jan Boon (Kaetemi)
- * CEaxXAudio2
+ * CEaxXAudio2 is a set of utility functions to get the right parameters for the EAX effects under XAudio2.
  */
 class CEaxXAudio2
 {

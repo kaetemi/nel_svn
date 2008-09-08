@@ -1,9 +1,9 @@
 /**
- * \file music_channel_xaudio2.h
- * \brief CMusicChannelXAudio2
- * \date 2008-08-30 13:31GMT
+ * \file adpcm_xaudio2.h
+ * \brief CAdpcmXAudio2
+ * \date 2008-09-07 03:53GMT
  * \author Jan Boon (Kaetemi)
- * CMusicChannelXAudio2
+ * CAdpcmXAudio2
  * 
  * $Id$
  */
@@ -28,50 +28,54 @@
  * MA 02110-1301 USA.
  */
 
-#ifndef NLSOUND_MUSIC_CHANNEL_XAUDIO2_H
-#define NLSOUND_MUSIC_CHANNEL_XAUDIO2_H
+#ifndef NLSOUND_ADPCM_XAUDIO2_H
+#define NLSOUND_ADPCM_XAUDIO2_H
 #include "stdxaudio2.h"
 
 // STL includes
 
 // NeL includes
-#include "../music_channel.h"
+#include "../buffer.h"
 
 // Project includes
+// #include "sound_driver_xaudio2.h"
 
 namespace NLSOUND {
-	class CSoundDriverXAudio2;
-	class IMusicBuffer;
+	class CBufferXAudio2;
 
 /**
- * \brief CMusicChannelXAudio2
- * \date 2008-08-30 13:31GMT
+ * \brief CAdpcmXAudio2
+ * \date 2008-09-07 03:53GMT
  * \author Jan Boon (Kaetemi)
- * CMusicChannelXAudio2 is an implementation of the IMusicChannel interface to run on XAudio2.
- * TODO: Properly decode the audio on a seperate thread.
- * TODO: Change IMusicChannel to IAudioStream, and fix the interface to make more sense.
+ * CAdpcmXAudio2 (TODO! IGNORE THIS CLASS!)
  */
-class CMusicChannelXAudio2 : public IMusicChannel, IXAudio2VoiceCallback
+class CAdpcmXAudio2
 {
 protected:
-	// far pointers
-	CSoundDriverXAudio2 *_SoundDriver;
-	
-	// pointers
-	IMusicBuffer *_MusicBuffer;
+	// stuff
+	// IBuffer *_SourceBuffer;
 	IXAudio2SourceVoice *_SourceVoice;
-	// todo: thread for async loading of music buffer and source voice
-	// isasyncloading checks if thread exists
-	// isended checks if not async loading too
+	uint8 *_SourceData;
+	uint32 _SourceSize;
 	
-	// instances
-	uint8 _Buffer[64 * 1024]; // no specific reason, lol
+	// other stuff
+	IBuffer::TADPCMState _State;
+	bool _InfiniteLoop;
+	uint16 _Buffer[16 * 1024]; // no specific reason, lol
 	uint32 _BufferPos; // 0
-	float _Gain;
-
+	uint _InvalidCounter;
 public:
-	CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver);
-	virtual ~CMusicChannelXAudio2();
+	CAdpcmXAudio2();
+	virtual ~CAdpcmXAudio2();
+	
+	/// Submit the next ADPCM buffer, only 1 buffer can be submitted at a time!
+	void submitSourceBuffer(CBufferXAudio2 *buffer, bool infiniteLoop);
+
+	/// Reset the decoder, clear the queued buffer
+	void flushSourceBuffers();
+
+	/// Returns NULL if the buffer has ended playing, never NULL for loops!
+	inline uint8 *getSourceData() { return _SourceData; }
 
 private:
 	// XAudio2 Callbacks
@@ -95,42 +99,10 @@ private:
     // the error.  The callback arguments report which buffer was being
     // processed when the error occurred, and its HRESULT code.
     STDMETHOD_(void, OnVoiceError) (THIS_ void* pBufferContext, HRESULT Error);
-
-public:
-	/** Play some music (.ogg etc...)
-	 *	NB: if an old music was played, it is first stop with stopMusic()
-	 *	\param filepath file path, CPath::lookup is done here
-	 *  \param async stream music from hard disk, preload in memory if false
-	 *	\param loop must be true to play the music in loop. 
-	 */
-	virtual bool play(const std::string &filepath, bool async, bool loop); 
-
-	/// Stop the music previously loaded and played (the Memory is also freed)
-	virtual void stop();
-
-	/// Pause the music previously loaded and played (the Memory is not freed)
-	virtual void pause();
-	
-	/// Resume the music previously paused
-	virtual void resume();
-
-	/// Return true if a song is finished.
-	virtual bool isEnded();
-
-	/// Return true if the song is still loading asynchronously and hasn't started playing yet (false if not async), used to delay fading
-	virtual bool isLoadingAsync();
-	
-	/// Return the total length (in second) of the music currently played
-	virtual float getLength();
-	
-	/** Set the music volume (if any music played). (volume value inside [0 , 1]) (default: 1)
-	 *	NB: the volume of music is NOT affected by IListener::setGain()
-	 */
-	virtual void setVolume(float gain);
-}; /* class CMusicChannelXAudio2 */
+}; /* class CAdpcmXAudio2 */
 
 } /* namespace NLSOUND */
 
-#endif /* #ifndef NLSOUND_MUSIC_CHANNEL_XAUDIO2_H */
+#endif /* #ifndef NLSOUND_ADPCM_XAUDIO2_H */
 
 /* end of file */

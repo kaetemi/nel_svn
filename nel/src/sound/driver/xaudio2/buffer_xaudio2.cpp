@@ -4,6 +4,8 @@
  * \date 2008-08-20 17:21GMT
  * \author Jan Boon (Kaetemi)
  * CBufferXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -29,7 +31,7 @@
 /*
  * TODO:
  *  - ADPCM
- *    - ADPCMWAVEFORMAT
+ *    - ADPCM
  *  - Fill More
  *    - fillBuffer
  *    - isFillMoreSupported
@@ -62,23 +64,18 @@ CBufferXAudio2::CBufferXAudio2() : _Data(NULL)
 
 CBufferXAudio2::~CBufferXAudio2()
 {
+	// Remove the buffer from the driver.
 	CSoundDriverXAudio2::getInstance()->removeBuffer(this);
 
-	// Release possible _Data
+	// Release possible _Data.
 	delete[] _Data; _Data = NULL;
 }
 
-//void CBufferXAudio2::release()
-//{
-//
-//}
-
 bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {
-	// "Allocate the sample" buffer or something
+	// If name has been preset, it must match.
 	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
 	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
-	// If name has been preset, it must match.
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
 
@@ -188,10 +185,9 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 
 bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
 {
-	// "Allocate the sample" buffer or something
+	// If name has been preset, it must match.
 	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
 	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
-	// If name has been preset, it must match.
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
 
@@ -227,7 +223,7 @@ void CBufferXAudio2::setFormat(TSampleFormat format, uint freq)
 /// Set the buffer size and fill the buffer.  Return true if ok. Call setFormat() first.
 bool CBufferXAudio2::fillBuffer(void *src, uint32 bufsize)
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
+	throw ESoundDriverNotSupp();
 	return false;
 }
 
@@ -290,8 +286,7 @@ bool CBufferXAudio2::isFillMoreSupported() const
 /// Force the buffer size without filling data (if isFillMoreSupported() only)
 void CBufferXAudio2::setSize(uint32 size)
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return;
+	throw ESoundDriverNotSupp();
 }
 
 /** Fill the buffer partially (if isFillMoreSupported() only),
@@ -301,8 +296,7 @@ void CBufferXAudio2::setSize(uint32 size)
  */
 bool CBufferXAudio2::fillMore(void *src, uint32 srcsize)
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return false;
+	throw ESoundDriverNotSupp();
 }
 
 /// Return the name of this buffer

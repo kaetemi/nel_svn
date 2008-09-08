@@ -58,7 +58,7 @@ _DopplerScaler(1.0f), _ReverbApo(NULL),
 _EaxEnvironment(CEaxXAudio2::getInvalidEnvironmentId()), 
 _ReverbVoice(NULL), _SampleVoice(NULL)
 #if MANUAL_ROLLOFF == 0
-, _DistanceScaler(1.0f)
+, _RolloffScaler(1.0f)
 #endif
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CListenerXAudio2");
@@ -240,7 +240,7 @@ void CListenerXAudio2::setRolloffFactor(float f)
 #else
 
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
-	_DistanceScaler = f;
+	_RolloffScaler = f;
 #endif
 }
 

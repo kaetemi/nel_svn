@@ -4,6 +4,8 @@
  * \date 2008-08-20 10:52GMT
  * \author Jan Boon (Kaetemi)
  * CSoundDriverXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -297,6 +299,50 @@ void CSoundDriverXAudio2::initSourcesFormat(TSampleFormat format)
 {
 	std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
 	for (; it != end; ++it) { if (!(*it)->getSourceVoice()) { (*it)->initFormat(format); } }
+}
+
+/// (Internal) Create an XAudio2 source voice of the specified format.
+IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format)
+{
+	nlassert(_Listener);
+
+	HRESULT hr;
+
+	WAVEFORMATEX wfe;
+	wfe.cbSize = 0;
+
+	nlassert(format == Mono16 || format == Mono16ADPCM || format == Mono16 || format == Stereo16 || format == Stereo8);
+
+	wfe.wFormatTag = WAVE_FORMAT_PCM;
+
+	wfe.nChannels = (format == Mono16 || format == Mono16ADPCM || format == Mono8)
+		? 1
+		: 2;
+	wfe.wBitsPerSample = (format == Mono8 || format == Stereo8)
+		? 8
+		: 16;
+
+	XAUDIO2_VOICE_DETAILS voice_details;
+	_Listener->getVoiceSends()->pOutputVoices[0]->GetVoiceDetails(&voice_details);
+	wfe.nSamplesPerSec = voice_details.InputSampleRate;
+
+	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
+	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
+
+	// NOTE: 32.0f allows at lowest 1378.125hz audio samples, increase if you need even lower bitrate (or higher pitch).
+	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
+	IXAudio2SourceVoice *source_voice = NULL;
+
+	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, NULL/*this*/, _Listener->getVoiceSends(), NULL)))
+	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
+
+	return source_voice;
+}
+
+/// (Internal) Destroy an XAudio2 source voice.
+void CSoundDriverXAudio2::destroySourceVoice(IXAudio2SourceVoice *sourceVoice)
+{
+	if (sourceVoice) sourceVoice->DestroyVoice();
 }
 
 /// Create a sound buffer

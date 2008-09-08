@@ -4,6 +4,8 @@
  * \date 2008-08-20 15:53GMT
  * \author Jan Boon (Kaetemi)
  * CSourceXAudio2
+ * 
+ * $Id$
  */
 
 /* 
@@ -51,6 +53,7 @@
 #include "sound_driver_xaudio2.h"
 #include "buffer_xaudio2.h"
 #include "listener_xaudio2.h"
+#include "adpcm_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -108,7 +111,7 @@ CSourceXAudio2::~CSourceXAudio2()
 void CSourceXAudio2::release() // called by driver :)
 {
 	_SoundDriver->removeSource(this);
-	destroySourceVoice(_SourceVoice);
+	_SoundDriver->destroySourceVoice(_SourceVoice);
 	_SourceVoice = NULL;
 	stop();
 }
@@ -138,7 +141,8 @@ void CSourceXAudio2::commit3DChanges()
 		_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
 
 #if MANUAL_ROLLOFF == 0
-		_Emitter.CurveDistanceScaler = _MinDistance * _SoundDriver->getListener()->getDistanceScaler();
+		// divide min distance (distance from where to start attenuation) with rolloff scaler (factor to get faster attenuation)
+		_Emitter.CurveDistanceScaler = _MinDistance / _SoundDriver->getListener()->getRolloffScaler();
 		// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
 #else
 		float sqrdist = _Relative 
@@ -208,49 +212,6 @@ void CSourceXAudio2::updateState()
 	}
 }
 
-IXAudio2SourceVoice *CSourceXAudio2::createSourceVoice(TSampleFormat format)
-{
-	nlassert(_SoundDriver->getListener());
-
-	HRESULT hr;
-
-	WAVEFORMATEX wfe; // todo: ADPCMWAVEFORMAT // wSamplesPerBlock // wNumCoef // aCoef
-	wfe.cbSize = 0;
-
-	nlassert(format == Mono16 || format == Mono16ADPCM || format == Mono16 || format == Stereo16 || format == Stereo8);
-
-	wfe.wFormatTag = (format == Mono16ADPCM) 
-		? WAVE_FORMAT_ADPCM
-		: WAVE_FORMAT_PCM;
-	wfe.nChannels = (format == Mono16 || format == Mono16ADPCM || format == Mono8)
-		? 1
-		: 2;
-	wfe.wBitsPerSample = (format == Mono8 || format == Stereo8)
-		? 8
-		: 16;
-
-	XAUDIO2_VOICE_DETAILS voice_details;
-	_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0]->GetVoiceDetails(&voice_details);
-	wfe.nSamplesPerSec = voice_details.InputSampleRate;
-
-	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
-	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
-
-	// note: 32.0f allows at lowest 1378.125hz audio samples, increase if you need even lower bitrate (or higher pitch)
-	// todo: callback for when error happens on voice, so we can restart it!
-	IXAudio2SourceVoice *source_voice = NULL;
-
-	if (FAILED(hr = _SoundDriver->getXAudio2()->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, NULL/*this*/, _SoundDriver->getListener()->getVoiceSends(), NULL)))
-	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
-
-	return source_voice;
-}
-
-void CSourceXAudio2::destroySourceVoice(IXAudio2SourceVoice *sourceVoice)
-{
-	if (sourceVoice) sourceVoice->DestroyVoice();
-}
-
 void CSourceXAudio2::submitStaticBuffer()
 {
 	nlassert(_SourceVoice);
@@ -281,7 +242,7 @@ void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 	// if (buffer) nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
 	// else nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
 
-	if (_IsPlaying) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called setStaticBuffer(IBuffer *buffer) while _IsPlaying == true!");
+	// if (_IsPlaying) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called setStaticBuffer(IBuffer *buffer) while _IsPlaying == true!");
 	
 	_StaticBuffer = static_cast<CBufferXAudio2 *>(buffer);
 }
@@ -306,8 +267,15 @@ IBuffer *CSourceXAudio2::getStaticBuffer()
 void CSourceXAudio2::setLooping(bool l)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
-	
-	_IsLooping = l;
+	if (_IsLooping != l)
+	{
+		if (!l)
+		{
+			if (_SourceVoice)
+				_SourceVoice->ExitLoop();
+		}
+		_IsLooping = l;
+	}
 }
 
 /// Return the looping state
@@ -321,7 +289,7 @@ bool CSourceXAudio2::initFormat(TSampleFormat format)
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
 
 	nlassert(!_SourceVoice)
-	_SourceVoice = createSourceVoice(format);
+	_SourceVoice = _SoundDriver->createSourceVoice(format);
 	if (!_SourceVoice) return false; // fail
 	_Format = format;
 	XAUDIO2_VOICE_DETAILS voice_details;
@@ -348,7 +316,7 @@ bool CSourceXAudio2::play()
 	{
 		if (_IsPlaying)
 		{
-			nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
+			// nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
 			if (_StaticBuffer->getFormat() == _Format) // cannot call stop directly before destroy voice, ms bug in xaudio2
 				stop(); // sets _IsPlaying = false;
 		}
@@ -357,11 +325,12 @@ bool CSourceXAudio2::play()
 			if (_SourceVoice && _StaticBuffer->getFormat() != _Format)
 			{
 				nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
-				destroySourceVoice(_SourceVoice);
+				_SoundDriver->destroySourceVoice(_SourceVoice);
 				_SourceVoice = NULL;
 			}
 			if (!_SourceVoice)
 			{
+				// initialize a source voice with this format
 				if (!initFormat(_StaticBuffer->getFormat()))
 				{
 					nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());

@@ -4,6 +4,8 @@
  * \date 2008-08-20 12:32GMT
  * \author Jan Boon (Kaetemi)
  * STDXAudio2
+ * 
+ * $Id$
  */
 
 /* 

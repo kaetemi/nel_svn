@@ -4,6 +4,8 @@
  * \date 2008-08-30 11:38GMT
  * \author Jan Boon (Kaetemi)
  * IMusicBuffer
+ * 
+ * $Id$
  */
 
 /* 
@@ -51,6 +53,9 @@ namespace NLSOUND {
  * music files into a readable format (it's a simple decoder interface).
  * You should not call these functions (getSongTitle) on nlsound or user level, 
  * as a driver might have additional music types implemented.
+ * TODO: Change IMusicBuffer to IAudioDecoder, and change the interface to make more sense.
+ * TODO: Allow user application to register more decoders.
+ * TODO: Look into libavcodec for decoding audio.
  */
 class IMusicBuffer
 {

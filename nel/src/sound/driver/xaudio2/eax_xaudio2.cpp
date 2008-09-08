@@ -4,6 +4,8 @@
  * \date 2008-09-04 00:47GMT
  * \author Jan Boon (Kaetemi)
  * CEaxXAudio2
+ * 
+ * $Id$
  */
 
 /* 

@@ -4,6 +4,8 @@
  * \date 2008-08-30 13:31GMT
  * \author Jan Boon (Kaetemi)
  * CMusicChannelXAudio2
+ * 
+ * $Id$
  */
 
 /* 

@@ -177,14 +177,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\eax_xaudio2.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\eax_xaudio2.h"
-				>
-			</File>
-			<File
 				RelativePath=".\listener_xaudio2.cpp"
 				>
 			</File>
@@ -200,6 +192,26 @@
 				RelativePath=".\source_xaudio2.h"
 				>
 			</File>
+			<Filter
+				Name="utility"
+				>
+				<File
+					RelativePath=".\adpcm_xaudio2.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\adpcm_xaudio2.h"
+					>
+				</File>
+				<File
+					RelativePath=".\eax_xaudio2.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\eax_xaudio2.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="music"
@@ -212,26 +224,26 @@
 				RelativePath=".\music_channel_xaudio2.h"
 				>
 			</File>
-		</Filter>
-		<Filter
-			Name="nlsound"
-			>
-			<File
-				RelativePath=".\music_buffer.cpp"
+			<Filter
+				Name="utility"
 				>
-			</File>
-			<File
-				RelativePath=".\music_buffer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\music_buffer_vorbis.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\music_buffer_vorbis.h"
-				>
-			</File>
+				<File
+					RelativePath=".\music_buffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\music_buffer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\music_buffer_vorbis.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\music_buffer_vorbis.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\driver_xaudio2.def"
