@@ -2,6 +2,6 @@
 
 cd ..
 CURDIR=$(pwd)
-cd doc
-rm -rf html/*
-doxygen nel.dox -DCURDIR
+cd -
+rm -rf html
+doxygen nel.dox -D$CURDIR
