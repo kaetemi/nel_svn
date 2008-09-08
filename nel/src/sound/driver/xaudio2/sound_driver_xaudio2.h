@@ -4,8 +4,6 @@
  * \date 2008-08-20 10:52GMT
  * \author Jan Boon (Kaetemi)
  * CSoundDriverXAudio2
- * 
- * $Id$
  */
 
 /* 

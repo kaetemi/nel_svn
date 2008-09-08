@@ -4,8 +4,6 @@
  * \date 2008-08-20 15:53GMT
  * \author Jan Boon (Kaetemi)
  * CSourceXAudio2
- * 
- * $Id$
  */
 
 /* 

@@ -4,8 +4,6 @@
  * \date 2008-09-04 16:29GMT
  * \author Jan Boon (Kaetemi)
  * IMusicChannel
- * 
- * $Id$
  */
 
 /* 

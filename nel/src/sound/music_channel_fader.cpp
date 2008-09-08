@@ -4,8 +4,6 @@
  * \date 2008-09-04 21:49GMT
  * \author Jan Boon (Kaetemi)
  * CMusicChannelFader roughly based on music_channel_fmod.cpp
- * 
- * $Id$
  */
 
 /* Copyright, 2000-2004 Nevrax Ltd.

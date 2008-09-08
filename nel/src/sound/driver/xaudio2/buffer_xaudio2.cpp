@@ -4,8 +4,6 @@
  * \date 2008-08-20 17:21GMT
  * \author Jan Boon (Kaetemi)
  * CBufferXAudio2
- * 
- * $Id$
  */
 
 /* 
