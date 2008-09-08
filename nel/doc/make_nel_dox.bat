@@ -1,7 +1,9 @@
 @echo off
-R:
-cd \code\nel\doc
+cd ..
+set CURDIR=%CD%
+cd doc
 del html\*.* /Q
-s:\bin\doxygen nel.dox
+doxygen nel.dox -DCURDIR
 S:\bin\hhc html\index.hhp
-copy html\index.chm s:\doc\nel.chm
+copy html\index.chm nel.chm
+pause
