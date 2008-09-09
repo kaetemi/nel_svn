@@ -99,7 +99,6 @@ protected:
 	};
 	typedef std::map<std::string, CNormalizationInfo> TNameToNI; // sharename to the normalization factor
 	static TNameToNI	_NameToNF; // name to normalization factor
-	TNameToNI::iterator	_NameToNFHandle; // handle of this instance into the map
 private:
 	/// we don't allow for mipmap for bump so we redefine this to prevent the user from doing this on the base class Itexture
 	virtual         void setFilterMode(TMagFilter magf, TMinFilter minf);

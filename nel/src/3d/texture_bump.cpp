@@ -255,13 +255,11 @@ void CTextureBump::doGenerate(bool async)
 		ni.NormalizationFactor = normalizationFactor;
 		std::pair<TNameToNI::iterator, bool> pb = _NameToNF.insert(TNameToNI::value_type(shareName, ni));
 		_NormalizationFactor = &(pb.first->second.NormalizationFactor);
-		_NameToNFHandle = pb.first;
 	}
 	else
 	{
 		// another map has computed the factor
 		_NormalizationFactor = &(it->second.NormalizationFactor);
-		_NameToNFHandle = it;
 		++(it->second.NumRefs);
 	}
 
@@ -312,7 +310,6 @@ float CTextureBump::getNormalizationFactor()
 	TNameToNI::iterator it = _NameToNF.find(shareName);
 	if (it != _NameToNF.end())
 	{
-		_NameToNFHandle = it;
 		_NormalizationFactor = &(it->second.NormalizationFactor);
 		++(it->second.NumRefs);
 	}
@@ -327,12 +324,16 @@ float CTextureBump::getNormalizationFactor()
 ///==============================================================================================
 CTextureBump::~CTextureBump()
 {
-	if (_NormalizationFactor)
+	if (_NormalizationFactor && !_NameToNF.empty())
 	{
-		--(_NameToNFHandle->second.NumRefs);
-		if (_NameToNFHandle->second.NumRefs == 0)
+		// find normalization factor from its name
+		TNameToNI::iterator it = _NameToNF.find(getShareName());
+
+		// if found
+		if (it != _NameToNF.end())
 		{
-			_NameToNF.erase(_NameToNFHandle);
+			// we can delete it only if it's not used anymore
+			if (--(it->second.NumRefs) == 0) _NameToNF.erase(it);
 		}
 	}
 }
