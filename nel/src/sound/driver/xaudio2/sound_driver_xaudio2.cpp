@@ -30,8 +30,6 @@
 
 /*
  * TODO:
- *  - Profile
- *    - writeProfile
  *  - Bench
  *    - startBench
  *    - endBench
@@ -176,6 +174,17 @@ NLMISC_CATEGORISED_COMMAND(nel, disableEaxEnvironment, "Disable eax environment 
 	return true;
 }
 
+NLMISC_CATEGORISED_COMMAND(nel, displaySoundPerformance, "Display information on sound driver", "")
+{
+	string performance;
+	CSoundDriverXAudio2::getInstance()->writeProfile(performance);
+	vector<string> pv;
+	explode<string>(performance, "\n", pv, true);
+	vector<string>::iterator it(pv.begin()), end(pv.end());
+	for (; it != end; ++it) log.displayNL((*it).c_str());
+	return true;
+}
+
 #endif /* !FINAL_VERSION */
 
 // ******************************************************************
@@ -183,7 +192,11 @@ NLMISC_CATEGORISED_COMMAND(nel, disableEaxEnvironment, "Disable eax environment 
 CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax, 
 	ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer) 
 	: _StringMapper(stringMapper), _XAudio2(NULL), _MasteringVoice(NULL), 
-	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), _UseEax(useEax)
+	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), _UseEax(useEax), 
+	_PerformanceCommit3DCounter(0), _PerformanceMono16ADPCMBufferSize(0), 
+	_PerformanceMono16BufferSize(0), _PerformanceMono8BufferSize(0), 
+	_PerformanceMusicPlayCounter(0), _PerformanceSourcePlayCounter(0), 
+	_PerformanceStereo16BufferSize(0), _PerformanceStereo8BufferSize(0)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
 
@@ -348,7 +361,7 @@ void CSoundDriverXAudio2::destroySourceVoice(IXAudio2SourceVoice *sourceVoice)
 /// Create a sound buffer
 IBuffer *CSoundDriverXAudio2::createBuffer()
 {
-	return new CBufferXAudio2();
+	return new CBufferXAudio2(this);
 }
 
 /// Create the listener instance
@@ -387,6 +400,8 @@ bool CSoundDriverXAudio2::readRawBuffer(IBuffer *destbuffer, const std::string &
 /// Commit all the changes made to 3D settings of listener and sources
 void CSoundDriverXAudio2::commit3DChanges()
 {
+	performanceIncreaseCommit3DCounter();
+
 	// Sync up sources & listener 3d position.
 	{
 		std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
@@ -397,8 +412,32 @@ void CSoundDriverXAudio2::commit3DChanges()
 /// Write information about the driver to the output stream.
 void CSoundDriverXAudio2::writeProfile(std::string& out)
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	out = NLSOUND_XAUDIO2_NAME "\n---\nlalalalalaaaa";
+	XAUDIO2_PERFORMANCE_DATA performance;
+	_XAudio2->GetPerformanceData(&performance);
+
+	out = toString(NLSOUND_XAUDIO2_NAME)
+		+ "\n  Mono8BufferSize: " + toString(_PerformanceMono8BufferSize)
+		+ "\n  Mono16BufferSize: " + toString(_PerformanceMono16BufferSize)
+		+ "\n  Mono16ADPCMBufferSize: " + toString(_PerformanceMono16ADPCMBufferSize)
+		+ "\n  Stereo8BufferSize: " + toString(_PerformanceStereo8BufferSize)
+		+ "\n  Stereo16BufferSize: " + toString(_PerformanceStereo16BufferSize)
+		+ "\n  SourcePlayCounter: " + toString(_PerformanceSourcePlayCounter)
+		+ "\n  MusicPlayCounter: " + toString(_PerformanceMusicPlayCounter)
+		+ "\n  Commit3DCounter: " + toString(_PerformanceCommit3DCounter)
+		+ "\nXAUDIO2_PERFORMANCE_DATA"
+		+ "\n  AudioCyclesSinceLastQuery: " + toString(performance.AudioCyclesSinceLastQuery)
+		+ "\n  TotalCyclesSinceLastQuery: " + toString(performance.TotalCyclesSinceLastQuery)
+		+ "\n  MinimumCyclesPerQuantum: " + toString(performance.MinimumCyclesPerQuantum)
+		+ "\n  MaximumCyclesPerQuantum: " + toString(performance.MaximumCyclesPerQuantum)
+		+ "\n  MemoryUsageInBytes: " + toString(performance.MemoryUsageInBytes)
+		+ "\n  CurrentLatencyInSamples: " + toString(performance.CurrentLatencyInSamples)
+		+ "\n  GlitchesSinceEngineStarted: " + toString(performance.GlitchesSinceEngineStarted)
+		+ "\n  ActiveSourceVoiceCount: " + toString(performance.ActiveSourceVoiceCount)
+		+ "\n  TotalSourceVoiceCount: " + toString(performance.TotalSourceVoiceCount)
+		+ "\n  ActiveSubmixVoiceCount: " + toString(performance.ActiveSubmixVoiceCount)
+		+ "\n  TotalSubmixVoiceCount: " + toString(performance.TotalSubmixVoiceCount)
+		+ "\n  ActiveXmaSourceVoices: " + toString(performance.ActiveXmaSourceVoices)
+		+ "\n  ActiveXmaStreams: " + toString(performance.ActiveXmaStreams);
 	return;
 }
 

@@ -74,6 +74,8 @@ bool CMusicChannelXAudio2::play(const std::string &filepath, bool async, bool lo
 {
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "play %s %u", filepath.c_str(), (uint32)loop);
 
+	_SoundDriver->performanceIncreaseMusicPlayCounter();
+
 	HRESULT hr;
 
 	stop();

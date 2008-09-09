@@ -57,7 +57,9 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
-CBufferXAudio2::CBufferXAudio2() : _Data(NULL)
+CBufferXAudio2::CBufferXAudio2(CSoundDriverXAudio2 *soundDriver) 
+: _SoundDriver(soundDriver), _Data(NULL), 
+_Size(0), _Name(NULL), _Format((TSampleFormat)~0), _Freq(0)
 {
 	
 }
@@ -65,9 +67,10 @@ CBufferXAudio2::CBufferXAudio2() : _Data(NULL)
 CBufferXAudio2::~CBufferXAudio2()
 {
 	// Remove the buffer from the driver.
-	CSoundDriverXAudio2::getInstance()->removeBuffer(this);
+	_SoundDriver->removeBuffer(this);
 
-	// Release possible _Data.
+	// Release possible _Data and update stats.
+	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
 	delete[] _Data; _Data = NULL;
 }
 
@@ -79,7 +82,8 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
 
-	// Free any existing _Data if it exists
+	// Free any existing _Data if it exists and update stats.
+	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
 	delete[] _Data; _Data = NULL;
 
 	// Create mmio stuff
@@ -180,6 +184,9 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	_Size = mmckinfodata.cksize;
 	_Data = new uint8[_Size];
 	CFastMem::memcpy(_Data, wavedata, _Size);
+
+	// Update stats
+	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
 	return true;
 }
 
@@ -191,7 +198,8 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
 
-	// Free any existing _Data if it exists
+	// Free any existing _Data if it exists and update stats.
+	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
 	delete[] _Data; _Data = NULL;
 
 	// Copy stuff from params
@@ -200,6 +208,9 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
 	_Data = new BYTE[dataSize];
 	CFastMem::memcpy(_Data, rawData, dataSize);
 	_Freq = frequency;
+
+	// Update stats
+	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
 	return true;
 }
 
@@ -245,7 +256,7 @@ float CBufferXAudio2::getDuration() const
     case Mono8:
         break;
     case Mono16ADPCM:
-        frames *= 2.0f; // don't think this is right...
+        frames *= 2.0f;
         break;
     case Mono16:
         frames /= 2.0f;
@@ -279,7 +290,6 @@ void CBufferXAudio2::getFormat( TSampleFormat& format, uint& freq ) const
  */
 bool CBufferXAudio2::isFillMoreSupported() const
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
 	return false;
 }
 

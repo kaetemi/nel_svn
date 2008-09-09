@@ -88,6 +88,16 @@ protected:
 	X3DAUDIO_HANDLE _X3DAudioHandle; //I
 	/// X3DAudio DSP Settings structure for 1 channel to all channels.
 	X3DAUDIO_DSP_SETTINGS _DSPSettings;
+
+	// performance stats
+	uint _PerformanceMono8BufferSize;
+	uint _PerformanceMono16BufferSize;
+	uint _PerformanceMono16ADPCMBufferSize;
+	uint _PerformanceStereo8BufferSize;
+	uint _PerformanceStereo16BufferSize;
+	uint _PerformanceSourcePlayCounter;
+	uint _PerformanceMusicPlayCounter;
+	uint _PerformanceCommit3DCounter;
 	
 	// user init vars
 	/// If eax is used.
@@ -100,6 +110,37 @@ public:
 	virtual ~CSoundDriverXAudio2();
 	/// (Internal) Release all resources owned by CSoundDriverXAudio2.
 	void release();
+
+	/// (Internal) Register a data buffer with the performance counters.
+	inline void performanceRegisterBuffer(TSampleFormat format, uint size) 
+	{ 
+		switch (format)
+		{
+		case Mono8: _PerformanceMono8BufferSize += size; break;
+		case Mono16: _PerformanceMono16BufferSize += size; break;
+		case Mono16ADPCM: _PerformanceMono16ADPCMBufferSize += size; break;
+		case Stereo8: _PerformanceMono8BufferSize += size; break;
+		case Stereo16: _PerformanceMono16BufferSize += size; break;
+		}
+	}
+	/// (Internal) Remove a data buffer from the performance counters.
+	inline void performanceUnregisterBuffer(TSampleFormat format, uint size) 
+	{ 
+		switch (format)
+		{
+		case Mono8: _PerformanceMono8BufferSize -= size; break;
+		case Mono16: _PerformanceMono16BufferSize -= size; break;
+		case Mono16ADPCM: _PerformanceMono16ADPCMBufferSize -= size; break;
+		case Stereo8: _PerformanceMono8BufferSize -= size; break;
+		case Stereo16: _PerformanceMono16BufferSize -= size; break;
+		}
+	}
+	/// (Internal) Increase the source play counter by one.
+	inline void performanceIncreaseSourcePlayCounter() { ++_PerformanceSourcePlayCounter; }
+	/// (Internal) Increase the music play counter by one.
+	inline void performanceIncreaseMusicPlayCounter() { ++_PerformanceMusicPlayCounter; }
+	/// (Internal) Increase the commit 3d counter by one.
+	inline void performanceIncreaseCommit3DCounter() { ++_PerformanceCommit3DCounter; }
 	
 	/// (Internal) Initialize uninitialized sources with this format (so xaudio2 voices don't need to be created at runtime)
 	void initSourcesFormat(TSampleFormat format);
@@ -130,14 +171,14 @@ public:
 	virtual	IBuffer *createBuffer();
 	/// Create the listener instance.
 	virtual	IListener *createListener();
-	/// Return the maximum number of sources that can created.
+	/// Return an artificial limit on the number of sources that can created (you really can make more).
 	virtual uint countMaxSources();
 	/// Create a source channel.
 	virtual	ISource *createSource();
 	
 	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8).
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
-	/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16).
+	/// Read data from the data block. All supported formats are implemented.
 	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
 	
 	/// Commit all the changes made to 3D settings of listener and sources.

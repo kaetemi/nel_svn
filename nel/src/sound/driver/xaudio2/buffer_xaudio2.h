@@ -40,6 +40,7 @@
 // Project includes
 
 namespace NLSOUND {
+	class CSoundDriverXAudio2;
 
 /**
  * \brief CBufferXAudio2
@@ -50,6 +51,10 @@ namespace NLSOUND {
 class CBufferXAudio2 : public IBuffer
 {
 protected:
+	// far pointers
+	/// The sound driver that owns this buffer, used for stats. (artificial limit)
+	CSoundDriverXAudio2 *_SoundDriver;
+	
 	// pointers
 	/// The sample data in this buffer.
 	uint8 *_Data;
@@ -68,7 +73,7 @@ protected:
 	/// The sample frequency
 	uint _Freq;
 public:
-	CBufferXAudio2();
+	CBufferXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CBufferXAudio2();
 	//void release();
 

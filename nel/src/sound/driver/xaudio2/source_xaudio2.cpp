@@ -341,6 +341,8 @@ bool CSourceXAudio2::play()
 	}
 	else
 	{
+		_SoundDriver->performanceIncreaseSourcePlayCounter();
+
 		if (_IsPlaying)
 		{
 			// nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
