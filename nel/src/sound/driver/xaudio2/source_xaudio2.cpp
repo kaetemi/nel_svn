@@ -287,7 +287,8 @@ void CSourceXAudio2::setLooping(bool l)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
 	if (_IsLooping != l)
-	{		
+	{
+		_IsLooping = l;
 		if (_AdpcmUtility)
 		{
 			_AdpcmUtility->setLooping(l);
@@ -295,9 +296,32 @@ void CSourceXAudio2::setLooping(bool l)
 		else if (!l)
 		{
 			if (_SourceVoice)
-				_SourceVoice->ExitLoop();
+			{
+				if (_IsPlaying)
+				{
+					// flush any queued buffers, keep playing current buffer
+					if (FAILED(_SourceVoice->FlushSourceBuffers())) 
+						nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
+					// exit loop of current buffer
+					if (FAILED(_SourceVoice->ExitLoop()))
+						nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED ExitLoop");
+				}
+				else
+				{
+					// not playing but buffer already queued
+					XAUDIO2_VOICE_STATE voice_state;
+					_SourceVoice->GetState(&voice_state);
+					if (voice_state.BuffersQueued)
+					{
+						nlwarning(NLSOUND_XAUDIO2_PREFIX "not playing but buffer already queued???");
+						if (FAILED(_SourceVoice->FlushSourceBuffers())) 
+							nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
+						// queue buffer with correct looping parameters
+						submitStaticBuffer();
+					}
+				}
+			}
 		}
-		_IsLooping = l;
 	}
 }
 
