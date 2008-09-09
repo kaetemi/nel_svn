@@ -11,15 +11,11 @@ MAKE         = make
 
 # The flags for the C++ compiler
 CXXFLAGS     = -g -pipe -D_REENTRANT -D_GNU_SOURCE \
-				-I$(HOME)/cvs/code/nel/include \
-				-I/usr/include/stlport \
-				-I/usr/local/include
+				-I$(HOME)/code/nel/include
 
 # The flags for the linker
-LDFLAGS      = -L$(HOME)/install/release/lib \
-				-L/usr/local/lib \
+LDFLAGS      = -L$(HOME)/code/install/release/lib \
 				-lnelmisc \
-				-lstlport_gcc \
 				-lpthread \
 				-lrt \
 				-ldl
