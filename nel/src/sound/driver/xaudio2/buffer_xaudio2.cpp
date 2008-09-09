@@ -4,8 +4,6 @@
  * \date 2008-08-20 17:21GMT
  * \author Jan Boon (Kaetemi)
  * CBufferXAudio2
- * 
- * $Id$
  */
 
 /* 
@@ -30,8 +28,6 @@
 
 /*
  * TODO:
- *  - ADPCM
- *    - ADPCM
  *  - Fill More
  *    - fillBuffer
  *    - isFillMoreSupported
@@ -74,17 +70,44 @@ CBufferXAudio2::~CBufferXAudio2()
 	delete[] _Data; _Data = NULL;
 }
 
+/// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
+/// May return NULL if the format or frequency is not supported by the driver.
+uint8 *CBufferXAudio2::openWritable(uint size, TSampleFormat format, uint32 frequency)
+{
+	if (_Data)
+	{
+		_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
+		if (size != _Size) delete[] _Data; _Data = NULL;
+	}
+
+	if (!_Data) _Data = new uint8[size];
+
+	_Format = format;
+	_Freq = frequency;
+	_Size = size;
+
+	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
+
+	return _Data;
+}
+
+/// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
+/// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
+/// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
+void CBufferXAudio2::lockWritable(bool keepLocal)
+{
+	// does nothing in this driver
+}
+
 bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {
+	TSampleFormat format = (TSampleFormat)~0;
+
 	// If name has been preset, it must match.
 	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
 	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
-
-	// Free any existing _Data if it exists and update stats.
-	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
-	delete[] _Data; _Data = NULL;
 
 	// Create mmio stuff
 	MMIOINFO mmioinfo;
@@ -130,10 +153,10 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 			switch (wavefmt->wBitsPerSample)
 			{
 			case 8:
-				_Format = Mono8;
+				format = Mono8;
 				break;
 			case 16:
-				_Format = Mono16;
+				format = Mono16;
 				break;
 			default:
 				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
@@ -143,7 +166,7 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 			switch (wavefmt->wBitsPerSample)
 			{
 			case 16:
-				_Format = Mono16ADPCM;
+				format = Mono16ADPCM;
 				break;
 			default:
 				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
@@ -160,10 +183,10 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 			switch (wavefmt->wBitsPerSample)
 			{
 			case 8:
-				_Format = Stereo8;
+				format = Stereo8;
 				break;
 			case 16:
-				_Format = Stereo16;
+				format = Stereo16;
 				break;
 			default:
 				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
@@ -177,16 +200,10 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 		throw ESoundDriver(toString("nChannels invalid (%i)", (sint32)wavefmt->nChannels));
 	}
 
-	// Get frequency
-	_Freq = wavefmt->nSamplesPerSec;
-
 	// Copy stuff
-	_Size = mmckinfodata.cksize;
-	_Data = new uint8[_Size];
-	CFastMem::memcpy(_Data, wavedata, _Size);
-
-	// Update stats
-	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
+	uint8 *wbuffer = openWritable(mmckinfodata.cksize, format, wavefmt->nSamplesPerSec);
+	CFastMem::memcpy(wbuffer, wavedata, mmckinfodata.cksize);
+	lockWritable(true);
 	return true;
 }
 
@@ -198,19 +215,10 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
 
-	// Free any existing _Data if it exists and update stats.
-	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
-	delete[] _Data; _Data = NULL;
-
 	// Copy stuff from params
-	_Format = format;
-	_Size = dataSize;
-	_Data = new BYTE[dataSize];
-	CFastMem::memcpy(_Data, rawData, dataSize);
-	_Freq = frequency;
-
-	// Update stats
-	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
+	uint8 *wbuffer = openWritable(dataSize, format, frequency);
+	CFastMem::memcpy(wbuffer, rawData, dataSize);
+	lockWritable(true);
 	return true;
 }
 

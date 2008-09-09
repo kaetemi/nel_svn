@@ -4,8 +4,6 @@
  * \date 2008-08-20 17:21GMT
  * \author Jan Boon (Kaetemi)
  * CBufferXAudio2
- * 
- * $Id$
  */
 
 /* 
@@ -65,13 +63,13 @@ protected:
 	// XAUDIO2_BUFFER _Buffer;
 
 	/// The size of the data in this buffer
-	uint32 _Size;
+	uint _Size;
 	/// The name of the buffer
 	NLMISC::TStringId _Name;
 	/// The sample format
 	TSampleFormat _Format;
 	/// The sample frequency
-	uint _Freq;
+	uint32 _Freq;
 public:
 	CBufferXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CBufferXAudio2();
@@ -83,6 +81,14 @@ public:
 	inline uint getFreq() { return _Freq; }
 	/// Returns the sample format.
 	inline TSampleFormat getFormat() { return _Format; }
+
+	/// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
+	/// May return NULL if the format or frequency is not supported by the driver.
+	virtual uint8 *openWritable(uint size, TSampleFormat format, uint32 frequency);
+	/// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
+	/// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
+	/// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
+	virtual void lockWritable(bool keepLocal);
 
 	/// Read the audio data from a WAV format buffer.
 	bool readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize);

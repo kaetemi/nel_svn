@@ -4,8 +4,6 @@
  * \date 2008-08-20 10:52GMT
  * \author Jan Boon (Kaetemi)
  * CSoundDriverXAudio2
- * 
- * $Id$
  */
 
 /* 
@@ -60,6 +58,12 @@
 
 using namespace std;
 using namespace NLMISC;
+
+/// Sample rate for master voice (device).
+/// Default (0) under windows is 44100 (CD) or 48000 (DVD). 
+/// Note 1: OpenAL driver uses 22050 at the moment.
+/// Note 2: 44100 seems to be the optimal value here.
+#define NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE 44100
 
 namespace NLSOUND {
 
@@ -237,7 +241,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	// XAudio2
 	if (FAILED(hr = XAudio2Create(&_XAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
 		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "XAudio2 failed to initialize. Please install the latest version of the DirectX End-User Runtimes."); return; }
-	if (FAILED(hr = _XAudio2->CreateMasteringVoice(&_MasteringVoice, 0, 44100, 0, 0, NULL)))
+	if (FAILED(hr = _XAudio2->CreateMasteringVoice(&_MasteringVoice, 0, NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE, 0, 0, NULL)))
 		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateMasteringVoice _MasteringVoice!"); return; }
 	
 	// X3DAudio

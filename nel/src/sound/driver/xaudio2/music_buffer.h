@@ -4,8 +4,6 @@
  * \date 2008-08-30 11:38GMT
  * \author Jan Boon (Kaetemi)
  * IMusicBuffer
- * 
- * $Id$
  */
 
 /* 
@@ -44,6 +42,35 @@ namespace NLMISC {
 }
 
 namespace NLSOUND {
+
+	/*
+	 * TODO: Streaming
+	 * Some kind of decent streaming functionality, to get rid of the current music implementation. Audio decoding should be done on nlsound level. IBuffer needs a writable implementation, it allocates and owns the data memory, which can be written to by nlsound. When buffer is written, a function needs to be called to 'finalize' the buffer (so it can be submitted to OpenAL for example). 
+	 * Required interface functions, IBuffer:
+	 * /// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
+	 * /// May return NULL if the format or frequency is not supported by the driver.
+	 * uint8 *IBuffer::openWritable(uint size, TSampleFormat format, uint32 frequency);
+	 * /// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
+	 * /// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
+	 * /// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
+	 * void IBuffer::lockWritable(bool keepLocal);
+	 * Required interface functions, ISource:
+	 * /// Enable or disable the streaming facilities.
+	 * void ISource::setStreaming(bool streaming);
+	 * /// Submits a new buffer to the stream. A buffer of 100ms length is optimal for streaming.
+	 * /// Should be called by a thread which checks countStreamingBuffers every 100ms
+	 * void ISource::submitStreamingBuffer(IBuffer *buffer);
+	 * /// Returns the number of buffers that are queued (includes playing buffer). 3 buffers is optimal.
+	 * uint ISource::countStreamingBuffers();
+	 * Other required interface functions, ISource:
+	 * /// Enable or disable 3d calculations (to send directly to speakers).
+	 * void ISource::set3DMode(bool enable);
+	 * For compatibility with music trough fmod, ISoundDriver:
+	 * /// Returns true if the sound driver has a native implementation of IMusicChannel (bad!).
+	 * /// If this returns false, use the nlsound music channel, which goes trough Ctrack/ISource,
+	 * /// The nlsound music channel requires support for IBuffer/ISource streaming.
+	 * bool ISoundDriver::hasMusicChannel();
+	 */
 
 /**
  * \brief IMusicBuffer

@@ -4,8 +4,6 @@
  * \date 2008-09-07 03:53GMT
  * \author Jan Boon (Kaetemi)
  * CAdpcmXAudio2
- * 
- * $Id$
  */
 
 /* 
