@@ -705,7 +705,12 @@ void	CAudioMixerUser::buildSampleBankList()
 				// NB : the next commented line replaced by the next two line.
 				//		The first generate an access violation at the 64th insert !
 				// bankFile.insert(bankFile.begin()+i, filename);
-				bankFile.insert(bankFile.begin()+i, NULL);
+				// NB REPLY : the next commented line, which was actually the line
+				//            that replaced the line above this note, crashed too !
+				//            (don't ask me why this happens, but this seems to fix it)
+				// bankFile.insert(bankFile.begin()+i, NULL);
+				if (bankFile.size() < i + 1) bankFile.resize(i + 1);
+				else bankFile.insert(bankFile.begin() + i, NULL);
 				bankFile[i] = filename;
 			}
 		}
