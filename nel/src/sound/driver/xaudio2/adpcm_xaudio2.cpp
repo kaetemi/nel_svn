@@ -44,9 +44,13 @@ using namespace std;
 
 namespace NLSOUND {
 
-CAdpcmXAudio2::CAdpcmXAudio2()
+CAdpcmXAudio2::CAdpcmXAudio2() 
+: _SourceVoice(NULL), _SourceData(NULL), _SourceSize(0), _SampleRate(0), 
+_Loop(false), _BufferNext(0), _SampleNb(0), _AdpcmSize(0),
+_AdpcmIndex(0)
 {
-	
+	_State.PreviousSample = 0;
+	_State.StepIndex = 0;
 }
 
 CAdpcmXAudio2::~CAdpcmXAudio2()
@@ -55,76 +59,73 @@ CAdpcmXAudio2::~CAdpcmXAudio2()
 }
 
 /// Submit the next ADPCM buffer, only 1 buffer can be submitted at a time!
-void CAdpcmXAudio2::submitSourceBuffer(CBufferXAudio2 *buffer, bool infiniteLoop)
+void CAdpcmXAudio2::submitSourceBuffer(CBufferXAudio2 *buffer)
 {
-	if (!_Buffer) nlerror("Only 1 ADPCM buffer can be submitted at a time!");
-
-	++_InvalidCounter;
-	bool _InfiniteLoop = infiniteLoop;
+	_Mutex.enter();
+	if (_Buffer) nlerror("Only 1 ADPCM buffer can be submitted at a time! Call flushSourceBuffers first in CSourceXAudio2 stop().");
 	_SourceSize = buffer->getSize();
 	_SourceData = buffer->getData();
+	_AdpcmSize = buffer->getFreq() / 40;
+	_SampleNb = _AdpcmSize * 2;
+	nlassert(_SampleNb < _BufferMax);
+	processBuffers();
+	_Mutex.leave();
 }
 
 /// Reset the decoder, clear the queued buffer
 void CAdpcmXAudio2::flushSourceBuffers()
 {
-	++_InvalidCounter;
+	_Mutex.enter();
 	_SourceData = NULL;
-	_SourceSize = 0;
+	//_SourceSize = 0;
+	//_SampleRate = 0;
 	_State.PreviousSample = 0;
 	_State.StepIndex = 0;
+	_AdpcmIndex = 0;
+	//_PcmSize = 0;
+	//_AdpcmSize = 0;
+	_Mutex.leave();
 }
 
-void CAdpcmXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
-{    
-	if (BytesRequired > 0)
+void CAdpcmXAudio2::processBuffers()
+{
+	if (_SourceData)
 	{
-		// nlwarning(NLSOUND_XAUDIO2_PREFIX "Bytes Required: %u", BytesRequired);
-		uint invalid_counter = _InvalidCounter;
-		uint8 *source_data = _SourceData;
-		if (source_data)
-		{		
-			IBuffer::TADPCMState adpcm_state = _State;
-			bool infinite_loop = _InfiniteLoop;
-			uint32 source_size = _SourceSize;
+		XAUDIO2_VOICE_STATE voice_state;
+		_SourceVoice->GetState(&voice_state);
+		while (voice_state.BuffersQueued < _BufferNb)
+		{
+			// ADPCM = 4bit, PCM = 16bit // 1 adpcm byte = 2 samples
+			uint maxinbytes = _SourceSize - _AdpcmIndex;
+			uint inbytes = min(maxinbytes, _AdpcmIndex);
 
-			if (_InvalidCounter != invalid_counter) // buffer changed by main thread
-				{ _State.PreviousSample = 0; _State.StepIndex = 0; return; } 
-			
-			uint32 minimum = BytesRequired * 2; // give some more than required
-			if (minimum > sizeof(_Buffer) - _BufferPos) _BufferPos = 0;
-			uint16 *buffer = &_Buffer[_BufferPos];
-
-			uint32 length = 0; // -- ! decode here ! --
-
-			_State = adpcm_state;
-			
-			if (_InvalidCounter != invalid_counter) // buffer changed by main thread
-				{ _State.PreviousSample = 0; _State.StepIndex = 0; return; } 
-
-			_BufferPos += length;
-
-			if (length)
+			if (inbytes > 0)
 			{
+				IBuffer::decodeADPCM(_SourceData + (_AdpcmIndex / 2), _Buffer[_BufferNext], inbytes * 2, _State);
+				
 				XAUDIO2_BUFFER xbuffer;
-				xbuffer.AudioBytes = length;
+				xbuffer.AudioBytes = inbytes * 4;
 				xbuffer.Flags = 0;
 				xbuffer.LoopBegin = 0;
 				xbuffer.LoopCount = 0;
 				xbuffer.LoopLength = 0;
-				xbuffer.pAudioData = (BYTE *)buffer;
-				xbuffer.pContext = NULL; // nothing here for now
+				xbuffer.pAudioData = (BYTE *)_Buffer[_BufferNext];
+				xbuffer.pContext = NULL;
 				xbuffer.PlayBegin = 0;
 				xbuffer.PlayLength = 0;
-
 				_SourceVoice->SubmitSourceBuffer(&xbuffer);
-			}
-			else
-			{
-				flushSourceBuffers();
+
+				_AdpcmIndex += inbytes;
+				_BufferNext = (_BufferNext + 1) % _BufferNb;
+				++voice_state.BuffersQueued;
 			}
 		}
 	}
+}
+
+void CAdpcmXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
+{    
+	
 }
 
 void CAdpcmXAudio2::OnVoiceProcessingPassEnd()
@@ -144,7 +145,12 @@ void CAdpcmXAudio2::OnBufferStart(void *pBufferContext)
 
 void CAdpcmXAudio2::OnBufferEnd(void *pBufferContext)
 { 
-	
+	// The "correct" way would be to decode the buffer on a seperate thread,
+	// but since ADPCM decoding should be really fast, there is no problem
+	// with doing it here directly.
+	_Mutex.enter();
+	processBuffers();
+	_Mutex.leave();
 }
 
 void CAdpcmXAudio2::OnLoopEnd(void *pBufferContext)

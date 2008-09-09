@@ -35,6 +35,7 @@
 // STL includes
 
 // NeL includes
+#include <nel/misc/mutex.h>
 #include "../buffer.h"
 
 // Project includes
@@ -47,37 +48,58 @@ namespace NLSOUND {
  * \brief CAdpcmXAudio2
  * \date 2008-09-07 03:53GMT
  * \author Jan Boon (Kaetemi)
- * CAdpcmXAudio2 (TODO! IGNORE THIS CLASS!)
+ * CAdpcmXAudio2 is a utility class for realtime streaming and decoding of Intel ADPCM data to an XAudio2 source voice.
  */
 class CAdpcmXAudio2
 {
 protected:
 	// stuff
-	// IBuffer *_SourceBuffer;
+	/// Source voice to which the data is sent.
 	IXAudio2SourceVoice *_SourceVoice;
+	/// ADPCM data.
 	uint8 *_SourceData;
+	/// ADPCM data size.
 	uint32 _SourceSize;
+	/// Sample data rate.
+	uint _SampleRate;
+	/// Size in uint8 50ms ADPCM. (50ms 4bit ADPCM in uint8 = _SampleRate / 40)
+	uint _AdpcmSize;
+	/// Samples for 50ms. Also size in uint16 for 100ms PCM. (50ms 16bit PCM in uint16 = _SampleRate / 20)
+	uint _SampleNb;
+	/// Current position in ADPCM buffer in uint8.
+	uint _AdpcmIndex;
 	
 	// other stuff
 	IBuffer::TADPCMState _State;
-	bool _InfiniteLoop;
-	uint16 _Buffer[16 * 1024]; // no specific reason, lol
-	uint32 _BufferPos; // 0
-	uint _InvalidCounter;
+	/// Looping or not.
+	bool _Loop;
+	/// Number of buffers.
+	static const uint _BufferNb = 3;
+	/// Data in buffer (in uint16).
+	static const uint _BufferMax = 2400;
+	/// Three buffers of up to 50ms of 48kHz 16bit PCM data each.
+	sint16 _Buffer[_BufferNb][_BufferMax];
+	/// Buffer that will be written to next.
+	uint _BufferNext;
+	/// Mutex for cross-thread access from XAudio2 callbacks.
+	NLMISC::CMutex _Mutex;
 public:
 	CAdpcmXAudio2();
 	virtual ~CAdpcmXAudio2();
 	
-	/// Submit the next ADPCM buffer, only 1 buffer can be submitted at a time!
-	void submitSourceBuffer(CBufferXAudio2 *buffer, bool infiniteLoop);
-
+	/// Set looping state.
+	inline void setLooping(bool l) { _Loop = l; }
+	/// Submit the next ADPCM buffer, only 1 buffer can be submitted at a time! Plays as soon as submitted (if sourcevoice is playing).
+	void submitSourceBuffer(CBufferXAudio2 *buffer);
 	/// Reset the decoder, clear the queued buffer
 	void flushSourceBuffers();
-
 	/// Returns NULL if the buffer has ended playing, never NULL for loops!
 	inline uint8 *getSourceData() { return _SourceData; }
-
+	
 private:
+	/// (Internal) Process and submit the ADPCM data.
+	void processBuffers();
+	
 	// XAudio2 Callbacks
     // Called just before this voice's processing pass begins.
     STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 BytesRequired);
