@@ -302,7 +302,7 @@ void CSoundDriverXAudio2::initSourcesFormat(TSampleFormat format)
 }
 
 /// (Internal) Create an XAudio2 source voice of the specified format.
-IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format)
+IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format, IXAudio2VoiceCallback *callback)
 {
 	nlassert(_Listener);
 
@@ -333,7 +333,7 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
 	IXAudio2SourceVoice *source_voice = NULL;
 
-	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, NULL/*this*/, _Listener->getVoiceSends(), NULL)))
+	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, callback, _Listener->getVoiceSends(), NULL)))
 	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
 
 	return source_voice;

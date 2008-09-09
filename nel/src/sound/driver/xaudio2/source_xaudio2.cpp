@@ -65,7 +65,8 @@ CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver)
 _Format(Mono16), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0), 
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
-_Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max())
+_Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
+_AdpcmUtility(NULL)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 
@@ -201,13 +202,25 @@ void CSourceXAudio2::updateState()
 {
 	if (_IsPlaying)
 	{
-		XAUDIO2_VOICE_STATE voice_state;
-		_SourceVoice->GetState(&voice_state);
-		if (!voice_state.BuffersQueued)
+		if (_AdpcmUtility)
 		{
-			if (FAILED(_SourceVoice->Stop(0))) 
-				nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
-			_IsPlaying = false;
+			if (!_AdpcmUtility->getSourceData())
+			{
+				if (FAILED(_SourceVoice->Stop(0))) 
+					nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+				_IsPlaying = false;
+			}
+		}
+		else
+		{
+			XAUDIO2_VOICE_STATE voice_state;
+			_SourceVoice->GetState(&voice_state);
+			if (!voice_state.BuffersQueued)
+			{
+				if (FAILED(_SourceVoice->Stop(0))) 
+					nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
+				_IsPlaying = false;
+			}
 		}
 	}
 }
@@ -216,19 +229,25 @@ void CSourceXAudio2::submitStaticBuffer()
 {
 	nlassert(_SourceVoice);
 	nlassert(_Format == _StaticBuffer->getFormat());
-	
-	XAUDIO2_BUFFER buffer;
-	buffer.AudioBytes = _StaticBuffer->getSize();
-	buffer.Flags = 0;
-	buffer.LoopBegin = 0;
-	buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
-	buffer.LoopLength = 0;
-	buffer.pAudioData = _StaticBuffer->getData();
-	buffer.pContext = _StaticBuffer;
-	buffer.PlayBegin = 0;
-	buffer.PlayLength = 0;
-	
-	_SourceVoice->SubmitSourceBuffer(&buffer);
+	if (_AdpcmUtility)
+	{
+		_AdpcmUtility->submitSourceBuffer(_StaticBuffer);
+	}
+	else
+	{
+		XAUDIO2_BUFFER buffer;
+		buffer.AudioBytes = _StaticBuffer->getSize();
+		buffer.Flags = 0;
+		buffer.LoopBegin = 0;
+		buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
+		buffer.LoopLength = 0;
+		buffer.pAudioData = _StaticBuffer->getData();
+		buffer.pContext = _StaticBuffer;
+		buffer.PlayBegin = 0;
+		buffer.PlayLength = 0;
+		
+		_SourceVoice->SubmitSourceBuffer(&buffer);
+	}
 }
 
 /// \name Initialization
@@ -268,8 +287,12 @@ void CSourceXAudio2::setLooping(bool l)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
 	if (_IsLooping != l)
-	{
-		if (!l)
+	{		
+		if (_AdpcmUtility)
+		{
+			_AdpcmUtility->setLooping(l);
+		}
+		else if (!l)
 		{
 			if (_SourceVoice)
 				_SourceVoice->ExitLoop();
@@ -288,8 +311,12 @@ bool CSourceXAudio2::initFormat(TSampleFormat format)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
 
-	nlassert(!_SourceVoice)
-	_SourceVoice = _SoundDriver->createSourceVoice(format);
+	nlassert(!_SourceVoice); nlassert(!_AdpcmUtility);
+	// create adpcm utility callback if needed
+	if (format == Mono16ADPCM) _AdpcmUtility = new CAdpcmXAudio2(_IsLooping);
+	// create voice with adpcm utility callback or NULL callback
+	_SourceVoice = _SoundDriver->createSourceVoice(format, _AdpcmUtility);
+	if (_AdpcmUtility) _AdpcmUtility->setSourceVoice(_SourceVoice);
 	if (!_SourceVoice) return false; // fail
 	_Format = format;
 	XAUDIO2_VOICE_DETAILS voice_details;
@@ -325,8 +352,10 @@ bool CSourceXAudio2::play()
 			if (_SourceVoice && _StaticBuffer->getFormat() != _Format)
 			{
 				nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
-				_SoundDriver->destroySourceVoice(_SourceVoice);
-				_SourceVoice = NULL;
+				// destroy existing voice
+				_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
+				// destroy adpcm utility (if it exists)
+				delete _AdpcmUtility; _AdpcmUtility = NULL;
 			}
 			if (!_SourceVoice)
 			{
@@ -361,6 +390,10 @@ void CSourceXAudio2::stop()
 	_IsPaused = false;
 	if (_SourceVoice)
 	{
+		// stop adpcm stream
+		if (_AdpcmUtility) _AdpcmUtility->flushSourceBuffers();
+
+		// stop source voice and remove pending buffers
 		if (FAILED(_SourceVoice->Stop(0))) 
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
 		if (FAILED(_SourceVoice->FlushSourceBuffers())) 

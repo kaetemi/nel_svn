@@ -44,6 +44,7 @@
 namespace NLSOUND {
 	class CSoundDriverXAudio2;
 	class CBufferXAudio2;
+	class CAdpcmXAudio2;
 
 /**
  * \brief CSourceXAudio2
@@ -63,6 +64,8 @@ protected:
 	// -- Pointers --
 	/// Source voice, can be NULL!
 	IXAudio2SourceVoice *_SourceVoice;
+	/// Adpcm helper, can be NULL!
+	CAdpcmXAudio2 *_AdpcmUtility;
 
 	// -- System vars 2d --
 	/// Format of the current source voice.

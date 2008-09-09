@@ -44,9 +44,9 @@ using namespace std;
 
 namespace NLSOUND {
 
-CAdpcmXAudio2::CAdpcmXAudio2() 
+CAdpcmXAudio2::CAdpcmXAudio2(bool loop) 
 : _SourceVoice(NULL), _SourceData(NULL), _SourceSize(0), _SampleRate(0), 
-_Loop(false), _BufferNext(0), _SampleNb(0), _AdpcmSize(0),
+_Loop(loop), _BufferNext(0), _SampleNb(0), _AdpcmSize(0),
 _AdpcmIndex(0)
 {
 	_State.PreviousSample = 0;
@@ -62,7 +62,7 @@ CAdpcmXAudio2::~CAdpcmXAudio2()
 void CAdpcmXAudio2::submitSourceBuffer(CBufferXAudio2 *buffer)
 {
 	_Mutex.enter();
-	if (_Buffer) nlerror("Only 1 ADPCM buffer can be submitted at a time! Call flushSourceBuffers first in CSourceXAudio2 stop().");
+	if (_SourceData) nlerror("Only 1 ADPCM buffer can be submitted at a time! Call flushSourceBuffers first in CSourceXAudio2 stop().");
 	_SourceSize = buffer->getSize();
 	_SourceData = buffer->getData();
 	_AdpcmSize = buffer->getFreq() / 40;
@@ -97,11 +97,11 @@ void CAdpcmXAudio2::processBuffers()
 		{
 			// ADPCM = 4bit, PCM = 16bit // 1 adpcm byte = 2 samples
 			uint maxinbytes = _SourceSize - _AdpcmIndex;
-			uint inbytes = min(maxinbytes, _AdpcmIndex);
+			uint inbytes = min(maxinbytes, _AdpcmSize);
 
 			if (inbytes > 0)
 			{
-				IBuffer::decodeADPCM(_SourceData + (_AdpcmIndex / 2), _Buffer[_BufferNext], inbytes * 2, _State);
+				IBuffer::decodeADPCM(_SourceData + _AdpcmIndex, _Buffer[_BufferNext], inbytes * 2, _State);
 				
 				XAUDIO2_BUFFER xbuffer;
 				xbuffer.AudioBytes = inbytes * 4;
@@ -118,6 +118,14 @@ void CAdpcmXAudio2::processBuffers()
 				_AdpcmIndex += inbytes;
 				_BufferNext = (_BufferNext + 1) % _BufferNb;
 				++voice_state.BuffersQueued;
+			}
+
+			if (inbytes != _AdpcmSize) // end of buffer
+			{
+				if (!_Loop) _SourceData = NULL;
+				_State.PreviousSample = 0;
+				_State.StepIndex = 0;
+				_AdpcmIndex = 0;
 			}
 		}
 	}

@@ -122,7 +122,7 @@ public:
 	inline bool useEax() { return _UseEax; }
 	
 	/// (Internal) Create an XAudio2 source voice of the specified format.
-	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format);
+	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format, IXAudio2VoiceCallback *callback);
 	/// (Internal) Destroy an XAudio2 source voice.
 	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
 	

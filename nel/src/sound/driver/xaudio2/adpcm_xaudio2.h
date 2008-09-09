@@ -50,7 +50,7 @@ namespace NLSOUND {
  * \author Jan Boon (Kaetemi)
  * CAdpcmXAudio2 is a utility class for realtime streaming and decoding of Intel ADPCM data to an XAudio2 source voice.
  */
-class CAdpcmXAudio2
+class CAdpcmXAudio2 : public IXAudio2VoiceCallback
 {
 protected:
 	// stuff
@@ -84,8 +84,11 @@ protected:
 	/// Mutex for cross-thread access from XAudio2 callbacks.
 	NLMISC::CMutex _Mutex;
 public:
-	CAdpcmXAudio2();
+	CAdpcmXAudio2(bool loop);
 	virtual ~CAdpcmXAudio2();
+
+	/// Create the source voice, it must have this class as callback stuff.
+	inline void setSourceVoice(IXAudio2SourceVoice *sourceVoice) { _SourceVoice = sourceVoice; }
 	
 	/// Set looping state.
 	inline void setLooping(bool l) { _Loop = l; }
