@@ -68,7 +68,7 @@ _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f),
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
 _AdpcmUtility(NULL)
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
+	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 
 	memset(&_Emitter, 0, sizeof(_Emitter));
 	memset(&_Cone, 0, sizeof(_Cone));
@@ -104,7 +104,7 @@ _AdpcmUtility(NULL)
 
 CSourceXAudio2::~CSourceXAudio2()
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSourceXAudio2");
+	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSourceXAudio2");
 
 	release();
 }
@@ -112,8 +112,8 @@ CSourceXAudio2::~CSourceXAudio2()
 void CSourceXAudio2::release() // called by driver :)
 {
 	_SoundDriver->removeSource(this);
-	_SoundDriver->destroySourceVoice(_SourceVoice);
-	_SourceVoice = NULL;
+	_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
+	delete _AdpcmUtility; _AdpcmUtility = NULL;
 	stop();
 }
 
@@ -137,7 +137,7 @@ void CSourceXAudio2::commit3DChanges()
 	}
 	else
 	{
-		// nldebug(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getBuffer() %u", (uint32)_SampleVoice->getBuffer());
+		// // nldebug(NLSOUND_XAUDIO2_PREFIX "_SampleVoice->getBuffer() %u", (uint32)_SampleVoice->getBuffer());
 
 		_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
 
@@ -258,8 +258,8 @@ void CSourceXAudio2::submitStaticBuffer()
  */
 void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
-	// if (buffer) nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
-	// else nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
+	// if (buffer) // nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
+	// else // nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
 
 	// if (_IsPlaying) nlwarning(NLSOUND_XAUDIO2_PREFIX "Called setStaticBuffer(IBuffer *buffer) while _IsPlaying == true!");
 	
@@ -641,7 +641,7 @@ void CSourceXAudio2::setAlpha(double a)
 #if MANUAL_ROLLOFF == 0
 	nlerror("MANUAL_ROLLOFF == 0");
 #else
-	// if (a != 1.0) nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
+	// if (a != 1.0) // nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
 
 	_Alpha = a;
 #endif
