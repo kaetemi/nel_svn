@@ -39,7 +39,7 @@ namespace NL3D
 #include "editable_range.h"
 #include "particle_workspace.h"
 //
-#include "nel/../../src/3d/ps_zone.h"
+#include "nel/3d/ps_zone.h"
 
 
 class CParticleDlg;

@@ -35,11 +35,11 @@
 
 #include "nel/misc/aabbox.h"
 
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/water_model.h"
-#include "nel/../../src/3d/water_shape.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/water_model.h"
+#include "nel/3d/water_shape.h"
 
 #include <string>
 #include <map>
@@ -63,7 +63,7 @@ public:
 	CIGBox(const string &name, const CAABBox &bbox) : Name(name), BBox(bbox) {}
 	string			Name;
 	CAABBox			BBox;
-	void			serial(IStream &f) { f.serial(Name, BBox); }
+	void			serial(NLMISC::IStream &f) { f.serial(Name, BBox); }
 };
 
 vector<CIGBox>										Boxes;

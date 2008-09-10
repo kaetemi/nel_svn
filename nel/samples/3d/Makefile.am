@@ -4,7 +4,7 @@
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS              = font cluster_viewer
+SUBDIRS              = font cluster_viewer @CEGUI_SUBDIR@
 
 
 # End of Makefile.am

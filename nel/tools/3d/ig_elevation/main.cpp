@@ -40,7 +40,7 @@
 
 #include "nel/../../src/ligo/zone_region.h"
 
-#include "nel/../../src/3d/scene_group.h"
+#include "nel/3d/scene_group.h"
 
 #include <windows.h>
 

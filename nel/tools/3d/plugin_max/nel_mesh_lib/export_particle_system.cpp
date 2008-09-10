@@ -23,8 +23,8 @@
  */
 
 #include "StdAfx.h"
-#include "nel/../../src/3d/particle_system_model.h"
-#include "nel/../../src/3d/particle_system_shape.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/particle_system_shape.h"
 #include "nel/misc/path.h"
 #include "export_appdata.h"
 #include "export_nel.h"

@@ -8,11 +8,17 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 #include "nel/misc/path.h"
 
 using namespace std;
+
+class CMiscUnitTestNelLibrary : public NLMISC::INelLibrary { 
+	void onLibraryLoaded(bool firstTime) { } 
+	void onLibraryUnloaded(bool lastTime) { }  
+};
+NLMISC_DECL_PURE_LIB(CMiscUnitTestNelLibrary);
 
 // Test suite for CInstanceCounter
 class CFoo1
@@ -474,7 +480,7 @@ private:
 
 auto_ptr<Test::Suite> intRegisterTestSuite(const std::string &workingPath)
 {
-	return static_cast<Test::Suite*>(new CMiscTS(workingPath));
+	return auto_ptr<Test::Suite>(static_cast<Test::Suite*>(new CMiscTS(workingPath)));
 }
 
 NL_LIB_EXPORT_SYMBOL(registerTestSuite, void, intRegisterTestSuite);

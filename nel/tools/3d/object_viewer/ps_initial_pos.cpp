@@ -27,10 +27,10 @@
 #include "std_afx.h"
 #include "ps_initial_pos.h"
 //
-#include "nel/../../src/3d/particle_system.h"
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/ps_edit.h"
-#include "nel/../../src/3d/ps_emitter.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_edit.h"
+#include "nel/3d/ps_emitter.h"
 
 
 // CPSInitialPos  implementation //

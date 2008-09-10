@@ -30,15 +30,15 @@
 #include "nel/misc/config_file.h"
 #include "nel/misc/path.h"
 
-#include "nel/../../src/3d/instance_lighter.h"
-#include "nel/../../src/3d/quad_grid.h"
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/shape.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/pacs/global_retriever.h"
-#include "nel/../../src/pacs/local_retriever.h"
-#include "nel/../../src/pacs/retriever_bank.h"
+#include "nel/3d/instance_lighter.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/register_3d.h"
+#include "../../../src/pacs/global_retriever.h"
+#include "../../../src/pacs/local_retriever.h"
+#include "../../../src/pacs/retriever_bank.h"
 #include "../ig_lighter_lib/ig_lighter_lib.h"
 
 
@@ -50,7 +50,7 @@ using namespace NLPACS;
 // ***************************************************************************
 #define BAR_LENGTH 21
 
-char *progressbar[BAR_LENGTH]=
+const char *progressbar[BAR_LENGTH]=
 {
 	"[                    ]",
 	"[.                   ]",

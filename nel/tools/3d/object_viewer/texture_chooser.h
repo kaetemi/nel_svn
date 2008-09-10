@@ -39,7 +39,7 @@
 //
 #include "nel/misc/smart_ptr.h"
 //
-#include "nel/../../src/3d/texture.h"
+#include "nel/3d/texture.h"
 
 using NLMISC::CSmartPtr ;
 

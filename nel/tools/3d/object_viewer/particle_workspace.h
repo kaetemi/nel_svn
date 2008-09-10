@@ -27,7 +27,7 @@
 
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/stream.h"
-#include "nel/../../src/3d/skeleton_model.h"
+#include "nel/3d/skeleton_model.h"
 //
 #include "ps_initial_pos.h"
 

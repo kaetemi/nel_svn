@@ -1,7 +1,7 @@
 
 
 #include "nel/misc/command.h"
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;

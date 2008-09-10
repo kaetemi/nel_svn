@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "nel_patch_paint.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
+#include "nel/3d/zone_symmetrisation.h"
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ void PaintPatchMod::ClearPatchDataFlag(ModContextList& mcList, DWORD f)
 void PaintPatchMod::ModifyObject(TimeValue t, ModContext &mc, ObjectState * os, INode *node) 
 {		
 	// Alert(_T("in ModifyObject"));
-	nlassert(os->obj->ClassID() == RYKOLPATCHOBJ_CLASS_ID);
+	nlassert(os->obj->IsSubClassOf(RYKOLPATCHOBJ_CLASS_ID));
 	// Alert(_T("ModifyObject class ID is OK"));
 	
 	RPO *patchOb =(RPO*)os->obj;

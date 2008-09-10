@@ -26,7 +26,7 @@
 #include "std_afx.h"
 
 
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/particle_system.h"
 #include "object_viewer.h"
 #include "located_target_dlg.h"
 #include "collision_zone_dlg.h"

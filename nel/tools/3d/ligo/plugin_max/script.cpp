@@ -54,10 +54,10 @@
 
 
 // From nel 3d
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
-#include "nel/../../src/3d/nelu.h"
-#include "nel/../../src/3d/landscape_model.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/zone_symmetrisation.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/landscape_model.h"
 
 // From nel misc
 #include "nel/misc/file.h"

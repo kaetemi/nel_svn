@@ -40,7 +40,7 @@ namespace NLMISC {
 
 struct EXmlParsingError : public EStream
 {
-	EXmlParsingError ( const std::string& str ) : EStream( str ) {};
+	EXmlParsingError ( const std::string& str ) : EStream( str ) {}
 };
 
 /**

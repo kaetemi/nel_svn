@@ -25,9 +25,9 @@
 //
 
 #include "std_afx.h"
-#include "nel/../../src/3d/ps_located.h"
+#include "nel/3d/ps_located.h"
 #include "nel/3d/u_particle_system_sound.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/particle_system.h"
 #include "object_viewer.h"
 #include "edit_ps_sound.h"
 #include "attrib_dlg.h"

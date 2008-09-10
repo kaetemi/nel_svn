@@ -10,7 +10,7 @@
 #include "nel/net/module_gateway.h"
 
 
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -201,7 +201,7 @@ public:
 	
 	void setup()
 	{
-_CrtCheckMemory();
+//_CrtCheckMemory();
 		_RestorePath = CPath::getCurrentPath();
 
 		nlverify(CPath::setCurrentPath(_WorkingPath.c_str()));
@@ -211,7 +211,7 @@ _CrtCheckMemory();
 		// copy the service dll and config file to
 		// have completely different memory context
 
-_CrtCheckMemory();
+//_CrtCheckMemory();
 		for (uint i=0; i<NB_SERVICES; ++i)
 		{
 			string libName = CLibrary::makeLibName("net_service_lib_test");
@@ -231,7 +231,7 @@ _CrtCheckMemory();
 			// load the library file
 			ServiceLib[i].loadLibrary(destDll, false, false, true);
 		}
-_CrtCheckMemory();
+//_CrtCheckMemory();
 
 		// Start the services
 		for (uint i=0; i<NB_SERVICES; ++i)
@@ -245,7 +245,7 @@ _CrtCheckMemory();
 
 		// leave some time for services to start
 //		nlSleep(2000);
-_CrtCheckMemory();
+//_CrtCheckMemory();
 
 		// add the service in layer 5
 		cmdFuncs[0] = *(TCommandFunc**)ServiceLib[0].getSymbolAddress("runCommand");
@@ -259,7 +259,7 @@ _CrtCheckMemory();
 		cmdFuncs[2]= *(TCommandFunc**)ServiceLib[2].getSymbolAddress("runCommand");
 		cmdFuncs[2]("unifiedNetwork.addService test_service_1 (address=localhost:8061 external sendId)");
 		cmdFuncs[2]("unifiedNetwork.addService test_service_2 (address=localhost:8062 external sendId)");
-_CrtCheckMemory();
+//_CrtCheckMemory();
 
 		// leave some time to establish connections
 //		nlSleep(5000);
@@ -270,18 +270,18 @@ _CrtCheckMemory();
 		nlSleep(5000);
 		for (uint i=0; i<NB_SERVICES; ++i)
 		{
-_CrtCheckMemory();
+//_CrtCheckMemory();
 			TStopFunc *stopFunc = *(TStopFunc**)ServiceLib[i].getSymbolAddress("stopService");
 
-_CrtCheckMemory();
+//_CrtCheckMemory();
 			stopFunc();
-_CrtCheckMemory();
+//_CrtCheckMemory();
 		}
 		for (uint i=0; i<NB_SERVICES; ++i)
 		{
-_CrtCheckMemory();
+//_CrtCheckMemory();
 			ServiceLib[i].freeLibrary();
-_CrtCheckMemory();
+//_CrtCheckMemory();
 		}
 
 		CPath::setCurrentPath(_RestorePath.c_str() );

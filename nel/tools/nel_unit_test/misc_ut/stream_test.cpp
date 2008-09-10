@@ -5,7 +5,7 @@
 #include "nel/misc/sstring.h"
 #include "nel/misc/bit_mem_stream.h"
 
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -85,7 +85,7 @@ public:
 
 
 		CMemStream s1;
-		IStream &is1 = s1;
+		NLMISC::IStream &is1 = s1;
 
 		const string str("toto");
 		const uint32 i(1234546);
@@ -111,7 +111,7 @@ public:
 		is1.serialEnum(e2);
 
 		const CMemStream &s2 = s1;
-		const IStream &is2 = s2;
+		const NLMISC::IStream &is2 = s2;
 
 		string str3;
 		uint32 i3;

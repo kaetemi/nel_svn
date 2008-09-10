@@ -25,8 +25,8 @@
 
 #include "std_afx.h"
 
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/particle_system.h"
 
 
 #include "nel/misc/stream.h"

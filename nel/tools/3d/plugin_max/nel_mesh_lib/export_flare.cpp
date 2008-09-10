@@ -26,7 +26,7 @@
 
 #include "StdAfx.h"
 #include "export_nel.h"
-#include "nel/../../src/3d/flare_shape.h"
+#include "nel/3d/flare_shape.h"
 #include "nel/misc/path.h"
 
 
@@ -159,4 +159,5 @@ IShape* CExportNel::buildFlare(INode& node, TimeValue time)
 	fshape->getDefaultPos()->setDefaultValue( CVector(fp.x, fp.y, fp.z) );						
 	return fshape;
 }
+
 

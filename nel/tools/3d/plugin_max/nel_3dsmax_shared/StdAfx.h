@@ -45,13 +45,9 @@
 #include <iparamm2.h>
 #include <utilapi.h>
 #ifdef min
-#undef min
-#endif
-#ifdef max
-#undef max
-#endif
 
-// TODO: reference additional headers your program requires here
+#undef min
+#undef max
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

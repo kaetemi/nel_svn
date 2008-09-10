@@ -33,12 +33,12 @@
 #include "../nel_patch_lib/rpo.h"
 #include "../../ig_lighter_lib/ig_lighter_lib.h"
 
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/scene.h"
-#include "nel/../../src/3d/shape_bank.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
-#include "nel/../../src/3d/particle_system_shape.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/shape_bank.h"
+#include "nel/3d/zone_symmetrisation.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/particle_system.h"
 
 
 #include <vector>
@@ -193,7 +193,7 @@ CInstanceGroup*	CExportNel::buildInstanceGroup(const vector<INode*>& vectNode, v
 			++nNumIG;
 		}
 	}
-	/// \todo Make this work (precision):
+	// todo Make this work (precision):
 	/*
 	vGlobalPos = vGlobalPos / nNumIG;
 	for (i = 0; i < nNumIG; ++i)

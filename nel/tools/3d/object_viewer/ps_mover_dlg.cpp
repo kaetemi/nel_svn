@@ -28,8 +28,8 @@
 #include "particle_tree_ctrl.h"
 #include "particle_dlg.h"
 #include "main_frame.h"
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/particle_system.h"
 
 
 #include "editable_range.h"
@@ -345,4 +345,5 @@ NL3D::CPSLocatedBindable *CPSMoverDlg::getLocatedBindable(void)
 	
 	return (NL3D::CPSLocatedBindable *) m_SubComponentCtrl.GetItemData(currIndex);
 }
+
 

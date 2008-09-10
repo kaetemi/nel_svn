@@ -79,7 +79,7 @@ struct CSharedClass : public CTransportClass
 		property ("i2", PropUInt16, (uint16)22, i2);
 		propertyCont ("vi1", PropUInt16, vi1);
 		property ("str", PropString, (string)"str22", str);
-		property ("eid", PropEntityId, CEntityId::Unknown, eid);
+//		property ("eid", PropEntityId, CEntityId::Unknown, eid);
 		property ("f2", PropFloat,  2.5f, f2);
 	}
 
@@ -101,7 +101,7 @@ static void cbUpService (const std::string &serviceName, uint16 sid, void *arg)
 {
 	// When a service comes, send the new class
 	CSharedClass foo;
-	foo.send ((uint8)sid);
+	foo.send((TServiceId)sid);
 }
 
 //
@@ -113,7 +113,7 @@ struct CAIService : public IService
 	void init()
 	{
 		// callback when a new service comes
-		CUnifiedNetwork::getInstance()->setServiceUpCallback("*", cbUpService, NULL);
+		CUnifiedNetwork::getInstance()->setServiceUpCallback("*", (TUnifiedNetCallback)cbUpService, NULL);
 
 		// init the class transport system
 		CTransportClass::init ();

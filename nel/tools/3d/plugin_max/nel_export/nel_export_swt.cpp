@@ -28,7 +28,7 @@
 #include "std_afx.h"
 #include "nel_export.h"
 #include "resource.h"
-#include "nel/../../src/3d/skeleton_weight.h"
+#include "nel/3d/skeleton_weight.h"
 #include "nel/misc/file.h"
 #include "../nel_mesh_lib/export_nel.h"
 #include "../nel_mesh_lib/export_appdata.h"

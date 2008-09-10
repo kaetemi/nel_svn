@@ -29,10 +29,10 @@
 #include "texture_anim_dlg.h"
 #include "attrib_dlg.h"
 #include "texture_chooser.h"
-#include "nel/../../src/3d/ps_particle.h"
-#include "nel/../../src/3d/ps_particle_basic.h"
-#include "nel/../../src/3d/texture_grouped.h"
-#include "nel/../../src/3d/texture_file.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_particle_basic.h"
+#include "nel/3d/texture_grouped.h"
+#include "nel/3d/texture_file.h"
 
 
 #include "nel/misc/smart_ptr.h"

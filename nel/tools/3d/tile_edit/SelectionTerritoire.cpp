@@ -9,7 +9,7 @@
 #include "GetVal.h"
 #include "Browse.h"
 #include "choose_veget_set.h"
-#include "nel/../../src/3d/tile_bank.h"
+#include "nel/3d/tile_bank.h"
 #include "nel/misc/stream.h"
 #include "nel/misc/file.h"
 #include <shlobj.h>
@@ -578,7 +578,7 @@ void SelectionTerritoire::OnPath()
 									goodPath=false;
 
 									// Make a message
-									sprintf (msg, "Path %s can't be found in bitmap %s. Continue ?", path, bitmapPath.c_str());
+									sprintf (msg, "Path '%s' can't be found in bitmap '%s'. Continue ?", path, bitmapPath.c_str());
 
 									// Message
 									if (MessageBox (msg, "TileEdit", MB_YESNO|MB_ICONQUESTION)==IDNO)
@@ -607,7 +607,7 @@ void SelectionTerritoire::OnPath()
 							goodPath=false;
 
 							// Make a message
-							sprintf (msg, "Path %s can't be found in bitmap %s. Continue ?", path, bitmapPath);
+							sprintf (msg, "Path '%s' can't be found in bitmap '%s'. Continue ?", path, bitmapPath);
 
 							// Message
 							if (MessageBox (msg, "TileEdit", MB_YESNO|MB_ICONQUESTION)==IDNO)

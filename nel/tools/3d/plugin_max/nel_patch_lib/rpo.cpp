@@ -253,9 +253,17 @@ int RPO::Display(TimeValue t, INode* inode, ViewExp *vpt, int flags)
 		return ret;
 
 	}
-	else
+	else	
 	{
-		return rpatch->Display (t, inode, vpt, flags, patch);
+		try
+		{
+			return rpatch->Display (t, inode, vpt, flags, patch);
+		}
+		catch (std::exception e)
+		{
+			nlwarning("RPO::Display failed");
+			return 0;
+		}
 	}
 }
 
@@ -328,19 +336,21 @@ Mesh* RPO::GetRenderMesh(TimeValue t, INode *inode, View& view, BOOL& needDelete
 /*
   Lire doc intervals
   Ici : conversion d'un RPM en n'importe kwa : triObj, PO
-
+  If this returns a pointer other than itself, it must be deleted by whatever called it.
 */
 Object* RPO::ConvertToType(TimeValue t, Class_ID cid)
 {
-	if (cid==RYKOLPATCHOBJ_CLASS_ID) 
-	{
-		return this;
-	}
-	if (cid==defObjectClassID) 
-	{
-		return this;
-	}	
-	if (cid==triObjectClassID) 
+	if (cid == RYKOLPATCHOBJ_CLASS_ID) return this;
+	//if (cid == patchObjectClassID)
+	//{
+	//  --- uncomment this if you want to do conversion from rkl back to max patch (you will lose rkl data in the zone)
+	//	PatchObject *o = new PatchObject();
+	//	o->patch = patch;
+	//	return o;
+	//}
+	if (cid == patchObjectClassID) return this;
+	if (cid == defObjectClassID) return this;
+	if (cid == triObjectClassID) 
 	{		
 		TriObject *pTriObj=CreateNewTriObject();
 		rpatch->InvalidateChannels (PART_TOPO|PART_GEOM|PART_TEXMAP|PART_SELECT|PART_DISPLAY);
@@ -349,26 +359,18 @@ Object* RPO::ConvertToType(TimeValue t, Class_ID cid)
 		pTriObj->SetChannelValidity(GEOM_CHAN_NUM,ConvertValidity(t));
 		return pTriObj;
 	}
-	return NULL;
+	return PatchObject::ConvertToType(t, cid);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 int RPO::CanConvertToType(Class_ID cid)
 {
-	if (cid==RYKOLPATCHOBJ_CLASS_ID) 
-	{
-		return 1;
-	}
-	if (cid==defObjectClassID) 
-	{
-		return 1;
-	}
-	if (cid==triObjectClassID) 
-	{
-		return 1;
-	}
-	return(0);
+	if (cid == RYKOLPATCHOBJ_CLASS_ID) return 1;
+	if (cid == patchObjectClassID) return 1;
+	if (cid == defObjectClassID) return 1;
+	if (cid == triObjectClassID) return 1;
+	return PatchObject::CanConvertToType(cid);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -384,7 +386,7 @@ int RPO::IntersectRay(TimeValue t, Ray& ray, float& at, Point3& norm)
 
 void RPO::GetCollapseTypes(Tab<Class_ID> &clist,Tab<TSTR*> &nlist)
 {
-    Object::GetCollapseTypes(clist, nlist);
+	Object::GetCollapseTypes(clist, nlist);
 	//TODO: Append any any other collapse type the plugin supports
 	
     Class_ID id = RYKOLPATCHOBJ_CLASS_ID;

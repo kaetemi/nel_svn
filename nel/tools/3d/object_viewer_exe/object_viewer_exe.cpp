@@ -4,10 +4,10 @@
 #include "std_afx.h"
 
 
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/3d/scene.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/scene.h"
 #include "../object_viewer/object_viewer_interface.h"
-#include "nel/../../src/3d/init_3d.h"
+#include "nel/3d/init_3d.h"
 
 using namespace NL3D;
 using namespace NLMISC;

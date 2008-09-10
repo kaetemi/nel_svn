@@ -51,7 +51,7 @@ uint32 NbId = 0;
 //
 TTime	pingDate;
 
-void cbPong( CMessage& msgin, const string &name, uint16 sid )
+void cbPong(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32	counter;
 	msgin.serial( counter );
@@ -60,7 +60,7 @@ void cbPong( CMessage& msgin, const string &name, uint16 sid )
 	nlinfo("Received PONG %u (%u ms)", counter, pingTime);
 }
 
-void	sendPing()
+void sendPing()
 {
 	pingDate = CTime::getLocalTime();
 	uint32 counter = 0;
@@ -72,7 +72,7 @@ void	sendPing()
 
 
 //
-void cbPos(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbPos(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	CMessage msgout("ACK_POS");
 	CUnifiedNetwork::getInstance()->send("PLS", msgout);
@@ -98,7 +98,7 @@ void cbPos(CMessage &msgin, const std::string &serviceName, uint16 sid)
 	nlinfo( "Received POS, Sending POS to FS (serial %.2fs, send %.2fs)", CTime::ticksToSecond (v2-v1), CTime::ticksToSecond (v3-v2));
 }
 
-void cbAskVision(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbAskVision(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 Value = '0ACE';
 
@@ -143,33 +143,33 @@ void cbAskVision(CMessage &msgin, const std::string &serviceName, uint16 sid)
 }
 
 //
-void cbUpPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("Ping Service connecting");
 	sendPing();
 }
 
-void cbDownPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("Ping Service disconnecting");
 }
 
 //
-void cbUpFS( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpFS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("F Service connecting");
 	sendPing();
 }
 
-void cbDownFS( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownFS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("F Service disconnecting");
 }
 
 //
-void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is up", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is up", serviceName.c_str(), sid.get());
 
 	CMessage msgout("TOTO");
 	uint32 i = 10;
@@ -177,9 +177,9 @@ void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
 	CUnifiedNetwork::getInstance()->send(sid, msgout);
 }
 
-void cbDownService( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is down", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is down", serviceName.c_str(), sid.get());
 }
 
 

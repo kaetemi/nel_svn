@@ -43,10 +43,10 @@
 #include <nel/3d/u_driver.h>
 #include <nel/3d/u_text_context.h>
 #include <nel/3d/u_texture.h>
-#include <3d/driver.h>
-#include <3d/vertex_buffer.h>
-#include <3d/material.h>
-#include <3d/driver_user.h>
+#include <nel/3d/driver.h>
+#include <nel/3d/vertex_buffer.h>
+#include <nel/3d/material.h>
+#include <nel/3d/driver_user.h>
 
 //
 // Namespaces

@@ -9,7 +9,7 @@ EXTRA_DIST                = zwelder.cfg \
 
 bin_PROGRAMS              = zone_welder
 
-zone_welder_SOURCES       = zone_welder.cpp
+zone_welder_SOURCES = internal_weld.cpp zone_welder.cpp
 
 AM_CXXFLAGS               = -I$(top_srcdir)/src 
 

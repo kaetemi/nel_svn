@@ -31,14 +31,14 @@
 #include "nel/misc/config_file.h"
 #include "nel/misc/path.h"
 
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/instance_lighter.h"
-#include "nel/../../src/3d/quad_grid.h"
-#include "nel/../../src/3d/landscape.h"
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/shape.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/instance_lighter.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/register_3d.h"
 
 #include "../zone_lib/zone_utility.h"
 
@@ -48,7 +48,7 @@ using namespace NL3D;
 
 #define BAR_LENGTH 21
 
-char *progressbar[BAR_LENGTH]=
+const char *progressbar[BAR_LENGTH]=
 {
 	"[                    ]",
 	"[.                   ]",

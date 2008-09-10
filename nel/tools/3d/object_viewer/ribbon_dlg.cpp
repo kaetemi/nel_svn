@@ -6,7 +6,7 @@
 #include "ribbon_dlg.h"
 #include "editable_range.h"
 
-#include "nel/../../src/3d/ps_particle2.h"
+#include "nel/3d/ps_particle2.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

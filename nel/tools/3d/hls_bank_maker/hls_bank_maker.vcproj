@@ -1,339 +1,96 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="hls_bank_maker"
 	ProjectGUID="{BACF1238-7651-43DA-B0D9-0145701CBB7B}"
-	SccProjectName=""
-	SccLocalPath="">
+	RootNamespace="hls_bank_maker"
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="DebugFast|Win32"
-			OutputDirectory=".\DebugFast"
-			IntermediateDirectory=".\DebugFast"
+			Name="Debug|Win32"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_d_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;NL_DEBUG_FAST"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\DebugFast/hls_bank_maker.pch"
-				AssemblerListingLocation=".\DebugFast/"
-				ObjectFile=".\DebugFast/"
-				ProgramDataBaseFileName=".\DebugFast/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\DebugFast/hls_bank_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\DebugFast/hls_bank_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\DebugFast/hls_bank_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
-			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\ReleaseDebug"
-			IntermediateDirectory=".\ReleaseDebug"
+			Name="DebugFast|Win32"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_df_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="_CONSOLE;NL_RELEASE_DEBUG;WIN32;NDEBUG"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\ReleaseDebug/hls_bank_maker.pch"
-				AssemblerListingLocation=".\ReleaseDebug/"
-				ObjectFile=".\ReleaseDebug/"
-				ProgramDataBaseFileName=".\ReleaseDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\ReleaseDebug/hls_bank_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\ReleaseDebug/hls_bank_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\ReleaseDebug/hls_bank_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_ds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_r_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Release/hls_bank_maker.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Release/hls_bank_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release/hls_bank_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/hls_bank_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
 		</Configuration>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			Name="ReleaseDebug|Win32"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rd_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="__STL_DEBUG;WIN32;_DEBUG;_CONSOLE"
-				StringPooling="TRUE"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Debug/hls_bank_maker.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				BrowseInformation="0"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
-				CompileAs="2"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Debug/hls_bank_maker.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/hls_bank_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/hls_bank_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="hls_bank_maker.cpp">
-			<FileConfiguration
-				Name="DebugFast|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="ReleaseDebug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
+			RelativePath=".\hls_bank_maker.cpp"
+			>
 		</File>
 		<File
-			RelativePath="hls_bank_maker.h">
+			RelativePath=".\hls_bank_maker.h"
+			>
 		</File>
 		<File
-			RelativePath="..\panoply_maker\hls_bank_texture_info.cpp">
-			<FileConfiguration
-				Name="DebugFast|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="ReleaseDebug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
+			RelativePath="..\panoply_maker\hls_bank_texture_info.cpp"
+			>
 		</File>
 		<File
-			RelativePath="..\panoply_maker\hls_bank_texture_info.h">
+			RelativePath="..\panoply_maker\hls_bank_texture_info.h"
+			>
 		</File>
 	</Files>
 	<Globals>

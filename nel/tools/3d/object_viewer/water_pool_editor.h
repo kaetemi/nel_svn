@@ -38,7 +38,7 @@ namespace NL3D
 	class CWaterPoolManager;
 }
 
-#include "nel/../../src/3d/water_height_map.h"
+#include "nel/3d/water_height_map.h"
 #include "ps_wrapper.h"
 #include "editable_range.h"
 

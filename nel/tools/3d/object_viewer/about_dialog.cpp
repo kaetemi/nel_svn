@@ -40,16 +40,14 @@ BOOL CAboutDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// Get the module path
-// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
-#ifdef NL_DEBUG_FAST
-		HMODULE hModule = GetModuleHandle("object_viewer_debug_fast.dll");
-#elif defined (NL_DEBUG)
-		HMODULE hModule = GetModuleHandle("object_viewer_debug.dll");
-#elif defined (NL_RELEASE_DEBUG)
-		HMODULE hModule = GetModuleHandle("object_viewer_rd.dll");
-#else
-		HMODULE hModule = GetModuleHandle("object_viewer.dll");
-#endif
+	HMODULE hModule = AfxGetInstanceHandle();
+#ifdef NL_STATIC // can return null if static, should be same as exe anyway
+	if (!hModule) hModule = GetModuleHandle(NULL);
+#endif /* NL_STATIC */
+	nlassert(hModule); // shouldn't be null now anymore in any case
+#ifndef NL_STATIC // if this is dll, the module handle can't be same as exe
+	nlassert(hModule != GetModuleHandle(NULL));
+#endif /* !NL_STATIC */
 	if (hModule)
 	{
 		// Find the verion resource

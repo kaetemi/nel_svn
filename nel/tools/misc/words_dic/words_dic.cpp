@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "words_dic.h"
 #include "words_dicDlg.h"
+#include "nel/misc/app_context.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -46,6 +47,7 @@ BOOL CWords_dicApp::InitInstance()
 	//  of your final executable, you should remove from the following
 	//  the specific initialization routines you do not need.
 
+	NLMISC::CApplicationContext myApplicationContext;
 #ifdef _AFXDLL
 	Enable3dControls();			// Call this when using MFC in a shared DLL
 #else

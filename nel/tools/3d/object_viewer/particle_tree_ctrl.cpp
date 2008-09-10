@@ -51,18 +51,18 @@
 #include "lb_extern_id_dlg.h"
 #include "skippable_message_box.h"
 // 
-#include "nel/../../src/3d/particle_system.h"
-#include "nel/../../src/3d/particle_system_model.h"
-#include "nel/../../src/3d/particle_system_shape.h"
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/ps_particle.h"
-#include "nel/../../src/3d/ps_mesh.h"
-#include "nel/../../src/3d/ps_force.h"
-#include "nel/../../src/3d/ps_zone.h"
-#include "nel/../../src/3d/ps_sound.h"
-#include "nel/../../src/3d/ps_emitter.h"
-#include "nel/../../src/3d/ps_edit.h"
-#include "nel/../../src/3d/nelu.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_mesh.h"
+#include "nel/3d/ps_force.h"
+#include "nel/3d/ps_zone.h"
+#include "nel/3d/ps_sound.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/ps_edit.h"
+#include "nel/3d/nelu.h"
 //
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
@@ -1899,5 +1899,6 @@ void CParticleTreeCtrl::removeAllPS(CParticleWorkspace &ws)
 	reset();
 	buildTreeFromWorkSpace(ws);
 }
+
 
 

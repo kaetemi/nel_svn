@@ -49,9 +49,9 @@ CFileDisplayer fd("pls.log");
 bool PingServiceUp = false;
 
 //
-TTime	pingDate;
+TTime pingDate;
 
-void cbPong( CMessage& msgin, const string &name, uint16 sid )
+void cbPong(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	nlassert (PingServiceUp);
 	uint32	counter;
@@ -61,7 +61,7 @@ void cbPong( CMessage& msgin, const string &name, uint16 sid )
 	nlinfo("Received PONG %u (%u ms)", counter, pingTime);
 }
 
-void	sendPing()
+void sendPing()
 {
 	nlassert (PingServiceUp);
 	pingDate = CTime::getLocalTime();
@@ -73,7 +73,7 @@ void	sendPing()
 }
 
 //
-void cbPos(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbPos(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	CMessage msgout("POS");
 	CUnifiedNetwork::getInstance()->send("GPMS", msgout);
@@ -81,33 +81,33 @@ void cbPos(CMessage &msgin, const std::string &serviceName, uint16 sid)
 	nlinfo( "Received POS from %s, send POS to GPMS", serviceName.c_str());
 }
 
-void cbAckPos(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbAckPos(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	nlinfo( "Received ACK_POS from %s", serviceName.c_str());
 }
 
 //
-void cbUpPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("Ping Service connecting");
 	PingServiceUp = true;
 	sendPing();
 }
 
-void cbDownPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo("Ping Service disconnecting");
 }
 
 //
-void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is up", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is up", serviceName.c_str(), sid.get());
 }
 
-void cbDownService( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is down", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is down", serviceName.c_str(), sid.get());
 }
 
 

@@ -38,16 +38,8 @@ bool CExportNel::scriptEvaluate (const char *script, void *out, TNelScriptValueT
 
 	four_typed_value_locals(Parser* parser,Value* code,Value* result,StringStream* source);
 
-	#ifdef	NL_NEW
-		#undef new
-		vl.parser = new Parser;
-		vl.source = new StringStream (const_cast<char *>(script));
-		#define new NL_NEW
-	#else
-		vl.parser = new Parser;
-		vl.source = new StringStream (const_cast<char *>(script));
-	#endif
-
+	vl.parser = new Parser;
+	vl.source = new StringStream (const_cast<char *>(script));
 	vl.source->log_to(NULL);
 	save_current_frames();
 	try

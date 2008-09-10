@@ -28,6 +28,7 @@
 
 // contains the logger
 #include "nel/misc/log.h"
+#include "nel/misc/string_common.h"
 
 // contains standard displayers
 #include "nel/misc/displayer.h"
@@ -63,11 +64,11 @@ int main (int argc, char **argv)
 	logger.addDisplayer (&mbd);
 
 	// so, now, if we send something on the logger, it will be displayed on the 3 displayers
-	// (stdout, file and messagebox)
+	// (stdout, file and message box)
 
 	// display the string with decoration.
 	// The decoration is the text that displayers add before the string.
-	// They could add the date, the processname and so on.
+	// They could add the date, the process name and so on.
 	// Before each display/displayNL, you have to set the position of where the display
 	// occurs. If you don't do that, the position will not be displayed on the displayers.
 	logger.setPosition (__LINE__, __FILE__);

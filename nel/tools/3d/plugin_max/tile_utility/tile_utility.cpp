@@ -23,26 +23,17 @@
  * MA 02111-1307, USA.
  */
 
-//#pragma warning ( disable : 4876)
-#include <max.h>
-#include <stdmat.h>
-#ifdef min
-#undef min
-#endif
-#ifdef max
-#undef max
-#endif
+#include "tile_utility.h"
 
 #include "nel/misc/types_nl.h"
-#include "nel/../../src/3d/tile_bank.h"
+#include "nel/3d/tile_bank.h"
 #include "nel/misc/file.h"
 #include "../nel_patch_lib/rpo.h"
-
-#include "tile_utility.h"
 
 #define TILE_UTILITY_CLASS_ID	Class_ID(0x2301c0, 0x4c156b46)
 
 extern ClassDesc* GetRGBAddDesc();
+extern HINSTANCE hInstance;
 
 using namespace NLMISC;
 using namespace NL3D;
@@ -110,7 +101,7 @@ static BOOL CALLBACK Tile_utilityDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPA
 			//  load the sampler dropdown
 
 			// Get the module path
-			HMODULE hModule = GetModuleHandle("neltileutility.dlu");
+			HMODULE hModule = hInstance;
 			if (hModule)
 			{
 				// Get module file name
@@ -164,7 +155,7 @@ static BOOL CALLBACK Tile_utilityDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPA
 					SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleFileName failed");
 			}
 			else
-				SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleHandle failed");
+				SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "hInstance NULL");
 
 
 			theTile_utility.Init(hWnd);

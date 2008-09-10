@@ -25,7 +25,7 @@
 #define NL_LISTENER_AL_H
 
 #include "nel/misc/types_nl.h"
-#include "../listener.h"
+#include "sound/driver/listener.h"
 
 
 namespace NLSOUND {

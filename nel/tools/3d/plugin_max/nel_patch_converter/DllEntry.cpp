@@ -34,7 +34,7 @@ extern ClassDesc* GetRPODesc();
 
 using namespace NLMISC;
 
-HINSTANCE hInstance;
+HINSTANCE hInstance = NULL;
 int controlsInit = FALSE;
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,14 +47,18 @@ int controlsInit = FALSE;
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,ULONG fdwReason,LPVOID lpvReserved)
 {
-	// initialize nel context
+	if(fdwReason == DLL_PROCESS_ATTACH)
+	{
+		// Hang on to this DLL's instance handle.
+		hInstance = hinstDLL;
+		DisableThreadLibraryCalls(hInstance);
+	}
 	if (!NLMISC::INelContext::isContextInitialised())
 		new NLMISC::CApplicationContext();
-			
-	hInstance = hinstDLL;				// Hang on to this DLL's instance handle.
-
+	nlassert(hInstance);
 	if (!controlsInit) 
 	{
+		// This method has been deprecated.
 		controlsInit = TRUE;
 		InitCustomControls(hInstance);	// Initialize MAX's custom controls
 		InitCommonControls();			// Initialize Win95 controls
@@ -82,7 +86,10 @@ __declspec( dllexport ) int LibNumberClasses()
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-// This function returns the number of plug-in classes this DLL
+/// This function returns a pointer to an object (Class ClassDesc2) called a 
+/// class Descriptor for each plugin class in the DLL. This class descriptor 
+/// object describes the properties of each plugin class and a way to 
+/// allocate an instance of the class in memory. 
 __declspec( dllexport ) ClassDesc* LibClassDesc(int i)
 {
 	switch(i) {

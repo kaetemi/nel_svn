@@ -1,2 +1,2 @@
-DebugFast\nel_unit_test_df.exe --html
+nel_unit_test.exe --html
 start result.html

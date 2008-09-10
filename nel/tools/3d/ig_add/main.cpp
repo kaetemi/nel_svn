@@ -28,7 +28,7 @@
 
 #include "nel/misc/file.h"
 
-#include "nel/../../src/3d/scene_group.h"
+#include "nel/3d/scene_group.h"
 
 using namespace NLMISC;
 using namespace NL3D;

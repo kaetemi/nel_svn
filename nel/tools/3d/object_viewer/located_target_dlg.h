@@ -32,8 +32,8 @@
 
 
 
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/ps_force.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_force.h"
 #include "dialog_stack.h"
 #include "ps_wrapper.h"
 #include "particle_workspace.h"

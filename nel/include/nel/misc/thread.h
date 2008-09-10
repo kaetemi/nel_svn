@@ -142,7 +142,7 @@ public:
  */
 struct EThread : public Exception
 {
-	EThread (const char* message) : Exception (message) {};
+	EThread (const char* message) : Exception (message) {}
 };
 
 
@@ -155,7 +155,7 @@ struct EThread : public Exception
 class IProcess
 {
 public:
-	virtual ~IProcess() {};
+	virtual ~IProcess() {}
 
 	/**
 	  * Return a pointer on the current process.

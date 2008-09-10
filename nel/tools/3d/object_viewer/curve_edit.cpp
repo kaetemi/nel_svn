@@ -29,7 +29,7 @@
 #include "object_viewer.h"
 #include "curve_edit.h"
 #include "editable_range.h"
-#include "nel/../../src/3d/ps_float.h"
+#include "nel/3d/ps_float.h"
 #include "nel/misc/common.h"
 #include "nel/misc/fast_floor.h"
 

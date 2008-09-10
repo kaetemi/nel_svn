@@ -28,12 +28,12 @@
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 #include "nel/misc/debug.h"
-#include "nel/../../src/3d/lod_character_shape_bank.h"
-#include "nel/../../src/3d/lod_character_shape.h"
-#include "nel/../../src/3d/lod_character_builder.h"
-#include "nel/../../src/3d/animation.h"
-#include "nel/../../src/3d/skeleton_shape.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/lod_character_shape_bank.h"
+#include "nel/3d/lod_character_shape.h"
+#include "nel/3d/lod_character_builder.h"
+#include "nel/3d/animation.h"
+#include "nel/3d/skeleton_shape.h"
+#include "nel/3d/register_3d.h"
 
 
 using namespace std;

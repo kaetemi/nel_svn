@@ -4,8 +4,8 @@
 #include "std_afx.h"
 #include "object_viewer.h"
 #include "edit_morph_mesh_dlg.h"
-#include "nel/../../src/3d/ps_mesh.h"
-#include "nel/../../src/3d/particle_system_model.h"
+#include "nel/3d/ps_mesh.h"
+#include "nel/3d/particle_system_model.h"
 //
 #include "attrib_dlg.h"
 #include "particle_dlg.h"
@@ -315,4 +315,5 @@ std::string CEditMorphMeshDlg::getShapeDescStr(uint shapeIndex, sint numVerts) c
 		return result;
 	}
 }
+
 

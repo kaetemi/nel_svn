@@ -28,7 +28,7 @@
 #include "export_appdata.h"
 #include "calc_lm.h"
 #include "nel/misc/path.h"
-#include "nel/../../src/3d/texture_file.h"
+#include "nel/3d/texture_file.h"
 #include <modstack.h> // class IDerivedObject
 #include <decomp.h> // class IDerivedObject
 #include <locale.h>
@@ -1251,4 +1251,5 @@ bool		CExportNel::isErrorInDialog () const
 {
 	return _ErrorInDialog;
 }
+
 

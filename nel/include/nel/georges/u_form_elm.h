@@ -38,7 +38,7 @@ class UFormElm
 {
 public:
 	// dtor
-	virtual ~UFormElm() {};
+	virtual ~UFormElm() {}
 
 	// ** Common methods
 

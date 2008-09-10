@@ -24,7 +24,7 @@
 
 #include "std_afx.h"
 #include "object_viewer.h"
-#include "nel/../../src/3d/ps_particle.h"
+#include "nel/3d/ps_particle.h"
 #include "tail_particle_dlg.h"
 
 

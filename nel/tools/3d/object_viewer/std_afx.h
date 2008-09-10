@@ -86,18 +86,18 @@
 #include <algorithm>
 
 
-#include "nel/../../src/3d/nelu.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/mesh_instance.h"
-#include "nel/../../src/3d/text_context.h"
-#include "nel/../../src/3d/skeleton_model.h"
-#include "nel/../../src/3d/animation_set.h"
-#include "nel/../../src/3d/channel_mixer.h"
-#include "nel/../../src/3d/shape.h"
-#include "nel/../../src/3d/event_mouse_listener.h"
-#include "nel/../../src/3d/light.h"
-#include "nel/../../src/3d/font_manager.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/text_context.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/animation_set.h"
+#include "nel/3d/channel_mixer.h"
+#include "nel/3d/shape.h"
+#include "nel/3d/event_mouse_listener.h"
+#include "nel/3d/light.h"
+#include "nel/3d/font_manager.h"
 
 
 

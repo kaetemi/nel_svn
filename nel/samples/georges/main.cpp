@@ -40,6 +40,102 @@
 #include "nel/georges/u_form_elm.h"
 #include "nel/georges/load_form.h"
 
+#ifndef GF_DIR
+#       define GF_DIR "."
+#endif
+
+struct TPositionData
+{
+	uint X, Y, Z;
+
+	/// This class must be serializable for the form to be packed.
+	void serial(NLMISC::IStream &f)
+	{
+		f.serial(X);
+		f.serial(Y);
+		f.serial(Z);
+	}	
+};
+
+struct TSampleConfig
+{
+	/// Load a form, if necessary, and store its data in the members of this class.
+	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const NLMISC::CSheetId &sheetId)
+	{
+		readForm(form);
+	}
+
+	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const std::string &sheetId)
+	{
+		readForm(form);
+	}
+
+	void readForm(const NLMISC::CSmartPtr<NLGEORGES::UForm> &form)
+	{
+		nlinfo("Loading a sample config object.");
+		// The system has already loaded the form and parsed it using a loader. So get the root node:
+		NLGEORGES::UFormElm &root = form->getRootNode();
+
+		// And start loading the form values into the object.
+		root.getValueByName(TestVal1, ".TestVal1");
+		root.getValueByName(TestVal2, ".TestVal2");
+
+		root.getValueByName(PosData.X,"PositionData.x");
+		root.getValueByName(PosData.Y,"PositionData.y");
+		root.getValueByName(PosData.Z,"PositionData.z");
+
+		// Get the array called "TestArray"
+		NLGEORGES::UFormElm *testArray;
+		root.getNodeByName(&testArray, ".TestArray");
+		if(testArray != NULL) {
+			// Get the size of the array.
+			uint size;
+			testArray->getArraySize(size);
+
+			// Cycle through the atoms in the array
+			for(uint idx=0 ; idx<size ; idx++) {
+				std::string arrayValue;
+
+				// Get the value of the array.
+				testArray->getArrayValue(arrayValue, idx);
+				// And insert it into our container.
+				TestArray.push_back(arrayValue);
+			}
+		}
+
+		// And so on. We'll skip the rest of the sheet, you get the idea.
+		// ...
+	}
+
+	/// This class must be serializable for the form to be packed.
+	void serial(NLMISC::IStream &f)
+	{
+		f.serial(TestVal1);
+		f.serial(TestVal2);
+		f.serial(PosData);
+		f.serialCont(TestArray);
+	}
+
+	/// This is called whenever the loader needs to remove an old sheet.
+	void removed()
+	{
+
+	}
+
+	/// This is used to make sure that changes in form/loader versions are correctly handled. This must be > 0.
+	static uint getVersion() { return 1; }
+
+	uint32 TestVal1;
+	uint32 TestVal2;
+
+	TPositionData PosData;
+
+	std::vector<std::string> TestArray;
+};
+
+/// This contains the TSampleConfig sheets.
+std::map<NLMISC::CSheetId, TSampleConfig> MySampleConfigsSheets;
+std::map<std::string, TSampleConfig> MySampleConfigs;
 
 int main(void)
 {
@@ -47,6 +143,8 @@ int main(void)
 
 	// get a pointer ready for the form loader.
 	NLGEORGES::UFormLoader *formLoader = NULL;
+
+	NLMISC::CPath::addSearchPath(GF_DIR, false, false);
 
 	try {
 		// set the name of the form you're going to load.
@@ -210,5 +308,16 @@ int main(void)
 		nlinfo("Caught an exception, quitting.");
 		NLGEORGES::UFormLoader::releaseLoader(formLoader);
 	}
+
+	// Now demonstrate the packed sheet system.
+	nlinfo("Begin loading packed sheets.");
+	::loadForm( "sample_config", "sample_configs.packed_sheets", MySampleConfigs, true, false);
+	nlinfo("Number of sheets loaded: %d", MySampleConfigs.size());
+
+	// Now demonstrate the packed sheet system using CSheetId's and the sheet_id.bin file.
+	nlinfo("Load packed sheets using CSheetId and the sheet_id.bin");
+	::loadForm( "sample_config", "sample_configs_sheets.packed_sheets", MySampleConfigsSheets, true, false);
+	nlinfo("Number of sheets loaded with CSheetId's: %d", MySampleConfigsSheets.size());
+	
 	
 }

@@ -25,14 +25,14 @@
 
 #include "stdafx.h"
 #include "export_nel.h"
-#include "nel/../../src/3d/camera.h"
-#include "nel/../../src/3d/transform.h"
-#include "nel/../../src/3d/animation.h"
-#include "nel/../../src/3d/animated_material.h"
-#include "nel/../../src/3d/key.h"
-#include "nel/../../src/3d/track.h"
-#include "nel/../../src/3d/particle_system_model.h"
-#include "nel/../../src/3d/skeleton_model.h"
+#include "nel/3d/camera.h"
+#include "nel/3d/transform.h"
+#include "nel/3d/animation.h"
+#include "nel/3d/animated_material.h"
+#include "nel/3d/key.h"
+#include "nel/3d/track.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/skeleton_model.h"
 #include "nel/misc/algo.h"
 #include <notetrck.h>
 #include <functional>
@@ -2353,5 +2353,6 @@ void				CSSSBuild::compile(NL3D::CAnimation &dest, const char* sBaseName)
 			dest.addSSSShape(*it);
 	}
 }
+
 
 

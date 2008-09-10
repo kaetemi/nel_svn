@@ -31,7 +31,7 @@
 #endif 
 
 #include "ps_wrapper.h"
-#include "nel/../../src/3d/ps_particle.h"
+#include "nel/3d/ps_particle.h"
 #include "value_gradient_dlg.h"
 #include "popup_notify.h"
 #include "particle_workspace.h"

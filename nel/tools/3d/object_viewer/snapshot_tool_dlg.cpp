@@ -20,15 +20,15 @@
 #include "nel/3d/u_scene.h"
 #include "nel/3d/u_driver.h"
 //
-#include "3d/driver.h"
-#include "3d/driver_user.h"
-#include "3d/shape_bank.h"
-#include "3d/camera.h"
-#include "3d/texture_multi_file.h"
-#include "3d/mesh_base.h"
-#include "3d/particle_system.h"
-#include "3d/particle_system_shape.h"
-#include "3d/particle_system_model.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/driver_user.h"
+#include "nel/3d/shape_bank.h"
+#include "nel/3d/camera.h"
+#include "nel/3d/texture_multi_file.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/particle_system_model.h"
 
 
 

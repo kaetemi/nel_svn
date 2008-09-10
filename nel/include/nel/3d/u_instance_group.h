@@ -112,7 +112,7 @@ public:
 	/**
 	 * Instance group
 	 */
-	virtual ~UInstanceGroup () {};
+	virtual ~UInstanceGroup () {}
 
 
 	/**

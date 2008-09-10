@@ -42,7 +42,7 @@ bool readTheFile (const char *filename, vector<char> &fileArray)
 	if (file.open (filename))
 	{
 		// Go to the end
-		file.seek (0, IStream::end);
+		file.seek (0, NLMISC::IStream::end);
 
 		// Get file size
 		sint32 size = file.getPos ();
@@ -51,12 +51,12 @@ bool readTheFile (const char *filename, vector<char> &fileArray)
 		fileArray.resize (size);
 
 		// Go to the begin
-		file.seek (0, IStream::begin);
+		file.seek (0, NLMISC::IStream::begin);
 
 		if (size)
 		{
 			// Read the file
-			IStream *stream = &file;
+			NLMISC::IStream *stream = &file;
 			stream->serialBuffer ((uint8*)&fileArray[0], size);
 		}
 

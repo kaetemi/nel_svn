@@ -29,7 +29,7 @@ bool isExcludedFile(const std::string &fileName)
 	
 	if (!init)
 	{
-		explode(ExcludeFiles, ";", excludeFileVect, true);
+		explode(ExcludeFiles, string(";"), excludeFileVect, true);
 		init = true;
 	}
 	
@@ -54,7 +54,7 @@ bool isExcludedDir(const std::string &dirName)
 	
 	if (!init)
 	{
-		explode(ExcludeDirs, ";", excludeDirVect, true);
+		explode(ExcludeDirs, string(";"), excludeDirVect, true);
 	}
 	
 	bool excluded = false;
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 						}
 						if (needFinalReturn)
 						{
-							char *finalReturn = "\n";
+							const char *finalReturn = "\n";
 							fputs(finalReturn, fp);
 						}
 						

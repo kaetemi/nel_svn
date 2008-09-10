@@ -29,9 +29,9 @@
 #include "nel/misc/config_file.h"
 #include "nel/misc/path.h"
 
-#include "nel/../../src/3d/animation.h"
-#include "nel/../../src/3d/animation_optimizer.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/animation.h"
+#include "nel/3d/animation_optimizer.h"
+#include "nel/3d/register_3d.h"
 
 
 using namespace std;

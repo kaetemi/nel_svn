@@ -36,7 +36,7 @@ static RPO*			pRPO;
 static ObjectState*	pOS;
 
 
-static PO2RPOClassDesc PO2RPODesc;
+PO2RPOClassDesc PO2RPODesc;
 ClassDesc2* GetPO2RPODesc() {return &PO2RPODesc;}
 
 enum { po2rpo_params };
@@ -61,7 +61,7 @@ IObjParam *PO2RPO::ip			= NULL;
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PO2RPO::PO2RPO()
+PO2RPO::PO2RPO() : pblock(NULL)
 {
 	PO2RPODesc.MakeAutoParamBlocks(this);
 }
@@ -111,17 +111,25 @@ void PO2RPO::ModifyObject(TimeValue t, ModContext &mc, ObjectState * os, INode *
 		return;
 	}
 */
-	// Is our source is a MAX Patch Object ?
-	nlassert(os->obj->ClassID() == Class_ID(PATCHOBJ_CLASS_ID, 0));
+	// Note the default implementation: a class is considered to also be a subclass of itself.
+	if (os->obj->IsSubClassOf(RYKOLPATCHOBJ_CLASS_ID))
+	{
+		pRPO = (RPO*)os->obj;
+	}
+	else
+	{
+		// Is our source is a MAX Patch Object ?
+		nlassert(os->obj->IsSubClassOf(patchObjectClassID));
 
-	// Create the RykolPatchObject
-	pRPO=new RPO( *((PatchObject*)os->obj) );
-	os->obj=pRPO;
-	pRPO->rpatch->UpdateBinding (pRPO->patch, t);
+		// Create the RykolPatchObject
+		pRPO=new RPO( *((PatchObject*)os->obj) );
+		os->obj=pRPO;
+		pRPO->rpatch->UpdateBinding (pRPO->patch, t);
+	}
 }
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+extern HINSTANCE hInstance;
 BOOL CALLBACK DlgProc_Panel(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 {
 	switch (message) 
@@ -130,7 +138,7 @@ BOOL CALLBACK DlgProc_Panel(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		case WM_INITDIALOG: 
 		{
 			// Get the module path
-			HMODULE hModule = GetModuleHandle("nelconvertpatch.dlm");
+			HMODULE hModule = hInstance;
 			if (hModule)
 			{
 				// Get module file name
@@ -184,7 +192,7 @@ BOOL CALLBACK DlgProc_Panel(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleFileName failed");
 			}
 			else
-				SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleHandle failed");
+				SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "hInstance NULL");
 		}
 
 		// -----

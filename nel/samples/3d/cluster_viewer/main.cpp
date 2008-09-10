@@ -24,29 +24,37 @@
  */
 
 
-// ---------------------------------------------------------------------------
+//
 // Includes
-// ---------------------------------------------------------------------------
-
+//
 
 #include "nel/misc/types_nl.h"
-#include "nel/misc/file.h"
-#include "nel/misc/bitmap.h"
 
-#include "3d/driver.h"
-#include "3d/nelu.h"
-#include "nel/misc/event_server.h"
-#include "nel/misc/event_listener.h"
-#include "nel/misc/events.h"
-#include "nel/misc/path.h"
-#include "nel/misc/time_nl.h"
-#include "3d/scene_group.h"
-#include "3d/transform_shape.h"
-#include "3d/event_mouse_listener.h"
-#include "3d/text_context.h"
+#include <sstream>
 
 #ifdef NL_OS_WINDOWS
-#include <windows.h>
+#	include <windows.h>
+#	undef min
+#	undef max
+#endif
+
+#include "nel/misc/file.h"
+#include "nel/misc/path.h"
+#include "nel/misc/bitmap.h"
+#include "nel/misc/events.h"
+#include "nel/misc/time_nl.h"
+#include "nel/misc/event_server.h"
+#include "nel/misc/event_listener.h"
+
+#include "nel/3d/nelu.h"
+#include "nel/3d/driver.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/text_context.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/event_mouse_listener.h"
+
+#ifndef CV_DIR
+#	define CV_DIR "."
 #endif
 
 using namespace std;
@@ -202,12 +210,7 @@ void LoadSceneScript (const char *ScriptName, CScene* pScene, vector<SDispCS> &D
 // Main
 // ---------------------------------------------------------------------------
 #ifdef NL_OS_WINDOWS
-int WINAPI WinMain(
-  HINSTANCE hInstance,      // handle to current instance
-  HINSTANCE hPrevInstance,  // handle to previous instance
-  LPSTR lpCmdLine,          // command line
-  int nCmdShow              // show state
-)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else
 int main()
 #endif
@@ -230,18 +233,20 @@ int main()
 	CTransformShape *pDynObj_InRoot;
 	CTransformShape *pDynObj_InCS;
 
-
-
 	CNELU::init (800, 600, CViewport(), 32, true);
 
-	CPath::addSearchPath("shapes/");
-	CPath::addSearchPath("groups/");
+	CNELU::Scene->enableLightingSystem(true);
+	CNELU::Scene->setAmbientGlobal(CRGBA(128,128,128));
+
+	CPath::addSearchPath(CV_DIR"/shapes");
+	CPath::addSearchPath(CV_DIR"/groups");
+	CPath::addSearchPath(CV_DIR"/fonts");
 
 	CFontManager FontManager;
 	CTextContext TextContext;
 
 	TextContext.init (CNELU::Driver, &FontManager);	
-	TextContext.setFontGenerator ("fonts/n019003l.pfb");
+	TextContext.setFontGenerator (NLMISC::CPath::lookup("n019003l.pfb"));
 	TextContext.setHotSpot (CComputedString::TopLeft);
 	TextContext.setColor (CRGBA(255,255,255));
 	TextContext.setFontSize (20);
@@ -255,16 +260,14 @@ int main()
 	// Force to automatically find the cluster system
 	CNELU::Camera->setClusterSystem ((CInstanceGroup*)-1); 
 
-
 	CClipTrav *pClipTrav = (CClipTrav*)&(CNELU::Scene->getClipTrav());
 	dcsTemp.Name = "Root";
 	dcsTemp.pIG = NULL;
 	DispCS.push_back (dcsTemp);
 
-	
 	// Add all instance that create the scene
 	// --------------------------------------	
-	// Begining of script reading
+	// Beginning of script reading
 	CVector CameraStart;
 
 	LoadSceneScript ("main.cvs", CNELU::Scene, DispCS, CameraStart, vAllIGs);
@@ -275,10 +278,10 @@ int main()
 	// End of script reading
 
 	// Put a dynamic object in the root
-	pDynObj_InRoot = CNELU::Scene->createInstance ("Sphere01.shape");
+	pDynObj_InRoot = CNELU::Scene->createInstance ("sphere01.shape");
 	pDynObj_InRoot->setPos (0.0f, 0.0f, 0.0f);
 	// Put a dynamic object inside
-	pDynObj_InCS = CNELU::Scene->createInstance ("Sphere01.shape");
+	pDynObj_InCS = CNELU::Scene->createInstance ("sphere01.shape");
 	pDynObj_InCS->setPos (50.0f, 50.0f, 25.0f);
 	// No automatic detection for moving objects - setup in street
 	pDynObj_InCS->setClusterSystem (vAllIGs[0]);
@@ -382,9 +385,7 @@ int main()
 				if (j < (vCluster.size()-1))
 					sAllClusters += ",  ";
 			}
-			TextContext.printfAt (0, 1-0.028f, sAllClusters.c_str());				
-
-
+			TextContext.printfAt (0, 1-0.028f, sAllClusters.c_str());
 		}
 
 		// -----------------------------------------------------
@@ -392,7 +393,7 @@ int main()
 
 		CNELU::Driver->swapBuffers ();
 
-		
+
 		// Keys management
 		// ---------------
 
@@ -449,6 +450,7 @@ int main()
 		}
 
 	}
-	while (!CNELU::AsyncListener.isKeyPushed (KeyESCAPE));
-	return 1;
+	while ((!CNELU::AsyncListener.isKeyPushed(KeyESCAPE)) && CNELU::Driver->isActive());
+
+	return EXIT_SUCCESS;
 }

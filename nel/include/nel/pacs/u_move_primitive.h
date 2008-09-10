@@ -128,7 +128,7 @@ public:
 	  */
 	TUserData		UserData;
 
-	virtual ~UMovePrimitive() {};
+	virtual ~UMovePrimitive() {}
 
 	/// \name Setup the primitive static parts.
 

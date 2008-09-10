@@ -8,13 +8,13 @@
 #include "nel/misc/log.h"
 #include "nel/misc/path.h"
 
-#include "nel/../../src/3d/mesh_base.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/mesh_mrm.h"
-#include "nel/../../src/3d/mesh_multi_lod.h"
-#include "nel/../../src/3d/vertex_buffer.h"
-#include "nel/../../src/3d/texture_file.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/mesh_base.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh_multi_lod.h"
+#include "nel/3d/vertex_buffer.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/register_3d.h"
 
 #include "windows.h"
 

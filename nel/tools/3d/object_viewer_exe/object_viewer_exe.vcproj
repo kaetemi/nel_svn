@@ -1,417 +1,548 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="object_viewer_exe"
 	ProjectGUID="{C18D947F-1EB1-4B0E-A768-8F6CF6A6ACC3}"
-	SccProjectName=""
-	SccLocalPath=""
-	Keyword="MFCProj">
+	RootNamespace="object_viewer"
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\ReleaseDebug"
-			IntermediateDirectory=".\ReleaseDebug"
-			ConfigurationType="1"
-			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForWindowsApplication="TRUE"
-				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;NL_RELEASE_DEBUG"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="std_afx.h"
-				PrecompiledHeaderFile=".\ReleaseDebug/object_viewer_exe.pch"
-				AssemblerListingLocation=".\ReleaseDebug/"
-				ObjectFile=".\ReleaseDebug/"
-				ProgramDataBaseFileName=".\ReleaseDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="freetype219MT.lib"
-				OutputFile="ReleaseDebug/object_viewer.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\ReleaseDebug/object_viewer.pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\ReleaseDebug/object_viewer_exe.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_d_exe_windows.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="__STL_DEBUG;WIN32;_DEBUG;_WINDOWS"
-				StringPooling="TRUE"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="std_afx.h"
-				PrecompiledHeaderFile=".\Debug/object_viewer_exe.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				BrowseInformation="0"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
-				CompileAs="2"/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="freetype219MT_D.lib"
-				OutputFile="debug\object_viewer.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\..\..\lib"
-				IgnoreDefaultLibraryNames="libcmt.lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/object_viewer.pdb"
-				SubSystem="2"
-				TargetMachine="1"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/object_viewer_exe.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
-			ConfigurationType="1"
-			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForWindowsApplication="TRUE"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
+				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std_afx.h"
-				PrecompiledHeaderFile=".\Release/object_viewer_exe.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"/>
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="msvcrt.lib libc.lib freetype.lib"
-				OutputFile="Release/object_viewer.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release/object_viewer.pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/object_viewer_exe.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="DebugFast|Win32"
-			OutputDirectory=".\DebugFast"
-			IntermediateDirectory=".\DebugFast"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_df_exe_windows.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;NL_DEBUG_FAST;_STLP_USE_DEBUG_LIB"
-				StringPooling="TRUE"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				EnableEnhancedInstructionSet="0"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="std_afx.h"
-				PrecompiledHeaderFile=".\DebugFast/object_viewer_exe.pch"
-				AssemblerListingLocation=".\DebugFast/"
-				ObjectFile=".\DebugFast/"
-				ProgramDataBaseFileName=".\DebugFast/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="freetype_debug.lib"
-				OutputFile="DebugFast\object_viewer.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\..\..\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\DebugFast/object_viewer.pdb"
-				SubSystem="2"
-				TargetMachine="1"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\DebugFast/object_viewer_exe.tlb"
-				HeaderFileName=""/>
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCCLCompilerTool"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std_afx.h"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_ds_exe_windows.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std_afx.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_r_exe_windows.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std_afx.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebug|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rd_exe_windows.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std_afx.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rds_exe_windows.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std_afx.h"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Name="resources_dll"
+			>
 			<File
-				RelativePath="object_viewer_exe.cpp">
+				RelativePath="..\object_viewer\object_viewer.rc"
+				>
 				<FileConfiguration
-					Name="ReleaseDebug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""/>
+						Name="VCResourceCompilerTool"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="DebugFast|Win32"
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						Name="VCResourceCompilerTool"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""/>
+						Name="VCResourceCompilerTool"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DebugFast|Win32">
+					Name="ReleaseDebug|Win32"
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						Name="VCResourceCompilerTool"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="std_afx.cpp">
-				<FileConfiguration
-					Name="ReleaseDebug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugFast|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
+				RelativePath="..\object_viewer\resource.h"
+				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Name="resources_exe"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+			>
 			<File
-				RelativePath="std_afx.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
-			<File
-				RelativePath="cursor1.cur">
+				RelativePath=".\cursor1.cur"
+				>
 			</File>
 			<File
-				RelativePath="cursor2.cur">
+				RelativePath=".\cursor2.cur"
+				>
 			</File>
 			<File
-				RelativePath="icon1.ico">
+				RelativePath=".\icon1.ico"
+				>
 			</File>
 			<File
-				RelativePath="nevraxpill.ico">
+				RelativePath=".\nevraxpill.ico"
+				>
 			</File>
 			<File
-				RelativePath="object_viewer_exe.rc">
+				RelativePath=".\object_viewer_exe.rc"
+				>
+				<FileConfiguration
+					Name="DebugStatic|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseDebugStatic|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\resource.h"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\lib\object_viewer.cfg">
+			RelativePath="..\object_viewer\object_viewer.cfg"
+			>
 		</File>
 		<File
-			RelativePath="ReadMe.txt">
+			RelativePath=".\object_viewer_exe.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\std_afx.cpp"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DebugFast|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DebugStatic|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="ReleaseDebug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="ReleaseDebugStatic|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\std_afx.h"
+			>
 		</File>
 	</Files>
 	<Globals>

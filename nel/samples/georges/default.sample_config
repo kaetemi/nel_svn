@@ -3,6 +3,7 @@
   <STRUCT>
     <ATOM Name="TestVal1" Value="1"/>
     <ATOM Name="TestVal2" Value="2"/>
+    <ATOM Name="WriteVal" Value="4"/>
     <ARRAY Name="TestArray">
       <ATOM Value="Array Val 1"/>
       <ATOM Value="Array Val 2"/>

@@ -23,31 +23,42 @@
  * MA 02111-1307, USA.
  */
 
-#include "object.h"
+/*
+
+LEFT/RIGHT/UP/DOWN : move the selected primitive
+TAB : select the next primitive
+CTRL+MOUSE : move the camera
+WHEEL: zoom in/out
+PRIOR/NEXT: move on the z axis the selected primitive
+INSERT: add primitives
+SPACE: start chaos (move all primitive in random manner)
+DEL: remove a primitive
+*/
+
+
+// Misc includes
+#include <nel/misc/path.h>
+#include <nel/misc/time_nl.h>
 
 // Pacs includes
 #include <nel/pacs/u_move_container.h>
 #include <nel/pacs/u_move_primitive.h>
 #include <nel/pacs/u_collision_desc.h>
 
-// Misc includes
-#include <nel/misc/time_nl.h>
-#include <nel/misc/path.h>
-
 // 3d includes
+#include <nel/3d/u_scene.h>
 #include <nel/3d/u_camera.h>
 #include <nel/3d/u_driver.h>
-#include <nel/3d/u_text_context.h>
 #include <nel/3d/u_instance.h>
-#include <nel/3d/u_scene.h>
-#include <nel/3d/u_3d_mouse_listener.h>
 #include <nel/3d/u_material.h>
+#include <nel/3d/u_text_context.h>
+#include <nel/3d/u_3d_mouse_listener.h>
+
+#include "object.h"
 
 #ifdef NL_OS_WINDOWS
-
 // Just for the main function and ::MessageBox
-#include <windows.h>
-
+#	include <windows.h>
 #endif // NL_OS_WINDOWS
 
 using namespace NLMISC;
@@ -123,24 +134,16 @@ void keyboard (UDriver	*pDriver, double deltaTime, CObjectDyn &obj)
 // ** Main entry
 
 #ifdef NL_OS_WINDOWS
-
-int APIENTRY WinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPSTR     lpCmdLine,
-                     int       nCmdShow)
-
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else // NL_OS_WINDOWS
-
 int main ()
-
 #endif // NL_OS_WINDOWS
-
 {
 	NLMISC::CApplicationContext myApplicationContext;
 
 	try
 	{
-		// Init search pathes
+		// Init search paths
 		CPath::addSearchPath ("shapes");
 		
 		// Create a driver
@@ -151,11 +154,15 @@ int main ()
 
 		// Create a scene
 		UScene *pScene = pDriver->createScene(false);
+		nlassert(pScene);
+
+		pScene->enableLightingSystem(true);
+		pScene->setAmbientGlobal(CRGBA(128,128,128));
 
 		// Create a container
 		// This container has 31 world images. The first is a static world image, the others are dynamic.
 		// Each frame, the sample eval the collision in the next dynamic world image.
-		// This is to show the multiple world images fonctionnality.
+		// This is to show the multiple world images functionality.
 		UMoveContainer *container=UMoveContainer::createMoveContainer (-ARENA_SIZE/2.0, -ARENA_SIZE/2.0, ARENA_SIZE/2.0, ARENA_SIZE/2.0,
 			NUM_CELL, NUM_CELL, (double)SIZE_PRIMITIVE_MAX*sqrt(2.0), MAX_WORLD_IMAGE);
 
@@ -251,7 +258,7 @@ int main ()
 				}
 			}
 
-			// Make caos if SPACE pressed
+			// Make chaos if SPACE pressed
 			if (pDriver->AsyncListener.isKeyDown (KeySPACE))
 			{
 				for (uint t=0; t<arrayObj.size(); t++)
@@ -270,15 +277,18 @@ int main ()
 				// Remove a primitive if DELETE pressed
 				if (pDriver->AsyncListener.isKeyDown (KeyDELETE))
 				{
-					arrayObj[arrayObj.size()-1]->remove (*container, *pScene);
-					arrayObj.resize (arrayObj.size()-1);
+					// remove all but one
+					if (arrayObj.size() > 1) {
+						arrayObj[arrayObj.size()-1]->remove (*container, *pScene);
+						arrayObj.resize (arrayObj.size()-1);
+					}
 				}
 
 				// Check selected
 				if (selected>=arrayObj.size())
 					selected=arrayObj.size()-1;
-				if (selected<0)
-					selected=0;
+				//if (selected<0)
+				//	selected=0;
 
 				// Change selected object if TAB pressed
 				if (pDriver->AsyncListener.isKeyPushed (KeyTAB))
@@ -340,7 +350,7 @@ int main ()
 				out += (type == UTriggerInfo::Out)?1:0;
 				inside += (type == UTriggerInfo::Inside)?1:0;
 				if (type == UTriggerInfo::Out)
-					int toto = 0;
+					int foobar = 0;
 			}
 
 			// Draw the trigger bar
@@ -377,4 +387,3 @@ int main ()
 
 	return 0;
 }
-

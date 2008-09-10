@@ -12,9 +12,10 @@ zone_lighter_SOURCES      = zone_lighter.cpp
 
 AM_CXXFLAGS               = -I$(top_srcdir)/src 
 
-zone_lighter_LDADD        = ../../../src/misc/libnelmisc.la \
-                            ../../../src/3d/libnel3d.la     \
-                            ../zone_lib/libzone.la
+zone_lighter_LDADD        =	../../../src/misc/libnelmisc.la		\
+				../../../src/3d/libnel3d.la		\
+				../../../src/georges/libnelgeorges.la	\
+				../zone_lib/libzone.la
 
 
 # End of Makefile.am

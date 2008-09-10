@@ -74,7 +74,7 @@ TTime	pingDate;
  * Output (sent message to a client): PONG
  * - uint32: ping counter
  */
-void cbPong( CMessage& msgin, const string &name, uint16 sid )
+void cbPong(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32	counter;
 	msgin.serial( counter );
@@ -83,7 +83,7 @@ void cbPong( CMessage& msgin, const string &name, uint16 sid )
 	nlinfo("Received PONG %u (%u ms)", counter, pingTime);
 }
 
-void	sendPing()
+void sendPing()
 {
 	pingDate = CTime::getLocalTime();
 	uint32 counter = 0;
@@ -94,7 +94,7 @@ void	sendPing()
 }
 
 //
-void cbPos( CMessage& msgin, const string &name, uint16 sid )
+void cbPos(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	// decode the message
 
@@ -111,7 +111,7 @@ void cbPos( CMessage& msgin, const string &name, uint16 sid )
 	
 	TCPUCycle v2 = CTime::getPerformanceTime ();
 
-	nlinfo("Received POS from %s (serial: %.2fs)", name.c_str(), CTime::ticksToSecond (v2-v1));
+	nlinfo("Received POS from %s (serial: %.2fs)", serviceName.c_str(), CTime::ticksToSecond(v2-v1));
 }
 
 TTime t = 0;
@@ -125,7 +125,7 @@ void sendRequestVision ()
 	t = CTime::getLocalTime ();
 }
 
-void cbVision( CMessage& msgin, const string &name, uint16 sid )
+void cbVision(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 NbValue;
 	uint32 Value;
@@ -151,7 +151,7 @@ void cbVision( CMessage& msgin, const string &name, uint16 sid )
 }
 
 
-void	sendPos()
+void sendPos()
 {
 	nlinfo("Simulate receive pos from client, send POS to GPMS");
 	CMessage msgout("POS");
@@ -159,7 +159,7 @@ void	sendPos()
 }
 
 //
-void cbUpGPMS( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpGPMS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo( "GPMS connecting.");
 	sendRequestVision ();
@@ -167,27 +167,27 @@ void cbUpGPMS( const std::string &serviceName, uint16 sid, void *arg )
 
 
 //
-void cbUpPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo( "Ping Service connecting.");
 	sendPing();
 }
 
 
-void cbDownPS( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownPS(const std::string &serviceName, TServiceId sid, void *arg)
 {
 	nlinfo( "Ping Service disconnecting." );
 }
 
 //
-void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is up", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is up", serviceName.c_str(), sid.get());
 }
 
-void cbDownService( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is down", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is down", serviceName.c_str(), sid.get());
 }
 
 

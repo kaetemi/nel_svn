@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // edit_ps_light.h : header file
 //
-#include "nel/../../src/3d/ps_light.h"
+#include "nel/3d/ps_light.h"
 //
 #include "ps_wrapper.h"
 #include "particle_workspace.h"

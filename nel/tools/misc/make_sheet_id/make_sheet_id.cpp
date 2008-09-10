@@ -427,6 +427,9 @@ void display()
 //-----------------------------------------------
 int main( int argc, char ** argv )
 {
+	// Create an application context.
+	NLMISC::CApplicationContext appContext;
+
 	// read args
 	if( argc < 2 )
 	{

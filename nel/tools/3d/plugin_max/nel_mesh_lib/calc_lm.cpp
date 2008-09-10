@@ -34,12 +34,12 @@
 #include "nel/misc/bsphere.h"
 #include "nel/misc/path.h"
 #include "nel/3d/quad_tree.h"
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/skeleton_shape.h"
-#include "nel/../../src/3d/texture_file.h"
-#include "nel/../../src/3d/light.h"
-#include "nel/../../src/3d/bsp_tree.h"
-#include "nel/../../src/3d/quad_grid.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/skeleton_shape.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/light.h"
+#include "nel/3d/bsp_tree.h"
+#include "nel/3d/quad_grid.h"
 
 #include <vector>
 
@@ -286,7 +286,6 @@ void SLightBuild::convertFromMaxLight (INode *node,TimeValue tvTime)
 		}
 	}
 
-	/// \todo hulud: modify this code to work under max4
 #if (MAX_RELEASE < 4000)
 		// Convert exclusion list
 		NameTab& ntExclu = maxLight->GetExclusionList();
@@ -2684,4 +2683,5 @@ bool CExportNel::calculateLM( CMesh::CMeshBuild *pZeMeshBuild, CMeshBase::CMeshB
 		InfoLog->display("CalculateLM : %d ms\n", timeGetTime()-t);
 	return true;	
 }
+
 

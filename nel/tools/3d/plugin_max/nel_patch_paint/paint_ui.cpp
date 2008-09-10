@@ -3,8 +3,8 @@
 
 #include "paint_ui.h"
 #include "resource.h"
-#include "nel/../../src/3d/texture_file.h"
-#include "nel/../../src/3d/texture_mem.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/texture_mem.h"
 #include "nel/misc/config_file.h"
 
 #define REGKEY_EDIT_PATCH "Software\\Nevrax\\Ryzom\\edit_patch"
@@ -387,11 +387,11 @@ void setBackgroundColor ()
 }
 
 /*-------------------------------------------------------------------*/
-
+extern HINSTANCE hInstance;
 void LoadKeyCfg ()
 {
 	// Path of the dll
-	HMODULE hModule = GetModuleHandle("nelpaintpatch.dlm");
+	HMODULE hModule = hInstance;
 	if (hModule)
 	{
 		char sModulePath[256];
@@ -436,11 +436,11 @@ void LoadKeyCfg ()
 }
 
 /*-------------------------------------------------------------------*/
-
+extern HINSTANCE hInstance;
 void LoadVarCfg ()
 {
 	// Path of the dll
-	HMODULE hModule = GetModuleHandle("nelpaintpatch.dlm");
+	HMODULE hModule = hInstance;
 	if (hModule)
 	{
 		char sModulePath[256];

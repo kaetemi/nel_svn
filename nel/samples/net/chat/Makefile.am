@@ -10,7 +10,13 @@ chatserver_SOURCES = server.cpp
 
 chatclient_SOURCES = client.cpp kbhit.h kbhit.cpp
 
-AM_CXXFLAGS               = -I$(top_srcdir)/src 
+chatserverdir=$(datadir)/nel/samples/net/chat
+chatserver_DATA=chat_service.cfg
+
+chatclientdir=$(datadir)/nel/samples/net/chat
+chatclient_DATA=client.cfg
+
+AM_CXXFLAGS               = -DCHAT_DIR="\"$(chatclientdir)\"" -I$(top_srcdir)/src 
 
 chatserver_LDADD   = ../../../src/misc/libnelmisc.la \
                      ../../../src/net/libnelnet.la 
@@ -19,4 +25,3 @@ chatclient_LDADD   = ../../../src/misc/libnelmisc.la \
                      ../../../src/net/libnelnet.la 
 
 # End of Makefile.am
-

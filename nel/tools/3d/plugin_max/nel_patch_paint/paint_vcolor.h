@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "nel/../../src/3d/texture_file.h"
+#include "nel/3d/texture_file.h"
 
 using namespace NL3D;
 using namespace NLMISC;
@@ -18,7 +18,7 @@ class CVertexColorFrozed
 {
 public:
 	// Constructors
-	CVertexColorFrozed () {};
+	CVertexColorFrozed () {}
 	CVertexColorFrozed (EPM_PaintTile *tile, int s, int t)
 	{
 		Tile = tile;

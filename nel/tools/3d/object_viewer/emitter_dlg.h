@@ -30,8 +30,8 @@
 #pragma once
 #endif 
 
-#include "nel/../../src/3d/ps_particle.h"
-#include "nel/../../src/3d/ps_emitter.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_emitter.h"
 #include "start_stop_particle_system.h"
 
 namespace NL3D

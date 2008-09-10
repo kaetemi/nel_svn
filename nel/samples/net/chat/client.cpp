@@ -1,4 +1,4 @@
-/** \file login_system/client.cpp
+/** \file samples/net/chat/client.cpp
  * Login system example
  *
  * $Id: client.cpp,v 1.2 2005/04/13 12:37:16 cado Exp $
@@ -40,18 +40,19 @@
 
 #include <string>
 
+#include "nel/misc/types_nl.h"
+#include "nel/misc/debug.h"
+#include "nel/misc/config_file.h"
+#include "nel/misc/bit_mem_stream.h"
+#include "nel/misc/path.h"
+
+#include "nel/net/callback_client.h"
+
 #ifdef NL_OS_WINDOWS
 #include <conio.h>
 #else
 #include "kbhit.h"
 #endif
-
-#include "nel/misc/types_nl.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/config_file.h"
-#include "nel/misc/bit_mem_stream.h"
-
-#include "nel/net/callback_client.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -66,6 +67,10 @@ using namespace NLNET;
 #else
 #define KEY_ESC		27
 #define KEY_ENTER	10
+#endif
+
+#ifndef CHAT_DIR
+#	define CHAT_DIR "."
 #endif
 
 string CurrentEditString;
@@ -92,11 +97,15 @@ TCallbackItem CallbackArray[NB_CB] =
  */
 int main (int argc, char **argv)
 {
+	NLMISC::CApplicationContext applicationContext;
+
 	CCallbackClient *Client;
+
+	NLMISC::CPath::addSearchPath(CHAT_DIR);
 
 	// Read the host where to connect in the client.cfg file
 	CConfigFile ConfigFile;	
-	ConfigFile.load ("client.cfg");
+	ConfigFile.load (NLMISC::CPath::lookup("client.cfg"));
 	string LSHost(ConfigFile.getVar("LSHost").asString());
 
 	// Init and Connect the client to the server located on port 3333

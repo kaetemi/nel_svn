@@ -26,7 +26,7 @@
 
 #include "nel/misc/types_nl.h"
 #include "nel/misc/debug.h"
-#include "../buffer.h"
+#include "sound/driver/buffer.h"
 
 #include "AL/al.h"
 

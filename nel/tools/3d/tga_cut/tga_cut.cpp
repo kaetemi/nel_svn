@@ -29,7 +29,6 @@
 #include "nel/misc/file.h"
 #include "nel/misc/debug.h"
 #include <math.h>
-#include "ddraw.h"
 
 using namespace NLMISC;
 using namespace std;
@@ -41,7 +40,7 @@ const int CutSize = 160;
 const int SaveSize = 256;
 
 void writeInstructions();
-void main(int argc, char **argv);
+int main(int argc, char **argv);
 
 // ***************************************************************************
 
@@ -103,29 +102,29 @@ void dividSize (CBitmap &bitmap)
 }
 
 // ***************************************************************************
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	// Parse Command Line.
 	//====================
 	if(argc<2)
 	{
 		writeInstructions();
-		return;
+		return 0;
 	}
 	if(!strcmp(argv[1],"/?"))
 	{
 		writeInstructions();
-		return;
+		return 0;
 	}
 	if(!strcmp(argv[1],"-?"))
 	{
 		writeInstructions();
-		return;
+		return 0;
 	}
 	if(argc != 2)
 	{
 		writeInstructions();
-		return;
+		return 0;
 	}
 
 	// Reading TGA and converting to RGBA

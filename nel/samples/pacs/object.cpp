@@ -71,11 +71,11 @@ CObjectDyn::CObjectDyn (double width, double depth, double height, double orient
 		uint i;
 		for (i=0; i<_Instance.getNumMaterials(); i++)
 		{
-			UInstanceMaterial &material = _Instance.getMaterial(i);
+			UInstanceMaterial material = _Instance.getMaterial(i);
 			if (trigger != UMovePrimitive::NotATrigger)
 			{
 				// material.setBlend(true);
-				/// material.setBlendFunc(UInstanceMaterial::srcalpha, UInstanceMaterial::invsrcalpha);
+				// material.setBlendFunc(UInstanceMaterial::srcalpha, UInstanceMaterial::invsrcalpha);
 				material.setDiffuse (CRGBA(255,255,255,255));
 				// material.setOpacity(128);
 			}
@@ -117,7 +117,7 @@ CObjectDyn::CObjectDyn (double width, double depth, double height, double orient
 	_MovePrimitive->setAbsorbtion (0.9f);
 
 	// Setup user data
-	_MovePrimitive->UserData=(uint)this;
+	_MovePrimitive->UserData=(uint64)this;
 
 	// Setup trigger type
 	_MovePrimitive->setTriggerType (trigger);
@@ -151,7 +151,7 @@ CObjectDyn::CObjectDyn (double diameter, double height, const CVectorD& pos, con
 		uint i;
 		for (i=0; i<_Instance.getNumMaterials(); i++)
 		{
-			UInstanceMaterial &material = _Instance.getMaterial(i);
+			UInstanceMaterial material = _Instance.getMaterial(i);
 			if (trigger != UMovePrimitive::NotATrigger)
 			{
 				// material.setBlend(true);
@@ -195,7 +195,7 @@ CObjectDyn::CObjectDyn (double diameter, double height, const CVectorD& pos, con
 	_MovePrimitive->setAbsorbtion (0.9f);
 
 	// Setup user data
-	_MovePrimitive->UserData=(uint)this;
+	_MovePrimitive->UserData=(uint64)this;
 
 	// Setup trigger type
 	_MovePrimitive->setTriggerType (trigger);

@@ -33,7 +33,7 @@
 //
 
 #include "blend_wnd.h"
-#include <nel/../../src/3d/animation_set.h>
+#include <nel/3d/animation_set.h>
 #include <nel/misc/debug.h>
 
 /////////////////////////////////////////////////////////////////////////////

@@ -31,13 +31,13 @@
 #include "nel/misc/debug.h"
 #include "nel/misc/file.h"
 
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/patch.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/landscape.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/patch.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/landscape.h"
 
 #include "nel/3d/quad_tree.h"
-#include "nel/../../src/3d/quad_grid.h"
+#include "nel/3d/quad_grid.h"
 
 #include "nel/misc/vector.h"
 #include "nel/misc/aabbox.h"
@@ -444,10 +444,10 @@ public:
 
 		nldebug("%d elements added", Elements.size());
 
-		Center = CVector::Null;
+		Center = NLMISC::CVector::Null;
 		for (i=0; i<(sint)Elements.size(); ++i)
 		{
-			vector<CVector>	&vertices = *Elements[i]->Vertices;
+			std::vector<NLMISC::CVector>	&vertices = *Elements[i]->Vertices;
 			Center += (vertices[Elements[i]->Tri[0]]+vertices[Elements[i]->Tri[1]]+vertices[Elements[i]->Tri[2]]);
 		}
 		Center /= (float)(Elements.size()*3);

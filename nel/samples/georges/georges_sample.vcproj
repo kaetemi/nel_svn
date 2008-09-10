@@ -1,199 +1,119 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="georges_sample"
 	ProjectGUID="{0D68447C-103D-4173-9516-97D45AB570E1}"
 	RootNamespace="georges_sample"
-	Keyword="ManagedCProj">
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_d_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			ManagedExtensions="TRUE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG"
-				MinimalRebuild="FALSE"
-				BasicRuntimeChecks="0"
-				RuntimeLibrary="1"
-				WarningLevel="3"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
-				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
-				AssemblyDebug="1"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugFast|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_df_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_ds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_r_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			ManagedExtensions="TRUE">
-			<Tool
-				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG"
-				MinimalRebuild="FALSE"
-				RuntimeLibrary="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+
+			>
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE,NL_RELEASE_DEBUG"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="0"
-				AssemblerListingLocation=".\ReleaseDebug/"
-				ObjectFile=".\ReleaseDebug/"
-				ProgramDataBaseFileName=".\ReleaseDebug/"
-				WarningLevel="3"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib libxml2.lib odbc32.lib odbccp32.lib ws2_32.lib"
-				OutputFile=".\georges_sample_rd.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\ReleaseDebug/georges_sample.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_rd_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\src\nel_vs90_rds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			Name="source_files"
+			>
 			<File
-				RelativePath=".\main.cpp">
+				RelativePath=".\main.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-		</Filter>
-		<Filter
-			Name="Forms"
-			Filter="">
+			Name="georges_forms"
+			>
 			<File
-				RelativePath=".\boolean.typ">
+				RelativePath=".\boolean.typ"
+				>
 			</File>
 			<File
-				RelativePath=".\coolfilesinfo.dfn">
+				RelativePath=".\coolfilesinfo.dfn"
+				>
 			</File>
 			<File
-				RelativePath=".\default.sample_config">
+				RelativePath=".\default.sample_config"
+				>
 			</File>
 			<File
-				RelativePath=".\int.typ">
+				RelativePath=".\int.typ"
+				>
 			</File>
 			<File
-				RelativePath=".\positiondata.dfn">
+				RelativePath=".\positiondata.dfn"
+				>
 			</File>
 			<File
-				RelativePath=".\sample_config.dfn">
+				RelativePath=".\sample_config.dfn"
+				>
 			</File>
 			<File
-				RelativePath=".\string.typ">
+				RelativePath=".\string.typ"
+				>
 			</File>
 		</Filter>
 	</Files>

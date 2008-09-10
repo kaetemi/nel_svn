@@ -32,7 +32,7 @@
 #include "nel/misc/displayer.h"
 #include "nel/misc/file.h"
 
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/register_3d.h"
 
 #include "build_surf.h"
 #include "build_rbank.h"

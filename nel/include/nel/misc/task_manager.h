@@ -94,7 +94,7 @@ public:
 	class IChangeTaskPriority
 	{
 	public:
-		virtual ~IChangeTaskPriority() {};
+		virtual ~IChangeTaskPriority() {}
 		virtual float getTaskPriority(const IRunnable &runable) = 0;
 	};
 

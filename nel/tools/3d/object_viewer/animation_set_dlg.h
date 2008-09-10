@@ -32,7 +32,7 @@
 // animation_set_dlg.h : header file
 //
 
-#include <nel/../../src/3d/animation_set.h>
+#include <nel/3d/animation_set.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnimationSetDlg dialog

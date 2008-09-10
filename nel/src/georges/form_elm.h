@@ -57,7 +57,7 @@ public:
 	virtual ~CFormElm ();
 
 	/// Reset contents
-	virtual void	clean() {};
+	virtual void	clean() {}
 
 	// Get the form pointer
 	CForm			*getForm () const;

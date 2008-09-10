@@ -29,13 +29,13 @@
 
 
 
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/ps_particle.h"
-#include "nel/../../src/3d/ps_mesh.h"
-#include "nel/../../src/3d/ps_force.h"
-#include "nel/../../src/3d/ps_emitter.h"
-#include "nel/../../src/3d/ps_zone.h"
-#include "nel/../../src/3d/particle_system_model.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_mesh.h"
+#include "nel/3d/ps_force.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/ps_zone.h"
+#include "nel/3d/particle_system_model.h"
 
 
 

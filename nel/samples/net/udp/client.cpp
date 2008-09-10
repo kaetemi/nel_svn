@@ -53,7 +53,7 @@
 #include "nel/3d/u_play_list_manager.h"
 #include "nel/3d/u_text_context.h"
 #include "nel/3d/u_texture.h"
-#include "3d/event_mouse_listener.h"
+#include "nel/3d/event_mouse_listener.h"
 
 using namespace NL3D;
 #endif
@@ -85,7 +85,7 @@ CUdpSimSock	*UdpSock = NULL;
 
 uint8		Mode = 0;
 
-uint32		Session = 0;
+uint64		Session = 0;
 
 string		ConnectionName;
 

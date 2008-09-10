@@ -24,7 +24,7 @@
  */
 
 
-#include <iostream.h>
+#include <iostream>
 #include "nel/misc/types_nl.h"
 #include "nel/misc/file.h"
 

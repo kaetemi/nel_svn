@@ -12,8 +12,8 @@
 #include "vegetable_copy_dlg.h"
 #include "vegetable_edit_tools.h"
 #include "vegetable_wind_dlg.h"
-#include "nel/../../src/3d/vegetable.h"
-#include "nel/../../src/3d/tile_vegetable_desc.h"
+#include "nel/3d/vegetable.h"
+#include "nel/3d/tile_vegetable_desc.h"
 
 
 
@@ -542,7 +542,7 @@ void CVegetableDlg::OnButtonVegetableInsert()
 	if(id!=LB_ERR)
 	{
 		// Add a new vegetable to the list.
-		_Vegetables.insert(_Vegetables.begin()+id);
+		_Vegetables.insert(_Vegetables.begin()+id, CVegetableDesc());
 		_Vegetables[id].initDefaultVegetable();
 
 		// update view
@@ -788,7 +788,7 @@ void CVegetableDlg::OnButtonVegetableCopy()
 							break;
 						}
 					}
-					// Apperance
+					// Appearance
 					if(dlg.BendPhase)
 						vegetDst.BendPhase = vegetSrc.BendPhase;
 					if(dlg.BendFactor)
@@ -851,7 +851,7 @@ void CVegetableDlg::OnCheckVegetableShow()
 		// Landscape not created ??
 		if(!_ObjView->isVegetableLandscapeCreated())
 		{
-			// if succes to create / Load the landscape.
+			// if success to create / Load the landscape.
 			if(_ObjView->createVegetableLandscape())
 			{
 				// Enable the refresh button

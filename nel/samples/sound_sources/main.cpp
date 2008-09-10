@@ -30,21 +30,23 @@
  * (UListener).
  */
 
-#include <stdio.h>
-#include <conio.h>
 
-#include <nel/misc/debug.h>
-#include <nel/misc/time_nl.h>
-#include <nel/misc/path.h>
-#include <nel/misc/vector.h>
-#include <nel/sound/u_audio_mixer.h>
-#include <nel/sound/u_listener.h>
-
-using namespace NLSOUND;
+#include "nel/misc/debug.h"
+#include "nel/misc/time_nl.h"
+#include "nel/misc/path.h"
+#include "nel/misc/vector.h"
 using namespace NLMISC;
+
+#include "nel/sound/u_audio_mixer.h"
+#include "nel/sound/u_listener.h"
+using namespace NLSOUND;
+
+#include <stdio.h>
+
 
 // Pointer to the audio mixer object
 UAudioMixer	*AudioMixer = NULL;
+
 
 /*
  * Initialization
@@ -66,9 +68,18 @@ void Init()
 		AudioMixer->setSamplePath("data/samplebank");
 		// Packed sheet option, this mean we want packed sheet generated in 'data' folder
 		AudioMixer->setPackedSheetOption("data", true);
+		
+		printf("Select NLSOUND Driver:\n");
+		printf(" [1] FMod\n");
+		printf(" [2] OpenAl\n");
+		printf(" [3] DSound\n");
+		printf(" [4] XAudio2\n");
+		printf("> ");
+		int selection = getchar();
+		printf("\n");
+		
 		// init with 32 tracks, EAX enabled, no ADPCM, and activate automatic sample bank loading
-		AudioMixer->init(32, true, false, NULL, true, UAudioMixer::DriverFMod);
-//		AudioMixer->init(32, true, false, NULL, true);
+		AudioMixer->init(32, true, false, NULL, true, (UAudioMixer::TDriver)(selection - '0')/*UAudioMixer::DriverFMod*/);
 
 		/*
 		 * 2. Initialize listener's position and orientation (in NeL coordinate system).
@@ -132,7 +143,6 @@ void OnMove( const CVector& listenerpos )
 	 */
 }
 
-
 /*
  * main
  *
@@ -147,7 +157,7 @@ void OnMove( const CVector& listenerpos )
  */
 int main()
 {
-	new CApplicationContext();
+	new CApplicationContext(); // crash at end if on stack ...
 
 	// Initialization
 	Init();
@@ -156,13 +166,13 @@ int main()
 	printf( "Press ENTER to start playing the two sources\n" );
 	printf( "One is 20 meters ahead, on the right\n" );
 	printf( "The other is 5 meters ahead, on the left\n" );
-	while (!_kbhit()) { AudioMixer->update(); Sleep(10); } _getch();
+	getchar();
 	USource *src1 = OnAddSource( "beep", 1.0f, 20.0f, 0.0f );  // Beep on the right, 20 meters ahead
 	USource *src2 = OnAddSource( "tuut", -2.0f, 5.0f, 0.0f ); // Tuut on the left, 5 meters ahead
 
 	// Second step: we will move the listener ahead
-	printf( "Press ANY key again to start moving the listener\n" );
-	while (!_kbhit()) { AudioMixer->update(); Sleep(10); } _getch();
+	printf( "Press ENTER again to start moving the listener\n" );
+	getchar();
 
 	// Listener orientation is constant in this example (see initialization)
 

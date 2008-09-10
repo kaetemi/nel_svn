@@ -28,7 +28,9 @@
 
 #ifdef NL_OS_WINDOWS
 
-#include <winsock2.h>
+#if !defined(NL_COMP_VC9)
+#	include <winsock2.h>
+#endif
 
 #elif defined NL_OS_UNIX
 
@@ -74,9 +76,9 @@ void	TReceivedMessage::vectorToAddress()
  * Constructor
  */
 CReceiveTask::CReceiveTask( uint16 port, uint32 msgsize ) :
+	_DatagramLength( msgsize ),
 	_ReceivedMessage(),
 	_WriteQueue( "WriteQueue" ), // value unspecified
-	_DatagramLength( msgsize ),
 	_ExitRequired( false )
 {
 	// Socket

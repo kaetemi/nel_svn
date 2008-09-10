@@ -7,6 +7,7 @@
 #define IDS_CLASS_NAME                  3
 #define IDC_ADD                         3
 #define IDS_PARAMS                      4
+#define IDC_STATIC                      -1
 #define IDC_REMOVE                      4
 #define IDS_SPIN                        5
 #define IDC_UP                          5

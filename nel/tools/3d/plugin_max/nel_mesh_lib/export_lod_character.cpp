@@ -30,9 +30,9 @@
 #include "../nel_export/std_afx.h"
 #include "../nel_export/nel_export.h"
 
-#include "nel/../../src/3d/lod_character_shape.h"
-#include "nel/../../src/3d/mrm_parameters.h"
-#include "nel/../../src/3d/mesh_mrm.h"
+#include "nel/3d/lod_character_shape.h"
+#include "nel/3d/mrm_parameters.h"
+#include "nel/3d/mesh_mrm.h"
 
 using namespace NLMISC;
 using namespace NL3D;

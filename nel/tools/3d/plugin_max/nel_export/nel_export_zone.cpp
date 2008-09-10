@@ -25,8 +25,8 @@
 
 #include "std_afx.h"
 #include "nel_export.h"
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/zone_symmetrisation.h"
 #include "../nel_patch_lib/rpo.h"
 
 using namespace NL3D;
@@ -108,5 +108,6 @@ bool CNelExport::exportZone (const char *sPath, INode& node, TimeValue time)
 	}
 	return bRet;
 }
+
 
 

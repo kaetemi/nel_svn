@@ -4,7 +4,7 @@
 #include "std_afx.h"
 #include "object_viewer.h"
 #include "skeleton_scale_dlg.h"
-#include "nel/../../src/3d/skeleton_shape.h"
+#include "nel/3d/skeleton_shape.h"
 #include "nel/misc/algo.h"
 #include "main_frame.h"
 

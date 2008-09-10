@@ -52,7 +52,7 @@ class UGlobalPosition;
 class UGlobalRetriever
 {
 public:
-	virtual ~UGlobalRetriever() {};
+	virtual ~UGlobalRetriever() {}
 
 	/// Make a raytrace test. For the time, always return false.
 	virtual bool					testRaytrace (const NLMISC::CVectorD &v0, const NLMISC::CVectorD &v1) =0;

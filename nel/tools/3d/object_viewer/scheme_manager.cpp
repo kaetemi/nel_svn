@@ -25,7 +25,7 @@
 
 #include "std_afx.h"
 #include "scheme_manager.h"
-#include "nel/../../src/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_attrib_maker.h"
 
 CSchemeManager SchemeManager;
 

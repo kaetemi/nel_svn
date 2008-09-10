@@ -310,7 +310,7 @@ void createRetriever(vector<CVector> &translation)
 
 // pacs test
 
-void	serialGPos(UGlobalPosition &gp, IStream &f)
+void	serialGPos(UGlobalPosition &gp, NLMISC::IStream &f)
 {
 	f.serial(gp.InstanceId, gp.LocalPosition.Surface, gp.LocalPosition.Estimation);
 }

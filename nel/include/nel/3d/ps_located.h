@@ -1015,7 +1015,7 @@ public:
 	 *  can't call your releaseTargetRsc override in its destructor, it does it in its finalize method,
 	 *  which is called by the particle system
 	 */
-	virtual void		releaseTargetRsc(CPSLocated *target) {};
+	virtual void		releaseTargetRsc(CPSLocated *target) {}
 	/// Seralization, must be called by derivers
 	void				serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 	/// Finalize this object : the default is to call releaseTargetRsc on targets

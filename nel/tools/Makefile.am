@@ -4,7 +4,7 @@
 
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS              = 3d
+SUBDIRS              = 3d misc pacs
 
 
 # End of Makefile.am

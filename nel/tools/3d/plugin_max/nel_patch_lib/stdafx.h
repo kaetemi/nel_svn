@@ -23,15 +23,21 @@
  * MA 02111-1307, USA.
  */
 
+#pragma conform(forScope, push)
+#pragma conform(forScope, off)
+
+#define _CRT_SECURE_NO_DEPRECATE
+
 #pragma warning (disable : 4786)
-#include "Max.h"
-#include "istdplug.h"
-#include "meshadj.h"
-#include "iparamb2.h"
-#include "iparamm2.h"
-#ifdef min
+#include <Max.h>
+#include <istdplug.h>
+#include <meshadj.h>
+#include <iparamb2.h>
+#include <iparamm2.h>
+
+#undef _CRT_SECURE_NO_DEPRECATE
+
+#pragma conform(forScope, pop)
+
 #undef min
-#endif
-#ifdef max
 #undef max
-#endif

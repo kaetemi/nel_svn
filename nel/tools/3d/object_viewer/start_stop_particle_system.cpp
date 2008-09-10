@@ -33,11 +33,11 @@
 #include "located_properties.h"
 #include "select_string.h"
 //
-#include "nel/../../src/3d/particle_system.h"
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/ps_sound.h"
-#include "nel/../../src/3d/ps_emitter.h"
-#include "nel/../../src/3d/particle_system_model.h"
+#include "nel/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/ps_sound.h"
+#include "nel/3d/ps_emitter.h"
+#include "nel/3d/particle_system_model.h"
 #include "particle_dlg.h"
 
 

@@ -32,10 +32,10 @@ PROJECT DEPENDENCIES:
 ligoscape_lib <- nel_3d
 ligoscape_lib <- nel_misc
 
-ligoscape_plugin_max <- ligoscape_lib
+ligoscape_plugin_max <- nel_ligo
 ligoscape_plugin_max <- nel_patch_lib
 
-WorldEditor <- ligoscape_lib
+WorldEditor <- nel_ligo
 WorldEditor <- nel_3d
 WorldEditor <- nel_misc
 WorldEditor <- nel_driver_opengl

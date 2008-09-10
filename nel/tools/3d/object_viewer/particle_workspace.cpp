@@ -28,10 +28,10 @@
 #include "particle_workspace.h"
 #include "object_viewer.h"
 //
-#include "nel/../../src/3d/shape_bank.h"
-#include "nel/../../src/3d/particle_system_model.h"
-#include "nel/../../src/3d/particle_system_shape.h"
-#include "nel/../../src/3d/skeleton_model.h"
+#include "nel/3d/shape_bank.h"
+#include "nel/3d/particle_system_model.h"
+#include "nel/3d/particle_system_shape.h"
+#include "nel/3d/skeleton_model.h"
 //
 #include "nel/misc/o_xml.h"
 #include "nel/misc/i_xml.h"
@@ -596,4 +596,5 @@ void CParticleWorkspace::restickAllObjects(CObjectViewer *ov)
 		}
 	}
 }
+
 

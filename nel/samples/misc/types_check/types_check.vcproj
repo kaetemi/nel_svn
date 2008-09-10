@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="types_check"
+	ProjectGUID="{FE5F54A3-0F2D-4FF0-BB70-BEE1B341E455}"
+	RootNamespace="types_check"
+	TargetFrameworkVersion="0"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_d_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugFast|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_df_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_ds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_r_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebug|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rd_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
+		</Configuration>
+		<Configuration
+			Name="ReleaseDebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+
+			>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath=".\main.cpp"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -25,7 +25,7 @@
 
 #include "stdafx.h"
 #include "export_nel.h"
-#include "nel/../../src/3d/light.h"
+#include "nel/3d/light.h"
 #include "nel/misc/common.h"
 
 using namespace NLMISC;
@@ -256,4 +256,5 @@ void CExportNel::getLights (std::vector<CLight>& vectLight, TimeValue time, INod
 }
 
 // ***************************************************************************
+
 

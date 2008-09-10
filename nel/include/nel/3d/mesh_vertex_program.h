@@ -111,8 +111,8 @@ public:
 	// @{
 	virtual	bool	supportMeshBlockRendering() const { return false; }
 	virtual	bool	isMBRVpOk(IDriver *drv) const {return false;}
-	virtual	void	beginMBRMesh(IDriver *drv, CScene *scene) {};
-	virtual	void	beginMBRInstance(IDriver *drv, CScene *scene, CMeshBaseInstance *mbi, const NLMISC::CMatrix &invertedModelMat) {};
+	virtual	void	beginMBRMesh(IDriver *drv, CScene *scene) {}
+	virtual	void	beginMBRInstance(IDriver *drv, CScene *scene, CMeshBaseInstance *mbi, const NLMISC::CMatrix &invertedModelMat) {}
 	virtual	void	endMBRMesh(IDriver *drv) {}
 	// @}
 

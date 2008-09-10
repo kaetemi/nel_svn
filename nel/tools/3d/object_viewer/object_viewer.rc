@@ -2789,8 +2789,8 @@ IDR_OBJECT_VIEWER_MENU MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "Open...",                     ID_FILE_OPEN
-        MENUITEM "Remove all instances from the scene", 
+        MENUITEM "Open... (&O)",                ID_FILE_OPEN
+        MENUITEM "&Remove all instances from the scene", 
                                                 IDM_REMOVE_ALL_INSTANCES_FROM_SCENE
 
         MENUITEM SEPARATOR
@@ -3349,4 +3349,5 @@ LANGUAGE 12, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
 

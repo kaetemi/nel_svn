@@ -1,13 +1,13 @@
 
 
 #include "nel/misc/path.h"
-#include "nel/../../src/3d/mesh_mrm_skinned.h"
-#include "nel/../../src/3d/mesh_mrm.h"
-#include "nel/../../src/3d/mesh.h"
+#include "nel/3d/mesh_mrm_skinned.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh.h"
 #include "nel/misc/file.h"
 #include "nel/misc/path.h"
-#include "nel/../../src/3d/stripifier.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/stripifier.h"
+#include "nel/3d/register_3d.h"
 
 
 using namespace NLMISC;

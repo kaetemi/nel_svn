@@ -32,7 +32,7 @@
 
 #include "ps_wrapper.h"
 #include "dialog_stack.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/particle_system.h"
 #include "particle_workspace.h"
 
 namespace NL3D

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "nel_patch_paint.h"
-#include "../../../code/nel/tools/3d/plugin_max/nel_patch_lib/vertex_neighborhood.h"
+#include "..//nel_patch_lib/vertex_neighborhood.h"
 
 // in mods.cpp
 extern HINSTANCE hInstance;

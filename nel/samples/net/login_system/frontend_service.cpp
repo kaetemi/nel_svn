@@ -69,7 +69,7 @@ void onConnectionClient (TSockId from, const CLoginCookie &cookie)
 
 
 /*
- * Disonnection callback for a client
+ * Disconnection callback for a client
  */
 void onDisconnectClient (TSockId from, void *arg)
 {
@@ -86,7 +86,7 @@ class CFrontEndService : public IService
 {
 private:
 	/// The server on which the clients connect
-	CCallbackServer		_FEServer;
+	CCallbackServer		_FServer;
 
 public:
 
@@ -96,24 +96,24 @@ public:
 	void init()
 	{
 		// connect the front end login system
-		uint16	fesPort = 37373;
+		uint16	fsPort = 37373;
 		try
 		{
-			fesPort = IService::ConfigFile.getVar("FESPort").asInt();
+			fsPort = IService::ConfigFile.getVar("FSPort").asInt();
 		}
 		catch ( EUnknownVar& )
 		{
 		}
-		_FEServer.init(fesPort);
-		CLoginServer::init (_FEServer, onConnectionClient); 
+		_FServer.init(fsPort);
+		CLoginServer::init (_FServer, onConnectionClient); 
 
 		//
-		_FEServer.setDisconnectionCallback(onDisconnectClient, NULL);
+		_FServer.setDisconnectionCallback(onDisconnectClient, NULL);
 	}
 
 	bool	update()
 	{
-		_FEServer.update();
+		_FServer.update();
 		return true;
 	}
 };
@@ -133,7 +133,7 @@ class CFrontEndService : public IService
 {
 private:
 	/// The server on which the clients connect
-	CUdpSock *_FEServer;
+	CUdpSock *_FServer;
 
 public:
 
@@ -153,8 +153,8 @@ public:
 		}
 
 		// Socket
-		_FEServer = new CUdpSock( false );
-		nlassert( _FEServer );
+		_FServer = new CUdpSock( false );
+		nlassert( _FServer );
 
 		// Test of multihomed host
 		vector<CInetAddress> addrlist;
@@ -165,9 +165,9 @@ public:
 			nlinfo( "%s", (*ivi).asIPString().c_str() );
 		}
 		addrlist[0].setPort( fesPort );
-		_FEServer->bind( addrlist[0] );
+		_FServer->bind( addrlist[0] );
 		
-		CLoginServer::init (*_FEServer, NULL); 
+		CLoginServer::init (*_FServer, NULL); 
 	}
 
 	bool	update()
@@ -176,10 +176,10 @@ public:
 		uint len;
 		CInetAddress addr;
 
-		while (_FEServer->dataAvailable ())
+		while (_FServer->dataAvailable ())
 		{
 			len = 64000;
-			_FEServer->receivedFrom (buf, len, addr);
+			_FServer->receivedFrom (buf, len, addr);
 
 			CBitMemStream msgin (true);
 			msgin.clear ();
@@ -196,7 +196,7 @@ public:
 			CBitMemStream msgout;
 			msgout.serial (res);
 			uint32 l = msgout.length ();
-			_FEServer->sendTo (msgout.buffer (), l, addr);
+			_FServer->sendTo (msgout.buffer (), l, addr);
 		}
 		return true;
 	}
@@ -206,6 +206,6 @@ public:
 
 /*
  * Declare a service with the class CFrontEndService, the names "FS" (short) and "frontend_service" (long).
- * The port is dynamicaly find and there s no callback array.
+ * The port is dynamically find and there s no callback array.
  */
 NLNET_SERVICE_MAIN (CFrontEndService, "FS", "frontend_service", 0, EmptyCallbackArray, "", "")

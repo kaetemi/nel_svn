@@ -192,7 +192,7 @@ private:
 	void rebuildPatch  (const CVector2s texturePos, const CPatchIdent &pid);
 
 	/// From IStreamable
-	virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream) {};
+	virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream) {}
 
 	// Some static buffers
 	static NLMISC::CRGBA	_LightmapExpanded[];

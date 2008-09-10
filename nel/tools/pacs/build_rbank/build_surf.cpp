@@ -35,17 +35,16 @@
 #include "nel/misc/triangle.h"
 #include "nel/misc/polygon.h"
 
-#include "nel/../../src/3d/landscape.h"
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/quad_grid.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/quad_grid.h"
 
 #include "nel/../../src/pacs/vector_2s.h"
 
 #include "build_surf.h"
 
 #include <deque>
-#include <hash_map>
 
 using namespace std;
 using namespace NLMISC;
@@ -211,10 +210,18 @@ template<class A>
 class CHashPtr
 {
 public:
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+
 	typedef	A	*ptrA;
 	size_t	operator() (const ptrA &a) const
 	{
-		return ((uint32)a)/sizeof(A);
+		return ((uintptr_t)a)/sizeof(A);
+	}
+
+	bool operator() (const ptrA &a, const ptrA &b) const
+	{
+		return (uintptr_t)a < (uintptr_t)b;
 	}
 };
 
@@ -1163,10 +1170,10 @@ void	NLPACS::CZoneTessellation::build()
 	}
 
 	// generate a vector of vertices and of surf element
-	hash_map<const CVector *, uint32, CHashPtr<const CVector> >				vremap;
-	hash_map<const CVector *, uint32, CHashPtr<const CVector> >::iterator	vremapit;
-	hash_map<const CTessFace *, CSurfElement *, CHashPtr<const CTessFace> >	fremap;
-	hash_map<const CTessFace *, CSurfElement *, CHashPtr<const CTessFace> >::iterator	fremapit;
+	CHashMap<const CVector *, uint32, CHashPtr<const CVector> >				vremap;
+	CHashMap<const CVector *, uint32, CHashPtr<const CVector> >::iterator	vremapit;
+	CHashMap<const CTessFace *, CSurfElement *, CHashPtr<const CTessFace> >	fremap;
+	CHashMap<const CTessFace *, CSurfElement *, CHashPtr<const CTessFace> >::iterator	fremapit;
 	_Vertices.clear();
 	_Tessellation.resize(leaves.size());
 
@@ -1430,7 +1437,7 @@ void	NLPACS::CZoneTessellation::compile()
 	tz = float2Fixed(Translation.z);
 
 	uint	p;
-	for (i=0; i<(sint)_Vertices.size(); ++i)
+	for (i=0; i<_Vertices.size(); ++i)
 	{
 		vx = float2Fixed(_Vertices[i].x) + tx;
 		vy = float2Fixed(_Vertices[i].y) + ty;
@@ -1454,7 +1461,7 @@ void	NLPACS::CZoneTessellation::compile()
 			nlinfo("build and flood fill surfaces -- pass 1");
 		uint32	surfId = 0; // + (ZoneId<<16);
 
-		for (p=0; p<(sint)Elements.size(); ++p)
+		for (p=0; p<Elements.size(); ++p)
 		{
 			if (Elements[p]->SurfaceId == UnaffectedSurfaceId)
 			{
@@ -1524,7 +1531,7 @@ void	NLPACS::CZoneTessellation::compile()
 		uint	totalSurf = 0;
 		sint32	extSurf = -1024;
 
-		for (p=0; p<(sint)Elements.size(); ++p)
+		for (p=0; p<Elements.size(); ++p)
 		{
 			if (Elements[p]->SurfaceId == UnaffectedSurfaceId)
 			{
@@ -1708,7 +1715,7 @@ void	NLPACS::CZoneTessellation::loadTessellation(CIFile &input)
 	}
 
 	Elements.resize(_Tessellation.size());
-	for (i=0; i<(sint)_Tessellation.size(); ++i)
+	for (i=0; i<_Tessellation.size(); ++i)
 	{
 		Elements[i] = &_Tessellation[i];
 	}

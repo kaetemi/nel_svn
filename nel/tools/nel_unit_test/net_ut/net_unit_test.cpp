@@ -8,11 +8,17 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 #include "nel/misc/path.h"
 
 using namespace std;
+
+class CNetUnitTestNelLibrary : public NLMISC::INelLibrary { 
+	void onLibraryLoaded(bool firstTime) { } 
+	void onLibraryUnloaded(bool lastTime) { }  
+};
+NLMISC_DECL_PURE_LIB(CNetUnitTestNelLibrary);
 
 Test::Suite *createModuleTS(const std::string &workingPath);
 Test::Suite *createCMessageTS();
@@ -34,7 +40,7 @@ public:
 		add(auto_ptr<Test::Suite>(createLayer3TS(workingPath)));
 		
 		// initialise the application context
-		new NLMISC::CApplicationContext;
+		NLMISC::CApplicationContext::getInstance();
 		NLNET::IModuleManager::getInstance();
 
 		NLMISC::createDebug();
@@ -52,7 +58,7 @@ private:
 
 auto_ptr<Test::Suite> intRegisterTestSuite(const std::string &workingPath)
 {
-	return static_cast<Test::Suite*>(new CNetTS(workingPath));
+	return auto_ptr<Test::Suite>(static_cast<Test::Suite*>(new CNetTS(workingPath)));
 }
 
 NL_LIB_EXPORT_SYMBOL(registerTestSuite, void, intRegisterTestSuite);

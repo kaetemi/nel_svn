@@ -25,22 +25,10 @@
 
 #define EXPORT_GET_ALLOCATOR
 
-#include "PO2RPO.h"
-#include "nel/misc/file.h"
-#include "nel/misc/common.h"
+#pragma conform(forScope, push)
+#pragma conform(forScope, off)
 
-#include "..\nel_patch_lib\rpo.h"
-#include "..\nel_mesh_lib\export_nel.h"
-#include "..\nel_mesh_lib\export_appdata.h"
-
-#include "nel/../../src/3d/zone.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
-#include "nel/../../src/3d/tile_bank.h"
-
-
-using namespace NLMISC;
-using namespace NL3D;
-using namespace std;
+#define _CRT_SECURE_NO_DEPRECATE
 
 #include <MaxScrpt/maxscrpt.h>
 #include <MaxScrpt/3dmath.h>
@@ -60,6 +48,31 @@ using namespace std;
 
 // define the new primitives using macros from SDK
 #include <MaxScrpt/definsfn.h>
+
+#undef _CRT_SECURE_NO_DEPRECATE
+
+#pragma conform(forScope, pop)
+
+#undef min
+#undef max
+
+#include "PO2RPO.h"
+#include "nel/misc/file.h"
+#include "nel/misc/common.h"
+
+#include "..\nel_patch_lib\rpo.h"
+#include "..\nel_mesh_lib\export_nel.h"
+#include "..\nel_mesh_lib\export_appdata.h"
+
+#include "nel/3d/zone.h"
+#include "nel/3d/zone_symmetrisation.h"
+#include "nel/3d/tile_bank.h"
+
+
+using namespace NLMISC;
+using namespace NL3D;
+using namespace std;
+
 
 /*===========================================================================*\
  |	Define our new functions
@@ -1999,4 +2012,5 @@ weld_cf (Value** arg_list, int count)
 __declspec( dllexport ) void
 LibInit() { 
 }
+
 

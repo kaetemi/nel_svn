@@ -13,13 +13,9 @@
 #include "ligoscape_utility.h"
 #include "nel/misc/app_context.h"
 
-#ifdef NL_NEW
-	#undef new
-#endif
-
 extern ClassDesc2* GetLigoscapeDesc();
 
-HINSTANCE hInstance;
+HINSTANCE hInstance = NULL;
 int controlsInit = FALSE;
 
 // This function is called by Windows when the DLL is loaded.  This 

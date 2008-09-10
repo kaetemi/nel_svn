@@ -9,7 +9,7 @@
 #include "nel/misc/path.h"
 #include "nel/misc/uv.h"
 
-#include "windows.h"
+//#include "windows.h"
 
 #include <vector>
 #include <string>
@@ -20,16 +20,21 @@ using namespace std;
 using namespace NLMISC;
 
 // ***************************************************************************
-char sExeDir[MAX_PATH];
+//char sExeDir[MAX_PATH];
+std::string sExeDir;
+NLMISC::CApplicationContext _ApplicationContext;
 
 void outString (const string &sText)
 {
-	char sCurDir[MAX_PATH];
-	GetCurrentDirectory (MAX_PATH, sCurDir);
-	SetCurrentDirectory (sExeDir);
+	std::string sCurDir = CPath::getCurrentPath();
+	CPath::setCurrentPath(sExeDir.c_str());
+	//char sCurDir[MAX_PATH];
+	//GetCurrentDirectory (MAX_PATH, sCurDir);
+	//SetCurrentDirectory (sExeDir);
 	NLMISC::createDebug ();
 	NLMISC::InfoLog->displayRaw(sText.c_str());
-	SetCurrentDirectory (sCurDir);
+	//SetCurrentDirectory (sCurDir);
+	CPath::setCurrentPath(sCurDir.c_str());
 }
 
 // ***************************************************************************
@@ -168,13 +173,13 @@ void enlargeCanvas (NLMISC::CBitmap &b)
 	b = b2;
 }
 
-
 // ***************************************************************************
 // main
 // ***************************************************************************
 int main(int nNbArg, char **ppArgs)
 {
-	GetCurrentDirectory (MAX_PATH, sExeDir);
+	//GetCurrentDirectory (MAX_PATH, sExeDir);
+	sExeDir = CPath::getCurrentPath();
 
 	if (nNbArg < 3)
 	{
@@ -337,7 +342,8 @@ int main(int nNbArg, char **ppArgs)
 	}
 
 	// Write global texture file
-	SetCurrentDirectory (sExeDir);
+	//SetCurrentDirectory (sExeDir);
+	CPath::setCurrentPath(sExeDir.c_str());
 
 	NLMISC::COFile outTga;
 	if (fmtName.rfind('.') == string::npos)

@@ -79,7 +79,7 @@ struct IInputDeviceEvent
 	IInputDevice    *Emitter;	// the input device that emitted that event
 	// Used to sort events by time stamp.
 	virtual bool	operator < (const IInputDeviceEvent &IInputDeviceEvent) const = 0;
-	virtual ~IInputDeviceEvent() {};
+	virtual ~IInputDeviceEvent() {}
 };
 
 

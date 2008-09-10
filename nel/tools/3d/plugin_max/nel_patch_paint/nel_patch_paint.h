@@ -8,7 +8,7 @@
 #include "nsclip.h"
 #include "sbmtlapi.h"
 #include "../nel_patch_lib/rpo.h"
-#include "nel/../../src/3d/tile_bank.h"
+#include "nel/3d/tile_bank.h"
 #include "nel/3d/quad_tree.h"
 #include "nel/misc/rgba.h"
 #include <list>
@@ -476,7 +476,7 @@ class PaintPatchMod : public Modifier
 		CreateMouseCallBack* GetCreateMouseCallBack() { return NULL; } 
 		void BeginEditParams( IObjParam  *ip, ULONG flags, Animatable *prev );
 		void EndEditParams( IObjParam *ip, ULONG flags, Animatable *next );
-		RefTargetHandle Clone(RemapDir& remap = NoRemap());
+		RefTargetHandle Clone(RemapDir& remap = DefaultRemapDir());
 		TCHAR *GetObjectName() { return "NeL Patch Painter"; }
 		
 		void RescaleWorldUnits(float f);

@@ -4,7 +4,7 @@
 #include "nel/misc/common.h"
 #include "nel/misc/thread.h"
 
-#include "src/cpptest.h"
+#include "cpptest.h"
 #include <vector>
 
 using namespace std;

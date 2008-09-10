@@ -28,9 +28,9 @@
 #include "nel/misc/file.h"
 #include <math.h>
 #include "lod_texture_builder.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/mesh_mrm.h"
-#include "nel/../../src/3d/register_3d.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/register_3d.h"
 #include "nel/misc/config_file.h"
 #include "nel/misc/algo.h"
 

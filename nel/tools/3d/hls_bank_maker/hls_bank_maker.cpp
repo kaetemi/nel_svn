@@ -24,7 +24,7 @@
  */
 
 #include "hls_bank_maker.h"
-#include "nel/../../src/3d/hls_texture_bank.h"
+#include "nel/3d/hls_texture_bank.h"
 #include "../panoply_maker/hls_bank_texture_info.h"
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"

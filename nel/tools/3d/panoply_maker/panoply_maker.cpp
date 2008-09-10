@@ -27,8 +27,11 @@
 #include "color_modifier.h"
 #include "color_mask.h"
 #include "hls_bank_texture_info.h"
+#define HAS_INFO_GENERATION 0
+#if HAS_INFO_GENERATION
 #include "info_color_generation.h"
 #include "info_mask_generation.h"
+#endif
 
 #include <nel/misc/types_nl.h>
 #include <nel/misc/config_file.h>
@@ -121,6 +124,7 @@ int main(int argc, char* argv[])
 
 	//"panoply.cfg" "gtm" "fyros"
 
+#if HAS_INFO_GENERATION
 	if(!strcmp(argv[2], "gtm") || !strcmp(argv[2], "cgi"))
 	{
 		NLMISC::CConfigFile cf;
@@ -228,6 +232,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+#endif
 		NLMISC::InfoLog->addNegativeFilter ("adding the path");
 
 		if (argc != 2)
@@ -351,11 +356,13 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 		return 0;
+#if HAS_INFO_GENERATION
 	}
+#endif
 }
 
 ///======================================================
-
+#if HAS_INFO_GENERATION
 static void validateCgiInfo()
 {
 	NLMISC::CIFile f;
@@ -387,7 +394,7 @@ static void validateGtmInfo()
 {
 
 }
-
+#endif
 ///======================================================
 static void BuildMasksFromConfigFile(NLMISC::CConfigFile &cf,
 									 TColorMaskVect &colorMasks)

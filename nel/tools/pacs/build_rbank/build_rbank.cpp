@@ -33,11 +33,11 @@
 #include "nel/misc/polygon.h"
 #include "nel/misc/smart_ptr.h"
 
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/water_model.h"
-#include "nel/../../src/3d/water_shape.h"
-#include "nel/../../src/3d/quad_grid.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/water_model.h"
+#include "nel/3d/water_shape.h"
+#include "nel/3d/quad_grid.h"
 
 #include "build_rbank.h"
 #include "build_surf.h"
@@ -68,7 +68,7 @@ public:
 	CIGBox(const string &name, const CAABBox &bbox) : Name(name), BBox(bbox) {}
 	string			Name;
 	CAABBox			BBox;
-	void			serial(IStream &f) { f.serial(Name, BBox); }
+	void			serial(NLMISC::IStream &f) { f.serial(Name, BBox); }
 };
 
 /*
@@ -111,7 +111,7 @@ uint32	getIdByCoord(uint x, uint y)
 	return y*256+x;
 }
 
-string	changeExt(string name, string &ext)
+string	changeExt(string name, const string &ext)
 {
 	string::iterator	it, last;
 	last = name.end();
@@ -161,7 +161,7 @@ void processAllPasses(string &zoneName)
 			retriever.setBBox(rbbox);
 			retriever.setType(NLPACS::CLocalRetriever::Landscape);
 
-			for (j=0; j<(sint)tessellation.Surfaces.size(); ++j)
+			for (j=0; j<tessellation.Surfaces.size(); ++j)
 			{
 				retriever.addSurface(0,
 									 0,
@@ -181,7 +181,7 @@ void processAllPasses(string &zoneName)
 				}
 			}
 
-			for (j=0; j<(sint)tessellation.Borders.size(); ++j)
+			for (j=0; j<tessellation.Borders.size(); ++j)
 			{
 				if (tessellation.Borders[j].Right < -1)
 				{
@@ -567,7 +567,7 @@ void	fixFaultyLinks(map<uint, CFaultyInstance> &faultyInstances,
 				{
 					inst.Reconstructed.back().Chains.push_back(l);
 				}
-				while ((l=inst.Chains[l].NextChain) != -1);
+				while ((sint)(l=inst.Chains[l].NextChain) != -1);
 				inst.Reconstructed.back().Start = inst.Chains[inst.Reconstructed.back().Chains.front()].Start;
 				inst.Reconstructed.back().End   = inst.Chains[inst.Reconstructed.back().Chains.back()].End;
 			}
@@ -1106,4 +1106,5 @@ void	updateRetrieverBank()
 	retrieverBank.serial(outputBank);
 	outputBank.close();
 }
+
 

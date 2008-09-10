@@ -119,9 +119,9 @@ public:
 	/// Test if there is a start/stop caps in the objects (some fxs such as remanence)
 	virtual bool		canStartStop() { return false; }
 	// For instance that have a start/stop caps
-	virtual void		start() {};
+	virtual void		start() {}
 	// For instance that have a start/stop caps
-	virtual void		stop()  {};
+	virtual void		stop()  {}
 	// For instance that have a start/stop caps
 	virtual bool		isStarted() const { return false; }
 

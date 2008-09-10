@@ -22,11 +22,11 @@
 #include "tune_mrm_dlg.h"
 #include "snapshot_tool_dlg.h"
 #include "nel/misc/file.h"
-#include "nel/../../src/3d/nelu.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/mesh_instance.h"
-#include "nel/../../src/3d/skeleton_model.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/skeleton_model.h"
 
 
 using namespace NLMISC;
@@ -1057,18 +1057,15 @@ void CMainFrame::OnUpdateWindowDayNight(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck (DayNightWindow);
 }
 
-
 void CMainFrame::OnUpdateWindowWaterPool(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck (WaterPoolWindow);
 }
 
-
 void CMainFrame::OnUpdateWindowVegetable(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck (VegetableWindow);
 }
-
 
 void CMainFrame::OnUpdateWindowGlobalwind(CCmdUI* pCmdUI) 
 {
@@ -1468,4 +1465,5 @@ void CMainFrame::OnSnapShotTool()
 	CSnapshotToolDlg snapshotTool(ObjView);
 	snapshotTool.DoModal();
 }
+
 

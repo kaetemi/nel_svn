@@ -25,8 +25,8 @@
 
 #include "std_afx.h"
 #include "nel_export.h"
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/3d/skeleton_shape.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/skeleton_shape.h"
 #include "nel/misc/debug.h"
 #include "nel/misc/file.h"
 #include "../nel_mesh_lib/export_nel.h"
@@ -225,6 +225,7 @@ int CALLBACK OptionsDialogCallback (
 	return TRUE;
 }
 
+extern HINSTANCE hInstance;
 static BOOL CALLBACK CNelExportDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// Set locale to english
@@ -238,7 +239,7 @@ static BOOL CALLBACK CNelExportDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 				theCNelExport.Init(hWnd);
 
 				// Get the module path
-				HMODULE hModule = GetModuleHandle("nelexport.dlu");
+				HMODULE hModule = hInstance;
 				if (hModule)
 				{
 					// Get module file name
@@ -292,7 +293,7 @@ static BOOL CALLBACK CNelExportDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 						SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleFileName failed");
 				}
 				else
-					SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "GetModuleHandle failed");
+					SetWindowText (GetDlgItem (hWnd, IDC_VERSION), "hInstance NULL");
 			}
 			break;
 

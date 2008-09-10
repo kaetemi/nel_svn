@@ -5,7 +5,7 @@
 #include "paint_undo.h"
 #include "paint_vcolor.h"
 #include "paint_to_nel.h"
-#include "nel/../../src/3d/landscape.h"
+#include "nel/3d/landscape.h"
 
 /*-------------------------------------------------------------------*/
 
@@ -322,4 +322,5 @@ void CFillPatch::fillDisplace (int mesh, int patch, std::vector<EPM_Mesh> &vectM
 }
 
 /*-------------------------------------------------------------------*/
+
 

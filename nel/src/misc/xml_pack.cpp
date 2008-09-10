@@ -4,7 +4,7 @@
 #include "nel/misc/xml_pack.h"
 #include "nel/misc/file.h"
 
-#include <stdio.h>
+#include <cstdio>
 
 using namespace std;
 

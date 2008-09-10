@@ -44,7 +44,7 @@ template <class T> bool check (T value)
 	CMemStream msgout;
 	msgout.serial (value);
 	CMemStream msgin (true);
-	msgin.fill (&(*msgout.bufferAsVector().begin()), msgout.bufferAsVector().size());
+	msgin.fill (msgout.buffer(), msgout.size());
 	msgin.serial (result);
 	
 	if (value != result)

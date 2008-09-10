@@ -2,6 +2,7 @@
 # Configuration script for NeL
 # ====================================================================
 #
+# $Id: configure.ac,v 1.8 2005/04/14 15:54:32 cado Exp $
 # 
 
 # ====================================================================
@@ -18,7 +19,7 @@ AM_INIT_AUTOMAKE([tar-ustar])
 AC_CONFIG_SRCDIR(include/nel/misc/types_nl.h)
 AM_CONFIG_HEADER(include/nelconfig.h)
 
-AC_SUBST(LIBTOOL_VERSION, [0:4:0])
+AC_SUBST(LIBTOOL_VERSION, [0:5:0])
 
 # Checks for programs.
 AC_CANONICAL_HOST
@@ -158,6 +159,47 @@ then
    NEL_SUBDIRS="$NEL_SUBDIRS sound"
 fi
 
+# CEGUI Renderer library
+AC_ARG_ENABLE([cegui],
+              AC_HELP_STRING([--enable-cegui],
+                             [enable compilation and install of NeL CEGUI Renderer]),
+              [],
+              [enable_cegui=no])
+
+CEGUI_SUBDIR=""
+if test "$enable_cegui" = "yes"
+then
+   AC_MSG_RESULT([enable NeL CEGUI Renderer])
+   NEL_SUBDIRS="$NEL_SUBDIRS cegui"
+   CEGUI_SUBDIR="cegui"
+fi
+
+# Unit Tests
+AC_ARG_ENABLE([tests],
+		AC_HELP_STRING([--enable-tests],
+				[enable unit tests of NeL]),
+		[],
+		[enable_tests=no])
+
+if test "$enable_tests" = "yes"
+then
+	AC_MSG_RESULT([enable NeL Unit Tests])
+fi
+
+# Code Coverage
+AC_ARG_ENABLE([coverage],
+	AC_HELP_STRING([--enable-coverage],
+			[enable code coverage generation]),
+		[]
+		[enable_coverage=no])
+
+if test "$enable_coverage" = "yes"
+then
+	AC_MSG_RESULT([enable Code Coverage generation])
+
+	CXXFLAGS="$CXXFLAGS -fprofile-arcs -ftest-coverage"
+fi
+
 # Enable/disable samples compilation.
 AC_ARG_ENABLE([samples],
 	AC_HELP_STRING([--disable-samples],
@@ -194,11 +236,12 @@ AC_SUBST([enable_pacs])
 AC_SUBST([enable_sound])
 AC_SUBST([enable_georges])
 AC_SUBST([enable_ligo])
-
+AC_SUBST([enable_cegui])
 
 AC_SUBST([NEL_SUBDIRS])
 AC_SUBST([SAMPLE_SUBDIR])
 AC_SUBST([TOOLS_SUBDIR])
+AC_SUBST([CEGUI_SUBDIR])
 
 # ====================================================================
 # Checks for programs.
@@ -340,7 +383,6 @@ AC_LANG([C])
 
 AM_PATH_XML2([2.0.0], [], [AC_MSG_ERROR([libxml2 must be installed])])
 
-CFLAGS="$CFLAGS $XML_CFLAGS $XML_CPPFLAGS"
 CXXFLAGS="$CXXFLAGS $XML_CFLAGS $XML_CPPFLAGS"
 
 LIBS="$LIBS $XML_LIBS"
@@ -376,7 +418,21 @@ then
 
   AC_SUBST([with_gtk])
 fi
+
 # ====================================================================
+# CEGUI
+
+if test "$enable_cegui" = "yes"
+then
+	PKG_CHECK_MODULES(CEGUI, CEGUI >= 0.4,
+		[],
+		[
+			AC_MSG_ERROR([Couldn't find CEGUI or tests failed:
+$CEGUI_PKG_ERRORS
+Please go to http://crayzedsgui.sourceforge.net to get the latest, or check
+config.log to see why the tests failed, and fix it.])
+		])
+fi
 
 # ====================================================================
 # FreeType 2
@@ -423,11 +479,16 @@ then
   AC_SUBST([SOUND_SUBDIRS])
 fi
 
+
+# ====================================================================
+# CppTest 
+
+#AM_PATH_CPPTEST($enable_tests)
+
 # ====================================================================
 # Arrange for the include directory to be in the search path even when
 # build is done outside the source tree
 # Put the nelconfig.h define
-CFLAGS="$CFLAGS -I\${top_srcdir}/include -DHAVE_NELCONFIG_H"
 CXXFLAGS="$CXXFLAGS -I\${top_srcdir}/include -DHAVE_NELCONFIG_H"
 
 # ====================================================================
@@ -449,6 +510,7 @@ AC_CONFIG_FILES([Makefile                                  \
            include/nel/pacs/Makefile                       \
            include/nel/sound/Makefile                      \
            include/nel/georges/Makefile                    \
+           include/nel/cegui/Makefile                      \
            src/Makefile                                    \
            src/misc/Makefile                               \
            src/misc/nel-misc.pc                            \
@@ -466,6 +528,52 @@ AC_CONFIG_FILES([Makefile                                  \
            src/sound/driver/openal/Makefile                \
            src/georges/Makefile                            \
            src/ligo/Makefile                               \
+           src/cegui/Makefile                              \
+           tools/Makefile                                  \
+           tools/3d/Makefile                               \
+           tools/3d/build_coarse_mesh/Makefile             \
+           tools/3d/build_far_bank/Makefile                \
+           tools/3d/build_smallbank/Makefile               \
+           tools/3d/ig_lighter/Makefile                    \
+           tools/3d/ig_lighter_lib/Makefile                \
+           tools/3d/panoply_maker/Makefile                 \
+           tools/3d/zone_dependencies/Makefile             \
+           tools/3d/zone_ig_lighter/Makefile               \
+           tools/3d/zone_lib/Makefile                      \
+           tools/3d/zone_lighter/Makefile                  \
+           tools/3d/zone_welder/Makefile                   \
+           tools/misc/Makefile                             \
+           tools/misc/bnp_make/Makefile                    \
+           tools/misc/disp_sheet_id/Makefile               \
+           tools/misc/make_sheet_id/Makefile               \
+           tools/misc/xml_packer/Makefile                  \
+           tools/pacs/Makefile                             \
+           tools/pacs/build_ig_boxes/Makefile              \
+           tools/pacs/build_indoor_rbank/Makefile          \
+           tools/pacs/build_rbank/Makefile                 \
+           samples/Makefile                                \
+           samples/sound_sources/Makefile                  \
+           samples/pacs/Makefile                           \
+           samples/georges/Makefile                        \
+           samples/3d/Makefile                             \
+           samples/3d/font/Makefile                        \
+           samples/3d/cluster_viewer/Makefile              \
+           samples/3d/cluster_viewer/shapes/Makefile       \
+           samples/3d/cluster_viewer/groups/Makefile       \
+           samples/3d/cluster_viewer/fonts/Makefile        \
+           samples/3d/cegui/Makefile                       \
+	   samples/misc/Makefile                           \
+	   samples/misc/command/Makefile                   \
+	   samples/misc/configfile/Makefile                \
+	   samples/misc/debug/Makefile                     \
+	   samples/misc/i18n/Makefile                      \
+	   samples/misc/log/Makefile                       \
+	   samples/misc/strings/Makefile                   \
+	   samples/misc/types_check/Makefile               \
+	   samples/net/Makefile                            \
+	   samples/net/chat/Makefile                       \
+	   samples/net/udp/Makefile                        \
+	   samples/net/login_system/Makefile               \
            nel-config
 		
 ])

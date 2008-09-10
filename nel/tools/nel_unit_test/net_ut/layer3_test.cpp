@@ -3,7 +3,7 @@
 #include "nel/net/callback_server.h"
 #include "nel/net/message.h"
 #include "nel/misc/debug.h"
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;

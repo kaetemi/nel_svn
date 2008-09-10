@@ -36,7 +36,7 @@
 #include "nel_export.h"
 #include "../nel_mesh_lib/export_nel.h"
 #include "../nel_patch_lib/rpo.h"
-#include "nel/../../src/3d/scene_group.h"
+#include "nel/3d/scene_group.h"
 
 #include <vector>
 

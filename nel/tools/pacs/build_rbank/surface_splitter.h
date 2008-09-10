@@ -208,9 +208,9 @@ public:
 		uint16	SubSurface;
 
 		CSurfaceId(uint16 instance=65535, uint16 surface=65535, uint16 subsurface=0) : 
-			SubSurface(subsurface),
+			Instance(instance),
 			Surface(surface),
-			Instance(instance) {}
+			SubSurface(subsurface) {}
 
 		bool	operator == (const CSurfaceId &id) const	{ return Instance == id.Instance && Surface == id.Surface && SubSurface == id.SubSurface; }
 		bool	operator != (const CSurfaceId &id) const	{ return !(*this == id); }

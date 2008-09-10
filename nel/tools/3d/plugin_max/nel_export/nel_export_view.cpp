@@ -25,14 +25,14 @@
 
 #include "std_afx.h"
 
-#include "nel/../../src/3d/scene.h"
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/3d/skeleton_shape.h"
-#include "nel/../../src/3d/skeleton_model.h"
-#include "nel/../../src/3d/mesh_instance.h"
-#include "nel/../../src/3d/light.h"
-#include "nel/../../src/3d/water_pool_manager.h"
-#include "nel/../../src/3d/instance_lighter.h"
+#include "nel/3d/scene.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/skeleton_shape.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/light.h"
+#include "nel/3d/water_pool_manager.h"
+#include "nel/3d/instance_lighter.h"
 
 #include "nel/../../src/pacs/retriever_bank.h"
 #include "nel/../../src/pacs/global_retriever.h"
@@ -109,9 +109,9 @@ void regsiterOVPath ()
 {
 // must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
 #ifdef NL_DEBUG_FAST
-	HMODULE hModule = GetModuleHandle("object_viewer_debug_fast.dll");
+	HMODULE hModule = GetModuleHandle("object_viewer_df.dll");
 #elif defined (NL_DEBUG)
-	HMODULE hModule = GetModuleHandle("object_viewer_debug.dll");
+	HMODULE hModule = GetModuleHandle("object_viewer_d.dll");
 #elif defined (NL_RELEASE_DEBUG)
 	HMODULE hModule = GetModuleHandle("object_viewer_rd.dll");
 #else
@@ -723,4 +723,5 @@ void CNelExport::viewMesh (TimeValue time)
 		delete slInfo.GlobalRetriever;
 	}
 }
+
 

@@ -31,7 +31,7 @@
 #endif
 
 
-#include "nel/../../src/3d/ps_float.h"
+#include "nel/3d/ps_float.h"
 #include "ps_wrapper.h"
 #include "popup_notify.h"
 #include "editable_range.h"

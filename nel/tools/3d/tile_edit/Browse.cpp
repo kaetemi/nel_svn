@@ -9,7 +9,7 @@
 #include "custom.h"
 #include "getval.h"
 
-#include "nel/../../src/3d/tile_bank.h"
+#include "nel/3d/tile_bank.h"
 
 #include "nel/misc/bitmap.h"
 #include "nel/misc/file.h"

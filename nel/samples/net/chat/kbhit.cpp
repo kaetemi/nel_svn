@@ -1,3 +1,4 @@
+#ifdef __GNUC__
 #include "kbhit.h"
 #include <termios.h>
 #include <unistd.h>   // for read()
@@ -57,3 +58,5 @@ int getch()
 	read(STDIN_FILENO,&ch,1);
 	return ch;
 }
+
+#endif // __GNUC__

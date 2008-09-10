@@ -40,7 +40,7 @@ namespace NLMISC
 	class CVector ;
 }
 
-#include "nel/../../src/3d/ps_edit.h"
+#include "nel/3d/ps_edit.h"
 #include "ps_wrapper.h"
 #include "editable_range.h"
 #include "particle_workspace.h"

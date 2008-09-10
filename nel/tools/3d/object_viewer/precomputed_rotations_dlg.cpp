@@ -26,8 +26,8 @@
 #include "std_afx.h"
 #include "object_viewer.h"
 #include "precomputed_rotations_dlg.h"
-#include "nel/../../src/3d/ps_particle.h"
-#include "nel/../../src/3d/ps_mesh.h"
+#include "nel/3d/ps_particle.h"
+#include "nel/3d/ps_mesh.h"
 #include "attrib_dlg.h"
 
 

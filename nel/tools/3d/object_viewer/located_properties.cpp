@@ -40,8 +40,8 @@
 #include "lb_extern_id_dlg.h"
 #include "object_viewer.h"
 //
-#include "nel/../../src/3d/ps_located.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/ps_located.h"
+#include "nel/3d/particle_system.h"
 
 using NL3D::CPSLocated;
 
@@ -362,4 +362,5 @@ void CLocatedProperties::touchPSState()
 {
 	if (_Node) _Node->setModified(true);
 }
+
 

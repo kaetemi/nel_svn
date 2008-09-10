@@ -44,14 +44,14 @@ namespace	NLMISC
  */
 struct ERegistry : public Exception
 {
-	ERegistry() : Exception( "Registry error" ) {};
+	ERegistry() : Exception( "Registry error" ) {}
 
-	ERegistry( const std::string& str ) : Exception( str ) {};
+	ERegistry( const std::string& str ) : Exception( str ) {}
 };
 
 struct ERegisteredClass : public ERegistry
 {
-	ERegisteredClass() : ERegistry( "Class already registered" ) {};
+	ERegisteredClass() : ERegistry( "Class already registered" ) {}
 };
 
 struct EUnregisteredClass : public ERegistry

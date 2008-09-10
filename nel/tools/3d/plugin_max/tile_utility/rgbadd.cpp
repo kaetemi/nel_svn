@@ -23,12 +23,6 @@
  * MA 02111-1307, USA.
  */
 
-//#include "mtlhdr.h"
-#include "max.h"
-#include "imtl.h"
-#include "texutil.h"
-#include "resource.h"
-#include "iparamm2.h"
 #include "tile_utility.h"
 
 extern HINSTANCE hInstance;
@@ -99,7 +93,7 @@ class RGBAdd: public Texmap {
 		void SetReference(int i, RefTargetHandle rtarg);
 		int RemapRefOnLoad(int iref); 
 
-		RefTargetHandle Clone(RemapDir &remap = NoRemap());
+		RefTargetHandle Clone(RemapDir &remap = DefaultRemapDir());
 		RefResult NotifyRefChanged( Interval changeInt, RefTargetHandle hTarget, 
 		   PartID& partID, RefMessage message );
 

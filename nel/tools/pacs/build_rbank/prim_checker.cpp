@@ -37,11 +37,11 @@
 #include "nel/ligo/primitive.h"
 
 // NeL 3d
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/water_model.h"
-#include "nel/../../src/3d/water_shape.h"
-#include "nel/../../src/3d/quad_grid.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/water_model.h"
+#include "nel/3d/water_shape.h"
+#include "nel/3d/quad_grid.h"
 
 // STL includes
 #include <vector>
@@ -427,4 +427,5 @@ void	CPrimChecker::renderBits(const CPolygon &poly, uint8 bits)
 	}
 
 }
+
 

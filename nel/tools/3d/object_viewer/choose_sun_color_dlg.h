@@ -7,7 +7,7 @@
 // choose_sun_color_dlg.h : header file
 //
 
-#include "nel/../../src/3d/scene.h"
+#include "nel/3d/scene.h"
 #include "ps_wrapper.h"
 
 class CColorEdit;

@@ -32,7 +32,7 @@
 #include <vector>
 #include <set>
 #include <string>
-#include "nel/../../src/3d/tile_bank.h"
+#include "nel/3d/tile_bank.h"
 #include "nel/misc/file.h"
 #include "nel_patch_mesh.h"
 
@@ -73,9 +73,6 @@ class RPO : public PatchObject
 
 		// bug hack
 		bool bBigHack;
-
-		// Parameter block
-		IParamBlock2	*pblock;	//ref 0
 
 		// Validity
 		Interval topoValid;
@@ -211,6 +208,11 @@ class RPO : public PatchObject
 				return Class_ID(PATCHOBJ_CLASS_ID,0);
 			else
 				return RYKOLPATCHOBJ_CLASS_ID;
+		}
+		BOOL IsSubClassOf(Class_ID classID) 
+		{
+			return classID == ClassID() 
+				? true : PatchObject::IsSubClassOf(classID);
 		}
 		SClass_ID SuperClassID() { return GEOMOBJECT_CLASS_ID; }
 		void GetClassName(TSTR& s) {s = "Rykol Patch Object";}

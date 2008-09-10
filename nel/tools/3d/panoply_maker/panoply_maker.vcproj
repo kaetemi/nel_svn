@@ -1,402 +1,105 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="panoply_maker"
 	ProjectGUID="{AFE4141C-9AC8-4AF4-B892-D65A86615355}"
-	SccProjectName=""
-	SccLocalPath="">
+	RootNamespace="panoply_maker"
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="DebugFast|Win32"
-			OutputDirectory=".\DebugFast"
-			IntermediateDirectory=".\DebugFast"
+			Name="Debug|Win32"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_d_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_CONSOLE;NL_DEBUG_FAST;WIN32;_DEBUG"
-				StringPooling="TRUE"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				PrecompiledHeaderFile=".\DebugFast/panoply_maker.pch"
-				AssemblerListingLocation=".\DebugFast/"
-				ObjectFile=".\DebugFast/"
-				ProgramDataBaseFileName=".\DebugFast/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\DebugFast/panoply_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\DebugFast/panoply_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\DebugFast/panoply_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugFast|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_df_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+		</Configuration>
+		<Configuration
+			Name="DebugStatic|Win32"
+			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_ds_exe_console.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_r_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForWindowsApplication="TRUE"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/panoply_maker.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Release/panoply_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release/panoply_maker.pdb"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/panoply_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
 			Name="ReleaseDebug|Win32"
-			OutputDirectory=".\ReleaseDebug"
-			IntermediateDirectory=".\ReleaseDebug"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rd_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForWindowsApplication="TRUE"
-				PreprocessorDefinitions="_CONSOLE;WIN32;NDEBUG;NL_RELEASE_DEBUG"
-				StringPooling="TRUE"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\ReleaseDebug/panoply_maker.pch"
-				AssemblerListingLocation=".\ReleaseDebug/"
-				ObjectFile=".\ReleaseDebug/"
-				ProgramDataBaseFileName=".\ReleaseDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\ReleaseDebug/panoply_maker.exe"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\ReleaseDebug/panoply_maker.pdb"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				OptimizeForWindows98="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\ReleaseDebug/panoply_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			Name="ReleaseDebugStatic|Win32"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\..\..\src\nel_vs90_rds_exe_console.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				GlobalOptimizations="FALSE"
-				PreprocessorDefinitions="__STL_DEBUG;_CONSOLE;WIN32;_DEBUG"
-				StringPooling="TRUE"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				PrecompiledHeaderFile=".\Debug/panoply_maker.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				BrowseInformation="0"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
-				CompileAs="2"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="s3tc.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Debug/panoply_maker.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/panoply_maker.pdb"
-				SubSystem="1"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/panoply_maker.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1036"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="color_mask.h">
+			RelativePath=".\color_mask.h"
+			>
 		</File>
 		<File
-			RelativePath="color_modifier.cpp">
-			<FileConfiguration
-				Name="DebugFast|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="ReleaseDebug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
+			RelativePath=".\color_modifier.cpp"
+			>
 		</File>
 		<File
-			RelativePath="color_modifier.h">
+			RelativePath=".\color_modifier.h"
+			>
 		</File>
 		<File
-			RelativePath="hls_bank_texture_info.cpp">
-			<FileConfiguration
-				Name="DebugFast|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="ReleaseDebug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
+			RelativePath=".\hls_bank_texture_info.cpp"
+			>
 		</File>
 		<File
-			RelativePath="hls_bank_texture_info.h">
+			RelativePath=".\hls_bank_texture_info.h"
+			>
 		</File>
 		<File
-			RelativePath="panoply.cfg">
+			RelativePath=".\panoply.cfg"
+			>
 		</File>
 		<File
-			RelativePath="panoply_maker.cpp">
-			<FileConfiguration
-				Name="DebugFast|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="ReleaseDebug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"/>
-			</FileConfiguration>
+			RelativePath=".\panoply_maker.cpp"
+			>
 		</File>
 	</Files>
 	<Globals>

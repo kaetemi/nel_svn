@@ -5,7 +5,7 @@
 #include "nel/misc/command.h"
 #include "nel/misc/path.h"
 
-#include <src/cpptest.h>
+#include <cpptest.h>
 
 #include "dyn_lib_test.h"
 

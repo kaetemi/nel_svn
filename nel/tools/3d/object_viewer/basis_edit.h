@@ -30,7 +30,7 @@
 #pragma once
 #endif 
 
-#include "nel/../../src/3d/ps_plane_basis.h"
+#include "nel/3d/ps_plane_basis.h"
 #include "ps_wrapper.h"
 #include "edit_attrib_dlg.h"
 

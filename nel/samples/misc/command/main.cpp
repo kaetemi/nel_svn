@@ -33,6 +33,7 @@
 
 // include the command system
 #include "nel/misc/command.h"
+#include "nel/misc/variable.h"
 
 
 //

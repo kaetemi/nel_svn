@@ -11,7 +11,7 @@
 #include "nel/net/service.h"
 
 
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;

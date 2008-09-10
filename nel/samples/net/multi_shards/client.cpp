@@ -89,24 +89,29 @@ void main (int argc, char **argv)
 	/* Try to connect to the login service and check the login, password and version of the client.
 	 * return an empty string if all go well
 	 */
-	result = CLoginClient::authenticate(LSHost+":49999", Login, Password, 1);
+	result = CLoginClient::authenticate(LSHost+":49999", Login, Password, "sample");
 	
 	if(!result.empty()) nlerror ("*** Authenticate failed '%s' ***", result.c_str());
 
 	// CLoginClient::ShardList contains all available shards
 	for (uint i = 0; i < CLoginClient::ShardList.size (); i++)
 	{
-		nlinfo ("*** shard %d is: %s (%s) ***", i, CLoginClient::ShardList[i].ShardName.c_str (), CLoginClient::ShardList[i].WSAddr.c_str ());
+		nlinfo("*** shard %d is: %s (%d) ***", i, CLoginClient::ShardList[i].Name.c_str (), CLoginClient::ShardList[i].Id);
 	}
 
 	/* Try to connect to the last shard number in the list.
 	 * return an empty string if all go well
 	 */
+
+	string fs_ip, login_cookie;
+	result = CLoginClient::wantToConnectToShard(CLoginClient::ShardList[CLoginClient::ShardList.size() - 1].Id, fs_ip, login_cookie);
+	if (!result.empty()) nlerror("*** Select shard failed '%s' ***", result.c_str());
+	CLoginCookie cookie; cookie.setFromString(login_cookie); // who's idea was it to send the cookie as a string...
 	
 	CCallbackClient *cnx = new CCallbackClient();
-	result = CLoginClient::connectToShard (CLoginClient::ShardList.size ()-1, *cnx);
+	result = CLoginClient::connectToShard(cookie, fs_ip, *cnx);
 
-	if(!result.empty()) nlerror ("*** Connection to the shard failed '%s' ***", result.c_str());
+	if (!result.empty()) nlerror("*** Connection to the shard failed '%s' ***", result.c_str());
 
 	nlinfo ("*** Connection granted! You are connected on the frond end ***");
 

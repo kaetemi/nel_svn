@@ -28,7 +28,7 @@
 
 #include "resource.h"
 #include "../nel_mesh_lib/export_nel.h"
-#include "nel/../../src/3d/mesh.h"
+#include "nel/3d/mesh.h"
 
 #include <vector>
 #include <string>

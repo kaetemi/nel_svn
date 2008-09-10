@@ -26,12 +26,12 @@
 // From MAXSDK
 #include <MaxScrpt/maxscrpt.h>
 
+
+#undef min
+#undef max
+
 // From nel misc
 #include "nel/misc/stream.h"
-
-#ifdef NL_NEW
-#undef new
-#endif
 
 #include "max_to_ligo.h"
 
@@ -42,6 +42,7 @@
 
 using namespace std;
 using namespace NLMISC;
+extern HINSTANCE hInstance;
 
 #define NEL3D_APPDATA_ZONE_SYMMETRY		1266703979
 
@@ -119,11 +120,10 @@ bool CMaxToLigo::buildZoneTemplate (INode* pNode, const PatchMesh &patchMesh, CZ
 }
 
 // ***************************************************************************
-
 bool CMaxToLigo::loadLigoConfigFile (CLigoConfig& config, Interface& it, bool dialog)
 {
 	// Get the module path
-	HMODULE hModule = GetModuleHandle("nelligo.dlx");
+	HMODULE hModule = hInstance;
 	if (hModule)
 	{
 		// Get the path

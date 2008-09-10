@@ -1,4 +1,4 @@
-#include "nel/../../src/3d/mesh.h"
+#include "nel/3d/mesh.h"
 #include "../nel_mesh_lib/calc_lm.h"
 
 /*-------------------------------------------------------------------*/

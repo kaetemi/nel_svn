@@ -27,11 +27,11 @@
 #define NL_LOD_TEXTURE_BUILDER_H
 
 #include "nel/misc/types_nl.h"
-#include "nel/../../src/3d/lod_character_texture.h"
-#include "nel/../../src/3d/lod_character_shape.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/mesh_mrm.h"
-#include "nel/../../src/3d/mesh_mrm_skinned.h"
+#include "nel/3d/lod_character_texture.h"
+#include "nel/3d/lod_character_shape.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh_mrm_skinned.h"
 #include <set>
 
 

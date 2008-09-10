@@ -58,7 +58,7 @@ CFileDisplayer fd("ps.log");
  * Output (sent message to the ping server): PONG
  * - uint32: ping counter
  */
-void cbPing(CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbPing(CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 counter;
 
@@ -74,9 +74,9 @@ void cbPing(CMessage &msgin, const std::string &serviceName, uint16 sid)
 }
 
 //
-void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
+void cbUpService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is up", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is up", serviceName.c_str(), sid.get());
 
 	// Output (uses layer 4 but this is not really necessary, see server.cpp in layer 3 example)
 	CMessage msgout("PONG");
@@ -85,9 +85,9 @@ void cbUpService( const std::string &serviceName, uint16 sid, void *arg )
 	CUnifiedNetwork::getInstance()->send(sid, msgout);
 }
 
-void cbDownService( const std::string &serviceName, uint16 sid, void *arg )
+void cbDownService(const std::string &serviceName, TServiceId sid, void *arg)
 {
-	nlinfo("Service %s %d is down", serviceName.c_str(), sid);
+	nlinfo("Service %s %d is down", serviceName.c_str(), sid.get());
 }
 
 

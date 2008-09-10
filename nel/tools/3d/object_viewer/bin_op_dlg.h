@@ -32,7 +32,7 @@
 #endif 
 
 #include "attrib_dlg.h"
-#include "nel/../../src/3d/ps_attrib_maker_bin_op.h"
+#include "nel/3d/ps_attrib_maker_bin_op.h"
 
 class CBinOpDlg : public CDialog
 {

@@ -65,8 +65,8 @@ using namespace NLNET;
 
 struct CClient
 {
-	CClient (TSockId from, uint32 session, const string &cn) : From(from), Session(session), NextPingNumber(0), ConnectionName(cn), FirstWrite(true),
-		NbPing(0), NbPong(0), MeanPongTime(0), NbDuplicated(0), LastPongReceived(0), FullMeanPongTime(0), FullNbPong(0), BlockNumber(0)
+	CClient (TSockId from, uint32 session, const string &cn) : From(from), Session(session), NextPingNumber(0), LastPongReceived(0), ConnectionName(cn),
+		BlockNumber(0), FullMeanPongTime(0), FullNbPong(0), NbPing(0), NbPong(0), MeanPongTime(0), NbDuplicated(0), FirstWrite(true)
 	{ PongReceived.resize (1001); }
 
 	CInetAddress	Address;	// udp address
@@ -94,10 +94,18 @@ struct CClient
 	void updateFullStat ();
 };
 
-struct TInetAddressHash : public std::hash<NLNET::CInetAddress>
+struct TInetAddressHash
 {
+	static const size_t bucket_size = 4;
+	static const size_t min_buckets = 8;
+
+	inline bool operator() (const NLNET::CInetAddress &x1, const NLNET::CInetAddress &x2) const
+	{
+		return x1 == x2;
+	}
+
 	/// Hash function
-	size_t operator() ( const NLNET::CInetAddress& x ) const
+	inline size_t operator() ( const NLNET::CInetAddress& x ) const
 	{
 		return x.port();
 		//return x.internalIPAddress();
@@ -108,7 +116,7 @@ struct TInetAddressHash : public std::hash<NLNET::CInetAddress>
 // Types
 //
 
-typedef std::hash_map<NLNET::CInetAddress,CClient*,TInetAddressHash> TClientMap;
+typedef CHashMap<NLNET::CInetAddress,CClient*,TInetAddressHash> TClientMap;
 #define GETCLIENTA(it) (*it).second
 
 //
@@ -166,7 +174,7 @@ string getDate()
 
 void cbInit (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 {
-	uint32 session = (uint32) from;
+	uint64 session = (uint64)(uintptr_t) from;
 
 	string connectionName;
 	msgin.serial (connectionName);

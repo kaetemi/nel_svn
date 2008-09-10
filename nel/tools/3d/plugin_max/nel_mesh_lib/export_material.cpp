@@ -26,11 +26,11 @@
 #include "stdafx.h"
 #include "export_nel.h"
 #include "../tile_utility/tile_utility.h"
-#include "nel/../../src/3d/texture_file.h"
-#include "nel/../../src/3d/texture_multi_file.h"
-#include "nel/../../src/3d/texture_cube.h"
-#include "nel/../../src/3d/tangent_space_build.h"
-#include "nel/../../src/3d/meshvp_per_pixel_light.h"
+#include "nel/3d/texture_file.h"
+#include "nel/3d/texture_multi_file.h"
+#include "nel/3d/texture_cube.h"
+#include "nel/3d/tangent_space_build.h"
+#include "nel/3d/meshvp_per_pixel_light.h"
 
 #include <vector>
 #include <string>

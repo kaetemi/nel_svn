@@ -34,7 +34,7 @@
 struct IPopupNotify;
 
 #include "ps_wrapper.h"
-#include "nel/../../src/3d/ps_plane_basis_maker.h"
+#include "nel/3d/ps_plane_basis_maker.h"
 #include "editable_range.h"
 #include "particle_workspace.h"
 

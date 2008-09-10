@@ -1,4 +1,4 @@
-/** \file service/chat_service.cpp
+/** \file samples/net/chat/server.cpp
  * example of the IService class
  *
  * $Id: server.cpp,v 1.1 2003/07/21 12:11:53 lecroart Exp $
@@ -27,7 +27,6 @@
 
 #include "nel/misc/common.h"
 #include "nel/misc/path.h"
-#include "nel/misc/heap_allocator.h"
 
 // contains the service base class
 #include "nel/net/service.h"

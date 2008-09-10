@@ -29,9 +29,3 @@
 // and not in this file
 
 #include "stdafx.h"
-
-#include <max.h>
-#include <iparamb2.h>
-#include <istdplug.h>
-#include <iparamm2.h>
-#include <utilapi.h>

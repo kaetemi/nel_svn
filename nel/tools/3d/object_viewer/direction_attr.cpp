@@ -29,8 +29,8 @@
 #include "direction_attr.h"
 #include "direction_edit.h"
 #include "choose_name.h"
-#include "nel/../../src/3d/ps_direction.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/ps_direction.h"
+#include "nel/3d/particle_system.h"
 
 
 

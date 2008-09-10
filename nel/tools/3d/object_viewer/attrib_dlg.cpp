@@ -47,12 +47,12 @@
 #include "curve_edit.h"
 
 
-#include "nel/../../src/3d/ps_attrib_maker.h"
-#include "nel/../../src/3d/ps_float.h"
-#include "nel/../../src/3d/ps_int.h"
-#include "nel/../../src/3d/ps_color.h"
-#include "nel/../../src/3d/ps_plane_basis.h"
-#include "nel/../../src/3d/ps_plane_basis_maker.h"
+#include "nel/3d/ps_attrib_maker.h"
+#include "nel/3d/ps_float.h"
+#include "nel/3d/ps_int.h"
+#include "nel/3d/ps_color.h"
+#include "nel/3d/ps_plane_basis.h"
+#include "nel/3d/ps_plane_basis_maker.h"
 
 
 

@@ -47,7 +47,7 @@ struct IValueBlenderDlgClient
 	virtual CEditAttribDlg *createDialog(uint index, CParticleWorkspace::CNode *ownerNode) = 0;
 
 	/// dtor
-	virtual ~IValueBlenderDlgClient() {};
+	virtual ~IValueBlenderDlgClient() {}
 } ;
 
 class CValueBlenderDlg : public CDialog

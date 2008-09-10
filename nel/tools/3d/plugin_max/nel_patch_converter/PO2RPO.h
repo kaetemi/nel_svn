@@ -47,6 +47,8 @@ extern TCHAR *GetString(int id);
 
 extern HINSTANCE hInstance;
 
+
+
 class PO2RPO : public Modifier {
 	public:
 		// Parameter block
@@ -116,17 +118,19 @@ class PO2RPO : public Modifier {
 class PO2RPOClassDesc:public ClassDesc2 {
 	public:
 	int 			IsPublic() {return 1;}
-	void *			Create(BOOL loading = FALSE) 
+	void *			Create(BOOL loading = FALSE)
 	{
 		return new PO2RPO();
 	}
-	const TCHAR *	ClassName() {return "NeLConvert";}
+
+	const TCHAR *	ClassName() {return "NeL Convert";}
 	SClass_ID		SuperClassID() {return OSM_CLASS_ID;}
 	Class_ID		ClassID() {return PO2RPO_CLASS_ID;}
 	const TCHAR* 	Category() {return "NeL Tools";}
-	const TCHAR*	InternalName() { return _T("PatchObject To NelPatchObject"); }	// returns fixed parsable name (scripter-visible name)
+	const TCHAR*	InternalName() { return _T("PatchObjectToNelPatchObject"); }	// returns fixed parsable name (scripter-visible name)
 	HINSTANCE		HInstance() { return hInstance; }				// returns owning module handle
 };
 
+extern PO2RPOClassDesc PO2RPODesc;
 
 #endif // __PMESH2RKLPMESH__H

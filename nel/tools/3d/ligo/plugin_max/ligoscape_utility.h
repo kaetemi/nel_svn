@@ -15,12 +15,18 @@
 #define __PLUGIN_MAX__H
 
 #include "Max.h"
-#include "resource.h"
-#include "istdplug.h"
-#include "iparamb2.h"
-#include "iparamm2.h"
+#include <Max.h>
+#include <istdplug.h>
+#include <iparamb2.h>
+#include <iparamm2.h>
 
-#include "utilapi.h"
+#include <utilapi.h>
+
+
+#undef min
+#undef max
+
+#include "resource.h"
 
 extern TCHAR *GetString(int id);
 

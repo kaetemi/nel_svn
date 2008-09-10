@@ -9,6 +9,9 @@ using namespace std;
 using namespace NLMISC;
 using namespace NLNET;
 
+// This library intentionally has it's own CApplicationContext, 
+// because you can only have one IService instance in one application.
+
 bool	stopServiceRq = false;
 
 IThread	*serviceThread = NULL; 
@@ -70,7 +73,7 @@ public:
 	{
 _CrtCheckMemory();
 		// do the job
-		CApplicationContext serviceContext;
+		createDebug();
 		CTestService *scn = new CTestService;
 		scn->setArgs (0, NULL);
 //		scn->setCallbackArray (__ServiceCallbackArray, sizeof(__ServiceCallbackArray)/sizeof(__ServiceCallbackArray[0])); 

@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -26,9 +26,9 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_PANEL DIALOG DISCARDABLE  0, 0, 108, 17
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_PANEL DIALOGEX 0, 0, 108, 17
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     CTEXT           "Can't read version",IDC_VERSION,10,5,90,10
 END
@@ -40,7 +40,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_PANEL, DIALOG
     BEGIN
@@ -59,18 +59,18 @@ END
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -79,15 +79,14 @@ END
 #endif    // APSTUDIO_INVOKED
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1, 0, 0, 52
- PRODUCTVERSION 3,0,0,0
+ FILEVERSION 0,6,0,0
+ PRODUCTVERSION 0,6,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -102,18 +101,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "TECH: \0"
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "PatchMesh to RykolPatchMesh\0"
-            VALUE "FileVersion", "1, 0, 0, 52\0"
-            VALUE "InternalName", "PatchMesh to RykolPatchMesh\0"
-            VALUE "LegalCopyright", "\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "PMesh2RklPMesh.dlm\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "3D Studio MAX\0"
-            VALUE "ProductVersion", "3.0.0.0\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "Comments", "http://www.opennel.org/"
+            VALUE "FileDescription", "PatchMesh to RykolPatchMesh"
+            VALUE "FileVersion", "0.6.0"
+            VALUE "InternalName", "PatchMesh to RykolPatchMesh"
+            VALUE "LegalCopyright", "Copyright, 2000 Nevrax Ltd."
+            VALUE "OriginalFilename", "nel_convert_patch.dlm"
+            VALUE "ProductName", "NeL Patch Converter"
+            VALUE "ProductVersion", "0.6.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -122,19 +117,17 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
-    IDS_LIBDESCRIPTION      "Rykol patchmesh converter"
+    IDS_LIBDESCRIPTION      "Rykol Patchmesh Converter"
     IDS_CATEGORY            "Rykol Tools"
-    IDS_CLASS_NAME          "Rykol patchmesh converter"
+    IDS_CLASS_NAME          "Rykol Patchmesh Converter"
     IDS_PARAMS              "Parameters"
     IDS_SPIN                "Spin"
 END

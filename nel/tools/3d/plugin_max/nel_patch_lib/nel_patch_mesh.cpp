@@ -28,7 +28,7 @@
 #include "nel/misc/time_nl.h"
 #include "vertex_neighborhood.h"
 #include "../nel_3dsmax_shared/nel_3dsmax_shared.h"
-#include "nel/../../src/3d/zone_symmetrisation.h"
+#include "nel/3d/zone_symmetrisation.h"
 
 // For MAX_RELEASE
 #include <plugapi.h>
@@ -469,10 +469,10 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 	for (int nVertex=0; nVertex<(int)getUIVertexSize(); nVertex++)
 	{
 		// Binding on this vertex ?
-		if (UIVertex[nVertex].Binding.bBinded)
+		if (getUIVertex(nVertex).Binding.bBinded)
 		{
 			// Check # of the patch
-			int nPatchNumber=UIVertex[nVertex].Binding.nPatch;
+			int nPatchNumber=getUIVertex(nVertex).Binding.nPatch;
 			if ((nPatchNumber>=nPatchUICount)||(nPatchNumber<0))
 			{
 				if (bAssert)
@@ -481,7 +481,7 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 			}
 
 			// Check # of the edge
-			int nEdgeNumber=UIVertex[nVertex].Binding.nEdge;
+			int nEdgeNumber=getUIVertex(nVertex).Binding.nEdge;
 			if ((nEdgeNumber>=4)||(nEdgeNumber<0))
 			{
 				if (bAssert)
@@ -490,7 +490,7 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 			}
 
 			// Check fWhere
-			typeBind type=UIVertex[nVertex].Binding.nType;
+			typeBind type = (typeBind)(getUIVertex(nVertex).Binding.nType);
 			if ((type!=BIND_25)&&
 				(type!=BIND_50)&&
 				(type!=BIND_75)&&
@@ -502,7 +502,7 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 			}
 
 			// Primary vertex
-			int nPrim=UIVertex[nVertex].Binding.nPrimVert;
+			int nPrim=getUIVertex(nVertex).Binding.nPrimVert;
 			if ((nPrim<0)||(nPrim>=patch.numVerts))
 			{
 				if (bAssert)
@@ -511,28 +511,28 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 
 				if (nPrim!=nVertex)
 				{
-					if (!UIVertex[nPrim].Binding.bBinded)
+					if (!getUIVertex(nPrim).Binding.bBinded)
 					{
 						if (bAssert)
 							nlassert(0);
 						bRet=false;
 					}
 
-					if (UIVertex[nPrim].Binding.nEdge!=(uint)nEdgeNumber)
+					if (getUIVertex(nPrim).Binding.nEdge!=(uint)nEdgeNumber)
 					{
 						if (bAssert)
 							nlassert(0);
 						bRet=false;
 					}
 					
-					if (UIVertex[nPrim].Binding.nPatch!=(uint)nPatchNumber)
+					if (getUIVertex(nPrim).Binding.nPatch!=(uint)nPatchNumber)
 					{
 						if (bAssert)
 							nlassert(0);
 						bRet=false;
 					}
 					
-					if ((UIVertex[nPrim].Binding.nPrimVert==BIND_50)||(UIVertex[nPrim].Binding.nPrimVert==BIND_SINGLE))
+					if ((getUIVertex(nPrim).Binding.nPrimVert==BIND_50)||(getUIVertex(nPrim).Binding.nPrimVert==BIND_SINGLE))
 					{
 						if (bAssert)
 							nlassert(0);
@@ -603,7 +603,7 @@ bool RPatchMesh::Validity (const PatchMesh& patch, bool bAssert)
 	if (rTess.TileTesselLevel>=0)
 	{
 		int nFaceCount=mesh.numFaces;
-		int nHitCount=MapHitToTileIndex.size();
+		int nHitCount=_Data._MapHitToTileIndex->size();
 		if (nFaceCount!=nHitCount)
 		{
 			if (bAssert)

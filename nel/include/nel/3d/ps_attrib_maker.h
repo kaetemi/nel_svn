@@ -258,7 +258,7 @@ public:
 		 *  The default does nothing (clamping unsupported)
 		 *  \see isClampingSupported()
 		 */
-		virtual void setClamping(bool enable = true) {};
+		virtual void setClamping(bool enable = true) {}
 
 
 		/** Test if the clamping is enabled.

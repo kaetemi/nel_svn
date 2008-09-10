@@ -5,7 +5,7 @@
 #include "object_viewer.h"
 #include "water_pool_editor.h"
 #include "editable_range.h"
-#include "nel/../../src/3d/water_pool_manager.h"
+#include "nel/3d/water_pool_manager.h"
 #include "choose_pool_id.h"
 #include "nel/misc/i_xml.h"
 #include "nel/misc/o_xml.h"

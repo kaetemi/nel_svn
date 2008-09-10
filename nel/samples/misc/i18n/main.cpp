@@ -24,8 +24,8 @@
  * MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <string>
+#include <iostream>
 
 // contains all i18n features
 #include "nel/misc/i18n.h"
@@ -34,43 +34,19 @@ using namespace NLMISC;
 
 int main (int argc, char **argv)
 {
-	// set the path were the .uxt are
-	CI18N::setPath("./");
-	
-	// get all language names (you must call this before calling load())
-	const std::vector<ucstring> languages = CI18N::getLanguageNames ();
+	createDebug();
+	InfoLog->displayRawNL("Please, choose 'en', 'fr' or 'de' and press <return>");
 
-	if (languages.empty())
-	{
-		printf ("No language evailable, can't do anything, press <return> to exit\n");
-		getchar();
-		return EXIT_FAILURE;
-	}
-
-	nlinfo ("%d languages are available:", languages.size());
-	for (uint i = 0; i < languages.size(); i++)
-	{
-		nlinfo (" %d - %s", i, languages[i].toString().c_str());
-	}
-	nlinfo ("Please, type a number between 0 and %d and then press <return>", languages.size()-1);
-
-	// Get the selected language (i know there s a potentiel buffer overflow)
-	char  buf[1024];
-	gets (buf);
-
-	uint languageNumber = atoi (buf);
+	std::string langName;
+	std::getline(std::cin, langName);
 
 	// load the language
-	CI18N::load (languageNumber);
+	CI18N::load(langName);
 
-	// display "Salut" that is the "hi" string in the selected language (french).
-	nlinfo (CI18N::get("hi").toString().c_str ());
-
-	// display "rms est un master", the french version of the string
-	nlinfo (CI18N::get("%s is proud to present you NeL Internationalisation system").toString().c_str (), "Ace");
-
-	nlinfo (CI18N::get("press <return> to exit").toString().c_str ());
-	getchar ();
+	InfoLog->displayRawNL(CI18N::get("Hi").toString().c_str());
+	InfoLog->displayRawNL(CI18N::get("PresentI18N").toString().c_str(), "Nevrax");
+	InfoLog->displayRawNL(CI18N::get("ExitStr").toString().c_str());
+	getchar();
 
 	return EXIT_SUCCESS;
 }

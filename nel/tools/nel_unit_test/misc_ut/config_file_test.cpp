@@ -3,7 +3,7 @@
 #include "nel/misc/debug.h"
 #include "nel/misc/config_file.h"
 #include "nel/misc/path.h"
-#include "src/cpptest.h"
+#include "cpptest.h"
 
 using namespace std;
 using namespace NLMISC;

@@ -32,7 +32,7 @@
 #endif
 
 #include "ps_wrapper.h"
-#include "nel/../../src/3d/ps_sound.h"
+#include "nel/3d/ps_sound.h"
 #include "editable_range.h"
 #include "particle_workspace.h"
 

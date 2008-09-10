@@ -2,8 +2,8 @@
 //
 
 #include <nel/misc/file.h>
-#include <3d/animation_set.h>
-#include <3d/register_3d.h>
+#include <nel/3d/animation_set.h>
+#include <nel/3d/register_3d.h>
 #include "anim_utility.h"
 
 using namespace NLMISC;

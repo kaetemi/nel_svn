@@ -33,8 +33,8 @@
 #include "nel/misc/line.h"
 #include "nel/misc/polygon.h"
 #include "nel/misc/path.h"
-#include "nel/../../src/3d/quad_grid.h"
-#include "nel/../../src/3d/mesh_mrm_skinned.h"
+#include "nel/3d/quad_grid.h"
+#include "nel/3d/mesh_mrm_skinned.h"
 #include "export_appdata.h"
 
 
@@ -767,6 +767,7 @@ bool	CExportNel::selectInterfaceVertices(INode &node, TimeValue time)
 
 	return ::SelectVerticesInMeshFromInterfaces(meshInterfaces, threshold, node, time );			
 }
+
 
 
 

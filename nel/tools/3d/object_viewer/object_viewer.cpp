@@ -32,28 +32,32 @@
 #include "std_afx.h"
 
 #undef OBJECT_VIEWER_EXPORT
-#define OBJECT_VIEWER_EXPORT __declspec( dllexport ) 
+#ifdef NL_STATIC
+#	define OBJECT_VIEWER_EXPORT 
+#else
+#	define OBJECT_VIEWER_EXPORT __declspec( dllexport ) 
+#endif
 
 #include <vector>
 
 
 #include "object_viewer.h"
 
-#include "nel/../../src/3d/nelu.h"
-#include "nel/../../src/3d/mesh.h"
-#include "nel/../../src/3d/mesh_mrm.h"
-#include "nel/../../src/3d/mesh_mrm_skinned.h"
-#include "nel/../../src/3d/transform_shape.h"
-#include "nel/../../src/3d/mesh_instance.h"
-#include "nel/../../src/3d/text_context.h"
-#include "nel/../../src/3d/skeleton_model.h"
-#include "nel/../../src/3d/init_3d.h"
-#include "nel/../../src/3d/scene_group.h"
-#include "nel/../../src/3d/animation_playlist.h"
-#include "nel/../../src/3d/track_keyframer.h"
-#include "nel/../../src/3d/font_generator.h"
-#include "nel/../../src/3d/register_3d.h"
-#include "nel/../../src/3d/seg_remanence.h"
+#include "nel/3d/nelu.h"
+#include "nel/3d/mesh.h"
+#include "nel/3d/mesh_mrm.h"
+#include "nel/3d/mesh_mrm_skinned.h"
+#include "nel/3d/transform_shape.h"
+#include "nel/3d/mesh_instance.h"
+#include "nel/3d/text_context.h"
+#include "nel/3d/skeleton_model.h"
+#include "nel/3d/init_3d.h"
+#include "nel/3d/scene_group.h"
+#include "nel/3d/animation_playlist.h"
+#include "nel/3d/track_keyframer.h"
+#include "nel/3d/font_generator.h"
+#include "nel/3d/register_3d.h"
+#include "nel/3d/seg_remanence.h"
 
 #include "nel/misc/common.h"
 #include "nel/misc/file.h"
@@ -62,11 +66,11 @@
 #include "nel/misc/config_file.h"
 
 #include "nel/sound/u_audio_mixer.h"
-#include "nel/../../src/3d/water_pool_manager.h"
-#include "nel/../../src/3d/landscape_model.h"
-#include "nel/../../src/3d/visual_collision_manager.h"
-#include "nel/../../src/3d/visual_collision_entity.h"
-#include "nel/../../src/3d/ps_util.h"
+#include "nel/3d/water_pool_manager.h"
+#include "nel/3d/landscape_model.h"
+#include "nel/3d/visual_collision_manager.h"
+#include "nel/3d/visual_collision_entity.h"
+#include "nel/3d/ps_util.h"
 
 
 #include "nel/../../src/pacs/global_retriever.h"
@@ -177,8 +181,8 @@ public:
 	{
 		MainFrame=NULL;	
 	};
-	virtual ~CObjView() {};
-	virtual void OnDraw (CDC *) {};
+	virtual ~CObjView() {}
+	virtual void OnDraw (CDC *) {}
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC) 
 	{ 
 		return FALSE; 
@@ -287,28 +291,24 @@ CObjectViewer::CObjectViewer ()
 	_CS = NULL;
 }
 
-
 // ***************************************************************************
 std::string CObjectViewer::getModulePath() const
 {
-	// Get the module path
-	// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
-#ifdef NL_DEBUG_FAST
-	HMODULE hModule = GetModuleHandle("object_viewer_debug_fast.dll");
-#elif defined (NL_DEBUG)
-	HMODULE hModule = GetModuleHandle("object_viewer_debug.dll");
-#elif defined (NL_RELEASE_DEBUG)
-	HMODULE hModule = GetModuleHandle("object_viewer_rd.dll");
-#else
-	HMODULE hModule = GetModuleHandle("object_viewer.dll");
-#endif
-	nlassert (hModule);		
+	// Get the configuration file path (located in same directory as module)
+	HMODULE hModule = AfxGetInstanceHandle();
+#ifdef NL_STATIC // can return null if static, should be same as exe anyway
+	if (!hModule) hModule = GetModuleHandle(NULL);
+#endif /* NL_STATIC */
+	nlassert(hModule); // shouldn't be null now anymore in any case
+#ifndef NL_STATIC // if this is dll, the module handle can't be same as exe
+	nlassert(hModule != GetModuleHandle(NULL));
+#endif /* !NL_STATIC */
 	char sModulePath[256];
-	int res=GetModuleFileName(hModule, sModulePath, 256);
-	nlassert(res);
+	int res = GetModuleFileName(hModule, sModulePath, 256); nlassert(res);
+	nldebug("Object viewer module path is '%s'", sModulePath);
 	_splitpath (sModulePath, SDrive, SDir, NULL, NULL);
 	_makepath (sModulePath, SDrive, SDir, "object_viewer", ".cfg");
-	return sModulePath;	
+	return sModulePath;
 }
 
 
@@ -325,13 +325,13 @@ void CObjectViewer::loadDriverName()
 // ***************************************************************************
 void CObjectViewer::loadConfigFile()
 {
-	// Charge l'object_viewer.ini
+	// Load object_viewer.ini
 	try
 	{
 		// Load the config file
 		CConfigFile cf;
 		cf.load (getModulePath());
-		//
+		
 		try
 		{
 			// Add search pathes
@@ -752,18 +752,15 @@ bool CObjectViewer::initUI (HWND parent)
 	_WaterPoolDlg->Create (IDD_WATER_POOL);
 	getRegisterWindowState (_WaterPoolDlg, REGKEY_OBJ_WATERPOOL_DLG, false);
 
-
 	// Create day night dialog
 	_DayNightDlg = new CDayNightDlg (this, _MainFrame);
 	_DayNightDlg->Create (IDD_DAYNIGHT);
 	getRegisterWindowState (_DayNightDlg, REGKEY_OBJ_DAYNIGHT_DLG, false);
 
-
 	// Create vegetable dialog
 	_VegetableDlg=new CVegetableDlg (this, _MainFrame);
 	_VegetableDlg->Create (IDD_VEGETABLE_DLG);
 	getRegisterWindowState (_VegetableDlg, REGKEY_OBJ_VIEW_VEGETABLE_DLG, false);
-
 
 	// Create global wind dialog
 	_GlobalWindDlg= new CGlobalWindDlg (this, _MainFrame);
@@ -784,7 +781,6 @@ bool CObjectViewer::initUI (HWND parent)
 	_ChooseFrameDelayDlg = new CChooseFrameDelay(this, _MainFrame);
 	_ChooseFrameDelayDlg->Create(IDD_CHOOSE_FRAME_DELAY, _MainFrame);
 	getRegisterWindowState (_ChooseFrameDelayDlg, REGKEY_CHOOSE_FRAME_DELAY_DLG, false);
-
 
 	// Set backgroupnd color
 	setBackGroundColor(_MainFrame->BgColor);
@@ -1281,7 +1277,9 @@ void CObjectViewer::go ()
 			if (CNELU::AsyncListener.isKeyPushed(Key8))
 				_MainFrame->OnWindowGlobalwind(), keyWndOk= true;
 			if (CNELU::AsyncListener.isKeyPushed(Key9))
-				_MainFrame->OnWindowSoundAnim(), keyWndOk= true;														
+				_MainFrame->OnWindowSoundAnim(), keyWndOk= true;
+			if (CNELU::AsyncListener.isKeyPushed(KeyO))
+				_MainFrame->OnFileOpen(), keyWndOk= true;
 
 			// Reload texture ?
 			if (CNELU::AsyncListener.isKeyPushed(KeyR))
@@ -3936,4 +3934,5 @@ bool browseFolder(const CString &caption, CString &destFolder, HWND parent)
 	}
 	return false;
 }
+
 

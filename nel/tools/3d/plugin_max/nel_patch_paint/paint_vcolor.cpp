@@ -4,8 +4,8 @@
 #include "paint_vcolor.h"
 #include "paint_undo.h"
 #include "paint_to_nel.h"
-#include "nel/../../src/3d/landscape.h"
-#include "nel/../../src/3d/nelu.h"
+#include "nel/3d/landscape.h"
+#include "nel/3d/nelu.h"
 
 // User color 1 and 2
 extern COLORREF color1;
@@ -536,4 +536,5 @@ void CPaintColor::forceFrozen (const std::vector<CVertexColorFrozed> &frozenVert
 }
 
 /*-------------------------------------------------------------------*/
+
 

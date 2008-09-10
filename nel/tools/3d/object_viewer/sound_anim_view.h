@@ -89,7 +89,7 @@ class CSoundAnimView : public CWnd
 public:
 
 	CSoundAnimView() : CWnd() {}
-	virtual ~CSoundAnimView() {};
+	virtual ~CSoundAnimView() {}
 
 	virtual void			Create(CObjectViewer* objView, CAnimationDlg* animDlg, CSoundAnimDlg* parent, const RECT& rect);  
 

@@ -5,7 +5,7 @@
 #include "object_viewer.h"
 #include "choose_frame_delay.h"
 #include "particle_dlg.h"
-#include "nel/../../src/3d/particle_system.h"
+#include "nel/3d/particle_system.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CChooseFrameDelay dialog
