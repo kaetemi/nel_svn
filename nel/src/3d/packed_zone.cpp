@@ -1291,7 +1291,7 @@ template <class T> bool raytrace(T &packedZone, const NLMISC::CVector &start, co
 		if (x >= (sint) packedZone.Grid.getWidth()) continue;
 		if (y < 0) continue;
 		if (y >= (sint) packedZone.Grid.getHeight()) continue;
-		T::TIndexType triListIndex = packedZone.Grid(x, y);
+		typename T::TIndexType triListIndex = packedZone.Grid(x, y);
 		if (triListIndex != T::UndefIndex)
 		{
 			CTriangle tri;
