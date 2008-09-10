@@ -13,11 +13,14 @@
 FontName = "n019003l.pfb";
 
 // Root directory where we can find the client datas (zones, tiles, maps, ...)
-DataPath = "@SNOWBALLS_DATABASE@";
+DataPath = "@database@";
 
 //////////////////////////////////////////////////////////////////////////////
 // Screen Variables //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
+
+// Use OpenGL, set to 1, Direc3D (Windows) set to 0.
+OpenGL = 1;
 
 // Resolution of the screen
 ScreenWidth = 800;
@@ -165,13 +168,20 @@ Local = 1;
 //////////////////////////////////////////////////////////////////////////////
 
 // Landscape color (can't be modified in real time)
-LandscapeAmbiantColor = { 17, 54, 100 };
-LandscapeDiffuseColor = { 241, 226, 244 };
-LandscapeMultiplyFactor = 1.1;
+Landscape_AmbiantColor = { 17, 54, 100 };
+Landscape_DiffuseColor = { 241, 226, 244 };
+Landscape_MultiplyFactor = 1.1;
 
 // Landscape tesselation
-LandscapeTileNear = 50.0;	// more is bigger more is faster
-LandscapeThresold = 0.001;	// more is bigger more is faster
+Landscape_TileNear = 50.0;	// more is bigger more is faster
+Landscape_Threshold = 0.001;	// more is bigger more is faster
+
+// Landscape range
+Landscape_Vision = 500.0;
+Landscape_VisionInitial = 250.0;
+
+// Landscape shadows
+Landscape_ReceiveShadowMap = 0;
 
 SunAmbientColor = { 255, 255, 255 };
 SunDiffuseColor = { 255, 255, 255 };
@@ -189,8 +199,8 @@ FogEnd = 500;				// in meter
 FogColor = { 80, 77, 118 };
 
 // Name of the landscape data
-BankName = "bank.bank";
-FarBankName = "bank.farbank";
+Landscape_BankName = "bank.bank";
+Landscape_FarBankName = "bank.farbank";
 RetrieverBankName = "snowballs.rbank";
 GlobalRetrieverName = "snowballs.gr";
 

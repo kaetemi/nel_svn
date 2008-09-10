@@ -1,7 +1,7 @@
 /** \file sound.h
  * Sound interface between the game and NeL
  *
- * $Id: sound.h,v 1.4 2003/02/24 13:04:53 lecroart Exp $
+ * $Id$
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -23,42 +23,56 @@
  * MA 02111-1307, USA.
  */
 
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef SBCLIENT_SOUND_H
+#define SBCLIENT_SOUND_H
 
 //
 // Includes
 //
 
+#include <nel/misc/types_nl.h>
+#include <nel/misc/config_file.h>
+
 #include <nel/sound/u_audio_mixer.h>
 #include <nel/sound/u_listener.h>
 #include <nel/sound/u_source.h>
 
-
+#include "client.h"
 #include "entities.h"
+
+// 
+// Defines
+// 
+
+#define SBCLIENT_MUSIC_WAIT (0), (0)
+#define SBCLIENT_MUSIC_LOGIN (1), (0)
+#define SBCLIENT_MUSIC_BACKGROUND (2), (0)
+#define SBCLIENT_MUSIC_BACKGROUND_BEAT (2), (1)
 
 //
 // External variables
 //
 
 extern NLSOUND::UAudioMixer *AudioMixer;
-
 extern NLSOUND::TSoundId SoundId;
 
 //
 // External functions
 //
 
-void	initSound ();
-void	updateSound ();
-void	releaseSound ();
+void playMusic(sint32 playlist, sint32 track);
+void setMusicVolume(sint32 playlist, float volume);
+
+void initSound();
+void updateSound();
+void releaseSound();
 
 // Set and play a sound on an entity
-void	playSound (CEntity &entity, NLSOUND::TSoundId id);
+void playSound(CEntity &entity, NLSOUND::TSoundId id);
 
 // Remove the sound system link to the entity
-void	deleteSound (CEntity &entity);
+void deleteSound(CEntity &entity);
 
-#endif // SOUND_H
+#endif // SBCLIENT_SOUND_H
 
-/* End of sound.h */
+/* End of sound.h */ // duh

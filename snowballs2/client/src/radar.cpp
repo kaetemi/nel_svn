@@ -2,7 +2,7 @@
  * Snowballs 2 specific code for managing the radar.
  * This code was taken from Snowballs 1.
  *
- * $Id: radar.cpp,v 1.5 2001/07/19 13:45:53 lecroart Exp $
+ * $Id: radar.cpp,v 1.5 2001-07-19 13:45:53 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -28,9 +28,10 @@
 // Includes
 //
 
+#include <nel/misc/types_nl.h>
+
 #include <vector>
 
-#include <nel/misc/types_nl.h>
 #include <nel/misc/vector.h>
 #include <nel/misc/matrix.h>
 #include <nel/misc/command.h>
@@ -67,6 +68,7 @@ static	CRGBA	RadarBackColor, RadarFrontColor, RadarSelfColor, RadarOtherColor, R
 static	float	RadarEntitySize;
 static	uint	RadarFontSize;
 static	float	RadarLittlePosX, RadarLittlePosY, RadarLittleRadius;
+static NL3D::UMaterial RadarMaterial = NULL;
 
 uint RadarState;
 uint RadarDistance;
@@ -102,7 +104,13 @@ void displayRadar ()
 	Driver->setMatrixMode2D11 ();
 
 	// Background
-	Driver->drawQuad (xLeft,yBottom,xRight,yTop,RadarBackColor);
+	RadarMaterial.setColor(RadarBackColor);
+	CQuad quad;
+	quad.V0.set(xLeft,yBottom,0);
+	quad.V1.set(xRight,yBottom,0);
+	quad.V2.set(xRight,yTop,0);
+	quad.V3.set(xLeft,yTop,0);
+	Driver->drawQuad (quad, RadarMaterial);
 
 	// Print radar's range
 	TextContext->setHotSpot(UTextContext::TopRight);
@@ -121,11 +129,19 @@ void displayRadar ()
 	float gapV = stepV/2;
 	float gapH = stepH/2;
 	
+	CLine line;
+	RadarMaterial.setColor(RadarFrontColor);
 	while(gapH<=RadarWidth/2.0)
 	{
 		// v lines
-		Driver->drawLine (xCenter+gapH,yTop,xCenter+gapH,yBottom,RadarFrontColor);
-		Driver->drawLine (xCenter-gapH,yTop,xCenter-gapH,yBottom,RadarFrontColor);
+	        line.V0.set(xCenter+gapH, yTop, 0);
+	        line.V1.set(xCenter+gapH, yBottom, 0);
+	        Driver->drawLine(line, RadarMaterial);
+		//Driver->drawLine (xCenter+gapH,yTop,xCenter+gapH,yBottom,RadarFrontColor);
+		line.V0.set(xCenter-gapH, yTop, 0);
+		line.V1.set(xCenter-gapH, yBottom, 0);
+		Driver->drawLine(line, RadarMaterial);
+		//Driver->drawLine (xCenter-gapH,yTop,xCenter-gapH,yBottom,RadarFrontColor);
 
 		gapH += stepH;
 	}
@@ -133,8 +149,14 @@ void displayRadar ()
 	while(gapV<=RadarHeight/2.0)
 	{
 		// h lines
-		Driver->drawLine (xLeft,yCenter+gapV,xRight,yCenter+gapV,RadarFrontColor);
-		Driver->drawLine (xLeft,yCenter-gapV,xRight,yCenter-gapV,RadarFrontColor);
+	        line.V0.set(xLeft, yCenter+gapV, 0);
+	        line.V1.set(xRight, yCenter+gapV, 0);
+	        Driver->drawLine(line, RadarMaterial);
+		//Driver->drawLine (xLeft,yCenter+gapV,xRight,yCenter+gapV,RadarFrontColor);
+		line.V0.set(xLeft, yCenter-gapV, 0);
+		line.V1.set(xRight, yCenter-gapV, 0);
+		Driver->drawLine(line, RadarMaterial);
+		//Driver->drawLine (xLeft,yCenter-gapV,xRight,yCenter-gapV,RadarFrontColor);
 
 		gapV += stepV;
 	}
@@ -154,10 +176,21 @@ void displayRadar ()
 	float radius = RadarEntitySize;
 
 	// Arrow in center (user)
-	Driver->drawTriangle(xscreen-2*radius,yscreen-2*radius, xscreen,yscreen-radius, xscreen,yscreen+2*radius, RadarSelfColor);
-	Driver->drawTriangle(xscreen,yscreen-radius, xscreen+2*radius,yscreen-2*radius, xscreen,yscreen+2*radius, RadarSelfColor);
+	RadarMaterial.setColor(RadarSelfColor);
+	CTriangle triangle;
+	triangle.V0.set(xscreen-2*radius, yscreen-2*radius, 0);
+	triangle.V1.set(xscreen, yscreen-radius, 0);
+	triangle.V2.set(xscreen, yscreen+2*radius, 0);
+	Driver->drawTriangle(triangle, RadarMaterial);
+	//Driver->drawTriangle(xscreen-2*radius,yscreen-2*radius, xscreen,yscreen-radius, xscreen,yscreen+2*radius, RadarSelfColor);
+	triangle.V0.set(xscreen, yscreen-radius, 0);
+	triangle.V1.set(xscreen+2*radius, yscreen-2*radius, 0);
+	triangle.V2.set(xscreen, yscreen+2*radius, 0);
+	Driver->drawTriangle(triangle, RadarMaterial);
+	//Driver->drawTriangle(xscreen,yscreen-radius, xscreen+2*radius,yscreen-2*radius, xscreen,yscreen+2*radius, RadarSelfColor);
 
 	TextContext->setColor(RadarOtherColor);
+	RadarMaterial.setColor(RadarOtherColor);
 
 	for(EIT eit=Entities.begin(); eit!=Entities.end(); eit++)
 	{
@@ -215,7 +248,12 @@ void displayRadar ()
 
 			TextContext->setColor(RadarOtherColor);
 
-			Driver->drawQuad (x-radius,y-radius, x+radius,y+radius,RadarOtherColor);
+			quad.V0.set(x-radius, y+radius, 0);
+			quad.V1.set(x+radius, y+radius, 0);
+			quad.V2.set(x+radius, y-radius, 0);
+			quad.V3.set(x-radius, y-radius, 0);
+			Driver->drawQuad(quad, RadarMaterial);
+			//Driver->drawQuad (x-radius,y-radius, x+radius,y+radius,RadarOtherColor);
 
 			// Print his name
 			TextContext->setFontSize(RadarFontSize);
@@ -249,6 +287,7 @@ void displayRadar ()
 	}
 
 	// display particular places
+	RadarMaterial.setColor(RadarPlaceColor);
 	for(uint i = 0; i < RadarParticularPlaces.size(); i++)
 	{
 		// relative position
@@ -298,7 +337,11 @@ void displayRadar ()
 			continue;
 		}
 
-		Driver->drawTriangle(x-radius,y-radius, x+radius,y-radius, x,y+radius, RadarPlaceColor);
+		triangle.V0.set(x-radius, y-radius, 0);
+		triangle.V1.set(x+radius, y-radius, 0);
+		triangle.V2.set(x, y+radius, 0);
+		Driver->drawTriangle(triangle, RadarMaterial);
+		//Driver->drawTriangle(x-radius,y-radius, x+radius,y-radius, x,y+radius, RadarPlaceColor);
 
 		TextContext->setFontSize(RadarFontSize);
 		TextContext->setColor(RadarPlaceColor);
@@ -332,8 +375,6 @@ void displayRadar ()
 	}
 }
 
-
-
 /*********************************************************\
 					displayLittleRadar()
 \*********************************************************/
@@ -350,7 +391,15 @@ void displayLittleRadar()
 	Driver->setMatrixMode2D11 ();
 	
 	// Background
-	Driver->drawQuad (xLeft,yBottom,xRight,yTop,RadarBackColor);
+	RadarMaterial.setColor(RadarBackColor);
+	CQuad quad;
+	quad.V0.set(xLeft,yBottom,0);
+	quad.V1.set(xRight,yBottom,0);
+	quad.V2.set(xRight,yTop,0);
+	quad.V3.set(xLeft,yTop,0);
+
+	//Driver->drawQuad (xLeft,yBottom,xRight,yTop,RadarBackColor);
+	Driver->drawQuad(quad, RadarMaterial);
 
 	// Print radar's range
 	TextContext->setHotSpot(UTextContext::MiddleBottom);
@@ -367,14 +416,34 @@ void displayLittleRadar()
 
 	// Drawing radar's lines
 	// h lines
-	Driver->drawLine (xLeft, yTop,         xRight, yTop,          RadarFrontColor);
-	Driver->drawLine (xLeft, yBottom+radius,xRight, yBottom+radius, RadarFrontColor);
-	Driver->drawLine (xLeft, yBottom,      xRight, yBottom,       RadarFrontColor);
+	RadarMaterial.setColor(RadarFrontColor);
+	CLine line;
+	line.V0.set(xLeft, yTop, 0);
+	line.V1.set(xRight, yTop, 0);
+	Driver->drawLine(line, RadarMaterial);
+	line.V0.set(xLeft, yBottom+radius, 0);
+	line.V1.set(xRight, yBottom+radius, 0);
+	Driver->drawLine(line, RadarMaterial);
+	line.V0.set(xLeft, yBottom, 0);
+	line.V1.set(xRight, yBottom, 0);
+	Driver->drawLine(line, RadarMaterial);
+	//Driver->drawLine (xLeft, yTop,         xRight, yTop,          RadarFrontColor);
+	//Driver->drawLine (xLeft, yBottom+radius,xRight, yBottom+radius, RadarFrontColor);
+	//Driver->drawLine (xLeft, yBottom,      xRight, yBottom,       RadarFrontColor);
 	
-	// v lines
-	Driver->drawLine (xLeft,               yTop, xLeft,               yBottom, RadarFrontColor);
-	Driver->drawLine (xLeft+radius*3.f/4.f, yTop, xLeft+radius*3.f/4.f, yBottom, RadarFrontColor);
-	Driver->drawLine (xRight,              yTop, xRight,              yBottom, RadarFrontColor);
+	// v lines (assuming 4:3 screen)
+	line.V0.set(xLeft, yTop, 0);
+	line.V1.set(xLeft, yBottom, 0);
+	Driver->drawLine(line, RadarMaterial);
+	line.V0.set(xLeft + radius*0.75f, yTop, 0);
+	line.V1.set(xLeft + radius*0.75f, yBottom, 0);
+	Driver->drawLine(line, RadarMaterial);
+	line.V0.set(xRight, yTop, 0);
+	line.V1.set(xRight, yBottom, 0);
+	Driver->drawLine(line, RadarMaterial);
+	//Driver->drawLine (xLeft,               yTop, xLeft,               yBottom, RadarFrontColor);
+	//Driver->drawLine (xLeft+radius*3.f/4.f, yTop, xLeft+radius*3.f/4.f, yBottom, RadarFrontColor);
+	//Driver->drawLine (xRight,              yTop, xRight,              yBottom, RadarFrontColor);
 
 	float scale = 1.0f;
 
@@ -448,12 +517,19 @@ void displayLittleRadar()
 
 			TextContext->setColor(RadarOtherColor);
 
-			Driver->drawQuad (x-entitySize,y-entitySize,x+entitySize,y+entitySize,RadarOtherColor);
+			quad.V0.set(x-entitySize, y+entitySize, 0);
+			quad.V1.set(x+entitySize, y+entitySize, 0);
+			quad.V2.set(x+entitySize, y-entitySize, 0);
+			quad.V3.set(x-entitySize, y-entitySize, 0);
+			RadarMaterial.setColor(RadarOtherColor);
+			Driver->drawQuad(quad, RadarMaterial);
+			//Driver->drawQuad (x-entitySize,y-entitySize,x+entitySize,y+entitySize,RadarOtherColor);
 		}
 	}
 
 
 	// display particular places
+	CTriangle triangle;
 	for(uint i = 0; i < RadarParticularPlaces.size(); i++)
 	{
 		// relative position
@@ -503,7 +579,12 @@ void displayLittleRadar()
 			continue;
 		}
 
-		Driver->drawTriangle(x-entitySize,y-entitySize, x+entitySize,y-entitySize, x,y+entitySize, RadarPlaceColor);
+		triangle.V0.set(x-entitySize, y-entitySize, 0);
+		triangle.V1.set(x+entitySize, y-entitySize, 0);
+		triangle.V2.set(x, y+entitySize, 0);
+		RadarMaterial.setColor(RadarPlaceColor);
+		Driver->drawTriangle(triangle, RadarMaterial);
+		//Driver->drawTriangle(x-entitySize,y-entitySize, x+entitySize,y-entitySize, x,y+entitySize, RadarPlaceColor);
 	}
 }
 
@@ -526,7 +607,7 @@ void cbUpdateRadar (CConfigFile::CVar &var)
 	else if (var.Name == "RadarParticularPlaces")
 	{
 		RadarParticularPlaces.clear ();
-		for (sint i = 0; i < var.size(); i += 3)
+		for (uint i = 0; i < var.size(); i += 3)
 		{
 			RadarParticularPlaces.push_back (RadarParticularPlace(var.asFloat(i), var.asFloat(i+1), var.asString(i+2)));
 		}
@@ -540,45 +621,50 @@ void cbUpdateRadar (CConfigFile::CVar &var)
 
 void initRadar ()
 {
-	ConfigFile.setCallback ("RadarPosX", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarPosY", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarWidth", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarHeight", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarBackColor", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarFrontColor", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarSelfColor", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarOtherColor", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarPlaceColor", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarEntitySize", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarState", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarDistance", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarMinDistance", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarMaxDistance", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarParticularPlaces", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarFontSize", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarLittlePosX", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarLittlePosY", cbUpdateRadar);
-	ConfigFile.setCallback ("RadarLittleRadius", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarPosX", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarPosY", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarWidth", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarHeight", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarBackColor", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarFrontColor", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarSelfColor", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarOtherColor", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarPlaceColor", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarEntitySize", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarState", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarDistance", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarMinDistance", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarMaxDistance", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarParticularPlaces", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarFontSize", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarLittlePosX", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarLittlePosY", cbUpdateRadar);
+	ConfigFile->setCallback ("RadarLittleRadius", cbUpdateRadar);
 
-	cbUpdateRadar (ConfigFile.getVar ("RadarPosX"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarPosY"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarWidth"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarHeight"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarFrontColor"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarBackColor"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarSelfColor"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarOtherColor"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarPlaceColor"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarEntitySize"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarState"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarDistance"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarMinDistance"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarMaxDistance"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarParticularPlaces"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarFontSize"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarLittlePosX"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarLittlePosY"));
-	cbUpdateRadar (ConfigFile.getVar ("RadarLittleRadius"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarPosX"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarPosY"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarWidth"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarHeight"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarFrontColor"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarBackColor"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarSelfColor"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarOtherColor"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarPlaceColor"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarEntitySize"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarState"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarDistance"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarMinDistance"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarMaxDistance"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarParticularPlaces"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarFontSize"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarLittlePosX"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarLittlePosY"));
+	cbUpdateRadar (ConfigFile->getVar ("RadarLittleRadius"));
+
+        RadarMaterial = Driver->createMaterial ();
+        RadarMaterial.initUnlit ();
+        RadarMaterial.setBlendFunc (UMaterial::srcalpha, UMaterial::invsrcalpha);
+        RadarMaterial.setBlend(true);
 }
 
 void updateRadar ()
@@ -601,6 +687,26 @@ void updateRadar ()
 
 void releaseRadar ()
 {
+	ConfigFile->setCallback ("RadarPosX", NULL);
+	ConfigFile->setCallback ("RadarPosY", NULL);
+	ConfigFile->setCallback ("RadarWidth", NULL);
+	ConfigFile->setCallback ("RadarHeight", NULL);
+	ConfigFile->setCallback ("RadarBackColor", NULL);
+	ConfigFile->setCallback ("RadarFrontColor", NULL);
+	ConfigFile->setCallback ("RadarSelfColor", NULL);
+	ConfigFile->setCallback ("RadarOtherColor", NULL);
+	ConfigFile->setCallback ("RadarPlaceColor", NULL);
+	ConfigFile->setCallback ("RadarEntitySize", NULL);
+	ConfigFile->setCallback ("RadarState", NULL);
+	ConfigFile->setCallback ("RadarDistance", NULL);
+	ConfigFile->setCallback ("RadarMinDistance", NULL);
+	ConfigFile->setCallback ("RadarMaxDistance", NULL);
+	ConfigFile->setCallback ("RadarParticularPlaces", NULL);
+	ConfigFile->setCallback ("RadarFontSize", NULL);
+	ConfigFile->setCallback ("RadarLittlePosX", NULL);
+	ConfigFile->setCallback ("RadarLittlePosY", NULL);
+	ConfigFile->setCallback ("RadarLittleRadius", NULL);
+	Driver->deleteMaterial(RadarMaterial); RadarMaterial = NULL;
 }
 
 NLMISC_COMMAND(go,"change position of the player with a player name or location","<player_name>|<location_name>")

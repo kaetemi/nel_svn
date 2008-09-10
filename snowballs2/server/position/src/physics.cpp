@@ -1,7 +1,7 @@
 /** \file physics.cpp
  * Snowballs trajectory computation
  *
- * $Id: physics.cpp,v 1.1 2001/07/24 17:00:47 valignat Exp $
+ * $Id: physics.cpp,v 1.1 2001-07-24 17:00:47 valignat Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

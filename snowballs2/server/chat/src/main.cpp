@@ -1,7 +1,7 @@
 /*
  * This file contain the Snowballs Chat Service.
  *
- * $Id: main.cpp,v 1.7 2002/10/10 17:51:46 lecroart Exp $
+ * $Id: main.cpp,v 1.7 2002-10-10 17:51:46 lecroart Exp $
  */
 
 /*
@@ -56,11 +56,11 @@ using namespace NLNET;
  *             Callback function called when the Chat Service receive a "CHAT"
  *             message
  ****************************************************************************/
-void cbChat (CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbChat (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	string message;
 
-	// Extract the incomming message content from the Frontend and print it
+	// Extract the incoming message content from the Frontend and print it
 	msgin.serial( message );
 	nldebug( "SB: Received CHAT line: \"%s\"", message.c_str() );
 

@@ -11,13 +11,14 @@ highly recommended reading.
 2. What are NeL and Nevrax
    -----------------------
 
-You should really take a look at the http://www.nevrax.org/ (for NeL)
-and http://www.nevrax.com/ (for Nevrax). NeL is a free software
-framework developped and maintained by Nevrax Ltd, for the purpose of
+NeL is a free software framework developped by Nevrax Ltd, for the purpose of 
 building internet multiuser entertainment.
 
-Nevrax is a company dedicated to Free Software, which is why our
-tools are covered by the GPL. See the attached license file.
+Nevrax is a company dedicated to Free Software, which is why their tools are 
+covered by the GPL. See the attached license file. They built NeL to create 
+their massively multiplayer online role playing game called The Saga of Ryzom.
+
+You should visit our website at http://www.opennel.org/ for more information.
 
 
 3. What's in the package?
@@ -39,9 +40,9 @@ only test on a limited range of configurations, and the vagaries of
 OS and hardware means we cannot guarantee it compiles and executes
 correctly on your system at the time.
 
-If you are using CVS, you can keep in synch with the NeL Development Team 
-as we have included the required CVS information. An update will give you 
-current source. We do not guarantee that the source in CVS will compile 
+If you are using SVN, you can keep in synch with the NeL Development Team 
+as we have included the required SVN information. An update will give you 
+current source. We do not guarantee that the source in SVN will compile 
 and work correctly at all time as it includes the latest work in progress.
 
 
@@ -49,18 +50,20 @@ and work correctly at all time as it includes the latest work in progress.
    ------
 
 The sample client, server and data files provided do not accurately reflect
-our game currently in production. We do not intend penguins and gnus to appear
-in the final game, and most of the gameplay you will see does not reflect
+our game currently in production. We do intend penguins and gnus to appear
+in the final game, but most of the gameplay you will see does not reflect
 what we will implement later.
 
 
 5. Compiling NeL and SNOWBALLS
    ---------------------------
 
+TODO: update text.
 You will need a C++ compiler to properly compile and execute the NeL
 framework. The program compiles reasonably under a Unix/GCC environment,
 but it has been chiefly tested under a Linux environment.
 
+TODO: update text.
 The server has been compiled and executed on a Windows machine, but it
 is highly recommended that you run it on a separate GNU/Linux machine. The
 client has been compiled and executed on a GNU/Linux machine, but will
@@ -82,6 +85,7 @@ main memory (128Megs+) and a 3D card that supports T&L in hardware and
 has 32Mb of memory. Lesser configurations will probably give you very 
 poor framerates.
 
+TODO: rewrite completely, incorrect.
 You just have to execute nel_launcher.exe (and never snowballs.exe directly).
 The application will prompt you a login and password. If you enter
 a user name that has never been used before on the server that you are
@@ -91,9 +95,11 @@ as you'll need each time you login in the future. Use only alphanumeric
 value for login and password, don't use space and other strange characters.
 WARNING: Password are not crypted so you should use 'dummy' password.
 
+TODO: rewrite completely, incorrect.
 After you have to select a shard if available, just click on the shard name.
 It patch if necessary and automatically launch snowballs game, just wait.
 
+TODO: rewrite completely, incorrect and extremely boring.
 You're now a penguin on an artic snowfield. You have snowballs which you
 can throw at other people. When you throw a snowball, you have a few
 seconds during which you gather more snow before you can throw the next
@@ -117,7 +123,7 @@ F6: switch on/off the radar
 F7: zoom out the radar
 F8: zoom in the radar
 F9: capture or uncapture the mouse
-F10: Windows menu (Windows only)
+F10: switch betweeon online and offline
 F11: reset player position
 F12: take a screenshot
 SHIFT-ESC: quit
@@ -128,6 +134,6 @@ Type text followed by ENTER to broadcast messages
 8. Contacting us
    -------------
 
-For comments and problems relating to SNOWBALLS contact us at snowballs@nevrax.com
-For comments, bugs and suggestions relating to NeL contact us at nel@nevrax.com
-
+For comments and problems relating to SNOWBALLS or NeL 
+you can go to the forums at http://www.opennel.org/jforum/forums/list.page
+or use the issue tracker at http://www.opennel.org/jira/secure/Dashboard.jspa

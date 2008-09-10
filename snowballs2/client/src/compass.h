@@ -2,7 +2,7 @@
  * Snowballs 2 specific code for managing the compass.
  * This code was taken from Snowballs 1.
  *
- * $Id: compass.h,v 1.1 2001/07/18 16:06:34 lecroart Exp $
+ * $Id: compass.h,v 1.1 2001-07-18 16:06:34 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

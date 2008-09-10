@@ -1,7 +1,7 @@
 /** \file pacs.cpp
  * pacs management
  *
- * $Id: pacs.cpp,v 1.8 2001/08/14 13:45:34 lecroart Exp $
+ * $Id: pacs.cpp,v 1.8 2001-08-14 13:45:34 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -26,6 +26,8 @@
 //
 // Includes
 //
+
+#include <nel/misc/types_nl.h>
 
 #include <vector>
 
@@ -56,6 +58,8 @@ using namespace NLMISC;
 using namespace NL3D;
 using namespace NLPACS;
 
+extern ULandscape *Landscape;
+
 //
 // Variables
 //
@@ -67,7 +71,7 @@ UGlobalRetriever			*GlobalRetriever;
 // The move container used for dynamic collisions
 UMoveContainer				*MoveContainer;
 
-// The collision manager for ground snappping
+// The collision manager for ground snapping
 UVisualCollisionManager		*VisualCollisionManager;
 
 // The collision primitive for the instances in the landscape
@@ -80,18 +84,21 @@ vector<UMovePrimitive *>	InstancesMovePrimitives;
 void	initPACS()
 {
 	// init the global retriever and the retriever bank
-	RetrieverBank = URetrieverBank::createRetrieverBank(ConfigFile.getVar("RetrieverBankName").asString().c_str());
-	GlobalRetriever = UGlobalRetriever::createGlobalRetriever(ConfigFile.getVar("GlobalRetrieverName").asString().c_str(), RetrieverBank);
+	RetrieverBank = URetrieverBank::createRetrieverBank(ConfigFile->getVar("RetrieverBankName").asString().c_str());
+	GlobalRetriever = UGlobalRetriever::createGlobalRetriever(ConfigFile->getVar("GlobalRetrieverName").asString().c_str(), RetrieverBank);
 
 	// create the move primitive
 	MoveContainer = UMoveContainer::createMoveContainer(GlobalRetriever, 100, 100, 6.0);
 
 	// create a visual collision manager
 	// this should not be in pacs, but this is too close to pacs to be put elsewhere
+	// -- -- put it elsewhere anyways, the other code in this page can be made re-usable 
+	//       to share between the client and the collision service.
 	VisualCollisionManager = Scene->createVisualCollisionManager();
 	VisualCollisionManager->setLandscape(Landscape);
 
-	// create a move primite for each instance in the instance group
+	// -- -- move this to snowballs specific game task
+	// create a move primitive for each instance in the instance group
 	uint	i, j;
 	for (j=0; j<InstanceGroups.size(); ++j)
 	{
@@ -109,6 +116,7 @@ void	initPACS()
 			string	name = InstanceGroups[j]->getShapeName(i);
 			float rad;
 
+			// -- -- improve this
 			     if (strlwr(name) == "pi_po_igloo_a")		rad = 4.5f;
 			else if (strlwr(name) == "pi_po_snowman_a")		rad = 1.0f;
 			else if (strlwr(name) == "pi_po_pinetree_a")	rad = 2.0f;
@@ -134,7 +142,7 @@ void	initPACS()
 
 void	releasePACS()
 {
-	// create a move primite for each instance in the instance group
+	// all move primitives
 	uint	i;
 	for (i=0; i<InstancesMovePrimitives.size(); ++i)
 		MoveContainer->removePrimitive(InstancesMovePrimitives[i]);

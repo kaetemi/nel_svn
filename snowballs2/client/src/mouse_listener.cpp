@@ -1,7 +1,7 @@
 /** \file event_mouse_listener.cpp
  * Snowballs 2 specific code for managing the mouse listener.
  *
- * $Id: mouse_listener.cpp,v 1.17 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: mouse_listener.cpp,v 1.17 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -26,6 +26,8 @@
 //
 // Includes
 //
+
+#include <nel/misc/types_nl.h>
 
 #include <nel/misc/event_server.h>
 #include <nel/3d/u_driver.h>
@@ -66,6 +68,13 @@ static float GroundCamLimit = 0.5f;
 
 C3dMouseListener::C3dMouseListener()
 {
+	// -- -- a mouse listener that can aim at the ground with a shape
+	//       and does a bunch of other random things that should be
+	//       done by something else, really
+
+	// -- -- half of this thing has to be split up into a
+	//       CKeyboardControlledMovePrimitive or something
+
 	_Matrix.identity();
 	_ModelMatrix.identity() ;
 	_EnableModelMatrixEdition = false ;
@@ -96,6 +105,10 @@ C3dMouseListener::C3dMouseListener()
 
 C3dMouseListener::~C3dMouseListener()
 {
+	// -- -- doesn't need to know about the snowballs specific global, 
+	//       scene shout be passed at construction to create aiming instance
+	// -- -- random note: aiminginstance here and aimingentity in landscape.cpp ...
+	//       one of them obviously is in the wrong place
 	Scene->deleteInstance(_AimingInstance);
 }
 
@@ -153,7 +166,6 @@ void C3dMouseListener::operator ()(const CEvent& event)
 		// Normalize, too much transformation could give an ugly matrix..
 		_Matrix.normalize (CMatrix::XYZ);			
 
-
 		// Update mouse position
 		Driver->setMousePos(0.5f, 0.5f);
 		_X = 0.5f;
@@ -181,7 +193,7 @@ void C3dMouseListener::operator ()(const CEvent& event)
 		}
 		else
 		{
-			shotSnowball (rand(), Self->Id, _AimingPosition, _AimedTarget, SnowballSpeed, _AimingDamage);
+			shotSnowball (NextEID++, Self->Id, _AimingPosition, _AimedTarget, SnowballSpeed, _AimingDamage);
 		}
 	}
 	else if (event==EventMouseWheelId)
@@ -222,6 +234,8 @@ void C3dMouseListener::update()
 	// CVector
 	CVector dir (0,0,0);
 	bool find=false;
+
+	// -- -- what does the mouse listener have to do with the keyboard?!
 
 	// Key pushed ?
 	if (_AsyncListener.isKeyDown (KeyUP))
@@ -434,15 +448,25 @@ void	cbUpdateMouseListenerConfig(CConfigFile::CVar &var)
 
 void	initMouseListenerConfig()
 {
-	ConfigFile.setCallback ("MouseInvert", cbUpdateMouseListenerConfig);
-	ConfigFile.setCallback ("MouseZoomStep", cbUpdateMouseListenerConfig);
-	ConfigFile.setCallback ("ViewLagBehind", cbUpdateMouseListenerConfig);
-	ConfigFile.setCallback ("ViewHeight", cbUpdateMouseListenerConfig);
-	ConfigFile.setCallback ("ViewTargetHeight", cbUpdateMouseListenerConfig);
+	ConfigFile->setCallback ("MouseInvert", cbUpdateMouseListenerConfig);
+	ConfigFile->setCallback ("MouseZoomStep", cbUpdateMouseListenerConfig);
+	ConfigFile->setCallback ("ViewLagBehind", cbUpdateMouseListenerConfig);
+	ConfigFile->setCallback ("ViewHeight", cbUpdateMouseListenerConfig);
+	ConfigFile->setCallback ("ViewTargetHeight", cbUpdateMouseListenerConfig);
 
-	cbUpdateMouseListenerConfig(ConfigFile.getVar ("MouseInvert"));
-	cbUpdateMouseListenerConfig(ConfigFile.getVar ("MouseZoomStep"));
-	cbUpdateMouseListenerConfig(ConfigFile.getVar ("ViewLagBehind"));
-	cbUpdateMouseListenerConfig(ConfigFile.getVar ("ViewHeight"));
-	cbUpdateMouseListenerConfig(ConfigFile.getVar ("ViewTargetHeight"));
+	cbUpdateMouseListenerConfig(ConfigFile->getVar ("MouseInvert"));
+	cbUpdateMouseListenerConfig(ConfigFile->getVar ("MouseZoomStep"));
+	cbUpdateMouseListenerConfig(ConfigFile->getVar ("ViewLagBehind"));
+	cbUpdateMouseListenerConfig(ConfigFile->getVar ("ViewHeight"));
+	cbUpdateMouseListenerConfig(ConfigFile->getVar ("ViewTargetHeight"));
 }
+
+void releaseMouseListenerConfig()
+{
+	ConfigFile->setCallback("MouseInvert", NULL);
+	ConfigFile->setCallback("MouseZoomStep", NULL);
+	ConfigFile->setCallback("ViewLagBehind", NULL);
+	ConfigFile->setCallback("ViewHeight", NULL);
+	ConfigFile->setCallback("ViewTargetHeight", NULL);
+}
+

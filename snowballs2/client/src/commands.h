@@ -1,7 +1,7 @@
 /** \file commands.h
  * Snowballs 2 specific code for managing the command interface
  *
- * $Id: commands.h,v 1.7 2001/07/18 17:30:17 lecroart Exp $
+ * $Id: commands.h,v 1.7 2001-07-18 17:30:17 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

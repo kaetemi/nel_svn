@@ -1,7 +1,7 @@
 /** \file landscape.cpp
  * Landscape interface between the game and NeL
  *
- * $Id: landscape.cpp,v 1.19 2003/04/04 17:00:10 lecroart Exp $
+ * $Id: landscape.cpp,v 1.19 2003-04-04 17:00:10 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -72,13 +72,18 @@ using namespace NL3D;
 // Variables
 //
 
-ULandscape				*Landscape = NULL;
+
+
+
 UVisualCollisionEntity	*AimingEntity = NULL;
+
+
 vector<UInstanceGroup*>	 InstanceGroups;
 
-ULight					*Sun = NULL;
 
+ULight					*Sun = NULL;
 NLMISC::CVector			 SunDirection;
+
 
 //
 // Functions
@@ -86,15 +91,34 @@ NLMISC::CVector			 SunDirection;
 
 void cbUpdateLandscape (CConfigFile::CVar &var)
 {
-	if (var.Name == "LandscapeTileNear") Landscape->setTileNear (var.asFloat ());
-	else if (var.Name == "LandscapeThresold") Landscape->setThreshold (var.asFloat ());
-	else if (var.Name == "FogStart") Driver->setupFog (var.asFloat (), ConfigFile.getVar ("FogEnd").asFloat (), CRGBA(ConfigFile.getVar ("FogColor").asInt (0), ConfigFile.getVar ("FogColor").asInt (1), ConfigFile.getVar ("FogColor").asInt (2)));
-	else if (var.Name == "FogEnd") Driver->setupFog (ConfigFile.getVar ("FogStart").asFloat (), var.asFloat (), CRGBA(ConfigFile.getVar ("FogColor").asInt (0), ConfigFile.getVar ("FogColor").asInt (1), ConfigFile.getVar ("FogColor").asInt (2)));
-	else if (var.Name == "FogColor") Driver->setupFog (ConfigFile.getVar ("FogStart").asFloat (), ConfigFile.getVar ("FogEnd").asFloat (), CRGBA(var.asInt (0), var.asInt (1), var.asInt (2)));
+	// -- -- split this whole thing up, lol
+
+	if (var.Name == "FogStart") 
+		Driver->setupFog (var.asFloat (), 
+		ConfigFile->getVar ("FogEnd").asFloat (), 
+		CRGBA(ConfigFile->getVar ("FogColor").asInt (0), 
+		ConfigFile->getVar ("FogColor").asInt (1),
+		ConfigFile->getVar ("FogColor").asInt (2)));
+	else if (var.Name == "FogEnd") 
+		Driver->setupFog (ConfigFile->getVar ("FogStart").asFloat (), 
+		var.asFloat (), 
+		CRGBA(ConfigFile->getVar ("FogColor").asInt (0), 
+		ConfigFile->getVar ("FogColor").asInt (1),
+		ConfigFile->getVar ("FogColor").asInt (2)));
+	else if (var.Name == "FogColor")
+		Driver->setupFog(
+		ConfigFile->getVar ("FogStart").asFloat (), 
+		ConfigFile->getVar ("FogEnd").asFloat (), 
+		CRGBA(var.asInt (0), var.asInt (1), var.asInt (2)));
 	else if (var.Name == "FogEnable")
 	{
-		Driver->enableFog (var.asInt () == 1);
-		Driver->setupFog (ConfigFile.getVar ("FogStart").asFloat (), ConfigFile.getVar ("FogStart").asFloat (), CRGBA(ConfigFile.getVar ("FogColor").asInt (0), ConfigFile.getVar ("FogColor").asInt (1), ConfigFile.getVar ("FogColor").asInt (2)));
+		Driver->enableFog(var.asBool());
+		Driver->setupFog(
+			ConfigFile->getVar("FogStart").asFloat(), 
+			ConfigFile->getVar("FogEnd").asFloat(),
+			CRGBA(ConfigFile->getVar("FogColor").asInt(0), 
+			ConfigFile->getVar ("FogColor").asInt(1), 
+			ConfigFile->getVar ("FogColor").asInt(2)));
 	}
 	else if (var.Name == "SunAmbientColor")
 	{
@@ -120,35 +144,61 @@ void cbUpdateLandscape (CConfigFile::CVar &var)
 	else nlwarning ("Unknown variable update %s", var.Name.c_str());
 }
 
+void initLight()
+{
+	// -- -- sun or whatever light, simple use, doesn't need class yet
+
+	Sun = ULight::createLight();
+	nlassert(Sun != NULL);
+	Sun->setMode(ULight::DirectionalLight);
+	Driver->enableLight(0);
+
+	ConfigFile->setCallback("SunAmbientColor", cbUpdateLandscape);
+	ConfigFile->setCallback("SunDiffuseColor", cbUpdateLandscape);
+	ConfigFile->setCallback("SunSpecularColor", cbUpdateLandscape);
+	ConfigFile->setCallback("SunDirection", cbUpdateLandscape);
+
+	cbUpdateLandscape(ConfigFile->getVar("SunAmbientColor"));
+	cbUpdateLandscape(ConfigFile->getVar("SunDiffuseColor"));
+	cbUpdateLandscape(ConfigFile->getVar("SunSpecularColor"));
+	cbUpdateLandscape(ConfigFile->getVar("SunDirection"));
+}
+
+void releaseLight()
+{
+	// -- -- just data
+
+	ConfigFile->setCallback("SunAmbientColor", NULL);
+	ConfigFile->setCallback("SunDiffuseColor", NULL);
+	ConfigFile->setCallback("SunSpecularColor", NULL);
+	ConfigFile->setCallback("SunDirection", NULL);
+
+	delete Sun; Sun = NULL;
+}
 
 void	initLandscape()
 {
-	// create the landscape
-	Landscape = Scene->createLandscape();
 
-	// load the bank files
-	Landscape->loadBankFiles (CPath::lookup(ConfigFile.getVar("BankName").asString()), 
-							  CPath::lookup(ConfigFile.getVar("FarBankName").asString()));
 
-	// setup the zone path
-	Landscape->setZonePath (ConfigFile.getVar("DataPath").asString() + "zones/");
 
-	// and eventually, load the zones around the starting point.
-	Landscape->loadAllZonesAround (CVector(ConfigFile.getVar("StartPoint").asFloat(0),
-										   ConfigFile.getVar("StartPoint").asFloat(1),
-										   ConfigFile.getVar("StartPoint").asFloat(2)), 
-								   1000.0f);
+	ConfigFile->setCallback ("FogStart", cbUpdateLandscape);
+	ConfigFile->setCallback ("FogEnd", cbUpdateLandscape);
+	ConfigFile->setCallback ("FogColor", cbUpdateLandscape);
+	ConfigFile->setCallback ("FogEnable", cbUpdateLandscape);
 
-	// color of the landscape shadow
-	CRGBA diffuse (ConfigFile.getVar("LandscapeDiffuseColor").asInt(0), ConfigFile.getVar("LandscapeDiffuseColor").asInt(1), ConfigFile.getVar("LandscapeDiffuseColor").asInt(2));
-	
-	Landscape->setupStaticLight(
-		diffuse,
-		CRGBA(ConfigFile.getVar("LandscapeAmbiantColor").asInt(0), ConfigFile.getVar("LandscapeAmbiantColor").asInt(1), ConfigFile.getVar("LandscapeAmbiantColor").asInt(2)),
-		ConfigFile.getVar("LandscapeMultiplyFactor").asFloat());
+	cbUpdateLandscape (ConfigFile->getVar ("FogStart"));
+	cbUpdateLandscape (ConfigFile->getVar ("FogEnd"));
+	cbUpdateLandscape (ConfigFile->getVar ("FogColor"));
+	cbUpdateLandscape (ConfigFile->getVar ("FogEnable"));
 
-	CConfigFile::CVar igv = ConfigFile.getVar("InstanceGroups");
-	for (sint32 i = 0; i < igv.size (); i++)
+
+
+
+
+	// -- -- start of init for "instance groups loaded from config"
+
+	CConfigFile::CVar igv = ConfigFile->getVar("InstanceGroups");
+	for (uint32 i = 0; i < igv.size (); i++)
 	{
 		UInstanceGroup *inst = UInstanceGroup::createInstanceGroup (igv.asString (i));
 		if (inst == NULL)
@@ -161,49 +211,24 @@ void	initLandscape()
 			InstanceGroups.push_back (inst);
 		}
 	}
-
-	Sun = ULight::createLight ();
-	nlassert (Sun != NULL);
-	Sun->setMode (ULight::DirectionalLight);
-	Driver->enableLight (0);
-
-	ConfigFile.setCallback ("LandscapeTileNear", cbUpdateLandscape);
-	ConfigFile.setCallback ("LandscapeThresold", cbUpdateLandscape);
-	ConfigFile.setCallback ("FogStart", cbUpdateLandscape);
-	ConfigFile.setCallback ("FogEnd", cbUpdateLandscape);
-	ConfigFile.setCallback ("FogColor", cbUpdateLandscape);
-	ConfigFile.setCallback ("FogEnable", cbUpdateLandscape);
-
-	ConfigFile.setCallback ("SunAmbientColor", cbUpdateLandscape);
-	ConfigFile.setCallback ("SunDiffuseColor", cbUpdateLandscape);
-	ConfigFile.setCallback ("SunSpecularColor", cbUpdateLandscape);
-	ConfigFile.setCallback ("SunDirection", cbUpdateLandscape);
-
-	cbUpdateLandscape (ConfigFile.getVar ("LandscapeTileNear"));
-	cbUpdateLandscape (ConfigFile.getVar ("LandscapeThresold"));
-	cbUpdateLandscape (ConfigFile.getVar ("FogStart"));
-	cbUpdateLandscape (ConfigFile.getVar ("FogEnd"));
-	cbUpdateLandscape (ConfigFile.getVar ("FogColor"));
-	cbUpdateLandscape (ConfigFile.getVar ("FogEnable"));
-
-	cbUpdateLandscape (ConfigFile.getVar ("SunAmbientColor"));
-	cbUpdateLandscape (ConfigFile.getVar ("SunDiffuseColor"));
-	cbUpdateLandscape (ConfigFile.getVar ("SunSpecularColor"));
-	cbUpdateLandscape (ConfigFile.getVar ("SunDirection"));
-}
-
-void	updateLandscape()
-{
-	// load the zones around the viewpoint
-	Landscape->refreshZonesAround (MouseListener->getViewMatrix().getPos(), 1000.0f);
 }
 
 void	releaseLandscape()
 {
+
+	ConfigFile->setCallback("FogStart", NULL);
+	ConfigFile->setCallback("FogEnd", NULL);
+	ConfigFile->setCallback("FogColor", NULL);
+	ConfigFile->setCallback("FogEnable", NULL);
+
 }
+
 
 void	initAiming()
 {
+	// -- -- belongs in "camera that follows entity and can be used to aim"
+	// -- -- random note: is an extension of "camera that follows entity"
+
 	// Create an aiming entity
 	AimingEntity = VisualCollisionManager->createEntity();
 	AimingEntity->setCeilMode(true);
@@ -211,10 +236,26 @@ void	initAiming()
 
 void	releaseAiming()
 {
+	// -- -- belongs in CAimingEntityCamera
+
 	VisualCollisionManager->deleteEntity(AimingEntity);
 }
 
-
+// -- -- mix with following bit of code for higher accuracy
+//NLMISC::CVector CSceneryMouse::getLandscape()
+//{
+//	if (_LandscapeCached) return _LandscapeCache;
+//	CViewport v = _Driver->getViewport();
+//	CVector pos, dir; -- -- random note: this code gets the landscape position where the mouse is pointing at
+//	v.getRayWithPoint(_X * v.getWidth(), _Y * v.getHeight(), pos, dir, _Camera.getMatrix(), _Camera.getFrustum());
+//	dir.normalize();
+//	dir *= 50;
+// -- -- float rc = _Landscape->getRayCollision(pos, pos + dir);
+// -- -- _LandscapeCache = pos + (rc * dir);
+//	_LandscapeCached = true;
+//	return _LandscapeCache;
+//}
+// -- -- if higher than 50 or something, use code below
 CVector	getTarget(const CVector &start, const CVector &step, uint numSteps)
 {
 	CVector	testPos = start;
@@ -284,36 +325,55 @@ CVector	getTarget(const CVector &start, const CVector &step, uint numSteps)
 }
 */
 
+// -- -- snowballs specific commands, not for the landscape class itself, it assumes using 
+//       one landscape, and will get actual landscape from CSnowballsClient instance
+// -- -- random note: there will only be one instance of CSnowballsClient,
+//       which is the class that takes care of what is currently done in client.cpp
 
-NLMISC_DYNVARIABLE(float,tilenear,"landscape tile near")
-{
-	if (get)
-		*pointer = Landscape->getTileNear();
-	else
-		Landscape->setTileNear(*pointer);
-}
+//NLMISC_DYNVARIABLE(float,tilenear,"landscape tile near")
+//{
+//	if (get)
+//		*pointer = Landscape->getTileNear();
+//	else
+//		Landscape->setTileNear(*pointer);
+//}
+//
+//NLMISC_DYNVARIABLE(float,threshold,"landscape threshold")
+//{
+//	if (get)
+//		*pointer = Landscape->getThreshold();
+//	else
+//		Landscape->setThreshold(*pointer);
+//}
+//
+//// boost to 
+//NLMISC_COMMAND(boost,"switch landscape parameters between high speed and high quality","0|1")
+//{
+//	if (args.size() != 1 ) return false;
+//	if ( args[0]=="1" )
+//	{
+//		ICommand::execute( "tilenear 5", CommandsLog);
+//		ICommand::execute( "threshold 1", CommandsLog);
+//	}
+//	else
+//	{
+//		ICommand::execute( "tilenear 100", CommandsLog);
+//		ICommand::execute( "threshold 0.01", CommandsLog);
+//	}
+//	return true;
+//}
 
-NLMISC_DYNVARIABLE(float,threshold,"landscape threshold")
-{
-	if (get)
-		*pointer = Landscape->getThreshold();
-	else
-		Landscape->setThreshold(*pointer);
-}
 
-// boost to 
-NLMISC_COMMAND(boost,"switch landscape parameters between high speed and high quality","0|1")
+NLMISC_COMMAND(add_ig, "add instance group", "name")
 {
 	if (args.size() != 1 ) return false;
-	if ( args[0]=="1" )
-	{
-		ICommand::execute( "tilenear 5", CommandsLog);
-		ICommand::execute( "threshold 1", CommandsLog);
-	}
+	UInstanceGroup *inst = UInstanceGroup::createInstanceGroup(args[0]);
+	if (inst == NULL) nlwarning("Instance group '%s' not found", args[0].c_str());
 	else
 	{
-		ICommand::execute( "tilenear 100", CommandsLog);
-		ICommand::execute( "threshold 0.01", CommandsLog);
+		inst->addToScene(*Scene);
+		InstanceGroups.push_back(inst);
 	}
 	return true;
 }
+

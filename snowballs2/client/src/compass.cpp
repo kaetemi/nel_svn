@@ -2,7 +2,7 @@
  * Snowballs 2 specific code for managing the compass.
  * This code was taken from Snowballs 1.
  *
- * $Id: compass.cpp,v 1.4 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: compass.cpp,v 1.4 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -71,26 +71,30 @@ void cbUpdateCompass (CConfigFile::CVar &var)
 	if (var.Name == "CompassPosX") CompassPosX = var.asFloat ();
 	else if (var.Name == "CompassPosY") CompassPosY = var.asFloat ();
 	else if (var.Name == "CompassRadius") CompassRadius = var.asFloat ();
-	else if (var.Name == "CompassColor") CompassColor.set (var.asInt(0), var.asInt(1), var.asInt(2), var.asInt(3));
+	else if (var.Name == "CompassColor") 
+	{
+		CompassColor.set(var.asInt(0), var.asInt(1), var.asInt(2), var.asInt(3));
+		CompassMaterial.setColor(CompassColor);
+	}
 	else nlwarning ("Unknown variable update %s", var.Name.c_str());
 }
 
 void initCompass ()
 {
-	ConfigFile.setCallback ("CompassPosX", cbUpdateCompass);
-	ConfigFile.setCallback ("CompassPosY", cbUpdateCompass);
-	ConfigFile.setCallback ("CompassRadius", cbUpdateCompass);
-	ConfigFile.setCallback ("CompassColor", cbUpdateCompass);
-
-	cbUpdateCompass (ConfigFile.getVar ("CompassPosX"));
-	cbUpdateCompass (ConfigFile.getVar ("CompassPosY"));
-	cbUpdateCompass (ConfigFile.getVar ("CompassRadius"));
-	cbUpdateCompass (ConfigFile.getVar ("CompassColor"));
-
 	CompassMaterial = Driver->createMaterial ();
 	CompassMaterial.initUnlit ();
 	CompassMaterial.setBlendFunc (UMaterial::srcalpha, UMaterial::invsrcalpha);
 	CompassMaterial.setBlend(true);
+
+	ConfigFile->setCallback ("CompassPosX", cbUpdateCompass);
+	ConfigFile->setCallback ("CompassPosY", cbUpdateCompass);
+	ConfigFile->setCallback ("CompassRadius", cbUpdateCompass);
+	ConfigFile->setCallback ("CompassColor", cbUpdateCompass);
+
+	cbUpdateCompass (ConfigFile->getVar ("CompassPosX"));
+	cbUpdateCompass (ConfigFile->getVar ("CompassPosY"));
+	cbUpdateCompass (ConfigFile->getVar ("CompassRadius"));
+	cbUpdateCompass (ConfigFile->getVar ("CompassColor"));
 }
 
 void updateCompass ()
@@ -98,8 +102,6 @@ void updateCompass ()
 	float x = CompassPosX;
 	float y = CompassPosY;
 	float radius = CompassRadius;
-
-	CompassMaterial.setColor(CompassColor);
 
 	// tri
 	CTriangle tri;
@@ -171,6 +173,11 @@ void updateCompass ()
 
 void releaseCompass ()
 {
+	ConfigFile->setCallback("CompassPosX", NULL);
+	ConfigFile->setCallback("CompassPosY", NULL);
+	ConfigFile->setCallback("CompassRadius", NULL);
+	ConfigFile->setCallback("CompassColor", NULL);
+
 	Driver->deleteMaterial (CompassMaterial);
 	CompassMaterial = NULL;
 }

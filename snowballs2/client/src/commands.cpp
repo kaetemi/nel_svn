@@ -1,7 +1,7 @@
 /** \file commands.cpp
  * Snowballs 2 specific code for managing the command interface
  *
- * $Id: commands.cpp,v 1.17 2005/11/07 13:01:53 cado Exp $
+ * $Id: commands.cpp,v 1.17 2005-11-07 13:01:53 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -27,9 +27,10 @@
 // Includes
 //
 
+#include <nel/misc/types_nl.h>
+
 #include <list>
 
-#include <nel/misc/types_nl.h>
 #include <nel/misc/event_listener.h>
 #include <nel/misc/command.h>
 #include <nel/misc/log.h>
@@ -73,6 +74,7 @@ static int CommandsNbLines;
 static float CommandsLineHeight;
 static int CommandsFontSize;
 static CRGBA CommandsBackColor, CommandsFrontColor;
+static UMaterial CommandsMaterial = NULL;
 
 //
 // Functions
@@ -258,33 +260,55 @@ void	initCommands()
 #endif
 
 	// Add callback for the config file
-	ConfigFile.setCallback ("CommandsBoxX", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsBoxY", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsBoxWidth", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsBoxBorder", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsNbLines", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsLineHeight", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsBackColor", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsFrontColor", cbUpdateCommands);
-	ConfigFile.setCallback ("CommandsFontSize", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsBoxX", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsBoxY", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsBoxWidth", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsBoxBorder", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsNbLines", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsLineHeight", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsBackColor", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsFrontColor", cbUpdateCommands);
+	ConfigFile->setCallback ("CommandsFontSize", cbUpdateCommands);
   
 	// Init the config file variable
-	cbUpdateCommands (ConfigFile.getVar ("CommandsBoxX"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsBoxY"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsBoxWidth"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsBoxBorder"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsNbLines"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsLineHeight"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsBackColor"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsFrontColor"));
-	cbUpdateCommands (ConfigFile.getVar ("CommandsFontSize"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsBoxX"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsBoxY"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsBoxWidth"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsBoxBorder"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsNbLines"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsLineHeight"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsBackColor"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsFrontColor"));
+	cbUpdateCommands (ConfigFile->getVar ("CommandsFontSize"));
+
+	CommandsMaterial = Driver->createMaterial();
+    CommandsMaterial.initUnlit();
+    CommandsMaterial.setBlendFunc(UMaterial::srcalpha, UMaterial::invsrcalpha);
+    CommandsMaterial.setBlend(true);
 }
 
 void	updateCommands()
 {
+	// Snap to pixels (kind of ugly code, but looks better ingame)
+	uint32 _width, _height;
+	Driver->getWindowSize(_width, _height);
+	float width = (float)_width, height = (float)_height;
+	float CommandsLineHeight = CommandsFontSize / height;
+	float CommandsBoxX = ((float)(sint32)(::CommandsBoxX * width)) / width;
+	float CommandsBoxWidth = ((float)(sint32)(::CommandsBoxWidth * width)) / width;
+	float CommandsBoxY = ((float)(sint32)(::CommandsBoxY * height)) / height;
+	float CommandsBoxHeight = ((float)(sint32)((CommandsNbLines + 1) * CommandsLineHeight * width)) / width;
+	float CommandsBoxBorderX = ((float)(sint32)(::CommandsBoxBorder * width)) / width;
+	float CommandsBoxBorderY = ((float)(sint32)(::CommandsBoxBorder * height)) / height;
+
 	// Display the background
 	Driver->setMatrixMode2D11 ();
-	Driver->drawQuad (CommandsBoxX-CommandsBoxBorder, CommandsBoxY-CommandsBoxBorder, CommandsBoxX+CommandsBoxWidth+CommandsBoxBorder, CommandsBoxY + (CommandsNbLines+1) * CommandsLineHeight + CommandsBoxBorder, CommandsBackColor);
+	CommandsMaterial.setColor(CommandsBackColor);
+	float x0 = CommandsBoxX - CommandsBoxBorderX;
+	float y0 = CommandsBoxY - CommandsBoxBorderY;
+	float x1 = CommandsBoxX + CommandsBoxWidth + CommandsBoxBorderX;
+	float y1 = CommandsBoxY + CommandsBoxHeight + CommandsBoxBorderY;
+	Driver->drawQuad(CQuad(CVector(x0, y0, 0), CVector(x1, y0, 0), CVector(x1, y1, 0), CVector(x0, y1, 0)), CommandsMaterial);
 
 	// Set the text context
 	TextContext->setHotSpot (UTextContext::BottomLeft);
@@ -292,18 +316,20 @@ void	updateCommands()
 	TextContext->setFontSize (CommandsFontSize);
 
 	// Display the user input line
-	string line = string("> ")+CommandsListener.line() + string ("_");
-	TextContext->printfAt (CommandsBoxX, CommandsBoxY + CommandsBoxBorder, line.c_str());
-	CommandsListener.setMaxWidthReached (TextContext->getLastXBound() > (CommandsBoxWidth-CommandsBoxBorder)*1.33f); // max is 1.33=4/3
+	ucstring line = ucstring("> ") + ucstring(CommandsListener.line()) + ucstring("_");
+	uint32 csi = TextContext->textPush(line);	
+	float sw = TextContext->getStringInfo(csi).StringWidth / width; // make sure newly typed text is visible
+	TextContext->printAt(sw > CommandsBoxWidth ? CommandsBoxX - sw + CommandsBoxWidth : CommandsBoxX, CommandsBoxY, csi);
+	TextContext->erase(csi);
 
 	// Display stored lines
-	float yPos = CommandsBoxY + CommandsBoxBorder;
+	float yPos = CommandsBoxY;
 	list<string>::reverse_iterator rit = StoredLines.rbegin();
-	for (sint i = 0; i < CommandsNbLines; i++)
+	for (sint32 i = 0; i < CommandsNbLines; ++i)
 	{
 		yPos += CommandsLineHeight;
 		if (rit == StoredLines.rend()) break;
-		TextContext->printfAt (CommandsBoxX, yPos, (*rit).c_str());
+		TextContext->printfAt(CommandsBoxX, yPos, (*rit).c_str());
 		rit++;
 	}
 }
@@ -313,10 +339,34 @@ void	clearCommands ()
 	StoredLines.clear ();
 }
 
-void	releaseCommands()
+void releaseCommands()
 {
-	// Rmove the keyboard listener from the server
-	Driver->EventServer.removeListener (EventCharId, &CommandsListener);
+	// Remove the displayers
+	CommandsLog.removeDisplayer(&CommandsDisplayer);
+#ifndef NL_RELEASE
+	InfoLog->removeDisplayer(&CommandsDisplayer);
+	InfoLog->removeDisplayer(&CommandsDisplayer);
+	WarningLog->removeDisplayer(&CommandsDisplayer);
+	AssertLog->removeDisplayer(&CommandsDisplayer);
+	ErrorLog->removeDisplayer(&CommandsDisplayer);
+#endif
+
+	// Remove callbacks for the config file
+	ConfigFile->setCallback("CommandsBoxX", NULL);
+	ConfigFile->setCallback("CommandsBoxY", NULL);
+	ConfigFile->setCallback("CommandsBoxWidth", NULL);
+	ConfigFile->setCallback("CommandsBoxBorder", NULL);
+	ConfigFile->setCallback("CommandsNbLines", NULL);
+	ConfigFile->setCallback("CommandsLineHeight", NULL);
+	ConfigFile->setCallback("CommandsBackColor", NULL);
+	ConfigFile->setCallback("CommandsFrontColor", NULL);
+	ConfigFile->setCallback("CommandsFontSize", NULL);
+
+	// Remove the keyboard listener from the server
+	Driver->EventServer.removeListener(EventCharId, &CommandsListener);
+
+	// Remove the material
+	Driver->deleteMaterial(CommandsMaterial);
 }
 
 NLMISC_COMMAND(clear,"clear the chat history","")

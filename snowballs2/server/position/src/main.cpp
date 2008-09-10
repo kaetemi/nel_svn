@@ -1,7 +1,7 @@
 /*
  * This file contain the Snowballs Position Service.
  *
- * $Id: main.cpp,v 1.12 2002/10/10 17:51:46 lecroart Exp $
+ * $Id: main.cpp,v 1.12 2002-10-10 17:51:46 lecroart Exp $
  */
 
 /*
@@ -63,6 +63,8 @@ using namespace std;
 #define THROW_ANIM_OFFSET  1000
 
 
+
+
 // Define information used for all connected players to the shard.
 struct _player
 {
@@ -93,12 +95,190 @@ struct _snowball
 list<_snowball> snoList;
 
 
+
+
+class CCLSClient
+{
+private:
+	struct _entity
+	{
+		_entity() { }
+		_entity(CVector position, float radius)
+			: Position(position), Radius(radius) { }
+		CVector Position;
+		float Radius;
+	};
+
+	static map<uint32, _entity> adds;
+	static map<uint32, CVector> positions;
+	static map<uint32, CVector> moves;
+	static map<uint32, float> radiuses;
+	static map<uint32, uint8> removes;
+public:
+	static void cbUpdate(CMessage &msgin, const std::string &serviceName, TServiceId sid)
+	{
+		// nldebug("Received CLS_UPDATE, %s %s", serviceName.c_str(), sid.toString().c_str());
+
+		for (map<uint32, _entity>::iterator it = adds.begin(); it != adds.end(); it++)
+		{
+			CMessage msgout("ADD");
+			msgout.serial((uint32 &)it->first);
+			msgout.serial(it->second.Position);
+			msgout.serial(it->second.Radius);
+			CUnifiedNetwork::getInstance()->send(sid, msgout);
+		}
+		adds.clear();
+
+		for (map<uint32, CVector>::iterator it = positions.begin(); it != positions.end(); it++)
+		{
+			CMessage msgout("POSITION");
+			msgout.serial((uint32 &)it->first);
+			msgout.serial((NLMISC::CVector &)it->second);
+			CUnifiedNetwork::getInstance()->send(sid, msgout);
+		}
+		positions.clear();
+
+		for (map<uint32, CVector>::iterator it = moves.begin(); it != moves.end(); it++)
+		{
+			CMessage msgout("MOVE");
+			msgout.serial((uint32 &)it->first);
+			msgout.serial((NLMISC::CVector &)it->second);
+			CUnifiedNetwork::getInstance()->send(sid, msgout);
+		}
+		moves.clear();
+
+		for (map<uint32, float>::iterator it = radiuses.begin(); it != radiuses.end(); it++)
+		{
+			CMessage msgout("RADIUS");
+			msgout.serial((uint32 &)it->first);
+			msgout.serial((float &)it->second);
+			CUnifiedNetwork::getInstance()->send(sid, msgout);
+		}
+		radiuses.clear();
+
+		for (map<uint32, uint8>::iterator it = removes.begin(); it != removes.end(); it++)
+		{
+			CMessage msgout("REMOVE");
+			msgout.serial((uint32 &)it->first);
+			CUnifiedNetwork::getInstance()->send(sid, msgout);
+		}
+		removes.clear();
+	}
+
+	static void cbPosition(CMessage &msgin, const std::string &serviceName, TServiceId sid)
+	{
+
+	}
+
+	static void addEntity(uint32 id, CVector position, float radius)
+	{
+		adds[id] = _entity(position, radius);
+	}
+
+	static void removeEntity(uint32 id)
+	{
+		if (positions.find(id) != positions.end()) positions.erase(id);
+		if (moves.find(id) != moves.end()) moves.erase(id);
+		if (radiuses.find(id) != radiuses.end()) radiuses.erase(id);
+		if (adds.find(id) == adds.end()) removes[id] = 1;
+		else adds.erase(id);
+	}
+	
+	static void movePosition(uint32 id, CVector position)
+	{
+		moves[id] = position;
+	}
+
+	static void setPosition(uint32 id, CVector position)
+	{
+		if (moves.find(id) != moves.end()) moves.erase(id);
+		if (adds.find(id) == adds.end()) positions[id] = position;
+		else adds[id].Position = position;
+	}
+
+	static void setRadius(uint32 id, float radius)
+	{
+		if (adds.find(id) == adds.end()) radiuses[id] = radius;
+		else adds[id].Radius = radius;
+	}
+
+	static void msgRegister(TServiceId sid)
+	{
+		CMessage msgout("REGISTER");
+		CUnifiedNetwork::getInstance()->send(sid, msgout);
+	}
+
+	static void clear()
+	{
+		adds.clear();
+		positions.clear();
+		moves.clear();
+		radiuses.clear();
+		removes.clear();
+	}
+};
+map<uint32, CCLSClient::_entity> CCLSClient::adds;
+map<uint32, CVector> CCLSClient::positions;
+map<uint32, CVector> CCLSClient::moves;
+map<uint32, float> CCLSClient::radiuses;
+map<uint32, uint8> CCLSClient::removes;
+
+class CCLSClientPOS : public CCLSClient
+{
+public:
+	static void cbPosition(CMessage &msgin, const std::string &serviceName, TServiceId sid)
+	{
+		// temp
+		uint32 id;
+		CVector position;
+		msgin.serial(id);
+		msgin.serial(position);
+		nldebug("Received CLS_POSITION, %s %s", serviceName.c_str(), sid.toString().c_str());
+
+		// Update position information in the player list
+		_pmap::iterator ItPlayer;
+		ItPlayer = playerList.find( id );
+		if ( ItPlayer == playerList.end() )
+		{
+			nlwarning( "Player id %u not found !", id );
+		}
+		else
+		{
+			((*ItPlayer).second).position = position;
+			//nldebug( "SB: Player position updated" );
+		}
+
+		CMessage msgout("ENTITY_TP");
+		msgout.serial(id);
+		msgout.serial(position);
+		CUnifiedNetwork::getInstance()->send("FS", msgout);
+	}
+
+	/****************************************************************************
+	 * Connection callback for the collision service
+	 ****************************************************************************/
+	static void cbCollisionServiceUp(const std::string &serviceName, TServiceId sid, void *arg)
+	{
+		nldebug("SB: Collision Service UP, %s %s", serviceName.c_str(), sid.toString().c_str());
+		clear();
+		msgRegister(sid);
+		for (_pmap::iterator it = playerList.begin(); it != playerList.end(); it++)
+			addEntity(it->second.id, it->second.position, 1.0f);
+	}
+};
+
+
+
+
+
+
+
 /****************************************************************************
  * Function:   cbAddEntity
  *             Callback function called when the Position Service receive a
  *             "ADD_ENTITY" message
  ****************************************************************************/
-void cbAddEntity (CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbAddEntity (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	bool    all;
 	uint32  id;
@@ -128,6 +308,8 @@ void cbAddEntity (CMessage &msgin, const std::string &serviceName, uint16 sid)
 	 * it back to the sender, that last argument should be 'from' inteed of '0'
 	 */
 	CUnifiedNetwork::getInstance ()->send( "FS", msgout );
+
+	CCLSClientPOS::addEntity(id, startPoint, /* 10.0f, */ 1.0f);
 
 	nldebug( "SB: Send back ADD_ENTITY line." );
 
@@ -159,7 +341,7 @@ void cbAddEntity (CMessage &msgin, const std::string &serviceName, uint16 sid)
  *             Callback function called when the Position Service receive a
  *             "ENTITY_POS" message
  ****************************************************************************/
-void cbPosition (CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbPosition (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32  id;
 	CVector pos;
@@ -198,6 +380,8 @@ void cbPosition (CMessage &msgin, const std::string &serviceName, uint16 sid)
 	 */
 	CUnifiedNetwork::getInstance ()->send( "FS", msgout );
 
+	CCLSClientPOS::movePosition(id, pos);
+
 	//nldebug( "SB: Send back ENTITY_POS line." );
 }
 
@@ -207,7 +391,7 @@ void cbPosition (CMessage &msgin, const std::string &serviceName, uint16 sid)
  *             Callback function called when the Position Service receive a
  *             "REMOVE_ENTITY" message
  ****************************************************************************/
-void cbRemoveEntity (CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbRemoveEntity (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	uint32 id;
 
@@ -227,6 +411,8 @@ void cbRemoveEntity (CMessage &msgin, const std::string &serviceName, uint16 sid
 	// Remove player form the player list.
 	playerList.erase( id );	
 
+	CCLSClientPOS::removeEntity(id);
+
 	nldebug( "SB: Send back REMOVE_ENTITY line. %d players left ...",
 			playerList.size() );
 }
@@ -237,7 +423,7 @@ void cbRemoveEntity (CMessage &msgin, const std::string &serviceName, uint16 sid
  *             Callback function called when the Position Service receive a
  *             "SNOWBALL" message
  ****************************************************************************/
-void cbSnowball (CMessage &msgin, const std::string &serviceName, uint16 sid)
+void cbSnowball (CMessage &msgin, const std::string &serviceName, TServiceId sid)
 {
 	static uint32 snowballId = START_SNOW_ID;
 
@@ -291,7 +477,9 @@ TUnifiedCallbackItem CallbackArray[] =
 	{ "ADD_ENTITY",    cbAddEntity    },
 	{ "ENTITY_POS",    cbPosition     },
 	{ "REMOVE_ENTITY", cbRemoveEntity },
-	{ "SNOWBALL",      cbSnowball     }
+	{ "SNOWBALL",      cbSnowball     },
+	{ "CLS_UPDATE", CCLSClientPOS::cbUpdate },
+	{ "CLS_POSITION", CCLSClientPOS::cbPosition }
 };
 
 
@@ -316,13 +504,17 @@ void SendHITMsg ( uint32 snowball, uint32 victim, bool direct )
 	CUnifiedNetwork::getInstance ()->send( "FS", msgout );
 }
 
-
 /****************************************************************************
  * CPositionService
  ****************************************************************************/
 class CPositionService : public IService
 {
 public:
+
+	void init()
+	{
+		CUnifiedNetwork::getInstance()->setServiceUpCallback("CLS", CCLSClientPOS::cbCollisionServiceUp, 0);
+	}
 
 	// Update fonction, called at every frames
 	bool update()

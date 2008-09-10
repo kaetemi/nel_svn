@@ -1,7 +1,7 @@
 /** \file interface.h
  * Snowballs 2 specific code for managing interface
  *
- * $Id: interface.h,v 1.2 2001/07/18 16:06:20 lecroart Exp $
+ * $Id: interface.h,v 1.2 2001-07-18 16:06:20 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -46,7 +46,7 @@ void	releaseInterface ();
 // queryString -> the string that will be display to the user
 // defaultString -> default prompt string
 // prompt -> set the user prompt format (0=normal, 1=with_star 2=no_prompt)
-// color -> the background coloe
+// color -> the background color
 void	askString (const std::string &queryString, const std::string &defaultString="", sint prompt=0, const NLMISC::CRGBA &color=NLMISC::CRGBA(0,0,64,128));
 
 // Return true if the answer have answered with the user answer in answer string

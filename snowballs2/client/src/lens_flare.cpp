@@ -2,7 +2,7 @@
  * Snowballs 2 specific code for managing the lens flare.
  * This code was taken from Snowballs 1.
  *
- * $Id: lens_flare.cpp,v 1.6 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: lens_flare.cpp,v 1.6 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -82,6 +82,7 @@ class CLensFlare
 		
 		_CFlare(NL3D::UTexture *texture, float width, float height, float location, float scale)
 		{
+			// -- -- nicely re-usable class, but why should it know about the snowballs specific driver global
 			Material = Driver->createMaterial ();
 			Material.initUnlit ();
 			Material.setTexture (texture);
@@ -121,6 +122,7 @@ public:
 		_AlphaCoef = coef;
 	}
 
+	// -- -- random note: show actually shows and is used within update
 	/// lens flare display function
 	void show();
 };
@@ -201,18 +203,26 @@ void CLensFlare::show()
 	}
 }
 
-static CLensFlare	*LensFlare = NULL;
+static CLensFlare *LensFlare = NULL;
+static UTextureFile *flareTexture1 = NULL;
+static UTextureFile *flareTexture3 = NULL;
+static UTextureFile *flareTexture4 = NULL;
+static UTextureFile *flareTexture5 = NULL;
+static UTextureFile *flareTexture6 = NULL;
+static UTextureFile *flareTexture7 = NULL;
 
 void initLensFlare ()
 {
+	// -- -- getting this from a config file would be more re-usable
+
 	LensFlare = new CLensFlare ();
 
-	UTexture *flareTexture1 = Driver->createTextureFile ("flare01.tga");
-	UTexture *flareTexture3 = Driver->createTextureFile ("flare03.tga");
-	UTexture *flareTexture4 = Driver->createTextureFile ("flare04.tga");
-	UTexture *flareTexture5 = Driver->createTextureFile ("flare05.tga");
-	UTexture *flareTexture6 = Driver->createTextureFile ("flare06.tga");
-	UTexture *flareTexture7 = Driver->createTextureFile ("flare07.tga");
+	flareTexture1 = Driver->createTextureFile("flare01.tga");
+	flareTexture3 = Driver->createTextureFile("flare03.tga");
+	flareTexture4 = Driver->createTextureFile("flare04.tga");
+	flareTexture5 = Driver->createTextureFile("flare05.tga");
+	flareTexture6 = Driver->createTextureFile("flare06.tga");
+	flareTexture7 = Driver->createTextureFile("flare07.tga");
 
 	float w = 30/800.0f;
 	float h = 30/600.0f;
@@ -234,6 +244,9 @@ void initLensFlare ()
 
 void updateLensFlare ()
 {
+	// -- -- todo: see how much of this can be modified to depend on nel 
+	//       things only, and moved into the lensflare class
+
 	// vector to sun
 	//==============
 	CVector userLook = MouseListener->getViewDirection ();
@@ -266,13 +279,13 @@ void updateLensFlare ()
 	tmp = Camera.getFrustum().project(tmp);
 	uint32	w,h;
 	Driver->getWindowSize(w,h);
-	float sunRadius = 24;
+	float sunRadius = 24; // -- -- why 24
 	CRect rect((uint32)(tmp.x*w)-(uint32)sunRadius,(uint32)(tmp.y*h)-(uint32)sunRadius,2*(uint32)sunRadius,2*(uint32)sunRadius);
 	vector<float> zbuff;
 	Driver->getZBufferPart(zbuff, rect);
 	float view = 0.f;
 	float sum = 0;
-	sint i;
+	sint i; // -- -- signed?
 	for(i=0; i<(sint)zbuff.size(); i++)
 	{
 		if(zbuff[i]>=0.99999f) sum ++;
@@ -296,6 +309,11 @@ void updateLensFlare ()
 
 void releaseLensFlare ()
 {
-	delete LensFlare;
-	LensFlare = NULL;
+	delete LensFlare; LensFlare = NULL;
+	Driver->deleteTextureFile(flareTexture1); flareTexture1 = NULL;
+	Driver->deleteTextureFile(flareTexture3); flareTexture3 = NULL;
+	Driver->deleteTextureFile(flareTexture4); flareTexture4 = NULL;
+	Driver->deleteTextureFile(flareTexture5); flareTexture5 = NULL;
+	Driver->deleteTextureFile(flareTexture6); flareTexture6 = NULL;
+	Driver->deleteTextureFile(flareTexture7); flareTexture7 = NULL;
 }

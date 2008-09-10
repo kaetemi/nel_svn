@@ -1,11 +1,9 @@
 
-If you find any bugs use the Nevrax Bug Tracking System :
+If you find any bugs or have any suggestions use the OpenNeL Issue Tracker:
+   <URL:http://www.opennel.org/jira/secure/Dashboard.jspa>
 
-   <URL:http://www.nevrax.org/bugs/>
-
-If you need any help contact us on the NeL mailing-list :
-
-   <URL:http://www.nevrax.org/mail/>
+If you need any help contact us on the OpenNeL Forums:
+   <URL:http://www.opennel.org/jforum/forums/list.page>
 
 
 Requirements
@@ -13,18 +11,17 @@ Requirements
 
    Snowballs need the folowing libraries :
 
-      - STLPort 4.5           <URL:http://www.stlport.org/>
-      - NeL                   <URL:http://www.nevrax.org/>
+      - NeL                   <URL:http://www.opennel.org/>
             Default install plus NeL Sound.
-	    You need to launch the configure script with the '--enable-sound'
-	    option.
-      - NeLNS                 <URL:http://www.nevrax.org/>
+            You need to launch the configure script with the '--enable-sound'
+            option.
+      - NeLNS                 <URL:http://www.opennel.org/>
             This is mandatory to run the Snowballs server but it isn't for
-	    the Snowballs client.
+            the Snowballs client.
 
    And the lastest Snowballs data pack available :
 
-                              <URL:http://www.nevrax.org/download/cvs/>
+                              <URL:http://www.opennel.org/>
 
 
 Compilation
@@ -33,26 +30,11 @@ Compilation
    1. Windows compilation
    ----------------------
 
-      The compilation on Windows has been done only with Visual C++ 6.0 SP4.
-
-      Set up Visual C++ to find the STLPort libraries. This is done in the
-      [Tools -> Options -> Directories] menu :
-
-         - Add the STLPort include directory to the "Library Files" category.
-           ex: D:/stlport-4.0/stlport
-
-         - Add the STLPort library directory to the "Library Files" category.
-           ex: D:/stlport-4.0/lib
-
-      Open the workspace file "snowballs.dsw" (in the menu [File -> Workspace]).
-
-      Setup Visual C++ to find the NeL include and library files :
-
-         - Add the NEL include directory to the "Library Files" category.
-           ex: D:/prefix/include
-
-         - Add the STLPort library directory to the "Library Files" category.
-           ex: D:/prefix/lib
+      Visit the following urls for the most recent information:
+      
+         http://www.opennel.org/confluence/display/NEL/NeLRequiredLibrariesWindows
+         http://www.opennel.org/confluence/display/NEL/CompilingNelWindows
+         http://www.opennel.org/confluence/display/NEL/NeLSetupQuickStart
 
 
    2. GNU/Linux compilation
@@ -99,18 +81,4 @@ Installation
    --------------------------
 
       % make install
-
-
-Contact us
-==========
-
-   If you find any bugs use the Nevrax Bug Tracking System :
-
-      <URL:http://www.nevrax.org/bugs/>
-
-   If you need any help contact us on the NeL mailing-list :
-
-      <URL:http://www.nevrax.org/mail/>
-
-
 

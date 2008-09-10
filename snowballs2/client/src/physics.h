@@ -1,7 +1,7 @@
 /** \file physics.h
  * Physics computation for particles (and thus snowballs)
  *
- * $Id: physics.h,v 1.2 2001/07/23 16:34:38 legros Exp $
+ * $Id: physics.h,v 1.2 2001-07-23 16:34:38 legros Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -29,6 +29,8 @@
 //
 // Includes
 //
+
+#include <nel/misc/types_nl.h>
 
 #include <nel/misc/vector.h>
 #include <nel/misc/time_nl.h>

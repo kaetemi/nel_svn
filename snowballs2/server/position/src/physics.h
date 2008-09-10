@@ -1,7 +1,7 @@
 /** \file physics.h
  * Physics computation for particles (and thus snowballs)
  *
- * $Id: physics.h,v 1.1 2001/07/24 17:00:47 valignat Exp $
+ * $Id: physics.h,v 1.1 2001-07-24 17:00:47 valignat Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,7 @@
 /** \file physics.cpp
  * Snowballs trajectory computation
  *
- * $Id: physics.cpp,v 1.4 2001/07/27 09:07:42 lecroart Exp $
+ * $Id: physics.cpp,v 1.4 2001-07-27 09:07:42 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -27,6 +27,8 @@
 // Includes
 //
 
+#include <nel/misc/types_nl.h>
+
 #include "physics.h"
 
 //
@@ -35,6 +37,8 @@
 
 using namespace std;
 using namespace NLMISC;
+
+// -- -- this file exists twice
 
 CVector	CTrajectory::eval(NLMISC::TTime t) const
 {

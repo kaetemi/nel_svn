@@ -1,7 +1,7 @@
 /** \file interface.cpp
  * Snowballs 2 specific code for managing interface
  *
- * $Id: interface.cpp,v 1.2 2001/07/18 16:06:20 lecroart Exp $
+ * $Id: interface.cpp,v 1.2 2001-07-18 16:06:20 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -27,7 +27,9 @@
 // Includes
 //
 
-#include <math.h>
+#include <nel/misc/types_nl.h>
+
+#include <cmath>
 #include <nel/misc/vectord.h>
 #include <nel/misc/event_listener.h>
 
@@ -151,21 +153,34 @@ private:
 
 // Instance of the listener
 static CInterfaceListener InterfaceListener;
+static UMaterial InterfaceMaterial = NULL;
 
 
 void	initInterface()
 {
 	// Add the keyboard listener in the event server
 	Driver->EventServer.addListener (EventCharId, &InterfaceListener);
+
+        InterfaceMaterial = Driver->createMaterial();
+        InterfaceMaterial.initUnlit();
+        InterfaceMaterial.setBlendFunc(UMaterial::srcalpha, UMaterial::invsrcalpha);
+        InterfaceMaterial.setBlend(true);
 }
 
 void	updateInterface()
 {
-	if (QueryString.empty()) return;
+        if (QueryString.empty()) return;
 
 	// Draw background
 	Driver->setMatrixMode2D11 ();
-	Driver->drawQuad (0.5f-DisplayWidth/2.0f, 0.5f-DisplayHeight/2.0f, 0.5f+DisplayWidth/2.0f, 0.5f+DisplayHeight/2.0f, DisplayColor);
+	InterfaceMaterial.setColor(DisplayColor);
+	CQuad quad;
+	quad.V0.set(0.5f-DisplayWidth/2.0f, 0.5f+DisplayHeight/2.0f, 0);
+	quad.V1.set(0.5f+DisplayWidth/2.0f, 0.5f+DisplayHeight/2.0f, 0);
+	quad.V2.set(0.5f+DisplayWidth/2.0f, 0.5f-DisplayHeight/2.0f, 0);
+	quad.V3.set(0.5f-DisplayWidth/2.0f, 0.5f-DisplayHeight/2.0f, 0);
+	Driver->drawQuad(quad, InterfaceMaterial);
+	//Driver->drawQuad (0.5f-DisplayWidth/2.0f, 0.5f-DisplayHeight/2.0f, 0.5f+DisplayWidth/2.0f, 0.5f+DisplayHeight/2.0f, DisplayColor);
 
 	// Set the text context
 	TextContext->setHotSpot (UTextContext::MiddleMiddle);
@@ -213,12 +228,16 @@ void	updateInterface()
 
 void	releaseInterface()
 {
-	// Rmove the keyboard listener from the server
+	// Delete the material
+	Driver->deleteMaterial(InterfaceMaterial);
+
+	// Remove the keyboard listener from the server
 	Driver->EventServer.removeListener (EventCharId, &InterfaceListener);
 }
 
 void	askString (const string &queryString, const string &defaultString, sint prompt, const CRGBA &color)
 {
+  nldebug("called askString");
 	QueryString = queryString;
 	
 	if (prompt == 2)

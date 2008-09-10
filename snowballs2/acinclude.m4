@@ -32,13 +32,6 @@
 #                 CXXFLAGS and LIBS variables to use it.
 #
 #
-# AM_PATH_STLPORT
-#
-#    Option:      none.
-#    Description: check the instalation of the STLPort library and set the
-#                 CXXFLAGS and LIBS variables to use it.
-#
-#
 # AM_PATH_OPENGL
 #
 #    Option:      "yes" if the use of the OpenGL library is mandatory.
@@ -72,11 +65,6 @@
 #    Option:      "yes" if the use of the Python library is mandatory.
 #    Description: check the instalation of the OpenGL library and set the
 #                 PYTHON_CFLAGS and PYTHON_LIBS variables to use it.
-#
-# AM_PATH_CCACHE
-#
-#    Option:      none.
-#    Description: check the instalation of the Ccache utility.
 #
 # =========================================================================
 
@@ -347,153 +335,6 @@ MY_NEL_LIB_CHK([NeL AI], [nelai], $nelai_is_mandatory)
 MY_NEL_LIB_CHK([NeL Georges], [nelgeorges], $nelgeorges_is_mandatory)
 
 ])
-
-
-# =========================================================================
-# AM_PATH_STLPORT : STLPort checking macros
-
-AC_DEFUN([AM_PATH_STLPORT],
-[ AC_REQUIRE_CPP()
-
-AC_ARG_WITH( stlport,
-    [  --with-stlport=<path>   path to the STLPort install files directory.
-                          e.g. /usr/local/stlport])
-
-AC_ARG_WITH( stlport-include,
-    [  --with-stlport-include=<path>
-                          path to the STLPort header files directory.
-                          e.g. /usr/local/stlport/stlport])
-
-AC_ARG_WITH( stlport-lib,
-    [  --with-stlport-lib=<path>
-                          path to the STLPort library files directory.
-                          e.g. /usr/local/stlport/lib])
-
-if test "$with_debug" = "full"
-then
- stlport_lib="stlport_gcc_debug"
-else
- stlport_lib="stlport_gcc"
-fi
-
-if test "$with_debug" = "full"
-then
- stlport_lib2="stlport_gcc_debug"
-else
- stlport_lib2="stlport_gcc"
-fi
-
-if test "$with_stlport" = no
-then
-    # The user explicitly disabled the use of the STLPorts
-    AC_MSG_ERROR([STLPort is mandatory: do not specify --without-stlport])
-else
-    stlport_includes="/usr/include/stlport"
-    if test "$with_stlport" -a "$with_stlport" != yes
-    then
-        stlport_includes="$with_stlport/stlport"
-        stlport_libraries="$with_stlport/lib"
-
-        if test ! -d "$stlport_includes"
-        then
-            stlport_includes="$with_stlport/include/stlport"
-        fi
-    fi
-fi
-
-if test "$with_stlport_include"
-then
-    stlport_includes="$with_stlport_include"
-fi
-
-if test "$with_stlport_lib"
-then
-    stlport_libraries="$with_stlport_lib"
-fi
-
-# Check for the 'pthread' library. SLTPort needs it.
-AC_CHECK_LIB(pthread, main, , [AC_MSG_ERROR([cannot find the pthread library.])])
-AC_CHECK_LIB(dl, dlopen, , [AC_MSG_ERROR([cannot find the dl library.])])
-
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
-
-# Put STLPorts includes in CXXFLAGS
-if test "$stlport_includes"
-then
-    CXXFLAGS="$CXXFLAGS -I$stlport_includes"
-fi
-
-# Put STLPorts libraries directory in LIBS
-if test "$stlport_libraries"
-then
-    LIBS="-L$stlport_libraries $LIBS"
-else
-    stlport_libraries='default'
-fi
-
-# Put STLPort GCC libraries directory in LIBS
-if test "$stlport_libraries2"
-then
-    LIBS="-L$stlport_libraries2 $LIBS"
-else
-    stlport_libraries2='default'
-fi
-
-# Test the headers
-
-AC_CHECK_HEADER(algorithm,
-    have_stlport_headers="yes",
-    have_stlport_headers="no" )
-
-AC_MSG_CHECKING(for STLPort headers)
-
-if test "$have_stlport_headers" = "yes"
-then
-    AC_MSG_RESULT([$stlport_includes])
-else
-    AC_MSG_RESULT(no)
-fi
-
-AC_CHECK_LIB($stlport_lib, main,, have_stlport_libraries="no")
-
-AC_MSG_CHECKING(for STLPort library)
-
-if test "$have_stlport_libraries" != "no"
-then
-    AC_MSG_RESULT([$stlport_libraries])
-else
-    AC_MSG_RESULT(no)
-fi
-
-AC_CHECK_LIB($stlport_lib2, main,, have_stlport_libraries="no")
-
-AC_MSG_CHECKING(for STLPort GCC library)
-
-if test "$have_stlport_libraries2" != "no"
-then
-    AC_MSG_RESULT([$stlport_libraries2])
-else
-    AC_MSG_RESULT(no)
-fi
-
-if test "$have_stlport_headers" = "yes" &&
-    (test "$have_stlport_libraries" != "no" || test "$have_stlport_libraries2" != "no")
-then
-    have_stlport="yes"
-else
-    have_stlport="no"
-fi
-
-if test "$have_stlport" = "no"
-then
-    AC_MSG_ERROR([STLPort must be installed (http://www.stlport.org).])
-fi
-
-AC_LANG_RESTORE
-
-])
-
 
 # =========================================================================
 # AM_PATH_OPENGL : OpenGL checking macros
@@ -855,6 +696,7 @@ AC_ARG_WITH( openal-lib,
                           e.g. /usr/local/lib])
 
 openal_lib="openal"
+alut_lib="alut"
 
 if test $with_openal
 then
@@ -884,14 +726,15 @@ if test "$openal_libraries"
 then
     OPENAL_LIBS="-L$openal_libraries"
 fi
-OPENAL_LIBS="$OPENAL_LIBS -l$openal_lib"
+OPENAL_LIBS="$OPENAL_LIBS -l$openal_lib -l$alut_lib"
 
 _CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="$CXXFLAGS $OPENAL_CFLAGS"
 
 AC_MSG_CHECKING(for OpenAL headers)
 AC_EGREP_CPP( yo_openal,
-[#include <AL/altypes.h>
+[#include <AL/al.h>
+#include <AL/alut.h>
 #ifdef AL_VERSION
    yo_openal
 #endif],
@@ -948,7 +791,7 @@ fi
 
 AC_SUBST(OPENAL_CFLAGS)
 AC_SUBST(OPENAL_LIBS)
-
+AC_SUBST([have_openal])
 
 ])
 
@@ -1075,27 +918,6 @@ else
     AC_SUBST(PYTHON_CFLAGS)
     AC_SUBST(PYTHON_LIBS)
 
-fi
-
-])
-
-
-# =========================================================================
-# AM_PATH_CCACHE : Ccache checking macros
-
-AC_DEFUN([AM_PATH_CCACHE],
-[
-
-AC_ARG_WITH( ccache,
-    [  --with-ccache           use ccache for compiling.],
-    [ using_ccache=$with_ccache ]
-)
-
-AC_PATH_PROG(CCACHE, ccache)
-if test "$CCACHE" -a "$using_ccache" = "yes"
-then
-    CC="ccache $CC"
-    CXX="ccache $CXX"
 fi
 
 ])
@@ -1388,6 +1210,7 @@ fi
 
 AC_SUBST(FMOD_CFLAGS)
 AC_SUBST(FMOD_LIBS)
+AC_SUBST([have_fmod])
 
 ])
 

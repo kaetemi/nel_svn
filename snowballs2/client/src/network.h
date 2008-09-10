@@ -1,7 +1,7 @@
 /** \file network.h
  * Network interface between the game and NeL
  *
- * $Id: network.h,v 1.12 2002/09/16 14:55:23 lecroart Exp $
+ * $Id: network.h,v 1.12 2002-09-16 14:55:23 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -65,7 +65,7 @@ extern NLNET::CCallbackClient	*Connection;
 bool	isOnline ();
 
 // Send the new entity (the player)
-void	sendAddEntity (uint32 id, std::string &name, uint8 race, NLMISC::CVector &startPosition);
+void	sendAddEntity (uint32 id, std::string &name, uint8 race);
 
 // Send a chat line to the server
 void	sendChatLine (std::string Line);

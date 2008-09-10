@@ -1,7 +1,7 @@
 /** \file entities.h
  * Snowballs 2 specific code for managing the entities
  *
- * $Id: entities.h,v 1.26 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: entities.h,v 1.26 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -76,10 +76,10 @@ public:
 	
 	// Create a default entity
 	CEntity () :
-		Id(0xffffffff), Name("<Unknown>"), AutoMove(false), Instance(NULL), Skeleton(NULL),
-		Particule(NULL), PlayList(NULL), /*CurrentAnim(NoAnim), */NextEmptySlot(0), Source (NULL),
-		Angle(0.0f), AuxiliaryAngle(0.0f), InterpolatedAuxiliaryAngle(0.0f),
-		IsWalking(false), WasWalking(false), IsAiming(false), WasAiming(false), BotState(0)
+		Id(0xffffffff), Name("<Unknown>"), Angle(0.0f), AuxiliaryAngle(0.0f), InterpolatedAuxiliaryAngle(0.0f),
+		AutoMove(false), Instance(NULL), Skeleton(NULL),
+		Particule(NULL), Source(NULL), IsWalking(false), WasWalking(false), IsAiming(false), WasAiming(false),
+		/*CurrentAnim(NoAnim), */NextEmptySlot(0), PlayList(NULL), BotState(0)
 		{ }
 
 
@@ -154,8 +154,6 @@ public:
 	std::queue<EAnim>				AnimQueue;
 	NL3D::CAnimationTime			StartAnimationTime;
 
-
-	/// \todo remove, just for bot automaton testing
 	uint							BotState;
 	NLMISC::TTime					BotStateStart;
 };
@@ -189,6 +187,8 @@ extern float								SnowballSpeed;
 extern std::map<uint32, CEntity>			Entities;
 typedef std::map<uint32, CEntity>::iterator	EIT;
 
+extern uint32 NextEID;
+
 //
 // External functions
 //
@@ -200,9 +200,11 @@ void	removeEntity (uint32 eid);
 
 // when we turn online, we need to clear all offline entities
 void	removeAllEntitiesExceptUs ();
+void deleteAllEntities();
 
-void	initEntities();
-void	updateEntities ();
+void initEntities();
+void updateEntities();
+void releaseEntities();
 
 // Reset the pacs position of an entity (in case pacs went wrong)
 void	resetEntityPosition(uint32 eid);

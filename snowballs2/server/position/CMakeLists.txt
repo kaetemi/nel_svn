@@ -1,0 +1,3 @@
+ADD_SUBDIRECTORY(src)
+
+INSTALL(FILES position_service.cfg DESTINATION ${PKGDIR})

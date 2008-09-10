@@ -1,7 +1,7 @@
 /** \file commands.cpp
  * Snowballs 2 specific code for managing the command interface
  *
- * $Id: entities.cpp,v 1.45 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: entities.cpp,v 1.45 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -27,7 +27,9 @@
 // Includes
 //
 
-#include <math.h>
+#include <nel/misc/types_nl.h>
+
+#include <cmath>
 #include <map>
 
 #include <nel/misc/types_nl.h>
@@ -81,7 +83,7 @@ using namespace NLPACS;
 // Variables
 //
 
-// A map of entities. All entities are later reffered by their unique id
+// A map of entities. All entities are later referred by their unique id
 map<uint32, CEntity>	Entities;
 
 CEntity					*Self = NULL;
@@ -103,6 +105,8 @@ float					SnowballSpeed = 15.0f;	// 36 km/h
 float					EntityNameSize;
 CRGBA					EntityNameColor;
 
+bool _TestCLS = false;
+
 
 // Set the state of the entity (Appear, Normal, Disappear)
 void CEntity::setState (TState state)
@@ -123,7 +127,8 @@ EIT findEntity (uint32 eid, bool needAssert)
 	return entity;
 }
 
-
+// -- -- things like Creature, Effect, Scenery seem more flexible than Self, Other, Snowball
+// -- -- random keywords: entitybehavior (animations), entityinteraction (targetable, menu, )
 // Creates an entity, given its id, its type (Self, Other, Snowball), its start and server positions.
 void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector &startPosition, const CVector &serverPosition)
 {
@@ -140,7 +145,7 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 	eit = (Entities.insert (make_pair (eid, CEntity()))).first;
 	CEntity	&entity = (*eit).second;
 
-	// Check that in the case the entity newly created is a Self, ther isn't a Self yet.
+	// Check that in the case the entity newly created is a Self, there's not a Self yet.
 	if (type == CEntity::Self)
 	{
 		if (Self != NULL)
@@ -181,7 +186,7 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 		entity.MovePrimitive->setHeight(1.8f);
 		// only use one world image, so use insert in world image 0
 		entity.MovePrimitive->insertInWorldImage(0);
-		// retreive the start position of the entity
+		// retrieve the start position of the entity
 		entity.MovePrimitive->setGlobalPosition(CVectorD(startPosition.x, startPosition.y, startPosition.z), 0);
 
 		// create instance of the mesh character
@@ -189,6 +194,9 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 		entity.Skeleton = Scene->createSkeleton ("gnu.skel");
 		// use the instance on the skeleton
 		entity.Skeleton.bindSkin (entity.Instance);
+
+		// Allow the skeleton to cast shadows.
+		entity.Skeleton.enableCastShadowMap(true);
 
 		entity.Instance.hide ();
 
@@ -205,7 +213,7 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 	case CEntity::Other:
 		entity.MovePrimitive = MoveContainer->addCollisionablePrimitive(0, 1);
 		entity.MovePrimitive->setPrimitiveType(UMovePrimitive::_2DOrientedCylinder);
-		entity.MovePrimitive->setReactionType(UMovePrimitive::DoNothing);
+		entity.MovePrimitive->setReactionType(UMovePrimitive::Slide);
 		entity.MovePrimitive->setTriggerType(UMovePrimitive::NotATrigger);
 		entity.MovePrimitive->setCollisionMask(OtherCollisionBit+SelfCollisionBit+SnowballCollisionBit);
 		entity.MovePrimitive->setOcclusionMask(OtherCollisionBit);
@@ -237,6 +245,7 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 		entity.Skeleton = NULL;
 		entity.Speed = SnowballSpeed;
 
+		// -- -- riiiiight
 #ifdef NL_OS_WINDOWS
 		playSound (entity, SoundId);
 #endif
@@ -314,7 +323,7 @@ void removeEntity (uint32 eid)
 	EIT eit = findEntity (eid);
 	CEntity	&entity = (*eit).second;
 
-	// if there is a particule system linked, delete it
+	// if there is a particle system linked, delete it
 	if (!entity.Particule.empty())
 	{
 		Scene->deleteInstance (entity.Particule);
@@ -353,6 +362,19 @@ void	removeAllEntitiesExceptUs ()
 	}
 }
 
+void deleteAllEntities()
+{
+	EIT eit, nexteit;
+	for (eit = Entities.begin(); eit != Entities.end(); )
+	{
+		nexteit = eit; nexteit++;
+		CEntity	&entity = (*eit).second;
+		deleteEntity (entity);
+		eit = nexteit;
+	}
+	Self = NULL;
+}
+
 
 
 
@@ -368,7 +390,7 @@ void stateAppear (CEntity &entity)
 	}
 
 	// after 5 seconds, delete the particle system (if any)
-	// and passe the entity into the Normal state
+	// and pass the entity into the Normal state
 	if (CTime::getLocalTime () > entity.StateStartTime + 3000)
 	{
 		if (!entity.Particule.empty())
@@ -403,7 +425,7 @@ void stateDisappear (CEntity &entity)
 		}
 	}
 
-	// after 5 seconds, remove the particule system and the entity entry
+	// after 5 seconds, remove the particle system and the entity entry
 	if (CTime::getLocalTime () > entity.StateStartTime + 3000)
 	{
 		deleteEntity (entity);
@@ -415,11 +437,6 @@ void stateDisappear (CEntity &entity)
 	}
 }
 
-
-
-
-
-
 void stateNormal (CEntity &entity)
 {
 	double	dt = (double)(NewTime-LastTime) / 1000.0;
@@ -430,6 +447,8 @@ void stateNormal (CEntity &entity)
 	CVector	pDelta = entity.Position - entity.ServerPosition;
 	CVector	pDeltaOri = pDelta;
 	pDelta.z = 0.0f;
+
+	// -- -- simple random bots =)  share with server
 
 	// find a new random server position
 	if (entity.Type == CEntity::Other && entity.AutoMove)
@@ -476,7 +495,7 @@ void stateNormal (CEntity &entity)
 				CVector	AimedTarget = getTarget(AimingPosition,
 												direction,
 												100);
-				shotSnowball(rand(), entity.Id, AimingPosition, AimedTarget, SnowballSpeed, 3.0f);
+				shotSnowball(NextEID++, entity.Id, AimingPosition, AimedTarget, SnowballSpeed, 3.0f);
 			}
 			break;
 		case 4:
@@ -598,12 +617,16 @@ void stateNormal (CEntity &entity)
 		if (entity.IsWalking)
 		{
 			entity.ImmediateSpeed = (newPos-oldPos)/(float)dt;
-			entity.MovePrimitive->move(entity.ImmediateSpeed, 0);
+			if (_TestCLS) entity.MovePrimitive->setGlobalPosition(newPos, 0);
+			else entity.MovePrimitive->move(entity.ImmediateSpeed, 0);
 		}
 	}
 	else if (entity.Type == CEntity::Other)
 	{
 		// go to the server position with linear interpolation
+		// -- -- useful for speed limiting on frontend service
+		// -- -- random note: also, get rid of the position service, 
+		//       and move the snowball physics to a more useful service
 
 		// Interpolate orientation for smoother motions
 		// AuxiliaryAngle -> the server imposed angle
@@ -816,15 +839,21 @@ void cbUpdateEntities (CConfigFile::CVar &var)
 
 void initEntities()
 {
-	ConfigFile.setCallback ("EntityNameColor", cbUpdateEntities);
-	ConfigFile.setCallback ("EntityNameSize", cbUpdateEntities);
+	ConfigFile->setCallback ("EntityNameColor", cbUpdateEntities);
+	ConfigFile->setCallback ("EntityNameSize", cbUpdateEntities);
 
-	cbUpdateEntities (ConfigFile.getVar ("EntityNameColor"));
-	cbUpdateEntities (ConfigFile.getVar ("EntityNameSize"));
+	cbUpdateEntities (ConfigFile->getVar ("EntityNameColor"));
+	cbUpdateEntities (ConfigFile->getVar ("EntityNameSize"));
 }
 
 void releaseEntities()
 {
+	// Remove config file callbacks
+	ConfigFile->setCallback("EntityNameColor", NULL);
+	ConfigFile->setCallback("EntityNameSize", NULL);
+
+	// Delete all entities (should already have been called normally)
+	deleteAllEntities();
 }
 
 
@@ -886,6 +915,9 @@ void	shotSnowball(uint32 sid, uint32 eid, const CVector &start, const CVector &t
 
 
 //
+// Commands
+//
+
 NLMISC_COMMAND(remove_entity,"remove a local entity","<eid>")
 {
 	// check args, if there s not the right number of parameter, return bad
@@ -908,7 +940,7 @@ NLMISC_COMMAND(add_entity,"add a local entity","<nb_entities> <auto_update>")
 	for (uint i = 0; i < nb ; i++)
 	{
 		uint32 eid = NextEID++;
-		CVector start(ConfigFile.getVar("StartPoint").asFloat(0), ConfigFile.getVar("StartPoint").asFloat(1), ConfigFile.getVar("StartPoint").asFloat(2));
+		CVector start(ConfigFile->getVar("StartPoint").asFloat(0), ConfigFile->getVar("StartPoint").asFloat(1), ConfigFile->getVar("StartPoint").asFloat(2));
 		addEntity (eid, "Entity"+toString(eid), CEntity::Other, start, start);
 		EIT eit = findEntity (eid);
 		(*eit).second.AutoMove = atoi(args[1].c_str()) == 1;
@@ -995,5 +1027,11 @@ NLMISC_COMMAND(entities, "display all entities info", "")
 		CEntity	&e = (*eit).second;
 		log.displayNL("%s %u (k%u) %s %d", (Self==&e)?"*":" ", e.Id, (*eit).first, e.Name.c_str(), e.Type);
 	}
+	return true;
+}
+
+NLMISC_COMMAND(test_cls, "test the collision service, disables collision test on self", "")
+{
+	_TestCLS = !_TestCLS;
 	return true;
 }

@@ -1,7 +1,7 @@
 /** \file landscape.h
  * Landscape interface between the game and NeL
  *
- * $Id: landscape.h,v 1.10 2001/07/27 09:07:22 lecroart Exp $
+ * $Id: landscape.h,v 1.10 2001-07-27 09:07:22 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -52,7 +52,6 @@ class CTrajectory;
 // External variables
 //
 
-extern NL3D::ULandscape						*Landscape;
 extern std::vector<NL3D::UInstanceGroup*>	 InstanceGroups;
 extern NLMISC::CVector						 SunDirection;
 
@@ -61,12 +60,14 @@ extern NLMISC::CVector						 SunDirection;
 // External functions
 //
 
-void			initLandscape();
-void			updateLandscape();
-void			releaseLandscape();
+void initLight();
+void releaseLight();
 
-void			initAiming();
-void			releaseAiming();
+void initLandscape();
+void releaseLandscape();
+
+void initAiming();
+void releaseAiming();
 
 // Compute the collision with the landscape from the start position, using the given step,
 // at maximum numSteps steps from the start. It uses full (!) physics computation, and should be

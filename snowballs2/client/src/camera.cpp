@@ -1,7 +1,7 @@
 /** \file camera.cpp
  * Camera interface between the game and NeL
  *
- * $Id: camera.cpp,v 1.21 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: camera.cpp,v 1.21 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -27,7 +27,9 @@
 // Includes
 //
 
-#include <math.h>
+#include <nel/misc/types_nl.h>
+
+#include <cmath>
 #include <nel/misc/vectord.h>
 #include <nel/3d/u_camera.h>
 #include <nel/3d/u_driver.h>
@@ -69,10 +71,6 @@ static UScene				*SkyScene = NULL;
 static UCamera				SkyCamera = NULL;
 static UInstance			Sky = NULL;
 
-// The logo 3D objects
-static UScene				*LogoScene = NULL;
-static UInstance			Logo = NULL;
-
 static UCloudScape			*Clouds = NULL;
 
 //
@@ -85,9 +83,9 @@ void	initCamera()
 	Camera = Scene->getCam();
 	Camera.setTransformMode (UTransformable::DirectMatrix);
 	Camera.setPerspective ((float)Pi/2.f, 1.33f, 0.1f, 1000);
-	Camera.lookAt (CVector(ConfigFile.getVar("StartPoint").asFloat(0),
-							ConfigFile.getVar("StartPoint").asFloat(1),
-							ConfigFile.getVar("StartPoint").asFloat(2)),
+	Camera.lookAt (CVector(ConfigFile->getVar("StartPoint").asFloat(0),
+							ConfigFile->getVar("StartPoint").asFloat(1),
+							ConfigFile->getVar("StartPoint").asFloat(2)),
 							CVectorD (0,0,0));
 
 	CamCollisionEntity = VisualCollisionManager->createEntity();
@@ -102,6 +100,8 @@ void	initCamera()
 	// Setup the sky scene
 	//
 
+	// -- -- not sure what the sky has to do with the camera
+
 	SkyScene = Driver->createScene(false);
 
 	SkyCamera = SkyScene->getCam ();
@@ -112,22 +112,17 @@ void	initCamera()
 	Sky = SkyScene->createInstance("sky.shape");
 	Sky.setTransformMode (UTransformable::DirectMatrix);
 	Sky.setMatrix(CMatrix::Identity);
-
-	//
-	// Setup the logo scene
-	//
-
-	LogoScene = Driver->createScene(false);
-
-	CViewport v;
-	v.init (0.0f, 0.80f, 0.2f, 0.2f);
-	LogoScene->setViewport (v);
-
-	Logo = LogoScene->createInstance("nel_logo.shape");
-	Logo.setPos (0.0f, 3.0f, 0.0f);
 }
 
-void	updateCamera()
+void releaseCamera()
+{
+	SkyScene->deleteInstance(Sky);
+	Driver->deleteScene(SkyScene);
+	Scene->deleteInstance(Snow);
+	VisualCollisionManager->deleteEntity(CamCollisionEntity);
+}
+
+void updateCamera()
 {
 	// Set the new position of the snow emitter
 	CMatrix	mat = CMatrix::Identity;
@@ -135,8 +130,10 @@ void	updateCamera()
 	Snow.setMatrix(mat);
 }
 
-void initSky ()
+void initSky()
 {
+	// -- -- or what the clouds have to do with the sky
+
 	SCloudScapeSetup css;
 	Clouds = Scene->createCloudScape ();
 	Clouds->init (&css);
@@ -144,12 +141,18 @@ void initSky ()
 	Clouds->setNbCloudToUpdateIn80ms (1);
 }
 
-void animateSky (TTime dt)
+void releaseSky()
+{
+	Scene->deleteCloudScape(Clouds);
+}
+
+// -- -- random note: update and render makes more sense than animate and update
+void animateSky(TTime dt)
 {
 	Clouds->anim ((double)dt);
 }
 
-void updateSky ()
+void updateSky()
 {
 	CMatrix skyCameraMatrix;
 	skyCameraMatrix.identity();
@@ -164,21 +167,4 @@ void updateSky ()
 	Driver->clearZBuffer();
 
 	Clouds->render ();
-}
-
-void releaseCamera()
-{
-	Driver->deleteScene (SkyScene);
-}
-
-void	update3dLogo ()
-{
-	Driver->clearZBuffer();
-
-	static float angle=0.0;
-	angle+=0.05f;
-	Logo.setTransformMode (UTransformable::RotEuler);
-	Logo.setRotEuler (0.0f,0.0f,angle);
-	LogoScene->animate (float(NewTime)/1000);
-	LogoScene->render ();
 }

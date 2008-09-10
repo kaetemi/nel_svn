@@ -1,0 +1,5 @@
+copy "..\..\nel\lib\nel_drv_direct3d_win_rd.dll" "nel_drv_direct3d_win_rd.dll"
+copy "..\..\nel\lib\nel_drv_dsound_win_rd.dll" "nel_drv_dsound_win_rd.dll"
+copy "..\..\nel\lib\nel_drv_opengl_win_rd.dll" "nel_drv_opengl_win_rd.dll"
+copy "..\..\nel\lib\nel_drv_fmod_win_rd.dll" "nel_drv_fmod_win_rd.dll"
+copy "..\..\nel\lib\nel_drv_openal_win_rd.dll" "nel_drv_openal_win_rd.dll"

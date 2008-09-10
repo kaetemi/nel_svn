@@ -1,7 +1,7 @@
 /** \file network.cpp
  * Animation interface between the game and NeL
  *
- * $Id: network.cpp,v 1.22 2004/07/12 09:03:08 cado Exp $
+ * $Id: network.cpp,v 1.22 2004-07-12 09:03:08 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -32,11 +32,14 @@
 #include <nel/misc/command.h>
 #include <nel/misc/log.h>
 #include <nel/misc/displayer.h>
+#include <nel/misc/vectord.h>
 
 #include <nel/net/login_client.h>
 #include <nel/net/login_cookie.h>
 
 #include <nel/3d/u_text_context.h>
+
+#include <nel/pacs/u_move_primitive.h>
 
 #include "client.h"
 #include "commands.h"
@@ -44,6 +47,7 @@
 #include "entities.h"
 #include "interface.h"
 #include "graph.h"
+#include "mouse_listener.h"
 
 //
 // Namespaces
@@ -53,6 +57,8 @@ using namespace std;
 using namespace NLMISC;
 using namespace NLNET;
 using namespace NL3D;
+
+// -- -- random note: most of this needs to change completely anyway
 
 //
 // Variables
@@ -86,13 +92,13 @@ static void cbAddEntity (CMessage &msgin, TSockId from, CCallbackNetBase &netbas
 
 	nlinfo ("New player named '%s' comes in at position (%8.2f, %8.2f, %8.2f)", name.c_str(), startPosition.x, startPosition.y, startPosition.z);
 
-	if (id != Self->Id)
+	if (Self == NULL && name == Login.toUtf8())
 	{
-		addEntity(id, name, CEntity::Other, startPosition, startPosition);
+		addEntity(id, name, CEntity::Self, startPosition, startPosition);
 	}
 	else
 	{
-//		nlinfo ("Receive my add entity");
+		addEntity(id, name, CEntity::Other, startPosition, startPosition);
 	}
 }
 
@@ -145,6 +151,25 @@ static void cbEntityPos (CMessage &msgin, TSockId from, CCallbackNetBase &netbas
 			entity.IsAiming = true;
 			entity.IsWalking = false;
 		}
+	}
+}
+
+static void cbEntityTeleport(CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+{
+	// temp
+	uint32 id;
+	CVector position;
+	msgin.serial(id, position);
+	nldebug("Received entity %u teleport %f,%f,%f", id, position.x, position.y, position.z);
+	EIT eit = findEntity(id, false);
+	if (eit == Entities.end()) nlwarning("can't find entity %u", id);
+	else
+	{
+		CEntity	&entity = eit->second;
+		entity.ServerPosition = position;
+		entity.Position = position;
+		entity.MovePrimitive->setGlobalPosition(CVectorD(position.x, position.y, position.z), 0);
+		if (&entity == Self) MouseListener->setPosition(position);
 	}
 }
 
@@ -201,31 +226,32 @@ static void cbIdentification (CMessage &msgin, TSockId from, CCallbackNetBase &n
 	
 //	nlinfo ("my online id is %u", id);
 
-	if (Self == NULL)
-		nlerror ("Self is NULL");
+//	if (Self == NULL)
+//		nlerror ("Self is NULL");
+//
+//	if (Self->Id != id)
+//	{
+////		nlinfo ("remaping my entity from %u to %u", Self->Id, id);
+//		
+//		// copy my old entity
+//		CEntity me = *Self;
+//		
+//		// set my new online id
+//		me.Id = id;
+//
+//		// add my new entity in the array
+//		EIT eit = (Entities.insert (make_pair (id, me))).first;
+//
+//		// remove my old entity
+//		Entities.erase (Self->Id);
+//
+//		// remap Self
+//		Self = &((*eit).second);
+//	}
 
-	if (Self->Id != id)
-	{
-//		nlinfo ("remaping my entity from %u to %u", Self->Id, id);
-		
-		// copy my old entity
-		CEntity me = *Self;
-		
-		// set my new online id
-		me.Id = id;
-
-		// add my new entity in the array
-		EIT eit = (Entities.insert (make_pair (id, me))).first;
-
-		// remove my old entity
-		Entities.erase (Self->Id);
-
-		// remap Self
-		Self = &((*eit).second);
-	}
-
-	// send to the network my entity					
-	sendAddEntity (Self->Id, Self->Name, 1, Self->Position);
+	// send to the network my entity
+	std::string login_name(Login.toUtf8());
+	sendAddEntity(id, login_name, 1);
 }
 
 // Array that contains all callback that could comes from the server
@@ -234,6 +260,7 @@ static TCallbackItem ClientCallbackArray[] =
 	{ "ADD_ENTITY", cbAddEntity },
 	{ "REMOVE_ENTITY", cbRemoveEntity },
 	{ "ENTITY_POS", cbEntityPos },
+	{ "ENTITY_TP", cbEntityTeleport },
 	{ "HIT", cbHit },
 	{ "CHAT", cbChat },
 	{ "SNOWBALL", cbSnowball },
@@ -246,13 +273,13 @@ bool	isOnline ()
 	return Connection != NULL && Connection->connected ();
 }
 
-void	sendAddEntity (uint32 id, string &name, uint8 race, CVector &startPosition)
+void	sendAddEntity (uint32 id, string &name, uint8 race)
 {
 	if (!isOnline ()) return;
 
-	CMessage msgout ("ADD_ENTITY");
-	msgout.serial (id, name, race, startPosition);
-	Connection->send (msgout);
+	CMessage msgout("ADD_ENTITY");
+	msgout.serial(id, name, race);
+	Connection->send(msgout);
 }
 
 void	sendChatLine (string Line)
@@ -314,7 +341,7 @@ void	initNetwork(const std::string &lc, const std::string &addr)
 
 	string fsaddr;
 	if (addr.empty())
-		fsaddr = ConfigFile.getVar("FSHost").asString ();
+		fsaddr = ConfigFile->getVar("FSHost").asString ();
 	else
 		fsaddr = addr;
 
@@ -329,7 +356,7 @@ void	initNetwork(const std::string &lc, const std::string &addr)
 		loginCookie.setFromString (lc);
 	}
 
-	string res;// TODO = CLoginClient::connectToShard (loginCookie, fsaddr, *Connection);
+	string res = CLoginClient::connectToShard (loginCookie, fsaddr, *Connection);
 	if (!res.empty ())
 	{
 		string err = string ("Connection to shard failed: ") + res;

@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.am,v 1.10 2003/04/07 14:06:08 lecroart Exp $
+# $Id: Makefile.am,v 1.10 2003-04-07 14:06:08 lecroart Exp $
 #
 
 MAINTAINERCLEANFILES = Makefile.in
@@ -16,14 +16,20 @@ snowballs_SOURCES    = animation.cpp                       \
                        commands.h                          \
                        compass.cpp                         \
                        compass.h                           \
+                       component.cpp                       \
+                       component.h                         \
+                       component_manager.cpp               \
+                       component_manager.h                 \
                        entities.cpp                        \
                        entities.h                          \
-		       graph.cpp                           \
-		       graph.h                             \
+                       graph.cpp                           \
+                       graph.h                             \
                        interface.cpp                       \
                        interface.h                         \
                        landscape.cpp                       \
                        landscape.h                         \
+                       landscape_component.cpp             \
+                       landscape_component.h               \
                        lens_flare.cpp                      \
                        lens_flare.h                        \
                        mouse_listener.cpp                  \
@@ -35,11 +41,15 @@ snowballs_SOURCES    = animation.cpp                       \
                        physics.cpp                         \
                        physics.h                           \
                        radar.cpp                           \
-                       radar.h                             
+                       radar.h                             \
+                       snowballs_client.cpp                \
+                       snowballs_client.h                  \
+                       sub_configuration.cpp               \
+                       sub_configuration.h
 
 snowballs_LDADD      = @FREETYPE_LIBS@ @OPENAL_LIBS@
 
-AM_CXXFLAGS          = @FREETYPE_CFLAGS@
+AM_CXXFLAGS          = -DSNOWBALLS_CONFIG="\"${pkgsysconfdir}/\"" @FREETYPE_CFLAGS@
 
 
 # End of Makefile.am

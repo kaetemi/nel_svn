@@ -1,7 +1,7 @@
 /** \file mouse_listener.h
  * Snowballs 2 specific code for managing the mouse listener.
  *
- * $Id: mouse_listener.h,v 1.9 2004/07/29 09:06:07 lecroart Exp $
+ * $Id: mouse_listener.h,v 1.9 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -39,6 +39,8 @@
 #include <nel/3d/frustum.h>
 #include <nel/3d/u_3d_mouse_listener.h>
 #include <nel/3d/u_instance.h>
+
+#include "camera.h"
 
 //
 // External definitions
@@ -303,7 +305,8 @@ private:
 // External functions
 //
 
-void	initMouseListenerConfig();
+void initMouseListenerConfig();
+void releaseMouseListenerConfig();
 
 #endif // MOUSE_LISTENER_H
 
