@@ -7,6 +7,13 @@
 // Functions
 // ---------------------------------------------------------------------------------------- 
 
+	function createSalt()
+	{
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			
+		return substr($chars, rand(0, strlen($chars)-1), 1).substr($chars, rand(0, strlen($chars)-1), 1);
+	}
+
 	// $reason contains the reason why the check failed or success
 	// return true if the check is ok
 	function checkUserValidity ($login, $password, $clientApplication, $cp, &$id, &$reason, &$priv, &$extended)
@@ -22,6 +29,12 @@
 		{
 			if ($AcceptUnknownUser)
 			{
+				if (!$cp)
+				{
+					// Create a crypted user/pass.
+					$password = crypt($password, createSalt());
+				}
+
 				// login doesn't exist, create it
 				$query = "INSERT INTO user (Login, Password) VALUES ('$login', '$password')";
 				$result = mysql_query ($query) or die ("Can't execute the query: ".$query);
@@ -39,7 +52,7 @@
 					$extended = $row["ExtendedPrivilege"];
 
 					// add the default permission
-					$query = "INSERT INTO permission (UId) VALUES ('$id')";
+					$query = "INSERT INTO permission (UId,ClientApplication) VALUES ('$id', 'snowballs')";
 					$result = mysql_query ($query) or die ("Can't execute the query: ".$query);
 
 					$res = true;
@@ -123,7 +136,7 @@
         $link = mysql_connect($DBHost, $DBUserName, $DBPassword) or die ("0:Can't connect to database host:$DBHost user:$DBUserName");
         mysql_select_db ($DBName) or die ("0:Can't access to the table dbname:$DBName");
 
-        $query = "SELECT * FROM permission WHERE UId='".$id."' AND ClientApplication='".$clientApplication."' AND ShardId='".$shardId."'";;
+        $query = "SELECT * FROM permission WHERE UId='".$id."' AND ClientApplication='".$clientApplication."' AND (ShardId='".$shardId."' OR ShardId='-1')";;
         $result = mysql_query ($query) or die ("0:Can't execute the query: ".$query);
 
         if (mysql_num_rows ($result) > 0)
@@ -215,7 +228,7 @@
 	function askSalt($login)
 	{
 		global $PHP_SELF;
-		global $DBHost, $DBUserName, $DBPassword, $DBName;
+		global $DBHost, $DBUserName, $DBPassword, $DBName, $AcceptUnknownUser;
 
 		$link = mysql_connect($DBHost, $DBUserName, $DBPassword) or die ("0:Can't connect to database host:$DBHost user:$DBUserName");
 		mysql_select_db ($DBName) or die ("0:Can't access to the table dbname:$DBName");
@@ -224,10 +237,21 @@
 		$result = mysql_query ($query) or die ("0:Can't execute the query: ".$query);
 
 		if (mysql_num_rows ($result) != 1)
-			die ("0:Unknown login $login (error code 64)");
-
-		$res_array = mysql_fetch_array($result);
-		$salt = substr($res_array['Password'], 0, 2);
+		{
+			if ($AcceptUnknownUser)
+			{
+				$salt = createSalt();
+			}
+			else
+			{
+				die ("0:Unknown login $login (error code 64)");
+			}
+		}
+		else
+		{
+			$res_array = mysql_fetch_array($result);
+			$salt = substr($res_array['Password'], 0, 2);
+		}
 
 		echo "1:".$salt;
 		mysql_close($link);

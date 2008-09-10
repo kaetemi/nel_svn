@@ -40,7 +40,7 @@ CConfigFile ConfigFile;
 bool VerboseLog = false;
 
 static CFileDisplayer NLFileDisplayer("nel_launcher.log", true);
-static DispayerAdded = false;
+static bool DispayerAdded = false;
 
 void quit()
 {

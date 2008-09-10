@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "nel_launcher.h"
 #include "Configuration.h"
+#include <nel/misc/debug.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -42,7 +43,7 @@ BOOL CConfiguration::Load()
 
 	if(f.Open(CONFIG_FILE, CFile::modeRead))
 	{
-		APP.Log("Opening configuration file...");
+		nlinfo("Opening configuration file...");
 
 		dwSize	= f.GetLength();
 		f.Read(csBuffer.GetBuffer(dwSize), dwSize);
@@ -52,70 +53,75 @@ BOOL CConfiguration::Load()
 		// Reading the configuration file version
 		GetValue(csBuffer, KEY_VERSION, csValue);
 		m_dVersion	= atof(csValue);
-		APP.Log("Config' version " + csValue);
+		nlinfo("Config' version %s", csValue);
 
 		if(m_dVersion < APP.m_dVersion)
 		{
-			APP.Log("Launcher version > config version, loading config from resources...");
+			nlinfo("Launcher version > config version, loading config from resources...");
 			LoadFromResource();
 		}
 		else
 		{
-			APP.Log("Launcher version <= config version, loading config from configuration file...");
+			nlinfo("Launcher version <= config version, loading config from configuration file...");
+
+			HINSTANCE hInst = (HINSTANCE)GetModuleHandle(NULL);
 
 			if(!GetValue(csBuffer, KEY_HOST, m_csHost))
-				m_csHost.LoadString(IDS_HOST);
+				m_csHost.LoadString(hInst, IDS_HOST);
+
 			if(!GetValue(csBuffer, KEY_URL_MAIN, m_csUrlMain))
-				m_csUrlMain.LoadString(IDS_URLMAIN);
+				m_csUrlMain.LoadString(hInst, IDS_URLMAIN);
 
 			if(!GetValue(csBuffer, KEY_URL_RN, m_csUrlRN))
-				m_csUrlRN.LoadString(IDS_URLRN);
+				m_csUrlRN.LoadString(hInst, IDS_URLRN);
 
 			if(!GetValue(csBuffer, KEY_URL_NEWS, m_csUrlNews))
-				m_csUrlNews.LoadString(IDS_URLNEWS);
+				m_csUrlNews.LoadString(hInst, IDS_URLNEWS);
 
 			if(!GetValue(csBuffer, KEY_APPLICATION, m_csApp, 0))
-				m_csApp.LoadString(IDS_APPLICATION_APP);
+				m_csApp.LoadString(hInst, IDS_APPLICATION_APP);
 
 			if(!GetValue(csBuffer, KEY_APPLICATION, m_csExe, 1))
-				m_csExe.LoadString(IDS_APPLICATION_EXE);
+				m_csExe.LoadString(hInst, IDS_APPLICATION_EXE);
 
 			if(!GetValue(csBuffer, KEY_APPLICATION, m_csBasePath, 2))
-				m_csBasePath.LoadString(IDS_APPLICATION_BASEPATH);
+				m_csBasePath.LoadString(hInst, IDS_APPLICATION_BASEPATH);
 
 			if(!GetValue(csBuffer, KEY_APPLICATION, m_csAppBasePath, 3))
-				m_csAppBasePath.LoadString(IDS_APPLICATION_APPBASEPATH);
+				m_csAppBasePath.LoadString(hInst, IDS_APPLICATION_APPBASEPATH);
 		}
 	}
 	else
 	{
 		// No configuration file is available
 		// Take configuration from exe resource
-		APP.Log("No configuration file found, loading config from resources...");
+		nlinfo("No configuration file found, loading config from resources...");
 		LoadFromResource();
 	}
-	APP.Log("Host " + m_csHost);
-	APP.Log("URL main page " + m_csUrlMain);
-	APP.Log("URL 'release notes' " + m_csUrlRN);
-	APP.Log("URL 'news' " + m_csUrlNews);
-	APP.Log("App " + m_csApp);
-	APP.Log("Exe " + m_csExe);
-	APP.Log("BasePath " + m_csBasePath);
-	APP.Log("AppBasePath " + m_csAppBasePath);
+	nlinfo("Host %s", m_csHost);
+	nlinfo("URL main page %s", m_csUrlMain);
+	nlinfo("URL 'release notes' %s", m_csUrlRN);
+	nlinfo("URL 'news' %s", m_csUrlNews);
+	nlinfo("App %s", m_csApp);
+	nlinfo("Exe %s", m_csExe);
+	nlinfo("BasePath %s", m_csBasePath);
+	nlinfo("AppBasePath %s", m_csAppBasePath);
 
 	return TRUE;
 }
 
 void CConfiguration::LoadFromResource()
 {
-	m_csHost.LoadString(IDS_HOST);
-	m_csUrlMain.LoadString(IDS_URLMAIN);
-	m_csUrlRN.LoadString(IDS_URLRN);
-	m_csUrlNews.LoadString(IDS_URLNEWS);
-	m_csApp.LoadString(IDS_APPLICATION_APP);
-	m_csExe.LoadString(IDS_APPLICATION_EXE);
-	m_csBasePath.LoadString(IDS_APPLICATION_BASEPATH);
-	m_csAppBasePath.LoadString(IDS_APPLICATION_APPBASEPATH);
+	HINSTANCE hInst = (HINSTANCE)GetModuleHandle(NULL);
+
+	m_csHost.LoadString(hInst, IDS_HOST);
+	m_csUrlMain.LoadString(hInst, IDS_URLMAIN);
+	m_csUrlRN.LoadString(hInst, IDS_URLRN);
+	m_csUrlNews.LoadString(hInst, IDS_URLNEWS);
+	m_csApp.LoadString(hInst, IDS_APPLICATION_APP);
+	m_csExe.LoadString(hInst, IDS_APPLICATION_EXE);
+	m_csBasePath.LoadString(hInst, IDS_APPLICATION_BASEPATH);
+	m_csAppBasePath.LoadString(hInst, IDS_APPLICATION_APPBASEPATH);
 	m_csAppBasePath.TrimRight();
 }
 

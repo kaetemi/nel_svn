@@ -6,6 +6,10 @@
 #if !defined(AFX_STDAFX_H__3553FEAD_1991_4F77_91FE_541702A9DEB5__INCLUDED_)
 #define AFX_STDAFX_H__3553FEAD_1991_4F77_91FE_541702A9DEB5__INCLUDED_
 
+#ifndef _WIN32_WINNT		// Allow use of features specific to Windows XP or later.                   
+#define _WIN32_WINNT 0x0501	// Change this to the appropriate value to target other versions of Windows.
+#endif
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -28,6 +32,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+#include <nel/misc/types_nl.h>
 
 #include <queue>
 #include <string>

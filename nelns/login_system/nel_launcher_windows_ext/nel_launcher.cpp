@@ -6,8 +6,9 @@
 #include <WinReg.h>
 #include "MsgDlg.h"
 
-#include "nel/misc/debug.h"
-#include "nel/misc/path.h"
+#include <nel/misc/types_nl.h>
+#include <nel/misc/debug.h>
+#include <nel/misc/path.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,7 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 #define	KEY_ROOT		_T("SOFTWARE\\Ryzom")
 #define	KEY_MAX_LENGTH	1024
-#define LOGFILE			"nel_launcher.log"
+
+NLMISC::CFileDisplayer FileDisplayer;
 
 using namespace std;
 
@@ -41,12 +43,6 @@ CNel_launcherApp::CNel_launcherApp()
 	m_bAuthGame	= FALSE;
 	m_dVersion	= 0;
 	m_bLog		= TRUE;
-
-	// Remove the log file
-	::DeleteFile(LOGFILE);
-
-	LoadVersion();
-	m_config.Load();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,6 +55,23 @@ CNel_launcherApp theApp;
 
 BOOL CNel_launcherApp::InitInstance()
 {
+	// use log.log if NEL_LOG_IN_FILE defined as 1
+	NLMISC::createDebug(NULL, true, true);
+
+	// filedisplayer only deletes the 001 etc
+	if (NLMISC::CFile::isExists("nel_launcher_ext.log"))
+		NLMISC::CFile::deleteFile("nel_launcher_ext.log");
+	// initialize the log file
+	FileDisplayer.setParam("nel_launcher_ext.log", true);
+	NLMISC::DebugLog->addDisplayer(&FileDisplayer);
+	NLMISC::InfoLog->addDisplayer(&FileDisplayer);
+	NLMISC::WarningLog->addDisplayer(&FileDisplayer);
+	NLMISC::AssertLog->addDisplayer(&FileDisplayer);
+	NLMISC::ErrorLog->addDisplayer(&FileDisplayer);
+
+	LoadVersion();
+	m_config.Load();
+
 	AfxEnableControlContainer();
 
 	// Standard initialization
@@ -80,10 +93,10 @@ BOOL CNel_launcherApp::InitInstance()
 
 	// ace: clear the cookies
 
-    HKEY	hkey;
-    TCHAR	*szKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders";
+	HKEY	hkey;
+	TCHAR	*szKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders";
 	CString	csRet;
-	
+
 	if(RegOpenKeyEx(HKEY_CURRENT_USER, szKey, 0, KEY_READ, &hkey) == ERROR_SUCCESS)
 	{
 		csRet	= ReadInfoFromRegistry("Cookies", hkey);
@@ -304,36 +317,38 @@ void CNel_launcherApp::LoadVersion()
 
 	m_dVersion	= 0;
 
-	if(!csVersion.LoadString(IDS_VERSION))
+	if(!csVersion.LoadString((HINSTANCE)GetModuleHandle(NULL), IDS_VERSION))
 	{
 		MSGBOX("Error", "Cannot load version resource");
 	}
 	else
 	{
-		Log("Launcher' version " + csVersion);
+		nlinfo("Launcher' version %s", csVersion);
 		m_dVersion	= atof(csVersion);
 	}
 }
 
-void CNel_launcherApp::EnableLog(BOOL bEnable)
-{
-	m_bLog	= bEnable;
-}
-
-void CNel_launcherApp::Log(CString cs)
-{
-	if(!m_bLog)
-		return;
-
-	CFile	f;
-
-	if(f.Open(LOGFILE, CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate))
-	{
-		f.SeekToEnd();
-		cs	+= "\r\n";
-		f.Write(cs, cs.GetLength());
-		f.Close();
-	}
-	else
-		AfxMessageBox("Cannot access/create to log file");
-}
+//void CNel_launcherApp::EnableLog(BOOL bEnable)
+//{
+//	m_bLog	= bEnable;
+//}
+//
+//void CNel_launcherApp::Log(CString cs)
+//{
+//	nlinfo(cs);
+//
+//	/*if(!m_bLog)
+//		return;
+//
+//	CFile	f;
+//
+//	if(f.Open(LOGFILE, CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate))
+//	{
+//		f.SeekToEnd();
+//		cs	+= "\r\n";
+//		f.Write(cs, cs.GetLength());
+//		f.Close();
+//	}
+//	else
+//		AfxMessageBox("Cannot access/create to log file");*/
+//}

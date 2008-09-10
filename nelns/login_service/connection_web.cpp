@@ -1,7 +1,7 @@
 /** \file connection_web.cpp
+ * 
  *
- *
- * $Id: connection_web.cpp,v 1.12 2007/06/11 12:53:21 boucher Exp $
+ * $Id: connection_web.cpp,v 1.12 2007-06-11 12:53:21 boucher Exp $
  *
  */
 
@@ -26,9 +26,9 @@
 
 #include "nel/misc/types_nl.h"
 
-#include <stdio.h>
+#include <cstdio>
 #include <ctype.h>
-#include <math.h>
+#include <cmath>
 
 #include <vector>
 #include <map>
@@ -83,7 +83,7 @@ static void cbWSShardChooseShard/* (CMessage &msgin, TSockId from, CCallbackNetB
 	string reason;
 	msgin.serial (reason);
 	msgout.serial (reason);
-
+	
 	CLoginCookie cookie;
 	msgin.serial (cookie);
 
@@ -106,8 +106,9 @@ static void cbWSShardChooseShard/* (CMessage &msgin, TSockId from, CCallbackNetB
 		msgin.serial (addr);
 		msgout.serial (addr);
 
-		uint32 nbPendingUser;
-		msgin.serial(nbPendingUser);
+		// MTR: No longer sent by WS?
+		//uint32 nbPendingUser;
+		//msgin.serial(nbPendingUser);
 
 		// read patch addresses sent by WS
 		/*
@@ -136,7 +137,7 @@ static const TUnifiedCallbackItem WSCallbackArray[] =
 
 void cbAskClientConnection (CMemStream &msgin, TSockId host)
 {
-	uint32 shardId;
+	sint32 shardId;
 	uint32 userId;
 	string userName, userPriv, userExtended;
 	msgin.serial (shardId);
@@ -169,7 +170,7 @@ void cbAskClientConnection (CMemStream &msgin, TSockId host)
 		if (Shards[i].ShardId == shardId)
 		{
 			// generate a cookie
-			CLoginCookie Cookie ((uint32)host, userId);
+			CLoginCookie Cookie ((uint32)(uintptr_t)host, userId);
 
 			// send message to the welcome service to see if it s ok and know the front end ip
 			CMessage msgout ("CS");
@@ -198,7 +199,7 @@ void cbAskClientConnection (CMemStream &msgin, TSockId host)
 
 void cbDisconnectClient (CMemStream &msgin, TSockId host)
 {
-	uint32 shardId;
+	sint32 shardId;
 	sint32 userId;
 	msgin.serial (shardId);
 	msgin.serial (userId);

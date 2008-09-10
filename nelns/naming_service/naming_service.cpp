@@ -35,9 +35,6 @@
 #define NELNS_LOGS ""
 #endif // NELNS_LOGS
 
-//
-/// \todo ace: check that if there are 2 subnet with different service that services are well connected with well services for his subnet and not the other one
-//
 
 //
 // Includes

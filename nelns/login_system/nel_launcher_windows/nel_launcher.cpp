@@ -18,6 +18,9 @@
 
 
 #include "stdafx.h"
+#include <nel/misc/types_nl.h>
+#include <nel/misc/debug.h>
+#include <nel/misc/path.h>
 #include "nel_launcher.h"
 #include "nel_launcherDlg.h"
 
@@ -26,6 +29,8 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+NLMISC::CFileDisplayer FileDisplayer;
 
 /////////////////////////////////////////////////////////////////////////////
 // CNel_launcherApp
@@ -57,6 +62,20 @@ CNel_launcherApp theApp;
 
 BOOL CNel_launcherApp::InitInstance()
 {
+	// use log.log if NEL_LOG_IN_FILE defined as 1
+	NLMISC::createDebug(NULL, true, true);
+
+	// filedisplayer only deletes the 001 etc
+	if (NLMISC::CFile::isExists("nel_launcher.log"))
+		NLMISC::CFile::deleteFile("nel_launcher.log");
+	// initialize the log file
+	FileDisplayer.setParam("nel_launcher.log", true);
+	NLMISC::DebugLog->addDisplayer(&FileDisplayer);
+	NLMISC::InfoLog->addDisplayer(&FileDisplayer);
+	NLMISC::WarningLog->addDisplayer(&FileDisplayer);
+	NLMISC::AssertLog->addDisplayer(&FileDisplayer);
+	NLMISC::ErrorLog->addDisplayer(&FileDisplayer);
+
 	AfxEnableControlContainer();
 
 	// Standard initialization

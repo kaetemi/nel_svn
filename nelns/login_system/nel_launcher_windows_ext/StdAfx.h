@@ -29,6 +29,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include <nel/misc/types_nl.h>
+
 #include <queue>
 #include <string>
 
@@ -36,8 +38,6 @@
 
 #undef min
 #undef max
-
-#include "nel/misc/types_nl.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

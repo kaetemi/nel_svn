@@ -47,6 +47,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include <nel/misc/types_nl.h>
+
 #include <queue>
 #include <string>
 

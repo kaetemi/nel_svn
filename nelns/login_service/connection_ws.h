@@ -1,7 +1,7 @@
 /** \file connection_ws.h
  * <File description>
  *
- * $Id: connection_ws.h,v 1.4 2002/10/21 12:00:52 lecroart Exp $
+ * $Id: connection_ws.h,v 1.4 2002-10-21 12:00:52 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -30,6 +30,7 @@
 #include "nel/net/callback_server.h"
 
 //extern NLNET::CCallbackServer *WSServer;
+extern uint NbPlayers;
 
 void connectionWSInit ();
 void connectionWSUpdate ();

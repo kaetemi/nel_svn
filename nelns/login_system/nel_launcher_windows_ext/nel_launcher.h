@@ -38,8 +38,6 @@ public:
 	CString GetRegKeyValue(const char* lpszEntry);
 	void	ResetConnection();
 	BOOL	GetWindowsVersion();
-	void	EnableLog(BOOL bEnable = TRUE);
-	void	Log(CString cs);
 
 public:	
 	CString	m_csLogin;

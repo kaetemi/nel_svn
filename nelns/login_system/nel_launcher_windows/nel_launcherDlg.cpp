@@ -68,6 +68,8 @@ END_MESSAGE_MAP()
 
 BOOL CNel_launcherDlg::OnInitDialog()
 {
+	NLMISC::CApplicationContext ApplicationContext;
+
 	CDialog::OnInitDialog();
 
 	// Set the icon for this dialog.  The framework does this automatically
@@ -611,6 +613,7 @@ void CNel_launcherDlg::OnDocumentCompleteExplorer1(LPDISPATCH pDisp, VARIANT FAR
 		return;
 	}
 }
+
 
 
 
