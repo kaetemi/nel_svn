@@ -206,7 +206,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = 
+TAGFILES               = nel.tag=../nel
 GENERATE_TAGFILE       = nelns.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO

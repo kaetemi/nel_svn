@@ -83,8 +83,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../include/nel \
-                        ../src
+INPUT                  = ../include/nel/misc
                         
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.h \
@@ -207,7 +206,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = nelns.tag=../nel
+TAGFILES               = 
 GENERATE_TAGFILE       = nel.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO
