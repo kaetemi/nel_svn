@@ -1,7 +1,9 @@
 #!/bin/sh
 
+rm -rf html/nel
+WORKDIR=$(pwd)
+
 cd ..
-CURDIR=$(pwd)
-cd -
-rm -rf html
-doxygen nel.dox -D$CURDIR
+export CURDIR=$(pwd)
+cd $WORKDIR
+doxygen nel.dox -DCURDIR

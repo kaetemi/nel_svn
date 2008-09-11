@@ -1,11 +1,11 @@
 @echo off
 
-del html\nel\*.* /Q
+del html\nelns\*.* /Q
 set WORKDIR=%CD%
 
-cd ..
+cd ..\..\nelns
 set CURDIR=%CD%
 cd %WORKDIR%
-doxygen nel.dox -DCURDIR
+doxygen nelns.dox -DCURDIR
 
 pause

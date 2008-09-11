@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = NeL
+PROJECT_NAME           = NeLNS
 PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = 
 CREATE_SUBDIRS         = YES
@@ -83,8 +83,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../include/nel \
-                        ../src
+INPUT                  = ../../nelns
                         
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.h \
@@ -126,7 +125,7 @@ IGNORE_PREFIX          = C \
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html/nel
+HTML_OUTPUT            = html/nelns
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
@@ -207,8 +206,8 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = nelns.tag=../nel
-GENERATE_TAGFILE       = nel.tag
+TAGFILES               = 
+GENERATE_TAGFILE       = nelns.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO
 PERL_PATH              = /usr/bin/perl
