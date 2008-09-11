@@ -85,6 +85,8 @@ void CAdpcmXAudio2::flushSourceBuffers()
 {
 	_Mutex.enter();
 	_SourceData = NULL;
+	for (uint i = 0; i < _BufferNb; ++i) 
+		_ValidBufferContext[i] = 0;
 	//_SourceSize = 0;
 	_State.PreviousSample = 0;
 	_State.StepIndex = 0;
