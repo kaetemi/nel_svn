@@ -81,6 +81,10 @@ protected:
 	uint _BufferNext;
 	/// Mutex for cross-thread access from XAudio2 callbacks.
 	NLMISC::CMutex _Mutex;
+	/// Unique id for buffer.
+	uint _LastBufferContext;
+	/// Current buffer.
+	void *_ValidBufferContext[_BufferNb];
 public:
 	CAdpcmXAudio2(bool loop);
 	virtual ~CAdpcmXAudio2();

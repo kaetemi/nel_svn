@@ -591,11 +591,6 @@ bool CSourceXAudio2::getSourceRelativeMode() const
 	return _Relative;
 }
 
-//nd_sources_df.exe : ----- setMinMaxDistances 1.200000, 1000.000000 ----
-//df.exe :            ------- setCone 6.283185, 6.283185 ,0.000010 ----
-//nd_sources_df.exe : ----- setMinMaxDistances 5.000000, 50.000000 -----
-//df.exe :             ----- setCone 6.283185, 6.283185 ,0.000010 ------
-
 /// Set the min and max distances (default: 1, MAX_FLOAT) (3D mode only)
 void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool deferred)
 {
