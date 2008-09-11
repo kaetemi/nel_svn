@@ -147,24 +147,24 @@ void CSourceXAudio2::commit3DChanges()
 		float sqrdist = _Relative 
 			? getPos().sqrnorm()
 			: (getPos() - _SoundDriver->getListener()->getPos()).sqrnorm();
-
+		
 		static const sint32 dbMin = -10000;
 		static const sint32 dbMax = 0;
-
+		
 		// calculate rolloff from alpha and distance
 		sint32 rolloff100thDb = ISource::computeManualRollOff(dbMax, dbMin, dbMax, _Alpha, sqrdist);
-
+		
 		// decibels to amplitude ratio
 		float rolloff = (float)pow(10.0, double(rolloff100thDb) / 2000.0);
 		clamp(rolloff, 0.0f, 1.0f);
-
+		
 		// apply rolloff
-		// i don't know why but this works (correctly!), heheh
-		X3DAUDIO_DISTANCE_CURVE_POINT curve_points[2] = { 0.0f, 1.0f, 1.0f, rolloff };
+		X3DAUDIO_DISTANCE_CURVE_POINT curve_points[3] = { 0.f, rolloff, 1.f, rolloff };
 		X3DAUDIO_DISTANCE_CURVE curve = { (X3DAUDIO_DISTANCE_CURVE_POINT *)&curve_points[0], 2 };
 		_Emitter.pVolumeCurve = &curve;
+		_Emitter.pLFECurve = &curve;
 #endif
-
+		
 		_SoundDriver->getDSPSettings()->DstChannelCount = 2;
 
 		X3DAudioCalculate(_SoundDriver->getX3DAudio(), 
@@ -601,6 +601,7 @@ void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool defer
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setMinMaxDistances %f, %f", mindist, maxdist);
 
+	_Emitter.InnerRadius = mindist;
 	_MinDistance = mindist;
 	_MaxDistance = maxdist;
 

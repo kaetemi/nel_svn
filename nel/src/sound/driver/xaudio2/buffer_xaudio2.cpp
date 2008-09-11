@@ -77,7 +77,7 @@ uint8 *CBufferXAudio2::openWritable(uint size, TSampleFormat format, uint32 freq
 	if (_Data)
 	{
 		_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
-		if (size != _Size) delete[] _Data; _Data = NULL;
+		if (size > _Size) delete[] _Data; _Data = NULL;
 	}
 
 	if (!_Data) _Data = new uint8[size];
