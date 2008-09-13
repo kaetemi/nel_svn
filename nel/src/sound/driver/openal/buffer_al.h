@@ -23,12 +23,7 @@
 
 #ifndef NL_BUFFER_AL_H
 #define NL_BUFFER_AL_H
-
-#include "nel/misc/types_nl.h"
-#include "nel/misc/debug.h"
-#include "sound/driver/buffer.h"
-
-#include "AL/al.h"
+#include <nel/misc/types_nl.h>
 
 namespace NLSOUND {
 
@@ -86,10 +81,10 @@ public:
 	ALuint				bufferName()							{ return _BufferName; }
 
 	/// Return the name of the buffer (as a string)
-	virtual const NLMISC::TStringId& getName()							{ return _Name; }
+	virtual const NLMISC::TStringId& getName() const							{ return _Name; }
 
 	/// Return true if the buffer is loaded. Used for async load/unload.
-	virtual bool		isBufferLoaded();
+	virtual bool		isBufferLoaded() const;
 
 	/// Set the name of the buffer
 	virtual void		setName(NLMISC::TStringId& name)				{ _Name = name; }

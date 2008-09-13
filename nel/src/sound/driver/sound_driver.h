@@ -133,6 +133,9 @@ public:
 	/// Create the listener instance
 	virtual	IListener		*createListener() = 0;
 
+	/// Create a native music channel, only supported by the FMod driver.
+	virtual IMusicChannel	*createMusicChannel() { return NULL; }
+
 	/// Return the maximum number of sources that can created
 	virtual uint			countMaxSources() = 0;
 
@@ -159,12 +162,6 @@ public:
 
 	// Filled at createDriver()
 	const std::string &getDllName() const { return _DllName; }
-
-	/// Create a music channel, destroy with destroyMusicChannel
-	virtual IMusicChannel *createMusicChannel() =0;
-
-	/// Destroy a music channel
-	virtual void destroyMusicChannel(IMusicChannel *musicChannel) =0;
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
@@ -179,12 +176,6 @@ protected:
 
 	/// Constructor
 	ISoundDriver() {}
-
-	/// Remove a buffer (should be called by the friend destructor of the buffer class)
-	virtual void			removeBuffer( IBuffer *buffer ) = 0;
-
-	/// Remove a source (should be called by the friend destructor of the source class)
-	virtual void			removeSource( ISource *source ) = 0;
 
 private:
 	std::string				_DllName;

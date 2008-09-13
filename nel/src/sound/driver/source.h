@@ -37,7 +37,7 @@ class ILoader;
 
 /**
  * Sound source interface (implemented in sound driver dynamic library)
- *
+ * 
  * - If the buffer is mono, the source is played in 3D mode. For arguments
  * as 3D vectors, use the NeL vector coordinate system:
  * \verbatim
@@ -48,8 +48,9 @@ class ILoader;
  *       -----x (right)
  * \endverbatim
  *
- * - If the buffer is stereo, the source is played in stereo mode.
- *
+ * - If the buffer is multi-channel, only distance rolloff is applied.
+ * - All streaming related functionalities are thread-safe.
+ * 
  * \author Olivier Cado
  * \author Nevrax France
  * \date 2001
@@ -57,21 +58,22 @@ class ILoader;
 class ISource
 {
 public:
-
 	/// \name Initialization
 	//@{
+	/// Enable or disable streaming mode. Source must be stopped to call this.
+	virtual void setStreaming(bool streaming) { throw ESoundDriverNotSupp(); }
 	/** Set the buffer that will be played (no streaming)
 	 * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
 	 * otherwise the source is considered as a 3D source.
 	 */
-	virtual void					setStaticBuffer( IBuffer *buffer )	= 0; //{ _Buffer = buffer; }
+	virtual void setStaticBuffer(IBuffer *buffer) = 0;
 	/// Return the buffer, or NULL if streaming is used.
-	virtual IBuffer					*getStaticBuffer() = 0; //					{ return _Buffer; }
-	/** Set the sound loader that will be used to stream in the data to play
-	 * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
-	 * otherwise the source is considered as a 3D source.
-	 */
-	virtual void					setStreamLoader( ILoader *loader )	{ _Loader = loader; }
+	virtual IBuffer *getStaticBuffer() = 0;
+	/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+	/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+	virtual void submitStreamingBuffer(IBuffer *buffer) { throw ESoundDriverNotSupp(); }
+	/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+	virtual uint countStreamingBuffers() const { throw ESoundDriverNotSupp(); }
 	//@}
 
 

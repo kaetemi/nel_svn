@@ -96,9 +96,9 @@ public:
 
 
 	/// Return the name of the buffer
-	virtual const NLMISC::TStringId&	getName()		{ return _Name; }
+	virtual const NLMISC::TStringId&	getName() const		{ return _Name; }
 
-	virtual bool			isBufferLoaded()			{ return _FModSample != 0; }
+	virtual bool			isBufferLoaded() const			{ return _FModSample != 0; }
 
 private:
 	friend class	CSourceFMod;

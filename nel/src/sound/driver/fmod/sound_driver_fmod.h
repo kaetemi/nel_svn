@@ -127,9 +127,6 @@ public:
 
 	/// Create a music channel, destroy with destroyMusicChannel
 	virtual IMusicChannel *createMusicChannel();
-
-	/// Destroy a music channel
-	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
@@ -141,21 +138,18 @@ public:
 	// also check that the channel still exist (avoid any free problem)
 	void markMusicChannelEnded(void *stream, CMusicChannelFMod *musicChannel);
 
+	/// (Internal) Remove a buffer (should be called by the destructor of the buffer class)
+	void removeBuffer(CBufferFMod *buffer);
+	/// (Internal) Remove a source (should be called by the destructor of the source class)
+	void removeSource(CSourceFMod *source);
+	/// (Internal) Remove a music channel (should be called by the destructor of the music channel class)
+	void removeMusicChannel(CMusicChannelFMod *musicChannel);
+
 private:
 
 	// The refence to the singleton.
     static CSoundDriverFMod* _Instance;
-
-	friend CBufferFMod::~CBufferFMod();
-	friend CSourceFMod::~CSourceFMod();
-
- 	/// Remove a buffer (should be called by the friend destructor of the buffer class)
-	virtual void removeBuffer(IBuffer *buffer);
-
-	/// Remove a source (should be called by the friend destructor of the source class)
-	virtual void removeSource(ISource *source);
-
-
+	
 	virtual void	startBench();
 	virtual void	endBench();
 	virtual void	displayBench(NLMISC::CLog *log);

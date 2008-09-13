@@ -22,13 +22,11 @@
  */
 
 #include "stdopenal.h"
-
 #include "listener_al.h"
-#include "../sound_driver.h"
 
+#include "sound_driver_al.h"
 
 using namespace NLMISC;
-
 
 namespace NLSOUND {
 
@@ -200,8 +198,8 @@ void					CListenerAL::setDopplerFactor( float f )
  */
 void					CListenerAL::setRolloffFactor( float f )
 {
-	nlassert( CSoundDriverAL::instance() != NULL );
-	CSoundDriverAL::instance()->applyRolloffFactor( f );
+	nlassert(CSoundDriverAL::getInstance() != NULL);
+	CSoundDriverAL::getInstance()->applyRolloffFactor(f);
 }
 
 

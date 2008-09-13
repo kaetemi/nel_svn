@@ -23,11 +23,7 @@
 
 #ifndef NL_SOURCE_AL_H
 #define NL_SOURCE_AL_H
-
-#include "nel/misc/types_nl.h"
-#include "../source.h"
-#include "AL/al.h"
-
+#include <nel/misc/types_nl.h>
 
 namespace NLSOUND {
 

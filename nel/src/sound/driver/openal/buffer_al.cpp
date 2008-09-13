@@ -22,8 +22,9 @@
  */
 
 #include "stdopenal.h"
-
 #include "buffer_al.h"
+
+#include "sound_driver_al.h"
 
 namespace NLSOUND {
 
@@ -48,7 +49,7 @@ CBufferAL::~CBufferAL()
 		delete _Data;
 
 	// delete OpenAL copy
-	CSoundDriverAL *sdal = CSoundDriverAL::instance();
+	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
 	//nlinfo( "Deleting buffer (name %u)", _BufferName );
 	sdal->removeBuffer( this );
 }
@@ -164,7 +165,7 @@ bool CBufferAL::fillBuffer(void *src, uint32 bufsize)
 	return (alGetError() == AL_NO_ERROR);
 }
 
-bool CBufferAL::isBufferLoaded()
+bool CBufferAL::isBufferLoaded() const
 {
 	return (_SampleFormat != AL_INVALID && _Data != NULL && _Size > 0 && _Frequency > 0);
 }

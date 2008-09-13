@@ -129,10 +129,10 @@ public:
 	virtual bool fillMore(void *src, uint32 srcsize);
 
 	/// Return the name of this buffer
-	virtual const NLMISC::TStringId& getName();
+	virtual const NLMISC::TStringId& getName() const;
 
 	/// Return true if the buffer is loaded. Used for async load/unload.
-	virtual bool isBufferLoaded();
+	virtual bool isBufferLoaded() const;
 
 	/** Unoptimized utility function designed to build ADPCM encoded sample bank file.
 	 *	Return the number of sample in the buffer.

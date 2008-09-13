@@ -22,16 +22,16 @@
  */
 
 #include "stdopenal.h"
+#include "sound_driver_al.h"
+
+#include <nel/misc/path.h>
+#include <nel/misc/dynloadlib.h>
 
 #include "buffer_al.h"
 #include "listener_al.h"
-#include "nel/misc/path.h"
-#include "nel/misc/dynloadlib.h"
-#include "../sound_driver.h"
 
 using namespace std;
 using namespace NLMISC;
-
 
 namespace NLSOUND {
 
@@ -104,7 +104,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
 {
 	CSoundDriverAL *driver = new CSoundDriverAL();
-	driver->init();
+	driver->init(useEax);
 	return driver;
 }
 
@@ -128,7 +128,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 #endif
 	(string &out)
 {
-	CSoundDriverAL::instance()->writeProfile(out);
+	CSoundDriverAL::getInstance()->writeProfile(out);
 }
 
 // ******************************************************************
@@ -163,27 +163,15 @@ uint32 NLSOUND_interfaceVersion ()
 
 #endif // NL_OS_UNIX
 
-
-// The instance of the singleton
-CSoundDriverAL	*CSoundDriverAL::_Instance = NULL;
-
-
 /*
  * Constructor
  */
-CSoundDriverAL::CSoundDriverAL() :
-	ISoundDriver(), _NbExpBuffers( 0 ), _NbExpSources( 0 ), _RolloffFactor( 1.0f )
+CSoundDriverAL::CSoundDriverAL() 
+: _AlcDevice(NULL), _AlcContext(NULL), 
+_NbExpBuffers(0), _NbExpSources(0), _RolloffFactor(1.f)
 {
-	if ( _Instance == NULL )
-	{
-		_Instance = this;
-	}
-	else
-	{
-		nlerror( "Sound driver singleton instanciated twice" );
-	}
+	
 }
-
 
 /*
  * Destructor
@@ -195,19 +183,21 @@ CSoundDriverAL::~CSoundDriverAL()
 	alDeleteBuffers(compactAliveNames( _Buffers, alIsBuffer ), &*_Buffers.begin());
 
 	// OpenAL exit
-	alutExit();
-
-	_Instance = NULL;
+	alcDestroyContext(_AlcContext); _AlcContext = NULL;
+	alcCloseDevice(_AlcDevice); _AlcDevice = NULL;
 }
 
 
 /*
  * Initialization
  */
-bool CSoundDriverAL::init()
+bool CSoundDriverAL::init(bool useEax)
 {
 	// OpenAL initialization
-	alutInit( NULL, NULL );
+	// TODO: driver selection, check if device open succeeded, etc
+	_AlcDevice = alcOpenDevice(NULL);
+	_AlcContext = alcCreateContext(_AlcDevice, NULL);
+	alcMakeContextCurrent(_AlcContext);
 
 	// Display version information
 	const ALchar *alversion, *alrenderer, *alvendor, *alext;
@@ -478,7 +468,7 @@ TSampleFormat ALtoNLSoundFormat( ALenum alformat )
  */
 bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
 {
-	ALsizei size,freq;
+/*	ALsizei size,freq;
 	ALenum format;
 	ALvoid *data;
 	ALboolean loop;
@@ -495,12 +485,16 @@ bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
 
 	alutUnloadWAV(format,data,size,freq); // Where is it on Linux ?!?
 	return true;
+	*/
+	return false;
 }
 
 /*
  * loads a memory mapped .wav-file into the given buffer
  */
-bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) {
+bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) 
+{
+	/*
 	ALenum format;
 	ALsizei size;
 	ALfloat frequency;
@@ -513,9 +507,11 @@ bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name,
     destbuffer->fillBuffer((void*)sampleData, (uint32)size);
     free(sampleData);
     return true;
+	*/
+	return false;
 }
 
-bool CSoundDriverAL::readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+bool CSoundDriverAL::readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
 {
 	nlassert(destbuffer != NULL);
 	nlassert(rawData != NULL);

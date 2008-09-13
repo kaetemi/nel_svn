@@ -98,9 +98,9 @@ public:
     virtual uint8*			getData() const				{ return _Data; }
 
 	/// Return the name of the buffer
-	virtual const NLMISC::TStringId&	getName()		{ return _Name; }
+	virtual const NLMISC::TStringId&	getName() const		{ return _Name; }
 
-	virtual bool			isBufferLoaded()			{ return _Data != 0; }
+	virtual bool			isBufferLoaded() const			{ return _Data != 0; }
 
 private:
 

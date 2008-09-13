@@ -23,27 +23,10 @@
 
 #ifndef NL_SOUND_DRIVER_AL_H
 #define NL_SOUND_DRIVER_AL_H
+#include <nel/misc/types_nl.h>
 
-#include "nel/misc/types_nl.h"
-#include "../sound_driver.h"
 #include "source_al.h"
 #include "buffer_al.h"
-#include <AL/al.h>
-#include <AL/alut.h>
-#ifdef NL_OS_WINDOWS
-# include <objbase.h> // needed before eax.h
-# if defined EAX_AVAILABLE
-#   undef EAX_AVAILABLE
-# endif
-# define EAX_AVAILABLE 1
-#endif
-
-#if EAX_AVAILABLE == 1
-#include <eax.h> // no EAX on Linux !
-#endif
-
-#include <vector>
-
 
 namespace NLSOUND {
 
@@ -89,18 +72,15 @@ void TestALError();
  * \author Nevrax France
  * \date 2001
  */
-class CSoundDriverAL : public ISoundDriver
+class CSoundDriverAL : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverAL>
 {
 public:
 
 	/// Constructor
 	CSoundDriverAL();
 
-	/// Return the instance of the singleton
-	static CSoundDriverAL	*instance() { return _Instance; }
-
 	/// Initialization
-	virtual bool			init();
+	virtual bool			init(bool useEax);
 
 	/// Create a sound buffer
 	virtual	IBuffer			*createBuffer();
@@ -144,9 +124,6 @@ public:
 	// @{
 	/// Create a music channel, destroy with destroyMusicChannel
 	virtual IMusicChannel *createMusicChannel() { return NULL; }
-
-	/// Destroy a music channel
-	virtual void destroyMusicChannel(IMusicChannel *musicChannel) { }
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented. 
 	 *  If the song has no name, result is filled with the filename.
@@ -178,7 +155,7 @@ protected:
 	/// Allocate nb new buffers or sources
 	void					allocateNewItems( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc,
 											  std::vector<ALuint>& names, uint index, uint nb );
-
+	
 	/// Generate nb buffers
 	void					generateItems( TGenFunctionAL algenfunc, TTestFunctionAL altestfunc, uint nb, ALuint *array );
 
@@ -193,39 +170,23 @@ protected:
 	bool					deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, std::vector<ALuint>& names );
 
 private:
-
-	// The instance of the singleton
-	static CSoundDriverAL	*_Instance;
+	// OpenAL device
+	ALCdevice *_AlcDevice;
+	// OpenAL context
+	ALCcontext *_AlcContext;
 
 	// Allocated buffers
-	std::vector<ALuint>		_Buffers;
-
+	std::vector<ALuint> _Buffers;
 	// Allocated sources
-	std::vector<ALuint>		_Sources;
+	std::vector<ALuint> _Sources;
 
 	// Number of exported buffers (including any deleted buffers)
-	uint					_NbExpBuffers;
-
+	uint _NbExpBuffers;
 	// Number of exported sources (including any deleted buffers)
-	uint					_NbExpSources;
+	uint _NbExpSources;
 
 	// Rolloff factor (not in the listener in OpenAL, but relative to the sources)
-	float					_RolloffFactor;
-
-
-	/// \name Music
-	// @{
-
-	/// Number of music channels/sources available.
-	enum {NumMusicChannel = 2};
-
-	/// Music channels/sources
-	CSourceAL	*_MusicChannel[NumMusicChannel];
-
-	/// Update the music channels.
-	void updateMusic();
-
-	// @}
+	float _RolloffFactor;
 };
 
 

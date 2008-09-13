@@ -22,9 +22,9 @@
  */
 
 #include "stdopenal.h"
-#include "../sound_driver.h"
-
 #include "source_al.h"
+
+#include "sound_driver_al.h"
 
 using namespace NLMISC;
 
@@ -46,7 +46,7 @@ CSourceAL::CSourceAL( ALuint sourcename ) :
  */
 CSourceAL::~CSourceAL()
 {
-	CSoundDriverAL *sdal = CSoundDriverAL::instance();
+	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
 	if (_Buffer != NULL)
 		sdal->removeBuffer(_Buffer);
 	sdal->removeSource(this);

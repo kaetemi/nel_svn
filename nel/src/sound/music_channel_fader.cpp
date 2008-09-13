@@ -78,7 +78,7 @@ void CMusicChannelFader::release()
 	{
 		for (uint i = 0; i < _MaxMusicFader; ++i) if (_MusicFader[i].MusicChannel) 
 		{
-			_SoundDriver->destroyMusicChannel(_MusicFader[i].MusicChannel);
+			delete _MusicFader[i].MusicChannel;
 			_MusicFader[i].MusicChannel = NULL;
 		}
 		_SoundDriver = NULL;

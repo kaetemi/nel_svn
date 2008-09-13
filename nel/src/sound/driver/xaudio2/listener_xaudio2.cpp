@@ -263,6 +263,7 @@ void CListenerXAudio2::setEnvironment(uint env, float size)
 void CListenerXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setEAXProperty %u, %u, %u", (uint32)prop, (uint32)value, (uint32)valuesize);
+	nlerror("this isn't used");
 }
 
 //@}

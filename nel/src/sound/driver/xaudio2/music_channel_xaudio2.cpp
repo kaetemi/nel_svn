@@ -60,6 +60,7 @@ CMusicChannelXAudio2::~CMusicChannelXAudio2()
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CMusicChannelXAudio2");
 
 	stop();
+	_SoundDriver->removeMusicChannel(this);
 }
 
 /** Play some music (.ogg etc...)

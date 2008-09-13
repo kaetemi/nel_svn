@@ -319,7 +319,7 @@ IBuffer *CSoundDriverFMod::createBuffer()
 
 // ******************************************************************
 
-void CSoundDriverFMod::removeBuffer(IBuffer *buffer)
+void CSoundDriverFMod::removeBuffer(CBufferFMod *buffer)
 {
 }
 
@@ -353,9 +353,16 @@ ISource *CSoundDriverFMod::createSource()
 
 // ******************************************************************
 
-void CSoundDriverFMod::removeSource(ISource *source)
+void CSoundDriverFMod::removeSource(CSourceFMod *source)
 {
 	_Sources.erase((CSourceFMod*) source);
+}
+
+// ******************************************************************
+
+void CSoundDriverFMod::removeMusicChannel(CMusicChannelFMod *musicChannel)
+{
+	_MusicChannels.erase(static_cast<CMusicChannelFMod *>(musicChannel));
 }
 
 // ******************************************************************
@@ -476,13 +483,6 @@ IMusicChannel *CSoundDriverFMod::createMusicChannel()
 	CMusicChannelFMod *music_channel = new CMusicChannelFMod(this);
 	_MusicChannels.insert(music_channel);
 	return static_cast<IMusicChannel *>(music_channel);
-}
-
-/// Destroy a music channel
-void CSoundDriverFMod::destroyMusicChannel(IMusicChannel *musicChannel)
-{
-	_MusicChannels.erase(static_cast<CMusicChannelFMod *>(musicChannel));
-	delete musicChannel;
 }
 
 bool getTag (std::string &result, const char *tag, FSOUND_STREAM *stream)

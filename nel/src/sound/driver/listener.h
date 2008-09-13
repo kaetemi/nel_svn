@@ -30,13 +30,43 @@
 
 namespace NLSOUND {
 
+enum TEnvironment
+{
+	EnvironmentGeneric = 0, 
+	EnvironemntPaddedCell = 1, 
+	EnvironmentRoom = 2, 
+	EnvironmentBathRoom = 3, 
+	EnvironmentLivingRoom = 4, 
+	EnvironmentStoneRoom = 5, 
+	EnvironmentAuditorium = 6, 
+	EnvironmentConcertHall = 7, 
+	EnvironmentCave = 8, 
+	EnvironmentArena = 9, 
+	EnvironmentHangar = 10, 
+	EnvironmentCarpetedHallway = 11, 
+	EnvironmentHallway = 12, 
+	EnvironmentStoneCorridor = 13, 
+	EnvironmentAlley = 14, 
+	EnvironmentForest = 15, 
+	EnvironmentCity = 16, 
+	EnvironmentMountains = 17, 
+	EnvironmentQuarry = 18, 
+	EnvironmentPlain = 19, 
+	EnvironmentParkingLot = 20, 
+	EnvironmentSewerPipe = 21, 
+	EnvironmentUnderwater = 22, 
+	EnvironmentDrugged = 23, 
+	EnvironmentDizzy = 24, 
+	EnvironmentPsychotic = 25, 
+
+	EnvironmentCount = 26
+};
 
 /// Default environmental effect
 #define ENVFX_DEFAULT_NUM 2
 
 /// Default environmental effect size
 #define ENVFX_DEFAULT_SIZE 7.5f
-
 
 /**
  * Sound listener interface (implemented in sound driver dynamic library)
@@ -94,7 +124,7 @@ public:
 	/// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 	virtual void			setRolloffFactor( float f ) = 0;
 	/// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
-	virtual void			setEnvironment( uint env, float size=ENVFX_DEFAULT_SIZE ) = 0;
+	virtual void			setEnvironment(uint env = ENVFX_DEFAULT_NUM, float size = ENVFX_DEFAULT_SIZE) = 0;
 	/// Set any EAX listener property if EAX available
 	virtual void			setEAXProperty( uint prop, void *value, uint valuesize ) = 0;
 	//@}

@@ -193,9 +193,6 @@ public:
 	/// Create a music channel, destroy with destroyMusicChannel.
 	virtual IMusicChannel *createMusicChannel();
 	
-	/// Destroy a music channel.
-	virtual void destroyMusicChannel(IMusicChannel *musicChannel);
-	
 	/** Get music info. Returns false if the song is not found or the function is not implemented.
 	 *  \param filepath path to file, CPath::lookup done by driver
 	 *  \param artist returns the song artist (empty if not available)
@@ -203,13 +200,13 @@ public:
 	 */
 	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
 	
-	/// (Internal) Remove a buffer (should be called by the friend destructor of the buffer class).
-	virtual void removeBuffer(IBuffer *buffer);
-	
-	/// (Internal) Remove a source (should be called by the friend destructor of the source class).
-	virtual void removeSource(ISource *source);
-	
-	/// (Internal) Remove the listener (called by destructor of listener class)
+	/// (Internal) Remove a buffer (should be called by the destructor of the buffer class).
+	void removeBuffer(CBufferXAudio2 *buffer);	
+	/// (Internal) Remove a source (should be called by the destructor of the source class).
+	void removeSource(CSourceXAudio2 *source);
+	/// (Internal) Remove a source (should be called by the destructor of the source class).
+	void removeMusicChannel(CMusicChannelXAudio2 *source);	
+	/// (Internal) Remove the listener ((should be called by destructor of listener class)
 	inline void removeListener(CListenerXAudio2 *listener) { nlassert(_Listener == listener); _Listener = NULL; }
 
 }; /* class CSoundDriverXAudio2 */

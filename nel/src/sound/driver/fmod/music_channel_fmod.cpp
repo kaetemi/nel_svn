@@ -68,6 +68,7 @@ _MusicChannel(-1), _CallBackEnded(false), _SoundDriver(soundDriver)
 CMusicChannelFMod::~CMusicChannelFMod()
 {
 	stop();
+	_SoundDriver->removeMusicChannel(this);
 }
 
 /// Play async, if bnp give path of bnp and position and size of file inside, else just path to file with fileSize 0.

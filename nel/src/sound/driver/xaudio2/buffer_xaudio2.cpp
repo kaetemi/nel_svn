@@ -318,13 +318,13 @@ bool CBufferXAudio2::fillMore(void *src, uint32 srcsize)
 }
 
 /// Return the name of this buffer
-const NLMISC::TStringId &CBufferXAudio2::getName()
+const NLMISC::TStringId &CBufferXAudio2::getName() const
 {
 	return _Name;
 }
 
 /// Return true if the buffer is loaded. Used for async load/unload.
-bool CBufferXAudio2::isBufferLoaded()
+bool CBufferXAudio2::isBufferLoaded() const
 {
 	return _Data != NULL;
 }

@@ -639,6 +639,27 @@ void CSourceXAudio2::getCone(float& innerAngle, float& outerAngle, float& outerG
 /// Set any EAX source property if EAX available
 void CSourceXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
 {
+	switch (prop)
+	{
+	case 9: // Occlusion 0 [-10000; 0]
+		nlassert(valuesize == sizeof(sint32));
+		nlinfo("Occlusion: %i", *(sint32 *)value);
+		break;
+	case 10: // OcclusionLFRatio 0.25f [0.0f; 1.0f]
+		nlassert(valuesize == sizeof(float));
+		nlinfo("OcclusionLFRatio: %f", *(float *)value);
+		break;
+	case 11: // OcclusionRoomRatio 0.5f [0.0f; 10.0f]
+		nlassert(valuesize == sizeof(float));
+		nlinfo("OcclusionRoomRatio: %f", *(float *)value);
+		break;
+	case 7: // Obstruction 0 [-10000; 0]
+		nlassert(valuesize == sizeof(sint32));
+		nlinfo("Obstruction: %i", *(sint32 *)value);
+		break;
+	default:
+		nlerror("not used prop");
+	}
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setEAXProperty %u, %u, %u", (uint32)prop, (uint32)value, (uint32)valuesize);
 }
 

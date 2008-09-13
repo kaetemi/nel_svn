@@ -368,6 +368,14 @@ IBuffer *CSoundDriverXAudio2::createBuffer()
 	return new CBufferXAudio2(this);
 }
 
+/// Create a music channel
+IMusicChannel *CSoundDriverXAudio2::createMusicChannel()
+{
+	CMusicChannelXAudio2 *music_channel = new CMusicChannelXAudio2(this);
+	_MusicChannels.insert(music_channel);
+	return static_cast<IMusicChannel *>(music_channel);
+}
+
 /// Create the listener instance
 IListener *CSoundDriverXAudio2::createListener()
 {
@@ -464,21 +472,6 @@ void CSoundDriverXAudio2::displayBench(NLMISC::CLog *log)
 	return;
 }
 
-/// Create a music channel
-IMusicChannel *CSoundDriverXAudio2::createMusicChannel()
-{
-	CMusicChannelXAudio2 *music_channel = new CMusicChannelXAudio2(this);
-	_MusicChannels.insert(music_channel);
-	return static_cast<IMusicChannel *>(music_channel);
-}
-
-/// Destroy a music channel
-void CSoundDriverXAudio2::destroyMusicChannel(IMusicChannel *musicChannel)
-{
-	_MusicChannels.erase(static_cast<CMusicChannelXAudio2 *>(musicChannel));
-	delete musicChannel;
-}
-
 /** Get music info. Returns false if the song is not found or the function is not implemented.
  *  \param filepath path to file, CPath::lookup done by driver
  *  \param artist returns the song artist (empty if not available)
@@ -491,19 +484,25 @@ bool CSoundDriverXAudio2::getMusicInfo(const std::string &filepath, std::string 
 }
 
 /// Remove a buffer (should be called by the friend destructor of the buffer class)
-void CSoundDriverXAudio2::removeBuffer(IBuffer *buffer)
+void CSoundDriverXAudio2::removeBuffer(CBufferXAudio2 *buffer)
 {
 	// does nothing here .. see createBuffer
 }
 
 /// Remove a source (should be called by the friend destructor of the source class)
-void CSoundDriverXAudio2::removeSource(ISource *source)
+void CSoundDriverXAudio2::removeSource(CSourceXAudio2 *source)
 {
 	if (_SourceChannels.find((CSourceXAudio2 *)source) != _SourceChannels.end())
 		_SourceChannels.erase((CSourceXAudio2 *)source); // note: IT DOESN'T DELETE
 	else nlwarning("removeSource already called");
 	// SOURCE ARE DELETED IN CTrack / mixing_track.h ...
 	// -> use delete to call this function ^^'
+}
+	
+/// (Internal) Remove a source (should be called by the destructor of the source class).
+void CSoundDriverXAudio2::removeMusicChannel(CMusicChannelXAudio2 *source)
+{
+	_MusicChannels.erase(source);
 }
 
 } /* namespace NLSOUND */
