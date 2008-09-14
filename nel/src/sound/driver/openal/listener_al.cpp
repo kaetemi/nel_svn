@@ -48,6 +48,7 @@ CListenerAL::CListenerAL() : IListener()
 	{
 		nlerror( "Listener singleton instanciated twice" );
 	}
+	_Pos.set(0.0f, 0.0f, 0.0f);
 }
 
 

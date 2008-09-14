@@ -33,7 +33,7 @@ namespace NLSOUND {
 enum TEnvironment
 {
 	EnvironmentGeneric = 0, 
-	EnvironemntPaddedCell = 1, 
+	EnvironmentPaddedCell = 1, 
 	EnvironmentRoom = 2, 
 	EnvironmentBathRoom = 3, 
 	EnvironmentLivingRoom = 4, 

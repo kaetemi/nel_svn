@@ -98,12 +98,12 @@ protected:
 	uint _PerformanceCommit3DCounter;
 	
 	// user init vars
-	/// If eax is used.
-	const bool _UseEax;
+	/// Driver options
+	TSoundOptions _Options;
 	
 public:
 	/// (Internal) Constructor for CSoundDriverXAudio2.
-	CSoundDriverXAudio2(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
+	CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider *stringMapper);
 	/// (Internal) Destructor for CSoundDriverXAudio2.
 	virtual ~CSoundDriverXAudio2();
 	/// (Internal) Release all resources owned by CSoundDriverXAudio2.
@@ -158,12 +158,22 @@ public:
 	/// (Internal) Returns an X3DAudio listener at 0 position.
 	inline X3DAUDIO_LISTENER *getEmptyListener() { return &_EmptyListener; }
 	/// (Internal) Returns if EAX is enabled.
-	inline bool useEax() { return _UseEax; }
+	inline bool useEax() { return getOption(OptionSubmixEffects); }
 	
 	/// (Internal) Create an XAudio2 source voice of the specified format.
 	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format, IXAudio2VoiceCallback *callback);
 	/// (Internal) Destroy an XAudio2 source voice.
 	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
+
+	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
+	/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+	virtual void init(std::string device, TSoundOptions options);
+
+	/// Return options that are enabled (including those that cannot be disabled on this driver).
+	virtual TSoundOptions getOptions();
+	/// Return if an option is enabled (including those that cannot be disabled on this driver).
+	virtual bool getOption(TSoundOptions option);
 	
 	/// Create a sound buffer.
 	virtual	IBuffer *createBuffer();

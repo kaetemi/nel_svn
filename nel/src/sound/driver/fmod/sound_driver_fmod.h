@@ -57,23 +57,27 @@ namespace NLSOUND {
 
 
 // ***************************************************************************
-class CSoundDriverFMod : public ISoundDriver
+class CSoundDriverFMod : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverFMod>
 {
 public:
 
     /// Constructor
-    CSoundDriverFMod();
+    CSoundDriverFMod(ISoundDriver::IStringMapperProvider *stringMapper);
 
     virtual ~CSoundDriverFMod();
+	
+	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
+	/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+	virtual void init(std::string device, TSoundOptions options);
 
-	/// Return the instance of the singleton
-	static CSoundDriverFMod *instance() { return _Instance; }
+	/// Return options that are enabled (including those that cannot be disabled on this driver).
+	virtual TSoundOptions ISoundDriver::getOptions();
+	/// Return if an option is enabled (including those that cannot be disabled on this driver).
+	virtual bool ISoundDriver::getOption(TSoundOptions option);
 
 	/// Create the listener instance
 	virtual	IListener *createListener();
-
-	/// Initialization
-	void init(IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
 
 	/// Create a sound buffer
 	virtual	IBuffer *createBuffer();
@@ -145,17 +149,12 @@ public:
 	/// (Internal) Remove a music channel (should be called by the destructor of the music channel class)
 	void removeMusicChannel(CMusicChannelFMod *musicChannel);
 
-private:
-
-	// The refence to the singleton.
-    static CSoundDriverFMod* _Instance;
-	
-	virtual void	startBench();
-	virtual void	endBench();
-	virtual void	displayBench(NLMISC::CLog *log);
+private:	
+	virtual void startBench();
+	virtual void endBench();
+	virtual void displayBench(NLMISC::CLog *log);
 
 	void updateMusic();
-
 
 	/// The string mapper provided by client code
 	IStringMapperProvider *_StringMapper;
@@ -172,6 +171,9 @@ private:
 
 	/// Master Volume [0,1]
 	float _MasterGain;
+
+	/// Driver options
+	TSoundOptions _Options;
 
 };
 

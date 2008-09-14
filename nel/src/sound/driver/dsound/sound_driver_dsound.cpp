@@ -34,7 +34,6 @@
 #include "../sound_driver.h"
 
 #include <cmath>
-#include <eax.h>
 
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/dynloadlib.h"
@@ -91,7 +90,7 @@ ISoundDriver* createISoundDriverInstance
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
-	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
+	(ISoundDriver::IStringMapperProvider *stringMapper)
 {
 #ifdef NL_STATIC
 	HINSTANCE CSoundDriverDllHandle = (HINSTANCE)GetModuleHandle(NULL);
@@ -139,10 +138,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 	nlassert(ret != 0);
 */
 
-	CSoundDriverDSound *driver = new CSoundDriverDSound();
-	driver->init(CSoundDriverWnd, useEax, stringMapper);
-
-	return driver;
+	return new CSoundDriverDSound(stringMapper);
 }
 
 // ******************************************************************
@@ -186,8 +182,8 @@ __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 
 // ******************************************************************
 
-CSoundDriverDSound::CSoundDriverDSound()
-:	_StringMapper(0)
+CSoundDriverDSound::CSoundDriverDSound(ISoundDriver::IStringMapperProvider *stringMapper)
+: _StringMapper(stringMapper)
 {
 	if ( _Instance == NULL )
 	{
@@ -351,17 +347,78 @@ BOOL CALLBACK CSoundDriverDSoundEnumCallback(LPGUID guid, LPCSTR description, PC
 
 // ******************************************************************
 
-bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stringMapper)
+CSoundDriverDSound::~CSoundDriverDSound()
 {
-	_StringMapper = stringMapper;
+	nldebug("Destroying DirectSound driver");
+
+    if (_TimerID != NULL)
+    {
+        timeKillEvent(_TimerID);
+        timeEndPeriod(_TimerResolution);
+    }
+
+
+	// Assure that the remaining sources have released all their DSBuffers
+	// before closing down DirectSound
+	set<CSourceDSound*>::iterator iter;
+
+	for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
+	{
+		(*iter)->release();
+	}
+
+
+	// Assure that the listener has released all resources before closing
+	// down DirectSound
+	if (CListenerDSound::instance() != 0)
+	{
+		CListenerDSound::instance()->release();
+	}
+
+
+    if (_PrimaryBuffer != NULL)
+    {
+        _PrimaryBuffer->Release();
+        _PrimaryBuffer = NULL;
+    }
+
+    if (_DirectSound != NULL)
+    {
+        _DirectSound->Release();
+        _DirectSound = NULL;
+    }
+
+	_Instance = 0;
+
+	// free the enumerated list
+	if (CDeviceDescription::_List)
+	{
+		delete CDeviceDescription::_List;
+		CDeviceDescription::_List = NULL;
+	}
+}
+
+/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+// ***todo*** void CSoundDriverDSound::getDevices(std::vector<std::string> &devices) { }
+
+/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions options)
+{
+	// set the options: disable effects if no eax, always local copy
+	_Options = options;
+	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
+#if !EAX_AVAILABLE
+	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+#endif
+
     if (FAILED(DirectSoundEnumerate(CSoundDriverDSoundEnumCallback, this)))
     {
         throw ESoundDriver("Failed to enumerate the DirectSound devices");
     }
 
     // Create a DirectSound object and set the cooperative level.
-
-	if (useEax)
+#if EAX_AVAILABLE
+	if (getOption(OptionSubmixEffects))
 	{
 		if (EAXDirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK)
 		{
@@ -369,6 +426,7 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 		}
 	}
 	else
+#endif
 	{
 		if (DirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK)
 		{
@@ -377,7 +435,7 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 	}
 
 
-    if (_DirectSound->SetCooperativeLevel(wnd, DSSCL_PRIORITY) != DS_OK)
+    if (_DirectSound->SetCooperativeLevel(CSoundDriverWnd, DSSCL_PRIORITY) != DS_OK)
     {
         throw ESoundDriver("Failed to set the cooperative level");
     }
@@ -408,7 +466,7 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 	// check if wa can honor eax request
 	if (countHw3DBuffers() > 10)
 	{
-		_UseEAX = useEax;
+		_UseEAX = getOption(OptionSubmixEffects);
 	}
 	else
 	{
@@ -557,16 +615,13 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 	}
 
 */
-
-
+	
     TIMECAPS tcaps;
 
     timeGetDevCaps(&tcaps, sizeof(TIMECAPS));
     _TimerResolution = (tcaps.wPeriodMin > 10)? tcaps.wPeriodMin : 10;
     timeBeginPeriod(_TimerResolution);
-
-
-
+	
 #if NLSOUND_PROFILE
     for (uint i = 0; i < 1024; i++)
     {
@@ -575,75 +630,27 @@ bool CSoundDriverDSound::init(HWND wnd, bool useEax, IStringMapperProvider *stri
 
     _TimerDate = CTime::getPerformanceTime();
 #endif
-
-
-
-
+	
     _TimerID = timeSetEvent(_TimerPeriod, 0, &CSoundDriverDSound::TimerCallback, (DWORD)this, TIME_CALLBACK_FUNCTION | TIME_PERIODIC);
 
     if (_TimerID == NULL)
     {
         throw ESoundDriver("Failed to create the timer");
     }
-
-
-
-
-    return true;
 }
 
-// ******************************************************************
-
-CSoundDriverDSound::~CSoundDriverDSound()
+/// Return options that are enabled (including those that cannot be disabled on this driver).
+ISoundDriver::TSoundOptions CSoundDriverDSound::getOptions()
 {
-	nldebug("Destroying DirectSound driver");
-
-    if (_TimerID != NULL)
-    {
-        timeKillEvent(_TimerID);
-        timeEndPeriod(_TimerResolution);
-    }
-
-
-	// Assure that the remaining sources have released all their DSBuffers
-	// before closing down DirectSound
-	set<CSourceDSound*>::iterator iter;
-
-	for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
-	{
-		(*iter)->release();
-	}
-
-
-	// Assure that the listener has released all resources before closing
-	// down DirectSound
-	if (CListenerDSound::instance() != 0)
-	{
-		CListenerDSound::instance()->release();
-	}
-
-
-    if (_PrimaryBuffer != NULL)
-    {
-        _PrimaryBuffer->Release();
-        _PrimaryBuffer = NULL;
-    }
-
-    if (_DirectSound != NULL)
-    {
-        _DirectSound->Release();
-        _DirectSound = NULL;
-    }
-
-	_Instance = 0;
-
-	// free the enumerated list
-	if (CDeviceDescription::_List)
-	{
-		delete CDeviceDescription::_List;
-		CDeviceDescription::_List = NULL;
-	}
+	return _Options;
 }
+
+/// Return if an option is enabled (including those that cannot be disabled on this driver).
+bool CSoundDriverDSound::getOption(ISoundDriver::TSoundOptions option)
+{
+	return ((uint)_Options & (uint)option) == (uint)option;
+}
+
 // ******************************************************************
 
 uint CSoundDriverDSound::countMaxSources()

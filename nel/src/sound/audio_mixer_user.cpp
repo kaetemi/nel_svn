@@ -57,21 +57,10 @@
 #include "sample_bank.h"
 #include "sound_bank.h"
 
-#if EAX_AVAILABLE == 1
-# include <eax.h>
-#endif
-
 using namespace std;
-
-
-
 using namespace NLMISC;
 
-
-
 namespace NLSOUND {
-
-
 
 #define NL_TRACE_MIXER 0
 
@@ -81,12 +70,8 @@ namespace NLSOUND {
 #define _profile(_a)
 #endif
 
-// The audio mixer singleton instance
-CAudioMixerUser		*CAudioMixerUser::_Instance = NULL;
-
 // Return the priority cstring (debug info)
 const char *PriToCStr [NbSoundPriorities] = { "XH", "HI", "MD", "LO" };
-
 
 
 // ******************************************************************
@@ -120,23 +105,12 @@ CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
 									 _PlayingSourcesMuted(0),
 									 _Leaving(false)
 {
-	if ( _Instance == NULL )
-	{
-		_Instance = this;
-
 #if NL_PROFILE_MIXER
 		_UpdateTime = 0.0;
 		_CreateTime = 0.0;
 		_UpdateCount = 0;
 		_CreateCount = 0;
 #endif
-
-	}
-	else
-	{
-		nlerror( "Audio mixer singleton instanciated twice" );
-	}
-
 
 	// init the filter names and short names
 	for (uint i=0; i<TBackgroundFlags::NB_BACKGROUND_FLAGS; ++i)
@@ -156,23 +130,9 @@ CAudioMixerUser::~CAudioMixerUser()
 {
 	//nldebug( "AM: Releasing..." );
 
-	if (_ClusteredSound != NULL)
-	{
-		delete _ClusteredSound;
-		_ClusteredSound= NULL;
-	}
-
-	if (_BackgroundSoundManager != NULL)
-	{
-		delete _BackgroundSoundManager;
-		_BackgroundSoundManager= NULL;
-	}
-
-	if (_BackgroundMusicManager != NULL)
-	{
-		delete _BackgroundMusicManager;
-		_BackgroundMusicManager= NULL;
-	}
+	delete _ClusteredSound; _ClusteredSound = NULL;
+	delete _BackgroundSoundManager; _BackgroundSoundManager = NULL;
+	delete _BackgroundMusicManager; _BackgroundMusicManager = NULL;
 
 	reset();
 
@@ -183,23 +143,19 @@ CAudioMixerUser::~CAudioMixerUser()
 	// Release all the SampleBanks
 	CSampleBank::releaseAll();
 
-	// Tracks
-	uint i;
-	for (i = 0; i < _Tracks.size(); ++i)
+	// Detete tracks
+	for (uint i = 0; i < _Tracks.size(); ++i)
 	{
-		if (_Tracks[i])
-			delete _Tracks[i];
+		delete _Tracks[i];
+		_Tracks[i] = NULL;
 	}
 
 	// Release music channels
-	for (i = 0; i < _NbMusicChannelFaders; ++i)
+	for (uint i = 0; i < _NbMusicChannelFaders; ++i)
 		_MusicChannelFaders[i].release();
 
 	// Sound driver
-	if ( _SoundDriver != NULL )
-		delete _SoundDriver;
-
-	_Instance = NULL;
+	delete _SoundDriver; _SoundDriver = NULL;
 
 	//nldebug( "AM: Released" );
 }
@@ -208,17 +164,15 @@ CAudioMixerUser::~CAudioMixerUser()
 void CAudioMixerUser::initClusteredSound(NL3D::UScene *uscene, float minGain, float maxDistance, float portalInterpolate)
 {
 	NL3D::CScene *scene = 0;
-	if (uscene != 0)
-		scene = &(static_cast<NL3D::CSceneUser*>(uscene)->getScene());
-
+	if (uscene) scene = &(static_cast<NL3D::CSceneUser*>(uscene)->getScene());
+	
 	initClusteredSound(scene, minGain, maxDistance, portalInterpolate);
 }
 
 void CAudioMixerUser::initClusteredSound(NL3D::CScene *scene, float minGain, float maxDistance, float portalInterpolate = 20.0f)
 {
-	if (_ClusteredSound == 0)
-		_ClusteredSound = new CClusteredSound;
-
+	if (!_ClusteredSound) _ClusteredSound = new CClusteredSound();
+	
 	_ClusteredSound->init(scene, portalInterpolate, maxDistance, minGain);
 }
 
@@ -237,7 +191,7 @@ void CAudioMixerUser::setLowWaterMark(uint value)
 // ******************************************************************
 
 
-void				CAudioMixerUser::writeProfile(std::string& out)
+void CAudioMixerUser::writeProfile(std::string& out)
 {
 	// compute number of muted source
 	uint nb = 0;
@@ -289,7 +243,7 @@ void				CAudioMixerUser::writeProfile(std::string& out)
 
 // ******************************************************************
 
-void	CAudioMixerUser::addSourceWaitingForPlay(CSimpleSource *source)
+void CAudioMixerUser::addSourceWaitingForPlay(CSimpleSource *source)
 {
 	_SourceWaitingForPlay.push_back(source);
 }
@@ -297,7 +251,7 @@ void	CAudioMixerUser::addSourceWaitingForPlay(CSimpleSource *source)
 
 // ******************************************************************
 
-void				CAudioMixerUser::reset()
+void CAudioMixerUser::reset()
 {
 	_Leaving = true;
 
@@ -352,7 +306,7 @@ void				CAudioMixerUser::reset()
 	_Leaving = false;
 }
 
-void	CAudioMixerUser::setPackedSheetOption(const std::string &path, bool update)
+void CAudioMixerUser::setPackedSheetOption(const std::string &path, bool update)
 {
 	_PackedSheetPath = CPath::standardizePath(path, true);
 	_UpdatePackedSheet = update;
@@ -367,7 +321,7 @@ void CAudioMixerUser::setSamplePath(const std::string& path)
 
 // ******************************************************************
 
-void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressCallback *progressCallBack, bool autoLoadSample, TDriver driverType, bool forceSoftwareBuffer)
+void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressCallback *progressCallBack, bool autoLoadSample, TDriver driverType, bool forceSoftwareBuffer)
 {
 	nldebug( "AM: Init..." );
 
@@ -382,35 +336,63 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	{
 		// create the wanted driver
 		nlctassert(NumDrivers == UAudioMixer::TDriver(ISoundDriver::NumDrivers));
-		_SoundDriver = ISoundDriver::createDriver(useEax, this, (ISoundDriver::TDriver)driverType, forceSoftwareBuffer);
+		_SoundDriver = ISoundDriver::createDriver(this, (ISoundDriver::TDriver)driverType);
 		if(_SoundDriver)
 		{
 			_profile(( "AM: DRIVER: %s", _SoundDriver->getDllName().c_str() ));
+			
+			// the device to use, default for now
+			string driverDevice = "";
+			
+			// the options to init the driver
+			uint driverOptions = 0;
+			if (_UseEax) driverOptions |= ISoundDriver::OptionSubmixEffects;
+			if (_UseADPCM) driverOptions |= ISoundDriver::OptionAllowADPCM;
+			if (forceSoftwareBuffer) driverOptions |= ISoundDriver::OptionSoftwareBuffer;
+#if MANUAL_ROLLOFF
+			driverOptions |= ISoundDriver::OptionManualRolloff;
+#endif
+			if (_AutoLoadSample) driverOptions |= ISoundDriver::OptionLocalBufferCopy;
+			
+			// init the driver with selected device and needed options
+			_SoundDriver->init(driverDevice, (ISoundDriver::TSoundOptions)driverOptions);
+			
+			// verify the options
+			if (_UseEax && !_SoundDriver->getOption(ISoundDriver::OptionSubmixEffects))
+			{
+				nlwarning("AM: OptionSubmixEffects not available, _UseEax = false");
+				_UseEax = false;
+			}
+			if (_UseADPCM && !_SoundDriver->getOption(ISoundDriver::OptionAllowADPCM))
+			{
+				nlwarning("AM: OptionAllowADPCM not available, _UseADPCM = false");
+				_UseADPCM = false;
+			}
+			if (_AutoLoadSample && !_SoundDriver->getOption(ISoundDriver::OptionLocalBufferCopy))
+			{
+				nlwarning("AM: OptionLocalBufferCopy not available, _AutoLoadSample = false");
+				_AutoLoadSample = false;
+			}
 		}
 	}
-	catch(ESoundDriver &e)
+	catch (ESoundDriver &e)
 	{
 		nlwarning(e.what());
-		// TODO : is this logic to auto destruct this object in case of failing to create the driver ?
-		delete this;
-		_Instance = NULL;
-		throw;
-	}
-	catch(...)
-	{
+		delete _SoundDriver; _SoundDriver = NULL;
 		// TODO : is this logic to auto destruct this object in case of failing to create the driver ? no it isn't
 		delete this;
-		_Instance = NULL;
+		throw;
+	}
+	catch (...)
+	{
+		delete _SoundDriver; _SoundDriver = NULL;
+		// TODO : is this logic to auto destruct this object in case of failing to create the driver ? NO, IT ISN'T, really.
+		delete this;
 		throw;
 	}
 
 	uint i;
-
-	uint max_track_driver = _SoundDriver->countMaxSources();
-	_Tracks.resize(max_track_driver);
-	if (maxTrack > max_track_driver) nlwarning("MaxTrack limited from %u to %u", (uint32)maxTrack, (uint32)max_track_driver);
-	maxTrack = min(maxTrack, max_track_driver);
-	
+		
 	// Init registrable classes
 	static bool initialized = false;
 	if (!initialized)
@@ -419,26 +401,10 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	}
 
 	// Init listener
-	_Listener.init( _SoundDriver );
+	_Listener.init(_SoundDriver);
 
 	// Init tracks (physical sources)
-	_Tracks.resize(maxTrack, NULL); // could be chosen by the user, or according to the capabilities of the sound card
-	try
-	{
-		for (i = 0; i < _Tracks.size(); ++i)
-		{
-			_Tracks[i] = new CTrack();
-			_Tracks[i]->init(_SoundDriver);
-			// insert in front because the last inserted wan be sofware buffer...
-			_FreeTracks.insert(_FreeTracks.begin(), _Tracks[i]);
-		}
-	}
-	catch ( ESoundDriver & )
-	{
-		delete _Tracks[i];
-		// If the source generation failed, keep only the generated number of sources
-		_Tracks.resize(i);
-	}
+	changeMaxTrack(maxTrack);
 
 	// Init the reserve stuff.
 	_LowWaterMark = 0;
@@ -472,10 +438,10 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 
 	// Load the sound bank singleton
 	CSoundBank::instance()->load();
-	nlinfo( "Initialized audio mixer with %u voices, %s and %s.",
+	nlinfo("AM: Initialized audio mixer with %u voices, %s and %s.",
 		_Tracks.size(),
-		useEax ? "with EAX support" : "WITHOUT EAX",
-		useADPCM ? "with ADPCM sample source" : "with 16 bits PCM sample source");
+		_UseEax ? "with EAX support" : "WITHOUT EAX",
+		_UseADPCM ? "with ADPCM sample source" : "with 16 bits PCM sample source");
 
 	// try to load default configuration from george sheet
 
@@ -586,7 +552,7 @@ void				CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgre
 	initUserVar();
 }
 
-void	CAudioMixerUser::buildSampleBankList()
+void CAudioMixerUser::buildSampleBankList()
 {
 	uint i;
 	// regenerate the sample banks list
@@ -596,7 +562,7 @@ void	CAudioMixerUser::buildSampleBankList()
 	vector<string>	bankDir;
 	CPath::getPathContent(sp, false, true, false, bankDir);
 	sort(bankDir.begin(), bankDir.end());
-	for (i=0; i<bankDir.size(); ++i)
+	for (i = 0; i < bankDir.size(); ++i)
 	{
 		if (bankDir[i].empty())
 		{
@@ -604,7 +570,7 @@ void	CAudioMixerUser::buildSampleBankList()
 			--i;
 		}
 	}
-	for (i=0; i<bankDir.size(); ++i)
+	for (i = 0; i < bankDir.size(); ++i)
 	{
 		nldebug("Found sample bank dir [%s]", bankDir[i].c_str());
 	}
@@ -612,8 +578,8 @@ void	CAudioMixerUser::buildSampleBankList()
 	// build the list of available sample bank file
 	vector<string>	bankFile;
 	CPath::getPathContent(sp, false, false, true, bankFile);
-	// filter ou any non sample bank file
-	for (i=0; i<bankFile.size(); ++i)
+	// filter out any non sample bank file
+	for (i = 0; i < bankDir.size(); ++i)
 	{
 		if (bankFile[i].find(".sample_bank") != bankFile[i].size() - 12)
 		{
@@ -622,13 +588,13 @@ void	CAudioMixerUser::buildSampleBankList()
 		}
 	}
 	sort(bankFile.begin(), bankFile.end());
-	for (i=0; i<bankFile.size(); ++i)
+	for (i = 0; i < bankDir.size(); ++i)
 	{
 		nldebug("Found sample bank file [%s]", bankFile[i].c_str());
 	}
 
 	// now, do a one to one comparison on bank file and sample file date
-	for (i=0; i<bankDir.size(); ++i)
+	for (i = 0; i < bankDir.size(); ++i)
 	{
 		string	bankname = bankDir[i];
 		if (bankname[bankname.size()-1] == '/')
@@ -965,7 +931,7 @@ void CAudioMixerUser::initUserVar()
 
 }
 
-void CAudioMixerUser::CControledSources::serial (NLMISC::IStream &s)
+void CAudioMixerUser::CControledSources::serial(NLMISC::IStream &s)
 {
 	std::string name, soundName;
 	if (s.isReading())
@@ -2200,11 +2166,11 @@ void CAudioMixerUser::displayDriverBench(CLog *log)
 }
 
 // ***************************************************************************
-void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
+void CAudioMixerUser::changeMaxTrack(uint maxTrack)
 {
 	uint max_track_old = maxTrack;
 	maxTrack = min(maxTrack, _SoundDriver->countMaxSources());
-	if (maxTrack != max_track_old) nlwarning("MaxTrack limited from %u to %u", (uint32)max_track_old, (uint32)maxTrack);
+	if (maxTrack != max_track_old) nlwarning("AM: MaxTrack limited from %u to %u", (uint32)max_track_old, (uint32)maxTrack);
 	
 	// if same, no op
 	if (maxTrack == _Tracks.size())
@@ -2234,6 +2200,7 @@ void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 			// If the source generation failed, keep only the generated number of sources
 			maxTrack = i;
 			_Tracks.resize(maxTrack);
+			nlwarning("AM: Failed to create another track, MaxTrack is %u now", (uint32)maxTrack);
 		}
 	}
 	// **** else must delete some tracks
@@ -2245,9 +2212,8 @@ void		CAudioMixerUser::changeMaxTrack(uint maxTrack)
 			nlassert(_Tracks[i]);
 
 			// stop the track playing source if needed!
-			CSimpleSource *source= _Tracks[i]->getSource();
-			if (source)
-				source->stop();
+			CSimpleSource *source = _Tracks[i]->getSource();
+			if (source) source->stop();
 			// if fails (don't know why), abort reducing
 			if (_Tracks[i]->getSource())
 			{

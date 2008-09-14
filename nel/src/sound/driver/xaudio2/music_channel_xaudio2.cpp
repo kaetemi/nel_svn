@@ -51,16 +51,23 @@ CMusicChannelXAudio2::CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _MusicBuffer(NULL), _SourceVoice(NULL), _BufferPos(0), _SoundDriver(soundDriver), _Gain(1.0)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CMusicChannelXAudio2");
-
+	
 	stop();
 }
 
 CMusicChannelXAudio2::~CMusicChannelXAudio2()
 {
+	release();
+	
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CMusicChannelXAudio2");
+}
 
+void CMusicChannelXAudio2::release()
+{
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CMusicChannelXAudio2");
+	
 	stop();
-	_SoundDriver->removeMusicChannel(this);
+	if (_SoundDriver) { _SoundDriver->removeMusicChannel(this); _SoundDriver = NULL; }
 }
 
 /** Play some music (.ogg etc...)

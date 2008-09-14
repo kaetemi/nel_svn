@@ -109,8 +109,14 @@ CSourceXAudio2::~CSourceXAudio2()
 
 void CSourceXAudio2::release() // called by driver :)
 {
-	_SoundDriver->removeSource(this);
-	_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
+	_AdpcmUtility->flushSourceBuffers();
+	if (_SoundDriver)
+	{
+		_SoundDriver->removeSource(this);
+		_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
+	} 
+	_SoundDriver = NULL;
+	nlassert(!_SourceVoice);
 	delete _AdpcmUtility; _AdpcmUtility = NULL;
 	stop();
 }
@@ -166,7 +172,7 @@ void CSourceXAudio2::commit3DChanges()
 #endif
 		
 		_SoundDriver->getDSPSettings()->DstChannelCount = 2;
-
+		
 		X3DAudioCalculate(_SoundDriver->getX3DAudio(), 
 			_Relative 
 				? _SoundDriver->getEmptyListener() // position is relative to listener (we use 0pos listener)
@@ -174,7 +180,7 @@ void CSourceXAudio2::commit3DChanges()
 			&_Emitter, 
 			X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
 			_SoundDriver->getDSPSettings());
-
+		
 		_SourceVoice->SetOutputMatrix(
 			// _SoundDriver->getMasteringVoice(),
 			_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 

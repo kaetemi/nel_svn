@@ -1,8 +1,8 @@
 /** \file stddsound.cpp
- *
+ * DirectSound precompiled header
  */
 
-/* Copyright, 2001 Nevrax Ltd.
+/* Copyright, 200. Nevrax Ltd.
  *
  * This file is part of NEVRAX NEL.
  * NEVRAX NEL is free software; you can redistribute it and/or modify
@@ -26,3 +26,5 @@
 
 // Foo function to remove disabled warning
 void foo_stddsound() {}
+
+/* end of file */

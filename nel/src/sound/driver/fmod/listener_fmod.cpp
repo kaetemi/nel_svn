@@ -56,7 +56,7 @@ CListenerFMod::CListenerFMod() //: IListener()
 		_Up= CVector::K;
 #if MANUAL_ROLLOFF == 1
 		// Manual RollOff => disable API rollOff
-		if( CSoundDriverFMod::instance()->fmodOk() )
+		if( CSoundDriverFMod::getInstance()->fmodOk() )
 		{
 			FSOUND_3D_SetRolloffFactor(0);
 		}
@@ -135,21 +135,21 @@ void CListenerFMod::getOrientation( NLMISC::CVector& front, NLMISC::CVector& up 
 // ***************************************************************************
 void CListenerFMod::setGain( float gain )
 {
-	CSoundDriverFMod::instance()->setGain(gain);
+	CSoundDriverFMod::getInstance()->setGain(gain);
 }
 
 
 // ***************************************************************************
 float CListenerFMod::getGain() const
 {
-    return CSoundDriverFMod::instance()->getGain();
+    return CSoundDriverFMod::getInstance()->getGain();
 }
 
 
 // ***************************************************************************
 void CListenerFMod::setDopplerFactor( float f )
 {
-	if( !CSoundDriverFMod::instance()->fmodOk() )
+	if( !CSoundDriverFMod::getInstance()->fmodOk() )
 		return;
 
 	// clamp as in DSound.

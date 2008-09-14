@@ -24,7 +24,7 @@
 #include "stddsound.h"
 #include "../sound_driver.h"
 
-#if EAX_AVAILABLE == 1
+#if EAX_AVAILABLE
 # include <eax.h>
 #endif
 
@@ -354,7 +354,7 @@ void CListenerDSound::setEnvironment( uint env, float size )
  */
 void CListenerDSound::setEAXProperty( uint prop, void *value, uint valuesize )
 {
-#ifdef EAX_AVAILABLE
+#if EAX_AVAILABLE
 	if (_EAXListener == NULL)
 	{
 		_EAXListener = CSoundDriverDSound::instance()->createPropertySet(NULL);

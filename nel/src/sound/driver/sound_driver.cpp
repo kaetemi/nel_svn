@@ -36,74 +36,20 @@ using namespace NLMISC;
 namespace NLSOUND
 {
 
-
-/** DLL NAME selection for standard driver
- */
-//#ifdef NL_OS_WINDOWS
-//# if _MSC_VER >= 1300	// visual .NET, use different dll name
-//#  define NLSOUND_DLL_NAME "nldriver_openal"
-//# else
-//#  define NLSOUND_DLL_NAME "nel_drv_dsound_win"
-//# endif
-//#elif defined (NL_OS_UNIX)
-//# define NLSOUND_DLL_NAME "nel_drv_openal"
-//#else
-//# error "Unknown system"
-//#endif
-//
-//#ifdef NL_OS_WINDOWS
-//
-//#if _MSC_VER >= 1300	// visual .NET, use different dll name
-//	// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
-//#ifdef NL_DEBUG_FAST
-//#define NLSOUND_DLL_NAME "nldriver_openal_df.dll"
-//#elif defined (NL_DEBUG)
-//#define NLSOUND_DLL_NAME "nldriver_openal_d.dll"
-//#elif defined (NL_RELEASE_DEBUG)
-//#define NLSOUND_DLL_NAME "nldriver_openal_rd.dll"
-//#elif defined (NL_RELEASE)
-//#define NLSOUND_DLL_NAME "nldriver_openal_r.dll"
-//#else
-//#error "Unknown dll name"
-//#endif
-//
-//#else
-//
-//	// must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
-//#ifdef NL_DEBUG_FAST
-//#define NLSOUND_DLL_NAME "nel_drv_dsound_win_df.dll"
-//#elif defined (NL_DEBUG)
-//#define NLSOUND_DLL_NAME "nel_drv_dsound_win_d.dll"
-//#elif defined (NL_RELEASE_DEBUG)
-//#define NLSOUND_DLL_NAME "nel_drv_dsound_win_rd.dll"
-//#elif defined (NL_RELEASE)
-//#define NLSOUND_DLL_NAME "nel_drv_dsound_win_r.dll"
-//#else
-//#error "Unknown dll name"
-//#endif
-//
-//#endif
-//
-//#elif defined (NL_OS_UNIX)
-//#define NLSOUND_DLL_NAME "libnel_drv_openal.so"
-//#else
-//#error "Unknown system"
-//#endif
-
-
 // Interface version
-const uint32 ISoundDriver::InterfaceVersion = 0x09;
+const uint32 ISoundDriver::InterfaceVersion = 0x0A;
 
 #ifdef NL_STATIC
 
-extern ISoundDriver* createISoundDriverInstance(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
+/// Statically linked driver stuff... ***deprecated*** ***todo***
+extern ISoundDriver* createISoundDriverInstance(ISoundDriver::IStringMapperProvider *stringMapper);
 extern uint32 interfaceVersion();
 extern void outputProfile(std::string &out);
 extern ISoundDriver::TDriver getDriverType();
 
 #else
 
-typedef ISoundDriver* (*ISDRV_CREATE_PROC)(bool, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer);
+typedef ISoundDriver* (*ISDRV_CREATE_PROC)(ISoundDriver::IStringMapperProvider *stringMapper);
 const char *IDRV_CREATE_PROC_NAME = "NLSOUND_createISoundDriverInstance";
 
 typedef uint32 (*ISDRV_VERSION_PROC)(void);
@@ -111,42 +57,40 @@ const char *IDRV_VERSION_PROC_NAME = "NLSOUND_interfaceVersion";
 
 #endif
 
+/// Return driver name from type.
+const char *ISoundDriver::getDriverName(TDriver driverType)
+{
+	switch (driverType)
+	{
+		case DriverAuto: return "AUTO";
+		case DriverFMod: return "FMod";
+		case DriverOpenAl: return "OpenAL";
+		case DriverDSound: return "DSound";
+		case DriverXAudio2: return "XAudio2";
+		default: return "UNKNOWN";
+	}
+}
+
 /*
  * The static method which builds the sound driver instance
  */
-ISoundDriver	*ISoundDriver::createDriver(bool useEax, IStringMapperProvider *stringMapper, TDriver driverType, bool forceSoftwareBuffer)
+ISoundDriver *ISoundDriver::createDriver(IStringMapperProvider *stringMapper, TDriver driverType)
 {
 #ifdef NL_STATIC
+	
+	if (driverType != DriverAuto && getDriverType() != driverType)
+		nlwarning("Statically linked sound driver %s is not the same as the selected sound driver %s.", getDriverName(getDriverType()), getDriverName(driverType));
+	nlinfo("Creating %s sound driver. This driver is statically linked into this application.", getDriverName(getDriverType()));
+	
+	ISoundDriver *result = createISoundDriverInstance(stringMapper);
+	if (!result) throw ESoundDriverCantCreateDriver(getDriverName(driverType)); 
 
-	if (getDriverType() != driverType) nlwarning("Statically linked sound driver is not the same as the selected sound driver.");
-
-	std::string driverName;
-	switch (getDriverType())
-	{
-	case DriverFMod:
-		driverName = "FMod";
-		break;
-	case DriverOpenAl:
-		driverName = "OpenAL";
-		break;
-	case DriverDSound:
-		driverName = "DirectSound";
-		break;
-	case DriverXAudio2:
-		driverName = "XAudio2";
-		break;
-	default:
-		driverName = "UNKNOWN";
-	}
-
-	nlinfo("Creating %s sound driver. This driver is statically linked into this application.", driverName.c_str());
-
-	return createISoundDriverInstance(useEax, stringMapper, forceSoftwareBuffer);
-
+	return result;
+	
 #else
 
-	ISDRV_CREATE_PROC	createSoundDriver = NULL;
-	ISDRV_VERSION_PROC	versionDriver = NULL;
+	ISDRV_CREATE_PROC createSoundDriver = NULL;
+	ISDRV_VERSION_PROC versionDriver = NULL;
 
 	// dll selected
 	std::string	dllName;

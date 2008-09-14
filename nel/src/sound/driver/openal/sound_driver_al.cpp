@@ -101,11 +101,9 @@ ISoundDriver* createISoundDriverInstance
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
-	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
+	(ISoundDriver::IStringMapperProvider *stringMapper)
 {
-	CSoundDriverAL *driver = new CSoundDriverAL();
-	driver->init(useEax);
-	return driver;
+	return new CSoundDriverAL(stringMapper);
 }
 
 // ******************************************************************
@@ -148,11 +146,9 @@ __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 
 extern "C"
 {
-ISoundDriver* NLSOUND_createISoundDriverInstance (bool useEax)
+ISoundDriver* NLSOUND_createISoundDriverInstance(ISoundDriver::IStringMapperProvider *stringMapper)
 {
-	CSoundDriverAL *driver = new CSoundDriverAL();
-	driver->init();
-	return driver;
+	return new CSoundDriverAL(stringMapper);
 }
 
 uint32 NLSOUND_interfaceVersion ()
@@ -166,8 +162,8 @@ uint32 NLSOUND_interfaceVersion ()
 /*
  * Constructor
  */
-CSoundDriverAL::CSoundDriverAL() 
-: _AlcDevice(NULL), _AlcContext(NULL), 
+CSoundDriverAL::CSoundDriverAL(ISoundDriver::IStringMapperProvider *stringMapper) 
+: _StringMapper(stringMapper), _AlcDevice(NULL), _AlcContext(NULL), 
 _NbExpBuffers(0), _NbExpSources(0), _RolloffFactor(1.f)
 {
 	
@@ -187,12 +183,19 @@ CSoundDriverAL::~CSoundDriverAL()
 	alcCloseDevice(_AlcDevice); _AlcDevice = NULL;
 }
 
+/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+// ***todo*** void CSoundDriverAL::getDevices(std::vector<std::string> &devices) { }
 
-/*
- * Initialization
- */
-bool CSoundDriverAL::init(bool useEax)
+/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions options)
 {
+	// set the options: no adpcm, no manual rolloff (for now), no effects (for now)
+	_Options = options;
+	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionManualRolloff);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+	// ***todo*** test eax or efx availability
+
 	// OpenAL initialization
 	// TODO: driver selection, check if device open succeeded, etc
 	_AlcDevice = alcOpenDevice(NULL);
@@ -239,10 +242,19 @@ bool CSoundDriverAL::init(bool useEax)
 	// Initial buffers and sources allocation
 	allocateNewItems( alGenBuffers, alIsBuffer, _Buffers, _NbExpBuffers, INITIAL_BUFFERS );
 	allocateNewItems( alGenSources, alIsSource, _Sources, _NbExpSources, INITIAL_SOURCES );
-
-	return true;
 }
 
+/// Return options that are enabled (including those that cannot be disabled on this driver).
+ISoundDriver::TSoundOptions CSoundDriverAL::getOptions()
+{
+	return _Options;
+}
+
+/// Return if an option is enabled (including those that cannot be disabled on this driver).
+bool CSoundDriverAL::getOption(ISoundDriver::TSoundOptions option)
+{
+	return ((uint)_Options & (uint)option) == (uint)option;
+}
 
 /*
  * Allocate nb new items

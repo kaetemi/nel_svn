@@ -78,6 +78,8 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 	_Listener.Velocity.y = 0.0f;
 	_Listener.Velocity.z = 0.0f;
 
+	_Pos.set(0.0f, 0.0f, 0.0f);
+
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
@@ -121,7 +123,7 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 		_VoiceSends.OutputCount = 1;
 		_VoiceSends.pOutputVoices = (IXAudio2Voice **)(&_SampleVoice);
 
-		setEnvironment(0, 100.0f); // something default-ish here
+		setEnvironment(ENVFX_DEFAULT_NUM, ENVFX_DEFAULT_SIZE); // something default-ish here
 	}
 	else
 	{

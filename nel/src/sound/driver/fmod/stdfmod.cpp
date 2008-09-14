@@ -1,8 +1,8 @@
 /** \file stdfmod.cpp
- *
+ * FMod precompiled header
  */
 
-/* Copyright, 2001 Nevrax Ltd.
+/* Copyright, 2004 Nevrax Ltd.
  *
  * This file is part of NEVRAX NEL.
  * NEVRAX NEL is free software; you can redistribute it and/or modify
@@ -32,3 +32,5 @@ void	dummyToAvoidStupidVCWarning_stdfmod_cpp()
 }
 
 } // NLSOUND
+
+/* end of file */

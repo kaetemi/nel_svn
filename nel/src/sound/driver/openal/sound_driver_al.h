@@ -74,65 +74,76 @@ void TestALError();
  */
 class CSoundDriverAL : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverAL>
 {
+private:
+	// far pointers
+	/// The string mapper provided by client code.
+	IStringMapperProvider *_StringMapper;
+
+	// openal pointers
+	// OpenAL device
+	ALCdevice *_AlcDevice;
+	// OpenAL context
+	ALCcontext *_AlcContext;
+
+	// system vars
+	// Allocated buffers
+	std::vector<ALuint> _Buffers;
+	// Allocated sources
+	std::vector<ALuint> _Sources;
+	// Number of exported buffers (including any deleted buffers)
+	uint _NbExpBuffers;
+	// Number of exported sources (including any deleted buffers)
+	uint _NbExpSources;
+
+	// user vars
+	// Rolloff factor (not in the listener in OpenAL, but relative to the sources)
+	float _RolloffFactor; // ***todo*** move
+	/// Driver options
+	TSoundOptions _Options;
 public:
 
 	/// Constructor
-	CSoundDriverAL();
+	CSoundDriverAL(ISoundDriver::IStringMapperProvider *stringMapper);
 
-	/// Initialization
-	virtual bool			init(bool useEax);
+	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
+	/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+	virtual void init(std::string device, TSoundOptions options);
+
+	/// Return options that are enabled (including those that cannot be disabled on this driver).
+	virtual TSoundOptions ISoundDriver::getOptions();
+	/// Return if an option is enabled (including those that cannot be disabled on this driver).
+	virtual bool ISoundDriver::getOption(TSoundOptions option);
 
 	/// Create a sound buffer
-	virtual	IBuffer			*createBuffer();
-
+	virtual	IBuffer *createBuffer();
 	/// Create the listener instance
-	virtual	IListener		*createListener();
-
-	/// Return the maximum number of sources that can created
-	virtual uint			countMaxSources()	{ return 32; }
-
+	virtual	IListener *createListener();
 	/// Create a source
-	virtual	ISource			*createSource();
-
-	virtual bool			readWavBuffer( IBuffer *destbuffer, const std::string &name,
-										   uint8 *wavData, uint dataSize);
-
-	virtual bool			readRawBuffer( IBuffer *destbuffer, const std::string &name,
-	                                       uint8 *rawData, uint dataSize, TSampleFormat format,
-	                                       uint32 frequency);
-
-	virtual void	startBench() { /* todo */ }
-	virtual void	endBench() { /* todo */ }
-	virtual void	displayBench(NLMISC::CLog *log) { /* TODO */ }
+	virtual	ISource *createSource();
+	/// Return the maximum number of sources that can created
+	virtual uint countMaxSources()	{ return 32; }
+	
+	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
+	
+	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
+	
+	virtual void startBench() { /* todo */ }
+	virtual void endBench() { /* todo */ }
+	virtual void displayBench(NLMISC::CLog *log) { /* TODO */ }
 
 
 	/// Change the rolloff factor and apply to all sources
-	void					applyRolloffFactor( float f );
+	void applyRolloffFactor(float f);
 
 	/// Temp
-	virtual bool			loadWavFile( IBuffer *destbuffer, const char *filename);
+	virtual bool loadWavFile(IBuffer *destbuffer, const char *filename);
 
 	/// Commit all the changes made to 3D settings of listener and sources
-	virtual void			commit3DChanges() {}
+	virtual void commit3DChanges() { }
 
 	/// Write information about the driver to the output stream.
-	virtual void			writeProfile(std::string& out) {}
-
-	// Does not create a sound loader
-
-	/// \name Music
-	// @{
-	/// Create a music channel, destroy with destroyMusicChannel
-	virtual IMusicChannel *createMusicChannel() { return NULL; }
-	
-	/** Get music info. Returns false if the song is not found or the function is not implemented. 
-	 *  If the song has no name, result is filled with the filename.
-	 *  \param filepath path to file, CPath::lookup done by driver
-	 *  \param artist returns the song artist (empty if not available)
-	 *  \param title returns the title (empty if not available)
-	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
-	// @}
+	virtual void writeProfile(std::string& out) { }
 
 public:
 
@@ -168,25 +179,6 @@ protected:
 
 	/// Delete a buffer or a source
 	bool					deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, std::vector<ALuint>& names );
-
-private:
-	// OpenAL device
-	ALCdevice *_AlcDevice;
-	// OpenAL context
-	ALCcontext *_AlcContext;
-
-	// Allocated buffers
-	std::vector<ALuint> _Buffers;
-	// Allocated sources
-	std::vector<ALuint> _Sources;
-
-	// Number of exported buffers (including any deleted buffers)
-	uint _NbExpBuffers;
-	// Number of exported sources (including any deleted buffers)
-	uint _NbExpSources;
-
-	// Rolloff factor (not in the listener in OpenAL, but relative to the sources)
-	float _RolloffFactor;
 };
 
 

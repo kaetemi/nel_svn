@@ -41,28 +41,30 @@
 #ifdef NL_OS_WINDOWS
 #	define XRAM_AVAILABLE 1
 #	define EFX_AVAILABLE 1
-#	define EAX_AVAILABLE 1
+#	define EAX_AVAILABLE 0
 #else
-#	define XRAM_AVAILABLE 0
+#	define XRAM_AVAILABLE 1
 #	define EFX_AVAILABLE 0
 #	define EAX_AVAILABLE 0
 #endif
 
 #include <AL/al.h>
 #include <AL/alc.h>
-#if XRAM_AVAILABLE
-#	include <AL/xram.h>
-#endif
-#if EFX_AVAILABLE
-// #	include <AL/efx.h>
-#	include <AL/EFX-Util.h>
-#endif
+// #if XRAM_AVAILABLE
+// #	include <AL/xram.h>
+typedef ALboolean (__cdecl *EAXSetBufferMode)(ALsizei n, ALuint *buffers, ALint value);
+typedef ALenum (__cdecl *EAXGetBufferMode)(ALuint buffer, ALint *value);
+// #endif
 #if EAX_AVAILABLE
 #	define OPENAL
 #	ifdef NL_OS_WINDOWS
 #		include <objbase.h>
 #	endif
 #	include <eax.h>
+#endif
+#if EFX_AVAILABLE
+// #	include <AL/efx.h>
+#	include <AL/EFX-Util.h>
 #endif
 
 #include <nel/misc/common.h>

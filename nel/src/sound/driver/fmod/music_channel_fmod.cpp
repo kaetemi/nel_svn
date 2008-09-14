@@ -50,10 +50,10 @@ signed char F_CALLBACKAPI streamEndCallBack(
 	)
 {
 	// Avoid any problem, check that the sound driver is still allocated
-	if (!CSoundDriverFMod::instance()) return false;
+	if (!CSoundDriverFMod::getInstance()) return false;
 
 	// mark this fader as music ended
-	CSoundDriverFMod::instance()->markMusicChannelEnded(stream, static_cast<CMusicChannelFMod *>(userdata));
+	CSoundDriverFMod::getInstance()->markMusicChannelEnded(stream, static_cast<CMusicChannelFMod *>(userdata));
 	
 	return true;
 }

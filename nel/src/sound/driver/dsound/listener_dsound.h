@@ -29,8 +29,8 @@
 #include "../sound_driver.h"
 #include <dsound.h>
 
-#if EAX_AVAILABLE == 1
-#include <eax.h>
+#if EAX_AVAILABLE
+#	include <eax.h>
 #endif
 
 namespace NLSOUND {

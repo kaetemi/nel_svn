@@ -74,7 +74,7 @@ CSourceFMod::~CSourceFMod()
 {
 	//nldebug("Destroying FMod source");
 
-	CSoundDriverFMod::instance()->removeSource(this);
+	CSoundDriverFMod::getInstance()->removeSource(this);
 
 	release();
 }

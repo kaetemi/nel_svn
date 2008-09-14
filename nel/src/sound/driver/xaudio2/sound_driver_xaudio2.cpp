@@ -91,10 +91,9 @@ ISoundDriver* createISoundDriverInstance
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
-	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
+	(ISoundDriver::IStringMapperProvider *stringMapper)
 {
-	CSoundDriverXAudio2 *driver = new CSoundDriverXAudio2(useEax, stringMapper, forceSoftwareBuffer);
-	return driver;
+	return new CSoundDriverXAudio2(stringMapper);
 }
 
 // ******************************************************************
@@ -117,7 +116,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 #endif
 	(string &out)
 {
-	// -- CSoundDriverXAudio2::instance()->writeProfile(out);
+	CSoundDriverXAudio2::getInstance()->writeProfile(out);
 }
 
 // ******************************************************************
@@ -193,21 +192,15 @@ NLMISC_CATEGORISED_COMMAND(nel, displaySoundPerformance, "Display information on
 
 // ******************************************************************
 
-CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax, 
-	ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer) 
+CSoundDriverXAudio2::CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider *stringMapper) 
 	: _StringMapper(stringMapper), _XAudio2(NULL), _MasteringVoice(NULL), 
-	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), _UseEax(useEax), 
+	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), 
 	_PerformanceCommit3DCounter(0), _PerformanceMono16ADPCMBufferSize(0), 
 	_PerformanceMono16BufferSize(0), _PerformanceMono8BufferSize(0), 
 	_PerformanceMusicPlayCounter(0), _PerformanceSourcePlayCounter(0), 
 	_PerformanceStereo16BufferSize(0), _PerformanceStereo8BufferSize(0)
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
-
-	// Initializes EAX environment presets if not initialized yet.
-	if (useEax) CEaxXAudio2::init();
-
-	HRESULT hr;
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Creating CSoundDriverXAudio2");
 
 	memset(&_X3DAudioHandle, 0, sizeof(_X3DAudioHandle));
 	memset(&_DSPSettings, 0, sizeof(_DSPSettings));
@@ -224,7 +217,9 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	_EmptyListener.Position.z = 0.0f;
 	_EmptyListener.Velocity.x = 0.0f;
 	_EmptyListener.Velocity.y = 0.0f;
-	_EmptyListener.Velocity.z = 0.0f;
+	_EmptyListener.Velocity.z = 0.0f;	
+	
+	HRESULT hr;
 
 	// Windows
 #ifdef NL_OS_WINDOWS // CoInitializeEx not on xbox, lol
@@ -232,6 +227,78 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED))"); return; }
 	_CoInitOk = true;
 #endif
+}
+
+CSoundDriverXAudio2::~CSoundDriverXAudio2()
+{
+	release();
+
+	// Windows
+#ifdef NL_OS_WINDOWS
+	if (_CoInitOk) CoUninitialize();
+	_CoInitOk = false;
+#else
+	nlassert(!_CoInitOk);
+#endif
+
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSoundDriverXAudio2");
+}
+
+#define NLSOUND_XAUDIO2_RELEASE(pointer) if (_SoundDriverOk) nlassert(pointer) \
+	/*if (pointer) {*/ delete pointer; pointer = NULL; /*}*/
+#define NLSOUND_XAUDIO2_RELEASE_EX(pointer, command) if (_SoundDriverOk) nlassert(pointer) \
+	if (pointer) { command; pointer = NULL; }
+void CSoundDriverXAudio2::release()
+{
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CSoundDriverXAudio2");
+
+	// Driver (listeners etc todo)
+	// Stop any played music
+	{
+		set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
+		for (; it != end; ++it)
+		{
+			(*it)->release();
+		}
+		_MusicChannels.clear();
+	}
+	// Assure that the remaining sources have released all their channels before closing
+	{
+		set<CSourceXAudio2*>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
+		for (; it != end; ++it)
+		{
+			(*it)->release(); // WARNING: The sources are NOT DELETED automagically!
+		}
+	}
+	// Stop the listener
+	if (_Listener) _Listener->release(); // LISTENER AND SOURCES DELETED AT NLSOUND USER LEVEL
+
+	// X3DAudio
+	NLSOUND_XAUDIO2_RELEASE(_DSPSettings.pMatrixCoefficients);
+
+	// XAudio2
+	NLSOUND_XAUDIO2_RELEASE_EX(_MasteringVoice, _MasteringVoice->DestroyVoice());
+	NLSOUND_XAUDIO2_RELEASE_EX(_XAudio2, _XAudio2->Release());
+	_SoundDriverOk = false;
+}
+
+/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+// ***todo*** void CSoundDriverXAudio2::getDevices(std::vector<std::string> &devices) { }
+
+/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+void CSoundDriverXAudio2::init(std::string device, TSoundOptions options)
+{
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
+
+	// set the options: always use software buffer, always have local copy
+	_Options = options;
+	_Options = (TSoundOptions)((uint)_Options | OptionSoftwareBuffer);
+	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
+
+	// initialize EAX environment presets if not initialized yet
+	if (getOption(OptionSubmixEffects)) CEaxXAudio2::init();
+
+	HRESULT hr;
 
 	uint32 flags = 0;
 #ifdef NL_DEBUG
@@ -258,57 +325,16 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(bool useEax,
 	_SoundDriverOk = true;
 }
 
-CSoundDriverXAudio2::~CSoundDriverXAudio2()
+/// Return options that are enabled (including those that cannot be disabled on this driver).
+ISoundDriver::TSoundOptions CSoundDriverXAudio2::getOptions()
 {
-	release();
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSoundDriverXAudio2");
+	return _Options;
 }
 
-#define NLSOUND_XAUDIO2_RELEASE(pointer) if (_SoundDriverOk) nlassert(pointer) \
-	/*if (pointer) {*/ delete pointer; pointer = NULL; /*}*/
-#define NLSOUND_XAUDIO2_RELEASE_EX(pointer, command) if (_SoundDriverOk) nlassert(pointer) \
-	if (pointer) { command; pointer = NULL; }
-void CSoundDriverXAudio2::release()
+/// Return if an option is enabled (including those that cannot be disabled on this driver).
+bool CSoundDriverXAudio2::getOption(ISoundDriver::TSoundOptions option)
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CSoundDriverXAudio2");
-
-	// Driver (listeners etc todo)
-	// Stop any played music
-	{
-		set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
-		for (; it != end; ++it)
-		{
-			nlwarning("CMusicChannelXAudio2 was not deleted by user, deleting now!");
-			delete *it;
-		}
-		_MusicChannels.clear();
-	}
-	// Assure that the remaining sources have released all their channels before closing
-	{
-		set<CSourceXAudio2*>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
-		for (; it != end; ++it)
-		{
-			(*it)->release(); // WARNING: The sources are NOT DELETED automagically!
-		}
-	}
-	// Stop the listener
-	if (_Listener) _Listener->release(); // LISTENER AND SOURCES DELETED AT NLSOUND USER LEVEL
-
-	// X3DAudio
-	NLSOUND_XAUDIO2_RELEASE(_DSPSettings.pMatrixCoefficients);
-
-	// XAudio2
-	NLSOUND_XAUDIO2_RELEASE_EX(_MasteringVoice, _MasteringVoice->DestroyVoice());
-	NLSOUND_XAUDIO2_RELEASE_EX(_XAudio2, _XAudio2->Release());
-	_SoundDriverOk = false;
-
-	// Windows
-#ifdef NL_OS_WINDOWS
-	if (_CoInitOk) CoUninitialize();
-	_CoInitOk = false;
-#else
-	nlassert(!_CoInitOk);
-#endif
+	return ((uint)_Options & (uint)option) == (uint)option;
 }
 
 /// Tell sources without voice about a format
@@ -428,28 +454,29 @@ void CSoundDriverXAudio2::writeProfile(std::string& out)
 	_XAudio2->GetPerformanceData(&performance);
 
 	out = toString(NLSOUND_XAUDIO2_NAME)
-		+ "\n  Mono8BufferSize: " + toString(_PerformanceMono8BufferSize)
-		+ "\n  Mono16BufferSize: " + toString(_PerformanceMono16BufferSize)
-		+ "\n  Mono16ADPCMBufferSize: " + toString(_PerformanceMono16ADPCMBufferSize)
-		+ "\n  Stereo8BufferSize: " + toString(_PerformanceStereo8BufferSize)
-		+ "\n  Stereo16BufferSize: " + toString(_PerformanceStereo16BufferSize)
-		+ "\n  SourcePlayCounter: " + toString(_PerformanceSourcePlayCounter)
-		+ "\n  MusicPlayCounter: " + toString(_PerformanceMusicPlayCounter)
-		+ "\n  Commit3DCounter: " + toString(_PerformanceCommit3DCounter)
+		+ "\n\tMono8BufferSize: " + toString(_PerformanceMono8BufferSize)
+		+ "\n\tMono16BufferSize: " + toString(_PerformanceMono16BufferSize)
+		+ "\n\tMono16ADPCMBufferSize: " + toString(_PerformanceMono16ADPCMBufferSize)
+		+ "\n\tStereo8BufferSize: " + toString(_PerformanceStereo8BufferSize)
+		+ "\n\tStereo16BufferSize: " + toString(_PerformanceStereo16BufferSize)
+		+ "\n\tSourcePlayCounter: " + toString(_PerformanceSourcePlayCounter)
+		+ "\n\tMusicPlayCounter: " + toString(_PerformanceMusicPlayCounter)
+		+ "\n\tCommit3DCounter: " + toString(_PerformanceCommit3DCounter)
 		+ "\nXAUDIO2_PERFORMANCE_DATA"
-		+ "\n  AudioCyclesSinceLastQuery: " + toString(performance.AudioCyclesSinceLastQuery)
-		+ "\n  TotalCyclesSinceLastQuery: " + toString(performance.TotalCyclesSinceLastQuery)
-		+ "\n  MinimumCyclesPerQuantum: " + toString(performance.MinimumCyclesPerQuantum)
-		+ "\n  MaximumCyclesPerQuantum: " + toString(performance.MaximumCyclesPerQuantum)
-		+ "\n  MemoryUsageInBytes: " + toString(performance.MemoryUsageInBytes)
-		+ "\n  CurrentLatencyInSamples: " + toString(performance.CurrentLatencyInSamples)
-		+ "\n  GlitchesSinceEngineStarted: " + toString(performance.GlitchesSinceEngineStarted)
-		+ "\n  ActiveSourceVoiceCount: " + toString(performance.ActiveSourceVoiceCount)
-		+ "\n  TotalSourceVoiceCount: " + toString(performance.TotalSourceVoiceCount)
-		+ "\n  ActiveSubmixVoiceCount: " + toString(performance.ActiveSubmixVoiceCount)
-		+ "\n  TotalSubmixVoiceCount: " + toString(performance.TotalSubmixVoiceCount)
-		+ "\n  ActiveXmaSourceVoices: " + toString(performance.ActiveXmaSourceVoices)
-		+ "\n  ActiveXmaStreams: " + toString(performance.ActiveXmaStreams);
+		+ "\n\tAudioCyclesSinceLastQuery: " + toString(performance.AudioCyclesSinceLastQuery)
+		+ "\n\tTotalCyclesSinceLastQuery: " + toString(performance.TotalCyclesSinceLastQuery)
+		+ "\n\tMinimumCyclesPerQuantum: " + toString(performance.MinimumCyclesPerQuantum)
+		+ "\n\tMaximumCyclesPerQuantum: " + toString(performance.MaximumCyclesPerQuantum)
+		+ "\n\tMemoryUsageInBytes: " + toString(performance.MemoryUsageInBytes)
+		+ "\n\tCurrentLatencyInSamples: " + toString(performance.CurrentLatencyInSamples)
+		+ "\n\tGlitchesSinceEngineStarted: " + toString(performance.GlitchesSinceEngineStarted)
+		+ "\n\tActiveSourceVoiceCount: " + toString(performance.ActiveSourceVoiceCount)
+		+ "\n\tTotalSourceVoiceCount: " + toString(performance.TotalSourceVoiceCount)
+		+ "\n\tActiveSubmixVoiceCount: " + toString(performance.ActiveSubmixVoiceCount)
+		+ "\n\tTotalSubmixVoiceCount: " + toString(performance.TotalSubmixVoiceCount)
+		+ "\n\tActiveXmaSourceVoices: " + toString(performance.ActiveXmaSourceVoices)
+		+ "\n\tActiveXmaStreams: " + toString(performance.ActiveXmaStreams)
+		+ "\n";
 	return;
 }
 

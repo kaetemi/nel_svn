@@ -45,7 +45,7 @@ static const std::string	EmptyString;
 // ***************************************************************************
 CBufferFMod::CBufferFMod()
 {
-	_Name = CSoundDriverFMod::instance()->getStringMapper()->map(EmptyString);
+	_Name = CSoundDriverFMod::getInstance()->getStringMapper()->map(EmptyString);
     _Size = 0;
     _Format = Mono16;
     _Freq = 0;
@@ -402,8 +402,8 @@ bool CBufferFMod::readWavBuffer(const std::string &name, uint8 *wavData, uint da
 	}
 #endif
 
-	static NLMISC::TStringId	empty(CSoundDriverFMod::instance()->getStringMapper()->map(""));
-	NLMISC::TStringId nameId = CSoundDriverFMod::instance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
+	static NLMISC::TStringId	empty(CSoundDriverFMod::getInstance()->getStringMapper()->map(""));
+	NLMISC::TStringId nameId = CSoundDriverFMod::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
 	// if name is preseted, the name must match.
 	if (_Name != empty)
 	{
@@ -434,8 +434,8 @@ bool CBufferFMod::readRawBuffer(const std::string &name, uint8 *rawData, uint da
 
 
     // Allocate the sample buffer
-	static NLMISC::TStringId	empty(CSoundDriverFMod::instance()->getStringMapper()->map(""));
-	NLMISC::TStringId nameId = CSoundDriverFMod::instance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
+	static NLMISC::TStringId	empty(CSoundDriverFMod::getInstance()->getStringMapper()->map(""));
+	NLMISC::TStringId nameId = CSoundDriverFMod::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
 	// if name is preseted, the name must match.
 	if (_Name != empty)
 	{
@@ -588,7 +588,7 @@ void	CBufferFMod::loadDataToFMod(uint8 *data)
 		};
 		uint32	commonType= FSOUND_LOADRAW|FSOUND_LOOP_NORMAL|FSOUND_LOADMEMORY;
 		// if can use hardware buffer
-		if(!CSoundDriverFMod::instance()->forceSofwareBuffer())
+		if(!CSoundDriverFMod::getInstance()->forceSofwareBuffer())
 			commonType|= FSOUND_HW3D;
 		// create FMod sample
 		_FModSample= FSOUND_Sample_Load(FSOUND_FREE, (const char*)uploadData, commonType|type, 0, _Size);

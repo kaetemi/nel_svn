@@ -70,6 +70,7 @@ protected:
 public:
 	CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CMusicChannelXAudio2();
+	void release();
 
 private:
 	// XAudio2 Callbacks

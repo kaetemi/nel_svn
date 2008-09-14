@@ -23,11 +23,16 @@
 
 #ifndef NL_AUDIO_MIXER_USER_H
 #define NL_AUDIO_MIXER_USER_H
-
-#include <nel/misc/stream.h>
 #include <nel/misc/types_nl.h>
-#include <nel/sound/u_audio_mixer.h>
+
+#include <vector>
+#include <list>
+#include <numeric>
+
 #include <nel/misc/time_nl.h>
+#include <nel/misc/stream.h>
+#include <nel/misc/singleton.h>
+#include <nel/sound/u_audio_mixer.h>
 #include <nel/georges/u_form.h>
 
 #include "driver/source.h"
@@ -37,28 +42,19 @@
 #include "sound.h"
 #include "music_channel_fader.h"
 
-#include <vector>
-#include <list>
-#include <numeric>
-
-
 namespace NLLIGO {
-
-class CLigoConfig;
-
+	class CLigoConfig;
 }
 
 namespace NLSOUND {
-
-
-class CSimpleSource;
-class CEnvSoundUser;
-class CEnvEffect;
-class CSoundBank;
-class CSourceCommon;
-class CClusteredSound;
-class CBackgroundSoundManager;
-class CMusicSoundManager;
+	class CSimpleSource;
+	class CEnvSoundUser;
+	class CEnvEffect;
+	class CSoundBank;
+	class CSourceCommon;
+	class CClusteredSound;
+	class CBackgroundSoundManager;
+	class CMusicSoundManager;
 
 /// Hasher functor for hashed container with pointer key.
 template <class Pointer>
@@ -102,16 +98,16 @@ struct THashPtr : public std::unary_function<const Pointer &, size_t>
  * \author Nevrax France
  * \date 2001
  */
-class CAudioMixerUser : public UAudioMixer, public ISoundDriver::IStringMapperProvider
+class CAudioMixerUser : public UAudioMixer, public ISoundDriver::IStringMapperProvider, public NLMISC::CManualSingleton<CAudioMixerUser>
 {
 public:
 
 	/// Constructor
 	CAudioMixerUser();
 	/// Return the audio mixer object
-	static CAudioMixerUser		*instance() { return _Instance; }
+	static CAudioMixerUser *instance() { return getInstance(); }
 	/// Destructor
-	virtual						~CAudioMixerUser();
+	virtual ~CAudioMixerUser();
 
 	//@{
 	/// @name IStringMapperProvider implementation
@@ -478,9 +474,6 @@ private:
 	uint32						_ReserveUsage[NbSoundPriorities];
 	/// Low water mark. After this number of free voice is reach, reserve can't be overloaded.
 	uint32						_LowWaterMark;
-
-	/// The audio mixer singleton instance
-	static CAudioMixerUser		*_Instance;
 
 	/// The sound driver instance
 	ISoundDriver				*_SoundDriver;

@@ -31,21 +31,10 @@
 
 /// This namespace contains the sound classes
 namespace NLSOUND {
-
-
-class IBuffer;
-class IListener;
-class ISource;
-class IMusicChannel;
-
-/** Configuration for compiling with or without EAX support.
- *	Set to 0 if you don't have EAX library or don't want EAX support.
- *	This definition impact on code generation for driver AND sound lib.
- * NO EAX on linux
- */
-#ifdef NL_OS_WINDOWS
-#define EAX_AVAILABLE	1
-#endif
+	class IBuffer;
+	class IListener;
+	class ISource;
+	class IMusicChannel;
 
 /**
  *	Configuration to compile with manual or API (directx or open AL) rolloff factor.
@@ -56,15 +45,15 @@ class IMusicChannel;
  *		ISource::setAlpha() change the shape of attenuation
  *		IListener::setRollOffFactor() has no impact
  */
-#define MANUAL_ROLLOFF	1
+#define MANUAL_ROLLOFF 1
 
+// don't use eax.h anymore
+#define EAX_AVAILABLE 0
 
 /*
  * Sound sample format
  */
 enum TSampleFormat { Mono8, Mono16ADPCM, Mono16, Stereo8, Stereo16 };
-
-
 
 /**
  * Abstract sound driver (implemented in sound driver dynamic library)
@@ -84,7 +73,7 @@ class ISoundDriver
 public:
 
 	/// Driver Creation Choice
-	enum	TDriver
+	enum TDriver
 	{
 		DriverAuto = 0,
 		DriverFMod,
@@ -92,6 +81,21 @@ public:
 		DriverDSound,
 		DriverXAudio2,
 		NumDrivers
+	};
+
+	/// Driver creation flags
+	enum TSoundOptions
+	{
+		/// Enable EAX/I3DL2 environment effects. (not implemented on FMod driver).
+		OptionSubmixEffects = 0x01, 
+		/// Allow the user to use the ADPCM encoding. (verify availability with getOption)
+		OptionAllowADPCM = 0x02, 
+		/// Force software buffering (always true for XAudio2).
+		OptionSoftwareBuffer = 0x04, 
+		/// Enable manual rolloff instead of API native rolloff.
+		OptionManualRolloff = 0x08, 
+		/// Enable local copy of buffer (used by OpenAL driver, required to build sample bank).
+		OptionLocalBufferCopy = 0x10, 
 	};
 
 	/** The interface must be implemented and provided to the driver
@@ -106,26 +110,42 @@ public:
 	public:
 		virtual ~IStringMapperProvider() {}
 		/// map a string
-		virtual const NLMISC::TStringId map(const std::string &str) =0;
+		virtual const NLMISC::TStringId map(const std::string &str) = 0;
 		/// unmap a string
-		virtual const std::string &unmap(const NLMISC::TStringId &stringId) =0;
+		virtual const std::string &unmap(const NLMISC::TStringId &stringId) = 0;
 	};
 
 	/// Version of the driver interface. To increment when the interface change.
-	static const uint32		InterfaceVersion;
+	static const uint32 InterfaceVersion;
 
+	/// Return driver name from type.
+	static const char *getDriverName(TDriver driverType);
 	/** The static method which builds the sound driver instance
 	 * In case of failure, can throw one of these ESoundDriver exception objects:
 	 * ESoundDriverNotFound, ESoundDriverCorrupted, ESoundDriverOldVersion, ESoundDriverUnknownVersion
+	*/
+	static ISoundDriver *createDriver(IStringMapperProvider *stringMapper, TDriver driverType = DriverAuto);
+
+	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
+	/** Initialize the driver with a user selected device. 
+	 * In case of failure, can throw one of these ESoundDriver exception objects:
+	 * ESoundDriverNotFound, ESoundDriverCorrupted, ESoundDriverOldVersion, ESoundDriverUnknownVersion
+	 * The driver instance should be deleted by the user after init failure.
 	 *
 	 * You can request support for EAX. If EAX is requested and if there is enougth hardware
 	 * buffer replay, then only hardware buffer are created when calling createBuffer.
 	 * If the number of available hardware buffer is less than 10, then EAX is ignored.
 	 *
-	 *	\param driverType set DriverFMod if you want to use FMod driver (nel_drv_fmod_win_??.dll)
-	 *	\param forceSoftwareBuffer (used only by FMod for now) force Buffer to be loaded in software (may be faster)
+	 *	\param device If device.empty(), the default or most appropriate device is used.
+	 *	\param options The features you want enabled. Verify after init() with getOption() or getOptions().
 	*/
-	static	ISoundDriver	*createDriver(bool useEax, IStringMapperProvider *stringMapper, TDriver driverType = DriverAuto, bool forceSoftwareBuffer = false);
+	virtual void init(std::string device, TSoundOptions options) = 0;
+
+	/// Return options that are enabled (including those that cannot be disabled on this driver).
+	virtual TSoundOptions getOptions() = 0;
+	/// Return if an option is enabled (including those that cannot be disabled on this driver).
+	virtual bool getOption(TSoundOptions option) = 0;
 
 	/// Create a sound buffer, destroy with delete
 	virtual	IBuffer			*createBuffer() = 0;
@@ -156,9 +176,9 @@ public:
 
 	// Does not create a sound loader
 
-	virtual void	startBench() =0;
-	virtual void	endBench() =0;
-	virtual void	displayBench(NLMISC::CLog *log) =0;
+	virtual void	startBench() = 0;
+	virtual void	endBench() = 0;
+	virtual void	displayBench(NLMISC::CLog *log) = 0;
 
 	// Filled at createDriver()
 	const std::string &getDllName() const { return _DllName; }
@@ -168,7 +188,7 @@ public:
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) =0;
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; };
 
 	/// Destructor
 	virtual	~ISoundDriver() {}

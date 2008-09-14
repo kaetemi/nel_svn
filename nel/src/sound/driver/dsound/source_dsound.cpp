@@ -30,10 +30,6 @@
 #include "listener_dsound.h"
 #include "../sound_driver.h"
 
-#if EAX_AVAILABLE == 1
-#include <eax.h>
-#endif
-
 #include <algorithm>
 
 

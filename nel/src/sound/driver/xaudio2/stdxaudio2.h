@@ -46,7 +46,11 @@
 #include <nel/misc/log.h>
 #include <nel/misc/vector.h>
 #include <nel/misc/singleton.h>
+
 #include "../sound_driver.h"
+#include "../buffer.h"
+#include "../source.h"
+#include "../listener.h"
 
 // Defines
 #define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"

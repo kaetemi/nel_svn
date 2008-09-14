@@ -21,27 +21,20 @@
  * MA 02111-1307, USA.
  */
 
-
 #include "stdfmod.h"
-#include "../sound_driver.h"
 
 #include <cmath>
-
-#ifdef NL_OS_WINDOWS
-#	include <eax.h>
-#endif
 
 #include "nel/misc/hierarchical_timer.h"
 #include "nel/misc/path.h"
 #include "nel/misc/file.h"
 #include "nel/misc/dynloadlib.h"
 #include "nel/misc/big_file.h"
+#include "../sound_driver.h"
+
 #include "sound_driver_fmod.h"
 #include "listener_fmod.h"
 #include "music_channel_fmod.h"
-
-#include <fmod.h>
-
 
 using namespace std;
 using namespace NLMISC;
@@ -58,8 +51,6 @@ class CSoundDriverFModNelLibrary : public NLMISC::INelLibrary {
 NLMISC_DECL_PURE_LIB(CSoundDriverFModNelLibrary)
 
 #endif /* #ifndef NL_STATIC */
-
-CSoundDriverFMod* CSoundDriverFMod::_Instance = NULL;
 
 #ifdef NL_OS_WINDOWS
 #ifndef NL_STATIC
@@ -83,12 +74,10 @@ ISoundDriver* createISoundDriverInstance
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
-	(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
+	(ISoundDriver::IStringMapperProvider *stringMapper)
 {
 
-	CSoundDriverFMod *driver = new CSoundDriverFMod();
-	driver->init(stringMapper, forceSoftwareBuffer);
-	return driver;
+	return new CSoundDriverFMod(stringMapper);
 }
 
 // ******************************************************************
@@ -111,7 +100,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 #endif
 	(string &out)
 {
-	CSoundDriverFMod::instance()->writeProfile(out);
+	CSoundDriverFMod::getInstance()->writeProfile(out);
 }
 
 // ******************************************************************
@@ -128,12 +117,9 @@ __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 #elif defined (NL_OS_UNIX)
 extern "C"
 {
-ISoundDriver *NLSOUND_createISoundDriverInstance(bool useEax, ISoundDriver::IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
+ISoundDriver *NLSOUND_createISoundDriverInstance(ISoundDriver::IStringMapperProvider *stringMapper)
 {
-	CSoundDriverFMod *driver = new CSoundDriverFMod();
-	driver->init(stringMapper, forceSoftwareBuffer);
-
-	return driver;
+	return new CSoundDriverFMod(stringMapper);
 }
 uint32 NLSOUND_interfaceVersion ()
 {
@@ -143,55 +129,11 @@ uint32 NLSOUND_interfaceVersion ()
 #endif // NL_OS_UNIX
 
 // ******************************************************************
-#ifdef NL_OS_WINDOWS
-#	pragma warning( push )
-#	pragma warning( disable : 4355 )
-#endif
-CSoundDriverFMod::CSoundDriverFMod()
-:	_StringMapper(0)
+
+CSoundDriverFMod::CSoundDriverFMod(ISoundDriver::IStringMapperProvider *stringMapper)
+: _StringMapper(stringMapper), _FModOk(false), _MasterGain(1.f), _ForceSoftwareBuffer(false)
 {
-	if ( _Instance == NULL )
-	{
-		_Instance = this;
-		_FModOk= false;
-		_MasterGain= 1.f;
-		_ForceSoftwareBuffer= false;
-    }
-	else
-	{
-		nlerror("Sound driver singleton instantiated twice");
-	}
-}
-#ifdef NL_OS_WINDOWS
-#	pragma warning( pop )
-#endif
-
-// ******************************************************************
-
-void	CSoundDriverFMod::init(IStringMapperProvider *stringMapper, bool forceSoftwareBuffer)
-{
-	uint initFlags=0;
-#ifdef NL_OS_WINDOWS
-	initFlags=FSOUND_INIT_DSOUND_DEFERRED;
-#endif
-	_StringMapper = stringMapper;
-
-	// Init with 32 channels, and deferred sound
-	if(!FSOUND_Init(22050, 32, initFlags))
-	{
-		throw ESoundDriver("Failed to create the FMod driver object");
-	}
-
-	// succeed
-	_FModOk= true;
-
-	// Allocate buffer in software?
-	_ForceSoftwareBuffer= forceSoftwareBuffer;
-
-	// Display Hardware Support
-	int		num2D, num3D, numTotal;
-	FSOUND_GetNumHWChannels(&num2D, &num3D, &numTotal);
-	nlinfo("FMod Hardware Support: %d 2D channels, %d 3D channels, %d Total Channels", num2D, num3D, numTotal);
+	
 }
 
 // ******************************************************************
@@ -232,9 +174,55 @@ CSoundDriverFMod::~CSoundDriverFMod()
 		FSOUND_Close();
 		_FModOk= false;
 	}
-
-	_Instance = 0;
 }
+
+/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+// ***todo*** void CSoundDriverFMod::getDevices(std::vector<std::string> &devices) { }
+
+/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+void CSoundDriverFMod::init(std::string device, TSoundOptions options)
+{
+	// set the options: no adpcm, no effects
+	_Options = options;
+	// _Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+
+	uint initFlags = 0;
+#ifdef NL_OS_WINDOWS
+	initFlags = FSOUND_INIT_DSOUND_DEFERRED;
+#endif
+
+	// Init with 32 channels, and deferred sound
+	if (!FSOUND_Init(22050, 32, initFlags))
+	{
+		throw ESoundDriver("Failed to create the FMod driver object");
+	}
+
+	// succeed
+	_FModOk = true;
+
+	// Allocate buffer in software?
+	_ForceSoftwareBuffer = getOption(OptionSoftwareBuffer);
+
+	// Display Hardware Support
+	int num2D, num3D, numTotal;
+	FSOUND_GetNumHWChannels(&num2D, &num3D, &numTotal);
+	nlinfo("FMod Hardware Support: %d 2D channels, %d 3D channels, %d Total Channels", num2D, num3D, numTotal);
+}
+
+/// Return options that are enabled (including those that cannot be disabled on this driver).
+ISoundDriver::TSoundOptions CSoundDriverFMod::getOptions()
+{
+	return _Options;
+}
+
+/// Return if an option is enabled (including those that cannot be disabled on this driver).
+bool CSoundDriverFMod::getOption(ISoundDriver::TSoundOptions option)
+{
+	return ((uint)_Options & (uint)option) == (uint)option;
+}
+
 // ******************************************************************
 
 uint CSoundDriverFMod::countMaxSources()

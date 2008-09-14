@@ -43,20 +43,26 @@ class CBufferDSound;
 class CSoundDriverDSound : public ISoundDriver
 {
 public:
-
     /// Constructor
-    CSoundDriverDSound();
+    CSoundDriverDSound(ISoundDriver::IStringMapperProvider *stringMapper);
 
     virtual ~CSoundDriverDSound();
 
 	/// Return the instance of the singleton
 	static CSoundDriverDSound *instance() { return _Instance; }
+	
+	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
+	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
+	/// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
+	virtual void init(std::string device, TSoundOptions options);
+
+	/// Return options that are enabled (including those that cannot be disabled on this driver).
+	virtual TSoundOptions ISoundDriver::getOptions();
+	/// Return if an option is enabled (including those that cannot be disabled on this driver).
+	virtual bool ISoundDriver::getOption(TSoundOptions option);
 
 	/// Create the listener instance
 	virtual	IListener *createListener();
-
-	/// Initialization
-	virtual bool init(HWND wnd, bool useEax, IStringMapperProvider *stringMapper);
 
 	/// Create a sound buffer
 	virtual	IBuffer *createBuffer();
@@ -177,6 +183,8 @@ private:
 	bool	_UseEAX;
 	/// The string mapper provided by client code
 	IStringMapperProvider	*_StringMapper;
+	/// Driver options
+	TSoundOptions _Options;
 
 #if NLSOUND_PROFILE
 protected:
