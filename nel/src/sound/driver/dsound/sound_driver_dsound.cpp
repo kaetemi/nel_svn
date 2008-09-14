@@ -86,7 +86,7 @@ long FAR PASCAL CSoundDriverCreateWindowProc(HWND hWnd, unsigned message, WPARAM
 // ******************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver* createISoundDriverInstance
+ISoundDriver* createISoundDriverInstanceDSound
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
@@ -144,7 +144,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 // ******************************************************************
 
 #ifdef NL_STATIC
-uint32 interfaceVersion()
+uint32 interfaceVersionDSound()
 #else
 __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 #endif
@@ -155,7 +155,7 @@ __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 // ******************************************************************
 
 #ifdef NL_STATIC
-void outputProfile
+void outputProfileDSound
 #else
 __declspec(dllexport) void NLSOUND_outputProfile
 #endif
@@ -167,7 +167,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 // ******************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver::TDriver getDriverType()
+ISoundDriver::TDriver getDriverTypeDSound()
 #else
 __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 #endif

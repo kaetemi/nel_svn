@@ -87,7 +87,7 @@ BOOL WINAPI DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 // ***************************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver* createISoundDriverInstance
+ISoundDriver* createISoundDriverInstanceXAudio2
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
@@ -99,7 +99,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 // ******************************************************************
 
 #ifdef NL_STATIC
-uint32 interfaceVersion()
+uint32 interfaceVersionXAudio2()
 #else
 __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 #endif
@@ -110,7 +110,7 @@ __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 // ******************************************************************
 
 #ifdef NL_STATIC
-void outputProfile
+void outputProfileXAudio2
 #else
 __declspec(dllexport) void NLSOUND_outputProfile
 #endif
@@ -122,7 +122,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 // ******************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver::TDriver getDriverType()
+ISoundDriver::TDriver getDriverTypeXAudio2()
 #else
 __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 #endif

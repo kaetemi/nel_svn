@@ -22,30 +22,62 @@
  */
 
 #include "sound_driver.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/dynloadlib.h"
-
 
 #ifdef NL_OS_WINDOWS
 #	define NOMINMAX
 #	include <windows.h>
 #endif // NL_OS_WINDOWS
 
+#include <nel/misc/debug.h>
+#ifndef NL_STATIC
+#	include <nel/misc/dynloadlib.h>
+#endif
+
 using namespace NLMISC;
+
+#if defined( NL_OS_WINDOWS )
+#	define NL_FMOD_AVAILABLE 1
+#	define NL_OPENAL_AVAILABLE 1
+#	define NL_DSOUND_AVAILABLE 1
+#	define NL_XAUDIO2_AVAILABLE 1
+#elif defined( NL_OS_UNIX )
+#	define NL_FMOD_AVAILABLE 1
+#	define NL_OPENAL_AVAILABLE 1
+#	define NL_DSOUND_AVAILABLE 0
+#	define NL_XAUDIO2_AVAILABLE 0
+#else
+#	define NL_FMOD_AVAILABLE 0
+#	define NL_OPENAL_AVAILABLE 0
+#	define NL_DSOUND_AVAILABLE 0
+#	define NL_XAUDIO2_AVAILABLE 0
+#endif
 
 namespace NLSOUND
 {
 
 // Interface version
-const uint32 ISoundDriver::InterfaceVersion = 0x0A;
+const uint32 ISoundDriver::InterfaceVersion = 0x0B;
 
 #ifdef NL_STATIC
 
-/// Statically linked driver stuff... ***deprecated*** ***todo***
-extern ISoundDriver* createISoundDriverInstance(ISoundDriver::IStringMapperProvider *stringMapper);
-extern uint32 interfaceVersion();
-extern void outputProfile(std::string &out);
-extern ISoundDriver::TDriver getDriverType();
+#define NLSOUND_DECLARE_DRIVER(__soundDriver) \
+	extern ISoundDriver* createISoundDriverInstance##__soundDriver##(ISoundDriver::IStringMapperProvider *stringMapper); \
+	extern uint32 interfaceVersion##__soundDriver##(); \
+	extern void outputProfile##__soundDriver##(std::string &out); \
+	extern ISoundDriver::TDriver getDriverType##__soundDriver##();
+
+#if NL_FMOD_AVAILABLE
+	NLSOUND_DECLARE_DRIVER(FMod)
+#endif
+#if NL_OPENAL_AVAILABLE
+	NLSOUND_DECLARE_DRIVER(OpenAl)
+#endif
+#if NL_DSOUND_AVAILABLE
+	NLSOUND_DECLARE_DRIVER(DSound)
+#endif
+#if NL_XAUDIO2_AVAILABLE
+	NLSOUND_DECLARE_DRIVER(XAudio2)
+#endif
 
 #else
 
@@ -78,13 +110,32 @@ ISoundDriver *ISoundDriver::createDriver(IStringMapperProvider *stringMapper, TD
 {
 #ifdef NL_STATIC
 	
-	if (driverType != DriverAuto && getDriverType() != driverType)
-		nlwarning("Statically linked sound driver %s is not the same as the selected sound driver %s.", getDriverName(getDriverType()), getDriverName(driverType));
-	nlinfo("Creating %s sound driver. This driver is statically linked into this application.", getDriverName(getDriverType()));
+	nlinfo("Creating statically linked sound driver %s", getDriverName(driverType));
 	
-	ISoundDriver *result = createISoundDriverInstance(stringMapper);
+	ISoundDriver *result = NULL;
+	switch (driverType)
+	{
+		// switch between available drivers
+#	if NL_FMOD_AVAILABLE
+		case DriverFMod: result = createISoundDriverInstanceFMod(stringMapper); break;
+#	endif
+#	if NL_OPENAL_AVAILABLE
+		case DriverOpenAl: result = createISoundDriverInstanceOpenAl(stringMapper); break;
+#	endif
+#	if NL_DSOUND_AVAILABLE
+		case DriverDSound: result = createISoundDriverInstanceDSound(stringMapper); break;
+#	endif
+#	if NL_XAUDIO2_AVAILABLE
+		case DriverXAudio2: result = createISoundDriverInstanceXAudio2(stringMapper); break;
+#	endif
+		// auto driver = openal
+#	if NL_OPENAL_AVAILABLE
+		case DriverAuto: result = createISoundDriverInstanceOpenAl(stringMapper); break;
+#	endif
+		// unavailable driver = fail
+		default: throw ESoundDriverNotFound(getDriverName(driverType));
+	}
 	if (!result) throw ESoundDriverCantCreateDriver(getDriverName(driverType)); 
-
 	return result;
 	
 #else

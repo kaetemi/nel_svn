@@ -23,11 +23,11 @@
 
 #ifndef NL_SOUND_DRIVER_H
 #define NL_SOUND_DRIVER_H
+#include <nel/misc/types_nl.h>
 
-#include "nel/misc/types_nl.h"
-#include "nel/misc/string_mapper.h"
-#include "nel/misc/common.h"
-#include "nel/misc/file.h"
+#include <nel/misc/common.h>
+#include <nel/misc/file.h>
+#include <nel/misc/string_mapper.h>
 
 /// This namespace contains the sound classes
 namespace NLSOUND {

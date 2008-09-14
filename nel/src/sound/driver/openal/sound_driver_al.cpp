@@ -97,7 +97,7 @@ NLMISC_DECL_PURE_LIB(CSoundDriverALNelLibrary)
 // ******************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver* createISoundDriverInstance
+ISoundDriver* createISoundDriverInstanceOpenAl
 #else
 __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 #endif
@@ -109,7 +109,7 @@ __declspec(dllexport) ISoundDriver *NLSOUND_createISoundDriverInstance
 // ******************************************************************
 
 #ifdef NL_STATIC
-uint32 interfaceVersion()
+uint32 interfaceVersionOpenAl()
 #else
 __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 #endif
@@ -120,7 +120,7 @@ __declspec(dllexport) uint32 NLSOUND_interfaceVersion()
 // ******************************************************************
 
 #ifdef NL_STATIC
-void outputProfile
+void outputProfileOpenAl
 #else
 __declspec(dllexport) void NLSOUND_outputProfile
 #endif
@@ -132,7 +132,7 @@ __declspec(dllexport) void NLSOUND_outputProfile
 // ******************************************************************
 
 #ifdef NL_STATIC
-ISoundDriver::TDriver getDriverType()
+ISoundDriver::TDriver getDriverTypeOpenAl()
 #else
 __declspec(dllexport) ISoundDriver::TDriver NLSOUND_getDriverType()
 #endif
