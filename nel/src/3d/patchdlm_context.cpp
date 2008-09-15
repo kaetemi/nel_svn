@@ -767,9 +767,10 @@ void			CPatchDLMContext::addPointLightInfluence(const CPatchDLMPointLight &pl)
 				col.G= (uint8)floor(g);
 				col.B= (uint8)floor(b);
 #else
-				col.R= (uint8)OptFastFloor24(r);
-				col.G= (uint8)OptFastFloor24(g);
-				col.B= (uint8)OptFastFloor24(b);
+				// we need to do the 0xff mask or run time type check can break here because sometime r g b are > 255
+				col.R= uint8(OptFastFloor24(r) & 0xff);
+				col.G= uint8(OptFastFloor24(g) & 0xff);
+				col.B= uint8(OptFastFloor24(b) & 0xff);
 #endif
 
 				// add to map.
@@ -846,9 +847,10 @@ void			CPatchDLMContext::addPointLightInfluence(const CPatchDLMPointLight &pl)
 				col.G= (uint8)floor(g);
 				col.B= (uint8)floor(b);
 #else
-				col.R= (uint8)OptFastFloor24(r);
-				col.G= (uint8)OptFastFloor24(g);
-				col.B= (uint8)OptFastFloor24(b);
+				// we need to do the 0xff mask or run time type check can break here because sometime r g b are > 255
+				col.R= uint8(OptFastFloor24(r) & 0xff);
+				col.G= uint8(OptFastFloor24(g) & 0xff);
+				col.B= uint8(OptFastFloor24(b) & 0xff);
 #endif
 				// add to map.
 #ifdef NL_OS_WINDOWS
