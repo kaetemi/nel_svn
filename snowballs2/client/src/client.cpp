@@ -563,6 +563,9 @@ void loopLogin()
 	{
 		if (ConfigFile->getVar("UseDirectClient").asInt() == 1)
 		{
+/*
+			TODO: use the new login system
+
 			string result;
 			string LSHost(ConfigFile->getVar("LSHost").asString());
 			Login = ConfigFile->getVar("Login").asString();
@@ -611,6 +614,7 @@ SelectFail:
 			NextGameState = GameStateOffline;
 			return;
 SelectSuccess:;
+*/
 		}
 		NextGameState = GameStateOnline;
 		return;
