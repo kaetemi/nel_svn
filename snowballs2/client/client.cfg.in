@@ -34,6 +34,49 @@ ScreenFull = 0;
 StartPoint = { 1840.0, -970.0, 0.0 };
 
 //////////////////////////////////////////////////////////////////////////////
+// Sound Variables ///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+// The sound driver, choose between "Auto", "FMod", "DSound" and "OpenAl"
+SoundDriver          = "OpenAL";
+SoundMaxTracks       = 32;
+SoundUseEax          = 1;
+SoundUseADPCM        = 1;
+SoundForceSoftware   = 1;
+SoundEnabled         = 1;
+
+// Music playlists
+// Set loop to 0 to play once, 1 to repeat the same music, and 2 to loop trough the playlist
+SoundPlaylist_Count       = 3;
+
+// Loading music, uses first one only
+SoundPlaylist_0_Volume = 0.1;
+SoundPlaylist_0_Fade   = 0;
+SoundPlaylist_0_Async  = 0;
+SoundPlaylist_0_Loop   = 1;
+SoundPlaylist_0_Music  = {
+	"xtarsia_evil-snowballs_wait.ogg" 
+};
+
+// Login screen music, uses first one only
+SoundPlaylist_1_Volume = 0.1;
+SoundPlaylist_1_Fade   = 2000;
+SoundPlaylist_1_Async  = 1;
+SoundPlaylist_1_Loop   = 1;
+SoundPlaylist_1_Music  = {
+	"xtarsia_evil-snowballs_login.ogg" 
+};
+
+// Ingame music, second one is played when the player is leading the game
+SoundPlaylist_2_Volume = 0.1;
+SoundPlaylist_2_Fade   = 2000;
+SoundPlaylist_2_Async  = 1;
+SoundPlaylist_2_Loop   = 1;
+SoundPlaylist_2_Music  = {
+	"xtarsia_evil-snowballs_game.ogg", "xtarsia_evil-snowballs_beat.ogg" 
+};
+
+//////////////////////////////////////////////////////////////////////////////
 // Mouse Variables ///////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
@@ -145,43 +188,50 @@ RadarParticularPlaces = {
 // Login Variables ///////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+// If 1, launch snowballs in offline mode (not server), otherwise 0 for connecting to a server
+Local = 1;
+
 // Address of the login system (should be itsalive.nevrax.org)
-LoginSystemAddress = "itsalive.nevrax.org";
+LSHost = "itsalive.nevrax.org";
 
 // Your login
 Login = "";
 
-// Your password
+// Your password in clear text
 Password = "";
 
 // The shard number index
-ShardNumber = 0;
+ShardId = 300;
 
-// If 1, display the login procedure at the beginning of the game
-AutoLogin = 0;
+// If 1, the client directly connects to the LS
+// If 0, the client connects to the web server and the web server connects to the LS
+UseDirectClient = 1;
 
-// If 1, launch snowballs in offline mode (not server), otherwise 0 for connecting to a server
-Local = 1;
+ClientApplication = "sample";
 
 //////////////////////////////////////////////////////////////////////////////
 // Landscape Variables ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
+
+// Name of the landscape data
+Landscape_BankName = "bank.bank";
+Landscape_FarBankName = "bank.farbank";
 
 // Landscape color (can't be modified in real time)
 Landscape_AmbiantColor = { 17, 54, 100 };
 Landscape_DiffuseColor = { 241, 226, 244 };
 Landscape_MultiplyFactor = 1.1;
 
+// Landscape view distance for zone loading
+Landscape_VisionInitial = 250.0;
+Landscape_Vision = 500.0;
+
+// Enable the landscape to receive dynamic shadows
+Landscape_ReceiveShadowMap = 1;
+
 // Landscape tesselation
 Landscape_TileNear = 50.0;	// more is bigger more is faster
 Landscape_Threshold = 0.001;	// more is bigger more is faster
-
-// Landscape range
-Landscape_Vision = 500.0;
-Landscape_VisionInitial = 250.0;
-
-// Landscape shadows
-Landscape_ReceiveShadowMap = 0;
 
 SunAmbientColor = { 255, 255, 255 };
 SunDiffuseColor = { 255, 255, 255 };
@@ -193,14 +243,11 @@ SunDirection = { -2.935, +0.107, -1.22 };
 //////////////////////////////////////////////////////////////////////////////
 
 // 1 if you want to see the fog
-FogEnable = 0;
-FogStart = 200;				// in meter
-FogEnd = 500;				// in meter
+FogEnable = 1;
+FogStart = 100.0;				// in meter
+FogEnd = 250.0;				// in meter
 FogColor = { 80, 77, 118 };
 
-// Name of the landscape data
-Landscape_BankName = "bank.bank";
-Landscape_FarBankName = "bank.farbank";
 RetrieverBankName = "snowballs.rbank";
 GlobalRetrieverName = "snowballs.gr";
 
