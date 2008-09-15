@@ -63,6 +63,7 @@
 #include <nel/3d/u_instance.h>
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_text_context.h>
+#include <nel/3d/bloom_effect.h>
 
 #include "pacs.h"
 #include "radar.h"
@@ -339,6 +340,12 @@ void initIngame()
 
 		// Create a scene
 		Scene = Driver->createScene(false);
+
+		// initialize bloom effect
+		CBloomEffect::instance().setDriver(Driver);
+		CBloomEffect::instance().setScene(Scene);
+		CBloomEffect::instance().init(ConfigFile->getVar("OpenGL").asInt() == 1);
+
 		// Init the landscape using the previously created UScene
 		displayLoadingState("Initialize Landscape");
 		LandscapeComponent = new CLandscapeComponent(
@@ -529,6 +536,10 @@ void releaseIngame()
 		// Release the mouse listener
 		MouseListener->removeFromServer(Driver->EventServer);
 		delete MouseListener;
+
+		// release bloom effect
+		CBloomEffect::instance().releaseInstance();
+
 		Driver->deleteScene(Scene);
 	}
 }
@@ -654,10 +665,18 @@ void loopIngame()
 		updateSound(); // Update the sound
 #endif
 		Scene->animate(float(NewTime)/1000); // Set new animation date
+
+		// start bloom effect (just before the first scene element render)
+		CBloomEffect::instance().initBloom();
+
 		updateSky(); // Render the sky scene before the main scene
 
 		Scene->render(); // Render		
 		updateLensFlare(); // Render the lens flare
+
+		// end bloom effect for the scene
+		CBloomEffect::instance().endBloom();
+
 		updateCompass(); // Update the compass		
 		updateRadar(); // Update the radar
 		updateGraph(); // Update the radar		
@@ -667,6 +686,9 @@ void loopIngame()
 		updateInterface(); // Update interface
 		renderInformation();
 		update3dLogo();
+
+		// end bloom effect for the interface
+		CBloomEffect::instance().endInterfacesDisplayBloom();
 
 		// Update network messages
 		updateNetwork();
