@@ -38,37 +38,8 @@
 #include <utility>
 #include <deque>
 
-#ifdef NL_OS_WINDOWS
-#	define XRAM_AVAILABLE 1
-#	define EFX_AVAILABLE 1
-#	define EAX_AVAILABLE 0
-#else
-#	define XRAM_AVAILABLE 1
-#	define EFX_AVAILABLE 0
-#	define EAX_AVAILABLE 0
-#endif
-
 #include <AL/al.h>
 #include <AL/alc.h>
-// #if XRAM_AVAILABLE
-// #	include <AL/xram.h>
-// FIXME originally defined with __cdecl, but this doesn't work with gcc.
-// Left the __cdecl out, if there are any weird bugs in this regard, put it back
-// in and wrap it up properly for the different compilers.
-typedef ALboolean (*EAXSetBufferMode)(ALsizei n, ALuint *buffers, ALint value);
-typedef ALenum (*EAXGetBufferMode)(ALuint buffer, ALint *value);
-// #endif
-#if EAX_AVAILABLE
-#	define OPENAL
-#	ifdef NL_OS_WINDOWS
-#		include <objbase.h>
-#	endif
-#	include <eax.h>
-#endif
-#if EFX_AVAILABLE
-// #	include <AL/efx.h>
-#	include <AL/EFX-Util.h>
-#endif
 
 #include <nel/misc/common.h>
 #include <nel/misc/debug.h>
@@ -79,5 +50,7 @@ typedef ALenum (*EAXGetBufferMode)(ALuint buffer, ALint *value);
 #include "../buffer.h"
 #include "../source.h"
 #include "../listener.h"
+
+#include "ext_al.h"
 
 /* end of file */

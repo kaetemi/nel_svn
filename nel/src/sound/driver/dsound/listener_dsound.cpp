@@ -24,10 +24,6 @@
 #include "stddsound.h"
 #include "../sound_driver.h"
 
-#if EAX_AVAILABLE
-# include <eax.h>
-#endif
-
 #include "listener_dsound.h"
 #include "sound_driver_dsound.h"
 

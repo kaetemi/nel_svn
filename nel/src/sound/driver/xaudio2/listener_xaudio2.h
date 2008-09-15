@@ -52,7 +52,7 @@ namespace NLSOUND {
 class CListenerXAudio2 : public IListener, public NLMISC::CManualSingleton<CListenerXAudio2>
 {
 protected:
-	// far pointers
+	// outside pointers
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers

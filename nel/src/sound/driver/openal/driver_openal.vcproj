@@ -186,6 +186,14 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath=".\ext_al.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ext_al.h"
+			>
+		</File>
+		<File
 			RelativePath=".\listener_al.cpp"
 			>
 		</File>

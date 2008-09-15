@@ -49,7 +49,7 @@ namespace NLSOUND {
 class CBufferXAudio2 : public IBuffer
 {
 protected:
-	// far pointers
+	// outside pointers
 	/// The sound driver that owns this buffer, used for stats. (artificial limit)
 	CSoundDriverXAudio2 *_SoundDriver;
 	

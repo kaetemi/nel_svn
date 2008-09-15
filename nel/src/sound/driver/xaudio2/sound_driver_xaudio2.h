@@ -59,7 +59,7 @@ namespace NLSOUND {
 class CSoundDriverXAudio2 : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverXAudio2>
 {
 protected:
-	// far pointers
+	// outside pointers
 	/// The string mapper provided by client code.
 	IStringMapperProvider *_StringMapper;
 	/// Listener, created by client code.

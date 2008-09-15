@@ -44,11 +44,14 @@ namespace NLSOUND {
  *	1 => Manual rollOff control
  *		ISource::setAlpha() change the shape of attenuation
  *		IListener::setRollOffFactor() has no impact
+ *  TODO: Move to OptionManualRolloff.
  */
 #define MANUAL_ROLLOFF 1
 
 // don't use eax.h anymore
-#define EAX_AVAILABLE 0
+#if !defined( EAX_AVAILABLE )
+#	define EAX_AVAILABLE 0
+#endif
 
 /*
  * Sound sample format

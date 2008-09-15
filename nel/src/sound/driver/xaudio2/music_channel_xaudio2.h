@@ -52,7 +52,7 @@ namespace NLSOUND {
 class CMusicChannelXAudio2 : public IMusicChannel, IXAudio2VoiceCallback
 {
 protected:
-	// far pointers
+	// outside pointers
 	CSoundDriverXAudio2 *_SoundDriver;
 	
 	// pointers

@@ -406,9 +406,9 @@ void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain 
 void CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
 {
 #if EAX_AVAILABLE == 1
-	if ( EAXSetProp != NULL )
+	if (AlExtEax)
 	{
-		EAXSetProp( &DSPROPSETID_EAX_SourceProperties, prop, _SourceName, value, valuesize );
+		eaxSet( &DSPROPSETID_EAX_SourceProperties, prop, _SourceName, value, valuesize );
 	}
 #endif
 }

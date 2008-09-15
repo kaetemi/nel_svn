@@ -43,14 +43,6 @@ typedef void (*TDeleteFunctionAL) ( ALsizei, const ALuint* );
 typedef ALboolean (*TTestFunctionAL) ( ALuint );
 
 
-#if EAX_AVAILABLE == 1
-// EAXSet global function
-extern EAXSet	EAXSetProp;
-
-// EAXGet global function
-extern EAXGet	EAXGetProp;
-#endif
-
 
 #ifdef NL_DEBUG
 void TestALError();
@@ -75,7 +67,7 @@ void TestALError();
 class CSoundDriverAL : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverAL>
 {
 private:
-	// far pointers
+	// outside pointers
 	/// The string mapper provided by client code.
 	IStringMapperProvider *_StringMapper;
 

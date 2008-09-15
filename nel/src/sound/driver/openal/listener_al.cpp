@@ -210,10 +210,10 @@ void					CListenerAL::setRolloffFactor( float f )
 void					CListenerAL::setEnvironment( uint env, float size )
 {
 #if EAX_AVAILABLE == 1
-	if ( EAXSetProp != NULL )
+	if (AlExtEax)
 	{
-		EAXSetProp( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &env, sizeof(unsigned long) );
-		EAXSetProp( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, 0, &size, sizeof(float) );
+		eaxSet( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &env, sizeof(unsigned long) );
+		eaxSet( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, 0, &size, sizeof(float) );
 	}
 #endif
 }
@@ -225,9 +225,9 @@ void					CListenerAL::setEnvironment( uint env, float size )
 void					CListenerAL::setEAXProperty( uint prop, void *value, uint valuesize )
 {
 #if EAX_AVAILABLE == 1
-	if ( EAXSetProp != NULL )
+	if (AlExtEax)
 	{
-		EAXSetProp( &DSPROPSETID_EAX_ListenerProperties, prop, 0, value, valuesize );
+		eaxSet( &DSPROPSETID_EAX_ListenerProperties, prop, 0, value, valuesize );
 	}
 #endif
 }

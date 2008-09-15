@@ -75,7 +75,7 @@ protected:
 	// const
 	static const uint _MaxMusicFader = 2;
 
-	// far pointers
+	// outside pointers
 	ISoundDriver *_SoundDriver;
 	
 	// pointers

@@ -59,7 +59,7 @@ namespace NLSOUND {
 class CMusicBufferVorbis : public IMusicBuffer
 {
 protected:
-	// far pointers
+	// outside pointers
 	NLMISC::IStream *_Stream;
 
 	// pointers

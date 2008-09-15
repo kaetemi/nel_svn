@@ -24,14 +24,9 @@
 #ifndef NL_LISTENER_DSOUND_H
 #define NL_LISTENER_DSOUND_H
 
-
 #include "../listener.h"
 #include "../sound_driver.h"
 #include <dsound.h>
-
-#if EAX_AVAILABLE
-#	include <eax.h>
-#endif
 
 namespace NLSOUND {
 

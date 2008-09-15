@@ -53,7 +53,7 @@ namespace NLSOUND {
 class CSourceXAudio2 : public ISource
 {
 protected:
-	// -- Far pointers --
+	// -- outside pointers --
 	/// The sound driver, cannot change at runtime.
 	CSoundDriverXAudio2 *_SoundDriver;
 	/// Buffer that should be playing.

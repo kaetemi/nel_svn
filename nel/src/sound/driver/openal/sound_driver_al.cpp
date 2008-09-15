@@ -36,15 +36,6 @@ using namespace NLMISC;
 namespace NLSOUND {
 
 
-#if EAX_AVAILABLE == 1
-// EAXSet global function
-EAXSet					EAXSetProp = NULL;
-
-// EAXGet global function
-EAXGet					EAXGetProp = NULL;
-#endif
-
-
 // Currently, the OpenAL headers are different between Windows and Linux versions !
 // AL_INVALID_XXXX are part of the spec, though.
 /*#ifdef NL_OS_UNIX
@@ -209,25 +200,33 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	alvendor = alGetString( AL_VENDOR );
 	alext = alGetString( AL_EXTENSIONS );
 	TestALError();
-	nlinfo( "Loading OpenAL lib: %s, %s, %s", alversion, alrenderer, alvendor );
-	nlinfo( "Listing extensions: %s", alext );
+	nlinfo("AL: Loading OpenAL lib: %s, %s, %s", alversion, alrenderer, alvendor);
+	nlinfo("AL: Listing extensions: %s", alext);
 
-#if EAX_AVAILABLE == 1
+	// Load and display extensions
+	alExtInit(_AlcDevice);
+#if EAX_AVAILABLE
+	nlinfo("AL: EAX: %s, EAX-RAM: %s, ALC_EXT_EFX: %s", 
+		AlExtEax ? "Present" : "Not available", 
+		AlExtXRam ? "Present" : "Not available", 
+		AlExtEfx ? "Present" : "Not available");
+#else
+	nlinfo("AL: EAX-RAM: %s, ALC_EXT_EFX: %s", 
+		AlExtXRam ? "Present" : "Not available", 
+		AlExtEfx ? "Present" : "Not available");
+#endif
+
+	// todo: prefer efx over eax :)
+#if EAX_AVAILABLE
     // Set EAX environment if EAX is available
-	if ( alIsExtensionPresent((ALchar *)"EAX") == AL_TRUE ) // or EAX2.0
+	if (AlExtEax) // or EAX2.0
 	{
-		nlinfo( "Initializing EAX" );
-	    EAXSetProp = (EAXSet)alGetProcAddress((ALchar*)"EAXSet");
-		EAXGetProp = (EAXGet)alGetProcAddress((ALchar*)"EAXGet");
-		if ( EAXSetProp != NULL )
-		{
-			unsigned long ulEAXVal;
-			long lGlobalReverb;
-		    lGlobalReverb = 0;
-			EAXSetProp( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 0, &lGlobalReverb, sizeof(unsigned long) );
-			ulEAXVal = EAX_ENVIRONMENT_GENERIC;
-			EAXSetProp( &DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &ulEAXVal, sizeof(unsigned long) );
-		}
+		unsigned long ulEAXVal;
+		long lGlobalReverb;
+	    lGlobalReverb = 0;
+		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 0, &lGlobalReverb, sizeof(unsigned long));
+		ulEAXVal = EAX_ENVIRONMENT_GENERIC;
+		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &ulEAXVal, sizeof(unsigned long));
 	}
 	else
 #endif
