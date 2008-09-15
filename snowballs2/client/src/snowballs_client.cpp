@@ -39,7 +39,11 @@ using namespace NLMISC;
 namespace SBCLIENT {
 
 CSnowballsClient::CSnowballsClient() 
-: _FileDisplayer(NULL), _ComponentManager(NULL)
+:
+#ifdef SBCLIENT_USE_LOG
+_FileDisplayer(NULL),
+#endif
+_ComponentManager(NULL)
 {
 	// use log.log if NEL_LOG_IN_FILE and SBCLIENT_USE_LOG_LOG defined as 1
 	createDebug(NULL, SBCLIENT_USE_LOG_LOG, false);
