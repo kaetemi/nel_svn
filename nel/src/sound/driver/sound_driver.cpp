@@ -233,7 +233,7 @@ ISoundDriver *ISoundDriver::createDriver(IStringMapperProvider *stringMapper, TD
 			throw ESoundDriverUnknownVersion(dllName);
 	}
 
-	ISoundDriver *ret = createSoundDriver(useEax, stringMapper, forceSoftwareBuffer);
+	ISoundDriver *ret = createSoundDriver(stringMapper);
 	if ( ret == NULL )
 	{
 		throw ESoundDriverCantCreateDriver(dllName);
