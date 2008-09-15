@@ -157,14 +157,66 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\buffer_al.cpp"
+		<Filter
+			Name="efx"
 			>
-		</File>
-		<File
-			RelativePath=".\buffer_al.h"
+			<File
+				RelativePath=".\effect_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\effect_al.h"
+				>
+			</File>
+			<File
+				RelativePath=".\submix_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\submix_al.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="sfx"
 			>
-		</File>
+			<File
+				RelativePath=".\buffer_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\buffer_al.h"
+				>
+			</File>
+			<File
+				RelativePath=".\listener_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\listener_al.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source_al.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="util"
+			>
+			<File
+				RelativePath=".\ext_al.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ext_al.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\driver_openal.def"
 			>
@@ -186,35 +238,11 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\ext_al.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\ext_al.h"
-			>
-		</File>
-		<File
-			RelativePath=".\listener_al.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\listener_al.h"
-			>
-		</File>
-		<File
 			RelativePath=".\sound_driver_al.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\sound_driver_al.h"
-			>
-		</File>
-		<File
-			RelativePath=".\source_al.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\source_al.h"
 			>
 		</File>
 		<File

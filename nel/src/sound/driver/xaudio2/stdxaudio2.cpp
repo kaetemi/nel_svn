@@ -28,4 +28,9 @@
 
 #include "stdxaudio2.h"
 
+void dummyToAvoidStupidCompilerWarning_stdxaudio2_cpp()
+{
+	
+}
+
 /* end of file */

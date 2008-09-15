@@ -73,18 +73,22 @@ private:
 
 	// openal pointers
 	// OpenAL device
-	ALCdevice *_AlcDevice;
+	ALCdevice *_AlDevice;
 	// OpenAL context
-	ALCcontext *_AlcContext;
+	ALCcontext *_AlContext;
 
 	// system vars
 	// Allocated buffers
 	std::vector<ALuint> _Buffers;
 	// Allocated sources
 	std::vector<ALuint> _Sources;
+	// Allocated submixers
+	std::vector<ALuint> _Submixes;
+	// Allocated effects
+	std::vector<ALuint> _Effects;
 	// Number of exported buffers (including any deleted buffers)
 	uint _NbExpBuffers;
-	// Number of exported sources (including any deleted buffers)
+	// Number of exported sources (including any deleted sources)
 	uint _NbExpSources;
 
 	// user vars
@@ -113,8 +117,14 @@ public:
 	virtual	IListener *createListener();
 	/// Create a source
 	virtual	ISource *createSource();
+	/// Create a submix
+	virtual ISubmix *createSubmix();
+	/// Create an effect
+	virtual IEffect *createEffect(IEffect::TEffectType effectType);
 	/// Return the maximum number of sources that can created
-	virtual uint countMaxSources()	{ return 32; }
+	virtual uint countMaxSources();
+	/// Return the maximum number of submixers that can be attached to a source
+	virtual uint countMaxSubmixesPerSource();
 	
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
 	

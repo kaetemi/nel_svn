@@ -168,6 +168,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\effect.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\effect.h"
+			>
+		</File>
+		<File
 			RelativePath="listener.cpp"
 			>
 		</File>
@@ -197,6 +205,14 @@
 		</File>
 		<File
 			RelativePath="source.h"
+			>
+		</File>
+		<File
+			RelativePath=".\submix.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\submix.h"
 			>
 		</File>
 	</Files>

@@ -23,4 +23,9 @@
 
 #include "stdopenal.h"
 
+void dummyToAvoidStupidCompilerWarning_stdopenal_cpp()
+{
+	
+}
+
 /* end of file */

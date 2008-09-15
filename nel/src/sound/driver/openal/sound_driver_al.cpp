@@ -29,6 +29,8 @@
 
 #include "buffer_al.h"
 #include "listener_al.h"
+#include "submix_al.h"
+#include "effect_al.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -154,7 +156,7 @@ uint32 NLSOUND_interfaceVersion ()
  * Constructor
  */
 CSoundDriverAL::CSoundDriverAL(ISoundDriver::IStringMapperProvider *stringMapper) 
-: _StringMapper(stringMapper), _AlcDevice(NULL), _AlcContext(NULL), 
+: _StringMapper(stringMapper), _AlDevice(NULL), _AlContext(NULL), 
 _NbExpBuffers(0), _NbExpSources(0), _RolloffFactor(1.f)
 {
 	
@@ -170,8 +172,8 @@ CSoundDriverAL::~CSoundDriverAL()
 	alDeleteBuffers(compactAliveNames( _Buffers, alIsBuffer ), &*_Buffers.begin());
 
 	// OpenAL exit
-	alcDestroyContext(_AlcContext); _AlcContext = NULL;
-	alcCloseDevice(_AlcDevice); _AlcDevice = NULL;
+	if (_AlContext) { alcDestroyContext(_AlContext); _AlContext = NULL; }
+	if (_AlDevice) { alcCloseDevice(_AlDevice); _AlDevice = NULL; }
 }
 
 /// Return a list of available devices for the user. If the result is empty, you should use the default device.
@@ -184,14 +186,14 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	_Options = options;
 	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
 	_Options = (TSoundOptions)((uint)_Options & ~OptionManualRolloff);
-	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
-	// ***todo*** test eax or efx availability
 
 	// OpenAL initialization
 	// TODO: driver selection, check if device open succeeded, etc
-	_AlcDevice = alcOpenDevice(NULL);
-	_AlcContext = alcCreateContext(_AlcDevice, NULL);
-	alcMakeContextCurrent(_AlcContext);
+	_AlDevice = alcOpenDevice(NULL);
+	if (!_AlDevice) throw ESoundDriver("AL: Failed to open device");
+	_AlContext = alcCreateContext(_AlDevice, NULL);
+	if (!_AlContext) { alcCloseDevice(_AlDevice); throw ESoundDriver("AL: Failed to create context"); }
+	alcMakeContextCurrent(_AlContext);
 
 	// Display version information
 	const ALchar *alversion, *alrenderer, *alvendor, *alext;
@@ -200,23 +202,38 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	alvendor = alGetString( AL_VENDOR );
 	alext = alGetString( AL_EXTENSIONS );
 	TestALError();
-	nlinfo("AL: Loading OpenAL lib: %s, %s, %s", alversion, alrenderer, alvendor);
-	nlinfo("AL: Listing extensions: %s", alext);
+	nldebug("AL: Loading OpenAL lib: %s, %s, %s", alversion, alrenderer, alvendor);
+	nldebug("AL: Listing extensions: %s", alext);
 
 	// Load and display extensions
-	alExtInit(_AlcDevice);
+	alExtInit(_AlDevice);
 #if EAX_AVAILABLE
 	nlinfo("AL: EAX: %s, EAX-RAM: %s, ALC_EXT_EFX: %s", 
 		AlExtEax ? "Present" : "Not available", 
 		AlExtXRam ? "Present" : "Not available", 
 		AlExtEfx ? "Present" : "Not available");
 #else
-	nlinfo("AL: EAX-RAM: %s, ALC_EXT_EFX: %s", 
+	nldebug("AL: EAX-RAM: %s, ALC_EXT_EFX: %s", 
 		AlExtXRam ? "Present" : "Not available", 
 		AlExtEfx ? "Present" : "Not available");
 #endif
 
-	// todo: prefer efx over eax :)
+	nldebug("AL: Max. sources: %u, Max. submixes per source: %u", (uint32)countMaxSources(), (uint32)countMaxSubmixesPerSource());
+
+	if (getOption(OptionSubmixEffects)) 
+	{
+		if (!AlExtEfx)
+		{
+			nlwarning("AL: ALC_EXT_EFX is required, submix effects disabled");
+			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+		}
+		else if (!countMaxSubmixesPerSource())
+		{		
+			nlwarning("AL: No submixes available, submix effects disabled");
+			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+		}
+	}
+
 #if EAX_AVAILABLE
     // Set EAX environment if EAX is available
 	if (AlExtEax) // or EAX2.0
@@ -228,11 +245,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 		ulEAXVal = EAX_ENVIRONMENT_GENERIC;
 		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &ulEAXVal, sizeof(unsigned long));
 	}
-	else
 #endif
-	{
-		nlinfo( "EAX not available" );
-	}
 
 	// Choose the I3DL2 model (same as DirectSound3D)
 	alDistanceModel( AL_INVERSE_DISTANCE_CLAMPED );
@@ -330,6 +343,69 @@ ISource *CSoundDriverAL::createSource()
 	return sourceal;
 }
 
+/// Create a submix
+ISubmix *CSoundDriverAL::createSubmix()
+{
+	ALuint object;
+	alGenAuxiliaryEffectSlots(1, &object);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		nlwarning("AL: alGenAuxiliaryEffectSlots failed");
+		return NULL;
+	}
+	_Submixes.push_back(object);
+	CSubmixAl *result = new CSubmixAl(object);
+	return static_cast<ISubmix *>(result);
+}
+
+/// Create a reverb effect
+IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
+{
+	ALuint object;
+	alGenEffects(1, &object);
+	IEffect *result = NULL;
+	if (alGetError() != AL_NO_ERROR)
+	{
+		nlwarning("AL: alGenEffects failed");
+		return NULL;
+	}
+	switch (effectType)
+	{
+	case IEffect::Reverb:
+		alEffecti(object, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
+		if (alGetError() != AL_NO_ERROR)
+		{
+			nlwarning("AL: Reverb Effect not supported");
+			alDeleteEffects(1, &object);
+			return NULL;
+		}
+		result = static_cast<IEffect *>(new CReverbAl(object));
+		break;
+	default:
+		nlwarning("AL: Invalid effectType");
+		alDeleteEffects(1, &object);
+		return NULL;
+	}
+	nlassert(result);
+	_Effects.push_back(object);
+	return result;
+}
+
+/// Return the maximum number of sources that can created
+uint CSoundDriverAL::countMaxSources()
+{ 
+	return 32;
+}
+
+/// Return the maximum number of submixers that can be attached to a source
+uint CSoundDriverAL::countMaxSubmixesPerSource()
+{
+	if (!getOption(OptionSubmixEffects)) return 0;
+	if (!AlExtEfx) return 0;
+	ALCint max_auxiliary_sends;
+	alcGetIntegerv(_AlDevice, ALC_MAX_AUXILIARY_SENDS, 1, &max_auxiliary_sends);
+	return (uint)max_auxiliary_sends;
+}
 
 /*
  * Create a sound buffer or a sound source
