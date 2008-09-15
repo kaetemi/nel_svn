@@ -1,7 +1,7 @@
 /** \file seg_remanence.h
  * A segment that let a remanence on the screen (for sword trace)
 
-/* Copyright, 2000, 2001, 2002 Nevrax Ltd.
+ * Copyright, 2000, 2001, 2002 Nevrax Ltd.
  *
  * This file is part of NEVRAX NEL.
  * NEVRAX NEL is free software; you can redistribute it and/or modify

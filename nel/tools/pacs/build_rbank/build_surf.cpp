@@ -1571,7 +1571,7 @@ void	NLPACS::CZoneTessellation::compile()
 	// flag vertices that are pointed by more than 2 surfaces
 	VerticesFlags.resize(_Vertices.size(), 0);
 
-	for (p=0; p<(sint)Elements.size(); ++p)
+	for (p=0; p<Elements.size(); ++p)
 	{
 		CSurfElement	*elem = Elements[p];
 

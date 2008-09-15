@@ -362,7 +362,7 @@ void	displayInfoFileInStream(FILE *logStream, const char *fileName, const set<st
 							if(instance.Light[1]!=0xFF)
 								fprintf(logStream, "%3d", instance.Light[1]);
 							else
-								fprintf(logStream, "   ", instance.Light[1]);
+							  fprintf(logStream, "   "); //, instance.Light[1]);
 							fprintf(logStream, " - ");
 						}
 						if(instance.LocalAmbientId==0xFF)

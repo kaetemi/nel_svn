@@ -292,7 +292,7 @@ void createRetriever(vector<CVector> &translation)
 			
 			// Compute an identifier name
 			string indentifier = meshName;
-			int sharpPos = indentifier.rfind ('#');
+			string::size_type sharpPos = indentifier.rfind ('#');
 			if (sharpPos != string::npos)
 				indentifier = indentifier.substr (0, sharpPos);
 			lr.setIdentifier(indentifier);

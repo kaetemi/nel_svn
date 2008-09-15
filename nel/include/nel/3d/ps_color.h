@@ -256,7 +256,7 @@ public:
 
 
 
-
+#if 0
 
 /**
  * Here, we got color maker
@@ -266,7 +266,6 @@ public:
 /// these are some attribute makers for colors
 
 /// This is a int blender class. It just blend between 2 values. The blending is exact, and thus slow...
-/*
 class CPSColorBlenderExact : public CPSValueBlender<NLMISC::CRGBA>
 {
 public:
@@ -279,11 +278,7 @@ public:
 
 };
 
-
-*/
-
 // an int blender class that perform 64 color sample between colors, it is faster than CPSColorBlenderExact
-/*
 class CPSColorBlender : public CPSValueBlenderSample<NLMISC::CRGBA, 64>
 {
 public:
@@ -295,12 +290,9 @@ public:
 	CPSAttribMakerBase *clone() const { return new CPSColorBlender(*this); }
 };
 
-*/
-
 /** This is a color gradient class
   * NB: a non null gradient must be set before use
   */
-/*
 class CPSColorGradient : public CPSValueGradient<NLMISC::CRGBA>
 {
 public:
@@ -316,18 +308,15 @@ public:
 	 *  \param nbStages The result is sampled into a table by linearly interpolating values. This give the number of step between each value
 	 * \param nbCycles : The nb of time the pattern is repeated during particle life. see ps_attrib_maker.h
 	 */
-/*
 	CPSColorGradient(const NLMISC::CRGBA *colorTab, uint32 nbValues, uint32 nbStages, float nbCycles = 1.0f);
 	static NLMISC::CRGBA _DefaultGradient[];
 	CPSAttribMakerBase *clone() const { return new CPSColorGradient(*this); }
 };
-*/
 
 /** this memorize value by applying some function on the emitter. For a particle's attribute, each particle has its
   * own value memorized
   *  You MUST called setScheme (from CPSAttribMakerMemory) to tell how the value will be generted
   */
-/*
 class CPSColorMemory : public CPSAttribMakerMemory<NLMISC::CRGBA>
 {
 public:
@@ -335,19 +324,19 @@ public:
 	NLMISC_DECLARE_CLASS(CPSColorMemory);
 	CPSAttribMakerBase *clone() const { return new CPSColorMemory(*this); }
 };
-*/
 
 /** An attribute maker whose output if the result of a binary op on colors
   *
   */
-/*
 class CPSColorBinOp : public CPSAttribMakerBinOp<NLMISC::CRGBA>
 {
 	public:
 	NLMISC_DECLARE_CLASS(CPSColorBinOp);
 	CPSAttribMakerBase *clone() const { return new CPSColorBinOp(*this); }
 };
-*/
+
+#endif // #if 0
+
 
 } // NL3D
 #endif // NL_PS_COLOR_H

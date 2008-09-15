@@ -501,7 +501,7 @@ bool testNameWithFilter( sint8 filter, string motif, string varName )
 			// *xxx*
 			case 0 :
 			{
-				if(varName.find(motif) != -1)
+				if(varName.find(motif) != string::npos)
 				{
 					return true;
 				}

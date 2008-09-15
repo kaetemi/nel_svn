@@ -773,7 +773,7 @@ template<class T>	typename CQuadTree<T>::CIterator	CQuadTree<T>::insert(const NL
 template<class T>	void		CQuadTree<T>::clearSelection()
 {
 	CBaseNode	*p;
-	while(p=_Selection.Next)
+	while((p=_Selection.Next))
 	{
 		// We are removing this node from selection, which will implicitly modify _Selection.Next.
 		if(p->Prev)	p->Prev->Next= p->Next;

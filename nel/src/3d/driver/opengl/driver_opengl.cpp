@@ -1098,6 +1098,8 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 	size_hints.max_height = height;
 
 	XTextProperty text_property;
+	// FIXME char*s are created as const char*, but that doesn't work
+	// with XStringListToTextProperty()'s char** ...
 	char *title="NeL window";
 	XStringListToTextProperty(&title, 1, &text_property);
 

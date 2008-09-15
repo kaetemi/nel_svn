@@ -532,7 +532,7 @@ int main (int argc, char* argv[])
 
 							// Write the dependencies file
 							FILE *outputFile;
-							if (outputFile=fopen (strlwr (outputFileName).c_str(), "w"))
+							if ((outputFile=fopen (strlwr (outputFileName).c_str(), "w")))
 							{
 								// Add a dependency entry
 								fprintf (outputFile, "dependencies =\n{\n");

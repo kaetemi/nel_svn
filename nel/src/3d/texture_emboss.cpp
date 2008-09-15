@@ -157,7 +157,4 @@ void CTextureEmboss::doGenerate(bool async)
 	}
 }
 
-
-
-
 }

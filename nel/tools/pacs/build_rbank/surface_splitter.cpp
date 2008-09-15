@@ -239,7 +239,7 @@ void	CSurfaceSplitter::splitChain(TChainMap::iterator it, uint &numInters)
 				// self colliding chain
 
 				// check order
-				nlassert(edge >= 0);
+				//nlassert(edge >= 0); // always true for unsigned
 				nlassert(edge < collidingEdge.Edge);
 				nlassert(collidingEdge.Edge < chain.Vertices.size()-1);
 
@@ -284,7 +284,7 @@ void	CSurfaceSplitter::splitChain(TChainMap::iterator it, uint &numInters)
 			}
 			else
 			{
-				nlassert(edge >= 0);
+				//nlassert(edge >= 0); // always true for unsigned
 				nlassert(edge < chain.Vertices.size()-1);
 
 				// split the chain
@@ -470,10 +470,10 @@ void	CSurfaceSplitter::removeChain(CChainId chainId)
 
 	CSurface	*surf;
 	
-	if (surf = getSurface(chain.Left))
+	if ((surf = getSurface(chain.Left)))
 		surf->removeChain(chainId);
 
-	if (surf = getSurface(chain.Right))
+	if ((surf = getSurface(chain.Right)))
 		surf->removeChain(chainId);
 }
 
@@ -483,7 +483,7 @@ void	CSurfaceSplitter::replaceChain(CChainId chainId, const vector<CChainId> &ch
 	// get chain it
 	TChainMap::iterator	it = _Chains.find(chainId);
 
-	if (it == _Chains.end())
+	if ((it == _Chains.end()))
 		return;
 
 	CChain	&chain = (*it).second;
@@ -498,7 +498,7 @@ void	CSurfaceSplitter::replaceChain(CChainId chainId, const vector<CChainId> &ch
 		dumpChain(chains[c]);
 	nlinfo("-- End Replace --");
 	
-	if (surf = getSurface(chain.Left))
+	if ((surf = getSurface(chain.Left)))
 	{
 		uint	loop;
 		for (loop=0; loop<surf->Loops.size(); ++loop)

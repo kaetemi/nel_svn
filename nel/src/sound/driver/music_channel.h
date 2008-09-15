@@ -47,8 +47,8 @@ namespace NLSOUND {
 class IMusicChannel
 {
 public:
-	IMusicChannel::IMusicChannel() { }
-	virtual IMusicChannel::~IMusicChannel() { }
+	IMusicChannel() { }
+	virtual ~IMusicChannel() { }
 
 	/** Play some music (.ogg etc...)
 	 *	NB: if an old music was played, it is first stop with stopMusic()

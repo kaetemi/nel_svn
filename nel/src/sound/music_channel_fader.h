@@ -50,7 +50,7 @@ class CMusicChannelFader
 private:
 	struct _CMusicFader
 	{
-		_CMusicFader::_CMusicFader() : MusicChannel(NULL), XFadeVolume(0.f), XFadeDVolume(0.f), Playing(false), Fade(false) { }
+		_CMusicFader() : MusicChannel(NULL), XFadeVolume(0.f), XFadeDVolume(0.f), Playing(false), Fade(false) { }
 		IMusicChannel *MusicChannel;
 		float XFadeVolume; // 0--1
 		float XFadeDVolume; // delta

@@ -370,7 +370,7 @@ int main (int nNbArg, char **ppArgs)
 		gDestBNPFile = ppArgs[2];
 		if ((gDestBNPFile.rfind('/') != string::npos) || (gDestBNPFile.rfind('/') != string::npos))
 		{
-			int pos = gDestBNPFile.rfind('/');
+			string::size_type pos = gDestBNPFile.rfind('/');
 			if (pos == string::npos)
 				pos = gDestBNPFile.rfind('/');
 			for (i = 0; i <= pos; ++i)
@@ -416,7 +416,7 @@ int main (int nNbArg, char **ppArgs)
 		gDestBNPFile = ppArgs[2];
 		if ((gDestBNPFile.rfind('/') != string::npos) || (gDestBNPFile.rfind('/') != string::npos))
 		{
-			int pos = gDestBNPFile.rfind('/');
+			string::size_type pos = gDestBNPFile.rfind('/');
 			if (pos == string::npos)
 				pos = gDestBNPFile.rfind('/');
 			for (i = 0; i <= pos; ++i)

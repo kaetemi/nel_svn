@@ -52,8 +52,11 @@
 #include <AL/alc.h>
 // #if XRAM_AVAILABLE
 // #	include <AL/xram.h>
-typedef ALboolean (__cdecl *EAXSetBufferMode)(ALsizei n, ALuint *buffers, ALint value);
-typedef ALenum (__cdecl *EAXGetBufferMode)(ALuint buffer, ALint *value);
+// FIXME originally defined with __cdecl, but this doesn't work with gcc.
+// Left the __cdecl out, if there are any weird bugs in this regard, put it back
+// in and wrap it up properly for the different compilers.
+typedef ALboolean (*EAXSetBufferMode)(ALsizei n, ALuint *buffers, ALint value);
+typedef ALenum (*EAXGetBufferMode)(ALuint buffer, ALint *value);
 // #endif
 #if EAX_AVAILABLE
 #	define OPENAL

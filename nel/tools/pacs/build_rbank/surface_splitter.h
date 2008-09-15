@@ -411,6 +411,7 @@ public:
 					Chain += Direction;
 					resetChain();
 				}
+				// FIXME add return value here!
 			}
 
 			void	resetChain()

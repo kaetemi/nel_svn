@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
 							if (input.open(path+name+ext))
 							{
 								// Warning message
-								printf ("Dump %s\n", name);
+								printf ("Dump %s\n", name.c_str());
 
 								// Landscape
 								CLandscape landscape;
@@ -191,7 +191,7 @@ int main(int argc, char* argv[])
 							}
 							else
 								// Warning message
-								printf ("Dump %s (missing)\n", name);
+								printf ("Dump %s (missing)\n", name.c_str());
 						}
 					
 						// Get the current pos
