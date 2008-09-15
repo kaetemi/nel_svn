@@ -57,9 +57,9 @@ public:
 	virtual void init(std::string device, TSoundOptions options);
 
 	/// Return options that are enabled (including those that cannot be disabled on this driver).
-	virtual TSoundOptions ISoundDriver::getOptions();
+	virtual TSoundOptions getOptions();
 	/// Return if an option is enabled (including those that cannot be disabled on this driver).
-	virtual bool ISoundDriver::getOption(TSoundOptions option);
+	virtual bool getOption(TSoundOptions option);
 
 	/// Create the listener instance
 	virtual	IListener *createListener();
