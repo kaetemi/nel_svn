@@ -45,6 +45,7 @@
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="_WINDOWS;WIN32;_DEBUG;LIBXML_STATIC;NL_DEBUG_FAST"
 				StringPooling="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
@@ -62,7 +63,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib libxml2.lib zlib.lib"
 				OutputFile="..\bin\$(RootNamespace)_d.exe"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -123,12 +123,13 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;NL_RELEASE_DEBUG;ASSERT_THROW_EXCEPTION;FINAL_VERSION;LIBXML_STATIC"
+				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;NL_RELEASE_DEBUG;ASSERT_THROW_EXCEPTION;LIBXML_STATIC"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -141,7 +142,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib libxml2.lib"
 				OutputFile="..\bin\$(RootNamespace).exe"
 				IgnoreDefaultLibraryNames=""
 				SubSystem="2"
