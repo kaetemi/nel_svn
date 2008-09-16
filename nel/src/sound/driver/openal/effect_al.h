@@ -48,15 +48,23 @@ class CReverbAl : public IReverb
 {
 protected:
 	// pointers
-	// ...
 	
 	// instances
 	ALuint _AlEffect;
+	CEnvironment _Environment;
+	float _RoomSize;
+
+#if EFX_CREATIVE_AVAILABLE
+	bool _Creative;
+#endif
 public:
 	CReverbAl(ALuint alEfxObject);
 	virtual ~CReverbAl();
 
 	inline ALuint getAlEfxObject() { return _AlEffect; }
+#if EFX_CREATIVE_AVAILABLE
+	inline void setCreative(bool creative) { _Creative = creative; }
+#endif
 
 	// IEffect
 	virtual TEffectType getType();

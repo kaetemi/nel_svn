@@ -234,6 +234,13 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 		}
 	}
 
+	// test
+	createSubmix();
+	createEffect(IEffect::Reverb);
+	createEffect(IEffect::Reverb);
+	createEffect(IEffect::Reverb);
+	createEffect(IEffect::Reverb);
+
 //#if EAX_AVAILABLE
 //    // Set EAX environment if EAX is available
 //	if (AlExtEax) // or EAX2.0
@@ -372,6 +379,20 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 	switch (effectType)
 	{
 	case IEffect::Reverb:
+#if EFX_CREATIVE_AVAILABLE
+		alEffecti(object, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+		if (alGetError() != AL_NO_ERROR)
+		{
+			nlinfo("AL: Creative Reverb Effect not supported, falling back to standard Reverb Effect");
+		}
+		else
+		{
+			CReverbAl *reverb = new CReverbAl(object);
+			reverb->setCreative(true);
+			result = static_cast<IEffect *>(reverb);
+			break;
+		}
+#endif		
 		alEffecti(object, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
 		if (alGetError() != AL_NO_ERROR)
 		{
