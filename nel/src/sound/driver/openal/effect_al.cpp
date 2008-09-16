@@ -29,12 +29,7 @@
 #include "stdopenal.h"
 #include "effect_al.h"
 
-// STL includes
-
-// NeL includes
-// #include <nel/misc/debug.h>
-
-// Project includes
+#include "sound_driver_al.h"
 
 using namespace std;
 // using namespace NLMISC;
@@ -48,6 +43,13 @@ CReverbAl::CReverbAl(ALuint alEfxObject) : _AlEffect(alEfxObject), _RoomSize(ENV
 {
 	setEnvironment(CEnvironment(NLSOUND_I3DL2_ENVIRONMENT_PRESET_ROOM));
 }
+
+#if EFX_CREATIVE_AVAILABLE
+CReverbAl::CReverbAl(ALuint alEfxObject, bool creative) : _AlEffect(alEfxObject), _RoomSize(ENVFX_DEFAULT_SIZE), _Creative(creative)
+{
+	setEnvironment(CEnvironment(NLSOUND_I3DL2_ENVIRONMENT_PRESET_ROOM));
+}
+#endif
 
 CReverbAl::~CReverbAl()
 {
@@ -97,33 +99,45 @@ void CReverbAl::setEnvironment(const CEnvironment &environment)
 		EFXEAXREVERBPROPERTIES efxcreativereverb;
 		ConvertReverbParameters(&eaxreverb, &efxcreativereverb);
 		efxcreativereverb.flDensity = environment.Density / 100.0f;
-		alEffectf(_AlEffect, AL_EAXREVERB_DENSITY, efxcreativereverb.flDensity);
-		alEffectf(_AlEffect, AL_EAXREVERB_DIFFUSION, efxcreativereverb.flDiffusion);
-		alEffectf(_AlEffect, AL_EAXREVERB_GAIN, efxcreativereverb.flGain);
-		alEffectf(_AlEffect, AL_EAXREVERB_GAINHF, efxcreativereverb.flGainHF);
-		alEffectf(_AlEffect, AL_EAXREVERB_GAINLF, efxcreativereverb.flGainLF);
-		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_TIME, efxcreativereverb.flDecayTime);
-		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_HFRATIO, efxcreativereverb.flDecayHFRatio);
-		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_LFRATIO, efxcreativereverb.flDecayLFRatio);
-		alEffectf(_AlEffect, AL_EAXREVERB_REFLECTIONS_GAIN, efxcreativereverb.flReflectionsGain);
-		alEffectf(_AlEffect, AL_EAXREVERB_REFLECTIONS_DELAY, efxcreativereverb.flReflectionsDelay);
-		alEffectfv(_AlEffect, AL_EAXREVERB_REFLECTIONS_PAN, efxcreativereverb.flReflectionsPan);
-		alEffectf(_AlEffect, AL_EAXREVERB_LATE_REVERB_GAIN, efxcreativereverb.flLateReverbGain);
-		alEffectf(_AlEffect, AL_EAXREVERB_LATE_REVERB_DELAY, efxcreativereverb.flLateReverbDelay);
-		alEffectfv(_AlEffect, AL_EAXREVERB_LATE_REVERB_PAN, efxcreativereverb.flLateReverbPan);
-		alEffectf(_AlEffect, AL_EAXREVERB_ECHO_TIME, efxcreativereverb.flEchoTime);
-		alEffectf(_AlEffect, AL_EAXREVERB_ECHO_DEPTH, efxcreativereverb.flEchoDepth);
-		alEffectf(_AlEffect, AL_EAXREVERB_MODULATION_TIME, efxcreativereverb.flModulationTime);
-		alEffectf(_AlEffect, AL_EAXREVERB_MODULATION_DEPTH, efxcreativereverb.flModulationDepth);
-		alEffectf(_AlEffect, AL_EAXREVERB_AIR_ABSORPTION_GAINHF, efxcreativereverb.flAirAbsorptionGainHF);
-		alEffectf(_AlEffect, AL_EAXREVERB_HFREFERENCE, efxcreativereverb.flHFReference);
-		alEffectf(_AlEffect, AL_EAXREVERB_LFREFERENCE, efxcreativereverb.flLFReference);
-		alEffectf(_AlEffect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, efxcreativereverb.flRoomRolloffFactor);
-		alEffecti(_AlEffect, AL_EAXREVERB_DECAY_HFLIMIT, efxcreativereverb.iDecayHFLimit); // note: spec says AL_EAXREVERB_DECAYHF_LIMIT
+		ALenum gaintest14 = alGetEnumValue("AL_EAXREVERB_GAIN");
+		ALenum gaintes42t = alGetEnumValue("AL_REVERB_GAIN");
+		ALenum gaintes4t23 = alGetEnumValue("AL_EAXREVERB_DENSITY");
+		ALenum gaintest = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_EAXREVERB_GAIN");
+		ALenum gaintes2t = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_REVERB_GAIN");
+		ALenum gaintest23 = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_EAXREVERB_DENSITY");
+		alEffectf(_AlEffect, AL_EAXREVERB_DENSITY, efxcreativereverb.flDensity); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_DIFFUSION, efxcreativereverb.flDiffusion); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_GAIN, efxcreativereverb.flGain); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_GAINHF, efxcreativereverb.flGainHF); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_GAINLF, efxcreativereverb.flGainLF); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_TIME, efxcreativereverb.flDecayTime); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_HFRATIO, efxcreativereverb.flDecayHFRatio); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_DECAY_LFRATIO, efxcreativereverb.flDecayLFRatio); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_REFLECTIONS_GAIN, efxcreativereverb.flReflectionsGain); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_REFLECTIONS_DELAY, efxcreativereverb.flReflectionsDelay); alTestWarning();
+		alEffectfv(_AlEffect, AL_EAXREVERB_REFLECTIONS_PAN, efxcreativereverb.flReflectionsPan); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_LATE_REVERB_GAIN, efxcreativereverb.flLateReverbGain); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_LATE_REVERB_DELAY, efxcreativereverb.flLateReverbDelay); alTestWarning();
+		alEffectfv(_AlEffect, AL_EAXREVERB_LATE_REVERB_PAN, efxcreativereverb.flLateReverbPan); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_ECHO_TIME, efxcreativereverb.flEchoTime); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_ECHO_DEPTH, efxcreativereverb.flEchoDepth); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_MODULATION_TIME, efxcreativereverb.flModulationTime); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_MODULATION_DEPTH, efxcreativereverb.flModulationDepth); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_AIR_ABSORPTION_GAINHF, efxcreativereverb.flAirAbsorptionGainHF); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_HFREFERENCE, efxcreativereverb.flHFReference); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_LFREFERENCE, efxcreativereverb.flLFReference); alTestWarning();
+		alEffectf(_AlEffect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, efxcreativereverb.flRoomRolloffFactor); alTestWarning();
+		alEffecti(_AlEffect, AL_EAXREVERB_DECAY_HFLIMIT, efxcreativereverb.iDecayHFLimit); alTestWarning(); // note: spec says AL_EAXREVERB_DECAYHF_LIMIT
 	}
 	else
 #endif
 	{
+		ALenum gaintest14 = alGetEnumValue("AL_EAXREVERB_GAIN");
+		ALenum gaintes42t = alGetEnumValue("AL_REVERB_GAIN");
+		ALenum gaintes4t23 = alGetEnumValue("AL_EAXREVERB_DENSITY");
+		ALenum gaintest = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_EAXREVERB_GAIN");
+		ALenum gaintes2t = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_REVERB_GAIN");
+		ALenum gaintest23 = alcGetEnumValue(CSoundDriverAL::getInstance()->getAlDevice(), "AL_EAXREVERB_DENSITY");
 		nlwarning("setEnvironment not implemented");
 	}
 }

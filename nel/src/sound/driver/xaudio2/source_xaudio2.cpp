@@ -109,7 +109,7 @@ CSourceXAudio2::~CSourceXAudio2()
 
 void CSourceXAudio2::release() // called by driver :)
 {
-	_AdpcmUtility->flushSourceBuffers();
+	if (_AdpcmUtility) _AdpcmUtility->flushSourceBuffers();
 	if (_SoundDriver)
 	{
 		_SoundDriver->removeSource(this);

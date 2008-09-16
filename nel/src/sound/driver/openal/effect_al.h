@@ -59,6 +59,9 @@ protected:
 #endif
 public:
 	CReverbAl(ALuint alEfxObject);
+#if EFX_CREATIVE_AVAILABLE
+	CReverbAl(ALuint alEfxObject, bool creative);
+#endif
 	virtual ~CReverbAl();
 
 	inline ALuint getAlEfxObject() { return _AlEffect; }

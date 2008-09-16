@@ -45,11 +45,15 @@ typedef ALboolean (*TTestFunctionAL) ( ALuint );
 
 
 #ifdef NL_DEBUG
-void TestALError();
+void alTestError();
+void alTestWarning();
 #else
-#define TestALError()
+#define alTestError()
+#define alTestWarning()
 #endif
 
+extern ISubmix *TestSubmix;
+extern IEffect *TestReverb;
 
 
 /**
@@ -100,6 +104,9 @@ public:
 
 	/// Constructor
 	CSoundDriverAL(ISoundDriver::IStringMapperProvider *stringMapper);
+
+	inline ALCdevice *getAlDevice() { return _AlDevice; }
+	inline ALCcontext *getAlContext() { return _AlContext; }
 
 	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
 	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);

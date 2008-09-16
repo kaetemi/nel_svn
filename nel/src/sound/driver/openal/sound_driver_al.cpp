@@ -37,6 +37,9 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
+ISubmix *TestSubmix = NULL;
+IEffect *TestReverb = NULL;
+
 
 // Currently, the OpenAL headers are different between Windows and Linux versions !
 // AL_INVALID_XXXX are part of the spec, though.
@@ -48,18 +51,30 @@ namespace NLSOUND {
 
 #ifdef NL_DEBUG
 // Test error in debug mode
-void TestALError()
+void alTestError()
 {
 	ALuint errcode = alGetError();
-	switch( errcode )
+	switch (errcode)
 	{
 	case AL_NO_ERROR : break;
-	case AL_INVALID_NAME : nlerror( "OpenAL: Invalid name" );
-	case AL_INVALID_ENUM  : nlerror( "OpenAL: Invalid enum" );
-	case AL_INVALID_VALUE  : nlerror( "OpenAL: Invalid value" );
-	case AL_INVALID_OPERATION  : nlerror( "OpenAL: Invalid operation" );
-	case AL_OUT_OF_MEMORY  : nlerror( "OpenAL: Out of memory" );
-	// alGetString( errcode ) seems to fail !
+	case AL_INVALID_NAME: nlerror("OpenAL: Invalid name");
+	case AL_INVALID_ENUM: nlerror("OpenAL: Invalid enum");
+	case AL_INVALID_VALUE: nlerror("OpenAL: Invalid value");
+	case AL_INVALID_OPERATION: nlerror("OpenAL: Invalid operation");
+	case AL_OUT_OF_MEMORY: nlerror("OpenAL: Out of memory");
+	}
+}
+void alTestWarning()
+{
+	ALuint errcode = alGetError();
+	switch ( errcode )
+	{
+	case AL_NO_ERROR: break;
+	case AL_INVALID_NAME: nlwarning("AL: Invalid Name paramater passed to AL call"); break;
+	case AL_INVALID_ENUM: nlwarning("AL: Invalid parameter passed to AL call"); break;
+	case AL_INVALID_VALUE: nlwarning("AL: Invalid enum parameter value"); break;
+	case AL_INVALID_OPERATION: nlwarning("AL: Illegal call"); break;
+	case AL_OUT_OF_MEMORY: nlerror("AL: Out of memory"); break;
 	}
 }
 #endif
@@ -201,7 +216,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	alrenderer = alGetString( AL_RENDERER );
 	alvendor = alGetString( AL_VENDOR );
 	alext = alGetString( AL_EXTENSIONS );
-	TestALError();
+	alTestError();
 	nldebug("AL: Loading OpenAL lib: %s, %s, %s", alversion, alrenderer, alvendor);
 	nldebug("AL: Listing extensions: %s", alext);
 
@@ -235,11 +250,12 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	}
 
 	// test
-	createSubmix();
+	TestSubmix = createSubmix();
+	TestReverb = createEffect(IEffect::Reverb);
+	TestSubmix->setEffect(TestReverb);
+	/*createEffect(IEffect::Reverb);
 	createEffect(IEffect::Reverb);
-	createEffect(IEffect::Reverb);
-	createEffect(IEffect::Reverb);
-	createEffect(IEffect::Reverb);
+	createEffect(IEffect::Reverb);*/
 
 //#if EAX_AVAILABLE
 //    // Set EAX environment if EAX is available
@@ -256,7 +272,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 
 	// Choose the I3DL2 model (same as DirectSound3D)
 	alDistanceModel( AL_INVERSE_DISTANCE_CLAMPED );
-	TestALError();
+	alTestError();
 
 	// Initial buffers and sources allocation
 	allocateNewItems( alGenBuffers, alIsBuffer, _Buffers, _NbExpBuffers, INITIAL_BUFFERS );
@@ -387,8 +403,7 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 		}
 		else
 		{
-			CReverbAl *reverb = new CReverbAl(object);
-			reverb->setCreative(true);
+			CReverbAl *reverb = new CReverbAl(object, true);
 			result = static_cast<IEffect *>(reverb);
 			break;
 		}
@@ -525,7 +540,7 @@ bool			CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, 
 	}
 	aldeletefunc( 1, &*ibn );
 	*ibn = AL_NONE;
-	TestALError();
+	alTestError();
 	return true;
 }
 
@@ -551,7 +566,7 @@ void			CSoundDriverAL::applyRolloffFactor( float f )
 	{
 		alSourcef( *ibn, AL_ROLLOFF_FACTOR, _RolloffFactor );
 	}
-	TestALError();
+	alTestError();
 }
 
 
