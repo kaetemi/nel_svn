@@ -41,11 +41,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="4"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../include"
-				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;LIBXML_STATIC;NL_STATIC"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;LIBXML_STATIC"
+				StringPooling="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
