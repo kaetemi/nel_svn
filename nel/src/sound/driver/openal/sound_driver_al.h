@@ -123,8 +123,8 @@ public:
 	virtual IEffect *createEffect(IEffect::TEffectType effectType);
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources();
-	/// Return the maximum number of submixers that can be attached to a source
-	virtual uint countMaxSubmixesPerSource();
+	/// Return the maximum number of submixers that can be created
+	virtual uint countMaxSubmixes();
 	
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
 	

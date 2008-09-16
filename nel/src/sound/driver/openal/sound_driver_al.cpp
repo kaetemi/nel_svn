@@ -218,7 +218,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 		AlExtEfx ? "Present" : "Not available");
 #endif
 
-	nldebug("AL: Max. sources: %u, Max. submixes per source: %u", (uint32)countMaxSources(), (uint32)countMaxSubmixesPerSource());
+	nldebug("AL: Max. sources: %u, Max. submixes per source: %u", (uint32)countMaxSources(), (uint32)countMaxSubmixes());
 
 	if (getOption(OptionSubmixEffects)) 
 	{
@@ -227,25 +227,25 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 			nlwarning("AL: ALC_EXT_EFX is required, submix effects disabled");
 			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
 		}
-		else if (!countMaxSubmixesPerSource())
+		else if (!countMaxSubmixes())
 		{		
 			nlwarning("AL: No submixes available, submix effects disabled");
 			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
 		}
 	}
 
-#if EAX_AVAILABLE
-    // Set EAX environment if EAX is available
-	if (AlExtEax) // or EAX2.0
-	{
-		unsigned long ulEAXVal;
-		long lGlobalReverb;
-	    lGlobalReverb = 0;
-		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 0, &lGlobalReverb, sizeof(unsigned long));
-		ulEAXVal = EAX_ENVIRONMENT_GENERIC;
-		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &ulEAXVal, sizeof(unsigned long));
-	}
-#endif
+//#if EAX_AVAILABLE
+//    // Set EAX environment if EAX is available
+//	if (AlExtEax) // or EAX2.0
+//	{
+//		unsigned long ulEAXVal;
+//		long lGlobalReverb;
+//	    lGlobalReverb = 0;
+//		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 0, &lGlobalReverb, sizeof(unsigned long));
+//		ulEAXVal = EAX_ENVIRONMENT_GENERIC;
+//		eaxSet(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, 0, &ulEAXVal, sizeof(unsigned long));
+//	}
+//#endif
 
 	// Choose the I3DL2 model (same as DirectSound3D)
 	alDistanceModel( AL_INVERSE_DISTANCE_CLAMPED );
@@ -397,8 +397,8 @@ uint CSoundDriverAL::countMaxSources()
 	return 32;
 }
 
-/// Return the maximum number of submixers that can be attached to a source
-uint CSoundDriverAL::countMaxSubmixesPerSource()
+/// Return the maximum number of submixers that can be created
+uint CSoundDriverAL::countMaxSubmixes()
 {
 	if (!getOption(OptionSubmixEffects)) return 0;
 	if (!AlExtEfx) return 0;

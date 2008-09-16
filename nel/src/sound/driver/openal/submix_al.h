@@ -47,14 +47,19 @@ namespace NLSOUND {
 class CSubmixAl : public ISubmix
 {
 protected:
-	// pointers
-	// ...
+	// outside pointers
+	IEffect *_Effect;
 	
 	// instances
-	// ...
+	ALuint _AlAuxEffectSlot;
 public:
 	CSubmixAl(ALuint alEfxObject);
 	virtual ~CSubmixAl();
+
+	inline ALuint getAlEfxObject() { return _AlAuxEffectSlot; }
+
+	virtual void setEffect(IEffect *effect);
+	virtual void setGain(float gain);
 }; /* class CSubmixAl */
 
 } /* namespace NLSOUND */

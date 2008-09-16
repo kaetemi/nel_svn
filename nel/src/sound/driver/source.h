@@ -23,17 +23,15 @@
 
 #ifndef NL_SOURCE_H
 #define NL_SOURCE_H
+#include <nel/misc/types_nl.h>
 
-#include "nel/misc/types_nl.h"
-#include "nel/misc/vector.h"
+#include <nel/misc/vector.h>
 #include "sound_driver.h"
 
 namespace NLSOUND {
-
-
-class IBuffer;
-class ILoader;
-
+	class IBuffer;
+	class ILoader;
+	class ISubmix;
 
 /**
  * Sound source interface (implemented in sound driver dynamic library)
@@ -58,6 +56,9 @@ class ILoader;
 class ISource
 {
 public:
+	/// Set the submix send for this source, NULL to disable.
+	virtual void setSubmix(ISubmix *submix) { throw ESoundDriverNotSupp(); }
+
 	/// \name Initialization
 	//@{
 	/// Enable or disable streaming mode. Source must be stopped to call this.

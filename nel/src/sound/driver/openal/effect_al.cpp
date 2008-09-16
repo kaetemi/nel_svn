@@ -41,7 +41,7 @@ using namespace std;
 
 namespace NLSOUND {
 
-CReverbAl::CReverbAl(ALuint alEfxObject)
+CReverbAl::CReverbAl(ALuint alEfxObject) : _AlEffect(alEfxObject)
 {
 	
 }
@@ -54,6 +54,16 @@ CReverbAl::~CReverbAl()
 IEffect::TEffectType CReverbAl::getType()
 {
 	return Reverb;
+}
+
+void CReverbAl::setEnvironment(const CEnvironment &environment)
+{
+	
+}
+
+void CReverbAl::setRoomSize(float roomSize)
+{
+	
 }
 
 } /* namespace NLSOUND */

@@ -35,18 +35,55 @@
 // #include <nel/misc/debug.h>
 
 // Project includes
+#include "effect_al.h"
 
 using namespace std;
 // using namespace NLMISC;
 
 namespace NLSOUND {
 
-CSubmixAl::CSubmixAl(ALuint alEfxObject)
+CSubmixAl::CSubmixAl(ALuint alEfxObject) : _AlAuxEffectSlot(alEfxObject)
 {
 	
 }
 
 CSubmixAl::~CSubmixAl()
+{
+	
+}
+
+void CSubmixAl::setEffect(IEffect *effect)
+{
+	if (_Effect) if (_Effect->getType() == IEffect::Reverb)
+	{
+		alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_FALSE); // auto only for reverb!
+	}
+	if (!effect)
+	{
+		alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
+		_Effect = NULL;
+	}
+	else switch (effect->getType())
+	{
+		case IEffect::Reverb:
+		{
+			CReverbAl *reverb = static_cast<CReverbAl *>(effect);
+			alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_EFFECT, reverb->getAlEfxObject());
+			alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); // auto only for reverb!
+			_Effect = effect;
+			break;
+		}
+		default:
+		{
+			nlwarning("AL: Unknown effect type");
+			alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
+			_Effect = NULL;
+			break;
+		}
+	}
+}
+
+void CSubmixAl::setGain(float gain)
 {
 	
 }

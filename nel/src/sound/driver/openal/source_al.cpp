@@ -25,6 +25,7 @@
 #include "source_al.h"
 
 #include "sound_driver_al.h"
+#include "submix_al.h"
 
 using namespace NLMISC;
 
@@ -52,6 +53,13 @@ CSourceAL::~CSourceAL()
 	sdal->removeSource(this);
 }
 
+void CSourceAL::setSubmix(ISubmix *submix)
+{
+	// no filter stuff yet
+	// only allow one submix send for now -----------------------------------------------> 0
+	if (submix) alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, static_cast<CSubmixAl *>(submix)->getAlEfxObject(), 0, AL_FILTER_NULL);
+	else alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
+}
 
 /* Set the buffer that will be played (no streaming)
  * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,

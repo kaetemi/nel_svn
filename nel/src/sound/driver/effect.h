@@ -67,8 +67,16 @@ public:
 class IReverb : public IEffect
 {
 public:
+	class CEnvironment
+	{
+
+	};
+
 	IReverb();
 	virtual ~IReverb();
+
+	virtual void setEnvironment(const CEnvironment &environment) = 0;
+	virtual void setRoomSize(float roomSize) = 0;
 }; /* class IReverb */
 
 } /* namespace NLSOUND */

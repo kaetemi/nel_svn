@@ -51,12 +51,19 @@ protected:
 	// ...
 	
 	// instances
-	// ...
+	ALuint _AlEffect;
 public:
 	CReverbAl(ALuint alEfxObject);
 	virtual ~CReverbAl();
 
+	inline ALuint getAlEfxObject() { return _AlEffect; }
+
+	// IEffect
 	virtual TEffectType getType();
+
+	// IReverb
+	virtual void setEnvironment(const CEnvironment &environment);
+	virtual void setRoomSize(float roomSize);
 }; /* class CReverbAl */
 
 } /* namespace NLSOUND */

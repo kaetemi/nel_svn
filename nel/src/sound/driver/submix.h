@@ -37,6 +37,7 @@
 // Project includes
 
 namespace NLSOUND {
+	class IEffect;
 
 /**
  * \brief ISubmix
@@ -49,6 +50,9 @@ class ISubmix
 public:
 	ISubmix();
 	virtual ~ISubmix();
+
+	virtual void setEffect(IEffect *effect) = 0;
+	virtual void setGain(float gain) = 0;
 }; /* class ISubmix */
 
 } /* namespace NLSOUND */

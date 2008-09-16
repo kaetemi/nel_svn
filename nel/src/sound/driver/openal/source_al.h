@@ -49,10 +49,11 @@ class CSourceAL : public ISource
 public:
 
 	/// Constructor
-	CSourceAL( ALuint sourcename=AL_NONE );
+	CSourceAL(ALuint sourcename=AL_NONE);
 	/// Destructor
-	virtual					~CSourceAL();
+	virtual	~CSourceAL();
 
+	virtual void setSubmix(ISubmix *submix);
 
 	/// \name Initialization
 	//@{
