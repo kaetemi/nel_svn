@@ -46,10 +46,10 @@ typedef ALboolean (*TTestFunctionAL) ( ALuint );
 
 #ifdef NL_DEBUG
 void alTestError();
-void alTestWarning();
+void alTestWarning(const char *src);
 #else
 #define alTestError()
-#define alTestWarning()
+#define alTestWarning(__src)
 #endif
 
 extern ISubmix *TestSubmix;

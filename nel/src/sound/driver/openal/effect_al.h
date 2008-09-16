@@ -51,8 +51,6 @@ protected:
 	
 	// instances
 	ALuint _AlEffect;
-	CEnvironment _Environment;
-	float _RoomSize;
 
 #if EFX_CREATIVE_AVAILABLE
 	bool _Creative;
@@ -74,7 +72,6 @@ public:
 
 	// IReverb
 	virtual void setEnvironment(const CEnvironment &environment);
-	virtual void setRoomSize(float roomSize);
 }; /* class CReverbAl */
 
 } /* namespace NLSOUND */

@@ -64,17 +64,17 @@ void alTestError()
 	case AL_OUT_OF_MEMORY: nlerror("OpenAL: Out of memory");
 	}
 }
-void alTestWarning()
+void alTestWarning(const char *src)
 {
 	ALuint errcode = alGetError();
 	switch ( errcode )
 	{
 	case AL_NO_ERROR: break;
-	case AL_INVALID_NAME: nlwarning("AL: Invalid Name paramater passed to AL call"); break;
-	case AL_INVALID_ENUM: nlwarning("AL: Invalid parameter passed to AL call"); break;
-	case AL_INVALID_VALUE: nlwarning("AL: Invalid enum parameter value"); break;
-	case AL_INVALID_OPERATION: nlwarning("AL: Illegal call"); break;
-	case AL_OUT_OF_MEMORY: nlerror("AL: Out of memory"); break;
+	case AL_INVALID_NAME: nlwarning("AL: Invalid Name paramater passed to AL call (%s)", src); break;
+	case AL_INVALID_ENUM: nlwarning("AL: Invalid parameter passed to AL call (%s)", src); break;
+	case AL_INVALID_VALUE: nlwarning("AL: Invalid enum parameter value (%s)", src); break;
+	case AL_INVALID_OPERATION: nlwarning("AL: Illegal call (%s)", src); break;
+	case AL_OUT_OF_MEMORY: nlerror("AL: Out of memory (%s)", src); break;
 	}
 }
 #endif
