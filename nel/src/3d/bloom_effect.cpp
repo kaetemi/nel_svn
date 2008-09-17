@@ -283,6 +283,9 @@ void CBloomEffect::initBloom() // clientcfg
 	if(!((CDriverUser *)_Driver)->getDriver()->supportBloomEffect())
 		return;
 
+	// don't activate bloom when PolygonMode is different from Filled
+	if (_Driver->getPolygonMode() != UDriver::Filled) return;
+
 	if(_Driver->getWindowWidth()==0 || _Driver->getWindowHeight()==0)
 		return;
 
@@ -368,6 +371,9 @@ void CBloomEffect::endBloom() // clientcfg
 {
 	if(!_Driver->supportBloomEffect() || !_Init)
 		return;
+
+	// don't activate bloom when PolygonMode is different from Filled
+	if (_Driver->getPolygonMode() != UDriver::Filled) return;
 
 	if(_Driver->getWindowWidth()==0 || _Driver->getWindowHeight()==0)
 		return;
@@ -468,6 +474,9 @@ void CBloomEffect::endInterfacesDisplayBloom() // clientcfg
 	{
 		if(!_Driver->supportBloomEffect() || !_Init)
 			return;
+
+		// don't activate bloom when PolygonMode is different from Filled
+		if (_Driver->getPolygonMode() != UDriver::Filled) return;
 
 		if(_Driver->getWindowWidth()==0 || _Driver->getWindowHeight()==0)
 			return;
