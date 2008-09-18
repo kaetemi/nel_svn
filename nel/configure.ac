@@ -60,7 +60,7 @@ fi
 
 # The following hack should ensure that configure doesnt add optimizing
 # or debugging flags to CFLAGS or CXXFLAGS
-CXXFLAGS="$CXXFLAGS -ftemplate-depth-24 -fno-stack-protector"
+CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -ftemplate-depth-24 -fno-stack-protector"
 
 
 # ====================================================================
