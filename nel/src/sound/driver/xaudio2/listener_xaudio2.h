@@ -56,14 +56,8 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers
-	/// Submix voice for volume change, also direct sample input if no effects used (see _VoiceSends).
+	/// Submix voice for volume change, also direct sample input.
 	IXAudio2SubmixVoice *_OutputVoice;
-	/// Submix voice for reverb effect if effects used.
-	IXAudio2SubmixVoice *_ReverbVoice;
-	/// Submix voice for samples input if effects used.
-	IXAudio2SubmixVoice *_SampleVoice;
-	/// Reverb effect
-	IUnknown *_ReverbApo;
 	
 	// instances
 	/// X3DAudio data for listener position in space.
@@ -72,12 +66,6 @@ protected:
 	NLMISC::CVector _Pos;
 	/// If the listener initialized correctly.
 	bool _ListenerOk;
-	/// Reference to the Submix Voice sent to by samples.
-	XAUDIO2_VOICE_SENDS _VoiceSends;
-	/// Parameters of the reverb (eax environment) effect.
-	XAUDIO2FX_REVERB_PARAMETERS _ReverbParams;
-	/// Current eax environment id.
-	uint _EaxEnvironment;
 
 	// user vars
 	/// Doppler scaler, set by user
@@ -94,9 +82,6 @@ public:
 	inline CSoundDriverXAudio2 *getSoundDriver() { return _SoundDriver; }
 	inline X3DAUDIO_LISTENER *getListener() { return &_Listener; }
 	inline IXAudio2SubmixVoice *getOutputVoice() { return _OutputVoice; }
-	inline IXAudio2SubmixVoice *getReverbVoice() { return _ReverbVoice; }
-	inline IXAudio2SubmixVoice *getSampleVoice() { return _SampleVoice; }
-	inline XAUDIO2_VOICE_SENDS *getVoiceSends() { return &_VoiceSends; }
 	inline float getDopplerScaler() { return _DopplerScaler; }
 #if MANUAL_ROLLOFF == 0
 	inline float getRolloffScaler() { return _RolloffScaler; }
@@ -135,10 +120,6 @@ public:
 	virtual void setDopplerFactor(float f);
 	/// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 	virtual void setRolloffFactor(float f);
-	/// Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
-	virtual void setEnvironment(uint env, float size=ENVFX_DEFAULT_SIZE);
-	/// Set any EAX listener property if EAX available
-	virtual void setEAXProperty(uint prop, void *value, uint valuesize);
 	//@}
 }; /* class CListenerXAudio2 */
 

@@ -46,7 +46,6 @@
 #include "listener_xaudio2.h"
 #include "source_xaudio2.h"
 #include "music_channel_xaudio2.h"
-#include "eax_xaudio2.h"
 #include "submix_xaudio2.h"
 #include "effect_xaudio2.h"
 
@@ -149,40 +148,6 @@ NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 }
 
 #endif /* NL_DEBUG */
-
-#if !FINAL_VERSION
-
-NLMISC_CATEGORISED_COMMAND(nel, setEaxEnvironment, "Set the id and size of the eax environment", "<id> <size>")
-{
-	if (args.size() != 2) return false;
-	CSoundDriverXAudio2::getInstance()->getListener()->setEnvironment((uint)atoi(args[0].c_str()), (float)atoi(args[1].c_str()));
-	return true;
-}
-
-NLMISC_CATEGORISED_COMMAND(nel, enableEaxEnvironment, "Enable eax environment effect", "")
-{
-	CSoundDriverXAudio2::getInstance()->getListener()->getReverbVoice()->SetVolume(1.0f);
-	return true;
-}
-
-NLMISC_CATEGORISED_COMMAND(nel, disableEaxEnvironment, "Disable eax environment effect", "")
-{
-	CSoundDriverXAudio2::getInstance()->getListener()->getReverbVoice()->SetVolume(0.0f);
-	return true;
-}
-
-NLMISC_CATEGORISED_COMMAND(nel, displaySoundPerformance, "Display information on sound driver", "")
-{
-	string performance;
-	CSoundDriverXAudio2::getInstance()->writeProfile(performance);
-	vector<string> pv;
-	explode<string>(performance, "\n", pv, true);
-	vector<string>::iterator it(pv.begin()), end(pv.end());
-	for (; it != end; ++it) log.displayNL((*it).c_str());
-	return true;
-}
-
-#endif /* !FINAL_VERSION */
 
 // ******************************************************************
 
@@ -304,9 +269,6 @@ void CSoundDriverXAudio2::init(std::string device, TSoundOptions options)
 	_Options = (TSoundOptions)((uint)_Options | OptionSoftwareBuffer);
 	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
 
-	// initialize EAX environment presets if not initialized yet
-	if (getOption(OptionSubmixEffects)) CEaxXAudio2::init();
-
 	HRESULT hr;
 
 	uint32 flags = 0;
@@ -375,7 +337,7 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 		: 16;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
-	_Listener->getVoiceSends()->pOutputVoices[0]->GetVoiceDetails(&voice_details);
+	_Listener->getOutputVoice()->GetVoiceDetails(&voice_details);
 	wfe.nSamplesPerSec = voice_details.InputSampleRate;
 
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
@@ -385,7 +347,7 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
 	IXAudio2SourceVoice *source_voice = NULL;
 
-	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, callback, _Listener->getVoiceSends(), NULL)))
+	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, callback, NULL, NULL)))
 	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
 
 	return source_voice;
@@ -622,6 +584,19 @@ void CSoundDriverXAudio2::releaseEffect(IEffect *effect)
 	{
 	case IEffect::Reverb:
 		static_cast<CReverbEffectXAudio2 *>(effect)->release();
+		break;
+	default:
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
+	}
+}
+	
+/// (Internal) Set the voice of an effect.
+void CSoundDriverXAudio2::setEffectVoice(IEffect *effect, IXAudio2Voice *voice)
+{
+	switch (effect->getType())
+	{
+	case IEffect::Reverb:
+		static_cast<CReverbEffectXAudio2 *>(effect)->setVoice(voice);
 		break;
 	default:
 		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");

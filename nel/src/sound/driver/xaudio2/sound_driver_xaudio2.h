@@ -241,6 +241,8 @@ public:
 	static IUnknown *getEffectInternal(IEffect *effect);
 	/// (Internal) Call the release function of an effect.
 	static void releaseEffect(IEffect *effect);
+	/// (Internal) Set the voice of an effect.
+	static void setEffectVoice(IEffect *effect, IXAudio2Voice *voice);
 
 }; /* class CSoundDriverXAudio2 */
 

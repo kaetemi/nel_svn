@@ -50,6 +50,7 @@ class CSubmixXAudio2 : public ISubmix
 protected:
 	// outside pointers
 	CSoundDriverXAudio2 *_SoundDriver;
+	IEffect *_Effect;
 	
 	// pointers
 	IXAudio2SubmixVoice *_SubmixVoice;

@@ -203,14 +203,6 @@
 					RelativePath=".\adpcm_xaudio2.h"
 					>
 				</File>
-				<File
-					RelativePath=".\eax_xaudio2.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\eax_xaudio2.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

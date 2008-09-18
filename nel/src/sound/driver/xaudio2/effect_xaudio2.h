@@ -50,15 +50,21 @@ class CReverbEffectXAudio2 : public IReverbEffect
 protected:
 	// outside pointers
 	CSoundDriverXAudio2 *_SoundDriver;
+	IXAudio2Voice *_EffectVoice;
 
 	// pointers
 	IUnknown *_Effect;
+
+	// user data
+	/// Parameters of the reverb (eax environment) effect.
+	XAUDIO2FX_REVERB_PARAMETERS _ReverbParams;
 public:
 	CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CReverbEffectXAudio2();
 	void release();
 
 	inline IUnknown *getEffect() { return _Effect; }
+	void setVoice(IXAudio2Voice *effectVoice);
 
 	/// Get the type of effect (reverb, etc)
 	virtual TEffectType getType();

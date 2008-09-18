@@ -62,7 +62,7 @@ CStandardReverbEffectAl::CStandardReverbEffectAl(ALuint alEfxObject) : CReverbEf
 	alEffectf(_AlEffect, AL_REVERB_ROOM_ROLLOFF_FACTOR, 0.0f);
 	alEffectf(_AlEffect, AL_REVERB_DECAY_HFLIMIT, AL_TRUE);
 	// set default environment
-	setEnvironment(CEnvironment(NLSOUND_ENVIRONMENT_PRESET_ROOM, ENVFX_DEFAULT_SIZE));
+	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
 }
 
 CStandardReverbEffectAl::~CStandardReverbEffectAl()
@@ -94,7 +94,7 @@ void CStandardReverbEffectAl::setEnvironment(const CEnvironment &environment)
 CCreativeReverbEffectAl::CCreativeReverbEffectAl(ALuint alEfxObject) : CReverbEffectAl(alEfxObject)
 {
 	// set default environment
-	setEnvironment(CEnvironment(NLSOUND_ENVIRONMENT_PRESET_ROOM, ENVFX_DEFAULT_SIZE));
+	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
 }
 
 CCreativeReverbEffectAl::~CCreativeReverbEffectAl()

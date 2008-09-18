@@ -132,6 +132,8 @@ public:
 #define NLSOUND_MATERIAL_PRESET_STONEWALL     -60.00f, 0.68f
 #define NLSOUND_MATERIAL_PRESET_CURTAIN       -12.00f, 0.15f
 
+#define NLSOUND_ENVIRONMENT_DEFAULT CEnvironment(NLSOUND_ENVIRONMENT_PRESET_ROOM, 7.5f)
+
 inline float decibelsToAmplitudeRatio(float d)
 {
 	return powf(10.0f, d / 20.0f);
@@ -186,7 +188,7 @@ public:
 			RoomSize((env0.RoomSize * (1.0f - balance)) + (env1.RoomSize * balance)) { }
 		/// [-100.00, 0] in dB, default: -100.00 dB
 		float RoomFilter;
-		/// [-100.00, 0] in dB, default: 0 mB
+		/// [-100.00, 0] in dB, default: 0 dB
 		float RoomFilterHF;
 		/// [0.1, 20.0] in seconds, default: 1.0 s
 		float DecayTime;

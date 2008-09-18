@@ -2466,6 +2466,21 @@ bool	CAudioMixerUser::isEventMusicEnded()
 	return true;
 }
 
+#if !FINAL_VERSION
+
+NLMISC_CATEGORISED_COMMAND(nel, displaySoundProfile, "Display information on sound driver", "")
+{
+	string performance;
+	CAudioMixerUser::getInstance()->writeProfile(performance);
+	vector<string> pv;
+	explode<string>(performance, "\n", pv, true);
+	vector<string>::iterator it(pv.begin()), end(pv.end());
+	for (; it != end; ++it) log.displayNL((*it).c_str());
+	return true;
+}
+
+#endif /* !FINAL_VERSION */
+
 
 } // NLSOUND
 

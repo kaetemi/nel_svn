@@ -42,14 +42,14 @@ using namespace std;
 
 namespace NLSOUND {
 
-CSubmixXAudio2::CSubmixXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _SubmixVoice(NULL)
+CSubmixXAudio2::CSubmixXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _SubmixVoice(NULL), _Effect(NULL)
 {
 	HRESULT hr;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
-	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SubmixVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 9000, NULL, NULL)))
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_SubmixVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4500, NULL, NULL)))
 		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _SubmixVoice!"); return; }
 }
 
@@ -67,17 +67,31 @@ void CSubmixXAudio2::release()
 /// Attach an effect to this submixer, set NULL to remove the effect
 void CSubmixXAudio2::setEffect(IEffect *effect)
 {
-	XAUDIO2_VOICE_DETAILS voice_details;
-	_SubmixVoice->GetVoiceDetails(&voice_details);
-	XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
-	effect_descriptor.InitialState = TRUE;
-	effect_descriptor.OutputChannels = voice_details.InputChannels;
-	effect_descriptor.pEffect = CSoundDriverXAudio2::getEffectInternal(effect);
-	if (!effect_descriptor.pEffect) { nlwarning(NLSOUND_XAUDIO2_PREFIX "pEffect NULL"); return; }
-	XAUDIO2_EFFECT_CHAIN effect_chain;
-	effect_chain.EffectCount = 1;
-	effect_chain.pEffectDescriptors = &effect_descriptor;
-	_SubmixVoice->SetEffectChain(&effect_chain);
+	if (_Effect) CSoundDriverXAudio2::setEffectVoice(_Effect, NULL);
+	_Effect = effect;
+	if (effect)
+	{
+		XAUDIO2_VOICE_DETAILS voice_details;
+		_SubmixVoice->GetVoiceDetails(&voice_details);
+		XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
+		effect_descriptor.InitialState = TRUE;
+		effect_descriptor.OutputChannels = voice_details.InputChannels;
+		effect_descriptor.pEffect = CSoundDriverXAudio2::getEffectInternal(effect);
+		if (!effect_descriptor.pEffect) { nlwarning(NLSOUND_XAUDIO2_PREFIX "pEffect NULL"); return; }
+		XAUDIO2_EFFECT_CHAIN effect_chain;
+		effect_chain.EffectCount = 1;
+		effect_chain.pEffectDescriptors = &effect_descriptor;
+		_SubmixVoice->SetEffectChain(&effect_chain);
+		CSoundDriverXAudio2::setEffectVoice(effect, _SubmixVoice);
+	}
+	else
+	{
+		XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
+		XAUDIO2_EFFECT_CHAIN effect_chain;
+		effect_chain.EffectCount = 0;
+		effect_chain.pEffectDescriptors = &effect_descriptor;
+		_SubmixVoice->SetEffectChain(&effect_chain);
+	}
 }
 
 /// Set the volume of this submixer

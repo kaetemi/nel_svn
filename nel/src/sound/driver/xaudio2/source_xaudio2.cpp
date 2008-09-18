@@ -46,6 +46,7 @@
 #include "buffer_xaudio2.h"
 #include "listener_xaudio2.h"
 #include "adpcm_xaudio2.h"
+#include "submix_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -58,9 +59,11 @@ _Format(Mono16), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0),
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
-_AdpcmUtility(NULL)
+_AdpcmUtility(NULL), _ListenerVoice(NULL), _SubmixVoice(NULL)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
+	nlassert(_SoundDriver->getListener());
+	_ListenerVoice = _SoundDriver->getListener()->getOutputVoice();
 
 	memset(&_Emitter, 0, sizeof(_Emitter));
 	memset(&_Cone, 0, sizeof(_Cone));
@@ -176,11 +179,19 @@ void CSourceXAudio2::commit3DChanges()
 			_SoundDriver->getDSPSettings());
 		
 		_SourceVoice->SetOutputMatrix(
-			// _SoundDriver->getMasteringVoice(),
-			_SoundDriver->getListener()->getVoiceSends()->pOutputVoices[0], 
+			_ListenerVoice, 
 			_SoundDriver->getDSPSettings()->SrcChannelCount, 
 			_SoundDriver->getDSPSettings()->DstChannelCount, 
 			_SoundDriver->getDSPSettings()->pMatrixCoefficients);
+		if (_SubmixVoice) 
+		{
+			_SourceVoice->SetOutputMatrix(
+				_SubmixVoice, 
+				_SoundDriver->getDSPSettings()->SrcChannelCount, 
+				_SoundDriver->getDSPSettings()->DstChannelCount, 
+				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
+		}
+
 		// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
 		_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
 		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
@@ -245,6 +256,36 @@ void CSourceXAudio2::submitStaticBuffer()
 		buffer.PlayLength = 0;
 		
 		_SourceVoice->SubmitSourceBuffer(&buffer);
+	}
+}
+
+/// Set the submix send for this source, NULL to disable.
+void CSourceXAudio2::setSubmix(ISubmix *submix)
+{
+	if (submix)
+	{
+		_SubmixVoice = static_cast<CSubmixXAudio2 *>(submix)->getSubmixVoice();
+		if (_SourceVoice)
+		{
+			IXAudio2Voice *voice[2] = { 
+				_ListenerVoice,
+				_SubmixVoice };
+			XAUDIO2_VOICE_SENDS voice_sends;
+			voice_sends.OutputCount = 2;
+			voice_sends.pOutputVoices = voice;
+			_SourceVoice->SetOutputVoices(&voice_sends);
+		}
+	}
+	else
+	{
+		_SubmixVoice = NULL;
+		if (_SourceVoice)
+		{
+			XAUDIO2_VOICE_SENDS voice_sends;
+			voice_sends.OutputCount = 1;
+			voice_sends.pOutputVoices = &_ListenerVoice;
+			_SourceVoice->SetOutputVoices(&voice_sends);
+		}
 	}
 }
 
@@ -345,6 +386,23 @@ bool CSourceXAudio2::initFormat(TSampleFormat format)
 	_SourceVoice->GetVoiceDetails(&voice_details);
 	_FreqVoice = (float)voice_details.InputSampleRate;
 	_SourceVoice->SetVolume(_Gain);
+	if (_SubmixVoice)
+	{
+		IXAudio2Voice *voice[2] = { 
+			_ListenerVoice,
+			_SubmixVoice };
+		XAUDIO2_VOICE_SENDS voice_sends;
+		voice_sends.OutputCount = 2;
+		voice_sends.pOutputVoices = voice;
+		_SourceVoice->SetOutputVoices(&voice_sends);
+	}
+	else
+	{
+		XAUDIO2_VOICE_SENDS voice_sends;
+		voice_sends.OutputCount = 1;
+		voice_sends.pOutputVoices = &_ListenerVoice;
+		_SourceVoice->SetOutputVoices(&voice_sends);
+	}
 	return true;
 }
 
@@ -634,33 +692,6 @@ void CSourceXAudio2::getCone(float& innerAngle, float& outerAngle, float& outerG
 	innerAngle = _Cone.InnerAngle;
 	outerAngle = _Cone.OuterAngle;
 	outerGain = _Cone.OuterVolume;
-}
-
-/// Set any EAX source property if EAX available
-void CSourceXAudio2::setEAXProperty(uint prop, void *value, uint valuesize)
-{
-	switch (prop)
-	{
-	case 9: // Occlusion 0 [-10000; 0]
-		nlassert(valuesize == sizeof(sint32));
-		nlinfo("Occlusion: %i", *(sint32 *)value);
-		break;
-	case 10: // OcclusionLFRatio 0.25f [0.0f; 1.0f]
-		nlassert(valuesize == sizeof(float));
-		nlinfo("OcclusionLFRatio: %f", *(float *)value);
-		break;
-	case 11: // OcclusionRoomRatio 0.5f [0.0f; 10.0f]
-		nlassert(valuesize == sizeof(float));
-		nlinfo("OcclusionRoomRatio: %f", *(float *)value);
-		break;
-	case 7: // Obstruction 0 [-10000; 0]
-		nlassert(valuesize == sizeof(sint32));
-		nlinfo("Obstruction: %i", *(sint32 *)value);
-		break;
-	default:
-		nlerror("not used prop");
-	}
-	// nldebug(NLSOUND_XAUDIO2_PREFIX "setEAXProperty %u, %u, %u", (uint32)prop, (uint32)value, (uint32)valuesize);
 }
 
 ///** Set the alpha value for the volume-distance curve

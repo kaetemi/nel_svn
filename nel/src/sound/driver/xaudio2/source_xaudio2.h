@@ -58,6 +58,10 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 	/// Buffer that should be playing.
 	CBufferXAudio2 *_StaticBuffer;
+	/// Listener voice
+	IXAudio2Voice *_ListenerVoice;
+	/// Submix voice
+	IXAudio2Voice *_SubmixVoice;
 	
 	// -- Pointers --
 	/// Source voice, can be NULL!
@@ -126,6 +130,9 @@ public:
 	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
 	/// (Internal) Submit the static buffer to the XAudio2 source voice.
 	void submitStaticBuffer();
+	
+	/// Set the submix send for this source, NULL to disable.
+	virtual void setSubmix(ISubmix *submix);
 
 	// ISource Functions
 	/// \name Initialization
@@ -216,8 +223,6 @@ public:
 	virtual void setCone(float innerAngle, float outerAngle, float outerGain);
 	/// Get the cone angles (in radian)
 	virtual void getCone(float& innerAngle, float& outerAngle, float& outerGain) const;
-	/// Set any EAX source property if EAX available
-	virtual void setEAXProperty(uint prop, void *value, uint valuesize);
 	///** Set the alpha value for the volume-distance curve
 	// *
 	// *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
