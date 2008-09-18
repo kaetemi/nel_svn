@@ -673,11 +673,11 @@ private:
 /// Data for instance counting
 struct TInstanceCounterData
 {
-	sint32	_InstanceCounter;
-	sint32	_DeltaCounter;
-	char	*_ClassName;
+	sint32		_InstanceCounter;
+	sint32		_DeltaCounter;
+	const char	*_ClassName;
 
-	TInstanceCounterData(char *className);
+	TInstanceCounterData(const char *className);
 
 	~TInstanceCounterData();
 };

@@ -1215,7 +1215,7 @@ NLMISC_SAFE_SINGLETON_IMPL(CInstanceCounterManager);
 
 CInstanceCounterLocalManager *CInstanceCounterLocalManager::_Instance = NULL;
 
-TInstanceCounterData::TInstanceCounterData(char *className)
+TInstanceCounterData::TInstanceCounterData(const char *className)
 :	_InstanceCounter(0),
 	_DeltaCounter(0),
 	_ClassName(className)
