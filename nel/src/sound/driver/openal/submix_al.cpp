@@ -68,7 +68,7 @@ void CSubmixAl::setEffect(IEffect *effect)
 	{
 		case IEffect::Reverb:
 		{
-			CReverbAl *reverb = static_cast<CReverbAl *>(effect);
+			CReverbEffectAl *reverb = static_cast<CReverbEffectAl *>(effect);
 			alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_EFFECT, reverb->getAlEfxObject()); alTestError();
 			alAuxiliaryEffectSloti(_AlAuxEffectSlot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 			_Effect = effect;

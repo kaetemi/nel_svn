@@ -136,17 +136,18 @@ inline float decibelsToAmplitudeRatio(float d)
 }
 
 /**
- * \brief IReverb
+ * \brief IReverbEffect
  * \date 2008-09-15 22:27GMT
  * \author Jan Boon (Kaetemi)
- * IReverb
+ * IReverbEffect
  */
-class IReverb : public IEffect
+class IReverbEffect : public IEffect
 {
 public:
-	/// Reverb environment (based on 3dl2.h)
+	/// Reverb environment
 	struct CEnvironment
 	{
+		/// Constructor with all parameters, can be used with presets, roomsize.
 		CEnvironment(float roomFilter, float roomFilterHF, 
 			float decayTime, float decayHFRatio, float reflections, 
 			float reflectionsDelay, float lateReverb, float lateReverbDelay, 
@@ -156,16 +157,31 @@ public:
 			ReflectionsDelay(reflectionsDelay), LateReverb(lateReverb), 
 			LateReverbDelay(lateReverbDelay), Diffusion(diffusion), Density(density), 
 			RoomSize(roomSize) { }
+		/// Default constructor.
 		CEnvironment() : RoomFilter(-100.00f), RoomFilterHF(0.00f), 
 			DecayTime(1.0f), DecayHFRatio(0.5f), Reflections(-100.00f), 
 			ReflectionsDelay(0.02f), LateReverb(-100.00f), LateReverbDelay(0.04f), 
 			Diffusion(100.0f), Density(100.0f), RoomSize(100.0f) { }
+		/// Constructor which copies another environment and gives it a new roomsize.
 		CEnvironment(const CEnvironment &environment, float roomSize) : 
 			RoomFilter(environment.RoomFilter), RoomFilterHF(environment.RoomFilterHF), 
 			DecayTime(environment.DecayTime), DecayHFRatio(environment.DecayHFRatio), 
 			Reflections(environment.Reflections), ReflectionsDelay(environment.ReflectionsDelay), 
 			LateReverb(environment.LateReverb), LateReverbDelay(environment.LateReverbDelay), 
 			Diffusion(environment.Diffusion), Density(environment.Density), RoomSize(roomSize) { }
+		/// Constructor to fade between two environments.
+		CEnvironment(const CEnvironment &env0, const CEnvironment &env1, float balance) :
+			RoomFilter((env0.RoomFilter * (1.0f - balance)) + (env1.RoomFilter * balance)), 
+			RoomFilterHF((env0.RoomFilterHF * (1.0f - balance)) + (env1.RoomFilterHF * balance)), 
+			DecayTime((env0.DecayTime * (1.0f - balance)) + (env1.DecayTime * balance)), 
+			DecayHFRatio((env0.DecayHFRatio * (1.0f - balance)) + (env1.DecayHFRatio * balance)), 
+			Reflections((env0.Reflections * (1.0f - balance)) + (env1.Reflections * balance)), 
+			ReflectionsDelay((env0.ReflectionsDelay * (1.0f - balance)) + (env1.ReflectionsDelay * balance)), 
+			LateReverb((env0.LateReverb * (1.0f - balance)) + (env1.LateReverb * balance)), 
+			LateReverbDelay((env0.LateReverbDelay * (1.0f - balance)) + (env1.LateReverbDelay * balance)), 
+			Diffusion((env0.Diffusion * (1.0f - balance)) + (env1.Diffusion * balance)), 
+			Density((env0.Density * (1.0f - balance)) + (env1.Density * balance)), 
+			RoomSize((env0.RoomSize * (1.0f - balance)) + (env1.RoomSize * balance)) { }
 		/// [-100.00, 0] in dB, default: -100.00 dB
 		float RoomFilter;
 		/// [-100.00, 0] in dB, default: 0 mB
@@ -191,12 +207,49 @@ public:
 		/* This struct can *float* on water! */
 	};
 
-	IReverb();
-	virtual ~IReverb();
+	IReverbEffect();
+	virtual ~IReverbEffect();
 
 	/// Set the environment (you have full control now, have fun)
 	virtual void setEnvironment(const CEnvironment &environment) = 0;
-}; /* class IReverb */
+}; /* class IReverbEffect */
+
+extern IReverbEffect::CEnvironment EnvironmentPresets[];
+
+enum TEnvironment
+{
+	EnvironmentGeneric = 0, 
+	EnvironmentPaddedCell = 1, 
+	EnvironmentRoom = 2, 
+	EnvironmentBathRoom = 3, 
+	EnvironmentLivingRoom = 4, 
+	EnvironmentStoneRoom = 5, 
+	EnvironmentAuditorium = 6, 
+	EnvironmentConcertHall = 7, 
+	EnvironmentCave = 8, 
+	EnvironmentArena = 9, 
+	EnvironmentHangar = 10, 
+	EnvironmentCarpetedHallway = 11, 
+	EnvironmentHallway = 12, 
+	EnvironmentStoneCorridor = 13, 
+	EnvironmentAlley = 14, 
+	EnvironmentForest = 15, 
+	EnvironmentCity = 16, 
+	EnvironmentMountains = 17, 
+	EnvironmentQuarry = 18, 
+	EnvironmentPlain = 19, 
+	EnvironmentParkingLot = 20, 
+	EnvironmentSewerPipe = 21, 
+	EnvironmentUnderwater = 22, 
+	EnvironmentSmallRoom = 23, 
+	EnvironmentMediumRoom = 24, 
+	EnvironmentLargeRoom = 25, 
+	EnvironmentMediumHall = 26, 
+	EnvironmentLargeHall = 27, 
+	EnvironmentPlate = 28, 
+
+	EnvironmentCount = 29
+};
 
 } /* namespace NLSOUND */
 

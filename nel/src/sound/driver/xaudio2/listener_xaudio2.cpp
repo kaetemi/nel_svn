@@ -54,7 +54,7 @@ CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _OutputVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), 
 _DopplerScaler(1.0f), _ReverbApo(NULL), 
 _EaxEnvironment(CEaxXAudio2::getInvalidEnvironmentId()), 
-_ReverbVoice(NULL), _SampleVoice(NULL)
+_ReverbVoice(NULL), _SampleVoice(NULL), _Pos(0.0f, 0.0f, 0.0f)
 #if MANUAL_ROLLOFF == 0
 , _RolloffScaler(1.0f)
 #endif
@@ -77,8 +77,6 @@ _ReverbVoice(NULL), _SampleVoice(NULL)
 	_Listener.Velocity.x = 0.0f;
 	_Listener.Velocity.y = 0.0f;
 	_Listener.Velocity.z = 0.0f;
-
-	_Pos.set(0.0f, 0.0f, 0.0f);
 
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);

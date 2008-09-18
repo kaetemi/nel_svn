@@ -50,7 +50,7 @@ CBufferAL::~CBufferAL()
 
 	// delete OpenAL copy
 	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
-	//nlinfo( "Deleting buffer (name %u)", _BufferName );
+	//nlinfo("AL: Deleting buffer (name %u)", _BufferName );
 	sdal->removeBuffer( this );
 }
 

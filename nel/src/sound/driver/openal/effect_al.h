@@ -1,9 +1,9 @@
 /**
  * \file effect_al.h
- * \brief CReverbAl
+ * \brief CReverbEffectAl
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CReverbAl
+ * CReverbEffectAl
  */
 
 /* 
@@ -39,40 +39,70 @@
 namespace NLSOUND {
 
 /**
- * \brief CReverbAl
+ * \brief CReverbEffectAl
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CReverbAl
+ * CReverbEffectAl
  */
-class CReverbAl : public IReverb
+class CReverbEffectAl : public IReverbEffect
+{
+protected:
+	// instances
+	ALuint _AlEffect;
+public:
+	CReverbEffectAl(ALuint alEfxObject);
+	virtual ~CReverbEffectAl();
+
+	inline ALuint getAlEfxObject() { return _AlEffect; }
+
+	// IEffect
+	virtual TEffectType getType();
+}; /* class CReverbEffectAl */
+
+/**
+ * \brief CStandardReverbEffectAl
+ * \date 2008-09-15 23:09GMT
+ * \author Jan Boon (Kaetemi)
+ * CStandardReverbEffectAl
+ */
+class CStandardReverbEffectAl : public CReverbEffectAl
 {
 protected:
 	// pointers
 	
 	// instances
-	ALuint _AlEffect;
 
-#if EFX_CREATIVE_AVAILABLE
-	bool _Creative;
-#endif
 public:
-	CReverbAl(ALuint alEfxObject);
-#if EFX_CREATIVE_AVAILABLE
-	CReverbAl(ALuint alEfxObject, bool creative);
-#endif
-	virtual ~CReverbAl();
+	CStandardReverbEffectAl(ALuint alEfxObject);
+	virtual ~CStandardReverbEffectAl();
 
-	inline ALuint getAlEfxObject() { return _AlEffect; }
-#if EFX_CREATIVE_AVAILABLE
-	inline void setCreative(bool creative) { _Creative = creative; }
-#endif
-
-	// IEffect
-	virtual TEffectType getType();
-
-	// IReverb
+	// IReverbEffect
 	virtual void setEnvironment(const CEnvironment &environment);
-}; /* class CReverbAl */
+}; /* class CReverbEffectAl */
+
+#if EFX_CREATIVE_AVAILABLE
+
+/**
+ * \brief CCreativeReverbEffectAl
+ * \date 2008-09-15 23:09GMT
+ * \author Jan Boon (Kaetemi)
+ * CCreativeReverbEffectAl
+ */
+class CCreativeReverbEffectAl : public CReverbEffectAl
+{
+protected:
+	// pointers
+	
+	// instances
+public:
+	CCreativeReverbEffectAl(ALuint alEfxObject);
+	virtual ~CCreativeReverbEffectAl();
+
+	// IReverbEffect
+	virtual void setEnvironment(const CEnvironment &environment);
+}; /* class CReverbEffectAl */
+
+#endif /* #if EFX_CREATIVE_AVAILABLE */
 
 } /* namespace NLSOUND */
 

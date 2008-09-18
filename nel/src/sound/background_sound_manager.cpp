@@ -882,6 +882,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 	}
 
 	// evalutate the current env fx
+	if (mixer->useSubmixEffects())
 	{
 		H_AUTO(NLSOUND_EvaluateEnvFx)
 		NL3D::CCluster *rootCluster = 0;
@@ -907,7 +908,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 					else
 					{
 						// no cluster system, set the env 'manualy'
-						IListener *drvListener = static_cast<CListenerUser*>(mixer->getListener())->getListener();
+						IReverbEffect *drvReverbEffect = mixer->getReverbEffect();
 
 						if (_LastEnv != first->FxName)
 						{
@@ -959,16 +960,22 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 								envNum = 21;
 							else if (first->FxName == CStringMapper::map("UNDERWATER"))
 								envNum = 22;
-							else if (first->FxName == CStringMapper::map("DRUGGED"))
+							else if (first->FxName == CStringMapper::map("SMALLROOM"))
 								envNum = 23;
-							else if (first->FxName == CStringMapper::map("DIZZY"))
+							else if (first->FxName == CStringMapper::map("MEDIUMROOM"))
 								envNum = 24;
-							else if (first->FxName == CStringMapper::map("PSYCHOTIC"))
+							else if (first->FxName == CStringMapper::map("LARGEROOM"))
 								envNum = 25;
+							else if (first->FxName == CStringMapper::map("MEDIUMHALL"))
+								envNum = 26;
+							else if (first->FxName == CStringMapper::map("LARGEHALL"))
+								envNum = 27;
+							else if (first->FxName == CStringMapper::map("PLATE"))
+								envNum = 28;
 							else
 								envNum = 19;
 
-							drvListener->setEnvironment(envNum, 10);
+							drvReverbEffect->setEnvironment(IReverbEffect::CEnvironment(EnvironmentPresets[envNum], 10));
 						}
 					}
 					break;

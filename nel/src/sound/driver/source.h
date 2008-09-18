@@ -56,9 +56,14 @@ namespace NLSOUND {
 class ISource
 {
 public:
+	/// Constructor
+	ISource() { }
+	/// Destructor
+	virtual ~ISource() { }
+	
 	/// Set the submix send for this source, NULL to disable.
 	virtual void setSubmix(ISubmix *submix) { throw ESoundDriverNotSupp(); }
-
+	
 	/// \name Initialization
 	//@{
 	/// Enable or disable streaming mode. Source must be stopped to call this.
@@ -76,14 +81,14 @@ public:
 	/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
 	virtual uint countStreamingBuffers() const { throw ESoundDriverNotSupp(); }
 	//@}
-
-
+	
 	/// \name Playback control
 	//@{
 	/// Set looping on/off for future playbacks (default: off)
 	virtual void					setLooping( bool l ) = 0;
 	/// Return the looping state
 	virtual bool					getLooping() const = 0;
+
 	/** Play the static buffer (or stream in and play).
 	 *	This method can return false if the sample for this sound is unloaded.
 	 */
@@ -96,13 +101,10 @@ public:
 	virtual bool					isPlaying() const = 0;
 	/// Return true if playing is finished or stop() has been called.
 	virtual bool					isStopped() const = 0;
-	/// Update the source (e.g. continue to stream the data in)
-	virtual bool					update() = 0;
 	/// Returns the number of milliseconds the source has been playing
 	virtual uint32					getTime() { return 0; }
 	//@}
-
-
+	
 	/// \name Source properties
 	//@{
 	/** Set the position vector (default: (0,0,0)).
@@ -149,8 +151,6 @@ public:
 	virtual void					setCone( float innerAngle, float outerAngle, float outerGain ) = 0;
 	/// Get the cone angles (in radian)
 	virtual void					getCone( float& innerAngle, float& outerAngle, float& outerGain ) const = 0;
-	/// Set any EAX source property if EAX available
-	virtual void					setEAXProperty( uint prop, void *value, uint valuesize ) = 0;
 	/** Set the alpha value for the volume-distance curve
 	 *
 	 *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
@@ -167,25 +167,10 @@ public:
 	///
 	virtual void					setAlpha(double a) {  }
 	//@}
-
-
-	/// Constructor
-	ISource() : /*_Buffer(NULL),*/ _Loader(NULL) {}
-
-	/// Destructor
-	virtual							~ISource() { /*_Buffer=NULL;*/ _Loader=NULL; }
-
 protected:
-
-	// Buffer (static mode)
-//	IBuffer							*_Buffer;
-
-	// Sound loader (streaming mode, if _Buffer==NULL)
-	ILoader							*_Loader;
-
+	
 	// common method used only if MANUAL_ROLLOFF==1. return the volume in 1/100th DB modified
-	sint32		computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const;
-
+	sint32 computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const;
 };
 
 

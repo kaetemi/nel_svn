@@ -24,15 +24,13 @@
 #include "source.h"
 #include "nel/misc/common.h"
 
-void foo_source_lowlevel() {}
-
 using namespace NLMISC;
 
 namespace NLSOUND
 {
 
 // ***************************************************************************
-sint32		ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const
+sint32 ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const
 {
 	float min, max;
 	getMinMaxDistances(min, max);
@@ -74,5 +72,6 @@ sint32		ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMa
 	}
 }
 
-
 } // NLSOUND
+
+/* end of file */

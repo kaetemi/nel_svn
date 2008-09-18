@@ -30,27 +30,17 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
-
-// The instance of the singleton
-CListenerAL	*CListenerAL::_Instance = NULL;
-
-
-/*
- * Constructor
- */
-CListenerAL::CListenerAL() : IListener()
+/// Constructor
+CListenerAL::CListenerAL() : IListener(), _Pos(0.0f, 0.0f, 0.0f)
 {
-	if ( _Instance == NULL )
-	{
-		_Instance = this;
-	}
-	else
-	{
-		nlerror( "Listener singleton instanciated twice" );
-	}
-	_Pos.set(0.0f, 0.0f, 0.0f);
+	
 }
 
+/// Destructor
+CListenerAL::~CListenerAL()
+{
+
+}
 
 /*
  * Set the position vector (default: (0,0,0)) (3D mode only)

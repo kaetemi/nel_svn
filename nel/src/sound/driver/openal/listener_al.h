@@ -25,8 +25,9 @@
 #define NL_LISTENER_AL_H
 #include <nel/misc/types_nl.h>
 
-namespace NLSOUND {
+#include <nel/misc/singleton.h>
 
+namespace NLSOUND {
 
 /**
  * OpenAL sound listener.
@@ -38,15 +39,13 @@ namespace NLSOUND {
  * \author Nevrax France
  * \date 2001
  */
-class CListenerAL : public IListener
+class CListenerAL : public IListener, public NLMISC::CManualSingleton<CListenerAL>
 {
 public:
-
 	/// Constructor
 	CListenerAL();
-
-	/// Return the instance of the singleton
-	static CListenerAL		*instance() { return _Instance; }
+	/// Destructor
+	virtual ~CListenerAL();
 
 	/// \name Listener properties
 	//@{
@@ -87,20 +86,12 @@ public:
 	virtual void			setEAXProperty( uint prop, void *value, uint valuesize );
 	//@}
 
-	/// Destructor
-	virtual					~CListenerAL() { _Instance = NULL; }
-
 private:
-
-	// The instance of the singleton
-	static CListenerAL		*_Instance;
-
 	NLMISC::CVector			_Pos;
+
 };
 
-
 } // NLSOUND
-
 
 #endif // NL_LISTENER_AL_H
 

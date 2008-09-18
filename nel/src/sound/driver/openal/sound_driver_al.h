@@ -42,19 +42,17 @@ typedef void (*TDeleteFunctionAL) ( ALsizei, const ALuint* );
 //typedef ALAPI ALboolean ALAPIENTRY (*TTestFunctionAL) ( ALuint );
 typedef ALboolean (*TTestFunctionAL) ( ALuint );
 
-
-
-#ifdef NL_DEBUG
-void alTestError();
+#if !FINAL_VERSION
 void alTestWarning(const char *src);
 #else
-#define alTestError()
 #define alTestWarning(__src)
 #endif
 
-extern ISubmix *TestSubmix;
-extern IEffect *TestReverb;
-
+#ifdef NL_DEBUG
+void alTestError();
+#else
+#define alTestError() alTestWarning("alTestError")
+#endif
 
 /**
  * OpenAL sound driver

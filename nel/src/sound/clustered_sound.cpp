@@ -35,9 +35,7 @@
 #include "driver/listener.h"
 #include "audio_mixer_user.h"
 #include "driver/sound_driver.h"
-#if EAX_AVAILABLE == 1
-# include <eax.h>
-#endif
+#include "driver/effect.h"
 #include "clustered_sound.h"
 
 using namespace std;
@@ -72,9 +70,12 @@ const char *CClusteredSound::_EnvironmentNames[] =
     "PARKINGLOT",
     "SEWERPIPE",
     "UNDERWATER",
-    "DRUGGED",
-    "DIZZY",
-    "PSYCHOTIC",
+    "SMALLROOM", //"DRUGGED",
+    "MEDIUMROOM", //"DIZZY",
+    "LARGEROOM", //"PSYCHOTIC",
+	"MEDIUMHALL", 
+	"LARGEHALL", 
+	"PLATE", 
 	NULL
 };
 const char *CClusteredSound::_MaterialNames[] =
@@ -402,13 +403,13 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 	}
 
 	// update the environment effect (if any)
-	if (!vCluster.empty())
+	CAudioMixerUser *mixer = CAudioMixerUser::instance();
+	if (mixer->useSubmixEffects() && !vCluster.empty())
 	{
 		H_AUTO(NLSOUND_ClusteredSound_updateEnvFx)
-		CAudioMixerUser *mixer = CAudioMixerUser::instance();
 		TStringId fxId = vCluster[0]->getEnvironmentFxId();
-
-		IListener *drvListener = static_cast<CListenerUser*>(mixer->getListener())->getListener();
+		IReverbEffect *drvReverbEffect = mixer->getReverbEffect();
+		//IListener *drvListener = static_cast<CListenerUser*>(mixer->getListener())->getListener();
 		const CAABBox &box = vCluster[0]->getBBox();
 		CVector vsize = box.getHalfSize();
 		float	size = NLMISC::minof(vsize.x, vsize.y, vsize.z) * 2;
@@ -444,7 +445,8 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 		// only update environment if there is some change.
 		if (newEnv != _LastEnv || size != _LastEnvSize)
 		{
-			drvListener->setEnvironment(newEnv, size);
+			nldebug("AM: setEnvironment %u %f", (uint32)newEnv, size);
+			drvReverbEffect->setEnvironment(IReverbEffect::CEnvironment(EnvironmentPresets[newEnv], size));
 			_LastEnv = newEnv;
 			_LastEnvSize = size;
 		}

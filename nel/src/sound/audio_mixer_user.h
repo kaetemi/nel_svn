@@ -55,6 +55,8 @@ namespace NLSOUND {
 	class CClusteredSound;
 	class CBackgroundSoundManager;
 	class CMusicSoundManager;
+	class IReverbEffect;
+	class ISubmix;
 
 /// Hasher functor for hashed container with pointer key.
 template <class Pointer>
@@ -307,8 +309,15 @@ public:
 //	bool						setPlaying(CSimpleSource *source);
 //	void						unsetPlaying(CSimpleSource *source);
 
-	CTrack						*getFreeTrack(CSimpleSource *source);
-	void						freeTrack(CTrack *track);
+	/// Get a free track for a CSimpleSource, or steal one if needed.
+	CTrack *getFreeTrack(CSimpleSource *source);
+	/// Free a track.
+	void freeTrack(CTrack *track);
+
+	/// Get a free track without a source! Steal one if if you want when no tracks are available! Used by music channel, etc.
+	CTrack *getFreeTrackWithoutSource(bool steal);
+	/// Free a track that has no source. Used by music channel, etc.
+	void freeTrackWithoutSource(CTrack *track);
 
 	void						incPlayingSource()	{ ++_PlayingSources; };
 	void						decPlayingSource()	{ --_PlayingSources; };
@@ -336,6 +345,9 @@ public:
 	virtual void	setEventMusicVolume(float gain);
 	virtual bool	isEventMusicEnded();
 
+	inline ISubmix *getReverbSubmix() { return _ReverbSubmix; }
+	inline IReverbEffect *getReverbEffect() { return _ReverbEffect; }
+	inline bool useSubmixEffects() const { return _UseEax; }
 
 private:
 	enum	TMusicChannel
@@ -496,6 +508,11 @@ private:
 
 	/// The listener instance
 	CListenerUser				_Listener;
+
+	/// The reverb submix
+	ISubmix *_ReverbSubmix;
+	/// The reverb effect
+	IReverbEffect *_ReverbEffect;
 
 	/// Listener position vector
 	NLMISC::CVector				_ListenPosition;

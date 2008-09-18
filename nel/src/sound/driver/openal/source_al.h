@@ -46,13 +46,27 @@ namespace NLSOUND {
  */
 class CSourceAL : public ISource
 {
+private:
+	// assigned buffer object
+	IBuffer*				_Buffer;
+
+	// Source name
+	ALuint					_SourceName;
+
+	bool _IsPlaying;
+	bool _IsPaused;
+	NLMISC::CVector			_Pos;
 public:
 
 	/// Constructor
-	CSourceAL(ALuint sourcename=AL_NONE);
+	CSourceAL(ALuint sourcename = AL_NONE);
 	/// Destructor
 	virtual	~CSourceAL();
 
+	/// Return the OpenAL source name
+	inline ALuint sourceName() { return _SourceName; }
+
+	/// Set the submixer.
 	virtual void setSubmix(ISubmix *submix);
 
 	/// \name Initialization
@@ -141,17 +155,7 @@ public:
 	//@}
 
 
-	/// Return the OpenAL source name
-	ALuint					sourceName()							{ return _SourceName; }
 
-private:
-	// assigned buffer object
-	IBuffer*				_Buffer;
-
-	// Source name
-	ALuint					_SourceName;
-
-	NLMISC::CVector			_Pos;
 };
 
 

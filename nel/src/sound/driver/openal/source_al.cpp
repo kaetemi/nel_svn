@@ -36,10 +36,12 @@ namespace NLSOUND {
 /*
  * Constructor
  */
-CSourceAL::CSourceAL( ALuint sourcename ) :
-	ISource(), _Buffer(NULL), _SourceName(sourcename)
+CSourceAL::CSourceAL(ALuint sourcename) :
+	_Buffer(NULL), _SourceName(sourcename), 
+	_IsPlaying(false), _IsPaused(false), 
+	_Pos(0.0f, 0.0f, 0.0f)
 {
-	setSubmix(TestSubmix);
+	
 }
 
 
@@ -58,8 +60,8 @@ void CSourceAL::setSubmix(ISubmix *submix)
 {
 	// no filter stuff yet
 	// only allow one submix send for now -----------------------------------------------> 0
-	if (submix) alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, static_cast<CSubmixAl *>(submix)->getAlEfxObject(), 0, AL_FILTER_NULL);
-	else alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
+	if (submix) { nldebug("AL: Setting submix"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, static_cast<CSubmixAl *>(submix)->getAlEfxObject(), 0, AL_FILTER_NULL); }
+	else { nldebug("AL: Removing submix"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
 	alTestError();
 }
 
@@ -130,13 +132,15 @@ bool CSourceAL::play()
 	if ( _Buffer != NULL )
 	{
 		// Static playing mode
-		alSourcePlay( _SourceName );
+		_IsPlaying = true;
+		_IsPaused = false;
+		alSourcePlay(_SourceName);
 		return alGetError() == AL_NO_ERROR;
 	}
 	else
 	{
 		// Streaming mode
-		nlwarning( "AM: Cannot play null buffer; streaming not implemented" );
+		nlwarning("AL: Cannot play null buffer; streaming not implemented" );
 		nlstop;
 	}
 	return false;
@@ -151,13 +155,15 @@ void CSourceAL::stop()
 	if ( _Buffer != NULL )
 	{
 		// Static playing mode
-		alSourceStop( _SourceName );
+		_IsPlaying = false;
+		_IsPaused = false;
+		alSourceStop(_SourceName);
 		alTestError();
 	}
 	else
 	{
 		// Streaming mode
-		nlwarning( "AM: Cannot stop null buffer; streaming not implemented" );
+		nlwarning("AL: Cannot stop null buffer; streaming not implemented" );
 		//nlstop;
 	}
 }
@@ -170,14 +176,20 @@ void CSourceAL::pause()
 {
 	if ( _Buffer != NULL )
 	{
+		if (_IsPaused) nlwarning("AL: Called pause() while _IsPaused == true!");
+
 		// Static playing mode
-		alSourcePause( _SourceName );
-		alTestError();
+		if (!isStopped())
+		{
+			_IsPaused = true;
+			alSourcePause( _SourceName );
+			alTestError();
+		}
 	}
 	else
 	{
 		// Streaming mode
-		nlwarning( "AM: Cannot pause null buffer; streaming not implemented" );
+		nlwarning("AL: Cannot pause null buffer; streaming not implemented" );
 		nlstop;
 	}
 }
@@ -188,6 +200,7 @@ void CSourceAL::pause()
  */
 bool CSourceAL::isPlaying() const
 {
+	//return !isStopped() && !_IsPaused;
 	ALint srcstate;
 	alGetSourcei( _SourceName, AL_SOURCE_STATE, &srcstate );
 	alTestError();
@@ -200,10 +213,18 @@ bool CSourceAL::isPlaying() const
  */
 bool CSourceAL::isStopped() const
 {
+	//if (_IsPlaying)
+	//{
+	//	if (!_IsPaused)
+	//	{
 	ALint srcstate;
-	alGetSourcei( _SourceName, AL_SOURCE_STATE, &srcstate );
+	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
 	alTestError();
-	return (srcstate == AL_STOPPED);
+	return (srcstate == AL_STOPPED || srcstate == AL_INITIAL);
+	//	}
+	//	return false;
+	//}
+	//return true;
 }
 
 
@@ -222,7 +243,7 @@ bool CSourceAL::update()
  * 3D mode -> 3D position
  * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
  */
-void CSourceAL::setPos( const NLMISC::CVector& pos, bool deffered)
+void CSourceAL::setPos(const NLMISC::CVector& pos, bool deffered)
 {
 	_Pos = pos;
 	// Coordinate system: conversion from NeL to OpenAL/GL:
@@ -319,8 +340,8 @@ float CSourceAL::getGain() const
  */
 void CSourceAL::setPitch( float pitch )
 {
-	nlassert( (pitch > 0) && (pitch <= 1.0f ) );
-	alSourcef( _SourceName, AL_PITCH, pitch );
+	nlassert(pitch > 0);
+	alSourcef(_SourceName, AL_PITCH, pitch);
 	alTestError();
 }
 

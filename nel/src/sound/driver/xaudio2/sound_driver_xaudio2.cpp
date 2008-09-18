@@ -412,7 +412,9 @@ IListener *CSoundDriverXAudio2::createListener()
 /// Return the maximum number of sources that can created
 uint CSoundDriverXAudio2::countMaxSources()
 {
-	return 512; // there is no real limit, but this should be pretty heavy
+	// the only limit is the user's cpu
+	// keep similar to openal limit for now
+	return 128;
 }
 
 /// Create a source

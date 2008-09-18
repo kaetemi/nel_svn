@@ -41,6 +41,8 @@
 #include "nel/3d/scene_user.h"
 #include "driver/sound_driver.h"
 #include "driver/buffer.h"
+#include "driver/submix.h"
+#include "driver/effect.h"
 
 #include "background_sound_manager.h"
 #include "background_sound_manager.h"
@@ -95,7 +97,9 @@ UAudioMixer	*UAudioMixer::createAudioMixer()
 
 CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
 									 _UseADPCM(true),
-									 _SoundDriver(NULL),
+									 _SoundDriver(NULL), 
+									 _ReverbSubmix(NULL), 
+									 _ReverbEffect(NULL), 
 									 _BackgroundSoundManager(0),
 									 _ClusteredSound(0),
 									 _ListenPosition(CVector::Null),
@@ -143,6 +147,10 @@ CAudioMixerUser::~CAudioMixerUser()
 	// Release all the SampleBanks
 	CSampleBank::releaseAll();
 
+	// Release music channels
+	for (uint i = 0; i < _NbMusicChannelFaders; ++i)
+		_MusicChannelFaders[i].release();
+
 	// Detete tracks
 	for (uint i = 0; i < _Tracks.size(); ++i)
 	{
@@ -150,9 +158,9 @@ CAudioMixerUser::~CAudioMixerUser()
 		_Tracks[i] = NULL;
 	}
 
-	// Release music channels
-	for (uint i = 0; i < _NbMusicChannelFaders; ++i)
-		_MusicChannelFaders[i].release();
+	// Reverb effect
+	delete _ReverbSubmix; _ReverbSubmix = NULL;
+	delete _ReverbEffect; _ReverbEffect = NULL;
 
 	// Sound driver
 	delete _SoundDriver; _SoundDriver = NULL;
@@ -256,6 +264,8 @@ void CAudioMixerUser::reset()
 	_Leaving = true;
 
 	_SourceWaitingForPlay.clear();
+
+	/* TODO: Stop music channels */
 
 	// Stop tracks
 	uint i;
@@ -403,6 +413,18 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	// Init listener
 	_Listener.init(_SoundDriver);
 
+	if (_UseEax)
+	{
+		// create submix for reverb
+		if (!(_ReverbSubmix = _SoundDriver->createSubmix())) 
+			{ _UseEax = false; }
+		// create effect for reverb
+		else if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb)))) 
+			{ delete _ReverbSubmix; _ReverbSubmix = NULL; _UseEax = false; }
+		// attach the reverb effect to the submixer
+		else { nldebug("AM: Reverb OK"); _ReverbSubmix->setEffect(_ReverbEffect); }
+	}
+
 	// Init tracks (physical sources)
 	changeMaxTrack(maxTrack);
 
@@ -439,7 +461,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	// Load the sound bank singleton
 	CSoundBank::instance()->load();
 	nlinfo("AM: Initialized audio mixer with %u voices, %s and %s.",
-		_Tracks.size(),
+		(uint32)_Tracks.size(),
 		_UseEax ? "with EAX support" : "WITHOUT EAX",
 		_UseADPCM ? "with ADPCM sample source" : "with 16 bits PCM sample source");
 
@@ -1051,8 +1073,7 @@ void CAudioMixerUser::removeUserControledSource(CSourceCommon *source, NLMISC::T
 void	CAudioMixerUser::bufferUnloaded(IBuffer *buffer)
 {
 	// check all track to find a track playing this buffer.
-	uint i;
-	for (i = 0; i < _Tracks.size(); ++i)
+	for (uint i = 0; i < _Tracks.size(); ++i)
 	{
 		CTrack *track = _Tracks[i];
 		if (track && track->getSource())
@@ -1147,6 +1168,41 @@ void				CAudioMixerUser::reloadSampleBanks(bool async)
 
 // ******************************************************************
 
+CTrack *CAudioMixerUser::getFreeTrackWithoutSource(bool steal)
+{
+	if (!_FreeTracks.empty())
+	{
+		CTrack *free_track = _FreeTracks.back();
+		_FreeTracks.pop_back();
+		nlassert(!free_track->getSource());		
+		++_ReserveUsage[HighestPri];
+		if (_UseEax) free_track->DrvSource->setSubmix(NULL); // no reverb!
+		return free_track;
+	}
+	else if (steal) for (uint i = 0; i < _Tracks.size(); ++i)
+	{
+		CSimpleSource *src2 = _Tracks[i]->getSource();
+		if (src2)
+		{
+			src2->stop();
+			if (_FreeTracks.empty())
+			{
+				nlwarning("No free track after cutting a playing sound source !");
+			}
+			else
+			{
+				CTrack *free_track = _FreeTracks.back();
+				_FreeTracks.pop_back();
+				nlassert(!free_track->getSource());
+				++_ReserveUsage[HighestPri];
+				if (_UseEax) free_track->DrvSource->setSubmix(NULL); // no reverb!
+				return free_track;
+			}
+		}
+	}
+	return NULL;
+}
+
 CTrack *CAudioMixerUser::getFreeTrack(CSimpleSource *source)
 {
 //	nldebug("There are %d free tracks", _FreeTracks.size() );
@@ -1176,10 +1232,10 @@ CTrack *CAudioMixerUser::getFreeTrack(CSimpleSource *source)
 		d1 = (source->getPos() - _ListenPosition).norm();
 		t1 = max(0.0f, 1-((d1-source->getSimpleSound()->getMinDistance()) / (source->getSimpleSound()->getMaxDistance() - source->getSimpleSound()->getMinDistance())));
 
-		for (uint i=0; i<_Tracks.size(); ++i)
+		for (uint i = 0; i < _Tracks.size(); ++i)
 		{
 			CSimpleSource *src2 = _Tracks[i]->getSource();
-			if (src2 != 0)
+			if (src2)
 			{
 				d2 = (src2->getPos() - _ListenPosition).norm();
 				t2 = max(0.0f, 1-((d2-src2->getSimpleSound()->getMinDistance()) / (src2->getSimpleSound()->getMaxDistance() - src2->getSimpleSound()->getMinDistance())));
@@ -1212,6 +1268,17 @@ CTrack *CAudioMixerUser::getFreeTrack(CSimpleSource *source)
 	return 0;
 }
 
+// ******************************************************************
+
+void CAudioMixerUser::freeTrackWithoutSource(CTrack *track)
+{
+	nlassert(track);
+
+	if (_UseEax) track->DrvSource->setSubmix(_ReverbSubmix); // return reverb!
+	--_ReserveUsage[HighestPri];
+	_FreeTracks.push_back(track);
+}
+
 void CAudioMixerUser::freeTrack(CTrack *track)
 {
 	nlassert(track != 0);
@@ -1224,6 +1291,7 @@ void CAudioMixerUser::freeTrack(CTrack *track)
 	_FreeTracks.push_back(track);
 }
 
+// ******************************************************************
 
 void CAudioMixerUser::getPlayingSoundsPos(bool virtualPos, std::vector<std::pair<bool, NLMISC::CVector> > &pos)
 {
@@ -2190,6 +2258,7 @@ void CAudioMixerUser::changeMaxTrack(uint maxTrack)
 
 				_Tracks[i] = new CTrack();
 				_Tracks[i]->init(_SoundDriver);
+				if (_UseEax) _Tracks[i]->DrvSource->setSubmix(_ReverbSubmix);
 				// insert in front because the last inserted wan be sofware buffer...
 				_FreeTracks.insert(_FreeTracks.begin(), _Tracks[i]);
 			}
@@ -2206,28 +2275,44 @@ void CAudioMixerUser::changeMaxTrack(uint maxTrack)
 	// **** else must delete some tracks
 	else
 	{
-		sint i;
-		for (i = (sint)prev_track_nb - 1; i >= (sint)maxTrack; --i)
+		vector<CTrack *> non_erasable;
+		while (_Tracks.size() + non_erasable.size() > maxTrack && _Tracks.size() > 0)
 		{
-			nlassert(_Tracks[i]);
-
-			// stop the track playing source if needed!
-			CSimpleSource *source = _Tracks[i]->getSource();
-			if (source) source->stop();
-			// if fails (don't know why), abort reducing
-			if (_Tracks[i]->getSource())
+			CTrack *track = _Tracks.back();
+			_Tracks.pop_back();
+			nlassert(track);
+			if (track->isAvailable())
 			{
-				maxTrack = i + 1;
-				nlwarning("AM: Abort ChangeTrack, cant stop a track");
-				break;
+				_FreeTracks.erase(find(_FreeTracks.begin(), _FreeTracks.end(), track));
+				delete track;
 			}
-
-			// remove from freeTracks, and delete the track
-			_FreeTracks.erase(find(_FreeTracks.begin(), _FreeTracks.end(), _Tracks[i]));
-			delete _Tracks[i];
-			_Tracks[i] = NULL;
+			else if (track->getSource())
+			{
+				track->getSource()->stop();
+				if (track->getSource())
+				{
+					nlwarning("AM: cant stop a track");
+					non_erasable.push_back(track);
+				}
+				else
+				{
+					_FreeTracks.erase(find(_FreeTracks.begin(), _FreeTracks.end(), track));
+					delete track;
+				}
+			}
+			else /* music track or something */
+			{
+				non_erasable.push_back(track);
+			}
 		}
-		_Tracks.resize(maxTrack);
+		while (non_erasable.size() > 0)
+		{
+			// put non erasable back into track list
+			_Tracks.push_back(non_erasable.back());
+			non_erasable.pop_back();
+		}
+		if (maxTrack != _Tracks.size())
+			nlwarning("AM: Failed to reduce number of tracks; MaxTrack is now %u instead of the requested %u", (uint32)_Tracks.size(), (uint32)maxTrack);
 	}
 }
 

@@ -29,12 +29,15 @@
 #include <nel/misc/file.h>
 #include <nel/misc/string_mapper.h>
 
+#include "effect.h"
+
 /// This namespace contains the sound classes
 namespace NLSOUND {
 	class IBuffer;
 	class IListener;
 	class ISource;
 	class IMusicChannel;
+	class ISubmix;
 
 /**
  *	Configuration to compile with manual or API (directx or open AL) rolloff factor.
@@ -74,14 +77,18 @@ enum TSampleFormat { Mono8, Mono16ADPCM, Mono16, Stereo8, Stereo16 };
 class ISoundDriver
 {
 public:
-
 	/// Driver Creation Choice
 	enum TDriver
 	{
+		/// DriverAuto automatically picks the most awesome driver (it just picks OpenAl for now).
 		DriverAuto = 0,
+		/// DriverFMod is a driver that runs on FMod, nice quality, but not fully implemented.
 		DriverFMod,
+		/// DriverOpenAl is the recommended driver, especially if you have hardware sound acceleration.
 		DriverOpenAl,
+		/// DriverDSound is deprecated.
 		DriverDSound,
+		/// DriverXAudio2 runs on a fully software-based audio processing API without artificial limits.
 		DriverXAudio2,
 		NumDrivers
 	};
@@ -129,6 +136,11 @@ public:
 	*/
 	static ISoundDriver *createDriver(IStringMapperProvider *stringMapper, TDriver driverType = DriverAuto);
 
+	/// Constructor
+	ISoundDriver() { }
+	/// Destructor
+	virtual	~ISoundDriver() {}
+
 	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
 	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);
 	/** Initialize the driver with a user selected device. 
@@ -150,40 +162,42 @@ public:
 	/// Return if an option is enabled (including those that cannot be disabled on this driver).
 	virtual bool getOption(TSoundOptions option) = 0;
 
-	/// Create a sound buffer, destroy with delete
-	virtual	IBuffer			*createBuffer() = 0;
+	/// Commit all the changes made to 3D settings of listener and sources
+	virtual void commit3DChanges() = 0;
 
 	/// Create the listener instance
-	virtual	IListener		*createListener() = 0;
+	virtual	IListener *createListener() = 0;
+	/// Create a source, destroy with delete
+	virtual	ISource *createSource() = 0;
+	/// Create a sound buffer, destroy with delete
+	virtual	IBuffer *createBuffer() = 0;
+	/// Create a submix
+	virtual ISubmix *createSubmix() { return NULL; }
+	/// Create an effect
+	virtual IEffect *createEffect(IEffect::TEffectType effectType) { return NULL; }
+	/// Return the maximum number of sources that can created
+	virtual uint countMaxSources() = 0;
+	/// Return the maximum number of submixers that can be created
+	virtual uint countMaxSubmixes() { return 0; }
 
 	/// Create a native music channel, only supported by the FMod driver.
-	virtual IMusicChannel	*createMusicChannel() { return NULL; }
-
-	/// Return the maximum number of sources that can created
-	virtual uint			countMaxSources() = 0;
-
-	/// Create a source, destroy with delete
-	virtual	ISource			*createSource() = 0;
+	virtual IMusicChannel *createMusicChannel() { return NULL; }
 
 	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
-	virtual bool			readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) = 0;
-
+	virtual bool readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) = 0;
 	/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16)
-	virtual bool			readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency) = 0;
+	virtual bool readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency) = 0;
 
-	/// Commit all the changes made to 3D settings of listener and sources
-	virtual void			commit3DChanges() = 0;
 
 	/// Write information about the driver to the output stream.
-	virtual void			writeProfile(std::string& out) = 0;
+	virtual void writeProfile(std::string& out) = 0;
 
-	// Does not create a sound loader
+	/// Stuff
+	virtual void startBench() = 0;
+	virtual void endBench() = 0;
+	virtual void displayBench(NLMISC::CLog *log) = 0;
 
-	virtual void	startBench() = 0;
-	virtual void	endBench() = 0;
-	virtual void	displayBench(NLMISC::CLog *log) = 0;
-
-	// Filled at createDriver()
+	/// Filled at createDriver()
 	const std::string &getDllName() const { return _DllName; }
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented.
@@ -191,17 +205,10 @@ public:
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; };
-
-	/// Destructor
-	virtual	~ISoundDriver() {}
-protected:
-
-	/// Constructor
-	ISoundDriver() {}
+	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 
 private:
-	std::string				_DllName;
+	std::string _DllName;
 };
 
 
