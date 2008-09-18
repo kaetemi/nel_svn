@@ -37,6 +37,7 @@
 // Project includes
 
 namespace NLSOUND {
+	class CSoundDriverXAudio2;
 
 /**
  * \brief CReverbEffectXAudio2
@@ -44,17 +45,26 @@ namespace NLSOUND {
  * \author Jan Boon (Kaetemi)
  * CReverbEffectXAudio2
  */
-class CReverbEffectXAudio2
+class CReverbEffectXAudio2 : public IReverbEffect
 {
 protected:
+	// outside pointers
+	CSoundDriverXAudio2 *_SoundDriver;
+
 	// pointers
-	// ...
-	
-	// instances
-	// ...
+	IUnknown *_Effect;
 public:
-	CReverbEffectXAudio2();
+	CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CReverbEffectXAudio2();
+	void release();
+
+	inline IUnknown *getEffect() { return _Effect; }
+
+	/// Get the type of effect (reverb, etc)
+	virtual TEffectType getType();
+
+	/// Set the environment (you have full control now, have fun)
+	virtual void setEnvironment(const CEnvironment &environment);
 }; /* class CReverbEffectXAudio2 */
 
 } /* namespace NLSOUND */

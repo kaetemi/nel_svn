@@ -26,15 +26,6 @@
  * MA 02110-1301 USA.
  */
 
-/*
- * TODO:
- *  - Fill More
- *    - fillBuffer
- *    - isFillMoreSupported
- *    - setSize
- *    - fillMore
- */
-
 #include "stdxaudio2.h"
 #include "buffer_xaudio2.h"
 
@@ -62,11 +53,20 @@ _Size(0), _Name(NULL), _Format((TSampleFormat)~0), _Freq(0)
 
 CBufferXAudio2::~CBufferXAudio2()
 {
-	// Remove the buffer from the driver.
-	_SoundDriver->removeBuffer(this);
+	release();
+}
 
-	// Release possible _Data and update stats.
-	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
+void CBufferXAudio2::release()
+{
+	if (_SoundDriver)
+	{
+		// Remove the buffer from the driver.
+		_SoundDriver->removeBuffer(this);
+		// Update stats.
+		_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
+		_SoundDriver = NULL;
+	}
+	// Release possible _Data
 	delete[] _Data; _Data = NULL;
 }
 

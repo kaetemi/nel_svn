@@ -49,6 +49,8 @@ namespace NLSOUND {
 	class CListenerXAudio2;
 	class CSampleVoiceXAudio2;
 	class CMusicChannelXAudio2;
+	class CEffectXaudio2;
+	class CSubmixXAudio2;
 
 /**
  * \brief CSoundDriverXAudio2
@@ -78,8 +80,14 @@ protected:
 	bool _CoInitOk;
 	/// Empty 3D Listener.
 	X3DAUDIO_LISTENER _EmptyListener;
-	/// Array with the allocated source channels.
-	std::set<CSourceXAudio2 *> _SourceChannels;
+	/// Array with the allocated buffers.
+	std::set<CBufferXAudio2 *> _Buffers;
+	/// Array with the allocated sources.
+	std::set<CSourceXAudio2 *> _Sources;
+	/// Array with the allocated submixers.
+	std::set<CSubmixXAudio2 *> _Submixes;
+	/// Array with the allocated effects.
+	std::set<IEffect *> _Effects;
 	/// Array with the allocated music channels.
 	std::set<CMusicChannelXAudio2 *> _MusicChannels;
 	/// Initialization Handle of X3DAudio.
@@ -175,14 +183,20 @@ public:
 	/// Return if an option is enabled (including those that cannot be disabled on this driver).
 	virtual bool getOption(TSoundOptions option);
 	
-	/// Create a sound buffer.
-	virtual	IBuffer *createBuffer();
-	/// Create the listener instance.
+	/// Create the listener instance
 	virtual	IListener *createListener();
-	/// Return an artificial limit on the number of sources that can created (you really can make more).
-	virtual uint countMaxSources();
-	/// Create a source channel.
+	/// Create a source, destroy with delete
 	virtual	ISource *createSource();
+	/// Create a sound buffer, destroy with delete
+	virtual	IBuffer *createBuffer();
+	/// Create a submix
+	virtual ISubmix *createSubmix();
+	/// Create an effect
+	virtual IEffect *createEffect(IEffect::TEffectType effectType);
+	/// Return the maximum number of sources that can created
+	virtual uint countMaxSources();
+	/// Return the maximum number of submixers that can be created
+	virtual uint countMaxSubmixes();
 	
 	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8).
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
@@ -214,10 +228,19 @@ public:
 	void removeBuffer(CBufferXAudio2 *buffer);	
 	/// (Internal) Remove a source (should be called by the destructor of the source class).
 	void removeSource(CSourceXAudio2 *source);
-	/// (Internal) Remove a source (should be called by the destructor of the source class).
-	void removeMusicChannel(CMusicChannelXAudio2 *source);	
-	/// (Internal) Remove the listener ((should be called by destructor of listener class)
+	/// (Internal) Remove a source (should be called by the destructor of the music channel class).
+	void removeMusicChannel(CMusicChannelXAudio2 *musicChannel);	
+	/// (Internal) Remove the listener (should be called by the destructor of the listener class)
 	inline void removeListener(CListenerXAudio2 *listener) { nlassert(_Listener == listener); _Listener = NULL; }
+	/// (Internal) Remove a submix (should be called by the destructor of the submix class)
+	void removeSubmix(CSubmixXAudio2 *submix);
+	/// (Internal) Remove an effect (should be called by the destructor of the effect class)
+	void removeEffect(IEffect *effect);
+
+	/// (Internal) Get internal effect object of an effect.
+	static IUnknown *getEffectInternal(IEffect *effect);
+	/// (Internal) Call the release function of an effect.
+	static void releaseEffect(IEffect *effect);
 
 }; /* class CSoundDriverXAudio2 */
 

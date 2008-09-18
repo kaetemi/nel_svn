@@ -51,7 +51,10 @@ public:
 	ISubmix();
 	virtual ~ISubmix();
 
+	/// Attach an effect to this submixer, set NULL to remove the effect
 	virtual void setEffect(IEffect *effect) = 0;
+
+	/// Set the volume of this submixer
 	virtual void setGain(float gain) = 0;
 }; /* class ISubmix */
 

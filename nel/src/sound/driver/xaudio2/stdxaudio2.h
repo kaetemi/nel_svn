@@ -51,11 +51,13 @@
 #include "../buffer.h"
 #include "../source.h"
 #include "../listener.h"
+#include "../effect.h"
+#include "../submix.h"
 
 // Defines
 #define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"
 // prefix for warnings and debug messages
-#define NLSOUND_XAUDIO2_PREFIX NLSOUND_XAUDIO2_NAME ": "
+#define NLSOUND_XAUDIO2_PREFIX "XA2: "
 // swap y and z
 #define NLSOUND_XAUDIO2_X3DAUDIO_VECTOR_FROM_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;
 #define NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(to, from) (to).x = (from).x; (to).y = (from).z; (to).z = (from).y;

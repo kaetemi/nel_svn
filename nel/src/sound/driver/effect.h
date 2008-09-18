@@ -56,6 +56,7 @@ public:
 	IEffect();
 	virtual ~IEffect();
 
+	/// Get the type of effect (reverb, etc)
 	virtual TEffectType getType() = 0;
 }; /* class IEffect */
 
@@ -121,14 +122,15 @@ public:
  -10.00f, -6.00f, 1.80f,0.70f, -20.00f,0.030f, -14.00f,0.060f,100.0f,100.0f
 #define NLSOUND_ENVIRONMENT_PRESET_PLATE \
  -10.00f, -2.00f, 1.30f,0.90f,   0.00f,0.002f,   0.00f,0.010f,100.0f, 75.0f
-#define NLSOUND_MATERIAL_PRESET_SINGLEWINDOW  -2800, 0.71f
-#define NLSOUND_MATERIAL_PRESET_DOUBLEWINDOW  -5000, 0.40f
-#define NLSOUND_MATERIAL_PRESET_THINDOOR      -1800, 0.66f
-#define NLSOUND_MATERIAL_PRESET_THICKDOOR     -4400, 0.64f
-#define NLSOUND_MATERIAL_PRESET_WOODWALL      -4000, 0.50f
-#define NLSOUND_MATERIAL_PRESET_BRICKWALL     -5000, 0.60f
-#define NLSOUND_MATERIAL_PRESET_STONEWALL     -6000, 0.68f
-#define NLSOUND_MATERIAL_PRESET_CURTAIN       -1200, 0.15f
+//                                             in dB    ---
+#define NLSOUND_MATERIAL_PRESET_SINGLEWINDOW  -28.00f, 0.71f
+#define NLSOUND_MATERIAL_PRESET_DOUBLEWINDOW  -50.00f, 0.40f
+#define NLSOUND_MATERIAL_PRESET_THINDOOR      -18.00f, 0.66f
+#define NLSOUND_MATERIAL_PRESET_THICKDOOR     -44.00f, 0.64f
+#define NLSOUND_MATERIAL_PRESET_WOODWALL      -40.00f, 0.50f
+#define NLSOUND_MATERIAL_PRESET_BRICKWALL     -50.00f, 0.60f
+#define NLSOUND_MATERIAL_PRESET_STONEWALL     -60.00f, 0.68f
+#define NLSOUND_MATERIAL_PRESET_CURTAIN       -12.00f, 0.15f
 
 inline float decibelsToAmplitudeRatio(float d)
 {

@@ -73,7 +73,7 @@ protected:
 public:
 	CBufferXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CBufferXAudio2();
-	//void release();
+	void release();
 
 	/// Returns a pointer to the PCM or ADPCM bytes.
 	inline uint8 *getData() { return _Data; }

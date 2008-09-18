@@ -26,14 +26,6 @@
  * MA 02110-1301 USA.
  */
 
-/*
- * TODO:
- *  - Bench
- *    - startBench
- *    - endBench
- *    - displayBench
- */
-
 #include "stdxaudio2.h"
 #include "sound_driver_xaudio2.h"
 
@@ -55,6 +47,8 @@
 #include "source_xaudio2.h"
 #include "music_channel_xaudio2.h"
 #include "eax_xaudio2.h"
+#include "submix_xaudio2.h"
+#include "effect_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -252,26 +246,41 @@ void CSoundDriverXAudio2::release()
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CSoundDriverXAudio2");
 
-	// Driver (listeners etc todo)
-	// Stop any played music
+	// WARNING: Only internal resources are released here, 
+	// the created instances must still be released by the user!
+
+	// Release internal resources of all remaining IMusicChannel instances
 	{
 		set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
-		for (; it != end; ++it)
-		{
-			(*it)->release();
-		}
+		for (; it != end; ++it) (*it)->release();
 		_MusicChannels.clear();
 	}
-	// Assure that the remaining sources have released all their channels before closing
+	// Release internal resources of all remaining ISource instances
 	{
-		set<CSourceXAudio2*>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
-		for (; it != end; ++it)
-		{
-			(*it)->release(); // WARNING: The sources are NOT DELETED automagically!
-		}
+		set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
+		for (; it != end; ++it) (*it)->release();
+		_Sources.clear();
 	}
-	// Stop the listener
-	if (_Listener) _Listener->release(); // LISTENER AND SOURCES DELETED AT NLSOUND USER LEVEL
+	// Release internal resources of all remaining IBuffer instances
+	{
+		set<CBufferXAudio2 *>::iterator it(_Buffers.begin()), end(_Buffers.end());
+		for (; it != end; ++it) (*it)->release();
+		_Buffers.clear();
+	}
+	// Release internal resources of all remaining ISubmix instances
+	{
+		set<CSubmixXAudio2 *>::iterator it(_Submixes.begin()), end(_Submixes.end());
+		for (; it != end; ++it) (*it)->release();
+		_Submixes.clear();
+	}
+	// Release internal resources of all remaining IEffect instances
+	{
+		set<IEffect *>::iterator it(_Effects.begin()), end(_Effects.end());
+		for (; it != end; ++it) releaseEffect(*it);
+		_Effects.clear();
+	}
+	// Release internal resources of the IListener instance
+	if (_Listener) { _Listener->release(); _Listener = NULL; }
 
 	// X3DAudio
 	NLSOUND_XAUDIO2_RELEASE(_DSPSettings.pMatrixCoefficients);
@@ -340,7 +349,7 @@ bool CSoundDriverXAudio2::getOption(ISoundDriver::TSoundOptions option)
 /// Tell sources without voice about a format
 void CSoundDriverXAudio2::initSourcesFormat(TSampleFormat format)
 {
-	std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
+	std::set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
 	for (; it != end; ++it) { if (!(*it)->getSourceVoice()) { (*it)->initFormat(format); } }
 }
 
@@ -388,12 +397,6 @@ void CSoundDriverXAudio2::destroySourceVoice(IXAudio2SourceVoice *sourceVoice)
 	if (sourceVoice) sourceVoice->DestroyVoice();
 }
 
-/// Create a sound buffer
-IBuffer *CSoundDriverXAudio2::createBuffer()
-{
-	return new CBufferXAudio2(this);
-}
-
 /// Create a music channel
 IMusicChannel *CSoundDriverXAudio2::createMusicChannel()
 {
@@ -409,20 +412,71 @@ IListener *CSoundDriverXAudio2::createListener()
 	return static_cast<IListener *>(_Listener);
 }
 
+/// Create a source, destroy with delete
+ISource *CSoundDriverXAudio2::createSource()
+{
+	CSourceXAudio2 *source = new CSourceXAudio2(this);
+	_Sources.insert(source);
+	return static_cast<ISource *>(source);
+}
+
+/// Create a sound buffer, destroy with delete
+IBuffer *CSoundDriverXAudio2::createBuffer()
+{
+	CBufferXAudio2 *buffer = new CBufferXAudio2(this);
+	_Buffers.insert(buffer);
+	return static_cast<IBuffer *>(buffer);
+}
+
+/// Create a submix
+ISubmix *CSoundDriverXAudio2::createSubmix()
+{
+	CSubmixXAudio2 *submix = new CSubmixXAudio2(this);
+	if (submix->getSubmixVoice())
+	{
+		_Submixes.insert(submix);
+		return static_cast<ISubmix *>(submix);
+	}
+	delete submix; return NULL;
+}
+
+/// Create an effect
+IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
+{
+	IEffect *effect = NULL;
+	switch (effectType)
+	{
+		case IEffect::Reverb:
+		{
+			CReverbEffectXAudio2 *reverb = new CReverbEffectXAudio2(this);
+			if (reverb->getEffect()) { effect = static_cast<IEffect *>(reverb); break; }
+			else { delete reverb; return NULL; }
+		}
+		default:
+		{
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
+			return NULL;
+		}
+	}
+	nlassert(effect);
+	_Effects.insert(effect);
+	return effect;
+}
+
 /// Return the maximum number of sources that can created
 uint CSoundDriverXAudio2::countMaxSources()
 {
 	// the only limit is the user's cpu
-	// keep similar to openal limit for now
+	// keep similar to openal limit for now ...
 	return 128;
 }
 
-/// Create a source
-ISource *CSoundDriverXAudio2::createSource()
+/// Return the maximum number of submixers that can be created
+uint CSoundDriverXAudio2::countMaxSubmixes()
 {
-	CSourceXAudio2* src = new CSourceXAudio2(this);
-	_SourceChannels.insert(src);
-	return static_cast<ISource *>(src);
+	// the only limit is the user's cpu
+	// openal only allows 1 in software ...
+	return 32;
 }
 
 /// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
@@ -444,7 +498,7 @@ void CSoundDriverXAudio2::commit3DChanges()
 
 	// Sync up sources & listener 3d position.
 	{
-		std::set<CSourceXAudio2 *>::iterator it(_SourceChannels.begin()), end(_SourceChannels.end());
+		std::set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
 		for (; it != end; ++it) { (*it)->updateState(); (*it)->update3DChanges(); }
 	}
 }
@@ -485,20 +539,20 @@ void CSoundDriverXAudio2::writeProfile(std::string& out)
 // Does not create a sound loader .. what does it do then?
 void CSoundDriverXAudio2::startBench()
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return;
+	NLMISC::CHTimer::startBench();
 }
 
 void CSoundDriverXAudio2::endBench()
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return;
+	NLMISC::CHTimer::endBench();
 }
 
 void CSoundDriverXAudio2::displayBench(NLMISC::CLog *log)
 {
-	// -- nlerror(NLSOUND_XAUDIO2_PREFIX "not implemented");
-	return;
+	NLMISC::CHTimer::displayHierarchicalByExecutionPathSorted(log, CHTimer::TotalTime, true, 48, 2);
+	NLMISC::CHTimer::displayHierarchical(log, true, 48, 2);
+	NLMISC::CHTimer::displayByExecutionPath(log, CHTimer::TotalTime);
+	NLMISC::CHTimer::display(log, CHTimer::TotalTime);
 }
 
 /** Get music info. Returns false if the song is not found or the function is not implemented.
@@ -515,23 +569,63 @@ bool CSoundDriverXAudio2::getMusicInfo(const std::string &filepath, std::string 
 /// Remove a buffer (should be called by the friend destructor of the buffer class)
 void CSoundDriverXAudio2::removeBuffer(CBufferXAudio2 *buffer)
 {
-	// does nothing here .. see createBuffer
+	if (_Buffers.find(buffer) != _Buffers.end()) _Buffers.erase(buffer);
+	else nlwarning("removeBuffer already called");
 }
 
 /// Remove a source (should be called by the friend destructor of the source class)
 void CSoundDriverXAudio2::removeSource(CSourceXAudio2 *source)
 {
-	if (_SourceChannels.find((CSourceXAudio2 *)source) != _SourceChannels.end())
-		_SourceChannels.erase((CSourceXAudio2 *)source); // note: IT DOESN'T DELETE
+	if (_Sources.find(source) != _Sources.end()) _Sources.erase(source);
 	else nlwarning("removeSource already called");
-	// SOURCE ARE DELETED IN CTrack / mixing_track.h ...
-	// -> use delete to call this function ^^'
 }
 	
 /// (Internal) Remove a source (should be called by the destructor of the source class).
-void CSoundDriverXAudio2::removeMusicChannel(CMusicChannelXAudio2 *source)
+void CSoundDriverXAudio2::removeMusicChannel(CMusicChannelXAudio2 *musicChannel)
 {
-	_MusicChannels.erase(source);
+	if (_MusicChannels.find(musicChannel) != _MusicChannels.end()) _MusicChannels.erase(musicChannel);
+	else nlwarning("removeMusicChannel already called");
+}
+	
+/// (Internal) Remove a submix (should be called by the destructor of the submix class)
+void CSoundDriverXAudio2::removeSubmix(CSubmixXAudio2 *submix)
+{
+	if (_Submixes.find(submix) != _Submixes.end()) _Submixes.erase(submix);
+	else nlwarning("removeSubmix already called");
+}
+
+/// (Internal) Remove an effect (should be called by the destructor of the effect class)
+void CSoundDriverXAudio2::removeEffect(IEffect *effect)
+{
+	if (_Effects.find(effect) != _Effects.end()) _Effects.erase(effect);
+	else nlwarning("removeEffect already called");
+}
+
+/// (Internal) Get internal effect object of an effect.
+IUnknown *CSoundDriverXAudio2::getEffectInternal(IEffect *effect)
+{
+	switch (effect->getType())
+	{
+	case IEffect::Reverb:
+		return static_cast<CReverbEffectXAudio2 *>(effect)->getEffect();
+		break;
+	default:
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
+		return NULL;
+	}
+}
+
+/// (Internal) Call the release function of an effect.
+void CSoundDriverXAudio2::releaseEffect(IEffect *effect)
+{
+	switch (effect->getType())
+	{
+	case IEffect::Reverb:
+		static_cast<CReverbEffectXAudio2 *>(effect)->release();
+		break;
+	default:
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
+	}
 }
 
 } /* namespace NLSOUND */

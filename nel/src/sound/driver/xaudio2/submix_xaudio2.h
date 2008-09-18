@@ -37,6 +37,7 @@
 // Project includes
 
 namespace NLSOUND {
+	class CSoundDriverXAudio2;
 
 /**
  * \brief CSubmixXAudio2
@@ -44,17 +45,26 @@ namespace NLSOUND {
  * \author Jan Boon (Kaetemi)
  * CSubmixXAudio2
  */
-class CSubmixXAudio2
+class CSubmixXAudio2 : public ISubmix
 {
 protected:
-	// pointers
-	// ...
+	// outside pointers
+	CSoundDriverXAudio2 *_SoundDriver;
 	
-	// instances
-	// ...
+	// pointers
+	IXAudio2SubmixVoice *_SubmixVoice;
 public:
-	CSubmixXAudio2();
+	CSubmixXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CSubmixXAudio2();
+	void release();
+
+	inline IXAudio2SubmixVoice *getSubmixVoice() { return _SubmixVoice; }
+
+	/// Attach an effect to this submixer, set NULL to remove the effect
+	virtual void setEffect(IEffect *effect);
+
+	/// Set the volume of this submixer
+	virtual void setGain(float gain);
 }; /* class CSubmixXAudio2 */
 
 } /* namespace NLSOUND */

@@ -26,12 +26,6 @@
  * MA 02110-1301 USA.
  */
 
-/*
- * TODO:
- *  - EAX
- *    - setEAXProperty
- */
-
 #include "stdxaudio2.h"
 #include "listener_xaudio2.h"
 

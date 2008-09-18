@@ -41,7 +41,7 @@ using namespace std;
 
 namespace NLSOUND {
 
-CReverbEffectXAudio2::CReverbEffectXAudio2()
+CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver)
 {
 	
 }
@@ -49,6 +49,19 @@ CReverbEffectXAudio2::CReverbEffectXAudio2()
 CReverbEffectXAudio2::~CReverbEffectXAudio2()
 {
 	
+}
+
+/// Get the type of effect (reverb, etc)
+IEffect::TEffectType CReverbEffectXAudio2::getType()
+{
+	return Reverb;
+}
+
+/// Set the environment (you have full control now, have fun)
+void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
+{
+	/* TODO: setEnvironment */
+	nlwarning(NLSOUND_XAUDIO2_PREFIX "setEnvironment not implemented yet");
 }
 
 } /* namespace NLSOUND */

@@ -26,12 +26,6 @@
  * MA 02110-1301 USA.
  */
 
-/*
- * TODO:
- *  - EAX
- *    - setEAXProperty
- */
-
 // curve cone eax time
 
 #include "stdxaudio2.h"
