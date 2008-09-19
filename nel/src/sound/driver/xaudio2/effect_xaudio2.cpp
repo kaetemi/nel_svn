@@ -33,12 +33,13 @@
 
 // NeL includes
 // #include <nel/misc/debug.h>
+#include <nel/misc/common.h>
 
 // Project includes
 #include "sound_driver_xaudio2.h"
 
 using namespace std;
-// using namespace NLMISC;
+using namespace NLMISC;
 
 namespace NLSOUND {
 
@@ -83,53 +84,52 @@ IEffect::TEffectType CReverbEffectXAudio2::getType()
 void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
 {
 	// unused params
-    _ReverbParams.RearDelay = XAUDIO2FX_REVERB_DEFAULT_REAR_DELAY;
-    _ReverbParams.PositionLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION;
-    _ReverbParams.PositionRight = XAUDIO2FX_REVERB_DEFAULT_POSITION;
-    _ReverbParams.PositionMatrixLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
-    _ReverbParams.PositionMatrixRight = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
-    _ReverbParams.RoomFilterFreq = XAUDIO2FX_REVERB_DEFAULT_ROOM_FILTER_FREQ;
-    _ReverbParams.LowEQCutoff = 4;
-    _ReverbParams.HighEQCutoff = 6;
-    _ReverbParams.WetDryMix = 100.0f;
+	_ReverbParams.RearDelay = XAUDIO2FX_REVERB_DEFAULT_REAR_DELAY;
+	_ReverbParams.PositionLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION;
+	_ReverbParams.PositionRight = XAUDIO2FX_REVERB_DEFAULT_POSITION;
+	_ReverbParams.PositionMatrixLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
+	_ReverbParams.PositionMatrixRight = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
+	_ReverbParams.RoomFilterFreq = XAUDIO2FX_REVERB_DEFAULT_ROOM_FILTER_FREQ;
+	_ReverbParams.LowEQCutoff = 4;
+	_ReverbParams.HighEQCutoff = 6;
+	_ReverbParams.WetDryMix = 100.0f;
 
-    // directly mapped
-    _ReverbParams.RoomSize = environment.RoomSize;
-    _ReverbParams.RoomFilterMain = environment.RoomFilter;
-    _ReverbParams.RoomFilterHF = environment.RoomFilterHF;
-    _ReverbParams.ReflectionsGain = environment.Reflections;
-    _ReverbParams.ReverbGain = environment.LateReverb;
-    _ReverbParams.Density = environment.Density;
+	// directly mapped
+	_ReverbParams.RoomSize = environment.RoomSize;
+	_ReverbParams.RoomFilterMain = environment.RoomFilter;
+	_ReverbParams.RoomFilterHF = environment.RoomFilterHF;
+	_ReverbParams.ReflectionsGain = environment.Reflections;
+	_ReverbParams.ReverbGain = environment.LateReverb;
+	_ReverbParams.Density = environment.Density;
 
-	// conversions, see ReverbConvertI3DL2ToNative
-    _ReverbParams.EarlyDiffusion = (BYTE)(environment.Diffusion * 0.15f);
-    _ReverbParams.LateDiffusion = _ReverbParams.EarlyDiffusion;
-    if (environment.DecayHFRatio >= 1.0f)
-    {
-        _ReverbParams.HighEQGain = 8;
-        INT32 index = (INT32)(-4.0 * log10(environment.DecayHFRatio));
-        if (index < -8)  index = -8;
-        _ReverbParams.LowEQGain = BYTE((index < 0) ? index + 8 : 8);
-        _ReverbParams.DecayTime = environment.DecayTime * environment.DecayHFRatio;
-    }
-    else
-    {
-        _ReverbParams.LowEQGain = 8;
-        INT32 index = (INT32)(4.0 * log10(environment.DecayHFRatio));
-        if (index < -8) index = -8;
-        _ReverbParams.HighEQGain = BYTE((index < 0) ? index + 8 : 8);
-        _ReverbParams.DecayTime = environment.DecayTime;
-    }
-    float reflections_delay = environment.ReflectionsDelay * 1000.0f;
-    if (reflections_delay >= XAUDIO2FX_REVERB_MAX_REFLECTIONS_DELAY)
-        reflections_delay = (float)(XAUDIO2FX_REVERB_MAX_REFLECTIONS_DELAY - 1);
-    else if (reflections_delay <= 1) 
-		reflections_delay = 1;
-    _ReverbParams.ReflectionsDelay = (UINT32)reflections_delay;
-	float reverb_delay = environment.LateReverbDelay * 1000.0f;
-    if (reverb_delay >= XAUDIO2FX_REVERB_MAX_REVERB_DELAY)
-        reverb_delay = (float)(XAUDIO2FX_REVERB_MAX_REVERB_DELAY - 1);
-    _ReverbParams.ReverbDelay = (BYTE)reverb_delay;
+	// conversions, see ReverbConvertI3DL2ToNative in case of errors
+	if (environment.DecayHFRatio >= 1.0f)
+	{
+		_ReverbParams.HighEQGain = XAUDIO2FX_REVERB_DEFAULT_HIGH_EQ_GAIN;
+		sint32 index = (sint32)(log10(environment.DecayHFRatio) * -4.0f) + 8;
+		clamp(index, XAUDIO2FX_REVERB_MIN_LOW_EQ_GAIN, XAUDIO2FX_REVERB_MAX_LOW_EQ_GAIN);
+		_ReverbParams.LowEQGain = (BYTE)index;
+		_ReverbParams.DecayTime = environment.DecayTime * environment.DecayHFRatio;
+	}
+	else
+	{
+		_ReverbParams.LowEQGain = XAUDIO2FX_REVERB_DEFAULT_LOW_EQ_GAIN;
+		sint32 index = (sint32)(log10(environment.DecayHFRatio) * 4.0f) + 8;
+		clamp(index, XAUDIO2FX_REVERB_MIN_HIGH_EQ_GAIN, XAUDIO2FX_REVERB_MAX_HIGH_EQ_GAIN);
+		_ReverbParams.HighEQGain = (BYTE)index;
+		_ReverbParams.DecayTime = environment.DecayTime;
+	}
+
+	sint32 reflections_delay = (sint32)(environment.ReflectionsDelay * 1000.0f);
+	clamp(reflections_delay, XAUDIO2FX_REVERB_MIN_REFLECTIONS_DELAY, XAUDIO2FX_REVERB_MAX_REFLECTIONS_DELAY);
+	_ReverbParams.ReflectionsDelay = (UINT32)reflections_delay;
+	
+	sint32 reverb_delay = (sint32)(environment.LateReverbDelay * 1000.0f);
+	clamp(reverb_delay, XAUDIO2FX_REVERB_MIN_REVERB_DELAY, XAUDIO2FX_REVERB_MAX_REVERB_DELAY);
+	_ReverbParams.ReverbDelay = (BYTE)reverb_delay;
+
+	_ReverbParams.EarlyDiffusion = (BYTE)(environment.Diffusion * 0.15f);
+	_ReverbParams.LateDiffusion = _ReverbParams.EarlyDiffusion;
 
 	if (_EffectVoice) _EffectVoice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0);
 }

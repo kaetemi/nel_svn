@@ -230,7 +230,7 @@ public:
 	// *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
 	// *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
 	// *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
-	// *                is the default used by DirectSound/OpenAL
+	// *				is the default used by DirectSound/OpenAL
 	// * 
 	// *  For any other value of alpha, an interpolation is be done between the two
 	// *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between

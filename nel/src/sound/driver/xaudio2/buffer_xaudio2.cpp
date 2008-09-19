@@ -235,8 +235,8 @@ void CBufferXAudio2::presetName(const NLMISC::TStringId &bufferName)
 /// Set the sample format. Example: freq=44100
 void CBufferXAudio2::setFormat(TSampleFormat format, uint freq)
 {
-    _Format = format;
-    _Freq = freq;
+	_Format = format;
+	_Freq = freq;
 }
 
 /// Set the buffer size and fill the buffer.  Return true if ok. Call setFormat() first.
@@ -257,27 +257,27 @@ float CBufferXAudio2::getDuration() const
 {
 	// from NLSOUND DSound Driver, Copyright (C)  2001 Nevrax Ltd.
 
-    float frames = (float)_Size;
+	float frames = (float)_Size;
 
-    switch (_Format) 
+	switch (_Format) 
 	{
-    case Mono8:
-        break;
-    case Mono16ADPCM:
-        frames *= 2.0f;
-        break;
-    case Mono16:
-        frames /= 2.0f;
-        break;
-    case Stereo8:
-        frames /= 2.0f;
-        break;
-    case Stereo16:
-        frames /= 4.0f;
-        break;
-    }
+	case Mono8:
+		break;
+	case Mono16ADPCM:
+		frames *= 2.0f;
+		break;
+	case Mono16:
+		frames /= 2.0f;
+		break;
+	case Stereo8:
+		frames /= 2.0f;
+		break;
+	case Stereo16:
+		frames /= 4.0f;
+		break;
+	}
 
-    return 1000.0f * frames / (float)_Freq;
+	return 1000.0f * frames / (float)_Freq;
 }
 
 /// Return true if the buffer is stereo, false if mono

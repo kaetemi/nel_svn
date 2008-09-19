@@ -193,7 +193,7 @@ void CMusicChannelXAudio2::setVolume(float gain)
 }
 
 void CMusicChannelXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
-{    
+{	
 	if (BytesRequired > 0)
 	{
 		// nlwarning(NLSOUND_XAUDIO2_PREFIX "Bytes Required: %u", BytesRequired); // byte req to not have disruption
@@ -246,7 +246,7 @@ void CMusicChannelXAudio2::OnStreamEnd()
 }
 
 void CMusicChannelXAudio2::OnBufferStart(void *pBufferContext)
-{    
+{	
 	
 }
 
@@ -256,7 +256,7 @@ void CMusicChannelXAudio2::OnBufferEnd(void *pBufferContext)
 }
 
 void CMusicChannelXAudio2::OnLoopEnd(void *pBufferContext)
-{    
+{	
 	
 }
 

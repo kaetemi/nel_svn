@@ -98,9 +98,9 @@ long vorbisTellFunc(void *datasource)
 
 static ov_callbacks OV_CALLBACKS_NLMISC_STREAM = {
   (size_t (*)(void *, size_t, size_t, void *))  vorbisReadFunc,
-  (int (*)(void *, ogg_int64_t, int))          vorbisSeekFunc,
-  (int (*)(void *))                             NULL, //vorbisCloseFunc,
-  (long (*)(void *))                            vorbisTellFunc
+  (int (*)(void *, ogg_int64_t, int))		  vorbisSeekFunc,
+  (int (*)(void *))							 NULL, //vorbisCloseFunc,
+  (long (*)(void *))							vorbisTellFunc
 };
 
 CMusicBufferVorbis::CMusicBufferVorbis(NLMISC::IStream *stream, bool loop) 

@@ -152,7 +152,7 @@ void CAdpcmXAudio2::processBuffers()
 }
 
 void CAdpcmXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
-{    
+{	
 	
 }
 
