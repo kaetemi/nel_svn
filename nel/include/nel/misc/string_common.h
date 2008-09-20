@@ -218,29 +218,29 @@ inline std::string toString(const sint &val) { return toString("%d", val); }
 #endif // NL_COMP_VC6
 
 template<class T>
-void fromString(const std::string &str, T &obj)
+bool fromString(const std::string &str, T &obj)
 {
-	obj.fromString(str);
+	return obj.fromString(str);
 }
 
-inline void fromString(const std::string &str, uint32 &val) { sscanf(str.c_str(), "%u", &val); }
-inline void fromString(const std::string &str, sint32 &val) { sscanf(str.c_str(), "%d", &val); }
-inline void fromString(const std::string &str, uint8 &val) { uint32 v; fromString(str, v); val = (uint8)v; }
-inline void fromString(const std::string &str, sint8 &val) { sint32 v; fromString(str, v); val = (sint8)v; }
-inline void fromString(const std::string &str, uint16 &val) { uint32 v; fromString(str, v); val = (uint16)v; }
-inline void fromString(const std::string &str, sint16 &val) { uint32 v; fromString(str, v); val = (sint16)v; }
-inline void fromString(const std::string &str, uint64 &val) { sscanf(str.c_str(), "%"NL_I64"u", &val); }
-inline void fromString(const std::string &str, sint64 &val) { sscanf(str.c_str(), "%"NL_I64"d", &val); }
-inline void fromString(const std::string &str, float &val) { sscanf(str.c_str(), "%f", &val); }
-inline void fromString(const std::string &str, double &val) { sscanf(str.c_str(), "%lf", &val); }
-inline void fromString(const std::string &str, bool &val) { uint32 v; fromString(str, v); val = (v==1); }
-inline void fromString(const std::string &str, std::string &val) { val = str; }
+inline bool fromString(const std::string &str, uint32 &val) { return sscanf(str.c_str(), "%u", &val) == 1; }
+inline bool fromString(const std::string &str, sint32 &val) { return sscanf(str.c_str(), "%d", &val) == 1; }
+inline bool fromString(const std::string &str, uint8 &val) { uint32 v; bool ret = fromString(str, v); val = (uint8)v; return ret; }
+inline bool fromString(const std::string &str, sint8 &val) { sint32 v; bool ret = fromString(str, v); val = (sint8)v; return ret; }
+inline bool fromString(const std::string &str, uint16 &val) { uint32 v; bool ret = fromString(str, v); val = (uint16)v; return ret; }
+inline bool fromString(const std::string &str, sint16 &val) { uint32 v; bool ret = fromString(str, v); val = (sint16)v; return ret; }
+inline bool fromString(const std::string &str, uint64 &val) { return sscanf(str.c_str(), "%"NL_I64"u", &val) == 1; }
+inline bool fromString(const std::string &str, sint64 &val) { return sscanf(str.c_str(), "%"NL_I64"d", &val) == 1; }
+inline bool fromString(const std::string &str, float &val) { return sscanf(str.c_str(), "%f", &val) == 1; }
+inline bool fromString(const std::string &str, double &val) { return sscanf(str.c_str(), "%lf", &val) == 1; }
+inline bool fromString(const std::string &str, bool &val) { uint32 v; bool ret = fromString(str, v); val = (v==1); return ret; }
+inline bool fromString(const std::string &str, std::string &val) { val = str; return true; }
 
 // stl vectors of bool use bit reference and not real bools, so define the operator for bit reference
 
 #ifdef NL_COMP_VC6
-inline void fromString(const std::string &str, uint &val) { sscanf(str.c_str(), "%u", &val); }
-inline void fromString(const std::string &str, sint &val) { sscanf(str.c_str(), "%d", &val); }
+inline bool fromString(const std::string &str, uint &val) { return sscanf(str.c_str(), "%u", &val) == 1; }
+inline bool fromString(const std::string &str, sint &val) { return sscanf(str.c_str(), "%d", &val) == 1; }
 #endif // NL_COMP_VC6
 
 
