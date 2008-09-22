@@ -23,7 +23,10 @@
 
 #include "std3d.h"
 
+// FIXME: shouldn't this be configured outside?
+#ifndef USE_JPEG
 #define USE_JPEG
+#endif
 
 #include "nel/3d/zone_lighter.h"
 #include "nel/3d/landscape.h"

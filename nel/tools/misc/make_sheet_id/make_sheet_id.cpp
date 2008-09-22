@@ -117,7 +117,7 @@ void displayHelp()
 //-----------------------------------------------
 sint16 getFirstFreeFileTypeId()
 {
-	for( uint8 id=0; id<256; ++id )
+	for( sint16 id=0; id<256; ++id )
 	{
 		if( IdToFileType.find(id) == IdToFileType.end() )
 		{

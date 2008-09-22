@@ -365,7 +365,7 @@ int main (int nNbArg, char **ppArgs)
 	if ((strcmp(ppArgs[1], "/u") == 0) || (strcmp(ppArgs[1], "/U") == 0) ||
 		(strcmp(ppArgs[1], "-u") == 0) || (strcmp(ppArgs[1], "-U") == 0))
 	{
-		int i;
+		string::size_type i;
 		string path;
 		gDestBNPFile = ppArgs[2];
 		if ((gDestBNPFile.rfind('/') != string::npos) || (gDestBNPFile.rfind('/') != string::npos))
@@ -411,7 +411,7 @@ int main (int nNbArg, char **ppArgs)
 	if ((strcmp(ppArgs[1], "/l") == 0) || (strcmp(ppArgs[1], "/L") == 0) ||
 		(strcmp(ppArgs[1], "-l") == 0) || (strcmp(ppArgs[1], "-L") == 0))
 	{
-		int i;
+		string::size_type i;
 		string path;
 		gDestBNPFile = ppArgs[2];
 		if ((gDestBNPFile.rfind('/') != string::npos) || (gDestBNPFile.rfind('/') != string::npos))

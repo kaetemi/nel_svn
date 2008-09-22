@@ -382,7 +382,10 @@ int main(int argc, char *argv[])
 				} while(result != NULL);
 				
 			}
-			//			break;
+			break;
+		default:
+			// this shouldn't happen / keep compiler happy
+			break;
 		}
 		
 		if (recursive)
