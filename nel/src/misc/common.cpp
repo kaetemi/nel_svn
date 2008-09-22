@@ -321,36 +321,24 @@ bool isPowerOf2(sint32 v)
 
 string bytesToHumanReadable (const std::string &bytes)
 {
-	static const char *divTable[]= { "B", "KB", "MB", "GB" };
-	uint div = 0;
-	uint64 res = atoiInt64(bytes.c_str());
-	uint64 newres = res;
-	while (true)
-	{
-		newres /= 1024;
-		if(newres < 8 || div > 2)
-			break;
-		div++;
-		res = newres;
-	}
-	return toString ("%"NL_I64"u%s", res, divTable[div]);
+	return bytesToHumanReadable (atoiInt64(bytes.c_str()));
 }
 
 string bytesToHumanReadable (uint64 bytes)
 {
-	static const char *divTable[]= { "B", "KB", "MB", "GB" };
+	static const char *divTable[]= { "B", "KB", "MB", "GB", "TB" };
 	uint div = 0;
 	uint64 res = bytes;
 	uint64 newres = res;
 	while (true)
 	{
 		newres /= 1024;
-		if(newres < 8 || div > 2)
+		if(newres < 8 || div > 3)
 			break;
 		div++;
 		res = newres;
 	}
-	return toString ("%u%s", res, divTable[div]);
+	return toString ("%"NL_I64"u%s", res, divTable[div]);
 }
 
 uint32 humanReadableToBytes (const string &str)
