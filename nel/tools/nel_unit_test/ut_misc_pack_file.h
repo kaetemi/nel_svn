@@ -1,12 +1,5 @@
-#include "nel/misc/app_context.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/sstring.h"
-#include "nel/misc/file.h"
-
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
+#ifndef UT_MISC_PACK_FILE
+#define UT_MISC_PACK_FILE
 
 #ifdef NL_OS_WINDOWS
 const string NewLine("\r\n");
@@ -18,24 +11,24 @@ const string NewLine("\n");
 
 
 // Test suite for bnp and xml pack files
-class CPackFileTS : public Test::Suite
+class CUTMiscPackFile : public Test::Suite
 {
 	string		_WorkingPath;
 	string		_OldPath;
 public:
-	CPackFileTS (const std::string &workingPath)
+	CUTMiscPackFile ()
 	{
-		TEST_ADD(CPackFileTS::addBnp);
-		TEST_ADD(CPackFileTS::loadFromBnp);
-		TEST_ADD(CPackFileTS::addXmlpack);
-		TEST_ADD(CPackFileTS::loadFromXmlpack);
-		TEST_ADD(CPackFileTS::compressMemory);
-		TEST_ADD(CPackFileTS::loadFromBnpCompressed);
-		TEST_ADD(CPackFileTS::loadFromXmlpackCompressed);
-		TEST_ADD(CPackFileTS::decompressMemory);
-		TEST_ADD(CPackFileTS::loadFromBnpUncompressed);
-		TEST_ADD(CPackFileTS::loadFromXmlpackUncompressed);
-		TEST_ADD(CPackFileTS::loadXmlpackWithSameName);
+		TEST_ADD(CUTMiscPackFile::addBnp);
+		TEST_ADD(CUTMiscPackFile::loadFromBnp);
+		TEST_ADD(CUTMiscPackFile::addXmlpack);
+		TEST_ADD(CUTMiscPackFile::loadFromXmlpack);
+		TEST_ADD(CUTMiscPackFile::compressMemory);
+		TEST_ADD(CUTMiscPackFile::loadFromBnpCompressed);
+		TEST_ADD(CUTMiscPackFile::loadFromXmlpackCompressed);
+		TEST_ADD(CUTMiscPackFile::decompressMemory);
+		TEST_ADD(CUTMiscPackFile::loadFromBnpUncompressed);
+		TEST_ADD(CUTMiscPackFile::loadFromXmlpackUncompressed);
+		TEST_ADD(CUTMiscPackFile::loadXmlpackWithSameName);
 	}
 
 	void setup()
@@ -53,7 +46,7 @@ public:
 	void addBnp()
 	{
 		// add bnp file in the path and access to file inside
-		CPath::addSearchBigFile("misc_ut/files/files.bnp", false, false);
+		CPath::addSearchBigFile("ut_misc_files/files.bnp", false, false);
 	}
 
 	void loadFromBnp()
@@ -92,14 +85,14 @@ public:
 	void addXmlpack()
 	{
 		// add xml_pack file in the path and access to file inside
-		CPath::addSearchXmlpackFile("misc_ut/files/xml_files/xml_files.xml_pack", false, false);
+		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/xml_files.xml_pack", false, false);
 	}
 
 	void loadFromXmlpack()
 	{
 		// lookup for the file
 		string filename = CPath::lookup("file1_in_xml_pack.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/xml_files.xml_pack@@file1_in_xml_pack.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/xml_files.xml_pack@@file1_in_xml_pack.xml");
 
 		// read the first file content
 		{
@@ -115,7 +108,7 @@ public:
 
 		// lookup for the 2nd file
 		filename = CPath::lookup("file2_in_xml_pack.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/xml_files.xml_pack@@file2_in_xml_pack.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/xml_files.xml_pack@@file2_in_xml_pack.xml");
 
 		{
 			// read the second file content
@@ -176,21 +169,21 @@ _CrtCheckMemory();
 		// but the 'addSearchPath' or add xml pack must be done
 		// at a higher discriminant directory
 
-//		CPath::addSearchXmlpackFile("misc_ut/files/xml_files/same_subfolder_1/samename/samename.xml_pack", true, false, NULL);
-//		CPath::addSearchXmlpackFile("misc_ut/files/xml_files/same_subfolder_2/samename/samename.xml_pack", true, false, NULL);
-		CPath::addSearchPath("misc_ut/files/xml_files", true, false);
+//		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack", true, false, NULL);
+//		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack", true, false, NULL);
+		CPath::addSearchPath("ut_misc_files/xml_files", true, false);
 
 		// lookup for the files in first subdirectory
 		string filename = CPath::lookup("file1_in_sub_1.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file1_in_sub_1.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file1_in_sub_1.xml");
 		filename = CPath::lookup("file2_in_sub_1.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file2_in_sub_1.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file2_in_sub_1.xml");
 
 		// lookup for the files in the second subdirectory
 		filename = CPath::lookup("file1_in_sub_2.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file1_in_sub_2.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file1_in_sub_2.xml");
 		filename = CPath::lookup("file2_in_sub_2.xml", true, true, false);
-		TEST_ASSERT(filename == "misc_ut/files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file2_in_sub_2.xml");
+		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file2_in_sub_2.xml");
 
 		// read the file content of the first file in first pack
 		filename = CPath::lookup("file1_in_sub_1.xml", true, true, false);
@@ -227,7 +220,4 @@ _CrtCheckMemory();
 
 };
 
-Test::Suite *createCPackFileTS(const std::string &workingPath)
-{
-	return new CPackFileTS(workingPath);
-}
+#endif

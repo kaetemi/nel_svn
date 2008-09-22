@@ -1,28 +1,22 @@
+#ifndef UT_MISC_CONFIG_FILE
+#define UT_MISC_CONFIG_FILE
 
-#include "nel/misc/app_context.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/config_file.h"
-#include "nel/misc/path.h"
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
+#include <nel/misc/path.h>
 
 // Test suite for CConfigFile class
-class CConfigFileTS : public Test::Suite
+class CUTMiscConfigFile : public Test::Suite
 {
 	string		_WorkingPath;
 	string		_OldPath;
 public:
-	CConfigFileTS (const std::string &workingPath)
-		: _WorkingPath(workingPath)
+	CUTMiscConfigFile ()
 	{
-		TEST_ADD(CConfigFileTS::configWithInclude);
-		TEST_ADD(CConfigFileTS::configWithOptional);
-		TEST_ADD(CConfigFileTS::configWithDefine);
-		TEST_ADD(CConfigFileTS::configWithBadTest);
-		TEST_ADD(CConfigFileTS::configIncludeAndOptional);
-		TEST_ADD(CConfigFileTS::reportErrorInSubFiles);
+		TEST_ADD(CUTMiscConfigFile::configWithInclude);
+		TEST_ADD(CUTMiscConfigFile::configWithOptional);
+		TEST_ADD(CUTMiscConfigFile::configWithDefine);
+		TEST_ADD(CUTMiscConfigFile::configWithBadTest);
+		TEST_ADD(CUTMiscConfigFile::configIncludeAndOptional);
+		TEST_ADD(CUTMiscConfigFile::reportErrorInSubFiles);
 	}
 
 	void setup()
@@ -40,7 +34,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("files/cfg_with_include.cfg"));
+		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_include.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);
@@ -53,7 +47,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("files/cfg_with_optional.cfg"));
+		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_optional.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);
@@ -67,7 +61,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("files/cfg_with_define.cfg"));
+		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_define.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgReadableVar") != NULL);
@@ -97,9 +91,9 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("files/cfg_with_bad_test.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_bad_test.cfg", false);
 
-		TEST_THROWS_NOTHING(configFile.load("files/cfg_with_bad_test.cfg"));
+		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_bad_test.cfg"));
 
 		TEST_ASSERT(configFile.getVarPtr("ASimpleVar") != NULL);
 
@@ -131,10 +125,10 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("files/cfg_with_include_and_optional.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_include_and_optional.cfg", false);
 
 
-		TEST_THROWS_NOTHING(configFile.load("files/cfg_with_include_and_optional.cfg"));
+		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_include_and_optional.cfg"));
 
 		// check that we have the warnings only for the 'include' command
 		TEST_ASSERT(warnings.Lines.size() == 1);
@@ -150,11 +144,11 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("files/cfg_with_error_main.cfg", false);
-		string subfullName = NLMISC::CPath::getFullPath("files/cfg_with_error.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_error_main.cfg", false);
+		string subfullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_error.cfg", false);
 
 
-		TEST_THROWS(configFile.load("files/cfg_with_error_main.cfg"), EParseError);
+		TEST_THROWS(configFile.load("ut_misc_files/cfg_with_error_main.cfg"), EParseError);
 
 		// check that we have error report with correct filename and line number
 		TEST_ASSERT(warnings.Lines.size() == 1);
@@ -163,7 +157,4 @@ public:
 	}
 };
 
-Test::Suite *createCConfigFileTS(const std::string &workingPath)
-{
-	return new CConfigFileTS(workingPath);
-}
+#endif

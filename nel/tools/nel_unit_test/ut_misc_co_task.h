@@ -1,14 +1,8 @@
+#ifndef UT_MISC_CO_TASK
+#define UT_MISC_CO_TASK
 
-#include "nel/misc/types_nl.h"
-#include "nel/misc/co_task.h"
-#include "nel/misc/common.h"
-#include "nel/misc/thread.h"
-
-#include "cpptest.h"
-#include <vector>
-
-using namespace std;
-using namespace NLMISC;
+#include <nel/misc/co_task.h>
+#include <nel/misc/thread.h>
 
 char *referenceResult[] =
 {
@@ -129,13 +123,13 @@ class CTaskThread : public IRunnable
 };
 
 // Test suite for coroutine task
-class CCoTaskTS: public Test::Suite
+class CUTMiscCoTask: public Test::Suite
 {
 public:
-	CCoTaskTS ()
+	CUTMiscCoTask()
 	{
-		TEST_ADD(CCoTaskTS::runTasks);
-		TEST_ADD(CCoTaskTS::tasksAndThreads);
+		TEST_ADD(CUTMiscCoTask::runTasks);
+		TEST_ADD(CUTMiscCoTask::tasksAndThreads);
 
 	}
 
@@ -231,8 +225,4 @@ public:
 	}
 };
 
-Test::Suite *createCCoTaskTS()
-{
-	return new CCoTaskTS;
-}
-
+#endif

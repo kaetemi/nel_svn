@@ -1,26 +1,13 @@
+#ifndef UT_MISC_SINGLETON
+#define UT_MISC_SINGLETON
 
-#include "nel/misc/app_context.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/dynloadlib.h"
-#include "nel/misc/command.h"
-#include "nel/misc/path.h"
-
-#include <cpptest.h>
-
-#include "dyn_lib_test.h"
-
-using namespace std;
-using namespace NLMISC;
+#include <nel/misc/command.h>
 
 class CSafeSingleton
 {
 	NL_INSTANCE_COUNTER_DECL(CSafeSingleton);
 	NLMISC_SAFE_SINGLETON_DECL(CSafeSingleton);
 	CSafeSingleton() {}
-
-public:
-
-
 };
 
 NL_INSTANCE_COUNTER_IMPL(CSafeSingleton);
@@ -51,17 +38,16 @@ CUnsafeSingleton	*CUnsafeSingleton::_Instance = NULL;
 
 
 // Test suite for Singleton behavior
-class CSafeSingletonTS : public Test::Suite
+class CUTMiscSingleton : public Test::Suite
 {
 	std::string WorkingPath;
 	std::string OldPath;
 public:
-	CSafeSingletonTS(const std::string &workingPath)
-		: WorkingPath(workingPath)
+	CUTMiscSingleton()
 	{
-		TEST_ADD(CSafeSingletonTS::createSingleton);
-		TEST_ADD(CSafeSingletonTS::accessSingleton);
-		TEST_ADD(CSafeSingletonTS::multiDllSingleton);
+		TEST_ADD(CUTMiscSingleton::createSingleton);
+		TEST_ADD(CUTMiscSingleton::accessSingleton);
+		//TEST_ADD(CUTMiscSingleton::multiDllSingleton);
 	}
 
 	void setup()
@@ -102,7 +88,7 @@ public:
 		TEST_ASSERT(NL_GET_INSTANCE_COUNTER(CUnsafeSingleton) == 1);
 	}
 
-	void multiDllSingleton()
+	/*void multiDllSingleton()
 	{
 		TEST_ASSERT(CCommandRegistry::getInstance().exists("aDynLibCommand") == false);
 
@@ -119,7 +105,7 @@ public:
 		TEST_ASSERT(libTest != NULL);
 
 		libTest->testSingleton(this);
-	}
+	}*/
 
 	void assertmentWrapper(Test::Source src)
 	{
@@ -134,5 +120,4 @@ public:
 	friend class CDynLibTest;
 };
 
-
-
+#endif

@@ -279,14 +279,14 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="_CONSOLE;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;FINAL_VERSION;LIBXML_STATIC"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="_CONSOLE;WIN32;NL_RELEASE_DEBUG;NDEBUG;ASSERT_THROW_EXCEPTION;LIBXML_STATIC"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -299,9 +299,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libxml2_a.lib odbc32.lib odbccp32.lib cpptestMD.lib"
+				AdditionalDependencies="zlib.lib libxml2.lib cpptest.lib ws2_32.lib"
 				OutputFile="$(RootNamespace).exe"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -500,7 +501,55 @@
 			>
 		</File>
 		<File
-			RelativePath="test_suite.cfg"
+			RelativePath=".\ut_misc.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_co_task.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_command.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_config_file.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_debug.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_dynlibload.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_file.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_pack_file.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_singleton.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_sstring.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_stream.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc_variable.h"
 			>
 		</File>
 	</Files>

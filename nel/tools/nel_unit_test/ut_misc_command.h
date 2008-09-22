@@ -1,10 +1,7 @@
+#ifndef UT_MISC_COMMAND
+#define UT_MISC_COMMAND
 
-
-#include "nel/misc/command.h"
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
+#include <nel/misc/command.h>
 
 vector<string>	callList;
 
@@ -117,18 +114,18 @@ public:
 	}
 };
 
-class CObjectCommandTS : public Test::Suite
+class CUTMiscCommand : public Test::Suite
 {
 	TTest	*t1;
 	TTest	*t2;
 public:
-	CObjectCommandTS()
+	CUTMiscCommand()
 	{
-		TEST_ADD(CObjectCommandTS::createOneInstance);
-		TEST_ADD(CObjectCommandTS::createAnotherInstance);
-		TEST_ADD(CObjectCommandTS::deleteOneInstance);
-		TEST_ADD(CObjectCommandTS::derivedClass);
-		TEST_ADD(CObjectCommandTS::derivedClassAndBaseCall);
+		TEST_ADD(CUTMiscCommand::createOneInstance);
+		TEST_ADD(CUTMiscCommand::createAnotherInstance);
+		TEST_ADD(CUTMiscCommand::deleteOneInstance);
+		TEST_ADD(CUTMiscCommand::derivedClass);
+		TEST_ADD(CUTMiscCommand::derivedClassAndBaseCall);
 	}
 
 	void derivedClassAndBaseCall()
@@ -237,7 +234,4 @@ public:
 
 };
 
-Test::Suite *createObjectCommandTS()
-{
-	return new CObjectCommandTS;
-}
+#endif

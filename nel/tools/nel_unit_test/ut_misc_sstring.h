@@ -1,24 +1,16 @@
+#ifndef UT_MISC_SSTRING
+#define UT_MISC_SSTRING
 
-#include "nel/misc/app_context.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/sstring.h"
+#include <nel/misc/sstring.h>
 
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
-
-// Test suite for CSString class
-class CSStringTS : public Test::Suite
+struct CUTMiscSString : public Test::Suite
 {
-public:
-	CSStringTS ()
+	CUTMiscSString()
 	{
-		TEST_ADD(CSStringTS::testStrtok);
-
-		// TODO insert code from ryzom/test/sstring.cpp
+		TEST_ADD(CUTMiscSString::testStrtok);
+		// Add a line here when adding a new test METHOD
 	}
-	
+
 	void testStrtok()
 	{
 		CSString testLine("  a=b  c   (a=e b=c) \t\t  c(a=e b=c) toto(bimbo(foo(bar(a=b))))");
@@ -43,11 +35,7 @@ public:
 		TEST_ASSERT(part2 == "bimbo");
 		part2 = part.strtok(" \t=", true, false);
 		TEST_ASSERT(part2 == "(foo(bar(a=b)))");
-
 	}
 };
 
-Test::Suite *createCSStringTS()
-{
-	return new CSStringTS;
-}
+#endif

@@ -1,29 +1,23 @@
+#ifndef UT_MISC_STREAM
+#define UT_MISC_STREAM
 
-#include "nel/misc/stream.h"
-#include "nel/misc/mem_stream.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/sstring.h"
-#include "nel/misc/bit_mem_stream.h"
-
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
+#include <nel/misc/stream.h>
+#include <nel/misc/bit_mem_stream.h>
 
 // The following line is known to crash in a Ryzom service
 CBitMemStream globalBms( false, 2048 ); // global to avoid reallocation
 
 // Test suite for stream based classes
 // ! not complete at all at time of writing !
-class CStreamTS: public Test::Suite
+class CUTMiscStream: public Test::Suite
 {
 public:
-	CStreamTS ()
+	CUTMiscStream ()
 	{
-		TEST_ADD(CStreamTS::constAndStream);
-		TEST_ADD(CStreamTS::memStreamSwap);
-		TEST_ADD(CStreamTS::copyOnWrite);
-		TEST_ADD(CStreamTS::preallocatedBitStream);
+		TEST_ADD(CUTMiscStream::constAndStream);
+		TEST_ADD(CUTMiscStream::memStreamSwap);
+		TEST_ADD(CUTMiscStream::copyOnWrite);
+		TEST_ADD(CUTMiscStream::preallocatedBitStream);
 	}
 
 	void preallocatedBitStream()
@@ -174,8 +168,4 @@ public:
 	}
 };
 
-Test::Suite *createCStreamTS()
-{
-	return new CStreamTS;
-}
-
+#endif
