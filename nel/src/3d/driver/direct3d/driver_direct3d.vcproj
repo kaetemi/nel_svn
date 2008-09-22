@@ -163,123 +163,6 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Shaders"
-			Filter="*.fx"
-			>
-			<File
-				RelativePath="cloud.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap0.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap0_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap0blend.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap0blend_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap1.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap1_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap1blend.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap1blend_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap2_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap2blend.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap2blend_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap3.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap3_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap3blend.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap3blend_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap4.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap4_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap4blend.fx"
-				>
-			</File>
-			<File
-				RelativePath="lightmap4blend_x2.fx"
-				>
-			</File>
-			<File
-				RelativePath="water_diffuse.fx"
-				>
-			</File>
-			<File
-				RelativePath="water_no_diffuse.fx"
-				>
-			</File>
-		</Filter>
-		<File
-			RelativePath="direct3d.rc"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-		</File>
 		<File
 			RelativePath="driver_direct3d.cpp"
 			>
@@ -350,10 +233,6 @@
 		</File>
 		<File
 			RelativePath="driver_direct3d_vertex_program.cpp"
-			>
-		</File>
-		<File
-			RelativePath="resource.h"
 			>
 		</File>
 		<File
