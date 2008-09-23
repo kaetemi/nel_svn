@@ -6,12 +6,11 @@
 
 #include <nel/misc/debug.h>
 
-
 using namespace std;
 
 #include "ut_misc.h"
-//#include "ut_net.h"
-//#include "ut_ligo.h"
+#include "ut_net.h"
+#include "ut_ligo.h"
 // Add a line here when adding a new test MODULE
 
 #ifdef _MSC_VER
@@ -99,8 +98,8 @@ int main(int argc, char *argv[])
 		Test::Suite ts;
 
 		ts.add(auto_ptr<Test::Suite>(new CUTMisc));
-		//ts.add(auto_ptr<Test::Suite>(new CUTNet));
-		//ts.add(auto_ptr<Test::Suite>(new CUTLigo));
+		ts.add(auto_ptr<Test::Suite>(new CUTNet));
+		ts.add(auto_ptr<Test::Suite>(new CUTLigo));
 		// Add a line here when adding a new test MODULE
 
 		auto_ptr<Test::Output> output(cmdline(argc, argv));

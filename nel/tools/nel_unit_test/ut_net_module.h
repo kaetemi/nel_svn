@@ -1,21 +1,16 @@
+#ifndef UT_NET_MODULE
+#define UT_NET_MODULE
 
-#include "nel/misc/dynloadlib.h"
-#include "nel/misc/command.h"
-#include "nel/misc/path.h"
-#include "nel/net/module_common.h"
-#include "nel/net/module_manager.h"
-#include "nel/net/module.h"
-#include "nel/net/inet_address.h"
-#include "nel/net/module_socket.h"
-#include "nel/net/module_gateway.h"
-#include "nel/net/service.h"
-
-
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
-using namespace NLNET;
+#include <nel/misc/dynloadlib.h>
+#include <nel/misc/command.h>
+#include <nel/misc/path.h>
+#include <nel/net/module_common.h>
+#include <nel/net/module_manager.h>
+#include <nel/net/module.h>
+#include <nel/net/inet_address.h>
+#include <nel/net/module_socket.h>
+#include <nel/net/module_gateway.h>
+#include <nel/net/service.h>
 
 class CModuleType0 : public CModuleBase
 {
@@ -460,7 +455,7 @@ public:
 };
 
 // Test suite for Modules class
-class CModuleTS : public Test::Suite
+class CUTNetModule : public Test::Suite
 {
 	string	_WorkingPath;
 	string	_RestorePath;
@@ -505,35 +500,34 @@ public:
 		CPath::setCurrentPath(_RestorePath.c_str());
 	}
 
-	CModuleTS (const std::string &workingPath)
-		: _WorkingPath(workingPath)
+	CUTNetModule ()
 	{
-		TEST_ADD(CModuleTS::testModuleInitInfoParsing);
-		TEST_ADD(CModuleTS::testModuleInitInfoQuering);
-		TEST_ADD(CModuleTS::testModuleInitInfoBadParsing);
-		TEST_ADD(CModuleTS::localModuleFactory);
-		TEST_ADD(CModuleTS::loadModuleLib);
-		TEST_ADD(CModuleTS::createModule);
-		TEST_ADD(CModuleTS::deleteModule);
-		TEST_ADD(CModuleTS::failedInit);
-		TEST_ADD(CModuleTS::unloadModuleLib);
-		TEST_ADD(CModuleTS::createLocalGateway);
-		TEST_ADD(CModuleTS::plugLocalGateway);
-		TEST_ADD(CModuleTS::moduleManagerCommands);
-		TEST_ADD(CModuleTS::gatewayTransportManagement);
-		TEST_ADD(CModuleTS::connectGateways);
-		TEST_ADD(CModuleTS::moduleDisclosure);
-		TEST_ADD(CModuleTS::moduleMessaging);
-		TEST_ADD(CModuleTS::localMessageQueing);
-		TEST_ADD(CModuleTS::uniqueNameGenerator);
-		TEST_ADD(CModuleTS::gwPlugUnplug);
-		TEST_ADD(CModuleTS::peerInvisible);
-		TEST_ADD(CModuleTS::firewalling);
-		TEST_ADD(CModuleTS::distanceAndConnectionLoop);
-		TEST_ADD(CModuleTS::securityPlugin);
-		TEST_ADD(CModuleTS::synchronousMessaging);
-		TEST_ADD(CModuleTS::layer3Autoconnect);
-		TEST_ADD(CModuleTS::interceptorTest);
+		TEST_ADD(CUTNetModule::testModuleInitInfoParsing);
+		TEST_ADD(CUTNetModule::testModuleInitInfoQuering);
+		TEST_ADD(CUTNetModule::testModuleInitInfoBadParsing);
+		TEST_ADD(CUTNetModule::localModuleFactory);
+		//TEST_ADD(CUTNetModule::loadModuleLib);
+		//TEST_ADD(CUTNetModule::createModule);
+		//TEST_ADD(CUTNetModule::deleteModule);
+		TEST_ADD(CUTNetModule::failedInit);
+		//TEST_ADD(CUTNetModule::unloadModuleLib);
+		TEST_ADD(CUTNetModule::createLocalGateway);
+		TEST_ADD(CUTNetModule::plugLocalGateway);
+		//TEST_ADD(CUTNetModule::moduleManagerCommands);
+		TEST_ADD(CUTNetModule::gatewayTransportManagement);
+		TEST_ADD(CUTNetModule::connectGateways);
+		TEST_ADD(CUTNetModule::moduleDisclosure);
+		TEST_ADD(CUTNetModule::moduleMessaging);
+		TEST_ADD(CUTNetModule::localMessageQueing);
+		TEST_ADD(CUTNetModule::uniqueNameGenerator);
+		TEST_ADD(CUTNetModule::gwPlugUnplug);
+		TEST_ADD(CUTNetModule::peerInvisible);
+		TEST_ADD(CUTNetModule::firewalling);
+		TEST_ADD(CUTNetModule::distanceAndConnectionLoop);
+		TEST_ADD(CUTNetModule::securityPlugin);
+		TEST_ADD(CUTNetModule::synchronousMessaging);
+		TEST_ADD(CUTNetModule::layer3Autoconnect);
+		TEST_ADD(CUTNetModule::interceptorTest);
 	}
 
 	void interceptorTest()
@@ -626,7 +620,7 @@ public:
 	
 	void layer3Autoconnect()
 	{
-		// Check that layer 3 client can automaticly reconnect in case of server 
+		// Check that layer 3 client can automatically reconnect in case of server 
 		// down/up
 		//
 		//	We create two gateway, gw1 and gw2, plugged in themselves, then we create
@@ -648,7 +642,7 @@ public:
 		IModuleGateway *gGw1 = dynamic_cast<IModuleGateway *>(gw1);
 		IModuleGateway *gGw2 = dynamic_cast<IModuleGateway *>(gw2);
 
-		// plug gateway in themselve
+		// plug gateway in themselves
 		cr.execute("gw1.plug gw1", InfoLog());
 		cr.execute("gw2.plug gw2", InfoLog());
 
@@ -2702,7 +2696,7 @@ public:
 		TEST_ASSERT(mm.getLocalModule("gw") == NULL);
 	}
 
-	void moduleManagerCommands()
+/*	void moduleManagerCommands()
 	{
 		string cmd;
 		// load a library
@@ -2724,7 +2718,7 @@ public:
 		// delete the module
 		cmd = "moduleManager.deleteModule AModuleName";
 		TEST_ASSERT(CCommandRegistry::getInstance().execute(cmd, InfoLog()));
-	}
+	}*/
 
 	void plugLocalGateway()
 	{
@@ -2776,7 +2770,7 @@ public:
 		TEST_ASSERT(mm.getLocalModule("localGateway") == NULL);
 	}
 
-	void unloadModuleLib()
+/*	void unloadModuleLib()
 	{
 		IModuleManager &mm = IModuleManager::getInstance();
 
@@ -2790,7 +2784,7 @@ public:
 
 		TModulePtr module2 = mm.createModule("ModuleType1", "TheModuleThatCantBeCreated", "the args");
 		TEST_ASSERT(module2 == NULL);
-	}
+	}*/
 
 	void failedInit()
 	{
@@ -2800,7 +2794,7 @@ public:
 		TEST_ASSERT(module == NULL);
 	}
 
-	void deleteModule()
+/*	void deleteModule()
 	{
 		IModuleManager &mm = IModuleManager::getInstance();
 
@@ -2811,9 +2805,9 @@ public:
 
 		mm.deleteModule(module);
 		TEST_ASSERT(checkPtr == NULL);
-	}
+	}*/
 
-	void createModule()
+/*	void createModule()
 	{
 		IModuleManager &mm = IModuleManager::getInstance();
 
@@ -2831,9 +2825,9 @@ public:
 		string fqmn = lh+":"+toString(getpid())+":TheModule";
 
 		TEST_ASSERT(module->getModuleFullyQualifiedName() == fqmn);
-	}
+	}*/
 
-	void loadModuleLib()
+/*	void loadModuleLib()
 	{
 		string moduleLibName = "net_module_lib_test/net_module_lib_test";
 
@@ -2850,7 +2844,7 @@ public:
 		TEST_ASSERT(moduleList[3] == "ModuleType1");
 		TEST_ASSERT(moduleList[4] == "ModuleType2");
 		TEST_ASSERT(moduleList[5] == "StandardGateway");
-	}
+	}*/
 
 	void localModuleFactory()
 	{
@@ -2968,8 +2962,4 @@ public:
 	}
 };
 
-
-Test::Suite *createModuleTS(const std::string &workingPath)
-{
-	return new CModuleTS(workingPath);;
-}
+#endif

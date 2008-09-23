@@ -1,25 +1,8 @@
+#ifndef UT_NET_LAYER3
+#define UT_NET_LAYER3
 
-#include "nel/net/callback_client.h"
-#include "nel/net/callback_server.h"
-#include "nel/net/message.h"
-#include "nel/misc/debug.h"
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
-using namespace NLNET;
-
-/*
- * Note: to be able to step into this program, you need to:
- * - Set "nel_unit_test" as Active Project.
- * - In the Settings of "nel_unit_test", add "code\nel\tools\nel_unit_test\net_ut\net_unit_test_d[f].dll"
- *   in Debug > Additional DLLs > Modules.
- * - In the Settings of "nel_unit_test", set --compiler instead of --html in Debug > General >
- *   Program Arguments.
- * - In you want to run this test suite only, comment the other ones in test_suite.cfg
- *   and in CNetTS::CNetTS() in net_unit_test.cpp.
- * - Uncatched exceptions (including access violations) will behave as a failed test.
- */
+#include <nel/net/callback_client.h>
+#include <nel/net/callback_server.h>
 
 uint16 TestPort1 = 56000;
 
@@ -82,22 +65,21 @@ static TCallbackItem CallbackArray[] =
 
 
 // Test suite for layer 3
-// ! not complete at all at time of writing !
-class CLayer3TS: public Test::Suite
+class CUTNetLayer3: public Test::Suite
 {
 public:
 
 	//
-	CLayer3TS ()
+	CUTNetLayer3 ()
 	{
 		_Server = NULL;
 		_Client = NULL;
-		TEST_ADD(CLayer3TS::sendReceiveUpdate);
+		TEST_ADD(CUTNetLayer3::sendReceiveUpdate);
 
 	}
 
 	//
-	~CLayer3TS ()
+	~CUTNetLayer3 ()
 	{
 		if ( _Server )
 			delete _Server;
@@ -206,7 +188,4 @@ private:
 
 };
 
-Test::Suite *createLayer3TS(const std::string &workingPath)
-{
-	return new CLayer3TS;
-}
+#endif

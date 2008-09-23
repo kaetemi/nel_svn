@@ -501,11 +501,15 @@
 			>
 		</File>
 		<File
-			RelativePath=".\ut_misc.h"
+			RelativePath=".\ut_ligo.h"
 			>
 		</File>
 		<File
-			RelativePath=".\ut_misc_.h"
+			RelativePath=".\ut_ligo_primitive.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ut_misc.h"
 			>
 		</File>
 		<File

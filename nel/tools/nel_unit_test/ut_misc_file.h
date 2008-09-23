@@ -22,8 +22,8 @@ private:
 
 	void setup()
 	{
-		_SrcFile = "copy_file_src.foo";
-		_DstFile = "copy_file_dst.foo";
+		_SrcFile = "__copy_file_src.foo";
+		_DstFile = "__copy_file_dst.foo";
 	}
 
 	void tear_down()

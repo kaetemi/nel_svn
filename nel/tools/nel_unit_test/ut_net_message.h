@@ -1,23 +1,14 @@
+#ifndef UT_NET_MESSAGE
+#define UT_NET_MESSAGE
 
-#include "nel/net/message.h"
-#include "nel/misc/debug.h"
-
-#include "cpptest.h"
-
-using namespace std;
-using namespace NLMISC;
-using namespace NLNET;
-
-// Test suite for stream based classes
-// ! not complete at all at time of writing !
-class CMessageTS: public Test::Suite
+class CUTNetMessage: public Test::Suite
 {
 public:
-	CMessageTS ()
+	CUTNetMessage ()
 	{
-		TEST_ADD(CMessageTS::messageSwap);
-		TEST_ADD(CMessageTS::lockSubMEssage);
-		TEST_ADD(CMessageTS::lockSubMEssageWithLongName);
+		TEST_ADD(CUTNetMessage::messageSwap);
+		TEST_ADD(CUTNetMessage::lockSubMEssage);
+		TEST_ADD(CUTNetMessage::lockSubMEssageWithLongName);
 
 	}
 
@@ -291,8 +282,4 @@ public:
 	}
 };
 
-Test::Suite *createCMessageTS()
-{
-	return new CMessageTS;
-}
-
+#endif

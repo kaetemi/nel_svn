@@ -1,39 +1,17 @@
+#ifndef UT_LIGO_PRIMITIVE
+#define UT_LIGO_PRIMITIVE
 
-#include "nel/misc/types_nl.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/path.h"
-#include "nel/misc/dynloadlib.h"
+#include <nel/ligo/ligo_config.h>
+#include <nel/ligo/primitive_utils.h>
 
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include "cpptest.h"
-
-#include "nel/misc/path.h"
-#include "nel/ligo/primitive.h"
-#include "nel/ligo/ligo_config.h"
-#include "nel/ligo/primitive_utils.h"
-
-using namespace std;
-using namespace NLMISC;
-using namespace NLLIGO;
-
-class CLigoUnitTestNelLibrary : public INelLibrary { 
-	void onLibraryLoaded(bool firstTime) { } 
-	void onLibraryUnloaded(bool lastTime) { }  
-};
-NLMISC_DECL_PURE_LIB(CLigoUnitTestNelLibrary);
-
-// Test suite for CFile behavior
-class CPrimitiveTS : public Test::Suite
+class CUTLigoPrimitive : public Test::Suite
 {
 public:
-	CPrimitiveTS(const std::string &workingPath)
+	CUTLigoPrimitive()
 	{
-		_WorkingPath = workingPath;
-		TEST_ADD(CPrimitiveTS::testAliasGenerator)
+		TEST_ADD(CUTLigoPrimitive::testAliasGenerator)
 	}
-	
+
 private:
 
 	string	_RestorePath;
@@ -44,7 +22,7 @@ private:
 		_RestorePath = CPath::getCurrentPath();
 		CPath::setCurrentPath(_WorkingPath.c_str());
 
-		_RefPrimFileName = "test_prim.primitive";
+		_RefPrimFileName = "__test_prim.primitive";
 
 		// register ligo class factory
 		NLLIGO::Register();
@@ -52,7 +30,7 @@ private:
 		// create a primitive config file
 		nlinfo("Building a default ligo class file");
 
-		char	*CLASS_FILE_NAME = "ligo_class.xml";
+		char	*CLASS_FILE_NAME = "__ligo_class.xml";
 
 		string classfile;
 		classfile = string()
@@ -171,30 +149,7 @@ private:
 		}
 	}
 
-
 	CLigoConfig		_LigoConfig;
 };
 
-
-// global test for any misc feature
-class CLigoTS : public Test::Suite
-{
-public:
-	CLigoTS(const std::string &workingPath)
-	{
-		add(auto_ptr<Test::Suite>(new CPrimitiveTS(workingPath)));
-	}
-
-private:
-};
-
-
-
-auto_ptr<Test::Suite> intRegisterTestSuite(const std::string &workingPath)
-{
-	// initialise a Nel context
-	CApplicationContext::getInstance();
-	return auto_ptr<Test::Suite>(static_cast<Test::Suite*>(new CLigoTS(workingPath)));
-}
-
-NL_LIB_EXPORT_SYMBOL(registerTestSuite, void, intRegisterTestSuite);
+#endif
