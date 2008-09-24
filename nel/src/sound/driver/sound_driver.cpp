@@ -37,9 +37,9 @@ using namespace NLMISC;
 
 #if defined( NL_OS_WINDOWS )
 #	define NL_FMOD_AVAILABLE 1
-#	define NL_OPENAL_AVAILABLE 1
-#	define NL_DSOUND_AVAILABLE 1
-#	define NL_XAUDIO2_AVAILABLE 1
+#	define NL_OPENAL_AVAILABLE 0
+#	define NL_DSOUND_AVAILABLE 0
+#	define NL_XAUDIO2_AVAILABLE 0
 #elif defined( NL_OS_UNIX )
 #	define NL_FMOD_AVAILABLE 1
 #	define NL_OPENAL_AVAILABLE 1
