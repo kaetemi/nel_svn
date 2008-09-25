@@ -1360,17 +1360,17 @@ bool CPSConstraintMesh::update(std::vector<sint> *numVertsVect /*= NULL*/)
 			}
 		}
 
-		if (!ok)
-		{
-			releaseShapes();
-			_Meshes.resize(1);
-			_MeshVertexBuffers.resize(1);
-			_Meshes[0] = GetDummyMeshFromBank(*_ModelBank);
-			_MeshVertexBuffers[0] = &_Meshes[0]->getVertexBuffer();
-			if (!numVertsVect) break;
-		}
+		if (!ok && !numVertsVect) break;
 	}
 
+	if (!ok)
+	{
+		releaseShapes();
+		_Meshes.resize(1);
+		_MeshVertexBuffers.resize(1);
+		_Meshes[0] = GetDummyMeshFromBank(*_ModelBank);
+		_MeshVertexBuffers[0] = &_Meshes[0]->getVertexBuffer();
+	}
 
 	const CMesh &m  = *_Meshes[0];
 
