@@ -1364,6 +1364,7 @@ bool CPSConstraintMesh::update(std::vector<sint> *numVertsVect /*= NULL*/)
 		{
 			releaseShapes();
 			_Meshes.resize(1);
+			_MeshVertexBuffers.resize(1);
 			_Meshes[0] = GetDummyMeshFromBank(*_ModelBank);
 			_MeshVertexBuffers[0] = &_Meshes[0]->getVertexBuffer();
 			if (!numVertsVect) break;
