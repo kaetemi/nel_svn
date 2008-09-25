@@ -29,8 +29,8 @@
 
 #include "buffer_al.h"
 #include "listener_al.h"
-#include "submix_al.h"
 #include "effect_al.h"
+#include "source_al.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -184,6 +184,12 @@ CSoundDriverAL::~CSoundDriverAL()
 	// Remove the allocated (but not exported) source and buffer names
 	alDeleteSources(compactAliveNames(_Sources, alIsSource), &*_Sources.begin());
 	alDeleteBuffers(compactAliveNames(_Buffers, alIsBuffer), &*_Buffers.begin());
+	// Release internal resources of all remaining IEffect instances
+	{
+		set<CEffectAL *>::iterator it(_Effects.begin()), end(_Effects.end());
+		for (; it != end; ++it) removeEffect(*it);
+		_Effects.clear();
+	}
 
 	// OpenAL exit
 	if (_AlContext) { alcDestroyContext(_AlContext); _AlContext = NULL; }
@@ -240,19 +246,19 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 #endif
 	alTestError();
 
-	nldebug("AL: Max. sources: %u, Max. submixes per source: %u", (uint32)countMaxSources(), (uint32)countMaxSubmixes());
+	nldebug("AL: Max. sources: %u, Max. effects: %u", (uint32)countMaxSources(), (uint32)countMaxEffects());
 
-	if (getOption(OptionSubmixEffects)) 
+	if (getOption(OptionEnvironmentEffects)) 
 	{
 		if (!AlExtEfx)
 		{
-			nlwarning("AL: ALC_EXT_EFX is required, submix effects disabled");
-			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+			nlwarning("AL: ALC_EXT_EFX is required, environment effects disabled");
+			_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
 		}
-		else if (!countMaxSubmixes())
+		else if (!countMaxEffects())
 		{		
-			nlwarning("AL: No submixes available, submix effects disabled");
-			_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+			nlwarning("AL: No effects available, environment effects disabled");
+			_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
 		}
 	}
 
@@ -354,64 +360,76 @@ ISource *CSoundDriverAL::createSource()
 	return sourceal;
 }
 
-/// Create a submix
-ISubmix *CSoundDriverAL::createSubmix()
+/// Create a reverb effect
+IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 {
-	ALuint object;
-	alGenAuxiliaryEffectSlots(1, &object);
+	IEffect *ieffect = NULL;
+	CEffectAL *effectal = NULL;
+
+	ALuint slot = AL_NONE;
+	alGenAuxiliaryEffectSlots(1, &slot);
 	if (alGetError() != AL_NO_ERROR)
 	{
 		nlwarning("AL: alGenAuxiliaryEffectSlots failed");
 		return NULL;
 	}
-	_Submixes.push_back(object);
-	CSubmixAl *result = new CSubmixAl(object);
-	return static_cast<ISubmix *>(result);
-}
 
-/// Create a reverb effect
-IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
-{
-	ALuint object;
-	alGenEffects(1, &object);
-	IEffect *result = NULL;
+	ALuint effect = AL_NONE;
+	alGenEffects(1, &effect);
 	if (alGetError() != AL_NO_ERROR)
 	{
 		nlwarning("AL: alGenEffects failed");
+		alDeleteAuxiliaryEffectSlots(1, &slot);
 		return NULL; /* createEffect */
 	}
+
 	switch (effectType)
 	{
 	case IEffect::Reverb:
 #if EFX_CREATIVE_AVAILABLE
-		alEffecti(object, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 		if (alGetError() != AL_NO_ERROR)
 		{
 			nlinfo("AL: Creative Reverb Effect not supported, falling back to standard Reverb Effect");
 		}
 		else
 		{
-			result = static_cast<IEffect *>(new CCreativeReverbEffectAl(object));
+			CCreativeReverbEffectAL *eff = new CCreativeReverbEffectAL(this, effect, slot);
+			ieffect = static_cast<IEffect *>(eff);
+			effectal = static_cast<CEffectAL *>(eff);
 			break; /* switch (effectType) */
 		}
 #endif		
-		alEffecti(object, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
+		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 		if (alGetError() != AL_NO_ERROR)
 		{
 			nlwarning("AL: Reverb Effect not supported");
-			alDeleteEffects(1, &object);
+			alDeleteAuxiliaryEffectSlots(1, &slot);
+			alDeleteEffects(1, &effect);
 			return NULL; /* createEffect */
 		}
-		result = static_cast<IEffect *>(new CStandardReverbEffectAl(object));
-		break;
+		else
+		{
+			CStandardReverbEffectAL *eff = new CStandardReverbEffectAL(this, effect, slot);
+			ieffect = static_cast<IEffect *>(eff);
+			effectal = static_cast<CEffectAL *>(eff);
+			break; /* switch (effectType) */
+		}
+		break; /* switch (effectType) */
 	default:
 		nlwarning("AL: Invalid effectType");
-		alDeleteEffects(1, &object);
+		alDeleteAuxiliaryEffectSlots(1, &slot);
+		alDeleteEffects(1, &effect);
 		return NULL; /* createEffect */
 	}
-	nlassert(result);
-	_Effects.push_back(object);
-	return result; /* createEffect */
+	nlassert(ieffect);
+	nlassert(effectal);
+	_Effects.insert(effectal);
+	return ieffect; /* createEffect */
 }
 
 /// Return the maximum number of sources that can created
@@ -423,10 +441,10 @@ uint CSoundDriverAL::countMaxSources()
 	return 128;
 }
 
-/// Return the maximum number of submixers that can be created, which is only 1 in openal software mode :(
-uint CSoundDriverAL::countMaxSubmixes()
+/// Return the maximum number of effects that can be created, which is only 1 in openal software mode :(
+uint CSoundDriverAL::countMaxEffects()
 {
-	if (!getOption(OptionSubmixEffects)) return 0;
+	if (!getOption(OptionEnvironmentEffects)) return 0;
 	if (!AlExtEfx) return 0;
 	ALCint max_auxiliary_sends;
 	alcGetIntegerv(_AlDevice, ALC_MAX_AUXILIARY_SENDS, 1, &max_auxiliary_sends);
@@ -490,38 +508,43 @@ uint CSoundDriverAL::compactAliveNames( vector<ALuint>& names, TTestFunctionAL a
 }
 
 
-/*
- * Remove a buffer
- */
-void			CSoundDriverAL::removeBuffer( IBuffer *buffer )
+/// Remove a buffer
+void CSoundDriverAL::removeBuffer(CBufferAL *buffer)
 {
-	nlassert( buffer != NULL );
-	CBufferAL *bufferAL = dynamic_cast<CBufferAL*>(buffer);
-	if ( ! deleteItem( bufferAL->bufferName(), alDeleteBuffers, _Buffers ) )
-	{
-		nlwarning("AL: Deleting buffer: name not found" );
-	}
+	nlassert(buffer != NULL);
+	if (!deleteItem( buffer->bufferName(), alDeleteBuffers, _Buffers))
+		nlwarning("AL: Deleting buffer: name not found");
 }
 
-
-/*
- * Remove a source
- */
-void			CSoundDriverAL::removeSource( ISource *source )
+/// Remove a source
+void CSoundDriverAL::removeSource(CSourceAL *source)
 {
-	nlassert( source != NULL );
-	CSourceAL *sourceAL = dynamic_cast<CSourceAL*>(source);
-	if ( ! deleteItem( sourceAL->sourceName(), alDeleteSources, _Sources ) )
-	{
-		nlwarning("AL: Deleting source: name not found" );
-	}
+	nlassert(source != NULL);
+	if (!deleteItem( source->sourceName(), alDeleteSources, _Sources))
+		nlwarning("AL: Deleting source: name not found");
+}
+
+/// Remove an effect
+void CSoundDriverAL::removeEffect(CEffectAL *effect)
+{
+	nlassert(effect != NULL);
+
+	set<CEffectAL *>::iterator it = _Effects.find(effect);
+	if (it == _Effects.end()) 
+		{ nlwarning("AL: Deleting effect: name not found"); return; }
+
+	ALuint slotname = effect->getAuxEffectSlot();
+	ALuint effectname = effect->getAlEffect();
+	alDeleteAuxiliaryEffectSlots(1, &slotname);
+	alDeleteEffects(1, &effectname);
+	_Effects.erase(it);
 }
 
 
 /*
  * Delete a buffer or a source
  */
-bool			CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, vector<ALuint>& names )
+bool CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, vector<ALuint>& names )
 {
 	vector<ALuint>::iterator ibn = find( names.begin(), names.end(), name );
 	if ( ibn == names.end() )

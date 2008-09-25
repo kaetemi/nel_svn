@@ -882,7 +882,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 	}
 
 	// evalutate the current env fx
-	if (mixer->useSubmixEffects())
+	if (mixer->useEnvironmentEffects())
 	{
 		H_AUTO(NLSOUND_EvaluateEnvFx)
 		NL3D::CCluster *rootCluster = 0;

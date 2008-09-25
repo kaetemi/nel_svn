@@ -56,7 +56,7 @@ namespace NLSOUND
 {
 
 // Interface version
-const uint32 ISoundDriver::InterfaceVersion = 0x0B;
+const uint32 ISoundDriver::InterfaceVersion = 0x0C;
 
 #ifdef NL_STATIC
 

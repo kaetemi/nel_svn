@@ -1,9 +1,9 @@
 /**
  * \file effect_al.h
- * \brief CReverbEffectAl
+ * \brief CReverbEffectAL
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CReverbEffectAl
+ * CReverbEffectAL
  */
 
 /* 
@@ -37,70 +37,74 @@
 // Project includes
 
 namespace NLSOUND {
+	class CSoundDriverAL;
 
 /**
- * \brief CReverbEffectAl
- * \date 2008-09-15 23:09GMT
+ * \brief CEffectAL
+ * \date 2008-09-25 08:21GMT
  * \author Jan Boon (Kaetemi)
- * CReverbEffectAl
+ * CEffectAL
  */
-class CReverbEffectAl : public IReverbEffect
+class CEffectAL
 {
 protected:
+	// outside pointers
+	CSoundDriverAL *_SoundDriver;
+
 	// instances
 	ALuint _AlEffect;
+	ALuint _AlAuxEffectSlot;
+
 public:
-	CReverbEffectAl(ALuint alEfxObject);
-	virtual ~CReverbEffectAl();
-
-	inline ALuint getAlEfxObject() { return _AlEffect; }
-
-	// IEffect
-	virtual TEffectType getType();
-}; /* class CReverbEffectAl */
+	CEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
+	virtual ~CEffectAL();
+	
+	inline ALuint getAlEffect() { return _AlEffect; }
+	inline ALuint getAuxEffectSlot() { return _AlAuxEffectSlot; }
+	
+}; /* class CEffectAL */
 
 /**
- * \brief CStandardReverbEffectAl
+ * \brief CStandardReverbEffectAL
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CStandardReverbEffectAl
+ * CStandardReverbEffectAL
  */
-class CStandardReverbEffectAl : public CReverbEffectAl
+class CStandardReverbEffectAL : public IReverbEffect, public CEffectAL
 {
-protected:
-	// pointers
-	
-	// instances
-
 public:
-	CStandardReverbEffectAl(ALuint alEfxObject);
-	virtual ~CStandardReverbEffectAl();
+	CStandardReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
+	virtual ~CStandardReverbEffectAL();
 
 	// IReverbEffect
 	virtual void setEnvironment(const CEnvironment &environment);
-}; /* class CReverbEffectAl */
+
+	virtual IEffect::TEffectType getType();
+
+	virtual void setGain(float gain);
+}; /* class CReverbEffectAL */
 
 #if EFX_CREATIVE_AVAILABLE
 
 /**
- * \brief CCreativeReverbEffectAl
+ * \brief CCreativeReverbEffectAL
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CCreativeReverbEffectAl
+ * CCreativeReverbEffectAL
  */
-class CCreativeReverbEffectAl : public CReverbEffectAl
+class CCreativeReverbEffectAL : public IReverbEffect, public CEffectAL
 {
-protected:
-	// pointers
-	
-	// instances
 public:
-	CCreativeReverbEffectAl(ALuint alEfxObject);
-	virtual ~CCreativeReverbEffectAl();
+	CCreativeReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
+	virtual ~CCreativeReverbEffectAL();
 
 	// IReverbEffect
 	virtual void setEnvironment(const CEnvironment &environment);
-}; /* class CReverbEffectAl */
+
+	virtual IEffect::TEffectType getType();
+
+	virtual void setGain(float gain);
+}; /* class CReverbEffectAL */
 
 #endif /* #if EFX_CREATIVE_AVAILABLE */
 

@@ -52,7 +52,6 @@
 #include "../source.h"
 #include "../listener.h"
 #include "../effect.h"
-#include "../submix.h"
 
 // Defines
 #define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"

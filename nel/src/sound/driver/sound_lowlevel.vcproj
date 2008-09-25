@@ -207,14 +207,6 @@
 			RelativePath="source.h"
 			>
 		</File>
-		<File
-			RelativePath=".\submix.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\submix.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

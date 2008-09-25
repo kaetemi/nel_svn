@@ -97,7 +97,7 @@ public:
 	enum TSoundOptions
 	{
 		/// Enable EAX/I3DL2 environment effects. (not implemented on FMod driver).
-		OptionSubmixEffects = 0x01, 
+		OptionEnvironmentEffects = 0x01, 
 		/// Allow the user to use the ADPCM encoding. (verify availability with getOption)
 		OptionAllowADPCM = 0x02, 
 		/// Force software buffering (always true for XAudio2).
@@ -171,14 +171,12 @@ public:
 	virtual	ISource *createSource() = 0;
 	/// Create a sound buffer, destroy with delete
 	virtual	IBuffer *createBuffer() = 0;
-	/// Create a submix
-	virtual ISubmix *createSubmix() { return NULL; }
 	/// Create an effect
 	virtual IEffect *createEffect(IEffect::TEffectType effectType) { return NULL; }
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources() = 0;
-	/// Return the maximum number of submixers that can be created
-	virtual uint countMaxSubmixes() { return 0; }
+	/// Return the maximum number of effects that can be created
+	virtual uint countMaxEffects() { return 0; }
 
 	/// Create a native music channel, only supported by the FMod driver.
 	virtual IMusicChannel *createMusicChannel() { return NULL; }

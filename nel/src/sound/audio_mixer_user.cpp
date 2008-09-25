@@ -41,7 +41,6 @@
 #include "nel/3d/scene_user.h"
 #include "driver/sound_driver.h"
 #include "driver/buffer.h"
-#include "driver/submix.h"
 #include "driver/effect.h"
 
 #include "background_sound_manager.h"
@@ -98,7 +97,6 @@ UAudioMixer	*UAudioMixer::createAudioMixer()
 CAudioMixerUser::CAudioMixerUser() : _AutoLoadSample(false),
 									 _UseADPCM(true),
 									 _SoundDriver(NULL), 
-									 _ReverbSubmix(NULL), 
 									 _ReverbEffect(NULL), 
 									 _BackgroundSoundManager(0),
 									 _ClusteredSound(0),
@@ -159,7 +157,6 @@ CAudioMixerUser::~CAudioMixerUser()
 	}
 
 	// Reverb effect
-	delete _ReverbSubmix; _ReverbSubmix = NULL;
 	delete _ReverbEffect; _ReverbEffect = NULL;
 
 	// Sound driver
@@ -356,7 +353,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			
 			// the options to init the driver
 			uint driverOptions = 0;
-			if (_UseEax) driverOptions |= ISoundDriver::OptionSubmixEffects;
+			if (_UseEax) driverOptions |= ISoundDriver::OptionEnvironmentEffects;
 			if (_UseADPCM) driverOptions |= ISoundDriver::OptionAllowADPCM;
 			if (forceSoftwareBuffer) driverOptions |= ISoundDriver::OptionSoftwareBuffer;
 #if MANUAL_ROLLOFF
@@ -368,9 +365,9 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			_SoundDriver->init(driverDevice, (ISoundDriver::TSoundOptions)driverOptions);
 			
 			// verify the options
-			if (_UseEax && !_SoundDriver->getOption(ISoundDriver::OptionSubmixEffects))
+			if (_UseEax && !_SoundDriver->getOption(ISoundDriver::OptionEnvironmentEffects))
 			{
-				nlwarning("AM: OptionSubmixEffects not available, _UseEax = false");
+				nlwarning("AM: OptionEnvironmentEffects not available, _UseEax = false");
 				_UseEax = false;
 			}
 			if (_UseADPCM && !_SoundDriver->getOption(ISoundDriver::OptionAllowADPCM))
@@ -415,14 +412,9 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 
 	if (_UseEax)
 	{
-		// create submix for reverb
-		if (!(_ReverbSubmix = _SoundDriver->createSubmix())) 
+		if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb))))
 			{ _UseEax = false; }
-		// create effect for reverb
-		else if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb)))) 
-			{ delete _ReverbSubmix; _ReverbSubmix = NULL; _UseEax = false; }
-		// attach the reverb effect to the submixer
-		else { nldebug("AM: Reverb OK"); _ReverbSubmix->setEffect(_ReverbEffect); }
+		else { nldebug("AM: Reverb OK"); }
 	}
 
 	// Init tracks (physical sources)
@@ -1176,7 +1168,7 @@ CTrack *CAudioMixerUser::getFreeTrackWithoutSource(bool steal)
 		_FreeTracks.pop_back();
 		nlassert(!free_track->getSource());		
 		++_ReserveUsage[HighestPri];
-		if (_UseEax) free_track->DrvSource->setSubmix(NULL); // no reverb!
+		if (_UseEax) free_track->DrvSource->setEffect(NULL); // no reverb!
 		return free_track;
 	}
 	else if (steal) for (uint i = 0; i < _Tracks.size(); ++i)
@@ -1195,7 +1187,7 @@ CTrack *CAudioMixerUser::getFreeTrackWithoutSource(bool steal)
 				_FreeTracks.pop_back();
 				nlassert(!free_track->getSource());
 				++_ReserveUsage[HighestPri];
-				if (_UseEax) free_track->DrvSource->setSubmix(NULL); // no reverb!
+				if (_UseEax) free_track->DrvSource->setEffect(NULL); // no reverb!
 				return free_track;
 			}
 		}
@@ -1274,7 +1266,7 @@ void CAudioMixerUser::freeTrackWithoutSource(CTrack *track)
 {
 	nlassert(track);
 
-	if (_UseEax) track->DrvSource->setSubmix(_ReverbSubmix); // return reverb!
+	if (_UseEax) track->DrvSource->setEffect(_ReverbEffect); // return reverb!
 	--_ReserveUsage[HighestPri];
 	_FreeTracks.push_back(track);
 }
@@ -2258,7 +2250,7 @@ void CAudioMixerUser::changeMaxTrack(uint maxTrack)
 
 				_Tracks[i] = new CTrack();
 				_Tracks[i]->init(_SoundDriver);
-				if (_UseEax) _Tracks[i]->DrvSource->setSubmix(_ReverbSubmix);
+				if (_UseEax) _Tracks[i]->DrvSource->setEffect(_ReverbEffect);
 				// insert in front because the last inserted wan be sofware buffer...
 				_FreeTracks.insert(_FreeTracks.begin(), _Tracks[i]);
 			}

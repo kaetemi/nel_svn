@@ -248,14 +248,6 @@
 				RelativePath=".\effect_xaudio2.h"
 				>
 			</File>
-			<File
-				RelativePath=".\submix_xaudio2.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\submix_xaudio2.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\driver_xaudio2.def"

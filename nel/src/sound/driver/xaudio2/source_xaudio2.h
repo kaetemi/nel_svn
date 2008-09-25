@@ -61,7 +61,7 @@ protected:
 	/// Listener voice
 	IXAudio2Voice *_ListenerVoice;
 	/// Submix voice
-	IXAudio2Voice *_SubmixVoice;
+	IXAudio2Voice *_EffectVoice;
 	
 	// -- Pointers --
 	/// Source voice, can be NULL!
@@ -132,7 +132,7 @@ public:
 	void submitStaticBuffer();
 	
 	/// Set the submix send for this source, NULL to disable.
-	virtual void setSubmix(ISubmix *submix);
+	virtual void setEffect(IEffect *effect);
 
 	// ISource Functions
 	/// \name Initialization

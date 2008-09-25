@@ -50,7 +50,6 @@
 #include "../buffer.h"
 #include "../source.h"
 #include "../listener.h"
-#include "../submix.h"
 #include "../effect.h"
 
 #include "ext_al.h"

@@ -1,9 +1,9 @@
 /**
  * \file effect_al.cpp
- * \brief CReverbEffectAl
+ * \brief CReverbEffectAL
  * \date 2008-09-15 23:09GMT
  * \author Jan Boon (Kaetemi)
- * CReverbEffectAl
+ * CReverbEffectAL
  */
 
 /* 
@@ -38,41 +38,43 @@ namespace NLSOUND {
 
 // ******************************************************************
 
-CReverbEffectAl::CReverbEffectAl(ALuint alEfxObject) : _AlEffect(alEfxObject)
+CEffectAL::CEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot) : _SoundDriver(soundDriver), _AlEffect(alEffect), _AlAuxEffectSlot(alAuxEffectSlot)
 {
 
 }
 
-CReverbEffectAl::~CReverbEffectAl()
+CEffectAL::~CEffectAL()
 {
-	
-}
-
-IEffect::TEffectType CReverbEffectAl::getType()
-{
-	return Reverb;
+	if (_SoundDriver)
+	{
+		_SoundDriver->removeEffect(this);
+		_SoundDriver = NULL;
+		_AlEffect = AL_NONE;
+		_AlAuxEffectSlot = AL_NONE;
+	}
 }
 
 // ******************************************************************
 
-CStandardReverbEffectAl::CStandardReverbEffectAl(ALuint alEfxObject) : CReverbEffectAl(alEfxObject)
+CStandardReverbEffectAL::CStandardReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot) : CEffectAL(soundDriver, alEffect, alAuxEffectSlot)
 {
 	// unused params, set default values
 	alEffectf(_AlEffect, AL_REVERB_AIR_ABSORPTION_GAINHF, 0.994f);
 	alEffectf(_AlEffect, AL_REVERB_ROOM_ROLLOFF_FACTOR, 0.0f);
 	alEffectf(_AlEffect, AL_REVERB_DECAY_HFLIMIT, AL_TRUE);
+
 	// set default environment
 	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
 }
 
-CStandardReverbEffectAl::~CStandardReverbEffectAl()
+CStandardReverbEffectAL::~CStandardReverbEffectAL()
 {
 
 }
 
-void CStandardReverbEffectAl::setEnvironment(const CEnvironment &environment)
+void CStandardReverbEffectAL::setEnvironment(const CEnvironment &environment)
 {
-	nldebug("AL: CStandardReverbEffectAl::setEnvironment, size: %f", environment.RoomSize);
+	nldebug("AL: CStandardReverbEffectAL::setEnvironment, size: %f", environment.RoomSize);
 
 	// *** TODO *** environment.RoomSize
 	alEffectf(_AlEffect, AL_REVERB_DENSITY, environment.Density / 100.0f); alTestWarning("AL_REVERB_DENSITY");
@@ -87,24 +89,46 @@ void CStandardReverbEffectAl::setEnvironment(const CEnvironment &environment)
 	alEffectf(_AlEffect, AL_REVERB_LATE_REVERB_DELAY, environment.LateReverbDelay); alTestWarning("AL_REVERB_LATE_REVERB_DELAY");
 }
 
+void CStandardReverbEffectAL::setGain(float gain)
+{
+	alAuxiliaryEffectSlotf(_AlAuxEffectSlot, AL_EFFECTSLOT_GAIN, gain);
+}
+
+/// Get the type of effect (reverb, etc)
+IEffect::TEffectType CStandardReverbEffectAL::getType()
+{
+	return Reverb;
+}
+
 // ******************************************************************
 
 #if EFX_CREATIVE_AVAILABLE
 
-CCreativeReverbEffectAl::CCreativeReverbEffectAl(ALuint alEfxObject) : CReverbEffectAl(alEfxObject)
+CCreativeReverbEffectAL::CCreativeReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot) : CEffectAL(soundDriver, alEffect, alAuxEffectSlot)
 {
 	// set default environment
 	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
 }
 
-CCreativeReverbEffectAl::~CCreativeReverbEffectAl()
+CCreativeReverbEffectAL::~CCreativeReverbEffectAL()
 {
 
 }
 
-void CCreativeReverbEffectAl::setEnvironment(const CEnvironment &environment)
+void CCreativeReverbEffectAL::setGain(float gain)
 {
-	nldebug("AL: CCreativeReverbEffectAl::setEnvironment, size: %f", environment.RoomSize);
+	alAuxiliaryEffectSlotf(_AlAuxEffectSlot, AL_EFFECTSLOT_GAIN, gain);
+}
+
+/// Get the type of effect (reverb, etc)
+IEffect::TEffectType CCreativeReverbEffectAL::getType()
+{
+	return Reverb;
+}
+
+void CCreativeReverbEffectAL::setEnvironment(const CEnvironment &environment)
+{
+	nldebug("AL: CCreativeReverbEffectAL::setEnvironment, size: %f", environment.RoomSize);
 
 	EAXREVERBPROPERTIES eaxreverb;
 	eaxreverb.ulEnvironment = 26;

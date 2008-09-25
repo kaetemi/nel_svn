@@ -67,7 +67,7 @@ public:
 	inline ALuint sourceName() { return _SourceName; }
 
 	/// Set the submixer.
-	virtual void setSubmix(ISubmix *submix);
+	virtual void setEffect(IEffect *effect);
 
 	/// \name Initialization
 	//@{

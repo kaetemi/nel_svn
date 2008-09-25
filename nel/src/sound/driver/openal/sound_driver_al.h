@@ -25,11 +25,11 @@
 #define NL_SOUND_DRIVER_AL_H
 #include <nel/misc/types_nl.h>
 
-#include "source_al.h"
-#include "buffer_al.h"
-
 namespace NLSOUND {
-
+	class CBufferAL;
+	class CListenerAL;
+	class CSourceAL;
+	class CEffectAL;
 
 // alGenBuffers, alGenSources
 //typedef ALAPI ALvoid ALAPIENTRY (*TGenFunctionAL) ( ALsizei, ALuint* );
@@ -84,10 +84,8 @@ private:
 	std::vector<ALuint> _Buffers;
 	// Allocated sources
 	std::vector<ALuint> _Sources;
-	// Allocated submixers
-	std::vector<ALuint> _Submixes;
 	// Allocated effects
-	std::vector<ALuint> _Effects;
+	std::set<CEffectAL *> _Effects;
 	// Number of exported buffers (including any deleted buffers)
 	uint _NbExpBuffers;
 	// Number of exported sources (including any deleted sources)
@@ -102,6 +100,8 @@ public:
 
 	/// Constructor
 	CSoundDriverAL(ISoundDriver::IStringMapperProvider *stringMapper);
+	/// Destructor
+	virtual ~CSoundDriverAL();
 
 	inline ALCdevice *getAlDevice() { return _AlDevice; }
 	inline ALCcontext *getAlContext() { return _AlContext; }
@@ -122,14 +122,12 @@ public:
 	virtual	IListener *createListener();
 	/// Create a source
 	virtual	ISource *createSource();
-	/// Create a submix
-	virtual ISubmix *createSubmix();
 	/// Create an effect
 	virtual IEffect *createEffect(IEffect::TEffectType effectType);
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources();
-	/// Return the maximum number of submixers that can be created
-	virtual uint countMaxSubmixes();
+	/// Return the maximum number of effects that can be created
+	virtual uint countMaxEffects();
 	
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
 	
@@ -152,21 +150,12 @@ public:
 	/// Write information about the driver to the output stream.
 	virtual void writeProfile(std::string& out) { }
 
-public:
-
-	/// Destructor
-	virtual					~CSoundDriverAL();
-
-protected:
-
-	friend CBufferAL::~CBufferAL();
-	friend CSourceAL::~CSourceAL();
-
 	/// Remove a buffer
-	void					removeBuffer( IBuffer *buffer );
-
+	void removeBuffer(CBufferAL *buffer);
 	/// Remove a source
-	void					removeSource( ISource *source );
+	void removeSource(CSourceAL *source);
+	/// Remove an effect
+	void removeEffect(CEffectAL *effect);
 
 protected:
 

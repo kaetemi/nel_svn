@@ -56,7 +56,6 @@ namespace NLSOUND {
 	class CBackgroundSoundManager;
 	class CMusicSoundManager;
 	class IReverbEffect;
-	class ISubmix;
 
 /// Hasher functor for hashed container with pointer key.
 template <class Pointer>
@@ -345,9 +344,8 @@ public:
 	virtual void	setEventMusicVolume(float gain);
 	virtual bool	isEventMusicEnded();
 
-	inline ISubmix *getReverbSubmix() { return _ReverbSubmix; }
 	inline IReverbEffect *getReverbEffect() { return _ReverbEffect; }
-	inline bool useSubmixEffects() const { return _UseEax; }
+	inline bool useEnvironmentEffects() const { return _UseEax; }
 
 private:
 	enum	TMusicChannel
@@ -508,12 +506,10 @@ private:
 
 	/// The listener instance
 	CListenerUser				_Listener;
-
-	/// The reverb submix
-	ISubmix *_ReverbSubmix;
+	
 	/// The reverb effect
 	IReverbEffect *_ReverbEffect;
-
+	
 	/// Listener position vector
 	NLMISC::CVector				_ListenPosition;
 

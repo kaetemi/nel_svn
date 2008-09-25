@@ -58,6 +58,9 @@ public:
 
 	/// Get the type of effect (reverb, etc)
 	virtual TEffectType getType() = 0;
+
+	/// Set the volume of this effect
+	virtual void setGain(float gain) = 0;
 }; /* class IEffect */
 
 // effect presets (based on I3DL2 specification, see 3dl2help.h)

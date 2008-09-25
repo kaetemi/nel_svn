@@ -391,10 +391,6 @@
 			>
 		</File>
 		<File
-			RelativePath="sound\sound_controller.h"
-			>
-		</File>
-		<File
 			RelativePath="sound\stdsound.cpp"
 			>
 			<FileConfiguration

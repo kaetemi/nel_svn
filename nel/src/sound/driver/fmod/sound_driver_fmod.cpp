@@ -186,7 +186,7 @@ void CSoundDriverFMod::init(std::string device, TSoundOptions options)
 	_Options = options;
 	// _Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
 	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
-	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
 
 	uint initFlags = 0;
 #ifdef NL_OS_WINDOWS

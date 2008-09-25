@@ -40,37 +40,58 @@ namespace NLSOUND {
 	class CSoundDriverXAudio2;
 
 /**
+ * \brief CEffectXAudio2
+ * \date 2008-09-25 07:46GMT
+ * \author Jan Boon (Kaetemi)
+ * CEffectXAudio2
+ */
+class CEffectXAudio2
+{
+protected:
+	// outside pointers
+	CSoundDriverXAudio2 *_SoundDriver;
+
+	// pointers
+	IXAudio2SubmixVoice *_Voice;
+	IUnknown *_Effect; // set by subclass
+
+public:
+	CEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
+	virtual ~CEffectXAudio2();
+	virtual void release();
+
+	inline IUnknown *getEffect() { return _Effect; }
+	inline IXAudio2Voice * getVoice() { return _Voice; }
+
+}; /* class CEffectXAudio2 */
+
+/**
  * \brief CReverbEffectXAudio2
  * \date 2008-09-17 17:27GMT
  * \author Jan Boon (Kaetemi)
  * CReverbEffectXAudio2
  */
-class CReverbEffectXAudio2 : public IReverbEffect
+class CReverbEffectXAudio2 : public IReverbEffect, public CEffectXAudio2
 {
 protected:
-	// outside pointers
-	CSoundDriverXAudio2 *_SoundDriver;
-	IXAudio2Voice *_EffectVoice;
-
-	// pointers
-	IUnknown *_Effect;
-
 	// user data
 	/// Parameters of the reverb (eax environment) effect.
 	XAUDIO2FX_REVERB_PARAMETERS _ReverbParams;
+
 public:
 	CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CReverbEffectXAudio2();
-	void release();
-
-	inline IUnknown *getEffect() { return _Effect; }
-	void setVoice(IXAudio2Voice *effectVoice);
+	virtual void release();
 
 	/// Get the type of effect (reverb, etc)
 	virtual TEffectType getType();
 
 	/// Set the environment (you have full control now, have fun)
 	virtual void setEnvironment(const CEnvironment &environment);
+
+	/// Set the volume of this submixer
+	void setGain(float gain);
+
 }; /* class CReverbEffectXAudio2 */
 
 } /* namespace NLSOUND */

@@ -408,7 +408,7 @@ void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions op
 	_Options = options;
 	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
 #if !EAX_AVAILABLE
-	_Options = (TSoundOptions)((uint)_Options & ~OptionSubmixEffects);
+	_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
 #endif
 
     if (FAILED(DirectSoundEnumerate(CSoundDriverDSoundEnumCallback, this)))
@@ -418,7 +418,7 @@ void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions op
 
     // Create a DirectSound object and set the cooperative level.
 #if EAX_AVAILABLE
-	if (getOption(OptionSubmixEffects))
+	if (getOption(OptionEnvironmentEffects))
 	{
 		if (EAXDirectSoundCreate8(NULL, &_DirectSound, NULL) != DS_OK)
 		{
@@ -466,7 +466,7 @@ void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions op
 	// check if wa can honor eax request
 	if (countHw3DBuffers() > 10)
 	{
-		_UseEAX = getOption(OptionSubmixEffects);
+		_UseEAX = getOption(OptionEnvironmentEffects);
 	}
 	else
 	{

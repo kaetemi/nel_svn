@@ -46,7 +46,7 @@
 #include "buffer_xaudio2.h"
 #include "listener_xaudio2.h"
 #include "adpcm_xaudio2.h"
-#include "submix_xaudio2.h"
+#include "effect_xaudio2.h"
 
 using namespace std;
 using namespace NLMISC;
@@ -59,7 +59,7 @@ _Format(Mono16), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0),
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
-_AdpcmUtility(NULL), _ListenerVoice(NULL), _SubmixVoice(NULL)
+_AdpcmUtility(NULL), _ListenerVoice(NULL), _EffectVoice(NULL)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 	nlassert(_SoundDriver->getListener());
@@ -183,10 +183,10 @@ void CSourceXAudio2::commit3DChanges()
 			_SoundDriver->getDSPSettings()->SrcChannelCount, 
 			_SoundDriver->getDSPSettings()->DstChannelCount, 
 			_SoundDriver->getDSPSettings()->pMatrixCoefficients);
-		if (_SubmixVoice) 
+		if (_EffectVoice) 
 		{
 			_SourceVoice->SetOutputMatrix(
-				_SubmixVoice, 
+				_EffectVoice, 
 				_SoundDriver->getDSPSettings()->SrcChannelCount, 
 				_SoundDriver->getDSPSettings()->DstChannelCount, 
 				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
@@ -259,17 +259,17 @@ void CSourceXAudio2::submitStaticBuffer()
 	}
 }
 
-/// Set the submix send for this source, NULL to disable.
-void CSourceXAudio2::setSubmix(ISubmix *submix)
+/// Set the effect send for this source, NULL to disable.
+void CSourceXAudio2::setEffect(IEffect *effect)
 {
-	if (submix)
+	if (effect)
 	{
-		_SubmixVoice = static_cast<CSubmixXAudio2 *>(submix)->getSubmixVoice();
+		_EffectVoice = dynamic_cast<CEffectXAudio2 *>(effect)->getVoice();
 		if (_SourceVoice)
 		{
 			IXAudio2Voice *voice[2] = { 
 				_ListenerVoice,
-				_SubmixVoice };
+				_EffectVoice };
 			XAUDIO2_VOICE_SENDS voice_sends;
 			voice_sends.OutputCount = 2;
 			voice_sends.pOutputVoices = voice;
@@ -278,7 +278,7 @@ void CSourceXAudio2::setSubmix(ISubmix *submix)
 	}
 	else
 	{
-		_SubmixVoice = NULL;
+		_EffectVoice = NULL;
 		if (_SourceVoice)
 		{
 			XAUDIO2_VOICE_SENDS voice_sends;
@@ -386,11 +386,11 @@ bool CSourceXAudio2::initFormat(TSampleFormat format)
 	_SourceVoice->GetVoiceDetails(&voice_details);
 	_FreqVoice = (float)voice_details.InputSampleRate;
 	_SourceVoice->SetVolume(_Gain);
-	if (_SubmixVoice)
+	if (_EffectVoice)
 	{
 		IXAudio2Voice *voice[2] = { 
 			_ListenerVoice,
-			_SubmixVoice };
+			_EffectVoice };
 		XAUDIO2_VOICE_SENDS voice_sends;
 		voice_sends.OutputCount = 2;
 		voice_sends.pOutputVoices = voice;

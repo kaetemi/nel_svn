@@ -25,7 +25,8 @@
 #include "source_al.h"
 
 #include "sound_driver_al.h"
-#include "submix_al.h"
+#include "effect_al.h"
+#include "buffer_al.h"
 
 using namespace NLMISC;
 
@@ -51,17 +52,17 @@ CSourceAL::CSourceAL(ALuint sourcename) :
 CSourceAL::~CSourceAL()
 {
 	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
-	if (_Buffer != NULL)
-		sdal->removeBuffer(_Buffer);
+	//if (_Buffer != NULL)
+	//	sdal->removeBuffer(_Buffer);
 	sdal->removeSource(this);
 }
 
-void CSourceAL::setSubmix(ISubmix *submix)
+void CSourceAL::setEffect(IEffect *effect)
 {
 	// no filter stuff yet
 	// only allow one submix send for now -----------------------------------------------> 0
-	if (submix) { nldebug("AL: Setting submix"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, static_cast<CSubmixAl *>(submix)->getAlEfxObject(), 0, AL_FILTER_NULL); }
-	else { nldebug("AL: Removing submix"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
+	if (effect) { nldebug("AL: Setting effect"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, dynamic_cast<CEffectAL *>(effect)->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
+	else { nldebug("AL: Removing effect"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
 	alTestError();
 }
 
@@ -84,7 +85,7 @@ void CSourceAL::setStaticBuffer( IBuffer *buffer )
 	}
 	else
 	{
-		CBufferAL *bufferAL = dynamic_cast<CBufferAL*>(buffer);
+		CBufferAL *bufferAL = dynamic_cast<CBufferAL *>(buffer);
 		alSourcei( _SourceName, AL_BUFFER, bufferAL->bufferName() );
 		alTestError();
 

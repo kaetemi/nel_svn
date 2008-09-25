@@ -404,7 +404,7 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 
 	// update the environment effect (if any)
 	CAudioMixerUser *mixer = CAudioMixerUser::instance();
-	if (mixer->useSubmixEffects() && !vCluster.empty())
+	if (mixer->useEnvironmentEffects() && !vCluster.empty())
 	{
 		H_AUTO(NLSOUND_ClusteredSound_updateEnvFx)
 		TStringId fxId = vCluster[0]->getEnvironmentFxId();

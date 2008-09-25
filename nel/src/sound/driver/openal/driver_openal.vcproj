@@ -177,14 +177,6 @@
 				RelativePath=".\effect_al.h"
 				>
 			</File>
-			<File
-				RelativePath=".\submix_al.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\submix_al.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="sfx"

@@ -46,7 +46,6 @@
 #include "listener_xaudio2.h"
 #include "source_xaudio2.h"
 #include "music_channel_xaudio2.h"
-#include "submix_xaudio2.h"
 #include "effect_xaudio2.h"
 
 using namespace std;
@@ -232,16 +231,10 @@ void CSoundDriverXAudio2::release()
 		for (; it != end; ++it) (*it)->release();
 		_Buffers.clear();
 	}
-	// Release internal resources of all remaining ISubmix instances
-	{
-		set<CSubmixXAudio2 *>::iterator it(_Submixes.begin()), end(_Submixes.end());
-		for (; it != end; ++it) (*it)->release();
-		_Submixes.clear();
-	}
 	// Release internal resources of all remaining IEffect instances
 	{
-		set<IEffect *>::iterator it(_Effects.begin()), end(_Effects.end());
-		for (; it != end; ++it) releaseEffect(*it);
+		set<CEffectXAudio2 *>::iterator it(_Effects.begin()), end(_Effects.end());
+		for (; it != end; ++it) (*it)->release();
 		_Effects.clear();
 	}
 	// Release internal resources of the IListener instance
@@ -390,18 +383,6 @@ IBuffer *CSoundDriverXAudio2::createBuffer()
 	return static_cast<IBuffer *>(buffer);
 }
 
-/// Create a submix
-ISubmix *CSoundDriverXAudio2::createSubmix()
-{
-	CSubmixXAudio2 *submix = new CSubmixXAudio2(this);
-	if (submix->getSubmixVoice())
-	{
-		_Submixes.insert(submix);
-		return static_cast<ISubmix *>(submix);
-	}
-	delete submix; return NULL;
-}
-
 /// Create an effect
 IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
 {
@@ -413,6 +394,7 @@ IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
 			CReverbEffectXAudio2 *reverb = new CReverbEffectXAudio2(this);
 			if (reverb->getEffect()) { effect = static_cast<IEffect *>(reverb); break; }
 			else { delete reverb; return NULL; }
+			_Effects.insert(reverb); // !!
 		}
 		default:
 		{
@@ -421,7 +403,6 @@ IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
 		}
 	}
 	nlassert(effect);
-	_Effects.insert(effect);
 	return effect;
 }
 
@@ -433,8 +414,8 @@ uint CSoundDriverXAudio2::countMaxSources()
 	return 128;
 }
 
-/// Return the maximum number of submixers that can be created
-uint CSoundDriverXAudio2::countMaxSubmixes()
+/// Return the maximum number of effects that can be created
+uint CSoundDriverXAudio2::countMaxEffects()
 {
 	// the only limit is the user's cpu
 	// openal only allows 1 in software ...
@@ -548,59 +529,12 @@ void CSoundDriverXAudio2::removeMusicChannel(CMusicChannelXAudio2 *musicChannel)
 	if (_MusicChannels.find(musicChannel) != _MusicChannels.end()) _MusicChannels.erase(musicChannel);
 	else nlwarning("removeMusicChannel already called");
 }
-	
-/// (Internal) Remove a submix (should be called by the destructor of the submix class)
-void CSoundDriverXAudio2::removeSubmix(CSubmixXAudio2 *submix)
-{
-	if (_Submixes.find(submix) != _Submixes.end()) _Submixes.erase(submix);
-	else nlwarning("removeSubmix already called");
-}
 
 /// (Internal) Remove an effect (should be called by the destructor of the effect class)
-void CSoundDriverXAudio2::removeEffect(IEffect *effect)
+void CSoundDriverXAudio2::removeEffect(CEffectXAudio2 *effect)
 {
 	if (_Effects.find(effect) != _Effects.end()) _Effects.erase(effect);
 	else nlwarning("removeEffect already called");
-}
-
-/// (Internal) Get internal effect object of an effect.
-IUnknown *CSoundDriverXAudio2::getEffectInternal(IEffect *effect)
-{
-	switch (effect->getType())
-	{
-	case IEffect::Reverb:
-		return static_cast<CReverbEffectXAudio2 *>(effect)->getEffect();
-		break;
-	default:
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
-		return NULL;
-	}
-}
-
-/// (Internal) Call the release function of an effect.
-void CSoundDriverXAudio2::releaseEffect(IEffect *effect)
-{
-	switch (effect->getType())
-	{
-	case IEffect::Reverb:
-		static_cast<CReverbEffectXAudio2 *>(effect)->release();
-		break;
-	default:
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
-	}
-}
-	
-/// (Internal) Set the voice of an effect.
-void CSoundDriverXAudio2::setEffectVoice(IEffect *effect, IXAudio2Voice *voice)
-{
-	switch (effect->getType())
-	{
-	case IEffect::Reverb:
-		static_cast<CReverbEffectXAudio2 *>(effect)->setVoice(voice);
-		break;
-	default:
-		nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
-	}
 }
 
 } /* namespace NLSOUND */

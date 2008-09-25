@@ -31,7 +31,6 @@
 namespace NLSOUND {
 	class IBuffer;
 	class ILoader;
-	class ISubmix;
 
 /**
  * Sound source interface (implemented in sound driver dynamic library)
@@ -61,8 +60,8 @@ public:
 	/// Destructor
 	virtual ~ISource() { }
 	
-	/// Set the submix send for this source, NULL to disable.
-	virtual void setSubmix(ISubmix *submix) { throw ESoundDriverNotSupp(); }
+	/// Set the effect send for this source, NULL to disable.
+	virtual void setEffect(IEffect *effect) { throw ESoundDriverNotSupp(); }
 	
 	/// \name Initialization
 	//@{

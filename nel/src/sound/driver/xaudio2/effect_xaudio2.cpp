@@ -43,7 +43,29 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
-CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _Effect(NULL), _EffectVoice(NULL)
+CEffectXAudio2::CEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _Voice(NULL), _Effect(NULL)
+{
+	HRESULT hr;
+
+	XAUDIO2_VOICE_DETAILS voice_details;
+	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
+
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_Voice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4500, NULL, NULL)))
+		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _Voice!"); return; }
+}
+
+CEffectXAudio2::~CEffectXAudio2()
+{
+	release();
+}
+
+void CEffectXAudio2::release()
+{
+	if (_SoundDriver) { _SoundDriver->removeEffect(this); _SoundDriver = NULL; }
+	if (_Voice) { _Voice->DestroyVoice(); _Voice = NULL; }
+}
+
+CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : CEffectXAudio2(soundDriver)
 {
 	HRESULT hr;
 
@@ -52,55 +74,66 @@ CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _
 	flags |= XAUDIO2FX_DEBUG;
 #endif		
 	if (FAILED(hr = XAudio2CreateReverb(&_Effect, flags)))
-		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "Failed to create Reverb APO!"); return; }
+		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "XAudio2CreateReverb FAILED"); return; }
 
+	XAUDIO2_VOICE_DETAILS voice_details;
+	_Voice->GetVoiceDetails(&voice_details);
+	XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
+	effect_descriptor.InitialState = TRUE;
+	effect_descriptor.OutputChannels = voice_details.InputChannels;
+	effect_descriptor.pEffect = _Effect;
+	XAUDIO2_EFFECT_CHAIN effect_chain;
+	effect_chain.EffectCount = 1;
+	effect_chain.pEffectDescriptors = &effect_descriptor;
+	if (FAILED(hr = _Voice->SetEffectChain(&effect_chain)))
+		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "SetEffectChain FAILED"); return; }
+	
 	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
 }
 
 CReverbEffectXAudio2::~CReverbEffectXAudio2()
 {
-	release();
+	// release(); called by CEffectXAudio2
 }
 
 void CReverbEffectXAudio2::release()
 {
-	if (_SoundDriver) { _SoundDriver->removeEffect(this); _SoundDriver = NULL; }
+	CEffectXAudio2::release();
 	if (_Effect) { _Effect->Release(); _Effect = NULL; }
 }
-
-void CReverbEffectXAudio2::setVoice(IXAudio2Voice *effectVoice) 
-{ 
-	_EffectVoice = effectVoice; 
-	if (_EffectVoice) _EffectVoice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0); 
-}
-
 /// Get the type of effect (reverb, etc)
 IEffect::TEffectType CReverbEffectXAudio2::getType()
 {
 	return Reverb;
 }
 
+/// Set the gain
+void CReverbEffectXAudio2::setGain(float gain)
+{
+	_Voice->SetVolume(gain);
+}
+
 /// Set the environment (you have full control now, have fun)
 void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
 {
 	// unused params
+	_ReverbParams.LowEQCutoff = 4;
+	_ReverbParams.HighEQCutoff = 6;
 	_ReverbParams.RearDelay = XAUDIO2FX_REVERB_DEFAULT_REAR_DELAY;
 	_ReverbParams.PositionLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION;
 	_ReverbParams.PositionRight = XAUDIO2FX_REVERB_DEFAULT_POSITION;
 	_ReverbParams.PositionMatrixLeft = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
 	_ReverbParams.PositionMatrixRight = XAUDIO2FX_REVERB_DEFAULT_POSITION_MATRIX;
-	_ReverbParams.RoomFilterFreq = XAUDIO2FX_REVERB_DEFAULT_ROOM_FILTER_FREQ;
-	_ReverbParams.LowEQCutoff = 4;
-	_ReverbParams.HighEQCutoff = 6;
+	_ReverbParams.RoomFilterFreq = 5000.0f;
 	_ReverbParams.WetDryMix = 100.0f;
 
 	// directly mapped
-	_ReverbParams.RoomSize = environment.RoomSize;
+	_ReverbParams.Density = environment.Density;
 	_ReverbParams.RoomFilterMain = environment.RoomFilter;
 	_ReverbParams.RoomFilterHF = environment.RoomFilterHF;
-	_ReverbParams.ReflectionsGain = environment.Reflections;
 	_ReverbParams.ReverbGain = environment.LateReverb;
-	_ReverbParams.Density = environment.Density;
+	_ReverbParams.ReflectionsGain = environment.Reflections;
+	_ReverbParams.RoomSize = environment.RoomSize;
 
 	// conversions, see ReverbConvertI3DL2ToNative in case of errors
 	if (environment.DecayHFRatio >= 1.0f)
@@ -131,7 +164,7 @@ void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
 	_ReverbParams.EarlyDiffusion = (BYTE)(environment.Diffusion * 0.15f);
 	_ReverbParams.LateDiffusion = _ReverbParams.EarlyDiffusion;
 
-	if (_EffectVoice) _EffectVoice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0);
+	_Voice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0);
 }
 
 } /* namespace NLSOUND */
