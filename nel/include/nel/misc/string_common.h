@@ -231,8 +231,8 @@ inline bool fromString(const std::string &str, uint16 &val) { uint32 v; bool ret
 inline bool fromString(const std::string &str, sint16 &val) { uint32 v; bool ret = fromString(str, v); val = ret ? (sint16)v:0; return ret; }
 inline bool fromString(const std::string &str, uint64 &val) { bool ret = sscanf(str.c_str(), "%"NL_I64"u", &val) == 1; if (!ret) val = 0; return ret; }
 inline bool fromString(const std::string &str, sint64 &val) { bool ret = sscanf(str.c_str(), "%"NL_I64"d", &val) == 1; if (!ret) val = 0; return ret; }
-inline bool fromString(const std::string &str, float &val) { bool ret = sscanf(str.c_str(), "%f", &val) == 1; if (!ret) val = 0; return ret; }
-inline bool fromString(const std::string &str, double &val) { bool ret = sscanf(str.c_str(), "%lf", &val) == 1; if (!ret) val = 0; return ret; }
+inline bool fromString(const std::string &str, float &val) { bool ret = sscanf(str.c_str(), "%f", &val) == 1; if (!ret) val = 0.0f; return ret; }
+inline bool fromString(const std::string &str, double &val) { bool ret = sscanf(str.c_str(), "%lf", &val) == 1; if (!ret) val = 0.0; return ret; }
 inline bool fromString(const std::string &str, bool &val) { uint32 v; bool ret = fromString(str, v); val = (ret && v==1); return ret; }
 inline bool fromString(const std::string &str, std::string &val) { val = str; return true; }
 
