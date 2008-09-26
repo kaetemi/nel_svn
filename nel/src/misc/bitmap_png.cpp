@@ -103,7 +103,11 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 
 //	CLibrary fctLoader(CLibrary::loadLibrary(string("libpng13.dll")));
-	CLibrary fctLoader("libpng13.dll", false, false);
+	CLibrary fctLoader;
+	
+	if (!fctLoader.loadLibrary("libpng13.dll", false, false))
+		if (!fctLoader.loadLibrary("libpng12.dll", false, false))
+			return 0;
 
 	///////////////////////////
 
@@ -641,7 +645,11 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	png_struct *png_ptr = NULL;
 	png_info *info_ptr = NULL;
 
-	CLibrary fctLoader("libpng13.dll", false, false);
+	CLibrary fctLoader;
+	
+	if (!fctLoader.loadLibrary("libpng13.dll", false, false))
+		if (!fctLoader.loadLibrary("libpng12.dll", false, false))
+			return false;
 
 	///////////////////////////
 
@@ -654,7 +662,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_create_write_struct)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_create_write_struct'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -664,7 +672,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_create_info_struct)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_create_info_struct'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -676,7 +684,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_destroy_write_struct)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_destroy_write_struct'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -688,7 +696,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_write_info)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_write_info'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -702,7 +710,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_set_write_fn)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_set_write_fn'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -722,7 +730,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_set_IHDR)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_set_IHDR'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -735,7 +743,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_write_end)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_write_end'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -748,7 +756,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_set_sBIT)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_set_sBIT'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -760,7 +768,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_set_shift)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_set_shift'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -771,7 +779,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_set_packing)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_set_packing'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
@@ -784,7 +792,7 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	if(!png_write_rows)
 	{
 		nlwarning("CBitmap::writePNG : can't find function 'png_write_rows'");
-		return 0;
+		return false;
 	}
 
 	///////////////////////////
