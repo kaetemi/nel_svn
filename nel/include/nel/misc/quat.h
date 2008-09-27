@@ -51,7 +51,7 @@ struct	CAngleAxis
 	float		Angle;		/// angle in radians.
 
 	CAngleAxis() {}
-	CAngleAxis(CVector axis, float ang) : Axis(axis), Angle(ang) {}
+	CAngleAxis(const CVector &axis, float ang) : Axis(axis), Angle(ang) {}
 
 	/// serial.
 	void	serial(IStream &f)
