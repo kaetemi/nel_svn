@@ -3824,7 +3824,8 @@ void CDriverGL::retrieveATIDriverVersion()
 					}
 					if (isNumerical)
 					{
-						uint configVersion = atoi(subKeyName);
+						uint configVersion;
+						fromString((const char*)subKeyName, configVersion);
 						if (configVersion >= latestConfigVersion)
 						{
 							configFound = true;

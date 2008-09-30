@@ -60,7 +60,8 @@ namespace NLMISC {
 		// check args, if there s not the right number of parameter, return bad
 		if(args.size() != 1) return false;
 		// get the value
-		uint32 val = atoi(args[0].c_str());
+		uint32 val;
+		fromString(args[0], val);
 		// display the result on the displayer
 		log.displayNL("The square of %d is %d", val, val*val);
 		return true;
