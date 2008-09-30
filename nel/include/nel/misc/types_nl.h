@@ -381,4 +381,8 @@ typedef	uint16	ucchar;
  #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)
 #endif
 
+#ifndef MAX_PATH
+#define MAX_PATH 255
+#endif
+
 #endif // NL_TYPES_H
