@@ -103,13 +103,14 @@ class __name##Class : public NLMISC::IVariable \
 public: \
 	__name##Class () : IVariable(#__category, #__name, __help) { } \
 	 \
-	virtual void fromString(const std::string &val, bool human=false) \
+	virtual bool fromString(const std::string &val, bool human=false) \
 	{ \
 		/*std::stringstream ss (val);*/ \
 		__type p; \
 		/*ss >> p;*/ \
-		NLMISC::fromString(val, p) ; \
+		bool ret = NLMISC::fromString(val, p) ; \
 		ptr (&p, false, human); \
+		return ret; \
 	} \
 	 \
 	virtual std::string toString(bool human) const \
@@ -150,7 +151,7 @@ public:
 		Type = Variable;
 	}
 
-	virtual void fromString(const std::string &val, bool human=false) = 0;
+	virtual bool fromString(const std::string &val, bool human=false) = 0;
 
 	virtual std::string toString(bool human=false) const = 0;
 
@@ -203,12 +204,13 @@ public:
 	{
 	}
 
-	virtual void fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool human=false)
 	{
 		//std::stringstream ss (val);
 		//ss >> *_ValuePtr;
-		NLMISC::fromString(val, *_ValuePtr);
+		bool ret = NLMISC::fromString(val, *_ValuePtr);
 		if (ChangeCallback) ChangeCallback (*this);
+		return ret;
 	}
 
 	virtual std::string toString (bool human) const
@@ -243,13 +245,14 @@ public:
 		set (defaultValue, executeCallbackForDefaultValue);
 	}
 
-	virtual void fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool human=false)
 	{
 		T v;
-		NLMISC::fromString(val, v);
+		bool ret = NLMISC::fromString(val, v);
 //		std::stringstream ss (val);
 //		ss >> v;
 		set (v);
+		return ret;
 	}
 
 	virtual std::string toString (bool human) const
@@ -416,9 +419,10 @@ public:
 		set (defaultValue, executeCallbackForDefaultValue);
 	}
 
-	virtual void fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool human=false)
 	{
 		set (val);
+		return true;
 	}
 
 	virtual std::string toString (bool human=false) const

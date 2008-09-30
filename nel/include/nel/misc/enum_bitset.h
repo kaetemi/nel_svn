@@ -173,7 +173,7 @@ namespace NLMISC
 			return result;
 		}
 
-		void fromString(const std::string &valueList)
+		bool fromString(const std::string &valueList)
 		{
 			std::vector<std::string> values;
 
@@ -186,6 +186,8 @@ namespace NLMISC
 			{
 				setEnumValue(EnumType(values[i]));
 			}
+
+			return true;
 		}
 
 		bool operator == (const CEnumBitset &other) const
