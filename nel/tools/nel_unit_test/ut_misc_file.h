@@ -38,7 +38,7 @@ private:
 
 		for (uint i=0; i<fileSize; ++i)
 		{
-			uint8 c = uint8(i);
+			uint8 c = uint8(i & 0xff);
 			nlverify(fwrite(&c, 1, 1, fp) == 1);
 		}
 		fclose(fp);
@@ -58,8 +58,8 @@ private:
 				TEST_ASSERT(nbRead == 1);
 				if (nbRead != 1)
 					break;
-				TEST_ASSERT_MSG(c == uint8(i), "File content changed during copy");
-				if (c != uint8(i))
+				TEST_ASSERT_MSG(c == uint8(i & 0xff), "File content changed during copy");
+				if (c != uint8(i & 0xff))
 					break;
 			}
 			fclose(fp);
@@ -105,7 +105,7 @@ private:
 
 		for (uint i=0; i<fileSize; ++i)
 		{
-			uint8 c = uint8(i);
+			uint8 c = uint8(i & 0xff);
 			nlverify(fwrite(&c, 1, 1, fp) == 1);
 		}
 		fclose(fp);
@@ -130,8 +130,8 @@ private:
 				TEST_ASSERT(nbRead == 1);
 				if (nbRead != 1)
 					break;
-				TEST_ASSERT_MSG(c == uint8(i), "File content changed during move");
-				if (c != uint8(i))
+				TEST_ASSERT_MSG(c == uint8(i & 0xff), "File content changed during move");
+				if (c != uint8(i & 0xff))
 					break;
 			}
 			fclose(fp);
