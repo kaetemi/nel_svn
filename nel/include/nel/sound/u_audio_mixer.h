@@ -159,7 +159,7 @@ public:
 	 *
 	 *	\param forceSoftware: to force the driver to load in software buffer, not hardware
 	 */
-	virtual void		init(uint maxTrack = 32, bool useEax = true, bool useADPCM = true, NLMISC::IProgressCallback *progressCallBack = NULL, bool autoLoadSample = false, TDriver driverType = DriverAuto, bool forceSoftware = false) = 0;
+	virtual void		init(uint maxTrack = 32, bool useEax = true, bool useADPCM = true, NLMISC::IProgressCallback *progressCallBack = NULL, bool autoLoadSample = false, TDriver driverType = DriverAuto, bool forceSoftware = false, bool manualRolloff = true) = 0;
 
 	/** Initialisation of the clustered sound system.
 	  */

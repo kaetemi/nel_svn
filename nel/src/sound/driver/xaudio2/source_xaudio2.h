@@ -93,10 +93,8 @@ protected:
 	NLMISC::CVector _Pos;
 	/// Source relative to listener position (listener + source = actual source location).
 	bool _Relative;
-#if MANUAL_ROLLOFF == 1
 	/// Alpha for manual rolloff.
 	double _Alpha;
-#endif
 	
 	// -- User vars 2d --
 	/// True if play() or pause(), false if stop().
@@ -225,7 +223,7 @@ public:
 	virtual void getCone(float& innerAngle, float& outerAngle, float& outerGain) const;
 	///** Set the alpha value for the volume-distance curve
 	// *
-	// *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
+	// *	Usefull only with OptionManualRolloff. value from -1 to 1 (default 0)
 	// * 
 	// *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
 	// *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)

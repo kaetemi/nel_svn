@@ -169,14 +169,16 @@ bool CSourceFMod::play()
 			setPitch(_Pitch);
 
 			// Set the correct volume now
-#if MANUAL_ROLLOFF == 0
-			FSOUND_SetVolume(_FModChannel, uint32(255*_Gain));
-#else
-			// manual rolloff => recompute according to position
-			CListenerFMod	*listener= CListenerFMod::instance();
-			if(listener)
-				updateVolume(listener->getPos());
-#endif
+			if (!CSoundDriverFMod::getInstance()->getOption(ISoundDriver::OptionManualRolloff))
+			{
+				FSOUND_SetVolume(_FModChannel, uint32(255*_Gain));
+			}
+			else
+			{
+				// manual rolloff => recompute according to position
+				CListenerFMod *listener = CListenerFMod::instance();
+				if (listener) updateVolume(listener->getPos());
+			}
 
 			// unpause
 			FSOUND_SetPaused(_FModChannel, false);
@@ -347,11 +349,12 @@ void CSourceFMod::setGain( float gain )
 	clamp(gain, 0.00001f, 1.0f);
 	_Gain = gain;
 
-#if MANUAL_ROLLOFF == 0
-	if(_FModChannel!=-1)
-		FSOUND_SetVolume(_FModChannel, uint32(255*gain));
-#endif
-	// set the volume later in updateVolume() in case of MANUAL_ROLLOFF==1
+	if (!CSoundDriverFMod::getInstance()->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		if(_FModChannel!=-1)
+			FSOUND_SetVolume(_FModChannel, uint32(255*gain));
+	}
+	// set the volume later in updateVolume() in case of OptionManualRolloff
 }
 
 
@@ -426,9 +429,7 @@ void CSourceFMod::getMinMaxDistances( float& mindist, float& maxdist ) const
 // ******************************************************************
 void CSourceFMod::updateVolume( const NLMISC::CVector& listener )
 {
-#if MANUAL_ROLLOFF == 0
-	nlstopex("no updateVolume() if MANUAL_ROLLOFF==0");
-#else
+	nlassert(CSoundDriverFMod::getInstance()->getOption(ISoundDriver::OptionManualRolloff));
 
 	// only if channel active
 	if(_FModChannel==-1)
@@ -441,21 +442,23 @@ void CSourceFMod::updateVolume( const NLMISC::CVector& listener )
 	float sqrdist = pos.sqrnorm();
 
 	// compute volume in DB, according to current gain
-	sint32 volumeDB= sint32(floor(2000.0 * log10(_Gain))); // convert to 1/100th decibels
-	const	sint32	dbMin= -10000;
-	const	sint32	dbMax= 0;
-	clamp(volumeDB, dbMin, dbMax);
+	//sint32 volumeDB= sint32(floor(2000.0 * log10(_Gain))); // convert to 1/100th decibels
+	//const	sint32	dbMin= -10000;
+	//const	sint32	dbMax= 0;
+	//clamp(volumeDB, dbMin, dbMax);
 
-	// attenuate the volume according to distance and alpha
-	volumeDB= ISource::computeManualRollOff(volumeDB, dbMin, dbMax, _Alpha, sqrdist);
+	//// attenuate the volume according to distance and alpha
+	//volumeDB= ISource::computeManualRollOff(volumeDB, dbMin, dbMax, _Alpha, sqrdist);
 
-	// retransform to linear form
-	double	attGain= pow((double)10.0, double(volumeDB)/2000.0);
-	clamp(attGain, 0.f, 1.f);
+	//// retransform to linear form
+	//double	attGain= pow((double)10.0, double(volumeDB)/2000.0);
+	//clamp(attGain, 0.f, 1.f);
+	
+	float rolloff = ISource::computeManualRolloff(_Alpha, sqrdist, _MinDist, _MaxDist);
+	float volume = _Gain * rolloff;
 
 	// set the attenuated volume
-	FSOUND_SetVolume(_FModChannel, uint32(attGain*255));
-#endif
+	FSOUND_SetVolume(_FModChannel, (sint)(volume * 255));
 }
 
 // ******************************************************************

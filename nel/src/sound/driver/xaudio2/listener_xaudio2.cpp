@@ -45,10 +45,7 @@ namespace NLSOUND {
 
 CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _OutputVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), 
-_DopplerScaler(1.0f), _Pos(0.0f, 0.0f, 0.0f)
-#if MANUAL_ROLLOFF == 0
-, _RolloffScaler(1.0f)
-#endif
+_DopplerScaler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _RolloffScaler(1.0f)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CListenerXAudio2");
 
@@ -176,13 +173,10 @@ void CListenerXAudio2::setDopplerFactor(float f)
 /// Set the rolloff factor (default: 1) to scale the distance attenuation effect
 void CListenerXAudio2::setRolloffFactor(float f)
 {
-#if MANUAL_ROLLOFF == 1
-	nlerror("MANUAL_ROLLOFF == 1");
-#else
+	nlassert(!_SoundDriver->getOption(ISoundDriver::OptionManualRolloff));
 
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "setRolloffFactor %f", f);
 	_RolloffScaler = f;
-#endif
 }
 
 //@}

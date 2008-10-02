@@ -328,7 +328,7 @@ void CAudioMixerUser::setSamplePath(const std::string& path)
 
 // ******************************************************************
 
-void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressCallback *progressCallBack, bool autoLoadSample, TDriver driverType, bool forceSoftwareBuffer)
+void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressCallback *progressCallBack, bool autoLoadSample, TDriver driverType, bool forceSoftwareBuffer, bool manualRolloff)
 {
 	nldebug( "AM: Init..." );
 
@@ -356,9 +356,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			if (_UseEax) driverOptions |= ISoundDriver::OptionEnvironmentEffects;
 			if (_UseADPCM) driverOptions |= ISoundDriver::OptionAllowADPCM;
 			if (forceSoftwareBuffer) driverOptions |= ISoundDriver::OptionSoftwareBuffer;
-#if MANUAL_ROLLOFF
-			driverOptions |= ISoundDriver::OptionManualRolloff;
-#endif
+			if (manualRolloff) driverOptions |= ISoundDriver::OptionManualRolloff;
 			if (_AutoLoadSample) driverOptions |= ISoundDriver::OptionLocalBufferCopy;
 			
 			// init the driver with selected device and needed options
@@ -379,6 +377,16 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			{
 				nlwarning("AM: OptionLocalBufferCopy not available, _AutoLoadSample = false");
 				_AutoLoadSample = false;
+			}
+			if (forceSoftwareBuffer && !_SoundDriver->getOption(ISoundDriver::OptionSoftwareBuffer))
+			{
+				nlwarning("AM: OptionSoftwareBuffer not available, forceSoftwareBuffer = false");
+				forceSoftwareBuffer = false; // not really needed, but set anyway in case this is still used later in this function
+			}
+			if (manualRolloff && !_SoundDriver->getOption(ISoundDriver::OptionLocalBufferCopy))
+			{
+				nlwarning("AM: OptionManualRolloff not available, manualRolloff = false");
+				manualRolloff = false; // not really needed, but set anyway in case this is still used later in this function
 			}
 		}
 	}

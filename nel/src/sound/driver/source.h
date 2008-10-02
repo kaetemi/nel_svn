@@ -152,7 +152,7 @@ public:
 	virtual void					getCone( float& innerAngle, float& outerAngle, float& outerGain ) const = 0;
 	/** Set the alpha value for the volume-distance curve
 	 *
-	 *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
+	 *	Usefull only with OptionManualRolloff. value from -1 to 1 (default 0)
 	 *
 	 *  alpha = 0.0: the volume will decrease linearly between 0dB and -100 dB
 	 *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
@@ -168,8 +168,10 @@ public:
 	//@}
 protected:
 	
-	// common method used only if MANUAL_ROLLOFF==1. return the volume in 1/100th DB modified
-	sint32 computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const;
+	// common method used only with OptionManualRolloff. return the volume in 1/100th DB  ( = mB)modified
+	static sint32 computeManualRollOff(sint32 volumeMB, sint32 mbMin, sint32 mbMax, double alpha, float sqrdist, float distMin, float distMax);
+	// common method used only with OptionManualRolloff. return the rolloff in amplitude ratio (gain)
+	static float computeManualRolloff(double alpha, float sqrdist, float distMin, float distMax);
 };
 
 

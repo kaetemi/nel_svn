@@ -51,13 +51,15 @@ CListenerDSound::CListenerDSound(LPDIRECTSOUND3DLISTENER8 dsoundListener) //: IL
 	{
 		_Instance = this;
         _Listener = dsoundListener;
-#if MANUAL_ROLLOFF == 1
-		// Manual RollOff => disable API rollOff
-		if ( !_Listener || FAILED(_Listener->SetRolloffFactor(DS3D_MINROLLOFFFACTOR, DS3D_DEFERRED)))
+
+		if (CSoundDriverDSound::instance()->getOption(ISoundDriver::OptionManualRolloff))
 		{
-			nlwarning("SetRolloffFactor failed");
+			// Manual RollOff => disable API rollOff
+			if ( !_Listener || FAILED(_Listener->SetRolloffFactor(DS3D_MINROLLOFFFACTOR, DS3D_DEFERRED)))
+			{
+				nlwarning("SetRolloffFactor failed");
+			}
 		}
-#endif
 	}
 	else
 	{
@@ -284,30 +286,36 @@ void CListenerDSound::setDopplerFactor( float f )
 void CListenerDSound::setRolloffFactor( float f )
 {
 	// Works only in API rolloff mode
-#if MANUAL_ROLLOFF == 0
-    if (_Listener != NULL)
-    {
-		clamp(f, DS3D_MINROLLOFFFACTOR, DS3D_MAXROLLOFFFACTOR);
-		if (FAILED(_Listener->SetRolloffFactor(f, DS3D_DEFERRED)))
+	nlassert(!CSoundDriverDSound::instance()->getOption(ISoundDriver::OptionManualRolloff));
+
+	if (!CSoundDriverDSound::instance()->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		if (_Listener != NULL)
 		{
-			nlwarning("SetRolloffFactor failed");
+			clamp(f, DS3D_MINROLLOFFFACTOR, DS3D_MAXROLLOFFFACTOR);
+			if (FAILED(_Listener->SetRolloffFactor(f, DS3D_DEFERRED)))
+			{
+				nlwarning("SetRolloffFactor failed");
+			}
 		}
-    }
-#endif
+	}
 }
 
 
 float CListenerDSound::getRolloffFactor()
 {
 	// Works only in API rolloff mode
-#if MANUAL_ROLLOFF == 0
-	if (_Listener != NULL)
-    {
-		float f;
-		_Listener->GetRolloffFactor(&f);
-		return f;
-    }
-#endif
+	nlassert(!CSoundDriverDSound::instance()->instance()->getOption(ISoundDriver::OptionManualRolloff));
+
+	if (!CSoundDriverDSound::instance()->instance()->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		if (_Listener != NULL)
+		{
+			float f;
+			_Listener->GetRolloffFactor(&f);
+			return f;
+		}
+	}
 
 	return 1.f;
 }

@@ -55,10 +55,12 @@ protected:
 	IXAudio2SubmixVoice *_Voice;
 	IUnknown *_Effect; // set by subclass
 
+	void _release();
+
 public:
 	CEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CEffectXAudio2();
-	virtual void release();
+	virtual void release() = 0;
 
 	inline IUnknown *getEffect() { return _Effect; }
 	inline IXAudio2Voice * getVoice() { return _Voice; }

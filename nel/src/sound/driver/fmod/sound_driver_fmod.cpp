@@ -360,24 +360,25 @@ void CSoundDriverFMod::commit3DChanges()
     if ( !_FModOk )
 		return;
 
-#if MANUAL_ROLLOFF == 1
-	// We handle the volume of the source according to the distance
-	// ourselves. Call updateVolume() to, well..., update the volume
-	// according to, euh ..., the new distance!
-	CListenerFMod* listener = CListenerFMod::instance();
-	if(listener)
+	if (getOption(OptionManualRolloff))
 	{
-		const CVector &origin = listener->getPos();
-		set<CSourceFMod*>::iterator iter;
-		for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
+		// We handle the volume of the source according to the distance
+		// ourselves. Call updateVolume() to, well..., update the volume
+		// according to, euh ..., the new distance!
+		CListenerFMod* listener = CListenerFMod::instance();
+		if(listener)
 		{
-			if ((*iter)->isPlaying())
+			const CVector &origin = listener->getPos();
+			set<CSourceFMod*>::iterator iter;
+			for (iter = _Sources.begin(); iter != _Sources.end(); iter++)
 			{
-				(*iter)->updateVolume(origin);
+				if ((*iter)->isPlaying())
+				{
+					(*iter)->updateVolume(origin);
+				}
 			}
 		}
 	}
-#endif
 
 	// We handle the "SourceRelative state" ourselves. Updates sources according to current listener position/velocity
 	set<CSourceFMod*>::iterator iter;

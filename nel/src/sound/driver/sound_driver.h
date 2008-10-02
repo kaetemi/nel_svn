@@ -39,18 +39,6 @@ namespace NLSOUND {
 	class IMusicChannel;
 	class ISubmix;
 
-/**
- *	Configuration to compile with manual or API (directx or open AL) rolloff factor.
- *	0 => API (directx or open AL) rollOff control.
- *		ISource::setAlpha() has no impact.
- *		IListener::setRollOffFactor() works
- *	1 => Manual rollOff control
- *		ISource::setAlpha() change the shape of attenuation
- *		IListener::setRollOffFactor() has no impact
- *  TODO: Move to OptionManualRolloff.
- */
-#define MANUAL_ROLLOFF 1
-
 // don't use eax.h anymore
 #if !defined( EAX_AVAILABLE )
 #	define EAX_AVAILABLE 0
@@ -102,7 +90,15 @@ public:
 		OptionAllowADPCM = 0x02, 
 		/// Force software buffering (always true for XAudio2).
 		OptionSoftwareBuffer = 0x04, 
-		/// Enable manual rolloff instead of API native rolloff.
+		/**
+		 *	Configuration to use manual or API (directx or open AL) rolloff factor.
+		 *	0 => API (directx, open AL, etc) rollOff control.
+		 *		ISource::setAlpha() will fail.
+		 *		IListener::setRollOffFactor() works
+		 *	1 => Manual rollOff control
+		 *		ISource::setAlpha() change the shape of attenuation (change the curve)
+		 *		IListener::setRollOffFactor() will fail
+		 */
 		OptionManualRolloff = 0x08, 
 		/// Enable local copy of buffer (used by OpenAL driver, required to build sample bank).
 		OptionLocalBufferCopy = 0x10, 

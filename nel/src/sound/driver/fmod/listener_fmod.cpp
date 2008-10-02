@@ -54,13 +54,14 @@ CListenerFMod::CListenerFMod() //: IListener()
 		_Vel= CVector::Null;
 		_Front= CVector::J;
 		_Up= CVector::K;
-#if MANUAL_ROLLOFF == 1
-		// Manual RollOff => disable API rollOff
-		if( CSoundDriverFMod::getInstance()->fmodOk() )
+		if (CSoundDriverFMod::getInstance()->getOption(ISoundDriver::OptionManualRolloff))
 		{
-			FSOUND_3D_SetRolloffFactor(0);
+			// Manual RollOff => disable API rollOff
+			if( CSoundDriverFMod::getInstance()->fmodOk() )
+			{
+				FSOUND_3D_SetRolloffFactor(0);
+			}
 		}
-#endif
 	}
 	else
 	{
@@ -164,18 +165,21 @@ void CListenerFMod::setDopplerFactor( float f )
 void CListenerFMod::setRolloffFactor( float f )
 {
 	// Works only in API rolloff mode
-#if MANUAL_ROLLOFF == 0
-	if( !CSoundDriverFMod::instance()->fmodOk() )
-		return;
+	if (CSoundDriverFMod::getInstance()->getOption(ISoundDriver::OptionManualRolloff))
+		nlerror("OptionManualRolloff");
+	else
+	{
+		if(!CSoundDriverFMod::getInstance()->fmodOk())
+			return;
 
-	// clamp as in DSound (FMod requirement)
-	clamp(f, 0.f, 10.f);
+		// clamp as in DSound (FMod requirement)
+		clamp(f, 0.f, 10.f);
 
-	_RolloffFactor= f;
+		_RolloffFactor = f;
 
-	// set
-	FSOUND_3D_SetRolloffFactor(f);
-#endif
+		// set
+		FSOUND_3D_SetRolloffFactor(f);
+	}
 }
 
 

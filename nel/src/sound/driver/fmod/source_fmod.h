@@ -193,7 +193,7 @@ public:
 
 	/** Update the source's volume according to its distance and fade out curve.
 	 *  It takes the current position of the listener as argument.
-	 *	Called only if MANUAL_ROLLOFF==1
+	 *	Called only with OptionManualRolloff
 	 */
 	void					updateVolume( const NLMISC::CVector& listener );
 

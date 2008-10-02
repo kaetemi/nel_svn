@@ -142,31 +142,23 @@ void CSourceXAudio2::commit3DChanges()
 
 		_Emitter.DopplerScaler = _SoundDriver->getListener()->getDopplerScaler();
 
-#if MANUAL_ROLLOFF == 0
-		// divide min distance (distance from where to start attenuation) with rolloff scaler (factor to get faster attenuation)
-		_Emitter.CurveDistanceScaler = _MinDistance / _SoundDriver->getListener()->getRolloffScaler();
-		// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
-#else
-		float sqrdist = _Relative 
-			? getPos().sqrnorm()
-			: (getPos() - _SoundDriver->getListener()->getPos()).sqrnorm();
-		
-		static const sint32 dbMin = -10000;
-		static const sint32 dbMax = 0;
-		
-		// calculate rolloff from alpha and distance
-		sint32 rolloff100thDb = ISource::computeManualRollOff(dbMax, dbMin, dbMax, _Alpha, sqrdist);
-		
-		// decibels to amplitude ratio
-		float rolloff = (float)pow(10.0, double(rolloff100thDb) / 2000.0);
-		clamp(rolloff, 0.0f, 1.0f);
-		
-		// apply rolloff
-		X3DAUDIO_DISTANCE_CURVE_POINT curve_points[3] = { 0.f, rolloff, 1.f, rolloff };
-		X3DAUDIO_DISTANCE_CURVE curve = { (X3DAUDIO_DISTANCE_CURVE_POINT *)&curve_points[0], 2 };
-		_Emitter.pVolumeCurve = &curve;
-		_Emitter.pLFECurve = &curve;
-#endif
+		if (_SoundDriver->getOption(ISoundDriver::OptionManualRolloff))
+		{
+			float sqrdist = _Relative 
+				? getPos().sqrnorm()
+				: (getPos() - _SoundDriver->getListener()->getPos()).sqrnorm();
+			float rolloff = ISource::computeManualRolloff(_Alpha, sqrdist, _MinDistance, _MaxDistance);
+			X3DAUDIO_DISTANCE_CURVE_POINT curve_points[3] = { 0.f, rolloff, 1.f, rolloff };
+			X3DAUDIO_DISTANCE_CURVE curve = { (X3DAUDIO_DISTANCE_CURVE_POINT *)&curve_points[0], 2 };
+			_Emitter.pVolumeCurve = &curve;
+			_Emitter.pLFECurve = &curve;
+		}
+		else
+		{
+			// divide min distance (distance from where to start attenuation) with rolloff scaler (factor to get faster attenuation)
+			_Emitter.CurveDistanceScaler = _MinDistance / _SoundDriver->getListener()->getRolloffScaler();
+			// _MaxDistance not implemented (basically should cut off sound beyond maxdistance)
+		}
 		
 		_SoundDriver->getDSPSettings()->DstChannelCount = 2;
 		
@@ -696,7 +688,7 @@ void CSourceXAudio2::getCone(float& innerAngle, float& outerAngle, float& outerG
 
 ///** Set the alpha value for the volume-distance curve
 // *
-// *	Usefull only if MANUAL_ROLLOFF==1. value from -1 to 1 (default 0)
+// *	Usefull only with OptionManualRolloff. value from -1 to 1 (default 0)
 // * 
 // *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
 // *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
@@ -710,13 +702,10 @@ void CSourceXAudio2::getCone(float& innerAngle, float& outerAngle, float& outerG
 ///// 
 void CSourceXAudio2::setAlpha(double a) 
 {  
-#if MANUAL_ROLLOFF == 0
-	nlerror("MANUAL_ROLLOFF == 0");
-#else
+	nlassert(_SoundDriver->getOption(ISoundDriver::OptionManualRolloff));
+		
 	// if (a != 1.0) // nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
-
 	_Alpha = a;
-#endif
 }
 
 } /* namespace NLSOUND */

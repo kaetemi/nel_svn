@@ -392,9 +392,10 @@ IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
 		case IEffect::Reverb:
 		{
 			CReverbEffectXAudio2 *reverb = new CReverbEffectXAudio2(this);
-			if (reverb->getEffect()) { effect = static_cast<IEffect *>(reverb); break; }
+			if (reverb->getEffect()) { effect = static_cast<IEffect *>(reverb); }
 			else { delete reverb; return NULL; }
 			_Effects.insert(reverb); // !!
+			break;
 		}
 		default:
 		{

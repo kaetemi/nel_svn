@@ -1586,25 +1586,28 @@ void CSourceDSound::getMinMaxDistances( float& mindist, float& maxdist ) const
 // ******************************************************************
 void CSourceDSound::updateVolume( const NLMISC::CVector& listener )
 {
-#if MANUAL_ROLLOFF == 0
-	// API controlled rolloff => return (just set the volume)
-	_SecondaryBuffer->SetVolume(_Volume);
+	if (!CSoundDriverDSound::instance()->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		// API controlled rolloff => return (just set the volume)
+		_SecondaryBuffer->SetVolume(_Volume);
+	}
+	else // manual rolloff
+	{
+		CVector pos = getPos();
+		// make relative to listener (if not already!)
+		if(!_PosRelative)
+			pos -= listener;
+		float sqrdist = pos.sqrnorm();
 
-#else
+		float mindist, maxdist;
+		getMinMaxDistances(mindist, maxdist);
 
-	CVector pos = getPos();
-	// make relative to listener (if not already!)
-	if(!_PosRelative)
-		pos -= listener;
-	float sqrdist = pos.sqrnorm();
+		// attenuate the volume according to distance and alpha
+		sint32 volumeDB = ISource::computeManualRollOff(_Volume, DSBVOLUME_MIN, DSBVOLUME_MAX, _Alpha, sqrdist, mindist, maxdist);
 
-	// attenuate the volume according to distance and alpha
-	sint32 volumeDB= ISource::computeManualRollOff(_Volume, DSBVOLUME_MIN, DSBVOLUME_MAX, _Alpha, sqrdist);
-
-	// set attenuated volume
-	_SecondaryBuffer->SetVolume(volumeDB);
-
-#endif
+		// set attenuated volume
+		_SecondaryBuffer->SetVolume(volumeDB);
+	}
 }
 
 // ******************************************************************

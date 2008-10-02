@@ -29,47 +29,54 @@ using namespace NLMISC;
 namespace NLSOUND
 {
 
-// ***************************************************************************
-sint32 ISource::computeManualRollOff(sint32 volumeDB, sint32 dbMin, sint32 dbMax, double alpha, float sqrdist) const
+// common method used only with OptionManualRolloff. return the volume in 1/100th DB ( = mB) modified
+sint32 ISource::computeManualRollOff(sint32 volumeMB, sint32 mbMin, sint32 mbMax, double alpha, float sqrdist, float distMin, float distMax)
 {
-	float min, max;
-	getMinMaxDistances(min, max);
-
-	if (sqrdist < min * min)
+	if (sqrdist < distMin * distMin)
 	{
 		// no attenuation
-		return volumeDB;
+		return volumeMB;
 	}
-	else if (sqrdist > max * max)
+	else if (sqrdist > distMax * distMax)
 	{
 		// full attenuation
-		return dbMin;
+		return mbMin;
 	}
 	else
 	{
 		double dist = (double) sqrt(sqrdist);
 
 		// linearly descending volume on a dB scale
-		double db1 = dbMin * (dist - min) / (max - min);
+		double db1 = mbMin * (dist - distMin) / (distMax - distMin);
 
 		if (alpha == 0.0) {
-			volumeDB += (sint32) db1;
+			volumeMB += (sint32) db1;
 
 		} else if (alpha > 0.0) {
-			double amp2 = 0.0001 + 0.9999 * (max - dist) / (max - min); // linear amp between 0.00001 and 1.0
+			double amp2 = 0.0001 + 0.9999 * (distMax - dist) / (distMax - distMin); // linear amp between 0.00001 and 1.0
 			double db2 = 2000.0 * log10(amp2); // convert to 1/100th decibels
-			volumeDB += (sint32) ((1.0 - alpha) * db1 + alpha * db2);
+			volumeMB += (sint32) ((1.0 - alpha) * db1 + alpha * db2);
 
 		} else if (alpha < 0.0) {
-			double amp3 = min / dist; // linear amplitude is 1/distance
+			double amp3 = distMin / dist; // linear amplitude is 1/distance
 			double db3 = 2000.0 * log10(amp3); // convert to 1/100th decibels
-			volumeDB += (sint32) ((1.0 + alpha) * db1 - alpha * db3);
+			volumeMB += (sint32) ((1.0 + alpha) * db1 - alpha * db3);
 		}
-
-		clamp(volumeDB, dbMin, dbMax);
-
-		return volumeDB;
+		
+		clamp(volumeMB, mbMin, mbMax);
+		return volumeMB;
 	}
+}
+
+// common method used only with OptionManualRolloff. return the rolloff in amplitude ratio (gain)
+float ISource::computeManualRolloff(double alpha, float sqrdist, float distMin, float distMax)
+{
+	static const sint32 mbMin = -10000;
+	static const sint32 mbMax = 0;
+	sint32 rolloffMb = ISource::computeManualRollOff(mbMax, mbMin, mbMax, alpha, sqrdist, distMin, distMax);
+	float rolloffGain = (float)pow(10.0, (double)rolloffMb / 2000.0);
+	clamp(rolloffGain, 0.0f, 1.0f);
+	return rolloffGain;
 }
 
 } // NLSOUND

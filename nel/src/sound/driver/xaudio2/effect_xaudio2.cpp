@@ -51,15 +51,15 @@ CEffectXAudio2::CEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
 	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_Voice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4500, NULL, NULL)))
-		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _Voice!"); return; }
+		{ _release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _Voice!"); return; }
 }
 
 CEffectXAudio2::~CEffectXAudio2()
 {
-	release();
+	// _release called by inheriting release
 }
 
-void CEffectXAudio2::release()
+void CEffectXAudio2::_release()
 {
 	if (_SoundDriver) { _SoundDriver->removeEffect(this); _SoundDriver = NULL; }
 	if (_Voice) { _Voice->DestroyVoice(); _Voice = NULL; }
@@ -67,38 +67,41 @@ void CEffectXAudio2::release()
 
 CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : CEffectXAudio2(soundDriver)
 {
-	HRESULT hr;
+	if (_Voice)
+	{
+		HRESULT hr;
 
-	uint flags = 0;
-#ifdef NL_DEBUG
-	flags |= XAUDIO2FX_DEBUG;
-#endif		
-	if (FAILED(hr = XAudio2CreateReverb(&_Effect, flags)))
-		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "XAudio2CreateReverb FAILED"); return; }
+		uint flags = 0;
+	#ifdef NL_DEBUG
+		flags |= XAUDIO2FX_DEBUG;
+	#endif		
+		if (FAILED(hr = XAudio2CreateReverb(&_Effect, flags)))
+			{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "XAudio2CreateReverb FAILED"); return; }
 
-	XAUDIO2_VOICE_DETAILS voice_details;
-	_Voice->GetVoiceDetails(&voice_details);
-	XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
-	effect_descriptor.InitialState = TRUE;
-	effect_descriptor.OutputChannels = voice_details.InputChannels;
-	effect_descriptor.pEffect = _Effect;
-	XAUDIO2_EFFECT_CHAIN effect_chain;
-	effect_chain.EffectCount = 1;
-	effect_chain.pEffectDescriptors = &effect_descriptor;
-	if (FAILED(hr = _Voice->SetEffectChain(&effect_chain)))
-		{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "SetEffectChain FAILED"); return; }
-	
-	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
+		XAUDIO2_VOICE_DETAILS voice_details;
+		_Voice->GetVoiceDetails(&voice_details);
+		XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
+		effect_descriptor.InitialState = TRUE;
+		effect_descriptor.OutputChannels = voice_details.InputChannels;
+		effect_descriptor.pEffect = _Effect;
+		XAUDIO2_EFFECT_CHAIN effect_chain;
+		effect_chain.EffectCount = 1;
+		effect_chain.pEffectDescriptors = &effect_descriptor;
+		if (FAILED(hr = _Voice->SetEffectChain(&effect_chain)))
+			{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "SetEffectChain FAILED"); return; }
+		
+		setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
+	}
 }
 
 CReverbEffectXAudio2::~CReverbEffectXAudio2()
 {
-	// release(); called by CEffectXAudio2
+	release();
 }
 
 void CReverbEffectXAudio2::release()
 {
-	CEffectXAudio2::release();
+	_release();
 	if (_Effect) { _Effect->Release(); _Effect = NULL; }
 }
 /// Get the type of effect (reverb, etc)
