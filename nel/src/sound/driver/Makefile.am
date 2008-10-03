@@ -11,10 +11,10 @@ noinst_LTLIBRARIES            = libnelsnd_lowlevel.la
 
 libnelsnd_lowlevel_la_SOURCES = buffer.cpp                 \
                                 buffer.h                   \
+                                effect.h                   \
+                                effect.cpp                 \
                                 listener.cpp               \
                                 listener.h                 \
-                                loader.cpp                 \
-                                loader.h                   \
                                 sound_driver.cpp           \
                                 sound_driver.h             \
                                 source.cpp                 \
