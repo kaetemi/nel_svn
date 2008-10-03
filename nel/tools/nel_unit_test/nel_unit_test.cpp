@@ -93,6 +93,8 @@ int main(int argc, char *argv[])
 	// init Nel context
 	new NLMISC::CApplicationContext;
 
+	bool noerrors = false;
+
 	try
 	{
 		Test::Suite ts;
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
 		// Add a line here when adding a new test MODULE
 
 		auto_ptr<Test::Output> output(cmdline(argc, argv));
-		ts.run(*output);
+		noerrors = ts.run(*output);
 
 		Test::HtmlOutput* const html = dynamic_cast<Test::HtmlOutput*>(output.get());
 		if (html)
@@ -117,5 +119,5 @@ int main(int argc, char *argv[])
 		cout << "unexpected exception encountered";
 		return EXIT_FAILURE;
 	}
-	return EXIT_SUCCESS;
+	return noerrors?EXIT_SUCCESS:EXIT_FAILURE;
 }
