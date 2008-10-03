@@ -1144,8 +1144,8 @@ uint64	CI18N::makeHash(const ucstring &str)
 
 	for (uint i=0; i<nbLoop; ++i)
 	{
-		ph[(i/2) & 0x7] += pc[i%(str.size()*2)] << roll;
-		ph[(i/2) & 0x7] += pc[i%(str.size()*2)] >> (8-roll);
+		ph[(i/2) & 0x7] = uint8((ph[(i/2) & 0x7] + (pc[i%(str.size()*2)] << roll)) & 0xff);
+		ph[(i/2) & 0x7] = uint8((ph[(i/2) & 0x7] + (pc[i%(str.size()*2)] >> (8-roll))) & 0xff);
 
 		roll++;
 		roll &= 0x7;
