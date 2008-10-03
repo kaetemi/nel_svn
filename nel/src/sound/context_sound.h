@@ -164,7 +164,7 @@ class CContextSoundContainer : public IContextSoundContainer
 			else if (!arg.empty())
 			{
 				// end of the argument.
-				fromString(arg, args[i++]);
+				NLMISC::fromString(arg, args[i++]);
 				arg.clear();
 			}
 		}
@@ -172,7 +172,7 @@ class CContextSoundContainer : public IContextSoundContainer
 		if (!arg.empty())
 		{
 			// end of the argument.
-			fromString(arg, args[i++]);
+			NLMISC::fromString(arg, args[i++]);
 			arg.clear();
 		}
 
@@ -195,7 +195,7 @@ class CContextSoundContainer : public IContextSoundContainer
 				{
 					nlassertex (!ok, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
 					// end of the argument.
-					fromString(arg, randomValue);
+					NLMISC::fromString(arg, randomValue);
 					arg.clear();
 					ok = true;
 				}
@@ -205,7 +205,7 @@ class CContextSoundContainer : public IContextSoundContainer
 			{
 				nlassertex (!ok, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
 				// end of the argument.
-				fromString(arg, randomValue);
+				NLMISC::fromString(arg, randomValue);
 				arg.clear();
 				ok = true;
 			}
