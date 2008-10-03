@@ -28,6 +28,7 @@
 
 #include <cstdio>
 #include <cstdarg>
+#include <errno.h>
 
 namespace NLMISC
 {
