@@ -423,7 +423,8 @@ uint32 fromHumanReadable (const std::string &str)
 	if (str.size() == 0)
 		return 0;
 
-	uint32 val = atoi (str.c_str());
+	uint32 val;
+	fromString(str, val);
 
 	switch (str[str.size()-1])
 	{
@@ -450,7 +451,9 @@ NLMISC_CATEGORISED_COMMAND(nel,stohr, "Convert a second number into an human rea
 	if (args.size() != 1)
 		return false;
 
-	log.displayNL("%s -> %s", args[0].c_str(), secondsToHumanReadable(atoi(args[0].c_str())).c_str());
+	uint32 seconds;
+	fromString(args[0], seconds);
+	log.displayNL("%s -> %s", args[0].c_str(), secondsToHumanReadable(seconds).c_str());
 
 	return true;
 }
@@ -883,7 +886,9 @@ NLMISC_CATEGORISED_COMMAND(nel, launchProgram, "Execute the command line using l
 NLMISC_CATEGORISED_COMMAND(nel, killProgram, "kill a program given the pid", "<pid>")
 {
 	if(args.size() != 1) return false;
-	killProgram(atoi(args[0].c_str()));
+	uint32 pid;
+	fromString(args[0], pid);
+	killProgram(pid);
 	return true;
 }
 

@@ -189,12 +189,12 @@ void CContextSound::init()
 			{
 				if (useRandom)
 				{
-					_Random = atoi(index.c_str());
+					fromString(index, _Random);
 				}
 				else
 				{
 					nlassertex(nbJoker < SoundContextNbArgs, ("Error will trying to play ContextSound '%s'", CStringMapper::unmap(_Name).c_str()));
-					contextArgIndex[nbJoker++] = atoi(index.c_str());
+					fromString(index, contextArgIndex[nbJoker++]);
 					parseArg = false;
 					index = "";
 				}
@@ -217,12 +217,12 @@ void CContextSound::init()
 	{
 		if (useRandom)
 		{
-			_Random = atoi(index.c_str());
+			fromString(index, _Random);
 		}
 		else
 		{
 			nlassertex(nbJoker < SoundContextNbArgs, ("Error will trying to play ContextSound '%s'", CStringMapper::unmap(_Name).c_str()));
-			contextArgIndex[nbJoker++] = atoi(index.c_str());
+			fromString(index, contextArgIndex[nbJoker++]);
 			parseArg = false;
 		}
 	}

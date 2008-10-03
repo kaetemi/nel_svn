@@ -21,6 +21,7 @@ void CComplexSound::parseSequence(const std::string &str, std::vector<uint32> &s
 {
 	seq.clear();
 
+	uint32 tmp;
 	string	val;
 	string::const_iterator first(str.begin()), last(str.end());
 
@@ -30,14 +31,18 @@ void CComplexSound::parseSequence(const std::string &str, std::vector<uint32> &s
 			val += *first;
 		else
 		{
-			seq.push_back(atoi(val.c_str()) * scale);
+			fromString(val, tmp);
+			seq.push_back(tmp * scale);
 			val.clear();
 		}
 	}
 
 	// parse the last value
 	if (!val.empty())
-		seq.push_back(atoi(val.c_str()) * scale);
+	{
+		fromString(val, tmp);
+		seq.push_back(tmp * scale);
+	}
 
 }
 

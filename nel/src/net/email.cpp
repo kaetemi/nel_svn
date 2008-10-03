@@ -105,7 +105,8 @@ bool sendEMailCommand (CTcpSock &sock, const std::string &command, uint32 code =
 			res += c;
 			if (c == '\n')
 			{
-				uint32 c = atoi (res.c_str());
+				uint32 c;
+				fromString(res, c);
 				if (c != code)
 				{
 					nlwarning ("EMAIL: EMail command '%s' returned '%s' instead of code %d on sock %s", command.substr(0, 20).c_str(), res.substr(0, res.size()-2).c_str(), code, sock.remoteAddr().asString().c_str());

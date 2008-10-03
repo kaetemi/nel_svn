@@ -162,7 +162,7 @@ CVariable<bool> Bench ("nel", "Bench", "1 if benching 0 if not", 0, true);
 
 // This produce an assertion in the thread if the update loop is too slow
 static CTimeoutAssertionThread	MyTAT;
-static void						UpdateAssertionThreadTimeoutCB(IVariable &var) { MyTAT.timeout(atoi(var.toString().c_str())); }
+static void						UpdateAssertionThreadTimeoutCB(IVariable &var) { uint32 timeOut; fromString(var.toString(), timeOut); MyTAT.timeout(timeOut); }
 static CVariable<uint32>		UpdateAssertionThreadTimeout("nel", "UpdateAssertionThreadTimeout", "in millisecond, timeout before thread assertion", 0, 0, true, UpdateAssertionThreadTimeoutCB);
 
 // Flag to enable/disable the flushing of the sending queues when the service is shut down
@@ -590,7 +590,8 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 	IThread *timeoutThread = NULL;
 
 	// a short name service can't be a number
-	nlassert (atoi(serviceShortName) == 0);
+	uint tmp;
+	nlassert (fromString(serviceShortName, tmp));
 
 	try
 	{
@@ -956,7 +957,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		// set the listen port if there are a port arg in the command line
 		if (haveArg('P'))
 		{
-			ListeningPort = atoi(getArg('P').c_str());
+			NLMISC::fromString(getArg('P'), ListeningPort);
 		}
 
 		// set the aes aliasname if present in cfg file
@@ -1754,7 +1755,8 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, string, Uptime, "time from the launching of 
 	}
 	else
 	{
-		LaunchingDate = CTime::getSecondsSince1970() - atoi ((*pointer).c_str());
+		NLMISC::fromString(*pointer, LaunchingDate);
+		LaunchingDate = CTime::getSecondsSince1970() - LaunchingDate;
 	}
 }
 

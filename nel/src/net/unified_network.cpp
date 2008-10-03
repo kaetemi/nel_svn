@@ -2197,17 +2197,17 @@ bool createMessage (CMessage &msgout, const vector<string> &args, CLog &log)
 		string type = args[i+0];
 		string value = args[i+1];
 
-			 if (type == "s8")			{ sint8  v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "s16")			{ sint16 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "s32")			{ sint32 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "s64")			{ sint64 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "u8")			{ uint8  v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "u16")			{ uint16 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "u32")			{ uint32 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "u64")			{ uint64 v = atoi(value.c_str()); msgout.serial (v); }
-		else if (type == "f")			{ float  v = (float)atof(value.c_str()); msgout.serial (v); }
-		else if (type == "d")			{ double v = atof(value.c_str()); msgout.serial (v); }
-		else if (type == "b")			{ bool v = atoi(value.c_str()) == 1; msgout.serial (v); }
+			 if (type == "s8")			{ sint8  v; fromString(value, v); msgout.serial (v); }
+		else if (type == "s16")			{ sint16 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "s32")			{ sint32 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "s64")			{ sint64 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "u8")			{ uint8  v; fromString(value, v); msgout.serial (v); }
+		else if (type == "u16")			{ uint16 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "u32")			{ uint32 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "u64")			{ uint64 v; fromString(value, v); msgout.serial (v); }
+		else if (type == "f")			{ float  v; fromString(value, v); msgout.serial (v); }
+		else if (type == "d")			{ double v; fromString(value, v); msgout.serial (v); }
+		else if (type == "b")			{ bool   v; fromString(value, v); msgout.serial (v); }
 		else if (type == "s")			{ msgout.serial (value); }
 		else if (type == "e")			{ CEntityId e; e.fromString(value.c_str()); msgout.serial(e); }
 		else { log.displayNL ("type '%s' is not a valid type", type.c_str()); return false; }
@@ -2501,7 +2501,11 @@ NLMISC_CLASS_COMMAND_IMPL(CUnifiedNetwork, addService)
 	TServiceId serviceId(0);
 	const TParsedCommandLine *sid = serviceInfo->getParam("sid");
 	if (sid != NULL)
-		serviceId.set(atoi(sid->ParamValue.c_str()));
+	{
+		uint16 nId;
+		fromString(sid->ParamValue, nId);
+		serviceId.set(nId);
+	}
 
 	bool sendId = serviceInfo->getParam("sendId") != NULL;
 	bool external = serviceInfo->getParam("external") != NULL;

@@ -475,7 +475,7 @@ private:
 inline bool CFormElm::convertValue (sint8 &result, const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, -128.f, 127.f);
 		result = (sint8)tmp;
@@ -494,7 +494,7 @@ inline bool CFormElm::convertValue (sint8 &result, const char *value) const
 inline bool CFormElm::convertValue (uint8 &result, const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, 0.f, 255.f);
 		result = (uint8)tmp;
@@ -513,7 +513,7 @@ inline bool CFormElm::convertValue (uint8 &result, const char *value) const
 inline bool CFormElm::convertValue (sint16 &result,	const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, -32768.f, 32767.f);
 		result = (sint16)tmp;
@@ -532,7 +532,7 @@ inline bool CFormElm::convertValue (sint16 &result,	const char *value) const
 inline bool CFormElm::convertValue (uint16 &result,	const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, 0.f, 65535.f);
 		result = (uint16)tmp;
@@ -551,7 +551,7 @@ inline bool CFormElm::convertValue (uint16 &result,	const char *value) const
 inline bool CFormElm::convertValue (sint32 &result,	const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, -2147483648.f, 2147483647.f);
 		result = (sint32)tmp;
@@ -570,7 +570,7 @@ inline bool CFormElm::convertValue (sint32 &result,	const char *value) const
 inline bool CFormElm::convertValue (uint32 &result,	const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		NLMISC::clamp (tmp, 0.f, 4294967295.f);
 		result = (sint32)tmp;
@@ -588,7 +588,7 @@ inline bool CFormElm::convertValue (uint32 &result,	const char *value) const
 
 inline bool CFormElm::convertValue (float &result, const char *value) const
 {
-	if (sscanf (value, "%f", &result) == 1)
+	if (NLMISC::fromString(value, result))
 	{
 		return true;
 	}
@@ -605,7 +605,7 @@ inline bool CFormElm::convertValue (float &result, const char *value) const
 inline bool CFormElm::convertValue (double &result, const char *value) const
 {
 	float tmp;
-	if (sscanf (value, "%f", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		result = tmp;
 		return true;
@@ -623,7 +623,7 @@ inline bool CFormElm::convertValue (double &result, const char *value) const
 inline bool CFormElm::convertValue (bool &result, const char *value) const
 {
 	int tmp;
-	if (sscanf (value, "%d", &tmp) == 1)
+	if (NLMISC::fromString(value, tmp))
 	{
 		result = tmp != 0;
 		return true;

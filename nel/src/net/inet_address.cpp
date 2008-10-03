@@ -208,7 +208,9 @@ void CInetAddress::setNameAndPort( const std::string& hostNameAndPort )
 	string::size_type pos = hostNameAndPort.find_first_of (':');
 	if (pos != string::npos)
 	{
-		setPort( atoi(hostNameAndPort.substr(pos + 1).c_str()) );
+		uint16 port;
+		fromString(hostNameAndPort.substr(pos + 1), port);
+		setPort( port );
 	}
 	else
 	{

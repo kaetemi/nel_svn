@@ -674,7 +674,7 @@ void updateAdmin()
 				}
 				else
 				{
-					val = atoi(strs[0].c_str());
+					fromString(strs[0], val);
 				}
 				mdDisplayVars.unlockStrings ();
 				mdDisplayVars.clear ();
@@ -785,6 +785,7 @@ void updateAdmin()
 void setInformations (const vector<string> &alarms, const vector<string> &graphupdate)
 {
 	uint i;
+	sint tmp;
 
 	// add only commands that I understand
 	Alarms.clear ();
@@ -804,18 +805,19 @@ void setInformations (const vector<string> &alarms, const vector<string> &graphu
 
 		if (IService::getInstance()->getServiceUnifiedName().find(servicevarpath.Destination[0].first) != string::npos && ICommand::exists(name))
 		{
-			nlinfo ("ADMIN: Adding alarm '%s' limit %d order %s (varpath '%s')", name.c_str(), atoi(alarms[i+1].c_str()), alarms[i+2].c_str(), alarms[i].c_str());
-			Alarms.push_back(CAlarm(name, atoi(alarms[i+1].c_str()), alarms[i+2]=="gt"));
+			fromString(alarms[i+1], tmp);
+			nlinfo ("ADMIN: Adding alarm '%s' limit %d order %s (varpath '%s')", name.c_str(), tmp, alarms[i+2].c_str(), alarms[i].c_str());
+			Alarms.push_back(CAlarm(name, tmp, alarms[i+2]=="gt"));
 		}
 		else
 		{
 			if (IService::getInstance()->getServiceUnifiedName().find(servicevarpath.Destination[0].first) == string::npos)
 			{
-				nlinfo ("ADMIN: Skipping alarm '%s' limit %d order %s (varpath '%s') (not for my service, i'm '%s')", name.c_str(), atoi(alarms[i+1].c_str()), alarms[i+2].c_str(), alarms[i].c_str(), IService::getInstance()->getServiceUnifiedName().c_str());
+				nlinfo ("ADMIN: Skipping alarm '%s' limit %d order %s (varpath '%s') (not for my service, i'm '%s')", name.c_str(), fromString(alarms[i+1], tmp) ? tmp:tmp, alarms[i+2].c_str(), alarms[i].c_str(), IService::getInstance()->getServiceUnifiedName().c_str());
 			}
 			else
 			{
-				nlinfo ("ADMIN: Skipping alarm '%s' limit %d order %s (varpath '%s') (var not exist)", name.c_str(), atoi(alarms[i+1].c_str()), alarms[i+2].c_str(), alarms[i].c_str());
+				nlinfo ("ADMIN: Skipping alarm '%s' limit %d order %s (varpath '%s') (var not exist)", name.c_str(), fromString(alarms[i+1], tmp) ? tmp:tmp, alarms[i+2].c_str(), alarms[i].c_str());
 			}
 		}
 	}
@@ -839,18 +841,19 @@ void setInformations (const vector<string> &alarms, const vector<string> &graphu
 
 		if (ICommand::exists(VarName) && (ServiceName == "*" || IService::getInstance()->getServiceShortName() == ServiceName))
 		{
-			nlinfo ("ADMIN: Adding graphupdate '%s' update %d (varpath '%s')", VarName.c_str(), atoi(graphupdate[i+1].c_str()), graphupdate[i].c_str());
-			GraphUpdates.push_back(CGraphUpdate(VarName, atoi(graphupdate[i+1].c_str())));
+			fromString(graphupdate[i+1], tmp);
+			nlinfo ("ADMIN: Adding graphupdate '%s' update %d (varpath '%s')", VarName.c_str(), tmp, graphupdate[i].c_str());
+			GraphUpdates.push_back(CGraphUpdate(VarName, tmp));
 		}
 		else
 		{
 			if (IService::getInstance()->getServiceShortName() != ServiceName)
 			{
-				nlinfo ("ADMIN: Skipping graphupdate '%s' limit %d (varpath '%s') (not for my service, i'm '%s')", VarName.c_str(), atoi(graphupdate[i+1].c_str()), graphupdate[i].c_str(), IService::getInstance()->getServiceUnifiedName().c_str());
+				nlinfo ("ADMIN: Skipping graphupdate '%s' limit %d (varpath '%s') (not for my service, i'm '%s')", VarName.c_str(), fromString(graphupdate[i+1], tmp) ? tmp:tmp, graphupdate[i].c_str(), IService::getInstance()->getServiceUnifiedName().c_str());
 			}
 			else
 			{
-				nlinfo ("ADMIN: Skipping graphupdate '%s' limit %d (varpath '%s') (var not exist)", VarName.c_str(), atoi(graphupdate[i+1].c_str()), graphupdate[i].c_str());
+				nlinfo ("ADMIN: Skipping graphupdate '%s' limit %d (varpath '%s') (var not exist)", VarName.c_str(), fromString(graphupdate[i+1], tmp) ? tmp:tmp, graphupdate[i].c_str());
 			}
 		}
 	}

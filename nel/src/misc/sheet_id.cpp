@@ -142,7 +142,8 @@ bool CSheetId::buildSheetId(const std::string& sheetName)
 	// we failed to find the sheet name in the sheetname map so see if the string is numeric
 	if (sheetName.size()>1 && sheetName[0]=='#')
 	{
-		uint32 numericId= atoi(sheetName.c_str()+1);
+		uint32 numericId;
+		NLMISC::fromString((const char*)(sheetName.c_str()+1), numericId);
 		if (NLMISC::toString("#%u",numericId)==sheetName)
 		{
 			_Id.Id= numericId;

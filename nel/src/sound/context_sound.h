@@ -164,16 +164,16 @@ class CContextSoundContainer : public IContextSoundContainer
 			else if (!arg.empty())
 			{
 				// end of the argument.
-				args[i++] = atoi(arg.c_str());
-				arg = "";
+				fromString(arg, args[i++]);
+				arg.clear();
 			}
 		}
 		// read the potential last arg.
 		if (!arg.empty())
 		{
 			// end of the argument.
-			args[i++] = atoi(arg.c_str());
-			arg = "";
+			fromString(arg, args[i++]);
+			arg.clear();
 		}
 
 		if (i != NbJoker)
@@ -193,23 +193,23 @@ class CContextSoundContainer : public IContextSoundContainer
 				}
 				else if (!arg.empty())
 				{
-					nlassertex (ok == false, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
+					nlassertex (!ok, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
 					// end of the argument.
-					randomValue = atoi(arg.c_str());
-					arg = "";
+					fromString(arg, randomValue);
+					arg.clear();
 					ok = true;
 				}
 			}
 			// read the potential last arg.
 			if (!arg.empty())
 			{
-				nlassertex (ok == false, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
+				nlassertex (!ok, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
 				// end of the argument.
-				randomValue = atoi(arg.c_str());
-				arg = "";
+				fromString(arg, randomValue);
+				arg.clear();
 				ok = true;
 			}
-			nlassertex (ok == true, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
+			nlassertex (ok, ("Error while adding sound '%s' into context sound container", NLMISC::CStringMapper::unmap(sound->getName()).c_str()));
 
 		}
 		else

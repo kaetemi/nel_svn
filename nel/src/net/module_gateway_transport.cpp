@@ -206,7 +206,8 @@ namespace NLNET
 				if (portParam == NULL)
 					throw EInvalidCommand();
 
-				uint16 port = atoi(portParam->ParamValue.c_str());
+				uint16 port;
+				fromString(portParam->ParamValue, port);
 
 				openServer(port);
 			}
@@ -639,13 +640,16 @@ namespace NLNET
 				if (conIdParam == NULL)
 					throw EInvalidCommand();
 
-				uint32	connId = atoi(conIdParam->ParamValue.c_str());
+				uint32	connId;
+				fromString(conIdParam->ParamValue, connId);
 
 				close(connId);
 			}
 			else if (commandName == "retryInterval")
 			{
-				_RetryInterval = uint(max(int(MIN_RETRY_INTERVAL), atoi(command.SubParams[0]->ParamValue.c_str())));
+				uint32 interval;
+				fromString(command.SubParams[0]->ParamValue, interval);
+				_RetryInterval = std::max(uint32(MIN_RETRY_INTERVAL), interval);
 
 				nldebug("CGatewayL3ClientTransport : setting retry interval to %u", _RetryInterval);
 			}
