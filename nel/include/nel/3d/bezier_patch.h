@@ -83,7 +83,7 @@ public:
 	/// Constructor: undefined Bezier patch!!
 	CBezierPatch() {}
 
-	/// complete computation of Vertices, Tangents, and Interiors, provinding the vertices and vertex normals.
+	/// complete computation of Vertices, Tangents, and Interiors, providing the vertices and vertex normals.
 	void		make(CVector vertices[4], CVector	normals[4]);
 	/// make default Interiors, according to Vertices and Tangents.
 	void		makeInteriors();
@@ -104,11 +104,11 @@ public:
 
 	/// \name Subdivision.
 	// @{
-	/** Subdivide the bezier patch in 2 bezier patch along s, at s (beetween [0,1]).
+	/** Subdivide the bezier patch in 2 bezier patches along s, at s (beetween [0,1]).
 	 * NB: left goes from 0 to s, right goes from s to 1.
 	 */
 	void		subdivideS(CBezierPatch &left, CBezierPatch &right, float s=0.5f) const;
-	/** Subdivide the bezier patch in 2 bezier patch along t, at t (beetween [0,1]).
+	/** Subdivide the bezier patch in 2 bezier patches along t, at t (beetween [0,1]).
 	 * NB: top goes from 0 to t, bottom goes from t to 1.
 	 */
 	void		subdivideT(CBezierPatch &top, CBezierPatch &bottom, float t=0.5f) const;

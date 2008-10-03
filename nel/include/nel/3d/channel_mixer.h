@@ -122,7 +122,7 @@ private:
 
 		/**
 		  * Global weight to apply to the animation of this slot.
-		  * This weight can be gived in any range because renormalisatio is done in final
+		  * This weight can be given in any range because renormalisation is done in final
 		  * weight evaluation. If weight is 0.f, the final mix is not influenced by the animation
 		  * of this slot.
 		  */
@@ -181,7 +181,7 @@ private:
 		/// The id of the animated value in the IAnimatable object.
 		uint32				_ValueId;
 
-		/// The id of the OwnerBit to touch the IAnimatable object. Usefull for IAnimatable derivation.
+		/// The id of the OwnerBit to touch the IAnimatable object. Useful for IAnimatable derivation.
 		uint32				_OwnerValueId;
 
 		/// The default track pointer used when track are missing in the animation. Can't be NULL.
@@ -291,7 +291,7 @@ public:
 	 */
 	void enableChannel (uint channelId, bool enable);
 
-	/** see enableChannel(). return false if channel do not exist...
+	/** see enableChannel(). return false if channel does not exist...
 	 *	\param channelId channelId get from CAnimationSet::getChannelIdByName() or addChannel()
 	 */
 	bool isChannelEnabled (uint channelId) const;
@@ -303,7 +303,7 @@ public:
 	 */
 	void lodEnableChannel (uint channelId, bool enable);
 
-	/** see enableChannel(). return false if channel do not exist...
+	/** see enableChannel(). return false if channel does not exist...
 	 *	\param channelId channelId get from CAnimationSet::getChannelIdByName() or addChannel()
 	 */
 	bool isChannelLodEnabled (uint channelId) const;
@@ -420,7 +420,7 @@ public:
 
 private:
 
-	/// /name Iternal methods
+	/// /name Internal methods
 
 	/// Clean the mixer
 	void cleanAll ();
@@ -428,7 +428,7 @@ private:
 	/// Dirt all slots
 	void dirtAll ();
 
-	/// Reshresh channel list
+	/// Refresh channel list
 	void refreshList ();
 
 	// The slot array
@@ -443,7 +443,7 @@ private:
 	// The first Global channel. If NULL, no channel to animate.  (animed in eval(false))
 	CChannel*						_FirstChannelGlobal;
 
-	// The first dertail channel. If NULL, no channel to animate.  (animed in eval(true))
+	// The first detail channel. If NULL, no channel to animate.  (animed in eval(true))
 	CChannel*						_FirstChannelDetail;
 
 	// last date of evalDetail().
@@ -459,7 +459,7 @@ private:
 	std::vector<CChannel*>			_GlobalListToEval;
 	std::vector<CChannel*>			_DetailListToEval;
 
-	/// Reshresh animate list
+	/// Refresh animate list
 	void							refreshListToEval ();
 
 	/**

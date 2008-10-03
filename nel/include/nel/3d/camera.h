@@ -61,7 +61,7 @@ public:
 // ***************************************************************************
 /**
  * A Camera node, based on a CTransform node.
- * The camera look in his local Y direction (see CScene).
+ * The camera looks in his local Y direction (see CScene).
  *
  * No special traverse*()
  *	- has default behavior of a transform.
@@ -129,45 +129,45 @@ public:
 	}
 
 	/// \name Get / Set some values
-	/// Work only if enableTargetAnimation.
+	/// Works only if enableTargetAnimation.
 	void	setTargetPos(const CVector &pos)
 	{
 		nlassert(_TargetAnimationEnabled);
 		_Target.Value= pos;
 		touch(TargetValue, OwnerBit);
 	}
-	/// Work only if enableTargetAnimation.
+	/// Works only if enableTargetAnimation.
 	void	setTargetPos(float x, float y, float z)
 	{
 		setTargetPos(CVector(x,y,z));
 	}
-	/// Work only if enableTargetAnimation.
+	/// Works only if enableTargetAnimation.
 	void	setRoll(float roll)
 	{
 		nlassert(_TargetAnimationEnabled);
 		_Roll.Value = roll;
 		touch(RollValue, OwnerBit);
 	}
-	/// Work only if enableFovAnimation.
+	/// Works only if enableFovAnimation.
 	void	setFov(float fov)
 	{
 		nlassert(_FovAnimationEnabled);
 		_Fov.Value = fov;
 		touch(FovValue, OwnerBit);
 	}
-	/// Work only if enableTargetAnimation.
+	/// Works only if enableTargetAnimation.
 	void	getTargetPos(CVector &pos) const
 	{
 		nlassert(_TargetAnimationEnabled);
 		pos=_Target.Value;
 	}
-	/// Work only if enableTargetAnimation.
+	/// Works only if enableTargetAnimation.
 	float	getRoll() const
 	{
 		nlassert(_TargetAnimationEnabled);
 		return _Roll.Value;
 	}
-	/// Work only if enableFovAnimation.
+	/// Works only if enableFovAnimation.
 	float	getFov() const
 	{
 		nlassert(_FovAnimationEnabled);

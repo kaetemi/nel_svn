@@ -38,7 +38,7 @@ class UScene;
 //-----------------------------------------------------------------------------------------------------------
 //---------------------------------------- CBloomEffect -----------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------
-// CBloomEffect class apply a bloom effect on all scene. All scene is rendered in a
+// CBloomEffect class apply a bloom effect on the whole scene. The whole scene is rendered in a
 // render target (a Frame Buffer Object on OpengL, the normal back buffer in Direct3D) which is stretched
 // in a 256*256 another render target.
 // We apply a horizontal blur on this 256*256 render target, then a vertical blur on the result of this first pass.
@@ -56,7 +56,7 @@ public:
 	~CBloomEffect();
 
 	// Called after the Driver initialization to indicate if OpenGL or Direct3D is used.
-	// They are some differences in bloom algorithm in function of this API choice.
+	// They are some differences in bloom algorithm depending on this API choice.
 	// If bloom effect is activated and supported, private method init() is called to initialize
 	// textures and materials.
 	// initBloomEffect = false => directx
@@ -89,12 +89,12 @@ public:
 	void initBloom();
 
 	// Called at the end of renderAll method in the main loop, recover stretched texture, apply
-	// the both blur passes, and the blending operation between initial render target and the blured one.
+	// both blur passes, and the blending operation between initial render target and the blured one.
 	void endBloom();
 
 	// In OpenGL, the use of FBO implies that Z buffer values of scene render have been stored in
 	// a depth render target. Then, to display 3D interfaces, we must display them in the same FBO,
-	// to keep correct Z tests.
+	// to keep Z tests correct.
 	// This method is called at the end of interfaces display in the main loop, to display final render target
 	// (with added interfaces) in the color frame buffer.
 	// NB : In Direct3D, the final render target is displayed at the end of endBloom call.
@@ -115,7 +115,7 @@ private:
 	// For the second pass, blur is applied vertically to precedent _BlurHorizontalTex texture and recover
 	// in _BlurFinalTex render target texture.
 	// For each pass, thanks to a vertex program, first texture is displayed with several little decals
-	// in order to obtain in the render target texture a mix of color of a texel and its neighbored texels
+	// in order to obtain in the render target texture a mix of color of a texel and its neighboured texels
 	// on the axis of the pass.
 	void doBlur(bool horizontalBlur);
 
@@ -139,7 +139,7 @@ private:
 	// used as stretched texture from _InitText, as displayed texture in first blur pass,
 	// and as render target in second blur pass.
 	NLMISC::CSmartPtr<NL3D::ITexture>  _BlurFinalTex;
-	// used as rander target in first blur pass, and as displayed texture on second blur pass.
+	// used as render target in first blur pass, and as displayed texture on second blur pass.
 	NLMISC::CSmartPtr<NL3D::ITexture>  _BlurHorizontalTex;
 
 

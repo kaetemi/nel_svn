@@ -45,7 +45,7 @@ class IAnimatedValue;
  * Animated values are animated by a CChannelMixer object.
  * Each value have a name and a default track.
  *
- * An IAnimatable may have IAnimatable sons (list of bones, list of materails etc...). The value count and valueId of
+ * An IAnimatable may have IAnimatable sons (list of bones, list of materials etc...). The value count and valueId of
  * the IAnimatable DO NOT count those sons, but register() should register his sons too.
  * A father propagated touch system (setFather()) is implemented. When a son is touched, he touchs his fathers, his grandfather
  * and so on.
@@ -123,7 +123,7 @@ public:
 	virtual ITrack* getDefaultTrack (uint valueId) =0;
 
 	/**
-	  * register the Aniamtable to a channelMixer (using CChannelMixer::addChannel()). You MUST use this method to register Animatable.
+	  * register the Animatable to a channelMixer (using CChannelMixer::addChannel()). You MUST use this method to register Animatable.
 	  * This method should:
 	  *		- call is BaseClass method.
 	  *		- register local AnimatableValues, with channel name:	prefix+getValueName().

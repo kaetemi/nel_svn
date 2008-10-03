@@ -46,7 +46,7 @@ class CMeshBaseInstance;
 class CAsyncTextureBlock
 {
 public:
-	// List of texture file name for a material
+	// List of texture file names for a material
 	std::string			TextureNames[IDRV_MAT_MAXTEXTURES];
 
 	CAsyncTextureBlock()

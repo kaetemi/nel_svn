@@ -43,7 +43,7 @@ class	CSkeletonModel;
 // ***************************************************************************
 /**
  * This is a bone default value. This object is stored in the SkeletonShape, and is serialised.
- * For hierarchy of bones, It contains the id of his father.
+ * For hierarchy of bones, it contains the id of his father.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2001
@@ -102,7 +102,7 @@ class CBone : public ITransformable
 public:
 
 	/** Constructor. build a bone from a CBoneBase*.
-	 * By defautl, a bone is in RotQuat transform mode.
+	 * By default, a bone is in RotQuat transform mode.
 	 * This ctor:
 	 *	- store a RefPtr on the bonebase (for getDefaultTracks() method). the refptr is just for nlassert.
 	 *	- copy the bonebase default track value into Animated Values Pos/Rot etc....
@@ -120,7 +120,7 @@ public:
 
 	/// \name Herited from ITransformable
 	// @{
-	/// retrive the default trak from skeleton shape.
+	/// retrieve the default track from skeleton shape.
 	virtual ITrack* getDefaultTrack (uint valueId);
 
 	/// register the ITransformable channels as detailled channels.
@@ -132,13 +132,13 @@ public:
 	 * NB: the result localSkeletonMatrix depends on BoneBase::UnheritScale. \n
 	 * NB: the result worldMatrix depends on BoneBase::UnheritScale. \n
 	 * NB: the result boneSkinMatrix depends on BoneBase::InvBindPos. \n
-	 * \param parent the parent of this bone (maybe NULL if root). his WorldMatrix is used, so it should be computed before.
-	 * \param rootMatrix is used as father worldmatrix if parent==NULL. Usefull for computing WorldMatrix.
+	 * \param parent the parent of this bone (maybe NULL if root). His WorldMatrix is used, so it should be computed before.
+	 * \param rootMatrix is used as father worldmatrix if parent==NULL. Useful for computing WorldMatrix.
 	 * \param skeletonForAnimCtrl if NULL, no AnimCtrl is performed, else skeletonForAnimCtrl->getWorldMAtrix() should be == to rootMatrix
 	 */
 	void			compute(CBone *parent, const CMatrix &rootMatrix, CSkeletonModel *skeletonForAnimCtrl);
 
-	/** Interpolate the current result of _BoneSkinMatrix fith otherMatrix.
+	/** Interpolate the current result of _BoneSkinMatrix with otherMatrix.
 	 *	when interp==0.f, _BoneSkinMatrix= otherMatrix.
 	 *	NB: the interpolation is made on per-vector basis => bad matrix interpolation.
 	 */

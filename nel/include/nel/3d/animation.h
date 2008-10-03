@@ -71,7 +71,7 @@ public:
 	  *	WARNING: slower if applyAnimHeaderCompression() has been called. try use getIdTrackByChannelId() instead
 	  *
 	  * \param name is the name of the desired track.
-	  * \return CAnimation::NotFound if the track doesn't exist else the the id of the track.
+	  * \return CAnimation::NotFound if the track doesn't exist else the id of the track.
 	  */
 	uint getIdTrackByName (const std::string& name) const;
 
@@ -84,7 +84,7 @@ public:
 
 	/** see applyAnimHeaderCompression()
 	  * \return CAnimation::NotFound if the track doesn't exist (or anim header not compressed)
-	  *		else return the the id of the track.
+	  *		else return the id of the track.
 	  */
 	uint getIdTrackByChannelId (uint16 channelId) const;
 
@@ -157,8 +157,8 @@ public:
 	  */
 	void	applyTrackQuatHeaderCompression();
 
-	/** Used by CAnimationSet to lower the memory Size. After This, you can
-	  *	(and should for better performance) use getIdTrackByChannelId()
+	/** Used by CAnimationSet to lower the memory Size. After this, you can
+	  *	(and should for better performances) use getIdTrackByChannelId()
 	  *	Does not support more than 65536 channels (nlassert)
 	  */
 	void	applyAnimHeaderCompression(CAnimationSet *animationSetOwner, const std::map <std::string, uint32> &channelMap);

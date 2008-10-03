@@ -119,7 +119,7 @@ public:
 	 * NB: id 0x7FFFFFFF is a reserved id, used as default to indicate no valid Animated texture.
 	 */
 	// @{
-	/// assign a specific texture for an id (a uint32). It is a valid to give a NULL ptr (=> un textured). Sotred as a SmartPtr.
+	/// assign a specific texture for an id (a uint32). It is valid to give a NULL ptr (=> untextured). Sorted as a SmartPtr.
 	void			setAnimatedTexture(uint32 id, CSmartPtr<ITexture>  pText);
 	/// is this Id valid?
 	bool			validAnimatedTexture(uint32 id);
@@ -181,7 +181,7 @@ public:
 	// @}
 
 
-	/** Check if The animated material is touched, and if necessary update the stored material (if any).
+	/** Check if the animated material is touched, and if necessary update the stored material (if any).
 	 * Texture animation: for now, texture animation is possible only on stage 0. If TextureValue flag is touched (ie
 	 * a texture anim track is linked to the animated value), update() look into the CMaterialBase what texture to set.
 	 * If the track gives a bad Id for the texture, no-op.

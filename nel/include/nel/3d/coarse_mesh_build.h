@@ -46,7 +46,7 @@ class ITexture;
  *
  * Each mesh geom should be a coarse mesh.
  *
- * The uv texture coodinates of those coarse meshes will be adjusted to fit
+ * The uv texture coordinates of those coarse meshes will be adjusted to fit
  * in a single texture.
  *
  * \author Cyril 'Hulud' Corvazier
@@ -93,7 +93,7 @@ public:
 	};
 
 	/**
-	  * The build method. This method will build a single texture and adjuste
+	  * The build method. This method will build a single texture and adjust
 	  * the UV texture coordinates of each mesh geom.
 	  *
 	  * \param coarseMeshes is a vector of coarse mesh to compute.

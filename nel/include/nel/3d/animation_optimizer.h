@@ -56,13 +56,13 @@ public:
 	/// Constructor
 	CAnimationOptimizer();
 
-	/** Set the Quaternion Error Thresholds. must be>=0.
+	/** Set the Quaternion Error Thresholds. must be >=0.
 	 *	Default is 0.0001 and 0.000001. Above this value, 2 quaternions are said different.
 	 *	NB: comparing 2 quaternions is made by multiplying the one with the inverse of the other.
 	 *	the W component is then tested and must be >1-threshold (modulo sign) to conclude to equality.
-	 *	Since quat.W= cos(angle/2), you can deduce the angle threshold with  angleThre= acos(1-thre)*2
+	 *	Since quat.W=cos(angle/2), you can deduce the angle threshold with angleThre=acos(1-thre)*2
 	 *
-	 *	Give 2 value, one For Low precision and High precision. Default setup use high precision. Use
+	 *	Give 2 values, one For Low precision and High precision. Default setup use high precision. Use
 	 *	addLowPrecisionTrack() to drive low precision tracks.
 	 */
 	void		setQuaternionThreshold(double lowPrecThre, double highPrecThre);
@@ -71,19 +71,19 @@ public:
 	 *	Default is 0.001 and 0.0001. Above this value, 2 vectors are said different.
 	 *	NB: comparing 2 vectors is made by geting the norm of the difference
 	 *
-	 *	Give 2 value, one For Low precision and High precision. Default setup use high precision. Use
+	 *	Give 2 values, one For Low precision and High precision. Default setup use high precision. Use
 	 *	addLowPrecisionTrack() to drive low precision tracks.
 	 */
 	void		setVectorThreshold(double lowPrecThre, double highPrecThre);
 
 	/** see setQuaternionThreshold(). Any track which contains this name will be considered as a
-	 *	Low precision track. Default setup is empty, so all track are "high precision" track.
-	 *	A good setup is  for example addLowPrecisionTrack("Finger") and addLowPrecisionTrack("Ponytail")
+	 *	low precision track. Default setup is empty, so all tracks are "high precision" tracks.
+	 *	A good setup is for example addLowPrecisionTrack("Finger") and addLowPrecisionTrack("Ponytail")
 	 *	Warning: case sensitive
 	 */
 	void		addLowPrecisionTrack(const std::string &name);
 
-	/// see addLowPrecisionTrack. This clear the array.
+	/// see addLowPrecisionTrack. This clears the array.
 	void		clearLowPrecisionTracks();
 
 	/** Set the Sample Frame Rate (>0)
@@ -140,7 +140,7 @@ private:
 
 	/** sample the track from beginTime to endTime, sample to numSamples, such that
 	 *	key[0].Time==beginTime and key[numSamples-1].Time==endTime.
-	 *	NB: quaternion are normalized, and are makeClosest()-ed from sample to the next.
+	 *	NB: quaternions are normalized, and are makeClosest()-ed from sample to the next.
 	 */
 	void		sampleQuatTrack(const ITrack *trackIn, float beginTime, float endTime, uint numSamples);
 

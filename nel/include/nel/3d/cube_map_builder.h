@@ -51,7 +51,7 @@ struct ICubeMapFunctor
   * \param f a functor that helps to build the cube map.
   * \param luminanceOnly When set to true, a luminance cube map is build. The luminance is taken from the alpha component of the color produced by the functor.
   *                      Warning : this isn't supported anywhere.
-  * \param shareName a prefix for sharename. If not empty this allow each face of the cube map to be sharable (a number is append to the given string)
+  * \param shareName a prefix for sharename. If not empty this allow each face of the cube map to be sharable (a number is appended to the given string)
   */
 CTextureCube *BuildCubeMap(sint mapSize, ICubeMapFunctor &f, bool luminanceOnly = false, const std::string &shareName = "");
 

@@ -63,7 +63,7 @@ public:
 	/// \name ITrav/ITravScene Implementation.
 	//@{
 	/** render after Clip and before light.
-	 * This order is important for possibles lights sticked to bones of skeletons.
+	 * This order is important for possible lights sticked to bones of skeletons.
 	 */
 	void				traverse();
 	//@}
@@ -72,7 +72,7 @@ public:
 public:
 	// ONLY FOR MODEL TRAVERSING.
 
-	sint64		CurrentDate;	// The current date of the traversal, usefull for evaldetail just one time..
+	sint64		CurrentDate;	// The current date of the traversal, useful for evaldetail just one time..
 
 
 	// For clipTrav. cleared at beginning of CClipTrav::traverse
@@ -91,7 +91,7 @@ public:
 
 // ********************
 private:
-	/// traverse the model recusrively, followin Hrc hierarchy
+	/// traverse the model recursively, following Hrc hierarchy
 	void				traverseHrcRecurs(CTransform *model);
 
 	// traverse list of model visible and usefull to animDetail.

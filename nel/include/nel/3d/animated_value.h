@@ -48,7 +48,7 @@ public:
 	virtual ~IAnimatedValue() {}
 
 	/**
-	  * The blend method. This method blend two the animated values and store the result
+	  * The blend method. This method blend two animated values and store the result
 	  * in the object. The two first args can be reference on the object itself.
 	  * Idealy, it performs the operation this->value=(this->value*blendFactor + value*(1.f-blendFactor))
 	  *
@@ -58,7 +58,7 @@ public:
 	virtual void blend (const IAnimatedValue& value, float blendFactor) =0;
 
 	/**
-	  * An assignation method. This method assign a values in the object.
+	  * An assignation method. This method assign a value to the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -94,7 +94,7 @@ public:
 	}
 
 	/**
-	  * An assignation method. This method assign a values in the object.
+	  * An assignation method. This method assign a value to the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -147,7 +147,7 @@ public:
 	}
 
 	/**
-	  * An assignation method. This method assign a values in the object.
+	  * An assignation method. This method assign a value to the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -196,7 +196,7 @@ public:
 	}
 
 	/**
-	  * An assignation method. This method assign a values in the object.
+	  * An assignation method. This method assign a value to the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -247,7 +247,7 @@ public:
 	}
 
 	/**
-	  * An assignation method. This method assign a values in the object.
+	  * An assignation method. This method assign a value to the object.
 	  *
 	  * \param value is the new value.
 	  */
@@ -280,8 +280,8 @@ typedef CAnimatedValueBlendable<NLMISC::CRGBA>		CAnimatedValueRGBA;
 
 
 // ***************************************************************************
-/** This class must contains all the possible AnimatedValue, so the system can work
-  *	It is used at ITrack evaluation to fill one of this value
+/** This class must contain all the possible AnimatedValue, so the system can work
+  *	It is used at ITrack evaluation to fill one of these values
   */
 class CAnimatedValueBlock
 {

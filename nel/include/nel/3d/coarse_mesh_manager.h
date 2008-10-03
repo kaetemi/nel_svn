@@ -39,7 +39,7 @@ namespace NL3D
 
 // Number of vertices that can be rendered in one pass
 #define NL3D_COARSEMESH_VERTEXBUFFER_SIZE				20000
-// Number of trianges that can be rendered in one pass
+// Number of triangles that can be rendered in one pass
 #define NL3D_COARSEMESH_TRIANGLE_SIZE					10000
 // The vertex Format used by the coarseMesh manager
 #define NL3D_COARSEMESH_VERTEX_FORMAT_MGR				(CVertexBuffer::PositionFlag|CVertexBuffer::TexCoord0Flag|CVertexBuffer::PrimaryColorFlag)

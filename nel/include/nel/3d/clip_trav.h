@@ -98,7 +98,7 @@ public:
 	void setQuadGridClipManager(CQuadGridClipManager *mgr);
 	const CQuadGridClipManager *getQuadGridClipManager() const {return _QuadGridClipManager;}
 
-	/// \name Visible List mgt. Those visible modles are updated each traverse().
+	/// \name Visible List mgt. Those visible models are updated each traverse().
 	//@{
 	// NB: list is cleared at begining of traverse().
 	void				addVisibleModel(CTransform *model)
@@ -114,11 +114,11 @@ public:
 
 	/// \name Cluster system related methods.
 	//@{
-	/** Retreive a list of cluster for witch the position is inside. At least return the RootCluster one
+	/** Retrieve a list of clusters for which the position is inside. At least return the RootCluster one
 	*/
 	bool fullSearch (std::vector<CCluster*>& result, const CVector& pos);
 
-	/// Set cluster tracking on/off (ie storage of thje visible cluster during clip traversal)
+	/// Set cluster tracking on/off (ie storage of the visible cluster during clip traversal)
 	void setClusterVisibilityTracking(bool track);
 	/// Check the activation of cluster visibility tracking.
 	bool getClusterVisibilityTracking();

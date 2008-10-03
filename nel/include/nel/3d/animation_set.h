@@ -218,7 +218,7 @@ public:
 	  *
 	  * First, for each animation you want to add to the set, you must add the animation in the set.
 	  *
-	  * When all animations are built, call this method to finlize the set.
+	  * When all animations are built, call this method to finalize the set.
 	  *
 	  * NoOp if already built
 	  */

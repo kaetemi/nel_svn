@@ -63,7 +63,7 @@ public:
 	/** setup the mipMap levels.
 	 *	\baseLevel When the texture is first added, it is loaded skipping the baseLevel
 	 *	first mipmap
-	 *	\maxLevel During time, furhter mipmap are loaded, according to instance position etc... maxLevel
+	 *	\maxLevel During time, further mipmap are loaded, according to instance position etc... maxLevel
 	 *	tells where to stop. If 0, the texture will finally be entirely uploaded.
 	 *	Default is 3,1.
 	 */
@@ -76,22 +76,22 @@ public:
 	void			setupMaxTotalTextureSize(uint maxText);
 
 	/** Add a reference to a texture owned by an instance.
-	 *	If the texture still exist, only the refcount is incremented
-	 *	Else If texture is found in the HLSTextureManager, it is builded (async) from it, else Begin Async loading
+	 *	If the texture still exists, only the refcount is incremented
+	 *	Else if texture is found in the HLSTextureManager, it is builded (async) from it, else Begin Async loading
 	 *
-	 *	ThereFore, only CTextureFile are possible. Note also that the texture is uploaded with mipmap by default, and
+	 *	Therefore, only CTextureFile are possible. Also note that the texture is uploaded with mipmap by default, and
 	 *	UpLoadFormat is also default (say ITexture::Auto)
 	 *
-	 *	If the texture file is not a DDS with mipmap, this is an error. But the system doens't fail and
+	 *	If the texture file is not a DDS with mipmap, this is an error. But the system doesn't fail and
 	 *	the file is entirely loaded and uploaded. The problem is that upload is not cut according to maxUpLoadPerFrame, so
 	 *	some freeze may occur.
 	 */
 	uint			addTextureRef(const std::string &textName, CMeshBaseInstance *instance, const NLMISC::CVector &position);
 
-	/// release a texture-instance tuple. the texture is released if no more instance use it.
+	/// release a texture-instance tuple. The texture is released if no more instance use it.
 	void			releaseTexture(uint id, CMeshBaseInstance *instance);
 
-	/// tells if a texture is loaded in the driver (ie ready to use)
+	/// tells if a texture is loaded in the driver (ie. ready to use)
 	bool			isTextureUpLoaded(uint id) const;
 
 	/** get the RAM LowDef version of a texture. Used For CLodCharacters
@@ -101,13 +101,13 @@ public:
 	const NLMISC::CBitmap	*getCoarseBitmap(uint id) const;
 
 
-	/** update the manager. New loaded texture are uploaded. Instances are updated to know if all their
+	/** update the manager. New loaded textures are uploaded. Instances are updated to know if all their
 	 *	pending textures have been uploaded.
 	 */
 	void			update(IDriver *pDriver);
 
 
-	/// get the async texture Size asked (ie maybe bigger than MaxTotalTextureSize).
+	/// get the async texture size asked (ie. maybe bigger than MaxTotalTextureSize).
 	uint			getTotalTextureSizeAsked() const {return _TotalTextureSizeAsked;}
 	/// get what the system really allows
 	uint			getLastTextureSizeGot() const {return _LastTextureSizeGot;}
@@ -178,7 +178,7 @@ private:
 		bool								UpLoaded;
 		// true if first loading ended, and if DXTC with mipmap
 		bool								CanHaveLOD;
-		// true if this texture must be builded from the HLSManager (at first load)
+		// true if this texture must be built from the HLSManager (at first load)
 		bool								BuildFromHLSManager;
 		// if BuildFromHLSManager, gives the text id in the manager
 		sint								HLSManagerTextId;

@@ -295,7 +295,7 @@ private:
 	// End weight time
 	TGlobalAnimationTime	_EndWeightTime[CChannelMixer::NumAnimationSlot];
 
-	// Smoothness of the
+	// Smoothness of the weight interpolation
 	float				_Smoothness[CChannelMixer::NumAnimationSlot];
 
 	// Wrap mode

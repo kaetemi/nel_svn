@@ -202,7 +202,7 @@ public:
 	CLetterColors LetterColors;
 
 	/**
-	 * Hotspot positions (origine for the string placement)
+	 * Hotspot positions (origin for the string placement)
 	 * You should take care that for vertical hotspot, an imaginary line is defined under
 	 * letters with no leg (like m,b,c etc..) between the leg of p and the loop of the p.
 	 */
@@ -271,7 +271,7 @@ public:
 	/** Special for interface. same as render2D but clip the quads to xmin,ymin/xmax,ymax.
 	 *	NB: behavior is same as render2D with: Hotspot = bottomLeft, scaleX=1, scaleZ=1, rotateY=0,
 	 *	useScreenAR43= false, roundToNearestPixel= false
-	 *	Additionnaly, this method don't render directly to the driver but add primitives to a CRenderStringBuffer
+	 *	Additionnaly, this method doesn't render directly to the driver but add primitives to a CRenderStringBuffer
 	 *	Use the method CRenderStringBuffer::flush() to flush it all.
 	 */
 	void render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuffer,

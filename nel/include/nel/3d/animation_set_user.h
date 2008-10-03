@@ -166,7 +166,7 @@ public:
 	}
 
 	/**
-	  * Get a animation ID by name. If no animation is found, method returns NotFound.
+	  * Get an animation ID by name. If no animation is found, method returns NotFound.
 	  */
 	virtual	uint getAnimationIdByName (const std::string& name) const
 	{
