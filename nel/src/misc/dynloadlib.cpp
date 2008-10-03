@@ -85,7 +85,7 @@ void *nlGetSymbolAddress(NL_LIB_HANDLE libHandle, const std::string &procName)
  #elif defined (NL_DEBUG)
    const string	NL_LIB_SUFFIX("_d");
  #elif defined (NL_RELEASE_DEBUG)
-   const string	NL_LIB_SUFFIX("_rd");
+   const string	NL_LIB_SUFFIX("_r");
  #elif defined (NL_RELEASE)
    const string	NL_LIB_SUFFIX("_r");
  #else
