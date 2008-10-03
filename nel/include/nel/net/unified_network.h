@@ -25,15 +25,15 @@
 #define NL_UNIFIED_NETWORD_H
 
 #include "nel/misc/types_nl.h"
-#include "nel/misc/command.h"
 
 #include <vector>
 #include <string>
 
+#include "nel/misc/command.h"
 #include "nel/misc/time_nl.h"
+
 #include "callback_client.h"
 #include "callback_server.h"
-//#include "service.h"
 
 namespace NLNET {
 
@@ -42,44 +42,43 @@ class TServiceId
 {
 	/// Service are identified by a 16 bits integer
 	uint16	_ServiceId;
+
 public:
+
 	typedef uint16	size_type;
 
 	/// A constant for the invalid service id
 	static const TServiceId	InvalidId;
 
 	/// Default constructor, set the id to 0 (no service should have 0)
-	TServiceId()
-		:	_ServiceId(0)
-	{}
+	TServiceId() : _ServiceId(0) { }
 
 	/// Copy constructor
-	TServiceId(const TServiceId &other)
-		:	_ServiceId(other._ServiceId)
-	{}
+	TServiceId(const TServiceId &other) : _ServiceId(other._ServiceId) { }
 
 	/// Only explicit construction from an integer are allowed
-	explicit TServiceId(uint16 sid)
-		:	_ServiceId(sid)
-	{}
+	explicit TServiceId(uint16 sid) : _ServiceId(sid) { }
 
 	bool operator == (const TServiceId &other) const
 	{
 		return _ServiceId == other._ServiceId;
 	}
+
 	bool operator != (const TServiceId &other) const
 	{
 		return !(*this == other);
 	}
+
 	bool operator < (const TServiceId &other) const
 	{
 		return _ServiceId < other._ServiceId;
 	}
 
 	/// Getter, return the integer value of the service id
-	uint16 get() const		{	return _ServiceId;}
+	uint16 get() const		{ return _ServiceId; }
+
 	/// Setter, set the value of the service id
-	void set(uint16 sid)	{	_ServiceId = sid;}
+	void set(uint16 sid)	{ _ServiceId = sid; }
 
 	void serial(NLMISC::IStream &s)
 	{
@@ -88,12 +87,12 @@ public:
 
 	std::string toString() const
 	{
-		return NLMISC::toString("%u", _ServiceId);
+		return NLMISC::toString(_ServiceId);
 	}
 
-	void fromString(const std::string &str)
+	bool fromString(const std::string &str)
 	{
-		_ServiceId = atoi(str.c_str());
+		return NLMISC::fromString(str, _ServiceId);
 	}
 };
 
@@ -108,7 +107,9 @@ class TServiceId8
 {
 	/// The 8bits service id
 	uint8	_ServiceId;
+
 public:
+
 	typedef uint8	size_type;
 
 	/// Default constructor, set the id to 0 (no service should have 0)
@@ -170,12 +171,12 @@ public:
 
 	std::string toString() const
 	{
-		return NLMISC::toString("%u", _ServiceId);
+		return NLMISC::toString(_ServiceId);
 	}
 
-	void fromString(const std::string &str)
+	bool fromString(const std::string &str)
 	{
-		_ServiceId = atoi(str.c_str());
+		return NLMISC::fromString(str, _ServiceId);
 	}
 };
 
@@ -346,7 +347,8 @@ public:
 	 * \param back if true, put the callback at the end of the callback array, otherwise but on the beginning. You should always use true
 	 */
 	void	setServiceUpCallback (const std::string &serviceName, TUnifiedNetCallback cb, void *arg = 0, bool back=true);
-	/** Remove a serive up callback */
+
+	/** Remove a service up callback */
 	void	removeServiceUpCallback (const std::string &serviceName, TUnifiedNetCallback cb, void *arg = 0);
 
 	/** Sets callback for disconnections.
@@ -362,7 +364,8 @@ public:
 	 * \param back if true, put the callback at the end of the callback array, otherwise but on the beginning. You should always use true
 	 */
 	void	setServiceDownCallback (const std::string &serviceName, TUnifiedNetCallback cb, void *arg = 0, bool back=true);
-	/** Remove a serive down callback */
+
+	/** Remove a service down callback */
 	void	removeServiceDownCallback (const std::string &serviceName, TUnifiedNetCallback cb, void *arg = 0);
 
 	/** Associate a string with a network id
@@ -376,7 +379,7 @@ public:
 	/** Clear all network association */
 	void	clearNetworkAssociation () { _NetworkAssociations.clear (); }
 
-	/** This array says to wich network we need to send the message for the default nid.
+	/** This array says to which network we need to send the message for the default nid.
 	 * For example you can says that message for AES will use the network 0 and message for LS will use the network 1.
 	 * To do that, just call the function with string "AES0" and "LS1" the number is the nid (look at addNetworkAssociation())
 	 * addNetworkAssociation("192.168.0.0", 0); addNetworkAssociation("192.168.1.0", 1);
@@ -399,7 +402,6 @@ public:
 
 	/// Return a string identifying the service, using the format "NAME-sid" (or "sid" only if not found)
 	std::string			getServiceUnifiedName(TServiceId sid);
-
 
 	/// \warning You should not use getNetBase functions because it could have more than one connection to a service and in this case
 	///          it ll return the first connection
@@ -451,8 +453,6 @@ private:
 
 	/// A map of service up/down callbacks with their user data.
 	typedef CHashMap<std::string, std::list<TCallbackArgItem> >	TNameMappedCallback;
-
-
 
 	/// This may contains a CCallbackClient or a TSockId, depending on which type of connection it is.
 	class CUnifiedConnection
@@ -688,7 +688,7 @@ private:
 	/// Last time of retry
 	NLMISC::TTime								_LastRetry;
 
-	/// Time of the theorical next update
+	/// Time of the theoretical next update
 	NLMISC::TTime								_NextUpdateTime;
 
 	/// The main instance
@@ -711,7 +711,7 @@ private:
 	/// Service id of the running service
 	TServiceId									_SId;
 
-	/// true if initialisation function called
+	/// true if initialization function called
 	bool										_Initialised;
 
 	//
@@ -755,9 +755,7 @@ private:
 	friend struct nel_l5QueuesStatsClass;
 };
 
-
 } // NLNET
-
 
 #endif // NL_UNIFIED_NETWORK_H
 
