@@ -117,10 +117,10 @@ void regsiterOVPath ()
 #else
 	HMODULE hModule = GetModuleHandle("object_viewer_r.dll");
 #endif
-	nlassert(hModule);		
+	if (!hModule) { ::MessageBox(NULL, "'hModule' failed at '" __FUNCTION__ "' in file '" __FILE__ " on line " NL_MACRO_TO_STR(__LINE__), "NeL Export", MB_OK | MB_ICONERROR); return; }
 	char sModulePath[256];
 	int res = GetModuleFileName(hModule, sModulePath, 256);
-	nlassert(res);
+	if (!res) { ::MessageBox(NULL, "'res' failed at '" __FUNCTION__ "' in file '" __FILE__ " on line " NL_MACRO_TO_STR(__LINE__), "NeL Export", MB_OK | MB_ICONERROR); return; }
 	char SDrive[512];
 	char SDir[512];
 	_splitpath (sModulePath, SDrive, SDir, NULL, NULL);
@@ -200,7 +200,12 @@ void CNelExport::viewMesh (TimeValue time)
 	if (view)
 	{
 		// Init it
-		view->initUI ();
+		if (!view->initUI())
+		{
+			::MessageBox(NULL, "Failed to initialize object viewer ui, this may be a driver init issue, check your log.log files", "NeL Export", MB_OK|MB_ICONEXCLAMATION);
+			IObjectViewer::releaseInterface(view);
+			return;
+		}
 
 		// Get node count
 		int nNumSelNode=_Ip->GetSelNodeCount();
