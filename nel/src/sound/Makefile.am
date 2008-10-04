@@ -29,6 +29,8 @@ libnelsnd_la_SOURCES = async_file_manager_sound.cpp \
 	listener_user.h \
 	mixing_track.cpp \
 	mixing_track.h \
+	music_channel_fader.h \
+	music_channel_fader.cpp \
 	music_sound.cpp \
 	music_sound.h \
 	music_sound_manager.cpp \
