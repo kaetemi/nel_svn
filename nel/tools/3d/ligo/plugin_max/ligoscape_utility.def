@@ -1,4 +1,4 @@
-LIBRARY plugin_max
+LIBRARY nelligoscapeutility.dlx
 EXPORTS
 	LibDescription			@1
 	LibNumberClasses		@2

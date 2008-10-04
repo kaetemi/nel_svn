@@ -1,4 +1,4 @@
-LIBRARY nelconvertpatch
+LIBRARY nelconvertpatch.dlm
 EXPORTS
 	LibDescription			@1
 	LibNumberClasses		@2

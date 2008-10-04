@@ -2,10 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nel_ligoscape_utility"
+	Name="ligoscape_utility"
 	ProjectGUID="{796E7156-7DE8-4F86-BF33-D7ACF4014204}"
-	RootNamespace="nel_ligoscape_utility"
-	TargetFrameworkVersion="131072"
+	RootNamespace="nelligoscapeutility"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -17,11 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,90 +39,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;LIBXML_STATIC"
-				StringPooling="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="true"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib libxml2.lib freetype.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace)_d.dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
-				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_d.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugFast|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="4"
 				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;NL_DEBUG_FAST;LIBXML_STATIC"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;NL_DEBUG_FAST;NL_STATIC;_USRDLL"
 				StringPooling="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -138,88 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="version.lib libxml2_a.lib freetype.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib winmm.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace)_df.dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
+				AdditionalDependencies="comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib libxml2.lib freetype.lib ws2_32.lib"
+				OutputFile="plugins\$(RootNamespace)_d.dlx"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;msvcrtd;msvcrt"
+				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_df.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugStatic|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;NL_STATIC;LIBXML_STATIC"
-				StringPooling="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="true"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="version.lib libxml2_a.lib freetype.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib winmm.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace)_ds.dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
-				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_ds.lib"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				ImportLibrary="$(RootNamespace)_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -246,11 +98,9 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -270,177 +120,19 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="true"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION;FINAL_VERSION"
-				StringPooling="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				WarningLevel="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="version.lib libxml2_a.lib freetype.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib winmm.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace).dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_r.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebug|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;NL_RELEASE_DEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION"
-				StringPooling="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="2"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="version.lib libxml2_a.lib freetype.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib winmm.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace)_rd.dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_rd.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebugStatic|Win32"
-			OutputDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\..\plugin_max\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;NL_RELEASE_DEBUG;NL_STATIC;LIBXML_STATIC;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;NL_RELEASE_DEBUG;NL_STATIC;_USRDLL"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
+				DisableLanguageExtensions="false"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -453,14 +145,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="version.lib libxml2_a.lib freetype.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib winmm.lib ws2_32.lib"
-				OutputFile="..\..\plugin_max\lib\$(RootNamespace)_rds.dlx"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
+				AdditionalDependencies="comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib gup.lib paramblk2.lib libxml2.lib freetype.lib ws2_32.lib"
+				OutputFile="plugins\$(RootNamespace).dlx"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmtd;msvcrtd;msvcrt"
+				ModuleDefinitionFile="$(ProjectName).def"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\..\plugin_max\lib\$(RootNamespace)_rds.lib"
+				ImportLibrary="$(RootNamespace)_r.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -512,6 +205,10 @@
 		</Filter>
 		<File
 			RelativePath="DllEntry.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ligoscape_utility.def"
 			>
 		</File>
 		<File

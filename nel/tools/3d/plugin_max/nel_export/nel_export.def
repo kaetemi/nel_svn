@@ -1,4 +1,4 @@
-LIBRARY nelexport
+LIBRARY nelexport.dlu
 EXPORTS
 	LibDescription			@1
 	LibNumberClasses		@2

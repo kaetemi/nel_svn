@@ -32,11 +32,7 @@
 #include "std_afx.h"
 
 #undef OBJECT_VIEWER_EXPORT
-#ifdef NL_STATIC
-#	define OBJECT_VIEWER_EXPORT 
-#else
-#	define OBJECT_VIEWER_EXPORT __declspec( dllexport ) 
-#endif
+#define OBJECT_VIEWER_EXPORT __declspec( dllexport )
 
 #include <vector>
 
@@ -296,13 +292,8 @@ std::string CObjectViewer::getModulePath() const
 {
 	// Get the configuration file path (located in same directory as module)
 	HMODULE hModule = AfxGetInstanceHandle();
-#ifdef NL_STATIC // can return null if static, should be same as exe anyway
-	if (!hModule) hModule = GetModuleHandle(NULL);
-#endif /* NL_STATIC */
 	nlassert(hModule); // shouldn't be null now anymore in any case
-#ifndef NL_STATIC // if this is dll, the module handle can't be same as exe
-	nlassert(hModule != GetModuleHandle(NULL));
-#endif /* !NL_STATIC */
+	nlassert(hModule != GetModuleHandle(NULL)); // if this is dll, the module handle can't be same as exe
 	char sModulePath[256];
 	int res = GetModuleFileName(hModule, sModulePath, 256); nlassert(res);
 	nldebug("Object viewer module path is '%s'", sModulePath);

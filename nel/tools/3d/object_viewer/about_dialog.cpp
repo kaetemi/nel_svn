@@ -41,13 +41,8 @@ BOOL CAboutDialog::OnInitDialog()
 	
 	// Get the module path
 	HMODULE hModule = AfxGetInstanceHandle();
-#ifdef NL_STATIC // can return null if static, should be same as exe anyway
-	if (!hModule) hModule = GetModuleHandle(NULL);
-#endif /* NL_STATIC */
 	nlassert(hModule); // shouldn't be null now anymore in any case
-#ifndef NL_STATIC // if this is dll, the module handle can't be same as exe
-	nlassert(hModule != GetModuleHandle(NULL));
-#endif /* !NL_STATIC */
+	nlassert(hModule != GetModuleHandle(NULL)); // if this is dll, the module handle can't be same as exe
 	if (hModule)
 	{
 		// Find the verion resource

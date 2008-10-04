@@ -17,80 +17,62 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_d_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_d.lib"
+				Name="VCCLCompilerTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;NL_DEBUG_FAST;NL_STATIC;_LIB"
+				StringPooling="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				EnableFunctionLevelLinking="true"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
-		</Configuration>
-		<Configuration
-			Name="DebugFast|Win32"
-			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_df_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_df.lib"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugStatic|Win32"
-			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_ds_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_ds.lib"
+				OutputFile="$(RootNamespace)_d.lib"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;msvcrtd;msvcrt"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_r_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_r.lib"
+				Name="VCCLCompilerTool"
+				Optimization="4"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;NL_RELEASE_DEBUG;NL_STATIC;_LIB"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
+				DisableLanguageExtensions="false"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
 			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebug|Win32"
-			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_rd_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_rd.lib"
-			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebugStatic|Win32"
-			ConfigurationType="4"
-			InheritedPropertySheets="..\..\..\src\nel_vs90_rds_lib.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\lib\$(RootNamespace)_rds.lib"
+				OutputFile="$(RootNamespace)_r.lib"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmtd;msvcrtd;msvcrt"
 			/>
 		</Configuration>
 	</Configurations>
