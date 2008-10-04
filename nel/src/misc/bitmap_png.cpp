@@ -23,13 +23,14 @@
 
 #include "stdmisc.h"
 
+#include "nel/misc/bitmap.h"
+
 // Currently this class supports Windows only
 #ifdef NL_OS_WINDOWS
 
 #include "nel/misc/stream.h"
 #include "nel/misc/file.h"
 #include "nel/misc/dynloadlib.h"
-#include "nel/misc/bitmap.h"
 #include <csetjmp>
 
 using namespace std;
@@ -942,5 +943,30 @@ void setPNGError(png_struct *png_ptr, const char* message)
 }
 
 }//namespace
+
+#else
+
+namespace NLMISC
+{
+/*-------------------------------------------------------------------*\
+							readPNG
+\*-------------------------------------------------------------------*/
+
+uint8 CBitmap::readPNG( NLMISC::IStream &f )
+{
+	// TODO for Linux
+	return 0;
+}
+
+/*-------------------------------------------------------------------*\
+							writePNG
+\*-------------------------------------------------------------------*/
+bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
+{
+	// TODO for Linux
+	return false;
+}
+
+}
 
 #endif // NL_OS_WINDOWS
