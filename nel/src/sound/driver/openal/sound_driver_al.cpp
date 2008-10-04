@@ -182,8 +182,8 @@ _NbExpBuffers(0), _NbExpSources(0), _RolloffFactor(1.f)
 CSoundDriverAL::~CSoundDriverAL()
 {
 	// Remove the allocated (but not exported) source and buffer names
-	alDeleteSources(compactAliveNames(_Sources, alIsSource), &*_Sources.begin());
-	alDeleteBuffers(compactAliveNames(_Buffers, alIsBuffer), &*_Buffers.begin());
+	if (!_Sources.empty()) alDeleteSources(compactAliveNames(_Sources, alIsSource), &*_Sources.begin());
+	if (!_Buffers.empty()) alDeleteBuffers(compactAliveNames(_Buffers, alIsBuffer), &*_Buffers.begin());
 	// Release internal resources of all remaining IEffect instances
 	{
 		set<CEffectAL *>::iterator it(_Effects.begin()), end(_Effects.end());
