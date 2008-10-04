@@ -232,7 +232,7 @@ void CInstanceGroup::getInstanceMatrix(uint instanceNb,NLMISC::CMatrix &dest) co
 
 // ***************************************************************************
 
-const sint32 CInstanceGroup::getInstanceParent (uint instanceNb) const
+sint32 CInstanceGroup::getInstanceParent (uint instanceNb) const
 {
 	// Return the scale vector of the n-th instance
 	return _InstancesInfos[instanceNb].nParent;

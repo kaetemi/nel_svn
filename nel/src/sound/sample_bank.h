@@ -123,7 +123,7 @@ public:
 //	const std::string&	getPath() const						{ return _Path; }
 
 	/// Return the name (must be unique)
-	const NLMISC::TStringId	getName() const						{ return _Name; }
+	NLMISC::TStringId	getName() const						{ return _Name; }
 
 	/// Delete all the loaded banks.
 	static	void		releaseAll();

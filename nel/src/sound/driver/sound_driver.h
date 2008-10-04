@@ -116,7 +116,7 @@ public:
 	public:
 		virtual ~IStringMapperProvider() {}
 		/// map a string
-		virtual const NLMISC::TStringId map(const std::string &str) = 0;
+		virtual NLMISC::TStringId map(const std::string &str) = 0;
 		/// unmap a string
 		virtual const std::string &unmap(const NLMISC::TStringId &stringId) = 0;
 	};

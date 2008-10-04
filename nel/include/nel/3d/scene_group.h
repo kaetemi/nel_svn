@@ -173,7 +173,7 @@ public:
 	void					getInstanceMatrix(uint instanceNb, NLMISC::CMatrix &dest) const;
 
 	// Get the instance father (-1 if this is a root)
-	const sint32			getInstanceParent (uint instanceNb) const;
+	sint32					getInstanceParent (uint instanceNb) const;
 
 	// Get a const ref on the instance
 	const CInstance			&getInstance(uint instanceNb) const;

@@ -113,7 +113,7 @@ public:
 	//@{
 	/// @name IStringMapperProvider implementation
 	/// map a string
-	const NLMISC::TStringId map(const std::string &str)			{ return NLMISC::CStringMapper::map(str);}
+	NLMISC::TStringId map(const std::string &str)			{ return NLMISC::CStringMapper::map(str);}
 	/// unmap a string
 	const std::string &unmap(const NLMISC::TStringId &stringId)		{ return NLMISC::CStringMapper::unmap(stringId);}
 	//@}
@@ -508,7 +508,7 @@ private:
 	CListenerUser				_Listener;
 	
 	/// The reverb effect
-	IReverbEffect *_ReverbEffect;
+	IReverbEffect				*_ReverbEffect;
 	
 	/// Listener position vector
 	NLMISC::CVector				_ListenPosition;
