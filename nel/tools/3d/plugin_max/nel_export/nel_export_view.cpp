@@ -108,18 +108,18 @@ public:
 void regsiterOVPath ()
 {
 // must test it first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
-#ifdef NL_DEBUG_FAST
-	HMODULE hModule = GetModuleHandle("object_viewer_df.dll");
-#elif defined (NL_DEBUG)
+//#ifdef NL_DEBUG_FAST
+//	HMODULE hModule = GetModuleHandle("object_viewer_df.dll");
+#if defined (NL_DEBUG)
 	HMODULE hModule = GetModuleHandle("object_viewer_d.dll");
-#elif defined (NL_RELEASE_DEBUG)
-	HMODULE hModule = GetModuleHandle("object_viewer_rd.dll");
+//#elif defined (NL_RELEASE_DEBUG)
+//	HMODULE hModule = GetModuleHandle("object_viewer_rd.dll");
 #else
-	HMODULE hModule = GetModuleHandle("object_viewer.dll");
+	HMODULE hModule = GetModuleHandle("object_viewer_r.dll");
 #endif
-	nlassert (hModule);		
+	nlassert(hModule);		
 	char sModulePath[256];
-	int res=GetModuleFileName(hModule, sModulePath, 256);
+	int res = GetModuleFileName(hModule, sModulePath, 256);
 	nlassert(res);
 	char SDrive[512];
 	char SDir[512];
