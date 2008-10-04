@@ -45,7 +45,7 @@ namespace NLLIGO
   * Ligo primitives are NODES, POINTS, PATHES or ZONES.
   * Ligo primitives have a CLASS.
   *
-  * The primitive class definies the properties attached to the primitive
+  * The primitive class defines the properties attached to the primitive
   * The primitive class are defined in the XML file specified in the LigoClass field of the CLigoConfig class.
   */
 
@@ -705,7 +705,7 @@ public:
 	// get the static alias part for this primitive
 	uint32			getAliasStaticPart();
 
-	// set the static alis part for this primitive
+	// set the static alias part for this primitive
 	void			setAliasStaticPart(uint32 staticPart);
 
 	// Build an alias by combining the static and dynamic part
@@ -719,13 +719,13 @@ public:
 	void			releaseAlias(IPrimitive *prim, uint32 dynamicAlias);
 
 	// Force the assignation of the specified alias the the primitive. If another primitive
-	// already old the alias, this other primitive is assigned a new alias.
+	// already hold the alias, this other primitive is assigned a new alias.
 	void			forceAlias(CPrimAlias *prim, uint32 alias);
 
-	// getthe last generated alias value (for debug only)
+	// get the last generated alias value (for debug only)
 	uint32			getLastGeneratedAlias();
 
-	// Return the primitive indexed by the given alias (ie, it don't return the alias primitive, but it's first parent)
+	// Return the primitive indexed by the given alias (ie, it doesn't return the alias primitive, but its first parent)
 	IPrimitive		*getPrimitiveByAlias(uint32 primAlias);
 
 	// Build the complete list of indexed primitive (ie all primitive that have a primalias child)

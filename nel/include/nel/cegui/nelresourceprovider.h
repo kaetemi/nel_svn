@@ -89,6 +89,6 @@ namespace CEGUI
 
 		void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup);
 	};
-}; // end namespacec CEGUI
+}; // end namespace CEGUI
 
 #endif // end __NELRESOURCEPROVIDER_H__

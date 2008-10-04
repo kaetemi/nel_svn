@@ -96,7 +96,7 @@ public:
 	/**
 	  * Load a PACS primitive block. (*.pacs_prim)
 	  *
-	  * Add a set of collisionable primitive in the container. If sucess, fill an array with primitives's pointers.
+	  * Add a set of collisionable primitive in the container. If success, fill an array with primitives's pointers.
 	  * The primitive are inserted in the requested world image of the container. Then a setGlobalPosition
 	  * is done to place the primitives in the world image. The world images are not evaluated.
 	  *
@@ -145,9 +145,9 @@ public:
 	/**
 	  * Evaluation of a worldImage of the collision system.
 	  * This method will evaluate the move of each modified collisionable primitives inserted in the world image.
-	  * The method test first collisions against the terrai, then test collisions against primitives
+	  * The method first test collisions against the terrain, then test collisions against primitives
 	  * inserted in the world images declared as static,
-	  * then test the collision against the primitives inserted in the world image to evaluate.
+	  * then test collisions against the primitives inserted in the world image to evaluate.
 	  *
 	  * \param deltaTime is the delta time of the system evaluation.
 	  * \param worldImage is the world image to eval.
@@ -156,12 +156,12 @@ public:
 
 	/**
 	  * Evaluation of a single non collisionable primitive.
-	  * The method test first collisions against the terrai, then test collisions against primitives
+	  * The method first test collisions against the terrain, then test collisions against primitives
 	  * inserted in the world images declared as static,
-	  * then test the collision against the primitives inserted in the world image to evaluate.
+	  * then test collisions against the primitives inserted in the world image to evaluate.
 	  *
 	  * \param deltaTime is the delta time of the system evaluation.
-	  * \param primitive is the prmitive pointer
+	  * \param primitive is the primitive pointer
 	  * \param worldImage is the world image to eval.
 	  * \return false if the primitive is a collisionable primitive.
 	  */
@@ -171,8 +171,8 @@ public:
 	  * Test the move of a primitive in a specific world image.
 	  *
 	  * This method will test the move of each modified primitives inserted in the world image.
-	  * The method will test first collisions against primitives inserted in the world images declared as static,
-	  * then test the collision against the primitives inserted in the world image choosed to test the move of the primitive.
+	  * The method will first test collisions against primitives inserted in the world images declared as static,
+	  * then test collisions against the primitives inserted in the world image choosed to test the move of the primitive.
 	  *
 	  * \param primitive is a pointer on the primitive
 	  * \param speed is the wanted speed of the primitive
@@ -203,7 +203,7 @@ public:
 	  * All primitive will be removed from the destination world image.
 	  * Then, the source world image will be copied in the destination world image.
 	  *
-	  * Warning, only primitives from the source that have been decalared as using the destintation
+	  * Warning, only primitives from the source that have been declared as using the destination
 	  * world image will be copied.
 	  *
 	  * The source world image remain the same.

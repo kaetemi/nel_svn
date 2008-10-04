@@ -70,7 +70,7 @@ public:
 	  *
 	  * About the node existance
 	  *
-	  * An atom node exist if its value are defined.
+	  * An atom node exist if its value is defined.
 	  * A struct node exist if one of its children exist.
 	  * An array node exist if one of its children exist.
 	  * If the node doesn't exist, you can't have a pointer on it with getNodeByName(). It returns NULL.
@@ -78,7 +78,7 @@ public:
 	  *
 	  * About the form name:
 	  *
-	  * Struct elements name must be separeted by '.'
+	  * Struct elements name must be separated by '.'
 	  * Struct indexes must be between '[' and ']'
 	  *
 	  * Exemple:
@@ -96,7 +96,7 @@ public:
 		ValueParentForm,		/// The value has been found in the parent form
 		ValueDefaultDfn,		/// The value has been found in the DFN default value
 		ValueDefaultType,		/// The value has been found in the TYPE default value
-		Dummy = 0xffffffff		/// By sure the size == sizeof(uint32)
+		Dummy = 0xffffffff		/// Be sure the size == sizeof(uint32)
 	};
 
 	/**

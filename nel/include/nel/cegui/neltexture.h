@@ -116,7 +116,7 @@ namespace CEGUI
 		ushort d_width;
 		ushort d_height;
 	};
-} // end namespacec CEGUI
+} // end namespace CEGUI
 
 #endif // __NELTEXTURE_H__
 

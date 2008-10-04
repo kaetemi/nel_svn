@@ -47,8 +47,8 @@ public:
 	/**
 	  * Create a retriever bank.
 	  *
-	  * \param retrieverBank is the global retriver bank path file name. This method use CPath to find the retriever
-	  * \return the retriver bank interface or NULL if the bank was not found.
+	  * \param retrieverBank is the global retriever bank path file name. This method use CPath to find the retriever
+	  * \return the retriever bank interface or NULL if the bank was not found.
 	  */
 	static URetrieverBank	*createRetrieverBank (const char* retrieverBank, bool loadAll = true);
 

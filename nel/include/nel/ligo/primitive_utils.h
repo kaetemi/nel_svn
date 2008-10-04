@@ -1,14 +1,14 @@
 /** \file primitive_utils.h
  * Utility to work with primitives tree
  *
- *	Some of this utilities use the concept of 'predicate' applyed to
+ *	Some of these utilities use the concept of 'predicate' applied to
  *	primitive node.
  *	As defined in the stl, a predicate is some form of functor that
  *	receive a parameter, apply some test on it, then return the result
  *	of the test.
  *	In this case, predicate functor receive a IPrimitive pointer and
  *	return a boolean.
- *	The utilities come with 4 predefined predicates :
+ *	The utility comes with 4 predefined predicates :
  *		- primitive class property test
  *		- primitive name property test
  *		- primitive class and name property test
@@ -188,7 +188,7 @@ public:
 		_IndexStack.push_back(~0);
 	}
 
-	/** Each call the this method will return a primitive pointer that match
+	/** Each call to this method will return a primitive pointer that match
 	 *	the predicate functor.
 	 *	Return NULL when there is no more primitive matching the predicate.
 	 */
@@ -211,7 +211,7 @@ public:
 				IPrimitive *child;
 				if (_CurrentPrim->getChild(child, _IndexStack.back()++))
 				{
-					// descent into this node
+					// go down into this node
 					_IndexStack.push_back(~0);
 					_CurrentPrim = child;
 				}
@@ -241,8 +241,8 @@ private:
 };
 
 /** Build a primitive set that match the predicate
- *	This class make use of the CPrimitiveEnumerator class to iterate
- *	onn each valid node and fill the result primitive set.
+ *	This class makes use of the CPrimitiveEnumerator class to iterate
+ *	on each valid node and fill the result primitive set.
 */
 template <class Pred>
 class CPrimitiveSet
@@ -390,9 +390,9 @@ void filterPrimitiveChilds(IPrimitive *parent, Pred &predicate, TPrimitiveSet &r
 
 
 /** Build a string that represent the path to a node
- *	Note that the reverse operation does not guarantie to
+ *	Note that the reverse operation does not guaranty to
  *	return a unique node because there is no name
- *	uniqueness constrains in the primitive system.
+ *	uniqueness constraint in the primitive system.
  */
 std::string buildPrimPath(const IPrimitive *prim);
 

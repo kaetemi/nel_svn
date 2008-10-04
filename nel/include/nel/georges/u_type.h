@@ -97,7 +97,7 @@ public:
 	virtual bool				getDefinition (uint index, std::string &label, std::string &value) const = 0;
 
 	/**
-	  * Get theh comments of type.
+	  * Get the comments of type.
 	  */
 	virtual const std::string	&getComment () const = 0;
 

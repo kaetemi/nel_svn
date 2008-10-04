@@ -113,7 +113,7 @@ public:
 	};
 
 	/** Structure that contain the background filter fadein and fade out delay
-	 *  This are configuration data.
+	 *  These are configuration data.
 	 */
 	struct TBackgroundFilterFades
 	{
@@ -155,7 +155,7 @@ public:
 	 * If the total of available hardware track is less than 10, then EAX is automatically
 	 * deactivated.
 	 * autoLoadSample is used for tools like georges or object viewer where you don't bother to
-	 * specified each sample bank to load, you just want to ear the sound.
+	 * specify each sample bank to load, you just want to ear the sound.
 	 *
 	 *	\param forceSoftware: to force the driver to load in software buffer, not hardware
 	 */
@@ -169,31 +169,31 @@ public:
 	virtual void		initClusteredSound(NL3D::CScene *scene, float minGain, float maxDistance, float portalInterpolate = 20.0f) = 0;
 	/** Set the priority channel reserve.
 	 *	Each priority channel can be assign a restrictive reserve value.
-	 *	This value is used when the number free track available for playing drop
+	 *	This value is used when the number of free tracks available for playing drop
 	 *	under the low water mark value (see setLowWaterMark).
-	 *	The mixer count the number of playing source in each priority channel.
-	 *	A priority channel can overflow it's reserve value only if the low water
-	 *	mark is not reach.
-	 *	In other word, when the number of played source increase, you can control
-	 *	a 'smooth' cut in priority layer. The idea is to try to keep some free track
+	 *	The mixer counts the number of playing sources in each priority channel.
+	 *	A priority channel can overflow its reserve value only if the low water
+	 *	mark is not reached.
+	 *	In other word, when the number of played sources increase, you can control
+	 *	a 'smooth' cut in priority layer. The idea is to try to keep some free tracks
 	 *	for the HighestPri source.
 	 *	By default, reserve are set for each channel to the number of available tracks.
 	 */
 	virtual void		setPriorityReserve(TSoundPriority priorityChannel, uint reserve) = 0;
 	/** Set the Low water mark.
-	 *	This value is use to mute sound source that try to play when there priority
+	 *	This value is use to mute sound source that try to play when their priority
 	 *	channel is full (see setPriorityReserve).
 	 *	Set a value 1 to 4 to keep some extra track available when a
 	 *	HighestPri source need to play.
-	 *	By default, the value is set to 0, witch mean no special treatment is done
+	 *	By default, the value is set to 0, witch means no special treatment is done
 	 *	and the mixer will mute sound with no user control at all.
-	 *	Note also that the availability of a track is not guarantee if the sum of
-	 *	the priority reserve (see setPriorityReserve) is grater than the number of
-	 *	available tracks (witch is almost always the case). But this value will help
-	 *	the mixer make it's best.
+	 *	Note also that the availability of a track is not guaranteed if the sum of
+	 *	the priority reserve (see setPriorityReserve) is greater than the number of
+	 *	available tracks (which is almost always the case). But this value will help
+	 *	the mixer make its best.
 	 */
 	virtual void		setLowWaterMark(uint value) = 0;
-	/** Change The number of tracks in RealTime. If the number is lowered, random tracks are deleted.
+	/** Change the number of tracks in RealTime. If the number is lowered, random tracks are deleted.
 	 *	Any playing sources of such deleted track will be stopped
 	 */
 	virtual	void		changeMaxTrack(uint maxTrack) = 0;
@@ -317,10 +317,10 @@ public:
 	//@{
 	//@name User controlled variable
 	/** Set the value of a user variable.
-	 *	User variable are variable that can be used to control
-	 *	the gain or transpose of all the instance (source) of a
+	 *	User variable are variables that can be used to control
+	 *	the gain or transpose all the instances (source) of a
 	 *	given sound.
-	 *	This has been initially design to control the gain of any
+	 *	This has been initially designed to control the gain of any
 	 *	source playing some atmospheric sound (like rain) according
 	 *	to the intensity of the effect (ie small rain or big rain).
 	 *	Binding from user var to sound parameter is done in
@@ -348,16 +348,16 @@ public:
 	 *	\param fileName a CPath::lookup is done (the file can be in a BNP)
 	 *	\param xFadeTime if not 0 the old music played is not stopped immediately but a cross-fade of xFadeTime (in ms) is made between the 2.
 	 *	\param async if false, the music is entirely loaded in memory. Interesting for instance for music played
-	 *		during loading (to not overload HardDrive). NB: The File is loaded in memory, but decompressed by FMod in a thread
+	 *		during loading (to not overload HardDrive). NB: The file is loaded into memory, but decompressed by FMod in a thread
 	 *		Hence if the mp3 fileSize is 5 Mb, it will take only 5 Mb in memory (not the decompressed 40 Mb size)
 	 *	\param loop must be true to play the music in loop.
 	 */
 	virtual bool	playMusic(const std::string &fileName, uint xFadeTime= 0, bool async= true, bool loop=true) =0;
-	/** Stop the music previously loaded and played (the Memory is also freed)
+	/** Stop the music previously loaded and played (the memory is also freed)
 	 *	\param xFadeTime if not 0 the old music played is not stopped immediately but a fade out of xFadeTime (in ms) is made
 	 */
 	virtual void	stopMusic(uint xFadeTime= 0) =0;
-	/** Pause the music previously loaded and played (the Memory is not freed)
+	/** Pause the music previously loaded and played (the memory is not freed)
 	 */
 	virtual void	pauseMusic() =0;
 	/** Resume the music previously paused
@@ -384,7 +384,7 @@ public:
 	 */
 	virtual void	enableBackgroundMusicTimeConstraint(bool enable) =0;
 	/** Play some music in the event channel (at same time than general channel)
-	 *	NB: it is user responsibility to lower/pause the generic music channel if he don't want 2 music at same time
+	 *	NB: it is user responsibility to lower/pause the generic music channel if he doesn't want 2 musics at same time
 	 */
 	virtual bool	playEventMusic(const std::string &fileName, uint xFadeTime= 0, bool async= true, bool loop=true) =0;
 	/** Stop any event music

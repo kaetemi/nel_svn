@@ -397,7 +397,7 @@ namespace CEGUI
 		QuadVector d_quadlist;
 		bool	 d_queueing;
 
-		// Ogre specific bits.
+		// NeL specific bits.
 		NL3D::UDriver				*m_Driver;			//!< The NeL Driver.
 		NL3D::UTexture				*m_currTexture;		//!< currently set texture;
 		std::list<NeLTexture *>		d_texturelist;		//!< List used to track textures.

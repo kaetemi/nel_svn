@@ -1,5 +1,5 @@
 /** \file sound_anim_manager.h
- * The sound animation manager handles all request to load, play, and
+ * The sound animation manager handles all requests to load, play, and
  * update sound animations.
  */
 
@@ -41,7 +41,7 @@ namespace NLSOUND {
 class CSoundAnimation;
 class UAudioMixer;
 
-/*// Comparision for const char*
+/*// Comparison for const char*
 struct eqsndanim
 {
   bool operator()(const char* s1, const char* s2) const
@@ -81,7 +81,7 @@ public:
 	virtual ~CSoundAnimManager();
 
 	/** Load the sound animation with the specified name.
-	 *  Returns the id of the new animation, or CSoundAnimationNoId is the
+	 *  Returns the id of the new animation, or CSoundAnimationNoId if the
 	 *  file could not be found.
 	 *  \param name The name of the animation to load.
 	 */
@@ -98,7 +98,7 @@ public:
 	 */
 	virtual void					saveAnimation(CSoundAnimation* anim, std::string& filname);
 
-	/** Start playing a sound animation. Returns true is the animation was
+	/** Start playing a sound animation. Returns true if the animation was
 	 *  found and is playing.
  	 *  \param name The name of the animation to load.
 	 */
@@ -126,7 +126,7 @@ public:
 	 */
 	virtual void					stopAnimation(TSoundAnimPlayId playbackId);
 
-	/** Returns true is the animation with the specified playback ID is playing
+	/** Returns true if the animation with the specified playback ID is playing
  	 *  \param name The playback id that was returned by playAnimation.
 	 */
 	virtual bool					isPlaying(TSoundAnimPlayId playbackId);

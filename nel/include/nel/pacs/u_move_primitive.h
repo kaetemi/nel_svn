@@ -61,14 +61,14 @@ public:
 	{
 		/**
 		  * This is a static 2d oriented bounding box. It can be oriented only on the Z axis.
-		  * It has a height. Collision can be performed only no its sides but not on its top and bottom
+		  * It has a height. Collision can be performed only on its sides but not on its top and bottom
 		  * planes. It doesn't mode. Default value.
 		  */
 		_2DOrientedBox=0x0,
 
 		/**
 		  * This is a movable 2d oriented cylinder. It can be oriented only on the Z axis.
-		  * It has a height. Collision can be performed only no its sides but not on its top and bottom
+		  * It has a height. Collision can be performed only on its sides but not on its top and bottom
 		  * planes. It can move only with 3d translations.
           */
 		_2DOrientedCylinder=0x1,
@@ -79,12 +79,12 @@ public:
 	enum TReaction
 	{
 		/**
-		  * No reaction. For static objects or not influanced objects. Default value.
+		  * No reaction. For static objects or not influenced objects. Default value.
 		  */
 		DoNothing=0x0,
 
 		/**
-		  * This object slids over surfaces.
+		  * This object slides over surfaces.
 		  */
 		Slide=0x10,
 
@@ -176,7 +176,7 @@ public:
 
 	/**
 	  * Set the attenuation of collision for this object. Default value is 1. Should be between 0~1.
-	  * 0, all the enrgy is attenuated by the collision. 1, all the energy stay in the object.
+	  * 0, all the energy is attenuated by the collision. 1, all the energy stay in the object.
 	  * Used only with the flag Reflexion.
 	  *
 	  * \param attenuation is the new attenuation for the primitive.
@@ -259,7 +259,7 @@ public:
 
 	/**
 	  * Set the attenuation of collision for this object. Default value is 1. Should be between 0~1.
-	  * 0, all the enrgy is attenuated by the collision. 1, all the energy stay in the object.
+	  * 0, all the energy is attenuated by the collision. 1, all the energy stay in the object.
 	  * Used only with the flag Reflexion.
 	  *
 	  * \param attenuation is the new attenuation for the primitive.
@@ -312,7 +312,7 @@ public:
 	  * Set the new orientation of the move primitive. Only for the box primitives.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \param rot is the new OZ rotation in radian.
 	  * \param worldImage is the world image in which the primitive must be oriented.
@@ -324,7 +324,7 @@ public:
 	  * you must pass the global position of the primitive.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \param pos is the new global position of the primitive.
 	  */
@@ -335,7 +335,7 @@ public:
 	  * This method is slow. Just for initilisation and teleportation.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \return the new position of the primitive.
 	  */
@@ -374,7 +374,7 @@ public:
 	  * this method only the first time or for teleporting.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \param pos is the new global position of the primitive.
 	  */
@@ -385,7 +385,7 @@ public:
 	  * you must pass the global position of the primitive.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \param pos is the new global position of the primitive.
 	  */
@@ -396,7 +396,7 @@ public:
 	  * This method is fast. Use it to move primitives.
 	  *
 	  * If you modify a noncollisionable primitive with this method, you must evaluate in the world
-	  * image where you have modify it before modify any other dynamic properties in another world image.
+	  * image where you have modified it before modify any other dynamic properties in another world image.
 	  *
 	  * \param speed is the speed of the primitive.
 	  */

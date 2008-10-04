@@ -46,7 +46,7 @@
  * the packed file.
  *
  * To use the loadForm(), you first have to create a class that will contains values for one sheet.
- * This class must also implements 2 functions (readGeorges() and serial()) and 1 static functions (getVersion())
+ * This class must also implements 2 functions (readGeorges() and serial()) and 1 static function (getVersion())
  *
  * Extension file name for the packedFilename must be ".packed_sheets"
  *
@@ -76,19 +76,19 @@
 			s.serial (WalkSpeed, RunSpeed);
 		}
 
-		// Event to implement any action when the sheet is no longeur existent.
-		// This method is call when a sheet have been read from the packed sheet
+		// Event to implement any action when the sheet no longer exist.
+		// This method is called when a sheet have been read from the packed sheet
 		// and the associated sheet file no more exist in the directories.
 		void removed()
 		{
 			// any action that is needed if the sheet no more exist.
 		}
 
-		// return the version of this class, increments this value when the content hof this class changed
+		// return the version of this class, increments this value when the content of this class changed
 		static uint getVersion () { return 1; }
 	};
 
-	// this structure is fill by the loadForm() function and will contain all you need
+	// this structure is filled by the loadForm() function and will contain all you need
 	std::map<NLMISC::CSheetId,CContainerEntry> Container;
 
 	void init ()
@@ -102,7 +102,7 @@
  */
 
 
-/// Dictionnaley entry for dependency information.
+/// Dictionnary entry for dependency information.
 /*
 struct TLoadFormDicoEntry
 {
@@ -227,7 +227,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 		}
 	}
 
-	// if we don't want to update packed sheet, we nothing more to do
+	// if we don't want to update packed sheet, we have nothing more to do
 	if (!updatePackedSheet)
 	{
 		nlinfo ("Don't update the packed sheet with real sheet");
@@ -260,7 +260,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 	for (uint i = 0; i < sheetFilters.size(); i++)
 		NLMISC::CSheetId::buildIdVector(sheetIds, filenames, sheetFilters[i]);
 
-	// if there s no file, nothing to do
+	// if there's no file, nothing to do
 	if (sheetIds.empty())
 		return;
 
@@ -303,7 +303,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 			{
 				if (dependencyDates[depends[i]] > packedFiledate)
 				{
-					nldebug("Dependancy on %s for %s not up to date !",
+					nldebug("Dependency on %s for %s not up to date !",
 						dictionnary[depends[i]].c_str(), sheetIds[k].toString().c_str());
 					NeededToRecompute.push_back(k);
 					break;
@@ -382,7 +382,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 				dependencies[sheetIds[NeededToRecompute[j]]] = depends;
 			}
 
-			// add the new creature, it could be already loaded by the packed sheets but will be overwrite with the new one
+			// add the new creature, it could be already loaded by the packed sheets but will be overwritten with the new one
 			typedef typename std::map<NLMISC::CSheetId, T>::iterator TType1;
             typedef typename std::pair<TType1, bool> TType2;
 			TType2 res = container.insert(std::make_pair(sheetIds[NeededToRecompute[j]],T()));
@@ -402,7 +402,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 		NLMISC::WarningLog->removeFilter ("CFormLoader: Can't open the form file");
 	}
 
-	// we have now to remove sheet that are in the container and not exist anymore in the sheet directories
+	// we have now to remove sheets that are in the container and not exist anymore in the sheet directories
 	for (std::map<NLMISC::CSheetId, bool>::iterator it2 = sheetToRemove.begin(); it2 != sheetToRemove.end(); it2++)
 	{
 		if((*it2).second)
@@ -447,7 +447,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 				ofile.serialCont(first->second);
 			}
 
-			// Then get the dicionary + dependencies size, and write it back to posBlockSize
+			// Then get the dictionary + dependencies size, and write it back to posBlockSize
 			sint32	endBlockSize= ofile.getPos();
 			dependBlockSize= (endBlockSize - posBlockSize) - 4;
 			ofile.seek(posBlockSize, NLMISC::IStream::begin);
@@ -590,7 +590,7 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 		}
 	}
 
-	// if we don't want to update packed sheet, we nothing more to do
+	// if we don't want to update packed sheet, we have nothing more to do
 	if (!updatePackedSheet)
 	{
 		nlinfo ("Don't update the packed sheet with real sheet");
@@ -623,11 +623,11 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 	for (uint i = 0; i < sheetFilters.size(); i++)
 		NLMISC::CSheetId::buildIdVector(sheetIds, filenames, sheetFilters[i]);
 
-	// if there s no file, nothing to do
+	// if there's no file, nothing to do
 	if (sheetIds.empty())
 		return;
 
-	// set up the current sheet in container to remove sheet that are in the container and not in the directory anymore
+	// set up the current sheet in container to remove sheets that are in the container and not in the directory anymore
 	std::map<NLMISC::CSheetId, bool> sheetToRemove;
 	for (typename std::map<NLMISC::CSheetId, NLMISC::CSmartPtr<T> >::iterator it = container.begin(); it != container.end(); it++)
 	{
@@ -666,7 +666,7 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 			{
 				if (dependencyDates[depends[i]] > packedFiledate)
 				{
-					nldebug("Dependancy on %s for %s not up to date !",
+					nldebug("Dependency on %s for %s not up to date !",
 						dictionnary[depends[i]].c_str(), sheetIds[k].toString().c_str());
 					NeededToRecompute.push_back(k);
 					break;
@@ -737,7 +737,7 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 						dictionnaryIndex.insert(std::make_pair(filename, dictionnary.size()));
 						dictionnary.push_back(filename);
 
-						// add the dependecy index
+						// add the dependency index
 						depends.push_back(dicIndex);
 					}
 				}
@@ -745,7 +745,7 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 				dependencies[sheetIds[NeededToRecompute[j]]] = depends;
 			}
 
-			// add the new creature, it could be already loaded by the packed sheets but will be overwrite with the new one
+			// add the new creature, it could be already loaded by the packed sheets but will be overwritten with the new one
 			typedef typename std::map<NLMISC::CSheetId, NLMISC::CSmartPtr<T> >::iterator TType1;
             typedef typename std::pair<TType1, bool> TType2;
 			TType2 res = container.insert(std::make_pair(sheetIds[NeededToRecompute[j]], NLMISC::CSmartPtr<T>(new T())));
@@ -765,7 +765,7 @@ void loadForm2(const std::vector<std::string> &sheetFilters, const std::string &
 		NLMISC::WarningLog->removeFilter ("CFormLoader: Can't open the form file");
 	}
 
-	// we have now to remove sheet that are in the container and not exist anymore in the sheet directories
+	// we have now to remove sheets that are in the container and not exist anymore in the sheet directories
 	for (std::map<NLMISC::CSheetId, bool>::iterator it2 = sheetToRemove.begin(); it2 != sheetToRemove.end(); it2++)
 	{
 		if((*it2).second)
@@ -951,7 +951,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 		}
 	}
 
-	// if we don't want to update packed sheet, we nothing more to do
+	// if we don't want to update packed sheet, we have nothing more to do
 	if (!updatePackedSheet)
 	{
 		nlinfo ("Don't update the packed sheet with real sheet");
@@ -987,7 +987,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 
 	}
 
-	// if there s no file, nothing to do
+	// if there's no file, nothing to do
 	if (sheetNames.empty())
 		return;
 
@@ -1110,7 +1110,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 				dependencies[sheetNames[NeededToRecompute[j]]] = depends;
 			}
 
-			// add the new creature, it could be already loaded by the packed sheets but will be overwrite with the new one
+			// add the new creature, it could be already loaded by the packed sheets but will be overwritten with the new one
 			typedef typename std::map<std::string, T>::iterator TType1;
             typedef typename std::pair<TType1, bool> TType2;
 			TType2 res = container.insert(std::make_pair(sheetNames[NeededToRecompute[j]],T()));
@@ -1134,7 +1134,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 	{
 		if(it2->second)
 		{
-			// informe the contained object that it is no more needed.
+			// inform the contained object that it is no more needed.
 			container.find(it2->first)->second.removed();
 			container.erase(it2->first);
 			containerChanged = true;
@@ -1302,7 +1302,7 @@ void loadFormNoPackedSheet (const std::vector<std::string> &sheetFilters, std::m
 		form = formLoader->loadForm (sheetIds[NeededToRecompute[j]].toString().c_str ());
 		if (form)
 		{
-			// add the new creature, it could be already loaded by the packed sheets but will be overwrite with the new one
+			// add the new creature, it could be already loaded by the packed sheets but will be overwritten with the new one
 			typedef typename std::map<NLMISC::CSheetId, T>::iterator TType1;
             typedef typename std::pair<TType1, bool> TType2;
 			TType2 res = container.insert(std::make_pair(sheetIds[NeededToRecompute[j]],T()));
@@ -1341,7 +1341,7 @@ void loadFormNoPackedSheet2 (const std::vector<std::string> &sheetFilters, std::
 		NLMISC::CSheetId::buildIdVector(sheetIds, filenames, sheetFilters[i]);
 
 
-	// if there s no file, nothing to do
+	// if there's no file, nothing to do
 	if (sheetIds.empty())
 		return;
 
@@ -1391,7 +1391,7 @@ void loadFormNoPackedSheet2 (const std::vector<std::string> &sheetFilters, std::
 		form = formLoader->loadForm (sheetIds[NeededToRecompute[j]].toString().c_str ());
 		if (form)
 		{
-			// add the new creature, it could be already loaded by the packed sheets but will be overwrite with the new one
+			// add the new creature, it could be already loaded by the packed sheets but will be overwritten with the new one
 			typedef typename std::map<NLMISC::CSheetId, NLMISC::CSmartPtr<T> >::iterator TType1;
             typedef typename std::pair<TType1, bool> TType2;
 			TType2 res = container.insert(std::make_pair(sheetIds[NeededToRecompute[j]], NLMISC::CSmartPtr<T>(new T())));

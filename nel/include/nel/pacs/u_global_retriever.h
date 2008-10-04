@@ -101,7 +101,7 @@ public:
 
 	/**
 	  * Retrieves the position of an estimated point in the global retriever (double instead.),
-	  * with specification of whether it si on landscape or in interior
+	  * with specification of whether it is on landscape or in interior
 	  */
 	UGlobalPosition					retrievePosition(const NLMISC::CVectorD &estimated, double threshold, UGlobalPosition::TType retrieveSpec) const;
 
@@ -178,9 +178,9 @@ public:
 	/**
 	  * Create a global retriever.
 	  *
-	  * \param globalRetriver is the global retriver path file name. This method use the CPath to find the file.
-	  * \param retriverBank is the global retriver bank associated to the global retriever.
-	  * \return the pointer on the global retriver or NULL if the file is not found.
+	  * \param globalRetriver is the global retriever path file name. This method use the CPath to find the file.
+	  * \param retrieverBank is the global retriever bank associated to the global retriever.
+	  * \return the pointer on the global retriever or NULL if the file is not found.
 	  */
 	static UGlobalRetriever	*		createGlobalRetriever (const char* globalRetriever, const URetrieverBank* retrieverBank);
 

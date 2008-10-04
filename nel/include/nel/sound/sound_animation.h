@@ -1,5 +1,5 @@
 /** \file sound_animation.h
- * A sound event marer on a sound track
+ * A sound anim marker on a sound track
  */
 
 /* Copyright, 2000 Nevrax Ltd.

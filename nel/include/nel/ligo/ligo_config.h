@@ -51,7 +51,7 @@ public:
 
 	virtual ~CLigoConfig() { }
 
-	/** Load the config file. Can throw some exception if file doesn't exist or is malformed.
+	/** Load the config file. Can throw some exceptions if file doesn't exist or is malformed.
 	  *
 	  * This file will try to open the file ligo class description file (XML) using the LigoClass as file name.
 	  * It will try first to load directly the file and then to lookup the file in NLMISC::CPath.
@@ -122,7 +122,7 @@ public:
 	// Is the primitive deletable ?
 	bool isStaticChild (const NLLIGO::IPrimitive &primitive);
 
-	// Is the primitive linked to it's brother primitive ?
+	// Is the primitive linked to its brother primitive ?
 	bool isPrimitiveLinked (const NLLIGO::IPrimitive &primitive);
 
 	// Return the next primitive linked to 'primitive', or NULL
@@ -157,7 +157,7 @@ public:
 	}
 
 	// Update the DynamicAlias bit count that was previously defined in the config file.
-	// The _StaticAliasFileMapping  is updated in order that full alias stay the same.
+	// The _StaticAliasFileMapping is updated in order that full alias stay the same.
 	// All previous DynamicAlias must fit in the new DynamicAliasBitCount
 	void updateDynamicAliasBitCount(uint32 newDynamicAliasBitCount);
 
