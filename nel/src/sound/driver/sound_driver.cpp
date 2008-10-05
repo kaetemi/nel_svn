@@ -128,11 +128,17 @@ ISoundDriver *ISoundDriver::createDriver(IStringMapperProvider *stringMapper, TD
 #	if NL_XAUDIO2_AVAILABLE
 		case DriverXAudio2: result = createISoundDriverInstanceXAudio2(stringMapper); break;
 #	endif
-		// auto driver = openal
-#	if NL_OPENAL_AVAILABLE
+		// auto driver = first available in this order: FMod, OpenAl, XAudio2, DSound
+#	if NL_FMOD_AVAILABLE
+		case DriverAuto: result = createISoundDriverInstanceFMod(stringMapper); break;
+#	elif NL_OPENAL_AVAILABLE
 		case DriverAuto: result = createISoundDriverInstanceOpenAl(stringMapper); break;
+#	elif NL_XAUDIO2_AVAILABLE
+		case DriverAuto: result = createISoundDriverInstanceXAudio2(stringMapper); break;
+#	elif NL_DSOUND_AVAILABLE
+		case DriverAuto: result = createISoundDriverInstanceDSound(stringMapper); break;
 #	endif
-		// unavailable driver = fail
+		// unavailable driver = FAIL
 		default: throw ESoundDriverNotFound(getDriverName(driverType));
 	}
 	if (!result) throw ESoundDriverCantCreateDriver(getDriverName(driverType)); 

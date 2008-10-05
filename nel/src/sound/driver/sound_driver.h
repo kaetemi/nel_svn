@@ -68,7 +68,7 @@ public:
 	/// Driver Creation Choice
 	enum TDriver
 	{
-		/// DriverAuto automatically picks the most awesome driver (it just picks OpenAl for now).
+		/// DriverAuto automatically picks the most awesome driver (picks first available in this order: FMod, OpenAl, XAudio2, DSound).
 		DriverAuto = 0,
 		/// DriverFMod is a driver that runs on FMod, nice quality, but not fully implemented.
 		DriverFMod,
