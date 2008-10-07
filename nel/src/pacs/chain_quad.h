@@ -31,8 +31,6 @@
 #include <vector>
 
 
-class NLMISC::IStream;
-
 
 namespace NLPACS
 {
