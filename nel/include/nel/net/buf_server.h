@@ -133,7 +133,7 @@ typedef std::vector<NLMISC::IThread*> CThreadPool;
 /**
  * Server class for layer 1
  *
- * Listening socket and accepted connetions, with packet scheme.
+ * Listening socket and accepted connections, with packet scheme.
  * The provided buffers are sent raw (no endianness conversion).
  * By default, the size time trigger is disabled, the time trigger is set to 20 ms.
  *

@@ -75,7 +75,7 @@ private:
 
 	virtual void	getWindowPos (uint32 &x, uint32 &y, uint32 &w, uint32 &h);
 
-	// all these variables above is used only by the DT
+	// all these variables above are used only by the DT
 
 	friend gint updateInterf (gpointer data);
 	friend gint ButtonClicked(GtkWidget *Widget, gpointer *Data);

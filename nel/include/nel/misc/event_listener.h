@@ -119,9 +119,9 @@ public:
 
 
 	/**
-	  * Clear all the Down states to false. Usefull sometimes when you don't bother what have been pushed before.
+	  * Clear all the Down states to false. Useful sometimes when you don't bother what has been pushed before.
 	  * e.g.: your app listen/test to the key 'A' and 'B' for a certain long period. Then, it test 'C' and 'D' later.
-	  * If the user has press (by error) the key 'C' during the first period, this API has record it, and then, at the
+	  * If the user has pressed (by mistake) the key 'C' during the first period, this API has record it, and then, at the
 	  * second period, isKeyDown(KeyC) will return true the first time the key is tested, unless if you do a
 	  * reset() at the beggining of the second period.
 	  * Clear all the pushed states to false too.

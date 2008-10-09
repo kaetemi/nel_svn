@@ -41,7 +41,7 @@ namespace NLMISC {
  *
  * This class provide an easy way to localize all string.
  * First you load the language file with \c load().
- * Now, you can get a localized string with his association with \c get().
+ * Now, you can get a localized string with its association with \c get().
  *
  *\code
 	// load the language French
@@ -54,7 +54,7 @@ namespace NLMISC {
  *
  *	Update 26-02-2002 Boris Boucher
  *
- *	Language are now preferably handled via official language code.
+ *	Languages are now preferably handled via official language code.
  *	We use the ISO 639-1 code for language.
  *	Optionally, we can append a country code (ISO 3066) to differentiate
  *	between language flavor (eg Chinese is ISO 639-1 zh, but come in
@@ -116,7 +116,7 @@ public:
 
 	/** Load a language file from its filename
 	  * \param filename name of the language file to load, with its extension
-	  * \param reload The file is being reloaded so error message won't be issued for string that are overwritten
+	  * \param reload The file is being reloaded so error message won't be issued for strings that are overwritten
 	  */
 	static void loadFromFilename (const std::string &filename, bool reload);
 
@@ -189,7 +189,7 @@ public:
 	/// Parse a marked string. NB : usually, we use [ and ] as string delimiters in translation files.
 	static bool		parseMarkedString	(ucchar openMark, ucchar closeMark, ucstring::const_iterator &it, ucstring::const_iterator &last, ucstring &result, uint32 *lineCounter = NULL, bool allowNewline = true);
 	/** Try to read a given token at current position.
-	 *	The function will fist skip any white space then try to read the token
+	 *	The function will first skip any white space then try to read the token
 	 *	If found, the function return true and 'it' is advanced after the matched token,
 	 *	Otherwise, the function return false and 'it' is unchanged.
 	 */

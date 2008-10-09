@@ -41,7 +41,7 @@ namespace NLMISC
  * It manages integers, real (double), and string basic types. A variable can be an array of
  * basic type. In this case, all elements of the array must have the same type.
  *
- * If you setup the global callback before loading, it'll be call after the load() function.
+ * If you setup the global callback before loading, it'll be called after the load() function.
  *
  * Example:
  *\code
@@ -52,7 +52,7 @@ namespace NLMISC
  * 	// Load and parse "test.txt" file
  *  cf.load ("test.txt");
  *
- *	// Attach a callback to the var1 variable. When the var1 will changed, this cvar1cb function will be called
+ *	// Attach a callback to the var1 variable. When the var1 will change, this cvar1cb function will be called
  *	cf.setCallback ("var1", var1cb);
  *
  *	// Get the foo variable (suppose it's a string variable)
@@ -64,7 +64,7 @@ namespace NLMISC
  * 	// Get the bar variable (suppose it's an array of int)
  * 	CConfigFile::CVar &bar = cf.getVar ("bar");
  *
- * 	// Display the content of the all elements of the bar variable
+ * 	// Display the content of all the elements of the bar variable
  * 	printf ("bar have %d elements : \n", bar.size ());
  * 	for (int i = 0; i < bar.size (); i++)
  * 		printf ("%d ", bar.asInt (i));
@@ -119,7 +119,7 @@ class CConfigFile
 public:
 
 	/**
-	 * CVar class. Used by CConfigFile. A CVar is return when you want to have a variable.
+	 * CVar class. Used by CConfigFile. A CVar is returned when you want to have a variable.
 	 *
 	 * Example: see the CConfigFile example
 	 *
@@ -223,7 +223,7 @@ public:
 	/// Get a variable.
 	CVar	*getVar (uint varId);
 
-	/// Add a variable. If the variable already exit, return it.
+	/// Add a variable. If the variable already exists, return it.
 	CVar	*insertVar (const std::string &varName, const CVar &varToCopy);
 
 	/// Return true if the variable exists, false otherwise

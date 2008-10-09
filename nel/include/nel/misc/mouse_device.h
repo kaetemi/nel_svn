@@ -46,7 +46,7 @@ struct IMouseDevice : public IInputDevice
 		/** Tells what messages should be sent :
 		  * DEFAULT is 'raw' messages
 		  * Raw messages : - no clamping nor frames applied
-		  *                - no speed apllied
+		  *                - no speed applied
 		  *				   - no factor applied
 		  *                - CGDMouseMove messages are sent
 		  *				   - Move expressed in mickeys

@@ -57,7 +57,7 @@ public:
 	/// Constructor
 	CTaskManager();
 
-	/// Destructeur
+	/// Destructor
 	~CTaskManager();
 
 	/// Manage TaskQueue

@@ -44,8 +44,8 @@ public:
 
 	// Must be called instead of constructing the object
 //	static CAsyncFileManager &getInstance ();
-	// NB: release the singleton, but assert it there is any pending loading tasks.
-	// Each systems that use the async file manager should ensure it has no more pending task in it
+	// NB: release the singleton, but assert if there is any pending loading tasks.
+	// Each system that use the async file manager should ensure it has no more pending task in it
 	static void terminate ();
 
 	// Do not use these methods with the bigfile manager
@@ -58,8 +58,8 @@ public:
 
 	/**
 	 *	CCancelCallback is an interface that is used in call to CAsyncFileManager::cancelLoad.
-	 *	This class contains one method that is call for each task in the async file loader.
-	 *	If the method return true, then the task is removed and cancelLoad return.
+	 *	This class contains one method that is called for each task in the async file loader.
+	 *	If the method returns true, then the task is removed and cancelLoad return.
 	 *	\author Boris Boucher
 	 *	\author Nevrax France
 	 *	\date 10/2002

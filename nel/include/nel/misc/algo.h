@@ -127,7 +127,7 @@ uint		searchLowerBound(const T *array, uint arraySize, const T &key)
 // ***************************************************************************
 /**	Search the lower_bound in a sorted array of Value, in growing order (0, 1, 2....).
  *	operator<= is used to perform the comparison.
- *	It return the first element such that array[id]<=key
+ *	It returns the first element such that array[id]<=key
  *	If not possible, 0 is returned
  *	NB: but 0 may still be a good value, so you must check wether or not 0 means "Not found", or "Id 0".
  */
@@ -190,7 +190,7 @@ bool		testWildCard(const std::string &strIn, const std::string &wildCard);
 
 
 // ***************************************************************************
-/** From a string with some separator, build a vector of string.
+/** From a string with some separators, build a vector of string.
  *	eg: splitString("hello|bye|||bee", "|", list) return 3 string into list: "hello", "bye" and "bee".
  */
 void		splitString(const std::string &str, const std::string &separator, std::vector<std::string> &retList);

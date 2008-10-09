@@ -31,26 +31,26 @@ namespace NLMISC {
 
 
 /**
- * This helps to know wether cpu has some features such as mmx, sse ...
+ * This helps to know whether cpu has some features such as mmx, sse ...
  * \author Nicolas Vizerie
  * \author Nevrax France
  * \date 2001
  */
 struct CCpuInfo___
 {
-	/** test wether the cpuid instruction is supported
+	/** test whether the cpuid instruction is supported
 	  * (always false on non intel architectures)
 	  */
 	static bool hasCPUID(void);
 
-	/** helps to know wether the processor features mmx instruction set
-	  * This is initialized at started, so its fast
+	/** helps to know whether the processor features mmx instruction set
+	  * This is initialized at startup, so it's fast
 	  * (always false on not 0x86 architecture ...)
 	  */
 	static bool hasMMX(void);
 
-	/** helps to know wether the processor has streaming SIMD instructions (the OS must supports it)
-	  * This is initialized at started, so its fast
+	/** helps to know whether the processor has streaming SIMD instructions (the OS must support it)
+	  * This is initialized at startup, so it's fast
 	  * (always false on not 0x86 architecture ...)
 	  */
 	static bool hasSSE(void);

@@ -30,7 +30,7 @@ namespace NLMISC
 {
 
 /**
-  * This class preforms numerical expression parsing.
+  * This class performs numerical expression parsing.
   */
 class CEvalNumExpr
 {
@@ -46,8 +46,8 @@ public:
 		FunctionError,		// Error during user defined function evaluation
 		NumberSyntaxError,	// Syntax error in a number expression
 		UnkownOperator,		// Unkown operator
-		MustBeOpen,			// Should be a open parentesis
-		MustBeClose,		// Should be a close parentesis
+		MustBeOpen,			// Should be a open parenthesis
+		MustBeClose,		// Should be a close parenthesis
 		MustBeComa,			// Should be a coma character
 		MustBeExpression,	// Should be an expression
 		NotUnaryOperator,	// Should not be an unary operator

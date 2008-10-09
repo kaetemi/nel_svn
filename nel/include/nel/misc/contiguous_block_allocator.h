@@ -32,7 +32,7 @@ namespace NLMISC
   * simply advancing a pointer. When not enough space is available, the default stl allocator is used.
   * When a block is deallocated, nothing happens, unless the block was allocated using the default stl allocator is used, in which case deallocate() is called.
   *
-  * The typical use is when an object makes a lot of allocations at init, but in a predictable way, and if it don't make alloc / realloc
+  * The typical use is when an object makes a lot of allocations at init, but in a predictable way, and if it doesn't make alloc / realloc
   * later. In this case the caller can measure the amount of memory needed to create the object, and can create this allocator with the good amount of
   * memory. Subsequent allocations will then be very fast even for very differently sized blocks, with no fragmentation inside the allocated block
   * and no memory overhead per allocated bloc.

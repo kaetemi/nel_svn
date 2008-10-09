@@ -41,7 +41,7 @@ class CEntityIdTranslator
 	NLMISC_SAFE_SINGLETON_DECL_PTR(CEntityIdTranslator);
 public:
 
-	/** Descritor for an entity in the translator */
+	/** Descriptor for an entity in the translator */
 	struct CEntity
 	{
 		CEntity ()

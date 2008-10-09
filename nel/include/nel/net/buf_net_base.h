@@ -119,7 +119,7 @@ public:
 	 * If receiving a message bigger than the limit, the connection will be dropped.
 	 *
 	 * Default value: CBufNetBase::DefaultMaxExpectedBlockSize
-	 * If you put a negative number as limit, the max size is reset to the default value.
+	 * If you put a negative number as limit, the max size is reseted to the default value.
 	 * Warning: you can call this method only at initialization time, before connecting (for a client)
 	 * or calling init() (for a server) !
 	 */
@@ -136,7 +136,7 @@ public:
 	 * Any bigger sent block will produce an assertion failure, currently.
 	 *
 	 * Default value: CBufNetBase::DefaultMaxSentBlockSize
-	 * If you put a negative number as limit, the max size is reset to the default value.
+	 * If you put a negative number as limit, the max size is reseted to the default value.
 	 * Warning: you can call this method only at initialization time, before connecting (for a client)
 	 * or calling init() (for a server) !
 	 */

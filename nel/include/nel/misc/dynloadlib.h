@@ -90,11 +90,11 @@ class CLibrary
 	 *	when it is deleted.
 	 */
 	bool			_Ownership;
-	/** This point to the 'pure' nel library interface.
-	 *	This mean that the library export an entry point called
-	 *	'NeLLibraryEntry' that point to a INelLibrary interface.
+	/** This points to the 'pure' nel library interface.
+	 *	This means that the library export an entry point called
+	 *	'NeLLibraryEntry' that points to a INelLibrary interface.
 	 *	This interface is used by the CLibrary class to
-	 *	management efficiently the library and to give
+	 *	manage efficiently the library and to give
 	 *	library implementors some hooks on library management.
 	 */
 	class INelLibrary		*_PureNelLibrary;

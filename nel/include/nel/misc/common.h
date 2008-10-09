@@ -49,7 +49,7 @@
 #include "string_common.h"
 
 
-/// This namespace contains all miscellaneous class used by other module
+/// This namespace contains all miscellaneous classes used by other modules
 namespace	NLMISC
 {
 
@@ -263,11 +263,11 @@ inline sint nlstricmp(const std::string &lhs, const std::string &rhs) { return s
 inline sint nlstricmp(const std::string &lhs, const char *rhs) { return stricmp(lhs.c_str(),rhs); }
 inline sint nlstricmp(const char *lhs, const std::string &rhs) { return stricmp(lhs,rhs.c_str()); }
 
-/** Signed 64 bit fseek. Same interface than fseek
+/** Signed 64 bit fseek. Same interface as fseek
   */
 int		nlfseek64( FILE *stream, sint64 offset, int origin );
 
-// Retrieve position in a file, same interface then ftell
+// Retrieve position in a file, same interface as ftell
 sint64  nlftell64(FILE *stream);
 
 /**
@@ -328,14 +328,14 @@ std::string secondsToHumanReadable (uint32 time);
 uint32 fromHumanReadable (const std::string &str);
 
 
-/// This function execute a program in the background and returns instantly (used for example to launch services in AES).
-/// The program will be launch in the current directory
+/// This function executes a program in the background and returns instantly (used for example to launch services in AES).
+/// The program will be launched in the current directory
 bool launchProgram (const std::string &programName, const std::string &arguments);
 
-/// This function kill a program using his pid (on unix, it uses the kill() POSIX function)
+/// This function kills a program using his pid (on unix, it uses the kill() POSIX function)
 bool killProgram(uint32 pid);
 
-/// This function kill a program using his pid with abort signal (on unix, it uses the kill() POSIX function)
+/// This function kills a program using his pid with abort signal (on unix, it uses the kill() POSIX function)
 bool abortProgram(uint32 pid);
 
 /** Returns a string corresponding to the class T in string format.

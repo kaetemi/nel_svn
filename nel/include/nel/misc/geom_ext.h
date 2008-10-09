@@ -44,7 +44,7 @@ namespace NLMISC
 
 // ***************************************************************************
 /**
- * A line with 2 color.
+ * A line with 2 colors.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -96,7 +96,7 @@ public:
 
 // ***************************************************************************
 /**
- * A line with 2 color and 2 uvs.
+ * A line with 2 colors and 2 uvs.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -131,7 +131,7 @@ public:
 
 // ***************************************************************************
 /**
- * A triangle with 3 color.
+ * A triangle with 3 colors.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -183,7 +183,7 @@ public:
 
 // ***************************************************************************
 /**
- * A triangle with 3 color and 3 uvs.
+ * A triangle with 3 colors and 3 uvs.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -217,7 +217,7 @@ public:
 
 // ***************************************************************************
 /**
- * A quad with 4 color.
+ * A quad with 4 colors.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -269,7 +269,7 @@ public:
 
 // ***************************************************************************
 /**
- * A quad with 4 color and 4 uvs.
+ * A quad with 4 colors and 4 uvs.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000
@@ -296,7 +296,7 @@ public:
 
 // ***************************************************************************
 /**
- * A quad with 4 color and 8 uvs.
+ * A quad with 4 colors and 8 uvs.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000

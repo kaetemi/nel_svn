@@ -1,5 +1,5 @@
 /** \file misc/enum_bitset.h
- * utility class to build bit field from enum value vithout need
+ * utility class to build bit field from enum value without need
  * to do explicit cast by hands.
  */
 

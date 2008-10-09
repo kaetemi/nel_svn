@@ -329,13 +329,13 @@ public:
 
 
 	/**
-	 * Make a dummy "?" texture. Usefull for file not found. Mode is rgba.
+	 * Make a dummy "?" texture. Useful for file not found. Mode is rgba.
 	 */
 	void	makeDummy();
 
 
 	/**
-	 * Make a dummy "2" texture. Usefull for file not power of 2. Mode is rgba.
+	 * Make a dummy "2" texture. Useful for file not power of 2. Mode is rgba.
 	 */
 	void	makeNonPowerOf2Dummy();
 

@@ -45,7 +45,7 @@ struct EMemStream : public NLMISC::EStream
 /** This class implement a copy on write behavior for memory stream buffer.
  *	The goal is to allow buffer sharing between CMemStream object, so that
  *	a CMemStream can be copied or passed by value as input/output parameter
- *	without copying the data buffer (thus making a CMemStrem copy alomst free).
+ *	without copying the data buffer (thus making a CMemStrem copy almost free).
  *	This class reference a TMemStreamBuffer object with a smart pointer,
  *	when some code call the getBufferWrite() method to obtain write access
  *	to the memory buffer, if the ref count is more than 1, then we make a copy

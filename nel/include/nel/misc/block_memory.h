@@ -44,8 +44,8 @@ extern	bool		NL3D_BlockMemoryAssertOnPurge;	// =true.
 /**
  * Block memory allocation
  *
- * This memory manager is a fast memory allocator, doing same thing as new/delete. It works by block. block are always
- * allocated, never deleted.  alocation/free are in O(1).
+ * This memory manager is a fast memory allocator, doing same thing as new/delete. It works by blocks. Blocks are always
+ * allocated, never deleted.  Allocation/free are in O(1).
  *
  * Elements with sizeof(T)<sizeof(void*) should not be used with this allocator, because
  * sizeEltInMemory= max(sizeof(T),sizeof(void*)).
@@ -200,7 +200,7 @@ public:
 // ********************
 public:
 
-	// This is to be used with CSTLBlockAllocator only!!! It change the size of an element!!
+	// This is to be used with CSTLBlockAllocator only!!! It changes the size of an element!!
 	void		__stl_alloc_changeEltSize(uint eltSize)
 	{
 		_Mutex.enter();

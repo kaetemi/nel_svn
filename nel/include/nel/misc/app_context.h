@@ -106,7 +106,7 @@ namespace NLMISC
 	};
 
 	/** This class implement the context interface for the application module
-	 *	That mean that this class will really hold the data.
+	 *	That means that this class will really hold the data.
 	 *	\author Boris 'SoniX' Boucher
 	 *  \date 2005
 	 */
@@ -158,7 +158,7 @@ namespace NLMISC
 
 	};
 
-	/** This class implement the context interface for the a library module.
+	/** This class implements the context interface for the a library module.
 	 *	All it contains is forward call to the application context instance.
 	 *	\author Boris 'SoniX' Boucher
 	 *  \date 2005

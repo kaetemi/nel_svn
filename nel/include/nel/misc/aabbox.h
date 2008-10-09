@@ -126,7 +126,7 @@ public:
 	void			makePyramid(CPlane	planes[6]) const;
 
 	/**
-	* Compute the union of 2 bboxs, that is the  aabbox that contains the 2 others.
+	* Compute the union of 2 bboxs, that is the aabbox that contains the 2 others.
 	* Should end up in NLMISC
 	*/
 
@@ -135,7 +135,7 @@ public:
 	/**
 	* Compute the intersection of 2 bboxs.
 	*	NB: this methods suppose the intersection exist, and doesn't check it (use intersect() to check).
-	*	If !intersect, *this is still modified and the result bbox is big chit.
+	*	If !intersect, *this is still modified and the result bbox is big shit.
 	*/
 	void			computeIntersection(const CAABBox &b1, const CAABBox &b2);
 

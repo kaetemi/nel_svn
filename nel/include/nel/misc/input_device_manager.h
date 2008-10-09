@@ -43,7 +43,7 @@ struct EInputDevice : public Exception
 };
 
 
-/** Interface for objects that give low level access access to devices (mouse, keyboard, joypads and joysticks).
+/** Interface for objects that give low level access to devices (mouse, keyboard, joypads and joysticks).
   * Generally an object implementing this interface will send the appropriate events when a device is 'created'.
   * (Example of implementation : a direct input event emitter)
   */

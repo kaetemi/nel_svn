@@ -57,7 +57,7 @@ public:		// const.
 public:		// Methods.
 	/// @name Object.
 	//@{
-	/// Constructor wich do nothing.
+	/// Constructor which does nothing.
 	CVectorD() {}
 	/// Constructor .
 	CVectorD(double	_x, double _y, double _z) : x(_x), y(_y), z(_z) {}

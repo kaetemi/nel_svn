@@ -45,7 +45,7 @@ public:
 	void	addEmitter(IEventEmitter *e, bool mustDelete);
 	/// remove an emitter (and delete it if necessary)
 	void	removeEmitter(IEventEmitter *e);
-	/// test wether e is in the emitter list
+	/// test whether e is in the emitter list
 	bool	isEmitter(IEventEmitter *e) const;
 	// Get the number of registered emitters
 	uint	getNumEmitters() const { return _Emitters.size(); }

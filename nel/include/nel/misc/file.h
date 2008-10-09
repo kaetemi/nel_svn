@@ -115,7 +115,7 @@ public:		// Advanced Usage.
 	void	flush();
 	/// Seek the file
 	bool	seek (sint32 offset, IStream::TSeekOrigin origin) const throw(EStream);
-	/// Gt the location of the file pointer
+	/// Get the location of the file pointer
 	sint32	getPos () const throw(EStream);
 
 	// Imp the Name of the stream as the name of the file.
@@ -128,7 +128,7 @@ public:		// Advanced Usage.
 	// return the size of the file
 	uint32 getFileSize () const { return _FileSize; }
 
-	// return true if there s nothing more to read (same as ifstream)
+	// return true if there's nothing more to read (same as ifstream)
 	bool eof ();
 
 	virtual void		serialBuffer(uint8 *buf, uint len)throw(EReadError);
@@ -230,7 +230,7 @@ public:		// Advanced Usage.
 	void	flush();
 	/// Seek the file
 	bool	seek (sint32 offset, IStream::TSeekOrigin origin) const throw(EStream);
-	/// Gt the location of the file pointer
+	/// Get the location of the file pointer
 	sint32	getPos () const throw(EStream);
 
 	// Imp the Name of the stream as the name of the file.

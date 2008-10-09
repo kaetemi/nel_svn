@@ -1,5 +1,5 @@
 /** \file entity_id.h
- * This class generate uniq Id for worl entities
+ * This class generate unique Id for world entities
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -39,7 +39,7 @@ namespace NLMISC {
  */
 struct CEntityId
 {
-	// pseudo constante
+	// pseudo constants
 	enum
 	{
 		DYNAMIC_ID_SIZE = 8,
@@ -85,10 +85,10 @@ public:
 	// ---------------------------------------------------------------------------------
 	// static data
 
-	///The maximume of number that we could generate without generate an overtaking exception.
+	///The maximum number that we could generate without generate an overtaking exception.
 	static const uint64			MaxEntityId;
 
-	/// Unknow CEntityId is similar as an NULL pointer.
+	/// Unknown CEntityId is similar as a NULL pointer.
 	static const CEntityId		Unknown;
 
 

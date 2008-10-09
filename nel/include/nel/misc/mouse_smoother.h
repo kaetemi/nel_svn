@@ -33,7 +33,7 @@ namespace NLMISC
  * This smooth position of mouse using cubic splines.
  * The mouse is sampled at the given period. The higher the period, the smoother the movement.
  * However there is a delay of 2 * samplingPeriod between the user moving the mouse and the pointer reaching
- * the wanted poistion.
+ * the wanted position.
  *
  * \author Nicolas Vizerie
  * \author Nevrax France
