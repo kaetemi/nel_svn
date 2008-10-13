@@ -172,7 +172,7 @@ CHashKey getSHA1(const uint8 *buffer, uint32 size)
 	return hk;
 }
 
-CHashKey getSHA1(const string &filename)
+CHashKey getSHA1(const string &filename, bool forcePath)
 {
     SHA1Context sha;
     int err;
@@ -181,7 +181,7 @@ CHashKey getSHA1(const string &filename)
 	//printf("reading '%s'\n", findData.cFileName);
 	CIFile ifile;
 	ifile.setCacheFileOnOpen(true);
-	if (!ifile.open(CPath::lookup(filename)))
+	if (!ifile.open(forcePath ? filename:CPath::lookup(filename)))
 	{
 		nlwarning ("SHA: Can't open the file '%s'", filename.c_str());
 		return CHashKey();

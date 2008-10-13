@@ -113,7 +113,8 @@ inline bool operator <(const struct CHashKey &a,const struct CHashKey &b)
 }
 
 // This function get a filename (it works with big files) and returns his SHA hash key
-CHashKey getSHA1(const std::string &filename);
+// when forcePath is true, it doesn't use NLMISC::lookup
+CHashKey getSHA1(const std::string &filename, bool forcePath = false);
 
 // This function get a buffer with size and returns his SHA hash key
 CHashKey getSHA1(const uint8 *buffer, uint32 size);
