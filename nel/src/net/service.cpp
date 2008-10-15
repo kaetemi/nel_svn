@@ -591,7 +591,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 	// a short name service can't be a number
 	uint tmp;
-	nlassert (fromString(serviceShortName, tmp));
+	nlassert (!fromString(serviceShortName, tmp));
 
 	try
 	{
