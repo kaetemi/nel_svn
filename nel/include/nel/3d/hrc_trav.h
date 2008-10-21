@@ -87,7 +87,7 @@ public:
 
 	// ONLY FOR MODELS.
 
-	sint64		CurrentDate;	// The current date of the traversal, usefull for matrix update.
+	sint64		CurrentDate;	// The current date of the traversal, useful for matrix update.
 };
 
 

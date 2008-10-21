@@ -262,7 +262,7 @@ public:
 
 	/// \name Collision methods.
 	// @{
-	/** Build the set of faces of landscape, which are IN a bbox. Usefull for collisions.
+	/** Build the set of faces of landscape, which are IN a bbox. Useful for collisions.
 	 * The faces are builded at Tile level (2m*2m).
 	 * \param bbox the bbox where faces are searched.
 	 * \param faces the result of the build.
@@ -270,7 +270,7 @@ public:
 	 * on patch level. Worst, but faster.
 	 */
 	void			buildCollideFaces(const CAABBoxExt &bbox, std::vector<CTriangle> &faces, bool faceSplit);
-	/** Build the set of faces of landscape, from a certain patch. Usefull for collisions. Triangles are built first in S
+	/** Build the set of faces of landscape, from a certain patch. Useful for collisions. Triangles are built first in S
 	 *  then T order. There is two triangles by tiles. So the number of triangles for a patch is 2*OrderS*OrderT.
 	 */
 	void			buildCollideFaces(sint zoneId, sint patch, std::vector<CTriangle> &faces);
@@ -358,10 +358,10 @@ public:
 	/// Delete All tiles. All zones must be deleted before (nlassert)
 	void			releaseAllTiles();
 
-	/// Return the texture for a tile Id. UseFull for Tile edition.
+	/// Return the texture for a tile Id. Useful for Tile edition.
 	NLMISC::CSmartPtr<ITexture>		getTileTexture(uint16 tileId, CTile::TBitmap bitmapType, CVector &uvScaleBias);
 
-	/// Return the tile element for a patch at specific UV. UseFull for getting surface data. Return NULL if not found.
+	/// Return the tile element for a patch at specific UV. Useful for getting surface data. Return NULL if not found.
 	CTileElement					*getTileElement(const CPatchIdent &patchId, const CUV &uv);
 	// @}
 

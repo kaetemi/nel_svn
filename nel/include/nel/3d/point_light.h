@@ -142,7 +142,7 @@ public:
 	float			getAttenuationEnd() const {return _AttenuationEnd;}
 
 
-	/** setup the spot AngleBegin and AngleEnd that define spot attenuation of the light. Usefull only if SpotLight
+	/** setup the spot AngleBegin and AngleEnd that define spot attenuation of the light. Useful only if SpotLight
 	 *	NB: clamp(angleBegin, 0, PI); clamp(angleEnd, angleBegin, PI); Default is PI/4, PI/2
 	 */
 	void			setupSpotAngle(float spotAngleBegin, float spotAngleEnd);
@@ -152,7 +152,7 @@ public:
 	float			getSpotAngleEnd() const {return _SpotAngleEnd;}
 
 
-	/** setup the spot Direction. Usefull only if SpotLight. Normalized internally
+	/** setup the spot Direction. Useful only if SpotLight. Normalized internally
 	 *	Default is (0, 1, 0)
 	 */
 	void			setupSpotDirection(const CVector &dir);

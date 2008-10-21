@@ -264,7 +264,7 @@ public:
 		hintRotateTheSame(0);
 	}
 
-	/** check wether a call to hintRotateTheSame was performed
+	/** check whether a call to hintRotateTheSame was performed
 	 *  \return 0 if the hint is disabled, the number of configurations else
 	 *  \see hintRotateTheSame(), CPSRotated3dPlaneParticle
 	 */
@@ -309,7 +309,7 @@ public:
 	/// force all material to use vertex color lighting
 	void				forceVertexColorLighting(bool force = true) { _VertexColorLightingForced = force; }
 
-	/// test wether vertex color lighting is forced.
+	/// test whether vertex color lighting is forced.
 	bool				isVertexColorLightingForced() const { return _VertexColorLightingForced; }
 
 	/// Setup the buffers used with prerotated meshs. Must be called during initialization.
@@ -579,9 +579,9 @@ protected:
 
 	// A new mesh has been set, so we must reconstruct it when needed
 	uint8	_Touched                          : 1;
-	// flags that indicate wether the object has transparent faces. When the 'touch' flag is set, it is undefined, until the next update() call.
+	// flags that indicate whether the object has transparent faces. When the 'touch' flag is set, it is undefined, until the next update() call.
 	uint8	_HasTransparentFaces              : 1;
-	// flags that indicate wether the object has opaques faces. When the 'touch' flag is set, it is undefined, until the next update() call.
+	// flags that indicate whether the object has opaques faces. When the 'touch' flag is set, it is undefined, until the next update() call.
 	uint8	_HasOpaqueFaces                   : 1;
 	uint8   _VertexColorLightingForced        : 1;
 	uint8   _GlobalAnimationEnabled           : 1;

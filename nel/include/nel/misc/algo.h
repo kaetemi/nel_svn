@@ -102,7 +102,7 @@ void drawLine (float x0, float y0, float x1, float y1, std::vector<std::pair<sin
  *	operator<= is used to perform the comparison.
  *	It return the first element such that array[id]<=key
  *	If not possible, 0 is returned
- *	NB: but 0 may still be a good value, so you must check wether or not 0 means "Not found", or "Id 0".
+ *	NB: but 0 may still be a good value, so you must check whether or not 0 means "Not found", or "Id 0".
  */
 template<class T>
 uint		searchLowerBound(const T *array, uint arraySize, const T &key)
@@ -129,7 +129,7 @@ uint		searchLowerBound(const T *array, uint arraySize, const T &key)
  *	operator<= is used to perform the comparison.
  *	It returns the first element such that array[id]<=key
  *	If not possible, 0 is returned
- *	NB: but 0 may still be a good value, so you must check wether or not 0 means "Not found", or "Id 0".
+ *	NB: but 0 may still be a good value, so you must check whether or not 0 means "Not found", or "Id 0".
  */
 template<class T>
 uint		searchLowerBound(const std::vector<T> &array, const T &key)

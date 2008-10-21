@@ -70,7 +70,7 @@ public:
 	/// Get a water pool by its ID. If the ID doesn't exist, a new pool is created with default parameters
 	CWaterHeightMap				&getPoolByID(uint32 ID);
 
-	/// test wether a pool of the given ID exists
+	/// test whether a pool of the given ID exists
 	bool						hasPool(uint32 ID) const;
 
 	/// remove the pool of the given ID

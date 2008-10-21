@@ -567,7 +567,7 @@ public:
 		  */
 		virtual NLMISC::IKeyboardDevice			*enableLowLevelKeyboard(bool enable) = 0;
 
-		/** Check wether there is a low level device manager available, and get its interface. Return NULL if not available.
+		/** Check whether there is a low level device manager available, and get its interface. Return NULL if not available.
 		  * From this interface you can deal with mouse and keyboard as above, but you can also manage game devices (joysticks, joypads ...)
 		  */
 		virtual NLMISC::IInputDeviceManager		*getLowLevelInputDeviceManager() = 0;

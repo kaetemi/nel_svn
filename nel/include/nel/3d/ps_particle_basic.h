@@ -134,7 +134,7 @@ public:
 	/// Force the Auto-LOD to be disbaled. When set to false, the default behaviour set in the system is used
 	void	disableAutoLOD(bool disable = true) { _DisableAutoLOD = disable; }
 
-	/// Test wether Auto-LOD is disabled.
+	/// Test whether Auto-LOD is disabled.
 	bool    isAutoLODDisabled() const { return _DisableAutoLOD; }
 
 	// Change z-bias of material. this must be redefined for all renderable particles
@@ -597,7 +597,7 @@ public:
 	  */
 	static void forceBasicCaps(bool force = true) { _ForceBasicCaps =  force; }
 
-	/// test wether basic caps are forced
+	/// test whether basic caps are forced
 	static  bool areBasicCapsForced() { return _ForceBasicCaps; }
 
 	/// Use the particle age rather than the global time to compute textures coordinates.
@@ -631,7 +631,7 @@ protected:
 						};
 	uint8   _MultiTexState;
 
-	/// test wether the alternate texture is used
+	/// test whether the alternate texture is used
 	bool	isAlternateTextureUsed(IDriver &driver) const;
 	bool	isEnvBumpMapUsed() const { return (_MultiTexState & EnvBumpMapUsed) != 0; }
 
@@ -749,7 +749,7 @@ struct CPSHintParticleRotateTheSame
 	virtual void disableHintRotateTheSame(void) = 0;
 
 
-	/** check wether a call to hintRotateTheSame was performed
+	/** check whether a call to hintRotateTheSame was performed
 	 *  \return 0 if the hint is disabled, the number of configurations else
 	 *  \see hintRotateTheSame(), CPSRotated3dPlaneParticle
 	 */
@@ -769,7 +769,7 @@ struct CPSTailParticle
 	 */
 	virtual void setColorFading(bool onOff = true) = 0;
 
-	/// test wether color fading is activated
+	/// test whether color fading is activated
 	virtual bool getColorFading(void) const = 0;
 
 

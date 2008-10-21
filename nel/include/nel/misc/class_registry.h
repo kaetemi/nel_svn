@@ -114,7 +114,7 @@ private:
 };
 
 
-/// Usefull Macros.
+/// Useful Macros.
 #define	NLMISC_DECLARE_CLASS(_class_)					\
 	virtual std::string	getClassName() {return #_class_;}		\
 	static	NLMISC::IClassable	*creator() {return new _class_;}

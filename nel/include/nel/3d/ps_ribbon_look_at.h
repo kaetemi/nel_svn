@@ -67,7 +67,7 @@ public:
 			*/
 			virtual void setColorFading(bool onOff = true) {}
 
-			/** Test wether color fading is activated.
+			/** Test whether color fading is activated.
 			  * NOT SUPPORTED FOR NOW
 			  */
 			virtual bool getColorFading(void) const { return false; }

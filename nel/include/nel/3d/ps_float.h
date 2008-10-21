@@ -150,7 +150,7 @@ class CPSFloatCurveFunctor
 		/// Enable / diable smoothing. This cause to use hermite / linear curves.
 		void							enableSmoothing(bool enable = true);
 
-		/// test wether smoothing is enabled
+		/// test whether smoothing is enabled
 		bool							hasSmoothing(void) const			{ return _Smoothing;}
 
 		/** This return a sampled value from the hermite curb. The more steps there are, the more accurate it is

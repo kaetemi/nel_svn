@@ -42,7 +42,7 @@ namespace NLMISC {
 
 
 /**
- * Add a variable that can be modify in realtime. The variable must be global. If you must acces the variable with
+ * Add a variable that can be modified in realtime. The variable must be global. If you must access the variable with
  * function, use NLMISC_DYNVARIABLE
  *
  * Example:
@@ -67,8 +67,8 @@ NLMISC::CVariablePtr<__type> __var##Instance(#__category,#__var, __help " (" #__
 
 
 /**
- * Add a variable that can be modify in realtime. The code profide the way to access to the variable in the read
- * and write access (depending of the \c get boolean value)
+ * Add a variable that can be modified in realtime. The code profide the way to access to the variable in the read
+ * and write access (depending on the \c get boolean value)
  *
  * Example:
  * \code

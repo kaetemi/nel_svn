@@ -80,7 +80,7 @@ public:
 	void			enableSpotlight(bool enable);
 	/// Is Spotlight enabled?
 	bool			isSpotlight() const;
-	/** setup the spot AngleBegin and AngleEnd that define spot attenuation of the light. Usefull only if SpotLight
+	/** setup the spot AngleBegin and AngleEnd that define spot attenuation of the light. Useful only if SpotLight
 	 *	NB: clamp(angleBegin, 0, PI); clamp(angleEnd, angleBegin, PI); Default is PI/4, PI/2
 	 */
 	void			setupSpotAngle(float spotAngleBegin, float spotAngleEnd);

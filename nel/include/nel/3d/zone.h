@@ -95,9 +95,9 @@ struct	CPatchInfo
 public:
 
 	/** A bind Info on a edge of a patch.
-	 * Entry 0 is only usefull for Bind One/One+
-	 * Entry 1 is only usefull for Bind One/Two+
-	 * Entry 2/3 is only usefull for Bind One/Four.
+	 * Entry 0 is only useful for Bind One/One+
+	 * Entry 1 is only useful for Bind One/Two+
+	 * Entry 2/3 is only useful for Bind One/Four.
 	 */
 	struct	CBindInfo
 	{
@@ -414,7 +414,7 @@ public:
 
 	/**
 	 * Update and refresh a patch texture.
-	 * Usefull for Tile edition. Even if patch is in tile mode, it is refreshed...
+	 * Useful for Tile edition. Even if patch is in tile mode, it is refreshed...
 	 * \param numPatch the index of patch in this zone which will receive his new texture. assert if bad id.
 	 * \param tiles the patch texture. assert if not of good size (OrderS*OrderT). Can be NULL if you don't want to change the patch texture.
 	 * \param colors the patch texture. assert if not of good size ((OrderS+1)*(OrderT+1)). Can be NULL if you don't want to change the patch colors.
@@ -424,7 +424,7 @@ public:
 
 	/**
 	 * refresh the geometry (re-compute vertices).
-	 * Usefull for Tile Noise edition. Do it after calling changePatchTextureAndColor().
+	 * Useful for Tile Noise edition. Do it after calling changePatchTextureAndColor().
 	 *	NB: a refreshTesselationGeometry() should be done on All patchs, and all direct neighbors of this patch (including
 	 *	patchs on corners).
 	 *	WARNING: specially coded for Tile edition. Result is not perfect:
@@ -564,7 +564,7 @@ private:
 
 
 private:
-	// The lanscape which own this zone. Usefull for texture management.
+	// The lanscape which own this zone. Useful for texture management.
 	// Filled at compilation only.
 	CLandscape		*Landscape;
 

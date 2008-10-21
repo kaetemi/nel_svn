@@ -52,7 +52,7 @@ using NLMISC::CMatrix;
 
 // ***************************************************************************
 /**
- * A render Context used to render MeshGeom. Contains any usefull information
+ * A render Context used to render MeshGeom. Contains any useful information
  */
 class CMeshGeomRenderContext
 {
@@ -94,7 +94,7 @@ public:
 	virtual ~IMeshGeom();
 
 
-	/** store usefull information for this meshGeom in the instance. Used for IMeshVertexProgram as example
+	/** store useful information for this meshGeom in the instance. Used for IMeshVertexProgram as example
 	 */
 	virtual	void	initInstance(CMeshBaseInstance *mbi) =0;
 

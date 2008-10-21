@@ -79,10 +79,10 @@ public:
 	/// Serial the force definition. MUST be called by deriver during their serialisation
 	virtual void		 serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 
-	/// check wether this force is integrable over time. The default is false
+	/// check whether this force is integrable over time. The default is false
 	virtual bool		 isIntegrable(void) const { return false; }
 
-	/// inherited from   CPSLocatedBindableTarget, we use that to tell wether this force is integrable or not
+	/// inherited from   CPSLocatedBindableTarget, we use that to tell whether this force is integrable or not
 	virtual void		 attachTarget(CPSLocated *ptr);
 
 	/// inherited from   CPSLocatedBindableTarget

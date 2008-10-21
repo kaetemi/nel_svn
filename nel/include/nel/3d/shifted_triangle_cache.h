@@ -36,7 +36,7 @@ namespace NL3D
 // ***************************************************************************
 /**
  * This is a cache of indices which are the copy of CMesh/CMeshMRM indices, but shifted according to a value.
- *	This is usefull for skinning.
+ *	This is useful for skinning.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2002

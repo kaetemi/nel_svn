@@ -94,7 +94,7 @@ private:
 	/// traverse the model recursively, following Hrc hierarchy
 	void				traverseHrcRecurs(CTransform *model);
 
-	// traverse list of model visible and usefull to animDetail.
+	// traverse list of model visible and useful to animDetail.
 	std::vector<CTransform*>	_VisibleList;
 	uint32						_CurrentNumVisibleModels;
 

@@ -231,7 +231,7 @@ public:
 	  * Helper method.
 	  * Load an animation set from animation files in a directory, then call build().
 	  * \param path Path to look at for animations
-	  * \param recurse wether to recurse to load animation in sub folders
+	  * \param recurse whether to recurse to load animation in sub folders
 	  * \param ext the extension for animation files
 	  * \param wantWarningMessage displays warning if some of the files could not be loaded
 	  * \return true if everything loaded ok

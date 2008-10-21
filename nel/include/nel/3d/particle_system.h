@@ -119,7 +119,7 @@ public:
 			  */
 			void	enableSharing(bool enabled = true) { _Sharing = enabled; }
 
-			/// Test wether sharing is enabled
+			/// Test whether sharing is enabled
 			bool	isSharingEnabled() const { return _Sharing; }
 		//@}
 
@@ -254,7 +254,7 @@ public:
 		  */
 		CParticleSystemProcess		*detach(uint index);
 
-		/** Test wether a process is part of this system
+		/** Test whether a process is part of this system
 		  */
 		bool						isProcess(const CParticleSystemProcess *process) const;
 
@@ -603,7 +603,7 @@ public:
 		  */
 		void	enableAutoLOD(bool enabled = true) { _AutoLOD = enabled; }
 
-		/// test wether Auto-LOD is enabled
+		/// test whether Auto-LOD is enabled
 		bool    isAutoLODEnabled() const { return _AutoLOD; }
 
 		/** Setup auto lod parameters.
@@ -841,7 +841,7 @@ public:
 			_PresetBehaviour = UserBehaviour;
 		}
 
-		/** check wether the system must be destroyed when it goes out of the frustum
+		/** check whether the system must be destroyed when it goes out of the frustum
 		  * \see getDelayBeforeDeathConditionTest()
 		  */
 		bool				doesDestroyWhenOutOfFrustum(void) const { return _DestroyWhenOutOfFrustum; }

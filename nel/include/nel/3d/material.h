@@ -380,17 +380,17 @@ public:
 											CRGBA specular=CRGBA(0,0,0),
 											float shininess= 10);
 
-	/// Set the emissive part ot material. Usefull only if setLighting(true) has been done.
+	/// Set the emissive part ot material. Useful only if setLighting(true) has been done.
 	void					setEmissive( CRGBA emissive=CRGBA(0,0,0) );
-	/// Set the Ambient part ot material. Usefull only if setLighting(true) has been done.
+	/// Set the Ambient part ot material. Useful only if setLighting(true) has been done.
 	void					setAmbient( CRGBA ambient=CRGBA(0,0,0) );
-	/// Set the Diffuse part ot material. Usefull only if setLighting(true) has been done. NB: opacity is NOT copied from diffuse.A.
+	/// Set the Diffuse part ot material. Useful only if setLighting(true) has been done. NB: opacity is NOT copied from diffuse.A.
 	void					setDiffuse( CRGBA diffuse=CRGBA(0,0,0) );
-	/// Set the Opacity part ot material. Usefull only if setLighting(true) has been done.
+	/// Set the Opacity part ot material. Useful only if setLighting(true) has been done.
 	void					setOpacity( uint8	opa );
-	/// Set the specular part ot material. Usefull only if setLighting(true) has been done.
+	/// Set the specular part ot material. Useful only if setLighting(true) has been done.
 	void					setSpecular( CRGBA specular=CRGBA(0,0,0) );
-	/// Set the shininess part ot material. Usefull only if setLighting(true) has been done.
+	/// Set the shininess part ot material. Useful only if setLighting(true) has been done.
 	void					setShininess( float shininess );
 	/// Set the color material flag. Used when the material is lighted. True to use the diffuse color of the material when lighted, false to use the color vertex.
 	void					setLightedVertexColor (bool useLightedVertexColor);
@@ -458,7 +458,7 @@ public:
 
 	// Enable a user texture matrix for the n-th stage. The initial matrix is set to identity.
 	void                    enableUserTexMat(uint stage, bool enabled = true);
-	// Test wether a user texture is enabled for the n-th stage
+	// Test whether a user texture is enabled for the n-th stage
 	bool                    isUserTexMatEnabled(uint stage) const;
 	/// Set a new texture matrix for the given stage.
 	void					setUserTexMat(uint stage, const NLMISC::CMatrix &m);

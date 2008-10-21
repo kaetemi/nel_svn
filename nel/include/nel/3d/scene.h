@@ -161,7 +161,7 @@ public:
 	 * NB: no Driver clear buffers (color or ZBuffer) are done....
 	 * This call t->traverse() function to registered render traversal following their order given.
 	 * NB: assert-crash if you are between a beginPartRender() and a endPartRender()
-	 * \param doHrcPass set it to false to indicate that the CHrcTrav have not to be traversed. UseFull to optimize if
+	 * \param doHrcPass set it to false to indicate that the CHrcTrav have not to be traversed. Useful to optimize if
 	 * you know that NONE of your models have moved (a good example is a shoot of the scene from different cameras).
 	 */
 	void			render(bool	doHrcPass=true);

@@ -67,11 +67,11 @@ public:
 
 
 	/** Called to setup constant / activate VertexProgram. (called before activate of the VB).
-	 *  The result tells wether the vertex program will be used in the given context.
+	 *  The result tells whether the vertex program will be used in the given context.
 	 *  If this is the case, a call to setupMaterial must be done for each material being rendered with this V.P.
 	 *  After all primitive have been rendered, end() must be called.
 	 *	\param drv driver where to setup VP.
-	 *	\param scene retrieve some useFull scene info (windPower, time ...)
+	 *	\param scene retrieve some useful scene info (windPower, time ...)
 	 *	\param mbi the mesh instance to retrieve some instance setup.
 	 *  \param mat the matrix to use (may not be the one of mbi)
 	 *  \param viewerPos position of the viewer in world space.
@@ -94,7 +94,7 @@ public:
 									 CScene *scene,
 									 CVertexBuffer *vb) = 0;
 
-	// Test wether this vertex program need tangent space informations (stored in the last texture coordinate of the mesh)
+	// Test whether this vertex program need tangent space informations (stored in the last texture coordinate of the mesh)
 	virtual	bool	needTangentSpace() const { return false; }
 
 

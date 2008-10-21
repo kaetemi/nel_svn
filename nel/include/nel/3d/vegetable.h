@@ -126,7 +126,7 @@ public:
 	 *	\param surfaceNormal UNIT up vector of the surface to compare with (0,0,1), to modulate density
 	 *	\param area area of the surface, to know number of elements to generate for this surface
 	 *	\param vegetSeed "random" value which Should be different for all vegetables in the same area.
-	 *	usefull if lot of different vegetable generated in same area: positions won't be generated at same place.
+	 *	useful if lot of different vegetable generated in same area: positions won't be generated at same place.
 	 *	\param instances the generated position of instances.
 	 */
 	void	generateGroup(const CVector &posInWorld, const CVector &surfaceNormal, float area, uint vegetSeed, std::vector<CVector2f> &instances) const;

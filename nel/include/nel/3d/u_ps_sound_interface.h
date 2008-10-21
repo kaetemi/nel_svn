@@ -82,7 +82,7 @@ struct UPSSoundInstance
 	/// start to play the sound
 	virtual void play(void) = 0;
 
-	/// tells wether the sound is playing
+	/// tells whether the sound is playing
 	virtual bool isPlaying(void) const = 0;
 
 	/// stop the sound

@@ -168,7 +168,7 @@ public:
 	  */
 	void enableModelTranslationAxis(TAxis axis, bool enabled) ;
 
-	/** check wether translation on the given axis is permitted
+	/** check whether translation on the given axis is permitted
 	  * \param axis the axis to check
 	  * \return true if translation is permitted
 	  */

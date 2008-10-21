@@ -134,7 +134,7 @@ public:
 	/** Light an InstanceGroup
 	 *	igOut has different PointLights than igIn. eg: if a pointLight do not light anything, then it is not
 	 *	present in igOut.
-	 *	NB: shapes are used to retrieve usefull info on them (center of AABBox ...) . They are taken from
+	 *	NB: shapes are used to retrieve useful info on them (center of AABBox ...) . They are taken from
 	 *	lightDesc.UserShapeMap, or loaded from lightDesc.ShapePath if not found.
 	 *	\param landscape if !NULL use this Landscape SunContribution, looking landscape faces under each instance,
 	 *	for faster computing, and to get influence of Sky. NB: this landscape does not have to be tesselated,

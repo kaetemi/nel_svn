@@ -61,7 +61,7 @@ public:
 				touch();
 			}
 
-			/** Test wether color fading is activated.
+			/** Test whether color fading is activated.
 			  */
 			virtual bool getColorFading(void) const
 			{
@@ -168,7 +168,7 @@ private:
 
 
 	bool _ColorFading  : 1;
-	bool _GlobalColor  : 1; // to see wether the system uses global color
+	bool _GlobalColor  : 1; // to see whether the system uses global color
 	bool _Lighted      : 1;
 	bool _ForceLighted : 1;
 	bool _Touch		   : 1; // we use this to see if we must setup the material again

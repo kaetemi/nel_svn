@@ -36,7 +36,7 @@ using NLMISC::CVector;
 
 // ***************************************************************************
 /**
- * A Screen frustum, perspective or orthogonal. No default ctor. Usefull for camera.
+ * A Screen frustum, perspective or orthogonal. No default ctor. Useful for camera.
  * \author Lionel Berenguier
  * \author Nevrax France
  * \date 2000

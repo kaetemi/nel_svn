@@ -50,7 +50,7 @@ namespace NL3D {
 class UParticleSystemInstance : public UInstance
 {
 public:
-	/** Tell wether the system is currently instanciated. This may not be the case when the system is not visible
+	/** Tell whether the system is currently instanciated. This may not be the case when the system is not visible
 	  * Unless specified otherwise, you must check this before you use any method that access the system.
 	  * If you don't, there will be an assertion when you'll try to access it
 	  *

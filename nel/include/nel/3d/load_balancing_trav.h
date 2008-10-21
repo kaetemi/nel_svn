@@ -200,7 +200,7 @@ private:
 	typedef	TGroupMap::iterator							ItGroupMap;
 	TGroupMap			_GroupMap;
 
-	// traverse list of model visible and usefull to loadBalance.
+	// traverse list of model visible and useful to loadBalance.
 	std::vector<CTransform*>	_VisibleList;
 	uint32						_CurrentNumVisibleModels;
 

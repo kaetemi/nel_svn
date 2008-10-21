@@ -42,7 +42,7 @@ struct CGameDeviceDesc
 	std::string	InstanceName;
 	// Friendly name for the product
 	std::string	ProductName;
-	// Tells wether this device is connected
+	// Tells whether this device is connected
 	bool		Connected;
 };
 

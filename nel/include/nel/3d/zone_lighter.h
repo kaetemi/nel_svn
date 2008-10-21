@@ -152,7 +152,7 @@ public:
 		// True to enable modulation with water previous texture
 		bool                    ModulateWaterColor;
 
-		/// Evaluation of the max height, in meters, of the vegetables. Needed when we compute wether a tile is below or above water.
+		/// Evaluation of the max height, in meters, of the vegetables. Needed when we compute whether a tile is below or above water.
 		float					VegetableHeight;
 
 		// Nombrer of CPU used
@@ -334,13 +334,13 @@ public:
 	  */
 	void addLightableShape(IShape *shape, const NLMISC::CMatrix& modelMT);
 
-	/// Add a water shape. This is needed to decide wether tiles are above / below water
+	/// Add a water shape. This is needed to decide whether tiles are above / below water
 	void addWaterShape(CWaterShape *shape, const NLMISC::CMatrix &MT);
 
 	/// get the number of water shapes added
 	uint getNumWaterShape() const {return _WaterShapes.size();}
 
-	/// check wether a shape is lightable.
+	/// check whether a shape is lightable.
 	static bool isLightableShape(IShape &shape);
 
 	// Progress callback
@@ -431,7 +431,7 @@ private:
 	void makeQuadGridFromWaterShapes(NLMISC::CAABBox zoneBBox);
 
 
-	/** For each tile of the current zone, check wether it below or above water.
+	/** For each tile of the current zone, check whether it below or above water.
 	  * The result is stored in the flags of the tile.
 	  * The quadtree is removed then.
 	  */
@@ -446,7 +446,7 @@ private:
 	void setTileFlagsToDefault(std::vector<const CTessFace*> &tessFaces);
 
 	/** This copy the flags of the tiles from the source zone to a dest zone (result of the lighting).
-	  * This is needed beacuse these flags are updated to say wether a given tile is above  / below water
+	  * This is needed beacuse these flags are updated to say whether a given tile is above  / below water
 	  * IMPORTANT : the source and destination zones must match of course...
 	  */
 	static void copyTileFlags(CZone &destZone, const CZone &srcZone);
@@ -603,7 +603,7 @@ private:
 	TShapeVect									_LightableShapes;
 	uint										_NumLightableShapesProcessed;
 
-	/** List of all the water shapes in the zone. We need them to check wether the tiles are above / below water, or if theyr intersect water
+	/** List of all the water shapes in the zone. We need them to check whether the tiles are above / below water, or if theyr intersect water
 	  */
 	TShapeVect									_WaterShapes;
 

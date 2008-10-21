@@ -149,7 +149,7 @@ public:
 	  */
 	CPolygon2D(const CTriangle &tri, const CMatrix &projMat = CMatrix::Identity);
 
-	/// Check wether this polygon is convex;
+	/// Check whether this polygon is convex;
 	bool		isConvex();
 
 	/** Build a convex hull from this polygon. The result poly is ordered, so it can also be used to order a convex
@@ -186,10 +186,10 @@ public:
 	  * IMPORTANT: coordinates must be in the -32000, 32000 range. This is checked in debug
 	  */
 	void		computeInnerBorders(TRasterVect &borders, sint &minimumY) const;
-	/// Test wether this polygon intersect another convex polygon. Currently not optimized.
+	/// Test whether this polygon intersect another convex polygon. Currently not optimized.
 	bool        intersect(const CPolygon2D &other) const;
 
-	/// Check wether a point is contained by this poly
+	/// Check whether a point is contained by this poly
 	bool		contains(const CVector2f &p, bool hintIsConvex = true) const;
 
 	/** Get the index of a segment of this poly that is a non null segment.

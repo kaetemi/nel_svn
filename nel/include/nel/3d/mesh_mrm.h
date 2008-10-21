@@ -385,7 +385,7 @@ private:
 		/// Skinning: does the VBuffer part of this Lod contains original skin vertices.
 		bool						OriginalSkinRestored;
 		/** Skinning: list of vertex blocks to copy from RAM to AGP, for this Lod only.
-		 *	NB: it is constructed from InfluencedVertices. Only usefull if skinned.
+		 *	NB: it is constructed from InfluencedVertices. Only useful if skinned.
 		 */
 		std::vector<CVertexBlock>		SkinVertexBlocks;
 

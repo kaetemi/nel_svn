@@ -427,7 +427,7 @@ class CPSModulatedEmitter
 		/// get the speed modulation shceme, or NULL if no one is set (const version)
 		const CPSAttribMaker<float> *getEmitteeSpeedScheme(void) const { return _EmitteeSpeedScheme; }
 
-		/// check wether a speed modulation scheme is being used
+		/// check whether a speed modulation scheme is being used
 		bool useEmitteeSpeedScheme(void) const { return _EmitteeSpeedScheme != NULL; }
 
 		/// serialization

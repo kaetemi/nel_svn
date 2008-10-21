@@ -83,7 +83,7 @@ public:
 		virtual void				stop();
 		/// Stop the fx with no unrolling
 		virtual void				stopNoUnroll();
-		// Test wether the fx is started
+		// Test whether the fx is started
 		virtual bool				isStarted() const { return _Started; }
 		// Test if the fx is stopping (unrollinh)
 		bool						isStopping() const { return _Stopping; }

@@ -167,7 +167,7 @@ public:
 
 
 /** This is a keyframer track interface.
-  * Once you've got a track, you can know wether its a keyframer track by using a dynamic_cast
+  * Once you've got a track, you can know whether its a keyframer track by using a dynamic_cast
   */
 class UTrackKeyframer
 {

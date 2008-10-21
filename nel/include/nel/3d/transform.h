@@ -271,7 +271,7 @@ public:
 
 	/** freeze the preceding position of the model. Do not use, special code for cluster.
 	 *	This inform the scene that preceding position setuped by user is "frozen". ie at next render(), this
-	 *	object won't be added to the "object moving list" (usefull for cluster mgt).
+	 *	object won't be added to the "object moving list" (useful for cluster mgt).
 	 *	The "frozen" state is disabled (at render() time) if:
 	 *	- change in position (directly or indireclty, such as animation) is performed after the freeze().
 	 *	- the "frozen" state of a father is not enabled (or disabled by a change in position of him :) ).
@@ -941,7 +941,7 @@ protected:
 	bool		_WorldVis;			// Is the node visible? (enabled?)
 	// Transform Specicic Hrc
 	bool		_Frozen;
-	bool		_DontUnfreezeChildren; // Usefull when cluster system move to not test instance again
+	bool		_DontUnfreezeChildren; // Useful when cluster system move to not test instance again
 	bool		_ClipLinkedInSonsOfAncestorSkeletonModelGroup;
 	// !NULL if any skeleton is an ancestor in hierarchy. Updated at each Hrc traversal!!
 	CSkeletonModel	*_AncestorSkeletonModel;

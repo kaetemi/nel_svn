@@ -302,7 +302,7 @@ class CRefPtr
 {
 private:
 	CRefCount::CPtrInfo		*pinfo;		// A ptr to the handle of the object.
-    mutable T				*Ptr;		// A cache for pinfo->Ptr. UseFull to speed up  ope->()  and  ope*()
+    mutable T				*Ptr;		// A cache for pinfo->Ptr. Useful to speed up  ope->()  and  ope*()
 
 	void	unRef()  const;				// Just release the handle pinfo, but do not update pinfo/Ptr, if deleted.
 
@@ -388,7 +388,7 @@ class CVirtualRefPtr
 {
 private:
 	CRefCount::CPtrInfo		*pinfo;		// A ptr to the handle of the object.
-    mutable T				*Ptr;		// A cache for pinfo->Ptr. UseFull to speed up  ope->()  and  ope*()
+    mutable T				*Ptr;		// A cache for pinfo->Ptr. Useful to speed up  ope->()  and  ope*()
 
 	void	unRef()  const;				// Just release the handle pinfo, but do not update pinfo/Ptr, if deleted.
 

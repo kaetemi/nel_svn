@@ -102,7 +102,7 @@ public:
 		hintRotateTheSame(0);
 	}
 
-	/** check wether a call to hintRotateTheSame was performed
+	/** check whether a call to hintRotateTheSame was performed
 	 *  \return 0 if the hint is disabled, the number of configurations else
 	 *  \see hintRotateTheSame(), CPSRotated3dPlaneParticle
 	 */

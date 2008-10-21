@@ -28,7 +28,7 @@ namespace NL3D
 {
 
 /** Interface to an occlusion query object.
-  * An occlusion query allows to know wether some pixels passed the z-test for a set of primitives.
+  * An occlusion query allows to know whether some pixels passed the z-test for a set of primitives.
   * Common usages include visibility determination, lens flares / coronas rendering etc.
   *
   * Usage :

@@ -41,7 +41,7 @@ namespace NL3D
 #define NL_TILE_ELM_OFFSET_SUBNOISE			9
 #define NL_TILE_ELM_SIZE_SUBNOISE			4
 
-/** Micro-veget specific. Tells wether it is disabled, above water (the default), under water, or if it intersects a water surface.
+/** Micro-veget specific. Tells whether it is disabled, above water (the default), under water, or if it intersects a water surface.
   * This state is represented encoded as an enum in CTileElement
   */
 #define	NL_TILE_ELM_OFFSET_VEGETABLE      13 // start at the 14 th bit

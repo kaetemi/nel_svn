@@ -429,7 +429,7 @@ private:
 
 private:
 	// Fake face are the only ones which have a NULL patch ptr (with mult face).
-	// The fake face which indicates a "can't merge". Usefull for bind 2/4 or 1/4.
+	// The fake face which indicates a "can't merge". Useful for bind 2/4 or 1/4.
 	static	CTessFace	CantMergeFace;
 
 public:

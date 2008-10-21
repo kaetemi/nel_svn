@@ -79,7 +79,7 @@ public:
 				touch();
 			}
 
-			/** Test wether color fading is activated.
+			/** Test whether color fading is activated.
 			  */
 			virtual bool getColorFading(void) const
 			{
@@ -261,7 +261,7 @@ private:
 
 	bool _BraceMode				: 1; // the ribbon mesh is shaped like a brace
 	bool _ColorFading           : 1;
-	bool _GlobalColor		    : 1; // to see wether the system uses global color
+	bool _GlobalColor		    : 1; // to see whether the system uses global color
 	bool _Lighted	            : 1;
 	bool _ForceLighted	        : 1;
 	bool _Touch		            : 1; // we use this to see if we must setup the material again
@@ -276,7 +276,7 @@ private:
 	void		setupUntexturedGlobalColor();
 	void		setupTextureMatrix();
 
-	/// Get the number of vertices in each slices (depends on wether the ribbon is textured or not)
+	/// Get the number of vertices in each slices (depends on whether the ribbon is textured or not)
 	uint 		getNumVerticesInSlice() const;
 
 

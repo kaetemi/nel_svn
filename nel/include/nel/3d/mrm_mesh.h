@@ -258,7 +258,7 @@ public:
 	// A LOD information for the final MRM representation.
 	struct	CLod
 	{
-		/// this tells how many wedges in the Wedges array this lod requires. this is usefull for partial loading.
+		/// this tells how many wedges in the Wedges array this lod requires. this is useful for partial loading.
 		sint						NWedges;
 		/// This is the face list for this LOD.
 		std::vector<CFace>			Faces;

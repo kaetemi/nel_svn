@@ -280,7 +280,7 @@ private:
 	// first is the filename that can be with a remapped extension
 	std::vector<CMCFileEntry> _MCFiles;
 
-	// Compare a MCFileEntry with a lowered string (usefull for MCfind)
+	// Compare a MCFileEntry with a lowered string (useful for MCfind)
 	class CMCFileComp
 	{
 	public:
@@ -582,7 +582,7 @@ private:
 //	// first is the filename that can be with a remapped extension
 //	std::vector<CMCFileEntry> _MCFiles;
 //
-//	// Compare a MCFileEntry with a lowered string (usefull for MCfind)
+//	// Compare a MCFileEntry with a lowered string (useful for MCfind)
 //	class CMCFileComp
 //	{
 //	public:

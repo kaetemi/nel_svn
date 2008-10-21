@@ -138,16 +138,16 @@ public:
 	/// get the percent of sound emission.
 	float						getEmissionPercent(void) const { return _EmissionPercent; }
 
-	/// tells wether sound emissions are spawned or not
+	/// tells whether sound emissions are spawned or not
 	void						setSpawn(bool enabled = true) { _SpawnSounds = enabled; }
 
-	/// test wether sound spawning is enabled
+	/// test whether sound spawning is enabled
 	bool						getSpawn(void) const		  { return _SpawnSounds; }
 
 	///set mute on/off. The default is off. WARNING : It is not saved by this object
 	void						setMute(bool enabled = true)  { _Mute = enabled; }
 
-	/// test wether mute has been activated
+	/// test whether mute has been activated
 	bool						getMute(void) const { return _Mute; }
 
 

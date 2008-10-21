@@ -122,10 +122,10 @@ public:
 	 */
 	uint32			createShapeBank();
 
-	/// get a shape Bank. UseFull for serialisation for example. return NULL if not found
+	/// get a shape Bank. Useful for serialisation for example. return NULL if not found
 	const CLodCharacterShapeBank	*getShapeBank(uint32 bankId) const;
 
-	/// get a shape Bank. UseFull for serialisation for example. return NULL if not found
+	/// get a shape Bank. Useful for serialisation for example. return NULL if not found
 	CLodCharacterShapeBank	*getShapeBank(uint32 bankId);
 
 	/// delete a Shape Bank. No-op if bad id.

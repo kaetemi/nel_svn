@@ -53,7 +53,7 @@ public:
 	uint	getNumDevices() const { return _Devices.size(); }
 	// return a device
 	IInputDevice *getDevice(uint index) { return _Devices[index]; }
-	/// Test wether the given device is handled by this server.
+	/// Test whether the given device is handled by this server.
 	bool	isDevice(IInputDevice *device) const;
 	/// Retrieve datas from the devices, and submit them to the given CEventServer.
 	void	poll(CEventServer *server);

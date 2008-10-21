@@ -717,7 +717,7 @@ public:
 	/// Delete any vegetable Ig still existing in this patch.
 	void		deleteAllVegetableIgs();
 
-	/// Recreate any vegetable block (as possible) in this patch. (usefull for edition)
+	/// Recreate any vegetable block (as possible) in this patch. (useful for edition)
 	void		recreateAllVegetableIgs();
 
 	// @}
@@ -1126,7 +1126,7 @@ private:
 	 *	NB: s,t does not have to be clamped to ([0;OrderS], [0;OrderT]).
 	 */
 	float		computeDisplaceRaw(float sTile, float tTile, float s, float t) const;
-	/** usefull only for computeDisplaceCornerSmooth().
+	/** useful only for computeDisplaceCornerSmooth().
 	 *	This method, if nessecary (ie sTile or tTile <0 or >Order), look on his neighbor to compute the value.
 	 */
 	float		computeDisplaceRawOnNeighbor(float sTile, float tTile, float s, float t) const;

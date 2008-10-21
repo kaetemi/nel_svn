@@ -65,7 +65,7 @@ using NLMISC::CRGBA;
  *	If NL_DLM_TILE_RES is defined, then, same reasoning, with blocks of 18x18. In worst case,
  *	space lost is 70%: (1 - 15*15 / 18*18). But others cases are pretty good (90% to 100%)
  *
- * 	NB: TextureDLM ensure that point (MaxX,MaxY) of this texture is black. UseFull for patch who
+ * 	NB: TextureDLM ensure that point (MaxX,MaxY) of this texture is black. Useful for patch who
  *	want default black color
  *
  * \author Lionel Berenguier

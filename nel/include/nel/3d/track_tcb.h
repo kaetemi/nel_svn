@@ -59,7 +59,7 @@ protected:
 			TMapTimeCKeyIterator	next= it;
 			next++;
 
-			// loop mgt. must compute ease from last to first (usefull if _RangeLock is false).
+			// loop mgt. must compute ease from last to first (useful if _RangeLock is false).
 			if(next==mapKey.end() && loopMode && mapKey.size()>1)
 				next= mapKey.begin();
 

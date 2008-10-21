@@ -106,7 +106,7 @@ public:
 	///\name Life managment
 		//@{
 		/**
-		 * test wether the system has become invalid. The condition for a system to be invalid
+		 * test whether the system has become invalid. The condition for a system to be invalid
 		 * are encoded in the system itself (no more particles for example). When a system has become invalid, you may want to remove it most of the time
 		 */
 		bool isInvalid(void) const { return _Invalidated; }
@@ -126,7 +126,7 @@ public:
 		  * \see registerPSModelObserver
 		  */
 		void removePSModelObserver(IPSModelObserver *obs);
-		/// test wether obs observe this model
+		/// test whether obs observe this model
 		bool isPSModelObserver(IPSModelObserver *obs);
 	//@}
 
@@ -152,7 +152,7 @@ public:
 		}
 		//
 		float						getEllapsedTimeRatio() const { return _EllapsedTimeRatio; }
-		/// tells wether the model will querry himself for the ellapsed time
+		/// tells whether the model will querry himself for the ellapsed time
 		bool						isAutoGetEllapsedTimeEnabled(void) const
 		{
 			return _AutoGetEllapsedTime;
@@ -174,7 +174,7 @@ public:
 		/// activate the display of tool (for edition purpose)
 		void						enableDisplayTools(bool enable = true);
 
-		// check wether the display of tools is enabled
+		// check whether the display of tools is enabled
 		bool						isToolDisplayEnabled(void) const
 		{
 			return _ToolDisplayEnabled;

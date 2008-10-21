@@ -126,7 +126,7 @@ public:
 			- WrapS/WrapT is LOCAL for each ITexture (ie each ITexture will have his own Wrap mode) => no duplication
 				is made.
 			- UploadFormat may duplicate the texture in video memory. There is one texture per different UploadFormat.
-			- MinFilter may duplicate the texture in video memory in the same way, wether the texture has mipmap or not.
+			- MinFilter may duplicate the texture in video memory in the same way, whether the texture has mipmap or not.
 	 */
 	// @{
 	virtual	void			setWrapS(TWrapMode mode) =0;

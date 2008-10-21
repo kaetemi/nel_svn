@@ -934,7 +934,7 @@ protected:
 	void				resetPtrTable();
 
 	/**
-	 * Change, in live, the state of the inputStream. This could be usefull in certain case.
+	 * Change, in live, the state of the inputStream. This could be useful in certain case.
 	 * The deriver which would want to do such a thing must call this method, and implement his own behavior.
 	 * In certain case, it should call resetPtrTable() if he want to reset the stream ptr info (maybe always)...
 	 */

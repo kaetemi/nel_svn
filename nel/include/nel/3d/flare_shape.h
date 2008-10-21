@@ -195,7 +195,7 @@ public:
 	/// force radial attenuation of the flares
 	void						setAttenuable(bool enable = true)	{ _Attenuable = enable; }
 
-	/// check wether radial :attenuation is on
+	/// check whether radial :attenuation is on
 	bool						getAttenuable(void) const			{ return _Attenuable;   }
 
 	/// set the range for attenuation
@@ -208,13 +208,13 @@ public:
 	/// force the first flare to keep its real size (e.g the isze on screen doesn't remains constant)
 	void						setFirstFlareKeepSize(bool enable = true) { _FirstFlareKeepSize = enable; }
 
-	/// test wether the first flare keep its real size
+	/// test whether the first flare keep its real size
 	bool						getFirstFlareKeepSize(void) const		  { return _FirstFlareKeepSize; }
 
 	/// enable dazzle when the flare is near the center of the screen
 	void						enableDazzle(bool enable = true)		  { _DazzleEnabled = enable; }
 
-	/// check wether dazzle is enabled
+	/// check whether dazzle is enabled
 	bool						hasDazzle(void) const	{  return _DazzleEnabled; }
 
 	/** set Dazzle color
@@ -259,7 +259,7 @@ public:
 	  */
 	void						setFlareAtInfiniteDist(bool enabled = true) { _InfiniteDist = enabled; }
 
-	/// test wether the flare is at the infinite
+	/// test whether the flare is at the infinite
 	bool						getFlareAtInfiniteDist(void) const			{ return _InfiniteDist; }
 
 	/// Transform default tracks.
@@ -281,7 +281,7 @@ public:
 	  * \return pointer to the mesh, or NULL if not used or not found
 	  */
 	CMesh				   *getOcclusionTestMesh(CShapeBank &sb);
-	// Tell wether the occlusion mesh inherit the rotation/scale part of the model matrix
+	// Tell whether the occlusion mesh inherit the rotation/scale part of the model matrix
 	void					setOcclusionTestMeshInheritScaleRot(bool on) { _OcclusionTestMeshInheritScaleRot = on; }
 	bool					getOcclusionTestMeshInheritScaleRot() const { return _OcclusionTestMeshInheritScaleRot; }
 
@@ -292,7 +292,7 @@ public:
 	float	getSizeDisappear() const { return _SizeDisappear; }
 	float	getAngleDisappear() const { return _AngleDisappear; }
 
-	// decide wether first flare is displayed using lookat mode
+	// decide whether first flare is displayed using lookat mode
 	void	setLookAtMode(bool on) { _LookAtMode = on; }
 	bool	getLookAtMode() const {	return _LookAtMode; }
 protected:

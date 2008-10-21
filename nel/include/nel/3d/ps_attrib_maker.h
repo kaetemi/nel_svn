@@ -231,7 +231,7 @@ public:
 		 */
 		float getNbCycles(void) const { return _NbCycles; }
 
-		/// tells wether one may choose one attribute from a CPSLocated to use as an input. If false, the input(s) is fixed
+		/// tells whether one may choose one attribute from a CPSLocated to use as an input. If false, the input(s) is fixed
 		virtual bool hasCustomInput(void) { return false; }
 
 
@@ -248,7 +248,7 @@ public:
 
 
 
-		/** tells wether clamping is supported for the input (value can't go above MaxInputValue)
+		/** tells whether clamping is supported for the input (value can't go above MaxInputValue)
 		 *  The default is false
 		 */
 		virtual bool isClampingSupported(void) const { return false; }

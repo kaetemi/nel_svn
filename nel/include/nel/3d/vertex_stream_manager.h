@@ -59,7 +59,7 @@ public:
 
 	/** init the manager with a driver, allocate the VBHards, and setup the vertexFormat.
 	 *	Must call each time the drive changes.
-	 *	NB: if VBufferHard creation fail (not supported etc...), then a VBSoft is created instead (and just one since not usefull)
+	 *	NB: if VBufferHard creation fail (not supported etc...), then a VBSoft is created instead (and just one since not useful)
 	 *	\param numVBHard the number of VBHard to create. The max you set, the lower lock you'll have.
 	 *	\param vbName base, for Lock profiling
 	 *  \param allowVolatileVertexBuffer allow to use a volatile vertex buffer instead of several buffers on devices that support it

@@ -92,17 +92,17 @@ public:
 	/// \name Lighted material mgt. Has effect only if isLighted().
 	// @{
 
-	/// Set the emissive part ot material. Usefull only if isLighted()
+	/// Set the emissive part ot material. Useful only if isLighted()
 	void				setEmissive( CRGBA emissive=CRGBA(0,0,0) );
-	/// Set the Ambient part ot material. Usefull only if isLighted()
+	/// Set the Ambient part ot material. Useful only if isLighted()
 	void				setAmbient( CRGBA ambient=CRGBA(0,0,0) );
-	/// Set the Diffuse part ot material. Usefull only if isLighted()
+	/// Set the Diffuse part ot material. Useful only if isLighted()
 	void				setDiffuse( CRGBA diffuse=CRGBA(0,0,0) );
-	/// Set the Opacity part ot material. Usefull only if isLighted()
+	/// Set the Opacity part ot material. Useful only if isLighted()
 	void				setOpacity( uint8	opa );
-	/// Set the specular part ot material. Usefull only if isLighted()
+	/// Set the specular part ot material. Useful only if isLighted()
 	void				setSpecular( CRGBA specular=CRGBA(0,0,0) );
-	/// Set the shininess part ot material. Usefull only if isLighted()
+	/// Set the shininess part ot material. Useful only if isLighted()
 	void				setShininess( float shininess );
 
 	CRGBA				getEmissive() const;
@@ -139,7 +139,7 @@ public:
 	// @{
 	/// Get the last stage that got a texture. -1 means there is no textures.
 	sint				getLastTextureStage() const;
-	/// Check wether the texture of the n-th stage is a texture file
+	/// Check whether the texture of the n-th stage is a texture file
 	bool				isTextureFile(uint stage) const;
 	/// Get the fileName used by the n-th texture file. (must be a texture file or an assertion is raised)
 	std::string			getTextureFileName(uint stage) const;
@@ -176,7 +176,7 @@ public:
 	// @{
 	// Enable a user texture matrix for the n-th stage. The initial matrix is set to identity.
 	void                    enableUserTexMat(uint stage, bool enabled = true);
-	// Test wether a user texture is enabled for the n-th stage
+	// Test whether a user texture is enabled for the n-th stage
 	bool                    isUserTexMatEnabled(uint stage) const;
 	/// Set a new texture matrix for the given stage.
 	void					setUserTexMat(uint stage, const NLMISC::CMatrix &m);

@@ -117,7 +117,7 @@ class CResourcePtr
 private:
 	CRefCount::CPtrInfo		*pinfo;		// A ptr to the handle of the object.
 	TKey					Key;		// The key used to find the pointer
-    mutable TPtr			*Ptr;		// A cache for pinfo->Ptr. UseFull to speed up  ope->()  and  ope*()
+    mutable TPtr			*Ptr;		// A cache for pinfo->Ptr. Useful to speed up  ope->()  and  ope*()
 
 	void	unRef()  const;				// Just release the handle pinfo, but do not update pinfo/Ptr, if deleted.
 

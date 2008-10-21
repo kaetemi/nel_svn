@@ -85,7 +85,7 @@ public:
 	  */
 	void setIndependantSizes(bool enable  = true) { _IndependantSizes = enable; }
 
-	/// test wether independant sizes are activated
+	/// test whether independant sizes are activated
 	bool hasIndependantSizes(void) const { return _IndependantSizes; }
 
 	/// retrieve an interface to set the second size

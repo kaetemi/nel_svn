@@ -316,7 +316,7 @@ private:
 	CVertexProgram									*_VertexProgram[NL3D_VEGETABLE_NRDRPASS][2];
 
 
-	// Material. Usefull for texture and alphaTest
+	// Material. Useful for texture and alphaTest
 	CMaterial										_VegetableMaterial;
 	// Norm
 	CVector											_DirectionalLight;

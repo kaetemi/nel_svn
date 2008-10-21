@@ -70,7 +70,7 @@ public:
 	  */
 	void					forceNormalize(bool force = true) { _ForceNormalize = force; }
 
-	/// Test wether normalization is forced with that texture
+	/// Test whether normalization is forced with that texture
 	bool				    isNormalizationForced() const { return _ForceNormalize; }
 
 	/** Get the normalization factor. This is valid only if the texture has been generated

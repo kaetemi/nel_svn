@@ -128,7 +128,7 @@ public:
 	  */
 	CPSLocatedBindable *unbind(uint index);
 
-	/// test wether a located bindable is attached to that object
+	/// test whether a located bindable is attached to that object
 	bool isBound(const CPSLocatedBindable *lb) const;
 
 	/** Get the index of a located bindable that is bound to that object.
@@ -408,7 +408,7 @@ public:
 
 	void releaseCollisionInfo(void);
 
-	/// test wether this located has collision infos
+	/// test whether this located has collision infos
 	bool hasCollisionInfos() const { return _CollisionNextPos != NULL; }
 
 	// Compute spawns. Should be called only inside the sim loop.
@@ -459,10 +459,10 @@ public:
 	std::string getName(void) const { return _Name; }
 
 
-	/// tells wether there are alive entities / particles in the system
+	/// tells whether there are alive entities / particles in the system
 	virtual bool hasParticles(void) const;
 
-	/// tells wether there are alive emitters / particles in the system
+	/// tells whether there are alive emitters / particles in the system
 	virtual bool hasEmitters(void) const;
 
 	/** Enable the to force LOD degradation. This will suppress instances immediately, (during the motion pass)  so that
@@ -487,7 +487,7 @@ public:
 	// Inherited from CParticlesystemProcess. Change the coord system for thta system.
 	virtual void setMatrixMode(TPSMatrixMode matrixMode);
 
-	/// Test wether this located support parametric motion
+	/// Test whether this located support parametric motion
 	bool         supportParametricMotion(void) const;
 
 	/** When set to true, this tells the system to use parametric motion. This is needed in a few case only,
@@ -495,7 +495,7 @@ public:
 	  */
 	void		 enableParametricMotion(bool enable = true);
 
-	/// test wether parametric motion is enabled
+	/// test whether parametric motion is enabled
 	bool		 isParametricMotionEnabled(void) const { return _ParametricMotion;}
 
 	/// inherited from CParticlesystemProcess perform parametric motion for this located to reach the given date
@@ -526,7 +526,7 @@ public:
 	/// Enable a trigger on death. It is used to create emission on an emitter with a given ID
 	void				enableTriggerOnDeath(bool enable = true) { _TriggerOnDeath = enable; }
 
-	/// Test wether a trigger on death has been enabled
+	/// Test whether a trigger on death has been enabled
 	bool                isTriggerOnDeathEnabled(void) const { return _TriggerOnDeath; }
 
 	/// Set an ID for the emitter to be triggered on death
@@ -861,9 +861,9 @@ public:
 	void					setLOD(TPSLod lod) { _LOD = lod; }
 	/// get the valid lods for that object
 	TPSLod					getLOD(void) const { return _LOD; }
-	/// tells wether there are alive entities / particles
+	/// tells whether there are alive entities / particles
 	virtual bool			hasParticles(void) const { return false; }
-	/// tells wether there are alive emitters
+	/// tells whether there are alive emitters
 	virtual bool			hasEmitters(void) const { return false; }
 	/** set the extern ID of this located bindable. 0 means no extern access. The map of ID-locatedBindable. Is in th
 	  * particle system, so this located bindable must have been attached to a particle system, otherwise an assertion is raised

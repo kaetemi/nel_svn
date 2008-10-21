@@ -61,7 +61,7 @@ class CMeshBase : public IShape
 public:
 	/** If AutoCameraCol, meshs will build the cameracollision mesh only if the mesh is lightmapped
 	 *	if NoCameraCol, the cameracollision won't be generated
-	 *	if ForceCameraCol, the cameracollision will be generated wether lightmaped or not (as long as possible)
+	 *	if ForceCameraCol, the cameracollision will be generated whether lightmaped or not (as long as possible)
 	 */
 	enum	TCameraCollisionGenerate {AutoCameraCol= 0, NoCameraCol, ForceCameraCol};
 
@@ -228,7 +228,7 @@ public:
 	  * NB: This is a clue to scene::createInstance, a call to createInstance of this object won't make the animation binding.
 	  */
 	void						setAutoAnim(bool on = true) { _AutoAnim = on; }
-	// Check wether automatic animation is enabled
+	// Check whether automatic animation is enabled
 	bool						getAutoAnim() const { return _AutoAnim; }
 	// @}
 

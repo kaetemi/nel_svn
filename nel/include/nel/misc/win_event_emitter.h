@@ -73,10 +73,10 @@ public:
 	// enable / disable other events to be processed. The default is enabled.
 	void enableIMEEvents(bool enabled = true) { _IMEEventsEnabled = enabled; }
 
-	// Test wether mouse events are enabled.
+	// Test whether mouse events are enabled.
 	bool areMouseEventsEnabled() const { return _MouseEventsEnabled; }
 
-	// Test wether keyboard events are enabled.
+	// Test whether keyboard events are enabled.
 	bool areKeyboardEventsEnabled() const { return _KeyboardEventsEnabled; }
 private:
 

@@ -117,7 +117,7 @@ public:
 	static	NLMISC::CBSphere	TileFarSphere;
 	// The sphere for TileNear test.
 	static	NLMISC::CBSphere	TileNearSphere;
-	// The size of a 128x128 tile, in pixel. UseFull for HalfPixel Scale/Bias.
+	// The size of a 128x128 tile, in pixel. Useful for HalfPixel Scale/Bias.
 	static	float		TilePixelSize;
 	// HalfPixel Scale/Bias.
 	static	float		TilePixelBias128;

@@ -203,7 +203,7 @@ public:
 
 	/// \name Misc flags
 	// @{
-		// Tells wether splashs are enabled (for client only, the flag in itself does nothing, and is here for convenience)
+		// Tells whether splashs are enabled (for client only, the flag in itself does nothing, and is here for convenience)
 	void				enableSplash(bool enable) { _SplashEnabled = enable; }
 	bool				isSplashEnabled() const { return _SplashEnabled; }
 	// Use envmap computed from scene instead of user envmap

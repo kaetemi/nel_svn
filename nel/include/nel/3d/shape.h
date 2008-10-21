@@ -164,7 +164,7 @@ public:
 
 	/** Build a system copy of geometry, typically for fast intersection computation
 	 *	NB: typically, this must be called just after load, because the vertexbuffer must not be resident
-	 *	Supported only on a subset of Shape, and specially not the skinned one (not usefull since not relevant)
+	 *	Supported only on a subset of Shape, and specially not the skinned one (not useful since not relevant)
 	 */
 	virtual void				buildSystemGeometry() {}
 

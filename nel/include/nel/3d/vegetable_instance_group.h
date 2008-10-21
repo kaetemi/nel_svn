@@ -85,13 +85,13 @@ private:
 
 
 	/** a reference to an instance which is lighted (precomputed or not).
-	 *	Usefull for Lighting updates.
+	 *	Useful for Lighting updates.
 	 */
 	struct	CVegetableLightedInstance
 	{
 		// The shape use to create the instance
 		CVegetableShape		*Shape;
-		// the matrix to multiply normal (usefull for precomputeLighting only)
+		// the matrix to multiply normal (useful for precomputeLighting only)
 		NLMISC::CMatrix		NormalMat;
 		// The color (not modulated by global ambients/diffuses).
 		NLMISC::CRGBA		MatAmbient;

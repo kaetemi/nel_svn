@@ -169,10 +169,10 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 		 */
 		virtual void			setMatrixMode(TPSMatrixMode matrixMode);
 
-		/// tells wether there are alive entities / particles in the system
+		/// tells whether there are alive entities / particles in the system
 		virtual bool			hasParticles(void) const { return false ; }
 
-		/// tells wether there are alive emitters / particles in the system
+		/// tells whether there are alive emitters / particles in the system
 		virtual bool			hasEmitters(void) const { return false ; }
 
 
@@ -182,7 +182,7 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 
 
 
-		/// test wether parametric motion is enabled
+		/// test whether parametric motion is enabled
 		virtual bool			isParametricMotionEnabled(void) const { return false;}
 
 		/// perform parametric motion if enabled
