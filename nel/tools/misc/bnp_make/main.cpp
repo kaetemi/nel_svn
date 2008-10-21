@@ -153,7 +153,7 @@ void append(const string &filename1, const string &filename2, uint32 sizeToRead)
 	fclose(f2);
 	fclose(f1);
 }
-#define MAX_PATH 260
+
 // ---------------------------------------------------------------------------
 bool i_comp(const string &s0, const string &s1)
 {
