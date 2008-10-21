@@ -380,7 +380,7 @@ void	CMeshMRMGeom::applySkinWithNormal(CLod &lod, const CSkeletonModel *skeleton
 
 
 
-	// Compute usefull Matrix for this lod.
+	// Compute useful Matrix for this lod.
 	//===========================
 	// Those arrays map the array of bones in skeleton.
 	static	vector<CMatrix3x4>			boneMat3x4;
@@ -452,7 +452,7 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 
 
 
-	// Compute usefull Matrix for this lod.
+	// Compute useful Matrix for this lod.
 	//===========================
 	// Those arrays map the array of bones in skeleton.
 	static	vector<CMatrix3x4>			boneMat3x4;
@@ -1454,7 +1454,7 @@ void	CMeshMRMGeom::applyRawSkinWithNormal(CLod &lod, CRawSkinNormalCache &rawSki
 	nlassert( NL3D_MESH_SKINNING_MAX_MATRIX==4 );
 
 
-	// Compute usefull Matrix for this lod.
+	// Compute useful Matrix for this lod.
 	//===========================
 	// Those arrays map the array of bones in skeleton.
 	static	vector<CMatrix3x4>			boneMat3x4;

@@ -543,7 +543,7 @@ void	CWaterModel::traverseRender()
 			// we just consider the height of Water columns that are near the observer
 			//
 			// Compute a quad in Water height field space that contains the useful heights
-			// This helps us to decide wether we should do a lookup in the height map
+			// This helps us to decide whether we should do a lookup in the height map
 
 			sint mapPosX, mapPosY;
 
@@ -637,7 +637,7 @@ void	CWaterModel::traverseRender()
 					{
 						if (isAbove)
 						{
-							// test wether the first row is out of horizon.
+							// test whether the first row is out of horizon.
 							// if this is the case, we make a correction
 							if (denom * currV.z <= 0)
 							{
@@ -645,7 +645,7 @@ void	CWaterModel::traverseRender()
 								currV += yStep * ((denom > 0 ? horizonEpsilon : - horizonEpsilon)   - currV.z) / yStep.z;
 							}
 
-							// now, for the transition, check wether the first raster does not go over the transition dist
+							// now, for the transition, check whether the first raster does not go over the transition dist
 
 							t = denom / currV.z;
 							const float VJ = camMat.getJ() * currV;
@@ -700,14 +700,14 @@ void	CWaterModel::traverseRender()
 						if (!isAbove)
 						{
 							// last line
-							// test wether we are out of horizon
+							// test whether we are out of horizon
 							if (denom * currHV.z <= 0)
 							{
 								// correct for the first line only by adding a y offset
 								currHV += yStep * ((denom > 0 ? horizonEpsilon : - horizonEpsilon)  - currHV.z) / yStep.z;
 							}
 
-							// now, for the transition, check wether the first raster does not go over the transition dist
+							// now, for the transition, check whether the first raster does not go over the transition dist
 
 							t = denom / currHV.z;
 							const float VJ = camMat.getJ() * currHV;

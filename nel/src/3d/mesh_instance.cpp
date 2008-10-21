@@ -41,7 +41,7 @@ CMeshInstance::CMeshInstance()
 {
 	_ShadowMap= NULL;
 
-	// LoadBalancing is not usefull for Mesh, because meshs cannot be reduced in faces.
+	// LoadBalancing is not useful for Mesh, because meshs cannot be reduced in faces.
 	// Override CTransformShape state.
 	CTransform::setIsLoadbalancable(false);
 

@@ -2281,7 +2281,7 @@ public:
 	CMaterialDrvInfosD3D	*_CurrentMaterialInfo;
 private:
 
-	// Optim: To not test change in Materials states if just texture has changed. Very usefull for landscape.
+	// Optim: To not test change in Materials states if just texture has changed. Very useful for landscape.
 	uint32					_MaterialAllTextureTouchedFlag;
 
 	// The modified render variables list

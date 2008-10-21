@@ -334,11 +334,11 @@ void CFormDfn::read (xmlNodePtr root, CFormLoader &loader, bool forceLoad, const
 
 uint CFormDfn::countParentDfn (uint32 round) const
 {
-	// Checkout recurcive calls
+	// Checkout recursive calls
 	if (round > NLGEORGES_MAX_RECURSION)
 	{
 		// Turn around..
-		warning (false, "countParentDfn", "Recurcive call on the same DFN, look for loop inheritances.");
+		warning (false, "countParentDfn", "Recursive call on the same DFN, look for loop inheritances.");
 		return 0;
 	}
 
@@ -355,11 +355,11 @@ uint CFormDfn::countParentDfn (uint32 round) const
 
 void CFormDfn::getParentDfn (std::vector<CFormDfn*> &array, uint32 round)
 {
-	// Checkout recurcive calls
+	// Checkout recursive calls
 	if (round > NLGEORGES_MAX_RECURSION)
 	{
 		// Turn around..
-		warning (false, "getParentDfn", "Recurcive call on the same DFN, look for loop inheritances.");
+		warning (false, "getParentDfn", "Recursive call on the same DFN, look for loop inheritances.");
 		return;
 	}
 
@@ -376,11 +376,11 @@ void CFormDfn::getParentDfn (std::vector<CFormDfn*> &array, uint32 round)
 
 void CFormDfn::getParentDfn (std::vector<const CFormDfn*> &array, uint32 round) const
 {
-	// Checkout recurcive calls
+	// Checkout recursive calls
 	if (round > NLGEORGES_MAX_RECURSION)
 	{
 		// Turn around..
-		warning (false, "getParentDfn", "Recurcive call on the same DFN, look for loop inheritances.");
+		warning (false, "getParentDfn", "Recursive call on the same DFN, look for loop inheritances.");
 		return;
 	}
 

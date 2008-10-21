@@ -642,7 +642,7 @@ std::string	CFileContainer::standardizeDosPath (const std::string &path)
 	{
 		if (path[i] == '/')
 			newPath += '\\';
-		// Yoyo: supress toLower. Not usefull!?!
+		// Yoyo: supress toLower. Not useful!?!
 		/*else if (isupper(path[i]))
 			newPath += tolower(path[i]);*/
 		else

@@ -947,7 +947,7 @@ bool CFormElm::getInternalNodeByName (CForm *form, const char *name, const CForm
 							}
 						}
 
-						// Must hjave a nodeDfn here
+						// Must have a nodeDfn here
 						nlassert (*nodeDfn);
 
 						// Look for the element
@@ -1312,7 +1312,7 @@ bool CFormElm::getInternalNodeByName (CForm *form, const char *name, const CForm
 			}
 		}
 
-		// Concat current adress
+		// Concat current address
 		currentName += token;
 		startToken = endToken;
 	}

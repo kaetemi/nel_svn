@@ -377,7 +377,7 @@ bool			CPatchDLMContext::generate(CPatch *patch, CTextureDLM *textureDLM, CPatch
 	tmpClusterHSon[0]= 0;
 	uint	finalClusterSize= bsx * bsy;
 
-	// If the next level has 1x1 cases, it is not usefull (since same sphere as entire Patch)
+	// If the next level has 1x1 cases, it is not useful (since same sphere as entire Patch)
 	while(nextBsx * nextBsy > 1 && nextLevel<NL_DLM_CLIP_NUM_LEVEL )
 	{
 		finalClusterSize+= nextBsx * nextBsy;

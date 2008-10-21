@@ -130,7 +130,7 @@ bool			CVertexArrayRangeNVidia::allocate(uint32 size, CVertexBuffer::TPreferredM
 	// init the allocator.
 	if(_VertexArrayPtr)
 	{
-		/* Init with an alignment of 8. Not sure it is usefull, but GDC01_Performance.pdf papers talks about
+		/* Init with an alignment of 8. Not sure it is useful, but GDC01_Performance.pdf papers talks about
 		  "Data arrays must be 8-byte aligned". Don't know what "Data" is.
 		*/
 		_HeapMemory.initHeap(_VertexArrayPtr, size, 8);
@@ -363,7 +363,7 @@ void		CVertexBufferHardGLNVidia::unlock(uint start, uint end)
 {
 	H_AUTO_OGL(CVertexBufferHardGLNVidia_unlock_start_end)
 	// no op.
-	// NB: start-end only usefull for ATI ext.
+	// NB: start-end only useful for ATI ext.
 }
 
 // ***************************************************************************
@@ -503,7 +503,7 @@ bool					CVertexArrayRangeATI::allocate(uint32 size, CVertexBuffer::TPreferredMe
 	if( nglIsObjectBufferATI(_VertexObjectId) )
 	{
 		_Allocated= true;
-		/* Init with an alignment of 8. Not sure if it is usefull.
+		/* Init with an alignment of 8. Not sure if it is useful.
 			Init With a FAKE memory starting at NL3D_DRV_ATI_FAKE_MEM_START
 		*/
 		_HeapMemory.initHeap((void*)NL3D_DRV_ATI_FAKE_MEM_START, size, 8);

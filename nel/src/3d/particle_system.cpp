@@ -855,7 +855,7 @@ void CParticleSystem::serial(NLMISC::IStream &f) throw(NLMISC::EStream)
 		_InvCurrentViewDist = _InvMaxViewDist;
 	}
 
-	if (version > 3) // tell wether the system must compute his bbox, hold a precomputed bbox
+	if (version > 3) // tell whether the system must compute his bbox, hold a precomputed bbox
 	{
 		bool computeBBox = _ComputeBBox;
 		f.serial(computeBBox);

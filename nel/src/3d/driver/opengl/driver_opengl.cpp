@@ -1412,7 +1412,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 	_NbSetupMaterialCall= 0;
 	_NbSetupModelMatrixCall= 0;
 
-	// check wether per pixel lighting shader is supported
+	// check whether per pixel lighting shader is supported
 	checkForPerPixelLightingSupport();
 
 	// if EXTVertexShader is used, bind  the standard GL arrays, and allocate constant
@@ -1826,7 +1826,7 @@ bool CDriverGL::swapBuffers()
 		if(!dummyVBinit)
 		{
 			dummyVBinit= true;
-			// setup a full feature VB (maybe not usefull ... :( ).
+			// setup a full feature VB (maybe not useful ... :( ).
 			dummyVB.setVertexFormat(CVertexBuffer::PositionFlag|CVertexBuffer::NormalFlag|
 				CVertexBuffer::PrimaryColorFlag|CVertexBuffer::SecondaryColorFlag|
 				CVertexBuffer::TexCoord0Flag|CVertexBuffer::TexCoord1Flag|

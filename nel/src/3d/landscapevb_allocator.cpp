@@ -322,7 +322,7 @@ void				CLandscapeVBAllocator::allocateVertexBuffer(uint32 numVertices)
 
 	v[11].xyz == EndPos-StartPos
 
-	Alpha: NB: Since only usefull for Far1, v[12] is not in the VB for Far0 and Tile VertexBuffer.
+	Alpha: NB: Since only useful for Far1, v[12] is not in the VB for Far0 and Tile VertexBuffer.
 	v[12] == { TransitionSqrMin, OOTransitionSqrDelta}
 		* TransitionSqrMin, OOTransitionSqrDelta : Alpha transition, see preRender().
 			There is only 3 values possibles. It depends on Far1 type. Changed in preRender()
@@ -358,7 +358,7 @@ void				CLandscapeVBAllocator::allocateVertexBuffer(uint32 numVertices)
 
 	- R0= scratch
 	- R1= CurrentPos geomorphed
-	- R2.x= sqrDist= (startPos - RefineCenter).sqrnorm(). Usefull for alpha computing.
+	- R2.x= sqrDist= (startPos - RefineCenter).sqrnorm(). Useful for alpha computing.
 
 Pgr Len= 18.
 NB: 9 ope for normal errorMetric, and 9 ope for smoothing with TileNear.

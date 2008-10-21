@@ -41,7 +41,7 @@ class CFormDfn;
 class CForm;
 
 /**
-  * Base class of form elments
+  * Base class of form elements
   */
 class CFormElm : public UFormElm
 {
@@ -62,7 +62,7 @@ public:
 	// Get the form pointer
 	CForm			*getForm () const;
 
-	// Is the element are used by this form ?
+	// Is the element used by this form ?
 	virtual bool	isUsed (const CForm *form) const;
 
 	// Get the form name of the element
@@ -149,14 +149,14 @@ public:
 
 	// ** Internal node access
 
-	// Create for a node by name. If the node already exist, return it
+	// Create a node by name. If the node already exists, return it
 	bool	createNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
 										const CFormDfn **nodeDfn, const CType **nodeType,
 										CFormElm **node, UFormDfn::TEntryType &type,
 										bool &array, bool &created);
 
 	/**
-	  * Delete a node by name. If the node already exist, return it
+	  * Delete a node by name. If the node already exists, return it
 	  *Delete its parent if not used
 	  */
 	bool	deleteNodeByName (const char *name, const CFormDfn **parentDfn, uint &indexDfn,
@@ -203,7 +203,7 @@ protected:
 	  *
 	  * Only form, name, and action, must be defined.
 	  * Then, else (*parentDfn / indexDfn ) or *node must be defined.
-	  * Others value are for result only.
+	  * Other values are for result only.
 	  */
 	static bool	getInternalNodeByName (CForm *form, const char *name, const CFormDfn **parentDfn, uint &indexDfn,
 										const CFormDfn **nodeDfn, const CType **nodeType,

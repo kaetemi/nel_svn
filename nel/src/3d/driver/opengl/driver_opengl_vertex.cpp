@@ -1666,7 +1666,7 @@ bool			CDriverGL::initVertexBufferHard(uint agpMem, uint vramMem)
 	// Try to allocate AGPMemory.
 	if(agpMem>0)
 	{
-		agpMem&= ~15;	// ensure 16-bytes aligned mem count (maybe usefull :) ).
+		agpMem&= ~15;	// ensure 16-bytes aligned mem count (maybe useful :) ).
 		agpMem= max(agpMem, (uint)NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE);
 		while(agpMem>= NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE)
 		{
@@ -1695,7 +1695,7 @@ bool			CDriverGL::initVertexBufferHard(uint agpMem, uint vramMem)
 	// Try to allocate VRAMMemory.
 	if(vramMem>0)
 	{
-		vramMem&= ~15;	// ensure 16-bytes aligned mem count (maybe usefull :) ).
+		vramMem&= ~15;	// ensure 16-bytes aligned mem count (maybe useful :) ).
 		vramMem= max(vramMem, (uint)NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE);
 		while(vramMem>= NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE)
 		{

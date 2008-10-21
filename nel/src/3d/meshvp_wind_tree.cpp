@@ -211,10 +211,10 @@ inline void			CMeshVPWindTree::setupPerMesh(IDriver *driver, CScene *scene)
 	}
 
 	// Setup common constants for each instances.
-	// c[8] take usefull constants.
+	// c[8] take useful constants.
 	static	float	ct8[4]= {0, 1, 0.5f, 2};
 	driver->setConstant(8, 1, ct8);
-	// c[9] take other usefull constants.
+	// c[9] take other useful constants.
 	static	float	ct9[4]= {3.f, 0.f, -1.f, -2.f};
 	driver->setConstant(9, 1, ct9);
 	// c[10] take Number of phase (4) for level2 and 3. -0.01 to avoid int value == 4.

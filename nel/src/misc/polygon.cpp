@@ -857,7 +857,7 @@ void CPolygon2D::fromPolygon(const CPolygon &src, const CMatrix &projMat /*=CMat
 bool		CPolygon2D::isConvex()
 {
 	bool Front  = true, Back = false;
-	// we apply a dummy algo for now : check wether every vertex is in the same side
+	// we apply a dummy algo for now : check whether every vertex is in the same side
 	// of every plane defined by a segment of this poly
 	uint numVerts = Vertices.size();
 	if (numVerts < 3) return true;
@@ -1068,7 +1068,7 @@ static void ScanEdge(CPolygon2D::TRasterVect &outputVect, sint topY, const CVect
 	 float fInverseSlope;
 	 sint  iInverseSlope, iPosX;
 
-	 // check wether this segment gives a contribution to the final poly
+	 // check whether this segment gives a contribution to the final poly
 	 height = (sint) (ceilf(v2.y) - ceilY1);
 	 if (height <= 0) return;
 

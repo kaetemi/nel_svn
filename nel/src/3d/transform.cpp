@@ -1256,7 +1256,7 @@ void			CTransform::hrcUnlink()
 	_HrcParent= NULL;
 	_HrcParentUnfreeze= NULL;
 
-	// I should recompute my worldMatrix (well not usefull since not linked, but still do it...)
+	// I should recompute my worldMatrix (well not useful since not linked, but still do it...)
 	_WorldDate= -1;
 }
 

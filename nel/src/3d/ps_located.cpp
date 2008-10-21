@@ -385,7 +385,7 @@ void  CPSLocated::releaseParametricInfos(void)
 }
 
 ///***************************************************************************************
-/// Test wether this located support parametric motion
+/// Test whether this located support parametric motion
 bool      CPSLocated::supportParametricMotion(void) const
 {
 	NL_PS_FUNC(CPSLocated_supportParametricMotion)
@@ -440,7 +440,7 @@ void CPSLocated::notifyMaxNumFacesChanged(void)
 	CHECK_PS_INTEGRITY
 	if (!_Owner) return;
 
-	// we examine wether we have particle attached to us, and ask for the max number of faces they may want
+	// we examine whether we have particle attached to us, and ask for the max number of faces they may want
 	_MaxNumFaces  = 0;
 	for (TLocatedBoundCont::const_iterator it = _LocatedBoundCont.begin(); it != _LocatedBoundCont.end(); ++it)
 	{
@@ -482,7 +482,7 @@ uint CPSLocated::querryMaxWantedNumFaces(void)
 */
 
 /// ***************************************************************************************
-/// tells wether there are alive entities / particles in the system
+/// tells whether there are alive entities / particles in the system
 bool CPSLocated::hasParticles(void) const
 {
 	NL_PS_FUNC(CPSLocated_hasParticles)
@@ -496,7 +496,7 @@ bool CPSLocated::hasParticles(void) const
 }
 
 ///***************************************************************************************
-/// tells wether there are alive emitters
+/// tells whether there are alive emitters
 bool CPSLocated::hasEmitters(void) const
 {
 	NL_PS_FUNC(CPSLocated_hasEmitters)
@@ -949,7 +949,7 @@ void CPSLocated::registerDtorObserver(CPSLocatedBindable *anObserver)
 {
 	NL_PS_FUNC(CPSLocated_registerDtorObserver)
 	CHECK_PS_INTEGRITY
-	// check wether the observer wasn't registered twice
+	// check whether the observer wasn't registered twice
 	nlassert(std::find(_DtorObserversVect.begin(), _DtorObserversVect.end(), anObserver) == _DtorObserversVect.end());
 	_DtorObserversVect.push_back(anObserver);
 	CHECK_PS_INTEGRITY
@@ -1193,7 +1193,7 @@ sint32 CPSLocated::newElement(const CPSSpawnInfo &si, bool doEmitOnce /* = false
 	}
 
 
-	// test wether parametric motion is used, and generate the infos that are needed then
+	// test whether parametric motion is used, and generate the infos that are needed then
 	if (_ParametricMotion)
 	{
 		_PInfo.insert( CParametricInfo(_Pos[creationIndex], _Speed[creationIndex], _Owner->getSystemDate() + CParticleSystem::RealEllapsedTime - CParticleSystem::RealEllapsedTimeRatio * si.LifeTime) );
@@ -1877,7 +1877,7 @@ void CPSLocated::updateCollisions()
 		{
 			if (_Time[currCollision->Index] >= 1.f)
 			{
-				// check wether particles died before the collision. If so, just continue (particle has already been inserted in the remove list), and cancel the collision
+				// check whether particles died before the collision. If so, just continue (particle has already been inserted in the remove list), and cancel the collision
 				float timeToCollision = currCollision->Dist / _Speed[currCollision->Index].norm();
 				if (_Time[currCollision->Index] / _TimeIncrement[currCollision->Index] - timeToCollision * CParticleSystem::RealEllapsedTimeRatio >= 1.f)
 				{
@@ -1887,7 +1887,7 @@ void CPSLocated::updateCollisions()
 					continue;
 				}
 			}
-			// if particle is too old, check wether it died before the collision
+			// if particle is too old, check whether it died before the collision
 			_Pos[currCollision->Index] = currCollision->NewPos;
 			std::swap(_Speed[currCollision->Index], currCollision->NewSpeed);
 			// notify each located bindable that a bounce occured ...
@@ -2942,7 +2942,7 @@ void CPSTargetLocatedBindable::attachTarget(CPSLocated *ptr)
 	}
 	#endif
 
-	// see wether this target has not been registered before
+	// see whether this target has not been registered before
 	nlassert(std::find(_Targets.begin(), _Targets.end(), ptr) == _Targets.end());
 	_Targets.push_back(ptr);
 

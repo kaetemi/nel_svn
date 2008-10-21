@@ -52,7 +52,7 @@ public:
 		/// Opened edges detected
 		OpenedEdge,
 
-		/// Mulitple edge on the boundary
+		/// Multiple edge on the boundary
 		MultipleEdge,
 
 		/// Vertex list invalid. One vertex should be a corner.

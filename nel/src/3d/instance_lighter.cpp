@@ -1006,7 +1006,7 @@ bool	CInstanceLighter::CPointLightRT::testRaytrace(const CVector &v, sint instan
 // ***************************************************************************
 void			CInstanceLighter::addStaticPointLight(const CPointLightNamed &pln, const char *igName)
 {
-	// NB: adding light more than 255 is allowed here, since the important thig is to not overflow really usefull lights
+	// NB: adding light more than 255 is allowed here, since the important thing is to not overflow really useful lights
 
 	// build the plRT.
 	CPointLightRT	plRT;
@@ -1084,7 +1084,7 @@ void			CInstanceLighter::compilePointLightRT(uint gridSize, float gridCellSize, 
 			// AmbiantLIghts: do nothing.
 			if(plRT.PointLight.getType()!=CPointLight::AmbientLight)
 			{
-				// Select only obstacle Faces around the light. Other are not usefull
+				// Select only obstacle Faces around the light. Other are not useful
 				CAABBox	bbox;
 				bbox.setCenter(plRT.PointLight.getPosition());
 				float	hl= plRT.PointLight.getAttenuationEnd();

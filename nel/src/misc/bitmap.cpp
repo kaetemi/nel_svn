@@ -3387,7 +3387,7 @@ void	CBitmap::flipH()
 		// try for DXTC
 		flipDXTC(false);
 
-		// then quit (wether it worked or not)
+		// then quit (whether it worked or not)
 		return;
 	}
 
@@ -3426,7 +3426,7 @@ void	CBitmap::flipV()
 		// try for DXTC
 		flipDXTC(true);
 
-		// then quit (wether it worked or not)
+		// then quit (whether it worked or not)
 		return;
 	}
 

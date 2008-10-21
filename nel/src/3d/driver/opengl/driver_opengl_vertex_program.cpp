@@ -659,7 +659,7 @@ bool CDriverGL::setupEXTVertexShader(const CVPParser::TProgram &program, GLuint 
 				nlassert(outputRegisterIndex < 16);
 			}
 
-			// Tells wether the output has already been written before the final write mask. This happens with instructions LOG, EXPP, LIT, RSQ and RCP,
+			// Tells whether the output has already been written before the final write mask. This happens with instructions LOG, EXPP, LIT, RSQ and RCP,
 			// because they write their output component by components
 			bool outputWritten = false;
 

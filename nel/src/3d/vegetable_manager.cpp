@@ -1116,7 +1116,7 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 		primaryRGBA.R= diffuseRGBA.R;
 		primaryRGBA.G= diffuseRGBA.G;
 		primaryRGBA.B= diffuseRGBA.B;
-		// may not be useFull (2Sided lighting no more supported)
+		// may not be useful (2Sided lighting no more supported)
 		secondaryRGBA= primaryRGBA;
 	}
 
@@ -1239,12 +1239,12 @@ void			CVegetableManager::addInstance(CVegetableInstanceGroup *ig,
 		diffusePL[1].swapBR();
 	}
 
-	// Usefull For !destLighted only.
+	// Useful for !destLighted only.
 	CVector		deltaPos;
 	float		deltaPosNorm=0.0;
 
 
-	// UseFull for ZSORT rdrPass, the worldVertices.
+	// Useful for ZSORT rdrPass, the worldVertices.
 	static	vector<CVector>		worldVertices;
 	if(rdrPass == NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT)
 	{
@@ -1769,7 +1769,7 @@ void			CVegetableManager::setupVertexProgramConstants(IDriver *driver)
 	driver->setConstantMatrix(0, IDriver::ModelViewProjection, IDriver::Identity);
 	// c[6] take the Fog vector. After setupModelMatrix();
 	driver->setConstantFog(6);
-	// c[8] take usefull constants.
+	// c[8] take useful constants.
 	driver->setConstant(8, 0, 1, 0.5f, 2);
 	// c[9] take normalized directional light
 	driver->setConstant(9, _DirectionalLight);

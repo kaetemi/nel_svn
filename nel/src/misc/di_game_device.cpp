@@ -203,7 +203,7 @@ void CDIGameDevice::submit(IInputDeviceEvent *deviceEvent, CEventServer *server)
 
 
 //============================================================================
-/** Tool fct : tests wether a DIDEVICEOBJECTINSTANCE contains a controls name and return it,
+/** Tool fct : tests whether a DIDEVICEOBJECTINSTANCE contains a controls name and return it,
   * or build a default one
   */
 static void BuildCtrlName(LPCDIDEVICEOBJECTINSTANCE lpddoi,

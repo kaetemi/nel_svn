@@ -198,7 +198,7 @@ void	CMeshMRMGeom::applySkin(CLod &lod, const CSkeletonModel *skeleton)
 
 
 
-	// Compute usefull Matrix for this lod.
+	// Compute useful Matrix for this lod.
 	//===========================
 	// Those arrays map the array of bones in skeleton.
 	static	vector<CMatrix3x4>			boneMat3x4;

@@ -88,7 +88,7 @@ const char* CLigoError::_StringError[CLigoError::ErrorCount]=
 	"No error",						// NoError
 	"No vertex in the edge list",	// NoEdgeVertices
 	"Opened edges detected",		// OpenedEdge
-	"Mulitple edge on the boundary",// MultipleEdge
+	"Multiple edge on the boundary",// MultipleEdge
 	"Vertex list invalid. One vertex should be a corner",	// VertexList
 	"The vertex has not been inserted in the edge list",	// NotInserted
 	"The vertex has been inserted in the edge list",		// Inserted

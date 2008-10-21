@@ -205,7 +205,7 @@ void CPSZonePlane::computeCollisions(CPSLocated &target, uint firstInstanceIndex
 {
 	NL_PS_FUNC(CPSZonePlane_computeCollisions)
 	MINI_TIMER(PSStatsZonePlane)
-	// for each target, we must check wether they are going through the plane
+	// for each target, we must check whether they are going through the plane
 	// if so they must bounce
 	TPSAttribVector::const_iterator planePosIt, planePosEnd, normalIt;
 	CPSCollisionInfo ci;
@@ -301,7 +301,7 @@ void CPSZoneSphere::computeCollisions(CPSLocated &target, uint firstInstanceInde
 {
 	NL_PS_FUNC(CPSZoneSphere_computeCollisions)
 	MINI_TIMER(PSStatsZoneSphere)
-	// for each target, we must check wether they are going through the plane
+	// for each target, we must check whether they are going through the plane
 	// if so they must bounce
 	TPSAttribRadiusPair::const_iterator radiusIt = _Radius.begin();
 	TPSAttribVector::const_iterator spherePosIt, spherePosEnd;
@@ -461,7 +461,7 @@ void CPSZoneDisc::computeCollisions(CPSLocated &target, uint firstInstanceIndex,
 {
 	NL_PS_FUNC(CPSZoneDisc_computeCollisions)
 	MINI_TIMER(PSStatsZoneDisc)
-	// for each target, we must check wether they are going through the disc
+	// for each target, we must check whether they are going through the disc
 	// if so they must bounce
 	TPSAttribVector::const_iterator discPosIt, discPosEnd, normalIt;
 	TPSAttribRadiusPair::const_iterator radiusIt;
@@ -701,7 +701,7 @@ void CPSZoneCylinder::performMotion(TAnimationTime ellapsedTime)
 
 
 
-				// check wether current pos was outside the cylinder
+				// check whether current pos was outside the cylinder
 
 
 				tPos = pos - center;
@@ -719,7 +719,7 @@ void CPSZoneCylinder::performMotion(TAnimationTime ellapsedTime)
 					destTPos = dest - center;
 					destProjectedPos = (1.f / dimIt->x) * (I * tPos) * I + (1.f / dimIt->y)  * (J * tPos) * J;
 
-					// test wether the new position is inside the cylinder
+					// test whether the new position is inside the cylinder
 
 
 					if (!
@@ -886,7 +886,7 @@ void CPSZoneCylinder::computeCollisions(CPSLocated &target, uint firstInstanceIn
 		while (itPosBefore != itPosBeforeEnd)
 		{
 			const CVector &pos = *itPosBefore;
-			// check wether current pos was outside the cylinder
+			// check whether current pos was outside the cylinder
 			tPos = pos - center;
 			projectedPos = (1 / dimIt->x) * (I * tPos) * I + (1 / dimIt->y)  * (J * tPos) * J;
 			if (!
@@ -900,7 +900,7 @@ void CPSZoneCylinder::computeCollisions(CPSLocated &target, uint firstInstanceIn
 				const CVector &dest = *itPosAfter;
 				destTPos = dest - center;
 				destProjectedPos = (1.f / dimIt->x) * (I * destTPos) * I + (1.f / dimIt->y)  * (J * destTPos) * J;
-				// test wether the new position is inside the cylinder
+				// test whether the new position is inside the cylinder
 				if (
 					((destTPos * K) < dimIt->z)
 					&& ((destTPos * K) > -dimIt->z)
@@ -1134,7 +1134,7 @@ void CPSZoneRectangle::computeCollisions(CPSLocated &target, uint firstInstanceI
 {
 	NL_PS_FUNC(CPSZoneRectangle_computeCollisions)
 	MINI_TIMER(PSStatsZoneRectangle)
-	// for each target, we must check wether they are going through the rectangle
+	// for each target, we must check whether they are going through the rectangle
 	// if so they must bounce
 	TPSAttribVector::const_iterator rectanglePosIt, rectanglePosEnd;
 	CPSAttrib<CPlaneBasis>::const_iterator basisIt;

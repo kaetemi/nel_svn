@@ -248,7 +248,7 @@ void registerGlExtensions(CGlExtensions &ext);
 	to avoid compilation conflict with future version of gl.h
 	eg: gl.h Version 1.2 define glActiveTextureARB so we can't use it.
 
-	NB: we do it for all (EXT, NV, ARB extension) even it should be usefull only for ARB ones.
+	NB: we do it for all (EXT, NV, ARB extension) even it should be useful only for ARB ones.
 */
 
 // ARB_multitexture

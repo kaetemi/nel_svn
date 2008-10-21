@@ -152,7 +152,7 @@ public:
 	virtual void					getCone( float& innerAngle, float& outerAngle, float& outerGain ) const = 0;
 	/** Set the alpha value for the volume-distance curve
 	 *
-	 *	Usefull only with OptionManualRolloff. value from -1 to 1 (default 0)
+	 *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
 	 *
 	 *  alpha = 0.0: the volume will decrease linearly between 0dB and -100 dB
 	 *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)

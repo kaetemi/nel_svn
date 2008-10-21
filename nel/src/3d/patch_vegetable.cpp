@@ -90,7 +90,7 @@ void		CPatch::generateTileVegetable(CVegetableInstanceGroup *vegetIg, uint distT
 	float	tileU= (ts + 0.5f) / (float)OrderS;
 	float	tileV= (tt + 0.5f) / (float)OrderT;
 	CBezierPatch	*bpatch= unpackIntoCache();
-	// Get approximate position for the tile (usefull for noise). NB: eval() is faster than computeVertex().
+	// Get approximate position for the tile (useful for noise). NB: eval() is faster than computeVertex().
 	CVector		tilePos= bpatch->eval(tileU, tileV);
 	// Get also the normal used for all instances on this tile (not precise,
 	// don't take noise into account, but faster).

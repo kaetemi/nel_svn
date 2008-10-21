@@ -200,7 +200,7 @@ void		CMatrix::identity()
 	StateBit= MAT_IDENTITY;
 	// Reset just Pos because must always be valid for faster getPos()
 	a14= a24= a34= 0;
-	// For optimisation it would be usefull to keep MAT_VALID states.
+	// For optimisation it would be useful to keep MAT_VALID states.
 	// But this slows identity(), and this may not be interesting...
 }
 // ======================================================================================================
@@ -955,7 +955,7 @@ void		CMatrix::transpose()
 				StateBit|= MAT_TRANS;
 			}
 		}
-		// reset validity. NB, maybe not usefull, but simpler, and bugfree.
+		// reset validity. NB, maybe not useful, but simpler, and bugfree.
 		StateBit&= ~(MAT_VALIDPROJ);
 	}
 	// NB: if no Trans or no Proj, do nothing, so don't need to modify VALIDTRANS and VALIDPROJ too.

@@ -143,7 +143,7 @@ CDIKeyboard::CDIKeyboard(CWinEventEmitter *we, HWND hwnd)
 	{
 		std::fill(_VKKeyState, _VKKeyState + NumKeys, 0);
 	}
-	//	test wether the user toggle its keyboard with shift or not..
+	//	test whether the user toggle its keyboard with shift or not..
 	HKEY hKey;
 	if (::RegOpenKeyEx(HKEY_CURRENT_USER, "Keyboard Layout", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
 	{
@@ -589,7 +589,7 @@ void	CDIKeyboard::repeatKey(uint32 currentDate, CEventServer *server)
 	// numpad case
 	if (vkey >= KeyNUMPAD0 && vkey <= KeyNUMPAD9 || vkey == KeyDECIMAL)
 	{
-		// check wether numlock is activated
+		// check whether numlock is activated
 		if ((_VKKeyState[KeyNUMLOCK] & 0x01) != 0)
 		{
 			for (uint k = 0; k < numRep; ++k)

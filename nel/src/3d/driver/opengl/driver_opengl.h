@@ -631,7 +631,7 @@ public:
 	virtual IOcclusionQuery *createOcclusionQuery();
 	virtual void			deleteOcclusionQuery(IOcclusionQuery *oq);
 
-	// Test wether this device supports the frame buffer object mecanism
+	// Test whether this device supports the frame buffer object mecanism
 	virtual bool			supportTextureRectangle() const;
 	virtual bool			supportFrameBufferObject() const;
 	virtual bool			supportPackedDepthStencil() const;
@@ -831,7 +831,7 @@ private:
 
 	// Prec settings for material.
 	CDriverGLStates			_DriverGLStates;
-	// Optim: To not test change in Materials states if just texture has changed. Very usefull for landscape.
+	// Optim: To not test change in Materials states if just texture has changed. Very useful for landscape.
 	uint32					_MaterialAllTextureTouchedFlag;
 
 	// @}
@@ -1153,7 +1153,7 @@ private:
 
 	/// \fallback for material shaders
 	// @{
-		/// test wether the given shader is supported, and gives back a supported shader
+		/// test whether the given shader is supported, and gives back a supported shader
 		CMaterial::TShader	getSupportedShader(CMaterial::TShader shader);
 	// @}
 

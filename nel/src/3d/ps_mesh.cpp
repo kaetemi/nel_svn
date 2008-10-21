@@ -296,7 +296,7 @@ void CPSMesh::deleteElement(uint32 index)
 	deleteAngle2DElement(index);
 	deletePlaneBasisElement(index);
 
-	// check wether CTransformShape have been instanciated
+	// check whether CTransformShape have been instanciated
 	nlassert(_Owner);
 	nlassert(_Owner->getOwner());
 	CScene *scene = _Owner->getScene();
@@ -1036,7 +1036,7 @@ bool CPSConstraintMesh::hasTransparentFaces(void)
 {
 	NL_PS_FUNC(CPSConstraintMesh_hasTransparentFaces)
 	if (!_Touched) return _HasTransparentFaces != 0;
-	/// we must update the mesh to know wether it has transparent faces
+	/// we must update the mesh to know whether it has transparent faces
 	update();
 	return _HasTransparentFaces != 0;
 }
@@ -1683,7 +1683,7 @@ CVertexBuffer &CPSConstraintMesh::makePrerotatedVb(const CVertexBuffer &inVb)
 
 		uint k = nbVerticesInSource;
 
-		// check wether we need to rotate normals as well...
+		// check whether we need to rotate normals as well...
 		if (inVb.getVertexFormat() & CVertexBuffer::NormalFlag)
 		{
 
@@ -1853,7 +1853,7 @@ void	CPSConstraintMesh::setupRenderPasses(float date, TRdrPassSet &rdrPasses, bo
 		CMaterial &SourceMat = rdrPassIt->SourceMat;
 
 
-		/// check wether this material has to be rendered
+		/// check whether this material has to be rendered
 		if ((opaque && Mat.getZWrite()) || (!opaque && ! Mat.getZWrite()))
 		{
 

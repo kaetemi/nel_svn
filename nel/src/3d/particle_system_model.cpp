@@ -334,7 +334,7 @@ void CParticleSystemModel::refreshRscDeletion(const std::vector<CPlane>	&worldFr
 {
 	MINI_TIMER(PSStatsRefreshRscDeletion)
 	if (_EditionMode) return;
-	/** Here we test wether the system has not gone out of scope.
+	/** Here we test whether the system has not gone out of scope.
 	  * Why do we test this here addtionnaly to the clip traversal ?
 	  * Simply because the clip traversal is not called if the cluster it is inserted in is not parsed.
 	  * This is not good, because we want to keep few CParticleSystem instance.
@@ -504,7 +504,7 @@ bool CParticleSystemModel::checkAgainstPyramid(const std::vector<CPlane>	&pyrami
 	// Transform the pyramid in Object space.
 	for(sint i=0; i < (sint) pyramid.size(); i++)
 	{
-		// test wether the bbox is entirely in the neg side of the plane
+		// test whether the bbox is entirely in the neg side of the plane
 		if (!bbox.clipBack(pyramid[i]  * mat  ))
 		{
 			return false;
@@ -787,7 +787,7 @@ void	CParticleSystemModel::traverseClip()
 			}
 		}
 
-		// check wether display filtered or not
+		// check whether display filtered or not
 		if( !(_Scene->getFilterRenderFlags() & _RenderFilterType) )
 		{
 			_Visible = false;
@@ -841,7 +841,7 @@ void	CParticleSystemModel::traverseClip()
 				}
 				else
 				{
-					// NB : The test to see wether the system is not too far is performed by the particle system manager
+					// NB : The test to see whether the system is not too far is performed by the particle system manager
 					if (!_EditionMode)
 					{
 						{
@@ -884,7 +884,7 @@ void	CParticleSystemModel::traverseClip()
 			const CVector d = pos - clipTrav.CamPos;
 
 
-			// check wether system not too far
+			// check whether system not too far
 			if (d * d > pss->_MaxViewDist * pss->_MaxViewDist)
 			{
 				_Visible = false;
@@ -895,7 +895,7 @@ void	CParticleSystemModel::traverseClip()
 				return;
 			}
 
-			// test the shape to see wether we have a precomputed bbox
+			// test the shape to see whether we have a precomputed bbox
 			if (!pss->_UsePrecomputedBBox)
 			{
 				///============================= the system has no precomputed bbox
@@ -948,7 +948,7 @@ void	CParticleSystemModel::traverseClip()
 		// the system is already instanciated
 
 		nlassert(ps);
-		/// Pyramid test. IMPORTANT : The test to see wether the system is not too far is performed by the particle system manager
+		/// Pyramid test. IMPORTANT : The test to see whether the system is not too far is performed by the particle system manager
 		// In edition mode, it isn't done by the manager (system never removed), so we do it here in this case
 		if (_EditionMode)
 		{
@@ -956,7 +956,7 @@ void	CParticleSystemModel::traverseClip()
 			nlassert(pss);
 			const CVector pos = getWorldMatrix().getPos();
 			const CVector d = pos - clipTrav.CamPos;
-			// check wether system not too far
+			// check whether system not too far
 			if (d * d > ps->getMaxViewDist() * ps->getMaxViewDist())
 			{
 				return; // not visible

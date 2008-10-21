@@ -1086,7 +1086,7 @@ void			CShadowMapManager::selectShadowMapsToGenerate(CScene *scene)
 		CTransform	*caster= _ShadowCasters[i];
 		/* If the shadowMap exist, and if not totaly faded
 			NB: take FinalFade here because if 1, it won't be rendered in renderProject()
-			so don't really need to update (usefull for update reason, but LastGenerationFrame do the job)
+			so don't really need to update (useful for update reason, but LastGenerationFrame do the job)
 		*/
 		if(caster->getShadowMap() && caster->getShadowMap()->getFinalFade()<1 )
 		{

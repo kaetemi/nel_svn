@@ -992,7 +992,7 @@ void	CMeshMRMSkinnedGeom::applyRawSkinWithNormal(CLod &lod, CRawSkinnedNormalCac
 	nlassert( NL3D_MESH_MRM_SKINNED_MAX_MATRIX==4 );
 
 
-	// Compute usefull Matrix for this lod.
+	// Compute useful Matrix for this lod.
 	//===========================
 	// Those arrays map the array of bones in skeleton.
 	static	vector<CMatrix3x4>			boneMat3x4;

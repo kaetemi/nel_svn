@@ -39,7 +39,7 @@ namespace NLGEORGES
 class CFormLoader;
 
 /**
-  * This class is the defnition for a familly of from.
+  * This class is the defnition for a family of forms.
   */
 class CFormDfn : public UFormDfn
 {
@@ -59,7 +59,7 @@ public:
 
 	virtual ~CFormDfn () { }
 
-	// A form defnition entry
+	// A form definition entry
 	class CEntry
 	{
 		friend class CType;
@@ -242,7 +242,7 @@ private:
 	// A vector of entries
 	std::vector<CEntry>				Entries;
 
-	// Recurcive call count
+	// Recursive call count
 	mutable uint32					Round;
 
 	// The form DFN filename

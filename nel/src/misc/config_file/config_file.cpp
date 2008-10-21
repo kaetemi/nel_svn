@@ -336,7 +336,7 @@ void CConfigFile::load (const string &fileName, bool lookupPaths )
 	(*CConfigFile::_ConfigFiles).push_back (this);
 	reparse ();
 
-	// If we find a linked config file, load it but don't overload already existant variable
+	// If we find a linked config file, load it but don't overload already existing variable
 	CVar *var = getVarPtr ("RootConfigFilename");
 	if (var)
 	{
@@ -450,7 +450,7 @@ void CConfigFile::reparse (bool lookupPaths)
 //		cf_ifile.close ();
 		cf_ifile.clear();
 
-		// If we find a linked config file, load it but don't overload already existant variable
+		// If we find a linked config file, load it but don't overload already existing variable
 		CVar *var = getVarPtr ("RootConfigFilename");
 		if (var)
 		{
@@ -513,7 +513,7 @@ void CConfigFile::reparse (bool lookupPaths)
 	{
 		nlassert (strlen(filename)>0);
 
-		// load external config filename, don't overwrite existant variable
+		// load external config filename, don't overwrite existing variable
 		if (cf_ifile.open (filename))
 		{
 			cfrestart (NULL);

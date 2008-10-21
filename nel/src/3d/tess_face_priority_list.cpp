@@ -467,7 +467,7 @@ void		CTessFacePriorityList::CRollingTable::clearRollTable()
 		clearRollTableEntry(i);
 	}
 	_EntryStart= 0;
-	// For convenience only (not really usefull).
+	// For convenience only (not really useful).
 	Remainder= 0;
 }
 

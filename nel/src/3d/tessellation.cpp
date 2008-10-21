@@ -156,7 +156,7 @@ CTessFace	CTessFace::MultipleBindFace;
 CTessFace::CTessFace()
 {
 	// Don't modify any of it!!
-	// Patch, SonLeft and SonRight nullity are very usefull for MultiplePatch faces, and CantMergeFace.
+	// Patch, SonLeft and SonRight nullity are very useful for MultiplePatch faces, and CantMergeFace.
 
 	Patch= NULL;
 	VBase=VLeft=VRight= NULL;
@@ -739,7 +739,7 @@ void		CTessFace::computeTileMaterial()
 
 	// 2. Compute Uvs.
 	//----------------
-	// NB: TileMaterial is already setup. Usefull for initTileUvLightmap() and initTileUvRGBA().
+	// NB: TileMaterial is already setup. Useful for initTileUvLightmap() and initTileUvRGBA().
 
 	// First, must create The TileFaces, according to the TileMaterial passes.
 	buildTileFaces();
@@ -2135,7 +2135,7 @@ void		CTessFace::updateRefineMerge()
 			{
 				merge();
 
-				// NB: here, merge() is not propagated to fathers (supposed to be not very usefull).
+				// NB: here, merge() is not propagated to fathers (supposed to be not very useful).
 
 				if(isLeaf())
 				{

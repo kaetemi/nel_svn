@@ -1204,7 +1204,7 @@ void			CLandscape::render(const CVector &refineCenter, const CVector &frontVecto
 	{
 		// c[0..3] take the ModelViewProjection Matrix.
 		driver->setConstantMatrix(0, IDriver::ModelViewProjection, IDriver::Identity);
-		// c[4] take usefull constants.
+		// c[4] take useful constants.
 		driver->setConstant(4, 0, 1, 0.5f, 0);
 		// c[5] take RefineCenter
 		driver->setConstant(5, refineCenter);

@@ -3325,7 +3325,7 @@ void			CZoneLighter::compilePointLightRT(uint gridSize, float gridCellSize, std:
 				// AmbiantLIghts: do nothing.
 				if(plRT.PointLight.getType()!=CPointLight::AmbientLight)
 				{
-					// Select only obstacle Faces around the light. Other are not usefull
+					// Select only obstacle Faces around the light. Other are not useful
 					CAABBox	bbox;
 					bbox.setCenter(plRT.PointLight.getPosition());
 					float	hl= plRT.PointLight.getAttenuationEnd();
@@ -3656,7 +3656,7 @@ void CZoneLighter::computeTileFlagsForPositionTowardWater(const CLightDesc &ligh
 		CTileOfPatch top((*it)->TileId, (*it)->Patch);
 		TTileOfPatchMap::iterator tileIt = tiles.find(top);
 
-		/// test wether we've seen face(s) from this tile before
+		/// test whether we've seen face(s) from this tile before
 		if (tileIt == tiles.end()) // first time ?
 		{
 			/// build a bbox for this face

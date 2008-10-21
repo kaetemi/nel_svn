@@ -240,7 +240,7 @@ void			CPatch::buildBBoxFromBezierPatch(const CBezierPatch &p, CAABBox &ret) con
 		bmax.maxof(bmax, p.Interiors[i]);
 	}
 
-	// Modulate with the maximum displacement map (usefull for patch clipping).
+	// Modulate with the maximum displacement map (useful for patch clipping).
 	static	CVector		vectorNoiseMax(NL3D_NOISE_MAX, NL3D_NOISE_MAX, NL3D_NOISE_MAX);
 	bmin-= vectorNoiseMax;
 	bmax+= vectorNoiseMax;
@@ -1263,8 +1263,8 @@ void			CPatch::makeRoots()
 	appendFaceToRenderList(Son0);
 	appendFaceToRenderList(Son1);
 
-	// Usefull for geomorph: Init 2 root faces MaxNearLimit, and MaxFaceSize
-	// NB: since no geomorph is made on endpoints (StartPos==EndPos) of patchs, this is not usefull.
+	// Useful for geomorph: Init 2 root faces MaxNearLimit, and MaxFaceSize
+	// NB: since no geomorph is made on endpoints (StartPos==EndPos) of patchs, this is not useful.
 	// but it is important to ensure the VP or software geomorph won't crash with bad float values.
 	// Init MaxFaceSize.
 	Son0->VBase->MaxFaceSize= 1;
@@ -1512,7 +1512,7 @@ void			CPatch::averageTesselationVertices()
 	nlassert(Son0);
 	nlassert(Son1);
 
-	// Recompute the BaseVertices. This is usefull for Pacs.
+	// Recompute the BaseVertices. This is useful for Pacs.
 	// Because CLandscape::averageTesselationVertices() is made on a strict order for patchs (map of zones, then
 	// array of patchs), we are sure to overwrite BaseVertices in this order.
 	CTessVertex *a= BaseVertices[0];

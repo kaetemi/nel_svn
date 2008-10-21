@@ -140,7 +140,7 @@ public:
 	/// \name Texture Mode setting.
 	// @{
 	enum			TTextureMode {TextureDisabled, Texture2D, TextureRect, TextureCubeMap, TextureModeCount};
-	/// same as glActiveTextureARB(). usefull for setTextureMode.
+	/// same as glActiveTextureARB(). useful for setTextureMode.
 	void			activeTextureARB(uint stage);
 	/// same as active texture arb, but with no cache check
 	void			forceActiveTextureARB(uint stage);
@@ -163,7 +163,7 @@ public:
 	void			enableWeightArray(bool enable);
 	void			enableColorArray(bool enable);
 	void			enableSecondaryColorArray(bool enable);
-	/// same as glClientActiveTextureARB(). usefull for enableTexCoordArray.
+	/// same as glClientActiveTextureARB(). useful for enableTexCoordArray.
 	void			clientActiveTextureARB(uint stage);
 	/// NB: caller must call correct clientActiveTextureARB() before.
 	void			enableTexCoordArray(bool enable);

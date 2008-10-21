@@ -103,7 +103,7 @@ void		CSkeletonModel::registerToChannelMixer(CChannelMixer *chanMixer, const std
 			and are "temp removed" from the render trav
 		- createdModels() in CSkeletonSpawnScript are delayed to the end of CScene::render()
 		- if a skeleton is not visible, or in LOD form, then its sticked SpawnedModels are not visible too,
-			wether or not they are too old regarding the animation time
+			whether or not they are too old regarding the animation time
 	*/
 	_SpawnScriptChannelId= addValue(chanMixer, SpawnScriptValue, OwnerBit, prefix, true);
 
@@ -1855,7 +1855,7 @@ void		CSkeletonModel::getLightHotSpotInWorld(CVector &modelPos, float &modelRadi
 	}
 	else
 	{
-		/* Else return the skeleton pos. NB: this seems unusefull since bone 0 not computed means no Skins.
+		/* Else return the skeleton pos. NB: this seems unuseful since bone 0 not computed means no Skins.
 			But lighting computation is still done and may use a VisualCollisionEntity.
 			This system cache some infos according to position. This is why we must return a position
 			near the skeleton (else cache crash each frame => slowdown...)

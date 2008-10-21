@@ -71,7 +71,7 @@ public:
 	{
 	public:
 		/**
-		 * A chain tip. Contains the id of the chain and wether this tip is the start of the chain.
+		 * A chain tip. Contains the id of the chain and whether this tip is the start of the chain.
 		 * \author Benjamin Legros
 		 * \author Nevrax France
 		 * \date 2001

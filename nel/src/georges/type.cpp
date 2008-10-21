@@ -645,7 +645,7 @@ bool CType::getValue (string &result, const CForm *form, const CFormElmAtom *nod
 				string token;
 				uint tokenType = getNextToken (result.c_str (), token, offset);
 
-				// Bracklets, {numerical expressions} : numerical expressions to string
+				// Brackets, {numerical expressions} : numerical expressions to string
 				if (tokenType == NL_TOKEN_OPEN_BRACKET)
 				{
 					// Find the second "

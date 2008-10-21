@@ -55,8 +55,8 @@ static bool	deleteElement(vector<sint>	&array, sint elt)
 		found=true, array.erase(it);
 
 	return found;
-	// Must not use remove<> since it do not modify size ... (???)
-	// This seems not to work.
+	// Do not use remove<> since it desn't modify size ... (???)
+	// This doesn't seem to work.
 	//return remove(array.begin(), array.end(), elt)!=array.end();
 }
 
@@ -271,11 +271,11 @@ float	CMRMBuilder::computeEdgeCost(const CMRMEdge &edge)
 	// **** Interface Sewing cost
 	if(_HasMeshInterfaces)
 	{
-		// if the 2 vertices comes from a Sewing Interface mesh (must be a real interface id)
+		// if the 2 vertices come from a Sewing Interface mesh (must be a real interface id)
 		sint	meshSewingId= TmpVertices[v1].InterfaceLink.InterfaceId;
 		if( meshSewingId>=0 && TmpVertices[v2].InterfaceLink.InterfaceId>=0 )
 		{
-			// if the 2 vertices comes from the same Sewing Interface mesh
+			// if the 2 vertices come from the same Sewing Interface mesh
 			if( meshSewingId == TmpVertices[v2].InterfaceLink.InterfaceId )
 			{
 				// Then the edge is one of the sewing interface mesh. must do special things for it
@@ -777,7 +777,7 @@ sint	CMRMBuilder::collapseEdge(const CMRMEdge &edge)
 
 		// release edges from list.
 		removeFaceFromEdgeList(TmpFaces[numFace]);
-		// ivalid all it!!
+		// invalid all it!!
 		TmpFaces[numFace].invalidAllIts(EdgeCollapses);
 
 
@@ -1923,7 +1923,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMGeo
 	// Setup VB.
 
 	bool useFormatExt = false;
-	// Check wether there are texture coordinates with more than 2 compnents, which force us to use an extended vertex format
+	// Check whether there are texture coordinates with more than 2 compnents, which force us to use an extended vertex format
 	for (k = 0; k < CVertexBuffer::MaxStage; ++k)
 	{
 		if (
@@ -2427,7 +2427,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 	// Setup VB.
 
 	bool useFormatExt = false;
-	// Check wether there are texture coordinates with more than 2 compnents, which force us to use an extended vertex format
+	// Check whether there are texture coordinates with more than 2 compnents, which force us to use an extended vertex format
 	for (k = 0; k < CVertexBuffer::MaxStage; ++k)
 	{
 		if (
@@ -2516,7 +2516,7 @@ void			CMRMBuilder::buildMeshBuildMrm(const CMRMMeshFinal &finalMRM, CMeshMRMSki
 		// seutp attributes.
 		attId= 0;
 
-		// For all activated attributes in mbuild, retriev the attribute from the finalMRM.
+		// For all activated attributes in mbuild, retrieve the attribute from the finalMRM.
 		if(vbFlags & CVertexBuffer::NormalFlag)
 		{
 			vba.setNormalCoord(i, wedge.Attributes[attId] );

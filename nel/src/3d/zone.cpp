@@ -97,7 +97,7 @@ CZone::~CZone()
 void			CZone::computeBBScaleBias(const CAABBox	&bb)
 {
 	ZoneBB= bb;
-	// Take a security for noise. (usefull for zone clipping).
+	// Take a security for noise. (useful for zone clipping).
 	ZoneBB.setHalfSize(ZoneBB.getHalfSize()+CVector(NL3D_NOISE_MAX, NL3D_NOISE_MAX, NL3D_NOISE_MAX));
 	CVector	hs= ZoneBB.getHalfSize();
 	float	rmax= maxof(hs.x, hs.y, hs.z);

@@ -93,7 +93,7 @@ void	CPSForce::attachTarget(CPSLocated *ptr)
 	NL_PS_FUNC(CPSForce_attachTarget)
 	nlassert(_Owner);
 	CPSTargetLocatedBindable::attachTarget(ptr);
-	// check wether we are integrable, and if so, add us to the list
+	// check whether we are integrable, and if so, add us to the list
 	if (this->isIntegrable())
 	{
 		ptr->registerIntegrableForce(this);

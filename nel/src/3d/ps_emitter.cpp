@@ -910,7 +910,7 @@ void CPSEmitter::processRegularEmission(uint firstInstanceIndex, float emitLOD)
 }
 
 /// private : generate the various position of an emitter in the given tab for the given slice of time,
-//  depending on wether its motion is parametric or incremental. This is used to create emittees at the right position
+//  depending on whether its motion is parametric or incremental. This is used to create emittees at the right position
 
 static
 #ifndef NL_DEBUG
