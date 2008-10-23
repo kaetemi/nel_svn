@@ -417,6 +417,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	// Init listener
 	_Listener.init(_SoundDriver);
 
+	// Init environment reverb effects
 	if (_UseEax)
 	{
 		if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb))))
@@ -456,8 +457,12 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			addEnvironment("MEDIUMHALL",      IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.80f,0.70f, -13.00f,0.015f,  -8.00f,0.030f,100.0f,100.0f));
 			addEnvironment("LARGEHALL",       IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.80f,0.70f, -20.00f,0.030f, -14.00f,0.060f,100.0f,100.0f));
 			addEnvironment("PLATE",           IReverbEffect::CEnvironment( -10.00f, -2.00f, 1.30f,0.90f,   0.00f,0.002f,   0.00f,0.010f,100.0f, 75.0f));
+			// these are the default environment settings in case no environment data is available (you'll hear this one)
 			_DefaultEnvironment = getEnvironment("PLAIN");
 			_DefaultRoomSize = 7.5f;
+			// note: 'no fx' generally does not use the default room size
+			_Environments[CStringMapper::map("no fx")] = _DefaultEnvironment;
+			// set the default environment now
 			_ReverbEffect->setEnvironment(_DefaultEnvironment, _DefaultRoomSize);
 		}
 	}
@@ -2508,7 +2513,7 @@ void CAudioMixerUser::addEnvironment(const std::string &environmentName, const I
 {
 	if (_ReverbEffect) 
 	{
-		TStringId environment_name = CStringMapper::map(NLMISC::toUpper(environmentName));
+		TStringId environment_name = CStringMapper::map(environmentName);
 
 		if (_Environments.find(environment_name) != _Environments.end()) 
 			nlwarning("Reverb environment %s already exists, replacing with new one", CStringMapper::unmap(environment_name).c_str());
@@ -2532,7 +2537,7 @@ const IReverbEffect::CEnvironment &CAudioMixerUser::getEnvironment(NLMISC::TStri
 	TEnvironments::iterator it(_Environments.find(environmentName));
 	if (it == _Environments.end())
 	{
-		nlwarning("Reverb environment %s does not exist, returning default", CStringMapper::unmap(environmentName).c_str());
+		nlwarning("Reverb environment '%s' does not exist, returning default", CStringMapper::unmap(environmentName).c_str());
 		return _DefaultEnvironment;
 	}
 	return it->second;

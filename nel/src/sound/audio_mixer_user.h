@@ -354,11 +354,11 @@ public:
 	/// Set the current reverb environment.
 	void setEnvironment(NLMISC::TStringId environmentName, float roomSize);
 	/// Set the current reverb environment.
-	inline void setEnvironment(const std::string &environmentName, float roomSize) { setEnvironment(NLMISC::CStringMapper::map(NLMISC::toUpper(environmentName)), roomSize); }
+	inline void setEnvironment(const std::string &environmentName, float roomSize) { setEnvironment(NLMISC::CStringMapper::map(environmentName), roomSize); }
 	/// Get a reverb environment
 	const IReverbEffect::CEnvironment & getEnvironment(NLMISC::TStringId environmentName);
 	/// Get a reverb environment
-	inline const IReverbEffect::CEnvironment & getEnvironment(const std::string &environmentName) { return getEnvironment(NLMISC::CStringMapper::map(NLMISC::toUpper(environmentName))); }
+	inline const IReverbEffect::CEnvironment & getEnvironment(const std::string &environmentName) { return getEnvironment(NLMISC::CStringMapper::map(environmentName)); }
 	//@}
 
 private:
