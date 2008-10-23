@@ -347,6 +347,20 @@ public:
 	inline IReverbEffect *getReverbEffect() { return _ReverbEffect; }
 	inline bool useEnvironmentEffects() const { return _UseEax; }
 
+	//@{
+	//\name Reverb environment functions
+	/// Add a reverb environment.
+	void addEnvironment(const std::string &name, const IReverbEffect::CEnvironment &environment);
+	/// Set the current reverb environment.
+	void setEnvironment(NLMISC::TStringId environmentName, float roomSize);
+	/// Set the current reverb environment.
+	inline void setEnvironment(const std::string &environmentName, float roomSize) { setEnvironment(NLMISC::CStringMapper::map(NLMISC::toUpper(environmentName)), roomSize); }
+	/// Get a reverb environment
+	const IReverbEffect::CEnvironment & getEnvironment(NLMISC::TStringId environmentName);
+	/// Get a reverb environment
+	inline const IReverbEffect::CEnvironment & getEnvironment(const std::string &environmentName) { return getEnvironment(NLMISC::CStringMapper::map(NLMISC::toUpper(environmentName))); }
+	//@}
+
 private:
 	enum	TMusicChannel
 	{
@@ -509,6 +523,13 @@ private:
 	
 	/// The reverb effect
 	IReverbEffect				*_ReverbEffect;
+	/// The default reverb environment
+	IReverbEffect::CEnvironment	_DefaultEnvironment;
+	/// The default reverb room size
+	float						_DefaultRoomSize;
+	/// Available reverb environments
+	typedef std::map<NLMISC::TStringId, IReverbEffect::CEnvironment> TEnvironments;
+	TEnvironments				_Environments;
 	
 	/// Listener position vector
 	NLMISC::CVector				_ListenPosition;

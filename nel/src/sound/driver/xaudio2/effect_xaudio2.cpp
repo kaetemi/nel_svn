@@ -90,7 +90,7 @@ CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : C
 		if (FAILED(hr = _Voice->SetEffectChain(&effect_chain)))
 			{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "SetEffectChain FAILED"); return; }
 		
-		setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
+		setEnvironment();
 	}
 }
 
@@ -117,7 +117,7 @@ void CReverbEffectXAudio2::setGain(float gain)
 }
 
 /// Set the environment (you have full control now, have fun)
-void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
+void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment, float roomSize)
 {
 	// unused params
 	_ReverbParams.LowEQCutoff = 4;
@@ -136,7 +136,7 @@ void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment)
 	_ReverbParams.RoomFilterHF = environment.RoomFilterHF;
 	_ReverbParams.ReverbGain = environment.LateReverb;
 	_ReverbParams.ReflectionsGain = environment.Reflections;
-	_ReverbParams.RoomSize = environment.RoomSize;
+	_ReverbParams.RoomSize = roomSize;
 
 	// conversions, see ReverbConvertI3DL2ToNative in case of errors
 	if (environment.DecayHFRatio >= 1.0f)

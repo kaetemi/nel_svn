@@ -89,7 +89,7 @@ public:
 	virtual TEffectType getType();
 
 	/// Set the environment (you have full control now, have fun)
-	virtual void setEnvironment(const CEnvironment &environment);
+	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
 
 	/// Set the volume of this submixer
 	void setGain(float gain);

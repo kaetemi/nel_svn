@@ -908,74 +908,11 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 					else
 					{
 						// no cluster system, set the env 'manualy'
-						IReverbEffect *drvReverbEffect = mixer->getReverbEffect();
-
 						if (_LastEnv != first->FxName)
 						{
+							// set an env with size 10.f
 							_LastEnv = first->FxName;
-							uint envNum;
-							if (first->FxName == CStringMapper::map("GENERIC"))
-								envNum = 0;
-							else if (first->FxName == CStringMapper::map("PADDEDCELL"))
-								envNum = 1;
-							else if (first->FxName == CStringMapper::map("ROOM"))
-								envNum = 2;
-							else if (first->FxName == CStringMapper::map("BATHROOM"))
-								envNum = 3;
-							else if (first->FxName == CStringMapper::map("LIVINGROOM"))
-								envNum = 4;
-							else if (first->FxName == CStringMapper::map("STONEROOM"))
-								envNum = 5;
-							else if (first->FxName == CStringMapper::map("AUDITORIUM"))
-								envNum = 6;
-							else if (first->FxName == CStringMapper::map("CONCERTHALL"))
-								envNum = 7;
-							else if (first->FxName == CStringMapper::map("CAVE"))
-								envNum = 8;
-							else if (first->FxName == CStringMapper::map("ARENA"))
-								envNum = 9;
-							else if (first->FxName == CStringMapper::map("HANGAR"))
-								envNum = 10;
-							else if (first->FxName == CStringMapper::map("CARPETEDHALLWAY"))
-								envNum = 11;
-							else if (first->FxName == CStringMapper::map("HALLWAY"))
-								envNum = 12;
-							else if (first->FxName == CStringMapper::map("STONECORRIDOR"))
-								envNum = 13;
-							else if (first->FxName == CStringMapper::map("ALLEY"))
-								envNum = 14;
-							else if (first->FxName == CStringMapper::map("FOREST"))
-								envNum = 15;
-							else if (first->FxName == CStringMapper::map("CITY"))
-								envNum = 16;
-							else if (first->FxName == CStringMapper::map("MOUNTAINS"))
-								envNum = 17;
-							else if (first->FxName == CStringMapper::map("QUARRY"))
-								envNum = 18;
-							else if (first->FxName == CStringMapper::map("PLAIN"))
-								envNum = 19;
-							else if (first->FxName == CStringMapper::map("PARKINGLOT"))
-								envNum = 20;
-							else if (first->FxName == CStringMapper::map("SEWERPIPE"))
-								envNum = 21;
-							else if (first->FxName == CStringMapper::map("UNDERWATER"))
-								envNum = 22;
-							else if (first->FxName == CStringMapper::map("SMALLROOM"))
-								envNum = 23;
-							else if (first->FxName == CStringMapper::map("MEDIUMROOM"))
-								envNum = 24;
-							else if (first->FxName == CStringMapper::map("LARGEROOM"))
-								envNum = 25;
-							else if (first->FxName == CStringMapper::map("MEDIUMHALL"))
-								envNum = 26;
-							else if (first->FxName == CStringMapper::map("LARGEHALL"))
-								envNum = 27;
-							else if (first->FxName == CStringMapper::map("PLATE"))
-								envNum = 28;
-							else
-								envNum = 19;
-
-							drvReverbEffect->setEnvironment(IReverbEffect::CEnvironment(EnvironmentPresets[envNum], 10));
+							mixer->setEnvironment(first->FxName, 10.f);
 						}
 					}
 					break;

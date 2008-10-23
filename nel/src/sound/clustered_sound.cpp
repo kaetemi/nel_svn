@@ -45,52 +45,6 @@ using namespace NL3D;
 namespace NLSOUND
 {
 
-const char *CClusteredSound::_EnvironmentNames[] =
-{
-    "GENERIC",
-    "PADDEDCELL",
-    "ROOM",
-    "BATHROOM",
-    "LIVINGROOM",
-    "STONEROOM",
-    "AUDITORIUM",
-    "CONCERTHALL",
-    "CAVE",
-    "ARENA",
-    "HANGAR",
-    "CARPETEDHALLWAY",
-    "HALLWAY",
-    "STONECORRIDOR",
-    "ALLEY",
-    "FOREST",
-    "CITY",
-    "MOUNTAINS",
-    "QUARRY",
-    "PLAIN",
-    "PARKINGLOT",
-    "SEWERPIPE",
-    "UNDERWATER",
-    "SMALLROOM", //"DRUGGED",
-    "MEDIUMROOM", //"DIZZY",
-    "LARGEROOM", //"PSYCHOTIC",
-	"MEDIUMHALL", 
-	"LARGEHALL", 
-	"PLATE", 
-	NULL
-};
-const char *CClusteredSound::_MaterialNames[] =
-{
-	"SINGLEWINDOW",
-	"DOUBLEWINDOW",
-	"THINDOOR",
-	"THICKDOOR",
-	"WOODWALL",
-	"BRICKWALL",
-	"STONEWALL",
-	"CURTAIN",
-	NULL
-};
-
 #if EAX_AVAILABLE == 1
 // An array to report all EAX predefined meterials
 float EAX_MATERIAL_PARAM[][3] =
@@ -117,9 +71,7 @@ float EAX_MATERIAL_PARAM[] =
 	float(pow((double)10, (double)-6000/2000)),
 	float(pow((double)10, (double)-1200/2000))
 };
-#define EAXLISTENER_MAXENVIRONMENTSIZE 100
 #endif	// EAX_AVAILABLE
-
 
 // An utility class to handle packed sheet loading/saving/updating
 class CSoundGroupSerializer
@@ -222,21 +174,10 @@ std::map<std::string, CSoundGroupSerializer> Container;
 CClusteredSound::CClusteredSound()
 :	_Scene(0),
 	_RootCluster(0),
-	_LastEnv(0xffffffff),
+	_LastEnv(CStringMapper::emptyId()),
 	_LastEnvSize(-1.0f) // size goes from 0.0f to 100.0f
 {
-	// fill the env name table
-	uint i;
-	for (i=0; _EnvironmentNames[i] != 0; ++i)
-	{
-		_IdToEaxEnv.insert(make_pair(CStringMapper::map(string(_EnvironmentNames[i])), i));
-	}
-	// fill the material name table
-	for (i=0; _MaterialNames[i] != 0; ++i)
-	{
-		_IdToMaterial.insert(make_pair(CStringMapper::map(string(_MaterialNames[i])), i));
-	}
-
+	
 }
 
 
@@ -408,8 +349,6 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 	{
 		H_AUTO(NLSOUND_ClusteredSound_updateEnvFx)
 		TStringId fxId = vCluster[0]->getEnvironmentFxId();
-		IReverbEffect *drvReverbEffect = mixer->getReverbEffect();
-		//IListener *drvListener = static_cast<CListenerUser*>(mixer->getListener())->getListener();
 		const CAABBox &box = vCluster[0]->getBBox();
 		CVector vsize = box.getHalfSize();
 		float	size = NLMISC::minof(vsize.x, vsize.y, vsize.z) * 2;
@@ -418,36 +357,20 @@ void CClusteredSound::update(const CVector &listenerPos, const CVector &view, co
 		if (vCluster[0] == _RootCluster)
 		{
 			// this is the root cluster. This cluster have a size of 0 !
-			size = EAXLISTENER_MAXENVIRONMENTSIZE;
+			size = 100.f;
 		}
 		else
 		{
 			// else, clip the env size to max eax supported size
-			size = std::min(size, (float)EAXLISTENER_MAXENVIRONMENTSIZE);
-		}
-
-		uint newEnv;
-
-		// retrieve the EAX environment number
-		TStringIntMap::iterator it(_IdToEaxEnv.find(fxId));
-		if (it != _IdToEaxEnv.end())
-		{
-			// there is an EAX effect
-			newEnv = it->second;
-		}
-		else
-		{
-			// no effect, default to "PLAIN" effect
-			static TStringId plain = CStringMapper::map("PLAIN");
-			newEnv = _IdToEaxEnv[plain];
+			clamp(size, 1.f, 100.f);
 		}
 
 		// only update environment if there is some change.
-		if (newEnv != _LastEnv || size != _LastEnvSize)
+		if (fxId != _LastEnv || size != _LastEnvSize)
 		{
-			nldebug("AM: setEnvironment %u %f", (uint32)newEnv, size);
-			drvReverbEffect->setEnvironment(IReverbEffect::CEnvironment(EnvironmentPresets[newEnv], size));
-			_LastEnv = newEnv;
+			nldebug("AM: CClusteredSound => setEnvironment %s %f", CStringMapper::unmap(fxId).c_str(), size);
+			mixer->setEnvironment(fxId, size);
+			_LastEnv = fxId;
 			_LastEnvSize = size;
 		}
 	}
@@ -678,14 +601,17 @@ void CClusteredSound::soundTraverse(const std::vector<CCluster *> &clusters, CSo
 
 							if (travContext.Dist+minDist < _MaxEarDistance)
 							{
+								// note: this block of code is a mess and should be cleaned up and commented =)
 								// TODO : compute relative gain according to portal behavior.
 								CClusterSoundStatus css;
 								css.Gain = travContext.Gain;
 								CVector soundDir = (nearPos - travContext.ListenerPos).normed();
+								/* ****** Todo: OpenAL EFX & XAudio2 implementation of Occlusion & Obstruction (not implemented for fmod anyways) !!! ******
 								TStringId occId = portal->getOcclusionModelId();
 								TStringIntMap::iterator it(_IdToMaterial.find(occId));
+								   ****** Todo: OpenAL EFX & XAudio2 implementation of Occlusion & Obstruction (not implemented for fmod anyways) !!! ****** */
 
-	#if EAX_AVAILABLE == 1
+	#if EAX_AVAILABLE == 1 // EAX_AVAILABLE no longer used => TODO: implement with EFX and remove when new implementation OK.
 								if (it != _IdToMaterial.end())
 								{
 									// found an occlusion material for this portal
@@ -702,12 +628,14 @@ void CClusteredSound::soundTraverse(const std::vector<CCluster *> &clusters, CSo
 									css.OcclusionRoomRatio = travContext.OcclusionRoomRatio;
 								}
 	#else	// EAX_AVAILABLE
+								/* ****** Todo: OpenAL EFX & XAudio2 implementation of Occlusion & Obstruction (not implemented for fmod anyways) !!! ******
 								if (it != _IdToMaterial.end())
 								{
 									// found an occlusion material for this portal
 									uint matId = it->second;
 									css.Gain *= EAX_MATERIAL_PARAM[matId];
 								}
+								   ****** Todo: OpenAL EFX & XAudio2 implementation of Occlusion & Obstruction (not implemented for fmod anyways) !!! ****** */
 	#endif	// EAX_AVAILABLE
 	/*							if (portal->getOcclusionModel() == "wood door")
 								{
@@ -759,7 +687,7 @@ void CClusteredSound::soundTraverse(const std::vector<CCluster *> &clusters, CSo
 	//								float sqrdist = (realListener - nearPoint).sqrnorm();
 									if (travContext.Dist < 2.0f)	// interpolate a 2 m
 										obst *= travContext.Dist / 2.0f;
-	#if EAX_AVAILABLE == 1
+	#if EAX_AVAILABLE == 1 // EAX_AVAILABLE no longer used => TODO: implement with EFX and remove when new implementation OK.
 									css.Obstruction = max(sint32(EAXBUFFER_MINOBSTRUCTION), sint32(travContext.Obstruction - sint32(obst)));
 									css.OcclusionLFFactor = 0.50f * travContext.OcclusionLFFactor;
 	#else

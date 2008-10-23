@@ -64,7 +64,7 @@ CStandardReverbEffectAL::CStandardReverbEffectAL(CSoundDriverAL *soundDriver, AL
 	alEffectf(_AlEffect, AL_REVERB_DECAY_HFLIMIT, AL_TRUE);
 
 	// set default environment
-	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
+	setEnvironment();
 }
 
 CStandardReverbEffectAL::~CStandardReverbEffectAL()
@@ -72,9 +72,9 @@ CStandardReverbEffectAL::~CStandardReverbEffectAL()
 
 }
 
-void CStandardReverbEffectAL::setEnvironment(const CEnvironment &environment)
+void CStandardReverbEffectAL::setEnvironment(const CEnvironment &environment, float roomSize)
 {
-	nldebug("AL: CStandardReverbEffectAL::setEnvironment, size: %f", environment.RoomSize);
+	nldebug("AL: CStandardReverbEffectAL::setEnvironment, size: %f", roomSize);
 
 	// *** TODO *** environment.RoomSize
 	alEffectf(_AlEffect, AL_REVERB_DENSITY, environment.Density / 100.0f); alTestWarning("AL_REVERB_DENSITY");
@@ -107,7 +107,7 @@ IEffect::TEffectType CStandardReverbEffectAL::getType()
 CCreativeReverbEffectAL::CCreativeReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot) : CEffectAL(soundDriver, alEffect, alAuxEffectSlot)
 {
 	// set default environment
-	setEnvironment(NLSOUND_ENVIRONMENT_DEFAULT);
+	setEnvironment();
 }
 
 CCreativeReverbEffectAL::~CCreativeReverbEffectAL()
@@ -126,13 +126,13 @@ IEffect::TEffectType CCreativeReverbEffectAL::getType()
 	return Reverb;
 }
 
-void CCreativeReverbEffectAL::setEnvironment(const CEnvironment &environment)
+void CCreativeReverbEffectAL::setEnvironment(const CEnvironment &environment, float roomSize)
 {
-	nldebug("AL: CCreativeReverbEffectAL::setEnvironment, size: %f", environment.RoomSize);
+	nldebug("AL: CCreativeReverbEffectAL::setEnvironment, size: %f", roomSize);
 
 	EAXREVERBPROPERTIES eaxreverb;
 	eaxreverb.ulEnvironment = 26;
-	eaxreverb.flEnvironmentSize = environment.RoomSize;
+	eaxreverb.flEnvironmentSize = roomSize;
 	eaxreverb.flEnvironmentDiffusion = environment.Diffusion / 100.0f;
 	eaxreverb.lRoom = (long)(environment.RoomFilter * 100.0f);
 	eaxreverb.lRoomHF = (long)(environment.RoomFilterHF * 100.0f);

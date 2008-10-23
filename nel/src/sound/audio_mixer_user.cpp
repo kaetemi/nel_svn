@@ -421,7 +421,45 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	{
 		if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb))))
 			{ _UseEax = false; }
-		else { nldebug("AM: Reverb OK"); }
+		else // createEffect succeeded, add environments
+		{ 
+			nldebug("AM: Reverb OK");
+			// todo: loading this data from a file or something would be neat
+			// also: check if this should go into clustered_sound (background_sound_manager also uses this stuff at one point, though)
+			// effect presets (based on I3DL2 specification/guidelines, see 3dl2help.h)
+			addEnvironment("GENERIC",         IReverbEffect::CEnvironment( -10.00f, -1.00f, 1.49f,0.83f, -26.02f,0.007f,   2.00f,0.011f,100.0f,100.0f));
+			addEnvironment("PADDEDCELL",      IReverbEffect::CEnvironment( -10.00f,-60.00f, 0.17f,0.10f, -12.04f,0.001f,   2.07f,0.002f,100.0f,100.0f));
+			addEnvironment("ROOM",            IReverbEffect::CEnvironment( -10.00f, -4.54f, 0.40f,0.83f, -16.46f,0.002f,   0.53f,0.003f,100.0f,100.0f));
+			addEnvironment("BATHROOM",        IReverbEffect::CEnvironment( -10.00f,-12.00f, 1.49f,0.54f,  -3.70f,0.007f,  10.30f,0.011f,100.0f, 60.0f));
+			addEnvironment("LIVINGROOM",      IReverbEffect::CEnvironment( -10.00f,-60.00f, 0.50f,0.10f, -13.76f,0.003f, -11.04f,0.004f,100.0f,100.0f));
+			addEnvironment("STONEROOM",       IReverbEffect::CEnvironment( -10.00f, -3.00f, 2.31f,0.64f,  -7.11f,0.012f,   0.83f,0.017f,100.0f,100.0f));
+			addEnvironment("AUDITORIUM",      IReverbEffect::CEnvironment( -10.00f, -4.76f, 4.32f,0.59f,  -7.89f,0.020f,  -2.89f,0.030f,100.0f,100.0f));
+			addEnvironment("CONCERTHALL",     IReverbEffect::CEnvironment( -10.00f, -5.00f, 3.92f,0.70f, -12.30f,0.020f,  -0.02f,0.029f,100.0f,100.0f));
+			addEnvironment("CAVE",            IReverbEffect::CEnvironment( -10.00f,  0.00f, 2.91f,1.30f,  -6.02f,0.015f,  -3.02f,0.022f,100.0f,100.0f));
+			addEnvironment("ARENA",           IReverbEffect::CEnvironment( -10.00f, -6.98f, 7.24f,0.33f, -11.66f,0.020f,   0.16f,0.030f,100.0f,100.0f));
+			addEnvironment("HANGAR",          IReverbEffect::CEnvironment( -10.00f,-10.00f,10.05f,0.23f,  -6.02f,0.020f,   1.98f,0.030f,100.0f,100.0f));
+			addEnvironment("CARPETEDHALLWAY", IReverbEffect::CEnvironment( -10.00f,-40.00f, 0.30f,0.10f, -18.31f,0.002f, -16.30f,0.030f,100.0f,100.0f));
+			addEnvironment("HALLWAY",         IReverbEffect::CEnvironment( -10.00f, -3.00f, 1.49f,0.59f, -12.19f,0.007f,   4.41f,0.011f,100.0f,100.0f));
+			addEnvironment("STONECORRIDOR",   IReverbEffect::CEnvironment( -10.00f, -2.37f, 2.70f,0.79f, -12.14f,0.013f,   3.95f,0.020f,100.0f,100.0f));
+			addEnvironment("ALLEY",           IReverbEffect::CEnvironment( -10.00f, -2.70f, 1.49f,0.86f, -12.04f,0.007f,  -0.04f,0.011f,100.0f,100.0f));
+			addEnvironment("FOREST",          IReverbEffect::CEnvironment( -10.00f,-33.00f, 1.49f,0.54f, -25.60f,0.162f,  -6.13f,0.088f, 79.0f,100.0f));
+			addEnvironment("CITY",            IReverbEffect::CEnvironment( -10.00f, -8.00f, 1.49f,0.67f, -22.73f,0.007f, -22.17f,0.011f, 50.0f,100.0f));
+			addEnvironment("MOUNTAINS",       IReverbEffect::CEnvironment( -10.00f,-25.00f, 1.49f,0.21f, -27.80f,0.300f, -20.14f,0.100f, 27.0f,100.0f));
+			addEnvironment("QUARRY",          IReverbEffect::CEnvironment( -10.00f,-10.00f, 1.49f,0.83f,-100.00f,0.061f,   5.00f,0.025f,100.0f,100.0f));
+			addEnvironment("PLAIN",           IReverbEffect::CEnvironment( -10.00f,-20.00f, 1.49f,0.50f, -24.66f,0.179f, -25.14f,0.100f, 21.0f,100.0f));
+			addEnvironment("PARKINGLOT",      IReverbEffect::CEnvironment( -10.00f,  0.00f, 1.65f,1.50f, -13.63f,0.008f, -11.53f,0.012f,100.0f,100.0f));
+			addEnvironment("SEWERPIPE",       IReverbEffect::CEnvironment( -10.00f,-10.00f, 2.81f,0.14f,   4.29f,0.014f,   6.48f,0.021f, 80.0f, 60.0f));
+			addEnvironment("UNDERWATER",      IReverbEffect::CEnvironment( -10.00f,-40.00f, 1.49f,0.10f,  -4.49f,0.007f,  17.00f,0.011f,100.0f,100.0f));
+			addEnvironment("SMALLROOM",       IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.10f,0.83f,  -4.00f,0.005f,   5.00f,0.010f,100.0f,100.0f));
+			addEnvironment("MEDIUMROOM",      IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.30f,0.83f, -10.00f,0.010f,  -2.00f,0.020f,100.0f,100.0f));
+			addEnvironment("LARGEROOM",       IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.50f,0.83f, -16.00f,0.020f, -10.00f,0.040f,100.0f,100.0f));
+			addEnvironment("MEDIUMHALL",      IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.80f,0.70f, -13.00f,0.015f,  -8.00f,0.030f,100.0f,100.0f));
+			addEnvironment("LARGEHALL",       IReverbEffect::CEnvironment( -10.00f, -6.00f, 1.80f,0.70f, -20.00f,0.030f, -14.00f,0.060f,100.0f,100.0f));
+			addEnvironment("PLATE",           IReverbEffect::CEnvironment( -10.00f, -2.00f, 1.30f,0.90f,   0.00f,0.002f,   0.00f,0.010f,100.0f, 75.0f));
+			_DefaultEnvironment = getEnvironment("PLAIN");
+			_DefaultRoomSize = 7.5f;
+			_ReverbEffect->setEnvironment(_DefaultEnvironment, _DefaultRoomSize);
+		}
 	}
 
 	// Init tracks (physical sources)
@@ -2463,6 +2501,41 @@ bool	CAudioMixerUser::isEventMusicEnded()
 	if (_MusicChannelFaders[EventMusicChannel].isInitOk())
 		_MusicChannelFaders[EventMusicChannel].isEnded();
 	return true;
+}
+
+/// Add a reverb environment
+void CAudioMixerUser::addEnvironment(const std::string &environmentName, const IReverbEffect::CEnvironment &environment)
+{
+	if (_ReverbEffect) 
+	{
+		TStringId environment_name = CStringMapper::map(NLMISC::toUpper(environmentName));
+
+		if (_Environments.find(environment_name) != _Environments.end()) 
+			nlwarning("Reverb environment %s already exists, replacing with new one", CStringMapper::unmap(environment_name).c_str());
+
+		_Environments[environment_name] = environment;
+	}
+}
+
+/// Set the current reverb environment
+void CAudioMixerUser::setEnvironment(NLMISC::TStringId environmentName, float roomSize)
+{
+	if (_ReverbEffect) 
+	{
+		_ReverbEffect->setEnvironment(getEnvironment(environmentName), roomSize);
+	}
+}
+
+/// Get a reverb environment
+const IReverbEffect::CEnvironment &CAudioMixerUser::getEnvironment(NLMISC::TStringId environmentName)
+{
+	TEnvironments::iterator it(_Environments.find(environmentName));
+	if (it == _Environments.end())
+	{
+		nlwarning("Reverb environment %s does not exist, returning default", CStringMapper::unmap(environmentName).c_str());
+		return _DefaultEnvironment;
+	}
+	return it->second;
 }
 
 #if !FINAL_VERSION

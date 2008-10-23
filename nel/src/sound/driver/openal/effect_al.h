@@ -77,7 +77,7 @@ public:
 	virtual ~CStandardReverbEffectAL();
 
 	// IReverbEffect
-	virtual void setEnvironment(const CEnvironment &environment);
+	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
 
 	virtual IEffect::TEffectType getType();
 
@@ -99,7 +99,7 @@ public:
 	virtual ~CCreativeReverbEffectAL();
 
 	// IReverbEffect
-	virtual void setEnvironment(const CEnvironment &environment);
+	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
 
 	virtual IEffect::TEffectType getType();
 

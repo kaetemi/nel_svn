@@ -250,7 +250,7 @@ private:
 	/// The cluster for the next travesal step
 	TClusterTravContextMap	_NextTraversalStep;
 	/// The last setted environement.
-	uint					_LastEnv;
+	NLMISC::TStringId				_LastEnv;
 	/// The last set environment size.
 	float					_LastEnvSize;
 	/// The segment of all the audio path.
@@ -263,17 +263,6 @@ private:
 	typedef CHashMap<NLMISC::TStringId, NLMISC::TStringId, NLMISC::CStringIdHashMapTraits> TStringStringMap;
 	/// The sound_group to sound assoc
 	TStringStringMap	_SoundGroupToSound;
-
-	typedef CHashMap<NLMISC::TStringId, uint, NLMISC::CStringIdHashMapTraits>	TStringIntMap;
-	/// The mapping for env name Id to EAX environement number
-	TStringIntMap	_IdToEaxEnv;
-	/// The mapping for occlusion material name to material number
-	TStringIntMap	_IdToMaterial;
-	/// The environment name table for init.
-	static const char							*_EnvironmentNames[];
-	/// The material name table for init.
-	static const char							*_MaterialNames[];
-
 };
 
 } // NLSOUND
