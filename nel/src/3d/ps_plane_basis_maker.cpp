@@ -309,7 +309,7 @@ void CSpinnerFunctor::setAxis(const NLMISC::CVector &axis)
 }
 
 ///============================================================================
-const void CSpinnerFunctor::setNumSamples(uint32 nbSamples)
+void CSpinnerFunctor::setNumSamples(uint32 nbSamples)
 {
 	nlassert(nbSamples > 0);
 	_NbSamples = nbSamples;
@@ -317,7 +317,7 @@ const void CSpinnerFunctor::setNumSamples(uint32 nbSamples)
 }
 
 ///============================================================================
-const uint32 CSpinnerFunctor::getNumSamples(void) const
+uint32 CSpinnerFunctor::getNumSamples(void) const
 {
 	return _NbSamples;
 }

@@ -195,9 +195,9 @@ public:
 	/// get the rotation axis
 	const NLMISC::CVector   getAxis(void) const { return _Axis;}
 	/// set the number of samples for the rotation
-	const void setNumSamples(uint32 nbSamples);
+	void setNumSamples(uint32 nbSamples);
 	/// get the number of samples for the rotation
-	const uint32 getNumSamples(void) const;
+	uint32 getNumSamples(void) const;
 	/// serial this object
 	void serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 protected:

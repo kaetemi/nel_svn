@@ -845,7 +845,7 @@ namespace NLNET
 		CModuleProxy(TModulePtr localModule, TModuleId localModuleId, const std::string &moduleClassName, const std::string &fullyQualifiedModuleName, const std::string &moduleManifest);
 	public:
 
-		const CGatewayRoute * const getRoute() const
+		const CGatewayRoute * getRoute() const
 		{
 			return _Route;
 		}
