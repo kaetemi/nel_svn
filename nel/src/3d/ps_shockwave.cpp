@@ -443,8 +443,6 @@ void CPSShockWave::updateVbColNUVForRender(uint32 startIndex, uint32 size, uint3
 			// for now, we don't make texture index wrapping
 			const CTextureGrouped::TFourUV &uvGroup = _TexGroup->getUVQuad((uint32) *currIndex);
 
-			k = _NbSeg + 1;
-
 			for (k = 0; k <= _NbSeg; ++k)
 			{
 
@@ -453,7 +451,6 @@ void CPSShockWave::updateVbColNUVForRender(uint32 startIndex, uint32 size, uint3
 				// point the next quad
 				currUV += stride2;
 			}
-			while (--k);
 
 			currIndex += currIndexIncr;
 		}

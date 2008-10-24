@@ -114,7 +114,7 @@ void *CPSPlaneBasisFollowSpeed::make(CPSLocated *loc,
 				while (speedIt != endSpeedIt);
 			break;
 			default:
-				nlassert(0); // unknow projection mode
+				nlstop; // unknow projection mode
 			break;
 		}
 		return tab;
@@ -148,7 +148,7 @@ void *CPSPlaneBasisFollowSpeed::make(CPSLocated *loc,
 				}
 			break;
 			case XZ:
-				while (numAttrib --);
+				while (numAttrib --)
 				{
 					const CVector *speedVect = &(*(speedIt + (fpIndex >> 16)));
 					float norm = sqrtf(speedVect->x * speedVect->x + speedVect->z * speedVect->z);
@@ -161,7 +161,7 @@ void *CPSPlaneBasisFollowSpeed::make(CPSLocated *loc,
 				}
 			break;
 			case YZ:
-				while (numAttrib --);
+				while (numAttrib --)
 				{
 					const CVector *speedVect = &(*(speedIt + (fpIndex >> 16)));
 					float norm = sqrtf(speedVect->y * speedVect->y + speedVect->z * speedVect->z);
@@ -174,7 +174,7 @@ void *CPSPlaneBasisFollowSpeed::make(CPSLocated *loc,
 				}
 			break;
 			default:
-				nlassert(0); // unknow projection mode
+				nlstop; // unknow projection mode
 			break;
 		}
 		return tab;
