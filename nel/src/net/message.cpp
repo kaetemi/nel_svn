@@ -271,7 +271,6 @@ void CMessage::readType ()
 	TFormat format;
 	serial (format);
 	//nldebug( "IN format = %hu", (uint16)format );
-	bool LongFormat = format.LongFormat;
 
 	// Set mode for the following of the buffer
 	_StringMode = format.StringMode;

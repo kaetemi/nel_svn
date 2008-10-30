@@ -243,7 +243,7 @@ void	NLPACS::CChain::make(const vector<CVector> &vertices, sint32 left, sint32 r
 		subchain3f._Vertices.reserve(last-first+1);
 		subchain3f._Forward = forward;
 		subchain3f._ParentId = thisId;
-		subchain3f._IndexInParent = _SubChains.size()-1;
+		subchain3f._IndexInParent = uint16(_SubChains.size()-1);
 
 		// and then copies the vertices (sorted, btw!)
 		if (forward)

@@ -35,9 +35,9 @@ namespace NLNET
 	class CEmptyModuleServiceBehav : public T
 	{
 	public:
-		virtual void				onServiceUp(const std::string &serviceName, NLNET::TServiceId serviceId)
+		virtual void				onServiceUp(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{}
-		virtual void				onServiceDown(const std::string &serviceName, NLNET::TServiceId serviceId)
+		virtual void				onServiceDown(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{}
 		virtual void				onModuleUpdate()
 		{}
@@ -53,13 +53,13 @@ namespace NLNET
 		{
 			return "";
 		}
-		virtual void				onModuleUp(IModuleProxy *moduleProxy)
+		virtual void				onModuleUp(IModuleProxy * /* moduleProxy */)
 		{}
-		virtual void				onModuleDown(IModuleProxy *moduleProxy)
+		virtual void				onModuleDown(IModuleProxy * /* moduleProxy */)
 		{}
-		virtual void				onModuleSecurityChange(IModuleProxy *moduleProxy)
+		virtual void				onModuleSecurityChange(IModuleProxy * /* moduleProxy */)
 		{}
-		virtual bool				onProcessModuleMessage(IModuleProxy *senderModuleProxy, const CMessage &message)
+		virtual bool				onProcessModuleMessage(IModuleProxy * /* senderModuleProxy */, const CMessage &/* message */)
 		{	return false; }
 	};
 
@@ -67,7 +67,7 @@ namespace NLNET
 	class CEmptySocketBehav : public T
 	{
 	public:
-		virtual void	onModuleSocketEvent(IModuleSocket *moduleSocket, IModule::TModuleSocketEvent eventType)
+		virtual void	onModuleSocketEvent(IModuleSocket * /* moduleSocket */, IModule::TModuleSocketEvent /* eventType */)
 		{
 		}
 	};

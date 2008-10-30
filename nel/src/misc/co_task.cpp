@@ -168,8 +168,6 @@ namespace NLMISC
 			for (;;)
 				// return to parent task
 				task->yield();
-
-			nlassert(false);
 		}
 #endif //NL_USE_THREAD_COTASK
 	};

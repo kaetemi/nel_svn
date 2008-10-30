@@ -418,7 +418,7 @@ bool CSock::dataAvailable()
 	switch ( res  )
 	{
 		case  0 : return false;
-		case -1 : throw ESocket( "CSock::dataAvailable(): select failed" ); return false;
+		case -1 : throw ESocket( "CSock::dataAvailable(): select failed" );
 		default : return true;
 	}
 }

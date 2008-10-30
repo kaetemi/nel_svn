@@ -86,7 +86,7 @@ void	NLPACS::CSurfaceQuadTree::init(float maxThickness, uint maxLevel, const CVe
 	nlassert(maxLevel > 0);
 	clear();
 	_MaxThickness = maxThickness;
-	_MaxLevel = maxLevel;
+	_MaxLevel = uint8(maxLevel);
 	_BBox.setCenter(center);
 	_BBox.setHalfSize(CVector(halfSize, halfSize, 10000.0f));
 }
@@ -284,7 +284,7 @@ void	NLPACS::CQuadBranch::serial(NLMISC::IStream &f)
 			}
 			else
 			{
-				childType = (_Children[child]->isLeaf()) ? LeafChild : BranchChild;
+				childType = uint8(_Children[child]->isLeaf() ? LeafChild : BranchChild);
 				f.serial(childType);
 				_Children[child]->serial(f);
 			}
@@ -371,7 +371,7 @@ void	NLPACS::CSurfaceQuadTree::serial(NLMISC::IStream &f)
 		}
 		else
 		{
-			childType = (_Root->isLeaf()) ? CQuadBranch::LeafChild : CQuadBranch::BranchChild;
+			childType = uint8(_Root->isLeaf() ? CQuadBranch::LeafChild : CQuadBranch::BranchChild);
 			f.serial(childType);
 			_Root->serial(f);
 		}

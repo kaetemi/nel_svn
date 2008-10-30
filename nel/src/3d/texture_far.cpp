@@ -477,7 +477,6 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 
 	// get the size of the texture to compute
 	uint subTextWidth=(nS*NL_NUM_PIXELS_ON_FAR_TILE_EDGE)>>(pid.FarIndex-1);
-	uint subTextHeight=(nT*NL_NUM_PIXELS_ON_FAR_TILE_EDGE)>>(pid.FarIndex-1);
 
 	// Check it is a 16 bits texture
 	nlassert (getPixelFormat()==RGBA);

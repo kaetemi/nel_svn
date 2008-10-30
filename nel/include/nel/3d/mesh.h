@@ -791,7 +791,7 @@ private:
 					switch(mb.NumCoords[i])
 					{
 						case 2:
-							vba.setTexCoord(id, i, corn->Uvws[i].U, corn->Uvws[i].V);
+							vba.setTexCoord(id, uint8(i), corn->Uvws[i].U, corn->Uvws[i].V);
 						break;
 						case 3:
 							vba.setValueFloat3Ex((CVertexBuffer::TValue) (CVertexBuffer::TexCoord0 + i), id, corn->Uvws[i].U, corn->Uvws[i].V, corn->Uvws[i].W);
@@ -814,7 +814,7 @@ private:
 			{
 				vba.setPaletteSkin(id, corn->Palette);
 				for(i=0;i<NL3D_MESH_SKINNING_MAX_MATRIX;i++)
-					vba.setWeight(id, i, corn->Weights[i]);
+					vba.setWeight(id, uint8(i), corn->Weights[i]);
 			}
 		}
 	}

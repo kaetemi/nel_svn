@@ -76,7 +76,7 @@ namespace NLNET
 			}
 			else
 			{
-				mt = msgType;
+				mt = uint8(msgType);
 				headerMessage.serial(mt);
 			}
 			headerMessage.serial(senderProxyId);

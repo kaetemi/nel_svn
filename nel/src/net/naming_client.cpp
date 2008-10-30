@@ -106,7 +106,7 @@ static void cbRegister (CMessage &msgin, TSockId from, CCallbackNetBase &netbase
 static bool QueryPort;
 static uint16 QueryPortPort;
 
-static void cbQueryPort (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+static void cbQueryPort (CMessage &msgin, TSockId /* from */, CCallbackNetBase &/* netbase */)
 {
 	msgin.serial (QueryPortPort);
 	QueryPort = true;
@@ -116,7 +116,7 @@ static void cbQueryPort (CMessage &msgin, TSockId from, CCallbackNetBase &netbas
 
 //static bool FirstRegisteredBroadcast;
 
-void cbRegisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+void cbRegisterBroadcast (CMessage &msgin, TSockId /* from */, CCallbackNetBase &/* netbase */)
 {
 	TServiceId::size_type size;
 	string name;
@@ -175,7 +175,7 @@ void cbRegisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netba
 
 //
 
-void cbUnregisterBroadcast (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+void cbUnregisterBroadcast (CMessage &msgin, TSockId /* from */, CCallbackNetBase &/* netbase */)
 {
 	string name;
 	TServiceId sid;
@@ -237,7 +237,7 @@ static TCallbackItem NamingClientCallbackArray[] =
 	{ "UNB", cbUnregisterBroadcast }
 };
 
-void CNamingClient::connect( const CInetAddress &addr, CCallbackNetBase::TRecordingState rec, const vector<CInetAddress> &addresses )
+void CNamingClient::connect( const CInetAddress &addr, CCallbackNetBase::TRecordingState rec, const vector<CInetAddress> &/* addresses */ )
 {
 	nlassert (_Connection == NULL || _Connection != NULL && !_Connection->connected ());
 
@@ -500,7 +500,7 @@ bool CNamingClient::lookupAndConnect (const std::string &name, CCallbackClient &
 	if (!CNamingClient::lookup (name, servaddr))
 		return false;
 
-	do
+	for(;;)
 	{
 		try
 		{
@@ -519,7 +519,6 @@ bool CNamingClient::lookupAndConnect (const std::string &name, CCallbackClient &
 				return false;
 		}
 	}
-	while (true);
 }
 
 
@@ -537,6 +536,10 @@ void CNamingClient::update ()
 
 NLMISC_CATEGORISED_COMMAND(nel, services, "displays registered services", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	CNamingClient::displayRegisteredServices (&log);

@@ -187,7 +187,7 @@ void	followBorder(CInteriorSurface &surface, uint first, uint edge, uint sens, v
 	// adds the pivot to the border and its normal
 	vstore.push_back(surface.CollisionMeshBuild->Vertices[current->V[pivot]]);
 
-	while (true)
+	for(;;)
 	{
 		loop = false;
 		// -1 means no neighbor at all, -2 means a neighbor that is not available yet
@@ -429,7 +429,7 @@ void	buildExteriorMesh(CCollisionMeshBuild &cmb, CExteriorMesh &em)
 {
 	// find the first non interior face
 	uint							i,
-									edge;
+									edge = 0;
 
 	vector<CExteriorMesh::CEdge>	edges;
 	uint							numLink = 0;
@@ -443,7 +443,7 @@ void	buildExteriorMesh(CCollisionMeshBuild &cmb, CExteriorMesh &em)
 
 	i = 0;
 
-	while (true)
+	for(;;)
 	{
 		bool	found = false;
 		for (; i<cmb.Faces.size() && !found; ++i)
@@ -473,11 +473,9 @@ void	buildExteriorMesh(CCollisionMeshBuild &cmb, CExteriorMesh &em)
 		sint			pivot = (edge+1)%3;
 		sint			nextEdge = edge;
 
-		bool			allowThis = true;
-
 		uint			firstExtEdge = edges.size();
 
-		while (true)
+		for(;;)
 		{
 			if (cmb.Faces[current].EdgeFlags[nextEdge])
 			{
@@ -588,7 +586,7 @@ void	linkExteriorToInterior(CLocalRetriever &lr)
 		else
 		{
 			// set it up to point on the chain and surface
-			link.BorderChainId = ch;
+			link.BorderChainId = uint16(ch);
 			link.ChainId = bchains[ch];
 			link.SurfaceId = (uint16)chains[link.ChainId].getLeft();
 		}

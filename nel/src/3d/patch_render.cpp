@@ -193,7 +193,7 @@ void			CPatch::computeNewFar(const NLMISC::CBSphere &patchSphere, sint &newFar0,
 				}
 
 				// Compute info for transition.
-				float	farDist;
+				float	farDist = 0.f;
 				switch(newFar1)
 				{
 					case 1: farDist= CLandscapeGlobals::TileDistNear; break;

@@ -214,11 +214,11 @@ public:
 	virtual void getKeysInRange(TAnimationTime t1, TAnimationTime t2, std::vector<TAnimationTime> &result)=0;
 
 	/// Fail if not A Float Linear Keyframer
-	virtual	bool	addLinearFloatKey(const UKeyLinearFloat &key) {return false;}
+	virtual	bool	addLinearFloatKey(const UKeyLinearFloat &/* key */) {return false;}
 	/// Fail if not A Float Bezier Keyframer
-	virtual	bool	addBezierFloatKey(const UKeyBezierFloat &key) {return false;}
+	virtual	bool	addBezierFloatKey(const UKeyBezierFloat &/* key */) {return false;}
 	/// Fail if not A Float TCB Keyframer
-	virtual	bool	addTCBFloatKey(const UKeyTCBFloat &key) {return false;}
+	virtual	bool	addTCBFloatKey(const UKeyTCBFloat &/* key */) {return false;}
 };
 
 

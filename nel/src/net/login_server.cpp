@@ -113,7 +113,7 @@ void CLoginServer::refreshPendingList ()
 }
 
 
-void cbWSChooseShard (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+void cbWSChooseShard (CMessage &msgin, const std::string &/* serviceName */, TServiceId /* sid */)
 {
 	// the WS call me that a new client want to come in my shard
 	string reason, userName, userPriv, userExtended;
@@ -183,7 +183,7 @@ void cbWSChooseShard (CMessage &msgin, const std::string &serviceName, TServiceI
 	CUnifiedNetwork::getInstance()->send ("WS", msgout);
 }
 
-void cbWSDisconnectClient (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+void cbWSDisconnectClient (CMessage &msgin, const std::string &serviceName, TServiceId /* sid */)
 {
 	// the WS tells me that i have to disconnect a client
 
@@ -272,7 +272,7 @@ void cbShardValidation (CMessage &msgin, TSockId from, CCallbackNetBase &netbase
 	}
 }
 
-void ClientConnection (TSockId from, void *arg)
+void ClientConnection (TSockId from, void * /* arg */)
 {
 	nldebug("LS: new client connection: %s", from->asString ().c_str ());
 
@@ -519,6 +519,10 @@ bool CLoginServer::acceptsInvalidCookie()
 
 NLMISC_CATEGORISED_COMMAND(nel, lsUsers, "displays the list of all connected users", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	if (ModeTcp)
@@ -540,6 +544,10 @@ NLMISC_CATEGORISED_COMMAND(nel, lsUsers, "displays the list of all connected use
 
 NLMISC_CATEGORISED_COMMAND(nel, lsPending, "displays the list of all pending users", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	log.displayNL ("Display the %d pending users :", PendingUsers.size());
@@ -555,6 +563,8 @@ NLMISC_CATEGORISED_COMMAND(nel, lsPending, "displays the list of all pending use
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, string, LSListenAddress, "the listen address sended to the client to connect on this front_end")
 {
+	nlunreferenced(human);
+
 	if (get)
 	{
 		*pointer = ListenAddr;

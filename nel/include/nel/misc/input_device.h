@@ -59,7 +59,7 @@ struct IInputDevice
 		  * If a device doesn't support buffered datas, the state changes can be directly send to the event server.
 		  * The default does nothing.
 		  */
-		virtual void begin(CEventServer *server) {}
+		virtual void begin(CEventServer * /* server */) {}
 
 		/**	For device server usage :
 		  * Poll all events from that device, and notify them to the given device server, so that they can be sorted between devices.
@@ -76,7 +76,7 @@ struct IInputDevice
 		  * The default does nothing.
 		  * The next message can be used to get a time stamp for example. It may be NULL is no next message is available
 		  */
-		virtual void transitionOccured(CEventServer *server, const IInputDeviceEvent *nextMessage) {}
+		virtual void transitionOccured(CEventServer * /* server */, const IInputDeviceEvent * /* nextMessage */) {}
 	//@}
 
 	// dtor

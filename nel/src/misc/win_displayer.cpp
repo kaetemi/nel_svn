@@ -159,7 +159,7 @@ LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					// and convert it to UTF-8 encoding.
 					TextSend = ucs.toUtf8();
 					SendMessage (cwd->_HInputEdit, WM_SETTEXT, (WPARAM)0, (LPARAM)"");
-					const char *pos1 = TextSend.c_str(), *pos2 = TextSend.c_str();
+					const char *pos2 = TextSend.c_str();
 					string str;
 					while (*pos2 != '\0')
 					{
@@ -322,7 +322,7 @@ void CWinDisplayer::resizeLabels ()
 
 		i = 0;
 
-		while (true)
+		for(;;)
 		{
 			nb = 0;
 			while (i+nb != access.value().size () && !access.value()[i+nb].Value.empty()) nb++;

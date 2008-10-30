@@ -186,7 +186,7 @@ public:
 	  * Layer 1 is for water surfaces
 	  * Layer 2 is for object above water
 	  */
-	void			setOrderingLayer(uint layer) { _OrderingLayer = layer; }
+	void			setOrderingLayer(uint layer) { _OrderingLayer = uint8(layer); }
 
 	/// Get the ordering layer
 	uint			getOrderingLayer() const { return _OrderingLayer; }
@@ -443,7 +443,7 @@ public:
 	 *	\param bbox: the bbox (in bone basis) filled if return is true
 	 *	\return false if no vertices are bound to
 	 */
-	virtual bool		getSkinBoneBBox(NLMISC::CAABBox &bbox, uint boneId) {return false;}
+	virtual bool		getSkinBoneBBox(NLMISC::CAABBox &/* bbox */, uint /* boneId */) {return false;}
 	// @}
 
 
@@ -486,7 +486,7 @@ public:
 	 *	if don't intersect, dist2D="nearest distance to the ray", and distZ=0
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
 	 */
-	virtual bool		fastIntersect(const NLMISC::CVector &p0, const NLMISC::CVector &dir, float &dist2D, float &distZ, bool computeDist2D) {return false;}
+	virtual bool		fastIntersect(const NLMISC::CVector &/* p0 */, const NLMISC::CVector &/* dir */, float &/* dist2D */, float &/* distZ */, bool /* computeDist2D */) {return false;}
 
 	/// internal only: used by CMeshBase
 	void				enableFastIntersectSupport(bool enable) {_SupportFastIntersect= enable;}
@@ -530,7 +530,7 @@ public:
 	 *	The extra blurring is a work of the ShadowMapManager (which blurs multiple shadows in a same pass)
 	 *	NB: you can overwrite the current driver frustum/ViewMatrix/modelMatrix without backuping it (ShadowMapManager work)
 	 */
-	virtual	void		generateShadowMap(const CVector &lightDir) {}
+	virtual	void		generateShadowMap(const CVector &/* lightDir */) { }
 	/** get The shadow Map result for receveing. If NULL, nothing is displayed.
 	 */
 	virtual	CShadowMap	*getShadowMap() {return NULL;}
@@ -544,7 +544,7 @@ public:
 	 *	\param casterPos the world position of the caster model.
 	 *	\param shadowMat a correclty setuped material with good ShadowColor, ready to be rendered.
 	 */
-	virtual void		receiveShadowMap(CShadowMap *shadowMap, const CVector &casterPos, const CMaterial &shadowMat) {}
+	virtual void		receiveShadowMap(CShadowMap * /* shadowMap */, const CVector &/* casterPos */, const CMaterial &/* shadowMat */) { }
 
 	/** For receivers. Retrieve the WorldMatrix of the model used for IDriver::render(). By default it returns getWorldMatrix().
 	 *	The exception is the Landscape and his "ZBuffer Problem" management.
@@ -559,13 +559,13 @@ public:
 	 *	The model should compute its bbox in World (best fit).
 	 *	\return false if the model don't support it (default), or if hidden in HRC!!
 	 */
-	virtual bool		computeWorldBBoxForShadow(NLMISC::CAABBox &worldBB) {return false;}
+	virtual bool		computeWorldBBoxForShadow(NLMISC::CAABBox &/* worldBB */) {return false;}
 	/** Special For Skeleton Caster. Render into the AuxDriver the mesh, within the current
 	 *	setuped Frustum/ViewMatrix.
 	 *	no-op by default, or if hidden in HRC!!
 	 *	\param rootSkeleton the skeleton which is currently rendering its shadowMap
 	 */
-	virtual void		renderIntoSkeletonShadowMap(CSkeletonModel *rootSkeleton, CMaterial	&castMat) {}
+	virtual void		renderIntoSkeletonShadowMap(CSkeletonModel * /* rootSkeleton */, CMaterial	&/* castMat */) { }
 
 	/** To limit some problems when the light direction is too on the XY axis.
 	 *	This method set an "angle" threshold for the shadow direction
@@ -657,7 +657,7 @@ protected:
 	 *	If the skin is a MRM, it is the skeleton which drives the MRM level with alphaMRM: [0,1]
 	 *	default is nop
 	 */
-	virtual void			renderSkin(float alphaMRM) {}
+	virtual void			renderSkin(float /* alphaMRM */) { }
 
 
 	/** Deriver may support SkinGrouping if isSkinnable().
@@ -668,19 +668,19 @@ protected:
 	/** if supportSkinGrouping(), called to transform the VBuffer, and store it into dest.
 	 *	\return number of vertices added to the VBuffer, or -1 if > reaminingVertices
 	 */
-	virtual	sint			renderSkinGroupGeom(float alphaMRM, uint remainingVertices, uint8 *dest) {return 0;}
+	virtual	sint			renderSkinGroupGeom(float /* alphaMRM */, uint /* remainingVertices */, uint8 * /* dest */) {return 0;}
 	/** if supportSkinGrouping(), called to render the primitives of the already skinned vertices (VB activated in the driver)
 	 *	Optionnaly, fill specRdrPasses with specular rdrPass to sort (used for specular grouping).
 	 *	\param baseVertex value to add to each PBlock index.
 	 */
-	virtual	void			renderSkinGroupPrimitives(uint baseVertex, std::vector<CSkinSpecularRdrPass> &specularRdrPasses, uint skinIndex) {}
+	virtual	void			renderSkinGroupPrimitives(uint /* baseVertex */, std::vector<CSkinSpecularRdrPass> &/* specularRdrPasses */, uint /* skinIndex */) { }
 	/// Render a specific specular renderPass returned by renderSkinGroupPrimitives
-	virtual	void			renderSkinGroupSpecularRdrPass(uint rdrPass) {}
+	virtual	void			renderSkinGroupSpecularRdrPass(uint /* rdrPass */) { }
 
 	/// Special Skinning For ShadowMapping
 	virtual	bool			supportShadowSkinGrouping() const {return false;}
-	virtual	sint			renderShadowSkinGeom(uint remainingVertices, uint8 *vbDest) {return 0;}
-	virtual	void			renderShadowSkinPrimitives(CMaterial &castMat, IDriver *drv, uint baseVertex) {}
+	virtual	sint			renderShadowSkinGeom(uint /* remainingVertices */, uint8 * /* vbDest */) {return 0;}
+	virtual	void			renderShadowSkinPrimitives(CMaterial &/* castMat */, IDriver * /* drv */, uint /* baseVertex */) { }
 
 	/** Special use of skinning to compute intersection of a ray with it.
 	 *	\return false if not supported/no triangles, else true if can do the test (even if don't intersect!)
@@ -689,7 +689,7 @@ protected:
 	 *	\param computeDist2D if false and don't intersect, then return dist2D=FLT_MAX, and distZ=0
 	 */
 	virtual	bool			supportIntersectSkin() const {return false;}
-	virtual	bool			intersectSkin(const CMatrix &toRaySpace, float &dist2D, float &distZ, bool computeDist2D) {return false;}
+	virtual	bool			intersectSkin(const CMatrix &/* toRaySpace */, float &/* dist2D */, float &/* distZ */, bool /* computeDist2D */) {return false;}
 
 	// The SkeletonModel, root of us (skinning or sticked object). NULL , if normal mode.
 	CSkeletonModel	*_FatherSkeletonModel;

@@ -147,7 +147,7 @@ void CMovePrimitive::checkSortedList ()
 {
 	// Check sorted list for ecah world image
 	for (uint i=0; i<(uint)_NumWorldImage; i++)
-		_WorldImages[i]->checkSortedList (i+_FirstWorldImage);
+		_WorldImages[i]->checkSortedList (uint8(i+_FirstWorldImage));
 }
 
 // ***************************************************************************
@@ -240,7 +240,7 @@ void CMovePrimitive::setGlobalPosition (const UGlobalPosition& pos, uint8 worldI
 
 // ***************************************************************************
 
-void CMovePrimitive::setGlobalPosition (const NLMISC::CVectorD& pos, uint8 worldImage, UGlobalPosition::TType type)
+void CMovePrimitive::setGlobalPosition (const NLMISC::CVectorD& pos, uint8 worldImage, UGlobalPosition::TType /* type */)
 {
 	NLPACS_HAUTO_SET_UGLOBAL_POSITION
 

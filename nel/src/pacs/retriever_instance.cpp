@@ -679,7 +679,7 @@ void	NLPACS::CRetrieverInstance::testExteriorCollision(NLPACS::CCollisionSurface
 			cst.CollisionChains[ccId].RightSurface = eee.Exterior;
 
 			// store this Id in the LUT of chains.
-			edgeLUT[eei]= ccId;
+			edgeLUT[eei]= uint16(ccId);
 		}
 		else
 		{
@@ -745,7 +745,7 @@ void	NLPACS::CRetrieverInstance::serial(NLMISC::IStream &f)
 	f.serial(_BBox);
 
 	// serialises the number of nodes
-	uint16	totalNodes = _NodesInformation.size();
+	uint16	totalNodes = uint16(_NodesInformation.size());
 	f.serial(totalNodes);
 	if (f.isReading())
 	{

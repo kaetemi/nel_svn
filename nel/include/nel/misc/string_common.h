@@ -96,32 +96,32 @@ sint smprintf( char *buffer, size_t count, const char *format, ... );
 // These functions are needed by template system to failed the compilation if you pass bad type on nlinfo...
 //
 
-inline void _check(int a) { }
-inline void _check(unsigned int a) { }
-inline void _check(char a) { }
-inline void _check(unsigned char a) { }
-inline void _check(long a) { }
-inline void _check(unsigned long a) { }
+inline void _check(int /* a */) { }
+inline void _check(unsigned int /* a */) { }
+inline void _check(char /* a */) { }
+inline void _check(unsigned char /* a */) { }
+inline void _check(long /* a */) { }
+inline void _check(unsigned long /* a */) { }
 
 #ifdef NL_COMP_VC6
-	inline void _check(uint8 a) { }
+	inline void _check(uint8 /* a */) { }
 #endif // NL_COMP_VC6
 
-inline void _check(sint8 a) { }
-inline void _check(uint16 a) { }
-inline void _check(sint16 a) { }
+inline void _check(sint8 /* a */) { }
+inline void _check(uint16 /* a */) { }
+inline void _check(sint16 /* a */) { }
 
 #ifdef NL_COMP_VC6
-	inline void _check(uint32 a) { }
-	inline void _check(sint32 a) { }
+	inline void _check(uint32 /* a */) { }
+	inline void _check(sint32 /* a */) { }
 #endif // NL_COMP_VC6
 
-inline void _check(uint64 a) { }
-inline void _check(sint64 a) { }
-inline void _check(float a) { }
-inline void _check(double a) { }
-inline void _check(const char *a) { }
-inline void _check(const void *a) { }
+inline void _check(uint64 /* a */) { }
+inline void _check(sint64 /* a */) { }
+inline void _check(float /* a */) { }
+inline void _check(double /* a */) { }
+inline void _check(const char * /* a */) { }
+inline void _check(const void * /* a */) { }
 
 #define CHECK_TYPES(__a,__b) \
 inline __a(const char *fmt) { __b(fmt); } \

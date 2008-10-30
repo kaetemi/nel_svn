@@ -94,7 +94,6 @@ void			CShadowMap::resetTexture()
 // ***************************************************************************
 void			CShadowMap::buildClipInfoFromMatrix()
 {
-	const	CMatrix	&cameraMatrix= LocalProjectionMatrix;
 	CVector	vi= LocalProjectionMatrix.getI();
 	CVector	vj= LocalProjectionMatrix.getJ();
 	CVector	vk= LocalProjectionMatrix.getK();

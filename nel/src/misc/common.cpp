@@ -330,7 +330,7 @@ string bytesToHumanReadable (uint64 bytes)
 	uint div = 0;
 	uint64 res = bytes;
 	uint64 newres = res;
-	while (true)
+	for(;;)
 	{
 		newres /= 1024;
 		if(newres < 8 || div > 3)
@@ -402,7 +402,7 @@ string secondsToHumanReadable (uint32 time)
 	uint div = 0;
 	uint32 res = time;
 	uint32 newres = res;
-	while (true)
+	for(;;)
 	{
 		if(div > 2)
 			break;

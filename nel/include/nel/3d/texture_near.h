@@ -54,7 +54,7 @@ public:
 	CTextureNear(sint size);
 
 	/// Since texture is always in memory...
-	void			doGenerate(bool async)
+	void			doGenerate(bool /* async */)
 	{
 		// Do nothing. texture still in memory... :o)
 	}
@@ -84,7 +84,7 @@ public:
 	/// TextureNear are system. Do not need to serialize them...
 	// default ctor is required for compilation with NLMISC_DECLARE_CLASS, but never called...
 	CTextureNear() {nlstop;}
-	virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream) {nlstop;}
+	virtual void	serial(NLMISC::IStream &/* f */) throw(NLMISC::EStream) {nlstop;}
 	NLMISC_DECLARE_CLASS(CTextureNear);
 
 private:

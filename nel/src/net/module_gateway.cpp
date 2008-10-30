@@ -824,7 +824,6 @@ namespace NLNET
 		{
 			H_AUTO(CModuleGetaway_onReceiveModuleMessage);
 			// clean the message type now, any return path will be safe
-			CModuleMessageHeaderCodec::TMessageType msgType = from->NextMessageType;
 			from->NextMessageType = CModuleMessageHeaderCodec::mt_invalid;
 
 			// Retrieve sender and destination proxy and recall gateway send method
@@ -1462,10 +1461,10 @@ namespace NLNET
 		}
 
 
-		void				onServiceUp(const std::string &serviceName, NLNET::TServiceId serviceId)
+		void				onServiceUp(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{
 		}
-		void				onServiceDown(const std::string &serviceName, NLNET::TServiceId serviceId)
+		void				onServiceDown(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{
 		}
 		void				onModuleUpdate()
@@ -1532,13 +1531,13 @@ namespace NLNET
 			}
 		}
 
-		void				onModuleUp(IModuleProxy *moduleProxy)
+		void				onModuleUp(IModuleProxy * /* moduleProxy */)
 		{
 		}
-		void				onModuleDown(IModuleProxy *moduleProxy)
+		void				onModuleDown(IModuleProxy * /* moduleProxy */)
 		{
 		}
-		bool				onProcessModuleMessage(IModuleProxy *senderModuleProxy, const CMessage &message)
+		bool				onProcessModuleMessage(IModuleProxy * /* senderModuleProxy */, const CMessage &message)
 		{
 			// simple message for debug and unit testing
 			if (message.getName() == "DEBUG_MOD_PING")
@@ -1551,11 +1550,11 @@ namespace NLNET
 			return false;
 		}
 
-		void				onModuleSecurityChange(IModuleProxy *moduleProxy)
+		void				onModuleSecurityChange(IModuleProxy * /* moduleProxy */)
 		{
 		}
 
-		void	onModuleSocketEvent(IModuleSocket *moduleSocket, TModuleSocketEvent eventType)
+		void	onModuleSocketEvent(IModuleSocket * /* moduleSocket */, TModuleSocketEvent /* eventType */)
 		{
 		}
 
@@ -2123,6 +2122,11 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(securityRemove)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(args);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (_SecurityPlugin == NULL)
 			{
 				log.displayNL("No security plug-in !");
@@ -2136,6 +2140,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(securityCommand)
 		{
+			nlunreferenced(args);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			TParsedCommandLine command;
 
 			if (!command.parseParamList(rawCommandString))
@@ -2163,6 +2171,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(securityCreate)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 1)
 				return false;
 
@@ -2182,6 +2194,10 @@ namespace NLNET
 		}
 		NLMISC_CLASS_COMMAND_DECL(securityListAvailableClass)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 0)
 				return false;
 
@@ -2200,6 +2216,11 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(transportRemove)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(log);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 1)
 				return false;
 
@@ -2209,6 +2230,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(transportCmd)
 		{
+			nlunreferenced(args);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			TParsedCommandLine pcl;
 			if (!pcl.parseParamList(rawCommandString))
 			{
@@ -2222,6 +2247,9 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(transportOptions)
 		{
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() < 1)
 				return false;
 
@@ -2240,7 +2268,7 @@ namespace NLNET
 				return false;
 			}
 
-			IGatewayTransport *transport = _Transports.find(transName)->second;
+//			IGatewayTransport *transport = _Transports.find(transName)->second;
 
 			// check for peer invisible
 			if (cl.SubParams[1]->getParam("PeerInvisible"))
@@ -2259,6 +2287,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(transportAdd)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 2)
 				return false;
 
@@ -2274,6 +2306,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(transportListAvailableClass)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 0)
 				return false;
 

@@ -74,7 +74,7 @@ public:
 
 
 	/// inherited from IShape. Does nothing. A new traverseRender() was set for that
-	virtual void				render(IDriver *drv, CTransformShape *trans, bool opaquePass) {}
+	virtual void				render(IDriver * /* drv */, CTransformShape * /* trans */, bool /* opaquePass */) {}
 
 	/// inherited from IShape
 	virtual	void				getAABBox(NLMISC::CAABBox &bbox) const;

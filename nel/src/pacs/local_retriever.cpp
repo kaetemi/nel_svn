@@ -470,7 +470,7 @@ void	NLPACS::CLocalRetriever::computeLoopsAndTips()
 
 		uint	totalAdded = 0;
 
-		while (true)
+		for(;;)
 		{
 			for (j=0; j<chainFlags.size() && chainFlags[j]; ++j)
 				;
@@ -485,12 +485,12 @@ void	NLPACS::CLocalRetriever::computeLoopsAndTips()
 			CVector	loopStart = getStartVector(surface._Chains[j].Chain, i);
 			CVector	currentEnd = getStopVector(surface._Chains[j].Chain, i);
 			_Chains[surface._Chains[j].Chain].setLoopIndexes(i, loopId, loop.size());
-			loop.push_back(j);
+			loop.push_back(uint16(j));
 			chainFlags[j] = true;
 
 			float	loopCloseDistance;
 
-			while (true)
+			for(;;)
 			{
 //				loopCloseDistance = hybrid2dNorm(loopStart-currentEnd);
 				loopCloseDistance = (loopStart-currentEnd).norm();
@@ -540,7 +540,7 @@ void	NLPACS::CLocalRetriever::computeLoopsAndTips()
 
 				currentEnd = getStopVector(surface._Chains[bestChain].Chain, i);
 				_Chains[surface._Chains[bestChain].Chain].setLoopIndexes(i, loopId, loop.size());
-				loop.push_back(bestChain);
+				loop.push_back(uint16(bestChain));
 				chainFlags[bestChain] = true;
 				++totalAdded;
 			}
@@ -787,7 +787,7 @@ void	NLPACS::CLocalRetriever::findBorderChains()
 		if (_Chains[chain].isBorderChain())
 		{
 			sint32	index = _BorderChains.size();
-			_BorderChains.push_back(chain);
+			_BorderChains.push_back(uint16(chain));
 			_Chains[chain].setBorderChainIndex(index);
 		}
 }
@@ -1703,7 +1703,7 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 					const CChain	&parent = _Chains[chain.getParentId()];
 					bool			isIn = (va-vb < 0.0f) ^ (parent.getLeft() == surfaceId) ^ chain.isForward();
 
-					intersections.push_back(CIntersectionMarker(va/(va-vb), entry.OChainId, j, isIn));
+					intersections.push_back(CIntersectionMarker(va/(va-vb), entry.OChainId, uint16(j), isIn));
 				}
 			}
 		}
@@ -1813,7 +1813,7 @@ void	NLPACS::CLocalRetriever::findPath(const NLPACS::CLocalRetriever::CLocalPosi
 
 		path.push_back(CVector2s(A.Estimation+intersections[i].Position*(B.Estimation-A.Estimation)));
 
-		while (true)
+		for(;;)
 		{
 			sint	from = (thisOChainId == intersections[i].OChain) ? intersections[i].Edge : -1,
 					to = (thisOChainId == intersections[i+1].OChain) ? intersections[i+1].Edge : -1;
@@ -1948,7 +1948,7 @@ void	NLPACS::CLocalRetriever::testCollision(CCollisionSurfaceTemp &cst, const CA
 			// this info at this level.
 
 			// store this Id in the LUT of chains.
-			chainLUT[chainId]= ccId;
+			chainLUT[chainId]= uint16(ccId);
 		}
 		else
 		{
@@ -2082,7 +2082,7 @@ void	NLPACS::CLocalRetriever::replaceChain(uint32 chainId, const std::vector<NLP
 				_BorderChains.resize(border+1, 0xffff);
 			}
 
-			_BorderChains[border] = replacement[i].Chain;
+			_BorderChains[border] = uint16(replacement[i].Chain);
 		}
 
 		nlassert(vertices.size() >= 2);
@@ -2192,7 +2192,7 @@ void	NLPACS::CLocalRetriever::replaceChain(uint32 chainId, const std::vector<NLP
 					uint	m;
 
 					for (m=0; m<replacement.size(); ++m)
-						_Surfaces[i]._Loops[j].insert(_Surfaces[i]._Loops[j].begin()+k+m, replacement[m].Chain);
+						_Surfaces[i]._Loops[j].insert(_Surfaces[i]._Loops[j].begin()+k+m, uint16(replacement[m].Chain));
 
 					break;
 				}

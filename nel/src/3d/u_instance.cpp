@@ -49,7 +49,7 @@ void UInstance::getShapeAABBox(NLMISC::CAABBox &bbox) const
 }
 
 // ***************************************************************************
-void UInstance::setBlendShapeFactor (const std::string &blendShapeName, float factor, bool dynamic)
+void UInstance::setBlendShapeFactor (const std::string &blendShapeName, float factor, bool /* dynamic */)
 {
 	CTransformShape	*object = getObjectPtr();
 	CMeshBaseInstance	*mi= dynamic_cast<CMeshBaseInstance*>(object);

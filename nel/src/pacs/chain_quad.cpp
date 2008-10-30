@@ -236,7 +236,7 @@ void			CChainQuad::build(const std::vector<COrderedChain> &ochains)
 			_Quad[i]= ptr;
 
 			// write len.
-			uint16	len= srcQuadNode.size();
+			uint16	len= uint16(srcQuadNode.size());
 			*((uint16*)ptr)= len;
 			ptr+= sizeof(uint16);
 
@@ -276,9 +276,9 @@ void			CChainQuad::addEdgeToQuadNode(list<CEdgeChainEntry> &quadNode, sint ochai
 	// 1. else, create new one.
 	//=========================================
 	CEdgeChainEntry		entry;
-	entry.OChainId= ochainId;
-	entry.EdgeStart= edgeId;
-	entry.EdgeEnd= edgeId+1;
+	entry.OChainId= uint16(ochainId);
+	entry.EdgeStart= uint16(edgeId);
+	entry.EdgeEnd= uint16(edgeId+1);
 	quadNode.push_back(entry);
 }
 
@@ -323,7 +323,7 @@ sint			CChainQuad::selectEdges(const NLMISC::CAABBox &bbox, CCollisionSurfaceTem
 				if(ochainLUT[ochainId]==0xFFFF)
 				{
 					// inc the list.
-					ochainLUT[ochainId]= nRes;
+					ochainLUT[ochainId]= uint16(nRes);
 					cst.EdgeChainEntries.push_back(ptrEdgeChainEntry[i]);
 					nRes++;
 				}
@@ -441,7 +441,7 @@ sint		CChainQuad::selectEdges(CVector start, CVector end, CCollisionSurfaceTemp 
 				if(ochainLUT[ochainId]==0xFFFF)
 				{
 					// inc the list.
-					ochainLUT[ochainId]= nRes;
+					ochainLUT[ochainId]= uint16(nRes);
 					cst.EdgeChainEntries.push_back(ptrEdgeChainEntry[i]);
 					nRes++;
 				}

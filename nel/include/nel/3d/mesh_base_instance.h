@@ -137,7 +137,7 @@ public:
 	 *	\param distanceMiddle The MRM has 50% of its faces at dist==distanceMiddle.
 	 *	\param distanceCoarsest The MRM has faces/Divisor (ie near 0) when dist>=distanceCoarsest.
 	 */
-	virtual void		changeMRMDistanceSetup(float distanceFinest, float distanceMiddle, float distanceCoarsest) {}
+	virtual void		changeMRMDistanceSetup(float /* distanceFinest */, float /* distanceMiddle */, float /* distanceCoarsest */) {}
 
 	/** If there are selectable texture in this mesh shape, this replace the matching material instances with the right texture
 	 *	If getAsyncTextureMode()==true, then this replace the AsyncTexture fileNames, instead of the Materials file Names.

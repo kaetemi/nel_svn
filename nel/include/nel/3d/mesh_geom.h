@@ -105,7 +105,7 @@ public:
 	 * \param worldMatrix the world matrix of the instance.
 	 * \return true if the object is visible, false otherwise. The default behavior is to return true (never clipped).
 	 */
-	virtual bool	clip(const std::vector<CPlane>	&pyramid, const CMatrix &worldMatrix) {return true;}
+	virtual bool	clip(const std::vector<CPlane>	&/* pyramid */, const CMatrix &/* worldMatrix */) {return true;}
 
 	/** render() this meshGeom in a driver, with the specified TransformShape instance information.
 	 *	NB: the meshGeom is ensured to not be skinned to a skeleton, but CMeshGeom may still have skin information.
@@ -195,14 +195,14 @@ public:
 	/** The framework call this method to know if the mesh can fit in VBHeap.
 	 *	if yes, deriver must return mesh vertexFormat and num of vertices.
 	 */
-	virtual	bool	getVBHeapInfo(uint &vertexFormat, uint &numVertices) {return false;}
+	virtual	bool	getVBHeapInfo(uint &/* vertexFormat */, uint &/* numVertices */) {return false;}
 
 	/** When the framework succes to allocate a VBHeap space, it call this method to fill this space and compute
 	 *	shifted Primitive block.
 	 *	\param the dest VertexBuffer. NB: start to fill at dst[0]
 	 *	\param indexStart used to shift primitive block.
 	 */
-	virtual	void	computeMeshVBHeap(void *dst, uint indexStart)  {}
+	virtual	void	computeMeshVBHeap(void * /* dst */, uint /* indexStart */)  {}
 
 	/** Return true if the meshGeom has to Fill some Vertices at activeInstance() time
 	 *	if VBHeap enabled at this time, then vbDst in activeInstance(,,,vbDst) will contains the vb to write to.

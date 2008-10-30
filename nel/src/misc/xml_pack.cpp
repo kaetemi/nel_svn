@@ -104,7 +104,7 @@ namespace NLMISC
 		skipLine(it, end, lineCount);
 
 		// now enter the sub file loop
-		do
+		for(;;)
 		{
 			TXMLFileInfo fileInfo;
 			// match a sub file header
@@ -181,7 +181,7 @@ namespace NLMISC
 			}
 
 			// continue to next file in pack
-		} while(true);
+		}
 
 		nldebug("XMLPack : xml_pack '%s' added to the collection with %u files", xmlPackFileName.c_str(), packInfo._XMLFiles.size());
 		// ok, parsing ended

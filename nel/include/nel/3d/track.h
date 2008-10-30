@@ -80,13 +80,13 @@ public:
 
 	/** typically used by CAnimation to lower the number of keys. not supported by default
 	  */
-	virtual void applySampleDivisor(uint sampleDivisor) {}
+	virtual void applySampleDivisor(uint /* sampleDivisor */) {}
 
 	/** used by CAnimation to compress the header of CTrackSampledQuat
 	 *	supported only by CTrackSampledQuat
 	 */
-	virtual bool	applyTrackQuatHeaderCompressionPass0(CTrackSampleCounter &quatCounter) {return false;}
-	virtual ITrack	*applyTrackQuatHeaderCompressionPass1(uint &globalKeyOffset, CTrackSamplePack &quatPacker) {return NULL;}
+	virtual bool	applyTrackQuatHeaderCompressionPass0(CTrackSampleCounter &/* quatCounter */) {return false;}
+	virtual ITrack	*applyTrackQuatHeaderCompressionPass1(uint &/* globalKeyOffset */, CTrackSamplePack &/* quatPacker */) {return NULL;}
 
 	/// \name From UTrack
 	// @{
@@ -245,7 +245,7 @@ protected:
 	_Son(const _T &v) : _Father<_T>(v) {}
 
 #define	NL3D_TRACKDEF_EVAL(_Val_)	\
-	virtual const IAnimatedValue &eval (const TAnimationTime& date, CAnimatedValueBlock &avBlock)	\
+	virtual const IAnimatedValue &eval (const TAnimationTime& /* date */, CAnimatedValueBlock &avBlock)	\
 	{																								\
 		avBlock._Val_.Value= _Value;																\
 		return avBlock._Val_;																		\

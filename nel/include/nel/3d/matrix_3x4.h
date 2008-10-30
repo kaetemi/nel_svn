@@ -299,7 +299,7 @@ public:
 
 
 	// mulAddvector. NB: vin should be different as v!! (else don't work).
-	void	mulAddVector(const CVector &vin, float scale, CVector &vout)
+	void	mulAddVector(const CVector &/* vin */, float scale, CVector &vout)
 	{
 		__asm
 		{
@@ -339,7 +339,7 @@ public:
 		}
 	}
 	// mulAddpoint. NB: vin should be different as v!! (else don't work).
-	void	mulAddPoint(const CVector &vin, float scale, CVector &vout)
+	void	mulAddPoint(const CVector &/* vin */, float scale, CVector &vout)
 	{
 		__asm
 		{

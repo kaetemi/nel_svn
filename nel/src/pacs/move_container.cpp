@@ -579,8 +579,8 @@ void CMoveContainer::getCells (CMovePrimitive *primitive, uint8 worldImage, uint
 		double pcx=(wI->getBBXMin()+wI->getBBXMax())/2.f;
 
 		elementArray[i]->Primitive=primitive;
-		elementArray[i]->X=x;
-		elementArray[i]->Y=y;
+		elementArray[i]->X=uint16(x);
+		elementArray[i]->Y=uint16(y);
 		// Insert in left or right ?
 		if (pcx<cx)
 		{
@@ -750,7 +750,7 @@ bool CMoveContainer::evalOneTerrainCollision (double beginTime, CMovePrimitive *
 // ***************************************************************************
 
 bool CMoveContainer::evalOnePrimitiveCollision (double beginTime, CMovePrimitive *primitive, uint8 worldImage, uint8 primitiveWorldImage,
-									   bool testMove, bool secondIsStatic, bool &testMoveValid, CCollisionOTDynamicInfo *dynamicColInfo,
+									   bool testMove, bool secondIsStatic, bool &/* testMoveValid */, CCollisionOTDynamicInfo *dynamicColInfo,
 										CVectorD *contactNormal)
 {
 //	H_AUTO(PACS_MC_evalOneCollision);
@@ -902,7 +902,7 @@ bool CMoveContainer::evalOnePrimitiveCollision (double beginTime, CMovePrimitive
 bool CMoveContainer::evalPrimAgainstPrimCollision (double beginTime, CMovePrimitive *primitive, CMovePrimitive *otherPrimitive,
 											CPrimitiveWorldImage *wI, CPrimitiveWorldImage *otherWI, bool testMove,
 											uint8 firstWorldImage, uint8 secondWorldImage, bool secondIsStatic, CCollisionOTDynamicInfo *dynamicColInfo,
-											CVectorD *contactNormal)
+											CVectorD * /* contactNormal */)
 {
 //	H_AUTO(PACS_MC_evalPrimAgainstPrimCollision);
 
@@ -1062,7 +1062,7 @@ void CMoveContainer::newCollision (CMovePrimitive* first, CMovePrimitive* second
 
 	if (dynamicColInfo)
 	{
-		dynamicColInfo->init (first, second, desc, collision, enter, exit, inside, firstWorldImage, secondWorldImage, secondIsStatic);
+		dynamicColInfo->init (first, second, desc, collision, enter, exit, inside, uint8(firstWorldImage), uint8(secondWorldImage), secondIsStatic);
 	}
 	else
 	{
@@ -1078,7 +1078,7 @@ void CMoveContainer::newCollision (CMovePrimitive* first, CMovePrimitive* second
 		{
 			// Build info
 			CCollisionOTDynamicInfo *info = allocateOTDynamicInfo ();
-			info->init (first, second, desc, collision, enter, exit, inside, firstWorldImage, secondWorldImage, secondIsStatic);
+			info->init (first, second, desc, collision, enter, exit, inside, uint8(firstWorldImage), uint8(secondWorldImage), secondIsStatic);
 
 			// Add in the primitive list
 			first->addCollisionOTInfo (info);
@@ -1224,7 +1224,7 @@ void CMoveContainer::newTrigger (CMovePrimitive* first, CMovePrimitive* second, 
 	_Triggers[index].Object0=first->UserData;
 	_Triggers[index].Object1=second->UserData;
 	_Triggers[index].CollisionDesc=desc;
-	_Triggers[index].CollisionType = triggerType;
+	_Triggers[index].CollisionType = uint8(triggerType);
 }
 
 // ***************************************************************************
@@ -1832,7 +1832,7 @@ void CMoveContainer::addCollisionnablePrimitiveBlock(UPrimitiveBlock *pb,uint8 f
 		for (wI=firstWorldImage; wI<(uint)(firstWorldImage+numWorldImage); wI++)
 		{
 			// Insert the primitive
-			primitive->insertInWorldImage (wI);
+			primitive->insertInWorldImage (uint8(wI));
 
 			// Final position&
 			float cosa = (float) cos (orientation);
@@ -1844,10 +1844,10 @@ void CMoveContainer::addCollisionnablePrimitiveBlock(UPrimitiveBlock *pb,uint8 f
 
 			// Set the primtive orientation
 			if (desc.Type == UMovePrimitive::_2DOrientedBox)
-				primitive->setOrientation ((float)fmod ((float)(desc.Orientation + orientation), (float)(2.0f*Pi)), wI);
+				primitive->setOrientation ((float)fmod ((float)(desc.Orientation + orientation), (float)(2.0f*Pi)), uint8(wI));
 
 			// Set the primitive global position
-			primitive->setGlobalPosition (finalPos, wI);
+			primitive->setGlobalPosition (finalPos, uint8(wI));
 		}
 
 		// Feedback asked ?

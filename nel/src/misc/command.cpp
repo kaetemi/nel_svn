@@ -219,10 +219,10 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 	vector<TCommandParams>	commands;
 	bool firstArg = true;
 	uint i = 0;
-	while (true)
+	for(;;)
 	{
 		// skip whitespace
-		while (true)
+		for(;;)
 		{
 			if (i == commandWithArgs.size())
 			{
@@ -241,7 +241,7 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 		{
 			// starting with a quote "
 			i++;
-			while (true)
+			for(;;)
 			{
 				if (i == commandWithArgs.size())
 				{
@@ -282,7 +282,7 @@ bool CCommandRegistry::execute (const std::string &commandWithArgs, CLog &log, b
 		else
 		{
 			// normal word
-			while (true)
+			for(;;)
 			{
 				if (allowControlChar && commandWithArgs[i] == '\\')
 				{

@@ -206,7 +206,7 @@ protected:
 	void				setDataAvailableFlag( bool da ) { _DataAvailable = da; }
 
 	/// Return _DataAvailable
-	volatile bool		dataAvailableFlag() const { return _DataAvailable; }
+	bool				dataAvailableFlag() const { return _DataAvailable; }
 
 #ifdef NL_OS_UNIX
 	/// Pipe to select() on data available

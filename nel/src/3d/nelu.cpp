@@ -82,7 +82,7 @@ bool			CNELU::initDriver (uint w, uint h, uint bpp, bool windowed, void *systemW
 		nlwarning ("CNELU::initDriver: init() failed");
 		return false;
 	}
-	if (!CNELU::Driver->setDisplay(systemWindow, GfxMode(w, h, bpp, windowed, offscreen)))
+	if (!CNELU::Driver->setDisplay(systemWindow, GfxMode(uint16(w), uint16(h), uint8(bpp), windowed, offscreen)))
 	{
 		nlwarning ("CNELU::initDriver: setDisplay() failed");
 		return false;

@@ -27,7 +27,8 @@
 
 #include "nel/net/inet_address.h"
 #include "nel/net/sock.h"
-#include "nel/net/net_log.h"
+#include "nel/net/net_log.h"
+
 
 
 #ifdef NL_OS_WINDOWS
@@ -483,7 +484,7 @@ std::vector<CInetAddress> CInetAddress::localAddresses()
 	vector<CInetAddress> vect;
 
 	uint i = 0;
-	do
+	for(;;)
 	{
 		hostent *phostent = gethostbyname( localhost );
 		if ( phostent == NULL ) // will come here if the local hostname (/etc/hostname in Linux) is not the real name
@@ -495,7 +496,6 @@ std::vector<CInetAddress> CInetAddress::localAddresses()
 		vect.push_back( CInetAddress( (const in_addr*)(phostent->h_addr_list[i]), localhost ) );
 		i++;
 	}
-	while (true);
 
 	if(vect.empty())
 	{

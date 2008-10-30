@@ -96,7 +96,7 @@ bool sendEMailCommand (CTcpSock &sock, const std::string &command, uint32 code =
 
 	string res;
 	char c;
-	while (true)
+	for(;;)
 	{
 		size = 1;
 

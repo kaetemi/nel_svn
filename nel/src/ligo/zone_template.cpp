@@ -468,7 +468,7 @@ bool CZoneTemplate::build (const std::vector<NLMISC::CVector> &vertices, const s
 			uint edgeIndex = 0;
 
 			// Build the edges
-			while (1)
+			for(;;)
 			{
 				// Add it
 				edge.push_back (*vertIte);

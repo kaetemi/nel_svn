@@ -214,12 +214,8 @@ bool CWinThread::isRunning()
 
 void CWinThread::terminate ()
 {
-	BOOL i = TerminateThread((HANDLE)ThreadHandle, 0);
-	if(!i)
-	{
-		DWORD e = GetLastError();
-	}
-	i = CloseHandle((HANDLE)ThreadHandle);
+	TerminateThread((HANDLE)ThreadHandle, 0);
+	CloseHandle((HANDLE)ThreadHandle);
 	ThreadHandle = NULL;
 	_SuspendCount = -1;
 }

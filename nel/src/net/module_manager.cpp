@@ -46,6 +46,11 @@ using namespace NLMISC;
 // for init of the module manager (if not already done by the application)
 NLMISC_CATEGORISED_COMMAND(net, initModuleManager, "force the initialisation of the module manager", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	// not really hard in fact :)
 	NLNET::IModuleManager::getInstance();
 
@@ -680,6 +685,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(deleteModule)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 1)
 				return false;
 
@@ -704,6 +713,11 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(unloadLibrary)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(log);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() != 1)
 				return false;
 
@@ -714,6 +728,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(loadLibrary)
 		{
+			nlunreferenced(log);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() < 1)
 				return false;
 
@@ -727,6 +745,10 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(createModule)
 		{
+			nlunreferenced(log);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			if (args.size() < 2)
 				return false;
 
@@ -750,6 +772,11 @@ namespace NLNET
 
 		NLMISC_CLASS_COMMAND_DECL(dump)
 		{
+			nlunreferenced(rawCommandString);
+			nlunreferenced(args);
+			nlunreferenced(quiet);
+			nlunreferenced(human);
+
 			log.displayNL("Dumping CModuleManager internal states :");
 			{
 				std::vector<std::string> moduleList;

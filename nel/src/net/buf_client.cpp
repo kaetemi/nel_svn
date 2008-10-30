@@ -54,7 +54,7 @@ uint32 	NbClientReceiveTask = 0;
 /*
  * Constructor
  */
-CBufClient::CBufClient( bool nodelay, bool replaymode, bool initPipeForDataAvailable ) :
+CBufClient::CBufClient( bool nodelay, bool replaymode, bool /* initPipeForDataAvailable */ ) :
 #ifdef NL_OS_UNIX
 	CBufNetBase( initPipeForDataAvailable ),
 #else

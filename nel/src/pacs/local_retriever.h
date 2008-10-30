@@ -213,7 +213,7 @@ public:
 		CIterator(const CLocalRetriever *retriever, uint chain)
 		{
 			_Retriever = retriever;
-			_Chain = chain;
+			_Chain = uint16(chain);
 			_OChainIndex = 0;
 			setupIndex();
 		}
@@ -274,7 +274,7 @@ public:
 				return;
 			const COrderedChain		&ochain = _Retriever->getOrderedChain(chain.getSubChain(_OChainIndex));
 			_OChainForward = ochain.isForward();
-			_MaxIndexInOChain = ochain.getVertices().size()-1;
+			_MaxIndexInOChain = sint16(ochain.getVertices().size()-1);
 			_IndexInOChain = (_OChainForward ? 0 : _MaxIndexInOChain);
 		}
 	};

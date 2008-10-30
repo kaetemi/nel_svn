@@ -359,7 +359,7 @@ void		CIFile::getline (char *buffer, uint32 bufferSize)
 		return;
 
 	uint read = 0;
-	while (true)
+	for(;;)
 	{
 		if (read == bufferSize - 1)
 		{

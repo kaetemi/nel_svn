@@ -51,7 +51,7 @@ public:
 	virtual void			disconnect();
 
 	// Nothing
-	virtual void			setNoDelay( bool value ) {}
+	virtual void			setNoDelay( bool /* value */ ) {}
 
 	// Nothing
 	virtual void			close() {}

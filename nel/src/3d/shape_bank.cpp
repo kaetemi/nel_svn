@@ -730,8 +730,7 @@ void CShapeBank::linkShapeToShapeCache(const string &shapeNameNotLwr, const stri
 {
 	string	shapeName= toLower(shapeNameNotLwr);
 
-	bool	canSet= true;
-	while(1)
+	for(;;)
 	{
 		// Shape exist?
 		IShape	*shapePtr= getShapePtrFromShapeName(shapeName);

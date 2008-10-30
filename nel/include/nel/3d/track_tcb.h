@@ -213,7 +213,7 @@ protected:
 
 	/// evalKey (runtime).
 	virtual void evalKey (	const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<T>	&resultVal= static_cast<CAnimatedValueBlendable<T>&>(result);
@@ -385,7 +385,7 @@ public:
 
 	/// evalKey (runtime).
 	virtual void evalKey (	const CKeyTCBQuat* previous, const CKeyTCBQuat* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueQuat	&resultVal= static_cast<CAnimatedValueQuat&>(result);

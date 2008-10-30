@@ -597,7 +597,7 @@ template <typename T, class F> class CPSAttribMakerT : public CPSAttribMaker<T>
 											  void *tab,
 											  uint32 stride,
 											  uint32 numAttrib,
-											  bool allowNoCopy /* = false */,
+											  bool /* allowNoCopy */ /* = false */,
 											  uint32 srcStep /*= (1 << 16)*/,
 											  bool	forceClampEntry /*= false*/
 											 ) const
@@ -1483,22 +1483,22 @@ public:
 	}
 
 	/// inherited from CPSAttribMaker
-	virtual T get(CPSLocated *loc, uint32 index)
+	virtual T get(CPSLocated * /* loc */, uint32 index)
 	{
 		if (index < _T.getSize()) return _T[index];
 		else return _DefaultValue;
 	}
-	virtual T get(const CPSEmitterInfo &infos) { 	return _DefaultValue; }
+	virtual T get(const CPSEmitterInfo &/* infos */) { 	return _DefaultValue; }
 
 	/// inherited from CPSAttribMaker
-	virtual void *make(CPSLocated *loc,
+	virtual void *make(CPSLocated * /* loc */,
 					   uint32 startIndex,
 					   void *output,
 					   uint32 stride,
 					   uint32 numAttrib,
 					   bool allowNoCopy = false,
 					   uint32 srcStep = (1 << 16),
-					   bool forceClampEntry = false
+					   bool /* forceClampEntry */ = false
 					  ) const
 	{
 		if (!numAttrib) return output;
@@ -1538,7 +1538,7 @@ public:
 	}
 
 	/// inherited from CPSAttribMaker
-	virtual void make4(CPSLocated *loc,
+	virtual void make4(CPSLocated * /* loc */,
 					   uint32 startIndex,
 					   void *tab,
 					   uint32 stride,
@@ -1583,7 +1583,7 @@ public:
 	}
 
 	/// inherited from CPSAttribMaker
-	virtual void makeN(CPSLocated *loc,
+	virtual void makeN(CPSLocated * /* loc */,
 					   uint32 startIndex,
 					   void *tab,
 					   uint32 stride,

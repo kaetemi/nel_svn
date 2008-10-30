@@ -131,7 +131,7 @@ protected:
 
 	/// evalKey (runtime).
 	virtual void evalKey (	const CKeyBezierQuat* previous, const CKeyBezierQuat* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueQuat	&resultVal= static_cast<CAnimatedValueQuat&>(result);

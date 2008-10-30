@@ -695,7 +695,6 @@ bool CBufFIFO::canFit (uint32 s)
 			return false;
 		}
 	}
-	nlstop;
 }
 
 #ifdef BUFFIFO_TRACK_ALL_BUFFERS

@@ -92,23 +92,23 @@ namespace NLNET
 //		}
 
 		/// Create and bind to this gateway a new transport
-		virtual void createTransport(const std::string &transportClass, const std::string &instanceName)
+		virtual void createTransport(const std::string &/* transportClass */, const std::string &/* instanceName */)
 		{
 		}
 		/// Delete a transport (this will close any open route)
-		virtual void deleteTransport(const std::string &instanceName)
+		virtual void deleteTransport(const std::string &/* instanceName */)
 		{
 		}
 
 		/// Activate/stop peer invisible mode on a transport
-		virtual void	setTransportPeerInvisible(const std::string &transportInstanceName, bool peerInvisible)
+		virtual void	setTransportPeerInvisible(const std::string &/* transportInstanceName */, bool /* peerInvisible */)
 		{
 			// unsupported
 			nlstop;
 		}
 
 		/// Activate/stop firewalling mode on a transport
-		virtual void	setTransportFirewallMode(const std::string &transportInstanceName, bool firewalled)
+		virtual void	setTransportFirewallMode(const std::string &/* transportInstanceName */, bool /* firewalled */)
 			throw (EGatewayFirewallBreak)
 		{
 			// unsupported
@@ -116,10 +116,10 @@ namespace NLNET
 		}
 
 		/// Send a command to a transport
-		virtual void transportCommand(const TParsedCommandLine &commandLine)
+		virtual void transportCommand(const TParsedCommandLine &/* commandLine */)
 		{
 		}
-		virtual IGatewayTransport *getGatewayTransport(const std::string &transportName) const
+		virtual IGatewayTransport *getGatewayTransport(const std::string &/* transportName */) const
 		{
 			// there are no transport here
 			return NULL;
@@ -140,24 +140,24 @@ namespace NLNET
 			return 0;
 		}
 
-		virtual void onRouteAdded(CGatewayRoute *route)
+		virtual void onRouteAdded(CGatewayRoute * /* route */)
 		{
 		}
 
 		/// A route is removed by a transport
-		virtual void onRouteRemoved(CGatewayRoute *route)
+		virtual void onRouteRemoved(CGatewayRoute * /* route */)
 		{
 		}
 
 		/// A transport have received a message
-		virtual void onReceiveMessage(CGatewayRoute *from, const CMessage &msgin)
+		virtual void onReceiveMessage(CGatewayRoute * /* from */, const CMessage &/* msgin */)
 		{
 		}
 
-		virtual void createSecurityPlugin(const std::string &className)
+		virtual void createSecurityPlugin(const std::string &/* className */)
 		{
 		}
-		virtual void sendSecurityCommand(const TParsedCommandLine &command)
+		virtual void sendSecurityCommand(const TParsedCommandLine &/* command */)
 		{
 		}
 		virtual void removeSecurityPlugin()
@@ -236,7 +236,7 @@ namespace NLNET
 			// always disclose module to local modules
 			discloseModule(addedModule);
 		}
-		virtual void onRemoveModuleProxy(IModuleProxy *removedModule)
+		virtual void onRemoveModuleProxy(IModuleProxy * /* removedModule */)
 		{
 		}
 		virtual void discloseModule(IModuleProxy *moduleProxy)
@@ -260,7 +260,7 @@ namespace NLNET
 				}
 			}
 		}
-		virtual IModuleProxy *getPluggedModuleProxy(IModule *pluggedModule)
+		virtual IModuleProxy *getPluggedModuleProxy(IModule * /* pluggedModule */)
 		{
 			return NULL;
 		}
@@ -294,10 +294,10 @@ namespace NLNET
 //		virtual void onReceiveModuleMessage(TModuleGatewayProxyPtr &senderGateway, TModuleMessagePtr &message)
 //		{
 //		}
-		virtual void sendModuleMessage(IModuleProxy *senderProxy, IModuleProxy *addresseeProxy, const NLNET::CMessage &message)
+		virtual void sendModuleMessage(IModuleProxy * /* senderProxy */, IModuleProxy * /* addresseeProxy */, const CMessage &/* message */)
 		{
 		}
-		virtual void dispatchModuleMessage(IModuleProxy *senderProxy, IModuleProxy *addresseeProxy, const CMessage &message)
+		virtual void dispatchModuleMessage(IModuleProxy * /* senderProxy */, IModuleProxy * /* addresseeProxy */, const CMessage &/* message */)
 		{
 			nlstop;
 //			TModuleId sourceId = message->getSenderModuleProxyId();
@@ -333,10 +333,10 @@ namespace NLNET
 			return string();
 		}
 
-		void				onServiceUp(const std::string &serviceName, NLNET::TServiceId serviceId)
+		void				onServiceUp(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{
 		}
-		void				onServiceDown(const std::string &serviceName, NLNET::TServiceId serviceId)
+		void				onServiceDown(const std::string &/* serviceName */, NLNET::TServiceId /* serviceId */)
 		{
 		}
 		void				onModuleUpdate()
@@ -345,20 +345,20 @@ namespace NLNET
 		void				onApplicationExit()
 		{
 		}
-		void				onModuleUp(IModuleProxy *moduleProxy)
+		void				onModuleUp(IModuleProxy * /* moduleProxy */)
 		{
 		}
-		void				onModuleDown(IModuleProxy *moduleProxy)
+		void				onModuleDown(IModuleProxy * /* moduleProxy */)
 		{
 		}
-		bool				onProcessModuleMessage(IModuleProxy *senderModuleProxy, const CMessage &message)
+		bool				onProcessModuleMessage(IModuleProxy * /* senderModuleProxy */, const CMessage &/* message */)
 		{
 			return false;
 		}
-		void				onModuleSecurityChange(IModuleProxy *moduleProxy)
+		void				onModuleSecurityChange(IModuleProxy * /* moduleProxy */)
 		{
 		}
-		void				onModuleSocketEvent(IModuleSocket *moduleSocket, TModuleSocketEvent eventType)
+		void				onModuleSocketEvent(IModuleSocket * /* moduleSocket */, TModuleSocketEvent /* eventType */)
 		{
 		}
 
@@ -378,10 +378,8 @@ namespace NLNET
 			for (; first != last && first->first->getModuleProxyId() != destModuleProxyId; ++first) {}
 			if (first != last) {  first->first->sendModuleMessage(senderModule, message); return;}
 			throw EModuleNotReachable();
-
-			nlstop;
 		}
-		virtual void _broadcastModuleMessage(IModule *senderModule, const NLNET::CMessage &message)
+		virtual void _broadcastModuleMessage(IModule * /* senderModule */, const NLNET::CMessage &/* message */)
 			throw (EModuleNotPluggedHere)
 		{
 			nlstop;

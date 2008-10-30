@@ -485,7 +485,6 @@ void CVertexBuffer::reserve(uint32 n)
 	nlassert (!isLocked());
 	if (_Capacity != n)
 	{
-		const uint oldSize = _Capacity;
 		_Capacity= n;
 		_NbVerts=std::min (_NbVerts,_Capacity);
 

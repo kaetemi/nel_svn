@@ -298,7 +298,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 			std::string s(&str2.c_str()[0], (str2.size() - n));
 			OutputDebugStringW((LPCWSTR)ucstring::makeFromUtf8(s).c_str());
 
-			while(true)
+			for(;;)
 			{
 
 				if((n - count) < maxOutString )
@@ -321,7 +321,7 @@ void CStdDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *mess
 		// OutputDebugString is a big shit, we can't display big string in one time, we need to split
 		uint32 pos = 0;
 		string splited;
-		while(true)
+		for(;;)
 		{
 			if (pos+1000 < args.CallstackAndLog.size ())
 			{

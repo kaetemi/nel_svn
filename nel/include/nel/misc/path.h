@@ -51,10 +51,10 @@ struct EPathNotFound : public Exception
 class CFileContainer
 {
 	// no copy allowed
-	CFileContainer(const CFileContainer &other)
+	CFileContainer(const CFileContainer &/* other */)
 	{}
 
-	CFileContainer &operator =(const CFileContainer &other)
+	CFileContainer &operator =(const CFileContainer &/* other */)
 	{
 		return *this;
 	}
@@ -292,8 +292,8 @@ private:
 			while (*lhs != '\0' && *rhs != '\0')
 			{
 				// lower case compare because name is in normal case
-				lchar = ::tolower(*lhs);
-				rchar = ::tolower(*rhs);
+				lchar = uint8(::tolower(*lhs));
+				rchar = uint8(::tolower(*rhs));
 				if (lchar != rchar) return ((sint)lchar) - ((sint)rchar);
 				++lhs;
 				++rhs;

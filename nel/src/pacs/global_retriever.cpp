@@ -118,8 +118,8 @@ bool	NLPACS::CGlobalRetriever::selectInstances(const NLMISC::CAABBox &bbox, CCol
 	NLPACS::CQuadGrid<uint32>::CIterator	it;
 	for (it=_InstanceGrid.begin(); it!=_InstanceGrid.end(); ++it)
 	{
-		if (type == UGlobalPosition::Landscape && _Instances[*it].getType() == CLocalRetriever::Interior ||
-			type == UGlobalPosition::Interior && _Instances[*it].getType() == CLocalRetriever::Landscape)
+		if ((type == UGlobalPosition::Landscape && _Instances[*it].getType() == CLocalRetriever::Interior) ||
+			(type == UGlobalPosition::Interior && _Instances[*it].getType() == CLocalRetriever::Landscape))
 			continue;
 
 		if (_Instances[*it].getBBox().intersect(bbox))
@@ -505,7 +505,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 }
 
 // Retrieves the position of an estimated point in the global retriever (double instead.)
-NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVectorD &estimated, double threshold, NLPACS::UGlobalPosition::TType retrieveSpec) const
+NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVectorD &estimated, double /* threshold */, NLPACS::UGlobalPosition::TType retrieveSpec) const
 {
 	NLPACS_HAUTO_RETRIEVE_POSITION
 
@@ -912,7 +912,7 @@ void		NLPACS::CGlobalRetriever::findAStarPath(const NLPACS::UGlobalPosition &beg
 
 	path.clear();
 
-	while (true)
+	for(;;)
 	{
 		if (open.empty())
 		{
@@ -1423,7 +1423,7 @@ void	NLPACS::CGlobalRetriever::testCollisionWithCollisionChains(CCollisionSurfac
 		To manage recovery, we must use such an algorithm, so we are sure to trace the way across all surfaces really
 		collided, and discard any other (such as other floor or ceiling).
 	*/
-	while(true)
+	for(;;)
 	{
 		// run all collisionChain.
 		//========================
@@ -2159,7 +2159,7 @@ NLPACS::UGlobalPosition
 
 
 	// Normally, just one iteration is made in this loop (but if precision problem (stopOnEdge, startOnEdge....).
-	while(true)
+	for(;;)
 	{
 		// must snap the end position.
 		CRetrieverInstance::snapVector(end);
@@ -2333,7 +2333,7 @@ const NLPACS::TCollisionSurfaceDescVector	&NLPACS::CGlobalRetriever::testBBoxRot
 
 
 // ***************************************************************************
-void	NLPACS::CGlobalRetriever::testRotCollisionWithCollisionChains(CCollisionSurfaceTemp &cst, const CVector2f &startCol, CSurfaceIdent startSurface, const CVector2f bbox[4]) const
+void	NLPACS::CGlobalRetriever::testRotCollisionWithCollisionChains(CCollisionSurfaceTemp &cst, const CVector2f &/* startCol */, CSurfaceIdent startSurface, const CVector2f bbox[4]) const
 {
 //	H_AUTO(PACS_GR_testRotCollisionWithCollisionChains);
 
@@ -2382,7 +2382,7 @@ void	NLPACS::CGlobalRetriever::testRotCollisionWithCollisionChains(CCollisionSur
 	// Traverse the array of collisions.
 	//========================
 	sint	indexCD=0;
-	while(true)
+	for(;;)
 	{
 		// What surfaces collided do we reach from this currentSurface??
 		for(i=0;i<(sint)cst.RotDescs.size();i++)
@@ -2487,7 +2487,7 @@ float			NLPACS::CGlobalRetriever::getInteriorHeightAround(const UGlobalPosition 
 
 // ***************************************************************************
 
-bool NLPACS::CGlobalRetriever::testRaytrace (const CVectorD &v0, const CVectorD &v1)
+bool NLPACS::CGlobalRetriever::testRaytrace (const CVectorD &/* v0 */, const CVectorD &/* v1 */)
 {
 	// TODO: implement raytrace
 	return false;

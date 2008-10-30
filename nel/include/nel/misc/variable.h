@@ -155,7 +155,7 @@ public:
 
 	virtual std::string toString(bool human=false) const = 0;
 
-	virtual bool execute(const std::string &rawCommandString, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
+	virtual bool execute(const std::string &/* rawCommandString */, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
 	{
 		if (args.size() > 1)
 			return false;
@@ -204,7 +204,7 @@ public:
 	{
 	}
 
-	virtual bool fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool /* human */=false)
 	{
 		//std::stringstream ss (val);
 		//ss >> *_ValuePtr;
@@ -213,7 +213,7 @@ public:
 		return ret;
 	}
 
-	virtual std::string toString (bool human) const
+	virtual std::string toString (bool /* human */) const
 	{
 		//std::stringstream ss;
 		//ss << *_ValuePtr;
@@ -245,7 +245,7 @@ public:
 		set (defaultValue, executeCallbackForDefaultValue);
 	}
 
-	virtual bool fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool /* human */=false)
 	{
 		T v;
 		bool ret = NLMISC::fromString(val, v);
@@ -255,7 +255,7 @@ public:
 		return ret;
 	}
 
-	virtual std::string toString (bool human) const
+	virtual std::string toString (bool /* human */) const
 	{
 		return NLMISC::toString(_Value);
 //		std::stringstream ss;
@@ -339,7 +339,7 @@ public:
 		return str;
 	}
 
-	virtual bool execute (const std::string &rawCommandString, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
+	virtual bool execute (const std::string &/* rawCommandString */, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
 	{
 		if (args.size() > 1)
 			return false;
@@ -413,19 +413,19 @@ template<> class CVariable<std::string> : public IVariable
 {
 public:
 
-	CVariable (const char *categoryName, const char *commandName, const char *commandHelp, const std::string &defaultValue, uint nbMeanValue = 0, bool useConfigFile = false, void (*cc)(IVariable &var)=NULL, bool executeCallbackForDefaultValue=false) :
+	CVariable (const char *categoryName, const char *commandName, const char *commandHelp, const std::string &defaultValue, uint /* nbMeanValue */ = 0, bool useConfigFile = false, void (*cc)(IVariable &/* var */)=NULL, bool executeCallbackForDefaultValue=false) :
 		IVariable (categoryName, commandName, commandHelp, "[<value>]", useConfigFile, cc)
 	{
 		set (defaultValue, executeCallbackForDefaultValue);
 	}
 
-	virtual bool fromString (const std::string &val, bool human=false)
+	virtual bool fromString (const std::string &val, bool /* human */=false)
 	{
 		set (val);
 		return true;
 	}
 
-	virtual std::string toString (bool human=false) const
+	virtual std::string toString (bool /* human */=false) const
 	{
 		return _Value;
 	}
@@ -468,7 +468,7 @@ public:
 		return _Value;
 	}
 
-	virtual bool execute (const std::string &rawCommandString, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
+	virtual bool execute (const std::string &/* rawCommandString */, const std::vector<std::string> &args, NLMISC::CLog &log, bool quiet, bool human)
 	{
 		if (args.size () > 1)
 			return false;

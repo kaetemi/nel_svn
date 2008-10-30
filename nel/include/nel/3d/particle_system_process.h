@@ -186,7 +186,7 @@ class CParticleSystemProcess : public NLMISC::IStreamable
 		virtual bool			isParametricMotionEnabled(void) const { return false;}
 
 		/// perform parametric motion if enabled
-		virtual void			performParametricMotion(TAnimationTime date) { nlassert(0);}
+		virtual void			performParametricMotion(TAnimationTime /* date */) { nlassert(0);}
 
 
 		// Called by the system when its date has been manually changed

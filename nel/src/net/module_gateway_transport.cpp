@@ -188,7 +188,7 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand)
+		void onCommand(const CMessage &/* command */) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
@@ -314,7 +314,7 @@ namespace NLNET
 		}
 
 		// Called to dispatch an incoming message to the gateway
-		void onDispatchMessage(const CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+		void onDispatchMessage(const CMessage &msgin, TSockId from, CCallbackNetBase &/* netbase */)
 		{
 			H_AUTO(L3S_onDispatchMessage);
 			TRouteMap::iterator it(_Routes.find(from));
@@ -586,7 +586,6 @@ namespace NLNET
 			TClientRoutes::const_iterator first(_Routes.begin()), last(_Routes.end());
 			for (; first != last; ++first)
 			{
-				TSockId	sockId = first->first;
 				CL3ClientRoute *route = first->second;
 				log.displayNL("    + route to '%s', %s, %u entries in the proxy translation table :",
 					route->ServerAddr.asString().c_str(),
@@ -612,7 +611,7 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand)
+		void onCommand(const CMessage &/* command */) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
@@ -787,7 +786,7 @@ namespace NLNET
 		}
 
 		// Called to dispatch an incoming message to the gateway
-		void onDispatchMessage(const CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+		void onDispatchMessage(const CMessage &msgin, TSockId from, CCallbackNetBase &/* netbase */)
 		{
 			H_AUTO(L3C_onDispatchMessage);
 			TClientRoutes::iterator it(_Routes.find(from));

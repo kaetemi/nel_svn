@@ -203,10 +203,10 @@ public:
 			nlwarning("forceBorderChainLink(): forces border %d on instance %d whereas link is initialised yet, incoherences may appear!", border, _InstanceId);
 		}
 
-		_BorderChainLinks[border].Instance = frontInstance;
-		_BorderChainLinks[border].BorderChainId = frontBorder;
-		_BorderChainLinks[border].ChainId = frontChain;
-		_BorderChainLinks[border].SurfaceId = frontSurface;
+		_BorderChainLinks[border].Instance = uint16(frontInstance);
+		_BorderChainLinks[border].BorderChainId = uint16(frontBorder);
+		_BorderChainLinks[border].ChainId = uint16(frontChain);
+		_BorderChainLinks[border].SurfaceId = uint16(frontSurface);
 	}
 
 	/// Returns the number of the edge on the instance corresponding to the edge on the retriever.

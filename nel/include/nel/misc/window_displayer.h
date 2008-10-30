@@ -68,7 +68,7 @@ public:
 	bool	update ();
 
 	// set a special title to the window bar
-	virtual void	setTitleBar (const std::string &titleBar) { }
+	virtual void	setTitleBar (const std::string &/* titleBar */) { }
 
 	virtual void	getWindowPos (uint32 &x, uint32 &y, uint32 &w, uint32 &h) { x=y=w=h=0; }
 

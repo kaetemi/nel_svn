@@ -27,7 +27,8 @@
 
 #include "nel/net/buf_sock.h"
 #include "nel/net/callback_net_base.h"
-#include "nel/net/net_log.h"
+#include "nel/net/net_log.h"
+
 
 
 #ifdef USE_MESSAGE_RECORDER
@@ -72,7 +73,7 @@ void cbnbNewDisconnection (TSockId from, void *data)
 /*
  * Constructor
  */
-CCallbackNetBase::CCallbackNetBase(  TRecordingState rec, const string& recfilename, bool recordall )
+CCallbackNetBase::CCallbackNetBase(  TRecordingState /* rec */, const string& /* recfilename */, bool /* recordall */ )
 	:	_BytesSent(0),
 		_BytesReceived(0),
 		_NewDisconnectionCallback(cbnbNewDisconnection),
@@ -141,7 +142,8 @@ void CCallbackNetBase::addCallbackArray (const TCallbackItem *callbackarray, sin
 
 		_CallbackArray[ni] = callbackarray[i];
 
-	}
+	}
+
 
 //	LNETL3_DEBUG ("LNETL3NB_CB: Added %d callback Now, there're %d callback associated with message type", arraysize, _CallbackArray.size ());
 }
@@ -439,7 +441,7 @@ void CCallbackNetBase::baseUpdate2 (sint32 timeout, sint32 mintime)
 }
 
 
-const	CInetAddress& CCallbackNetBase::hostAddress (TSockId hostid)
+const	CInetAddress& CCallbackNetBase::hostAddress (TSockId /* hostid */)
 {
 	// should never be called
 	nlstop;

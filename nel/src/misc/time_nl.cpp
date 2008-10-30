@@ -245,7 +245,7 @@ double CTime::ticksToSecond (TTicks ticks)
 			TTicks tickAfter = tickBefore;
 			TTime timeBefore = getLocalTime ();
 			TTime timeAfter = timeBefore;
-			while (true)
+			for(;;)
 			{
 				if (timeAfter - timeBefore > 1000)
 					break;

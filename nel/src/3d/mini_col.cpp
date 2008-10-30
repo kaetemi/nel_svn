@@ -159,7 +159,7 @@ void			CMiniCol::removeZone(uint16 zoneId)
 		if(pa.Inserted)
 		{
 			// Reject the patch.
-			removeLandScapePart(zone.ZoneId, i, pa.Sphere);
+			removeLandScapePart(uint16(zone.ZoneId), uint16(i), pa.Sphere);
 			pa.Inserted= false;
 			zone.NPatchInserted--;
 		}
@@ -215,7 +215,7 @@ void			CMiniCol::setCenter(const CVector& center)
 					// Reject the patch, if entirely OUT the max radius.
 					if(!BMax.intersect(pa.Sphere))
 					{
-						removeLandScapePart(zone.ZoneId, i, pa.Sphere);
+						removeLandScapePart(uint16(zone.ZoneId), uint16(i), pa.Sphere);
 						pa.Inserted= false;
 						zone.NPatchInserted--;
 					}
@@ -225,7 +225,7 @@ void			CMiniCol::setCenter(const CVector& center)
 					// Insert the pacth, if only partially IN the min radius.
 					if(BMin.intersect(pa.Sphere))
 					{
-						addLandscapePart(zone.ZoneId, i);
+						addLandscapePart(uint16(zone.ZoneId), uint16(i));
 						pa.Inserted= true;
 						zone.NPatchInserted++;
 					}

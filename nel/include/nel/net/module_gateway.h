@@ -500,7 +500,7 @@ namespace NLNET
 		virtual ~CGatewaySecurity() { }
 
 		/** the gateway send a command to the security module */
-		virtual void onCommand(const TParsedCommandLine &command)	{}
+		virtual void onCommand(const TParsedCommandLine &/* command */)	{}
 
 		/** A new proxy is available, the security plug-in can add security data */
 		virtual void onNewProxy(IModuleProxy *proxy) =0;

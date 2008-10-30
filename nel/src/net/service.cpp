@@ -1311,7 +1311,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 		TTime	checkCpuProcTime = 0;
 
-		do
+		for(;;)
 		{
 			MyTAT.activate();
 
@@ -1521,7 +1521,6 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 
 			MyTAT.desactivate();
 		}
-		while (true);
 	}
 	catch (EFatalError &)
 	{
@@ -1741,6 +1740,7 @@ void IService::unregisterUpdatable(IServiceUpdatable *updatable)
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, string, LaunchingDate, "date of the launching of the program")
 {
+	nlunreferenced(human);
 	if (get) *pointer = asctime (localtime ((time_t*)&LaunchingDate));
 }
 
@@ -1767,6 +1767,8 @@ NLMISC_CATEGORISED_VARIABLE(nel, uint32, NbUserUpdate, "number of time the user 
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, string, Scroller, "current size in bytes of the sent queue size")
 {
+	nlunreferenced(human);
+
 	if (get)
 	{
 		// display the scroll text
@@ -1779,6 +1781,10 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, string, Scroller, "current size in bytes of 
 
 NLMISC_CATEGORISED_COMMAND(nel, quit, "exit the service", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	log.displayNL("User ask me with a command to quit");
@@ -1789,6 +1795,11 @@ NLMISC_CATEGORISED_COMMAND(nel, quit, "exit the service", "")
 
 NLMISC_CATEGORISED_COMMAND(nel, brutalQuit, "exit the service brutally", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(log);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	::exit (0xFFFFFFFF);
@@ -1819,6 +1830,10 @@ NLMISC_CATEGORISED_COMMAND(nel, mutex, "display mutex values", "")
 
 NLMISC_CATEGORISED_COMMAND(nel, serviceInfo, "display information about this service", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	log.displayNL ("Service %s '%s' using NeL ("__DATE__" "__TIME__")", IService::getInstance()->getServiceLongName().c_str(), IService::getInstance()->getServiceUnifiedName().c_str());
@@ -1849,12 +1864,23 @@ NLMISC_CATEGORISED_COMMAND(nel, serviceInfo, "display information about this ser
 
 NLMISC_CATEGORISED_COMMAND(nel, resetMeasures, "reset hierarchical timer", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(log);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	IService::getInstance()->requireResetMeasures();
 	return true;
 }
 
 NLMISC_CATEGORISED_COMMAND(nel, getWinDisplayerInfo, "display the info about the pos and size of the window displayer", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	uint32 x,y,w,h;
 	IService::getInstance()->WindowDisplayer->getWindowPos (x,y,w,h);
 	log.displayNL ("Window Displayer : XWinParam = %d; YWinParam = %d; WWinParam = %d; HWinParam = %d;", x, y, w, h);
@@ -1863,12 +1889,22 @@ NLMISC_CATEGORISED_COMMAND(nel, getWinDisplayerInfo, "display the info about the
 
 NLMISC_CATEGORISED_COMMAND(nel, displayConfigFile, "display the variables of the default configfile", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	IService::getInstance()->ConfigFile.display (&log);
 	return true;
 }
 
 NLMISC_CATEGORISED_COMMAND(nel, getUnknownConfigFileVariables, "display the variables from config file that are called but not present", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	log.displayNL ("%d Variables not found in the configfile '%s'", IService::getInstance()->ConfigFile.UnknownVariables.size(), IService::getInstance()->ConfigFile.getFilename().c_str() );
 	for (uint i = 0; i < IService::getInstance()->ConfigFile.UnknownVariables.size(); i++)
 	{
@@ -1885,6 +1921,7 @@ NLMISC_CATEGORISED_COMMAND(nel, getUnknownConfigFileVariables, "display the vari
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, string, State, "Set this value to 0 to shutdown the service and 1 to start the service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)
 	{
@@ -1925,6 +1962,7 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, string, State, "Set this value to 0 to shutd
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, uint32, ShardId, "Get value of shardId set for this particular service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)
 	{
@@ -1935,48 +1973,56 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint32, ShardId, "Get value of shardId set f
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, CPULoad, "Get instant CPU load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPULoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, ProcessLoad, "Get instant CPU load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, CPUUserLoad, "Get instant CPU user load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUUserLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, CPUSytemLoad, "Get instant CPU system load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUSystemLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, CPUNiceLoad, "Get instant CPU nice processes load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUNiceLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, CPUIOWaitLoad, "Get instant CPU IO wait load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUIOWaitLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, ProcessUserLoad, "Get instant CPU user load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessUserLoad(); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, ProcessSystemLoad, "Get instant CPU system load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessSystemLoad(); }
 }
@@ -1984,48 +2030,56 @@ NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, ProcessSystemLoad, "Get instant CPU s
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanCPULoad, "Get instant CPU load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPULoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanProcessLoad, "Get instant CPU load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanCPUUserLoad, "Get instant CPU user load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUUserLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanCPUSytemLoad, "Get instant CPU system load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUSystemLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanCPUNiceLoad, "Get instant CPU nice processes load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUNiceLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanCPUIOWaitLoad, "Get instant CPU IO wait load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUIOWaitLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanProcessUserLoad, "Get instant CPU user load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessUserLoad(CCPUTimeStat::Mean); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanProcessSystemLoad, "Get instant CPU system load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessSystemLoad(CCPUTimeStat::Mean); }
 }
@@ -2034,48 +2088,56 @@ NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, MeanProcessSystemLoad, "Get instant C
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakCPULoad, "Get instant CPU load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPULoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakProcessLoad, "Get instant CPU load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakCPUUserLoad, "Get instant CPU user load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUUserLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakCPUSytemLoad, "Get instant CPU system load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUSystemLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakCPUNiceLoad, "Get instant CPU nice processes load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUNiceLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakCPUIOWaitLoad, "Get instant CPU IO wait load of the server")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getCPUIOWaitLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakProcessUserLoad, "Get instant CPU user load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessUserLoad(CCPUTimeStat::Peak); }
 }
 
 NLMISC_CATEGORISED_DYNVARIABLE(cpu, float, PeakProcessSystemLoad, "Get instant CPU system load of the process/service")
 {
+	nlunreferenced(human);
 	// read or write the variable
 	if (get)	{ *pointer = IService::getInstance()->getCPUUsageStats().getProcessSystemLoad(CCPUTimeStat::Peak); }
 }

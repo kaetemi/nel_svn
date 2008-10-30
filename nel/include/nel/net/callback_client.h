@@ -72,7 +72,7 @@ public:
 	 */
 	virtual bool	connected () const { return CBufClient::connected (); }
 
-	virtual const CInetAddress&	hostAddress( TSockId hostid ) { return remoteAddress(); }
+	virtual const CInetAddress&	hostAddress( TSockId /* hostid */ ) { return remoteAddress(); }
 
 	/** Disconnect a connection
 	 * Unlike in CCallbackClient, you can call disconnect() on a socket that is already disconnected
@@ -90,14 +90,14 @@ public:
 	uint64	getSendQueueSize () { return CBufClient::getSendQueueSize(); }
 
 	void displayReceiveQueueStat (NLMISC::CLog *log = NLMISC::InfoLog) { CBufClient::displayReceiveQueueStat(log); }
-	void displaySendQueueStat (NLMISC::CLog *log = NLMISC::InfoLog, TSockId destid = InvalidSockId) { CBufClient::displaySendQueueStat(log); }
+	void displaySendQueueStat (NLMISC::CLog *log = NLMISC::InfoLog, TSockId /* destid */ = InvalidSockId) { CBufClient::displaySendQueueStat(log); }
 
 	void displayThreadStat (NLMISC::CLog *log = NLMISC::InfoLog) { CBufClient::displayThreadStat(log); }
 
 private:
 
 	/// These function is public in the base class and put it private here because user cannot use it in layer 2
-	void	send (const NLMISC::CMemStream &buffer) { nlstop; }
+	void	send (const NLMISC::CMemStream &/* buffer */) { nlstop; }
 
 	/// Returns true if there are messages to read
 	bool	dataAvailable ();

@@ -423,7 +423,6 @@ namespace NLMISC
 	{
 		if (uMsg == WM_COPYDATA) // WM_COPYDATA messages are sent by the other window to communicate with the client
 		{
-			COPYDATASTRUCT *cds = (COPYDATASTRUCT *) lParam;
 			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);
 		}
 		else
@@ -439,7 +438,6 @@ namespace NLMISC
 	{
 		if (uMsg == WM_COPYDATA) // WM_COPYDATA messages are sent by the other window to communicate with the client
 		{
-			COPYDATASTRUCT *cds = (COPYDATASTRUCT *) lParam;
 			return handleWMCopyData(hwnd, (COPYDATASTRUCT *) lParam);
 		}
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);

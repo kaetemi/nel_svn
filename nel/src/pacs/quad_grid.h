@@ -454,10 +454,10 @@ template<class T>	typename CQuadGrid<T>::CIterator	CQuadGrid<T>::insert(const NL
 	sint	x1,y1;
 	selectQuads(bmin, bmax, x0,x1, y0,y1);
 
-	ptr->x0= x0;
-	ptr->x1= x1;
-	ptr->y0= y0;
-	ptr->y1= y1;
+	ptr->x0= uint16(x0);
+	ptr->x1= uint16(x1);
+	ptr->y0= uint16(y0);
+	ptr->y1= uint16(y1);
 
 	// Then for all of them, insert the node in their list.
 	//=====================================================

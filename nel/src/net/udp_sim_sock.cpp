@@ -189,11 +189,11 @@ void CUdpSimSock::updateBufferizedPackets ()
 void				cbSimVar (CConfigFile::CVar &var)
 {
 	     if (var.Name == "SimInLag") CUdpSimSock::_InLag = var.asInt ();
-	else if (var.Name == "SimInPacketLost") CUdpSimSock::_InPacketLoss = var.asInt ();
+	else if (var.Name == "SimInPacketLost") CUdpSimSock::_InPacketLoss = uint8(var.asInt ());
 	else if (var.Name == "SimOutLag") CUdpSimSock::_OutLag = var.asInt ();
-	else if (var.Name == "SimOutPacketLost") CUdpSimSock::_OutPacketLoss = var.asInt ();
-	else if (var.Name == "SimOutPacketDuplication") CUdpSimSock::_OutPacketDuplication = var.asInt ();
-	else if (var.Name == "SimOutPacketDisordering") CUdpSimSock::_OutPacketDisordering = var.asInt ();
+	else if (var.Name == "SimOutPacketLost") CUdpSimSock::_OutPacketLoss = uint8(var.asInt ());
+	else if (var.Name == "SimOutPacketDuplication") CUdpSimSock::_OutPacketDuplication = uint8(var.asInt ());
+	else if (var.Name == "SimOutPacketDisordering") CUdpSimSock::_OutPacketDisordering = uint8(var.asInt ());
 	else nlstop;
 }
 
@@ -312,7 +312,7 @@ bool				CUdpSimSock::receive (uint8 *buffer, uint32& len, bool throw_exception)
 	}
 }
 
-CSock::TSockResult	CUdpSimSock::send (const uint8 *buffer, uint32& len, bool throw_exception)
+CSock::TSockResult	CUdpSimSock::send (const uint8 *buffer, uint32& len, bool /* throw_exception */)
 {
 	sendUDP (buffer, len);
 	return CSock::Ok;

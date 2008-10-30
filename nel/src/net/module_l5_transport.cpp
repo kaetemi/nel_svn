@@ -29,7 +29,8 @@
 #include "nel/net/module_message.h"
 #include "nel/net/unified_network.h"
 #include "nel/net/service.h"
-#include "nel/net/net_log.h"
+#include "nel/net/net_log.h"
+
 
 using namespace std;
 using namespace NLMISC;
@@ -224,7 +225,7 @@ namespace NLNET
 			}
 		}
 
-		void onCommand(const CMessage &command) throw (EInvalidCommand)
+		void onCommand(const CMessage &/* command */) throw (EInvalidCommand)
 		{
 			// nothing done for now
 			throw EInvalidCommand();
@@ -363,7 +364,7 @@ namespace NLNET
 			// the route will be created by receiving this message
 		}
 
-		void onServiceDown(const std::string &serviceName, TServiceId sid)
+		void onServiceDown(const std::string &/* serviceName */, TServiceId sid)
 		{
 			H_AUTO(L5_onServicedown);
 
@@ -400,8 +401,6 @@ namespace NLNET
 					sid.get());
 				return;
 			}
-
-			CL5Route *route = it->second;
 
 			// read the message size
 			uint32 msgLen;
@@ -486,7 +485,7 @@ namespace NLNET
 		/***************************************************/
 		/// callback from layer 5
 
-		static void cbL5AddTransport(CMessage &msgin, const std::string &serviceName, TServiceId sid)
+		static void cbL5AddTransport(CMessage &msgin, const std::string &/* serviceName */, TServiceId sid)
 		{
 			LNETL6_DEBUG("LNETL6: L5 transport cbL5AddTransport from service %hu", sid.get());
 			// Receive a transport descriptor from another service, create
@@ -514,7 +513,7 @@ namespace NLNET
 			}
 		}
 
-		static void cbL5RemoveTransport(CMessage &msgin, const std::string &serviceName, TServiceId sid)
+		static void cbL5RemoveTransport(CMessage &msgin, const std::string &/* serviceName */, TServiceId sid)
 		{
 			LNETL6_DEBUG("LNETL6: L5 transport cbL5RemoveTransport from service %hu", sid.get());
 			// Receive a transport descriptor from another service, delete
@@ -562,7 +561,7 @@ namespace NLNET
 			transport->onDispatchMessage(msgin, sid);
 		}
 
-		static  void cbOnServiceUp (const std::string &serviceName, TServiceId sid, void *arg)
+		static  void cbOnServiceUp (const std::string &serviceName, TServiceId sid, void * /* arg */)
 		{
 			LNETL6_DEBUG("LNETL6: L5 transport cbOnServiceUp called, service up for %s", serviceName.c_str());
 			// callback all open transport about the new service
@@ -576,7 +575,7 @@ namespace NLNET
 			}
 		}
 
-		static  void cbOnServiceDown (const std::string &serviceName, TServiceId sid, void *arg)
+		static  void cbOnServiceDown (const std::string &serviceName, TServiceId sid, void * /* arg */)
 		{
 			LNETL6_DEBUG("LNETL6: L5 transport cbOnServicedown called, service down for %s", serviceName.c_str());
 			// callback all open transport about the removed service

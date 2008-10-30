@@ -481,24 +481,24 @@ void				UInstanceMaterial::setWrapT(uint stage, TWrapMode mode)
 
 UInstanceMaterial::TWrapMode			UInstanceMaterial::getWrapS(uint stage) const
 {
-	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
+	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(uint8(stage)) == NULL)
 	{
 		nlwarning("UInstanceMaterial::getWrapS : stage %d is invalid or there's no texture", stage);
 		return Repeat;
 	}
-	return (TWrapMode) _Object->getTexture(stage)->getWrapS();
+	return (TWrapMode) _Object->getTexture(uint8(stage))->getWrapS();
 }
 
 // ***************************************************************************
 
 UInstanceMaterial::TWrapMode			UInstanceMaterial::getWrapT(uint stage) const
 {
-	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(stage) == NULL)
+	if (stage >= IDRV_MAT_MAXTEXTURES || _Object->getTexture(uint8(stage)) == NULL)
 	{
 		nlwarning("UInstanceMaterial::getWrapT : stage %d is invalid or there's no texture", stage);
 		return Repeat;
 	}
-	return (TWrapMode) _Object->getTexture(stage)->getWrapT();
+	return (TWrapMode) _Object->getTexture(uint8(stage))->getWrapT();
 }
 
 // ***************************************************************************

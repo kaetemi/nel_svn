@@ -282,7 +282,7 @@ void cbTCReceiveMessage (CMessage &msgin, const string &name, TServiceId sid)
 	}
 }
 
-void cbTCReceiveOtherSideClass (CMessage &msgin, const string &name, TServiceId sid)
+void cbTCReceiveOtherSideClass (CMessage &msgin, const string &/* name */, TServiceId sid)
 {
 	NETTC_DEBUG ("NETTC: cbReceiveOtherSideClass");
 
@@ -325,7 +325,7 @@ static TUnifiedCallbackItem CallbackArray[] =
 	{ "CT_MSG", cbTCReceiveMessage },
 };
 
-void cbTCUpService (const std::string &serviceName, TServiceId sid, void *arg)
+void cbTCUpService (const std::string &serviceName, TServiceId sid, void * /* arg */)
 {
 	NETTC_DEBUG ("NETTC: CTransportClass Service %s %hu is up", serviceName.c_str(), sid.get());
 	if (sid.get() >= 256)

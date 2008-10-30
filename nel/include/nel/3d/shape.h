@@ -93,7 +93,7 @@ public:
 	 * \param worldMatrix the world matrix of the instance.
 	 * \return true if the object is visible, false otherwise. The default behavior is to return true (never clipped).
 	 */
-	virtual bool				clip(const std::vector<CPlane>	&pyramid, const CMatrix &worldMatrix) {return true;}
+	virtual bool				clip(const std::vector<CPlane>& /* pyramid */, const CMatrix &/* worldMatrix */) {return true;}
 
 	/** render() this shape in a driver, with the specified TransformShape information.
 	 * CTransfromShape call this method in the render traversal.
@@ -123,7 +123,7 @@ public:
 	/** Profiling. Called in RenderPass if Current Frame profiled. No-Op by default
 	 *	Informations must be added in rdrTrav->Scene
 	 */
-	virtual void				profileSceneRender(CRenderTrav *rdrTrav, CTransformShape *trans, bool opaquePass) {}
+	virtual void				profileSceneRender(CRenderTrav * /* rdrTrav */, CTransformShape * /* trans */, bool /* opaquePass */) { }
 
 
 	/// \name Load balancing methods
@@ -158,7 +158,7 @@ public:
 	 *	\param polygonCount the number of polygons to render for the meshGeom returned
 	 *	\return the meshgeom to render per block if OK, else NULL (default)
 	 */
-	virtual IMeshGeom			*supportMeshBlockRendering (CTransformShape *trans, float &polygonCount ) const {return NULL;}
+	virtual IMeshGeom			*supportMeshBlockRendering (CTransformShape * /* trans */, float &/* polygonCount */ ) const {return NULL;}
 
 	// @}
 

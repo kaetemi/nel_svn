@@ -74,17 +74,12 @@ void XMLError (xmlNodePtr xmlNode, const char *filename, const char *format, ...
 xmlNodePtr GetFirstChildNode (xmlNodePtr xmlNode, const char *filename, const char *childName)
 {
 	// Call the CIXml version
-	xmlNodePtr result;
-	if ((result = CIXml::getFirstChildNode (xmlNode, childName)))
-	{
-		return result;
-	}
-	else
-	{
-		// Output a formated error
-		XMLError (xmlNode, filename, "Can't find XML node named (%s)", childName);
-		return NULL;
-	}
+	xmlNodePtr result = CIXml::getFirstChildNode (xmlNode, childName);
+	if (result) return result;
+
+	// Output a formated error
+	XMLError (xmlNode, filename, "Can't find XML node named (%s)", childName);
+	return NULL;
 }
 
 // ***************************************************************************
@@ -591,8 +586,10 @@ bool CPrimPath::read (xmlNodePtr xmlNode, const char *filename, uint version, CL
 			VPoints.push_back (CPrimVector ());
 			if (!ReadVector (VPoints.back (), filename, ptNode))
 				return false;
+
+			ptNode = CIXml::getNextChildNode (ptNode, "PT");
 		}
-		while ((ptNode = CIXml::getNextChildNode (ptNode, "PT")));
+		while (ptNode);
 	}
 
 	return IPrimitive::read (xmlNode, filename, version, config);
@@ -660,8 +657,10 @@ bool CPrimZone::read (xmlNodePtr xmlNode, const char *filename, uint version, CL
 			VPoints.push_back (CPrimVector ());
 			if (!ReadVector (VPoints.back (), filename, ptNode))
 				return false;
+
+			ptNode = CIXml::getNextChildNode (ptNode, "PT");
 		}
-		while ((ptNode = CIXml::getNextChildNode (ptNode, "PT")));
+		while (ptNode);
 	}
 
 	return IPrimitive::read (xmlNode, filename, version, config);
@@ -1728,8 +1727,10 @@ bool IPrimitive::read (xmlNodePtr xmlNode, const char *filename, uint version, C
 								string content;
 								GetContentString (content, filename, stringNode);
 								propertyStringArray->StringArray.push_back (content);
+
+								stringNode = CIXml::getNextChildNode (stringNode, "STRING");
 							}
-							while ((stringNode = CIXml::getNextChildNode (stringNode, "STRING")));
+							while (stringNode);
 						}
 					}
 					else if (type == "color")
@@ -1784,8 +1785,10 @@ bool IPrimitive::read (xmlNodePtr xmlNode, const char *filename, uint version, C
 			{
 				return false;
 			}
+
+			propNode = CIXml::getNextChildNode (propNode, "PROPERTY");
 		}
-		while ((propNode = CIXml::getNextChildNode (propNode, "PROPERTY")));
+		while (propNode);
 	}
 
 	// Initialise default value
@@ -1833,8 +1836,10 @@ bool IPrimitive::read (xmlNodePtr xmlNode, const char *filename, uint version, C
 			{
 				return false;
 			}
+
+			childNode = CIXml::getNextChildNode (childNode, "CHILD");
 		}
-		while ((childNode = CIXml::getNextChildNode (childNode, "CHILD")));
+		while (childNode);
 	}
 
 #ifdef NLLIGO_DEBUG

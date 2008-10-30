@@ -109,11 +109,11 @@ void CVarPath::decode ()
 
 	if (val == "[" )
 	{
-		do
+		for(;;)
 		{
 			uint osbnb = 0;
 			string d;
-			do
+			for(;;)
 			{
 				val = getToken ();
 				if (val == "[")
@@ -135,12 +135,10 @@ void CVarPath::decode ()
 
 				d += val;
 			}
-			while (true);
 			dest.push_back (d);
 			if (val == "]")
 				break;
 		}
-		while (true);
 	}
 	else if (val != "." && val != "," && val != "]")
 	{
@@ -214,6 +212,10 @@ void CVarPath::display ()
 
 NLMISC_CATEGORISED_COMMAND(nel, varPath, "Test a varpath (for debug purpose)", "<rawvarpath>")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 1) return false;
 
 	CVarPath vp (args[0]);

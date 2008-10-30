@@ -61,7 +61,7 @@ string CTextureCube::getShareName() const
 }
 
 // ***************************************************************************
-void CTextureCube::doGenerate(bool async)
+void CTextureCube::doGenerate(bool /* async */)
 {
 	uint i;
 	ITexture *pRefTex = NULL;

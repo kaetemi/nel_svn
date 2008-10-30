@@ -24,7 +24,8 @@
 #include "stdnet.h"
 
 #include "nel/net/callback_server.h"
-#include "nel/net/net_log.h"
+#include "nel/net/net_log.h"
+
 
 #ifdef USE_MESSAGE_RECORDER
 #include "nel/net/dummy_tcp_sock.h"
@@ -87,7 +88,7 @@ CCallbackServer::CCallbackServer( TRecordingState rec, const string& recfilename
  * Recorded : YES
  * Replayed : MAYBE
  */
-void CCallbackServer::send (const CMessage &buffer, TSockId hostid, bool log)
+void CCallbackServer::send (const CMessage &buffer, TSockId hostid, bool /* log */)
 {
 	nlassert (connected ());
 	nlassert (buffer.length() != 0);

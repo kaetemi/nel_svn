@@ -723,7 +723,7 @@ inline bool CBitmap::writeJPG( NLMISC::IStream &f, uint8 quality)
 	return true;
 }
 #else // USE_JPEG
-inline bool CBitmap::writeJPG( NLMISC::IStream &f, uint8 quality)
+inline bool CBitmap::writeJPG( NLMISC::IStream &/* f */, uint8 /* quality */)
 {
 	nlwarning ("You must put #define USE_JPEG before all include in the file where you call writeJPG() if you want jpeg support");
 	return false;

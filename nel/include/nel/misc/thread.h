@@ -43,7 +43,7 @@ namespace NLMISC {
 	{
 		void run ()
 		{
-			while(true)	printf("Hello World\n");
+			for(;;)	printf("Hello World\n");
 		}
 
 	};

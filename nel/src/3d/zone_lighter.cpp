@@ -343,7 +343,7 @@ void setCPUMask (IThread *thread, uint process)
 	{
 		uint i=0;
 		uint count = 0;
-		while (1)
+		for(;;)
 		{
 			if (mask & (UINT64_CONSTANT(1)<<i))
 			{
@@ -887,7 +887,6 @@ void FilterZBuffer (CZoneLighter::CZBuffer &zbuffer, uint filterRadius)
 	for (x=0; x<zbuffer.LocalZBufferWidth; x++)
 	{
 		// The Value
-		const float &oldValue = zbuffer.Pixels[x+y*zbuffer.LocalZBufferWidth];
 		float &newValue = tempPixels[x+y*zbuffer.LocalZBufferWidth];
 
 		uint n;
@@ -1291,9 +1290,6 @@ void CZoneLighter::processCalc (uint process, const CLightDesc& description)
 {
 	// *** Raytrace each patches
 
-	// Pointer on the zone
-	CZone *pZone=_Landscape->getZone (_ZoneToLight);
-
 	// Get a patch
 	uint patch = getAPatch (process);
 	while (patch != 0xffffffff)
@@ -1634,12 +1630,6 @@ void CZoneLighter::addTriangles (CLandscape &landscape, vector<uint> &listZone, 
 	{
 		// Leave
 		const CTessFace *face=leaves[leave];
-
-		// Start and end coordinate
-		float startS=min (min (face->PVBase.getS(), face->PVLeft.getS()), face->PVRight.getS());
-		float endS=max (max (face->PVBase.getS(), face->PVLeft.getS()), face->PVRight.getS());
-		float startT=min (min (face->PVBase.getT(), face->PVLeft.getT()), face->PVRight.getT());
-		float endT=max (max (face->PVBase.getT(), face->PVLeft.getT()), face->PVRight.getT());
 
 		// Add a triangle
 		triangleArray.push_back (CTriangle (NLMISC::CTriangle (face->VBase->EndPos, face->VLeft->EndPos, face->VRight->EndPos)));
@@ -2121,7 +2111,6 @@ void CZoneLighter::buildZoneInformation (CLandscape &landscape, const vector<uin
 
 				// Number of lumels
 				uint lumelCount = orderS*orderT*16;
-				uint lumelCornerCount = (orderS*4+1)*(orderT*4+1);
 
 				// Resize the lumel descriptor
 				CLumelDescriptor descriptor;
@@ -3853,9 +3842,6 @@ float CZoneLighter::attenuation (const CVector &pos, const CZoneLighter::CLightD
 		CVector zPos;
 		transformVectorToZBuffer (zbuffer, pos, zPos);
 
-		sint x = (sint)floor (zPos.x);
-		sint y = (sint)floor (zPos.y);
-
 		// Get the z
 		float random = (float)_Random.rand () * description.SoftShadowJitter + _Random.RandMax * (1.f - description.SoftShadowJitter);
 		averageAttenuation += random * testZPercentageCloserFilter (zPos.x-(float)zbuffer.LocalZBufferXMin, zPos.y-(float)zbuffer.LocalZBufferYMin, zPos.z, zbuffer, description, _ZBufferOverflow);
@@ -3872,9 +3858,6 @@ float CZoneLighter::attenuation (const CVector &pos, const CZoneLighter::CLightD
 	// Get position in z buffer
 	CVector zPos;
 	transformVectorToZBuffer (_ZBufferObject, pos, zPos);
-
-	const sint x = (sint)floor (zPos.x);
-	const sint y = (sint)floor (zPos.y);
 
 	const float objectAttenuation = testZPercentageCloserFilter (zPos.x-(float)_ZBufferObject.LocalZBufferXMin, zPos.y-(float)_ZBufferObject.LocalZBufferYMin, zPos.z, _ZBufferObject, description, _ZBufferOverflow);
 

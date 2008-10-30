@@ -616,7 +616,7 @@ inline void MakeNPrivate(uint8 * dest,
 				  uint32 numAttrib,
 				  CPSBinOp::BinOp op,
 				  uint nbReplicate,
-				  uint32 srcStep = (1 << 16)
+				  uint32 /* srcStep */ = (1 << 16)
 				 )
 {
 	uint k;

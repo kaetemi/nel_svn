@@ -371,7 +371,7 @@ public:
 	/** Select a texture among several other (if this texture is a set of texture such as CTextureMultiFile)
 	  * The default does nothing
 	  */
-	virtual void selectTexture(uint index) {}
+	virtual void selectTexture(uint /* index */) {}
 
 	/// Test whether this texture is selectable
 	virtual bool isSelectable() const { return false; }
@@ -379,7 +379,7 @@ public:
 	/** If this texture is selectable, build a non selectable version of this texture that is setupped with the given slot.
 	  * NB : If this texture is selectable, you are ensured that the return pointer is not 'this'
 	  */
-	virtual ITexture *buildNonSelectableVersion(uint index) { return this; }
+	virtual ITexture *buildNonSelectableVersion(uint /* index */) { return this; }
 
 
 

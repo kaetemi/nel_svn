@@ -179,7 +179,7 @@ static DWORD __stdcall GetModuleBase(HANDLE hProcess, DWORD dwReturnAddress)
 				   NULL, "MN",
 				   NULL, (DWORD) memoryBasicInfo.AllocationBase, 0))
 				{
-					DWORD dwError = GetLastError();
+//					DWORD dwError = GetLastError();
 //					nlinfo("Error: %d", dwError);
 				}
 		}
@@ -189,7 +189,7 @@ static DWORD __stdcall GetModuleBase(HANDLE hProcess, DWORD dwReturnAddress)
 			   NULL, ((cch) ? szFile : NULL),
 			   NULL, (DWORD) memoryBasicInfo.AllocationBase, 0))
 			{
-				DWORD dwError = GetLastError();
+//				DWORD dwError = GetLastError();
 //				nlinfo("Error: %d", dwError);
 			 }
 
@@ -443,7 +443,7 @@ void CMemDisplayer::write (string &str, bool crLf)
 }
 
 
-void	CLightMemDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *message )
+void	CLightMemDisplayer::doDisplay ( const CLog::TDisplayInfo& /* args */, const char *message )
 {
 	//stringstream	ss;
 	string str;

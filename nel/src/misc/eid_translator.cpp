@@ -448,7 +448,7 @@ void cbInvalidEntityNamesFilename(const std::string &invalidEntityNamesFilename)
 		return;
 	}
 
-	while (true)
+	for(;;)
 	{
 		char str[512];
 		fgets(str, 511, fp);

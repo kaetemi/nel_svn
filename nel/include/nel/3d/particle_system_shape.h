@@ -124,7 +124,7 @@ public:
 	/** this method is meaningless here : the traverseLoadBalancing() for particle system
 	  * compute the number of triangles from the Model, not the shape
 	  */
-	virtual float				getNumTriangles (float distance) { return 0; }
+	virtual float				getNumTriangles (float /* distance */) { return 0; }
 
 
 	/// \name access default tracks.

@@ -566,10 +566,10 @@ float		CEdgeCollide::testBBoxMove(const CVector2f &start, const CVector2f &delta
 
 
 	// Else, do 4 test edge/edge, and return Tmin.
-	float	tMin, tMax;
+	float	tMin = 0.f, tMax = 0.f;
 	bool	edgeCollided= false;
 	bool	normalOnBox= false;
-	CVector2f	boxNormal;
+	CVector2f	boxNormal(0.f, 0.f);
 	for(sint i=0;i<4;i++)
 	{
 		float	t0, t1;

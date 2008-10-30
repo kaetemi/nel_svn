@@ -40,7 +40,7 @@ namespace NL3D
 /*------------------------------------------------------------------*\
 							doGenerate()
 \*------------------------------------------------------------------*/
-void CTextureMem::doGenerate(bool async)
+void CTextureMem::doGenerate(bool /* async */)
 {
 	if (_Data)
 	{

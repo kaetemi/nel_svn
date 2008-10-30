@@ -384,7 +384,7 @@ private:
 	virtual void onBranchUnlink() {}
 
 	/// Callback called when the primitive is updated, giving a chance to track the primitive's modifications during the loading
-	virtual void onModifyPrimitive(CPrimitives &primitives) const {}
+	virtual void onModifyPrimitive(CPrimitives &/* primitives */) const {}
 
 	// internal recusive call
 	void branchLink();

@@ -126,7 +126,7 @@ public:
 	/** This function will be call when we receive this class from the network. It will use the instance given at the
 	 * registration process. By default, it does nothing.
 	 */
-	virtual void callback (const std::string &name, NLNET::TServiceId sid) { }
+	virtual void callback (const std::string &/* name */, NLNET::TServiceId /* sid */) { }
 
 
 	//
@@ -285,9 +285,9 @@ protected:
 		std::string	Name;
 		TProp Type;
 
-		virtual void serialDefaultValue (NLMISC::IStream &f) { }
+		virtual void serialDefaultValue (NLMISC::IStream &/* f */) { }
 
-		virtual void serialValue (NLMISC::IStream &f) { }
+		virtual void serialValue (NLMISC::IStream &/* f */) { }
 
 		virtual void setDefaultValue () { }
 	};

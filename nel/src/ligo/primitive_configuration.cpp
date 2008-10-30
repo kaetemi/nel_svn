@@ -81,11 +81,15 @@ bool CPrimitiveConfigurations::read (xmlNodePtr configurationNode, const char *f
 					{
 						pair.second = name;
 					}
+
+					match = CIXml::getNextChildNode (match, "MATCH");
 				}
-				while ((match = CIXml::getNextChildNode (match, "MATCH")));
+				while (match);
 			}
+
+			matchGroups = CIXml::getNextChildNode (matchGroups, "MATCH_GROUP");
 		}
-		while ((matchGroups = CIXml::getNextChildNode (matchGroups, "MATCH_GROUP")));
+		while (matchGroups);
 	}
 	return true;
 }

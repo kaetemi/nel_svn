@@ -315,7 +315,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::getNextToken (TToken &token)
 				currentChar = *_ExprPtr;
 
 				// For each values
-				while (1)
+				for(;;)
 				{
 					if ((currentChar >= '0') && (currentChar <= '9'))
 					{
@@ -627,7 +627,7 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 	TReturnState error = getNextToken (nextToken);
 	if (error != NoError)
 		return error;
-	while (1)
+	for(;;)
 	{
 		// Unary opertor
 		uint unaryOpCount = 0;

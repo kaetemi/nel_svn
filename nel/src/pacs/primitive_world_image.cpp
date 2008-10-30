@@ -1053,7 +1053,7 @@ void CPrimitiveWorldImage::precalcBB (double beginTime, double endTime, CMovePri
 
 // ***************************************************************************
 
-void CPrimitiveWorldImage::addMoveElement (CMoveCell& cell, uint16 x, uint16 y, double centerX, double centerY, CMovePrimitive *primitive,
+void CPrimitiveWorldImage::addMoveElement (CMoveCell& cell, uint16 x, uint16 y, double centerX, double /* centerY */, CMovePrimitive *primitive,
 										   CMoveContainer &container, uint8 worldImage)
 {
 	// Find a free place
@@ -1346,7 +1346,7 @@ void CPrimitiveWorldImage::reaction (CPrimitiveWorldImage& second, const CCollis
 // ***************************************************************************
 
 void CPrimitiveWorldImage::reaction (const CCollisionSurfaceDesc&	surfaceDesc, const UGlobalPosition& globalPosition,
-							   CGlobalRetriever& retriever, double ratio, double dt, CMovePrimitive &primitive, CMoveContainer &container,
+							   CGlobalRetriever& retriever, double /* ratio */, double dt, CMovePrimitive &primitive, CMoveContainer &container,
 							   uint8 worldImage)
 {
 //	H_AUTO(PACS_PWI_reaction_short);

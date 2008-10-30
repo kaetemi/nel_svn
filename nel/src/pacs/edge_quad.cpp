@@ -309,7 +309,7 @@ void			CEdgeQuad::build(const CExteriorMesh &em,
 				if (entry == _EdgeEntries.size())
 				{
 					_EdgeEntries.push_back(CExteriorEdgeEntry());
-					_EdgeEntries.back().EdgeId = edgeId;
+					_EdgeEntries.back().EdgeId = uint16(edgeId);
 					_EdgeEntries.back().ChainId = chainId;
 					_EdgeEntries.back().Interior = interior;
 					_EdgeEntries.back().Exterior = exterior;
@@ -326,7 +326,7 @@ void			CEdgeQuad::build(const CExteriorMesh &em,
 							if (entry == *it)
 								break;
 						if (it == tempQuad[y*_Width+x].end())
-							tempQuad[y*_Width+x].push_back(entry);
+							tempQuad[y*_Width+x].push_back(uint16(entry));
 					}
 				}
 			}
@@ -386,7 +386,7 @@ void			CEdgeQuad::build(const CExteriorMesh &em,
 			_Quad[i]= ptr;
 
 			// write len.
-			uint16	len= srcQuadNode.size();
+			uint16	len= uint16(srcQuadNode.size());
 			*((uint16*)ptr)= len;
 			ptr+= sizeof(uint16);
 
@@ -444,7 +444,7 @@ sint			CEdgeQuad::selectEdges(const NLMISC::CAABBox &bbox, CCollisionSurfaceTemp
 				if (indexLUT[index]==0xFFFF)
 				{
 					// inc the list.
-					indexLUT[index]= nRes;
+					indexLUT[index]= uint16(nRes);
 					cst.ExteriorEdgeIndexes.push_back(index);
 					nRes++;
 				}
@@ -550,7 +550,7 @@ sint		CEdgeQuad::selectEdges(CVector start, CVector end, CCollisionSurfaceTemp &
 				if(indexLUT[index]==0xFFFF)
 				{
 					// inc the list.
-					indexLUT[index]= nRes;
+					indexLUT[index]= uint16(nRes);
 					cst.ExteriorEdgeIndexes.push_back(ptrExteriorEdgeIndex[i]);
 					nRes++;
 				}

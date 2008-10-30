@@ -43,7 +43,7 @@ namespace NLNET {
 // Callback for answer of the request shard
 bool ShardValidate;
 string ShardValidateReason;
-void cbShardValidate (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+void cbShardValidate (CMessage &msgin, TSockId /* from */, CCallbackNetBase &/* netbase */)
 {
 	//
 	// S14: receive "SV" message from FES

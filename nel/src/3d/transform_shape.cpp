@@ -114,14 +114,14 @@ uint		CTransformShape::getNumMaterial () const
 
 
 // ***************************************************************************
-const CMaterial *CTransformShape::getMaterial (uint materialId) const
+const CMaterial *CTransformShape::getMaterial (uint /* materialId */) const
 {
 	return NULL;
 }
 
 
 // ***************************************************************************
-CMaterial *CTransformShape::getMaterial (uint materialId)
+CMaterial *CTransformShape::getMaterial (uint /* materialId */)
 {
 	return NULL;
 }
@@ -214,7 +214,7 @@ void	CTransformShape::traverseRender()
 		bool				currentPassOpaque= rdrTrav.isCurrentPassOpaque();
 
 		// shape must be rendered in a CMeshBlockManager ??
-		float polygonCount;
+		float polygonCount = 0.f;
 		IMeshGeom	*meshGeom= NULL;
 		// true only if in pass opaque
 		if( currentPassOpaque )

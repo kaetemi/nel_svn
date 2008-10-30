@@ -157,7 +157,7 @@ public:
 			CPrimitiveWorldImage	*worldImage=_WorldImages[i];
 
 			// Dirt its pos
-			worldImage->dirtPos (_Container, this, i+_FirstWorldImage);
+			worldImage->dirtPos (_Container, this, uint8(i+_FirstWorldImage));
 		}
 	}
 

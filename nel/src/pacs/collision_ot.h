@@ -399,14 +399,14 @@ public:
 	}
 
 	// Link in the primitive
-	void				primitiveLink (CMovePrimitive *primitive, CCollisionOTInfo *other)
+	void				primitiveLink (CMovePrimitive * /* primitive */, CCollisionOTInfo *other)
 	{
 		// Link
 		_Next=other;
 	}
 
 	// Link in the primitive
-	CCollisionOTInfo	*getNext (CMovePrimitive *primitive) const
+	CCollisionOTInfo	*getNext (CMovePrimitive * /* primitive */) const
 	{
 		// return next
 		return _Next;
@@ -427,7 +427,7 @@ public:
 	// Remove the collision from the primitives
 	void				removeFromPrimitives ();
 
-	CMovePrimitive		*getOtherPrimitive (CMovePrimitive *primitive) const
+	CMovePrimitive		*getOtherPrimitive (CMovePrimitive * /* primitive */) const
 	{
 		return NULL;
 	}

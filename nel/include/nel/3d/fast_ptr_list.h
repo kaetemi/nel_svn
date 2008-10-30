@@ -44,7 +44,7 @@ public:
 	CFastPtrListNode() {_Owner= NULL;}
 	~CFastPtrListNode() {unlink();}
 	// No-op const copy
-	CFastPtrListNode(const CFastPtrListNode &o) {_Owner= NULL;}
+	CFastPtrListNode(const CFastPtrListNode &/* o */) {_Owner= NULL;}
 
 	// If linked to a list, remove me from it.
 	void			unlink();
@@ -53,7 +53,7 @@ public:
 	bool			isLinked() const {return _Owner!=NULL;}
 
 	// No-op operator=
-	CFastPtrListNode	&operator=(const CFastPtrListNode &o)
+	CFastPtrListNode	&operator=(const CFastPtrListNode &/* o */)
 	{
 		return *this;
 	}
@@ -80,7 +80,7 @@ class CFastPtrListBase
 public:
 	/// Constructor
 	CFastPtrListBase() {}
-	CFastPtrListBase(const CFastPtrListBase &o) {}
+	CFastPtrListBase(const CFastPtrListBase &/* o */) {}
 	~CFastPtrListBase();
 
 	/// insert an element in the list through its Node, unlinking older if necessary
@@ -98,7 +98,7 @@ public:
 	void			clear();
 
 	// operator= is noop. Cant do it because nodes keep a ptr on me!!
-	CFastPtrListBase	&operator=(const CFastPtrListBase &o) {return *this;}
+	CFastPtrListBase	&operator=(const CFastPtrListBase &/* o */) {return *this;}
 
 // **************
 private:

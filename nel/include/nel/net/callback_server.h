@@ -93,7 +93,7 @@ public:
 private:
 
 	/// This function is public in the base class and put it private here because user cannot use it in layer 2
-	void			send (const NLMISC::CMemStream &buffer, TSockId hostid) { nlstop; }
+	void			send (const NLMISC::CMemStream &/* buffer */, TSockId /* hostid */) { nlstop; }
 
 	bool			dataAvailable ();
 	virtual bool	getDataAvailableFlagV() const { return dataAvailableFlag(); }

@@ -96,7 +96,7 @@ uint32 RequestTimeout = 4;	// in second
 // Callbacks
 //
 
-static void cbInfo (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+static void cbInfo (CMessage &msgin, const std::string &/* serviceName */, TServiceId /* sid */)
 {
 	nlinfo ("ADMIN: Updating admin informations");
 
@@ -108,7 +108,7 @@ static void cbInfo (CMessage &msgin, const std::string &serviceName, TServiceId 
 	setInformations (alarms, graphupdate);
 }
 
-static void cbServGetView (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+static void cbServGetView (CMessage &msgin, const std::string &/* serviceName */, TServiceId sid)
 {
 	uint32 rid;
 	string rawvarpath;
@@ -124,7 +124,7 @@ static void cbServGetView (CMessage &msgin, const std::string &serviceName, TSer
 	nlassert (answer.empty());
 }
 
-static void cbExecCommand (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+static void cbExecCommand (CMessage &msgin, const std::string &/* serviceName */, TServiceId sid)
 {
 	// create a displayer to gather the output of the command
 	class CStringDisplayer: public IDisplayer
@@ -136,7 +136,7 @@ static void cbExecCommand (CMessage &msgin, const std::string &serviceName, TSer
 		}
 
 	protected:
-		virtual void doDisplay( const CLog::TDisplayInfo& args, const char *message)
+		virtual void doDisplay( const CLog::TDisplayInfo& /* args */, const char *message)
 		{
 			_Data += message;
 		}
@@ -163,21 +163,21 @@ static void cbExecCommand (CMessage &msgin, const std::string &serviceName, TSer
 
 
 // AES wants to know if i'm not dead, I have to answer faster as possible or i'll be killed
-static void cbAdminPing (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+static void cbAdminPing (CMessage &/* msgin */, const std::string &/* serviceName */, TServiceId sid)
 {
 	// Send back a pong to say to the AES that I'm alive
 	CMessage msgout("ADMIN_PONG");
 	CUnifiedNetwork::getInstance()->send(sid, msgout);
 }
 
-static void cbStopService (CMessage &msgin, const std::string &serviceName, TServiceId sid)
+static void cbStopService (CMessage &/* msgin */, const std::string &serviceName, TServiceId sid)
 {
 	nlinfo ("ADMIN: Receive a stop from service %s-%hu, need to quit", serviceName.c_str(), sid.get());
 	IService::getInstance()->exit (0xFFFF);
 }
 
 
-void cbAESConnection (const string &serviceName, TServiceId sid, void *arg)
+void cbAESConnection (const string &/* serviceName */, TServiceId /* sid */, void * /* arg */)
 {
 	// established a connection to the AES, identify myself
 
@@ -203,7 +203,7 @@ void cbAESConnection (const string &serviceName, TServiceId sid, void *arg)
 }
 
 
-static void cbAESDisconnection (const std::string &serviceName, TServiceId sid, void *arg)
+static void cbAESDisconnection (const std::string &serviceName, TServiceId sid, void * /* arg */)
 {
 	nlinfo("Lost connection to the %s-%hu", serviceName.c_str(), sid.get());
 }
@@ -249,6 +249,7 @@ static void addRequestWaitingNb (uint32 rid)
 	nlwarning ("ADMIN: addRequestWaitingNb: can't find the rid %d", rid);
 }
 
+/*
 static void subRequestWaitingNb (uint32 rid)
 {
 	for (uint i = 0 ; i < Requests.size (); i++)
@@ -262,6 +263,7 @@ static void subRequestWaitingNb (uint32 rid)
 	}
 	nlwarning ("ADMIN: subRequestWaitingNb: can't find the rid %d", rid);
 }
+*/
 
 void addRequestAnswer (uint32 rid, const TAdminViewVarNames& varNames, const TAdminViewValues& values)
 {
@@ -286,6 +288,7 @@ void addRequestAnswer (uint32 rid, const TAdminViewVarNames& varNames, const TAd
 	nlwarning ("ADMIN: Receive an answer for unknown request %d", rid);
 }
 
+/*
 static bool emptyRequest (uint32 rid)
 {
 	for (uint i = 0 ; i < Requests.size (); i++)
@@ -297,6 +300,7 @@ static bool emptyRequest (uint32 rid)
 	}
 	return true;
 }
+*/
 
 static void cleanRequest ()
 {
@@ -865,6 +869,11 @@ void setInformations (const vector<string> &alarms, const vector<string> &graphu
 
 NLMISC_CATEGORISED_COMMAND(nel, displayInformations, "displays all admin informations", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	uint i;
 
 	log.displayNL("There're %d alarms:", Alarms.size());
@@ -882,6 +891,10 @@ NLMISC_CATEGORISED_COMMAND(nel, displayInformations, "displays all admin informa
 
 NLMISC_CATEGORISED_COMMAND(nel, getView, "send a view and receive an array as result", "<varpath>")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 1) return false;
 
 	TAdminViewResult answer;

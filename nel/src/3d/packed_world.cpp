@@ -46,7 +46,6 @@ void CPackedWorld::build(std::vector<TPackedZoneBaseSPtr> &packedZones)
 	for(uint k = 1; k < packedZones.size(); ++k)
 	{
 		nlassert(packedZones[k]);
-		const CAABBox &otherBox = packedZones[k]->Box;
 		box.extend(packedZones[k]->Box.getMin());
 		box.extend(packedZones[k]->Box.getMax());
 	}

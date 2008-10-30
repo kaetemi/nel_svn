@@ -107,7 +107,7 @@ private:
 
 	/// Todo: serialize a font texture.
 public:
-	virtual void	serial(NLMISC::IStream &f) throw(NLMISC::EStream) {nlstop;}
+	virtual void	serial(NLMISC::IStream &/* f */) throw(NLMISC::EStream) {nlstop;}
 	NLMISC_DECLARE_CLASS(CTextureFont);
 
 };

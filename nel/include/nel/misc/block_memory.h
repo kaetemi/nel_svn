@@ -154,8 +154,7 @@ public:
 		nlassert( *checkStart == CheckAllocatedIdent);
 		nlassert( *checkEnd   == CheckAllocatedIdent);
 		// if ok, mark this element as deleted.
-		*checkStart= CheckDeletedIdent;
-		*checkEnd  = CheckDeletedIdent;
+		*checkStart = *checkEnd = uint32(CheckDeletedIdent);
 #endif
 
 		// destruct the element.
@@ -298,8 +297,7 @@ private:
 			uint32	*checkStart= (uint32*)ptr-1;
 			uint32	*checkEnd  = (uint32*)((uint8*)ptr+_EltSize);
 			// mark this element as deleted.
-			*checkStart= CheckDeletedIdent;
-			*checkEnd  = CheckDeletedIdent;
+			*checkStart = *checkEnd = uint32(CheckDeletedIdent);
 
 			// next elt.
 			ptr= (uint8*)ptr + nodeSize;

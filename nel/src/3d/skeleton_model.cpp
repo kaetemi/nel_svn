@@ -967,7 +967,7 @@ void		CSkeletonModel::computeLodTexture()
 				for(uint i=0;i<numMats;i++)
 				{
 					// get the manager bitmap to write to
-					CLodCharacterTmpBitmap	&dstBmp= mngr->getTmpBitmap(i);
+					CLodCharacterTmpBitmap	&dstBmp= mngr->getTmpBitmap(uint8(i));
 
 					// if the material stage 0 is not textured, or has not a valid async id, build the bitmap with a color.
 					sint			asyncTextId= mbi->getAsyncTextureId(i,0);
@@ -2107,7 +2107,7 @@ void			CSkeletonModel::deleteShadowMap()
 }
 
 // ***************************************************************************
-void		CSkeletonModel::updateShadowMap(IDriver *driver)
+void		CSkeletonModel::updateShadowMap(IDriver * /* driver */)
 {
 	nlassert(_ShadowMap);
 

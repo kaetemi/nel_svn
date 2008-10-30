@@ -595,7 +595,7 @@ private:
 						if (i >= NetworkConnectionAssociations.size ())
 							NetworkConnectionAssociations.resize (i+1);
 
-						NetworkConnectionAssociations[i] = j;
+						NetworkConnectionAssociations[i] = uint8(j);
 						nlinfo ("HNETL5: nid %u will be use connection %u", i, j);
 						break;
 					}

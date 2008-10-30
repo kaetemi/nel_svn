@@ -363,7 +363,6 @@ void CPath::remapFile (const std::string &file1, const std::string &file2)
 
 void CFileContainer::remapFile (const std::string &file1, const std::string &file2)
 {
-	CPath *inst = CPath::getInstance();
 	if (file1.empty()) return;
 	if (file2.empty()) return;
 	_RemappedFiles[toLower(file1)] = toLower(file2);
@@ -440,7 +439,6 @@ string CFileContainer::lookup (const string &filename, bool throwException, bool
 	}
 
 	// Try to find in the map directories
-	CPath *inst = CPath::getInstance();
 
 	// If filename contains a path, we get only the filename to look inside paths
 	string str = CFile::getFilename(toLower(filename));
@@ -858,7 +856,7 @@ void CFileContainer::getPathContent (const string &path, bool recurse, bool want
 	// contains path that we have to recurs into
 	vector<string> recursPath;
 
-	while (true)
+	for(;;)
 	{
 		dirent *de = readdir(dir);
 		if (de == NULL)
@@ -954,7 +952,6 @@ void CPath::removeAllAlternativeSearchPath ()
 
 void CFileContainer::removeAllAlternativeSearchPath ()
 {
-	CPath *inst = CPath::getInstance();
 	_AlternativePaths.clear ();
 	NL_DISPLAY_PATH("PATH: CPath::RemoveAllAternativeSearchPath(): removed");
 }
@@ -2405,7 +2402,7 @@ bool CPath::makePathRelative (const char *basePath, std::string &relativePath)
 	string src = standardizePath (relativePath, true);
 	string prefix;
 
-	while (1)
+	for(;;)
 	{
 		// Compare with relativePath
 		if (strncmp (tmp.c_str (), src.c_str (), tmp.length ()) == 0)

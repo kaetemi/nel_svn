@@ -448,8 +448,8 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey   (const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
-							TAnimationTime date, IAnimatedValue &result)
+							TAnimationTime /* datePrevious */, TAnimationTime /* dateNext */,
+							TAnimationTime /* date */, IAnimatedValue &result)
 	{
 		// Const key.
 		if (previous)
@@ -476,8 +476,8 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey (	const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
-							TAnimationTime date, IAnimatedValue &result )
+							TAnimationTime /* datePrevious */, TAnimationTime /* dateNext */,
+							TAnimationTime /* date */, IAnimatedValue &result )
 	{
 		// Const key.
 		if (previous)
@@ -512,7 +512,7 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey (	const CKeyT* previous, const CKeyT* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<T>	&resultVal= static_cast<CAnimatedValueBlendable<T>&>(result);
@@ -555,7 +555,7 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey (	const CKeyQuat* previous, const CKeyQuat* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<CQuat>	&resultVal= static_cast<CAnimatedValueBlendable<CQuat>&>(result);
@@ -594,7 +594,7 @@ public:
 
 	/// From ITrackKeyFramer
 	virtual void evalKey (	const CKeyRGBA* previous, const CKeyRGBA* next,
-							TAnimationTime datePrevious, TAnimationTime dateNext,
+							TAnimationTime datePrevious, TAnimationTime /* dateNext */,
 							TAnimationTime date, IAnimatedValue &result )
 	{
 		CAnimatedValueBlendable<NLMISC::CRGBA>	&resultVal= static_cast<CAnimatedValueBlendable<NLMISC::CRGBA>&>(result);

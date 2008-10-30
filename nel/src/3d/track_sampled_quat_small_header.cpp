@@ -226,7 +226,7 @@ const IAnimatedValue	&CTrackSampledQuatSmallHeader::eval (const TAnimationTime& 
 
 
 // ***************************************************************************
-void					CTrackSampledQuatSmallHeader::serial(NLMISC::IStream &f)
+void					CTrackSampledQuatSmallHeader::serial(NLMISC::IStream &/* f */)
 {
 	// CTrackSampledQuatSmallHeader not designed to be serialsied
 	nlstop;

@@ -775,7 +775,7 @@ public:
 	/** Release any reference this obj may have on the given process.
 	  * For example, this is used when detaching a located bindable from a system.
 	  */
-	virtual	void			 releaseRefTo(const CParticleSystemProcess *other) {}
+	virtual	void			 releaseRefTo(const CParticleSystemProcess * /* other */) {}
 
 	/** Release any reference this obj may have to other process of the system
 	  * For example, this is used when detaching a located bindable from a system.
@@ -788,7 +788,7 @@ public:
 	* The default behaviour does nothing
 	* \return true if you modified the bbox
 	*/
-	virtual bool			completeBBox(NLMISC::CAABBox &box) const  { return false;}
+	virtual bool			completeBBox(NLMISC::CAABBox &/* box */) const  { return false;}
 	/***
 	 * Override the following to say that you don't want to be part of a bbox computation
 	 */
@@ -874,23 +874,23 @@ public:
 	/** Called when the basis of the owner changed. the default behaviour does nothing
 	  * \param newBasis : True if in the system basis, false for the world basis.
 	  */
-	virtual void			basisChanged(TPSMatrixMode systemBasis) {}
+	virtual void			basisChanged(TPSMatrixMode /* systemBasis */) {}
 
 	/// called when a located has switch between incrmental / parametric motion. The default does nothing
-	virtual	void			motionTypeChanged(bool parametric) {}
+	virtual	void			motionTypeChanged(bool /* parametric */) {}
 
 	// returns the number of sub-objects (including this one, that requires the user matrix for its computations)
 	virtual bool			getUserMatrixUsageCount() const { return 0; }
 
 	// enum tex used by the object, and append them to dest
-	virtual	void			enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &dest, IDriver &drv) {}
+	virtual	void			enumTexs(std::vector<NLMISC::CSmartPtr<ITexture> > &/* dest */, IDriver &/* drv */) {}
 
 	// change z-bias in material (default does nothing)
-	virtual void			setZBias(float value) {}
+	virtual void			setZBias(float /* value */) {}
 
 
 	// called when the show / hide flag has been changed
-	virtual void onShow(bool shown) {}
+	virtual void onShow(bool /* shown */) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -906,7 +906,7 @@ protected:
 	// Delete element at the given index
 	virtual void deleteElement(uint32 index) = 0;
 	// Delete element at the given index. Gives the remaining time until the next sim loop
-	virtual void deleteElement(uint32 index, TAnimationTime timeUntilNextSimStep) { deleteElement(index); }
+	virtual void deleteElement(uint32 index, TAnimationTime /* timeUntilNextSimStep */) { deleteElement(index); }
 
 	/** Resize the bindable attributes containers
 	 * should not be called directly. Call CPSLocated::resize instead
@@ -916,7 +916,7 @@ protected:
 	/** a bounce occured, so some action could be done. The default behaviour does nothing
 	 *  \param index the index of the element that bounced
 	 */
-	virtual void bounceOccured(uint32 index, TAnimationTime timeToNextsimStep) {}
+	virtual void bounceOccured(uint32 /* index */, TAnimationTime /* timeToNextsimStep */) {}
 
 	/** show an drawing to represent the object, and in red if it is selected
 	 *  \param tab : a table of 2 * nbSeg vector. only the x and y coordinates are used
@@ -1015,7 +1015,7 @@ public:
 	 *  can't call your releaseTargetRsc override in its destructor, it does it in its finalize method,
 	 *  which is called by the particle system
 	 */
-	virtual void		releaseTargetRsc(CPSLocated *target) {}
+	virtual void		releaseTargetRsc(CPSLocated * /* target */) {}
 	/// Seralization, must be called by derivers
 	void				serial(NLMISC::IStream &f) throw(NLMISC::EStream);
 	/// Finalize this object : the default is to call releaseTargetRsc on targets

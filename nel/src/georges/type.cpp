@@ -910,7 +910,7 @@ const string	&CType::getComment () const
 
 // ***************************************************************************
 
-void CType::getDependencies (std::set<std::string> &dependencies) const
+void CType::getDependencies (std::set<std::string> & /* dependencies */) const
 {
 
 }

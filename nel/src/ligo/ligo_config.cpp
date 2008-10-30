@@ -175,8 +175,10 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 						}
 						else
 							return false;
+
+						primitive = CIXml::getNextChildNode (primitive, "PRIMITIVE");
 					}
-					while ((primitive = CIXml::getNextChildNode (primitive, "PRIMITIVE")));
+					while (primitive);
 				}
 
 				// Add the context strings
@@ -208,8 +210,10 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 						}
 						else
 							return false;
+
+						configuration = CIXml::getNextChildNode (configuration, "CONFIGURATION");
 					}
-					while ((configuration = CIXml::getNextChildNode (configuration, "CONFIGURATION")));
+					while (configuration);
 				}
 
 				// Ok

@@ -82,7 +82,7 @@ void main()
 	set<uint32> myset;
 
 	// generates the key for this cookie
-	while (true)
+	for(;;)
 	{
 		uint32 val = (t&0xFFF)<<20 | (r&0xFF)<<12 | (n&0xFFF);
 		pair<set<uint32>::iterator,bool> p = myset.insert (val);

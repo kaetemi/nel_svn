@@ -306,7 +306,6 @@ bool UParticleSystemInstance::isGlobalUserParamValueBypassed(uint userParamIndex
 		nlwarning("invalid user param index");
 		return 0.f;
 	}
-	CParticleSystemModel *object = NLMISC::safe_cast<CParticleSystemModel *>(_Object);
 	return isGlobalUserParamValueBypassed(userParamIndex);
 }
 

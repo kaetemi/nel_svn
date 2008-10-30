@@ -153,7 +153,7 @@ public:
 		/** Direct lookup of the result value from a float input (if it makes sense). This bypass what was set with setInput
 		  * The input must be in [0, 1[
 		  */
-		virtual T get(float input) { nlassert(0); return T(); /* not supported by default */ }
+		virtual T get(float /* input */) { nlassert(0); return T(); /* not supported by default */ }
 
 
 		/** Fill tab with an attribute by using the given stride. It fills numAttrib attributes.
@@ -238,7 +238,7 @@ public:
 		/** set a new input type (if supported). The default does nothing
 		 *  \see hasCustomInput()
 		 */
-		virtual void setInput(const CPSInputType &input) {}
+		virtual void setInput(const CPSInputType &/* input */) {}
 
 
 		/** get the type of input (if supported). The default return attrDate
@@ -258,7 +258,7 @@ public:
 		 *  The default does nothing (clamping unsupported)
 		 *  \see isClampingSupported()
 		 */
-		virtual void setClamping(bool enable = true) {}
+		virtual void setClamping(bool /* enable */ = true) {}
 
 
 		/** Test if the clamping is enabled.
@@ -278,24 +278,24 @@ public:
 		bool hasMemory(void) const { return _HasMemory; }
 
 		/// delete an element, given its index. this must be called  only if memory management is used.
-		virtual void deleteElement(uint32 index) { nlassert(false); }
+		virtual void deleteElement(uint32 /* index */) { nlassert(false); }
 
 		/** create a new element, and provides the emitter,
 		  *	this must be called only if this attribute maker has its own memory
 		  */
-		virtual void newElement(const CPSEmitterInfo &info) { nlassert(false); }
+		virtual void newElement(const CPSEmitterInfo &/* info */) { nlassert(false); }
 
 		/** set a new capacity for the memorized attribute, and a number of used element. This usually is 0
 		  * , but during edition, this may not be ... so new element are created.
 		  * this must be called only if this attribute maker has its own memory
 		  */
-		virtual void resize(uint32 capacity, uint32 nbPresentElements) { nlassert(false); }
+		virtual void resize(uint32 /* capacity */, uint32 /* nbPresentElements */) { nlassert(false); }
 	//@}
 
 	// misc
 
 	// used by colors only : set the internal color format. useful to write in vertex buffer (format differs between D3D & OpenGL)
-	virtual void setColorType(CVertexBuffer::TVertexColorType type) {}
+	virtual void setColorType(CVertexBuffer::TVertexColorType /* type */) {}
 protected:
 
 	float _NbCycles;

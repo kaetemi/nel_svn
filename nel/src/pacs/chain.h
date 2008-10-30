@@ -239,13 +239,13 @@ protected:
 	{
 		if (_Left == surface)
 		{
-			_LeftLoop = loop;
-			_LeftLoopIndex = loopIndex;
+			_LeftLoop = uint8(loop);
+			_LeftLoopIndex = uint8(loopIndex);
 		}
 		else
 		{
-			_RightLoop = loop;
-			_RightLoopIndex = loopIndex;
+			_RightLoop = uint8(loop);
+			_RightLoopIndex = uint8(loopIndex);
 		}
 	}
 

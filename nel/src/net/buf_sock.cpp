@@ -27,7 +27,8 @@
 #include "nel/misc/variable.h"
 #include "nel/net/buf_sock.h"
 #include "nel/net/buf_server.h"
-#include "nel/net/net_log.h"
+#include "nel/net/net_log.h"
+
 
 
 #ifdef NL_OS_WINDOWS
@@ -153,8 +154,8 @@ bool CBufSock::flush( uint *nbBytesRemaining )
 	do
 	{
 		// Process each element in the send queue
-		uint8 *tmpbuffer;
-		uint32 size;
+		uint8 *tmpbuffer = NULL;
+		uint32 size = 0;
 		if (! SendFifo.empty())
 		{
 			SendFifo.front( tmpbuffer, size );

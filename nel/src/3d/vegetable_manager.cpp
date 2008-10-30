@@ -2273,9 +2273,6 @@ void		CVegetableManager::setupRenderStateForBlendLayerModel(IDriver *driver)
 	//=============
 	uint	rdrPass= NL3D_VEGETABLE_RDRPASS_UNLIT_2SIDED_ZSORT;
 
-	// setup doubleSidedmaterial for this rdrPass.
-	bool	doubleSided= doubleSidedRdrPass(rdrPass);
-
 	// Activate the unique material (correclty setuped for AlphaBlend in render()).
 	driver->setupMaterial(_VegetableMaterial);
 
@@ -2515,8 +2512,6 @@ uint		CVegetableManager::updateInstanceLighting(CVegetableInstanceGroup *ig, uin
 
 	// setup for this instance.
 	//---------
-	// 2Sided
-	bool	instanceDoubleSided= shape->DoubleSided;
 	// Precompute lighting or not??
 	bool	precomputeLighting= instanceLighted && shape->PreComputeLighting;
 	// bestSided Precompute lighting or not??

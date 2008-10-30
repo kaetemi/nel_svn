@@ -334,7 +334,7 @@ public:
 		else
 		{
 			nlassert(em < 0xff);
-			i = em;
+			i = uint8(em);
 			serial(i);
 		}
 	}
@@ -909,7 +909,7 @@ protected:
 	void setXMLMode (bool on);
 
 	/// xmlPushBegin implementation
-	virtual bool		xmlPushBeginInternal (const char *name) { return true; };
+	virtual bool		xmlPushBeginInternal (const char * /* name */) { return true; };
 
 	/// xmlPushEnd implementation
 	virtual bool		xmlPushEndInternal () { return true; };
@@ -918,13 +918,13 @@ protected:
 	virtual bool		xmlPopInternal () { return true; };
 
 	/// xmlBreakLine implementation
-	virtual bool		xmlSetAttribInternal (const char *name) { return true; };
+	virtual bool		xmlSetAttribInternal (const char * /* name */) { return true; };
 
 	/// xmlBreakLine implementation
 	virtual bool		xmlBreakLineInternal () { return true; };
 
 	/// xmlComment implementation
-	virtual	bool		xmlCommentInternal (const char *comment) { return true; };
+	virtual	bool		xmlCommentInternal (const char * /* comment */) { return true; };
 
 	/**
 	 * for Deriver: reset the PtrTable in the stream.

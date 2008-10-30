@@ -95,14 +95,14 @@ void CZoneBankElement::convertSize()
 		else
 			sTmp += sizeString[i];
 	}
-	_SizeX = atoi (sTmp.c_str());
+	fromString(sTmp, _SizeX);
 
 	++i; sTmp = "";
 	for (; i < sizeString.size(); ++i)
 	{
 		sTmp += sizeString[i];
 	}
-	_SizeY = atoi (sTmp.c_str());
+	fromString(sTmp, _SizeY);
 }
 
 // ---------------------------------------------------------------------------

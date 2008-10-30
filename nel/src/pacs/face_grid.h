@@ -135,7 +135,7 @@ inline void CFaceGrid::create(const CFaceGrid::CFaceGridBuild &fgb)
 	// setup grid size
 	_Width = (uint16)fgb.Width;
 	_ElSize = fgb.Size;
-	_Log2Width = NLMISC::getPowerOf2(_Width);
+	_Log2Width = uint16(NLMISC::getPowerOf2(_Width));
 
 	// and store in packed format the data of the face grid build
 	uint	i;

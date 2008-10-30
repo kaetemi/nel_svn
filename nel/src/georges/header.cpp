@@ -198,7 +198,9 @@ void CFileHeader::read (xmlNodePtr root)
 	if (node)
 	{
 		// Get a text node
-		if ((node = CIXml::getFirstChildNode (node, XML_TEXT_NODE)))
+		node = CIXml::getFirstChildNode (node, XML_TEXT_NODE);
+
+		if (node)
 		{
 			// Get content
 			const char *comments = (const char*)xmlNodeGetContent (node);
@@ -218,7 +220,9 @@ void CFileHeader::read (xmlNodePtr root)
 	if (node)
 	{
 		// Get a text node
-		if ((node = CIXml::getFirstChildNode (node, XML_TEXT_NODE)))
+		node = CIXml::getFirstChildNode (node, XML_TEXT_NODE);
+
+		if (node)
 		{
 			// Get content
 			const char *log = (const char*)xmlNodeGetContent (node);

@@ -44,7 +44,7 @@ bool _CUniTime::_Simulate = false;
 bool _CUniTime::Sync = false;
 
 
-void _CUniTime::setUniTime (NLMISC::TTime uTime, NLMISC::TTime lTime)
+void _CUniTime::setUniTime (NLMISC::TTime /* uTime */, NLMISC::TTime /* lTime */)
 {
 	nlstop;
 /*	if (Sync)
@@ -63,7 +63,7 @@ void _CUniTime::setUniTime (NLMISC::TTime uTime, NLMISC::TTime lTime)
 	_SyncLocalTime = lTime;
 */}
 
-void _CUniTime::setUniTime (NLMISC::TTime uTime)
+void _CUniTime::setUniTime (NLMISC::TTime /* uTime */)
 {
 	nlstop;
 //	setUniTime (uTime, getLocalTime ());
@@ -133,7 +133,7 @@ static bool GetUniversalTime;
 static uint32 GetUniversalTimeSecondsSince1970;
 static TTime GetUniversalTimeUniTime;
 
-
+/*
 static void cbGetUniversalTime (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 {
 	nlstop;
@@ -142,6 +142,7 @@ static void cbGetUniversalTime (CMessage &msgin, TSockId from, CCallbackNetBase 
 	msgin.serial (GetUniversalTimeUniTime);
 	GetUniversalTime = true;
 }
+*/
 
 /***************************************************************/
 /******************* THE FOLLOWING CODE IS COMMENTED OUT *******/
@@ -152,7 +153,7 @@ static TCallbackItem UniTimeCallbackArray[] =
 };
 ***************************************************************/
 
-void _CUniTime::syncUniTimeFromService (CCallbackNetBase::TRecordingState rec, const CInetAddress *addr)
+void _CUniTime::syncUniTimeFromService (CCallbackNetBase::TRecordingState /* rec */, const CInetAddress * /* addr */)
 {
 	nlstop;
 /***************************************************************/
@@ -257,7 +258,7 @@ error:
 
 // Server part
 
-static void cbServerAskUniversalTime (CMessage& msgin, TSockId from, CCallbackNetBase &netbase)
+static void cbServerAskUniversalTime (CMessage& /* msgin */, TSockId from, CCallbackNetBase &netbase)
 {
 	nlstop;
 	TTime ut = _CUniTime::getUniTime ();
@@ -291,6 +292,7 @@ void _CUniTime::installServer (CCallbackServer *server)
 static bool GetClientUniversalTime;
 static TTime GetClientUniversalTimeUniTime;
 
+/*
 static void cbClientGetUniversalTime (CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 {
 	nlstop;
@@ -298,6 +300,7 @@ static void cbClientGetUniversalTime (CMessage &msgin, TSockId from, CCallbackNe
 	msgin.serial (GetClientUniversalTimeUniTime);
 	GetClientUniversalTime = true;
 }
+*/
 
 /***************************************************************/
 /******************* THE FOLLOWING CODE IS COMMENTED OUT *******/
@@ -309,7 +312,7 @@ static TCallbackItem ClientUniTimeCallbackArray[] =
 ***************************************************************/
 
 
-void _CUniTime::syncUniTimeFromServer (CCallbackClient *client)
+void _CUniTime::syncUniTimeFromServer (CCallbackClient * /* client */)
 {
 	nlstop;
 /***************************************************************/

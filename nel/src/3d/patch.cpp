@@ -2094,7 +2094,7 @@ CPatchRdrPass	*CPatch::getTileRenderPass(sint tileId, sint pass)
 	else
 	{
 		// return still may be NULL, in additive case.
-		return Zone->Landscape->getTileRenderPass(tileNumber, additive);
+		return Zone->Landscape->getTileRenderPass(uint16(tileNumber), additive);
 	}
 }
 
@@ -2150,7 +2150,7 @@ void			CPatch::getTileUvInfo(sint tileId, sint pass, bool alpha, uint8 &orient, 
 		}
 
 		uint8	rotalpha;
-		Zone->Landscape->getTileUvScaleBiasRot(tileNumber, type, uvScaleBias, rotalpha);
+		Zone->Landscape->getTileUvScaleBiasRot(uint16(tileNumber), type, uvScaleBias, rotalpha);
 
 		// Add the special rotation of alpha.
 		if(alpha)

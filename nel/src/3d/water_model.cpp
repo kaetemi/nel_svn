@@ -985,7 +985,6 @@ void CWaterModel::setupMaterialNVertexShader(IDriver *drv, CWaterShape *shape, c
 void CWaterModel::setupSimpleRender(CWaterShape *shape, const NLMISC::CVector &obsPos, bool above)
 {
 	// rendering of water when no vertex / pixel shaders are available
-	CRenderTrav	&renderTrav		= getOwnerScene()->getRenderTrav();
 	static bool init = false;
 	if (!init)
 	{
@@ -1119,7 +1118,6 @@ void CWaterModel::setupSimpleRender(CWaterShape *shape, const NLMISC::CVector &o
 void CWaterModel::computeClippedPoly()
 {
 	CWaterShape	*shape = NLMISC::safe_cast<CWaterShape *>((IShape *) Shape);
-	CClipTrav	&clipTrav		= getOwnerScene()->getClipTrav();
 	const std::vector<CPlane>	&worldPyramid   = getOwnerScene()->getClipTrav().WorldFrustumPyramid;
 	_ClippedPoly.Vertices.resize(shape->_Poly.Vertices.size());
 	uint k;
@@ -1221,7 +1219,6 @@ uint CWaterModel::getNumWantedVertices()
 	//
 	CRenderTrav					&renderTrav		= getOwnerScene()->getRenderTrav();
 	if (!renderTrav.Perspective || forceWaterSimpleRender) return 0;
-	CWaterShape					*shape			= NLMISC::safe_cast<CWaterShape *>((IShape *) Shape);
 	// viewer pos in world space
 	const NLMISC::CVector &obsPos = renderTrav.CamPos;
 	// view matrix (inverted cam matrix)
@@ -1230,7 +1227,6 @@ uint CWaterModel::getNumWantedVertices()
 	const float zHeight =  getWorldMatrix().getPos().z;
 	const sint numStepX = CWaterShape::getScreenXGridSize();
 	const sint numStepY = CWaterShape::getScreenYGridSize();
-	const sint isAbove = obsPos.z > zHeight ? 1 : 0;
 	NLMISC::CMatrix modelMat;
 	modelMat.setPos(NLMISC::CVector(obsPos.x, obsPos.y, zHeight));
 	static NLMISC::CPolygon2D projPoly; // projected poly
@@ -1692,12 +1688,10 @@ void	CWaterModel::traverseRender()
 bool CWaterModel::clip()
 {
 	H_AUTO( NL3D_Water_Render );
-	CClipTrav			&clipTrav= getOwnerScene()->getClipTrav();
 	CRenderTrav			&renderTrav= getOwnerScene()->getRenderTrav();
 	if (renderTrav.CamPos.z == getWorldMatrix().getPos().z) return false;
 	if(Shape)
 	{
-		IDriver *drv = getOwnerScene()->getDriver();
 		computeClippedPoly();
 		if (_ClippedPoly.Vertices.empty()) return false;
 		// unlink from water model list

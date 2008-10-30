@@ -184,7 +184,9 @@ string CSystemInfo::getOS()
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-	if( !(bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi)) )
+	bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi);
+
+	if(!bOsVersionInfoEx)
 	{
 		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
 		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) )
@@ -498,7 +500,7 @@ uint64 CSystemInfo::getProcessorFrequency(bool quick)
 	if (!quick)
 	{
 		TTicks bestNumTicks   = 0;
-		uint64 bestNumCycles;
+		uint64 bestNumCycles  = 0;
 		uint64 numCycles;
 		const uint numSamples = 5;
 		const uint numLoops   = 50000000;
@@ -834,7 +836,8 @@ string CSystemInfo::availableHDSpace (const string &filename)
         return bytesToHumanReadable(space);
     }
 #else
-    return "NoInfo";
+	nlunreferenced(filename);
+	return "NoInfo";
 #endif
 }
 
@@ -848,8 +851,9 @@ uint64 CSystemInfo::availablePhysicalMemory ()
 	return uint64(getsysctlnum64("hw.usermem"));
 #elif defined NL_OS_UNIX
 	return getSystemMemory("MemFree:")+getSystemMemory("Buffers:")+getSystemMemory("Cached:");
-#endif
+#else
 	return 0;
+#endif
 }
 
 uint64 CSystemInfo::totalPhysicalMemory ()
@@ -862,8 +866,9 @@ uint64 CSystemInfo::totalPhysicalMemory ()
 	return uint64(getsysctlnum64("hw.physmem"));
 #elif defined NL_OS_UNIX
 	return getSystemMemory("MemTotal:");
-#endif
+#else
 	return 0;
+#endif
 }
 
 #ifndef NL_OS_WINDOWS
@@ -1234,8 +1239,9 @@ uint64 CSystemInfo::virtualMemory ()
 	MEMORYSTATUS ms;
 	GlobalMemoryStatus (&ms);
 	return uint64(ms.dwTotalVirtual - ms.dwAvailVirtual);
-#endif
+#else
 	return 0;
+#endif
 }
 
 } // NLMISC

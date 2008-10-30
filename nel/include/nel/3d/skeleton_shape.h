@@ -89,7 +89,7 @@ public:
 	virtual bool	clip(const std::vector<CPlane>	&pyramid, const CMatrix &worldMatrix);
 
 	/// render() this skeletonshape in a driver  (no-op)
-	virtual void	render(IDriver *drv, CTransformShape *trans, bool opaquePass)
+	virtual void	render(IDriver * /* drv */, CTransformShape * /* trans */, bool /* opaquePass */)
 	{
 	}
 
@@ -105,7 +105,7 @@ public:
 	NLMISC_DECLARE_CLASS(CSkeletonShape);
 
 	/// flush textures used by this shape.
-	virtual void				flushTextures (IDriver &driver, uint selectedTexture) {}
+	virtual void				flushTextures (IDriver &/* driver */, uint /* selectedTexture */) {}
 
 	// @}
 

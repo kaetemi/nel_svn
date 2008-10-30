@@ -770,7 +770,7 @@ bool CPrimitiveClass::CParameter::getDefaultValue (std::string &result, const IP
 
 // ***************************************************************************
 
-bool CPrimitiveClass::CParameter::getDefaultValue (std::vector<std::string> &result, const IPrimitive &primitive, const CPrimitiveClass &primitiveClass, std::string *fromWhere) const
+bool CPrimitiveClass::CParameter::getDefaultValue (std::vector<std::string> &result, const IPrimitive &primitive, const CPrimitiveClass &primitiveClass, std::string * /* fromWhere */) const
 {
 	if (!Autoname.empty())
 	{

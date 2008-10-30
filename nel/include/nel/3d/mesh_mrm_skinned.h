@@ -230,11 +230,11 @@ public:
 
 	virtual bool	sortPerMaterial() const { return false; }
 	virtual uint	getNumRdrPassesForMesh() const { return 0; }
-	virtual uint	getNumRdrPassesForInstance(CMeshBaseInstance *inst) const { return 0; }
-	virtual	void	beginMesh(CMeshGeomRenderContext &rdrCtx) {}
-	virtual	void	activeInstance(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, void *vbDst) {}
-	virtual	void	renderPass(CMeshGeomRenderContext &rdrCtx, CMeshBaseInstance *inst, float polygonCount, uint rdrPass) {}
-	virtual	void	endMesh(CMeshGeomRenderContext &rdrCtx) {}
+	virtual uint	getNumRdrPassesForInstance(CMeshBaseInstance * /* inst */) const { return 0; }
+	virtual	void	beginMesh(CMeshGeomRenderContext &/* rdrCtx */) {}
+	virtual	void	activeInstance(CMeshGeomRenderContext &/* rdrCtx */, CMeshBaseInstance * /* inst */, float /* polygonCount */, void * /* vbDst */) {}
+	virtual	void	renderPass(CMeshGeomRenderContext &/* rdrCtx */, CMeshBaseInstance * /* inst */, float /* polygonCount */, uint /* rdrPass */) {}
+	virtual	void	endMesh(CMeshGeomRenderContext &/* rdrCtx */) {}
 
 	// @}
 

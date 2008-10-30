@@ -253,7 +253,7 @@ uint		CTessFacePriorityList::selectQuadrant(const CVector &direction)
 	for(uint i=quadrantStart;i<quadrantEnd;i++)
 	{
 		// get the quadrant Id. Must mask for last (0). And Start at 1 in the _RollingTables.
-		uint	quadrantId= (i&_MaskQuadrant)+1;
+//		uint	quadrantId= (i&_MaskQuadrant)+1;
 		// Test with this quadrant
 		float	ps= direction*_RollingTables[i].QuadrantDirection;
 		if(ps>bestDirPs)
