@@ -185,7 +185,7 @@ class CContextSoundContainer : public IContextSoundContainer
 		{
 			bool ok = false;
 			// 3rd, read the random value (if any)
-			for (uint i=0; first != last; ++first)
+			while(first != last)
 			{
 				if (isdigit(int(*first)))
 				{
@@ -199,6 +199,8 @@ class CContextSoundContainer : public IContextSoundContainer
 					arg.clear();
 					ok = true;
 				}
+
+				++first;
 			}
 			// read the potential last arg.
 			if (!arg.empty())

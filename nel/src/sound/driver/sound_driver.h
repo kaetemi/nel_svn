@@ -168,7 +168,7 @@ public:
 	/// Create a sound buffer, destroy with delete
 	virtual	IBuffer *createBuffer() = 0;
 	/// Create an effect
-	virtual IEffect *createEffect(IEffect::TEffectType effectType) { return NULL; }
+	virtual IEffect *createEffect(IEffect::TEffectType /* effectType */) { return NULL; }
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources() = 0;
 	/// Return the maximum number of effects that can be created
@@ -199,7 +199,7 @@ public:
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
+	virtual bool getMusicInfo(const std::string &/* filepath */, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 
 private:
 	std::string _DllName;

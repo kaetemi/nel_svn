@@ -57,12 +57,12 @@ public:
 	 */
 	virtual void presetName(const NLMISC::TStringId &bufferName) = 0;
 	/// Set the sample format. (channels = 1, 2, ...; frequency = samples per second, 44100, ...; bitsPerSample = 8, 16)
-	virtual void setFormat(TBufferFormat format, uint8 channels, uint frequency, uint8 bitsPerSample) { throw ESoundDriverNotSupp(); }
+	virtual void setFormat(TBufferFormat /* format */, uint8 /* channels */, uint /* frequency */, uint8 /* bitsPerSample */) { throw ESoundDriverNotSupp(); }
 	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
 	virtual bool fillBuffer( void *src, uint32 bufsize ) = 0;
 
 	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint &frequency, uint8 &bitsPerSample) { throw ESoundDriverNotSupp(); }
+	virtual void getFormat(TBufferFormat &/* format */, uint8 &/* channels */, uint &/* frequency */, uint8 &/* bitsPerSample */) { throw ESoundDriverNotSupp(); }
 	/// Return the size of the buffer, in bytes.
 	virtual uint32 getSize() const = 0;
 	/// Return the duration (in ms) of the sample in the buffer.
@@ -89,7 +89,7 @@ public:
 		StorageSoftware
 	};
 	/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
-	virtual void setStorageMode(TStorageMode storageMode = IBuffer::StorageAuto) { throw ESoundDriverNotSupp(); }
+	virtual void setStorageMode(TStorageMode /* storageMode */ = IBuffer::StorageAuto) { throw ESoundDriverNotSupp(); }
 	/// Get the storage mode of this buffer.
 	virtual TStorageMode getStorageMode() { throw ESoundDriverNotSupp(); }
 	//@}

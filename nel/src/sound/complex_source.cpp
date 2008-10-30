@@ -50,7 +50,7 @@ CComplexSource::CComplexSource	(CComplexSound *soundPattern, bool spawn, TSpawnE
 
 CComplexSource::~CComplexSource()
 {
-	CAudioMixerUser *mixer = CAudioMixerUser::instance();
+//	CAudioMixerUser *mixer = CAudioMixerUser::instance();
 	// security
 	CAudioMixerUser::instance()->unregisterUpdate(this);
 	CAudioMixerUser::instance()->removeEvents(this);

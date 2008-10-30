@@ -232,13 +232,13 @@ void CSoundAnimManager::playAnimation(TSoundAnimId id, float lastTime, float cur
 
 
 // ********************************************************
-TSoundAnimPlayId		CSoundAnimManager::playAnimation(TSoundAnimId id, float time, NL3D::CCluster *cluster, CSoundContext &context)
+TSoundAnimPlayId		CSoundAnimManager::playAnimation(TSoundAnimId /* id */, float /* time */, NL3D::CCluster * /* cluster */, CSoundContext &/* context */)
 {
 	return 0;
 }
 
 // ********************************************************
-TSoundAnimPlayId CSoundAnimManager::playAnimation(string& name, float time, NL3D::CCluster *cluster, CSoundContext &context)
+TSoundAnimPlayId CSoundAnimManager::playAnimation(string& /* name */, float /* time */, NL3D::CCluster * /* cluster */, CSoundContext &/* context */)
 {
 /*	nlassert(position);
 
@@ -249,7 +249,7 @@ TSoundAnimPlayId CSoundAnimManager::playAnimation(string& name, float time, NL3D
 
 
 // ********************************************************
-void CSoundAnimManager::stopAnimation(TSoundAnimPlayId playbackId)
+void CSoundAnimManager::stopAnimation(TSoundAnimPlayId /* playbackId */)
 {
 /*	nlassert(playbackId >= 0);
 
@@ -267,7 +267,7 @@ void CSoundAnimManager::stopAnimation(TSoundAnimPlayId playbackId)
 }
 
 // ********************************************************
-bool CSoundAnimManager::isPlaying(TSoundAnimPlayId playbackId)
+bool CSoundAnimManager::isPlaying(TSoundAnimPlayId /* playbackId */)
 {
 	/*nlassert(playbackId >= 0);
 
@@ -286,7 +286,7 @@ bool CSoundAnimManager::isPlaying(TSoundAnimPlayId playbackId)
 }
 
 // ********************************************************
-void CSoundAnimManager::update(float lastTime, float curTime)
+void CSoundAnimManager::update(float /* lastTime */, float /* curTime */)
 {
 /*	set<CSoundAnimPlayer*>::iterator iter;
 

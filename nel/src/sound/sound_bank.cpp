@@ -38,6 +38,7 @@
 
 #include "nel/georges/load_form.h"
 
+#include <limits>
 
 using namespace std;
 using namespace NLMISC;
@@ -84,7 +85,7 @@ void CSoundBank::bufferUnloaded(const NLMISC::TStringId  &bufferName)
 }
 
 //void CSoundBank::bufferLoaded(const std::string bufferName, IBuffer *buffer)
-void CSoundBank::bufferLoaded(const NLMISC::TStringId &bufferName, IBuffer *buffer)
+void CSoundBank::bufferLoaded(const NLMISC::TStringId &/* bufferName */, IBuffer *buffer)
 {
 //	std::map<std::string, std::vector<TBufferAssoc> >::iterator it(_BufferAssoc.find(buffer->getName()));
 	TBufferAssocContainer::iterator it(_BufferAssoc.find(buffer->getName()));
@@ -234,7 +235,7 @@ public:
 			if (Sound == 0)
 			{
 				// the sound doesn't exist
-				uint32 i = -1;
+				uint32 i = std::numeric_limits<uint32>::max();
 				s.serialEnum(i);
 //				s.serial(std::string("bad sound"));
 			}

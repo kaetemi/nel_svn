@@ -98,7 +98,7 @@ void		CMusicSound::getSubSoundList(std::vector<std::pair<std::string, CSound*> >
 // ***************************************************************************
 void		CMusicSound::serial(NLMISC::IStream &s)
 {
-	sint	ver= s.serialVersion(0);
+	s.serialVersion(0);
 	CSound::serial(s);
 
 	CStringMapper::serialString(s, _FileName);

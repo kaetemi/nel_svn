@@ -86,7 +86,7 @@ public:
 	{}
 };
 
-void	CAsyncFileManagerSound::cancelLoadWaveFile(const std::string &filename)
+void	CAsyncFileManagerSound::cancelLoadWaveFile(const std::string &/* filename */)
 {
 	nlwarning("CAsyncFileManagerSound::cancelLoadWaveFile : not implemented yet !");
 //	CAsyncFileManager::getInstance().cancelLoadTask(CCancelLoadWavFile(filename));

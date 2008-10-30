@@ -799,7 +799,6 @@ void CBackgroundSoundManager::stop ()
 {
 	if(!_Playing)
 		return;
-	CAudioMixerUser *mixer = CAudioMixerUser::instance();
 
 	for (uint i=0; i<BACKGROUND_LAYER; ++i)
 	{
@@ -820,8 +819,6 @@ void CBackgroundSoundManager::stop ()
 void CBackgroundSoundManager::unload ()
 {
 	stop();
-
-	CAudioMixerUser *mixer = CAudioMixerUser::instance();
 
 	for (uint i=0; i<BACKGROUND_LAYER; ++i)
 	{
@@ -1346,7 +1343,7 @@ const vector<CVector> &CBackgroundSoundManager::getZone(uint32 zone)
 	return v;
 }
 */
-CVector CBackgroundSoundManager::getZoneSourcePos(uint32 zone)
+CVector CBackgroundSoundManager::getZoneSourcePos(uint32 /* zone */)
 {
 /*	nlassert (zone< BackgroundSounds.size());
 	CVector pos;

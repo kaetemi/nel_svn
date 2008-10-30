@@ -61,12 +61,12 @@ public:
 	virtual ~ISource() { }
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect *effect) { throw ESoundDriverNotSupp(); }
+	virtual void setEffect(IEffect * /* effect */) { throw ESoundDriverNotSupp(); }
 	
 	/// \name Initialization
 	//@{
 	/// Enable or disable streaming mode. Source must be stopped to call this.
-	virtual void setStreaming(bool streaming) { throw ESoundDriverNotSupp(); }
+	virtual void setStreaming(bool /* streaming */) { throw ESoundDriverNotSupp(); }
 	/** Set the buffer that will be played (no streaming)
 	 * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
 	 * otherwise the source is considered as a 3D source.
@@ -76,7 +76,7 @@ public:
 	virtual IBuffer *getStaticBuffer() = 0;
 	/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
 	/// Should be called by a thread which checks countStreamingBuffers every 100ms.
-	virtual void submitStreamingBuffer(IBuffer *buffer) { throw ESoundDriverNotSupp(); }
+	virtual void submitStreamingBuffer(IBuffer * /* buffer */) { throw ESoundDriverNotSupp(); }
 	/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
 	virtual uint countStreamingBuffers() const { throw ESoundDriverNotSupp(); }
 	//@}
@@ -164,7 +164,7 @@ public:
 	 *  the linear dB curve and the linear amplitude curve.
 	 */
 	///
-	virtual void					setAlpha(double a) {  }
+	virtual void					setAlpha(double /* a */) {  }
 	//@}
 protected:
 	

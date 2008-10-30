@@ -198,9 +198,9 @@ void CAudioMixerUser::setLowWaterMark(uint value)
 void CAudioMixerUser::writeProfile(std::string& out)
 {
 	// compute number of muted source
-	uint nb = 0;
+/*	uint nb = 0;
 
-/*	TSourceContainer::iterator first(_Sources.begin()), last(_Sources.end());
+	TSourceContainer::iterator first(_Sources.begin()), last(_Sources.end());
 	for (; first != last; ++first)
 	{
 		CSimpleSource *psu = *first;
@@ -209,8 +209,8 @@ void CAudioMixerUser::writeProfile(std::string& out)
 			++nb;
 		}
 	}
-*/
-/*	hash_set<CSimpleSource*>::const_iterator ips;
+
+	hash_set<CSimpleSource*>::const_iterator ips;
 	for ( ips=_Sources.begin(); ips!=_Sources.end(); ++ips )
 	{
 		CSimpleSource *psu = *ips;
@@ -420,7 +420,9 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	// Init environment reverb effects
 	if (_UseEax)
 	{
-		if (!(_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb))))
+		_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb));
+
+		if (!_ReverbEffect)
 			{ _UseEax = false; }
 		else // createEffect succeeded, add environments
 		{ 
@@ -899,7 +901,7 @@ class CUserVarSerializer
 {
 public:
 	std::vector<CAudioMixerUser::CControledSources>		Controlers;
-	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const std::string &name)
+	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const std::string &/* name */)
 	{
 		try
 		{
@@ -1131,7 +1133,7 @@ void	CAudioMixerUser::bufferUnloaded(IBuffer *buffer)
 
 // ******************************************************************
 
-void				CAudioMixerUser::enable( bool b )
+void				CAudioMixerUser::enable( bool /* b */ )
 {
 	// TODO :  rewrite this method
 
@@ -1860,7 +1862,7 @@ void				CAudioMixerUser::removeSource( CSourceCommon *source )
 
 // ******************************************************************
 
-void				CAudioMixerUser::selectEnvEffects( const std::string &tag )
+void				CAudioMixerUser::selectEnvEffects( const std::string &/* tag */ )
 {
 	nlassertex(false, ("Not implemented yet"));
 /*	// Select Env
@@ -2099,6 +2101,10 @@ void CAudioMixerUser::setListenerPos (const NLMISC::CVector &pos)
 
 NLMISC_CATEGORISED_COMMAND(nel, displaySoundInfo, "Display information about the audio mixer", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	if (CAudioMixerUser::instance() == NULL)
@@ -2290,7 +2296,7 @@ void CAudioMixerUser::changeMaxTrack(uint maxTrack)
 	// **** if try to add new tracks, easy
 	if (maxTrack > prev_track_nb)
 	{
-		uint i;
+		uint i = 0;
 		_Tracks.resize(maxTrack, NULL);
 		try
 		{
@@ -2487,7 +2493,7 @@ bool	CAudioMixerUser::playEventMusic(const std::string &fileName, uint xFadeTime
 }
 
 // ***************************************************************************
-void	CAudioMixerUser::stopEventMusic(uint xFadeTime)
+void	CAudioMixerUser::stopEventMusic(uint /* xFadeTime */)
 {
 	if (_MusicChannelFaders[EventMusicChannel].isInitOk())
 		_MusicChannelFaders[EventMusicChannel].stop();
@@ -2547,6 +2553,11 @@ const IReverbEffect::CEnvironment &CAudioMixerUser::getEnvironment(NLMISC::TStri
 
 NLMISC_CATEGORISED_COMMAND(nel, displaySoundProfile, "Display information on sound driver", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(args);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	string performance;
 	CAudioMixerUser::getInstance()->writeProfile(performance);
 	vector<string> pv;

@@ -80,7 +80,7 @@ public:
 	std::vector<std::pair<NLMISC::TStringId, NLMISC::TStringId> >	_SoundGroupAssoc;
 
 	// load the values using the george sheet (called by GEORGE::loadForm)
-	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const std::string &name)
+	void readGeorges (const NLMISC::CSmartPtr<NLGEORGES::UForm> &form, const std::string &/* name */)
 	{
 		try
 		{
@@ -209,7 +209,7 @@ void CClusteredSound::init(NL3D::CScene *scene, float portalInterpolate, float m
 		_RootCluster = 0;
 }
 
-void CClusteredSound::update(const CVector &listenerPos, const CVector &view, const CVector &up)
+void CClusteredSound::update(const CVector &listenerPos, const CVector &/* view */, const CVector &/* up */)
 {
 	H_AUTO(NLSOUND_ClusteredSoundUpdate)
 	if (_Scene == 0)
@@ -904,7 +904,7 @@ bool CClusteredSound::addAudibleCluster(CCluster *cluster, CClusterSoundStatus &
 	return false;
 }
 
-CVector CClusteredSound::interpolateSourceDirection(const CClusteredSound::CSoundTravContext &context, float portalDist, const CVector &nearPoint, const CVector &realListener, CVector &d1, CVector &d2, float &alpha)
+CVector CClusteredSound::interpolateSourceDirection(const CClusteredSound::CSoundTravContext &context, float portalDist, const CVector &nearPoint, const CVector &realListener, CVector &d1, CVector &/* d2 */, float &alpha)
 {
 	CVector direction;// (context.Direction);
 

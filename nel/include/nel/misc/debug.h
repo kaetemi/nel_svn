@@ -484,6 +484,7 @@ if(false)
 
 #endif // NL_RELEASE
 
+#define nlunreferenced(identifier) (identifier)
 
 #define nlstop \
 { \
