@@ -44,8 +44,8 @@ namespace  NLSOUND
 
 signed char F_CALLBACKAPI streamEndCallBack(
 	FSOUND_STREAM *stream,
-	void *buff,
-	int len,
+	void * /* buff */,
+	int /* len */,
 	void *userdata
 	)
 {
@@ -112,8 +112,9 @@ bool CMusicChannelFMod::playSync(const std::string &filepath, bool loop)
 	}
 
 	// open FMOD stream
-	if (!(_MusicStream = FSOUND_Stream_Open((const char*)_MusicBuffer,
-		FSOUND_2D | FSOUND_LOADMEMORY | (loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF), 0, fs)))
+	_MusicStream = FSOUND_Stream_Open((const char*)_MusicBuffer,
+		FSOUND_2D | FSOUND_LOADMEMORY | (loop ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF), 0, fs);
+	if (!_MusicStream)
 	{ 
 		nlwarning("NLSOUND FMod Driver: Error while creating the FMOD stream for music file"); 
 		delete[] _MusicBuffer; _MusicBuffer = NULL; 

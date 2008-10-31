@@ -266,7 +266,6 @@ void CSoundDriverFMod::writeProfile(string& out)
 void CSoundDriverFMod::update()
 {
 	H_AUTO(NLSOUND_FModUpdate)
-	NLMISC::TTime now = NLMISC::CTime::getLocalTime();
 
 	set<CSourceFMod*>::iterator first(_Sources.begin()), last(_Sources.end());
 	for (;first != last; ++first)
@@ -307,7 +306,7 @@ IBuffer *CSoundDriverFMod::createBuffer()
 
 // ******************************************************************
 
-void CSoundDriverFMod::removeBuffer(CBufferFMod *buffer)
+void CSoundDriverFMod::removeBuffer(CBufferFMod * /* buffer */)
 {
 }
 

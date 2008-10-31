@@ -78,7 +78,7 @@ void CBufferFMod::setFormat( TSampleFormat format, uint freq )
 
 
 // ***************************************************************************
-bool CBufferFMod::fillBuffer( void *src, uint32 bufsize )
+bool CBufferFMod::fillBuffer( void * /* src */, uint32 /* bufsize */ )
 {
     return false;
 }

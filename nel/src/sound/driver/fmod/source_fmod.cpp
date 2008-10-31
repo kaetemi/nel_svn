@@ -293,7 +293,7 @@ bool CSourceFMod::update()
 
 // ******************************************************************
 
-void CSourceFMod::setPos( const NLMISC::CVector& pos, bool deferred )
+void CSourceFMod::setPos( const NLMISC::CVector& pos, bool /* deferred */ )
 {
 	_Pos = pos;
 	updateFModPos();
@@ -310,7 +310,7 @@ const NLMISC::CVector &CSourceFMod::getPos() const
 
 // ******************************************************************
 
-void CSourceFMod::setVelocity( const NLMISC::CVector& vel, bool deferred )
+void CSourceFMod::setVelocity( const NLMISC::CVector& vel, bool /* deferred */ )
 {
 	_Vel= vel;
 	updateFModPos();
@@ -408,7 +408,7 @@ bool CSourceFMod::getSourceRelativeMode() const
 
 
 // ******************************************************************
-void CSourceFMod::setMinMaxDistances( float mindist, float maxdist, bool deferred )
+void CSourceFMod::setMinMaxDistances( float mindist, float maxdist, bool /* deferred */ )
 {
 	_MinDist= mindist;
 	_MaxDist= maxdist;
@@ -463,20 +463,20 @@ void CSourceFMod::updateVolume( const NLMISC::CVector& listener )
 
 // ******************************************************************
 
-void CSourceFMod::setCone( float innerAngle, float outerAngle, float outerGain )
+void CSourceFMod::setCone( float /* innerAngle */, float /* outerAngle */, float /* outerGain */ )
 {
 	// TODO_SOURCE_DIR
 }
 
 // ******************************************************************
 
-void CSourceFMod::getCone( float& innerAngle, float& outerAngle, float& outerGain ) const
+void CSourceFMod::getCone( float& /* innerAngle */, float& /* outerAngle */, float& /* outerGain */ ) const
 {
 	// TODO_SOURCE_DIR
 }
 
 // ******************************************************************
-void CSourceFMod::setEAXProperty( uint prop, void *value, uint valuesize )
+void CSourceFMod::setEAXProperty( uint /* prop */, void * /* value */, uint /* valuesize */ )
 {
 }
 

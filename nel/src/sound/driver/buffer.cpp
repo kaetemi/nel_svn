@@ -48,29 +48,20 @@ const uint IBuffer::_StepsizeTable[89] =
 
 void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state)
 {
-    sint16 *inp;			/* Input buffer pointer */
-    uint8 *outp;		/* output buffer pointer */
-    int val;			/* Current input sample value */
-    int sign;			/* Current adpcm sign bit */
-    int delta;			/* Current adpcm output value */
-    int diff;			/* Difference between val and valprev */
-    int step;			/* Stepsize */
-    int valpred;		/* Predicted output value */
-    int vpdiff;			/* Current change to valpred */
-    int index;			/* Current step change index */
-    int outputbuffer;		/* place to keep previous 4-bit value */
-    int bufferstep;		/* toggle between outputbuffer/output */
+	sint16 *inp = indata;				/* Input buffer pointer */
+	uint8 *outp = outdata;				/* output buffer pointer */
+	int val;							/* Current input sample value */
+	int sign;							/* Current adpcm sign bit */
+	int delta;							/* Current adpcm output value */
+	int diff;							/* Difference between val and valprev */
+	int valpred = state.PreviousSample;	/* Predicted output value */
+	int vpdiff;							/* Current change to valpred */
+	int index = state.StepIndex;		/* Current step change index */
+	int step = _StepsizeTable[index];	/* Stepsize */
+	uint8 outputbuffer = 0;				/* place to keep previous 4-bit value */
+	int bufferstep = 1;					/* toggle between outputbuffer/output */
 
-    outp = outdata;
-    inp = indata;
-
-    valpred = state.PreviousSample;
-    index = state.StepIndex;
-    step = _StepsizeTable[index];
-
-    bufferstep = 1;
-
-    for ( ; nbSample > 0 ; nbSample-- )
+	for ( ; nbSample > 0 ; nbSample-- )
 	{
 		val = *inp++;
 
@@ -149,37 +140,28 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
 			*outp++ = (delta & 0x0f) | outputbuffer;
 		}
 		bufferstep = !bufferstep;
-    }
+	}
 
-    /* Output last step, if needed */
-    if ( !bufferstep )
+	/* Output last step, if needed */
+	if ( !bufferstep )
 		*outp++ = outputbuffer;
 
-    state.PreviousSample = valpred;
-    state.StepIndex = index;
+	state.PreviousSample = sint16(valpred);
+	state.StepIndex = uint8(index);
 }
 
 void				IBuffer::decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state)
 {
-    uint8 *inp;		/* Input buffer pointer */
-    sint16 *outp;		/* output buffer pointer */
-    int sign;			/* Current adpcm sign bit */
-    int delta;			/* Current adpcm output value */
-    int step;			/* Stepsize */
-    int valpred;		/* Predicted value */
-    int vpdiff;			/* Current change to valpred */
-    int index;			/* Current step change index */
-    int inputbuffer;		/* place to keep next 4-bit value */
-    int bufferstep;		/* toggle between inputbuffer/input */
-
-    outp = outdata;
-    inp = indata;
-
-    valpred = state.PreviousSample;
-    index = state.StepIndex;
-    step = _StepsizeTable[index];
-
-    bufferstep = 0;
+    uint8 *inp = indata;				/* Input buffer pointer */
+    sint16 *outp = outdata;				/* output buffer pointer */
+    int sign;							/* Current adpcm sign bit */
+    int delta;							/* Current adpcm output value */
+    int valpred = state.PreviousSample;	/* Predicted value */
+    int vpdiff;							/* Current change to valpred */
+    int index = state.StepIndex;		/* Current step change index */
+    int step = _StepsizeTable[index];	/* Stepsize */
+    uint8 inputbuffer = 0;				/* place to keep next 4-bit value */
+    int bufferstep = 0;					/* toggle between inputbuffer/input */
 
     for ( ; nbSample > 0 ; nbSample-- )
 	{
@@ -235,11 +217,11 @@ void				IBuffer::decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADP
 		step = _StepsizeTable[index];
 
 		/* Step 7 - Output value */
-		*outp++ = valpred;
+		*outp++ = sint16(valpred);
     }
 
-    state.PreviousSample = valpred;
-    state.StepIndex = index;
+    state.PreviousSample = sint16(valpred);
+    state.StepIndex = uint8(index);
 }
 
 

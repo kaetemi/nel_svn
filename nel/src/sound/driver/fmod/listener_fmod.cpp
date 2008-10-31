@@ -191,14 +191,14 @@ float CListenerFMod::getRolloffFactor()
 
 
 // ***************************************************************************
-void CListenerFMod::setEnvironment( uint env, float size )
+void CListenerFMod::setEnvironment( uint /* env */, float /* size */ )
 {
 	// TODO_EAX
 }
 
 
 // ***************************************************************************
-void CListenerFMod::setEAXProperty( uint prop, void *value, uint valuesize )
+void CListenerFMod::setEAXProperty( uint /* prop */, void * /* value */, uint /* valuesize */ )
 {
 	// TODO_EAX
 }
