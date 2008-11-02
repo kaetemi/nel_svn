@@ -1392,8 +1392,8 @@ int CALLBACK LMCCopyFromDialogCallback(
 						COLORREF a = lmcParam->AmbValue[i].Ctrl->GetColor();
 						COLORREF d = lmcParam->DiffValue[i].Ctrl->GetColor();
 						lmcParam->AmbValue[i].R = (uint8)((a & 0xFF)); // GetRValue(a); // runtime check failure :(
-						lmcParam->AmbValue[i].G = (uint8)((a & 0xFF)); // GetGValue(a);
-						lmcParam->AmbValue[i].B = (uint8)((a & 0xFF00) >> 8); // GetBValue(a);
+						lmcParam->AmbValue[i].G = (uint8)((a & 0xFF00) >> 8); // GetGValue(a);
+						lmcParam->AmbValue[i].B = (uint8)((a & 0xFF0000) >> 16); // GetBValue(a);
 						lmcParam->DiffValue[i].R = (uint8)((d & 0xFF)); // GetRValue(d);
 						lmcParam->DiffValue[i].G = (uint8)((d & 0xFF00) >> 8); // GetGValue(d);
 						lmcParam->DiffValue[i].B = (uint8)((d & 0xFF0000) >> 16); // GetBValue(d);
