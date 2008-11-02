@@ -90,7 +90,7 @@ int CExportNel::getScriptAppData (Animatable *node, uint32 id, int def)
 
 	// String to int
 	int value;
-	if (sscanf ((const char*)ap->data, "%d", &value)==1)
+	if (NLMISC::fromString(std::string((const char*)ap->data), value))
 		return value;
 	else
 		return def;
@@ -101,18 +101,17 @@ int CExportNel::getScriptAppData (Animatable *node, uint32 id, int def)
 void CExportNel::setScriptAppData (Animatable *node, uint32 id, int value)
 {
 	// Int to string
-	char block[100];
-	sprintf (block, "%d", value);
+	std::string block = NLMISC::toString(value);
 
 	// Remove data
 	node->RemoveAppDataChunk (MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
 
 	// Copy data
-	char *copy=(char*)malloc (strlen (block)+1);
-	strcpy (copy, block);
+	char *copy = (char *)MAX_malloc(block.size() + 1);
+	strcpy(copy, block.c_str());
 
 	// Add data
-	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, strlen (block)+1, copy);
+	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, block.size() + 1, copy);
 
 }
 
@@ -145,7 +144,7 @@ void CExportNel::setScriptAppData (Animatable *node, uint32 id, float value)
 	node->RemoveAppDataChunk (MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
 
 	// Copy data
-	char *copy=(char*)malloc (str.length() + 1);
+	char *copy = (char *)MAX_malloc(str.length() + 1);
 	strcpy (copy, str.c_str());
 
 	// Add data
@@ -178,11 +177,11 @@ void CExportNel::setScriptAppData (Animatable *node, uint32 id, const std::strin
 	node->RemoveAppDataChunk (MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
 
 	// Copy data
-	char *copy=(char*)malloc (strlen (value.c_str())+1);
-	strcpy (copy, value.c_str());
+	char *copy = (char *)MAX_malloc(value.length() + 1);
+	strcpy(copy, value.c_str());
 
 	// Add data
-	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, strlen (value.c_str())+1, copy);
+	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, value.size() + 1, copy);
 }
 
 
@@ -194,7 +193,7 @@ NLMISC::CRGBA CExportNel::getScriptAppData (Animatable *node, uint32 id, NLMISC:
 	AppDataChunk *ap=node->GetAppDataChunk (MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
 	
 	// Not found ? return default
-	if (ap==NULL)
+	if (ap == NULL)
 		return def;
 	
 	// String to RGBA
@@ -218,17 +217,17 @@ NLMISC::CRGBA CExportNel::getScriptAppData (Animatable *node, uint32 id, NLMISC:
 void CExportNel::setScriptAppData (Animatable *node, uint32 id, NLMISC::CRGBA val)
 {
 	// Remove data
-	node->RemoveAppDataChunk (MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
+	node->RemoveAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id);
 	
 	// RGBA to string
-	std::string	value= NLMISC::toString("%d %d %d %d", val.R, val.G, val.B, val.A);
+	std::string	value = NLMISC::toString("%d %d %d %d", val.R, val.G, val.B, val.A);
 
 	// Copy data
-	char *copy=(char*)malloc (strlen (value.c_str())+1);
-	strcpy (copy, value.c_str());
+	char *copy = (char *)MAX_malloc(value.length() + 1);
+	strcpy(copy, value.c_str());
 	
 	// Add data
-	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, strlen (value.c_str())+1, copy);
+	node->AddAppDataChunk(MAXSCRIPT_UTILITY_CLASS_ID, UTILITY_CLASS_ID, id, value.size() + 1, copy);
 }
 
 

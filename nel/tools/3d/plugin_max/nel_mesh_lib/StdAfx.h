@@ -59,6 +59,7 @@
 #include "nel/misc/file.h"
 #include "nel/misc/triangle.h"
 #include "nel/misc/bsphere.h"
+#include "nel/misc/string_common.h"
 #include "nel/3d/quad_tree.h"
 #include "nel/3d/scene_group.h"
 #include "nel/3d/skeleton_shape.h"

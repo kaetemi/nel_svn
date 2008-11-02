@@ -1389,14 +1389,14 @@ int CALLBACK LMCCopyFromDialogCallback(
 					// get colors
 					for(i=0;i<CLodDialogBoxParam::NumLightGroup;i++)
 					{
-						COLORREF	a= lmcParam->AmbValue[i].Ctrl->GetColor();
-						COLORREF	d= lmcParam->DiffValue[i].Ctrl->GetColor();
-						lmcParam->AmbValue[i].R= GetRValue(a);
-						lmcParam->AmbValue[i].G= GetGValue(a);
-						lmcParam->AmbValue[i].B= GetBValue(a);
-						lmcParam->DiffValue[i].R= GetRValue(d);
-						lmcParam->DiffValue[i].G= GetGValue(d);
-						lmcParam->DiffValue[i].B= GetBValue(d);
+						COLORREF a = lmcParam->AmbValue[i].Ctrl->GetColor();
+						COLORREF d = lmcParam->DiffValue[i].Ctrl->GetColor();
+						lmcParam->AmbValue[i].R = (uint8)((a & 0xFF)); // GetRValue(a); // runtime check failure :(
+						lmcParam->AmbValue[i].G = (uint8)((a & 0xFF)); // GetGValue(a);
+						lmcParam->AmbValue[i].B = (uint8)((a & 0xFF00) >> 8); // GetBValue(a);
+						lmcParam->DiffValue[i].R = (uint8)((d & 0xFF)); // GetRValue(d);
+						lmcParam->DiffValue[i].G = (uint8)((d & 0xFF00) >> 8); // GetGValue(d);
+						lmcParam->DiffValue[i].B = (uint8)((d & 0xFF0000) >> 16); // GetBValue(d);
 					}
 
 					EndDialog(hwndDlg, IDOK);
@@ -1593,14 +1593,14 @@ int CALLBACK Lightmap2DialogCallback (
 							// get color
 							for(uint i=0;i<CLodDialogBoxParam::NumLightGroup;i++)
 							{
-								COLORREF	a= currentParam->LMCAmbient[i].Ctrl->GetColor();
-								COLORREF	d= currentParam->LMCDiffuse[i].Ctrl->GetColor();
-								currentParam->LMCAmbient[i].R= GetRValue(a);
-								currentParam->LMCAmbient[i].G= GetGValue(a);
-								currentParam->LMCAmbient[i].B= GetBValue(a);
-								currentParam->LMCDiffuse[i].R= GetRValue(d);
-								currentParam->LMCDiffuse[i].G= GetGValue(d);
-								currentParam->LMCDiffuse[i].B= GetBValue(d);
+								COLORREF a = currentParam->LMCAmbient[i].Ctrl->GetColor();
+								COLORREF d = currentParam->LMCDiffuse[i].Ctrl->GetColor();
+								currentParam->LMCAmbient[i].R = (uint8)((a & 0xFF)); // GetRValue(a); // runtime check failure :(
+								currentParam->LMCAmbient[i].G = (uint8)((a & 0xFF00) >> 8); // GetGValue(a);
+								currentParam->LMCAmbient[i].B = (uint8)((a & 0xFF0000) >> 16); // GetBValue(a);
+								currentParam->LMCDiffuse[i].R = (uint8)((d & 0xFF)); // GetRValue(d);
+								currentParam->LMCDiffuse[i].G = (uint8)((d & 0xFF00) >> 8); // GetGValue(d);
+								currentParam->LMCDiffuse[i].B = (uint8)((d & 0xFF0000) >> 16); // GetBValue(d);
 							}
 						}
 					break;
