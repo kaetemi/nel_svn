@@ -78,7 +78,7 @@ void CI18N::load (const std::string &languageCode)
 
 	if (i == _NbLanguages)
 	{
-		nlwarning("I18N: Unknown language code : %s, defaulting to %s", _LanguageCodes[0].c_str());
+		nlwarning("I18N: Unknown language code : %s, defaulting to %s", languageCode.c_str(), _LanguageCodes[0].c_str());
 		i = 0;
 	}
 
@@ -732,7 +732,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					}
 					else
 					{
-						// just push ‡ false
+						// just push ÅEfalse
 						readContext.IfStack.push_back(false);
 
 						skipLine(it, end, currentLine);
@@ -769,7 +769,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					}
 					else
 					{
-						// just push ‡ false
+						// just push ÅEfalse
 						readContext.IfStack.push_back(false);
 
 						skipLine(it, end, currentLine);
