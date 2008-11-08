@@ -41,6 +41,7 @@
 #include "clustered_sound.h"
 #include <algorithm>
 #include "background_source.h"
+#include <list>
 
 using namespace std;
 using namespace NLMISC;
@@ -1054,7 +1055,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 		// Compute new source mixing in this layer
 		{
 			/// Status of all selected sound ordered by surface.
-			CHashMultiMap<float, TSoundStatus>	status;
+			list<pair<float, TSoundStatus>> status;
 
 			// first loop to compute selected sound gain and position and order the result by surface..
 			{
@@ -1092,7 +1093,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 					}
 
 					// store the status.
-					status.insert(make_pair(sd.Surface, TSoundStatus(sd, pos, gain, distance, inside)));
+					status.push_back(make_pair(sd.Surface, TSoundStatus(sd, pos, gain, distance, inside)));
 				}
 			}
 			// second loop thrue the surface ordered selected sound.
@@ -1102,7 +1103,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 
 				float	maskFactor = 1.0f;
 
-				CHashMultiMap<float, TSoundStatus>::iterator first(status.begin()), last(status.end());
+				list<pair<float, TSoundStatus> >::iterator first(status.begin()), last(status.end());
 				for (; first != last; ++first)
 				{
 					TSoundStatus &ss = first->second;
