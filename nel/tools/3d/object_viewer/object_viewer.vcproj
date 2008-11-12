@@ -67,10 +67,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib version.lib"
+				AdditionalDependencies="version.lib libjpeg.lib"
 				OutputFile="..\..\..\lib\$(RootNamespace)_d.dll"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmt;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				ImportLibrary="..\..\..\lib\$(RootNamespace)_d.lib"
@@ -150,10 +150,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib version.lib"
+				AdditionalDependencies="version.lib libjpeg.lib"
 				OutputFile="..\..\..\lib\$(RootNamespace)_r.dll"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmtd;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames=""
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

@@ -33,6 +33,8 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
+#define NOMINMAX
+
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
@@ -56,14 +58,11 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
+#include <vector>
+#include <map>
+#include <algorithm>
 
-#ifdef min
-#undef min
-#endif
-
-#ifdef max
-#undef max
-#endif
+#define USE_JPEG
 
 #include "nel/misc/common.h"
 #include "nel/misc/stream.h"
@@ -76,16 +75,9 @@
 #include "nel/misc/event_listener.h"
 #include "nel/misc/stream.h"
 
-#include "nel/3d/logic_info.h"
-
 #include "nel/pacs/u_global_position.h"
 
-
-#include <vector>
-#include <map>
-#include <algorithm>
-
-
+#include "nel/3d/logic_info.h"
 #include "nel/3d/nelu.h"
 #include "nel/3d/mesh.h"
 #include "nel/3d/transform_shape.h"
@@ -98,8 +90,6 @@
 #include "nel/3d/event_mouse_listener.h"
 #include "nel/3d/light.h"
 #include "nel/3d/font_manager.h"
-
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

@@ -23,12 +23,6 @@
  * MA 02111-1307, USA.
  */
 
-
-
-
-
-#define USE_JPEG
-
 #include "std_afx.h"
 
 #undef OBJECT_VIEWER_EXPORT
@@ -225,6 +219,9 @@ CObjectViewer::CObjectViewer ()
 	_SceneRoot= NULL;
 	
 	init3d ();
+	
+	// vl: is it really useful? i moved it from ov.exe init
+	CScene::registerBasics ();
 
 	registerSerial3d();
 
