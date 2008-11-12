@@ -117,7 +117,7 @@ public:
 		// point the vector part in the current vertex
 		uint8 *ptPos;
 		// strides to go from one vertex to another one
-		const uint32 stride = vb.getVertexSize(), stride2 = stride << 1, stride3 = stride + stride2, stride4 = stride << 2;
+		const uint32 stride = vb.getVertexSize();
 		if (!la._Angle2DScheme)
 		{
 			// constant rotation case

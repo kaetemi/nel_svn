@@ -45,7 +45,7 @@ std::allocator<uint8> CStateRecord::Allocator;
 // The state manager with cache
 // ***************************************************************************
 
-HRESULT CDriverD3D::QueryInterface(REFIID riid, LPVOID *ppvObj)
+HRESULT CDriverD3D::QueryInterface(REFIID /* riid */, LPVOID * /* ppvObj */)
 {
 	H_AUTO_D3D(CDriverD3D_QueryInterface)
 	return D3D_OK;
@@ -78,7 +78,7 @@ HRESULT CDriverD3D::LightEnable(DWORD Index, BOOL Enable)
 
 // ***************************************************************************
 
-HRESULT CDriverD3D::SetFVF(DWORD FVF)
+HRESULT CDriverD3D::SetFVF(DWORD /* FVF */)
 {
 	H_AUTO_D3D(CDriverD3D_SetFVF)
 	// Not implemented
@@ -106,7 +106,7 @@ HRESULT CDriverD3D::SetMaterial(CONST D3DMATERIAL9* pMaterial)
 
 // ***************************************************************************
 
-HRESULT CDriverD3D::SetNPatchMode(FLOAT nSegments)
+HRESULT CDriverD3D::SetNPatchMode(FLOAT /* nSegments */)
 {
 	H_AUTO_D3D(CDriverD3D_SetNPatchMode)
 	// Not implemented
@@ -3536,7 +3536,7 @@ public:
 	LPDIRECT3DVERTEXSHADER9 Shader;
 public:
 	CStateRecordVertexShader(LPDIRECT3DVERTEXSHADER9 shader) : Shader(shader) {}
-	virtual void apply(class CDriverD3D &drv)
+	virtual void apply(class CDriverD3D &/* drv */)
 	{
 		nlassert(0); // not supported
 		//drv.setVertexProgram(Shader);
@@ -3645,7 +3645,7 @@ HRESULT STDMETHODCALLTYPE CFXPassRecorder::LightEnable(DWORD Index, BOOL Enable)
 	return D3D_OK;
 }
 
-HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetFVF(DWORD FVF)
+HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetFVF(DWORD /* FVF */)
 {
 	nlassert(0); // not managed
 	return D3D_OK;
@@ -3667,7 +3667,7 @@ HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetMaterial(CONST D3DMATERIAL9* pMate
 	return D3D_OK;
 }
 
-HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetNPatchMode(FLOAT nSegments)
+HRESULT STDMETHODCALLTYPE CFXPassRecorder::SetNPatchMode(FLOAT /* nSegments */)
 {
 	nlassert(0); // not managed
 	return D3D_OK;

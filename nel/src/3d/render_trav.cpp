@@ -588,9 +588,9 @@ void		CRenderTrav::resetLightSetup()
 		uint i;
 
 		// Disable all lights.
-		for(i=0; i<Driver->getMaxLight(); i++)
+		for(i=0; i<Driver->getMaxLight(); ++i)
 		{
-			Driver->enableLight(i, false);
+			Driver->enableLight(uint8(i), false);
 		}
 
 
@@ -697,18 +697,18 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 				{
 					// need to resetup the light. Cache it.
 					_LastPointLight[plId]= pl;
-					_LastPointLightFactor[plId]= inf;
+					_LastPointLightFactor[plId]= uint8(inf);
 					_LastPointLightLocalAttenuation[plId]= useLocalAttenuation;
 
 					// compute the driver light
 					if(useLocalAttenuation)
-						pl->setupDriverLight(_DriverLight[plId+1], inf);
+						pl->setupDriverLight(_DriverLight[plId+1], uint8(inf));
 					else
 						// Compute it with user Attenuation
-						pl->setupDriverLightUserAttenuation(_DriverLight[plId+1], inf);
+						pl->setupDriverLightUserAttenuation(_DriverLight[plId+1], uint8(inf));
 
 					// setup driver. decal+1 because of sun.
-					Driver->setLight(plId+1, _DriverLight[plId+1]);
+					Driver->setLight(uint8(plId+1), _DriverLight[plId+1]);
 				}
 
 				// next light?
@@ -728,13 +728,13 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 			// enable lights which are used now and were not before.
 			for(i=_NumLightEnabled; i<newNumLightEnabled; i++)
 			{
-				Driver->enableLight(i, true);
+				Driver->enableLight(uint8(i), true);
 			}
 
 			// disable lights which are no more used.
 			for(i=newNumLightEnabled; i<_NumLightEnabled; i++)
 			{
-				Driver->enableLight(i, false);
+				Driver->enableLight(uint8(i), false);
 			}
 
 			// cache the setup.
@@ -749,7 +749,7 @@ void		CRenderTrav::changeLightSetup(CLightContribution	*lightContribution, bool 
 			// disable lights which are no more used.
 			for(i=0; i<_NumLightEnabled; i++)
 			{
-				Driver->enableLight(i, false);
+				Driver->enableLight(uint8(i), false);
 			}
 
 			// cache the setup.

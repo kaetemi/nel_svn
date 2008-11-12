@@ -238,7 +238,6 @@ void	CAnimatedMaterial::update()
 		}
 
 		// Get texture matrix from animated value to setup the material
-		uint flagIndex = TextureMatValues;
 		for (uint k = 0; k < IDRV_MAT_MAXTEXTURES; ++k)
 		{
 			if (_Material->isUserTexMatEnabled(k))

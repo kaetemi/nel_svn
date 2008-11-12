@@ -70,7 +70,7 @@ void		CMeshMRMSkinnedGeom::CLod::serial(NLMISC::IStream &f)
 		- base vdrsion.
 	*/
 
-	sint	ver= f.serialVersion(0);
+	f.serialVersion(0);
 	uint	i;
 
 	f.serial(NWedges);
@@ -96,8 +96,6 @@ void		CMeshMRMSkinnedGeom::CLod::optimizeTriangleOrder()
 	for(uint  rp=0; rp<RdrPass.size(); rp++ )
 	{
 		// stripify list of triangles of this pass.
-		CRdrPass	&pass= RdrPass[rp];
-
 		CIndexBuffer block;
 		getRdrPassPrimitiveBlock(rp, block);
 
@@ -596,10 +594,6 @@ void	CMeshMRMSkinnedGeom::render(IDriver *drv, CTransformShape *trans, float pol
 
 	// get the meshMRM instance.
 	CMeshBaseInstance	*mi= safe_cast<CMeshBaseInstance*>(trans);
-	// get a ptr on scene
-	CScene				*ownerScene= mi->getOwnerScene();
-	// get a ptr on renderTrav
-	CRenderTrav			*renderTrav= &ownerScene->getRenderTrav();
 
 
 	// get the result of the Load Balancing.
@@ -1030,7 +1024,7 @@ void	CMeshMRMSkinnedGeom::serial(NLMISC::IStream &f)
 	Version 0:
 		- base version.
 	*/
-	sint	ver= f.serialVersion(0);
+	f.serialVersion(0);
 
 
 	// serial bones names
@@ -2054,7 +2048,7 @@ bool		CMeshMRMSkinnedGeom::intersectSkin(CMeshMRMSkinnedInstance *mi, const CMat
 void CMeshMRMSkinnedGeom::CPackedVertexBuffer::serial(NLMISC::IStream &f)
 {
 	// Version
-	sint ver = f.serialVersion(0);
+	f.serialVersion(0);
 
 	f.serialCont (_PackedBuffer);
 	f.serial (_DecompactScale);
@@ -2065,7 +2059,7 @@ void CMeshMRMSkinnedGeom::CPackedVertexBuffer::serial(NLMISC::IStream &f)
 void CMeshMRMSkinnedGeom::CPackedVertexBuffer::CPackedVertex::serial(NLMISC::IStream &f)
 {
 	// Version
-	sint ver = f.serialVersion(0);
+	f.serialVersion(0);
 
 	f.serial (X);
 	f.serial (Y);

@@ -346,7 +346,7 @@ void CCloudScape::init (SCloudScapeSetup *pCSS, NL3D::CCamera *pCamera)
 		c.setTex3DTemp (Tex3DTemp);
 		c.setTexClamp (TexClamp);
 
-		while (true)
+		for(;;)
 		{
 			bool bRecalc = false;
 			newX = MAX_DIST*(1.0f-2.0f*(((float)rand())/RAND_MAX));
@@ -364,7 +364,6 @@ void CCloudScape::init (SCloudScapeSetup *pCSS, NL3D::CCamera *pCamera)
 			float d = sqrtf(SQR(newX)+SQR(newY));
 			if (d > MAX_DIST) bRecalc = true;
 
-			float r1 = sqrtf(SQR(newSizeX/2)+SQR(newSizeY/2)+SQR(newSizeZ/2));
 			for (uint32 k = 0;k < i; ++k)
 			{
 				CCloud &c2 = _AllClouds[k];
@@ -857,7 +856,6 @@ void CCloudScape::makeHalfCloud ()
 			}
 
 			float r = sqrtf(SQR(c.getSizeX()/2)+SQR(c.getSizeY()/2)+SQR(c.getSizeZ()/2));
-			float d2D = sqrtf(SQR(c.getX()+c.getSizeX()/2-Viewer.x)+SQR(c.getY()+c.getSizeY()/2-Viewer.y));
 			float d = sqrtf(SQR(c.getX()+c.getSizeX()/2-Viewer.x)+SQR(c.getY()+c.getSizeY()/2-Viewer.y)+
 							SQR(c.getZ()+c.getSizeZ()/2-Viewer.z));
 			uint32 lookAtSize = (uint32)(_LODQualityThreshold*r/d);

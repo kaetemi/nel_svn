@@ -277,15 +277,15 @@ void CMeshBaseInstance::selectTextureSet(uint id)
 		CMaterial &mat = mb->getMaterial(k);
 		for(uint l = 0; l < IDRV_MAT_MAXTEXTURES; ++l)
 		{
-			if (mat.getTexture(l) && mat.getTexture(l)->isSelectable())
+			if (mat.getTexture(uint8(l)) && mat.getTexture(uint8(l))->isSelectable())
 			{
 				// use a smartPtr so the textFile will be released if just used to set the name for AsyncTextures.
-				CSmartPtr<ITexture>		texNSV= mat.getTexture(l)->buildNonSelectableVersion(id);
+				CSmartPtr<ITexture>		texNSV= mat.getTexture(uint8(l))->buildNonSelectableVersion(id);
 
 				// std case: just replace the texture.
 				if(!_AsyncTextureMode)
 				{
-					Materials[k].setTexture(l, texNSV);
+					Materials[k].setTexture(uint8(l), texNSV);
 				}
 				// Async case
 				else
@@ -298,7 +298,7 @@ void CMeshBaseInstance::selectTextureSet(uint id)
 					}
 					// else replace the texture.
 					else
-						Materials[k].setTexture(l, texNSV);
+						Materials[k].setTexture(uint8(l), texNSV);
 				}
 			}
 		}
@@ -402,7 +402,7 @@ void			CMeshBaseInstance::enableAsyncTextureMode(bool enable)
 			for(uint stage=0;stage<IDRV_MAT_MAXTEXTURES;stage++)
 			{
 				// test if really a CTextureFile
-				CTextureFile	*text= dynamic_cast<CTextureFile*>(Materials[i].getTexture(stage));
+				CTextureFile	*text= dynamic_cast<CTextureFile*>(Materials[i].getTexture(uint8(stage)));
 				if(text)
 				{
 					// Must setup the AsyncTextures
@@ -413,7 +413,7 @@ void			CMeshBaseInstance::enableAsyncTextureMode(bool enable)
 					CTextureFile *tf = new CTextureFile(*text);
 					// setup a dummy texture => Instance won't block rendering because texture not yet ready
 					tf->setFileName("blank.tga");
-					Materials[i].setTexture(stage, tf);
+					Materials[i].setTexture(uint8(stage), tf);
 				}
 				else
 				{
@@ -443,7 +443,7 @@ void			CMeshBaseInstance::enableAsyncTextureMode(bool enable)
 				if(AsyncTextures[i].IsTextureFile[stage])
 				{
 					// copy the texture name into the texture file.
-					CTextureFile	*text= safe_cast<CTextureFile*>(Materials[i].getTexture(stage));
+					CTextureFile	*text= safe_cast<CTextureFile*>(Materials[i].getTexture(uint8(stage)));
 					text->setFileName(AsyncTextures[i].TextureNames[stage]);
 					// clear string space
 					AsyncTextures[i].TextureNames[stage].clear();
@@ -534,7 +534,7 @@ bool			CMeshBaseInstance::isAsyncTextureReady()
 				if(_CurrentAsyncTextures[i].IsTextureFile[stage])
 				{
 					// copy the texture name into the texture file.
-					CTextureFile	*text= safe_cast<CTextureFile*>(Materials[i].getTexture(stage));
+					CTextureFile	*text= safe_cast<CTextureFile*>(Materials[i].getTexture(uint8(stage)));
 					// Since the texture is really uploaded in the driver, the true driver Texture Id will
 					// be bound to this texture.
 					text->setFileName(_CurrentAsyncTextures[i].TextureNames[stage]);

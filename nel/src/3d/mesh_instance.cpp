@@ -293,7 +293,7 @@ void		CMeshInstance::deleteShadowMap()
 }
 
 // ***************************************************************************
-void		CMeshInstance::updateShadowMap(IDriver *driver)
+void		CMeshInstance::updateShadowMap(IDriver * /* driver */)
 {
 	nlassert(_ShadowMap);
 

@@ -178,7 +178,7 @@ void	CFlareModel::traverseRender()
 	uint64 currFrame = drv->getSwapBufferCounter();
 	//
 	bool visibilityRetrieved = false;
-	float visibilityRatio;
+	float visibilityRatio = 0.f;
 	// if driver support occlusion query mechanism, use it
 	CMesh *occlusionTestMesh = NULL;
 	if (_Scene->getShapeBank())
@@ -432,7 +432,6 @@ void	CFlareModel::traverseRender()
 	// delta for each new Pos
 	const float dX = fs->getFlareSpacing() * ((sint) (width >> 1) - xPos);
 	const float dY = fs->getFlareSpacing() * ((sint) (height >> 1) - yPos);
-	uint k = 0;
 	ITexture *tex;
 	// special case for first flare
 	tex = fs->getTexture(0);

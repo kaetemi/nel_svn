@@ -287,9 +287,9 @@ void CAsyncFileManager3D::CMeshLoad::run()
 			const CMaterial &rMat = pMesh->getMaterial(i);
 			// Parse all textures from this material and generate them
 			for(j = 0; j < IDRV_MAT_MAXTEXTURES; ++j)
-			if (rMat.texturePresent(j))
+			if (rMat.texturePresent(uint8(j)))
 			{
-				pText = rMat.getTexture (j);
+				pText = rMat.getTexture (uint8(j));
 
 				// Does this texture is a texture file ?
 				if ((pText != NULL) && (pText->supportSharing()))

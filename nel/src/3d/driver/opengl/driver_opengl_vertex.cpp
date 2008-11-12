@@ -98,7 +98,7 @@ CVBDrvInfosGL::~CVBDrvInfosGL()
 }
 
 // ***************************************************************************
-uint8 *CVBDrvInfosGL::lock (uint first, uint last, bool readOnly)
+uint8 *CVBDrvInfosGL::lock (uint /* first */, uint /* last */, bool /* readOnly */)
 {
 	H_AUTO_OGL(CVBDrvInfosGL_lock)
 	if (_VBHard)
@@ -1525,7 +1525,6 @@ void		CDriverGL::setupGlArraysForEXTVertexShader(CVertexBufferInfo &vb)
 void		CDriverGL::setupGlArrays(CVertexBufferInfo &vb)
 {
 	H_AUTO_OGL(CDriverGL_setupGlArrays)
-	uint16	flags= vb.VertexFormat;
 
 	// Standard case (NVVertexProgram or no vertex program case)
 	if (_Extensions.NVVertexProgram)
@@ -1580,8 +1579,7 @@ void		CVertexBufferInfo::setupVertexBuffer(CVertexBuffer &vb)
 {
 	H_AUTO_OGL(CDriverGL_setupVertexBuffer)
 	sint	i;
-	uint	flags= vb.getVertexFormat();
-	VertexFormat= flags;
+	VertexFormat= vb.getVertexFormat();
 	VertexSize= vb.getVertexSize();
 	NumVertices= vb.getNumVertices();
 

@@ -359,7 +359,7 @@ void		CVertexBufferHardGLNVidia::unlock()
 }
 
 // ***************************************************************************
-void		CVertexBufferHardGLNVidia::unlock(uint start, uint end)
+void		CVertexBufferHardGLNVidia::unlock(uint /* start */, uint /* end */)
 {
 	H_AUTO_OGL(CVertexBufferHardGLNVidia_unlock_start_end)
 	// no op.
@@ -760,7 +760,7 @@ void			CVertexBufferHardGLATI::disable()
 }
 
 // ***************************************************************************
-void			CVertexBufferHardGLATI::lockHintStatic(bool staticLock)
+void			CVertexBufferHardGLATI::lockHintStatic(bool /* staticLock */)
 {
 	H_AUTO_OGL(CVertexBufferHardGLATI_lockHintStatic)
 	// no op.
@@ -1034,7 +1034,7 @@ void		*CVertexBufferHardGLMapObjectATI::getPointer()
 }
 
 // ***************************************************************************
-void CVertexBufferHardGLMapObjectATI::unlock(uint start,uint endVert)
+void CVertexBufferHardGLMapObjectATI::unlock(uint /* start */,uint /* endVert */)
 {
 	H_AUTO_OGL(CVertexBufferHardGLMapObjectATI_unlock)
 	unlock(); // can't do a lock on a range of the vb..
@@ -1073,7 +1073,7 @@ void CVertexBufferHardGLMapObjectATI::initGL(CVertexArrayRangeMapObjectATI *var,
 }
 
 // ***************************************************************************
-void			CVertexBufferHardGLMapObjectATI::lockHintStatic(bool staticLock)
+void			CVertexBufferHardGLMapObjectATI::lockHintStatic(bool /* staticLock */)
 {
 	H_AUTO_OGL(CVertexBufferHardGLMapObjectATI_lockHintStatix)
 	// no op.
@@ -1453,7 +1453,7 @@ void		*CVertexBufferHardARB::getPointer()
 }
 
 // ***************************************************************************
-void CVertexBufferHardARB::unlock(uint startVert,uint endVert)
+void CVertexBufferHardARB::unlock(uint /* startVert */,uint /* endVert */)
 {
 	H_AUTO_OGL(CVertexBufferHardARB_unlock)
 	unlock(); // can't do a lock on a range of the vb..
@@ -1493,7 +1493,7 @@ void CVertexBufferHardARB::initGL(uint vertexObjectID, CVertexArrayRangeARB *var
 }
 
 // ***************************************************************************
-void			CVertexBufferHardARB::lockHintStatic(bool staticLock)
+void			CVertexBufferHardARB::lockHintStatic(bool /* staticLock */)
 {
 	H_AUTO_OGL(CVertexBufferHardARB_lockHintStatic)
 	// no op.

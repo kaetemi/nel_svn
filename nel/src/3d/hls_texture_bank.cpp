@@ -114,7 +114,7 @@ void			CHLSTextureBank::compile()
 // ***************************************************************************
 void			CHLSTextureBank::serial(NLMISC::IStream &f)
 {
-	sint	ver= f.serialVersion(0);
+	f.serialVersion(0);
 
 	f.serialCont(_ColorTextures);
 	f.serialCont(_TextureInstanceData);
@@ -151,7 +151,7 @@ void			CHLSTextureBank::fillHandleArray(std::vector<CTextureInstanceHandle> &arr
 // ***************************************************************************
 void			CHLSTextureBank::CTextureInstance::serial(NLMISC::IStream &f)
 {
-	sint	ver= f.serialVersion(0);
+	f.serialVersion(0);
 
 	f.serial(_DataIndex);
 	f.serial(_ColorTextureId);

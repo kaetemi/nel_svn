@@ -84,7 +84,7 @@ void CDriverD3D::convertToIndices16(uint firstIndex, uint numIndices)
 #ifndef NL_DEBUG
 	inline
 #endif
-bool CDriverD3D::renderPrimitives(D3DPRIMITIVETYPE primitiveType, uint numVertexPerPrim, CMaterial& mat, uint firstVertex, uint32 nPrims)
+bool CDriverD3D::renderPrimitives(D3DPRIMITIVETYPE primitiveType, uint /* numVertexPerPrim */, CMaterial& mat, uint firstVertex, uint32 nPrims)
 {
 	// Setup material
 	if ( !setupMaterial(mat) )

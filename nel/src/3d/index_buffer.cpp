@@ -162,7 +162,6 @@ void CIndexBuffer::reserve(uint32 n)
 	nlassert (!isLocked());
 	if (_Capacity != n)
 	{
-		const uint oldSize = _Capacity;
 		_Capacity= n;
 		_NbIndexes=std::min (_NbIndexes,_Capacity);
 

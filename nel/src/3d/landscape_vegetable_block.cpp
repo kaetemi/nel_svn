@@ -91,8 +91,8 @@ void			CLandscapeVegetableBlock::init(const CVector &center, CVegetableManager *
 	_Center= center;
 	_VegetableClipBlock= vegetableClipBlock;
 	_Patch= patch;
-	_Ts= ts;
-	_Tt= tt;
+	_Ts= uint8(ts);
+	_Tt= uint8(tt);
 
 	// Create the Vegetable SortBlocks
 	sint	tms,tmt;
@@ -214,7 +214,7 @@ void			CLandscapeVegetableBlock::update(const CVector &viewCenter, CVegetableMan
 		}
 
 		// copy new dist type.
-		_CurDistType= newDistType;
+		_CurDistType= uint8(newDistType);
 	}
 
 

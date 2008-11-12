@@ -261,7 +261,6 @@ void CChannelMixer::eval (bool detail, uint64 evalDetailDate)
 		// For all channels
 		for(;numChans>0; numChans--, channelArrayPtr++)
 		{
-			CChannel	*pChannel= *channelArrayPtr;
 			evalSingleChannel(**channelArrayPtr, numActive, activeSlot);
 		}
 	}

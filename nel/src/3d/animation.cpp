@@ -301,7 +301,7 @@ UTrack* CAnimation::getTrackByName (const char* name)
 
 // ***************************************************************************
 
-void CAnimation::releaseTrack (UTrack* track)
+void CAnimation::releaseTrack (UTrack* /* track */)
 {
 	NL3D_HAUTO_UI_ANIMATION;
 

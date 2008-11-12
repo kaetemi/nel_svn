@@ -627,7 +627,6 @@ bool CMaterial::isSupportedByDriver(IDriver &drv, bool forceBaseCaps) const
 		case Water:					return true;
 		default:
 			nlassert(0); // unknown shader, must complete
-			return false;
 	}
 	return false;
 }

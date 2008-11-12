@@ -239,7 +239,7 @@ D3DFORMAT CDriverD3D::getD3DDestTextureFormat (ITexture& tex)
 
 uint getPixelFormatSize (D3DFORMAT destFormat)
 {
-	uint bits;
+	uint bits = 0;
 	switch (destFormat)
 	{
 	case D3DFMT_R8G8B8: bits=32; break;
@@ -321,11 +321,11 @@ bool CDriverD3D::generateD3DTexture (ITexture& tex, bool textureDegradation, D3D
 	d3dtext= getTextureD3D(tex);
 
 	// For each face
-	UINT width;
-	UINT height;
-	UINT levels;
-	bool srcFormatCompressed;
-	bool renderTarget;
+	UINT width = 0;
+	UINT height = 0;
+	UINT levels = 0;
+	bool srcFormatCompressed = true;
+	bool renderTarget = false;
 	const uint faceCount = cube?6:1;
 	uint face;
 	uint firstMipMap = 0;
@@ -476,8 +476,8 @@ bool CDriverD3D::generateD3DTexture (ITexture& tex, bool textureDegradation, D3D
 		// Copy parameters
 		d3dtext->Width = width;
 		d3dtext->Height = height;
-		d3dtext->Levels = levels;
-		d3dtext->FirstMipMap = firstMipMap;
+		d3dtext->Levels = uint8(levels);
+		d3dtext->FirstMipMap = uint8(firstMipMap);
 		d3dtext->DestFormat = destFormat;
 		d3dtext->SrcCompressed = srcFormatCompressed;
 		d3dtext->IsCube = cube;
@@ -787,7 +787,7 @@ bool CDriverD3D::setupTextureEx (ITexture& tex, bool bUpload, bool &bAllUploaded
 							rectDest.Y = y0;
 							rectDest.Width = x1-x0;
 							rectDest.Height = y1-y0;
-							uploadTextureInternal (tex, rectDest, destLevel, i, destFormat, srcFormat);
+							uploadTextureInternal (tex, rectDest, uint8(destLevel), uint8(i), destFormat, srcFormat);
 
 							// floor .
 							x0= x0/2;
@@ -1077,7 +1077,7 @@ uint CDriverD3D::getTextureHandle(const ITexture &tex)
 
 // ***************************************************************************
 
-bool CDriverD3D::setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 width, uint32 height, uint32 mipmapLevel, uint32 cubeFace)
+bool CDriverD3D::setRenderTarget (ITexture *tex, uint32 /* x */, uint32 /* y */, uint32 /* width */, uint32 /* height */, uint32 mipmapLevel, uint32 cubeFace)
 {
 	H_AUTO_D3D(CDriverD3D_setRenderTarget )
 	// Check the texture is a render target
@@ -1157,8 +1157,8 @@ bool CDriverD3D::setRenderTarget (ITexture *tex, uint32 x, uint32 y, uint32 widt
 
 // ***************************************************************************
 
-bool CDriverD3D::copyTargetToTexture (ITexture *tex, uint32 offsetx, uint32 offsety, uint32 x, uint32 y, uint32 width,
-												uint32 height, uint32 mipmapLevel)
+bool CDriverD3D::copyTargetToTexture (ITexture * /* tex */, uint32 /* offsetx */, uint32 /* offsety */, uint32 /* x */, uint32 /* y */, uint32 /* width */,
+												uint32 /* height */, uint32 /* mipmapLevel */)
 {
 	H_AUTO_D3D(CDriverD3D_copyTargetToTexture)
 	return false;

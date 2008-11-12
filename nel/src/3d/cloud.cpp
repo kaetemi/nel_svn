@@ -428,7 +428,6 @@ void CCloud::disp ()
 
 	uint32 w = _NbW*_Width;
 	uint32 h = _NbH*_Height;
-	uint32 i = 0;
 	qc.V0 = CVector(0.0f/800.0f,	0.0f/600.0f,	0.0f);
 	qc.V1 = CVector(w/800.0f,		0.0f/600.0f,	0.0f);
 	qc.V2 = CVector(w/800.0f,		h/600.0f,		0.0f);
@@ -536,7 +535,6 @@ void CCloud::calcBill (const CVector &Viewer, const CVector &Center, const CVect
 {
 
 	CVector ViewDir = Center - Viewer;
-	float ViewDist = ViewDir.norm();
 	ViewDir.normalize();
 
 	Left = 1000.0f;

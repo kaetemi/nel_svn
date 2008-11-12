@@ -40,7 +40,7 @@ CLodCharacterTexture::CLodCharacterTexture()
 // ***************************************************************************
 void		CLodCharacterTexture::serial(NLMISC::IStream &f)
 {
-	sint	ver= f.serialVersion(0);
+	f.serialVersion(0);
 
 	f.serial(_Width, _Height);
 	f.serialCont(Texture);

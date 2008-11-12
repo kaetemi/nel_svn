@@ -177,7 +177,7 @@ IDriver::TMessageBoxId IDriver::systemMessageBox (const char* message, const cha
 		"(R)etry (C)ancel ?"
 	};
 	printf ("%s%s\n%s", icons[icon], title, message);
-	while (1)
+	for(;;)
 	{
 		printf ("\n%s", messages[type]);
 		int c=getchar();

@@ -121,7 +121,7 @@ static inline void convTexAddr(ITexture *tex, CMaterial::TTexAddressingMode mode
 void CDriverGL::setTextureEnvFunction(uint stage, CMaterial& mat)
 {
 	H_AUTO_OGL(CDriverGL_setTextureEnvFunction)
-	ITexture	*text= mat.getTexture(stage);
+	ITexture	*text= mat.getTexture(uint8(stage));
 	if(text)
 	{
 		CMaterial::CTexEnv	&env= mat._TexEnvs[stage];
@@ -389,7 +389,7 @@ bool CDriverGL::setupMaterial(CMaterial& mat)
 	{
 		for(stage=0 ; stage<inlGetNumTextStages() ; stage++)
 		{
-			ITexture	*text= mat.getTexture(stage);
+			ITexture	*text= mat.getTexture(uint8(stage));
 			if (text != NULL && !setupTexture(*text))
 				return(false);
 		}
@@ -426,7 +426,7 @@ bool CDriverGL::setupMaterial(CMaterial& mat)
 	{
 		for(stage=0 ; stage<inlGetNumTextStages() ; stage++)
 		{
-			ITexture	*text= mat.getTexture(stage);
+			ITexture	*text= mat.getTexture(uint8(stage));
 
 			// activate the texture, or disable texturing if NULL.
 			activateTexture(stage,text);
@@ -1202,7 +1202,7 @@ sint			CDriverGL::beginSpecularMultiPass()
 	uint	numStages= std::min((uint)2, inlGetNumTextStages());
 	for(stage=0 ; stage<numStages; stage++)
 	{
-		ITexture	*text= mat.getTexture(stage);
+		ITexture	*text= mat.getTexture(uint8(stage));
 
 		// activate the texture, or disable texturing if NULL.
 		activateTexture(stage,text);
@@ -1467,7 +1467,7 @@ CTextureCube	*CDriverGL::getSpecularCubeMap(uint exp)
 					nearest = l;
 				}
 			}
-			expToCubeMap[k] = nearest;
+			expToCubeMap[k] = uint16(nearest);
 		}
 		tableBuilt = true;
 	}
@@ -1918,7 +1918,7 @@ sint		CDriverGL::beginCloudMultiPass ()
 }
 
 // ***************************************************************************
-void		CDriverGL::setupCloudPass (uint pass)
+void		CDriverGL::setupCloudPass (uint /* pass */)
 {
 	H_AUTO_OGL(CDriverGL_setupCloudPass )
 	nlassert(_CurrentMaterial->getShader() == CMaterial::Cloud);
@@ -2085,20 +2085,20 @@ void CDriverGL::setupWaterPassR200(const CMaterial &mat)
 	ITexture *tex = mat.getTexture(0);
 	if (tex)
 	{
-		if (tex->isBumpMap())
-		{
-			CTextureBump *tb = static_cast<CTextureBump *>(tex);
-		}
+//		if (tex->isBumpMap())
+//		{
+//			CTextureBump *tb = static_cast<CTextureBump *>(tex);
+//		}
 		setupTexture(*tex);
 		activateTexture(0, tex);
 	}
 	tex = mat.getTexture(1);
 	if (tex)
 	{
-		if (tex->isBumpMap())
-		{
-			CTextureBump *tb = static_cast<CTextureBump *>(tex);
-		}
+//		if (tex->isBumpMap())
+//		{
+//			CTextureBump *tb = static_cast<CTextureBump *>(tex);
+//		}
 		setupTexture(*tex);
 		activateTexture(1, tex);
 	}
@@ -2367,7 +2367,7 @@ void CDriverGL::setupWaterPassNV20(const CMaterial &mat)
 }
 
 // ***************************************************************************
-void CDriverGL::setupWaterPass(uint pass)
+void CDriverGL::setupWaterPass(uint /* pass */)
 {
 	H_AUTO_OGL(CDriverGL_setupWaterPass)
 	nlassert (_CurrentMaterial);

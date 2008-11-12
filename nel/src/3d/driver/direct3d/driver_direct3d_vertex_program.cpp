@@ -498,7 +498,7 @@ void CDriverD3D::setConstantMatrix (uint index, IDriver::TMatrix matrix, IDriver
 		return;
 	}
 	D3DXMATRIX mat;
-	D3DXMATRIX *matPtr;
+	D3DXMATRIX *matPtr = NULL;
 	switch (matrix)
 	{
 		case IDriver::ModelView:
@@ -550,7 +550,7 @@ void CDriverD3D::setConstantFog (uint index)
 
 // ***************************************************************************
 
-void CDriverD3D::enableVertexProgramDoubleSidedColor(bool doubleSided)
+void CDriverD3D::enableVertexProgramDoubleSidedColor(bool /* doubleSided */)
 {
 	H_AUTO_D3D(CDriverD3D_enableVertexProgramDoubleSidedColor)
 }

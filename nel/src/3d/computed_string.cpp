@@ -254,9 +254,9 @@ void CComputedString::render2DClip (IDriver& driver, CRenderStringBuffer &rdrBuf
 				if(!LetterColors.empty())
 				{
 					uint ind = LetterColors.getIndex(lastIndex);
-					if(LetterColors.getIndex(lastIndex)==i/4)
+					if(ind==i/4)
 					{
-						mCol.modulateFromColor(Color, LetterColors.getColor(lastIndex));
+						mCol.modulateFromColor(Color, ind);
 
 						if(lastIndex+1<LetterColors.size())
 						{

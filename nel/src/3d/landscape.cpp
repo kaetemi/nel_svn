@@ -111,7 +111,7 @@ public:
 	 * \author Stephane Coutelas
 	 * \date 2000
 	 */
-	virtual void doGenerate(bool async)
+	virtual void doGenerate(bool /* async */)
 	{
 		// Resize
 		resize (16, 16);
@@ -143,7 +143,7 @@ public:
 	}
 
 	// Dummy serial...
-	virtual void	serial(NLMISC::IStream &f)  throw(NLMISC::EStream) {nlstop;}
+	virtual void	serial(NLMISC::IStream &/* f */)  throw(NLMISC::EStream) {nlstop;}
 	NLMISC_DECLARE_CLASS(CTextureCross);
 };
 
@@ -436,7 +436,7 @@ bool			CLandscape::addZone(const CZone	&newZone)
 		const CPatch *pa= ((const CZone*)zone)->getPatch(i);
 		CPatchIdentEx	paId;
 		paId.ZoneId= zoneId;
-		paId.PatchId= i;
+		paId.PatchId= uint16(i);
 		paId.Patch= pa;
 		CAABBox		bb= pa->buildBBox();
 		_PatchQuadGrid.insert(bb.getMin(), bb.getMax(), paId);
@@ -771,7 +771,7 @@ void			CLandscape::refineAll(const CVector &refineCenter)
 // ***************************************************************************
 void			CLandscape::excludePatchFromRefineAll(sint zoneId, uint patch, bool exclude)
 {
-	ItZoneMap it= Zones.find(zoneId);
+	ItZoneMap it= Zones.find(uint16(zoneId));
 	if(it!=Zones.end())
 	{
 		it->second->excludePatchFromRefineAll(patch, exclude);
@@ -931,7 +931,7 @@ void			CLandscape::updateTessBlocksFaceVector()
 
 
 // ***************************************************************************
-static inline void	initPassTriArray(CPatchRdrPass &pass, uint32 numIndex)
+static inline void	initPassTriArray(CPatchRdrPass &/* pass */, uint32 numIndex)
 {
 
 	//uint	numIndices= pass.getMaxRenderedFaces()*3;
@@ -2029,7 +2029,7 @@ void			CLandscape::flushTiles(IDriver *drv, uint32 tileStart, uint32 nbTiles)
 		CTileInfo	*tile= TileInfos[tileId];
 		if(tile==NULL)
 		{
-			loadTile(tileId);
+			loadTile(uint16(tileId));
 			CTileInfo	*tile= TileInfos[tileId];
 			nlassert(tile);
 			if(tile->DiffuseRdrPass)
@@ -2069,7 +2069,7 @@ void			CLandscape::releaseTiles(uint32 tileStart, uint32 nbTiles)
 		CTileInfo	*tile= TileInfos[tileId];
 		if(tile!=NULL)
 		{
-			releaseTile(tileId);
+			releaseTile(uint16(tileId));
 		}
 	}
 
@@ -2360,7 +2360,7 @@ void		CLandscape::clearFarRenderPass (CPatchRdrPass* pass)
 CZone*			CLandscape::getZone (sint zoneId)
 {
 	TZoneMap::iterator	it;
-	it= Zones.find(zoneId);
+	it= Zones.find(uint16(zoneId));
 	if (it!=Zones.end())
 		return (*it).second;
 	else
@@ -2373,7 +2373,7 @@ const CZone*	CLandscape::getZone (sint zoneId) const
 {
 	TZoneMap::const_iterator	it;
 
-	it= Zones.find(zoneId);
+	it= Zones.find(uint16(zoneId));
 	if (it!=Zones.end())
 		return (*it).second;
 	else
@@ -2514,7 +2514,7 @@ void			CLandscape::fillPatchQuadBlock(CPatchQuadBlock &quadBlock) const
 {
 	sint zoneId=  quadBlock.PatchBlockId.PatchId.ZoneId;
 	sint patchId= quadBlock.PatchBlockId.PatchId.PatchId;
-	std::map<uint16, CZone*>::const_iterator	it= Zones.find(zoneId);
+	std::map<uint16, CZone*>::const_iterator	it= Zones.find(uint16(zoneId));
 	if(it!=Zones.end())
 	{
 		sint	N= (*it).second->getNumPatchs();
@@ -2611,7 +2611,7 @@ void			CLandscape::buildCollideFaces(sint zoneId, sint patch, std::vector<CTrian
 {
 	faces.clear();
 
-	ItZoneMap it= Zones.find(zoneId);
+	ItZoneMap it= Zones.find(uint16(zoneId));
 	if(it!=Zones.end())
 	{
 		// Then trace all patch.
@@ -2827,9 +2827,9 @@ void			CLandscape::setupStaticLight (const CRGBA &diffuse, const CRGBA &ambiant,
 		clamp (r, 0, 255);
 		clamp (g, 0, 255);
 		clamp (b, 0, 255);
-		_LightValue[i].R=r;
-		_LightValue[i].G=g;
-		_LightValue[i].B=b;
+		_LightValue[i].R=uint8(r);
+		_LightValue[i].G=uint8(g);
+		_LightValue[i].B=uint8(b);
 		_LightValue[i].A=255;
 	}
 }

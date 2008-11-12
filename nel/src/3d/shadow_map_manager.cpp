@@ -145,17 +145,17 @@ CShadowMapManager::CShadowMapManager()
 	// Fill mem
 	uint8	*tmpMem= new uint8[textMemSize];
 	memset(tmpMem, 255, textMemSize);
-	for(i=0;i<clampNearFadeSize;i++)
+	for(i=0;i<clampNearFadeSize;++i)
 	{
 		float	f= (float)i/clampNearFadeSize;
 		f= easeInEaseOut(f);
-		tmpMem[4*i+3]= (uint)(255*f);
+		tmpMem[4*i+3]= uint8(255.f*f);
 	}
-	for(i=0;i<clampFarFadeSize;i++)
+	for(i=0;i<clampFarFadeSize;++i)
 	{
 		float	f= (float)i/clampFarFadeSize;
 		f= easeInEaseOut(f);
-		tmpMem[4*(clampTextSize-i-1)+3]= (uint)(255*f);
+		tmpMem[4*(clampTextSize-i-1)+3]= uint8(255.f*f);
 	}
 	// build the texture
 	_ClampTexture = new CTextureMem (tmpMem, 4*clampTextSize*1, true, false, clampTextSize, 1);
@@ -609,7 +609,7 @@ void			CShadowMapManager::renderProject(CScene *scene)
 				G= 255*factor + G*(256-factor); G>>=8;
 				B= 255*factor + B*(256-factor); B>>=8;
 			}
-			_ReceiveShadowMaterial.setColor(CRGBA(R,G,B,255));
+			_ReceiveShadowMaterial.setColor(CRGBA(uint8(R),uint8(G),uint8(B),255));
 
 			// init the _ShadowMapProjector
 			_ShadowMapProjector.setWorldSpaceTextMat(wsTextMat);
@@ -820,9 +820,9 @@ void			CShadowMapManager::computeShadowColors(CScene *scene, CTransform *sc, CRG
 
 	// Don't take the MergedPointLight into consideration (should add to the diffuse part here, but rare case)
 
-	diffuse.R= min(r, 255U);
-	diffuse.G= min(g, 255U);
-	diffuse.B= min(b, 255U);
+	diffuse.R= uint8(min(r, 255U));
+	diffuse.G= uint8(min(g, 255U));
+	diffuse.B= uint8(min(b, 255U));
 }
 
 
@@ -972,9 +972,9 @@ void			CShadowMapManager::copyScreenToBlurTexture(IDriver *drv, uint numPassText
 	// TODO_SHADOW: optim: split into 2 copy for less pixel draw on the last line? No because of OverHead?
 
 	// number of line including the last line if not empty
-	uint	numTotalLine= (numPassText+numTextW-1)/numTextW;
+//	uint	numTotalLine= (numPassText+numTextW-1)/numTextW;
 	// number of column.
-	uint	numTotalCol= (numPassText<numTextW)?numPassText:numTextW;
+//	uint	numTotalCol= (numPassText<numTextW)?numPassText:numTextW;
 
 	/* todo hulud shadows
 	drv->copyFrameBufferToTexture(_BlurTexture, 0, 0, 0, 0, 0, numTotalCol*baseTextureSize, numTotalLine*baseTextureSize); */

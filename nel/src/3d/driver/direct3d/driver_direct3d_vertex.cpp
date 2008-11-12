@@ -52,7 +52,6 @@ namespace NL3D
 CVBDrvInfosD3D::CVBDrvInfosD3D(CDriverD3D *drv, ItVBDrvInfoPtrList it, CVertexBuffer *vb) : IVBDrvInfos(drv, it, vb)
 {
 	H_AUTO_D3D(CVBDrvInfosD3D_CVBDrvInfosD3D)
-	CDriverD3D *driver = static_cast<CDriverD3D*>(_Driver);
 	VertexDecl = NULL;
 	VertexDeclAliasDiffuseToSpecular = NULL;
 	ColorOffset = 0;
@@ -174,7 +173,7 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 	{
 		nlassert (VertexBuffer);
 		// Lock Profile?
-		TTicks	beforeLock;
+		TTicks	beforeLock = 0;
 		if(driver->_VBHardProfiling /*&& Hardware*/)
 		{
 			beforeLock= CTime::getPerformanceTime();
@@ -197,7 +196,7 @@ uint8	*CVBDrvInfosD3D::lock (uint begin, uint end, bool readOnly)
 
 // ***************************************************************************
 
-void	CVBDrvInfosD3D::unlock (uint begin, uint end)
+void	CVBDrvInfosD3D::unlock (uint /* begin */, uint /* end */)
 {
 	H_AUTO_D3D(CVBDrvInfosD3D_unlock )
 	CDriverD3D *drv = NLMISC::safe_cast<CDriverD3D *>(_Driver);
@@ -364,7 +363,7 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 
 		// Create the vertex buffer
 		const uint size = VB.capacity()*VB.getVertexSize();
-		uint preferredMemory;
+		uint preferredMemory = 0;
 		if (_DisableHardwareVertexArrayAGP)
 		{
 			preferredMemory = CVertexBuffer::RAMResident;
@@ -412,18 +411,19 @@ bool CDriverD3D::activeVertexBuffer(CVertexBuffer& VB)
 			// Offset will be 0
 			info->Offset = 0;
 
-			bool sucess;
+			bool success;
 			do
 			{
-				if (sucess =(_DeviceInterface->CreateVertexBuffer(size, RemapVertexBufferUsage[preferredMemory],
-					0, RemapVertexBufferPool[preferredMemory], &(info->VertexBuffer), NULL) == D3D_OK))
+				success = _DeviceInterface->CreateVertexBuffer(size, RemapVertexBufferUsage[preferredMemory],
+					0, RemapVertexBufferPool[preferredMemory], &(info->VertexBuffer), NULL) == D3D_OK;
+				if (success)
 					break;
 			}
 			while (preferredMemory--);
-			if (!sucess)
+			if (!success)
 				return false;
 
-			vertexCount++;
+			++vertexCount;
 
 			// Hardware ?
 			info->Hardware = preferredMemory != CVertexBuffer::RAMResident;
@@ -524,10 +524,10 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 			{
 				D3DVERTEXELEMENT9 &vertexElement = declaration.VertexElements[j];
 				vertexElement.Stream = 0;
-				vertexElement.Type = RemapVertexBufferTypeNeL2D3D[(uint)typeArray[i]];
-				vertexElement.Offset = offset;
+				vertexElement.Type = BYTE(RemapVertexBufferTypeNeL2D3D[(uint)typeArray[i]]);
+				vertexElement.Offset = WORD(offset);
 				vertexElement.Method = D3DDECLMETHOD_DEFAULT;
-				vertexElement.Usage = RemapVertexBufferUsageNeL2D3D[(uint)i];
+				vertexElement.Usage = BYTE(RemapVertexBufferUsageNeL2D3D[(uint)i]);
 				if (aliasDiffuseToSpecular && i == CVertexBuffer::PrimaryColor)
 				{
 					vertexElement.UsageIndex = 1; // Map to specular stream -> this free PrimaryColor to build a constant
@@ -535,7 +535,7 @@ bool CDriverD3D::createVertexDeclaration (uint16 vertexFormat, const uint8 *type
 				}
 				else
 				{
-					vertexElement.UsageIndex = RemapVertexBufferIndexNeL2D3D[(uint)i];
+					vertexElement.UsageIndex = BYTE(RemapVertexBufferIndexNeL2D3D[(uint)i]);
 				}
 
 				// nico : Fix for Radeon 7xxx series
@@ -873,7 +873,7 @@ void *CVolatileVertexBuffer::lock (uint size, uint stride, uint &offset)
 	}
 
 	// Lock Profile?
-	TTicks	beforeLock;
+	TTicks	beforeLock = 0;
 	if(Driver->_VBHardProfiling)
 	{
 		beforeLock= CTime::getPerformanceTime();
