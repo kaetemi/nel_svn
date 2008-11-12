@@ -64,10 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Winmm.lib Odbc32.lib Odbccp32.lib Ws2_32.lib"
 				OutputFile="$(RootNamespace)_d.exe"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmt;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="2"
@@ -145,10 +144,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Winmm.lib Odbc32.lib Odbccp32.lib Ws2_32.lib"
 				OutputFile="$(RootNamespace).exe"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmtd;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames=""
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"

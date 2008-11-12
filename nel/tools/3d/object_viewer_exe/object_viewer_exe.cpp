@@ -4,12 +4,12 @@
 #include "std_afx.h"
 
 
-#include "nel/3d/register_3d.h"
-#include "nel/3d/scene.h"
+//#include "nel/3d/register_3d.h"
+//#include "nel/3d/scene.h"
 #include "../object_viewer/object_viewer_interface.h"
-#include "nel/3d/init_3d.h"
+//#include "nel/3d/init_3d.h"
 
-using namespace NL3D;
+//using namespace NL3D;
 using namespace NLMISC;
 using namespace std;
 
@@ -19,9 +19,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Register 3d
-	registerSerial3d ();
-	CScene::registerBasics ();
-	init3d ();
+	// vl: the init doesn't seem to be important here
+//	registerSerial3d ();
+//	CScene::registerBasics ();
+//	init3d ();
 
 	// Remove command line ""
 	char commandLine[512];

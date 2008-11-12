@@ -8,6 +8,8 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
+#define NOMINMAX
+
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
@@ -30,20 +32,5 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
-
-#ifdef min
-#undef min
-#endif
-
-#ifdef max
-#undef max
-#endif
-
-#include "nel/3d/register_3d.h"
-#include "nel/3d/scene.h"
-#include "../object_viewer/object_viewer_interface.h"
-
-
-
 
 #endif
