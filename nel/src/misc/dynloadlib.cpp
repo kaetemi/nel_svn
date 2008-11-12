@@ -100,14 +100,14 @@ void *nlGetSymbolAddress(NL_LIB_HANDLE libHandle, const std::string &procName)
 std::vector<std::string>	CLibrary::_LibPaths;
 
 
-CLibrary::CLibrary (const CLibrary &other)
+CLibrary::CLibrary (const CLibrary &/* other */)
 {
 	// Nothing to do has it is forbidden.
 	// Allowing copy require to manage reference count from CLibrary to the module resource.
 	nlassert(false);
 }
 
-CLibrary &CLibrary::operator =(const CLibrary &other)
+CLibrary &CLibrary::operator =(const CLibrary &/* other */)
 {
 	// Nothing to do has it is forbidden.
 	// Allowing assignment require to manage reference count from CLibrary to the module resource.

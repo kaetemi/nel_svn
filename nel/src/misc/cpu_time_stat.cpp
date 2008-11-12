@@ -89,6 +89,11 @@ bool	CCPUTimeStat::getPIDTicks(uint64& utime, uint64& stime, uint64& cutime, uin
 
 	return true;
 #else
+	utime = 0;
+	stime = 0;
+	cutime = 0;
+	cstime = 0;
+	nlunreferenced(pid);
 	return false;
 #endif
 }

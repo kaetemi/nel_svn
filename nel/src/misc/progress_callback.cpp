@@ -53,7 +53,7 @@ void IProgressCallback::popCropedValues ()
 	_CropedValues.pop_back ();
 }
 
-void IProgressCallback::progress (float progressValue)
+void IProgressCallback::progress (float /* progressValue */)
 {
 }
 
