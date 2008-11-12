@@ -424,7 +424,7 @@ public:
 class CPatchAllocator
 {
 public:
-	CPatchAllocator ();
+	CPatchAllocator () : AllocPatch (100), AllocVertex (100), AllocInt (0) { }
 	CPathMeshAlloc<UI_PATCH>	AllocPatch;		// 100 patch by mesh
 	CPathMeshAlloc<UI_VERTEX>	AllocVertex;		// 100 vertices by mesh
 	CPathMeshAlloc<int>			AllocInt;

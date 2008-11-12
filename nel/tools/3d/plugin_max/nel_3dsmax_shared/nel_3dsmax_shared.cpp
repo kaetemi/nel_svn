@@ -37,7 +37,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	// initialize nel context
 	if (!NLMISC::INelContext::isContextInitialised())
 		new NLMISC::CApplicationContext();
-			
+
     switch (ul_reason_for_call)
 	{
 		case DLL_PROCESS_ATTACH:
@@ -67,4 +67,3 @@ NEL_3DSMAX_SHARED_API CPatchAllocator& GetAllocator ()
 
 	return Allocator;
 }
-

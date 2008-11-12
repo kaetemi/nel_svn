@@ -44,11 +44,10 @@
 #include <istdplug.h>
 #include <iparamm2.h>
 #include <utilapi.h>
+
 #ifdef min
-
-#undef min
-#undef max
-
+#	undef min
+#	undef max
 #endif
 
 //{{AFX_INSERT_LOCATION}}

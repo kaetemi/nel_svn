@@ -101,10 +101,6 @@ CPatchMeshData& CPatchMeshData::operator= (const CPatchMeshData& src)
 	return *this;
 }
 
-CPatchAllocator::CPatchAllocator () : AllocPatch (100), AllocVertex (100), AllocInt (0)
-{
-}
-
 NL3D::CTileBank bank;
 
 std::string GetBankPathName ()
