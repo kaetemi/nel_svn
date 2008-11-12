@@ -732,7 +732,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					}
 					else
 					{
-						// just push ÅEfalse
+						// just push to false
 						readContext.IfStack.push_back(false);
 
 						skipLine(it, end, currentLine);
@@ -769,7 +769,7 @@ void CI18N::_readTextFile(const std::string &filename,
 					}
 					else
 					{
-						// just push ÅEfalse
+						// just push to false
 						readContext.IfStack.push_back(false);
 
 						skipLine(it, end, currentLine);
