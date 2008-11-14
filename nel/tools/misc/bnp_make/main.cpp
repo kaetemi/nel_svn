@@ -5,8 +5,8 @@
 #include <stdlib.h>
 
 #ifdef NL_OS_WINDOWS
-#include <io.h>
-#include <direct.h>
+#	include <io.h>
+#	include <direct.h>
 #endif
 
 #include <vector>

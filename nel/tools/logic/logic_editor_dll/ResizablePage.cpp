@@ -135,7 +135,7 @@ void CResizablePage::AddAnchor(HWND wnd, CSize tl_type, CSize br_type)
 			refresh = TRUE;
 
 		// simple text never needs refresh
-		if (style & SS_TYPEMASK == SS_SIMPLE)
+		if ((style & SS_TYPEMASK) == SS_SIMPLE)
 			refresh = FALSE;
 	}
 
