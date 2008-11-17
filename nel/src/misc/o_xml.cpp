@@ -383,27 +383,8 @@ void COXml::serial(ucstring &b)
 {
 	nlassert( ! isReading() );
 
-	// Iniput size
-	uint size=b.length();
-
-	// Output string
-	string output;
-	output.resize (b.length());
-
-	// For each character
-	for (uint i=0; i<size; i++)
-	{
-		// 7 bits code ?
-		if (b[i]<0x7F)
-		{
-			output[i]=(char)b[i];
-		}
-		else
-		{
-			nlwarning ("XML: handle ucstring to utf-8");
-			output[i]=(b[i]&0xff);
-		}
-	}
+	// convert ucstring to utf-8 std::string
+	std::string output = b.toUtf8();
 
 	// Serial this string
 	serial (output);

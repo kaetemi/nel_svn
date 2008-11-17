@@ -688,7 +688,7 @@ void CIXml::serial(ucstring &b)
 		serial (tmp);
 
 		// Return a ucstring
-		b = tmp;
+		b.fromUtf8(tmp);
 	}
 }
 
