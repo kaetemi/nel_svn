@@ -105,10 +105,10 @@ public:
 	{
 		uint	a1 = coef;
 		uint	a2 = 256-a1;
-		R = (c0.R*a2 + c1.R*a1) >>8;
-		G = (c0.G*a2 + c1.G*a1) >>8;
-		B = (c0.B*a2 + c1.B*a1) >>8;
-		A = (c0.A*a2 + c1.A*a1) >>8;
+		R = uint8((c0.R*a2 + c1.R*a1) >>8);
+		G = uint8((c0.G*a2 + c1.G*a1) >>8);
+		B = uint8((c0.B*a2 + c1.B*a1) >>8);
+		A = uint8((c0.A*a2 + c1.A*a1) >>8);
 	}
 
 	/**
@@ -118,10 +118,10 @@ public:
 	 */
 	void	modulateFromui (CRGBA c0, uint a)
 	{
-		R = (c0.R*a) >>8;
-		G = (c0.G*a) >>8;
-		B = (c0.B*a) >>8;
-		A = (c0.A*a) >>8;
+		R = uint8((c0.R*a) >>8);
+		G = uint8((c0.G*a) >>8);
+		B = uint8((c0.B*a) >>8);
+		A = uint8((c0.A*a) >>8);
 	}
 
 
@@ -228,16 +228,16 @@ public:
 	{
 		uint	a1 = coef;
 		uint	a2 = 256-a1;
-		R = (c0.R*a2 + c1.R*a1) >>8;
-		G = (c0.G*a2 + c1.G*a1) >>8;
-		B = (c0.B*a2 + c1.B*a1) >>8;
+		R = uint8((c0.R*a2 + c1.R*a1) >>8);
+		G = uint8((c0.G*a2 + c1.G*a1) >>8);
+		B = uint8((c0.B*a2 + c1.B*a1) >>8);
 	}
 	/// see modulateFromui()
 	void	modulateFromuiRGBOnly(CRGBA c0, uint a)
 	{
-		R = (c0.R*a) >>8;
-		G = (c0.G*a) >>8;
-		B = (c0.B*a) >>8;
+		R = uint8((c0.R*a) >>8);
+		G = uint8((c0.G*a) >>8);
+		B = uint8((c0.B*a) >>8);
 	}
 	/// see modulateFromColor()
 	void	modulateFromColorRGBOnly(CRGBA c0, CRGBA c1)

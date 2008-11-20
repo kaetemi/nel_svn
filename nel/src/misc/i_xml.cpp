@@ -958,7 +958,7 @@ bool CIXml::xmlBreakLineInternal ()
 
 // ***************************************************************************
 
-bool CIXml::xmlCommentInternal (const char *comment)
+bool CIXml::xmlCommentInternal (const char * /* comment */)
 {
 	// Ok
 	return true;

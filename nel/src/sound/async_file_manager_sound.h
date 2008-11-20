@@ -57,7 +57,7 @@ public:
 
 private:
 	/// Constructor
-	CAsyncFileManagerSound() {};
+	CAsyncFileManagerSound() {}
 
 	/// Singleton instance.
 //	static CAsyncFileManagerSound	*_Singleton;

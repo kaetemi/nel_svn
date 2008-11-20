@@ -106,7 +106,7 @@ struct CContextMatcher
 class IContextSoundContainer
 {
 public:
-	virtual				~IContextSoundContainer() {};
+	virtual				~IContextSoundContainer() {}
 	virtual void		init(uint *contextArgsIndex) =0;
 	virtual void		addSound(CSound *sound, const std::string &baseName) =0;
 	virtual CSound		*getSound(const CSoundContext &context, uint32 randomValue) =0;

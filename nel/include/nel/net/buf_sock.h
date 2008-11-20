@@ -154,14 +154,14 @@ protected:
 			{
 				// Client: event type only
 				buffer.resize( 1 );
-				buffer[0] = event;
+				buffer[0] = uint8(event);
 			}
 			else
 			{
 				// Server: sockid + event type
 				buffer.resize( sizeof(TSockId) + 1 );
 				memcpy( &*buffer.begin(), &sockid, sizeof(TSockId) );
-				buffer[sizeof(TSockId)] = event;
+				buffer[sizeof(TSockId)] = uint8(event);
 			}
 			// Push
 			bnb->pushMessageIntoReceiveQueue( buffer );

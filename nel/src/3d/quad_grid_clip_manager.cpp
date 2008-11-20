@@ -203,8 +203,6 @@ bool				CQuadGridClipManager::linkModel(CTransformShape *pTfmShp)
 {
 	H_AUTO( NL3D_QuadClip_linkModel );
 
-	CClipTrav *pClipTrav= &getOwnerScene()->getClipTrav();
-
 	// use the position to get the cluster to use.
 	CAABBox box;
 	pTfmShp->getAABBox (box);
@@ -316,8 +314,6 @@ void				CQuadGridClipManager::traverseClip()
 // ***************************************************************************
 void				CQuadGridClipManager::profile() const
 {
-	CClipTrav *pClipTrav= &getOwnerScene()->getClipTrav();
-
 	nlinfo(" ***** CQuadGridClipManager stats");
 	nlinfo(" There is %d clusters", _Width*_Height );
 	sint	numEmptyClusters= 0;

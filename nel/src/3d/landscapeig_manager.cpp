@@ -81,7 +81,7 @@ CLandscapeIGManager::~CLandscapeIGManager()
 }
 // ***************************************************************************
 void	CLandscapeIGManager::initIG(UScene *scene, const std::string &igDesc, UDriver *driver, uint selectedTexture,
-									NLMISC::IProgressCallback *callBack)
+									NLMISC::IProgressCallback * /* callBack */)
 {
 	nlassert(scene);
 	_Scene= scene;

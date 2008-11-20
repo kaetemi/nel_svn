@@ -163,7 +163,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 		// read the header
 		ifile.serialCheck(PACKED_SHEET_HEADER);
 		ifile.serialCheck(PACKED_SHEET_VERSION);
-		sint	loadFormVersion= ifile.serialVersion(PACKED_SHEET_VERSION_COMPATIBLE);
+		ifile.serialVersion(PACKED_SHEET_VERSION_COMPATIBLE);
 
 		// Read depend block size
 		uint32	dependBlockSize;
@@ -887,7 +887,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 		// read the header
 		ifile.serialCheck(PACKED_SHEET_HEADER);
 		ifile.serialCheck(PACKED_SHEET_VERSION);
-		sint	loadFormVersion= ifile.serialVersion(PACKED_SHEET_VERSION_COMPATIBLE);
+		ifile.serialVersion(PACKED_SHEET_VERSION_COMPATIBLE);
 
 		// Read depend block size
 		uint32	dependBlockSize;
@@ -1085,7 +1085,7 @@ void loadForm (const std::vector<std::string> &sheetFilters, const std::string &
 					std::string p = NLMISC::CPath::lookup (*first, false, false);
 					if (!p.empty())
 					{
-						uint32 date = NLMISC::CFile::getFileModificationDate(p);
+//						uint32 date = NLMISC::CFile::getFileModificationDate(p);
 
 						uint dicIndex;
 						std::string filename = NLMISC::CFile::getFilename(p);

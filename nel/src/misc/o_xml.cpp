@@ -67,7 +67,7 @@ int xmlOutputWriteCallbackForNeL ( void *context, const char *buffer, int len)
 
 // ***************************************************************************
 
-int xmlOutputCloseCallbackForNeL ( void *context )
+int xmlOutputCloseCallbackForNeL ( void * /* context */ )
 {
 	// Get the object
 	// COXml *object = (COXml*) context;

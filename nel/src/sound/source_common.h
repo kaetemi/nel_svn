@@ -99,7 +99,7 @@ public:
 	/** This method is called from backgroup sound to check if
 	 *	subsound need to be restarted (ie subsound in loop mode).
 	 */
-	virtual void					checkup() {};
+	virtual void					checkup() {}
 
 protected:
 	// Dynamic properties

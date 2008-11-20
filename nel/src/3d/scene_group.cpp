@@ -695,8 +695,6 @@ bool CInstanceGroup::addToSceneWhenAllShapesLoaded (CScene& scene, IDriver *driv
 
 	// Setup the hierarchy
 	// We just have to set the traversal HRC (Hierarchy)
-	CHrcTrav	&hrcTrav = scene.getHrcTrav();
-
 	if (_Root == NULL)
 	{
 		createRoot (scene);
@@ -1179,7 +1177,7 @@ CQuat CInstanceGroup::getRotQuat ()
 }
 
 // ***************************************************************************
-void		CInstanceGroup::linkRoot (CScene &scene, CTransform *father)
+void		CInstanceGroup::linkRoot (CScene &/* scene */, CTransform *father)
 {
 	if(_Root)
 	{
@@ -1246,7 +1244,7 @@ void			CInstanceGroup::buildPointLightList(const std::vector<CPointLightNamed> &
 				// Check good index.
 				nlassert(inst.Light[l] < _PointLightArray.getPointLights().size());
 				// Remap index, because of light sorting.
-				inst.Light[l]= plRemap[inst.Light[l]];
+				inst.Light[l]= uint8(plRemap[inst.Light[l]]);
 			}
 		}
 
@@ -1254,7 +1252,7 @@ void			CInstanceGroup::buildPointLightList(const std::vector<CPointLightNamed> &
 		if(inst.LocalAmbientId!=0xFF)
 		{
 			nlassert(inst.LocalAmbientId < _PointLightArray.getPointLights().size());
-			inst.LocalAmbientId= plRemap[inst.LocalAmbientId];
+			inst.LocalAmbientId= uint8(plRemap[inst.LocalAmbientId]);
 		}
 	}
 
@@ -1283,9 +1281,9 @@ void			CInstanceGroup::enableRealTimeSunContribution(bool enable)
 void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *txtCtx)
 {
 	uint	opacity= 50;
-	CRGBA	colorCluster(255, 128, 255, opacity);
+	CRGBA	colorCluster(255, 128, 255, uint8(opacity));
 	// portals are drawn twice
-	CRGBA	colorPortal(128, 255, 128, opacity/2);
+	CRGBA	colorPortal(128, 255, 128, uint8(opacity/2));
 
 	CMaterial		clusterMat;
 	CMaterial		portalMat;
@@ -1307,7 +1305,7 @@ void			CInstanceGroup::displayDebugClusters(IDriver *drv, class CTextContext *tx
 	lineMat.setBlendFunc(CMaterial::srcalpha, CMaterial::invsrcalpha);
 	lineMat.setZWrite(false);
 	lineMat.setDoubleSided(true);
-	lineMat.setColor(CRGBA(0,0,0,opacity));
+	lineMat.setColor(CRGBA(0,0,0,uint8(opacity)));
 
 
 	// The geometry for each cluster
