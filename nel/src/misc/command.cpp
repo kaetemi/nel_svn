@@ -124,7 +124,7 @@ void CCommandRegistry::unregisterCommand(ICommand *command)
 			return;
 		}
 	}
-	nlwarning("CCommandRegistry::unregisterCommand : the command '%s' is not registered", command->getName().c_str());
+	//nlwarning("CCommandRegistry::unregisterCommand : the command '%s' is not registered", command->getName().c_str());
 }
 
 void CCommandRegistry::registerNamedCommandHandler(ICommandsHandler *handler, const std::string &className)
