@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="driver_opengl"
 	ProjectGUID="{1D9576F6-3321-4036-8C86-B5361CCCD4FB}"
 	RootNamespace="driver_opengl"
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -44,12 +44,13 @@
 				Optimization="4"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../../../include"
-				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;LIBXML_STATIC;NL_STATIC"
+				PreprocessorDefinitions="_USRDLL;_DEBUG;WIN32;LIBXML_STATIC"
 				StringPooling="true"
+				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdopengl.h"
 				WarningLevel="3"
@@ -67,11 +68,18 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\..\lib\$(ProjectName)_d.lib"
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib dinput8.lib dxguid.lib"
+				OutputFile="..\..\..\..\lib\nel_drv_opengl_win_d.dll"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
+				ModuleDefinitionFile=".\driver_opengl.def"
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -83,6 +91,9 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -90,10 +101,11 @@
 			Name="Release|Win32"
 			OutputDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -119,10 +131,10 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../../../include"
-				PreprocessorDefinitions="_LIB;NL_RELEASE_DEBUG;WIN32;NDEBUG;NL_STATIC;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="_USRDLL;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdopengl.h"
 				WarningLevel="3"
@@ -140,11 +152,17 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\..\lib\$(ProjectName)_r.lib"
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib dinput8.lib dxguid.lib"
+				OutputFile="..\..\..\..\lib\nel_drv_opengl_win_r.dll"
+				ModuleDefinitionFile=".\driver_opengl.def"
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -154,6 +172,9 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

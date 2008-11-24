@@ -64,12 +64,29 @@ bool			nlFreeLibrary(NL_LIB_HANDLE libHandle);
 /// Generic dynamic library symbol address lookup function.
 void			*nlGetSymbolAddress(NL_LIB_HANDLE libHandle, const std::string &symbolName);
 
+// Compilation mode specific suffixes
+#ifdef NL_OS_WINDOWS
+#	ifdef NL_DEBUG_INSTRUMENT
+const std::string nlLibSuffix("_di");
+#	elif defined(NL_DEBUG)
+const std::string nlLibSuffix("_d");
+#	elif defined(NL_RELEASE)
+const std::string nlLibSuffix("_r");
+#	else
+#		error "Unknown compilation mode, can't build suffix"
+#	endif
+#elif defined (NL_OS_UNIX)
+const string	nlLibSuffix;	// empty
+#else
+#	error "You must define the lib suffix for your platform"
+#endif
+
 
 // Utility macro to export a module entry point as a C pointer to a C++ class or function
 #define NL_LIB_EXPORT_SYMBOL(symbolName, classOrFunctionName, instancePointer) \
-extern "C"\
-{\
-	NL_LIB_EXPORT classOrFunctionName	*symbolName = (classOrFunctionName*)instancePointer;\
+extern "C" \
+{ \
+	NL_LIB_EXPORT classOrFunctionName	*symbolName = (classOrFunctionName*)instancePointer; \
 };
 
 /*
@@ -184,7 +201,7 @@ public:
 
 /** Interface class for 'pure Nel' library module.
  *	This interface is used to expose a standard
- *	entry point for dynamicly loaded library
+ *	entry point for dynamically loaded library
  *	and to add some hooks for library implementor
  *	over library loading/unloading.
  */
@@ -197,7 +214,7 @@ class INelLibrary
 	/// The library context
 	class CLibraryContext		*_LibContext;
 
-	/** Called by CLibrary after a succesful loadLibrary
+	/** Called by CLibrary after a successful loadLibrary
 	 *	Note : this methods MUST be virtual to ensure
 	 *	that the code executed is the one from
 	 *	the loaded library.
@@ -227,7 +244,7 @@ public:
 	 *	If the process load more than once the same
 	 *	library, subsequent call to this method will
 	 *	have firstTime false.
-	 *	Implement this method to initialise think or whatever.
+	 *	Implement this method to initialize think or whatever.
 	 */
 	virtual void onLibraryLoaded(bool firstTime) =0;
 	/** Called after before each unloading of the library.
@@ -243,11 +260,10 @@ public:
 
 #define NLMISC_PURE_LIB_ENTRY_POINT	NelLibraryEntry
 
-#define NLMISC_DECL_PURE_LIB(className)			\
-	className	_PureLibraryEntryInstance;	\
+#define NLMISC_DECL_PURE_LIB(className) \
+	className	_PureLibraryEntryInstance; \
 	NL_LIB_EXPORT_SYMBOL( NLMISC_PURE_LIB_ENTRY_POINT, NLMISC::INelLibrary, &_PureLibraryEntryInstance)
 
 } // NLMISC
 
 #endif // NL_DYNLIBLOAD_H
-

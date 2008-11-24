@@ -32,9 +32,9 @@
 #include "time_nl.h"
 #include "debug.h"
 
-#ifndef NL_RELEASE
+#ifndef NL_NO_DEBUG
 #	define ALLOW_TIMING_MEASURES
-#endif // NL_RELEASE
+#endif // NL_NO_DEBUG
 
 
 #ifdef ALLOW_TIMING_MEASURES

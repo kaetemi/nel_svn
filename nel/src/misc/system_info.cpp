@@ -1013,9 +1013,9 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 	 */
 
 	bool debug = false;
-#ifdef _DEBUG
+#ifdef NL_DEBUG
 	debug = true;
-#endif _DEBUG
+#endif
 
 	HMODULE hm = GetModuleHandle(TEXT("USER32"));
 	if (hm)

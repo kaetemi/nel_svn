@@ -3635,8 +3635,6 @@ ULONG STDMETHODCALLTYPE CFXPassRecorder::Release(VOID)
 	return Driver->Release();
 }
 
-#undef new
-
 HRESULT STDMETHODCALLTYPE CFXPassRecorder::LightEnable(DWORD Index, BOOL Enable)
 {
 	nlassert(Driver);

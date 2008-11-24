@@ -1472,7 +1472,7 @@ void				CAudioMixerUser::update()
 			nlassert(currentEvent);
 			currentEvent->onEvent();
 
-#if defined(NL_DEBUG) || defined(NL_DEBUG_FAST)
+#ifdef NL_DEBUG
 			currentEvent = 0;
 #endif
 		}

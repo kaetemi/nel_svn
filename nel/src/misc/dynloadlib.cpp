@@ -34,67 +34,52 @@ namespace NLMISC
 
 NL_LIB_HANDLE nlLoadLibrary(const std::string &libName)
 {
-#if defined NL_OS_WINDOWS
-	return LoadLibrary(libName.c_str());
-#elif defined (NL_OS_UNIX)
-	return dlopen(libName.c_str(), RTLD_NOW);
+	NL_LIB_HANDLE res = 0;
+#ifdef NL_OS_WINDOWS
+	res = LoadLibrary(libName.c_str());
+#elif defined(NL_OS_UNIX)
+	res = dlopen(libName.c_str(), RTLD_NOW);
 #else
-#error "You must define nlLoadLibrary for your platform"
+#	error "You must code nlLoadLibrary() for your platform"
 #endif
+	if(res == 0) nlwarning("Load library '%s' failed: %s", libName.c_str(), NLMISC::formatErrorMessage(NLMISC::getLastError()).c_str());
+	return res;
 }
 
 bool nlFreeLibrary(NL_LIB_HANDLE libHandle)
 {
-#if defined NL_OS_WINDOWS
+#ifdef NL_OS_WINDOWS
 	return FreeLibrary(libHandle) > 0;
-#elif defined (NL_OS_UNIX)
+#elif defined(NL_OS_UNIX)
 	return dlclose(libHandle) == 0;
 #else
-#error "You must define nlFreeLibrary for your platform"
+#	error "You must code nlFreeLibrary() for your platform"
 #endif
 }
 
 void *nlGetSymbolAddress(NL_LIB_HANDLE libHandle, const std::string &procName)
 {
-#if defined (NL_OS_WINDOWS)
-	return GetProcAddress(libHandle, procName.c_str());
-#elif defined (NL_OS_UNIX)
-	return dlsym(libHandle, procName.c_str());
+	void *res = 0;
+#ifdef NL_OS_WINDOWS
+	res = GetProcAddress(libHandle, procName.c_str());
+#elif defined(NL_OS_UNIX)
+	res = dlsym(libHandle, procName.c_str());
 #else
-#error "You must define nlGetProcAddress for your platform"
+#	error "You must code nlGetProcAddress() for your platform"
 #endif
+	if(res == 0) nlwarning("Getting symbol address of '%s' failed: %s", procName.c_str(), NLMISC::formatErrorMessage(NLMISC::getLastError()).c_str());
+	return res;
 }
 
 // Again some OS specifics stuff
-#if defined (NL_OS_WINDOWS)
-  const string	NL_LIB_PREFIX;	// empty
-  const string	NL_LIB_EXT(".dll");
-#elif defined (NL_OS_UNIX)
-  const string	NL_LIB_PREFIX("lib");
-  const string	NL_LIB_EXT(".so");
+#ifdef NL_OS_WINDOWS
+  const string	nlLibPrefix;	// empty
+  const string	nlLibExt(".dll");
+#elif defined(NL_OS_UNIX)
+  const string	nlLibPrefix("lib");
+  const string	nlLibExt(".so");
 #else
-#error "You must define the default dynamic lib extention"
-#endif
-
-// Compilation mode specific suffixes
-#if defined (NL_OS_WINDOWS)
- #ifdef NL_DEBUG_INSTRUMENT
-  const string	NL_LIB_SUFFIX("_di");
- #elif defined (NL_DEBUG_FAST)
-   const string	NL_LIB_SUFFIX("_df");
- #elif defined (NL_DEBUG)
-   const string	NL_LIB_SUFFIX("_d");
- #elif defined (NL_RELEASE_DEBUG)
-   const string	NL_LIB_SUFFIX("_r");
- #elif defined (NL_RELEASE)
-   const string	NL_LIB_SUFFIX("_r");
- #else
-   #error "Unknown compilation mode, can't build suffix"
- #endif
-#elif defined (NL_OS_UNIX)
-   const string	NL_LIB_SUFFIX;	// empty
-#else
- #error "Lib suffix not defined for your platform"
+#	error "You must define the default dynamic lib extention"
 #endif
 
 std::vector<std::string>	CLibrary::_LibPaths;
@@ -115,11 +100,9 @@ CLibrary &CLibrary::operator =(const CLibrary &/* other */)
 	return *this;
 }
 
-
-
 std::string CLibrary::makeLibName(const std::string &baseName)
 {
-	return NL_LIB_PREFIX+baseName+NL_LIB_SUFFIX+NL_LIB_EXT;
+	return nlLibPrefix+baseName+nlLibSuffix+nlLibExt;
 }
 
 std::string CLibrary::cleanLibName(const std::string &decoratedName)
@@ -127,17 +110,17 @@ std::string CLibrary::cleanLibName(const std::string &decoratedName)
 	// remove path and extension
 	string ret = CFile::getFilenameWithoutExtension(decoratedName);
 
-	if (!NL_LIB_PREFIX.empty())
+	if (!nlLibPrefix.empty())
 	{
 		// remove prefix
-		if (ret.find(NL_LIB_PREFIX) == 0)
-			ret = ret.substr(NL_LIB_PREFIX.size());
+		if (ret.find(nlLibPrefix) == 0)
+			ret = ret.substr(nlLibPrefix.size());
 	}
-	if (!NL_LIB_SUFFIX.empty())
+	if (!nlLibSuffix.empty())
 	{
 		// remove suffix
-		if (ret.substr(ret.size()-NL_LIB_SUFFIX.size()) == NL_LIB_SUFFIX)
-			ret = ret.substr(0, ret.size() - NL_LIB_SUFFIX.size());
+		if (ret.substr(ret.size()-nlLibSuffix.size()) == nlLibSuffix)
+			ret = ret.substr(0, ret.size() - nlLibSuffix.size());
 	}
 
 	return ret;
@@ -234,19 +217,19 @@ bool CLibrary::loadLibrary(const std::string &libName, bool addNelDecoration, bo
 #ifdef NL_OS_UNIX
 		char *errormsg=dlerror();
 #else
-		const char *errormsg="Verify DLL existence.";
+		const char *errormsg="Verify DLL existence";
 #endif
 		nlwarning("Loading library %s failed: %s", libPath.c_str(), errormsg);
 	}
 	else
 	{
-		// check for 'pure' nel library
+		// check for 'pure' NeL library
 		void *entryPoint = getSymbolAddress(NL_MACRO_TO_STR(NLMISC_PURE_LIB_ENTRY_POINT));
 		if (entryPoint != NULL)
 		{
 			// rebuild the interface pointer
 			_PureNelLibrary = *(reinterpret_cast<INelLibrary**>(entryPoint));
-			// call the private initialisation method.
+			// call the private initialization method.
 			_PureNelLibrary->_onLibraryLoaded(INelContext::getInstance());
 		}
 	}
@@ -262,7 +245,7 @@ void CLibrary::freeLibrary()
 
 		if (_PureNelLibrary)
 		{
-			// call the private finalisation method.
+			// call the private finalization method.
 			_PureNelLibrary->_onLibraryUnloaded();
 		}
 
@@ -301,14 +284,12 @@ INelLibrary *CLibrary::getNelLibraryInterface()
 	return _PureNelLibrary;
 }
 
-
 INelLibrary::~INelLibrary()
 {
 	// cleanup ram
 	if (_LibContext != NULL)
 		delete _LibContext;
 }
-
 
 void INelLibrary::_onLibraryLoaded(INelContext &nelContext)
 {
@@ -318,7 +299,7 @@ void INelLibrary::_onLibraryLoaded(INelContext &nelContext)
 	{
 		// Linux relocates all symbols, so this is unnecessary.
 #ifdef NL_OS_WINDOWS
-		// initialise Nel context
+		// initialize NeL context
 		nlassert(!NLMISC::INelContext::isContextInitialised());
 #endif // NL_OS_WINDOWS
 
@@ -345,7 +326,6 @@ uint32	INelLibrary::getLoadingCounter()
 {
 	return _LoadingCounter;
 }
-
 
 
 }	// namespace NLMISC

@@ -1,5 +1,5 @@
 	/** \file path.cpp
- * Utility class for searching files in differents paths.
+ * Utility class for searching files in different paths.
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -66,13 +66,13 @@ namespace NLMISC {
 //#define	NL_DEBUG_PATH
 
 #ifdef	NL_DEBUG_PATH
-	#define	NL_DISPLAY_PATH	nlinfo
+#	define	NL_DISPLAY_PATH	nlinfo
 #else
-	#ifdef __GNUC__
-		#define	NL_DISPLAY_PATH(format, args...)
-	#else // __GNUC__
-		#define	NL_DISPLAY_PATH if(false)
-	#endif // __GNUC__
+#	ifdef __GNUC__
+#		define	NL_DISPLAY_PATH(format, args...)
+#	else // __GNUC__
+#		define	NL_DISPLAY_PATH if(false)
+#	endif // __GNUC__
 #endif
 
 
@@ -80,12 +80,13 @@ namespace NLMISC {
 // Variables
 //
 
-//CPath *CPath::_Instance = NULL;
 NLMISC_SAFE_SINGLETON_IMPL(CPath);
 
+
 //
-// destructor
+// Functions
 //
+
 CFileContainer::~CFileContainer()
 {
 	if( _AllFileNames )
@@ -94,11 +95,6 @@ CFileContainer::~CFileContainer()
 		_AllFileNames = NULL;
 	}
 }
-
-
-//
-// Functions
-//
 
 void CPath::releaseInstance()
 {
@@ -239,7 +235,6 @@ void CFileContainer::clearMap ()
 	NL_DISPLAY_PATH("PATH: CPath::clearMap(): map directory cleared");
 }
 
-
 CFileContainer::CMCFileEntry *CFileContainer::MCfind (const std::string &filename)
 {
 	nlassert(_MemoryCompressed);
@@ -255,11 +250,6 @@ CFileContainer::CMCFileEntry *CFileContainer::MCfind (const std::string &filenam
 	}
 	return NULL;
 }
-
-//sint CPath::findExtension (const string &ext1, const string &ext2)
-//{
-//	getInstance()->_FileContainer.findExtension(ext1, ext2);
-//}
 
 sint CFileContainer::findExtension (const string &ext1, const string &ext2)
 {
@@ -344,7 +334,7 @@ void CFileContainer::remapExtension (const string &ext1, const string &ext2, boo
 					string file = (*it).first.substr (0, pos + 1);
 					file += ext2lwr;
 
-// TODO perhaps a problem because I insert in the current map that i parcours
+// TODO perhaps a problem because I insert in the current map that I process
 					string path = SSMpath.get((*it).second.idPath);
 					insertFileInMap (file, path+file, true, ext1lwr);
 				}
@@ -426,7 +416,7 @@ string CFileContainer::lookup (const string &filename, bool throwException, bool
 	 *	It can be loaded/called through CAsyncFileManager for instance
 	 * ***********************************************/
 	/*
-		NB: CPath acess static instance getInstance() of course, so user must ensure
+		NB: CPath access static instance getInstance() of course, so user must ensure
 		that no mutator is called while async loading
 	*/
 
@@ -551,7 +541,6 @@ bool CFileContainer::exists (const std::string &filename)
 		str.resize (str.size()-1);
 	}
 
-
 	if (_MemoryCompressed)
 	{
 		CMCFileEntry *pMCFE = MCfind(str);
@@ -577,35 +566,6 @@ string CPath::standardizePath (const string &path, bool addFinalSlash)
 
 string CFileContainer::standardizePath (const string &path, bool addFinalSlash)
 {
-/*
-	string newPath;
-	// check empty path
-	if (path.empty()) return "";
-
-	// don't transform the first \\ for windows network path
-//	if (path.size() >= 2 && path[0] == '\\' && path[1] == '\\')
-//	{
-//		newPath += "\\\\";
-//		i = 2;
-//	}
-
-	for (uint i = 0; i < path.size(); i++)
-	{
-		// don't transform the first \\ for windows network path
-		if (path[i] == '\\')
-			newPath += '/';
-		else
-			newPath += path[i];
-	}
-
-	// add terminal slash
-	if (addFinalSlash && newPath[path.size()-1] != '/')
-		newPath += '/';
-
-	return newPath;
-*/
-
-
 	// check empty path
 	if (path.empty())
 		return "";
@@ -626,7 +586,7 @@ string CFileContainer::standardizePath (const string &path, bool addFinalSlash)
 	return newPath;
 }
 
-// remplace / wiht \ and put all in lower case
+// replace / with backslash
 std::string	CPath::standardizeDosPath (const std::string &path)
 {
 	return getInstance()->_FileContainer.standardizeDosPath(path);
@@ -680,7 +640,6 @@ bool CFileContainer::setCurrentPath (const char *newDir)
 #ifdef NL_OS_WINDOWS
 	return _chdir(newDir) == 0;
 #else
-	// todo : check this compiles under linux. Thanks (Hulud)
 	return chdir(newDir) == 0;
 #endif
 }
@@ -902,17 +861,7 @@ void CFileContainer::getPathContent (const string &path, bool recurse, bool want
 				continue;
 			}
 
-/*			int lastSep = CFile::getLastSeparator(path);
-			#ifdef NL_OS_WINDOWS
-				char sep = lastSep == std::string::npos ? '\\'
-													    : path[lastSep];
-			#else
-				char sep = lastSep == std::string::npos ? '/'
-														: path[lastSep];
-			#endif
-*/
 			string stdName = standardizePath(path) + getname(de);
-
 
 			NL_DISPLAY_PATH("PATH: CPath::getPathContent(%s, %d, %d, %d): adding file '%s'", path.c_str(), recurse, wantDir, wantFile, stdName.c_str());
 			result.push_back (stdName);
@@ -1053,7 +1002,7 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 	{
 		vector<string> filesToProcess;
 
-		// Progree bar
+		// Progress bar
 		if (progressCallBack)
 		{
 			progressCallBack->progress (0);
@@ -1086,14 +1035,14 @@ void CFileContainer::addSearchPath (const string &path, bool recurse, bool alter
 //			insertFileInMap (filename, filepath, false, CFile::getExtension(filename));
 			addSearchFile (filesToProcess[f], false, "", progressCallBack);
 
-			// Progree bar
+			// Progress bar
 			if (progressCallBack)
 			{
 				progressCallBack->popCropedValues ();
 			}
 		}
 
-		// Progree bar
+		// Progress bar
 		if (progressCallBack)
 		{
 			progressCallBack->popCropedValues ();
@@ -1216,8 +1165,7 @@ void CFileContainer::addSearchListFile (const string &filename, bool recurse, bo
 		return;
 	}
 
-	// TODO lire le fichier et ajouter les fichiers qui sont dedans
-
+	// TODO read the file and add files that are inside
 }
 
 // WARNING : recurse is not used
@@ -1228,10 +1176,6 @@ void CPath::addSearchBigFile (const string &sBigFilename, bool recurse, bool alt
 
 void CFileContainer::addSearchBigFile (const string &sBigFilename, bool recurse, bool alternative, NLMISC::IProgressCallback *progressCallBack)
 {
- //#ifndef NL_OS_WINDOWS
-  //	nlerror( "BNP currently not supported on Unix" ); // test of BNP failed on Linux
-  //#endif
-
 	// Check if filename is not empty
 	if (sBigFilename.empty())
 	{
@@ -1263,7 +1207,7 @@ void CFileContainer::addSearchBigFile (const string &sBigFilename, bool recurse,
 	// add the link with the CBigFile singleton
 	if (CBigFile::getInstance().add (sBigFilename, BF_ALWAYS_OPENED | BF_CACHE_FILE_ON_OPEN))
 	{
-		// also add the bigfile name in the map to retreive the full path of a .bnp when we want modification date of the bnp for example
+		// also add the bigfile name in the map to retrieve the full path of a .bnp when we want modification date of the bnp for example
 		insertFileInMap (CFile::getFilename (sBigFilename), sBigFilename, false, CFile::getExtension(sBigFilename));
 
 		// parse the big file to add file in the map
@@ -1429,11 +1373,6 @@ void CFileContainer::addIgnoredDoubleFile(const std::string &ignoredFile)
 {
 	IgnoredFiles.push_back(ignoredFile);
 }
-
-//void CPath::insertFileInMap (const string &filename, const string &filepath, bool remap, const string &extension)
-//{
-//	getInstance()->_FileContainer.insertFileInMap(filename, filepath, remap, extension);
-//}
 
 void CFileContainer::insertFileInMap (const string &filename, const string &filepath, bool remap, const string &extension)
 {
@@ -1848,21 +1787,6 @@ string CFile::findNewFile (const string &filename)
 // \warning doesn't work with big file
 uint32	CFile::getFileSize (const std::string &filename)
 {
-/*	FILE *fp = fopen (filename.c_str(), "rb");
-	if (fp == NULL) return 0;
-	nlfseek64 (fp, 0, SEEK_END);
-	uint32 size = ftell (fp);
-	fclose (fp);
-	return size;*/
-
-/*	const char *s = filename.c_str();
-	int h = _open (s, _O_RDONLY | _O_BINARY);
-	_lseek (h, 0, SEEK_END);
-	uint32 size = _tell (h);
-	_close (h);
-	return size;
-*/
-
 	if (filename.find("@@") != string::npos)
 	{
 		uint32 fs = 0, bfo;
@@ -2247,21 +2171,6 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 			return false;
 		}
 #else
-//		// This code does not work for directories!
-//		if (link (ssrc.c_str(), sdest.c_str()) == -1)
-//		{
-//			nlwarning ("PATH: CopyMoveFile error: can't link/move '%s' into '%s', error %u",
-//				ssrc.c_str(),
-//				sdest.c_str(),
-//				errno);
-//			return false;
-//		}
-//		if (unlink (ssrc.c_str()) == -1)
-//		{
-//			nlwarning ("PATH: CopyMoveFile error: can't delete/unlink '%s'", ssrc.c_str());
-//			return false;
-//		}
-
 		if (rename (ssrc.c_str(), sdest.c_str()) == -1)
 		{
 			nlwarning ("PATH: CopyMoveFile error: can't rename '%s' into '%s', error %u",
@@ -2270,7 +2179,6 @@ static bool CopyMoveFile(const char *dest, const char *src, bool copyFile, bool 
 				errno);
 			return false;
 		}
-
 #endif
 	}
 	if (progress) progress->progress(1.f);
@@ -2337,7 +2245,7 @@ bool CFile::thoroughFileCompare(const std::string &fileName0, const std::string 
 		file0.serialBuffer(&buf0[0], bufSize);
 		file1.serialBuffer(&buf1[0], bufSize);
 
-		// compare the contents of hte 2 data buffers
+		// compare the contents of the 2 data buffers
 		if (buf0!=buf1)
 			return false;
 	}
@@ -2407,7 +2315,7 @@ bool CPath::makePathRelative (const char *basePath, std::string &relativePath)
 		// Compare with relativePath
 		if (strncmp (tmp.c_str (), src.c_str (), tmp.length ()) == 0)
 		{
-			// Troncate
+			// Truncate
 			uint size = tmp.length ();
 
 			// Same path ?
@@ -2515,5 +2423,3 @@ void CFile::getTemporaryOutputFilename (const std::string &originalFilename, std
 }
 
 } // NLMISC
-
-

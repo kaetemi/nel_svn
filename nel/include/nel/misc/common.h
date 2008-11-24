@@ -206,6 +206,7 @@ inline double	isValidDouble (double v)
 
 std::string	toLower ( const std::string &str );
 void		toLower ( char *str );
+char		toLower ( const char ch );	// convert only one character
 
 /** Convert a string in upper case.
  * \param a string to transform to upper case

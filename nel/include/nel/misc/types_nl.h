@@ -8,8 +8,8 @@
  * - NL_LITTLE_ENDIAN	: x86 processor
  * - NL_BIG_ENDIAN		: other processor
  *
- * - NL_DEBUG			: no optimization, full debug information, all log for the client
- * - NL_RELEASE			: full optimization, no debug information, no log for the client
+ * - NL_DEBUG			: basic optimization, full debug information, all log for the client
+ * - NL_RELEASE			: full optimization, full debug information, all log for the client
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -64,7 +64,7 @@
 #	define NL_LITTLE_ENDIAN
 #	define NL_CPU_INTEL
 #   ifndef _WIN32_WINNT
-#		define _WIN32_WINNT 0x0400
+#		define _WIN32_WINNT 0x0500	// Minimal OS = Windows 2000 (NeL is not supported on Windows 95/98)
 #   endif
 #	if _MSC_VER >= 1500
 #		define NL_COMP_VC9
@@ -95,10 +95,10 @@
 #	endif
 #	ifdef _DEBUG
 #		define NL_DEBUG
+#	elif defined (NDEBUG)
+#		define NL_RELEASE
 #	else
-#		ifndef NL_RELEASE_DEBUG
-#			define NL_RELEASE
-#		endif
+#		error "Don't know the compilation mode"
 #	endif
 	// define NOMINMAX to be sure that windows includes will not define min max macros, but instead, use the stl template
 #	define NOMINMAX
@@ -119,17 +119,9 @@
 #			define NL_LITTLE_ENDIAN
 #		endif
 #	endif
-// these define are set the linux and mac os
+// these define are set the GNU/Linux and Mac OS
 #	define NL_OS_UNIX
 #	define NL_COMP_GCC
-#endif
-
-// Mode checks: NL_DEBUG and NL_DEBUG_FAST are allowed at the same time, but not with any release mode
-// (by the way, NL_RELEASE and NL_RELEASE_DEBUG are not allowed at the same time, see above)
-#if defined (NL_DEBUG) || defined (NL_DEBUG_FAST)
-#	if defined (NL_RELEASE) || defined (NL_RELEASE_DEBUG)
-#		error "Error in preprocessor directives for NeL debug mode!"
-#	endif
 #endif
 
 // gcc 3.4 introduced ISO C++ with tough template rules
@@ -153,7 +145,6 @@
 #endif
 
 // Remove stupid Visual C++ warnings
-
 #ifdef NL_OS_WINDOWS
 #	pragma warning (disable : 4503)			// STL: Decorated name length exceeded, name was truncated
 #	pragma warning (disable : 4786)			// STL: too long identifier
@@ -161,7 +152,6 @@
 #	pragma warning (disable : 4250)			// inherits via dominance (informational warning).
 #	pragma warning (disable : 4390)			// don't warn in empty block "if(exp) ;"
 #	pragma warning (disable : 4996)			// 'vsnprintf': This function or variable may be unsafe. Consider using vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-
 // Debug : Sept 01 2006
 #	if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		pragma warning (disable : 4005)			// don't warn on redefinitions caused by xp platform sdk
@@ -188,6 +178,12 @@
 
 //#define NL_USE_GTK
 #undef NL_USE_GTK
+
+// Define this if you want to remove all assert, debug code...
+// You should never need to define this since it's always good to have assert, even in release mode
+
+//#define NL_NO_DEBUG
+#undef NL_NO_DEBUG
 
 
 // Standard types
@@ -357,32 +353,55 @@ typedef	uint16	ucchar;
 
 // To define a 64bits constant; ie: UINT64_CONSTANT(0x123456781234)
 #ifdef NL_OS_WINDOWS
-#  if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
-#    define INT64_CONSTANT(c)	(c##LL)
-#    define SINT64_CONSTANT(c)	(c##LL)
-#    define UINT64_CONSTANT(c)	(c##LL)
-#  else
-#    define INT64_CONSTANT(c)	(c)
-#    define SINT64_CONSTANT(c)	(c)
-#    define UINT64_CONSTANT(c)	(c)
-#  endif
+#	if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
+#		define INT64_CONSTANT(c)	(c##LL)
+#		define SINT64_CONSTANT(c)	(c##LL)
+#		define UINT64_CONSTANT(c)	(c##LL)
+#	else
+#		define INT64_CONSTANT(c)	(c)
+#		define SINT64_CONSTANT(c)	(c)
+#		define UINT64_CONSTANT(c)	(c)
+#	endif
 #else
-#  define INT64_CONSTANT(c)		(c##LL)
-#  define SINT64_CONSTANT(c)	(c##LL)
-#  define UINT64_CONSTANT(c)	(c##ULL)
+#	define INT64_CONSTANT(c)		(c##LL)
+#	define SINT64_CONSTANT(c)	(c##LL)
+#	define UINT64_CONSTANT(c)	(c##ULL)
 #endif
 
 // Define a macro to write template function according to compiler weakness
 #ifdef NL_COMP_NEED_PARAM_ON_METHOD
- #define NL_TMPL_PARAM_ON_METHOD_1(p1)	<p1>
- #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	<p1, p2>
+#	define NL_TMPL_PARAM_ON_METHOD_1(p1)	<p1>
+#	define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)	<p1, p2>
 #else
- #define NL_TMPL_PARAM_ON_METHOD_1(p1)
- #define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)
+#	define NL_TMPL_PARAM_ON_METHOD_1(p1)
+#	define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)
 #endif
 
 #ifndef MAX_PATH
-#define MAX_PATH 255
+#	define MAX_PATH 255
+#endif
+
+#ifdef NL_DEBUG
+const std::string nlMode("NL_DEBUG");
+#else
+const std::string nlMode("NL_RELEASE");
+#endif
+
+// Sanity checks
+#if defined (NL_DEBUG) && defined (NL_RELEASE)
+#	error "NeL cannot be configured for debug and release in the same time"
+#endif
+#if !defined (NL_DEBUG) && !defined (NL_RELEASE)
+#	error "NeL must be configured for debug or release"
+#endif
+#ifdef NL_RELEASE_DEBUG
+#	error "NL_RELEASE_DEBUG doesn't exist anymore, please remove it"
+#endif
+#ifdef NL_DEBUG_FAST
+#	error "NL_DEBUG_FAST doesn't exist anymore, please remove it"
+#endif
+#ifdef __STL_DEBUG
+#	error "NeL doesn't use stlport anymore, please remove __STL_DEBUG define"
 #endif
 
 #endif // NL_TYPES_H

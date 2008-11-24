@@ -169,30 +169,30 @@ void	setCrashAlreadyReported(bool state);
 	}
  *\endcode
  */
-#ifdef NL_RELEASE
+#ifdef NL_NO_DEBUG
 #	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nldebug __noop
 #	else
 #		define nldebug 0&&
 #	endif
-#else // NL_RELEASE
+#else // NL_NO_DEBUG
 	extern bool DisableNLDebug;
 #	define nldebug if (NLMISC::DisableNLDebug) {} else (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getDebugLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getDebugLog())->displayNL
-#endif // NL_RELEASE
+#endif // NL_NO_DEBUG
 
 /**
  * \def nlinfo(exp)
  * Same as nldebug but it will be display in debug and in release mode.
  */
-#ifdef NL_RELEASE
+#ifdef NL_NO_DEBUG
 #	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nlinfo __noop
 #	else
 #		define nlinfo 0&&
 #	endif
-#else // NL_RELEASE
+#else // NL_NO_DEBUG
 #	define nlinfo (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getInfoLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getInfoLog())->displayNL
-#endif // NL_RELEASE
+#endif // NL_NO_DEBUG
 
 /**
  * \def nlwarning(exp)
@@ -212,15 +212,15 @@ void	setCrashAlreadyReported(bool state);
  *\endcode
  */
 
-#ifdef NL_RELEASE
+#ifdef NL_NO_DEBUG
 #	if defined(NL_COMP_VC71) || defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		define nlwarning __noop
 #	else
 #		define nlwarning 0&&
 #	endif
-#else // NL_RELEASE
+#else // NL_NO_DEBUG
 #	define nlwarning (NLMISC::createDebug(), NLMISC::INelContext::getInstance().getWarningLog()->setPosition( __LINE__, __FILE__, __FUNCTION__ ), NLMISC::INelContext::getInstance().getWarningLog())->displayNL
-#endif // NL_RELEASE
+#endif // NL_NO_DEBUG
 
 /**
  * \def nlerror(exp)
@@ -364,22 +364,16 @@ extern bool _assertex_stop_1(bool &ignoreNextTime);
 
 // removed because we always check assert (even in release mode) #if defined(NL_DEBUG)
 
-#ifdef NL_RELEASE
-#define nlassert(exp) \
-if(false)
-#define nlassertonce(exp) \
-if(false)
-#define nlassertex(exp, str) \
-if(false)
-#define nlverify(exp) \
-{ exp; }
-#define nlverifyonce(exp) \
-{ exp; }
-#define nlverifyex(exp, str) \
-{ exp; }
-#else // NL_RELEASE
+#ifdef NL_NO_DEBUG
+#	define nlassert(exp) if(false)
+#	define nlassertonce(exp) if(false)
+#	define nlassertex(exp, str) if(false)
+#	define nlverify(exp) { exp; }
+#	define nlverifyonce(exp) { exp; }
+#	define nlverifyex(exp, str) { exp; }
+#else // NL_NO_DEBUG
 
-#ifdef NL_OS_UNIX
+#	ifdef NL_OS_UNIX
 
 // Linux set of asserts is reduced due to that there is no message box displayer
 
@@ -410,7 +404,7 @@ if(false)
 #define nlverifyonce(exp) nlassert(exp)
 #define nlverifyex(exp, str) nlassertex(exp, str)
 
-#else // NL_OS_UNIX
+#	else // NL_OS_UNIX
 
 #define nlassert(exp) \
 { \
@@ -480,9 +474,10 @@ if(false)
 	} \
 	ASSERT_THROW_EXCEPTION_CODE_EX(_expResult_, #exp) \
 }
-#endif // NL_OS_UNIX
 
-#endif // NL_RELEASE
+#	endif // NL_OS_UNIX
+
+#endif // NL_NO_DEBUG
 
 #define nlunreferenced(identifier) (identifier)
 

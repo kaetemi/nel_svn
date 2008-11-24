@@ -35,8 +35,8 @@
 
 namespace NLMISC {
 
-#if defined(NL_DEBUG) || defined(NL_DEBUG_FAST)
-#  define NL_DEBUG_SHEET_ID
+#ifdef NL_DEBUG
+#	define NL_DEBUG_SHEET_ID
 #endif
 
 // Use 24 bits id and 8 bits file types

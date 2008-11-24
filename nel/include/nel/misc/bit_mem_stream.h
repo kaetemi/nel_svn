@@ -34,12 +34,12 @@ namespace NLMISC {
 /* In debugging stage, should be defined. In stable stage, undefine it!
  * Works along with the verboseAllTraffic command
  */
-#ifndef NL_RELEASE
-#ifdef NL_OS_WINDOWS
-#define LOG_ALL_TRAFFIC
-#else
-#undef LOG_ALL_TRAFFIC
-#endif
+#ifndef NL_NO_DEBUG
+#	ifdef NL_OS_WINDOWS
+#		define LOG_ALL_TRAFFIC
+#	else
+#		undef LOG_ALL_TRAFFIC
+#	endif
 #endif
 
 #ifdef LOG_ALL_TRAFFIC

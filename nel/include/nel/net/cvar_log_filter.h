@@ -27,13 +27,13 @@
 #include "nel/misc/config_file.h"
 #include "nel/net/service.h"
 
-/** Declare an info loging function that works as nlinfo but that is activated with the given service config file variable
+/** Declare an info logging function that works as nlinfo but that is activated with the given service config file variable
   * Example of use :
   * DECLARE_CVAR_INFO_LOG_FUNCTION(my_info, MyInfoEnabled)
   *
   * my_info("my_message"); // no-op if "MyInfoEnabled = 0;" Is found in the service config file
   */
-#ifdef NL_RELEASE
+#ifdef NL_NO_DEBUG
 	#define NL_DECLARE_CVAR_INFO_LOG_FUNCTION(func, cvar, defaultValue)	inline void func(const char *format, ...) {}
 #else
 	#define NL_DECLARE_CVAR_INFO_LOG_FUNCTION(func, cvar, defaultValue)                                              \

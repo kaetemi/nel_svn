@@ -259,18 +259,7 @@ void CGtkDisplayer::setTitleBar (const string &titleBar)
 		wn += titleBar;
 		wn += ": ";
 	}
-#ifdef NL_RELEASE_DEBUG
-	string mode = "NL_RELEASE_DEBUG";
-#elif defined(NL_DEBUG_FAST)
-	string mode = "NL_DEBUG_FAST";
-#elif defined(NL_DEBUG)
-	string mode = "NL_DEBUG";
-#elif defined(NL_RELEASE)
-	string mode = "NL_RELEASE";
-#else
-	string mode = "???";
-#endif
-	wn += "Nel Service Console (compiled " __DATE__ " " __TIME__ " in " + mode + " mode)";
+	wn += "Nel Service Console (compiled " __DATE__ " " __TIME__ " in " + nlMode + " mode)";
 
 	nlassert (RootWindow != NULL);
 	gtk_window_set_title (GTK_WINDOW (RootWindow), wn.c_str());

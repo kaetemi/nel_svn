@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="sound_lowlevel"
 	ProjectGUID="{89064E9B-14E9-4FB2-8536-A9151DF55C68}"
 	RootNamespace="sound_lowlevel"
@@ -44,12 +44,13 @@
 				Optimization="4"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../../include"
-				PreprocessorDefinitions="_LIB;NL_DEBUG_FAST;_DEBUG;WIN32;NL_STATIC"
+				PreprocessorDefinitions="_LIB;_DEBUG;WIN32"
 				StringPooling="true"
+				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -92,6 +93,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -117,10 +119,10 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../../include"
-				PreprocessorDefinitions="_LIB;NL_RELEASE_DEBUG;WIN32;NDEBUG;NL_STATIC;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="_LIB;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>

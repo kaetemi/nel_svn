@@ -27,22 +27,19 @@
 #include "nel/misc/types_nl.h"
 #include "nel/3d/tessellation.h"
 
-
-// Yoyo: hide this if do not want to profile landscape.
-#define		NL3D_PROFILE_LAND
-// Hidden in release.
-#ifdef NL_RELEASE
-#undef		NL3D_PROFILE_LAND
+#ifdef NL_NO_DEBUG
+#	undef NL3D_PROFILE_LAND
+#else
+#	define NL3D_PROFILE_LAND
 #endif
 
 #ifdef	NL3D_PROFILE_LAND
-#define	NL3D_PROFILE_LAND_SET(_x_, _y_)	_x_=_y_
-#define	NL3D_PROFILE_LAND_ADD(_x_, _y_)	_x_+=_y_
+#	define	NL3D_PROFILE_LAND_SET(_x_, _y_)	_x_=_y_
+#	define	NL3D_PROFILE_LAND_ADD(_x_, _y_)	_x_+=_y_
 #else
-#define	NL3D_PROFILE_LAND_SET(_x_, _y_)
-#define	NL3D_PROFILE_LAND_ADD(_x_, _y_)
+#	define	NL3D_PROFILE_LAND_SET(_x_, _y_)
+#	define	NL3D_PROFILE_LAND_ADD(_x_, _y_)
 #endif
-
 
 namespace NL3D
 {

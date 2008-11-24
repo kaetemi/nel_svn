@@ -32,7 +32,6 @@
 #include "nel/misc/line.h"
 
 
-// must test debug fast first, because NL_DEBUG_FAST and NL_DEBUG are declared at same time.
 #ifdef NL_OS_WINDOWS
 # define NL3D_GL_DLL_NAME "nel_drv_opengl_win"
 # define NL3D_D3D_DLL_NAME "nel_drv_direct3d_win"
@@ -41,28 +40,6 @@
 #else
 # error "Unknown system"
 #endif
-
-//#ifdef NL_OS_WINDOWS
-//#	ifdef NL_DEBUG_FAST
-//#		define NL3D_GL_DLL_NAME "nel_drv_opengl_win_df.dll"
-//#		define NL3D_D3D_DLL_NAME "nel_drv_direct3d_win_df.dll"
-//#	elif defined (NL_DEBUG)
-//#		define NL3D_GL_DLL_NAME "nel_drv_opengl_win_d.dll"
-//#		define NL3D_D3D_DLL_NAME "nel_drv_direct3d_win_d.dll"
-//#	elif defined (NL_RELEASE_DEBUG)
-//#		define NL3D_GL_DLL_NAME "nel_drv_opengl_win_rd.dll"
-//#		define NL3D_D3D_DLL_NAME "nel_drv_direct3d_win_rd.dll"
-//#	elif defined (NL_RELEASE)
-//#		define NL3D_GL_DLL_NAME "nel_drv_opengl_win_r.dll"
-//#		define NL3D_D3D_DLL_NAME "nel_drv_direct3d_win_r.dll"
-//#	else
-//#		error "Unknown dll name"
-//#	endif
-//#elif defined (NL_OS_UNIX)
-//#	define NL3D_GL_DLL_NAME "libnel_drv_opengl.so.0"
-//#else
-//#	error "Unknown system"
-//#endif // NL_OS_UNIX
 
 namespace NL3D
 {

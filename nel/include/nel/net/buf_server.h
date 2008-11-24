@@ -28,7 +28,8 @@
 #include "buf_net_base.h"
 #include "listen_sock.h"
 #include "buf_sock.h"
-#include "net_log.h"
+#include "net_log.h"
+
 #include <list>
 #include <set>
 
@@ -400,17 +401,6 @@ private:
 
 
 typedef std::set<TSockId>					CConnections;
-
-/*
-// Workaround for Internal Compiler Error in debug mode with MSVC6
-#ifdef NL_RELEASE
-typedef CConnections::iterator				ItConnection;
-#else
-typedef TSockId								ItConnection;
-#endif
-// Set of iterators to connections (set because we must not add an element twice)
-typedef std::set<ItConnection>			CItConnections;
-*/
 
 
 // POLL2

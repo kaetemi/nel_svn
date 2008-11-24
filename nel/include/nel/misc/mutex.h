@@ -215,7 +215,7 @@ public:
 	{
 		uint32 result;
 #ifdef NL_OS_WINDOWS
-#ifdef NL_DEBUG_FAST
+#	ifdef NL_DEBUG
 		// Workaround for dumb inlining bug (returning of function goes into the choux): push/pop registers
 		__asm
 		{
@@ -228,7 +228,7 @@ public:
 			pop ecx
 			pop eax
 		}
-#else
+#	else
 		__asm
 		{
 			mov ecx,lockPtr
@@ -236,7 +236,7 @@ public:
 			xchg [ecx],eax
 			mov [result],eax
 		}
-#endif
+#	endif
 #else
 		ASM_ASWAP_FOR_GCC_XCHG
 #endif // NL_OS_WINDOWS

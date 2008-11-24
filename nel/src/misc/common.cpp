@@ -473,7 +473,19 @@ std::string	toLower(const std::string &str)
 	return res;
 }
 
-void		toLower(char *str)
+char toLower(const char ch)
+{
+	if( (ch >= 'A') && (ch <= 'Z') )
+	{
+		return ch - 'A' + 'a';
+	}
+	else
+	{
+		return ch;
+	}
+}
+
+void toLower(char *str)
 {
 	if (str == 0)
 		return;

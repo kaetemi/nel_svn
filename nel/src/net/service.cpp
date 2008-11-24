@@ -144,17 +144,7 @@ static uint32 LaunchingDate;
 
 static uint32 NbUserUpdate = 0;
 
-#ifdef NL_RELEASE_DEBUG
-string CompilationMode = "NL_RELEASE_DEBUG";
-#elif defined(NL_DEBUG_FAST)
-string CompilationMode = "NL_DEBUG_FAST";
-#elif defined(NL_DEBUG)
-string CompilationMode = "NL_DEBUG";
-#elif defined(NL_RELEASE)
-string CompilationMode = "NL_RELEASE";
-#else
-string CompilationMode = "???";
-#endif
+string CompilationMode = nlMode;
 
 //static bool Bench = false;
 
@@ -166,7 +156,7 @@ static void						UpdateAssertionThreadTimeoutCB(IVariable &var) { uint32 timeOut
 static CVariable<uint32>		UpdateAssertionThreadTimeout("nel", "UpdateAssertionThreadTimeout", "in millisecond, timeout before thread assertion", 0, 0, true, UpdateAssertionThreadTimeoutCB);
 
 // Flag to enable/disable the flushing of the sending queues when the service is shut down
-// Default: false (matches the former behaviour)
+// Default: false (matches the former behavior)
 // Set it to true in services that need to send data on exit (for instance in their release() method)
 CVariable<bool>					FlushSendingQueuesOnExit("nel", "FlushSendingQueuesOnExit",
 	"Flag to enable/disable the flushing of the sending queues when the service is shut down", false, 0, true );
@@ -879,9 +869,9 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 		//
 
 #ifdef NL_OS_WINDOWS
-#ifdef NL_RELEASE
+#	ifdef NL_NO_DEBUG
 		initSignal();
-#else
+#	else
 		// don't install signal is the application is started in debug mode
 		if (IsDebuggerPresent ())
 		{
@@ -893,7 +883,7 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 			//nlinfo("Running without the debugger, redirect SIGINT signal");
 			initSignal();
 		}
-#endif
+#	endif
 #else // NL_OS_UNIX
 		initSignal();
 #endif
@@ -1537,9 +1527,6 @@ sint IService::main (const char *serviceShortName, const char *serviceLongName, 
 	{
 		ErrorLog->displayNL( "SERVICE: System exception" );
 	}
-
-#ifdef NL_RELEASE
-#endif
 
 	try
 	{

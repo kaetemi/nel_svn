@@ -221,7 +221,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;NL_RELEASE_DEBUG;NL_STATIC;_WINDOWS"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
 			/>
 			<Tool

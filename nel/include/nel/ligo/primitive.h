@@ -35,8 +35,8 @@
 namespace NLLIGO
 {
 
-#if defined(NL_DEBUG) || defined(NL_DEBUG_FAST)
-#  define NLLIGO_DEBUG
+#ifdef NL_DEBUG
+#	define NLLIGO_DEBUG
 #endif
 
 
