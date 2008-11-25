@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="ig_lighter_lib"
 	ProjectGUID="{69225460-A0D0-4098-B5E6-70A221B11882}"
 	RootNamespace="ig_lighter_lib"
@@ -108,19 +108,22 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
+				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_LIB"
+				WholeProgramOptimization="false"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
 				DisableLanguageExtensions="false"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="nel_unit_test"
 	ProjectGUID="{F89D1853-2E47-4CE5-8EC8-188A805887EE}"
 	RootNamespace="nel_unit_test"
@@ -49,7 +49,7 @@
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -130,7 +130,7 @@
 				PreprocessorDefinitions="_CONSOLE;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;LIBXML_STATIC"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				WarningLevel="3"
 				DebugInformationFormat="3"

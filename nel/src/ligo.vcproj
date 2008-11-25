@@ -118,11 +118,13 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../include"
 				PreprocessorDefinitions="_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
