@@ -473,7 +473,6 @@ void CSoundDriverXAudio2::writeProfile(std::string& out)
 		+ "\n\tActiveSourceVoiceCount: " + toString(performance.ActiveSourceVoiceCount)
 		+ "\n\tTotalSourceVoiceCount: " + toString(performance.TotalSourceVoiceCount)
 		+ "\n\tActiveSubmixVoiceCount: " + toString(performance.ActiveSubmixVoiceCount)
-		+ "\n\tTotalSubmixVoiceCount: " + toString(performance.TotalSubmixVoiceCount)
 		+ "\n\tActiveXmaSourceVoices: " + toString(performance.ActiveXmaSourceVoices)
 		+ "\n\tActiveXmaStreams: " + toString(performance.ActiveXmaStreams)
 		+ "\n";
