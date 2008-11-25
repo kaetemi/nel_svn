@@ -496,7 +496,7 @@ void CBloomEffect::endInterfacesDisplayBloom() // clientcfg
 		_DisplayQuad.Uv3 = CUV(0.f,  newV);
 
 		// init material texture
-		CMaterial * matObjectInit = _DisplayInitMat.getObjectPtr();
+//		CMaterial * matObjectInit = _DisplayInitMat.getObjectPtr();
 
 		// display
 		UCamera	pCam = _Scene->getCam();

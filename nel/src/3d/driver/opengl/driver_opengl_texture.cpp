@@ -1170,7 +1170,7 @@ bool CDriverGL::uploadTexture (ITexture& tex, CRect& rect, uint8 nNumMipMap)
 }
 
 // ***************************************************************************
-bool CDriverGL::uploadTextureCube (ITexture& tex, CRect& rect, uint8 nNumMipMap, uint8 nNumFace)
+bool CDriverGL::uploadTextureCube (ITexture& tex, CRect& /* rect */, uint8 /* nNumMipMap */, uint8 /* nNumFace */)
 {
 	H_AUTO_OGL(uploadTextureCube)
 	if (tex.TextureDrvShare == NULL)

@@ -433,7 +433,6 @@ void			IStream::serialCont(vector<bool> &cont)
 bool			IStream::seek (sint32 offset, TSeekOrigin origin) const
 {
 	throw ESeekNotSupported(*this);
-	return false;
 }
 // ======================================================================================================
 sint32			IStream::getPos () const

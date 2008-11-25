@@ -167,14 +167,14 @@ void	uNetUnregistrationBroadcast(const string &name, TServiceId sid, const vecto
 // Callbacks from connection/disconnection services
 //
 
-void	uncbConnection(TSockId from, void *arg)
+void	uncbConnection(TSockId from, void * /* arg */)
 {
 	nlinfo ("HNETL5: + connec '%s'", from->asString().c_str());
 
 	from->setAppId (AppIdDeadConnection);
 }
 
-void	uncbDisconnection(TSockId from, void *arg)
+void	uncbDisconnection(TSockId from, void * /* arg */)
 {
 	if(from->appId () == AppIdDeadConnection)
 	{
@@ -345,7 +345,7 @@ void	uncbServiceIdentification(CMessage &msgin, TSockId from, CCallbackNetBase &
 }
 
 // the callbacks wrapper
-void	uncbMsgProcessing(CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
+void	uncbMsgProcessing(CMessage &msgin, TSockId from, CCallbackNetBase &/* netbase */)
 {
 	if (from->appId() == AppIdDeadConnection)
 	{
@@ -399,7 +399,7 @@ void	uncbMsgProcessing(CMessage &msgin, TSockId from, CCallbackNetBase &netbase)
 				TTime before = CTime::getLocalTime();
 
 				(*it).second.before();
-				const std::string &cbName = itcb->first;
+//				const std::string &cbName = itcb->first;
 				(*itcb).second (msgin, uc->ServiceName, sid);
 				(*it).second.after();
 
@@ -900,7 +900,7 @@ void	CUnifiedNetwork::addService(const string &name, const vector<CInetAddress> 
 				ssid.set(0);
 			}
 			msg.serial(ssid);	// serializes a 16 bits service id
-			uint8 pos = j;
+			uint8 pos = uint8(j);
 			msg.serial(pos);	// send the position in the connection table
 			msg.serial (uc->IsExternal);
 			cbc->send (msg);
@@ -988,7 +988,8 @@ void	CUnifiedNetwork::update(TTime timeout)
 	TTime remainingTime = timeout;
 
 	// check if we need to retry to connect to the client
-	if ((enableRetry = (t0-_LastRetry > 5000)))
+	enableRetry = (t0-_LastRetry > 5000);
+	if (enableRetry)
 		_LastRetry = t0;
 
 	H_AFTER(UNMisc1);
@@ -1022,7 +1023,7 @@ void	CUnifiedNetwork::update(TTime timeout)
 	H_AFTER(UNNamingCheck);
 
 	H_BEFORE(UNUpdateCnx);
-	while (true)
+	for(;;)
 	{
 		H_AUTO(L5OneLoopUpdate);
 
@@ -1203,7 +1204,7 @@ void CUnifiedNetwork::autoReconnect( CUnifiedConnection &uc, uint connectionInde
 				ssid.set(0);
 			}
 			msg.serial(ssid);	// serializes a 16 bits service id
-			uint8 pos = connectionIndex;
+			uint8 pos = uint8(connectionIndex);
 			msg.serial(pos);	// send the position in the connection table
 			msg.serial (uc.IsExternal);
 			uc.Connections[connectionIndex].CbNetBase->send (msg, uc.Connections[connectionIndex].HostId);
@@ -2224,6 +2225,8 @@ NLMISC_CATEGORISED_VARIABLE(nel, uint32, TotalCallbackCalled, "Total callback ca
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, SendQueueSize, "current size in bytes of all send queues")
 {
+	nlunreferenced(human);
+	
 	if (get)
 	{
 		if (!CUnifiedNetwork::isUsed ())
@@ -2235,6 +2238,8 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, SendQueueSize, "current size in byte
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, ReceiveQueueSize, "current size in bytes of all receive queues")
 {
+	nlunreferenced(human);
+
 	if (get)
 	{
 		if (!CUnifiedNetwork::isUsed ())
@@ -2247,6 +2252,8 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, ReceiveQueueSize, "current size in b
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, ReceivedBytes, "total of bytes received by this service")
 {
+	nlunreferenced(human);
+
 	if (get)
 	{
 		if (!CUnifiedNetwork::isUsed ())
@@ -2258,6 +2265,8 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, ReceivedBytes, "total of bytes recei
 
 NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, SentBytes, "total of bytes sent by this service")
 {
+	nlunreferenced(human);
+
 	if (get)
 	{
 		if (!CUnifiedNetwork::isUsed ())
@@ -2283,6 +2292,10 @@ NLMISC_CATEGORISED_DYNVARIABLE(nel, uint64, SentBytes, "total of bytes sent by t
 
 NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another service (ex: msgin 128 REGISTER u32 10 b 1 f 1.5)", "<ServiceName>|<ServiceId> <MessageName> [<ParamType> <Param>]*")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() < 2) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2291,7 +2304,10 @@ NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another s
 		return false;
 	}
 
-	TServiceId serviceId = TServiceId(atoi (args[0].c_str()));
+	uint16 sId;
+	fromString(args[0], sId);
+
+	TServiceId serviceId(sId);
 	string serviceName = args[0].c_str();
 	string messageName = args[1].c_str();
 
@@ -2343,6 +2359,10 @@ NLMISC_CATEGORISED_COMMAND(nel, msgin, "Simulate an input message from another s
 
 NLMISC_CATEGORISED_COMMAND(nel, msgout, "Send a message to a specified service (ex: msgout 128 REGISTER u32 10 b 1 f 1.5)", "<ServiceName>|<ServiceId> <MessageName> [<ParamType> <Param>]*")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() < 2) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2351,7 +2371,10 @@ NLMISC_CATEGORISED_COMMAND(nel, msgout, "Send a message to a specified service (
 		return false;
 	}
 
-	TServiceId serviceId = TServiceId(atoi (args[0].c_str()));
+	uint16 nId;
+	fromString(args[0], nId);
+
+	TServiceId serviceId(nId);
 	string serviceName = args[0].c_str();
 	string messageName = args[1].c_str();
 
@@ -2393,6 +2416,10 @@ NLMISC_CATEGORISED_COMMAND(nel, msgout, "Send a message to a specified service (
 
 NLMISC_CATEGORISED_COMMAND(nel, l5QueuesStats, "Displays queues stats of network layer5", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2416,6 +2443,10 @@ NLMISC_CATEGORISED_COMMAND(nel, l5QueuesStats, "Displays queues stats of network
 
 NLMISC_CATEGORISED_COMMAND(nel, l5InternalTables, "Displays internal table of network layer5", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2431,6 +2462,10 @@ NLMISC_CATEGORISED_COMMAND(nel, l5InternalTables, "Displays internal table of ne
 
 NLMISC_CATEGORISED_COMMAND(nel, l5Callback, "Displays all callback registered in layer5", "")
 {
+	nlunreferenced(rawCommandString);
+	nlunreferenced(quiet);
+	nlunreferenced(human);
+
 	if(args.size() != 0) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2451,6 +2486,10 @@ NLMISC_CATEGORISED_COMMAND(nel, l5Callback, "Displays all callback registered in
 
 NLMISC_CATEGORISED_COMMAND(nel, isServiceLocal, "Says if a service is local or not compare with this service", "<sid>|<service name>")
 {
+	nlunreferenced(human);
+	nlunreferenced(quiet);
+	nlunreferenced(rawCommandString);
+
 	if(args.size() != 1) return false;
 
 	if (!CUnifiedNetwork::isUsed ())
@@ -2459,7 +2498,10 @@ NLMISC_CATEGORISED_COMMAND(nel, isServiceLocal, "Says if a service is local or n
 		return false;
 	}
 
-	TServiceId sid = TServiceId(atoi (args[0].c_str ()));
+	uint16 nId;
+	fromString(args[0], nId);
+
+	TServiceId sid(nId);
 	if (sid.get() > 0)
 	{
 		log.displayNL ("Service %s-%hu and sid %s are %son the same computer", CUnifiedNetwork::getInstance ()->_Name.c_str(), CUnifiedNetwork::getInstance ()->_SId.get(), args[0].c_str(), CUnifiedNetwork::getInstance ()->isServiceLocal (sid)?"":"not ");
@@ -2474,6 +2516,10 @@ NLMISC_CATEGORISED_COMMAND(nel, isServiceLocal, "Says if a service is local or n
 
 NLMISC_CLASS_COMMAND_IMPL(CUnifiedNetwork, addService)
 {
+	nlunreferenced(human);
+	nlunreferenced(quiet);
+	nlunreferenced(args);
+
 	TParsedCommandLine pcl;
 	pcl.parseParamList(rawCommandString);
 

@@ -431,9 +431,9 @@ public:
 	virtual bool			renderRawTriangles(CMaterial& Mat, uint32 startIndex, uint32 numTris);
 	virtual bool			renderRawQuads(CMaterial& Mat, uint32 startIndex, uint32 numQuads);
 	//
-	virtual bool			renderLinesWithIndexOffset(CMaterial& mat, uint32 firstIndex, uint32 nlines, uint indexOffset) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
-	virtual bool			renderTrianglesWithIndexOffset(CMaterial& mat, uint32 firstIndex, uint32 ntris, uint indexOffset) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
-	virtual bool			renderSimpleTrianglesWithIndexOffset(uint32 firstIndex, uint32 ntris, uint indexOffset) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
+	virtual bool			renderLinesWithIndexOffset(CMaterial& /* mat */, uint32 /* firstIndex */, uint32 /* nlines */, uint /* indexOffset */) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
+	virtual bool			renderTrianglesWithIndexOffset(CMaterial& /* mat */, uint32 /* firstIndex */, uint32 /* ntris */, uint /* indexOffset */) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
+	virtual bool			renderSimpleTrianglesWithIndexOffset(uint32 /* firstIndex */, uint32 /* ntris */, uint /* indexOffset */) { nlassertex(0, (UNSUPPORTED_INDEX_OFFSET_MSG)); return false; }
 
 	virtual bool			swapBuffers();
 

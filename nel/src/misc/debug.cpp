@@ -555,7 +555,7 @@ public:
 	}
 
 	// display the callstack
-	void addStackAndLogToReason (sint skipNFirst = 0)
+	void addStackAndLogToReason (sint /* skipNFirst */ = 0)
 	{
 #ifdef NL_OS_WINDOWS
 		// ace hack
@@ -1045,7 +1045,7 @@ void getCallStack(std::string &result, sint skipNFirst)
 }
 
 
-void getCallStackAndLog (string &result, sint skipNFirst)
+void getCallStackAndLog (string &result, sint /* skipNFirst */)
 {
 	//getCallStack(result, skipNFirst);
 //#ifdef NL_OS_WINDOWS

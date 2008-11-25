@@ -817,7 +817,7 @@ public: \
 		{ \
 			_InstanceCounterData._InstanceCounter++; \
 		} \
-		className##InstanceCounter(const className##InstanceCounter &other) \
+		className##InstanceCounter(const className##InstanceCounter &/* other */) \
 		{ \
 			_InstanceCounterData._InstanceCounter++; \
 		} \

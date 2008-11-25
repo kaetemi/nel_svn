@@ -141,14 +141,14 @@ namespace NLNET
 	//////////////////////////////////////
 	// CModuleTask implementation
 	//////////////////////////////////////
-	CModuleTask::CModuleTask (class CModuleBase *module)
+	CModuleTask::CModuleTask (class CModuleBase * /*module */)
 		: _FailInvoke(false)
 	{
 //		module->queueModuleTask(this);
 	}
 
 
-	void CModuleTask::initMessageQueue(CModuleBase *module)
+	void CModuleTask::initMessageQueue(CModuleBase * /* module */)
 	{
 	}
 
@@ -264,7 +264,7 @@ namespace NLNET
 				hostName = IService::getInstance()->getHostName();
 			else
 				hostName = ::NLNET::CInetAddress::localHost().hostName();
-			int pid = ::getpid();
+//			int pid = ::getpid();
 
 			_FullyQualifedModuleName = IModuleManager::getInstance().getUniqueNameRoot()+":"+_ModuleName;
 		}
@@ -484,7 +484,7 @@ namespace NLNET
 				if (msg.getType() == CMessage::Response)
 				{
 					// we have the response message
-					nlassert(proxy = destModule);
+					nlassert(proxy == destModule);
 					resultMsg = msg;
 					// remove this message form the queue
 					_SyncMessages.pop_front();
@@ -505,7 +505,7 @@ namespace NLNET
 				else
 				{
 					// another message, dispatch it normally
-					CMessage::TMessageType msgType = msg.getType();
+//					CMessage::TMessageType msgType = msg.getType();
 //					try
 //					{
 						_onProcessModuleMessage(proxy, msg);
@@ -653,6 +653,10 @@ namespace NLNET
 
 	NLMISC_CLASS_COMMAND_IMPL(CModuleBase, plug)
 	{
+		nlunreferenced(human);
+		nlunreferenced(quiet);
+		nlunreferenced(rawCommandString);
+
 		if (args.size() != 1)
 			return false;
 
@@ -682,6 +686,10 @@ namespace NLNET
 
 	NLMISC_CLASS_COMMAND_IMPL(CModuleBase, unplug)
 	{
+		nlunreferenced(human);
+		nlunreferenced(quiet);
+		nlunreferenced(rawCommandString);
+
 		if (args.size() != 1)
 			return false;
 
@@ -717,6 +725,10 @@ namespace NLNET
 
 	NLMISC_CLASS_COMMAND_IMPL(CModuleBase, sendPing)
 	{
+		nlunreferenced(human);
+		nlunreferenced(quiet);
+		nlunreferenced(rawCommandString);
+
 		if (args.size() != 1)
 			return false;
 
@@ -752,6 +764,10 @@ namespace NLNET
 
 	NLMISC_CLASS_COMMAND_IMPL(CModuleBase, dump)
 	{
+		nlunreferenced(human);
+		nlunreferenced(quiet);
+		nlunreferenced(rawCommandString);
+
 		if (args.size() != 0)
 			return false;
 
