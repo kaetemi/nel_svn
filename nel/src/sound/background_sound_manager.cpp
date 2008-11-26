@@ -1055,7 +1055,7 @@ void CBackgroundSoundManager::updateBackgroundStatus()
 		// Compute new source mixing in this layer
 		{
 			/// Status of all selected sound ordered by surface.
-			list<pair<float, TSoundStatus>> status;
+			list<pair<float, TSoundStatus> > status;
 
 			// first loop to compute selected sound gain and position and order the result by surface..
 			{
