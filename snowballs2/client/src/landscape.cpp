@@ -60,6 +60,7 @@
 #include "mouse_listener.h"
 #include "physics.h"
 #include "configuration.h"
+#include "entities.h"
 
 //
 // Namespaces
@@ -286,11 +287,11 @@ void	initLandscape()
 
 void	releaseLandscape()
 {
-	CConfiguration::dropCallback("ReceiveShadowMap");
-	CConfiguration::dropCallback("TileNear");
-	CConfiguration::dropCallback("Threshold");
-	CConfiguration::dropCallback("Vision");
-	CConfiguration::dropCallback("VisionInitial");
+	CConfiguration::dropCallback("LandscapeReceiveShadowMap");
+	CConfiguration::dropCallback("LandscapeTileNear");
+	CConfiguration::dropCallback("LandscapeThreshold");
+	CConfiguration::dropCallback("LandscapeVision");
+	CConfiguration::dropCallback("LandscapeVisionInitial");
 
 	// -- -- release for cameralandscape
 	Scene->deleteLandscape(Landscape);
@@ -400,8 +401,9 @@ void updateLandscape()
 
 void loadAllZonesAround()
 {
-	Landscape->loadAllZonesAround(
-		Scene->getCam().getMatrix().getPos(), _LandscapeVisionInitial);
+	/*Landscape->loadAllZonesAround(
+		Scene->getCam().getMatrix().getPos(), _LandscapeVisionInitial);*/
+	Landscape->loadAllZonesAround(Self->Position, _LandscapeVisionInitial);
 }
 
 /*

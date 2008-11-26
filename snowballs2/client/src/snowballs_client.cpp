@@ -452,12 +452,8 @@ void initOffline()
 
 		// Creates the self entity
 		displayLoadingState("Creating offline entity");
-		addEntity(id, Login.toUtf8(), CEntity::Self, CVector(ConfigFile->getVar("StartPoint").asFloat(0),
-													 ConfigFile->getVar("StartPoint").asFloat(1),
-													 ConfigFile->getVar("StartPoint").asFloat(2)),
-											 CVector(ConfigFile->getVar("StartPoint").asFloat(0),
-													 ConfigFile->getVar("StartPoint").asFloat(1),
-													 ConfigFile->getVar("StartPoint").asFloat(2)));
+		CVector startPoint = CVector(ConfigFile->getVar("StartPoint").asFloat(0), ConfigFile->getVar("StartPoint").asFloat(1), ConfigFile->getVar("StartPoint").asFloat(2));
+		addEntity(id, Login.toUtf8(), CEntity::Self, startPoint, startPoint);
 
 		displayLoadingState("Load Landscape");
 		loadAllZonesAround();
@@ -710,24 +706,26 @@ void loopIngame()
 		if (Driver->isLost()) nlSleep(10);
 		else
 		{
-			// call all render thingies
-			// 01. Render Driver (background color)			
-			Driver->clearBuffers(CRGBA(0, 0, 0)); // Clear all buffers			
-			CBloomEffect::instance().initBloom(); // start bloom effect (just before the first scene element render)
-			
-			// 02. Render Sky (sky scene)
-			updateSky(); // Render the sky scene before the main scene
-			
-			// 04. Render Scene (entity scene)
-			Scene->render(); // Render		
-			
-			// 05. Render Effects (flare)
-			updateLensFlare(); // Render the lens flare
-			CBloomEffect::instance().endBloom(); // end bloom effect for the scene
-			
-			// 06. Render Interface 3D (player names)
-			// ...
-			
+			// call all 3d render thingies
+			{
+				// 01. Render Driver (background color)			
+				Driver->clearBuffers(CRGBA(0, 0, 0)); // Clear all buffers			
+				CBloomEffect::instance().initBloom(); // start bloom effect (just before the first scene element render)
+				
+				// 02. Render Sky (sky scene)
+				updateSky(); // Render the sky scene before the main scene
+				
+				// 04. Render Scene (entity scene)
+				Scene->render(); // Render		
+				
+				// 05. Render Effects (flare)
+				updateLensFlare(); // Render the lens flare
+				CBloomEffect::instance().endBloom(); // end the actual bloom effect visible in the scene
+				
+				// 06. Render Interface 3D (player names)
+				CBloomEffect::instance().endInterfacesDisplayBloom(); // end bloom effect system after drawing the 3d interface (z buffer related)
+			}
+
 			// 07. Render Interface 2D (chatboxes etc, optionally does have 3d)
 			updateCompass(); // Update the compass		
 			updateRadar(); // Update the radar
@@ -743,13 +741,12 @@ void loopIngame()
 			// ...
 			
 			// 09. Render Buffer
-			CBloomEffect::instance().endInterfacesDisplayBloom(); // end bloom effect for the interface
 			Driver->swapBuffers();
 		}
 		
 		// begin various extra keys stuff ...
 
-		if (Driver->AsyncListener.isKeyDown(KeySHIFT) && Driver->AsyncListener.isKeyDown(KeyESCAPE))
+		if (Driver->AsyncListener.isKeyDown(KeySHIFT) && Driver->AsyncListener.isKeyPushed(KeyESCAPE))
 		{
 			// Shift Escape -> quit
 			NextGameState = GameStateExit;
