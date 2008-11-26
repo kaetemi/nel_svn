@@ -2,4 +2,4 @@ cd ..
 cd ..
 cd nelns
 cd bin
-start naming_service_rd
+start login_service_r

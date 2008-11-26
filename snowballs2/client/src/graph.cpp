@@ -42,7 +42,7 @@
 #include <nel/3d/u_texture.h>
 
 #include "graph.h"
-#include "client.h"
+#include "snowballs_client.h"
 
 //
 // Namespaces
@@ -51,6 +51,9 @@
 using namespace NLMISC;
 using namespace NL3D;
 using namespace std;
+
+
+namespace SBCLIENT {
 
 //
 // Classes
@@ -169,3 +172,7 @@ NLMISC_COMMAND(graph,"swith on/off graphs","")
 	ShowGraph = !ShowGraph;
 	return true;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

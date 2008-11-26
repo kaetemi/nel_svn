@@ -46,7 +46,7 @@
 #include <nel/3d/u_landscape.h>
 
 #include "network.h"
-#include "client.h"
+#include "snowballs_client.h"
 #include "interface.h"
 
 //
@@ -56,6 +56,8 @@
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -294,12 +296,12 @@ void	updateCommands()
 	Driver->getWindowSize(_width, _height);
 	float width = (float)_width, height = (float)_height;
 	float CommandsLineHeight = CommandsFontSize / height;
-	float CommandsBoxX = ((float)(sint32)(::CommandsBoxX * width)) / width;
-	float CommandsBoxWidth = ((float)(sint32)(::CommandsBoxWidth * width)) / width;
-	float CommandsBoxY = ((float)(sint32)(::CommandsBoxY * height)) / height;
+	float CommandsBoxX = ((float)(sint32)(SBCLIENT::CommandsBoxX * width)) / width;
+	float CommandsBoxWidth = ((float)(sint32)(SBCLIENT::CommandsBoxWidth * width)) / width;
+	float CommandsBoxY = ((float)(sint32)(SBCLIENT::CommandsBoxY * height)) / height;
 	float CommandsBoxHeight = ((float)(sint32)((CommandsNbLines + 1) * CommandsLineHeight * width)) / width;
-	float CommandsBoxBorderX = ((float)(sint32)(::CommandsBoxBorder * width)) / width;
-	float CommandsBoxBorderY = ((float)(sint32)(::CommandsBoxBorder * height)) / height;
+	float CommandsBoxBorderX = ((float)(sint32)(SBCLIENT::CommandsBoxBorder * width)) / width;
+	float CommandsBoxBorderY = ((float)(sint32)(SBCLIENT::CommandsBoxBorder * height)) / height;
 
 	// Display the background
 	Driver->setMatrixMode2D11 ();
@@ -376,3 +378,7 @@ NLMISC_COMMAND(clear,"clear the chat history","")
 	clearCommands ();
 	return true;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

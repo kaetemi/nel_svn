@@ -42,7 +42,7 @@
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_landscape.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "interface.h"
 
 //
@@ -52,6 +52,8 @@
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -274,3 +276,7 @@ bool	interfaceOpen ()
 {
 	return !QueryString.empty();
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

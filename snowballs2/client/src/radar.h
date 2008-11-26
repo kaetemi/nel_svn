@@ -27,6 +27,8 @@
 #ifndef RADAR_H
 #define RADAR_H
 
+namespace SBCLIENT {
+
 //
 // External variables
 //
@@ -41,6 +43,8 @@ extern uint RadarState;
 void initRadar ();
 void updateRadar ();
 void releaseRadar ();
+
+} /* namespace SBCLIENT */
 
 #endif // RADAR_H
 

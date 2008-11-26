@@ -39,8 +39,9 @@
 #include <nel/misc/time_nl.h>
 #include <nel/misc/quat.h>
 #include <nel/misc/plane.h>
+#include <nel/misc/config_file.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "mouse_listener.h"
 #include "entities.h"
 #include "camera.h"
@@ -53,6 +54,8 @@
 
 using namespace NLMISC;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -470,3 +473,6 @@ void releaseMouseListenerConfig()
 	ConfigFile->setCallback("ViewTargetHeight", NULL);
 }
 
+} /* namespace SBCLIENT */
+
+/* end of file */

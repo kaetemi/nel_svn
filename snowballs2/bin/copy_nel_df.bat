@@ -1,5 +1,0 @@
-copy "..\..\nel\lib\nel_drv_direct3d_win_df.dll" "nel_drv_direct3d_win_df.dll"
-copy "..\..\nel\lib\nel_drv_dsound_win_df.dll" "nel_drv_dsound_win_df.dll"
-copy "..\..\nel\lib\nel_drv_opengl_win_df.dll" "nel_drv_opengl_win_df.dll"
-copy "..\..\nel\lib\nel_drv_fmod_win_df.dll" "nel_drv_fmod_win_df.dll"
-copy "..\..\nel\lib\nel_drv_openal_win_df.dll" "nel_drv_openal_win_df.dll"

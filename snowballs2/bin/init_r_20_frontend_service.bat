@@ -2,4 +2,4 @@ cd ..
 cd ..
 cd snowballs2
 cd bin
-start snowballs_client_rd
+start frontend_service_r

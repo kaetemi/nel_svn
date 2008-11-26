@@ -31,6 +31,7 @@
 
 // the config file name
 // #define SBCLIENT_CONFIG_FILE "snowballs_client.cfg"
+// #define SBCLIENT_CONFIG_FILE_DEFAULT "snowballs_client_default.cfg"
 
 
 
@@ -48,6 +49,8 @@
 // clear snowballs log before use
 #define SBCLIENT_ERASE_LOG true
 
+// version number
+#define SBCLIENT_VERSION "2.1.537"
 
 
 // some default defines
@@ -68,8 +71,14 @@
 #endif
 
 // for compatibility with old configuration
-#ifndef SNOWBALLS_CONFIG
-#	define SBCLIENT_CONFIG_FILE "snowballs_client.cfg"
-#else
-#	define SBCLIENT_CONFIG_FILE SNOWBALLS_CONFIG "client.cfg"
+#ifndef SBCLIENT_CONFIG_FILE
+#	ifndef SNOWBALLS_CONFIG
+#		define SBCLIENT_CONFIG_FILE "snowballs_client.cfg"
+#	else
+#		define SBCLIENT_CONFIG_FILE SNOWBALLS_CONFIG "client.cfg"
+#	endif
+#endif
+
+#ifndef SBCLIENT_CONFIG_FILE_DEFAULT
+#	define SBCLIENT_CONFIG_FILE_DEFAULT "snowballs_client_default.cfg"
 #endif

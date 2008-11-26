@@ -49,6 +49,8 @@
 using NLMISC::CVector;
 using NLMISC::CMatrix;
 
+namespace SBCLIENT {
+
 //
 // External classes
 //
@@ -307,6 +309,8 @@ private:
 
 void initMouseListenerConfig();
 void releaseMouseListenerConfig();
+
+} /* namespace SBCLIENT */
 
 #endif // MOUSE_LISTENER_H
 

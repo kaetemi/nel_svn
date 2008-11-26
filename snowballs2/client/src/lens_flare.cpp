@@ -40,7 +40,7 @@
 
 #include "camera.h"
 #include "landscape.h"
-#include "client.h"
+#include "snowballs_client.h"
 #include "mouse_listener.h"
 
 //
@@ -50,6 +50,8 @@
 using namespace NLMISC;
 using namespace NL3D;
 using namespace std;
+
+namespace SBCLIENT {
 
 /// If axis segment is longer than this value then no lens flare is displayed
 static const float _MaxLensFlareLenght = 0.4f;
@@ -317,3 +319,7 @@ void releaseLensFlare ()
 	Driver->deleteTextureFile(flareTexture6); flareTexture6 = NULL;
 	Driver->deleteTextureFile(flareTexture7); flareTexture7 = NULL;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

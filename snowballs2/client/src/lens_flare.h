@@ -27,6 +27,8 @@
 #ifndef LENS_FLARE_H
 #define LENS_FLARE_H
 
+namespace SBCLIENT {
+
 //
 // External functions
 //
@@ -34,6 +36,8 @@
 void initLensFlare ();
 void updateLensFlare ();
 void releaseLensFlare ();
+
+} /* namespace SBCLIENT */
 
 #endif // LENS_FLARE_H
 

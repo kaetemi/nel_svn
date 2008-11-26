@@ -26,6 +26,8 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+namespace SBCLIENT {
+
 //
 // External definitions
 //
@@ -55,6 +57,8 @@ void	deleteAnimation (CEntity &entity);
 void	initAnimation ();
 void	updateAnimation ();
 void	releaseAnimation ();
+
+} /* namespace SBCLIENT */
 
 #endif // ANIMATION_H
 

@@ -36,6 +36,8 @@
 #include <nel/misc/rgba.h>
 #include <nel/misc/time_nl.h>
 
+namespace SBCLIENT {
+
 //
 // External classes
 //
@@ -83,6 +85,10 @@ void initGraph ();
 void updateGraph ();
 void releaseGraph ();
 
+} /* namespace SBCLIENT */
+
 #endif // GRAPH_H
 
 /* End of graph.h */
+
+/* end of file */

@@ -2,4 +2,4 @@ cd ..
 cd ..
 cd nelns
 cd bin
-start login_service_rd
+start welcome_service_r

@@ -37,41 +37,41 @@
 #include <nel/sound/u_listener.h>
 #include <nel/sound/u_source.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "entities.h"
 
 // 
 // Defines
 // 
 
-#define SBCLIENT_MUSIC_WAIT (0), (0)
-#define SBCLIENT_MUSIC_LOGIN (1), (0)
-#define SBCLIENT_MUSIC_BACKGROUND (2), (0)
-#define SBCLIENT_MUSIC_BACKGROUND_BEAT (2), (1)
+//#define SBCLIENT_MUSIC_WAIT (0), (0)
+//#define SBCLIENT_MUSIC_LOGIN (1), (0)
+//#define SBCLIENT_MUSIC_BACKGROUND (2), (0)
+//#define SBCLIENT_MUSIC_BACKGROUND_BEAT (2), (1)
 
 //
 // External variables
 //
 
-extern NLSOUND::UAudioMixer *AudioMixer;
-extern NLSOUND::TSoundId SoundId;
-
+//extern NLSOUND::UAudioMixer *AudioMixer;
+//extern NLSOUND::TSoundId SoundId;
 //
-// External functions
+////
+//// External functions
+////
 //
-
-void playMusic(sint32 playlist, sint32 track);
-void setMusicVolume(sint32 playlist, float volume);
-
-void initSound();
-void updateSound();
-void releaseSound();
-
-// Set and play a sound on an entity
-void playSound(CEntity &entity, NLSOUND::TSoundId id);
-
-// Remove the sound system link to the entity
-void deleteSound(CEntity &entity);
+//void playMusic(sint32 playlist, sint32 track);
+//void setMusicVolume(sint32 playlist, float volume);
+//
+//void initSound();
+//void updateSound();
+//void releaseSound();
+//
+//// Set and play a sound on an entity
+//void playSound(CEntity &entity, NLSOUND::TSoundId id);
+//
+//// Remove the sound system link to the entity
+//void deleteSound(CEntity &entity);
 
 #endif // SBCLIENT_SOUND_H
 

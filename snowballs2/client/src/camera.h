@@ -41,6 +41,7 @@ namespace NL3D
 	class UVisualCollisionEntity;
 };
 
+namespace SBCLIENT {
 
 //
 // External variables
@@ -63,9 +64,13 @@ void releaseSky();
 
 // Update the sky for this frame, and render it.
 // Must be called before ANY rendering
+// this is actually render
 void	updateSky ();
 
-void	animateSky (NLMISC::TTime dt);
+// this is update :x
+void	animateSky (double dt);
+
+} /* namespace SBCLIENT */
 
 
 #endif // CAMERA_H

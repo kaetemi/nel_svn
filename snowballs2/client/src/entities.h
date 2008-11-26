@@ -64,6 +64,8 @@ namespace NL3D
 	class UPlayList;
 }
 
+namespace SBCLIENT {
+
 //
 // External classes
 //
@@ -155,7 +157,7 @@ public:
 	NL3D::CAnimationTime			StartAnimationTime;
 
 	uint							BotState;
-	NLMISC::TTime					BotStateStart;
+	NLMISC::TLocalTime				BotStateStart;
 };
 
 //
@@ -213,6 +215,7 @@ void	shotSnowball(uint32 sid, uint32 eid, const NLMISC::CVector &start, const NL
 
 void	renderEntitiesNames ();
 
+} /* namespace SBCLIENT */
 
 #endif // ENTITIES_H
 

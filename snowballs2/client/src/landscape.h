@@ -45,6 +45,8 @@ namespace NL3D
 	class UInstanceGroup;
 }
 
+namespace SBCLIENT {
+
 class CTrajectory;
 
 
@@ -69,10 +71,16 @@ void releaseLandscape();
 void initAiming();
 void releaseAiming();
 
+void updateLandscape();
+
+void loadAllZonesAround();
+
 // Compute the collision with the landscape from the start position, using the given step,
 // at maximum numSteps steps from the start. It uses full (!) physics computation, and should be
 // identical on the server
 NLMISC::CVector	getTarget(const NLMISC::CVector &start, const NLMISC::CVector &step, uint numSteps);
+
+} /* namespace SBCLIENT */
 
 #endif // LANDSCAPE_H
 

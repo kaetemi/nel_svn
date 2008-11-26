@@ -41,7 +41,7 @@
 
 #include <nel/pacs/u_move_primitive.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "commands.h"
 #include "network.h"
 #include "entities.h"
@@ -57,6 +57,8 @@ using namespace std;
 using namespace NLMISC;
 using namespace NLNET;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 // -- -- random note: most of this needs to change completely anyway
 
@@ -421,3 +423,7 @@ void	releaseNetwork()
 		Connection = NULL;
 	}
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

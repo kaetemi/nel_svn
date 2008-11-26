@@ -43,8 +43,9 @@
 #include <nel/3d/u_instance.h>
 
 #include <nel/misc/vectord.h>
+#include <nel/misc/config_file.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "landscape.h"
 #include "pacs.h"
 #include "entities.h"
@@ -57,6 +58,8 @@ using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
 using namespace NLPACS;
+
+namespace SBCLIENT {
 
 extern ULandscape *Landscape;
 
@@ -159,4 +162,6 @@ void	releasePACS()
 
 }
 
+} /* namespace SBCLIENT */
 
+/* end of file */

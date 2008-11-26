@@ -31,6 +31,7 @@
 
 #include <cmath>
 #include <nel/misc/vectord.h>
+#include <nel/misc/config_file.h>
 #include <nel/3d/u_camera.h>
 #include <nel/3d/u_driver.h>
 #include <nel/3d/u_scene.h>
@@ -41,7 +42,7 @@
 #include <nel/3d/u_cloud_scape.h>
 #include <nel/3d/viewport.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "entities.h"
 #include "mouse_listener.h"
 #include "pacs.h"
@@ -53,6 +54,8 @@
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -147,11 +150,12 @@ void releaseSky()
 }
 
 // -- -- random note: update and render makes more sense than animate and update
-void animateSky(TTime dt)
+void animateSky(double dt)
 {
-	Clouds->anim ((double)dt);
+	Clouds->anim(dt);
 }
 
+// this is actually render
 void updateSky()
 {
 	CMatrix skyCameraMatrix;
@@ -161,10 +165,14 @@ void updateSky()
 	skyCameraMatrix.setPos(CVector::Null);
 	SkyCamera.setMatrix(skyCameraMatrix);
 
-	SkyScene->animate (float(NewTime)/1000);
-	SkyScene->render ();
+	SkyScene->animate(AnimationTime);
+	SkyScene->render();
 	// Must clear ZBuffer For incoming rendering.
 	Driver->clearZBuffer();
 
-	Clouds->render ();
+	Clouds->render();
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

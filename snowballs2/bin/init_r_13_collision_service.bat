@@ -2,4 +2,4 @@ cd ..
 cd ..
 cd snowballs2
 cd bin
-start chat_service_rd
+start collision_service_r

@@ -34,6 +34,8 @@
 
 #include <nel/misc/log.h>
 
+namespace SBCLIENT {
+
 //
 // External variables
 //
@@ -50,6 +52,8 @@ void	releaseCommands ();
 
 void	clearCommands ();
 void	addLine (const std::string &line);
+
+} /* namespace SBCLIENT */
 
 #endif // COMMANDS_H
 

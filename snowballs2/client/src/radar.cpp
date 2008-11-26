@@ -43,7 +43,7 @@
 #include <nel/3d/u_texture.h>
 
 #include "camera.h"
-#include "client.h"
+#include "snowballs_client.h"
 #include "commands.h"
 #include "mouse_listener.h"
 #include "entities.h"
@@ -55,6 +55,8 @@
 using namespace NLMISC;
 using namespace NL3D;
 using namespace std;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -753,3 +755,7 @@ NLMISC_COMMAND(go,"change position of the player with a player name or location"
 
 	return true;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

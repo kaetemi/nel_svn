@@ -51,7 +51,7 @@
 
 #include "animation.h"
 #include "entities.h"
-#include "client.h"
+#include "snowballs_client.h"
 
 //
 // Namespaces
@@ -60,6 +60,8 @@
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+
+namespace SBCLIENT {
 
 //
 // Constantes
@@ -287,3 +289,7 @@ void	releaseAnimation()
 // The next line doesn t work (say that AnimationSet is not a valid AnimationSet Ptr) so we comment it.
 //	Scene->deleteAnimationSet (AnimationSet);
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

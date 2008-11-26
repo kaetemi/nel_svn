@@ -34,6 +34,8 @@
 
 #include <nel/misc/rgba.h>
 
+namespace SBCLIENT {
+
 //
 // External functions
 //
@@ -54,6 +56,8 @@ bool	haveAnswer (std::string &answer);
 
 // Return true if the interface is open
 bool	interfaceOpen ();
+
+} /* namespace SBCLIENT */
 
 #endif // INTERFACE_H
 

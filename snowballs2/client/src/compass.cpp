@@ -31,6 +31,7 @@
 #include <nel/misc/types_nl.h>
 #include <nel/misc/vector.h>
 #include <nel/misc/matrix.h>
+#include <nel/misc/config_file.h>
 
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_camera.h>
@@ -40,7 +41,7 @@
 
 #include "mouse_listener.h"
 #include "camera.h"
-#include "client.h"
+#include "snowballs_client.h"
 #include "entities.h"
 
 //
@@ -50,6 +51,8 @@
 using namespace NLMISC;
 using namespace NL3D;
 using namespace std;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -181,3 +184,7 @@ void releaseCompass ()
 	Driver->deleteMaterial (CompassMaterial);
 	CompassMaterial = NULL;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

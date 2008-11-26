@@ -50,6 +50,8 @@ namespace NLNET
 	class CCallbackClient;
 }
 
+namespace SBCLIENT {
+
 //
 // External variables
 //
@@ -79,6 +81,8 @@ void	sendSnowBall (uint32 eid, const NLMISC::CVector &position, const NLMISC::CV
 void	initNetwork (const std::string &lc, const std::string &addr);
 void	updateNetwork ();
 void	releaseNetwork ();
+
+} /* namespace SBCLIENT */
 
 #endif // NETWORK_H
 

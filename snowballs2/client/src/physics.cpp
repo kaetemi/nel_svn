@@ -38,9 +38,11 @@
 using namespace std;
 using namespace NLMISC;
 
+namespace SBCLIENT {
+
 // -- -- this file exists twice
 
-CVector	CTrajectory::eval(NLMISC::TTime t) const
+CVector	CTrajectory::eval(NLMISC::TLocalTime t) const
 {
 	if (t < _StartTime) return _StartPosition;
 
@@ -51,7 +53,7 @@ CVector	CTrajectory::eval(NLMISC::TTime t) const
 	return res;
 }
 
-CVector	CTrajectory::evalSpeed(NLMISC::TTime t) const
+CVector	CTrajectory::evalSpeed(NLMISC::TLocalTime t) const
 {
 	if (t < _StartTime) return _StartPosition;
 
@@ -61,3 +63,7 @@ CVector	CTrajectory::evalSpeed(NLMISC::TTime t) const
 	res.z += 0.3f*_Distance*_Distance/90.0f*(float)Pi*(float)cos(Pi*ft);
 	return res;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

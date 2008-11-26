@@ -59,7 +59,7 @@
 #include <nel/pacs/u_global_retriever.h>
 #include <nel/pacs/u_global_position.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "entities.h"
 #include "pacs.h"
 #include "animation.h"
@@ -78,6 +78,8 @@ using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
 using namespace NLPACS;
+
+namespace SBCLIENT {
 
 //
 // Variables
@@ -246,9 +248,9 @@ void addEntity (uint32 eid, std::string name, CEntity::TType type, const CVector
 		entity.Speed = SnowballSpeed;
 
 		// -- -- riiiiight
-#ifdef NL_OS_WINDOWS
-		playSound (entity, SoundId);
-#endif
+//#ifdef NL_OS_WINDOWS
+//		playSound (entity, SoundId);
+//#endif
 		entity.setState (CEntity::Normal);
 		break;
 	}
@@ -303,9 +305,9 @@ void deleteEntity (CEntity &entity)
 		entity.MovePrimitive = NULL;
 	}
 
-#ifdef NL_OS_WINDOWS
-	deleteSound (entity);
-#endif
+//#ifdef NL_OS_WINDOWS
+//	deleteSound (entity);
+//#endif
 
 //	nlinfo ("Remove the entity %u from the Entities list", entity.Id);
 	EIT eit = findEntity (entity.Id);
@@ -439,7 +441,7 @@ void stateDisappear (CEntity &entity)
 
 void stateNormal (CEntity &entity)
 {
-	double	dt = (double)(NewTime-LastTime) / 1000.0;
+	double	dt = LocalTimeDelta;
 	CVector	oldPos;
 	CVector	newPos;
 
@@ -464,7 +466,7 @@ void stateNormal (CEntity &entity)
 			break;
 		case 1:
 			// walk
-			if (pDelta.norm() < 0.1f || NewTime - entity.BotStateStart > 3000)
+			if (pDelta.norm() < 0.1f || LocalTime - entity.BotStateStart > 3.000)
 			{
 				// reached the point
 				entity.BotState = 0;
@@ -479,17 +481,17 @@ void stateNormal (CEntity &entity)
 			// aim
 			entity.IsWalking = false;
 			entity.IsAiming = true;
-			entity.BotStateStart = NewTime;
+			entity.BotStateStart = LocalTime;
 			entity.BotState = 3;
 			break;
 		case 3:
 			// wait to shoot
 			entity.IsWalking = false;
 			entity.IsAiming = true;
-			if (NewTime - entity.BotStateStart > 1000)
+			if (LocalTime - entity.BotStateStart > 1.000)
 			{
 				entity.BotState = 4;
-				entity.BotStateStart = NewTime;
+				entity.BotStateStart = LocalTime;
 				CVector	AimingPosition = entity.Position+CVector(0.0f, 0.0f, 2.0f);
 				CVector	direction = CVector((float)(cos(entity.Angle)), (float)(sin(entity.Angle)), 0.3f).normed();
 				CVector	AimedTarget = getTarget(AimingPosition,
@@ -502,10 +504,10 @@ void stateNormal (CEntity &entity)
 			// shoot
 			entity.IsWalking = false;
 			entity.IsAiming = false;
-			if (NewTime - entity.BotStateStart > 1000)
+			if (LocalTime - entity.BotStateStart > 1.000)
 			{
 				entity.BotState = 5;
-				entity.BotStateStart = NewTime;
+				entity.BotStateStart = LocalTime;
 			}
 			break;
 		case 5:
@@ -516,13 +518,13 @@ void stateNormal (CEntity &entity)
 											 (float)sin(entity.AuxiliaryAngle),
 											 0.0f)*EntityMaxSpeed;
 			entity.BotState = 1;
-			entity.BotStateStart = NewTime;
+			entity.BotStateStart = LocalTime;
 			break;
 		}
 	}
 
 
-	if (entity.Type == CEntity::Snowball && NewTime >= entity.Trajectory.getStopTime())
+	if (entity.Type == CEntity::Snowball && LocalTime >= entity.Trajectory.getStopTime())
 	{
 /*
 		CVector	tp(1140,-833,30);
@@ -665,10 +667,10 @@ void stateNormal (CEntity &entity)
 	else if (entity.Type == CEntity::Snowball)
 	{
 		// go to the server position using trajectory interpolation
-		CVector newPos = entity.Trajectory.eval(NewTime);
+		CVector newPos = entity.Trajectory.eval(LocalTime);
 		if (newPos != entity.Position)
 		{
-			entity.Position = entity.Trajectory.eval(NewTime);
+			entity.Position = entity.Trajectory.eval(LocalTime);
 			entity.Instance.show ();
 		}
 	}
@@ -686,7 +688,7 @@ void stateNormal (CEntity &entity)
 void updateEntities ()
 {
 	// compute the delta t that has elapsed since the last update (in seconds)
-	double	dt = (double)(NewTime-LastTime) / 1000.0;
+	double	dt = LocalTimeDelta;
 	EIT		eit, nexteit;
 
 	// move entities
@@ -775,7 +777,7 @@ void updateEntities ()
 				jdir = CVector(-(float)cos(entity.Angle), -(float)sin(entity.Angle), 0.0f);
 				break;
 			case CEntity::Snowball:
-				jdir = entity.Trajectory.evalSpeed(NewTime).normed();
+				jdir = entity.Trajectory.evalSpeed(LocalTime).normed();
 				break;
 			}
 
@@ -894,7 +896,7 @@ void	shotSnowball(uint32 sid, uint32 eid, const CVector &start, const CVector &t
 	CEntity	&snowball = (*sit).second;
 
 	snowball.AutoMove = 1;
-	snowball.Trajectory.init(start, target, speed, CTime::getLocalTime ()+1000);
+	snowball.Trajectory.init(start, target, speed, LocalTime + 1.000);
 	snowball.Instance.hide();
 
 	EIT eit = findEntity (eid);
@@ -1035,3 +1037,7 @@ NLMISC_COMMAND(test_cls, "test the collision service, disables collision test on
 	_TestCLS = !_TestCLS;
 	return true;
 }
+
+} /* namespace SBCLIENT */
+
+/* end of file */

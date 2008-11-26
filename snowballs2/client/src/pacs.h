@@ -42,6 +42,8 @@ namespace NL3D
 	class UVisualCollisionManager;
 }
 
+namespace SBCLIENT {
+
 //
 // External variables
 //
@@ -58,6 +60,8 @@ extern NL3D::UVisualCollisionManager	*VisualCollisionManager;
 
 void	initPACS();
 void	releasePACS();
+
+} /* namespace SBCLIENT */
 
 #endif // PACS_H
 

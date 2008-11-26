@@ -27,6 +27,8 @@
 #ifndef COMPASS_H
 #define COMPASS_H
 
+namespace SBCLIENT {
+
 //
 // External functions
 //
@@ -34,6 +36,8 @@
 void initCompass ();
 void updateCompass ();
 void releaseCompass ();
+
+} /* namespace SBCLIENT */
 
 #endif // COMPASS_H
 

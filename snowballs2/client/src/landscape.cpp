@@ -54,11 +54,12 @@
 #include <nel/3d/u_visual_collision_entity.h>
 #include <nel/3d/u_visual_collision_manager.h>
 
-#include "client.h"
+#include "snowballs_client.h"
 #include "pacs.h"
 #include "commands.h"
 #include "mouse_listener.h"
 #include "physics.h"
+#include "configuration.h"
 
 //
 // Namespaces
@@ -72,6 +73,8 @@ using namespace NL3D;
 // Variables
 //
 
+
+namespace SBCLIENT {
 
 
 
@@ -144,6 +147,29 @@ void cbUpdateLandscape (CConfigFile::CVar &var)
 	else nlwarning ("Unknown variable update %s", var.Name.c_str());
 }
 
+static float _LandscapeVision;
+static float _LandscapeVisionInitial;
+
+static void cbMoreLandscapeStuff(CConfigFile::CVar &var)
+{
+	if (var.Name == "LandscapeTileNear") 
+		Landscape->setTileNear(var.asFloat());
+
+	else if (var.Name == "LandscapeThreshold") 
+		Landscape->setThreshold(var.asFloat());
+
+	else if (var.Name == "LandscapeVision") 
+		_LandscapeVision = var.asFloat();
+
+	else if (var.Name == "LandscapeVisionInitial") 
+		_LandscapeVisionInitial = var.asFloat();
+
+	else if (var.Name == "LandscapeReceiveShadowMap")
+		Landscape->enableReceiveShadowMap(var.asBool());
+
+	else nlwarning("Unknown variable update %s", var.Name.c_str());
+}
+
 void initLight()
 {
 	// -- -- sun or whatever light, simple use, doesn't need class yet
@@ -211,10 +237,66 @@ void	initLandscape()
 			InstanceGroups.push_back (inst);
 		}
 	}
+
+
+
+		// -- -- start of init for "landscape around camera that gets data from config"
+
+	// create the landscape
+	nlassert(!Landscape);
+	Landscape = Scene->createLandscape();
+
+	// load the bank files
+	Landscape->loadBankFiles(
+		CPath::lookup(ConfigFile->getVar("LandscapeBankName").asString()), 
+		CPath::lookup(ConfigFile->getVar("LandscapeFarBankName").asString()));
+	Landscape->invalidateAllTiles();
+	
+	// -- -- this doesn't do anything useful
+	//// setup the zone path
+	//Landscape->setZonePath(ConfigFile->getVar("DataPath").asString() + "zones/");
+
+	// -- -- do this when character appears or does far teleport
+	//// and eventually, load the zones around the starting point.
+	//Landscape->loadAllZonesAround (CVector(ConfigFile->getVar("StartPoint").asFloat(0),
+	//									   ConfigFile->getVar("StartPoint").asFloat(1),
+	//									   ConfigFile->getVar("StartPoint").asFloat(2)), 
+	//							   1000.0f);
+	
+	// color of the landscape shadow
+	CRGBA diffuse(
+		ConfigFile->getVar("LandscapeDiffuseColor").asInt(0), 
+		ConfigFile->getVar("LandscapeDiffuseColor").asInt(1), 
+		ConfigFile->getVar("LandscapeDiffuseColor").asInt(2));
+	CRGBA ambient(
+		ConfigFile->getVar("LandscapeAmbiantColor").asInt(0), 
+		ConfigFile->getVar("LandscapeAmbiantColor").asInt(1), 
+		ConfigFile->getVar("LandscapeAmbiantColor").asInt(2));
+	
+	Landscape->setupStaticLight(
+		diffuse, ambient,
+		ConfigFile->getVar("LandscapeMultiplyFactor").asFloat());
+
+	CConfiguration::setAndCallback("LandscapeReceiveShadowMap", cbMoreLandscapeStuff);
+	CConfiguration::setAndCallback("LandscapeTileNear", cbMoreLandscapeStuff);
+	CConfiguration::setAndCallback("LandscapeThreshold", cbMoreLandscapeStuff);
+	CConfiguration::setAndCallback("LandscapeVision", cbMoreLandscapeStuff);
+	CConfiguration::setAndCallback("LandscapeVisionInitial", cbMoreLandscapeStuff);
 }
 
 void	releaseLandscape()
 {
+	CConfiguration::dropCallback("ReceiveShadowMap");
+	CConfiguration::dropCallback("TileNear");
+	CConfiguration::dropCallback("Threshold");
+	CConfiguration::dropCallback("Vision");
+	CConfiguration::dropCallback("VisionInitial");
+
+	// -- -- release for cameralandscape
+	Scene->deleteLandscape(Landscape);
+	Landscape = NULL;
+
+
 
 	ConfigFile->setCallback("FogStart", NULL);
 	ConfigFile->setCallback("FogEnd", NULL);
@@ -277,9 +359,9 @@ CVector	getTarget(const CVector &start, const CVector &step, uint numSteps)
 	return testPos;
 }
 
-CVector	getTarget(CTrajectory &trajectory, TTime dtSteps, uint numSteps)
+CVector	getTarget(CTrajectory &trajectory, TLocalTime dtSteps, uint numSteps)
 {
-	TTime	t = trajectory.getStartTime();
+	TLocalTime t = trajectory.getStartTime();
 	CVector	testPos;
 
 	uint	i;
@@ -299,6 +381,27 @@ CVector	getTarget(CTrajectory &trajectory, TTime dtSteps, uint numSteps)
 		t += dtSteps;
 	}
 	return testPos;
+}
+
+void updateLandscape()
+{
+	// -- -- update for CCameraLandscape
+	// -- -- no need to go to snowballs mouse listener, can probly get this 
+	//       from a NL3D::UCamera, NLPACS::UMovePrimitive or NL3D::UInstance too.
+	// -- -- random note: make a CControllableMovePrimitiveEntityInstance or something
+	// -- -- should get the player position and not the camera position,
+	//       most optimal for camera rotating around player.
+
+	// load the zones around the viewpoint
+	Landscape->refreshZonesAround(
+		Scene->getCam().getMatrix().getPos(), _LandscapeVision);
+	//_Landscape->refreshZonesAround(MouseListener->getViewMatrix().getPos(), 1000.0f);
+}
+
+void loadAllZonesAround()
+{
+	Landscape->loadAllZonesAround(
+		Scene->getCam().getMatrix().getPos(), _LandscapeVisionInitial);
 }
 
 /*
@@ -377,3 +480,8 @@ NLMISC_COMMAND(add_ig, "add instance group", "name")
 	return true;
 }
 
+
+
+} /* namespace SBCLIENT */
+
+/* end of file */
