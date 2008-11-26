@@ -5,7 +5,7 @@
 	Name="frontend_service"
 	ProjectGUID="{B15398CD-B3F8-4E85-A8BD-6F64CE59F069}"
 	RootNamespace="frontend_service"
-	TargetFrameworkVersion="131072"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -20,8 +20,6 @@
 			OutputDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -43,13 +41,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="4"
 				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="_WINDOWS;WIN32;_DEBUG"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;_WINDOWS"
 				StringPooling="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
+				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -63,11 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib libxml2.lib zlib.lib freetype.lib"
 				OutputFile="..\..\bin\$(RootNamespace)_d.exe"
-				IgnoreDefaultLibraryNames=""
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
+				ImportLibrary="..\..\bin\$(RootNamespace)_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -97,8 +101,6 @@
 			OutputDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -118,19 +120,19 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_WINDOWS"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
-				BufferSecurityCheck="false"
+				RuntimeLibrary="2"
+				DisableLanguageExtensions="false"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -143,12 +145,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\..\bin\$(RootNamespace).exe"
-				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="true"
+				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib libxml2.lib zlib.lib freetype.lib"
+				OutputFile="..\..\bin\$(RootNamespace)_r.exe"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				ImportLibrary="..\..\bin\$(RootNamespace)_r.lib"
 				TargetMachine="1"
 			/>
 			<Tool

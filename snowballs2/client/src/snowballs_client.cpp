@@ -709,8 +709,8 @@ void loopIngame()
 			// call all 3d render thingies
 			{
 				// 01. Render Driver (background color)			
-				Driver->clearBuffers(CRGBA(0, 0, 0)); // Clear all buffers			
 				CBloomEffect::instance().initBloom(); // start bloom effect (just before the first scene element render)
+				Driver->clearBuffers(CRGBA(0, 0, 0)); // Clear all buffers			
 				
 				// 02. Render Sky (sky scene)
 				updateSky(); // Render the sky scene before the main scene
