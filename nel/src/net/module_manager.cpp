@@ -71,9 +71,12 @@ namespace NLNET
 
 		static void releaseInstance()
 		{
-			if( _Instance )
+			if (_Instance)
+			{
+				NLMISC::INelContext::getInstance().releaseSingletonPointer("CModuleManager", _Instance);
 				delete _Instance;
-			_Instance = NULL;
+				_Instance = NULL;
+			}
 		}
 
 		struct TModuleLibraryInfo : public CRefCount

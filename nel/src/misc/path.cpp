@@ -98,8 +98,9 @@ CFileContainer::~CFileContainer()
 
 void CPath::releaseInstance()
 {
-	if( _Instance )
+	if (_Instance)
 	{
+		NLMISC::INelContext::getInstance().releaseSingletonPointer("CPath", _Instance);
 		delete _Instance;
 		_Instance = NULL;
 	}

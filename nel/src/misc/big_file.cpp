@@ -38,9 +38,12 @@ NLMISC_SAFE_SINGLETON_IMPL(CBigFile);
 // ***************************************************************************
 void CBigFile::releaseInstance()
 {
-	if( _Instance )
+	if (_Instance)
+	{
+		NLMISC::INelContext::getInstance().releaseSingletonPointer("CBigFile", _Instance);
 		delete _Instance;
-	_Instance = NULL;
+		_Instance = NULL;
+	}
 }
 // ***************************************************************************
 CBigFile::CThreadFileArray::CThreadFileArray()
