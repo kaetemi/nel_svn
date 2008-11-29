@@ -280,8 +280,19 @@ bool			CDriverUser::setDisplay(void *wnd, const CMode &mode, bool show, bool res
 // ***************************************************************************
 bool CDriverUser::setMode(const CMode& mode)
 {
-	return _Driver->setMode(GfxMode(mode.Width, mode.Height, mode.Depth, mode.Windowed, false, mode.Frequency));
+	return _Driver->setMode(GfxMode(mode.Width, mode.Height, mode.Depth, mode.Windowed, false, mode.Frequency, mode.AntiAlias));
 }
+
+// ----------------------------------------------------------------------------
+struct CModeSorter
+{
+	bool operator()(const UDriver::CMode &mode1, const UDriver::CMode &mode2) const
+	{
+		if (mode1.Width == mode2.Width) return mode1.Height < mode2.Height;
+
+		return mode1.Width < mode2.Width;
+	}
+};
 
 // ***************************************************************************
 bool CDriverUser::getModes(std::vector<CMode> &modes)
@@ -290,7 +301,10 @@ bool CDriverUser::getModes(std::vector<CMode> &modes)
 	bool res = _Driver->getModes(vTmp);
 	modes.clear();
 	for (uint i = 0; i < vTmp.size(); ++i)
-		modes.push_back(CMode(vTmp[i].Width, vTmp[i].Height, vTmp[i].Depth, vTmp[i].Windowed, vTmp[i].Frequency));
+		modes.push_back(CMode(vTmp[i].Width, vTmp[i].Height, vTmp[i].Depth, vTmp[i].Windowed, vTmp[i].Frequency, vTmp[i].AntiAlias));
+
+	std::sort(modes.begin(), modes.end(), CModeSorter());
+
 	return res;
 }
 
@@ -304,6 +318,7 @@ bool CDriverUser::getCurrentScreenMode(CMode &mode)
 	mode.Height= gfxMode.Height;
 	mode.Depth= gfxMode.Depth;
 	mode.Frequency= gfxMode.Frequency;
+	mode.AntiAlias= gfxMode.AntiAlias;
 	return res;
 }
 
