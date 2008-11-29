@@ -4,6 +4,7 @@
  * \date 2008-11-26 13:13GMT
  * \author NeL Developers
  * CSnowballsClient
+ * Snowballs 2 main file
  */
 
 /* 
@@ -58,6 +59,9 @@
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_text_context.h>
 #include <nel/3d/bloom_effect.h>
+#if SBCLIENT_DEV_STEREO
+#	include <nel/3d/stereo_render.h>
+#endif /* #if SBCLIENT_DEV_STEREO */
 
 // Project includes
 #include "pacs.h"
@@ -148,6 +152,10 @@ static uint8 CurrentGameState = -1, NextGameState = 0; // state
 // To know which data has been loaded
 static bool LoadedCore = false, LoadedIngame = false, LoadedLogin = false,
 LoadedOnline = false, LoadedOffline = false; // state
+
+#if SBCLIENT_DEV_STEREO
+static IStereoRender *_StereoRender = NULL;
+#endif /* #if SBCLIENT_DEV_STEREO */
 
 //
 // Prototypes
@@ -324,6 +332,13 @@ void initCore()
 		// Required for 3d rendering (3d nel logo etc)
 		displayLoadingState("Initialize Light");
 		initLight();
+#if SBCLIENT_DEV_STEREO
+		displayLoadingState("Initialize Stereo Renderer");
+		_StereoRender = Driver->createStereoRender();
+		_StereoRender->setMode("AnaglyphRedCyan");
+		//_StereoRender->setMode("SideBySideHalf");
+		//_StereoRender->setMode("Mono");
+#endif /* #if SBCLIENT_DEV_STEREO */
 
 		ConfigFile->setCallback("OpenGL", cbGraphicsDriver);
 	}
@@ -477,6 +492,12 @@ void releaseCore()
 		LoadedCore = false;
 		// Release configuration callbacks
 		CConfiguration::dropCallback("OpenGL");
+
+#if SBCLIENT_DEV_STEREO
+		// Release stereo render
+		Driver->deleteStereoRender(_StereoRender);
+		_StereoRender = NULL;
+#endif /* #if SBCLIENT_DEV_STEREO */
 
 		// Release the sun
 		releaseLight();
@@ -707,10 +728,17 @@ void loopIngame()
 		else
 		{
 			// call all 3d render thingies
+			Driver->clearBuffers(CRGBA(127, 0, 0)); // if you see red, there's a problem with bloom or stereo render
+#if SBCLIENT_DEV_STEREO
+			_StereoRender->calculateCameras(Camera.getObjectPtr()); // calculate modified matrices for the current camera
+			for (uint cameraId = 0; cameraId < _StereoRender->getCameraCount(); ++cameraId)
 			{
+				_StereoRender->getCamera(cameraId, Camera.getObjectPtr()); // get the matrix details for this camera
+#endif /* #if SBCLIENT_DEV_STEREO */
+
 				// 01. Render Driver (background color)			
 				CBloomEffect::instance().initBloom(); // start bloom effect (just before the first scene element render)
-				Driver->clearBuffers(CRGBA(0, 0, 0)); // Clear all buffers			
+				Driver->clearBuffers(CRGBA(0, 0, 127)); // clear all buffers, if you see this blue there's a problem with scene rendering
 				
 				// 02. Render Sky (sky scene)
 				updateSky(); // Render the sky scene before the main scene
@@ -724,7 +752,13 @@ void loopIngame()
 				
 				// 06. Render Interface 3D (player names)
 				CBloomEffect::instance().endInterfacesDisplayBloom(); // end bloom effect system after drawing the 3d interface (z buffer related)
+
+#if SBCLIENT_DEV_STEREO
+				_StereoRender->copyBufferToTexture(cameraId); // copy current buffer to the active stereorender texture
 			}
+			_StereoRender->restoreCamera(Camera.getObjectPtr()); // restore the camera
+			_StereoRender->render(); // render everything together in the current mode
+#endif /* #if SBCLIENT_DEV_STEREO */
 
 			// 07. Render Interface 2D (chatboxes etc, optionally does have 3d)
 			updateCompass(); // Update the compass		
@@ -836,11 +870,10 @@ void renderInformation()
 	TextContext->printfAt(0.99f, 0.99f, isOnline() ? "Online" : "Offline");
 
 	// Display the frame rate
-	float fps = FramesPerSecondSmooth; // FramesPerSecond; //1000.0f /(float)DiffTime;
 	TextContext->setHotSpot(UTextContext::TopLeft);
 	TextContext->setColor(CRGBA(255, 255, 255, 255));
 	TextContext->setFontSize(14);
-	TextContext->printfAt(0.01f, 0.99f, "%.2ffps %ums", fps, (uint32)LocalTimeDelta);
+	TextContext->printfAt(0.01f, 0.99f, "%.2f(%.2f)fps %.3fs", FramesPerSecondSmooth, FramesPerSecond, (float)LocalTimeDelta);
 
 	// one more frame
 	FpsGraph.addValue(1.0f);

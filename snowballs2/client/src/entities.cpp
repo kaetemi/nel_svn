@@ -1,7 +1,5 @@
 /** \file commands.cpp
- * Snowballs 2 specific code for managing the command interface
- *
- * $Id: entities.cpp,v 1.45 2004-07-29 09:06:07 lecroart Exp $
+ * Snowballs 2 specific code for managing entities
  */
 
 /* Copyright, 2001 Nevrax Ltd.

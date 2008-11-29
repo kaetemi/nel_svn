@@ -1,7 +1,5 @@
 /** \file graph.cpp
  * Snowballs 2 specific code for managing the graph (network traffic, fps, etc).
- *
- * $Id: graph.cpp,v 1.2 2001-07-27 09:07:02 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

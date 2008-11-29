@@ -1,7 +1,5 @@
 /** \file landscape.cpp
  * Landscape interface between the game and NeL
- *
- * $Id: landscape.cpp,v 1.19 2003-04-04 17:00:10 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -77,17 +75,19 @@ using namespace NL3D;
 
 namespace SBCLIENT {
 
+/*******************************************************************
+ *                             GLOBALS                             *
+ *******************************************************************/
 
+vector<UInstanceGroup*> InstanceGroups;
+NLMISC::CVector SunDirection;
 
-UVisualCollisionEntity	*AimingEntity = NULL;
+/*******************************************************************
+ *                            LANDSCAPE                            *
+ *******************************************************************/
 
-
-vector<UInstanceGroup*>	 InstanceGroups;
-
-
-ULight					*Sun = NULL;
-NLMISC::CVector			 SunDirection;
-
+static UVisualCollisionEntity *_AimingEntity = NULL;
+static ULight *_Sun = NULL;
 
 //
 // Functions
@@ -126,24 +126,24 @@ void cbUpdateLandscape (CConfigFile::CVar &var)
 	}
 	else if (var.Name == "SunAmbientColor")
 	{
-		Sun->setAmbiant (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
-		Driver->setLight (0, *Sun);
+		_Sun->setAmbiant (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
+		Driver->setLight (0, *_Sun);
 	}
 	else if (var.Name == "SunDiffuseColor")
 	{
-		Sun->setDiffuse (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
-		Driver->setLight (0, *Sun);
+		_Sun->setDiffuse (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
+		Driver->setLight (0, *_Sun);
 	}
 	else if (var.Name == "SunSpecularColor")
 	{
-		Sun->setSpecular (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
-		Driver->setLight (0, *Sun);
+		_Sun->setSpecular (CRGBA (var.asInt(0), var.asInt(1), var.asInt(2)));
+		Driver->setLight (0, *_Sun);
 	}
 	else if (var.Name == "SunDirection")
 	{
 		SunDirection.set (var.asFloat(0), var.asFloat(1), var.asFloat(2));
-		Sun->setDirection (SunDirection);
-		Driver->setLight (0, *Sun);
+		_Sun->setDirection (SunDirection);
+		Driver->setLight (0, *_Sun);
 	}
 	else nlwarning ("Unknown variable update %s", var.Name.c_str());
 }
@@ -175,9 +175,9 @@ void initLight()
 {
 	// -- -- sun or whatever light, simple use, doesn't need class yet
 
-	Sun = ULight::createLight();
-	nlassert(Sun != NULL);
-	Sun->setMode(ULight::DirectionalLight);
+	_Sun = ULight::createLight();
+	nlassert(_Sun);
+	_Sun->setMode(ULight::DirectionalLight);
 	Driver->enableLight(0);
 
 	ConfigFile->setCallback("SunAmbientColor", cbUpdateLandscape);
@@ -200,7 +200,7 @@ void releaseLight()
 	ConfigFile->setCallback("SunSpecularColor", NULL);
 	ConfigFile->setCallback("SunDirection", NULL);
 
-	delete Sun; Sun = NULL;
+	delete _Sun; _Sun = NULL;
 }
 
 void	initLandscape()
@@ -313,15 +313,15 @@ void	initAiming()
 	// -- -- random note: is an extension of "camera that follows entity"
 
 	// Create an aiming entity
-	AimingEntity = VisualCollisionManager->createEntity();
-	AimingEntity->setCeilMode(true);
+	_AimingEntity = VisualCollisionManager->createEntity();
+	_AimingEntity->setCeilMode(true);
 }
 
 void	releaseAiming()
 {
 	// -- -- belongs in CAimingEntityCamera
 
-	VisualCollisionManager->deleteEntity(AimingEntity);
+	VisualCollisionManager->deleteEntity(_AimingEntity);
 }
 
 // -- -- mix with following bit of code for higher accuracy
@@ -350,7 +350,7 @@ CVector	getTarget(const CVector &start, const CVector &step, uint numSteps)
 				normal;
 
 		// here use normal to check if we have collision
-		if (AimingEntity->snapToGround(snapped, normal) && (testPos.z-snapped.z)*normal.z < 0.0f)
+		if (_AimingEntity->snapToGround(snapped, normal) && (testPos.z-snapped.z)*normal.z < 0.0f)
 		{
 			testPos -= step*0.5f;
 			break;
@@ -373,7 +373,7 @@ CVector	getTarget(CTrajectory &trajectory, TLocalTime dtSteps, uint numSteps)
 				normal;
 
 		// here use normal to check if we have collision
-		if (AimingEntity->snapToGround(snapped, normal) && (testPos.z-snapped.z)*normal.z < 0.0f)
+		if (_AimingEntity->snapToGround(snapped, normal) && (testPos.z-snapped.z)*normal.z < 0.0f)
 		{
 			t -= (dtSteps/2);
 			testPos = trajectory.eval(t);

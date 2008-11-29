@@ -1,7 +1,5 @@
 /** \file landscape.h
  * Landscape interface between the game and NeL
- *
- * $Id: landscape.h,v 1.10 2001-07-27 09:07:22 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

@@ -1,7 +1,5 @@
 /** \file event_mouse_listener.cpp
  * Snowballs 2 specific code for managing the mouse listener.
- *
- * $Id: mouse_listener.cpp,v 1.17 2004-07-29 09:06:07 lecroart Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.

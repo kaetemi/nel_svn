@@ -1,7 +1,5 @@
 /** \file pacs.h
  * Pacs interface between the game and NeL
- *
- * $Id: pacs.h,v 1.5 2001-07-18 17:30:17 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

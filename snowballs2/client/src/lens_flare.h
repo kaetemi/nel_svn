@@ -1,8 +1,6 @@
 /** \file lens_flare.h
  * Snowballs 2 specific code for managing the lens flare.
  * This code was taken from Snowballs 1.
- *
- * $Id: lens_flare.h,v 1.3 2001-07-18 16:06:20 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

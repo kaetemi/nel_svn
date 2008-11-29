@@ -1,7 +1,5 @@
 /** \file commands.cpp
  * Snowballs 2 specific code for managing the command interface
- *
- * $Id: commands.cpp,v 1.17 2005-11-07 13:01:53 cado Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

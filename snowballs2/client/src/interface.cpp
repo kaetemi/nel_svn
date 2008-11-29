@@ -1,7 +1,5 @@
 /** \file interface.cpp
  * Snowballs 2 specific code for managing interface
- *
- * $Id: interface.cpp,v 1.2 2001-07-18 16:06:20 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

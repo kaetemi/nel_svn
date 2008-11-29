@@ -65,7 +65,11 @@ public:
 #elif defined (NL_RELEASE_DEBUG)
 			"COMPILE_MODE [NL_RELEASE_DEBUG]\n"
 #elif defined (NL_RELEASE)
+#	if defined (NL_NO_DEBUG)
+			"COMPILE_MODE [NL_RELEASE (NL_NO_DEBUG)]\n"
+#	else
 			"COMPILE_MODE [NL_RELEASE]\n"
+#	endif
 #endif
 #if FINAL_VERSION
 			"RELEASE_TYPE [FINAL_VERSION]\n"

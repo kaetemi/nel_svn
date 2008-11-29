@@ -1,7 +1,5 @@
 /** \file network.h
  * Network interface between the game and NeL
- *
- * $Id: network.h,v 1.12 2002-09-16 14:55:23 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

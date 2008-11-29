@@ -1,7 +1,5 @@
 /** \file pacs.cpp
  * pacs management
- *
- * $Id: pacs.cpp,v 1.8 2001-08-14 13:45:34 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
@@ -63,51 +61,71 @@ namespace SBCLIENT {
 
 extern ULandscape *Landscape;
 
-//
-// Variables
-//
+/*******************************************************************
+ *                             GLOBALS                             *
+ *******************************************************************/
 
 // The retriever bank used in the world
-URetrieverBank				*RetrieverBank;
+URetrieverBank *RetrieverBank = NULL;
 // The global retriever used for pacs
-UGlobalRetriever			*GlobalRetriever;
+UGlobalRetriever *GlobalRetriever = NULL;
 // The move container used for dynamic collisions
-UMoveContainer				*MoveContainer;
+UMoveContainer *MoveContainer = NULL;
 
 // The collision manager for ground snapping
-UVisualCollisionManager		*VisualCollisionManager;
+UVisualCollisionManager *VisualCollisionManager = NULL;
+
+/*******************************************************************
+ *                            COLLISIONS                           *
+ *******************************************************************/
 
 // The collision primitive for the instances in the landscape
-vector<UMovePrimitive *>	InstancesMovePrimitives;
+static vector<UMovePrimitive *> _InstancesMovePrimitives;
 
 //
 // Functions
 //
 
-void	initPACS()
+void initPACS()
 {
-	// init the global retriever and the retriever bank
+	// check stuff we need for this to init correctly
+	nlassert(Landscape);
+	nlassert(ConfigFile);
+	nlassert(Scene);
+
+	// check stuff we can't have yet
+	nlassert(!RetrieverBank);
+	nlassert(!GlobalRetriever);
+	nlassert(!MoveContainer);
+	nlassert(!VisualCollisionManager);
+
+	// init the global retriever
 	RetrieverBank = URetrieverBank::createRetrieverBank(ConfigFile->getVar("RetrieverBankName").asString().c_str());
+	nlassert(RetrieverBank);
+
+	// create the retriever bank
 	GlobalRetriever = UGlobalRetriever::createGlobalRetriever(ConfigFile->getVar("GlobalRetrieverName").asString().c_str(), RetrieverBank);
+	nlassert(GlobalRetriever);
 
 	// create the move primitive
 	MoveContainer = UMoveContainer::createMoveContainer(GlobalRetriever, 100, 100, 6.0);
+	nlassert(MoveContainer);
 
 	// create a visual collision manager
 	// this should not be in pacs, but this is too close to pacs to be put elsewhere
 	// -- -- put it elsewhere anyways, the other code in this page can be made re-usable 
 	//       to share between the client and the collision service.
 	VisualCollisionManager = Scene->createVisualCollisionManager();
+	nlassert(VisualCollisionManager);
 	VisualCollisionManager->setLandscape(Landscape);
 
 	// -- -- move this to snowballs specific game task
 	// create a move primitive for each instance in the instance group
-	uint	i, j;
-	for (j=0; j<InstanceGroups.size(); ++j)
+	for (uint j = 0; j < InstanceGroups.size(); ++j)
 	{
-		for (i=0; i<InstanceGroups[j]->getNumInstance(); ++i)
+		for (uint i = 0; i < InstanceGroups[j]->getNumInstance(); ++i)
 		{
-			UMovePrimitive	*primitive = MoveContainer->addCollisionablePrimitive(0, 1);
+			UMovePrimitive *primitive = MoveContainer->addCollisionablePrimitive(0, 1);
 			primitive->setPrimitiveType(UMovePrimitive::_2DOrientedCylinder);
 			primitive->setReactionType(UMovePrimitive::DoNothing);
 			primitive->setTriggerType(UMovePrimitive::NotATrigger);
@@ -138,28 +156,34 @@ void	initPACS()
 			primitive->insertInWorldImage(0);
 			CVector	pos = InstanceGroups[j]->getInstancePos(i);
 			primitive->setGlobalPosition(CVectorD(pos.x, pos.y, pos.z-1.5f), 0);
-			InstancesMovePrimitives.push_back(primitive);
+			_InstancesMovePrimitives.push_back(primitive);
 		}
 	}
 }
 
-void	releasePACS()
+void releasePACS()
 {
-	// all move primitives
-	uint	i;
-	for (i=0; i<InstancesMovePrimitives.size(); ++i)
-		MoveContainer->removePrimitive(InstancesMovePrimitives[i]);
-
-	InstancesMovePrimitives.clear();
+	// delete all move primitives
+	if (!MoveContainer) nlwarning("_InstancesMovePrimitives: !MoveContainer");
+	else
+	{
+		vector<UMovePrimitive *>::iterator it(_InstancesMovePrimitives.begin()), end(_InstancesMovePrimitives.end());
+		for (; it != end; ++it) MoveContainer->removePrimitive(*it);
+		_InstancesMovePrimitives.clear();
+	}
 
 	// delete all allocated objects
-	UGlobalRetriever::deleteGlobalRetriever(GlobalRetriever);
-	URetrieverBank::deleteRetrieverBank(RetrieverBank);
-	UMoveContainer::deleteMoveContainer(MoveContainer);
+	if (!GlobalRetriever) nlwarning("GlobalRetriever: !GlobalRetriever");
+	else { UGlobalRetriever::deleteGlobalRetriever(GlobalRetriever); GlobalRetriever = NULL; }
+	if (!RetrieverBank) nlwarning("RetrieverBank: !RetrieverBank");
+	else { URetrieverBank::deleteRetrieverBank(RetrieverBank); RetrieverBank = NULL; }
+	if (!MoveContainer) nlwarning("MoveContainer: !MoveContainer");
+	else { UMoveContainer::deleteMoveContainer(MoveContainer); MoveContainer = NULL; }
 
 	// delete the visual collision manager
-	Scene->deleteVisualCollisionManager(VisualCollisionManager);
-
+	if (!Scene) nlwarning("VisualCollisionManager: !Scene");
+	else if (!VisualCollisionManager) nlwarning("VisualCollisionManager: !VisualCollisionManager");
+	else { Scene->deleteVisualCollisionManager(VisualCollisionManager); VisualCollisionManager = NULL; }
 }
 
 } /* namespace SBCLIENT */

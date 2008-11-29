@@ -1,7 +1,5 @@
 /** \file graph.h
  * Snowballs 2 specific code for managing the graph (network traffic, fps, etc).
- *
- * $Id: graph.h,v 1.2 2001-07-27 09:07:06 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.

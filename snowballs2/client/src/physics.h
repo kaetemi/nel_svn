@@ -1,7 +1,5 @@
 /** \file physics.h
- * Physics computation for particles (and thus snowballs)
- *
- * $Id: physics.h,v 1.2 2001-07-23 16:34:38 legros Exp $
+ * Physics computation for throwing snowballs
  */
 
 /* Copyright, 2001 Nevrax Ltd.

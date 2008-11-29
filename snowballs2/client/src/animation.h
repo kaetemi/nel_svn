@@ -1,7 +1,5 @@
 /** \file animation.h
  * Animation interface between the game and NeL
- *
- * $Id: animation.h,v 1.5 2001-07-27 14:35:08 lecroart Exp $
  */
 
 /* Copyright, 2001 Nevrax Ltd.
