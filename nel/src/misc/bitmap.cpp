@@ -375,18 +375,22 @@ uint8 CBitmap::readDDS(NLMISC::IStream &f, uint mipMapSkip)
 		UPDATE: worst... on linux/opengl, it generates random alpha values
 		if we use alpha dxtc1 by default. So I only to that for windows
 		and leave the old test on linux
+
+		kervala: some used textures don't have an alpha channel and they are
+		(very) bad rendered with this fix	so we have to deactivate it the for moment
 */
-#ifdef NL_OS_WINDOWS
-	if(PixelFormat==DXTC1) //AlphaBitDepth
-	{
-		PixelFormat = DXTC1Alpha;
-	}
-#else
+
+//#ifdef NL_OS_WINDOWS
+//	if(PixelFormat==DXTC1) //AlphaBitDepth
+//	{
+//		PixelFormat = DXTC1Alpha;
+//	}
+//#else
 	if(PixelFormat==DXTC1 && _DDSSurfaceDesc[21]>0) //AlphaBitDepth
 	{
 		PixelFormat = DXTC1Alpha;
 	}
-#endif
+//#endif
 
 	if(PixelFormat!= DXTC1 && PixelFormat!= DXTC1Alpha && PixelFormat!= DXTC3 && PixelFormat!= DXTC5)
 	{
