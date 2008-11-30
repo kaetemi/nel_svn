@@ -457,7 +457,8 @@ namespace	NL3D
 // Debug: don't return false if the procaddr returns 0
 // It means that it can crash if nel calls this extension but at least we have a warning to know why the extension is available but not the procaddr
 #define CHECK_ADDRESS(type, ext) \
-	if(!(n##ext=(type)nglGetProcAddress(#ext))) { nlwarning("3D: GetProcAddress(\"%s\") returns NULL", #ext); return false; } else { nldebug("3D: GetProcAddress(\"%s\") succeed", #ext); }
+	n##ext=(type)nglGetProcAddress(#ext); \
+	if(!n##ext) { nlwarning("3D: GetProcAddress(\"%s\") returns NULL", #ext); return false; } else { nldebug("3D: GetProcAddress(\"%s\") succeed", #ext); }
 
 // ***************************************************************************
 // Extensions registrations, and Windows function Registration.
@@ -626,7 +627,7 @@ static bool	setupATITextureEnvCombine3(const char	*glext)
 }
 
 // *********************************
-static bool	setupATIXTextureEnvRoute(const char *glext)
+static bool	setupATIXTextureEnvRoute(const char * /* glext */)
 {
 	H_AUTO_OGL(setupATIXTextureEnvRoute);
 	return false;
@@ -919,10 +920,13 @@ static bool	setupATIVertexArrayObject(const char *glext)
 	CHECK_ADDRESS(NEL_PFNGLGETOBJECTBUFFERFVATIPROC, glGetObjectBufferfvATI);
 	CHECK_ADDRESS(NEL_PFNGLGETOBJECTBUFFERIVATIPROC, glGetObjectBufferivATI);
 
-	if(!(nglDeleteObjectBufferATI = (NEL_PFNGLDELETEOBJECTBUFFERATIPROC)nglGetProcAddress("nglDeleteObjectBufferATI")))
+	nglDeleteObjectBufferATI = (NEL_PFNGLDELETEOBJECTBUFFERATIPROC)nglGetProcAddress("nglDeleteObjectBufferATI");
+
+	if(!nglDeleteObjectBufferATI)
 	{
 		// seems that on matrox parhelia driver, this procedure is named nglFreeObjectBufferATI !!
-		if(!(nglDeleteObjectBufferATI = (NEL_PFNGLDELETEOBJECTBUFFERATIPROC)nglGetProcAddress("nglFreeObjectBufferATI"))) return false;
+		nglDeleteObjectBufferATI = (NEL_PFNGLDELETEOBJECTBUFFERATIPROC)nglGetProcAddress("nglFreeObjectBufferATI");
+		if(!nglDeleteObjectBufferATI) return false;
 	}
 
 	CHECK_ADDRESS(NEL_PFNGLARRAYOBJECTATIPROC, glArrayObjectATI);

@@ -391,7 +391,7 @@ bool CDriverGL::setupMaterial(CMaterial& mat)
 		{
 			ITexture	*text= mat.getTexture(uint8(stage));
 			if (text != NULL && !setupTexture(*text))
-				return(false);
+				return false;
 		}
 	}
 	// Here, for Lightmap materials, setup the lightmaps.
@@ -746,11 +746,11 @@ void			CDriverGL::setupLightMapPass(uint pass)
 
 	// common colors
 	static	uint32	packedColorBlack= CRGBA(0,0,0,255).getPacked();
-	static	GLfloat glcolBlack[4]= {0,0,0,1};
+	static	GLfloat glcolBlack[4]= {0.f,0.f,0.f,1.f};
 	static	uint32	packedColorWhite= CRGBA(255,255,255,255).getPacked();
-	static	GLfloat glcolWhite[4]= {1,1,1,1};
+	static	GLfloat glcolWhite[4]= {1.f,1.f,1.f,1.f};
 	static	uint32	packedColorGrey= CRGBA(128,128,128,128).getPacked();
-	static	GLfloat glcolGrey[4]= {0.5f,0.5f,0.5f,1};
+	static	GLfloat glcolGrey[4]= {0.5f,0.5f,0.5f,1.f};
 
 
 	// No lightmap or all blacks??, just setup "black texture" for stage 0.
@@ -1481,7 +1481,7 @@ CTextureCube	*CDriverGL::getSpecularCubeMap(uint exp)
 	NLMISC::clamp(exp, 1u, (MaxExponent - 1));
 
 
-	uint cubeMapIndex = expToCubeMap[(uint) exp];
+	uint cubeMapIndex = expToCubeMap[exp];
 	nlassert(cubeMapIndex < numCubeMap);
 
 

@@ -602,7 +602,7 @@ public:
 
 	/// \name UV Routing.
 	const uint8	*getUVRouting () const { return _UVRouting; }
-	void		setUVRouting (uint8 uvChannel, uint newUVRouting) { _UVRouting[uvChannel] = newUVRouting; }
+	void		setUVRouting (uint8 uvChannel, uint newUVRouting) { _UVRouting[uvChannel] = uint8(newUVRouting); }
 
 	/**
 	  * Set the vertex color format. If the vertex buffer is not in this format, the colors will be converted
@@ -817,8 +817,8 @@ public:
 private:
 
 	// No copy operators available
-	void		operator=(const CVertexBufferReadWrite& other) {}
-	CVertexBufferReadWrite(const CVertexBufferReadWrite& other) {}
+	void		operator=(const CVertexBufferReadWrite& /* other */) {}
+	CVertexBufferReadWrite(const CVertexBufferReadWrite& /* other */) {}
 
 	CVertexBuffer		*_Parent;
 	uint				_First, _Last;
@@ -875,8 +875,8 @@ public:
 private:
 
 	// No copy operators available
-	void		operator=(const CVertexBufferRead& other) {}
-	CVertexBufferRead(const CVertexBufferRead& other) {}
+	void		operator=(const CVertexBufferRead& /* other */) {}
+	CVertexBufferRead(const CVertexBufferRead& /* other */) {}
 
 	const CVertexBuffer		*_Parent;
 };

@@ -57,8 +57,6 @@ public:
 
 	enum { NotFound=0xffffffff };
 
-public:
-
 	/// \name Set build.
 	// @{
 	/** Set the animation Set in "Low Memory" mode by skipping some keys

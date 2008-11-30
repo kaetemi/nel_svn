@@ -684,7 +684,6 @@ NLMISC::CVector CPSLocated::computeI(void) const
 			return sysMat.getScaleUniform() * getWorldToLocalMatrix().mulVector(_Owner->getInvertedViewMat().getI());
 		}
 	}
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
@@ -719,7 +718,6 @@ NLMISC::CVector CPSLocated::computeIWithZAxisAligned(void) const
 			return sysMat.getScaleUniform() * getWorldToLocalMatrix().mulVector(I);
 		}
 	}
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
@@ -751,7 +749,6 @@ NLMISC::CVector CPSLocated::computeJ(void) const
 			return sysMat.getScaleUniform() * getWorldToLocalMatrix().mulVector(_Owner->getInvertedViewMat().getJ());
 		}
 	}
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
@@ -784,7 +781,6 @@ NLMISC::CVector CPSLocated::computeK(void) const
 			return sysMat.getScaleUniform() * getWorldToLocalMatrix().mulVector(_Owner->getInvertedViewMat().getK());
 		}
 	}
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
@@ -816,7 +812,6 @@ NLMISC::CVector CPSLocated::computeKWithZAxisAligned(void) const
 			return getWorldToLocalMatrix().mulVector(CVector(0.f, 0.f, sysMat.getScaleUniform()));
 		}
 	}
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************
@@ -2396,7 +2391,8 @@ void CPSLocated::addNewlySpawnedParticles()
 		{
 			for (CParticleSystem::TSpawnInfoVect::const_iterator it = spawns.SpawnInfos.begin(); it !=endIt; ++it)
 			{
-				sint32 insertionIndex = newElement(*it, false, CParticleSystem::EllapsedTime);
+//			sint32 insertionIndex = 
+				newElement(*it, false, CParticleSystem::EllapsedTime);
 			}
 		}
 		else
@@ -2629,7 +2625,6 @@ bool CPSLocated::isBound(const CPSLocatedBindable *lb) const
 	CHECK_PS_INTEGRITY
 	TLocatedBoundCont::const_iterator it = std::find(_LocatedBoundCont.begin(), _LocatedBoundCont.end(), lb);
 	return it != _LocatedBoundCont.end();
-	CHECK_PS_INTEGRITY
 }
 
 ///***************************************************************************************

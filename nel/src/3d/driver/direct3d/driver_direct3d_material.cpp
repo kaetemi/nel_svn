@@ -389,7 +389,7 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 		uint numUsedTexStages = 0;
 		for(numUsedTexStages = 0; numUsedTexStages < IDRV_MAT_MAXTEXTURES; ++numUsedTexStages)
 		{
-			if (mat.getTexture(numUsedTexStages) == NULL) break;
+			if (mat.getTexture(uint8(numUsedTexStages)) == NULL) break;
 		}
 
 		H_AUTO_D3D(CDriverD3D_setupMaterial_touchupdate)
@@ -480,23 +480,23 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 					if(matShader == CMaterial::Normal)
 					{
 						uint stage;
-						for(stage=0 ; stage<(uint)maxTexture; stage++)
+						for(stage=0 ; stage<maxTexture; ++stage)
 						{
 							// Build the tex env
-							pShader->buildTexEnv (stage, mat._TexEnvs[stage], mat.getTexture(stage) != NULL);
+							pShader->buildTexEnv (stage, mat._TexEnvs[stage], mat.getTexture(uint8(stage)) != NULL);
 						}
 					}
 				}
 				if (touched & (IDRV_TOUCHED_TEXGEN|IDRV_TOUCHED_ALLTEX))
 				{
 					uint stage;
-					for(stage=0 ; stage<(uint)maxTexture; stage++)
+					for(stage=0 ; stage<maxTexture; ++stage)
 					{
 						pShader->ActivateSpecularWorldTexMT[stage] = false;
 						pShader->ActivateInvViewModelTexMT[stage] = false;
 
 						// Build the tex env
-						ITexture	*text= mat.getTexture(stage);
+						ITexture	*text= mat.getTexture(uint8(stage));
 						if (text && text->isTextureCube())
 						{
 							if (mat.getTexCoordGen(stage))
@@ -549,8 +549,8 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 						uint secondConstant;
 						needsConstants (numConstants, firstConstant, secondConstant, mat);
 
-						pShader->ConstantIndex = firstConstant;
-						pShader->ConstantIndex2 = secondConstant;
+						pShader->ConstantIndex = uint8(firstConstant);
+						pShader->ConstantIndex2 = uint8(secondConstant);
 
 						// Need a constant color for the diffuse component ?
 						pShader->NeedsConstantForDiffuse = needsConstantForDiffuse (mat);
@@ -571,8 +571,8 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 							for(stage=0 ; stage<(uint)maxTexture; stage++)
 							{
 								// Stage used ?
-								normalShaderDesc.StageUsed[stage] = mat.getTexture (stage) != NULL;
-								normalShaderDesc.TexEnvMode[stage] = mat.getTexEnvMode(stage);
+								normalShaderDesc.StageUsed[stage] = mat.getTexture (uint8(stage)) != NULL;
+								normalShaderDesc.TexEnvMode[stage] = mat.getTexEnvMode(uint8(stage));
 							}
 
 							if (_PixelShader)
@@ -659,9 +659,9 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 		if (matShader == CMaterial::Normal)
 		{
 			uint stage;
-			for(stage=0 ; stage<(uint)maxTexture; stage++)
+			for(stage=0 ; stage<maxTexture; ++stage)
 			{
-				ITexture	*text= mat.getTexture(stage);
+				ITexture	*text= mat.getTexture(uint8(stage));
 				if (!text) break;
 				if (text != NULL && !setupTexture(*text))
 					return(false);
@@ -679,9 +679,9 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 		if(matShader == CMaterial::Normal)
 		{
 			uint stage;
-			for(stage=0 ; stage<(uint)maxTexture; stage++)
+			for(stage=0 ; stage<maxTexture; ++stage)
 			{
-				ITexture	*text= mat.getTexture(stage);
+				ITexture	*text= mat.getTexture(uint8(stage));
 				if (text)
 				{
 					// activate the texture, or disable texturing if NULL.
@@ -756,7 +756,7 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 				{
 					// If tex gen mode is used, or a cube texture is used, then use the matrix 'as it'.
 					// Must build a 3x3 matrix for 2D texture coordinates in D3D (which is kind of weird ...)
-					if (pShader->TexGen[stage] != D3DTSS_TCI_PASSTHRU || (mat.getTexture(stage) && mat.getTexture(stage)->isTextureCube()))
+					if (pShader->TexGen[stage] != D3DTSS_TCI_PASSTHRU || (mat.getTexture(uint8(stage)) && mat.getTexture(uint8(stage))->isTextureCube()))
 					{
 						NL_D3D_MATRIX(userMtx, mat.getUserTexMat(stage));
 					}
@@ -1035,7 +1035,7 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 				// Get the effect
 				nlassert (_CurrentShader);
 				CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
-				ID3DXEffect			*effect = shaderInfo->Effect;
+//				ID3DXEffect			*effect = shaderInfo->Effect;
 
 
 				// Set the ambiant for 8Bit Light Compression
@@ -1151,10 +1151,10 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 
 				// Get the shader
 				nlassert (_CurrentShader);
-				CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
+//				CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
 
 				// Set the constant
-				ID3DXEffect			*effect = shaderInfo->Effect;
+//				ID3DXEffect			*effect = shaderInfo->Effect;
 				CRGBA color = mat.getColor();
 				color.R = 255;
 				color.G = 255;
@@ -1172,7 +1172,7 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 				activeShader(mat.getTexture(3) ? &_ShaderWaterDiffuse : &_ShaderWaterNoDiffuse);
 				// Get the shader
 				nlassert (_CurrentShader);
-				CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
+//				CShaderDrvInfosD3D *shaderInfo = static_cast<CShaderDrvInfosD3D*>((IShaderDrvInfos*)_CurrentShader->_DrvInfo);
 				// Set the textures
 				if (_PixelShaderVersion >= D3DPS_VERSION(1, 4))
 				{
@@ -1180,10 +1180,10 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 					if (tex)
 					{
 						tex->setUploadFormat(ITexture::RGBA8888);
-						if (tex->isBumpMap())
-						{
-							CTextureBump *tb = static_cast<CTextureBump *>(tex);
-						}
+//						if (tex->isBumpMap())
+//						{
+//							CTextureBump *tb = static_cast<CTextureBump *>(tex);
+//						}
 						setupTexture(*tex);
 						setShaderTexture (0, tex, pShader->FXCache);
 					}
@@ -1194,18 +1194,18 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 					if (_PixelShaderVersion < D3DPS_VERSION(1, 4))
 					{
 						tex->setUploadFormat(ITexture::DsDt);
-						if (tex->isBumpMap())
-						{
-							CTextureBump *tb = static_cast<CTextureBump *>(tex);
-						}
+//						if (tex->isBumpMap())
+//						{
+//							CTextureBump *tb = static_cast<CTextureBump *>(tex);
+//						}
 					}
 					else
 					{
 						tex->setUploadFormat(ITexture::RGBA8888);
-						if (tex->isBumpMap())
-						{
-							CTextureBump *tb = static_cast<CTextureBump *>(tex);
-						}
+//						if (tex->isBumpMap())
+//						{
+//							CTextureBump *tb = static_cast<CTextureBump *>(tex);
+//						}
 					}
 					setupTexture(*tex);
 					setShaderTexture (1, tex, pShader->FXCache);
@@ -1225,7 +1225,7 @@ bool CDriverD3D::setupMaterial(CMaterial &mat)
 				}
 
 				// Set the constants
-				ID3DXEffect			*effect = shaderInfo->Effect;
+//				ID3DXEffect			*effect = shaderInfo->Effect;
 				if (_PixelShaderVersion < D3DPS_VERSION(2, 0))
 				{
 					if (_PixelShaderVersion < D3DPS_VERSION(1, 4))
@@ -1330,7 +1330,7 @@ bool CDriverD3D::needsConstants (uint &numConstant, uint &firstConstant, uint &s
 	std::set<uint> alphaPipe[2];  // constant used to compute the alpha component
 	for (uint i=0; i<IDRV_MAT_MAXTEXTURES; i++)
 	{
-		if (!mat.getTexture(i)) break;
+		if (!mat.getTexture(uint8(i))) break;
 		CMaterial::CTexEnv texEnv;
 		texEnv.EnvPacked = mat.getTexEnvMode(i);
 		rgbPipe[1].clear();
@@ -1437,7 +1437,7 @@ bool CDriverD3D::needsConstantForDiffuse (CMaterial &mat)
 	bool propAlpha = false;   // diffuse RGB propagated to current stage
 	for (uint i=0; i<IDRV_MAT_MAXTEXTURES; i++)
 	{
-		if (!mat.getTexture(i)) break;
+		if (!mat.getTexture(uint8(i))) break;
 		CMaterial::CTexEnv texEnv;
 		texEnv.EnvPacked = mat.getTexEnvMode(i);
 		bool newPropRGB = false;
@@ -1534,7 +1534,7 @@ void CDriverD3D::computeRelevantTexEnv(CMaterial &mat, bool rgbPipe[IDRV_MAT_MAX
 	uint numStages = 0;
 	for (uint i=0; i<IDRV_MAT_MAXTEXTURES; i++)
 	{
-		if (mat.getTexture(i) == NULL) break;
+		if (mat.getTexture(uint8(i)) == NULL) break;
 		++ numStages;
 	}
 	std::fill(rgbPipe, rgbPipe + IDRV_MAT_MAXTEXTURES, false);
@@ -1969,7 +1969,7 @@ bool CDriverD3D::supportBlendConstantColor() const
 
 // ***************************************************************************
 
-void CDriverD3D::setBlendConstantColor(NLMISC::CRGBA col)
+void CDriverD3D::setBlendConstantColor(NLMISC::CRGBA /* col */)
 {
 	/* Not supported in D3D */
 };
@@ -1984,7 +1984,7 @@ NLMISC::CRGBA CDriverD3D::getBlendConstantColor() const
 
 // ***************************************************************************
 
-void CDriverD3D::enablePolygonSmoothing(bool smooth)
+void CDriverD3D::enablePolygonSmoothing(bool /* smooth */)
 {
 	/* Not supported in D3D */
 }

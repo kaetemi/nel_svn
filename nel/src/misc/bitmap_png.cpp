@@ -486,7 +486,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 
 	//allocate memory to load the image
-	char **pbRowPointers=new char*[(const uint32)_Height];
+//	char **pbRowPointers=new char*[(const uint32)_Height];
 
 
 
@@ -546,12 +546,11 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 			{
 				for(uint32 pix=0;pix<3;pix++)
 				{//get the RGB
-				 _Data[0][row*_Width*4+line*4+pix]=pbImageData[row*_Width*3+line*3+pix];
+					_Data[0][row*_Width*4+line*4+pix]=pbImageData[row*_Width*3+line*3+pix];
 				}//for pix<3
-				_Data[0][row*_Width*4+line*4+3]=(uint8)'255';//add the alpha seting
+				_Data[0][row*_Width*4+line*4+3]=0xff;//add the alpha setting
 			}//for line<_Width
-
-	   }//for row<_Height
+		}//for row<_Height
 		bit=4;
 
 	}
@@ -610,7 +609,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
    //test->close();
-   return iBitDepth*bit;//return the size of a pixel, either 8,24,32 bit
+   return uint8(iBitDepth)*bit;//return the size of a pixel, either 8,24,32 bit
 }
 
 /*-------------------------------------------------------------------*\
@@ -925,7 +924,7 @@ void writePNGData(png_struct *png_ptr, char *data, uint length)
 
 }
 
-void setPNGWarning(png_struct *png_ptr, const char* message)
+void setPNGWarning(png_struct * /* png_ptr */, const char* message)
 {
 	nlwarning(message);
 }

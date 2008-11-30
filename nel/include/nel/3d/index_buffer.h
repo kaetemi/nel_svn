@@ -646,8 +646,8 @@ public:
 private:
 
 	// No copy operators available
-	void		operator=(const CIndexBufferReadWrite& other) {}
-	CIndexBufferReadWrite(const CIndexBufferReadWrite& other) {}
+	void		operator=(const CIndexBufferReadWrite& /* other */) {}
+	CIndexBufferReadWrite(const CIndexBufferReadWrite& /* other */) {}
 
 	CIndexBuffer		*_Parent;
 	uint				_First, _Last;
@@ -707,8 +707,8 @@ public:
 private:
 
 	// No copy operators available
-	void		operator=(const CIndexBufferRead& other) {}
-	CIndexBufferRead(const CIndexBufferRead& other) {}
+	void		operator=(const CIndexBufferRead& /* other */) {}
+	CIndexBufferRead(const CIndexBufferRead& /* other */) {}
 
 	const CIndexBuffer		*_Parent;
 };

@@ -764,8 +764,6 @@ void	CTransform::updateWorld()
 // ***************************************************************************
 void	CTransform::updateClipTravForAncestorSkeleton()
 {
-	CClipTrav		&clipTrav= getOwnerScene()->getClipTrav();
-
 	// If I have an ancestor Skeleton Model, I must be binded in ClipTrav to the SonsOfAncestorSkeletonModelGroup
 	if(_AncestorSkeletonModel && !_ClipLinkedInSonsOfAncestorSkeletonModelGroup)
 	{
@@ -1096,7 +1094,7 @@ void			CTransform::freezeStaticLightSetup(CPointLight *pointLight[NL3D_MAX_LIGHT
 
 	// Enable StaticLightSetup.
 	_LightContribution.FrozenStaticLightSetup= true;
-	_LightContribution.NumFrozenStaticLight= numPointLights;
+	_LightContribution.NumFrozenStaticLight= uint8(numPointLights);
 	_LightContribution.SunContribution= sunContribution;
 	// setup the FrozenAmbientLight
 	_LightContribution.FrozenAmbientLight= frozenAmbientlight;

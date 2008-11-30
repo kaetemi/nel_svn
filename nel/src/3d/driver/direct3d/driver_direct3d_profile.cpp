@@ -145,7 +145,7 @@ void CDriverD3D::endProfileVBHardLock(std::vector<std::string> &result)
 		result[i]= tmp;
 	}
 	result[_VBHardProfiles.size()]= toString("Total: %2.3f", total);
-	float	volatileVBTimeLock = (float)CTime::ticksToSecond(_VolatileVBLockTime)*1000 / max(_NumVBHardProfileFrame,1U);
+//	float	volatileVBTimeLock = (float)CTime::ticksToSecond(_VolatileVBLockTime)*1000 / max(_NumVBHardProfileFrame,1U);
 	result[_VBHardProfiles.size() + 1]= toString("Volatile Vertex Buffer lock time = %2.3f", _VolatileVBLockTime);
 
 	// clear.
