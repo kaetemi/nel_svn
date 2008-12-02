@@ -76,7 +76,7 @@ const std::string nlLibSuffix("_r");
 #		error "Unknown compilation mode, can't build suffix"
 #	endif
 #elif defined (NL_OS_UNIX)
-const string	nlLibSuffix;	// empty
+const std::string nlLibSuffix; // empty
 #else
 #	error "You must define the lib suffix for your platform"
 #endif
