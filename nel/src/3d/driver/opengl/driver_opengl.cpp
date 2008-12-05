@@ -103,7 +103,7 @@ uint CDriverGL::_Registered=0;
 #endif // NL_OS_WINDOWS
 
 // Version of the driver. Not the interface version!! Increment when implementation of the driver change.
-const uint32 CDriverGL::ReleaseVersion = 0xd; // Spex
+const uint32 CDriverGL::ReleaseVersion = 0xe; // kervala
 
 // Number of register to allocate for the EXTVertexShader extension
 const uint CDriverGL::_EVSNumConstant = 97;
@@ -919,7 +919,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 			SetWindowPos (_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE );
 
 			if (show || _FullScreen)
-				ShowWindow(_hWnd,SW_SHOW);
+				showWindow(true);
 		}
 
 		// Init Window Width and Height
@@ -1558,7 +1558,7 @@ bool CDriverGL::setMode(const GfxMode& mode)
 	AdjustWindowRectEx (&rc, GetWindowStyle (_hWnd), false, GetWindowExStyle (_hWnd));
 	SetWindowPos (_hWnd, NULL, 0, 0, rc.right-rc.left, rc.bottom-rc.top, SWP_NOZORDER | SWP_NOACTIVATE );
 
-	ShowWindow(_hWnd, SW_SHOW);
+	showWindow(true);
 
 	// Init Window Width and Height
 	RECT clientRect;
@@ -1654,15 +1654,40 @@ bool CDriverGL::getCurrentScreenMode(GfxMode &mode)
 }
 
 // --------------------------------------------------
-void CDriverGL::setWindowTitle(const std::string &title)
+void CDriverGL::setWindowTitle(const ucstring &title)
 {
 #ifdef NL_OS_WINDOWS
-	SetWindowTextA(_hWnd,title.c_str());
+	SetWindowTextW(_hWnd,(WCHAR*)title.c_str());
 #elif defined(NL_OS_UNIX) // NL_OS_WINDOWS
 	XTextProperty text_property;
-	char *t = (char*)title.c_str();
+	char *t = (char*)title.toUtf8().c_str();
 	XStringListToTextProperty(&t, 1, &text_property);
 	XSetWMName(dpy, win, &text_property);
+#endif // NL_OS_WINDOWS
+}
+
+// ***************************************************************************
+void CDriverGL::setWindowPos(uint32 x, uint32 y)
+{
+	_WindowX = (sint32)x;
+	_WindowY = (sint32)y;
+#ifdef NL_OS_WINDOWS
+	SetWindowPos(_hWnd, NULL, _WindowX, _WindowY, 0, 0, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+#elif defined(NL_OS_UNIX) // NL_OS_WINDOWS
+	XMoveWindow(dpy, win, _WindowX, _WindowY)
+#endif // NL_OS_WINDOWS
+}
+
+// ***************************************************************************
+void CDriverGL::showWindow(bool show)
+{
+#ifdef NL_OS_WINDOWS
+	ShowWindow (_hWnd, show ? SW_SHOW:SW_HIDE);
+#elif defined(NL_OS_UNIX) // NL_OS_WINDOWS
+	if (show)
+		XMapWindow(dpy, win);
+	else
+		XUnmapWindow(dpy, win);
 #endif // NL_OS_WINDOWS
 }
 

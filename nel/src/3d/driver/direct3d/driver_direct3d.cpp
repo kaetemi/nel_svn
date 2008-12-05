@@ -96,7 +96,7 @@ namespace NL3D
 // ***************************************************************************
 
 // Version of the driver. Not the interface version!! Increment when implementation of the driver change.
-const uint32		CDriverD3D::ReleaseVersion = 0xc; // nico
+const uint32		CDriverD3D::ReleaseVersion = 0xd; // kervala
 
 
 
@@ -1390,7 +1390,7 @@ bool CDriverD3D::setDisplay(void* wnd, const GfxMode& mode, bool show, bool resi
 
 		// Show the window
 		if (show || !_CurrentMode.Windowed)
-			ShowWindow(_HWnd,SW_SHOW);
+			showWindow(true);
 	}
 
 	// Choose an adapter
@@ -2175,9 +2175,23 @@ bool CDriverD3D::getCurrentScreenMode(GfxMode &gfxMode)
 }
 
 // ***************************************************************************
-void CDriverD3D::setWindowTitle(const std::string &title)
+void CDriverD3D::setWindowTitle(const ucstring &title)
 {
-	SetWindowTextA(_HWnd,title.c_str());
+	SetWindowTextW(_HWnd,(WCHAR*)title.c_str());
+}
+
+// ***************************************************************************
+void CDriverD3D::setWindowPos(uint32 x, uint32 y)
+{
+	_WindowX = (sint32)x;
+	_WindowY = (sint32)y;
+	SetWindowPos(_HWnd, NULL, _WindowX, _WindowY, 0, 0, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+}
+
+// ***************************************************************************
+void CDriverD3D::showWindow(bool show)
+{
+	ShowWindow (_HWnd, show ? SW_SHOW:SW_HIDE);
 }
 
 // ***************************************************************************

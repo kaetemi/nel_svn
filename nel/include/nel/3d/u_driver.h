@@ -191,7 +191,13 @@ public:
 	virtual bool			getCurrentScreenMode(CMode &mode)=0;
 
 	/// Set the title of the NeL window
-	virtual void			setWindowTitle(const std::string &title)=0;
+	virtual void			setWindowTitle(const ucstring &title)=0;
+
+	/// Set the position of the NeL window
+	virtual void			setWindowPos(uint32 x, uint32 y)=0;
+
+	/// Show or hide the NeL window
+	virtual void			showWindow(bool show = true)=0;
 
 	/* Pass in dialog box mode. After having called this method, you can use normal GUI.
 	 * In fullscreen under direct3d, the main 3d window is minimized.

@@ -762,8 +762,15 @@ public:
 	virtual void			getWindowSize (uint32 &width, uint32 &height);
 	virtual void			getWindowPos (uint32 &x, uint32 &y);
 	virtual uint8			getBitPerPixel ();
+
 	/// Set the title of the NeL window
-	virtual void			setWindowTitle(const std::string &title);
+	virtual void			setWindowTitle(const ucstring &title);
+
+	/// Set the position of the NeL window
+	virtual void			setWindowPos(uint32 x, uint32 y);
+
+	/// Show or hide the NeL window
+	virtual void			showWindow(bool show);
 
 	// Driver parameters
 	virtual void			disableHardwareVertexProgram();

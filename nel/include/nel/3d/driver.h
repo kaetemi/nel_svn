@@ -192,7 +192,13 @@ public:
 	virtual bool			getModes(std::vector<GfxMode> &modes)=0;
 
 	/// Set the title of the NeL window
-	virtual void			setWindowTitle(const std::string &title)=0;
+	virtual void			setWindowTitle(const ucstring &title)=0;
+
+	/// Set the position of the NeL window
+	virtual void			setWindowPos(uint32 x, uint32 y)=0;
+
+	/// Show or hide the NeL window
+	virtual void			showWindow(bool show)=0;
 
 	/// return the current screen mode (if we are in windowed, return the screen mode behind the window)
 	virtual bool			getCurrentScreenMode(GfxMode &mode)=0;

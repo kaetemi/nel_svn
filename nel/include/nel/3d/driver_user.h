@@ -153,7 +153,13 @@ public:
 	virtual void			endDialogMode();
 
 	/// Set the title of the NeL window
-	virtual void			setWindowTitle(const std::string &title);
+	virtual void			setWindowTitle(const ucstring &title);
+
+	/// Set the position of the NeL window
+	virtual void			setWindowPos(uint32 x, uint32 y);
+
+	/// Show or hide the NeL window
+	virtual void			showWindow(bool show);
 
 	/// Release the window.
 	virtual	void			release();
