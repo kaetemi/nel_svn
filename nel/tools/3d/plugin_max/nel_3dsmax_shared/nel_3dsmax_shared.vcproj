@@ -23,21 +23,6 @@
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="4"
 				InlineFunctionExpansion="1"
@@ -46,7 +31,7 @@
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -54,45 +39,15 @@
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="maxscrpt.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib freetype.lib"
 				OutputFile="..\..\..\..\lib\$(RootNamespace)_d.dll"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmt;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				ImportLibrary="..\..\..\..\lib\$(RootNamespace)_d.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
@@ -103,80 +58,32 @@
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
-				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_USRDLL;NEL_3DSMAX_SHARED_EXPORTS"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_USRDLL;NEL_3DSMAX_SHARED_EXPORTS"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
 				DisableLanguageExtensions="false"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="maxscrpt.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib freetype.lib"
 				OutputFile="..\..\..\..\lib\$(RootNamespace)_r.dll"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libc;libcmtd;msvcrtd;msvcrt"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="..\..\..\..\lib\$(RootNamespace)_r.lib"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 	</Configurations>

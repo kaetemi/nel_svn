@@ -24,18 +24,6 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -46,18 +34,6 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
 		</Configuration>
 	</Configurations>
 	<References>

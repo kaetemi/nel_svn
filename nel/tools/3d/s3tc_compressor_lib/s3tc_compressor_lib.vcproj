@@ -17,129 +17,62 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;_LIB"
+				StringPooling="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
+				EnableFunctionLevelLinking="true"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="$(LibraryS3TC)"
 				OutputFile="..\..\..\lib\$(RootNamespace)_d.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
-				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_LIB"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
+				DisableLanguageExtensions="false"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="$(LibraryS3TC)"
 				OutputFile="..\..\..\lib\$(RootNamespace)_r.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
 			/>
 		</Configuration>
 	</Configurations>

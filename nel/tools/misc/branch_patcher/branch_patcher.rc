@@ -175,7 +175,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\branch_patcher.ico"
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\nevrax_pill_3d_rgba.ico"
 #endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
 

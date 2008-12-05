@@ -17,138 +17,75 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;_CONSOLE"
+				StringPooling="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
+				EnableFunctionLevelLinking="true"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib libxml2.lib zlib.lib freetype.lib"
+				OutputFile="$(RootNamespace)_d.exe"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				SubSystem="1"
+				ImportLibrary="$(RootNamespace)_d.lib"
+				TargetMachine="1"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
-				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;_WINDOWS"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_CONSOLE"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
+				DisableLanguageExtensions="false"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				GenerateDebugInformation="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				AdditionalDependencies="winmm.lib odbc32.lib odbccp32.lib ws2_32.lib libxml2.lib zlib.lib freetype.lib"
+				OutputFile="$(RootNamespace)_r.exe"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(RootNamespace)_r.lib"
+				TargetMachine="1"
 			/>
 		</Configuration>
 	</Configurations>
