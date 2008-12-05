@@ -779,7 +779,7 @@ public:
 	virtual void			disableHardwareTextureShader();
 	virtual void			forceDXTCCompression(bool dxtcComp);
 	virtual void			forceTextureResize(uint divisor);
-	virtual void			forceNativeFragmentPrograms(bool nativeOnly) {} // ignored
+	virtual void			forceNativeFragmentPrograms(bool /* nativeOnly */) {} // ignored
 
 	// Driver informations
 	virtual uint			getNumAdapter() const;
@@ -806,7 +806,7 @@ public:
 	virtual bool			setupTextureEx (ITexture& tex, bool bUpload, bool &bAllUploaded, bool bMustRecreateSharedTexture= false);
 	virtual bool			uploadTexture (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap);
 	// todo hulud d3d texture
-	virtual bool			uploadTextureCube (ITexture& tex, NLMISC::CRect& rect, uint8 nNumMipMap, uint8 nNumFace) {return false;};
+	virtual bool			uploadTextureCube (ITexture& /* tex */, NLMISC::CRect& /* rect */, uint8 /* nNumMipMap */, uint8 /* nNumFace */) {return false;};
 
 	// Material
 	virtual bool			setupMaterial(CMaterial& mat);
@@ -824,7 +824,7 @@ public:
 	virtual	void			getDepthRange(float &znear, float &zfar) const;
 
 	// todo hulud d3d buffers
-	virtual void			getZBuffer (std::vector<float>  &zbuffer) {};
+	virtual void			getZBuffer (std::vector<float>  &/* zbuffer */) {}
 	virtual void			getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect);	// Only 32 bits back buffer supported
 
 	// return true if driver support Bloom effect.
@@ -832,7 +832,7 @@ public:
 
 	// copy the first texture in a second one of different dimensions
 	virtual bool			stretchRect (ITexture * srcText, NLMISC::CRect &srcRect, ITexture * destText, NLMISC::CRect &destRect);	// Only 32 bits back buffer supported
-	virtual bool			isTextureRectangle(ITexture * tex) const {return false;}
+	virtual bool			isTextureRectangle(ITexture * /* tex */) const {return false;}
 	IDirect3DSurface9*		getSurfaceTexture(ITexture * text);
 	void					getDirect3DRect(NLMISC::CRect &rect, RECT & d3dRect);
 
@@ -928,7 +928,7 @@ public:
 	virtual void			enableLight (uint8 num, bool enable=true);
 	virtual void			setLightMapDynamicLight (bool enable, const CLight& light);
 	// todo hulud d3d light
-	virtual void			setPerPixelLightingLight(CRGBA diffuse, CRGBA specular, float shininess) {};
+	virtual void			setPerPixelLightingLight(CRGBA /* diffuse */, CRGBA /* specular */, float /* shininess */) {}
 	virtual void			setAmbientColor (CRGBA color);
 
 	// Fog
@@ -946,15 +946,15 @@ public:
 	// todo hulud d3d adressing mode
 	virtual bool			isWaterShaderSupported() const;
 	// todo hulud d3d adressing mode
-	virtual bool			isTextureAddrModeSupported(CMaterial::TTexAddressingMode mode) const {return false;};
+	virtual bool			isTextureAddrModeSupported(CMaterial::TTexAddressingMode /* mode */) const {return false;};
 	// todo hulud d3d adressing mode
-	virtual void			setMatrix2DForTextureOffsetAddrMode(const uint stage, const float mat[4]) {};
+	virtual void			setMatrix2DForTextureOffsetAddrMode(const uint /* stage */, const float /* mat */[4]) {}
 
 	// EMBM support
 	virtual bool			supportEMBM() const;
 	virtual bool			isEMBMSupportedAtStage(uint stage) const;
 	virtual void			setEMBMMatrix(const uint stage, const float mat[4]);
-	virtual bool			supportPerPixelLighting(bool specular) const {return false;};
+	virtual bool			supportPerPixelLighting(bool /* specular */) const {return false;};
 
 	// index offset support
 	virtual bool			supportIndexOffset() const { return true; /* always supported with D3D driver */ }
@@ -1444,7 +1444,7 @@ public:
 
 		CTextureIndexState &_textureState = _TextureIndexStateCache[stage];
 		#ifdef NL_D3D_USE_RENDER_STATE_CACHE
-			NL_D3D_CACHE_TEST(CacheTest_TextureIndexMode, _textureState.TexGen = texGenEnabled || _textureState.TexGenMode != value)
+			NL_D3D_CACHE_TEST(CacheTest_TextureIndexMode, _textureState.TexGen == texGenEnabled || _textureState.TexGenMode != value)
 		#endif // NL_D3D_USE_RENDER_STATE_CACHE
 		{
 			// Ref on the state

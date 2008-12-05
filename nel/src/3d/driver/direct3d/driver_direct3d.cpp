@@ -522,9 +522,9 @@ void CDriverD3D::initRenderVariables()
 	_IndexBufferCache.IndexBuffer = NULL;
 	_VertexDeclCache.Modified = false;
 	_VertexDeclCache.Decl = NULL;
-	for (i=0; i<MaxLight; i++)
+	for (i=0; i<MaxLight; ++i)
 	{
-		_LightCache[i].LightIndex = i;
+		_LightCache[i].LightIndex = uint8(i);
 		*(uint32*)&(_LightCache[i].Light) = 0xcccccccc;
 		_LightCache[i].Modified = false;
 	}
@@ -874,8 +874,8 @@ void CDriverD3D::replaceAllArgument(DWORD from, DWORD to, DWORD blendOpFrom)
 #endif
 void CDriverD3D::setupConstantDiffuseColorFromLightedMaterial(D3DCOLOR color)
 {
-	for(uint i=1;i<_MaxLight;i++)
-		enableLightInternal(i, false);
+	for(uint i=1;i<_MaxLight;++i)
+		enableLightInternal(uint8(i), false);
 	_LightMapDynamicLightDirty= true;
 	D3DMATERIAL9 d3dMat;
 	setColor(d3dMat.Diffuse, 0.f, 0.f, 0.f, (1.f / 255.f) * (color >> 24));
@@ -1155,8 +1155,8 @@ bool CDriverD3D::handlePossibleSizeChange()
 		GetClientRect (_HWnd, &rect);
 
 		// Setup d3d resolution
-		uint newWidth = rect.right-rect.left;
-		uint newHeight = rect.bottom-rect.top;
+		uint16 newWidth = uint16(rect.right-rect.left);
+		uint16 newHeight = uint16(rect.bottom-rect.top);
 
 		// Set the new mode. Only change the size, keep the last setDisplay/setMode settings
 		GfxMode mode = _CurrentMode;
@@ -3038,7 +3038,7 @@ bool CDriverD3D::setMonitorColorProperties (const CMonitorColorProperties &prope
 
 				// Luminosity
 				value = value + properties.Luminosity[c] / 2.f;
-				ramp[i+(c<<8)] = min (65535, max (0, (int)(value * 65535)));
+				ramp[i+(c<<8)] = (WORD)min (65535, max (0, (int)(value * 65535)));
 			}
 		}
 
@@ -3667,7 +3667,7 @@ bool CDriverD3D::clipRect(NLMISC::CRect &rect)
 	return rect.Width>0 && rect.Height>0;
 }
 
-void CDriverD3D::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect)
+void CDriverD3D::getZBufferPart (std::vector<float>  &/* zbuffer */, NLMISC::CRect &/* rect */)
 {
 /* ace: currently not working
 	zbuffer.clear();

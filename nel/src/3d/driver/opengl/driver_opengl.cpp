@@ -405,7 +405,7 @@ CDriverGL::~CDriverGL()
 }
 
 // ***************************************************************************
-bool CDriverGL::init (uint windowIcon, emptyProc exitFunc)
+bool CDriverGL::init (uint windowIcon, emptyProc /* exitFunc */)
 {
 	H_AUTO_OGL(CDriverGL_init)
 #ifdef NL_OS_WINDOWS
@@ -453,7 +453,7 @@ bool CDriverGL::init (uint windowIcon, emptyProc exitFunc)
 }
 
 // ***************************************************************************
-bool CDriverGL::stretchRect(ITexture * srcText, NLMISC::CRect &srcRect, ITexture * destText, NLMISC::CRect &destRect)
+bool CDriverGL::stretchRect(ITexture * /* srcText */, NLMISC::CRect &/* srcRect */, ITexture * /* destText */, NLMISC::CRect &/* destRect */)
 {
 	H_AUTO_OGL(CDriverGL_stretchRect)
 
@@ -580,7 +580,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 		// Get the
 		HDC tempHDC = GetDC(tmpHWND);
 
-		_Depth=GetDeviceCaps(tempHDC,BITSPIXEL);
+		_Depth=uint8(GetDeviceCaps(tempHDC,BITSPIXEL));
 
 		// ---
 		memset(&_pfd,0,sizeof(_pfd));
@@ -666,7 +666,6 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 		// minimum requirements.
 		int iattributes[2*20];
 		float fattributes[2*20];
-		int nfattribs = 0;
 		int niattribs = 0;
 
 		// Attribute arrays must be "0" terminated - for simplicity, first
@@ -805,7 +804,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 		}
 
 		// Get the depth
-		_Depth = GetDeviceCaps (_hDC, BITSPIXEL);
+		_Depth = uint8(GetDeviceCaps (_hDC, BITSPIXEL));
 
 		// Destroy the temp gl context
 		if (!wglDeleteContext (tempGLRC))
@@ -933,7 +932,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 		_hDC=GetDC(_hWnd);
 		wglMakeCurrent(_hDC,NULL);
 
-		_Depth=GetDeviceCaps(_hDC,BITSPIXEL);
+		_Depth=uint8(GetDeviceCaps(_hDC,BITSPIXEL));
 		// ---
 		memset(&_pfd,0,sizeof(_pfd));
 		_pfd.nSize        = sizeof(_pfd);
@@ -2505,7 +2504,7 @@ void CDriverGL::setCapture (bool b)
 }
 
 
-bool			CDriverGL::clipRect(NLMISC::CRect &rect)
+bool CDriverGL::clipRect(NLMISC::CRect &rect)
 {
 	H_AUTO_OGL(CDriverGL_clipRect)
 	// Clip the wanted rectangle with window.
@@ -2526,7 +2525,7 @@ bool			CDriverGL::clipRect(NLMISC::CRect &rect)
 
 
 
-void			CDriverGL::getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect)
+void CDriverGL::getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect)
 {
 	H_AUTO_OGL(CDriverGL_getBufferPart )
 	bitmap.reset();
@@ -2535,13 +2534,10 @@ void			CDriverGL::getBufferPart (CBitmap &bitmap, NLMISC::CRect &rect)
 	{
 		bitmap.resize(rect.Width, rect.Height, CBitmap::RGBA);
 		glReadPixels (rect.X, rect.Y, rect.Width, rect.Height, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.getPixels ().getPtr());
-
-
 	}
 }
 
-
-void			CDriverGL::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect)
+void CDriverGL::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &rect)
 {
 	H_AUTO_OGL(CDriverGL_getZBufferPart )
 	zbuffer.clear();
@@ -2552,13 +2548,10 @@ void			CDriverGL::getZBufferPart (std::vector<float>  &zbuffer, NLMISC::CRect &r
 		glPixelTransferf(GL_DEPTH_SCALE, 1.0f) ;
 		glPixelTransferf(GL_DEPTH_BIAS, 0.f) ;
 		glReadPixels (rect.X, rect.Y, rect.Width, rect.Height, GL_DEPTH_COMPONENT , GL_FLOAT, &(zbuffer[0]));
-
-
 	}
 }
 
-
-void			CDriverGL::getZBuffer (std::vector<float>  &zbuffer)
+void CDriverGL::getZBuffer (std::vector<float>  &zbuffer)
 {
 	H_AUTO_OGL(CDriverGL_getZBuffer )
 	CRect	rect(0,0);
@@ -2837,7 +2830,7 @@ bool CDriverGL::isWaterShaderSupported() const
 }
 
 // ***************************************************************************
-bool CDriverGL::isTextureAddrModeSupported(CMaterial::TTexAddressingMode mode) const
+bool CDriverGL::isTextureAddrModeSupported(CMaterial::TTexAddressingMode /* mode */) const
 {
 	H_AUTO_OGL(CDriverGL_isTextureAddrModeSupported)
 
@@ -3118,7 +3111,7 @@ bool			CDriverGL::setMonitorColorProperties (const CMonitorColorProperties &prop
 
 				// Luminosity
 				value = value + properties.Luminosity[c] / 2.f;
-				ramp[i+(c<<8)] = min (65535, max (0, (int)(value * 65535)));
+				ramp[i+(c<<8)] = (WORD)min ((int)65535, max (0, (int)(value * 65535)));
 			}
 		}
 
@@ -3751,13 +3744,13 @@ void CDriverGL::startProfileIBLock()
 }
 
 // ***************************************************************************
-void CDriverGL::endProfileIBLock(std::vector<std::string> &result)
+void CDriverGL::endProfileIBLock(std::vector<std::string> &/* result */)
 {
 	// not implemented
 }
 
 // ***************************************************************************
-void CDriverGL::profileIBAllocation(std::vector<std::string> &result)
+void CDriverGL::profileIBAllocation(std::vector<std::string> &/* result */)
 {
 	// not implemented
 }
@@ -3972,7 +3965,7 @@ CVertexBuffer::TVertexColorType CDriverGL::getVertexColorFormat() const
 
 // ***************************************************************************
 
-bool CDriverGL::activeShader(CShader *shd)
+bool CDriverGL::activeShader(CShader * /* shd */)
 {
 	H_AUTO_OGL(CDriverGL_activeShader)
 
