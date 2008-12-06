@@ -105,6 +105,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver_openal", "..\nel\src
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver_xaudio2", "..\nel\src\sound\driver\xaudio2\driver_xaudio2.vcproj", "{23DCF574-1CEB-4DF4-9C59-D614580AC0C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44B21233-EFCC-4825-B5E5-3A3BD6CC5516} = {44B21233-EFCC-4825-B5E5-3A3BD6CC5516}
+		{89064E9B-14E9-4FB2-8536-A9151DF55C68} = {89064E9B-14E9-4FB2-8536-A9151DF55C68}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "collision_service", "server\collision\collision.vcproj", "{25E3F0B4-3DB2-43D3-B662-7C1095E73F62}"
 	ProjectSection(ProjectDependencies) = postProject
