@@ -669,12 +669,13 @@ private:
 	bool						_OffScreen;
 	uint						_Interval;
 
+	sint32						_WindowWidth, _WindowHeight, _WindowX, _WindowY;
+
 #ifdef NL_OS_WINDOWS
 
 	friend static bool GlWndProc(CDriverGL *driver, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	HWND						_hWnd;
-	sint32						_WindowWidth, _WindowHeight, _WindowX, _WindowY;
 	HDC							_hDC;
 	PIXELFORMATDESCRIPTOR		_pfd;
     HGLRC						_hRC;
