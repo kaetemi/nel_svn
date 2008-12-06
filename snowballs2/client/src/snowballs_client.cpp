@@ -35,9 +35,11 @@
 #include <ctime>
 #include <string>
 #include <vector>
-#include <direct.h>
 #include <stdio.h>
-#include <tchar.h>
+#if defined(NL_OS_WINDOWS)
+#	include <direct.h>
+#	include <tchar.h>
+#endif
 
 // NeL includes
 #include <nel/misc/config_file.h>
