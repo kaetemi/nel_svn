@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="configfile"
-	ProjectGUID="{F15C4E9E-FEF4-4FFC-A8A7-DFA6E9CACB7B}"
-	RootNamespace="configfile"
+	Name="font"
+	ProjectGUID="{F672DDD3-B793-4864-80E2-B76FB34856C4}"
+	RootNamespace="main"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -168,10 +168,6 @@
 	<Files>
 		<File
 			RelativePath=".\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\simpletest.txt"
 			>
 		</File>
 	</Files>

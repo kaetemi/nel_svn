@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="configfile"
-	ProjectGUID="{F15C4E9E-FEF4-4FFC-A8A7-DFA6E9CACB7B}"
-	RootNamespace="configfile"
+	Name="shape_viewer"
+	ProjectGUID="{5792755F-5122-4145-B66A-FE04A650163C}"
+	RootNamespace="shape_viewer"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -17,11 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -61,8 +59,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="nl3d_d.lib nlmisc_d.lib"
+				OutputFile="..\..\..\lib\$(ProjectName)_d.exe"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -89,11 +90,9 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -136,9 +135,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="nl3d_r.lib nlmisc_r.lib"
+				OutputFile="..\..\..\lib\$(ProjectName)_r.exe"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -168,10 +172,6 @@
 	<Files>
 		<File
 			RelativePath=".\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\simpletest.txt"
 			>
 		</File>
 	</Files>

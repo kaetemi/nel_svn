@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype219MT_D.lib libxml2_a.lib odbc32.lib odbccp32.lib ws2_32.lib"
+				AdditionalDependencies=""
 				OutputFile=".\Debug/sound_sources.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -96,7 +96,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype219MT.lib libxml2_a.lib odbc32.lib odbccp32.lib ws2_32.lib"
+				AdditionalDependencies=""
 				OutputFile=".\Release/sound_sources.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

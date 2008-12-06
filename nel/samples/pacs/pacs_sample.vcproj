@@ -18,7 +18,6 @@
 		<Configuration
 			Name="Debug|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_d_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -27,7 +26,6 @@
 		<Configuration
 			Name="DebugFast|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_df_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -36,7 +34,6 @@
 		<Configuration
 			Name="DebugStatic|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_ds_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -45,7 +42,6 @@
 		<Configuration
 			Name="Release|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_r_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -55,7 +51,6 @@
 		<Configuration
 			Name="ReleaseDebug|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_rd_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -65,7 +60,6 @@
 		<Configuration
 			Name="ReleaseDebugStatic|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\src\nel_vs90_rds_exe_windows.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
