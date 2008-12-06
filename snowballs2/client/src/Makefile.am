@@ -10,26 +10,24 @@ snowballs_SOURCES    = animation.cpp                       \
                        animation.h                         \
                        camera.cpp                          \
                        camera.h                            \
-                       client.cpp                          \
-                       client.h                            \
                        commands.cpp                        \
                        commands.h                          \
                        compass.cpp                         \
                        compass.h                           \
-                       component.cpp                       \
-                       component.h                         \
-                       component_manager.cpp               \
-                       component_manager.h                 \
+                       configuration.cpp                   \
+                       configuration.h                     \
                        entities.cpp                        \
                        entities.h                          \
+                       game_time.cpp                       \
+                       game_time.h                         \
                        graph.cpp                           \
                        graph.h                             \
                        interface.cpp                       \
                        interface.h                         \
+                       internationalization.cpp            \
+                       internationalization.h              \
                        landscape.cpp                       \
                        landscape.h                         \
-                       landscape_component.cpp             \
-                       landscape_component.h               \
                        lens_flare.cpp                      \
                        lens_flare.h                        \
                        mouse_listener.cpp                  \
@@ -44,8 +42,9 @@ snowballs_SOURCES    = animation.cpp                       \
                        radar.h                             \
                        snowballs_client.cpp                \
                        snowballs_client.h                  \
-                       sub_configuration.cpp               \
-                       sub_configuration.h
+                       snowballs_config.h                  \
+                       sound.cpp                           \
+                       sound.h
 
 snowballs_LDADD      = @FREETYPE_LIBS@ @OPENAL_LIBS@
 
