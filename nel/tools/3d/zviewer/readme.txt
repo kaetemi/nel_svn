@@ -138,12 +138,99 @@ SUBTRACT : diminuer la hauteur des yeux
  
 ZViewer allows you to view one or more zones exported from 3DSMax inside the NeL Engine
 
+1. zviewer.cfg File
+   ----------------
 
-When you run ZViewer for the first time if no configuration file is located one will be created with default values.
+
+When you run ZViewer for the first time if no  ZVIEWER.CFG configuration file is located one will be created with default values.
 The Configuration file defines the zones to load and other vital information and will not work in it's default state
 
+Config Example :
 
-Keys 
+FullScreen = 0;	
+Width = 800;    
+Height = 600; 
+Depth = 32;	
+Position = { 1088.9, -925.7, -1234.0 }; 
+EyesHeight = 1.80;  
+Background = { 100, 100, 255 }; 
+ZFar = 1000.0;	               
+LandscapeTileNear = 50.0;       
+LandscapeThreshold = 0.001;    
+BanksPath = "C:\WINDOWS\Bureau\zviewer\" ;
+Bank = "fyros_landf.bank" ;
+TilesPath = "C:\WINDOWS\Bureau\zviewer\tiles" ;
+ZonesPath = "C:\WINDOWS\Bureau\zviewer\zones" ;
+IgPath = "C:\WINDOWS\Bureau\zviewer\ig" ;
+ShapePath = "C:\WINDOWS\Bureau\zviewer\shapes" ;
+MapsPath = "C:\WINDOWS\Bureau\zviewer\maps" ;
+Zones = { "3_AC.zonel","3_AD.zonel" }; 
+Zonessave = { "3_AC.zonel","3_AD.zonel" }; 
+Zones = { "3_AC.zonel","3_AD.zonel" }; 
+Ig = { "3_AC.ig","3_AD.ig" }; 
+
+With :
+
+Fullscreen :
+0 : windowed 
+1 : fullscreen
+
+Width :
+width of the window.
+
+Height :
+height of the window.
+
+Depth :
+Color depth (32bits,24bits,...).
+
+Position :
+Initial position (x,y,z). Corresponding to Max Coordinates (Generic Units).
+The position is automatically snaped to the ground whatever the Z-Coordinate value is.
+
+EyesHeight :
+Eyes height in Walk mode.
+
+Background :
+rgb background color.
+
+ZFar :
+Clipping distance. the higher the distance is, the further u will see.
+
+LandscapeTileNear :
+Near value. the higher the value is, the wider the near zone will be.
+
+LandscapeThreshold :
+Threshold used for Adaptative Degradation. the higher this value is, the lower 
+the Subdivision Quality will be (Reduce calculation time). Minimal value by default (0.001)
+
+BanksPath :
+Banks path (same path for <bank>.bank and <bank>.farbank).
+
+Bank :
+Banks Name (same prefix for .bank and .farbank)
+
+ZonesPath :
+Zones path.
+
+Zones :
+Zones names List.
+
+
+2. Moving
+   ------
+
+Moving is done by using both Keyboard and Mouse.
+- Change Look orientation using Mouse
+- Move using Keyboard
+
+Two move modes are available : FreeLook and Walk (by default).
+- In FreeLook mode, The camera follows Look orientation (same as cstrike)
+- In Walk Mode, The camera is snaped to the ground, at eyes height.
+
+
+3. Keys
+   ----
 
 ESC: exit ZViewer
 F1: toggles information

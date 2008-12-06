@@ -1,7 +1,5 @@
 /** \file zviewer.cpp
  *
- *
- * $Id: zviewer.cpp,v 1.21 2007-03-19 09:55:28 boucher Exp $
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -23,32 +21,31 @@
  * MA 02111-1307, USA.
  */
 
-#include "nel/misc/types_nl.h"
-#include "nel/misc/config_file.h"
-#include "nel/misc/debug.h"
-#include "nel/misc/path.h"
-#include "nel/misc/i18n.h"
+#include <string>
+#include <deque>
 
-#include "nel/3d/driver.h"
-#include "nel/3d/camera.h"
-#include "nel/3d/landscape_model.h"
-#include "nel/3d/landscape.h"
-#include "nel/3d/text_context.h"
-#include "nel/3d/mini_col.h"
-#include "nel/3d/nelu.h"
-#include "nel/3d//scene_group.h"
-#include "nel/3d/texture_file.h"
+#include <nel/misc/types_nl.h>
+#include <nel/misc/config_file.h>
+#include <nel/misc/debug.h>
+#include <nel/misc/path.h>
+#include <nel/misc/i18n.h>
+
+#include <nel/3d/driver.h>
+#include <nel/3d/camera.h>
+#include <nel/3d/landscape_model.h>
+#include <nel/3d/landscape.h>
+#include <nel/3d/text_context.h>
+#include <nel/3d/mini_col.h>
+#include <nel/3d/nelu.h>
+#include <nel/3d/scene_group.h>
+#include <nel/3d/texture_file.h>
 
 //#include "nel/net/local_entity.h"
 
 #include "move_listener.h"
 
 // Tempyoyo.
-#include "nel/3d/height_map.h"
-
-
-#include <string>
-#include <deque>
+#include <nel/3d/height_map.h>
 
 using namespace std;
 using namespace NLMISC;
@@ -341,9 +338,8 @@ void displayZones()
 
 	// HeightField.
 	CBitmap		heightBitmap;
-	CIFile		heightfieldFile(ViewerCfg.HeightFieldName);
 
-	if( ViewerCfg.HeightFieldName!="" && heightBitmap.load(heightfieldFile) )
+	if( ViewerCfg.HeightFieldName!="" && heightBitmap.load(CIFile(ViewerCfg.HeightFieldName)) )
 	{
 		CHeightMap	heightMap;
 		heightMap.buildFromBitmap(heightBitmap);
@@ -372,7 +368,7 @@ void displayZones()
 		nlerror (tmp.c_str());
 	}
 
-	if ((Landscape->Landscape.TileBank.getAbsPath ()!="")&&(ViewerCfg.TilesPath!=""))
+	if ((Landscape->Landscape.TileBank.getAbsPath ()=="")&&(ViewerCfg.TilesPath!=""))
 		Landscape->Landscape.TileBank.setAbsPath (ViewerCfg.TilesPath + "/");
 
 	if (ViewerCfg.UseDDS)
@@ -657,27 +653,26 @@ void displayZones()
 
 			
 			ViewerCfg.TextContext.setFontSize(12);
-			ViewerCfg.TextContext.setHotSpot(CComputedString::MiddleTop);
 			ViewerCfg.TextContext.setColor(CRGBA(255,255,255));
 
 			// Display fps.
-			ViewerCfg.TextContext.printfAt(0.05f,0.99f,"%.1f fps",1/dt);
+			ViewerCfg.TextContext.printfAt(0.05f,0.98f,"%.1f fps",1/dt);
 
 			// Display ms
-			ViewerCfg.TextContext.printfAt(0.12f,0.99f,"%d ms",dt64);
+			ViewerCfg.TextContext.printfAt(0.12f,0.98f,"%d ms",dt64);
 
 			// Display Tile Near
-			ViewerCfg.TextContext.printfAt(0.75f,0.99f,"Tile Near : %.1f",tileNear);
+			ViewerCfg.TextContext.printfAt(0.75f,0.98f,"Tile Near : %.1f",tileNear);
 
 			//Display moving mode
 			ViewerCfg.TextContext.setColor(CRGBA(255,0,0));
 			switch(MoveListener.getMode())
 			{
 				case CMoveListener::WALK :
-					ViewerCfg.TextContext.printfAt(0.5f,0.99f,"Walk Mode");
+					ViewerCfg.TextContext.printfAt(0.5f,0.98f,"Walk Mode");
 					break;
 				case CMoveListener::FREE :
-					ViewerCfg.TextContext.printfAt(0.5f,0.99f,"Free-Look Mode");
+					ViewerCfg.TextContext.printfAt(0.5f,0.98f,"Free-Look Mode");
 					break;
 				default:
 					break;
@@ -685,10 +680,10 @@ void displayZones()
 			ViewerCfg.TextContext.setColor(CRGBA(255,255,255));
 
 			// Display Threshold
-			ViewerCfg.TextContext.printfAt(0.3f,0.99f,"Threshold : %.3f",threshold);
+			ViewerCfg.TextContext.printfAt(0.3f,0.98f,"Threshold : %.3f",threshold);
 
 			// Display Clip Far
-			ViewerCfg.TextContext.printfAt(0.92f,0.99f,"Clip Far : %.1f",zfar);
+			ViewerCfg.TextContext.printfAt(0.92f,0.98f,"Clip Far : %.1f",zfar);
 
 			
 			ViewerCfg.TextContext.setHotSpot(CComputedString::MiddleBottom);
@@ -751,7 +746,7 @@ void writeConfigFile(const char * configFileName)
 
 	if(f==NULL)
 	{
-		fprintf(stderr,"can't open file '%s'\n",configFileName);
+		nlerror("can't open file '%s'\n",configFileName);
 	}
 
 	fprintf(f,"FullScreen = %d;\n",ViewerCfg.Windowed?0:1);
@@ -948,7 +943,7 @@ void initViewerConfig(const char * configFileName)
 	}
 	catch (EConfigFile &e)
 	{
-		printf ("Problem in config file : %s\n", e.what ());
+		nlerror("Problem in config file : %s\n", e.what ());
 	}
 
 }
@@ -956,18 +951,25 @@ void initViewerConfig(const char * configFileName)
 /****************************************************************\
 							MAIN
 \****************************************************************/
-int main()
+#ifdef NL_OS_WINDOWS
+int WINAPI WinMain(HINSTANCE /* hInstance */, HINSTANCE /* hPrevInstance */, LPSTR cmdline, int /* nCmdShow */)
 {
+#else
+int main(int /* argc */, char ** /* argv */)
+{
+#endif
 	try
 	{
-		// Init NELU
-		NL3D::CNELU::init(ViewerCfg.Width, ViewerCfg.Height, CViewport(), ViewerCfg.Depth, ViewerCfg.Windowed, NULL, false, false);
-		NL3D::CNELU::Camera->setTransformMode(ITransformable::DirectMatrix);
-
-		// Init the font manager
+		NLMISC::CApplicationContext myApplicationContext;
 
 		initViewerConfig("zviewer.cfg");
 
+		// Init NELU
+		NL3D::CNELU::init(ViewerCfg.Width, ViewerCfg.Height, CViewport(), ViewerCfg.Depth, ViewerCfg.Windowed, NULL, false, false);
+		NL3D::CNELU::Driver->setWindowTitle(ucstring("NeL ZViewer"));
+		NL3D::CNELU::Camera->setTransformMode(ITransformable::DirectMatrix);
+
+		// Init the font manager
 		ViewerCfg.TextContext.init (CNELU::Driver, &ViewerCfg.FontManager);
 		ViewerCfg.TextContext.setFontGenerator(ViewerCfg.FontPath);
 		ViewerCfg.TextContext.setFontSize(12);
@@ -977,11 +979,10 @@ int main()
 			
 		// release nelu
 		NL3D::CNELU::release();
-		
 	}
 	catch (Exception &e)
 	{
-		fprintf (stderr,"main trapped an exception: '%s'", e.what ());
+		nlerror("main trapped an exception: '%s'", e.what ());
 	}
 
 	return 0;
