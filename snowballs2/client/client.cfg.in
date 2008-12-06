@@ -9,11 +9,33 @@
 // and the new values will be reloaded automatically in the client.
 //
 
+
+//////////////////////////////////////////////////////////////////////////////
+// Snowballs 2 ///////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+// Root directory where we can find the client datas (zones, tiles, maps, ...)
+SearchPaths = { "@database@" };
+
+// Which extensions to remap to what if needed (pairs of 2)
+RemapExtensions = { "dss", "tga" };
+
+// The language code of the client
+LanguageCode = "en";
+
+// If changes to the config should be saved on exit
+SaveConfig = 1;
+
 // Font name used for all text in the client (it can be a .ttf, .fon, .pfb)
 FontName = "n019003l.pfb";
 
-// Root directory where we can find the client datas (zones, tiles, maps, ...)
-DataPath = "@database@";
+
+//////////////////////////////////////////////////////////////////////////////
+// Time //////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+FpsSmoothing = 64;
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Screen Variables //////////////////////////////////////////////////////////
@@ -33,48 +55,19 @@ ScreenFull = 0;
 // Start position of the player (the z is always 0)
 StartPoint = { 1840.0, -970.0, 0.0 };
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Sound Variables ///////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 // The sound driver, choose between "Auto", "FMod", "DSound" and "OpenAl"
-SoundDriver          = "OpenAL";
+SoundDriver          = "FMod";
 SoundMaxTracks       = 32;
 SoundUseEax          = 1;
 SoundUseADPCM        = 1;
 SoundForceSoftware   = 1;
 SoundEnabled         = 1;
 
-// Music playlists
-// Set loop to 0 to play once, 1 to repeat the same music, and 2 to loop trough the playlist
-SoundPlaylist_Count       = 3;
-
-// Loading music, uses first one only
-SoundPlaylist_0_Volume = 0.1;
-SoundPlaylist_0_Fade   = 0;
-SoundPlaylist_0_Async  = 0;
-SoundPlaylist_0_Loop   = 1;
-SoundPlaylist_0_Music  = {
-	"xtarsia_evil-snowballs_wait.ogg" 
-};
-
-// Login screen music, uses first one only
-SoundPlaylist_1_Volume = 0.1;
-SoundPlaylist_1_Fade   = 2000;
-SoundPlaylist_1_Async  = 1;
-SoundPlaylist_1_Loop   = 1;
-SoundPlaylist_1_Music  = {
-	"xtarsia_evil-snowballs_login.ogg" 
-};
-
-// Ingame music, second one is played when the player is leading the game
-SoundPlaylist_2_Volume = 0.1;
-SoundPlaylist_2_Fade   = 2000;
-SoundPlaylist_2_Async  = 1;
-SoundPlaylist_2_Loop   = 1;
-SoundPlaylist_2_Music  = {
-	"xtarsia_evil-snowballs_game.ogg", "xtarsia_evil-snowballs_beat.ogg" 
-};
 
 //////////////////////////////////////////////////////////////////////////////
 // Mouse Variables ///////////////////////////////////////////////////////////
@@ -95,6 +88,7 @@ ViewHeight = 4.5;
 // Initial height of the target relative to the character
 ViewTargetHeight = 4.0;
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Entities Variables ////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -105,6 +99,7 @@ EntityNameColor = { 255, 255, 255, 255 };
 // Font size of the entity name
 EntityNameSize = 16;
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Commands interface Variables //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -113,7 +108,7 @@ EntityNameSize = 16;
 ShowCommands = 1;
 
 // If 1, display graph
-ShowGraph = 0;
+ShowGraph = 1;
 
 // Position & size of the command interface
 CommandsBoxX = 0.02;
@@ -135,6 +130,7 @@ CommandsFrontColor = { 255, 255, 255, 255 };
 
 // Font size for the command lines
 CommandsFontSize = 14;
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Radar interface Variables /////////////////////////////////////////////////
@@ -184,6 +180,7 @@ RadarParticularPlaces = {
 	"2133.0", "-471.0", "PingooVillage",
 };
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Login Variables ///////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -192,7 +189,10 @@ RadarParticularPlaces = {
 Local = 1;
 
 // Address of the login system (should be itsalive.nevrax.org)
-LSHost = "itsalive.nevrax.org";
+LSHost = "localhost";
+
+// Address of the frontend system (should be itsalive.nevrax.org)
+FSHost = "localhost";
 
 // Your login
 Login = "";
@@ -209,34 +209,36 @@ UseDirectClient = 1;
 
 ClientApplication = "sample";
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Landscape Variables ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 // Name of the landscape data
-Landscape_BankName = "bank.bank";
-Landscape_FarBankName = "bank.farbank";
+LandscapeBankName = "bank.bank";
+LandscapeFarBankName = "bank.farbank";
 
 // Landscape color (can't be modified in real time)
-Landscape_AmbiantColor = { 17, 54, 100 };
-Landscape_DiffuseColor = { 241, 226, 244 };
-Landscape_MultiplyFactor = 1.1;
+LandscapeAmbiantColor = { 17, 54, 100 };
+LandscapeDiffuseColor = { 241, 226, 244 };
+LandscapeMultiplyFactor = 1.1;
 
 // Landscape view distance for zone loading
-Landscape_VisionInitial = 250.0;
-Landscape_Vision = 500.0;
+LandscapeVisionInitial = 250.0;
+LandscapeVision = 500.0;
 
 // Enable the landscape to receive dynamic shadows
-Landscape_ReceiveShadowMap = 1;
+LandscapeReceiveShadowMap = 1;
 
 // Landscape tesselation
-Landscape_TileNear = 50.0;	// more is bigger more is faster
-Landscape_Threshold = 0.001;	// more is bigger more is faster
+LandscapeTileNear = 50.0;	// more is bigger more is faster
+LandscapeThreshold = 0.001;	// more is bigger more is faster
 
 SunAmbientColor = { 255, 255, 255 };
 SunDiffuseColor = { 255, 255, 255 };
 SunSpecularColor = { 255, 255, 255};
 SunDirection = { -2.935, +0.107, -1.22 };
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Fog Variables /////////////////////////////////////////////////////////////
@@ -251,6 +253,7 @@ FogColor = { 80, 77, 118 };
 RetrieverBankName = "snowballs.rbank";
 GlobalRetrieverName = "snowballs.gr";
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Compass interface Variables ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -262,6 +265,7 @@ CompassRadius = 0.020;
 
 // Color of the compass
 CompassColor = { 150, 50, 255, 150 };
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Instance groups ///////////////////////////////////////////////////////////
