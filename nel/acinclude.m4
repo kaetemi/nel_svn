@@ -77,9 +77,7 @@ AC_DEFUN([AM_NEL_DEBUG],
 MAX_C_OPTIMIZE="-O6"
 
 NL_DEBUG="-DNL_DEBUG"
-NL_DEBUG_FAST="-DNL_DEBUG_FAST"
-NL_RELEASE_DEBUG="-DNL_RELEASE_DEBUG"
-NL_RELEASE="-DNL_RELEASE_DEBUG"
+NL_RELEASE="-DNL_RELEASE"
 
 AC_ARG_WITH(debug,
     [  --with-debug[=full|medium|fast]
@@ -122,8 +120,8 @@ fi
 if test "$with_debug" = "yes" -o "$with_debug" = "medium"
 then
     # Medium debug. Inline optimization
-    CFLAGS="$DEBUG_CFLAGS $OPTIMIZE_INLINE_CFLAGS $NL_DEBUG $NL_DEBUG_FAST $CFLAGS"
-    CXXFLAGS="$DEBUG_CXXFLAGS $OPTIMIZE_INLINE_CXXFLAGS $NL_DEBUG $NL_DEBUG_FAST $CXXFLAGS"
+    CFLAGS="$DEBUG_CFLAGS $OPTIMIZE_INLINE_CFLAGS $NL_DEBUG $CFLAGS"
+    CXXFLAGS="$DEBUG_CXXFLAGS $OPTIMIZE_INLINE_CXXFLAGS $NL_DEBUG $CXXFLAGS"
 else
     if test "$with_debug" = "full"
     then
@@ -138,8 +136,8 @@ else
             CXXFLAGS="$DEBUG_CXXFLAGS $DEBUG_OPTIMIZE_CXX $OPTIMIZE_INLINE_CXXFLAGS $NL_DEBUG $CXXFLAGS"
         else
             # Optimized version. No debug
-            CFLAGS="$OPTIMIZE_CFLAGS $NL_RELEASE_DEBUG $CFLAGS"
-            CXXFLAGS="$OPTIMIZE_CXXFLAGS $NL_RELEASE_DEBUG $CXXFLAGS"
+            CFLAGS="$OPTIMIZE_CFLAGS $NL_RELEASE $CFLAGS"
+            CXXFLAGS="$OPTIMIZE_CXXFLAGS $NL_RELEASE $CXXFLAGS"
         fi
     fi
 fi
@@ -186,7 +184,7 @@ then
     else
         if test "$is_mandatory" = "yes"
         then
-            AC_MSG_ERROR([$chk_message_obj must be installed (http://www.nevrax.org).])
+            AC_MSG_ERROR([$chk_message_obj must be installed (http://dev.ryzom.com).])
         else
             AC_MSG_RESULT(no)
         fi
@@ -210,7 +208,7 @@ is_mandatory="$3"
 if test $is_mandatory = "yes"
 then
 
-    AC_CHECK_LIB($nel_test_lib, main,,[AC_MSG_ERROR([$chk_message_obj must be installed (http://www.nevrax.org).])])
+    AC_CHECK_LIB($nel_test_lib, main,,[AC_MSG_ERROR([$chk_message_obj must be installed (http://dev.ryzom.com).])])
 fi
 ])
 
@@ -430,7 +428,7 @@ if test "$have_glext" = "yes"
 then
     AC_MSG_RESULT(yes)
 else
-    AC_MSG_RESULT([no, <GL/glext.h> can be downloaded from http://oss.sgi.com/projects/ogl-sample/ABI/])
+    AC_MSG_RESULT([no, <GL/glext.h> can be downloaded from http://www.opengl.org/registry/])
 fi
     
 # Test the libraries
