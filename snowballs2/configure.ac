@@ -1,9 +1,6 @@
 dnl ====================================================================
 dnl Configuration script for Snowballs 2
 dnl ====================================================================
-dnl
-dnl $Id: configure.in,v 1.16 2002-07-08 15:10:16 lecroart Exp $
-dnl 
 
 
 dnl ====================================================================
@@ -171,6 +168,18 @@ dnl OpenAL
 
 AM_PATH_OPENAL($enable_client)
 
+
+dnl ====================================================================
+dnl LibXML
+
+dnl Use C compiler as a default for the libxml tests.
+AC_LANG([C])
+
+AM_PATH_XML2([2.0.0], [], [AC_MSG_ERROR([libxml2 must be installed])])
+
+CXXFLAGS="$CXXFLAGS $XML_CFLAGS $XML_CPPFLAGS"
+
+LIBS="$LIBS $XML_LIBS"
 
 dnl ====================================================================
 dnl NeL
