@@ -1673,7 +1673,7 @@ void CDriverGL::setWindowPos(uint32 x, uint32 y)
 #ifdef NL_OS_WINDOWS
 	SetWindowPos(_hWnd, NULL, _WindowX, _WindowY, 0, 0, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 #elif defined(NL_OS_UNIX) // NL_OS_WINDOWS
-	XMoveWindow(dpy, win, _WindowX, _WindowY)
+	XMoveWindow(dpy, win, _WindowX, _WindowY);
 #endif // NL_OS_WINDOWS
 }
 
