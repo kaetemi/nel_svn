@@ -12,7 +12,7 @@ Darwin)
 esac
 
 echo "Creating macros..." && \
-aclocal -I automacros/ && \
+aclocal && \
 echo "Creating library tools..." && \
 $LIBTOOLIZE --force && \
 echo "Creating header templates..." && \
