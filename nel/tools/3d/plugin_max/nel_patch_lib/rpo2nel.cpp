@@ -24,13 +24,14 @@
  */
 
 #include "stdafx.h"
-#include "rpo.h"
-#include "nel/3d/zone.h"
-#include "nel/3d/zone_symmetrisation.h"
 
 // For MAX_RELEASE
 #include <plugapi.h>
 #include <MaxScrpt/maxscrpt.h>
+
+#include "rpo.h"
+#include "nel/3d/zone.h"
+#include "nel/3d/zone_symmetrisation.h"
 
 using namespace std;
 using namespace NL3D;
