@@ -338,8 +338,9 @@ void displayZones()
 
 	// HeightField.
 	CBitmap		heightBitmap;
+	CIFile file(ViewerCfg.HeightFieldName);
 
-	if( ViewerCfg.HeightFieldName!="" && heightBitmap.load(CIFile(ViewerCfg.HeightFieldName)) )
+	if( ViewerCfg.HeightFieldName!="" && heightBitmap.load(file) )
 	{
 		CHeightMap	heightMap;
 		heightMap.buildFromBitmap(heightBitmap);

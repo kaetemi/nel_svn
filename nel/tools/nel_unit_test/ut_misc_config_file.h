@@ -3,6 +3,10 @@
 
 #include <nel/misc/path.h>
 
+#ifndef NEL_UNIT_BASE
+#define NEL_UNIT_BASE ""
+#endif // NEL_UNIT_BASE
+
 // Test suite for CConfigFile class
 class CUTMiscConfigFile : public Test::Suite
 {
@@ -34,7 +38,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_include.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_DATA # "ut_misc_files/cfg_with_include.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);

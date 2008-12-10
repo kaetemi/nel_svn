@@ -177,7 +177,7 @@
 // Define this if you want to use GTK for gtk_displayer
 
 //#define NL_USE_GTK
-#undef NL_USE_GTK
+//#undef NL_USE_GTK
 
 // Define this if you want to remove all assert, debug code...
 // You should never need to define this since it's always good to have assert, even in release mode

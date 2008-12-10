@@ -22,7 +22,7 @@ public:
 			master.serial(i);
 		}
 
-		sint32 sizes[4];
+		uint32 sizes[4];
 
 		// serial 4 sub messages
 		for (uint i=0; i<4; ++i)

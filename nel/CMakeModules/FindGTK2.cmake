@@ -104,6 +104,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
       PATHS
         ${_GLIB2IncDir}
         /usr/include
+	/usr/include/gtkgl-2.0
         /usr/local/include
         /usr/openwin/share/include
         /opt/gnome/include
@@ -278,7 +279,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
 
     find_library(GTK2_GTKGL_LIBRARY
       NAMES
-        gtkgl
+        gtkgl-2.0
       PATHS
         ${_GTK2LinkDir}
         /usr/lib
@@ -391,7 +392,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
                         set(GTK2_GTKGL_FOUND TRUE)
 
                         set(GTK2_INCLUDE_DIRS
-                          ${GTK2_INCLUDE_DIR}
+                          ${GTK2_INCLUDE_DIRS}
                           ${GTK2_GTKGL_INCLUDE_DIR}
                         )
 
@@ -429,6 +430,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
       message(SEND_ERROR "Could not find GTK2-X11")
     endif (GTK2_GTK_LIBRARY AND GTK2_GTK_INCLUDE_DIR)
 
+    MESSAGE("gtk2 include dirs " ${GTK2_INCLUDE_DIRS})
 
     if (GTK2_INCLUDE_DIRS AND GTK2_LIBRARIES)
        set(GTK2_FOUND TRUE)
