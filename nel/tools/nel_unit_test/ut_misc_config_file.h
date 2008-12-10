@@ -38,7 +38,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_DATA # "ut_misc_files/cfg_with_include.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_DATA "ut_misc_files/cfg_with_include.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);

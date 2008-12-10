@@ -8,6 +8,10 @@
 
 using namespace std;
 
+#ifdef NL_OS_WINDOWS
+#	define NEL_UNIT_DATA ""
+#endif
+
 #include "ut_misc.h"
 #include "ut_net.h"
 #include "ut_ligo.h"
