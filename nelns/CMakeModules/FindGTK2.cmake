@@ -104,6 +104,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
       PATHS
         ${_GLIB2IncDir}
         /usr/include
+	/usr/include/gtkgl-2.0
         /usr/local/include
         /usr/openwin/share/include
         /opt/gnome/include
@@ -278,7 +279,7 @@ else (GTK2_LIBRARIES AND GTK2_INCLUDE_DIRS)
 
     find_library(GTK2_GTKGL_LIBRARY
       NAMES
-        gtkgl
+        gtkgl-2.0
       PATHS
         ${_GTK2LinkDir}
         /usr/lib

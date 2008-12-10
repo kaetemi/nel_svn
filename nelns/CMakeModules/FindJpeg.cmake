@@ -24,7 +24,7 @@ FIND_PATH(JPEG_INCLUDE_DIR
 )
 
 FIND_LIBRARY(JPEG_LIBRARY
-  NAMES jpeg
+  NAMES jpeg libjpeg
   PATHS
   $ENV{JPEG_DIR}/lib
   /usr/local/lib
