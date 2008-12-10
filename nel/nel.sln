@@ -68,6 +68,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver_openal", "src\sound\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver_xaudio2", "src\sound\driver\xaudio2\driver_xaudio2.vcproj", "{23DCF574-1CEB-4DF4-9C59-D614580AC0C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{89064E9B-14E9-4FB2-8536-A9151DF55C68} = {89064E9B-14E9-4FB2-8536-A9151DF55C68}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
