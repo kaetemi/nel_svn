@@ -30,7 +30,7 @@ private:
 		// create a primitive config file
 		nlinfo("Building a default ligo class file");
 
-		char	*CLASS_FILE_NAME = "__ligo_class.xml";
+		const char	*CLASS_FILE_NAME = "__ligo_class.xml";
 
 		string classfile;
 		classfile = string()

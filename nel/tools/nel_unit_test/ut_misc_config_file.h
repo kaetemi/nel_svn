@@ -38,7 +38,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_DATA "ut_misc_files/cfg_with_include.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_include.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);
@@ -51,7 +51,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_optional.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_optional.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgWithInclude") != NULL);
@@ -65,7 +65,7 @@ public:
 	{
 		CConfigFile configFile;
 
-		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_define.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_define.cfg"));
 
 		TEST_ASSERT(configFile.loaded());
 		TEST_ASSERT(configFile.getVarPtr("CfgReadableVar") != NULL);
@@ -95,9 +95,9 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_bad_test.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath(NEL_UNIT_BASE "ut_misc_files/cfg_with_bad_test.cfg", false);
 
-		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_bad_test.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_bad_test.cfg"));
 
 		TEST_ASSERT(configFile.getVarPtr("ASimpleVar") != NULL);
 
@@ -129,10 +129,10 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_include_and_optional.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath(NEL_UNIT_BASE "ut_misc_files/cfg_with_include_and_optional.cfg", false);
 
 
-		TEST_THROWS_NOTHING(configFile.load("ut_misc_files/cfg_with_include_and_optional.cfg"));
+		TEST_THROWS_NOTHING(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_include_and_optional.cfg"));
 
 		// check that we have the warnings only for the 'include' command
 		TEST_ASSERT(warnings.Lines.size() == 1);
@@ -148,11 +148,11 @@ public:
 
 		CConfigFile configFile;
 
-		string fullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_error_main.cfg", false);
-		string subfullName = NLMISC::CPath::getFullPath("ut_misc_files/cfg_with_error.cfg", false);
+		string fullName = NLMISC::CPath::getFullPath(NEL_UNIT_BASE "ut_misc_files/cfg_with_error_main.cfg", false);
+		string subfullName = NLMISC::CPath::getFullPath(NEL_UNIT_BASE "ut_misc_files/cfg_with_error.cfg", false);
 
 
-		TEST_THROWS(configFile.load("ut_misc_files/cfg_with_error_main.cfg"), EParseError);
+		TEST_THROWS(configFile.load(NEL_UNIT_BASE "ut_misc_files/cfg_with_error_main.cfg"), EParseError);
 
 		// check that we have error report with correct filename and line number
 		TEST_ASSERT(warnings.Lines.size() == 1);

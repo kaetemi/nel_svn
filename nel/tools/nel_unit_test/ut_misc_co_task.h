@@ -4,7 +4,7 @@
 #include <nel/misc/co_task.h>
 #include <nel/misc/thread.h>
 
-char *referenceResult[] =
+const char *referenceResult[] =
 {
 	"Task1 : 0",
 	"Task2 : 0",
@@ -28,7 +28,7 @@ char *referenceResult[] =
 	"Task2 : 6",
 };
 
-char *referenceResultThread1[] =
+const char *referenceResultThread1[] =
 {
 	"Task1 : 0",
 	"Thread : 0",
@@ -46,7 +46,7 @@ char *referenceResultThread1[] =
 	"Thread : 4",
 };
 
-char *referenceResultThread2[] =
+const char *referenceResultThread2[] =
 {
 	"Task2 : 0",
 	"Main : 0",
@@ -170,13 +170,13 @@ public:
 		for (uint i=0; i<sizeofarray(referenceResultThread1); ++i)
 		{
 			string &s1 = result2[i];
-			char *s2 = referenceResultThread1[i];
+			const char *s2 = referenceResultThread1[i];
 			TEST_ASSERT(referenceResultThread1[i] == result2[i]);
 		}
 		for (uint i=0; i<sizeofarray(referenceResultThread2); ++i)
 		{
 			string &s1 = result[i];
-			char *s2 = referenceResultThread2[i];
+			const char *s2 = referenceResultThread2[i];
 			TEST_ASSERT(referenceResultThread2[i] == result[i]);
 		}
 	}
@@ -219,7 +219,7 @@ public:
 		for (uint i=0; i<sizeofarray(referenceResult); ++i)
 		{
 			string &s1 = result[i];
-			char *s2 = referenceResult[i];
+			const char *s2 = referenceResult[i];
 			TEST_ASSERT(referenceResult[i] == result[i]);
 		}
 	}

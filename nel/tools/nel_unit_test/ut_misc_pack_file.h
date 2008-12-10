@@ -9,6 +9,9 @@ const string NewLine("\n");
 #error "Specify the new line format for text file";
 #endif
 
+#ifndef NEL_UNIT_BASE
+#define NEL_UNIT_BASE ""
+#endif // NEL_UNIT_BASE
 
 // Test suite for bnp and xml pack files
 class CUTMiscPackFile : public Test::Suite
@@ -46,7 +49,7 @@ public:
 	void addBnp()
 	{
 		// add bnp file in the path and access to file inside
-		CPath::addSearchBigFile("ut_misc_files/files.bnp", false, false);
+		CPath::addSearchBigFile(NEL_UNIT_BASE "ut_misc_files/files.bnp", false, false);
 	}
 
 	void loadFromBnp()
@@ -85,14 +88,14 @@ public:
 	void addXmlpack()
 	{
 		// add xml_pack file in the path and access to file inside
-		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/xml_files.xml_pack", false, false);
+		CPath::addSearchXmlpackFile(NEL_UNIT_BASE "ut_misc_files/xml_files/xml_files.xml_pack", false, false);
 	}
 
 	void loadFromXmlpack()
 	{
 		// lookup for the file
 		string filename = CPath::lookup("file1_in_xml_pack.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/xml_files.xml_pack@@file1_in_xml_pack.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/xml_files.xml_pack@@file1_in_xml_pack.xml");
 
 		// read the first file content
 		{
@@ -108,7 +111,7 @@ public:
 
 		// lookup for the 2nd file
 		filename = CPath::lookup("file2_in_xml_pack.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/xml_files.xml_pack@@file2_in_xml_pack.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/xml_files.xml_pack@@file2_in_xml_pack.xml");
 
 		{
 			// read the second file content
@@ -169,9 +172,9 @@ _CrtCheckMemory();
 		// but the 'addSearchPath' or add xml pack must be done
 		// at a higher discriminant directory
 
-//		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack", true, false, NULL);
-//		CPath::addSearchXmlpackFile("ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack", true, false, NULL);
-		CPath::addSearchPath("ut_misc_files/xml_files", true, false);
+//		CPath::addSearchXmlpackFile(NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack", true, false, NULL);
+//		CPath::addSearchXmlpackFile(NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack", true, false, NULL);
+		CPath::addSearchPath(NEL_UNIT_BASE "ut_misc_files/xml_files", true, false);
 
 		// lookup for the files in first subdirectory
 		string filename = CPath::lookup("file1_in_sub_1.xml", true, true, false);
