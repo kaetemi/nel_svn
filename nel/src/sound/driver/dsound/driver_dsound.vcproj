@@ -4,8 +4,8 @@
 	Version="9,00"
 	Name="driver_dsound"
 	ProjectGUID="{309F8A55-BFBA-433B-8C3E-CB2223F799C3}"
-	RootNamespace="driver_dsound"
-	TargetFrameworkVersion="131072"
+	RootNamespace="dsound"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -19,146 +19,79 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="4"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../../../include"
-				PreprocessorDefinitions="_LIB;_DEBUG;WIN32;LIBXML_STATIC"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;_USRDLL;DRIVER_DSOUND_EXPORTS"
 				StringPooling="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stddsound.h"
+				PrecompiledHeaderThrough="std$(RootNamespace).h"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="dsound.lib"
-				OutputFile="..\..\..\..\lib\$(ProjectName)_d.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="winmm.lib ws2_32.lib dsound.lib dxguid.lib"
+				OutputFile="..\..\..\..\lib\nel_drv_$(RootNamespace)_win_d.dll"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
+				GenerateDebugInformation="true"
+				ModuleDefinitionFile="$(ProjectName).def"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				ImportLibrary="..\..\..\..\lib\nel_drv_$(RootNamespace)_win_d.lib"
+				TargetMachine="1"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../../../include"
-				PreprocessorDefinitions="_LIB;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_USRDLL;DRIVER_DSOUND_EXPORTS"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
+				DisableLanguageExtensions="false"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stddsound.h"
+				PrecompiledHeaderThrough="std$(RootNamespace).h"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="dsound.lib"
-				OutputFile="..\..\..\..\lib\$(ProjectName)_r.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="winmm.lib ws2_32.lib dsound.lib dxguid.lib"
+				OutputFile="..\..\..\..\lib\nel_drv_$(RootNamespace)_win_r.dll"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				ModuleDefinitionFile="$(ProjectName).def"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="..\..\..\..\lib\nel_drv_$(RootNamespace)_win_r.lib"
+				TargetMachine="1"
 			/>
 		</Configuration>
 	</Configurations>
@@ -176,22 +109,6 @@
 		<File
 			RelativePath="driver_dsound.def"
 			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="listener_dsound.cpp"
