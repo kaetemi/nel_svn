@@ -22,7 +22,7 @@ FIND_PATH(NELMISC_INCLUDE_DIRS
 )
 
 FIND_LIBRARY(NELMISC_LIBRARY
-  NAMES nelmisc nelmisc_rd
+  NAMES nelmisc
   PATHS
   $ENV{NELMISC_DIR}/lib
   /usr/local/lib

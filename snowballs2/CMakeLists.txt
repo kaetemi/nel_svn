@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------
 # Load some macros.
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-INCLUDE(CMakeModules/opennel.cmake)
+INCLUDE(CMakeModules/nel.cmake)
 
 #-----------------------------------------------------------------------------
 # Force out of source builds.

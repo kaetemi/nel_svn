@@ -22,7 +22,7 @@ FIND_PATH(NEL3D_INCLUDE_DIRS
 )
 
 FIND_LIBRARY(NEL3D_LIBRARY
-  NAMES nel3d nel3d_rd
+  NAMES nel3d
   PATHS
   $ENV{NEL3D_DIR}/lib
   /usr/local/lib
