@@ -86,6 +86,7 @@
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
+using namespace NLNET;
 
 namespace SBCLIENT {
 
@@ -601,24 +602,17 @@ void loopLogin()
 //#ifdef NL_OS_WINDOWS
 //	playMusic(SBCLIENT_MUSIC_LOGIN);
 //#endif
-
-	// TODO: remove me when login system fixed!
-	NextGameState = GameStateOffline;
-
 	// todo: login screen, move this stuff to a button or something
 	displayLoadingState("Login");
 	if (ConfigFile->getVar("Local").asInt() == 0)
 	{
 		if (ConfigFile->getVar("UseDirectClient").asInt() == 1)
 		{
-/*
-			TODO: use the new login system
-
 			string result;
 			string LSHost(ConfigFile->getVar("LSHost").asString());
 			Login = ConfigFile->getVar("Login").asString();
-			ucstring Password = ConfigFile->getVar("Password").asString();
-			CHashKeyMD5 hk = getMD5((uint8*)Password.c_str(), Password.size());
+			string Password = ConfigFile->getVar("Password").asString();
+			CHashKeyMD5 hk = getMD5((uint8 *)Password.c_str(), Password.size());
 			string CPassword = hk.toString();
 			nlinfo("The crypted password is %s", CPassword.c_str());
 			string Application = ConfigFile->getVar("ClientApplication").asString();
@@ -631,16 +625,16 @@ void loopLogin()
 			while (CLoginClient::authenticateUpdate(result))
 				updateLoadingState(ucstring("Authenticate"), false, false);
 			if (!result.empty()) goto AuthenticateFail;
-
 			goto AuthenticateSuccess;
+
 AuthenticateFail:
 			nlinfo("*** Authenticate failed '%s' ***", result.c_str());
-			for (TTime t = 0; t < 5000; t += DiffTime)
+			for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
 				updateLoadingState(ucstring("Authenticate failed: ") + ucstring(result), false, false);
 			NextGameState = GameStateOffline;
 			return;
-AuthenticateSuccess:
 
+AuthenticateSuccess:
 			nlinfo("%d Shards are available:", CLoginClient::ShardList.size());
 			for (uint i = 0; i < CLoginClient::ShardList.size(); i++)
 			{
@@ -655,14 +649,15 @@ AuthenticateSuccess:
 				updateLoadingState(ucstring("Select shard"), false, false);
 			if (!result.empty()) goto SelectFail;
 			goto SelectSuccess;
+
 SelectFail:
 			nlinfo("*** Connection to the shard failed '%s' ***", result.c_str());
-			for (TTime t = 0; t < 5000; t += DiffTime)
+			for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
 				updateLoadingState(ucstring("Select shard failed: ") + ucstring(result), false, false);
 			NextGameState = GameStateOffline;
 			return;
+
 SelectSuccess:;
-*/
 		}
 		NextGameState = GameStateOnline;
 		return;
@@ -1002,7 +997,7 @@ void updateLoadingState(const char *state, bool network, bool information)
 }
 void updateLoadingState(ucstring state, bool network, bool information)
 {
-	CGameTime::updateTime();
+	CGameTime::updateTime(); // important that time is updated here!!!
 //#ifdef NL_OS_WINDOWS
 //	updateSound();
 //#endif
