@@ -1,13 +1,16 @@
 #ifndef UT_MISC_PACK_FILE
 #define UT_MISC_PACK_FILE
 
-#ifdef NL_OS_WINDOWS
+
+// Commenting out the ifdef since the files are authored on Windows
+// and therefore always have a Windows-style newline.
+//#ifdef NL_OS_WINDOWS
 const string NewLine("\r\n");
-#elif defined(NL_OS_UNIX)
-const string NewLine("\n");
-#else
-#error "Specify the new line format for text file";
-#endif
+//#elif defined(NL_OS_UNIX)
+//const string NewLine("\n");
+//#else
+//#error "Specify the new line format for text file";
+//#endif
 
 #ifndef NEL_UNIT_BASE
 #define NEL_UNIT_BASE ""
@@ -178,15 +181,15 @@ _CrtCheckMemory();
 
 		// lookup for the files in first subdirectory
 		string filename = CPath::lookup("file1_in_sub_1.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file1_in_sub_1.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file1_in_sub_1.xml");
 		filename = CPath::lookup("file2_in_sub_1.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file2_in_sub_1.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_1/samename/samename.xml_pack@@file2_in_sub_1.xml");
 
 		// lookup for the files in the second subdirectory
 		filename = CPath::lookup("file1_in_sub_2.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file1_in_sub_2.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file1_in_sub_2.xml");
 		filename = CPath::lookup("file2_in_sub_2.xml", true, true, false);
-		TEST_ASSERT(filename == "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file2_in_sub_2.xml");
+		TEST_ASSERT(filename == NEL_UNIT_BASE "ut_misc_files/xml_files/same_subfolder_2/samename/samename.xml_pack@@file2_in_sub_2.xml");
 
 		// read the file content of the first file in first pack
 		filename = CPath::lookup("file1_in_sub_1.xml", true, true, false);
