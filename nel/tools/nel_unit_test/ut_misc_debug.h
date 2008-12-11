@@ -202,12 +202,23 @@ private:
 
 		}
 
+		// FIXME: This is brittle - the precise list of counters depends on how much of
+		// NeL gets linked with the unit tests. The order is also mostly unpredictable
+		// with Unix shared objects.
+#ifdef NL_OS_UNIX
+		string ref = "Listing 6 Instance counters :\n"
+#else
 		string ref = "Listing 5 Instance counters :\n"
+#endif // NL_OS_UNIX
 					 "  Class 'CFoo1               ', \t        10 instances, \t        10 delta\n"
 					 "  Class 'CFoo2               ', \t        20 instances, \t        20 delta\n"
 					 "  Class 'CFoo3               ', \t        10 instances, \t        10 delta\n"
 					 "  Class 'CSafeSingleton      ', \t         0 instances, \t         0 delta\n"
-					 "  Class 'CUnsafeSingleton    ', \t         0 instances, \t         0 delta\n";
+					 "  Class 'CUnsafeSingleton    ', \t         0 instances, \t         0 delta\n"
+#ifdef NL_OS_UNIX
+					 "  Class 'CWordsDictionary    ', \t         0 instances, \t         0 delta\n"
+#endif // NL_OS_UNIX
+					 "";
 
 		string ret = NLMISC::CInstanceCounterManager::getInstance().displayCounters();
 
