@@ -632,7 +632,7 @@ void sqlInit ()
 	}
 
 	my_bool opt = true;
-	if (mysql_options (DatabaseConnection, MYSQL_OPT_RECONNECT, &opt))
+	if (mysql_options (db, MYSQL_OPT_RECONNECT, &opt))
 	{
 		mysql_close(db);
 		DatabaseConnection = 0;
