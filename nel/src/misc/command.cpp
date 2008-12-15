@@ -889,10 +889,17 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 		{
 			TCommand::iterator comm = cr._Commands.find(args[0]);
 			log.displayNL("%s", comm->second->HelpString.c_str());
-			log.displayNL("usage: %s %s : %s",
+
+			std::vector<std::string> commandArgs;
+			splitString(comm->second->CommandArgs, "\n", commandArgs);
+
+			log.displayNL("usage: %s %s",
 				comm->first.c_str(),
-				comm->second->CommandArgs.c_str(),
-				comm->second->HelpString.c_str());
+				commandArgs.empty() ? "":commandArgs.front().c_str());
+
+			for(uint i = 1; i < commandArgs.size(); ++i)
+				log.displayNL("%s", commandArgs[i].c_str());
+
 			return true;
 		}
 		// look in the class commands
@@ -906,10 +913,17 @@ NLMISC_CATEGORISED_COMMAND(nel,help,"display help on a specific variable/command
 					if (it != chci._Commands.end())
 					{
 						log.displayNL("%s", it->second.CommandHelp.c_str());
-						log.displayNL("usage: %s %s %s",
+
+						std::vector<std::string> commandArgs;
+						splitString(it->second.CommandArgs, "\n", commandArgs);
+
+						log.displayNL("usage: %s %s",
 							it->first.c_str(),
-							it->second.CommandArgs.c_str(),
-							it->second.CommandHelp.c_str());
+							commandArgs.empty() ? "":commandArgs.front().c_str());
+
+						for(uint i = 1; i < commandArgs.size(); ++i)
+							log.displayNL("%s", commandArgs[i].c_str());
+
 						return true;
 					}
 				}
