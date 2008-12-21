@@ -2299,18 +2299,18 @@ bool CDriverD3D::setMode (const GfxMode& mode)
 	}
 
 	// set the mode
-    if( mode.Windowed )
-    {
-        // Set windowed-mode style
-        SetWindowLongW( _HWnd, GWL_STYLE, D3D_WINDOWED_STYLE|WS_VISIBLE);
+	if( mode.Windowed )
+	{
+		// Set windowed-mode style
+		SetWindowLongW( _HWnd, GWL_STYLE, D3D_WINDOWED_STYLE|WS_VISIBLE);
 		_FullScreen = false;
-    }
-    else
-    {
-        // Set fullscreen-mode style
-        SetWindowLongW( _HWnd, GWL_STYLE, D3D_FULLSCREEN_STYLE|WS_VISIBLE);
+	}
+	else
+	{
+		// Set fullscreen-mode style
+		SetWindowLongW( _HWnd, GWL_STYLE, D3D_FULLSCREEN_STYLE|WS_VISIBLE);
 		_FullScreen = true;
-    }
+	}
 
 	SetWindowLongW(_HWnd, GWL_WNDPROC, GetWindowLong(_HWnd, GWL_WNDPROC));
 
@@ -2332,7 +2332,7 @@ bool CDriverD3D::setMode (const GfxMode& mode)
 				std::max ((int)WndRect.left, 0), std::max ((int)WndRect.top, 0),
 						  ( WndRect.right - WndRect.left ),
 						  ( WndRect.bottom - WndRect.top ),
-						  SWP_SHOWWINDOW );
+						  SWP_NOMOVE | SWP_SHOWWINDOW );
 		}
 		return true;
 	}

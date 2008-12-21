@@ -915,7 +915,10 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 			RECT rc;
 			SetRect (&rc, 0, 0, width, height);
 			AdjustWindowRectEx (&rc, GetWindowStyle (_hWnd), GetMenu (_hWnd) != NULL, GetWindowExStyle (_hWnd));
-			SetWindowPos (_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE );
+			UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
+			if (mode.Windowed)
+				flags |= SWP_NOMOVE;
+			SetWindowPos (_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, flags);
 
 			if (show || _FullScreen)
 				showWindow(true);
@@ -1555,7 +1558,10 @@ bool CDriverGL::setMode(const GfxMode& mode)
 	RECT rc;
 	SetRect (&rc, 0, 0, _WindowWidth, _WindowHeight);
 	AdjustWindowRectEx (&rc, GetWindowStyle (_hWnd), false, GetWindowExStyle (_hWnd));
-	SetWindowPos (_hWnd, NULL, 0, 0, rc.right-rc.left, rc.bottom-rc.top, SWP_NOZORDER | SWP_NOACTIVATE );
+	UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
+	if (mode.Windowed)
+		flags |= SWP_NOMOVE;
+	SetWindowPos (_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, flags);
 
 	showWindow(true);
 
