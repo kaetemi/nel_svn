@@ -377,7 +377,7 @@ int main (int nNbArg, char **ppArgs)
 				path += gDestBNPFile[i];
 			string wholeName = gDestBNPFile;
 			gDestBNPFile = "";
-			for (; i < (int)wholeName.size(); ++i)
+			for (; i < wholeName.size(); ++i)
 				gDestBNPFile += wholeName[i];
 			if (CPath::setCurrentPath(path.c_str()))
 			{
@@ -394,7 +394,7 @@ int main (int nNbArg, char **ppArgs)
 			gDestBNPFile += ".bnp";
 		}
 		string dirName;
-		for (i = 0; i < (int)(gDestBNPFile.size()-4); ++i)
+		for (i = 0; i < gDestBNPFile.size()-4; ++i)
 			dirName += gDestBNPFile[i];
 		// Unpack a bnp file
 		if (!gBNPHeader.read (gDestBNPFile))
@@ -423,7 +423,7 @@ int main (int nNbArg, char **ppArgs)
 				path += gDestBNPFile[i];
 			string wholeName = gDestBNPFile;
 			gDestBNPFile = "";
-			for (; i < (int)wholeName.size(); ++i)
+			for (; i < wholeName.size(); ++i)
 				gDestBNPFile += wholeName[i];
 			if (CPath::setCurrentPath(path.c_str()))
 			{
@@ -440,7 +440,7 @@ int main (int nNbArg, char **ppArgs)
 			gDestBNPFile += ".bnp";
 		}
 		string dirName;
-		for (i = 0; i < (int)(gDestBNPFile.size()-4); ++i)
+		for (i = 0; i < gDestBNPFile.size()-4; ++i)
 			dirName += gDestBNPFile[i];
 
 		// Unpack a bnp file
