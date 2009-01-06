@@ -615,7 +615,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		instance.snap(result.LocalPosition, retriever);
 
 
-//		if (PacsRetrieveVerbose)
+		if (PacsRetrieveVerbose)
 			nlinfo("retrievePosition(%f,%f,%f) -> %d/%d/(%f,%f,%f) - %s/%s",
 					estimated.x, estimated.y, estimated.z,
 					result.InstanceId, result.LocalPosition.Surface,
@@ -625,7 +625,8 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 	}
 	else
 	{
-		nlwarning("PACS: unable to retrieve correct position (%f,%f,%f)", estimated.x, estimated.y, estimated.z);
+		if (PacsRetrieveVerbose)
+			nlwarning("PACS: unable to retrieve correct position (%f,%f,%f)", estimated.x, estimated.y, estimated.z);
 //		nlSleep(1);
 	}
 
