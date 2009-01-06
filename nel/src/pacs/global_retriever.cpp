@@ -524,7 +524,9 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 	bbpos.setCenter(estimated);
 	bbpos.setHalfSize(CVector(0.5f, 0.5f, 0.5f));
 	if (!selectInstances(bbpos, _InternalCST, retrieveSpec))
+	{
 		return result;
+	}
 
 	uint	i;
 
@@ -613,8 +615,8 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 		instance.snap(result.LocalPosition, retriever);
 
 
-		if (PacsRetrieveVerbose)
-			nlinfo("DebugBen: retrievePosition(%f,%f,%f) -> %d/%d/(%f,%f,%f) - %s/%s",
+//		if (PacsRetrieveVerbose)
+			nlinfo("retrievePosition(%f,%f,%f) -> %d/%d/(%f,%f,%f) - %s/%s",
 					estimated.x, estimated.y, estimated.z,
 					result.InstanceId, result.LocalPosition.Surface,
 					result.LocalPosition.Estimation.x, result.LocalPosition.Estimation.y, result.LocalPosition.Estimation.z,
@@ -623,7 +625,7 @@ NLPACS::UGlobalPosition	NLPACS::CGlobalRetriever::retrievePosition(const CVector
 	}
 	else
 	{
-//		nlwarning("PACS: unable to retrieve correct position (%f,%f,%f)", estimated.x, estimated.y, estimated.z);
+		nlwarning("PACS: unable to retrieve correct position (%f,%f,%f)", estimated.x, estimated.y, estimated.z);
 //		nlSleep(1);
 	}
 
