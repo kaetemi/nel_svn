@@ -1444,7 +1444,7 @@ public:
 
 		CTextureIndexState &_textureState = _TextureIndexStateCache[stage];
 		#ifdef NL_D3D_USE_RENDER_STATE_CACHE
-			NL_D3D_CACHE_TEST(CacheTest_TextureIndexMode, _textureState.TexGen == texGenEnabled || _textureState.TexGenMode != value)
+			NL_D3D_CACHE_TEST(CacheTest_TextureIndexMode, _textureState.TexGen = (texGenEnabled || _textureState.TexGenMode != value))
 		#endif // NL_D3D_USE_RENDER_STATE_CACHE
 		{
 			// Ref on the state
