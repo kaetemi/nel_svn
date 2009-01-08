@@ -26,11 +26,6 @@
 
 #include "driver_direct3d.h"
 
-#ifdef NL_STATIC
-#	include "nel/misc/path.h"
-#	include "nel/misc/file.h"
-#endif
-
 using namespace std;
 using namespace NLMISC;
 
@@ -388,7 +383,8 @@ bool CDriverD3D::activeShader(CShader *shd)
 		else
 		{
 			nlwarning ("Can't create shader '%s':", shd->getText());
-			nlwarning ((const char*)pErrorMsgs->GetBufferPointer());
+			if (pErrorMsgs)
+				nlwarning ((const char*)pErrorMsgs->GetBufferPointer());
 			shd->_ShaderChanged = false;
 			_CurrentShader = NULL;
 			return false;

@@ -119,7 +119,7 @@ CUnfairMutex::CUnfairMutex()
 }
 
 
-CUnfairMutex::CUnfairMutex( const std::string &name )
+CUnfairMutex::CUnfairMutex( const std::string & /* name */ )
 {
 	// Create a mutex with no initial owner.
 	_Mutex = (void *) CreateMutex( NULL, FALSE, NULL );

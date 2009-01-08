@@ -169,7 +169,7 @@ public:
 				ucchar c = *first;
 				c = c >> 6;
 				c = c & 0x1F;
-				res += c | 0xC0;
+				res += char(c) | 0xC0;
 				nbLoop = 1;
 			}
 			else /*if (*first < 0x10000)*/
@@ -177,7 +177,7 @@ public:
 				ucchar c = *first;
 				c = c >> 12;
 				c = c & 0x0F;
-				res += c | 0xE0;
+				res += char(c) | 0xE0;
 				nbLoop = 2;
 			}
 

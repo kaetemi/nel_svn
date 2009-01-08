@@ -182,8 +182,8 @@ void			CDriverD3D::setupLightMapDynamicLighting(bool enable)
 	if(enable)
 	{
 		// disable all lights but the 0th.
-		for(uint i=1;i<_MaxLight;i++)
-			enableLightInternal(i, false);
+		for(uint i=1;i<_MaxLight;++i)
+			enableLightInternal(uint8(i), false);
 
 		// if the dynamic light is really enabled
 		if(_LightMapDynamicLightEnabled)
@@ -208,8 +208,8 @@ void			CDriverD3D::setupLightMapDynamicLighting(bool enable)
 		setLightInternal(0, _UserLight0);
 
 		// restore all standard light enable states
-		for(uint i=0;i<_MaxLight;i++)
-			enableLightInternal(i, _UserLightEnable[i]);
+		for(uint i=0;i<_MaxLight;++i)
+			enableLightInternal(uint8(i), _UserLightEnable[i]);
 	}
 }
 
