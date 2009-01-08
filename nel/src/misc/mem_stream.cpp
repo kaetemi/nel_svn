@@ -28,8 +28,6 @@
 namespace NLMISC
 {
 
-
-
 void CMemStream::swap(CMemStream &other)
 {
 	IStream::swap(other);

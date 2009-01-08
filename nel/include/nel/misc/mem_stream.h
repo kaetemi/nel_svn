@@ -880,7 +880,6 @@ inline	void		CMemStream::serial(std::string &b)
 	{
 		if (isReading())
 		{
-			nlctassert(sizeof(char) == 1);
 			if (!isXML())
 			{
 				uint32	len=0;
