@@ -84,13 +84,11 @@ using namespace std;
 // If true, debug system will trap crash even if the application is in debugger
 static const bool TrapCrashInDebugger = false;
 
-// Do some basic compiler time check on type size
-nlctassert(sizeof(char) == 1);
 
 namespace NLMISC
 {
 
-//
+	//
 // Globals
 //
 
@@ -1125,6 +1123,10 @@ void changeLogDirectory(const std::string &dir)
 
 void createDebug (const char *logPath, bool logInFile, bool eraseLastLog)
 {
+
+	// Do some basic compiler time check on type size
+	nlctassert(sizeof(char) == 1);
+
 
 //	static bool alreadyCreateSharedAmongThreads = false;
 //	if ( !alreadyCreateSharedAmongThreads )
