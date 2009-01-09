@@ -2227,12 +2227,18 @@ uint8 CBitmap::readTGA( NLMISC::IStream &f)
 					}
 					for (i=0; i < (packet & 0x7F) + 1; i++)
 					{
-						for(j=0; j<imageDepth/8; j++)
+						if(imageDepth==32)
 						{
-							_Data[0][dstId++]= pixel[j];
+							_Data[0][dstId++]= pixel[2];
+							_Data[0][dstId++]= pixel[1];
+							_Data[0][dstId++]= pixel[0];
+							_Data[0][dstId++]= pixel[3];
 						}
 						if(imageDepth==24)
 						{
+							_Data[0][dstId++]= pixel[2];
+							_Data[0][dstId++]= pixel[1];
+							_Data[0][dstId++]= pixel[0];
 							_Data[0][dstId++]= 0;
 						}
 					}
