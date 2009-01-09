@@ -1,7 +1,7 @@
 /** \file types_nl.h
  * Basic types, define and class
  *
- * Available constantes:
+ * Available constants:
  * - NL_OS_WINDOWS		: windows operating system (32bits only)
  * - NL_OS_UNIX			: unix operating system (GNU/Linux and other)
  *
@@ -155,7 +155,6 @@
 // Debug : Sept 01 2006
 #	if defined(NL_COMP_VC8) || defined(NL_COMP_VC9)
 #		pragma warning (disable : 4005)			// don't warn on redefinitions caused by xp platform sdk
-#		pragma warning (disable : 4996)			// don't warn for deprecated function (sprintf, sscanf in VS8)
 #	endif // NL_COMP_VC8 || NL_COMP_VC9
 #endif // NL_OS_WINDOWS
 
@@ -377,7 +376,7 @@ typedef	uint16	ucchar;
 #	define NL_TMPL_PARAM_ON_METHOD_2(p1, p2)
 #endif
 
-#ifndef MAX_PATH
+#if !defined(MAX_PATH) && !defined(NL_OS_WINDOWS)
 #	define MAX_PATH 255
 #endif
 
