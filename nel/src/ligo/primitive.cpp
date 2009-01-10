@@ -638,6 +638,7 @@ NLLIGO::IPrimitive *CPrimZone::copy () const
 
 CPrimVector	*CPrimZone::getPrimVector ()
 {
+	if(VPoints.empty()) return 0;
 	return &(VPoints[0]);
 }
 
