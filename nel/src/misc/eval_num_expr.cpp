@@ -722,10 +722,10 @@ CEvalNumExpr::TReturnState CEvalNumExpr::evalExpression (double &finalResult, TT
 										value = pow (arg0, arg1);
 										break;
 									case Rand:
-										value = arg0 + (arg1-arg0) * (double)rand () / (double)(RAND_MAX+1);
+										value = arg0 + (arg1-arg0) * (double)rand () / ((double)RAND_MAX+1.0);
 										break;
 									default:
-										// Can't be hear after getToken
+										// Can't be here after getToken
 										nlstop;
 									}
 								}
