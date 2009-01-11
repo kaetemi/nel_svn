@@ -389,7 +389,7 @@ CDriverGL::CDriverGL()
 
 	_CurrentMaterialSupportedShader= CMaterial::Normal;
 
-	// to avoid any problem if light0 never setuped, and ligthmap rendered
+	// to avoid any problem if light0 never setted up, and ligthmap rendered
 	_UserLight0.setupDirectional(CRGBA::Black, CRGBA::White, CRGBA::White, CVector::K);
 
 	_TextureTargetCubeFace = 0;
@@ -1653,7 +1653,27 @@ bool CDriverGL::getCurrentScreenMode(GfxMode &mode)
 	mode.Width= (uint16)devmode.dmPelsWidth;
 	mode.Height= (uint16)devmode.dmPelsHeight;
 #else
-	nlwarning("LINUXTODO: enumerate all available modes. now returns empty array");
+
+#	ifdef XF86VIDMODE
+	sint pixelClock;
+	XF86VidModeModeLine xmode;
+
+	if (!XF86VidModeGetModeLine(dpy, 0, &pixelClock, &xmode))
+	{
+		nlwarning("XF86VidModeGetModeLine returns 0, cannot get current video mode");
+		return false;
+	}
+
+	mode.Windowed = !_FullScreen;
+	mode.OffScreen = false;
+	mode.Depth = (uint) DefaultDepth(dpy, DefaultScreen(dpy));
+	mode.Frequency = 1000 * pixelClock / (xmode.htotal * xmode.vtotal) ;
+	mode.Width = xmode.hdisplay;
+	mode.Height = xmode.vdisplay;
+
+	nldebug("Current mode : %dx%d, %d Hz, %dbit", mode.Width, mode.Height, mode.Frequency, mode.Depth);
+#	endif
+
 #endif
 	return true;
 }
@@ -2097,7 +2117,7 @@ bool CDriverGL::release()
 		nlinfo("3D: Switching back viewport to %d,%d",_OldX, _OldY);
 		XF86VidModeSetViewPort(dpy, DefaultScreen(dpy), _OldX, _OldY);
 		// Ungrab the keyboard (probably not necessary);
-        XUnmapWindow(dpy, win);
+		XUnmapWindow(dpy, win);
 		XSync(dpy, True);
 		XUngrabKeyboard(dpy, CurrentTime);
 	}
@@ -2505,6 +2525,9 @@ void CDriverGL::setCapture (bool b)
 	*/
 
 #elif defined (NL_OS_UNIX)
+
+	nlwarning("LINUXTODO: This method is not implemented under linux");
+	// TODO for Linux : implement it (clipRect with the window dimensions ?)
 
 #endif // NL_OS_UNIX
 }
@@ -3027,7 +3050,7 @@ uint CDriverGL::getDoubleClickDelay(bool hardwareMouse)
 		// try to read the good value from windows
 		return ::GetDoubleClickTime();
 #else
-		// FIXME: FAKE FIX
+		// TODO for Linux FIXME: FAKE FIX
 		return 250;
 #endif
 }
@@ -3138,6 +3161,7 @@ bool			CDriverGL::setMonitorColorProperties (const CMonitorColorProperties &prop
 
 #else
 
+	// TODO for Linux: implement CDriverGL::setMonitorColorProperties
 	nlwarning ("CDriverGL::setMonitorColorProperties not implemented");
 	return false;
 
@@ -3907,6 +3931,8 @@ void CDriverGL::retrieveATIDriverVersion()
 			}
 			RegCloseKey(parentKey);
 		}
+	#else
+		// TODO for Linux: implement retrieveATIDriverVersion... assuming versions under linux are probably different
 	#endif
 }
 
