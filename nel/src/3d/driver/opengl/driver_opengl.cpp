@@ -2123,6 +2123,12 @@ bool CDriverGL::release()
 	}
 #endif // XF86VIDMODE
 
+	glXDestroyContext(dpy, ctx);
+	ctx = NULL;
+
+	XCloseDisplay(dpy);
+	dpy = NULL;
+
 #endif // NL_OS_UNIX
 
 	// released
