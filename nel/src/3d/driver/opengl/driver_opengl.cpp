@@ -447,6 +447,17 @@ bool CDriverGL::init (uint windowIcon, emptyProc /* exitFunc */)
 
 	// ati specific : try to retrieve driver version
 	retrieveATIDriverVersion();
+#else
+
+	dpy = XOpenDisplay(NULL);
+	if (dpy == NULL)
+	{
+		nlerror ("XOpenDisplay failed on '%s'", getenv("DISPLAY"));
+	}
+	else
+	{
+		nldebug("3D: XOpenDisplay on '%s' OK", getenv("DISPLAY"));
+	}
 
 #endif
 	return true;
@@ -995,17 +1006,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 
 #elif defined(NL_OS_UNIX) // NL_OS_WINDOWS
 
-	dpy = XOpenDisplay(NULL);
-	if (dpy == NULL)
-	{
-		nlerror ("XOpenDisplay failed on '%s'", getenv("DISPLAY"));
-	}
-	else
-	{
-		nldebug("3D: XOpenDisplay on '%s' OK", getenv("DISPLAY"));
-	}
-
-	int sAttribList16bpp[] =
+	static int sAttribList16bpp[] =
 	{
 		GLX_RGBA,
 		GLX_DOUBLEBUFFER,
@@ -1017,7 +1018,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 		None
 	};
 
-	int sAttribList32bpp[] =
+	static int sAttribList32bpp[] =
 	{
 		GLX_RGBA,
 		GLX_DOUBLEBUFFER,
@@ -1610,11 +1611,12 @@ bool CDriverGL::getModes(std::vector<GfxMode> &modes)
 #	ifdef XF86VIDMODE
 	int nmodes;
 	XF86VidModeModeInfo **ms;
-	Bool ok = XF86VidModeGetAllModeLines(dpy, 0, &nmodes, &ms);
+	Bool ok = XF86VidModeGetAllModeLines(dpy, DefaultScreen(dpy), &nmodes, &ms);
 	if(ok)
 	{
 		nldebug("3D: %d available modes:", nmodes);
-		for (int j = 0; j < nmodes; j++) {
+		for (int j = 0; j < nmodes; j++)
+		{
 			// Add this mode
 			GfxMode mode;
 			mode.Width = (uint16)ms[j]->hdisplay;
@@ -1658,7 +1660,7 @@ bool CDriverGL::getCurrentScreenMode(GfxMode &mode)
 	sint pixelClock;
 	XF86VidModeModeLine xmode;
 
-	if (!XF86VidModeGetModeLine(dpy, 0, &pixelClock, &xmode))
+	if (!XF86VidModeGetModeLine(dpy, DefaultScreen(dpy), &pixelClock, &xmode))
 	{
 		nlwarning("XF86VidModeGetModeLine returns 0, cannot get current video mode");
 		return false;
@@ -2123,8 +2125,11 @@ bool CDriverGL::release()
 	}
 #endif // XF86VIDMODE
 
-	glXDestroyContext(dpy, ctx);
-	ctx = NULL;
+	if (ctx)
+	{
+		glXDestroyContext(dpy, ctx);
+		ctx = NULL;
+	}
 
 	XCloseDisplay(dpy);
 	dpy = NULL;
