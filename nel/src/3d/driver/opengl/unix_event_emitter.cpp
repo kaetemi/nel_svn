@@ -154,31 +154,57 @@ TKey getKey (KeySym keysym)
 //	case XK_bracketleft: return Key;
 //	case XK_backslash: return Key;
 //	case XK_bracketright: return Key;
+	case XK_A:
 	case XK_a: return KeyA;
+	case XK_B:
 	case XK_b: return KeyB;
+	case XK_C:
 	case XK_c: return KeyC;
+	case XK_D:
 	case XK_d: return KeyD;
+	case XK_E:
 	case XK_e: return KeyE;
+	case XK_F:
 	case XK_f: return KeyF;
+	case XK_G:
 	case XK_g: return KeyG;
+	case XK_H:
 	case XK_h: return KeyH;
+	case XK_I:
 	case XK_i: return KeyI;
+	case XK_J:
 	case XK_j: return KeyJ;
+	case XK_K:
 	case XK_k: return KeyK;
+	case XK_L:
 	case XK_l: return KeyL;
+	case XK_M:
 	case XK_m: return KeyM;
+	case XK_N:
 	case XK_n: return KeyN;
+	case XK_O:
 	case XK_o: return KeyO;
+	case XK_P:
 	case XK_p: return KeyP;
+	case XK_Q:
 	case XK_q: return KeyQ;
+	case XK_R:
 	case XK_r: return KeyR;
+	case XK_S:
 	case XK_s: return KeyS;
+	case XK_T:
 	case XK_t: return KeyT;
+	case XK_U:
 	case XK_u: return KeyU;
+	case XK_V:
 	case XK_v: return KeyV;
+	case XK_W:
 	case XK_w: return KeyW;
+	case XK_X:
 	case XK_x: return KeyX;
+	case XK_Y:
 	case XK_y: return KeyY;
+	case XK_Z:
 	case XK_z: return KeyZ;
 	default: nldebug ("0x%x %d '%c'", keysym, keysym, keysym);
 	}
