@@ -43,7 +43,7 @@
 #include <list>
 
 // CEGUI includes
-#include "nel/cegui/nelresourceprovider.h"
+#include <nel/cegui/nelresourceprovider.h>
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include <memory.h>

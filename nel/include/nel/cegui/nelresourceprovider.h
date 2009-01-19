@@ -36,16 +36,6 @@
 #ifndef __NELRESOURCEPROVIDER_H__
 #define __NELRESOURCEPROVIDER_H__
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef NEL_GUIRENDERER_EXPORTS
-#       define NEL_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define NEL_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define NEL_GUIRENDERER_API
-#endif
-
 // standard includes
 #include <set>
 #include <list>
@@ -81,7 +71,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	class NEL_GUIRENDERER_API NeLResourceProvider : public ResourceProvider
+	class NeLResourceProvider : public ResourceProvider
 	{
 	public:
 		NeLResourceProvider();

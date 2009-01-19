@@ -39,9 +39,9 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 
-#include "nel/cegui/nelrenderer.h"
-#include "nel/cegui/neltexture.h"
-#include "nel/cegui/nelresourceprovider.h"
+#include <nel/cegui/nelrenderer.h>
+#include <nel/cegui/neltexture.h>
+#include <nel/cegui/nelresourceprovider.h>
 
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_driver.h>

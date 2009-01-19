@@ -35,8 +35,8 @@
 #define USE_JPEG
 
 // NeL Renderer includes
-#include "nel/cegui/neltexture.h"
-#include "nel/cegui/nelrenderer.h"
+#include <nel/cegui/neltexture.h>
+#include <nel/cegui/nelrenderer.h>
 
 // CEGUI includes
 #include "CEGUIExceptions.h"

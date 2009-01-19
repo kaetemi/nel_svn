@@ -71,7 +71,7 @@
 
 namespace CEGUI
 {
-	class NEL_GUIRENDERER_API NeLTexture : public Texture
+	class NeLTexture : public Texture
 	{
 	private:
 		friend Texture *NeLRenderer::createTexture(void);

@@ -28,6 +28,8 @@
 #include "resource.h"
 #include "NeLDriver.h"
 
+#include <CEGUIExceptions.h>
+
 #ifdef NL_OS_WINDOWS
 #	include <windows.h>
 #	undef min

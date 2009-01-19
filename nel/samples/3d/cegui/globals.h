@@ -28,7 +28,7 @@
 
 //#define USE_JPEG
 
-#include "nel/misc/types_nl.h"
+#include <nel/misc/types_nl.h>
 
 #include <math.h>
 #include <stdio.h>

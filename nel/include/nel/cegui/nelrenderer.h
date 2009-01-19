@@ -3,6 +3,8 @@
  * \date November 2004
  * \author Matt Raykowski
  * \author Henri Kuuste
+ * \date 2008-11-08 16:16GMT
+ * NeLRenderer
  */
 
 /* Copyright, 2004 Werewolf
@@ -36,16 +38,6 @@
 #ifndef __NELRENDERER_H__
 #define __NELRENDERER_H__
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef NEL_GUIRENDERER_EXPORTS
-#       define NEL_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define NEL_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define NEL_GUIRENDERER_API
-#endif
-
 // standard includes
 #include <set>
 #include <list>
@@ -55,6 +47,7 @@
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
 #include "CEGUISystem.h"
+#include "CEGUIExceptions.h"
 
 // NeL includes
 #include <nel/misc/file.h>
@@ -88,7 +81,7 @@ namespace CEGUI
 	/**
 	 * \brief Class to interface with the NeL rendering engine.
 	 */
-	class NEL_GUIRENDERER_API NeLRenderer : public Renderer
+	class NeLRenderer : public Renderer
 	{
 	public:
 		NeLRenderer(NL3D::UDriver *driver, bool withRP=true);
@@ -201,64 +194,68 @@ namespace CEGUI
 					return; // not processing ANY input
 				}
 
-				// otherwise, on with the festivities.
-				 // catch ALL mouse event, just in case.
-				if(event==NLMISC::EventMouseDownId||event==NLMISC::EventMouseUpId||event==NLMISC::EventMouseMoveId||event==NLMISC::EventMouseDblClkId||event==NLMISC::EventMouseWheelId) {
-					if(!m_MouseActive) {
-						// we're not processing any mouse activity. The cursor isn't captured maybe?
-						return;
-					}
-
-					NLMISC::CEventMouse *mouseEvent=(NLMISC::CEventMouse *)&event;
-					// a mouse button was pressed.
-					if(event == NLMISC::EventMouseDownId) {
-						// it was the left button...
-						if (mouseEvent->Button & NLMISC::leftButton) {
-							CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
-						// it was the right button...
-						} else if (mouseEvent->Button & NLMISC::rightButton) {
-							CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
-						} else if (mouseEvent->Button & NLMISC::middleButton) {
-							CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
+				try
+				{
+					// otherwise, on with the festivities.
+					 // catch ALL mouse event, just in case.
+					if(event==NLMISC::EventMouseDownId||event==NLMISC::EventMouseUpId||event==NLMISC::EventMouseMoveId||event==NLMISC::EventMouseDblClkId||event==NLMISC::EventMouseWheelId) {
+						if(!m_MouseActive) {
+							// we're not processing any mouse activity. The cursor isn't captured maybe?
+							return;
 						}
-					// a mouse button was released
-					} else if (event == NLMISC::EventMouseUpId) {
-						// it was the left button...
-						if(mouseEvent->Button & NLMISC::leftButton) {
-							CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
-						// it was the right button...
-						} else if (mouseEvent->Button & NLMISC::rightButton) {
-							CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::RightButton);
-						} else if (mouseEvent->Button & NLMISC::middleButton) {
-							CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
+
+						NLMISC::CEventMouse *mouseEvent=(NLMISC::CEventMouse *)&event;
+						// a mouse button was pressed.
+						if(event == NLMISC::EventMouseDownId) {
+							// it was the left button...
+							if (mouseEvent->Button & NLMISC::leftButton) {
+								CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
+							// it was the right button...
+							} else if (mouseEvent->Button & NLMISC::rightButton) {
+								CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
+							} else if (mouseEvent->Button & NLMISC::middleButton) {
+								CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
+							}
+						// a mouse button was released
+						} else if (event == NLMISC::EventMouseUpId) {
+							// it was the left button...
+							if(mouseEvent->Button & NLMISC::leftButton) {
+								CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
+							// it was the right button...
+							} else if (mouseEvent->Button & NLMISC::rightButton) {
+								CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::RightButton);
+							} else if (mouseEvent->Button & NLMISC::middleButton) {
+								CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
+							}
+						} else if (event == NLMISC::EventMouseMoveId) {
+							// convert into screen coordinates.
+							float delta_x=(float)(mouseEvent->X - m_MouseX)*m_Width;
+							float delta_y=(float)((1.0f-mouseEvent->Y) - m_MouseY)*m_Height;
+
+							// inject into CEGUI
+							CEGUI::System::getSingleton().injectMouseMove( delta_x, delta_y);
+
+							// and save for delta.
+							m_MouseX=mouseEvent->X;
+							m_MouseY=1.0f-mouseEvent->Y;
+						} else if (event == NLMISC::EventMouseWheelId) {
+							NLMISC::CEventMouseWheel *ev=(NLMISC::CEventMouseWheel *)&event;
+							float dir=0.0f;
+							if(ev->Direction) dir=0.5f;
+							else dir=-0.5f;
+							CEGUI::System::getSingleton().injectMouseWheelChange(dir);
 						}
-					} else if (event == NLMISC::EventMouseMoveId) {
-						// convert into screen coordinates.
-						float delta_x=(float)(mouseEvent->X - m_MouseX)*m_Width;
-						float delta_y=(float)((1.0f-mouseEvent->Y) - m_MouseY)*m_Height;
-
-						// inject into CEGUI
-						CEGUI::System::getSingleton().injectMouseMove( delta_x, delta_y);
-
-						// and save for delta.
-						m_MouseX=mouseEvent->X;
-						m_MouseY=1.0f-mouseEvent->Y;
-					} else if (event == NLMISC::EventMouseWheelId) {
-						NLMISC::CEventMouseWheel *ev=(NLMISC::CEventMouseWheel *)&event;
-						float dir=0.0f;
-						if(ev->Direction) dir=0.5f;
-						else dir=-0.5f;
-						CEGUI::System::getSingleton().injectMouseWheelChange(dir);
-					}
-				} else { // assume otherwise that it's a character.
-					if(event==NLMISC::EventCharId) {
-						unsigned char c = (char)((NLMISC::CEventChar&)event).Char;
-						CEGUI::System::getSingleton().injectChar((CEGUI::utf32)c);
-					} else if(event==NLMISC::EventKeyDownId) {
-						NLMISC::CEventKeyDown *keyvent=(NLMISC::CEventKeyDown *)&event;
-						CEGUI::System::getSingleton().injectKeyDown(m_KeyMap[keyvent->Key]);
+					} else { // assume otherwise that it's a character.
+						if(event==NLMISC::EventCharId) {
+							unsigned char c = (char)((NLMISC::CEventChar&)event).Char;
+							CEGUI::System::getSingleton().injectChar((CEGUI::utf32)c);
+						} else if(event==NLMISC::EventKeyDownId) {
+							NLMISC::CEventKeyDown *keyvent=(NLMISC::CEventKeyDown *)&event;
+							CEGUI::System::getSingleton().injectKeyDown(m_KeyMap[keyvent->Key]);
+						}
 					}
 				}
+				catch (CEGUI::Exception) { }
 			}
 
 			void initKeyMap() {

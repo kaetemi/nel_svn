@@ -44,8 +44,9 @@
 //
 // CEGUI Includes
 //
-#include "nel/cegui/nelrenderer.h"
-#include "CEGUI/CEGUI.h"
+#include <nel/cegui/nelrenderer.h>
+#include <nel/cegui/nellogger.h>
+#include <CEGUI.h>
 #include "NeLDriver.h"
 
 #include <nel/misc/hierarchical_timer.h>
@@ -64,8 +65,9 @@ uint16 gScreenHeight;
 //
 // CEGUI GLOBALS
 //
-CEGUI::System		*gGuiSystem;
-CEGUI::NeLRenderer	*gGuiRenderer;
+CEGUI::NeLLogger *gGuiLogger;
+CEGUI::System *gGuiSystem;
+CEGUI::NeLRenderer *gGuiRenderer;
 bool gStopDemo;
 
 void createDemoWindows();
@@ -111,6 +113,7 @@ int main(int argc, char **argv)
 		gDriver->init();
 
 		// start up the Gui system.
+		gGuiLogger = new CEGUI::NeLLogger();
 		gGuiRenderer = new CEGUI::NeLRenderer(driver);
 		gGuiRenderer->addSearchPath("datafiles",true,false);
 		gGuiSystem = new CEGUI::System(gGuiRenderer);
