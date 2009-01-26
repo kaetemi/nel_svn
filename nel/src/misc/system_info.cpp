@@ -253,110 +253,59 @@ string CSystemInfo::getOS()
 			case PRODUCT_ULTIMATE:
 				OSString += " Ultimate Edition";
 				break;
-			case PRODUCT_ULTIMATE_N:
-				OSString += " Ultimate N Edition";
+			case PRODUCT_HOME_BASIC:
+				OSString += " Home Basic Edition";
 				break;
 			case PRODUCT_HOME_PREMIUM:
 				OSString += " Home Premium Edition";
 				break;
-			case PRODUCT_HOME_PREMIUM_N:
-				OSString += " Home Premium N Edition";
-				break;
-			case PRODUCT_HOME_BASIC:
-				OSString += " Home Basic Edition";
+			case PRODUCT_ENTERPRISE:
+				OSString += " Enterprise Edition";
 				break;
 			case PRODUCT_HOME_BASIC_N:
 				OSString += " Home Basic N Edition";
 				break;
-			case PRODUCT_ENTERPRISE:
-				OSString += " Enterprise Edition";
-				break;
-			case PRODUCT_ENTERPRISE_N:
-				OSString += " Enterprise N Edition";
-				break;
 			case PRODUCT_BUSINESS:
 				OSString += " Business Edition";
-				break;
-			case PRODUCT_BUSINESS_N:
-				OSString += " Business N Edition";
-				break;
-			case PRODUCT_STARTER:
-				OSString += " Starter Edition";
-				break;
-			case PRODUCT_CLUSTER_SERVER:
-				OSString += " Cluster Server Edition";
-				break;
-			case PRODUCT_DATACENTER_SERVER:
-				OSString += " Datacenter Edition";
-				break;
-			case PRODUCT_DATACENTER_SERVER_CORE:
-				OSString += " Datacenter Edition (core installation)";
-				break;
-			case PRODUCT_DATACENTER_SERVER_CORE_V:
-				OSString += " Datacenter without Hyper-V Edition (core installation)";
-				break;
-			case PRODUCT_DATACENTER_SERVER_V:
-				OSString += " Datacenter without Hyper-V Edition";
-				break;
-			case PRODUCT_ENTERPRISE_SERVER:
-				OSString += " Enterprise Edition";
-				break;
-			case PRODUCT_ENTERPRISE_SERVER_CORE:
-				OSString += " Enterprise Edition (core installation)";
-				break;
-			case PRODUCT_ENTERPRISE_SERVER_CORE_V:
-				OSString += " Enterprise without Hyper-V Edition (core installation)";
-				break;
-			case PRODUCT_ENTERPRISE_SERVER_V:
-				OSString += " Enterprise without Hyper-V Edition";
-				break;
-			case PRODUCT_ENTERPRISE_SERVER_IA64:
-				OSString += " Enterprise Edition for Itanium-based Systems";
-				break;
-			case PRODUCT_SMALLBUSINESS_SERVER:
-				OSString += " Small Business Server";
-				break;
-			case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM:
-				OSString += " Small Business Server Premium Edition";
-				break;
-			case PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT:
-				OSString += " Essential Business Server Management Server Edition";
-				break;
-			case PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING:
-				OSString += " Essential Business Server Messaging Server Edition";
-				break;
-			case PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY:
-				OSString += " Essential Business Server Security Server Edition";
-				break;
-			case PRODUCT_SERVER_FOR_SMALLBUSINESS:
-				OSString += " Essential Server Solutions Edition";
-				break;
-			case PRODUCT_SERVER_FOR_SMALLBUSINESS_V:
-				OSString += " Essential Server Solutions without Hyper-V Edition";
 				break;
 			case PRODUCT_STANDARD_SERVER:
 				OSString += " Standard Edition";
 				break;
-			case PRODUCT_STANDARD_SERVER_V:
-				OSString += " Standard without Hyper-V Edition";
+			case PRODUCT_DATACENTER_SERVER:
+				OSString += " Datacenter Edition";
+				break;
+			case PRODUCT_SMALLBUSINESS_SERVER:
+				OSString += " Small Business Server";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER:
+				OSString += " Enterprise Edition";
+				break;
+			case PRODUCT_STARTER:
+				OSString += " Starter Edition";
+				break;
+			case PRODUCT_DATACENTER_SERVER_CORE:
+				OSString += " Datacenter Edition (core installation)";
 				break;
 			case PRODUCT_STANDARD_SERVER_CORE:
 				OSString += " Standard Edition (core installation)";
 				break;
-			case PRODUCT_STANDARD_SERVER_CORE_V:
-				OSString += " Standard without Hyper-V Edition (core installation)";
+			case PRODUCT_ENTERPRISE_SERVER_CORE:
+				OSString += " Enterprise Edition (core installation)";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER_IA64:
+				OSString += " Enterprise Edition for Itanium-based Systems";
+				break;
+			case PRODUCT_BUSINESS_N:
+				OSString += " Business N Edition";
 				break;
 			case PRODUCT_WEB_SERVER:
 				OSString += " Web Server Edition";
 				break;
-			case PRODUCT_WEB_SERVER_CORE:
-				OSString += " Web Server Edition (core installation)";
+			case PRODUCT_CLUSTER_SERVER:
+				OSString += " Cluster Server Edition";
 				break;
-			case PRODUCT_HYPERV:
-				OSString += " Hyper-V Server Edition";
-				break;
-			case PRODUCT_STORAGE_ENTERPRISE_SERVER:
-				OSString += " Storage Server Enterprise Edition";
+			case PRODUCT_HOME_SERVER:
+				OSString += " Home Server Edition";
 				break;
 			case PRODUCT_STORAGE_EXPRESS_SERVER:
 				OSString += " Storage Server Express Edition";
@@ -367,6 +316,104 @@ string CSystemInfo::getOS()
 			case PRODUCT_STORAGE_WORKGROUP_SERVER:
 				OSString += " Storage Server Workgroup Edition";
 				break;
+			case PRODUCT_STORAGE_ENTERPRISE_SERVER:
+				OSString += " Storage Server Enterprise Edition";
+				break;
+#ifdef PRODUCT_SERVER_FOR_SMALLBUSINESS
+			case PRODUCT_SERVER_FOR_SMALLBUSINESS:
+				OSString += " Essential Server Solutions Edition";
+				break;
+#endif
+#ifdef PRODUCT_SMALLBUSINESS_SERVER_PREMIUM
+			case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM:
+				OSString += " Small Business Server Premium Edition";
+				break;
+#endif
+#ifdef PRODUCT_HOME_PREMIUM_N
+			case PRODUCT_HOME_PREMIUM_N:
+				OSString += " Home Premium N Edition";
+				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_N
+			case PRODUCT_ENTERPRISE_N:
+				OSString += " Enterprise N Edition";
+				break;
+#endif
+#ifdef PRODUCT_ULTIMATE_N
+			case PRODUCT_ULTIMATE_N:
+				OSString += " Ultimate N Edition";
+				break;
+#endif
+#ifdef PRODUCT_WEB_SERVER_CORE
+			case PRODUCT_WEB_SERVER_CORE:
+				OSString += " Web Server Edition (core installation)";
+				break;
+#endif
+#ifdef PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT
+			case PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT:
+				OSString += " Essential Business Server Management Server Edition";
+				break;
+#endif
+#ifdef PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY
+			case PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY:
+				OSString += " Essential Business Server Security Server Edition";
+				break;
+#endif
+#ifdef PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING
+			case PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING:
+				OSString += " Essential Business Server Messaging Server Edition";
+				break;
+#endif
+#ifdef PRODUCT_SMALLBUSINESS_SERVER_PRIME
+			case PRODUCT_SMALLBUSINESS_SERVER_PRIME:
+				OSString += " Small Business Server Prime Edition";
+				break;
+#endif
+#ifdef PRODUCT_HOME_PREMIUM_SERVER
+			case PRODUCT_HOME_PREMIUM_SERVER:
+				OSString += " Home Premium Server Edition";
+				break;
+#endif
+#ifdef PRODUCT_SERVER_FOR_SMALLBUSINESS_V
+			case PRODUCT_SERVER_FOR_SMALLBUSINESS_V:
+				OSString += " Essential Server Solutions without Hyper-V Edition";
+				break;
+#endif
+#ifdef PRODUCT_STANDARD_SERVER_V
+			case PRODUCT_STANDARD_SERVER_V:
+				OSString += " Standard without Hyper-V Edition";
+				break;
+#endif
+#ifdef PRODUCT_DATACENTER_SERVER_V
+			case PRODUCT_DATACENTER_SERVER_V:
+				OSString += " Datacenter without Hyper-V Edition";
+				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_SERVER_V
+			case PRODUCT_ENTERPRISE_SERVER_V:
+				OSString += " Enterprise without Hyper-V Edition";
+				break;
+#endif
+#ifdef PRODUCT_DATACENTER_SERVER_CORE_V
+			case PRODUCT_DATACENTER_SERVER_CORE_V:
+				OSString += " Datacenter without Hyper-V Edition (core installation)";
+				break;
+#endif
+#ifdef PRODUCT_STANDARD_SERVER_CORE_V
+			case PRODUCT_STANDARD_SERVER_CORE_V:
+				OSString += " Standard without Hyper-V Edition (core installation)";
+				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_SERVER_CORE_V
+			case PRODUCT_ENTERPRISE_SERVER_CORE_V:
+				OSString += " Enterprise without Hyper-V Edition (core installation)";
+				break;
+#endif
+#ifdef PRODUCT_HYPERV
+			case PRODUCT_HYPERV:
+				OSString += " Hyper-V Server Edition";
+				break;
+#endif
 			default:
 				OSString += toString(" Unknown Edition (0x%04x)", dwType);
 			}
@@ -384,8 +431,10 @@ string CSystemInfo::getOS()
 					OSString += " Windows Server 2003 R2";
 				else if ( osvi.wSuiteMask == VER_SUITE_STORAGE_SERVER )
 					OSString += " Windows Storage Server 2003";
+#ifdef VER_SUITE_WH_SERVER
 				else if ( osvi.wSuiteMask == VER_SUITE_WH_SERVER )
 					OSString += " Windows Home Server";
+#endif
 				else if( osvi.wProductType == VER_NT_WORKSTATION &&
 					si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
 					OSString += " Windows XP Professional x64 Edition";
