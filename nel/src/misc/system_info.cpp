@@ -174,6 +174,12 @@ string CSystemInfo::getOS()
 
 #ifdef NL_OS_WINDOWS
 
+	typedef void (WINAPI *PGNSI)(LPSYSTEM_INFO);
+	typedef BOOL (WINAPI *PGPI)(DWORD, DWORD, DWORD, DWORD, PDWORD);
+
+	SYSTEM_INFO si;
+	PGNSI pGNSI;
+	PGPI pGPI;
 	OSVERSIONINFOEX osvi;
 	BOOL bOsVersionInfoEx;
 	const int BUFSIZE = 80;
@@ -181,115 +187,332 @@ string CSystemInfo::getOS()
 	// Try calling GetVersionEx using the OSVERSIONINFOEX structure.
 	// If that fails, try using the OSVERSIONINFO structure.
 
+	ZeroMemory(&si, sizeof(SYSTEM_INFO));
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-	bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi);
+	bOsVersionInfoEx = GetVersionExA ((OSVERSIONINFO *) &osvi);
 
 	if(!bOsVersionInfoEx)
 	{
 		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-		if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) )
-		return OSString+" Can't GetVersionEx()";
+		if (! GetVersionExA ( (OSVERSIONINFO *) &osvi) )
+			return OSString+" Can't GetVersionEx()";
 	}
 
-	switch (osvi.dwPlatformId)
-	{
+	// Call GetNativeSystemInfo if supported or GetSystemInfo otherwise.
+
+	pGNSI = (PGNSI) GetProcAddress(GetModuleHandleA("kernel32.dll"), "GetNativeSystemInfo");
+
+	if (NULL != pGNSI)
+		pGNSI(&si);
+	else
+		GetSystemInfo(&si);
+
 	// Test for the Windows NT product family.
-	case VER_PLATFORM_WIN32_NT:
+	if ( VER_PLATFORM_WIN32_NT == osvi.dwPlatformId && osvi.dwMajorVersion > 4 )
+	{
+		OSString = "Microsoft";
 
-		// Test for the specific product family.
-		if ( osvi.dwMajorVersion == 6 )
-			OSString = "Microsoft Windows Vista ";
-
-		if ( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2 )
-			OSString = "Microsoft Windows Server 2003 family ";
-
-		if ( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1 )
-			OSString = "Microsoft Windows XP ";
-
-		if ( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0 )
-			OSString = "Microsoft Windows 2000 ";
-
-		if ( osvi.dwMajorVersion <= 4 )
-			OSString = "Microsoft Windows NT ";
-
-         // Test for specific product on Windows NT 4.0 SP6 and later.
-         if( bOsVersionInfoEx )
-         {
-			 // not available on visual 6 SP4, then comment it
-
-/*            // Test for the workstation type.
-            if ( osvi.wProductType == VER_NT_WORKSTATION )
-            {
-               if( osvi.dwMajorVersion == 4 )
-                  printf ( "Workstation 4.0 " );
-               else if( osvi.wSuiteMask & VER_SUITE_PERSONAL )
-                  printf ( "Home Edition " );
-               else
-                  printf ( "Professional " );
-            }
-
-            // Test for the server type.
-            else if ( osvi.wProductType == VER_NT_SERVER )
-            {
-               if( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2 )
-               {
-                  if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
-                     printf ( "Datacenter Edition " );
-                  else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
-                     printf ( "Enterprise Edition " );
-                  else if ( osvi.wSuiteMask == VER_SUITE_BLADE )
-                     printf ( "Web Edition " );
-                  else
-                     printf ( "Standard Edition " );
-               }
-
-               else if( osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0 )
-               {
-                  if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
-                     printf ( "Datacenter Server " );
-                  else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
-                     printf ( "Advanced Server " );
-                  else
-                     printf ( "Server " );
-               }
-
-               else  // Windows NT 4.0
-               {
-                  if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
-                     printf ("Server 4.0, Enterprise Edition " );
-                  else
-                     printf ( "Server 4.0 " );
-               }
-            }*/
-		}
-		else  // Test for specific product on Windows NT 4.0 SP5 and earlier
+		if ( osvi.dwMajorVersion > 6 )
 		{
-			HKEY hKey;
-			TCHAR szProductType[BUFSIZE];
-			DWORD dwBufLen=BUFSIZE;
-			LONG lRet;
+			OSString += " Windows (not released)";
+		}
+		else if ( osvi.dwMajorVersion == 6 )
+		{
+			if ( osvi.dwMinorVersion == 1 )
+			{
+				if( osvi.wProductType == VER_NT_WORKSTATION )
+					OSString += " Windows 7";
+				else
+					OSString += " Windows Server 2008 R2";
+			}
+			else if ( osvi.dwMinorVersion == 0 )
+			{
+				if( osvi.wProductType == VER_NT_WORKSTATION )
+					OSString += " Windows Vista";
+				else
+					OSString += " Windows Server 2008";
+			}
+			else
+			{
+				OSString += " Windows (not released)";
+			}
 
-			lRet = RegOpenKeyExA( HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ProductOptions", 0, KEY_QUERY_VALUE, &hKey );
-			if( lRet != ERROR_SUCCESS )
-				return OSString + " Can't RegOpenKeyEx";
+			pGPI = (PGPI) GetProcAddress(GetModuleHandleA("kernel32.dll"), "GetProductInfo");
 
-			lRet = RegQueryValueExA( hKey, "ProductType", NULL, NULL, (LPBYTE) szProductType, &dwBufLen);
-			if( (lRet != ERROR_SUCCESS) || (dwBufLen > BUFSIZE) )
-				return OSString + " Can't ReQueryValueEx";
+			DWORD dwType;
+			pGPI( osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.wServicePackMajor, osvi.wServicePackMinor, &dwType);
 
-			RegCloseKey( hKey );
+			// Test for the specific product family.
+			switch( dwType )
+			{
+			case PRODUCT_UNLICENSED:
+				OSString += " Unlicensed";
+				break;
+			case PRODUCT_ULTIMATE:
+				OSString += " Ultimate Edition";
+				break;
+			case PRODUCT_ULTIMATE_N:
+				OSString += " Ultimate N Edition";
+				break;
+			case PRODUCT_HOME_PREMIUM:
+				OSString += " Home Premium Edition";
+				break;
+			case PRODUCT_HOME_PREMIUM_N:
+				OSString += " Home Premium N Edition";
+				break;
+			case PRODUCT_HOME_BASIC:
+				OSString += " Home Basic Edition";
+				break;
+			case PRODUCT_HOME_BASIC_N:
+				OSString += " Home Basic N Edition";
+				break;
+			case PRODUCT_ENTERPRISE:
+				OSString += " Enterprise Edition";
+				break;
+			case PRODUCT_ENTERPRISE_N:
+				OSString += " Enterprise N Edition";
+				break;
+			case PRODUCT_BUSINESS:
+				OSString += " Business Edition";
+				break;
+			case PRODUCT_BUSINESS_N:
+				OSString += " Business N Edition";
+				break;
+			case PRODUCT_STARTER:
+				OSString += " Starter Edition";
+				break;
+			case PRODUCT_CLUSTER_SERVER:
+				OSString += " Cluster Server Edition";
+				break;
+			case PRODUCT_DATACENTER_SERVER:
+				OSString += " Datacenter Edition";
+				break;
+			case PRODUCT_DATACENTER_SERVER_CORE:
+				OSString += " Datacenter Edition (core installation)";
+				break;
+			case PRODUCT_DATACENTER_SERVER_CORE_V:
+				OSString += " Datacenter without Hyper-V Edition (core installation)";
+				break;
+			case PRODUCT_DATACENTER_SERVER_V:
+				OSString += " Datacenter without Hyper-V Edition";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER:
+				OSString += " Enterprise Edition";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER_CORE:
+				OSString += " Enterprise Edition (core installation)";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER_CORE_V:
+				OSString += " Enterprise without Hyper-V Edition (core installation)";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER_V:
+				OSString += " Enterprise without Hyper-V Edition";
+				break;
+			case PRODUCT_ENTERPRISE_SERVER_IA64:
+				OSString += " Enterprise Edition for Itanium-based Systems";
+				break;
+			case PRODUCT_SMALLBUSINESS_SERVER:
+				OSString += " Small Business Server";
+				break;
+			case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM:
+				OSString += " Small Business Server Premium Edition";
+				break;
+			case PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT:
+				OSString += " Essential Business Server Management Server Edition";
+				break;
+			case PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING:
+				OSString += " Essential Business Server Messaging Server Edition";
+				break;
+			case PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY:
+				OSString += " Essential Business Server Security Server Edition";
+				break;
+			case PRODUCT_SERVER_FOR_SMALLBUSINESS:
+				OSString += " Essential Server Solutions Edition";
+				break;
+			case PRODUCT_SERVER_FOR_SMALLBUSINESS_V:
+				OSString += " Essential Server Solutions without Hyper-V Edition";
+				break;
+			case PRODUCT_STANDARD_SERVER:
+				OSString += " Standard Edition";
+				break;
+			case PRODUCT_STANDARD_SERVER_V:
+				OSString += " Standard without Hyper-V Edition";
+				break;
+			case PRODUCT_STANDARD_SERVER_CORE:
+				OSString += " Standard Edition (core installation)";
+				break;
+			case PRODUCT_STANDARD_SERVER_CORE_V:
+				OSString += " Standard without Hyper-V Edition (core installation)";
+				break;
+			case PRODUCT_WEB_SERVER:
+				OSString += " Web Server Edition";
+				break;
+			case PRODUCT_WEB_SERVER_CORE:
+				OSString += " Web Server Edition (core installation)";
+				break;
+			case PRODUCT_HYPERV:
+				OSString += " Hyper-V Server Edition";
+				break;
+			case PRODUCT_STORAGE_ENTERPRISE_SERVER:
+				OSString += " Storage Server Enterprise Edition";
+				break;
+			case PRODUCT_STORAGE_EXPRESS_SERVER:
+				OSString += " Storage Server Express Edition";
+				break;
+			case PRODUCT_STORAGE_STANDARD_SERVER:
+				OSString += " Storage Server Standard Edition";
+				break;
+			case PRODUCT_STORAGE_WORKGROUP_SERVER:
+				OSString += " Storage Server Workgroup Edition";
+				break;
+			default:
+				OSString += toString(" Unknown Edition (0x%04x)", dwType);
+			}
 
-			if ( lstrcmpi( _T("WINNT"), szProductType) == 0 )
-				OSString += "Workstation ";
-			if ( lstrcmpi( _T("LANMANNT"), szProductType) == 0 )
-				OSString += "Server ";
-			if ( lstrcmpi( _T("SERVERNT"), szProductType) == 0 )
-				OSString += "Advanced Server ";
-         }
+			if ( si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 )
+				OSString += " 64-bit";
+			else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL )
+				OSString += " 32-bit";
+		}
+		else if ( osvi.dwMajorVersion == 5 )
+		{
+			if ( osvi.dwMinorVersion == 2 )
+			{
+				if( GetSystemMetrics(89 /* SM_SERVERR2 */) )
+					OSString += " Windows Server 2003 R2";
+				else if ( osvi.wSuiteMask == VER_SUITE_STORAGE_SERVER )
+					OSString += " Windows Storage Server 2003";
+				else if ( osvi.wSuiteMask == VER_SUITE_WH_SERVER )
+					OSString += " Windows Home Server";
+				else if( osvi.wProductType == VER_NT_WORKSTATION &&
+					si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+					OSString += " Windows XP Professional x64 Edition";
+				else
+					OSString += " Windows Server 2003";
 
-		// Display service pack (if any) and build number.
+				// Test for the server type.
+				if ( osvi.wProductType != VER_NT_WORKSTATION )
+				{
+					if ( si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64 )
+					{
+						if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
+							OSString += " Datacenter Edition for Itanium-based Systems";
+						else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
+							OSString += " Enterprise Edition for Itanium-based Systems";
+					}
+
+					else if ( si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 )
+					{
+						if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
+							OSString += " Datacenter x64 Edition";
+						else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
+							OSString += " Enterprise x64 Edition";
+						else
+							OSString += " Standard x64 Edition";
+					}
+
+					else
+					{
+						if ( osvi.wSuiteMask & VER_SUITE_COMPUTE_SERVER )
+							OSString += " Compute Cluster Edition";
+						else if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
+							OSString += " Datacenter Edition";
+						else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
+							OSString += " Enterprise Edition";
+						else if ( osvi.wSuiteMask & VER_SUITE_BLADE )
+							OSString += " Web Edition";
+						else
+							OSString += " Standard Edition";
+					}
+				}
+			}
+			else if ( osvi.dwMinorVersion == 1 )
+			{
+				OSString += " Windows XP";
+				if( osvi.wSuiteMask & VER_SUITE_PERSONAL )
+					OSString += " Home Edition";
+				else
+					OSString += " Professional";
+			}
+			else if ( osvi.dwMinorVersion == 0 )
+			{
+				OSString += " Windows 2000";
+
+				if ( osvi.wProductType == VER_NT_WORKSTATION )
+				{
+					OSString += " Professional";
+				}
+				else 
+				{
+					if( osvi.wSuiteMask & VER_SUITE_DATACENTER )
+						OSString += " Datacenter Server";
+					else if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
+						OSString += " Advanced Server";
+					else
+						OSString += " Server";
+				}
+			}
+			else
+			{
+				OSString += " Unknown Windows";
+			}
+		}
+		else if ( osvi.dwMajorVersion <= 4 )
+		{
+			OSString += " Windows NT";
+
+			// Test for specific product on Windows NT 4.0 SP6 and later.
+			if( bOsVersionInfoEx )
+			{
+				// Test for the workstation type.
+				if ( osvi.wProductType == VER_NT_WORKSTATION )
+				{
+					if( osvi.dwMajorVersion == 4 )
+						OSString += " Workstation 4.0";
+					else if( osvi.wSuiteMask & VER_SUITE_PERSONAL )
+						OSString += " Home Edition";
+					else
+						OSString += " Professional";
+				}
+
+				// Test for the server type.
+				else if ( osvi.wProductType == VER_NT_SERVER )
+				{
+					if( osvi.wSuiteMask & VER_SUITE_ENTERPRISE )
+						OSString += " Server 4.0 Enterprise Edition";
+					else
+						OSString += " Server 4.0";
+				}
+			}
+			else  // Test for specific product on Windows NT 4.0 SP5 and earlier
+			{
+				HKEY hKey;
+				TCHAR szProductType[BUFSIZE];
+				DWORD dwBufLen=BUFSIZE;
+				LONG lRet;
+
+				lRet = RegOpenKeyExA( HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ProductOptions", 0, KEY_QUERY_VALUE, &hKey );
+				if( lRet != ERROR_SUCCESS )
+					return OSString + " Can't RegOpenKeyEx";
+
+				lRet = RegQueryValueExA( hKey, "ProductType", NULL, NULL, (LPBYTE) szProductType, &dwBufLen);
+				if( (lRet != ERROR_SUCCESS) || (dwBufLen > BUFSIZE) )
+					return OSString + " Can't ReQueryValueEx";
+
+				RegCloseKey( hKey );
+
+				if ( lstrcmpi( _T("WINNT"), szProductType) == 0 )
+					OSString += " Workstation";
+				if ( lstrcmpi( _T("LANMANNT"), szProductType) == 0 )
+					OSString += " Server";
+				if ( lstrcmpi( _T("SERVERNT"), szProductType) == 0 )
+					OSString += " Advanced Server";
+			}
+		}
+
+		std::string servicePack;
 
 		if( osvi.dwMajorVersion == 4 && lstrcmpi( osvi.szCSDVersion, _T("Service Pack 6") ) == 0 )
 		{
@@ -299,51 +522,58 @@ string CSystemInfo::getOS()
 			// Test for SP6 versus SP6a.
 			lRet = RegOpenKeyExA( HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Hotfix\\Q246009", 0, KEY_QUERY_VALUE, &hKey );
 			if( lRet == ERROR_SUCCESS )
-				OSString += toString("Service Pack 6a (Build %d) ", osvi.dwBuildNumber & 0xFFFF );
+				servicePack = "Service Pack 6a";
 			else // Windows NT 4.0 prior to SP6a
 			{
-				OSString += toString("%s (Build %d) ", osvi.szCSDVersion, osvi.dwBuildNumber & 0xFFFF);
+				servicePack = osvi.szCSDVersion;
 			}
 
 			RegCloseKey( hKey );
 		}
 		else // Windows NT 3.51 and earlier or Windows 2000 and later
 		{
-			OSString += toString("%s (Build %d) ", osvi.szCSDVersion, osvi.dwBuildNumber & 0xFFFF);
+			servicePack = osvi.szCSDVersion;
 		}
 
-		break;
+		// Include service pack (if any)
+		if (!servicePack.empty()) OSString += " " + servicePack;
 
-		// Test for the Windows 95 product family.
-		case VER_PLATFORM_WIN32_WINDOWS:
+		// Include build number
+		OSString += toString(" (Build %d)", osvi.dwBuildNumber & 0xFFFF);
+	}
+	else if ( VER_PLATFORM_WIN32_WINDOWS == osvi.dwPlatformId )
+	{
+		OSString = "Microsoft";
 
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
-			{
-				OSString = "Microsoft Windows 95 ";
-				if ( osvi.szCSDVersion[1] == 'C' || osvi.szCSDVersion[1] == 'B' )
-					OSString += "OSR2 ";
-			}
-
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
-			{
-				OSString = "Microsoft Windows 98 ";
-				if ( osvi.szCSDVersion[1] == 'A' )
-					OSString += "SE ";
-			}
-
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
-			{
-				OSString = "Microsoft Windows Millennium Edition ";
-			}
-		break;
-
-		case VER_PLATFORM_WIN32s:
-
-			OSString = "Microsoft Win32s ";
-		break;
+		if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
+		{
+			OSString += " Windows 95";
+			if ( osvi.szCSDVersion[1] == 'C' || osvi.szCSDVersion[1] == 'B' )
+				OSString += " OSR2";
+		}
+		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
+		{
+			OSString += " Windows 98";
+			if ( osvi.szCSDVersion[1] == 'A' )
+				OSString += " SE";
+		}
+		else if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
+		{
+			OSString += " Windows Millennium Edition";
+		}
+		else
+			OSString += " Windows 9x";
+	}
+	else if ( VER_PLATFORM_WIN32s == osvi.dwPlatformId )
+	{
+		OSString = toString("Microsoft Windows %d.%d + Win32s", osvi.dwMajorVersion, osvi.dwMinorVersion);
+	}
+	else
+	{
+		OSString = toString("Microsoft Windows %d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion);
 	}
 
-	OSString += toString( "(%d.%d %d)", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.dwBuildNumber & 0xFFFF);
+	OSString += toString( " (%d.%d %d)", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.dwBuildNumber & 0xFFFF);
 
 #elif defined NL_OS_MAC
 
