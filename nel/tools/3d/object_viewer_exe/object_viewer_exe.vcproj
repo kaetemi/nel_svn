@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="object_viewer_exe"
 	ProjectGUID="{C18D947F-1EB1-4B0E-A768-8F6CF6A6ACC3}"
 	RootNamespace="object_viewer"
@@ -135,6 +135,7 @@
 				DisableLanguageExtensions="false"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -151,6 +152,7 @@
 				OutputFile="$(RootNamespace)_r.exe"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"

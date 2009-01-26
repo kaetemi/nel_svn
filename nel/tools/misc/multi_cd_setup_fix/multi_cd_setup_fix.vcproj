@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="multi_cd_setup_fix"
 	ProjectGUID="{18A4D1B0-26A2-49F2-95F1-0D5232D431B0}"
 	RootNamespace="multi_cd_setup_fix"
@@ -137,6 +137,7 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

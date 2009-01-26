@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="object_viewer"
 	ProjectGUID="{A10DFC7C-B9E1-47D3-B3D8-3EE15AEBDAEC}"
 	RootNamespace="object_viewer"
@@ -138,6 +138,7 @@
 				PrecompiledHeaderThrough="std_afx.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -154,6 +155,7 @@
 				OutputFile="..\..\..\lib\$(RootNamespace)_r.dll"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

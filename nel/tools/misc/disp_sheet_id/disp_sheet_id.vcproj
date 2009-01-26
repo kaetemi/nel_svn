@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="disp_sheet_id"
 	ProjectGUID="{F4E30D31-4D86-458B-8C41-713207390621}"
 	RootNamespace="disp_sheet_id"
@@ -124,6 +124,7 @@
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
 				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="zviewer"
 	ProjectGUID="{1D041D6A-ED55-4C34-B3F6-BE1C3E64BA56}"
 	RootNamespace="zviewer"
