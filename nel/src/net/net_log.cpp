@@ -40,11 +40,11 @@ namespace NLNET {
 // Globals
 //
 
-NLMISC::CVariable<bool> VerboseLNETL0("nel","VerboseLNETL0","Enable verbose logging in Network Layer 0 operations",true,0,true);
-NLMISC::CVariable<bool> VerboseLNETL1("nel","VerboseLNETL1","Enable verbose logging in Network Layer 1 operations",true,0,true);
-NLMISC::CVariable<bool> VerboseLNETL2("nel","VerboseLNETL2","Enable verbose logging in Network Layer 2 operations",true,0,true);
-NLMISC::CVariable<bool> VerboseLNETL3("nel","VerboseLNETL3","Enable verbose logging in Network Layer 3 operations",true,0,true);
-NLMISC::CVariable<bool> VerboseLNETL4("nel","VerboseLNETL4","Enable verbose logging in Network Layer 4 operations",true,0,true);
+NLMISC::CVariable<bool> VerboseLNETL0("nel","VerboseLNETL0","Enable verbose logging in Network Layer 0 operations",false,0,true);
+NLMISC::CVariable<bool> VerboseLNETL1("nel","VerboseLNETL1","Enable verbose logging in Network Layer 1 operations",false,0,true);
+NLMISC::CVariable<bool> VerboseLNETL2("nel","VerboseLNETL2","Enable verbose logging in Network Layer 2 operations",false,0,true);
+NLMISC::CVariable<bool> VerboseLNETL3("nel","VerboseLNETL3","Enable verbose logging in Network Layer 3 operations",false,0,true);
+NLMISC::CVariable<bool> VerboseLNETL4("nel","VerboseLNETL4","Enable verbose logging in Network Layer 4 operations",false,0,true);
 NLMISC::CVariable<bool> VerboseLNETL5("nel","VerboseLNETL5","Enable verbose logging in Network Layer 5 operations",true,0,true);
 NLMISC::CVariable<bool> VerboseLNETL6("nel","VerboseLNETL6","Enable verbose logging in Network Layer 6 operations",true,0,true);
 
