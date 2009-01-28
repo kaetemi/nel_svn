@@ -13,6 +13,7 @@
 #include <utility>
 #include <algorithm>
 #include <exception>
+#include <memory>
 
 #include "nel/misc/debug.h"
 #include "nel/misc/common.h"

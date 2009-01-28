@@ -28,6 +28,7 @@
 #include "vector.h"
 
 #include <list>
+#include <vector>
 
 #include "mutex.h"
 #include "thread.h"
