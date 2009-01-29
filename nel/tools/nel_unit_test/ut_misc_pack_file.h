@@ -131,13 +131,13 @@ public:
 
 	void compressMemory()
 	{
-#ifdef WIN32
-_CrtCheckMemory();
-#endif
+//#ifdef WIN32
+//_CrtCheckMemory();
+//#endif
 		CPath::memoryCompress();
-#ifdef WIN32
-_CrtCheckMemory();
-#endif
+//#ifdef WIN32
+//_CrtCheckMemory();
+//#endif
 	}
 
 	void loadFromBnpCompressed()
