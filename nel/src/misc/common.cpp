@@ -59,6 +59,12 @@ using namespace std;
 #		pragma message( "nlassert does not throw exceptions" )
 #	endif // ASSERT_THROW_EXCEPTION
 
+#	ifdef _STLPORT_VERSION
+#		pragma message( "Using STLport" )
+#	else
+#		pragma message( "Using standard STL" )
+#	endif // _STLPORT_VERSION
+
 #	pragma message( " " )
 
 #	if (_MSC_VER >= 1200) && (_MSC_VER < 1400) && (WINVER < 0x0500)
