@@ -1670,7 +1670,7 @@ bool			CDriverGL::initVertexBufferHard(uint agpMem, uint vramMem)
 		{
 			if(_AGPVertexArrayRange->allocate(agpMem, CVertexBuffer::AGPPreferred))
 			{
-				nlinfo("3D: %.d vertices supported", _MaxVerticesByVBHard);
+				nlinfo("3D: %.u vertices supported", _MaxVerticesByVBHard);
 				nlinfo("3D: Success to allocate %.1f Mo of AGP VAR Ram", agpMem / 1000000.f);
 				break;
 			}
@@ -1683,7 +1683,7 @@ bool			CDriverGL::initVertexBufferHard(uint agpMem, uint vramMem)
 
 		if(agpMem< NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE)
 		{
-			nlinfo("3D: %.d vertices supported", _MaxVerticesByVBHard);
+			nlinfo("3D: %.u vertices supported", _MaxVerticesByVBHard);
 			nlinfo("3D: Failed to allocate %.1f Mo of AGP VAR Ram", NL3D_DRV_VERTEXARRAY_MINIMUM_SIZE / 1000000.f);
 			ok= false;
 		}
