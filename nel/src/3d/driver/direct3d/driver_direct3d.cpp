@@ -2497,8 +2497,10 @@ bool CDriverD3D::reset (const GfxMode& mode)
 
 	{
 		CFpuRestorer fpuRestorer; // fpu control word is changed by "Reset"
-		if (_DeviceInterface->Reset (&parameters) != D3D_OK)
+		HRESULT hr = _DeviceInterface->Reset (&parameters);
+		if (hr != D3D_OK)
 		{
+			nlwarning("CDriverD3D::reset: Reset on _DeviceInterface error 0x%x", hr);
 			// tmp
 			nlstopex(("CDriverD3D::reset: Reset on _DeviceInterface"));
 			return false;
