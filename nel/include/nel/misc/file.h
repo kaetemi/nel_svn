@@ -213,7 +213,7 @@ public:		// Basic Usage.
 	~COFile();
 
 	/** Open a file for writing. false if failed. close() if a file was opened.
-	*	If you open the file with the flag useTempFile, you MUST close explicitlty the file
+	*	If you open the file with the flag useTempFile, you MUST close explicitly the file
 	*	with close() if the writing as been successed.
 	*/
 	bool	open(const std::string &path, bool append=false, bool text=false, bool useTempFile=false);

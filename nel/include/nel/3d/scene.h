@@ -79,7 +79,7 @@ class	CWaterEnvMap;
  * A CScene, which own a list of Render Traversals, and a render() method.
  *
  * \b USER \b RULES:
- * - Before creating any CScene, call the cool method CScene::registerBasics(), to register baisc models.
+ * - Before creating any CScene, call the cool method CScene::registerBasics(), to register basic models.
  * - Create a CScene (NB: may be static \c CScene \c scene;).
  * - call first initDefaultRoot() to create / register automatically the roots:
  * - set your driver for this scene with setDriver().
@@ -99,7 +99,7 @@ class	CWaterEnvMap;
  *              -------> X
  *
  * \b Shape \b System:\n
- * The scene has an instance Managagement:
+ * The scene has an instance Management:
  *		- IShape  design the object that is instancied (a mesh as example).
  *		- ITransformShape is the instance, which smart_point to a IShape.
  *		- user can add shape manually in the scene CShapeBank with CShapeBank::add (), or remove them with CShapeBank::release ().

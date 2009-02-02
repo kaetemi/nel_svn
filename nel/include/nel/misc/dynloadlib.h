@@ -164,7 +164,7 @@ public:
 		return _LibFileName;
 	}
 
-	/// Check weather a library is effectively loaded
+	/// Check whether a library is effectively loaded
 	bool isLibraryLoaded();
 
 	/** Check if the loaded library is a pure library

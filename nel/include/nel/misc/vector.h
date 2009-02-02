@@ -119,7 +119,7 @@ public:		// Methods.
 	 */
 	void	sphericToCartesian(float r, float theta,float phi);
 	/**
-	 * Get the sphreic coordinates of the vector.
+	 * Get the spheric coordinates of the vector.
 	 * See sphericToCartesian() to know coordinates conventions.
 	 * \sa sphericToCartesian()
 	 */
