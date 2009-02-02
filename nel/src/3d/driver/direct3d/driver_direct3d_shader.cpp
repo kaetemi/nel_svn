@@ -3168,11 +3168,11 @@ void CDriverD3D::initInternalShaders()
 	setFx(_ShaderLightmap2Blend,"lightmap2blendFx", Lightmap2blendFx);
 	setFx(_ShaderLightmap3Blend,"lightmap3blendFx", Lightmap3blendFx);
 	setFx(_ShaderLightmap4Blend,"lightmap4blendFx", Lightmap4blendFx);
-	setFx(_ShaderLightmap0X2,"lightmap0blend_x2Fx", Lightmap0blend_x2Fx);
-	setFx(_ShaderLightmap1X2,"lightmap1blend_x2Fx", Lightmap1blend_x2Fx);
-	setFx(_ShaderLightmap2X2,"lightmap2blend_x2Fx", Lightmap2blend_x2Fx);
-	setFx(_ShaderLightmap3X2,"lightmap3blend_x2Fx", Lightmap3blend_x2Fx);
-	setFx(_ShaderLightmap4X2,"lightmap4blend_x2Fx", Lightmap4blend_x2Fx);
+	setFx(_ShaderLightmap0X2,"lightmap0_x2Fx", Lightmap0_x2Fx);
+	setFx(_ShaderLightmap1X2,"lightmap1_x2Fx", Lightmap1_x2Fx);
+	setFx(_ShaderLightmap2X2,"lightmap2_x2Fx", Lightmap2_x2Fx);
+	setFx(_ShaderLightmap3X2,"lightmap3_x2Fx", Lightmap3_x2Fx);
+	setFx(_ShaderLightmap4X2,"lightmap4_x2Fx", Lightmap4_x2Fx);
 	setFx(_ShaderLightmap0BlendX2,"lightmap0blend_x2Fx", Lightmap0blend_x2Fx);
 	setFx(_ShaderLightmap1BlendX2,"lightmap1blend_x2Fx", Lightmap1blend_x2Fx);
 	setFx(_ShaderLightmap2BlendX2,"lightmap2blend_x2Fx", Lightmap2blend_x2Fx);
