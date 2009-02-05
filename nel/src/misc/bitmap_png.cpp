@@ -25,9 +25,6 @@
 
 #include "nel/misc/bitmap.h"
 
-// Currently this class supports Windows only
-#ifdef NL_OS_WINDOWS
-
 #include "nel/misc/stream.h"
 #include "nel/misc/file.h"
 #include "nel/misc/dynloadlib.h"
@@ -35,56 +32,6 @@
 
 using namespace std;
 
-#define PNG_LIBPNG_VER_STRING "1.2.5"
-#define PNG_COLOR_MASK_PALETTE    1
-#define PNG_COLOR_MASK_COLOR      2
-#define PNG_COLOR_MASK_ALPHA      4
-#define PNG_COLOR_TYPE_GRAY 0
-#define PNG_COLOR_TYPE_PALETTE  (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_PALETTE)
-#define PNG_COLOR_TYPE_RGB        (PNG_COLOR_MASK_COLOR)
-#define PNG_COLOR_TYPE_RGB_ALPHA  (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_ALPHA)
-#define PNG_COLOR_TYPE_GRAY_ALPHA (PNG_COLOR_MASK_ALPHA)
-#define PNG_COLOR_TYPE_RGBA  PNG_COLOR_TYPE_RGB_ALPHA
-#define PNG_COLOR_TYPE_GA  PNG_COLOR_TYPE_GRAY_ALPHA
-#define PNG_INFO_tRNS 0x0010
-
-#define PNG_INTERLACE_NONE        0 /* Non-interlaced image */
-#define PNG_COMPRESSION_TYPE_BASE 0 /* Deflate method 8, 32K window */
-#define PNG_FILTER_TYPE_BASE      0 /* Single row per-byte filtering */
-
-typedef struct png_info_struct
-{
-   /* the following are necessary for every PNG file */
-   uint32 width;       /* width of image in pixels (from IHDR) */
-   uint32 height;      /* height of image in pixels (from IHDR) */
-   uint32 valid;       /* valid chunk data (see PNG_INFO_ below) */
-   uint32 rowbytes;    /* bytes needed to hold an untransformed row */
-   void			*palette;      /* array of color values (valid & PNG_INFO_PLTE) */
-   uint16 num_palette; /* number of color entries in "palette" (PLTE) */
-   uint16 num_trans;   /* number of transparent palette color (tRNS) */
-   char bit_depth;      /* 1, 2, 4, 8, or 16 bits/channel (from IHDR) */
-   char color_type;     /* see PNG_COLOR_TYPE_ below (from IHDR) */
-} png_info;
-
-struct png_struct
-{
-   jmp_buf jmpbuf;            /* used in png_error */
-   void *error_fn;    /* function for printing errors and aborting */
-   void *warning_fn;  /* function for printing warnings */
-   void *error_ptr;       /* user supplied struct for error functions */
-   void *write_data_fn;  /* function for writing output data */
-   void *read_data_fn;   /* function for reading input data */
-   void *io_ptr;          /* ptr to application struct for I/O functions */
-};
-
-typedef struct png_color_8_struct
-{
-   uint8 red;   /* for use in red green blue files */
-   uint8 green;
-   uint8 blue;
-   uint8 gray;  /* for use in grayscale files */
-   uint8 alpha; /* for alpha channel files */
-} png_color_8;
 
 namespace NLMISC
 {
@@ -100,281 +47,6 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	png_struct *png_ptr = NULL;
 	png_info *info_ptr = NULL;
 	PixelFormat=RGBA;
-
-
-
-//	CLibrary fctLoader(CLibrary::loadLibrary(string("libpng13.dll")));
-	CLibrary fctLoader;
-	
-	if (!fctLoader.loadLibrary("libpng13.dll", false, false))
-		if (!fctLoader.loadLibrary("libpng12.dll", false, false))
-			return 0;
-
-	///////////////////////////
-
-	BOOL (* png_create_read_struct) (const char *user_png_ver,
-											void *error_ptr,
-											void *error_fn,
-											void *warn_fn)
-	=NULL;
-	*(FARPROC*)&png_create_read_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_read_struct"));
-	if(!png_create_read_struct)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_create'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_create_info_struct)(png_struct *png_ptr)=NULL;
-	*(FARPROC*)&png_create_info_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_info_struct"));
-	if(!png_create_info_struct)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_create_info_struct'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_destroy_read_struct) (png_struct **png_ptr_ptr,
-											png_info **info_ptr_ptr,
-											png_info **end_info_ptr_ptr)
-	=NULL;
-	*(FARPROC*)&png_destroy_read_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_destroy_read_struct"));
-	if(!png_destroy_read_struct)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_destroy_read_struct'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_sig_bytes)   (png_struct *png_ptr,
-										int num_bytes)
-	=NULL;
-	*(FARPROC*)&png_set_sig_bytes=(FARPROC)fctLoader.getSymbolAddress(string("png_set_sig_bytes"));
-	if(!png_set_sig_bytes)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_sig_bytes'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_malloc)  (png_struct *png_ptr,
-								uint32 size)
-	=NULL;
-	*(FARPROC*)&png_malloc=(FARPROC)fctLoader.getSymbolAddress(string("png_malloc"));
-	if(!png_malloc)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_malloc'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_get_rowbytes)    (png_struct *png_ptr,
-										png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_get_rowbytes=(FARPROC)fctLoader.getSymbolAddress(string("png_get_rowbytes"));
-	if(!png_get_rowbytes)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_get_rowbytes'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_init_io)    (png_struct *png_ptr,
-										FILE *f)
-	=NULL;
-	*(FARPROC*)&png_init_io=(FARPROC)fctLoader.getSymbolAddress(string("png_init_io"));
-	if(!png_init_io)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_init_io'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_read_info)    (png_struct *png_ptr,
-							 png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_read_info=(FARPROC)fctLoader.getSymbolAddress(string("png_read_info"));
-	if(!png_read_info)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_read_info'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_read_fn)    ( png_struct *png_ptr,
-								void *io_ptr,
-								void *read_data_fn)
-	=NULL;
-	*(FARPROC*)&png_set_read_fn=(FARPROC)fctLoader.getSymbolAddress(string("png_set_read_fn"));
-	if(!png_set_read_fn)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_read_fn'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_get_IHDR)    (  png_struct *png_ptr,
-								png_info *info_ptr,
-								uint32 *width,
-								uint32 *height,
-								int *bit_depth,
-								int *color_type,
-								int *interlace_method,
-								int *compression_method,
-								int *filter_method)
-	=NULL;
-
-	*(FARPROC*)&png_get_IHDR=(FARPROC)fctLoader.getSymbolAddress(string("png_get_IHDR"));
-	if(!png_get_IHDR)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_get_IHDR'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_get_channels)     ( png_struct *png_ptr,
-									png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_get_channels=(FARPROC)fctLoader.getSymbolAddress(string("png_get_channels"));
-	if(!png_get_channels)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_get_channels'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_strip_16)    (png_struct *png_ptr)
-	=NULL;
-	*(FARPROC*)&png_set_strip_16=(FARPROC)fctLoader.getSymbolAddress(string("png_set_strip_16"));
-	if(!png_set_strip_16)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_strip_16'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_gray_1_2_4_to_8)    (png_struct *png_ptr)
-	=NULL;
-	*(FARPROC*)&png_set_gray_1_2_4_to_8=(FARPROC)fctLoader.getSymbolAddress(string("png_set_gray_1_2_4_to_8"));
-	if(!png_set_gray_1_2_4_to_8)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_gray_1_2_4_to_8'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_get_valid)    ( png_struct *png_ptr,
-								png_info *info_ptr,
-								uint32 flag)
-	=NULL;
-	*(FARPROC*)&png_get_valid=(FARPROC)fctLoader.getSymbolAddress(string("png_get_valid"));
-	if(!png_get_valid)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_get_valid'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_expand)    (png_struct *png_ptr)
-	=NULL;
-	*(FARPROC*)&png_set_expand=(FARPROC)fctLoader.getSymbolAddress(string("png_set_expand"));
-	if(!png_set_expand)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_expand'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_get_gAMA)    (  png_struct *png_ptr,
-								png_info *info_ptr,
-								double *file_gamma  )
-	=NULL;
-	*(FARPROC*)&png_get_gAMA=(FARPROC)fctLoader.getSymbolAddress(string("png_get_gAMA"));
-	if(!png_get_gAMA)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_get_gAMA'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_gamma)    ( png_struct *png_ptr,
-								double screen_gamma,
-								double default_file_gamma)
-	=NULL;
-	*(FARPROC*)&png_set_gamma=(FARPROC)fctLoader.getSymbolAddress(string("png_set_gamma"));
-	if(!png_set_gamma)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_set_gamma'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_read_update_info)    (  png_struct *png_ptr,
-										png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_read_update_info=(FARPROC)fctLoader.getSymbolAddress(string("png_read_update_info"));
-	if(!png_read_update_info)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_read_update_info'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_error)    ( png_struct *png_ptr,
-							const char *error_message)
-	=NULL;
-	*(FARPROC*)&png_error=(FARPROC)fctLoader.getSymbolAddress(string("png_error"));
-	if(!png_error)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_error'");
-		return 0;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_read_image)    ( png_struct *png_ptr,
-								 char **image)
-	=NULL;
-	*(FARPROC*)&png_read_image=(FARPROC)fctLoader.getSymbolAddress(string("png_read_image"));
-	if(!png_read_image)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_read_image'");
-		return 0;
-	}
-
-	///////////////////////////
-
-
-	BOOL (* png_read_end)    (  png_struct *png_ptr,
-								png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_read_end=(FARPROC)fctLoader.getSymbolAddress(string("png_read_end"));
-	if(!png_read_end)
-	{
-		nlwarning("CBitmap::readPNG : can't find function 'png_read_end'");
-		return 0;
-	}
-
-	///////////////////////////
-
 
 	if(!f.isReading()) return false;
 
@@ -425,8 +97,8 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR( png_ptr,
 				  info_ptr,
-				  (uint32*) &_Width,
-				  (uint32*) &_Height,
+				  (png_uint_32*) &_Width,
+				  (png_uint_32*) &_Height,
 				  &iBitDepth,
 				  &iColorType,
 				  NULL, NULL, NULL);
@@ -473,8 +145,8 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
     png_get_IHDR(png_ptr,
 				 info_ptr,
-				 (uint32*) &_Width,
-				 (uint32*) &_Height,
+				 (png_uint_32*) &_Width,
+				 (png_uint_32*) &_Height,
 				 &iBitDepth,
 				 &iColorType,
 				 NULL,
@@ -527,7 +199,7 @@ uint8 CBitmap::readPNG( NLMISC::IStream &f )
 
 
 	//effective read of the image
-	png_read_image(png_ptr, ppbRowPointers);
+	png_read_image(png_ptr, (png_bytepp)ppbRowPointers);
 
 	png_read_end(png_ptr, NULL);
 
@@ -645,158 +317,6 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 	png_struct *png_ptr = NULL;
 	png_info *info_ptr = NULL;
 
-	CLibrary fctLoader;
-	
-	if (!fctLoader.loadLibrary("libpng13.dll", false, false))
-		if (!fctLoader.loadLibrary("libpng12.dll", false, false))
-			return false;
-
-	///////////////////////////
-
-	BOOL (* png_create_write_struct) (const char *user_png_ver,
-											void *error_ptr,
-											void *error_fn,
-											void *warn_fn)
-	=NULL;
-	*(FARPROC*)&png_create_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_write_struct"));
-	if(!png_create_write_struct)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_create_write_struct'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_create_info_struct)(png_struct *png_ptr)=NULL;
-	*(FARPROC*)&png_create_info_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_create_info_struct"));
-	if(!png_create_info_struct)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_create_info_struct'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_destroy_write_struct) (png_struct **png_ptr_ptr,
-											png_info **info_ptr_ptr)
-	=NULL;
-	*(FARPROC*)&png_destroy_write_struct=(FARPROC)fctLoader.getSymbolAddress(string("png_destroy_write_struct"));
-	if(!png_destroy_write_struct)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_destroy_write_struct'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_write_info) (png_struct *png_ptr,
-							 png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_write_info=(FARPROC)fctLoader.getSymbolAddress(string("png_write_info"));
-	if(!png_write_info)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_write_info'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_write_fn) ( png_struct *png_ptr,
-								void *io_ptr,
-								void *write_data_fn,
-								void *output_flush_fn)
-	=NULL;
-	*(FARPROC*)&png_set_write_fn=(FARPROC)fctLoader.getSymbolAddress(string("png_set_write_fn"));
-	if(!png_set_write_fn)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_set_write_fn'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_IHDR)    (  png_struct *png_ptr,
-								png_info *info_ptr,
-								uint32 width,
-								uint32 height,
-								int bit_depth,
-								int color_type,
-								int interlace_method,
-								int compression_method,
-								int filter_method)
-	=NULL;
-
-	*(FARPROC*)&png_set_IHDR=(FARPROC)fctLoader.getSymbolAddress(string("png_set_IHDR"));
-	if(!png_set_IHDR)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_set_IHDR'");
-		return false;
-	}
-
-	///////////////////////////
-
-
-	BOOL (* png_write_end)   (  png_struct *png_ptr,
-								png_info *info_ptr)
-	=NULL;
-	*(FARPROC*)&png_write_end=(FARPROC)fctLoader.getSymbolAddress(string("png_write_end"));
-	if(!png_write_end)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_write_end'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_sBIT)   (  png_struct *png_ptr,
-								png_info *info_ptr,
-								png_color_8 *sig_bit)
-	=NULL;
-	*(FARPROC*)&png_set_sBIT=(FARPROC)fctLoader.getSymbolAddress(string("png_set_sBIT"));
-	if(!png_set_sBIT)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_set_sBIT'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_shift)   (  png_struct *png_ptr,
-								png_color_8 *sig_bit)
-	=NULL;
-	*(FARPROC*)&png_set_shift=(FARPROC)fctLoader.getSymbolAddress(string("png_set_shift"));
-	if(!png_set_shift)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_set_shift'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_set_packing) (  png_struct *png_ptr)
-	=NULL;
-	*(FARPROC*)&png_set_packing=(FARPROC)fctLoader.getSymbolAddress(string("png_set_packing"));
-	if(!png_set_packing)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_set_packing'");
-		return false;
-	}
-
-	///////////////////////////
-
-	BOOL (* png_write_rows) (  png_struct *png_ptr,
-								uint8 **row,
-								uint32 num_rows)
-	=NULL;
-	*(FARPROC*)&png_write_rows=(FARPROC)fctLoader.getSymbolAddress(string("png_write_rows"));
-	if(!png_write_rows)
-	{
-		nlwarning("CBitmap::writePNG : can't find function 'png_write_rows'");
-		return false;
-	}
-
-	///////////////////////////
-
 	png_ptr = (png_struct*)png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, setPNGError, setPNGWarning);
 
 	if (!png_ptr)
@@ -908,20 +428,18 @@ bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
 								readPNGData
 \*-------------------------------------------------------------------*/
 
-void readPNGData(png_struct *png_ptr, char *data, uint length)
+void readPNGData(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	((IStream*) png_ptr->io_ptr)->serialBuffer((uint8*)data,length);
-
 }
 
 /*-------------------------------------------------------------------*\
 								writePNGData
 \*-------------------------------------------------------------------*/
 
-void writePNGData(png_struct *png_ptr, char *data, uint length)
+void writePNGData(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	((IStream*) png_ptr->io_ptr)->serialBuffer((uint8*)data,length);
-
 }
 
 void setPNGWarning(png_struct * /* png_ptr */, const char* message)
@@ -942,30 +460,3 @@ void setPNGError(png_struct *png_ptr, const char* message)
 }
 
 }//namespace
-
-#else
-
-namespace NLMISC
-{
-/*-------------------------------------------------------------------*\
-							readPNG
-\*-------------------------------------------------------------------*/
-
-uint8 CBitmap::readPNG( NLMISC::IStream &f )
-{
-	// TODO for Linux
-	return 0;
-}
-
-/*-------------------------------------------------------------------*\
-							writePNG
-\*-------------------------------------------------------------------*/
-bool CBitmap::writePNG( NLMISC::IStream &f, uint32 d)
-{
-	// TODO for Linux
-	return false;
-}
-
-}
-
-#endif // NL_OS_WINDOWS

@@ -33,6 +33,7 @@ extern "C"
 #endif // USE_JPEG
 
 
+#include <png.h>
 //---------------- END OF PNG STUFFS ------------------
 
 
@@ -42,7 +43,6 @@ extern "C"
 #include <vector>
 #include "object_vector.h"
 
-struct png_struct;
 
 namespace NLMISC
 {
@@ -640,12 +640,10 @@ public:
 };
 
 
-#ifdef NL_OS_WINDOWS
-void readPNGData(png_struct *png_ptr,char *data, uint length );
-void writePNGData(png_struct *png_ptr,char *data, uint length );
+void readPNGData(png_structp png_ptr, png_bytep data, png_size_t length);
+void writePNGData(png_structp png_ptr, png_bytep data, png_size_t length);
 void setPNGWarning(png_struct *png_ptr, const char* message);
 void setPNGError(png_struct *png_ptr, const char* message);
-#endif
 
 
 /*-------------------------------------------------------------------*\
