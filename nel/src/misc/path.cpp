@@ -622,27 +622,31 @@ std::string CPath::getCurrentPath ()
 
 std::string CFileContainer::getCurrentPath ()
 {
-	char buffer [10000];
+	char buffer [1024];
 
 #ifdef NL_OS_WINDOWS
-	return standardizePath(_getcwd(buffer, 10000), false);
+	return standardizePath(_getcwd(buffer, 1024), false);
 #else
-	return standardizePath(getcwd(buffer, 10000), false);
+	return standardizePath(getcwd(buffer, 1024), false);
 #endif
 }
 
-bool CPath::setCurrentPath (const char *newDir)
+bool CPath::setCurrentPath (const std::string &path)
 {
-	return getInstance()->_FileContainer.setCurrentPath(newDir);
+	return getInstance()->_FileContainer.setCurrentPath(path);
 }
 
-bool CFileContainer::setCurrentPath (const char *newDir)
+bool CFileContainer::setCurrentPath (const std::string &path)
 {
+	int res;
+	//nldebug("Change current path to '%s' (current path is '%s')", path.c_str(), getCurrentPath().c_str());
 #ifdef NL_OS_WINDOWS
-	return _chdir(newDir) == 0;
+	res = _chdir(path.c_str());
 #else
-	return chdir(newDir) == 0;
+	res = chdir(path.c_str());
 #endif
+	if(res != 0) nlwarning("Cannot change current path to '%s' (current path is '%s') res: %d errno: %d (%s)", path.c_str(), getCurrentPath().c_str(), res, errno, strerror(errno));
+	return res == 0;
 }
 
 std::string CPath::getFullPath (const std::string &path, bool addFinalSlash)

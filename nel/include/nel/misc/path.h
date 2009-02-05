@@ -1,5 +1,5 @@
 /** \file path.h
- * Utility class for searching files in differents paths.
+ * Utility class for searching files in different paths.
  */
 
 /* Copyright, 2000, 2001 Nevrax Ltd.
@@ -36,13 +36,13 @@
 
 namespace NLMISC {
 
-/// Exception throwed when a find is not found in a lookup() call
+/// Exception throw when a find is not found in a lookup() call
 struct EPathNotFound : public Exception
 {
 	EPathNotFound (const std::string& filename) : Exception ("Path not found for " + filename) { }
 };
 
-/** Utility to store a prebuilt list of file, bnp and xml_pack
+/** Utility to store a pre-built list of file, bnp and xml_pack
  *	Used by CPath to store the default application patch.
  *	Can be used by user to build a custom set of file.
  * \warning addSearchPath(), clearMap() and remapExtension() are not reentrant.
@@ -161,8 +161,8 @@ public:
 	 */
 	std::string	standardizePath (const std::string &path, bool addFinalSlash = true);
 
-	/**	Remplace / with \ for dos process. Use only this function if can't do another way.
-	 * For exemple, if you do a system("copy data/toto data/tata"); it'll not work because dos doesn't
+	/**	Replace / with \ for dos process. Use only this function if can't do another way.
+	 * For example, if you do a system("copy data/toto data/tata"); it'll not work because dos doesn't
 	 * understand /.
 	 * But in the majority of case, / working (it works for fopen for example)
 	 */
@@ -172,7 +172,7 @@ public:
 	/** List all files in a directory.
 	 *	\param path path where files are scanned. No-op if empty
 	 *	\param recurse true if want to recurs directories
-	 *	\param wantDir true if want to add directorires in result
+	 *	\param wantDir true if want to add directories in result
 	 *	\param wantFile true if want to add files in result
 	 *	\param result list of string where directories/files names are added.
 	 *  \param progressCallBack is a progression callback interface pointer.
@@ -192,19 +192,19 @@ public:
 	 */
 	std::string getFullPath (const std::string &path, bool addFinalSlash = true);
 
-	/** Returns the current path of the applicated.
+	/** Returns the current path of the application.
 	 */
 	std::string getCurrentPath ();
 
-	/** Set the current path of the applicated.
+	/** Set the current path of the application.
 	 */
-	bool setCurrentPath (const char *);
+	bool setCurrentPath (const std::string &path);
 
 	/** Create a list of file having the requested extension.
 	 */
 	void getFileList(const std::string &extension, std::vector<std::string> &filenames);
 
-	/** Create a list of file having the requested string in the filename and the requested extention.
+	/** Create a list of file having the requested string in the filename and the requested extension.
 	 */
 	void getFileListByName(const std::string &extension, const std::string &name, std::vector<std::string> &filenames);
 
@@ -271,7 +271,7 @@ private:
 	{
 		char *Name;				// Normal case (the search is done by using nlstricmp)
 		uint32	idPath	 : 16;	// Path (not with file at the end) - look in the SSMpath (65536 different path allowed)
-		uint32	idExt	 : 15;	// real extention of the file if remapped - look in the SSMext (32768 different extension allowed)
+		uint32	idExt	 : 15;	// real extension of the file if remapped - look in the SSMext (32768 different extension allowed)
 		uint32	Remapped : 1;	// true if the file is remapped
 	};
 
@@ -309,7 +309,7 @@ private:
 		}
 	};
 
-	/// first ext1, second ext2 (ext1 could remplace ext2)
+	/// first ext1, second ext2 (ext1 could replace ext2)
 	std::vector<std::pair<std::string, std::string> > _Extensions;
 
 	CMCFileEntry	*MCfind (const std::string &filename);
@@ -319,7 +319,7 @@ private:
 
 
 /**
- * Utility class for searching files in differents paths.
+ * Utility class for searching files in different paths.
  *
  * Change in jun 2007 : now the implementation code is in CFileContainer, the
  * CPath class is just a wrapper class that contains one instance of CFileContainer.
@@ -337,11 +337,11 @@ public:
 	/** Adds a search path.
      * The path is a directory "c:/temp" all files in the directory will be included (and recursively if asked)
 	 *
-	 * Alternative directories are not precached (instead of non Alternative files) and will used when a file is not found in the standard directories.
+	 * Alternative directories are not pre-cached (instead of non Alternative files) and will used when a file is not found in the standard directories.
 	 * For example, local data will be in the cached directories and server repository files will be in the Alternative files. If a new file is not
-	 * found in the local data, we'll try to find it on the repositrory.
+	 * found in the local data, we'll try to find it on the repository.
 	 *
-	 * When Alternative is false, all added file names must be uniq or a warning will be display. In the Alternative directories, it could have
+	 * When Alternative is false, all added file names must be unique or a warning will be display. In the Alternative directories, it could have
 	 * more than one file with the same name.
 	 *
 	 * \warning the path you provide is case sensitive, you must be sure that the path name is exactly the same
@@ -443,8 +443,8 @@ public:
 	 */
 	static std::string	standardizePath (const std::string &path, bool addFinalSlash = true);
 
-	/**	Remplace / with \ for dos process. Use only this function if can't do another way.
-	 * For exemple, if you do a system("copy data/toto data/tata"); it'll not work because dos doesn't
+	/**	Replace / with \ for dos process. Use only this function if can't do another way.
+	 * For example, if you do a system("copy data/toto data/tata"); it'll not work because dos doesn't
 	 * understand /.
 	 * But in the majority of case, / working (it works for fopen for example)
 	 */
@@ -454,7 +454,7 @@ public:
 	/** List all files in a directory.
 	 *	\param path path where files are scanned. No-op if empty
 	 *	\param recurse true if want to recurs directories
-	 *	\param wantDir true if want to add directorires in result
+	 *	\param wantDir true if want to add directories in result
 	 *	\param wantFile true if want to add files in result
 	 *	\param result list of string where directories/files names are added.
 	 *  \param progressCallBack is a progression callback interface pointer.
@@ -474,19 +474,19 @@ public:
 	 */
 	static std::string getFullPath (const std::string &path, bool addFinalSlash = true);
 
-	/** Returns the current path of the applicated.
+	/** Returns the current path of the application.
 	 */
 	static std::string getCurrentPath ();
 
-	/** Set the current path of the applicated.
+	/** Set the current path of the application.
 	 */
-	static bool setCurrentPath (const char *);
+	static bool setCurrentPath (const std::string &path);
 
 	/** Create a list of file having the requested extension.
 	 */
 	static void getFileList(const std::string &extension, std::vector<std::string> &filenames);
 
-	/** Create a list of file having the requested string in the filename and the requested extention.
+	/** Create a list of file having the requested string in the filename and the requested extension.
 	 */
 	static void getFileListByName(const std::string &extension, const std::string &name, std::vector<std::string> &filenames);
 
@@ -524,109 +524,6 @@ private:
 
 	/// The container used by the standard CPath
 	CFileContainer		_FileContainer;
-
-//	static CPath *getInstance ();
-
-//	static CPath *_Instance;
-
-//	CPath()
-//	{
-//		_MemoryCompressed = false;
-//		_AllFileNames = NULL;
-//	}
-//
-//	// All path in this vector must have a terminated '/'
-//	std::vector<std::string> _AlternativePaths;
-//
-//	std::vector<std::string> IgnoredFiles;
-//
-//	std::map<std::string, std::string> _RemappedFiles;
-//
-//	// ----------------------------------------------
-//	// MEMORY WISE
-//	// ----------------------------------------------
-//
-//	bool _MemoryCompressed;
-//	CStaticStringMapper	SSMext;
-//	CStaticStringMapper	SSMpath;
-//
-//	// If NOT memory compressed use this
-//	// ---------------------------------
-//
-//	struct CFileEntry
-//	{
-//		std::string	Name;		// Normal case
-//		uint32	idPath	 : 16;
-//		uint32	idExt	 : 15;
-//		uint32	Remapped : 1;
-//	};
-//
-//	typedef std::map<std::string, CFileEntry>	TFiles;
-//	TFiles	 _Files; // first is the filename in lowercase (can be with a remapped extension)
-//
-//
-//
-//	// If memory compressed use this
-//	// -----------------------------
-//
-//	struct CMCFileEntry
-//	{
-//		char *Name;				// Normal case (the search is done by using nlstricmp)
-//		uint32	idPath	 : 16;	// Path (not with file at the end) - look in the SSMpath (65536 different path allowed)
-//		uint32	idExt	 : 15;	// real extention of the file if remapped - look in the SSMext (32768 different extension allowed)
-//		uint32	Remapped : 1;	// true if the file is remapped
-//	};
-//
-//	char *_AllFileNames;
-//
-//	// first is the filename that can be with a remapped extension
-//	std::vector<CMCFileEntry> _MCFiles;
-//
-//	// Compare a MCFileEntry with a lowered string (useful for MCfind)
-//	class CMCFileComp
-//	{
-//	public:
-//		sint specialCompare(const CMCFileEntry &fe, const char *rhs)
-//		{
-//			char *lhs = fe.Name;
-//
-//			uint8 lchar, rchar;
-//			while (*lhs != '\0' && *rhs != '\0')
-//			{
-//				// lower case compare because name is in normal case
-//				lchar = ::tolower(*lhs);
-//				rchar = ::tolower(*rhs);
-//				if (lchar != rchar) return ((sint)lchar) - ((sint)rchar);
-//				++lhs;
-//				++rhs;
-//			}
-//			if (*lhs != 0) return 1;
-//			if (*rhs != 0) return -1;
-//			return 0;
-//		}
-//
-//
-//		// Debug : Sept 01 2006
-//		#if _STLPORT_VERSION >= 0x510
-//			bool operator()( const CMCFileEntry &fe, const CMCFileEntry &rhs )
-//			{
-//				return specialCompare( fe, rhs.Name ) < 0;
-//			}
-//		#else
-//			bool operator()( const CMCFileEntry &fe, const char *rhs )
-//			{
-//				return specialCompare( fe, rhs ) < 0;
-//			}
-//		#endif //_STLPORT_VERSION
-//
-//	};
-//
-//	/// first ext1, second ext2 (ext1 could remplace ext2)
-//	std::vector<std::pair<std::string, std::string> > _Extensions;
-//
-//	static CMCFileEntry *MCfind (const std::string &filename);
-//	static sint			findExtension (const std::string &ext1, const std::string &ext2);
-//	static void			insertFileInMap (const std::string &filename, const std::string &filepath, bool remap, const std::string &extension);
 };
 
 
@@ -703,7 +600,7 @@ struct CFile
 	 * Return Time of last modification of file. 0 if not found.
 	 *
 	 * You have to provide the full path of the file (the function doesn't lookup)
-	 * The time is mesured in second since 01-01-1970 0:0:0 UTC
+	 * The time is measured in second since 01-01-1970 0:0:0 UTC
 	 */
 	static uint32	getFileModificationDate(const std::string &filename);
 
@@ -711,7 +608,7 @@ struct CFile
 	 * Set the time of last modification of file.
 	 *
 	 * You have to provide the full path of the file (the function doesn't lookup)
-	 * The time is mesured in second since 01-01-1970 0:0:0 UTC
+	 * The time is measured in second since 01-01-1970 0:0:0 UTC
 	 * Return 'true' if the file date has been changed or false in case of error.
 	 */
 	static bool		setFileModificationDate(const std::string &filename, uint32 modTime);
@@ -774,12 +671,12 @@ struct CFile
 	static bool moveFile(const char *dest, const char *src);
 
 	/** Create a directory
-	  *	\return true if succes
+	  *	\return true if success
 	  */
 	static bool	createDirectory(const std::string &dirname);
 
 	/** Create a directory and any missing parent directories
-	  *	\return true if succes
+	  *	\return true if success
 	  */
 	static bool	createDirectoryTree(const std::string &dirname);
 
@@ -795,22 +692,18 @@ struct CFile
 	*/
 	static bool deleteFile(const std::string &filename);
 
-
 	/** Delete a directory if possible (change the write access if possible)
 	* \return true if the delete occurs.
 	*/
 	static bool deleteDirectory(const std::string &filename);
 
-
-
 	/** Get temporary output filename.
-	*	Call this method to get a temporary output filename. If you have successfuly saved your data, delete the old filename and move the new one.
+	*	Call this method to get a temporary output filename. If you have successfully saved your data, delete the old filename and move the new one.
 	*/
 	static void getTemporaryOutputFilename (const std::string &originalFilename, std::string &tempFilename);
 };
 
 } // NLMISC
-
 
 #endif // NL_PATH_H
 
