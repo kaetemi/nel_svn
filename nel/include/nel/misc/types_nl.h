@@ -399,8 +399,5 @@ const std::string nlMode("NL_RELEASE");
 #ifdef NL_DEBUG_FAST
 #	error "NL_DEBUG_FAST doesn't exist anymore, please remove it"
 #endif
-#ifdef __STL_DEBUG
-#	error "NeL doesn't use stlport anymore, please remove __STL_DEBUG define"
-#endif
 
 #endif // NL_TYPES_H
