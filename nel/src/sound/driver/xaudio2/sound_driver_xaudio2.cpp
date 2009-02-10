@@ -7,7 +7,7 @@
  */
 
 /* 
- * Copyright (C) 2008  Jan Boon (Kaetemi)
+ * Copyright (C) 2008-2009  by authors
  * 
  * This file is part of NLSOUND XAudio2 Driver.
  * NLSOUND XAudio2 Driver is free software: you can redistribute it
@@ -21,9 +21,8 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with NLSOUND XAudio2 Driver; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301 USA.
+ * along with NLSOUND XAudio2 Driver; see the file COPYING.  If not,
+ * see <http://www.gnu.org/licenses/>.
  */
 
 #include "stdxaudio2.h"
@@ -336,11 +335,11 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
 	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
 
-	// NOTE: 32.0f allows at lowest 1378.125hz audio samples, increase if you need even lower bitrate (or higher pitch).
+	// NOTE: 2.0f allows at most NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE*2 audio sample rate, increase if you need higher bitrate (or lower pitch).
 	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
 	IXAudio2SourceVoice *source_voice = NULL;
 
-	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 32.0f, callback, NULL, NULL)))
+	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 2.0f, callback, NULL, NULL)))
 	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
 
 	return source_voice;
