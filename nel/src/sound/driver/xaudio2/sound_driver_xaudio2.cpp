@@ -335,7 +335,7 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
 	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
 
-	// NOTE: 2.0f allows at most NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE*2 audio sample rate, increase if you need higher bitrate (or lower pitch).
+	// NOTE: 2.0f allows at most NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE*2 audio sample rate, increase if you need higher bitrate (or higher pitch).
 	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
 	IXAudio2SourceVoice *source_voice = NULL;
 
