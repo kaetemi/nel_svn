@@ -2514,6 +2514,12 @@ bool	CAudioMixerUser::isEventMusicEnded()
 	return true;
 }
 
+/// Get audio/container extensions that are currently supported by nel or the used driver implementation.
+void CAudioMixerUser::getMusicExtensions(std::vector<std::string> &extensions)
+{
+	_SoundDriver->getMusicExtensions(extensions);
+}
+
 /// Add a reverb environment
 void CAudioMixerUser::addEnvironment(const std::string &environmentName, const IReverbEffect::CEnvironment &environment)
 {

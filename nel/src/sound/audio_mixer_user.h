@@ -343,6 +343,8 @@ public:
 	virtual void	stopEventMusic(uint xFadeTime= 0);
 	virtual void	setEventMusicVolume(float gain);
 	virtual bool	isEventMusicEnded();
+	/// Get audio/container extensions that are currently supported by nel or the used driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions);
 
 	inline IReverbEffect *getReverbEffect() { return _ReverbEffect; }
 	inline bool useEnvironmentEffects() const { return _UseEax; }

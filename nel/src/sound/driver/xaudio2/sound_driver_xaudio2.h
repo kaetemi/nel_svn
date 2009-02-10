@@ -218,6 +218,9 @@ public:
 	 *  \param title returns the title (empty if not available)
 	 */
 	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title);
+
+	/// Get audio/container extensions that are supported natively by the driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions);
 	
 	/// (Internal) Remove a buffer (should be called by the destructor of the buffer class).
 	void removeBuffer(CBufferXAudio2 *buffer);	

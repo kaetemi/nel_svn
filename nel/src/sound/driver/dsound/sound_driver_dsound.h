@@ -156,6 +156,9 @@ private:
 	virtual void	endBench();
 	virtual void	displayBench(NLMISC::CLog *log);
 
+	/// Get audio/container extensions that are supported natively by the driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions) { }
+
 
 	// The DirectSound object
     LPDIRECTSOUND8			_DirectSound;

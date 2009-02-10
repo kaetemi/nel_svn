@@ -201,6 +201,9 @@ public:
 	 */
 	virtual bool getMusicInfo(const std::string &/* filepath */, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 
+	/// Get audio/container extensions that are supported natively by the driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions) = 0;
+
 private:
 	std::string _DllName;
 };

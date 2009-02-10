@@ -149,6 +149,9 @@ public:
 	/// (Internal) Remove a music channel (should be called by the destructor of the music channel class)
 	void removeMusicChannel(CMusicChannelFMod *musicChannel);
 
+	/// Get audio/container extensions that are supported natively by the driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions);
+
 private:	
 	virtual void startBench();
 	virtual void endBench();

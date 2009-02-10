@@ -536,6 +536,12 @@ void CSoundDriverXAudio2::removeEffect(CEffectXAudio2 *effect)
 	else nlwarning("removeEffect already called");
 }
 
+/// Get audio/container extensions that are supported natively by the driver implementation.
+void CSoundDriverXAudio2::getMusicExtensions(std::vector<std::string> &extensions)
+{
+	extensions.push_back("ogg");
+}
+
 } /* namespace NLSOUND */
 
 /* end of file */

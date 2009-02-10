@@ -553,4 +553,15 @@ void CSoundDriverFMod::markMusicChannelEnded(void *stream, CMusicChannelFMod *mu
 	if (it != _MusicChannels.end()) musicChannel->markMusicChannelEnded(stream);
 }
 
+/// Get audio/container extensions that are supported natively by the driver implementation.
+void CSoundDriverFMod::getMusicExtensions(std::vector<std::string> &extensions)
+{
+	extensions.push_back("ogg");
+	extensions.push_back("mp3");
+	extensions.push_back("mp2");
+	extensions.push_back("mp1");
+	extensions.push_back("wav");
+	extensions.push_back("raw");
+}
+
 } // NLSOUND

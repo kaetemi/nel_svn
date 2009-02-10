@@ -395,7 +395,9 @@ public:
 	virtual void	setEventMusicVolume(float gain) =0;
 	/** true if the event music is ended
 	 */
-	virtual bool	isEventMusicEnded() =0;
+	virtual bool	isEventMusicEnded() =0;	
+	/// Get audio/container extensions that are currently supported by nel or the used driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions) = 0;
 	//@}
 
 

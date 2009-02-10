@@ -157,6 +157,9 @@ public:
 	/// Remove an effect
 	void removeEffect(CEffectAL *effect);
 
+	/// Get audio/container extensions that are supported natively by the driver implementation.
+	virtual void getMusicExtensions(std::vector<std::string> &extensions) { }
+
 protected:
 
 	/// Allocate nb new buffers or sources
