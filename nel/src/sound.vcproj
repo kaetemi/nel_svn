@@ -174,10 +174,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\include\nel\sound\u_env_sound.h"
-				>
-			</File>
-			<File
 				RelativePath="..\include\nel\sound\u_listener.h"
 				>
 			</File>
