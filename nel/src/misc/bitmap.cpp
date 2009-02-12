@@ -123,12 +123,7 @@ uint8 CBitmap::load(NLMISC::IStream &f, uint mipMapSkip)
 	}
 	else if (fileType == PNG)
 	{
-#ifdef NL_OS_WINDOWS
 		return readPNG(f);
-#else
-		nlwarning("png loader is not implemented");
-		return 0;
-#endif
 	}
 
 	// assuming it's TGA
