@@ -683,7 +683,6 @@ void loopIngame()
 		Driver->EventServer.pump(); // Pump user input messages
 		MouseListener->update();
 		MouseListener->updateCamera();
-		updateCamera();
 
 		// 04. Update Incoming (network, receive messages)
 		updateNetwork(); 
@@ -706,18 +705,21 @@ void loopIngame()
 		// 08. Update Animations (playlists)
 		Scene->animate(AnimationTime); // Set new animation date
 		
-		// 09. Update Interface (login, ui, etc)
-		// ...
+		// 09. Update Camera (depends on entities)
+		updateCamera();
 		
-		// 10. Update Sound (sound driver)
+		// 10. Update Interface (login, ui, etc)
+		// ...
+
+		// 11. Update Sound (sound driver)
 //#ifdef NL_OS_WINDOWS
 //		updateSound(); // Update the sound
 //#endif
 		
-		// 11. Update Outgoing (network, send new position etc)
+		// 12. Update Outgoing (network, send new position etc)
 		// ...
 		
-		// 12. Update Debug (stuff for dev)
+		// 13. Update Debug (stuff for dev)
 		// ...
 		
 		// if driver is lost (d3d) do nothing for a while
@@ -741,7 +743,7 @@ void loopIngame()
 				updateSky(); // Render the sky scene before the main scene
 				
 				// 04. Render Scene (entity scene)
-				Scene->render(); // Render		
+				Scene->render(); // Render
 				
 				// 05. Render Effects (flare)
 				updateLensFlare(); // Render the lens flare
