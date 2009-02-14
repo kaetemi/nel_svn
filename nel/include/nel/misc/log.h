@@ -55,7 +55,7 @@ public:
 	// Debug information
 	struct TDisplayInfo
 	{
-		TDisplayInfo() : Date(0), LogType(CLog::LOG_NO), ThreadId(0), FileName(NULL), Line(-1), FuncName(NULL), ProcessName("") {}
+		TDisplayInfo() : Date(0), LogType(CLog::LOG_NO), ThreadId(0), FileName(NULL), Line(-1), FuncName(NULL) {}
 
 		time_t				Date;
 		TLogType			LogType;
@@ -197,7 +197,7 @@ protected:
 	bool passFilter( const char *filter );
 
 	TLogType							 _LogType;
-	static std::string					 _ProcessName;
+	static std::string					*_ProcessName;
 
 	const char							*_FileName;
 	sint								 _Line;
