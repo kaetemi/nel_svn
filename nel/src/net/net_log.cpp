@@ -88,7 +88,7 @@ void CNetLog::output( const char *srchost, uint8 msgnum,
 		srchost, (uint16)msgnum, _ProcessName.c_str(), desthost, msgname, msgsize );
 */
 	displayRawNL( "@@0@%s@%hu@%s@%s@%s@%u@",
-		srchost, (uint16)msgnum, (*_ProcessName).c_str(), desthost, msgname, msgsize );
+		srchost, (uint16)msgnum, _ProcessName.c_str(), desthost, msgname, msgsize );
 }
 
 
@@ -106,7 +106,7 @@ void CNetLog::input( const char *srchost, uint8 msgnum, const char *desthost )
 		  srchost, msgnum, _ProcessName.c_str(), desthost );
 */
 	displayRawNL( "##0#%s#%hu#%s#%s#",
-		  srchost, msgnum, (*_ProcessName).c_str(), desthost );
+		  srchost, msgnum, _ProcessName.c_str(), desthost );
 }
 
 
