@@ -1121,6 +1121,32 @@ void changeLogDirectory(const std::string &dir)
 	fd->setParam(p);
 }
 
+void destroyDebug()
+{
+	// called atexit of the process
+	delete sd; sd = NULL;
+	delete DefaultMsgBoxDisplayer; DefaultMsgBoxDisplayer = NULL;
+	delete fd; fd = NULL;
+	delete DefaultMemDisplayer; DefaultMemDisplayer = NULL;
+	if (INelContext::isContextInitialised())
+	{
+		CLog *log;
+		INelContext &context = INelContext::getInstance();
+		log = context.getErrorLog(); context.setErrorLog(NULL); delete log; log = NULL;
+		log = context.getWarningLog(); context.setWarningLog(NULL); delete log; log = NULL;
+		log = context.getInfoLog(); context.setInfoLog(NULL); delete log; log = NULL;
+		log = context.getDebugLog(); context.setDebugLog(NULL); delete log; log = NULL;
+		log = context.getAssertLog(); context.setAssertLog(NULL); delete log; log = NULL;
+		delete &context; // nel context must be deleted immediately after debug destroyed
+		// or there will be various issues when static destructors call nldebug etc...
+
+		// Kaetemi comment: It would be safer if user is forced to manually init 
+		//     and release nel context and debug system, instead of doing this automagically
+		//     in INelContext::getInstance calls and nldebug etc macros.
+	}
+}
+
+// note: this is automagically called by nldebug, nlinfo, and by a lot of other stuff
 void createDebug (const char *logPath, bool logInFile, bool eraseLastLog)
 {
 
@@ -1130,8 +1156,11 @@ void createDebug (const char *logPath, bool logInFile, bool eraseLastLog)
 
 //	static bool alreadyCreateSharedAmongThreads = false;
 //	if ( !alreadyCreateSharedAmongThreads )
-	if (!INelContext::getInstance().getAlreadyCreateSharedAmongThreads())
+	if (!INelContext::getInstance().getAlreadyCreateSharedAmongThreads()) // note: this creates nelcontext
 	{
+		// destroy debug environment when process exits, or we get memleaks in the memleak log
+		atexit(destroyDebug);
+		
 		// Debug Info for mutexes
 #ifdef MUTEX_DEBUG
 		initAcquireTimeMap();
