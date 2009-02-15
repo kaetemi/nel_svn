@@ -87,6 +87,14 @@ ICommand::~ICommand()
 			//printf("remove command\n");
 			LocalCommands->erase (comm);
 
+			// delete local commands if all gone
+			if (!LocalCommands->size())
+			{
+				delete LocalCommands;
+				LocalCommands = NULL;
+				LocalCommandsInit = false;
+			}
+
 			// Yoyo: if no nlinfo()/nlwarning() (thus no createDebug(), thus no new CApplicationContext)
 			// done in the .dll, it is possible that the nel context is never initialized
 			if (INelContext::isContextInitialised())

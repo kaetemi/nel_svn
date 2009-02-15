@@ -61,11 +61,14 @@ bool INelContext::isContextInitialised()
 INelContext::~INelContext()
 {
 	// unregister still undeleted local command into the global command registry
-	ICommand::TCommand::iterator first(ICommand::LocalCommands->begin()), last(ICommand::LocalCommands->end());
-	for (; first != last; ++first)
+	if (ICommand::LocalCommands)
 	{
-		ICommand *command = first->second;
-		CCommandRegistry::getInstance().unregisterCommand(command);
+		ICommand::TCommand::iterator first(ICommand::LocalCommands->begin()), last(ICommand::LocalCommands->end());
+		for (; first != last; ++first)
+		{
+			ICommand *command = first->second;
+			CCommandRegistry::getInstance().unregisterCommand(command);
+		}
 	}
 
 	CInstanceCounterLocalManager::releaseInstance();
