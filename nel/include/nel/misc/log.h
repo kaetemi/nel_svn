@@ -188,6 +188,9 @@ public:
 	/// Displays the list of filter into a log
 	void displayFilter( CLog &log );
 
+	/// Do not call this unless you know why you're doing it, it kills the debug/log system!
+	static void releaseProcessName();
+
 protected:
 
 	/// Symetric to setPosition(). Automatically called by display...(). Do not call if noDisplayer().

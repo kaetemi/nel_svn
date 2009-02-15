@@ -55,7 +55,12 @@ void CLog::setDefaultProcessName ()
 {
 	if (_ProcessName == NULL)
 	{
-		_ProcessName = new string;
+		_ProcessName = (string *)INelContext::getInstance().getSingletonPointer("NLMISC::CLog::_ProcessName");
+		if (_ProcessName == NULL)
+		{
+			_ProcessName = new string;
+			INelContext::getInstance().setSingletonPointer("NLMISC::CLog::_ProcessName", _ProcessName);
+		}
 	}
 
 #ifdef NL_OS_WINDOWS
@@ -77,7 +82,12 @@ void CLog::setProcessName (const std::string &processName)
 {
 	if (_ProcessName == NULL)
 	{
-		_ProcessName = new string;
+		_ProcessName = (string *)INelContext::getInstance().getSingletonPointer("NLMISC::CLog::_ProcessName");
+		if (_ProcessName == NULL)
+		{
+			_ProcessName = new string;
+			INelContext::getInstance().setSingletonPointer("NLMISC::CLog::_ProcessName", _ProcessName);
+		}
 	}
 
 	*_ProcessName = processName;
@@ -602,6 +612,17 @@ void CLog::resetFilters()
 	//displayNL ("CLog::resetFilter()");
 	_PositiveFilter.clear();
 	_NegativeFilter.clear();
+}
+
+/// Do not call this unless you know why you're doing it, it kills the debug/log system!
+void CLog::releaseProcessName()
+{
+	if (INelContext::isContextInitialised())
+	{
+		INelContext::getInstance().releaseSingletonPointer("NLMISC::CLog::_ProcessName", _ProcessName);
+	}
+	delete _ProcessName;
+	_ProcessName = NULL;
 }
 
 } // NLMISC
