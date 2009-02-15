@@ -293,6 +293,16 @@ void	releaseLandscape()
 	CConfiguration::dropCallback("LandscapeVision");
 	CConfiguration::dropCallback("LandscapeVisionInitial");
 
+
+	// release config'd instancegroups
+	for (vector<UInstanceGroup *>::iterator it(InstanceGroups.begin()), end(InstanceGroups.end()); it != end; ++it)
+	{
+		(*it)->removeFromScene(*Scene);
+		delete (*it);
+	}
+	InstanceGroups.clear();
+
+
 	// -- -- release for cameralandscape
 	Scene->deleteLandscape(Landscape);
 	Landscape = NULL;
