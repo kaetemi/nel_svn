@@ -64,8 +64,8 @@ public:
 	static std::string getValue(const std::string &varName, const std::string &defaultValue);
 	static ucstring getValue(const std::string &varName, const ucstring &defaultValue);
 	static bool getValue(const std::string &varName, bool defaultValue);
-	static NLMISC::CRGBA getValue(const std::string &varName, NLMISC::CRGBA &defaultValue);
-	static NLMISC::CRGBA getValue(NLMISC::CConfigFile::CVar &var, NLMISC::CRGBA &defaultValue);
+	static NLMISC::CRGBA getValue(const std::string &varName, const NLMISC::CRGBA &defaultValue);
+	static NLMISC::CRGBA getValue(const NLMISC::CConfigFile::CVar &var, const NLMISC::CRGBA &defaultValue);
 	
 }; /* class CConfiguration */
 

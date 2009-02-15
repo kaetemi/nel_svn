@@ -155,7 +155,7 @@ bool CConfiguration::getValue(const string &varName, bool defaultValue)
 	return defaultValue;
 }
 
-CRGBA CConfiguration::getValue(const string &varName, CRGBA &defaultValue)
+CRGBA CConfiguration::getValue(const string &varName, const CRGBA &defaultValue)
 {
 	if (ConfigFile->exists(varName)) 
 	{
@@ -174,7 +174,7 @@ CRGBA CConfiguration::getValue(const string &varName, CRGBA &defaultValue)
 	return defaultValue;
 }
 
-CRGBA CConfiguration::getValue(CConfigFile::CVar &var, CRGBA &defaultValue)
+CRGBA CConfiguration::getValue(const CConfigFile::CVar &var, const CRGBA &defaultValue)
 {
 	if (var.size() >= 3)
 	{
