@@ -64,8 +64,8 @@ using namespace NLMISC;
 
 namespace NL3D {
 
-FT_Library	CFontGenerator::_Library;
-bool		CFontGenerator::_LibraryInit = false;
+FT_Library	CFontGenerator::_Library = NULL;
+uint		CFontGenerator::_LibraryInit = 0;
 uint32		CFontGenerator::_FontGeneratorCounterUID = 1;
 
 const char *CFontGenerator::getFT2Error(FT_Error fte)
@@ -101,8 +101,8 @@ CFontGenerator::CFontGenerator (const std::string &fontFileName, const std::stri
 		{
 			nlerror ("FT_Init_FreeType() failed: %s", getFT2Error(error));
 		}
-		_LibraryInit = true;
 	}
+	++_LibraryInit;
 
 	error = FT_New_Face (_Library, fontFileName.c_str (), 0, &_Face);
 	if (error)
@@ -135,6 +135,15 @@ CFontGenerator::CFontGenerator (const std::string &fontFileName, const std::stri
 
 CFontGenerator::~CFontGenerator ()
 {
+	// important: destroying and creating your last font generator
+	// will also reload the freetype library
+	nlassert(_LibraryInit);
+	--_LibraryInit;
+	if (!_LibraryInit)
+	{
+		FT_Done_FreeType(_Library);
+		_Library = NULL;
+	}
 }
 
 void CFontGenerator::getSizes (ucchar c, uint32 size, uint32 &width, uint32 &height)

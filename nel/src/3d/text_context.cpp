@@ -151,7 +151,9 @@ void CTextContext::clear ()
 // ------------------------------------------------------------------------------------------------
 void CTextContext::setFontGenerator(const std::string &fontFileName, const std::string &fontExFileName)
 {
+	CFontGenerator *oldFontGen = _FontGen;
 	_FontGen = new NL3D::CFontGenerator(fontFileName, fontExFileName);
+	if (oldFontGen) delete oldFontGen;
 }
 
 // ------------------------------------------------------------------------------------------------

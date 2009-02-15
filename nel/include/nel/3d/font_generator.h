@@ -89,7 +89,7 @@ private:
 	const char			*getFT2Error(FT_Error fte);
 
 	static FT_Library	_Library;
-	static bool			_LibraryInit;
+	static uint			_LibraryInit;
 
 	FT_Face				_Face;
 #else // NL_DONT_USE_EXTERNAL_CODE
