@@ -101,6 +101,11 @@ class CLensFlare
 			// texture scale
 			Scale = scale;
 		}
+
+		~_CFlare()
+		{
+			Driver->deleteMaterial(Material);
+		}
 	};
 
 	/// flares due to light
@@ -112,6 +117,13 @@ public:
 	CLensFlare()
 	{
 		_AlphaCoef = 1.0f;
+	}
+
+	~CLensFlare()
+	{
+		for (std::vector<_CFlare *>::iterator it(_Flares.begin()), end(_Flares.end()); it != end; ++it)
+			delete (*it);
+		_Flares.clear();
 	}
 
 	/// add a flare to the flare list
