@@ -90,6 +90,9 @@ extern CMsgBoxDisplayer *DefaultMsgBoxDisplayer;
 // internal use only
 void createDebug (const char *logPath = NULL, bool logInFile = true, bool eraseLastLog = false);
 
+/// Do not call this, unless you know what you're trying to do (it kills debug)!
+void destroyDebug();
+
 // call this if you want to change the dir of the log.log file
 void changeLogDirectory(const std::string &dir);
 
