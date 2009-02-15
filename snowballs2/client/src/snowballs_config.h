@@ -63,6 +63,7 @@
 // temporary dev tags
 #define SBCLIENT_DEV_SOUND 0
 #define SBCLIENT_DEV_STEREO 0
+#define SBCLIENT_DEV_MEMLEAK 0
 
 
 

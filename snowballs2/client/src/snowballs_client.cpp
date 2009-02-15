@@ -1174,8 +1174,9 @@ NLMISC_COMMAND(sb_login, "go to the login screen", "")
 	return true;
 }
 
+#if SBCLIENT_DEV_MEMLEAK
 // enable memory leak checks, trick to get _CrtSetBreakAlloc in before main
-// #define DEBUG_ALLOC_HOOK
+#define DEBUG_ALLOC_HOOK
 #if defined(NL_OS_WINDOWS) && defined(NL_DEBUG)
 #if defined(DEBUG_ALLOC_HOOK)
 int debugAllocHook(int allocType, void *userData, size_t size, int 
@@ -1206,6 +1207,8 @@ int debugAllocHook(int allocType, void *userData, size_t size, int
 {
 	if (allocType == _HOOK_ALLOC)
 	{
+		//if (requestNumber == 14806)
+		//	_CrtSetBreakAlloc(14809);
 		//if (_EnableCrtDebug.LastSize == 4 && size == 40 && requestNumber > 291000 && requestNumber < 292000)
 		//	_CrtDbgBreak();
 		//if (_EnableCrtDebug.LastSize == 36 && size == 112 && requestNumber > 300000)
@@ -1275,11 +1278,13 @@ public:
 			delete &NLMISC::CInstanceCounterManager::getInstance();
 			delete &NLMISC::CCommandRegistry::getInstance();
 		}
+		NLMISC::CLog::releaseProcessName();
 #endif
 	}
 private:
 	yy_buffer_state *_CfBufferState;
 };
 CCleanupNeL _CleanupNeL;
+#endif
 
 /* end of file */
