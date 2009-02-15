@@ -1124,7 +1124,12 @@ void end()
 	nlinfo("See you later!");
 
 #if SBCLIENT_USE_LOG
-	nlassert(SBCLIENT::_FileDisplayer); delete SBCLIENT::_FileDisplayer;
+	DebugLog->removeDisplayer(SBCLIENT::_FileDisplayer);
+	InfoLog->removeDisplayer(SBCLIENT::_FileDisplayer);
+	WarningLog->removeDisplayer(SBCLIENT::_FileDisplayer);
+	AssertLog->removeDisplayer(SBCLIENT::_FileDisplayer);
+	ErrorLog->removeDisplayer(SBCLIENT::_FileDisplayer);
+	delete SBCLIENT::_FileDisplayer; SBCLIENT::_FileDisplayer = NULL;
 #endif
 }
 
@@ -1168,5 +1173,113 @@ NLMISC_COMMAND(sb_login, "go to the login screen", "")
 	SBCLIENT::NextGameState = SBCLIENT::GameStateLogin;
 	return true;
 }
+
+// enable memory leak checks, trick to get _CrtSetBreakAlloc in before main
+// #define DEBUG_ALLOC_HOOK
+#if defined(NL_OS_WINDOWS) && defined(NL_DEBUG)
+#if defined(DEBUG_ALLOC_HOOK)
+int debugAllocHook(int allocType, void *userData, size_t size, int 
+	blockType, long requestNumber, const unsigned char *filename, int 
+	lineNumber);
+#endif
+class CEnableCrtDebug
+{
+public:
+	CEnableCrtDebug()
+	{
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+		_CrtSetBreakAlloc(0);
+#if defined(DEBUG_ALLOC_HOOK)
+		LastSize = 0;
+		_CrtSetAllocHook(debugAllocHook);
+#endif
+	}
+#if defined(DEBUG_ALLOC_HOOK)
+	size_t LastSize;
+#endif
+};
+static CEnableCrtDebug _EnableCrtDebug;
+#if defined(DEBUG_ALLOC_HOOK)
+int debugAllocHook(int allocType, void *userData, size_t size, int 
+	blockType, long requestNumber, const unsigned char *filename, int 
+	lineNumber)
+{
+	if (allocType == _HOOK_ALLOC)
+	{
+		//if (_EnableCrtDebug.LastSize == 4 && size == 40 && requestNumber > 291000 && requestNumber < 292000)
+		//	_CrtDbgBreak();
+		//if (_EnableCrtDebug.LastSize == 36 && size == 112 && requestNumber > 300000)
+		//	_CrtDbgBreak();
+		_EnableCrtDebug.LastSize = size;
+	}
+	return TRUE;
+}
+#endif
+#endif
+
+// trick to clean up nel memory trash! (todo: unload of loaded dynamic nel libs (nel drivers) in linux)
+#include <nel/misc/debug.h>
+#include <nel/misc/command.h>
+#include <nel/misc/dynloadlib.h>
+#include <nel/misc/object_arena_allocator.h>
+#include <nel/misc/class_registry.h>
+#include <nel/misc/async_file_manager.h>
+#include <nel/misc/big_file.h>
+#include <nel/3d/particle_system_manager.h>
+#include <nel/3d/particle_system_shape.h>
+#ifdef NL_OS_WINDOWS
+#include <dbghelp.h>
+BOOL CALLBACK EnumerateLoadedModulesProc(PCSTR ModuleName, ULONG ModuleBase, ULONG ModuleSize, PVOID UserContext)
+{
+	// free nel libraries (cannot call nlwarning etc here, so nlGetProcAddress etc does not work)
+    HMODULE hModule = GetModuleHandle(ModuleName);
+	if (GetProcAddress(hModule, NL_MACRO_TO_STR(NLMISC_PURE_LIB_ENTRY_POINT)))	
+		FreeLibrary(hModule);
+	return TRUE;
+}
+#endif
+struct yy_buffer_state;
+extern void cf_switch_to_buffer(yy_buffer_state *new_buffer);
+extern yy_buffer_state *cf_create_buffer(FILE *file, int size);
+extern void cf_delete_buffer(yy_buffer_state *b);
+class CCleanupNeL
+{
+public:
+	CCleanupNeL() : _CfBufferState(NULL)
+	{
+		_CfBufferState = cf_create_buffer(NULL, 16384);
+		cf_switch_to_buffer(_CfBufferState);
+	}
+	~CCleanupNeL()
+	{
+#ifdef NL_OS_WINDOWS
+		// must unload all other nel modules before killing nel context (or they will crash in static destructors)
+		EnumerateLoadedModules(GetCurrentProcess(), EnumerateLoadedModulesProc, NULL); // todo: linux version
+#endif
+
+		// delete most stuff
+		NL3D::CParticleSystemShape::releaseInstance();
+		NLMISC::CAsyncFileManager::terminate();
+		NL3D::CParticleSystemManager::release();
+		NLMISC::CBigFile::releaseInstance();
+		NLMISC::CClassRegistry::release();
+		delete &NLMISC::CObjectArenaAllocator::getDefaultAllocator();
+		cf_delete_buffer(_CfBufferState); _CfBufferState = NULL;
+
+#ifdef NL_OS_WINDOWS
+		// delete context related stuff (must unload all dynamic nel libs first)
+		NLMISC::destroyDebug();
+		if (NLMISC::INelContext::isContextInitialised())
+		{
+			delete &NLMISC::INelContext::getInstance();
+			delete &NLMISC::CInstanceCounterManager::getInstance();
+			delete &NLMISC::CCommandRegistry::getInstance();
+		}
+#endif
+	}
+private:
+	yy_buffer_state *_CfBufferState;
+};
+CCleanupNeL _CleanupNeL;
 
 /* end of file */
