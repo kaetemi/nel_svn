@@ -252,7 +252,7 @@ void	initCommands()
 	// Add the command displayer to the standard log (to display NeL info)
 	CommandsLog.addDisplayer (&CommandsDisplayer);
 #ifndef NL_RELEASE
-	InfoLog->addDisplayer (&CommandsDisplayer);
+	DebugLog->addDisplayer (&CommandsDisplayer);
 	InfoLog->addDisplayer (&CommandsDisplayer);
 	WarningLog->addDisplayer (&CommandsDisplayer);
 	AssertLog->addDisplayer (&CommandsDisplayer);
@@ -344,7 +344,7 @@ void releaseCommands()
 	// Remove the displayers
 	CommandsLog.removeDisplayer(&CommandsDisplayer);
 #ifndef NL_RELEASE
-	InfoLog->removeDisplayer(&CommandsDisplayer);
+	DebugLog->removeDisplayer(&CommandsDisplayer);
 	InfoLog->removeDisplayer(&CommandsDisplayer);
 	WarningLog->removeDisplayer(&CommandsDisplayer);
 	AssertLog->removeDisplayer(&CommandsDisplayer);
