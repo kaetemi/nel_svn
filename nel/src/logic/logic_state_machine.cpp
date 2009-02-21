@@ -57,7 +57,7 @@ void xmlCheckNodeName (xmlNodePtr &node, const char *nodeName)
 		// Make an error message
 		char tmp[512];
 		smprintf (tmp, 512, "LogicStateMachine STATE_MACHINE XML Syntax error in block line %d, node %s should be %s",
-			(int)node->content, node->name, nodeName);
+			(int)node->line, node->name, nodeName);
 
 		nlinfo (tmp);
 		nlstop;
@@ -82,7 +82,7 @@ std::string getXMLProp (xmlNodePtr node, const char *propName)
 		// Make an error message
 		char tmp[512];
 		smprintf (tmp, 512, "LogicStateMachine XML Syntax error in block %s line %d, aguments Name not found",
-			node->name, (int)node->content);
+			node->name, (int)node->line);
 		throw EXmlParsingError (tmp);
 		return "";
 	}
