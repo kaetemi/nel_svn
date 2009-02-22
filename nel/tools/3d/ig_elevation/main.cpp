@@ -37,6 +37,7 @@
 #include "nel/misc/bitmap.h"
 #include "nel/misc/block_memory.h"
 #include "nel/misc/i_xml.h"
+#include "nel/misc/app_context.h"
 
 #include "nel/../../src/ligo/zone_region.h"
 
@@ -275,6 +276,9 @@ static float  getHeightMapZ(float x, float y, const CZoneLimits &zl, const SExpo
 // ---------------------------------------------------------------------------
 int main(int nNbArg, char**ppArgs)
 {
+	if (!NLMISC::INelContext::isContextInitialised())
+		new CApplicationContext();
+
 	NL3D_BlockMemoryAssertOnPurge = false;
 	char sCurDir[MAX_PATH];
 	GetCurrentDirectory (MAX_PATH, sCurDir);
@@ -306,11 +310,22 @@ int main(int nNbArg, char**ppArgs)
 	// Load the land
 	CZoneRegion *ZoneRegion = loadLand(options.LandFile);
 
-	CZoneLimits zl;	
-	zl._ZoneMinX = ZoneRegion->getMinX() < 0	? 0		: ZoneRegion->getMinX();
-	zl._ZoneMaxX = ZoneRegion->getMaxX() > 255	? 255	: ZoneRegion->getMaxX();
-	zl._ZoneMinY = ZoneRegion->getMinY() > 0	? 0		: ZoneRegion->getMinY();
-	zl._ZoneMaxY = ZoneRegion->getMaxY() < -255 ? -255	: ZoneRegion->getMaxY();
+	CZoneLimits zl;
+	if (ZoneRegion)
+	{
+		zl._ZoneMinX = ZoneRegion->getMinX() < 0	? 0		: ZoneRegion->getMinX();
+		zl._ZoneMaxX = ZoneRegion->getMaxX() > 255	? 255	: ZoneRegion->getMaxX();
+		zl._ZoneMinY = ZoneRegion->getMinY() > 0	? 0		: ZoneRegion->getMinY();
+		zl._ZoneMaxY = ZoneRegion->getMaxY() < -255 ? -255	: ZoneRegion->getMaxY();
+	}
+	else
+	{
+		nlwarning("A ligo .land file cannot be found");
+		zl._ZoneMinX = 0;
+		zl._ZoneMaxX = 255;
+		zl._ZoneMinY = 0;
+		zl._ZoneMaxY = 255;
+	}
 
 	// Load the 2 height maps
 	CBitmap *HeightMap1 = NULL;
