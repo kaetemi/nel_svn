@@ -55,7 +55,7 @@ protected:
 	/// Source voice to which the data is sent.
 	IXAudio2SourceVoice *_SourceVoice;
 	/// ADPCM data.
-	uint8 *_SourceData;
+	const uint8 *_SourceData;
 	/// ADPCM data size.
 	uint32 _SourceSize;
 	/// Sample data rate.
@@ -99,7 +99,7 @@ public:
 	/// Reset the decoder, clear the queued buffer
 	void flushSourceBuffers();
 	/// Returns NULL if the buffer has ended playing, never NULL for loops!
-	inline uint8 *getSourceData() { return _SourceData; }
+	inline const uint8 *getSourceData() const { return _SourceData; }
 	
 private:
 	/// (Internal) Process and submit the ADPCM data.

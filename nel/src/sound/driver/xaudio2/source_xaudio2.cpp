@@ -55,11 +55,12 @@ namespace NLSOUND {
 
 CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver) 
 : _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), 
-_Format(Mono16), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0), 
+_Format((IBuffer::TBufferFormat)~0), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0), 
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
-_AdpcmUtility(NULL), _ListenerVoice(NULL), _EffectVoice(NULL)
+_AdpcmUtility(NULL), _ListenerVoice(NULL), _EffectVoice(NULL), 
+_Channels(0), _BitsPerSample(0)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 	nlassert(_SoundDriver->getListener());
@@ -242,7 +243,7 @@ void CSourceXAudio2::submitStaticBuffer()
 		buffer.LoopBegin = 0;
 		buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
 		buffer.LoopLength = 0;
-		buffer.pAudioData = _StaticBuffer->getData();
+		buffer.pAudioData = const_cast<BYTE *>(_StaticBuffer->getData());
 		buffer.pContext = _StaticBuffer;
 		buffer.PlayBegin = 0;
 		buffer.PlayLength = 0;
@@ -362,18 +363,20 @@ bool CSourceXAudio2::getLooping() const
 	return _IsLooping;
 }
 
-bool CSourceXAudio2::initFormat(TSampleFormat format)
+bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
 
 	nlassert(!_SourceVoice); nlassert(!_AdpcmUtility);
 	// create adpcm utility callback if needed
-	if (format == Mono16ADPCM) _AdpcmUtility = new CAdpcmXAudio2(_IsLooping);
+	if (bufferFormat == IBuffer::FormatADPCM) _AdpcmUtility = new CAdpcmXAudio2(_IsLooping);
 	// create voice with adpcm utility callback or NULL callback
-	_SourceVoice = _SoundDriver->createSourceVoice(format, _AdpcmUtility);
+	_SourceVoice = _SoundDriver->createSourceVoice(bufferFormat, channels, bitsPerSample, _AdpcmUtility);
 	if (_AdpcmUtility) _AdpcmUtility->setSourceVoice(_SourceVoice);
 	if (!_SourceVoice) return false; // fail
-	_Format = format;
+	_Format = bufferFormat;
+	_Channels = channels;
+	_BitsPerSample = bitsPerSample;
 	XAUDIO2_VOICE_DETAILS voice_details;
 	_SourceVoice->GetVoiceDetails(&voice_details);
 	_FreqVoice = (float)voice_details.InputSampleRate;
@@ -418,12 +421,18 @@ bool CSourceXAudio2::play()
 		if (_IsPlaying)
 		{
 			// nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
-			if (_StaticBuffer->getFormat() == _Format) // cannot call stop directly before destroy voice, ms bug in xaudio2
+			if (_StaticBuffer->getFormat() == _Format
+				&& _StaticBuffer->getChannels() == _Channels
+				&& _StaticBuffer->getBitsPerSample() == _BitsPerSample) 
+				// cannot call stop directly before destroy voice, ms bug in xaudio2
 				stop(); // sets _IsPlaying = false;
 		}
 		if (_StaticBuffer)
 		{
-			if (_SourceVoice && _StaticBuffer->getFormat() != _Format)
+			if (_SourceVoice && (
+				_StaticBuffer->getFormat() != _Format
+				|| _StaticBuffer->getChannels() != _Channels
+				|| _StaticBuffer->getBitsPerSample() != _BitsPerSample))
 			{
 				nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
 				// destroy existing voice
@@ -434,7 +443,7 @@ bool CSourceXAudio2::play()
 			if (!_SourceVoice)
 			{
 				// initialize a source voice with this format
-				if (!initFormat(_StaticBuffer->getFormat()))
+				if (!initFormat(_StaticBuffer->getFormat(), _StaticBuffer->getChannels(), _StaticBuffer->getBitsPerSample()))
 				{
 					nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
 					return false;
@@ -442,9 +451,9 @@ bool CSourceXAudio2::play()
 				// notify other sources about this format, so they can make a voice in advance
 				// we know that there is a very high chance that all sources use same format
 				// so this gives better results at runtime (avoids sound clicks etc)
-				_SoundDriver->initSourcesFormat(_Format);
+				_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
 			}
-			_FreqRatio = (float)_StaticBuffer->getFreq() / _FreqVoice;
+			_FreqRatio = (float)_StaticBuffer->getFrequency() / _FreqVoice;
 			commit3DChanges(); // sets pitch etc
 			submitStaticBuffer();
 			_PlayStart = CTime::getLocalTime();

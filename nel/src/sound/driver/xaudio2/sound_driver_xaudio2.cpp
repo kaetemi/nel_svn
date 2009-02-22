@@ -152,10 +152,9 @@ NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 CSoundDriverXAudio2::CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider *stringMapper) 
 	: _StringMapper(stringMapper), _XAudio2(NULL), _MasteringVoice(NULL), 
 	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), 
-	_PerformanceCommit3DCounter(0), _PerformanceMono16ADPCMBufferSize(0), 
-	_PerformanceMono16BufferSize(0), _PerformanceMono8BufferSize(0), 
-	_PerformanceMusicPlayCounter(0), _PerformanceSourcePlayCounter(0), 
-	_PerformanceStereo16BufferSize(0), _PerformanceStereo8BufferSize(0)
+	_PerformanceCommit3DCounter(0), _PerformanceADPCMBufferSize(0), 
+	_PerformancePCMBufferSize(0), _PerformanceMusicPlayCounter(0), 
+	_PerformanceSourcePlayCounter(0)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Creating CSoundDriverXAudio2");
 
@@ -301,14 +300,14 @@ bool CSoundDriverXAudio2::getOption(ISoundDriver::TSoundOptions option)
 }
 
 /// Tell sources without voice about a format
-void CSoundDriverXAudio2::initSourcesFormat(TSampleFormat format)
+void CSoundDriverXAudio2::initSourcesFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample)
 {
 	std::set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
-	for (; it != end; ++it) { if (!(*it)->getSourceVoice()) { (*it)->initFormat(format); } }
+	for (; it != end; ++it) { if (!(*it)->getSourceVoice()) { (*it)->initFormat(bufferFormat, channels, bitsPerSample); } }
 }
 
 /// (Internal) Create an XAudio2 source voice of the specified format.
-IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format, IXAudio2VoiceCallback *callback)
+IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, IXAudio2VoiceCallback *callback)
 {
 	nlassert(_Listener);
 
@@ -317,16 +316,13 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(TSampleFormat format
 	WAVEFORMATEX wfe;
 	wfe.cbSize = 0;
 
-	nlassert(format == Mono16 || format == Mono16ADPCM || format == Mono16 || format == Stereo16 || format == Stereo8);
+	if (bufferFormat == IBuffer::FormatADPCM)
+		nlassert(channels == 1 && bitsPerSample == 16);
 
-	wfe.wFormatTag = WAVE_FORMAT_PCM;
+	wfe.wFormatTag = WAVE_FORMAT_PCM; // ADPCM is converted in the driver
 
-	wfe.nChannels = (format == Mono16 || format == Mono16ADPCM || format == Mono8)
-		? 1
-		: 2;
-	wfe.wBitsPerSample = (format == Mono8 || format == Stereo8)
-		? 8
-		: 16;
+	wfe.nChannels = channels;
+	wfe.wBitsPerSample = bitsPerSample;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
 	_Listener->getOutputVoice()->GetVoiceDetails(&voice_details);
@@ -429,9 +425,9 @@ bool CSoundDriverXAudio2::readWavBuffer(IBuffer *destbuffer, const std::string &
 }
 
 /// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16)
-bool CSoundDriverXAudio2::readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+bool CSoundDriverXAudio2::readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency)
 {
-	return ((CBufferXAudio2 *)destbuffer)->readRawBuffer(name, rawData, dataSize, format, frequency);
+	return ((CBufferXAudio2 *)destbuffer)->readRawBuffer(name, rawData, dataSize, sampleFormat, frequency);
 }
 
 /// Commit all the changes made to 3D settings of listener and sources
@@ -453,11 +449,8 @@ void CSoundDriverXAudio2::writeProfile(std::string& out)
 	_XAudio2->GetPerformanceData(&performance);
 
 	out = toString(NLSOUND_XAUDIO2_NAME)
-		+ "\n\tMono8BufferSize: " + toString(_PerformanceMono8BufferSize)
-		+ "\n\tMono16BufferSize: " + toString(_PerformanceMono16BufferSize)
-		+ "\n\tMono16ADPCMBufferSize: " + toString(_PerformanceMono16ADPCMBufferSize)
-		+ "\n\tStereo8BufferSize: " + toString(_PerformanceStereo8BufferSize)
-		+ "\n\tStereo16BufferSize: " + toString(_PerformanceStereo16BufferSize)
+		+ "\n\tPCMBufferSize: " + toString(_PerformancePCMBufferSize)
+		+ "\n\tADPCMBufferSize: " + toString(_PerformanceADPCMBufferSize)
 		+ "\n\tSourcePlayCounter: " + toString(_PerformanceSourcePlayCounter)
 		+ "\n\tMusicPlayCounter: " + toString(_PerformanceMusicPlayCounter)
 		+ "\n\tCommit3DCounter: " + toString(_PerformanceCommit3DCounter)

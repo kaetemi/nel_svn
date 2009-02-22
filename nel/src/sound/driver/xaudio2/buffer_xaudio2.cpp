@@ -46,7 +46,8 @@ namespace NLSOUND {
 
 CBufferXAudio2::CBufferXAudio2(CSoundDriverXAudio2 *soundDriver) 
 : _SoundDriver(soundDriver), _Data(NULL), 
-_Size(0), _Name(NULL), _Format((TSampleFormat)~0), _Freq(0)
+_Size(0), _Name(NULL), _Format((IBuffer::TBufferFormat)~0),
+_Channels(0), _BitsPerSample(0), _Frequency(0)
 {
 	
 }
@@ -72,22 +73,24 @@ void CBufferXAudio2::release()
 
 /// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
 /// May return NULL if the format or frequency is not supported by the driver.
-uint8 *CBufferXAudio2::openWritable(uint size, TSampleFormat format, uint32 frequency)
+uint8 *CBufferXAudio2::openWritable(uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	if (_Data)
 	{
 		_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
 		if (size > _Size) delete[] _Data; _Data = NULL;
 	}
-
+	
 	if (!_Data) _Data = new uint8[size];
-
-	_Format = format;
-	_Freq = frequency;
+	
+	_Format = bufferFormat;
+	_Channels = channels;
+	_BitsPerSample = bitsPerSample;
+	_Frequency = frequency;
 	_Size = size;
-
+	
 	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
-
+	
 	return _Data;
 }
 
@@ -201,13 +204,17 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	}
 
 	// Copy stuff
-	uint8 *wbuffer = openWritable(mmckinfodata.cksize, format, wavefmt->nSamplesPerSec);
+	TBufferFormat bufferFormat;
+	uint8 channels;
+	uint8 bitsPerSample;
+	sampleFormatToBufferFormat(format, bufferFormat, channels, bitsPerSample);
+	uint8 *wbuffer = openWritable(mmckinfodata.cksize, bufferFormat, channels, bitsPerSample, wavefmt->nSamplesPerSec);
 	CFastMem::memcpy(wbuffer, wavedata, mmckinfodata.cksize);
 	lockWritable(true);
 	return true;
 }
 
-bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency)
 {
 	// If name has been preset, it must match.
 	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
@@ -216,7 +223,11 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
 	_Name = nameId;
 
 	// Copy stuff from params
-	uint8 *wbuffer = openWritable(dataSize, format, frequency);
+	TBufferFormat bufferFormat;
+	uint8 channels;
+	uint8 bitsPerSample;
+	sampleFormatToBufferFormat(sampleFormat, bufferFormat, channels, bitsPerSample);
+	uint8 *wbuffer = openWritable(dataSize, bufferFormat, channels, bitsPerSample, frequency);
 	CFastMem::memcpy(wbuffer, rawData, dataSize);
 	lockWritable(true);
 	return true;
@@ -232,22 +243,34 @@ void CBufferXAudio2::presetName(const NLMISC::TStringId &bufferName)
 	_Name = bufferName;
 }
 
-/// Set the sample format. Example: freq=44100
-void CBufferXAudio2::setFormat(TSampleFormat format, uint freq)
+void CBufferXAudio2::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
 {
 	_Format = format;
-	_Freq = freq;
+	_Channels = channels;
+	_Frequency = frequency;
+	_BitsPerSample = bitsPerSample;
 }
 
-/// Set the buffer size and fill the buffer.  Return true if ok. Call setFormat() first.
-bool CBufferXAudio2::fillBuffer(void *src, uint32 bufsize)
+/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
+bool CBufferXAudio2::fillBuffer(const void *src, uint bufsize)
 {
-	throw ESoundDriverNotSupp();
-	return false;
+	uint8* wbuffer = openWritable(bufsize, _Format, _Channels, _BitsPerSample, _Frequency);
+	CFastMem::memcpy(wbuffer, src, bufsize);
+	lockWritable(true);
+	return true;
+}
+
+/// Return the sample format informations.
+void CBufferXAudio2::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+{
+	format = _Format;
+	channels = _Channels;
+	bitsPerSample = _BitsPerSample;
+	frequency = _Frequency;
 }
 
 /// Return the size of the buffer, in bytes
-uint32 CBufferXAudio2::getSize() const
+uint CBufferXAudio2::getSize() const
 {
 	return _Size;
 }
@@ -255,70 +278,31 @@ uint32 CBufferXAudio2::getSize() const
 /// Return the duration (in ms) of the sample in the buffer
 float CBufferXAudio2::getDuration() const
 {
-	// from NLSOUND DSound Driver, Copyright (C)  2001 Nevrax Ltd.
-
 	float frames = (float)_Size;
 
 	switch (_Format) 
 	{
-	case Mono8:
-		break;
-	case Mono16ADPCM:
+	case FormatADPCM:
+		nlassert(_Channels == 1 && _BitsPerSample == 16);
 		frames *= 2.0f;
 		break;
-	case Mono16:
-		frames /= 2.0f;
-		break;
-	case Stereo8:
-		frames /= 2.0f;
-		break;
-	case Stereo16:
-		frames /= 4.0f;
+	case FormatPCM:
+		frames /= (((float)_BitsPerSample) / 8.0f);
+		frames /= ((float)_Channels);
 		break;
 	}
 
-	return 1000.0f * frames / (float)_Freq;
+	return 1000.0f * frames / (float)_Frequency;
 }
 
 /// Return true if the buffer is stereo, false if mono
 bool CBufferXAudio2::isStereo() const
 {
-	return (_Format == Stereo8) || (_Format == Stereo16);
-}
-
-/// Return the format and frequency
-void CBufferXAudio2::getFormat( TSampleFormat& format, uint& freq ) const
-{
-	format = _Format;
-	freq = _Freq;
-}
-
-/** Return true if the buffer is able to be fill part by part, false if it must be filled in one call
- * OpenAL 1.0 -> false
- */
-bool CBufferXAudio2::isFillMoreSupported() const
-{
-	return false;
-}
-
-/// Force the buffer size without filling data (if isFillMoreSupported() only)
-void CBufferXAudio2::setSize(uint32 size)
-{
-	throw ESoundDriverNotSupp();
-}
-
-/** Fill the buffer partially (if isFillMoreSupported() only),
- * beginning at the pos changed by a previous call to fillMore().
- * If the pos+srcsize exceeds the buffer size, the exceeding data is put at the beginning
- * of the buffer. srcsize must be smaller than the buffer size.
- */
-bool CBufferXAudio2::fillMore(void *src, uint32 srcsize)
-{
-	throw ESoundDriverNotSupp();
+	return _Channels > 1;
 }
 
 /// Return the name of this buffer
-const NLMISC::TStringId &CBufferXAudio2::getName() const
+NLMISC::TStringId CBufferXAudio2::getName() const
 {
 	return _Name;
 }
@@ -327,6 +311,18 @@ const NLMISC::TStringId &CBufferXAudio2::getName() const
 bool CBufferXAudio2::isBufferLoaded() const
 {
 	return _Data != NULL;
+}
+	
+/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+void CBufferXAudio2::setStorageMode(IBuffer::TStorageMode /* storageMode */)
+{
+	// software sound, no hardware storage mode
+}
+
+/// Get the storage mode of this buffer.
+IBuffer::TStorageMode CBufferXAudio2::getStorageMode()
+{
+	return IBuffer::StorageSoftware;
 }
 
 /** Unoptimized utility function designed to build ADPCM encoded sample bank file.

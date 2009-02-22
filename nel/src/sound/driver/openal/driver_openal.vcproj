@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="driver_openal"
 	ProjectGUID="{46CD3ED8-A9E1-49ED-BA1B-586CF147143A}"
 	RootNamespace="driver_fmod"
@@ -72,7 +72,8 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib\nel_drv_openal_win_d.dll"
-				ModuleDefinitionFile=".\driver_openal.def"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
+				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 			/>
 			<Tool
@@ -156,7 +157,8 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib\nel_drv_openal_win_r.dll"
-				ModuleDefinitionFile=".\driver_openal.def"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 			/>
 			<Tool

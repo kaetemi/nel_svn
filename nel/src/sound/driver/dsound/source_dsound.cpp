@@ -429,10 +429,10 @@ void CSourceDSound::fillData(sint16 *dst, uint nbSample)
 	nlassert((nbSample & 0xfffffffe) == nbSample);
 	if (_Sample != 0)
 	{
-		void	*data = ((CBufferDSound*) _Sample)->getData();
-		sint8	*data8;
-		uint8	*dataAdpcm;
-		sint16	*data16;
+		const void *data = ((CBufferDSound*) _Sample)->getData();
+		const sint8 *data8;
+		const uint8 *dataAdpcm;
+		const sint16 *data16;
 		uint	i;
 
 //nldebug("Filling from %p to %p (%p sample, %p bytes)", dst, dst+nbSample, nbSample, nbSample*2);

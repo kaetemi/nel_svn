@@ -25,6 +25,97 @@
 
 
 namespace NLSOUND {
+	
+// for compatibility
+void IBuffer::setFormat(TSampleFormat format, uint freq)
+{
+	TBufferFormat bufferFormat;
+	uint8 channels;
+	uint8 bitsPerSample;
+	sampleFormatToBufferFormat(format, bufferFormat, channels, bitsPerSample);
+	setFormat(bufferFormat, channels, bitsPerSample, freq);
+}
+
+// for compatibility, very lazy checks (assume it's set by old setFormat)
+void IBuffer::getFormat(TSampleFormat& format, uint& freq) const
+{
+	TBufferFormat bufferFormat;
+	uint8 channels;
+	uint8 bitsPerSample;
+	getFormat(bufferFormat, channels, bitsPerSample, freq);
+	bufferFormatToSampleFormat(bufferFormat, channels, bitsPerSample, format);
+}
+
+/// Convert old sample format to new buffer format
+void IBuffer::sampleFormatToBufferFormat(TSampleFormat sampleFormat, TBufferFormat &bufferFormat, uint8 &channels, uint8 &bitsPerSample)
+{
+	switch (sampleFormat)
+	{
+	case Mono8:
+		bufferFormat = FormatPCM;
+		channels = 1;
+		bitsPerSample = 8;
+		break;
+	case Mono16ADPCM:
+		bufferFormat = FormatADPCM;
+		channels = 1;
+		bitsPerSample = 16;
+		break;
+	case Mono16:
+		bufferFormat = FormatPCM;
+		channels = 1;
+		bitsPerSample = 16;
+		break;
+	case Stereo8:
+		bufferFormat = FormatPCM;
+		channels = 2;
+		bitsPerSample = 8;
+		break;
+	case Stereo16:
+		bufferFormat = FormatPCM;
+		channels = 2;
+		bitsPerSample = 16;
+		break;
+	}
+}
+
+/// Convert new buffer format to old sample format
+void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, TSampleFormat &sampleFormat)
+{
+	switch (bufferFormat)
+	{
+	case FormatPCM:
+		switch (channels)
+		{
+		case 1:
+			switch (bitsPerSample)
+			{
+			case 8:
+				sampleFormat = Mono8;
+				break;
+			default:
+				sampleFormat = Mono16;
+				break;
+			}
+			break;
+		default:
+			switch (bitsPerSample)
+			{
+			case 8:
+				sampleFormat = Stereo8;
+				break;
+			default:
+				sampleFormat = Stereo16;
+				break;
+			}
+			break;
+		}
+		break;
+	case FormatADPCM:
+		sampleFormat = Mono16ADPCM;
+		break;
+	}
+}
 
 const sint IBuffer::_IndexTable[16] =
 {
@@ -46,9 +137,9 @@ const uint IBuffer::_StepsizeTable[89] =
 };
 
 
-void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state)
+void IBuffer::encodeADPCM(const sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state)
 {
-	sint16 *inp = indata;				/* Input buffer pointer */
+	const sint16 *inp = indata;				/* Input buffer pointer */
 	uint8 *outp = outdata;				/* output buffer pointer */
 	int val;							/* Current input sample value */
 	int sign;							/* Current adpcm sign bit */
@@ -150,9 +241,9 @@ void				IBuffer::encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADP
 	state.StepIndex = uint8(index);
 }
 
-void				IBuffer::decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state)
+void IBuffer::decodeADPCM(const uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state)
 {
-    uint8 *inp = indata;				/* Input buffer pointer */
+    const uint8 *inp = indata;				/* Input buffer pointer */
     sint16 *outp = outdata;				/* output buffer pointer */
     int sign;							/* Current adpcm sign bit */
     int delta;							/* Current adpcm output value */

@@ -70,21 +70,33 @@ void CBufferFMod::presetName(const NLMISC::TStringId &bufferName)
 
 
 // ***************************************************************************
-void CBufferFMod::setFormat( TSampleFormat format, uint freq )
+/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+void CBufferFMod::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
 {
-    _Format = format;
-    _Freq = freq;
+	bufferFormatToSampleFormat(format, channels, bitsPerSample, _Format);
+	_Freq = frequency;
 }
 
-
 // ***************************************************************************
-bool CBufferFMod::fillBuffer( void * /* src */, uint32 /* bufsize */ )
+bool CBufferFMod::fillBuffer(const void * /* src */, uint32 /* bufsize */)
 {
     return false;
 }
 
+/// Return the sample format informations.
+void CBufferFMod::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+{
+	sampleFormatToBufferFormat(_Format, format, channels, bitsPerSample);
+	frequency = _Freq;
+}
 
-// ***************************************************************************
+/// Return the size of the buffer, in bytes.
+uint CBufferFMod::getSize() const
+{
+	return _Size;
+}
+
+/// Return the duration (in ms) of the sample in the buffer.
 float CBufferFMod::getDuration() const
 {
     float frames = (float) _Size;
@@ -110,6 +122,36 @@ float CBufferFMod::getDuration() const
     return 1000.0f * frames / (float) _Freq;
 }
 
+/// Return true if the buffer is stereo (multi-channel), false if mono.
+bool CBufferFMod::isStereo() const
+{
+	return (_Format == Stereo8) || (_Format == Stereo16);
+}
+
+/// Return the name of this buffer
+NLMISC::TStringId CBufferFMod::getName() const
+{
+	return _Name;
+}
+
+/// Return true if the buffer is loaded. Used for async load/unload.
+bool CBufferFMod::isBufferLoaded() const
+{
+	return _FModSample != 0;
+}
+
+/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+void CBufferFMod::setStorageMode(TStorageMode /* storageMode */)
+{
+	// not implemented
+}
+
+/// Get the storage mode of this buffer.
+IBuffer::TStorageMode CBufferFMod::getStorageMode()
+{
+	// not implemented
+	return IBuffer::StorageAuto;
+}
 
 // ***************************************************************************
 bool CBufferFMod::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)

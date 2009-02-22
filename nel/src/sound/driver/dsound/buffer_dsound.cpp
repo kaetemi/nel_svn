@@ -148,19 +148,30 @@ void CBufferDSound::presetName(const NLMISC::TStringId &bufferName)
 	_Name = bufferName;
 }
 
-
-void CBufferDSound::setFormat( TSampleFormat format, uint freq )
+/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+void CBufferDSound::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
 {
-    _Format = format;
-    _Freq = freq;
+	bufferFormatToSampleFormat(format, channels, bitsPerSample, _Format);
+	_Freq = frequency;
 }
 
-
-bool CBufferDSound::fillBuffer( void *src, uint32 bufsize )
+bool CBufferDSound::fillBuffer(const void *src, uint bufsize)
 {
     return false;
 }
 
+/// Return the sample format informations.
+void CBufferDSound::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+{
+	sampleFormatToBufferFormat(_Format, format, channels, bitsPerSample);
+	frequency = _Freq;
+}
+
+/// Return the size of the buffer, in bytes.
+uint CBufferDSound::getSize() const
+{
+	return _Size;
+}
 
 float CBufferDSound::getDuration() const
 {
@@ -187,6 +198,36 @@ float CBufferDSound::getDuration() const
     return 1000.0f * frames / (float) _Freq;
 }
 
+bool CBufferDSound::isStereo() const
+{
+	return (_Format == Stereo8) || (_Format == Stereo16);
+}
+
+/// Return the name of this buffer
+NLMISC::TStringId CBufferDSound::getName() const
+{
+	return _Name;
+}
+
+/// Return true if the buffer is loaded. Used for async load/unload.
+bool CBufferDSound::isBufferLoaded() const
+{
+	return _Data != NULL;
+}
+
+	
+/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+void CBufferDSound::setStorageMode(TStorageMode /* storageMode */)
+{
+	// not implemented
+}
+
+/// Get the storage mode of this buffer.
+IBuffer::TStorageMode CBufferDSound::getStorageMode()
+{
+	// not implemented
+	return IBuffer::StorageAuto;
+}
 
 bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {

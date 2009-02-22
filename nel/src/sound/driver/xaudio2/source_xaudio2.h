@@ -71,7 +71,11 @@ protected:
 
 	// -- System vars 2d --
 	/// Format of the current source voice.
-	TSampleFormat _Format;
+	IBuffer::TBufferFormat _Format;
+	/// Number of channels in the current format
+	uint8 _Channels;
+	/// Bits per sample in the current format
+	uint8 _BitsPerSample;
 	/// Frequency of voice (should usually be 44100).
 	float _FreqVoice;
 	/// Rate of sample over rate of voice.
@@ -123,7 +127,7 @@ public:
 	void updateState();
 
 	/// (Internal) Initialize voice with this format, if no voice has been created yet.
-	bool initFormat(TSampleFormat format);
+	bool initFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample);
 	/// (Internal) Returns the XAudio2 source voice.
 	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
 	/// (Internal) Submit the static buffer to the XAudio2 source voice.

@@ -70,7 +70,7 @@ void CAdpcmXAudio2::submitSourceBuffer(CBufferXAudio2 *buffer)
 	}
 	else
 	{
-		_AdpcmSize = buffer->getFreq() / 40;
+		_AdpcmSize = buffer->getFrequency() / 40;
 		_SampleNb = _AdpcmSize * 2;
 		nlassert(_SampleNb < _BufferMax);
 		_SourceData = buffer->getData();

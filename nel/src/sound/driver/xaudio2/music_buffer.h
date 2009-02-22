@@ -49,7 +49,7 @@ namespace NLSOUND {
 	 * Required interface functions, IBuffer:
 	 * /// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
 	 * /// May return NULL if the format or frequency is not supported by the driver.
-	 * uint8 *IBuffer::openWritable(uint size, TSampleFormat format, uint32 frequency);
+	 * uint8 *IBuffer::openWritable(uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency);
 	 * /// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
 	 * /// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
 	 * /// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.

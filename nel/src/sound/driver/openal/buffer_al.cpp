@@ -54,9 +54,64 @@ CBufferAL::~CBufferAL()
 	sdal->removeBuffer( this );
 }
 
+/** Preset the name of the buffer. Used for async loading to give a name
+ *	before the buffer is effectivly loaded.
+ *	If the name after loading of the buffer doesn't match the preset name,
+ *	the load will assert.
+ */
 void CBufferAL::presetName(const NLMISC::TStringId &bufferName)
 {
 	_Name = bufferName;
+}
+
+/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+void CBufferAL::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
+{
+	TSampleFormat sampleFormat;
+	bufferFormatToSampleFormat(format, channels, bitsPerSample, sampleFormat);
+	switch (sampleFormat) 
+	{
+		case Mono8: _SampleFormat = AL_FORMAT_MONO8; break;
+		case Mono16: _SampleFormat = AL_FORMAT_MONO16; break;
+		case Stereo8: _SampleFormat = AL_FORMAT_STEREO8; break;
+		case Stereo16: _SampleFormat = AL_FORMAT_STEREO16; break;
+		default: nlstop; _SampleFormat = AL_INVALID;
+	}
+	_Frequency = frequency;
+}
+
+/// Set the buffer size and fill the buffer. Return true if ok.
+bool CBufferAL::fillBuffer(const void *src, uint bufsize)
+{
+	nlassert( src != NULL );
+	nlassert( (_SampleFormat != AL_INVALID) && (_Frequency != 0 ) );
+
+	// Fill buffer (OpenAL one)
+	alBufferData(_BufferName, _SampleFormat, src, bufsize, _Frequency);
+
+	// Fill buffer (local copy)
+	_Size = bufsize;
+	_Data = new uint8[_Size];
+	memcpy(_Data, src, (size_t)_Size);
+
+	// Error handling
+	return (alGetError() == AL_NO_ERROR);
+}
+
+/// Return the sample format informations.
+void CBufferAL::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+{
+	TSampleFormat sampleFormat;
+	switch (_SampleFormat)
+	{
+		case AL_FORMAT_MONO8: sampleFormat = Mono8; break;
+		case AL_FORMAT_MONO16: sampleFormat = Mono16; break;
+		case AL_FORMAT_STEREO8: sampleFormat = Stereo8; break;
+		case AL_FORMAT_STEREO16: sampleFormat = Stereo16; break;
+		default: nlstop;
+	}
+	sampleFormatToBufferFormat(sampleFormat, format, channels, bitsPerSample);
+	frequency = _Frequency;
 }
 
 
@@ -71,32 +126,6 @@ uint32 CBufferAL::getSize() const
 	nlassert(alGetError() == AL_NO_ERROR);
 	return value;*/
 }
-
-
-/*
- * Return true if the buffer is stereo, false if mono
- */
-bool CBufferAL::isStereo() const
-{
-	return (_SampleFormat==AL_FORMAT_STEREO8) || (_SampleFormat==AL_FORMAT_STEREO16);
-}
-
-
-/*
- * Return the format and frequency
- */
-void CBufferAL::getFormat( TSampleFormat& format, uint& freq ) const
-{
-	switch ( _SampleFormat ) {
-		case AL_FORMAT_MONO8 : 		format = Mono8; break;
-		case AL_FORMAT_MONO16 : 	format = Mono16; break;
-		case AL_FORMAT_STEREO8 : 	format = Stereo8; break;
-		case AL_FORMAT_STEREO16 : 	format = Stereo16; break;
-		default : 					nlstop;
-	}
-	freq = _Frequency;
-}
-
 
 /*
  * Return the duration (in ms) of the sample in the buffer
@@ -128,41 +157,18 @@ float CBufferAL::getDuration() const
 	return (float)(getSize()) * 1000.0f / (float)_Frequency / (float)bytespersample;
 }
 
-
 /*
- * Set the sample format. Example: freq=44100
+ * Return true if the buffer is stereo, false if mono
  */
-void CBufferAL::setFormat(TSampleFormat format, uint freq)
+bool CBufferAL::isStereo() const
 {
-	switch ( format ) {
-		case Mono8 : 	_SampleFormat = AL_FORMAT_MONO8; break;
-		case Mono16 : 	_SampleFormat = AL_FORMAT_MONO16; break;
-		case Stereo8 : 	_SampleFormat = AL_FORMAT_STEREO8; break;
-		case Stereo16 : _SampleFormat = AL_FORMAT_STEREO16; break;
-		default : 		nlstop; _SampleFormat = AL_INVALID;
-	}
-	_Frequency = freq;
+	return (_SampleFormat==AL_FORMAT_STEREO8) || (_SampleFormat==AL_FORMAT_STEREO16);
 }
 
-
-/*
- * Set the buffer size and fill the buffer. Return true if ok.
- */
-bool CBufferAL::fillBuffer(void *src, uint32 bufsize)
+/// Return the name of this buffer
+NLMISC::TStringId CBufferAL::getName() const
 {
-	nlassert( src != NULL );
-	nlassert( (_SampleFormat != AL_INVALID) && (_Frequency != 0 ) );
-
-	// Fill buffer (OpenAL one)
-	alBufferData(_BufferName, _SampleFormat, src, bufsize, _Frequency);
-
-	// Fill buffer (local copy)
-	_Size = bufsize;
-	_Data = new uint8[_Size];
-	memcpy(_Data, src, (size_t)_Size);
-
-	// Error handling
-	return (alGetError() == AL_NO_ERROR);
+	return _Name;
 }
 
 bool CBufferAL::isBufferLoaded() const
@@ -170,6 +176,19 @@ bool CBufferAL::isBufferLoaded() const
 	return (_SampleFormat != AL_INVALID && _Data != NULL && _Size > 0 && _Frequency > 0);
 }
 
+	
+/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+void CBufferAL::setStorageMode(TStorageMode /* storageMode */)
+{
+	// not implemented yet
+}
+
+/// Get the storage mode of this buffer.
+IBuffer::TStorageMode CBufferAL::getStorageMode()
+{
+	// not implemented yet
+	return IBuffer::StorageAuto;
+}
 
 /**
  * Made after CBufferFMod, with a few changes and additional

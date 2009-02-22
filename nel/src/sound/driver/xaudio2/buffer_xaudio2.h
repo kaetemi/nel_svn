@@ -67,73 +67,72 @@ protected:
 	/// The name of the buffer
 	NLMISC::TStringId _Name;
 	/// The sample format
-	TSampleFormat _Format;
+	TBufferFormat _Format;
+	/// The number of channels	
+	uint8 _Channels;
+	/// Bits per sample
+	uint8 _BitsPerSample;
 	/// The sample frequency
-	uint32 _Freq;
+	uint _Frequency;
 public:
 	CBufferXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CBufferXAudio2();
 	void release();
 
 	/// Returns a pointer to the PCM or ADPCM bytes.
-	inline uint8 *getData() { return _Data; }
-	/// Returns the sample rate.
-	inline uint getFreq() { return _Freq; }
+	inline const uint8 *getData() { return _Data; }
 	/// Returns the sample format.
-	inline TSampleFormat getFormat() { return _Format; }
-
+	inline TBufferFormat getFormat() { return _Format; }
+	/// Returns the number of channels
+	inline uint8 getChannels() { return _Channels; }
+	/// Returns the bits per sample
+	inline uint8 getBitsPerSample() { return _BitsPerSample; }
+	/// Returns the sample rate.
+	inline uint getFrequency() { return _Frequency; }
+	
 	/// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
 	/// May return NULL if the format or frequency is not supported by the driver.
-	virtual uint8 *openWritable(uint size, TSampleFormat format, uint32 frequency);
+	uint8 *openWritable(uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency);
 	/// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
 	/// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
 	/// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
-	virtual void lockWritable(bool keepLocal);
-
+	void lockWritable(bool keepLocal);
+	
 	/// Read the audio data from a WAV format buffer.
 	bool readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize);
-	bool readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
-
-
+	bool readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency);
+	
 	/** Preset the name of the buffer. Used for async loading to give a name
 	 *	before the buffer is effectivly loaded.
 	 *	If the name after loading of the buffer doesn't match the preset name,
 	 *	the load will assert.
 	 */
 	virtual void presetName(const NLMISC::TStringId &bufferName);
-	/// Set the sample format. Example: freq=44100.
-	virtual void setFormat(TSampleFormat format, uint freq);
-	/// Set the buffer size and fill the buffer. Return true if ok. Call setFormat() first.
-	virtual bool fillBuffer(void *src, uint32 bufsize);
-
+	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency);
+	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
+	virtual bool fillBuffer(const void *src, uint bufsize);
+	
+	/// Return the sample format informations.
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const;
 	/// Return the size of the buffer, in bytes.
-	virtual uint32 getSize() const;
+	virtual uint getSize() const;
 	/// Return the duration (in ms) of the sample in the buffer.
 	virtual float getDuration() const;
-	/// Return true if the buffer is stereo, false if mono.
+	/// Return true if the buffer is stereo (multi-channel), false if mono.
 	virtual bool isStereo() const;
-	/// Return the format and frequency.
-	virtual void getFormat( TSampleFormat& format, uint& freq ) const;
-
-	/** Return true if the buffer is able to be fill part by part, false if it must be filled in one call
-	 * OpenAL 1.0 -> false
-	 */
-	virtual bool isFillMoreSupported() const;
-	/// Force the buffer size without filling data (if isFillMoreSupported() only).
-	virtual void setSize(uint32 size);
-	/** Fill the buffer partially (if isFillMoreSupported() only),
-	 * beginning at the pos changed by a previous call to fillMore().
-	 * If the pos+srcsize exceeds the buffer size, the exceeding data is put at the beginning
-	 * of the buffer. srcsize must be smaller than the buffer size.
-	 */
-	virtual bool fillMore(void *src, uint32 srcsize);
-
+	
 	/// Return the name of this buffer
-	virtual const NLMISC::TStringId& getName() const;
-
+	virtual NLMISC::TStringId getName() const;
+	
 	/// Return true if the buffer is loaded. Used for async load/unload.
 	virtual bool isBufferLoaded() const;
-
+	
+	/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+	virtual void setStorageMode(TStorageMode storageMode = IBuffer::StorageAuto);
+	/// Get the storage mode of this buffer.
+	virtual TStorageMode getStorageMode();
+	
 	/** Unoptimized utility function designed to build ADPCM encoded sample bank file.
 	 *	Return the number of sample in the buffer.
 	 */
@@ -142,7 +141,7 @@ public:
 	 *	Return the number of sample in the buffer.
 	 */
 	virtual uint32 getBufferMono16(std::vector<sint16> &result);
-	//@}
+	
 }; /* class CBufferXAudio2 */
 
 } /* namespace NLSOUND */

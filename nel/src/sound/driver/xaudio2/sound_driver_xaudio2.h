@@ -93,11 +93,8 @@ protected:
 	X3DAUDIO_DSP_SETTINGS _DSPSettings;
 
 	// performance stats
-	uint _PerformanceMono8BufferSize;
-	uint _PerformanceMono16BufferSize;
-	uint _PerformanceMono16ADPCMBufferSize;
-	uint _PerformanceStereo8BufferSize;
-	uint _PerformanceStereo16BufferSize;
+	uint _PerformancePCMBufferSize;
+	uint _PerformanceADPCMBufferSize;
 	uint _PerformanceSourcePlayCounter;
 	uint _PerformanceMusicPlayCounter;
 	uint _PerformanceCommit3DCounter;
@@ -115,27 +112,21 @@ public:
 	void release();
 
 	/// (Internal) Register a data buffer with the performance counters.
-	inline void performanceRegisterBuffer(TSampleFormat format, uint size) 
+	inline void performanceRegisterBuffer(IBuffer::TBufferFormat bufferFormat, uint size) 
 	{ 
-		switch (format)
+		switch (bufferFormat)
 		{
-		case Mono8: _PerformanceMono8BufferSize += size; break;
-		case Mono16: _PerformanceMono16BufferSize += size; break;
-		case Mono16ADPCM: _PerformanceMono16ADPCMBufferSize += size; break;
-		case Stereo8: _PerformanceMono8BufferSize += size; break;
-		case Stereo16: _PerformanceMono16BufferSize += size; break;
+		case IBuffer::FormatPCM: _PerformancePCMBufferSize += size; break;
+		case IBuffer::FormatADPCM: _PerformanceADPCMBufferSize += size; break;
 		}
 	}
 	/// (Internal) Remove a data buffer from the performance counters.
-	inline void performanceUnregisterBuffer(TSampleFormat format, uint size) 
+	inline void performanceUnregisterBuffer(IBuffer::TBufferFormat bufferFormat, uint size) 
 	{ 
-		switch (format)
+		switch (bufferFormat)
 		{
-		case Mono8: _PerformanceMono8BufferSize -= size; break;
-		case Mono16: _PerformanceMono16BufferSize -= size; break;
-		case Mono16ADPCM: _PerformanceMono16ADPCMBufferSize -= size; break;
-		case Stereo8: _PerformanceMono8BufferSize -= size; break;
-		case Stereo16: _PerformanceMono16BufferSize -= size; break;
+		case IBuffer::FormatPCM: _PerformancePCMBufferSize -= size; break;
+		case IBuffer::FormatADPCM: _PerformanceADPCMBufferSize -= size; break;
 		}
 	}
 	/// (Internal) Increase the source play counter by one.
@@ -146,7 +137,7 @@ public:
 	inline void performanceIncreaseCommit3DCounter() { ++_PerformanceCommit3DCounter; }
 	
 	/// (Internal) Initialize uninitialized sources with this format (so xaudio2 voices don't need to be created at runtime)
-	void initSourcesFormat(TSampleFormat format);
+	void initSourcesFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample);
 	
 	/// (Internal) Returns the listener for this driver.
 	inline CListenerXAudio2 *getListener() { return _Listener; }
@@ -166,7 +157,7 @@ public:
 	inline bool useEax() { return getOption(OptionEnvironmentEffects); }
 	
 	/// (Internal) Create an XAudio2 source voice of the specified format.
-	IXAudio2SourceVoice *createSourceVoice(TSampleFormat format, IXAudio2VoiceCallback *callback);
+	IXAudio2SourceVoice *createSourceVoice(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, IXAudio2VoiceCallback *callback);
 	/// (Internal) Destroy an XAudio2 source voice.
 	void destroySourceVoice(IXAudio2SourceVoice *sourceVoice);
 
@@ -196,7 +187,7 @@ public:
 	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8).
 	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
 	/// Read data from the data block. All supported formats are implemented.
-	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
+	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency);
 	
 	/// Commit all the changes made to 3D settings of listener and sources.
 	virtual void commit3DChanges();

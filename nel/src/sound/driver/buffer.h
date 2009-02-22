@@ -56,22 +56,22 @@ public:
 	 *	the load will assert.
 	 */
 	virtual void presetName(const NLMISC::TStringId &bufferName) = 0;
-	/// Set the sample format. (channels = 1, 2, ...; frequency = samples per second, 44100, ...; bitsPerSample = 8, 16)
-	virtual void setFormat(TBufferFormat /* format */, uint8 /* channels */, uint /* frequency */, uint8 /* bitsPerSample */) { throw ESoundDriverNotSupp(); }
+	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency) = 0;
 	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
-	virtual bool fillBuffer( void *src, uint32 bufsize ) = 0;
+	virtual bool fillBuffer(const void *src, uint bufsize) = 0;
 
 	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &/* format */, uint8 &/* channels */, uint &/* frequency */, uint8 &/* bitsPerSample */) { throw ESoundDriverNotSupp(); }
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const = 0;
 	/// Return the size of the buffer, in bytes.
-	virtual uint32 getSize() const = 0;
+	virtual uint getSize() const = 0;
 	/// Return the duration (in ms) of the sample in the buffer.
 	virtual float getDuration() const = 0;
 	/// Return true if the buffer is stereo (multi-channel), false if mono.
 	virtual bool isStereo() const = 0;
 
 	/// Return the name of this buffer
-	virtual const NLMISC::TStringId& getName() const = 0;
+	virtual NLMISC::TStringId getName() const = 0;
 
 	/// Return true if the buffer is loaded. Used for async load/unload.
 	virtual bool isBufferLoaded() const = 0;
@@ -89,17 +89,21 @@ public:
 		StorageSoftware
 	};
 	/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
-	virtual void setStorageMode(TStorageMode /* storageMode */ = IBuffer::StorageAuto) { throw ESoundDriverNotSupp(); }
+	virtual void setStorageMode(TStorageMode storageMode = IBuffer::StorageAuto) = 0;
 	/// Get the storage mode of this buffer.
-	virtual TStorageMode getStorageMode() { throw ESoundDriverNotSupp(); }
+	virtual TStorageMode getStorageMode() = 0;
 	//@}
 
 	//@{
 	//\name ***deprecated***
 	/// Set the sample format. Example: freq=44100. ***deprecated***
-	virtual void setFormat(TSampleFormat format, uint freq) = 0;
+	void setFormat(TSampleFormat format, uint freq);
 	/// Return the format and frequency. ***deprecated***
-	virtual void getFormat(TSampleFormat& format, uint& freq) const = 0;
+	void getFormat(TSampleFormat& format, uint& freq) const;
+	/// Convert old sample format to new buffer format
+	static void sampleFormatToBufferFormat(TSampleFormat sampleFormat, TBufferFormat &bufferFormat, uint8 &channels, uint8 &bitsPerSample);
+	/// Convert new buffer format to old sample format
+	static void bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, TSampleFormat &sampleFormat);
 	//@}
 	
 	//@{
@@ -112,8 +116,8 @@ public:
 		uint8	StepIndex;
 	};
 	// Encode 16 wav buffer into ADPCM
-	static void encodeADPCM(sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state);
-	static void decodeADPCM(uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state);	
+	static void encodeADPCM(const sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state);
+	static void decodeADPCM(const uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state);	
 	/** Unoptimized utility function designed to build ADPCM encoded sample bank file.
 	 *	Return the number of sample in the buffer.
 	 */
@@ -130,11 +134,11 @@ private:
 	
 protected:
 	/// Constructor
-	IBuffer() {};
+	IBuffer() { }
 	
 public:
 	/// Destructor
-	virtual ~IBuffer() {}
+	virtual ~IBuffer() { }
 	
 };
 
