@@ -645,7 +645,7 @@ void CAudioMixerUser::buildSampleBankList()
 	vector<string>	bankFile;
 	CPath::getPathContent(sp, false, false, true, bankFile);
 	// filter out any non sample bank file
-	for (i = 0; i < bankDir.size(); ++i)
+	for (i = 0; i < bankFile.size(); ++i)
 	{
 		if (bankFile[i].find(".sample_bank") != bankFile[i].size() - 12)
 		{
@@ -654,7 +654,7 @@ void CAudioMixerUser::buildSampleBankList()
 		}
 	}
 	sort(bankFile.begin(), bankFile.end());
-	for (i = 0; i < bankDir.size(); ++i)
+	for (i = 0; i < bankFile.size(); ++i)
 	{
 		nldebug("Found sample bank file [%s]", bankFile[i].c_str());
 	}
