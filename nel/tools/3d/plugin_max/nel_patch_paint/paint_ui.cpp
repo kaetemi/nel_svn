@@ -230,10 +230,23 @@ void CTileSetCont::build (CTileBank& bank, uint tileSet)
 	}
 
 	// Current index
+	bool dmwarn = false;
 	for (uint displace=0; displace<CTileSet::CountDisplace; displace++)
 	{
+		uint dispTile = set->getDisplacementTile((CTileSet::TDisplacement)displace);
+
+		if (bank.getDisplacementMapCount() <= dispTile)
+		{
+			if (!dmwarn)
+			{
+				dmwarn = true;
+				MessageBox(NULL, "Tile bank not loaded, or bad tile bank. Missing a displacement tile. Use the tile bank utility to load the correct tilebank.", "NeL Patch Paint", MB_OK | MB_ICONWARNING);
+			}
+			continue; // with next displace
+		}
+
 		// Get the name
-		std::string fileName=bank.getDisplacementMap (set->getDisplacementTile ((CTileSet::TDisplacement)displace));
+		std::string fileName = bank.getDisplacementMap(dispTile);
 		if (fileName=="EmptyDisplacementMap")
 			fileName="";
 
