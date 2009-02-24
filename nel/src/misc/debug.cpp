@@ -1246,7 +1246,8 @@ CInstanceCounterLocalManager *CInstanceCounterLocalManager::_Instance = NULL;
 TInstanceCounterData::TInstanceCounterData(const char *className)
 :	_InstanceCounter(0),
 	_DeltaCounter(0),
-	_ClassName(className)
+	_ClassName(className),
+	_Touched(false)
 {
 	CInstanceCounterLocalManager::getInstance().registerInstanceCounter(this);
 }
@@ -1284,6 +1285,9 @@ std::string CInstanceCounterManager::displayCounters() const
 				for (; first != last; ++first)
 				{
 					const TInstanceCounterData *icd = *first;
+
+					if (!icd->_Touched)
+						break;
 
 					if( counters.find(icd->_ClassName) == counters.end())
 					{

@@ -675,6 +675,7 @@ struct TInstanceCounterData
 	sint32		_InstanceCounter;
 	sint32		_DeltaCounter;
 	const char	*_ClassName;
+	bool		_Touched;
 
 	TInstanceCounterData(const char *className);
 
@@ -819,10 +820,12 @@ public: \
 		className##InstanceCounter() \
 		{ \
 			_InstanceCounterData._InstanceCounter++; \
+			_InstanceCounterData._Touched = true; \
 		} \
 		className##InstanceCounter(const className##InstanceCounter &/* other */) \
 		{ \
 			_InstanceCounterData._InstanceCounter++; \
+			_InstanceCounterData._Touched = true; \
 		} \
 		\
 		~className##InstanceCounter()\
