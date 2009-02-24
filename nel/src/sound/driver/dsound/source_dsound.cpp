@@ -331,6 +331,17 @@ void CSourceDSound::reset()
 	setGain(1.0f);
 }
 
+/// Set the effect send for this source, NULL to disable.
+void CSourceDSound::setEffect(IEffect *effect)
+{
+	throw ESoundDriverNoEnvironmentEffects();
+}
+
+/// Enable or disable streaming mode. Source must be stopped to call this.
+void CSourceDSound::setStreaming(bool streaming)
+{
+	if (streaming) throw ESoundDriverNoBufferStreaming();
+}
 
 // ******************************************************************
 
@@ -410,6 +421,18 @@ IBuffer *CSourceDSound::getStaticBuffer()
 
 }
 
+/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+void CSourceDSound::submitStreamingBuffer(IBuffer *buffer)
+{
+	throw ESoundDriverNoBufferStreaming();
+}
+
+/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+uint CSourceDSound::countStreamingBuffers() const
+{
+	throw ESoundDriverNoBufferStreaming();
+}
 
 void CSourceDSound::getCursors(TCursors &cursors)
 {
@@ -1722,25 +1745,42 @@ void CSourceDSound::getCone( float& innerAngle, float& outerAngle, float& outerG
 
 // ******************************************************************
 
-void CSourceDSound::setEAXProperty( uint prop, void *value, uint valuesize )
-{
-#if EAX_AVAILABLE == 1
-	if (_EAXSource == 0)
-	{
-		_EAXSource = CSoundDriverDSound::instance()->createPropertySet(this);
-	}
-	if ( _EAXSource != NULL )
-	{
-		H_AUTO(NLSOUND_EAXPropertySet_Set)
-		HRESULT res = _EAXSource->Set( DSPROPSETID_EAX_BufferProperties, prop, NULL, 0, value, valuesize );
-		if (res != S_OK)
-		{
-//			nlwarning("Setting EAX Param #%u fail : %x", prop, res);
-		}
-	}
-#endif
-}
+//void CSourceDSound::setEAXProperty( uint prop, void *value, uint valuesize )
+//{
+//#if EAX_AVAILABLE == 1
+//	if (_EAXSource == 0)
+//	{
+//		_EAXSource = CSoundDriverDSound::instance()->createPropertySet(this);
+//	}
+//	if ( _EAXSource != NULL )
+//	{
+//		H_AUTO(NLSOUND_EAXPropertySet_Set)
+//		HRESULT res = _EAXSource->Set( DSPROPSETID_EAX_BufferProperties, prop, NULL, 0, value, valuesize );
+//		if (res != S_OK)
+//		{
+////			nlwarning("Setting EAX Param #%u fail : %x", prop, res);
+//		}
+//	}
+//#endif
+//}
 
+/** Set the alpha value for the volume-distance curve
+ *
+ *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
+ *
+ *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
+ *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
+ *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
+ *                is the default used by DirectSound/OpenAL
+ *
+ *  For any other value of alpha, an interpolation is be done between the two
+ *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
+ *  the linear dB curve and the linear amplitude curve.
+ */
+void CSourceDSound::setAlpha(double a)
+{
+	_Alpha = a;
+}
 
 // ******************************************************************
 

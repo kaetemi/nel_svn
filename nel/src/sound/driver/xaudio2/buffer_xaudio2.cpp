@@ -288,6 +288,7 @@ float CBufferXAudio2::getDuration() const
 		return 1000.0f * getDurationFromPCMSize(_Size, _Channels, _BitsPerSample, _Frequency);
 		break;
 	}
+	return 0.0f;
 }
 
 /// Return true if the buffer is stereo, false if mono

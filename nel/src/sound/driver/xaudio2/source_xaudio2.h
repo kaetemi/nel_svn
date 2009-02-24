@@ -52,7 +52,7 @@ namespace NLSOUND {
  */
 class CSourceXAudio2 : public ISource
 {
-protected:
+private:
 	// -- outside pointers --
 	/// The sound driver, cannot change at runtime.
 	CSoundDriverXAudio2 *_SoundDriver;
@@ -68,7 +68,7 @@ protected:
 	IXAudio2SourceVoice *_SourceVoice;
 	/// Adpcm helper, can be NULL!
 	CAdpcmXAudio2 *_AdpcmUtility;
-
+	
 	// -- System vars 2d --
 	/// Format of the current source voice.
 	IBuffer::TBufferFormat _Format;
@@ -123,46 +123,48 @@ public:
 	CSourceXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CSourceXAudio2();
 	void release();
-
+	
 	void commit3DChanges();
 	void update3DChanges();
 	void updateState();
-
+	
 	/// (Internal) Initialize voice with this format, if no voice has been created yet.
 	bool initFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample);
 	/// (Internal) Returns the XAudio2 source voice.
 	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
-	/// (Internal) Submit the static buffer to the XAudio2 source voice.
-	void submitStaticBuffer();
+	/// (Internal) Submit a buffer to the XAudio2 source voice.
+	void submitBuffer(CBufferXAudio2 *ibuffer);
 	/// (Internal) Prepare to play. Stop the currently playing buffers, and set the correct voice settings.
 	bool preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint frequency);
 	
-	/// Set the submix send for this source, NULL to disable.
+	/// Set the effect send for this source, NULL to disable.
 	virtual void setEffect(IEffect *effect);
-
-	// ISource Functions
+	
 	/// \name Initialization
 	//@{
+	/// Enable or disable streaming mode. Source must be stopped to call this.
+	virtual void setStreaming(bool streaming);
 	/** Set the buffer that will be played (no streaming)
 	 * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
-	 * otherwise the source is considered as a 3D source.
+	 * otherwise the source is considered as a 3D source. Use submitStreamingBuffer for streaming.
 	 */
-	virtual void setStaticBuffer(IBuffer *buffer); //{ _Buffer = buffer; }
-	/// Return the buffer, or NULL if streaming is used.
-	virtual IBuffer *getStaticBuffer(); //					{ return _Buffer; }
-	///** Set the sound loader that will be used to stream in the data to play
-	// * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
-	// * otherwise the source is considered as a 3D source.
-	// */
-	//virtual void setStreamLoader(ILoader *loader) { _Loader = loader; }
+	virtual void setStaticBuffer(IBuffer *buffer);
+	/// Return the buffer, or NULL if streaming is used. Not available for streaming.
+	virtual IBuffer *getStaticBuffer();
+	/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+	/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+	virtual void submitStreamingBuffer(IBuffer *buffer);
+	/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+	virtual uint countStreamingBuffers() const;
 	//@}
 	
 	/// \name Playback control
 	//@{
-	/// Set looping on/off for future playbacks (default: off)
+	/// Set looping on/off for future playbacks (default: off), not available for streaming
 	virtual void setLooping(bool l);
 	/// Return the looping state
 	virtual bool getLooping() const;
+	
 	/** Play the static buffer (or stream in and play).
 	 *	This method can return false if the sample for this sound is unloaded.
 	 */
@@ -171,18 +173,16 @@ public:
 	virtual void stop();
 	/// Pause. Call play() to resume.
 	virtual void pause();
-	/// Return the playing state
+	/// Return true if play() or pause(), false if stop().
 	virtual bool isPlaying() const;
 	/// Return true if playing is finished or stop() has been called.
 	virtual bool isStopped() const;
-	/// Return the paused state
+	/// Return true if the playing source is paused
 	virtual bool isPaused() const;
-	/// Update the source (e.g. continue to stream the data in)
-	virtual bool update();
 	/// Returns the number of milliseconds the source has been playing
 	virtual uint32 getTime();
 	//@}
-
+	
 	/// \name Source properties
 	//@{
 	/** Set the position vector (default: (0,0,0)).
@@ -229,22 +229,22 @@ public:
 	virtual void setCone(float innerAngle, float outerAngle, float outerGain);
 	/// Get the cone angles (in radian)
 	virtual void getCone(float& innerAngle, float& outerAngle, float& outerGain) const;
-	///** Set the alpha value for the volume-distance curve
-	// *
-	// *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
-	// * 
-	// *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
-	// *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
-	// *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
-	// *				is the default used by DirectSound/OpenAL
-	// * 
-	// *  For any other value of alpha, an interpolation is be done between the two
-	// *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
-	// *  the linear dB curve and the linear amplitude curve.
-	// */
-	///// 
+	/** Set the alpha value for the volume-distance curve
+	 *
+	 *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
+	 *
+	 *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
+	 *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
+	 *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
+	 *                is the default used by DirectSound/OpenAL
+	 *
+	 *  For any other value of alpha, an interpolation is be done between the two
+	 *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
+	 *  the linear dB curve and the linear amplitude curve.
+	 */
 	virtual void setAlpha(double a);
 	//@}
+	
 }; /* class CSourceXAudio2 */
 
 } /* namespace NLSOUND */

@@ -61,47 +61,49 @@ public:
 	virtual ~ISource() { }
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect * /* effect */) { throw ESoundDriverNotSupp(); }
+	virtual void setEffect(IEffect *effect) = 0;
 	
 	/// \name Initialization
 	//@{
 	/// Enable or disable streaming mode. Source must be stopped to call this.
-	virtual void setStreaming(bool /* streaming */) { throw ESoundDriverNotSupp(); }
+	virtual void setStreaming(bool streaming) = 0;
 	/** Set the buffer that will be played (no streaming)
 	 * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
-	 * otherwise the source is considered as a 3D source.
+	 * otherwise the source is considered as a 3D source. Use submitStreamingBuffer for streaming.
 	 */
 	virtual void setStaticBuffer(IBuffer *buffer) = 0;
-	/// Return the buffer, or NULL if streaming is used.
+	/// Return the buffer, or NULL if streaming is used. Not available for streaming.
 	virtual IBuffer *getStaticBuffer() = 0;
 	/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
 	/// Should be called by a thread which checks countStreamingBuffers every 100ms.
-	virtual void submitStreamingBuffer(IBuffer * /* buffer */) { throw ESoundDriverNotSupp(); }
+	virtual void submitStreamingBuffer(IBuffer *buffer) = 0;
 	/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
-	virtual uint countStreamingBuffers() const { throw ESoundDriverNotSupp(); }
+	virtual uint countStreamingBuffers() const = 0;
 	//@}
 	
 	/// \name Playback control
 	//@{
-	/// Set looping on/off for future playbacks (default: off)
-	virtual void					setLooping( bool l ) = 0;
+	/// Set looping on/off for future playbacks (default: off), not available for streaming
+	virtual void setLooping(bool l) = 0;
 	/// Return the looping state
-	virtual bool					getLooping() const = 0;
-
+	virtual bool getLooping() const = 0;
+	
 	/** Play the static buffer (or stream in and play).
 	 *	This method can return false if the sample for this sound is unloaded.
 	 */
-	virtual bool					play() = 0;
+	virtual bool play() = 0;
 	/// Stop playing
-	virtual void					stop() = 0;
+	virtual void stop() = 0;
 	/// Pause. Call play() to resume.
-	virtual void					pause() = 0;
-	/// Return the playing state
-	virtual bool					isPlaying() const = 0;
+	virtual void pause() = 0;
+	/// Return true if play() or pause(), false if stop().
+	virtual bool isPlaying() const = 0;
 	/// Return true if playing is finished or stop() has been called.
-	virtual bool					isStopped() const = 0;
+	virtual bool isStopped() const = 0;
+	/// Return true if the playing source is paused
+	virtual bool isPaused() const = 0;
 	/// Returns the number of milliseconds the source has been playing
-	virtual uint32					getTime() { return 0; }
+	virtual uint32 getTime() = 0;
 	//@}
 	
 	/// \name Source properties
@@ -110,46 +112,46 @@ public:
 	 * 3D mode -> 3D position
 	 * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
 	 */
-	virtual void					setPos( const NLMISC::CVector& pos, bool deffered = true ) = 0;
+	virtual void setPos(const NLMISC::CVector& pos, bool deffered = true) = 0;
 	/** Get the position vector.
 	 * See setPos() for details.
 	 */
-	virtual const NLMISC::CVector	&getPos() const =0;
+	virtual const NLMISC::CVector &getPos() const = 0;
 	/// Set the velocity vector (3D mode only, ignored in stereo mode) (default: (0,0,0))
-	virtual void					setVelocity( const NLMISC::CVector& vel, bool deferred = true ) = 0;
+	virtual void setVelocity(const NLMISC::CVector& vel, bool deferred = true) = 0;
 	/// Get the velocity vector
-	virtual void					getVelocity( NLMISC::CVector& vel ) const = 0;
+	virtual void getVelocity(NLMISC::CVector& vel) const = 0;
 	/// Set the direction vector (3D mode only, ignored in stereo mode) (default: (0,0,0) as non-directional)
-	virtual void					setDirection( const NLMISC::CVector& dir ) = 0;
+	virtual void setDirection(const NLMISC::CVector& dir) = 0;
 	/// Get the direction vector
-	virtual void					getDirection( NLMISC::CVector& dir ) const = 0;
+	virtual void getDirection(NLMISC::CVector& dir) const = 0;
 	/** Set the gain (volume value inside [0 , 1]). (default: 1)
 	 * 0.0 -> silence
 	 * 0.5 -> -6dB
 	 * 1.0 -> no attenuation
 	 * values > 1 (amplification) not supported by most drivers
 	 */
-	virtual void					setGain( float gain ) = 0;
+	virtual void setGain(float gain) = 0;
 	/// Get the gain
-	virtual float					getGain() const = 0;
+	virtual float getGain() const = 0;
 	/** Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
 	 * of one octave. 0 is not a legal value.
 	 */
-	virtual void					setPitch( float pitch ) = 0;
+	virtual void setPitch(float pitch) = 0;
 	/// Get the pitch
-	virtual float					getPitch() const = 0;
+	virtual float getPitch() const = 0;
 	/// Set the source relative mode. If true, positions are interpreted relative to the listener position
-	virtual void					setSourceRelativeMode( bool mode ) = 0;
+	virtual void setSourceRelativeMode(bool mode) = 0;
 	/// Get the source relative mode
-	virtual bool					getSourceRelativeMode() const = 0;
+	virtual bool getSourceRelativeMode() const = 0;
 	/// Set the min and max distances (default: 1, MAX_FLOAT) (3D mode only)
-	virtual void					setMinMaxDistances( float mindist, float maxdist, bool deferred = true ) = 0;
+	virtual void setMinMaxDistances(float mindist, float maxdist, bool deferred = true) = 0;
 	/// Get the min and max distances
-	virtual void					getMinMaxDistances( float& mindist, float& maxdist ) const = 0;
+	virtual void getMinMaxDistances(float& mindist, float& maxdist) const = 0;
 	/// Set the cone angles (in radian) and gain (in [0 , 1]) (default: 2PI, 2PI, 0)
-	virtual void					setCone( float innerAngle, float outerAngle, float outerGain ) = 0;
+	virtual void setCone(float innerAngle, float outerAngle, float outerGain) = 0;
 	/// Get the cone angles (in radian)
-	virtual void					getCone( float& innerAngle, float& outerAngle, float& outerGain ) const = 0;
+	virtual void getCone(float& innerAngle, float& outerAngle, float& outerGain) const = 0;
 	/** Set the alpha value for the volume-distance curve
 	 *
 	 *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
@@ -163,8 +165,7 @@ public:
 	 *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
 	 *  the linear dB curve and the linear amplitude curve.
 	 */
-	///
-	virtual void					setAlpha(double /* a */) {  }
+	virtual void setAlpha(double a) = 0;
 	//@}
 protected:
 	

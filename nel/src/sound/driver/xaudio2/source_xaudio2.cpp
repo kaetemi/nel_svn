@@ -227,27 +227,27 @@ void CSourceXAudio2::updateState()
 	}
 }
 
-void CSourceXAudio2::submitStaticBuffer()
+void CSourceXAudio2::submitBuffer(CBufferXAudio2 *ibuffer)
 {
-	nlassert(!_BufferStreaming);
 	nlassert(_SourceVoice);
-	nlassert(_Format == _StaticBuffer->getFormat()
-		&& _StaticBuffer->getChannels() == _Channels
-		&& _StaticBuffer->getBitsPerSample() == _BitsPerSample);
+	nlassert(ibuffer->getFormat() == _Format
+		&& ibuffer->getChannels() == _Channels
+		&& ibuffer->getBitsPerSample() == _BitsPerSample);
 	if (_AdpcmUtility)
 	{
-		_AdpcmUtility->submitSourceBuffer(_StaticBuffer);
+		nlassert(!_BufferStreaming);
+		_AdpcmUtility->submitSourceBuffer(ibuffer);
 	}
 	else
 	{
 		XAUDIO2_BUFFER buffer;
-		buffer.AudioBytes = _StaticBuffer->getSize();
+		buffer.AudioBytes = ibuffer->getSize();
 		buffer.Flags = 0;
 		buffer.LoopBegin = 0;
 		buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
 		buffer.LoopLength = 0;
-		buffer.pAudioData = const_cast<BYTE *>(_StaticBuffer->getData());
-		buffer.pContext = _StaticBuffer;
+		buffer.pAudioData = const_cast<BYTE *>(ibuffer->getData());
+		buffer.pContext = ibuffer;
 		buffer.PlayBegin = 0;
 		buffer.PlayLength = 0;
 		
@@ -287,6 +287,13 @@ void CSourceXAudio2::setEffect(IEffect *effect)
 
 /// \name Initialization
 //@{
+/// Enable or disable streaming mode. Source must be stopped to call this.
+void CSourceXAudio2::setStreaming(bool streaming)
+{
+	nlassert(!_IsPlaying);
+	_BufferStreaming = streaming;
+}
+
 /** Set the buffer that will be played (no streaming)
  * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
  * otherwise the source is considered as a 3D source.
@@ -306,9 +313,60 @@ void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 /// Return the buffer, or NULL if streaming is used.
 IBuffer *CSourceXAudio2::getStaticBuffer()
 {
-	nlassert(!_BufferStreaming);
+	nlassert(!_BufferStreaming); // can be implemented trough voice_state.pCurrentBufferContext
 
 	return _StaticBuffer;
+}
+
+/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+void CSourceXAudio2::submitStreamingBuffer(IBuffer *buffer)
+{
+	nlassert(_BufferStreaming);
+	
+	IBuffer::TBufferFormat bufferFormat;
+	uint8 channels;
+	uint8 bitsPerSample;
+	uint frequency;
+	buffer->getFormat(bufferFormat, channels, bitsPerSample, frequency);
+	// allow to change the format if not playing
+	if (!_IsPlaying)
+	{
+		if (!_SourceVoice)
+		{
+			// if no source yet, prepare the format
+			preparePlay(bufferFormat, channels, bitsPerSample, frequency);
+		}
+		else
+		{
+			XAUDIO2_VOICE_STATE voice_state;
+			_SourceVoice->GetState(&voice_state);
+			// if no buffers queued, prepare the format
+			if (!voice_state.BuffersQueued)
+			{
+				preparePlay(bufferFormat, channels, bitsPerSample, frequency);
+			}
+		}
+	}
+	
+	submitBuffer(static_cast<CBufferXAudio2 *>(buffer));
+}
+
+/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+uint CSourceXAudio2::countStreamingBuffers() const
+{
+	nlassert(_BufferStreaming);
+	
+	if (_SourceVoice)
+	{
+		XAUDIO2_VOICE_STATE voice_state;
+		_SourceVoice->GetState(&voice_state);
+		return voice_state.BuffersQueued;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 ///** Set the sound loader that will be used to stream in the data to play
@@ -358,7 +416,7 @@ void CSourceXAudio2::setLooping(bool l)
 						if (FAILED(_SourceVoice->FlushSourceBuffers())) 
 							nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
 						// queue buffer with correct looping parameters
-						submitStaticBuffer();
+						submitBuffer(_StaticBuffer);
 					}
 				}
 			}
@@ -491,7 +549,7 @@ bool CSourceXAudio2::play()
 					_StaticBuffer->getChannels(), 
 					_StaticBuffer->getBitsPerSample(),
 					_StaticBuffer->getFrequency());
-				submitStaticBuffer();
+				submitBuffer(_StaticBuffer);
 				_PlayStart = CTime::getLocalTime();
 				if (SUCCEEDED(_SourceVoice->Start(0))) _IsPlaying = true;
 				else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play");
@@ -541,12 +599,12 @@ void CSourceXAudio2::pause()
 	else nlwarning(NLSOUND_XAUDIO2_PREFIX "Called pause() while _IsPlaying == false!");
 }
 
-/// Return the playing state
+/// Return true if play() or pause(), false if stop().
 bool CSourceXAudio2::isPlaying() const
 {
 	// nlinfo(NLSOUND_XAUDIO2_PREFIX "isPlaying?");
 
-	return _IsPlaying && !_IsPaused;
+	return _IsPlaying;
 }
 
 /// Return true if playing is finished or stop() has been called.
@@ -565,11 +623,11 @@ bool CSourceXAudio2::isPaused() const
 	return _IsPaused;
 }
 
-/// Update the source (e.g. continue to stream the data in)
-bool CSourceXAudio2::update()
-{
-	return true;
-}
+///// Update the source (e.g. continue to stream the data in)
+//bool CSourceXAudio2::update()
+//{
+//	return true;
+//}
 
 /// Returns the number of milliseconds the source has been playing
 uint32 CSourceXAudio2::getTime()
@@ -666,7 +724,7 @@ void CSourceXAudio2::setPitch(float pitch)
 	_Pitch = pitch;
 	if (_SourceVoice)
 	{
-		if (_Format == Stereo16 || _Format == Stereo8) _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
+		if (_Channels > 1) _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
 		else _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
 	}
 }

@@ -294,7 +294,7 @@ public:
 
 
 /**
-/// ESoundDriverNotSupp
+ * ESoundDriverNotSupp
  */
 class ESoundDriverNotSupp : public ESoundDriver
 {
@@ -332,6 +332,16 @@ class ESoundDriverNoBufferStreaming : public ESoundDriverNotSupp
 {
 public:
 	ESoundDriverNoBufferStreaming() : ESoundDriverNotSupp("Buffer streaming is not supported by the current sound driver") { }
+};
+
+
+/**
+ * ESoundDriverNoManualRolloff : ESoundDriverNotSupp : ESoundDriver : NLMISC::Exception
+ */
+class ESoundDriverNoManualRolloff : public ESoundDriverNotSupp
+{
+public:
+	ESoundDriverNoManualRolloff() : ESoundDriverNotSupp("Manual rolloff alpha is not supported by the current sound driver") { }
 };
 
 

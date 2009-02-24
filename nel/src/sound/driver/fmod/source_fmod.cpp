@@ -116,6 +116,17 @@ void CSourceFMod::reset()
 	setGain(1.0f);
 }
 
+/// Set the effect send for this source, NULL to disable.
+void CSourceFMod::setEffect(IEffect *effect)
+{
+	throw ESoundDriverNoEnvironmentEffects();
+}
+
+/// Enable or disable streaming mode. Source must be stopped to call this.
+void CSourceFMod::setStreaming(bool streaming)
+{
+	if (streaming) throw ESoundDriverNoBufferStreaming();
+}
 
 // ******************************************************************
 void CSourceFMod::setStaticBuffer( IBuffer *buffer )
@@ -143,6 +154,18 @@ IBuffer *CSourceFMod::getStaticBuffer()
 
 }
 
+/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+void CSourceFMod::submitStreamingBuffer(IBuffer *buffer)
+{
+	throw ESoundDriverNoBufferStreaming();
+}
+
+/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+uint CSourceFMod::countStreamingBuffers() const
+{
+	throw ESoundDriverNoBufferStreaming();
+}
 
 // ***************************************************************************
 bool CSourceFMod::play()
@@ -475,11 +498,23 @@ void CSourceFMod::getCone( float& /* innerAngle */, float& /* outerAngle */, flo
 	// TODO_SOURCE_DIR
 }
 
-// ******************************************************************
-void CSourceFMod::setEAXProperty( uint /* prop */, void * /* value */, uint /* valuesize */ )
+/** Set the alpha value for the volume-distance curve
+ *
+ *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
+ *
+ *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
+ *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
+ *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
+ *                is the default used by DirectSound/OpenAL
+ *
+ *  For any other value of alpha, an interpolation is be done between the two
+ *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
+ *  the linear dB curve and the linear amplitude curve.
+ */
+void CSourceFMod::setAlpha(double a)
 {
+	_Alpha = a;
 }
-
 
 // ***************************************************************************
 void CSourceFMod::updateFModPos()

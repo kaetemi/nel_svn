@@ -66,6 +66,12 @@ void CSourceAL::setEffect(IEffect *effect)
 	alTestError();
 }
 
+/// Enable or disable streaming mode. Source must be stopped to call this.
+void CSourceAL::setStreaming(bool streaming)
+{
+	if (streaming) throw ESoundDriverNoBufferStreaming();
+}
+
 /* Set the buffer that will be played (no streaming)
  * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
  * otherwise the source is considered as a 3D source.
@@ -102,6 +108,18 @@ IBuffer *CSourceAL::getStaticBuffer()
 	return _Buffer;
 }
 
+/// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
+/// Should be called by a thread which checks countStreamingBuffers every 100ms.
+void CSourceAL::submitStreamingBuffer(IBuffer *buffer)
+{
+	throw ESoundDriverNoBufferStreaming();
+}
+
+/// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
+uint CSourceAL::countStreamingBuffers() const
+{
+	throw ESoundDriverNoBufferStreaming();
+}
 
 /*
  * Set looping on/off for future playbacks (default: off)
@@ -195,23 +213,17 @@ void CSourceAL::pause()
 	}
 }
 
-
-/*
- * Return the playing state
- */
+/// Return true if play() or pause(), false if stop().
 bool CSourceAL::isPlaying() const
 {
 	//return !isStopped() && !_IsPaused;
 	ALint srcstate;
-	alGetSourcei( _SourceName, AL_SOURCE_STATE, &srcstate );
+	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
 	alTestError();
-	return (srcstate == AL_PLAYING);
+	return (srcstate == AL_PLAYING || srcstate == AL_PAUSED);
 }
 
-
-/*
- * Return true if playing is finished or stop() has been called.
- */
+/// Return true if playing is finished or stop() has been called.
 bool CSourceAL::isStopped() const
 {
 	//if (_IsPlaying)
@@ -228,17 +240,21 @@ bool CSourceAL::isStopped() const
 	//return true;
 }
 
-
-/*
- * Update the source (e.g. continue to stream the data in)
- */
-bool CSourceAL::update()
+/// Return true if the playing source is paused
+bool CSourceAL::isPaused() const
 {
-	// Streaming not implemented
-	return false;
+	ALint srcstate;
+	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
+	alTestError();
+	return (srcstate == AL_PAUSED);
 }
 
-
+/// Returns the number of milliseconds the source has been playing
+uint32 CSourceAL::getTime()
+{
+	// TODO
+	return 0;
+}
 
 /* Set the position vector.
  * 3D mode -> 3D position
@@ -431,19 +447,37 @@ void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain 
 	alTestError();
 }
 
-
-/*
- * Set any EAX source property if EAX available
+/** Set the alpha value for the volume-distance curve
+ *
+ *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
+ *
+ *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
+ *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
+ *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
+ *                is the default used by DirectSound/OpenAL
+ *
+ *  For any other value of alpha, an interpolation is be done between the two
+ *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
+ *  the linear dB curve and the linear amplitude curve.
  */
-void CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
+void CSourceAL::setAlpha(double a)
 {
-#if EAX_AVAILABLE == 1
-	if (AlExtEax)
-	{
-		eaxSet( &DSPROPSETID_EAX_SourceProperties, prop, _SourceName, value, valuesize );
-	}
-#endif
+	throw ESoundDriverNoManualRolloff();
 }
+
+
+///*
+// * Set any EAX source property if EAX available
+// */
+//void CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
+//{
+//#if EAX_AVAILABLE == 1
+//	if (AlExtEax)
+//	{
+//		eaxSet( &DSPROPSETID_EAX_SourceProperties, prop, _SourceName, value, valuesize );
+//	}
+//#endif
+//}
 
 
 } // NLSOUND
