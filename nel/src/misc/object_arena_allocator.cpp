@@ -162,7 +162,7 @@ void CObjectArenaAllocator::dumpUnreleasedBlocks()
 {
 	for(std::map<void *, uint>::iterator it = _MemBlockToAllocID.begin(); it != _MemBlockToAllocID.end(); ++it)
 	{
-		nlinfo("block %d at adress %x remains", (int) it->second, (int) ((uint8 *) it->first + sizeof(uint)));
+	  nlinfo("block %u at adress %p remains", it->second, (static_cast<uint8 *>(it->first) + sizeof(uint)));
 	}
 }
 

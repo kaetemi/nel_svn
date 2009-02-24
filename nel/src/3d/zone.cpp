@@ -1418,7 +1418,7 @@ void CZone::setTileColor(bool monochrome, float factor)
 void			CZone::debugBinds(FILE *f)
 {
 	fprintf(f, "*****************************\n");
-	fprintf(f, "ZoneId: %d. NPatchs:%d\n", ZoneId, PatchConnects.size());
+	fprintf(f, "ZoneId: %d. NPatchs:%zu\n", ZoneId, PatchConnects.size());
 	sint i;
 	for(i=0;i<(sint)PatchConnects.size();i++)
 	{

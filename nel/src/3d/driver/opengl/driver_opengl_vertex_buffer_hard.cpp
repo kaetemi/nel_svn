@@ -1116,7 +1116,7 @@ void CVertexArrayRangeMapObjectATI::updateLostBuffers()
 		for(std::list<CVertexBufferHardGLMapObjectATI *>::iterator it = _MappedVBList.begin(); it != _MappedVBList.end(); ++it)
 		{
 			CVertexBufferHardGLMapObjectATI &vbati = **it;
-			nlwarning("Buffer id = %d, size = %d, address = 0x%x", (int) vbati._VertexObjectId, (int) (vbati.VB->getVertexSize() * vbati.VB->getNumVertices()), (int) vbati.getPointer());
+			nlwarning("Buffer id = %u, size = %u, address = %p", vbati._VertexObjectId, vbati.VB->getVertexSize() * vbati.VB->getNumVertices(), vbati.getPointer());
 		}
 	}
 #endif
@@ -1531,7 +1531,7 @@ void CVertexBufferHardARB::invalidate()
 		for(std::list<CVertexBufferHardARB *>::iterator it = _MappedVBList.begin(); it != _MappedVBList.end(); ++it)
 		{
 			CVertexBufferHardARB &vbarb = **it;
-			nlwarning("Buffer id = %d, size = %d, address = 0x%x", (int) vbarb._VertexObjectId, (int) (vbarb.VB->getVertexSize() * vbarb.VB->getNumVertices()), (int) vbarb.getPointer());
+			nlwarning("Buffer id = %u, size = %u, address = %p", vbarb._VertexObjectId, vbarb.VB->getVertexSize() * vbarb.VB->getNumVertices(), vbarb.getPointer());
 		}
 	}
 #endif

@@ -221,7 +221,7 @@ private:
 	const CVector2f &getSegRef1(uint index) const
 	{
 		nlassert(index < Vertices.size());
-		return index == Vertices.size() - 1 ?
+		return index + 1 == Vertices.size() ?
 			   Vertices[0]                 :
 		       Vertices[index + 1];
 	}
