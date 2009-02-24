@@ -81,7 +81,7 @@ public:
 		NumDrivers
 	};
 
-	/// Driver creation flags
+	/// Driver creation flags, to configure behaviour, or check feature availability.
 	enum TSoundOptions
 	{
 		/// Enable EAX/I3DL2 environment effects. (not implemented on FMod driver).
@@ -102,6 +102,8 @@ public:
 		OptionManualRolloff = 0x08, 
 		/// Enable local copy of buffer (used by OpenAL driver, required to build sample bank).
 		OptionLocalBufferCopy = 0x10, 
+		/// Use to check availability of buffer streaming. (verify with getOption)
+		OptionHasBufferStreaming = 0x20, 
 	};
 
 	/** The interface must be implemented and provided to the driver
@@ -292,12 +294,44 @@ public:
 
 
 /**
- * ESoundDriverNotSupp
+/// ESoundDriverNotSupp
  */
 class ESoundDriverNotSupp : public ESoundDriver
 {
 public:
-	ESoundDriverNotSupp() : ESoundDriver( "Operation not supported by sound driver" ) {}
+	ESoundDriverNotSupp() : ESoundDriver("Operation is not supported by the current sound driver") { }
+	ESoundDriverNotSupp(const char *reason) : ESoundDriver(reason) { }
+	ESoundDriverNotSupp(const std::string &reason) : ESoundDriver(reason.c_str()) { }
+};
+
+
+/**
+ * ESoundDriverNoEnvironmentEffects : ESoundDriverNotSupp : ESoundDriver : NLMISC::Exception
+ */
+class ESoundDriverNoEnvironmentEffects : public ESoundDriverNotSupp
+{
+public:
+	ESoundDriverNoEnvironmentEffects() : ESoundDriverNotSupp("Environment effects are not supported by the current sound driver") { }
+};
+
+
+/**
+ * ESoundDriverNoADPCM : ESoundDriverNotSupp : ESoundDriver : NLMISC::Exception
+ */
+class ESoundDriverNoADPCM : public ESoundDriverNotSupp
+{
+public:
+	ESoundDriverNoADPCM() : ESoundDriverNotSupp("ADPCM is not supported by the current sound driver") { }
+};
+
+
+/**
+ * ESoundDriverNoBufferStreaming : ESoundDriverNotSupp : ESoundDriver : NLMISC::Exception
+ */
+class ESoundDriverNoBufferStreaming : public ESoundDriverNotSupp
+{
+public:
+	ESoundDriverNoBufferStreaming() : ESoundDriverNotSupp("Buffer streaming is not supported by the current sound driver") { }
 };
 
 

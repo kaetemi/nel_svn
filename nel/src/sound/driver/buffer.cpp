@@ -117,6 +117,22 @@ void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 chann
 	}
 }
 
+uint IBuffer::getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint frequency)
+{
+	return (uint)(duration
+		* ((float)frequency)
+		* (((float)bitsPerSample) / 8.0f)
+		* ((float)channels));
+}
+
+float IBuffer::getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint frequency)
+{
+	return ((float)size) 
+		/ ((float)channels)
+		/ (((float)bitsPerSample) / 8.0f)
+		/ ((float)frequency);
+}
+
 const sint IBuffer::_IndexTable[16] =
 {
 	-1, -1, -1, -1, 2, 4, 6, 8,

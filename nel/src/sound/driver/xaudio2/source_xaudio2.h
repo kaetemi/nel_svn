@@ -82,6 +82,8 @@ protected:
 	float _FreqRatio;
 	/// Time when source started playing.
 	NLMISC::TTime _PlayStart;
+	/// Buffer loading system
+	bool _BufferStreaming;
 	
 	// -- System vars 3d --
 	float _Doppler;
@@ -132,6 +134,8 @@ public:
 	inline IXAudio2SourceVoice * getSourceVoice() { return _SourceVoice; }
 	/// (Internal) Submit the static buffer to the XAudio2 source voice.
 	void submitStaticBuffer();
+	/// (Internal) Prepare to play. Stop the currently playing buffers, and set the correct voice settings.
+	bool preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint frequency);
 	
 	/// Set the submix send for this source, NULL to disable.
 	virtual void setEffect(IEffect *effect);

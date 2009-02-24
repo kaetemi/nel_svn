@@ -60,7 +60,7 @@ _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0),
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
 _AdpcmUtility(NULL), _ListenerVoice(NULL), _EffectVoice(NULL), 
-_Channels(0), _BitsPerSample(0)
+_Channels(0), _BitsPerSample(0), _BufferStreaming(false)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 	nlassert(_SoundDriver->getListener());
@@ -124,18 +124,18 @@ void CSourceXAudio2::commit3DChanges()
 {
 	nlassert(_SourceVoice);
 	
-	// Only mono buffers get 3d sound, stereo buffers go directly to the speakers (calculate rolloff too!!).
-	// Todo: stereo buffers calculate distance
-	if (_Format == Stereo16 || _Format == Stereo8)
+	// Only mono buffers get 3d sound, multi-channel buffers go directly to the speakers (calculate rolloff too!!).
+	// Todo: stereo buffers calculate distance ?
+	if (_Channels > 1)
 	{
-		_SoundDriver->getDSPSettings()->DstChannelCount = 1;
-		_Emitter.pVolumeCurve = NULL; // todo: everything
+		// _SoundDriver->getDSPSettings()->DstChannelCount = 1;
+		// _Emitter.pVolumeCurve = NULL; // todo: everything
 		// calculate without doppler
 		// 1 result in matrix, use with setvolume
 		// todo: some more stuff...
 		// this isn't really used anyways
 		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
-		nlerror(NLSOUND_XAUDIO2_PREFIX "Stereo16 and Stereo8 not fully implemented, have fun! :)");
+		// nlerror(NLSOUND_XAUDIO2_PREFIX "Stereo16 and Stereo8 not fully implemented, have fun! :)");
 	}
 	else
 	{
@@ -229,8 +229,11 @@ void CSourceXAudio2::updateState()
 
 void CSourceXAudio2::submitStaticBuffer()
 {
+	nlassert(!_BufferStreaming);
 	nlassert(_SourceVoice);
-	nlassert(_Format == _StaticBuffer->getFormat());
+	nlassert(_Format == _StaticBuffer->getFormat()
+		&& _StaticBuffer->getChannels() == _Channels
+		&& _StaticBuffer->getBitsPerSample() == _BitsPerSample);
 	if (_AdpcmUtility)
 	{
 		_AdpcmUtility->submitSourceBuffer(_StaticBuffer);
@@ -290,6 +293,8 @@ void CSourceXAudio2::setEffect(IEffect *effect)
  */
 void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
+	nlassert(!_BufferStreaming);
+
 	// if (buffer) // nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer %s", _SoundDriver->getStringMapper()->unmap(buffer->getName()).c_str());
 	// else // nldebug(NLSOUND_XAUDIO2_PREFIX "setStaticBuffer NULL");
 
@@ -301,6 +306,8 @@ void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 /// Return the buffer, or NULL if streaming is used.
 IBuffer *CSourceXAudio2::getStaticBuffer()
 {
+	nlassert(!_BufferStreaming);
+
 	return _StaticBuffer;
 }
 
@@ -317,6 +324,8 @@ IBuffer *CSourceXAudio2::getStaticBuffer()
 /// Set looping on/off for future playbacks (default: off)
 void CSourceXAudio2::setLooping(bool l)
 {
+	nlassert(!_BufferStreaming);
+
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setLooping %u", (uint32)l);
 	if (_IsLooping != l)
 	{
@@ -360,6 +369,8 @@ void CSourceXAudio2::setLooping(bool l)
 /// Return the looping state
 bool CSourceXAudio2::getLooping() const
 {
+	nlassert(!_BufferStreaming);
+
 	return _IsLooping;
 }
 
@@ -401,6 +412,51 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 	return true;
 }
 
+/// (Internal) Prepare to play. Stop the currently playing buffers, and set the correct voice settings.
+bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint frequency)
+{
+	if (_IsPlaying)
+	{
+		// nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
+		// stop the currently playing voice if it's of the same type as we need
+		if (bufferFormat == _Format && channels == _Channels && bitsPerSample == _BitsPerSample) 
+			// cannot call stop directly before destroy voice, ms bug in xaudio2, see msdn docs
+			stop(); // sets _IsPlaying = false;
+	}
+	if (_SourceVoice && (bufferFormat != _Format || channels != _Channels || bitsPerSample != _BitsPerSample))
+	{
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)bufferFormat);
+		// destroy existing voice
+		_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
+		// destroy adpcm utility (if it exists)
+		delete _AdpcmUtility; _AdpcmUtility = NULL;
+		// reset current stuff
+		_Format = (IBuffer::TBufferFormat)~0;
+		_Channels = 0;
+		_BitsPerSample = 0;
+		_FreqVoice = 0.0f;
+	}
+	if (!_SourceVoice)
+	{
+		// initialize a source voice with this format
+		if (!initFormat(bufferFormat, channels, bitsPerSample))
+		{
+			nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!");
+			return false;
+		}
+		if (!_BufferStreaming)
+		{
+			// notify other sources about this format, so they can make a voice in advance
+			// we know that there is a very high chance that all sources use same format
+			// so this gives better results at runtime (avoids sound clicks etc)
+			_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
+		}
+	}
+	_FreqRatio = (float)frequency / _FreqVoice;
+	commit3DChanges(); // sets pitch etc
+	return true;
+}
+
 /** Play the static buffer (or stream in and play).
  *	This method can return false if the sample for this sound is unloaded.
  */
@@ -417,48 +473,33 @@ bool CSourceXAudio2::play()
 	else
 	{
 		_SoundDriver->performanceIncreaseSourcePlayCounter();
-
-		if (_IsPlaying)
+		
+		if (_BufferStreaming)
 		{
-			// nlwarning(NLSOUND_XAUDIO2_PREFIX "Called play() while _IsPlaying == true!");
-			if (_StaticBuffer->getFormat() == _Format
-				&& _StaticBuffer->getChannels() == _Channels
-				&& _StaticBuffer->getBitsPerSample() == _BitsPerSample) 
-				// cannot call stop directly before destroy voice, ms bug in xaudio2
-				stop(); // sets _IsPlaying = false;
-		}
-		if (_StaticBuffer)
-		{
-			if (_SourceVoice && (
-				_StaticBuffer->getFormat() != _Format
-				|| _StaticBuffer->getChannels() != _Channels
-				|| _StaticBuffer->getBitsPerSample() != _BitsPerSample))
-			{
-				nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
-				// destroy existing voice
-				_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
-				// destroy adpcm utility (if it exists)
-				delete _AdpcmUtility; _AdpcmUtility = NULL;
-			}
-			if (!_SourceVoice)
-			{
-				// initialize a source voice with this format
-				if (!initFormat(_StaticBuffer->getFormat(), _StaticBuffer->getChannels(), _StaticBuffer->getBitsPerSample()))
-				{
-					nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!", (uint32)_Format, (uint32)_StaticBuffer->getFormat());
-					return false;
-				}
-				// notify other sources about this format, so they can make a voice in advance
-				// we know that there is a very high chance that all sources use same format
-				// so this gives better results at runtime (avoids sound clicks etc)
-				_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
-			}
-			_FreqRatio = (float)_StaticBuffer->getFrequency() / _FreqVoice;
-			commit3DChanges(); // sets pitch etc
-			submitStaticBuffer();
+			// preparePlay already called, 
+			// stop already called before going into buffer streaming
+			nlassert(!_IsPlaying);
 			_PlayStart = CTime::getLocalTime();
 			if (SUCCEEDED(_SourceVoice->Start(0))) _IsPlaying = true;
-			else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play");
+			else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play (_BufferStreaming)");
+		}
+		else
+		{
+			if (_StaticBuffer)
+			{
+				preparePlay(_StaticBuffer->getFormat(), 
+					_StaticBuffer->getChannels(), 
+					_StaticBuffer->getBitsPerSample(),
+					_StaticBuffer->getFrequency());
+				submitStaticBuffer();
+				_PlayStart = CTime::getLocalTime();
+				if (SUCCEEDED(_SourceVoice->Start(0))) _IsPlaying = true;
+				else nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Play");
+			}
+			else
+			{
+				stop();
+			}
 		}
 		return _IsPlaying;
 	}

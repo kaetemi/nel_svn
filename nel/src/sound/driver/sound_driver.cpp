@@ -35,6 +35,7 @@
 
 using namespace NLMISC;
 
+// Driver availability for NL_STATIC compilation.
 #if defined( NL_OS_WINDOWS )
 #	define NL_FMOD_AVAILABLE 1
 #	define NL_OPENAL_AVAILABLE 0
@@ -55,8 +56,10 @@ using namespace NLMISC;
 namespace NLSOUND
 {
 
-// Interface version
-const uint32 ISoundDriver::InterfaceVersion = 0x0D;
+/// Interface version, increase when any part of sound_lowlevel is changed.
+/// Put your name in comment to make sure you don't commit with
+/// the same interface version number as someone else.
+const uint32 ISoundDriver::InterfaceVersion = 0x0F; // Kaetemi
 
 #ifdef NL_STATIC
 

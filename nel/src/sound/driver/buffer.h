@@ -105,6 +105,14 @@ public:
 	/// Convert new buffer format to old sample format
 	static void bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, TSampleFormat &sampleFormat);
 	//@}
+
+	//@{
+	//\name Utility functions
+	/// Return pcm size in bytes from duration in seconds.
+	static uint getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint frequency);
+	/// Return duration in seconds from pcm size in bytes.
+	static float getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint frequency);
+	//@}
 	
 	//@{
 	//\name ADPCM utility methods

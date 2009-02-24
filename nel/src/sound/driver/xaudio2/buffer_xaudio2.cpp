@@ -278,21 +278,16 @@ uint CBufferXAudio2::getSize() const
 /// Return the duration (in ms) of the sample in the buffer
 float CBufferXAudio2::getDuration() const
 {
-	float frames = (float)_Size;
-
 	switch (_Format) 
 	{
 	case FormatADPCM:
 		nlassert(_Channels == 1 && _BitsPerSample == 16);
-		frames *= 2.0f;
+		return 1000.0f * ((float)_Size * 2.0f) / (float)_Frequency;
 		break;
 	case FormatPCM:
-		frames /= (((float)_BitsPerSample) / 8.0f);
-		frames /= ((float)_Channels);
+		return 1000.0f * getDurationFromPCMSize(_Size, _Channels, _BitsPerSample, _Frequency);
 		break;
 	}
-
-	return 1000.0f * frames / (float)_Frequency;
 }
 
 /// Return true if the buffer is stereo, false if mono
