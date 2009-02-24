@@ -24,6 +24,7 @@
 #ifndef NL_SOURCE_AL_H
 #define NL_SOURCE_AL_H
 #include <nel/misc/types_nl.h>
+#include <queue>
 
 namespace NLSOUND {
 
@@ -48,6 +49,7 @@ class CSourceAL : public ISource
 private:
 	// assigned buffer object
 	IBuffer *_Buffer;
+	std::queue<IBuffer *> _QueuedBuffers;
 	
 	// Source name
 	ALuint _SourceName;

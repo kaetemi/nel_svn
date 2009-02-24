@@ -61,15 +61,20 @@ void CSourceAL::setEffect(IEffect *effect)
 {
 	// no filter stuff yet
 	// only allow one submix send for now -----------------------------------------------> 0
-	if (effect) { nldebug("AL: Setting effect"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, dynamic_cast<CEffectAL *>(effect)->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
-	else { nldebug("AL: Removing effect"); alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
+	if (effect) { /*nldebug("AL: Setting effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, dynamic_cast<CEffectAL *>(effect)->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
+	else { /*nldebug("AL: Removing effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
 	alTestError();
 }
 
 /// Enable or disable streaming mode. Source must be stopped to call this.
 void CSourceAL::setStreaming(bool streaming)
 {
-	if (streaming) throw ESoundDriverNoBufferStreaming();
+	nlassert(isStopped());
+
+	// bring the source type to AL_UNDETERMINED
+	alSourcei(_SourceName, AL_BUFFER, AL_NONE);
+	alTestError();
+	_Buffer = NULL;
 }
 
 /* Set the buffer that will be played (no streaming)
@@ -112,13 +117,33 @@ IBuffer *CSourceAL::getStaticBuffer()
 /// Should be called by a thread which checks countStreamingBuffers every 100ms.
 void CSourceAL::submitStreamingBuffer(IBuffer *buffer)
 {
-	throw ESoundDriverNoBufferStreaming();
+	ALuint bufferName = static_cast<CBufferAL *>(buffer)->bufferName();
+	nlassert(bufferName);
+	alSourceQueueBuffers(_SourceName, 1, &bufferName);
+	alTestError();
+	_QueuedBuffers.push(buffer);
 }
 
 /// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
 uint CSourceAL::countStreamingBuffers() const
 {
-	throw ESoundDriverNoBufferStreaming();
+	// a bit ugly here, but makes a much easier/simpler implementation on both drivers
+	ALint buffersProcessed;
+	alGetSourcei(_SourceName, AL_BUFFERS_PROCESSED, &buffersProcessed);
+	while (buffersProcessed)
+	{
+		ALuint bufferName = static_cast<CBufferAL *>(_QueuedBuffers.front())->bufferName();
+		alSourceUnqueueBuffers(_SourceName, 1, &bufferName);
+		alTestError();
+		const_cast<std::queue<IBuffer *> &>(_QueuedBuffers).pop();
+		--buffersProcessed;
+	}
+	// return how many are left in the queue
+	//ALint buffersQueued;
+	//alGetSourcei(_SourceName, AL_BUFFERS_QUEUED, &buffersQueued);
+	//alTestError();
+	//return (uint)buffersQueued;
+	return (uint)_QueuedBuffers.size();
 }
 
 /*
@@ -158,9 +183,14 @@ bool CSourceAL::play()
 	}
 	else
 	{
+		// TODO: Verify streaming mode?
+		_IsPlaying = true;
+		_IsPaused = false;
+		alSourcePlay(_SourceName);
+		return alGetError() == AL_NO_ERROR;
 		// Streaming mode
-		nlwarning("AL: Cannot play null buffer; streaming not implemented" );
-		nlstop;
+		//nlwarning("AL: Cannot play null buffer; streaming not implemented" );
+		//nlstop;
 	}
 	return false;
 }
@@ -181,8 +211,13 @@ void CSourceAL::stop()
 	}
 	else
 	{
+		// TODO: Verify streaming mode?
+		_IsPlaying = false;
+		_IsPaused = false;
+		alSourceStop(_SourceName);
+		alTestError();
 		// Streaming mode
-		nlwarning("AL: Cannot stop null buffer; streaming not implemented" );
+		//nlwarning("AL: Cannot stop null buffer; streaming not implemented" );
 		//nlstop;
 	}
 }
@@ -207,9 +242,13 @@ void CSourceAL::pause()
 	}
 	else
 	{
+		// TODO: Verify streaming mode?
+		_IsPaused = true;
+		alSourcePause( _SourceName );
+		alTestError();
 		// Streaming mode
-		nlwarning("AL: Cannot pause null buffer; streaming not implemented" );
-		nlstop;
+		//nlwarning("AL: Cannot pause null buffer; streaming not implemented" );
+		//nlstop;
 	}
 }
 
@@ -462,7 +501,7 @@ void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain 
  */
 void CSourceAL::setAlpha(double a)
 {
-	throw ESoundDriverNoManualRolloff();
+	// throw ESoundDriverNoManualRolloff();
 }
 
 

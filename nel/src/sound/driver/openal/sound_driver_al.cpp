@@ -213,7 +213,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	// OpenAL initialization
 	_AlDevice = alcOpenDevice(NULL);
 	if (!_AlDevice) throw ESoundDriver("AL: Failed to open device");	
-	int attrlist[] = { ALC_FREQUENCY, 22050,
+	int attrlist[] = { ALC_FREQUENCY, 44100,
 	                   ALC_MONO_SOURCES, 12, 
 	                   ALC_STEREO_SOURCES, 4, 
 	                   ALC_INVALID };
@@ -388,14 +388,14 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 	case IEffect::Reverb:
 #if EFX_CREATIVE_AVAILABLE
 		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
-		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
-		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 		if (alGetError() != AL_NO_ERROR)
 		{
 			nlinfo("AL: Creative Reverb Effect not supported, falling back to standard Reverb Effect");
 		}
 		else
 		{
+			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 			CCreativeReverbEffectAL *eff = new CCreativeReverbEffectAL(this, effect, slot);
 			ieffect = static_cast<IEffect *>(eff);
 			effectal = static_cast<CEffectAL *>(eff);
@@ -403,8 +403,6 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 		}
 #endif		
 		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
-		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
-		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 		if (alGetError() != AL_NO_ERROR)
 		{
 			nlwarning("AL: Reverb Effect not supported");
@@ -414,6 +412,8 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 		}
 		else
 		{
+			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
 			CStandardReverbEffectAL *eff = new CStandardReverbEffectAL(this, effect, slot);
 			ieffect = static_cast<IEffect *>(eff);
 			effectal = static_cast<CEffectAL *>(eff);
