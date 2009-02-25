@@ -1287,7 +1287,7 @@ std::string CInstanceCounterManager::displayCounters() const
 					const TInstanceCounterData *icd = *first;
 
 					if (!icd->_Touched)
-						break;
+						continue;
 
 					if( counters.find(icd->_ClassName) == counters.end())
 					{
