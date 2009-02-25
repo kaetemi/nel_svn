@@ -123,5 +123,9 @@ int main(int argc, char *argv[])
 		cout << "unexpected exception encountered";
 		return EXIT_FAILURE;
 	}
+	if(noerrors)
+		nlinfo("No errors during unit testing");
+	else
+		nlwarning("Errors during unit testing");
 	return noerrors?EXIT_SUCCESS:EXIT_FAILURE;
 }

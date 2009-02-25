@@ -209,8 +209,8 @@ private:
 
 		string ret = NLMISC::CInstanceCounterManager::getInstance().displayCounters();
 
-		printf("%s", ref.c_str());
-		printf("%s", ret.c_str());
+		nlinfo("%s", ref.c_str());
+		nlinfo("%s", ret.c_str());
 		TEST_ASSERT(ref == ret);
 	}
 };
