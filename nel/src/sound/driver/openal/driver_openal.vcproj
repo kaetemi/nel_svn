@@ -142,6 +142,7 @@
 				PrecompiledHeaderThrough="stdopenal.h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

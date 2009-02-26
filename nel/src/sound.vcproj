@@ -132,6 +132,7 @@
 				PrecompiledHeaderThrough="std$(ProjectName).h"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
