@@ -332,7 +332,7 @@ void CSourceDSound::reset()
 }
 
 /// Set the effect send for this source, NULL to disable.
-void CSourceDSound::setEffect(IEffect *effect)
+void CSourceDSound::setEffect(IEffect * /* effect */)
 {
 	throw ESoundDriverNoEnvironmentEffects();
 }
@@ -423,7 +423,7 @@ IBuffer *CSourceDSound::getStaticBuffer()
 
 /// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
 /// Should be called by a thread which checks countStreamingBuffers every 100ms.
-void CSourceDSound::submitStreamingBuffer(IBuffer *buffer)
+void CSourceDSound::submitStreamingBuffer(IBuffer * /* buffer */)
 {
 	throw ESoundDriverNoBufferStreaming();
 }

@@ -89,8 +89,8 @@ void alTestWarning(const char *src)
 #ifndef NL_STATIC
 
 class CSoundDriverALNelLibrary : public NLMISC::INelLibrary {
-	void onLibraryLoaded(bool firstTime) { }
-	void onLibraryUnloaded(bool lastTime) { }
+	void onLibraryLoaded(bool /* firstTime */) { }
+	void onLibraryUnloaded(bool /* lastTime */) { }
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverALNelLibrary)
 
@@ -202,10 +202,20 @@ CSoundDriverAL::~CSoundDriverAL()
 /// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
 void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions options)
 {
-	// set the options: no adpcm, no manual rolloff (for now)
-	_Options = options;
-	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
-	_Options = (TSoundOptions)((uint)_Options & ~OptionManualRolloff);
+	// list of supported options in this driver
+	// no adpcm, no manual rolloff (for now)
+	const sint supportedOptions = 
+		OptionEnvironmentEffects
+		| OptionSoftwareBuffer
+		| OptionLocalBufferCopy
+		| OptionHasBufferStreaming;
+
+	// list of forced options in this driver
+	const sint forcedOptions = 0;
+
+	// set the options
+	_Options = (TSoundOptions)(((sint)options & supportedOptions) | forcedOptions);
+
 	/* TODO: manual rolloff */
 	/* TODO: multichannel */
 	/* TODO: driver selection */
@@ -602,7 +612,7 @@ TSampleFormat ALtoNLSoundFormat( ALenum alformat )
 /*
  * Temp
  */
-bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
+bool CSoundDriverAL::loadWavFile(IBuffer * /* destbuffer */, const char * /* filename */)
 {
 /*	ALsizei size,freq;
 	ALenum format;
@@ -628,7 +638,7 @@ bool CSoundDriverAL::loadWavFile(IBuffer *destbuffer, const char *filename)
 /*
  * loads a memory mapped .wav-file into the given buffer
  */
-bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) 
+bool CSoundDriverAL::readWavBuffer(IBuffer * /* destbuffer */, const std::string & /* name */, uint8 * /* wavData */, uint /* dataSize */) 
 {
 	/*
 	ALenum format;
@@ -647,7 +657,7 @@ bool CSoundDriverAL::readWavBuffer(IBuffer *destbuffer, const std::string &name,
 	return false;
 }
 
-bool CSoundDriverAL::readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+bool CSoundDriverAL::readRawBuffer(IBuffer *destbuffer, const std::string & /* name */, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
 {
 	nlassert(destbuffer != NULL);
 	nlassert(rawData != NULL);

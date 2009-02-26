@@ -135,7 +135,7 @@ public:
 	
 	virtual void startBench() { /* todo */ }
 	virtual void endBench() { /* todo */ }
-	virtual void displayBench(NLMISC::CLog *log) { /* TODO */ }
+	virtual void displayBench(NLMISC::CLog * /* log */) { /* TODO */ }
 
 
 	/// Change the rolloff factor and apply to all sources
@@ -148,7 +148,7 @@ public:
 	virtual void commit3DChanges() { }
 
 	/// Write information about the driver to the output stream.
-	virtual void writeProfile(std::string& out) { }
+	virtual void writeProfile(std::string& /* out */) { }
 
 	/// Remove a buffer
 	void removeBuffer(CBufferAL *buffer);
@@ -158,7 +158,9 @@ public:
 	void removeEffect(CEffectAL *effect);
 
 	/// Get audio/container extensions that are supported natively by the driver implementation.
-	virtual void getMusicExtensions(std::vector<std::string> &extensions) { }
+	virtual void getMusicExtensions(std::vector<std::string> & /* extensions */) const { }
+	/// Return if a music extension is supported by the driver's music channel.
+	virtual bool isMusicExtensionSupported(const std::string & /* extension */) const { return false; }
 
 protected:
 

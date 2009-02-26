@@ -178,7 +178,7 @@ uint32 CMusicBufferVorbis::getNextBytes(uint8 *buffer, uint32 minimum, uint32 ma
 uint16 CMusicBufferVorbis::getChannels()
 {
 	vorbis_info *vi = ov_info(&_OggVorbisFile, -1);
-	return vi->channels;
+	return (uint16)vi->channels;
 }
 
 uint32 CMusicBufferVorbis::getSamplesPerSec()

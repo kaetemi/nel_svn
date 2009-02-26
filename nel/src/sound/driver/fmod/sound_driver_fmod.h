@@ -150,7 +150,9 @@ public:
 	void removeMusicChannel(CMusicChannelFMod *musicChannel);
 
 	/// Get audio/container extensions that are supported natively by the driver implementation.
-	virtual void getMusicExtensions(std::vector<std::string> &extensions);
+	virtual void getMusicExtensions(std::vector<std::string> &extensions) const;
+	/// Return if a music extension is supported by the driver's music channel.
+	virtual bool isMusicExtensionSupported(const std::string &extension) const;
 
 private:	
 	virtual void startBench();

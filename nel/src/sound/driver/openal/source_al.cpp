@@ -67,7 +67,7 @@ void CSourceAL::setEffect(IEffect *effect)
 }
 
 /// Enable or disable streaming mode. Source must be stopped to call this.
-void CSourceAL::setStreaming(bool streaming)
+void CSourceAL::setStreaming(bool /* streaming */)
 {
 	nlassert(isStopped());
 
@@ -103,7 +103,7 @@ void CSourceAL::setStaticBuffer( IBuffer *buffer )
 		// Set relative mode if the buffer is stereo
 		setSourceRelativeMode( bufferAL->isStereo() );
 
-		_Buffer = buffer;
+		_Buffer = bufferAL;
 	}
 }
 
@@ -117,11 +117,12 @@ IBuffer *CSourceAL::getStaticBuffer()
 /// Should be called by a thread which checks countStreamingBuffers every 100ms.
 void CSourceAL::submitStreamingBuffer(IBuffer *buffer)
 {
-	ALuint bufferName = static_cast<CBufferAL *>(buffer)->bufferName();
+	CBufferAL *bufferAL = static_cast<CBufferAL *>(buffer);
+	ALuint bufferName = bufferAL->bufferName();
 	nlassert(bufferName);
 	alSourceQueueBuffers(_SourceName, 1, &bufferName);
 	alTestError();
-	_QueuedBuffers.push(buffer);
+	_QueuedBuffers.push(bufferAL);
 }
 
 /// Return the amount of buffers in the queue (playing and waiting). 3 buffers is optimal.
@@ -132,10 +133,10 @@ uint CSourceAL::countStreamingBuffers() const
 	alGetSourcei(_SourceName, AL_BUFFERS_PROCESSED, &buffersProcessed);
 	while (buffersProcessed)
 	{
-		ALuint bufferName = static_cast<CBufferAL *>(_QueuedBuffers.front())->bufferName();
+		ALuint bufferName = _QueuedBuffers.front()->bufferName();
 		alSourceUnqueueBuffers(_SourceName, 1, &bufferName);
 		alTestError();
-		const_cast<std::queue<IBuffer *> &>(_QueuedBuffers).pop();
+		const_cast<std::queue<CBufferAL *> &>(_QueuedBuffers).pop();
 		--buffersProcessed;
 	}
 	// return how many are left in the queue
@@ -192,7 +193,6 @@ bool CSourceAL::play()
 		//nlwarning("AL: Cannot play null buffer; streaming not implemented" );
 		//nlstop;
 	}
-	return false;
 }
 
 
@@ -216,6 +216,14 @@ void CSourceAL::stop()
 		_IsPaused = false;
 		alSourceStop(_SourceName);
 		alTestError();
+		// unqueue buffers
+		while (_QueuedBuffers.size())
+		{
+			ALuint bufferName = _QueuedBuffers.front()->bufferName();
+			alSourceUnqueueBuffers(_SourceName, 1, &bufferName);
+			_QueuedBuffers.pop();
+			alTestError();
+		}
 		// Streaming mode
 		//nlwarning("AL: Cannot stop null buffer; streaming not implemented" );
 		//nlstop;
@@ -299,7 +307,7 @@ uint32 CSourceAL::getTime()
  * 3D mode -> 3D position
  * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
  */
-void CSourceAL::setPos(const NLMISC::CVector& pos, bool deffered)
+void CSourceAL::setPos(const NLMISC::CVector& pos, bool /* deffered */)
 {
 	_Pos = pos;
 	// Coordinate system: conversion from NeL to OpenAL/GL:
@@ -320,7 +328,7 @@ const NLMISC::CVector &CSourceAL::getPos() const
 /*
  * Set the velocity vector (3D mode only)
  */
-void CSourceAL::setVelocity( const NLMISC::CVector& vel, bool deferred )
+void CSourceAL::setVelocity( const NLMISC::CVector& vel, bool /* deferred */)
 {
 	// Coordsys conversion
 	alSource3f( _SourceName, AL_VELOCITY, vel.x, vel.z, -vel.y );
@@ -439,7 +447,7 @@ bool CSourceAL::getSourceRelativeMode() const
 /*
  * Set the min and max distances (3D mode only)
  */
-void CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool deferred )
+void CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool /* deferred */)
 {
 	nlassert( (mindist >= 0.0f) && (maxdist >= 0.0f) );
 	alSourcef( _SourceName, AL_REFERENCE_DISTANCE, mindist );
@@ -499,7 +507,7 @@ void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain 
  *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
  *  the linear dB curve and the linear amplitude curve.
  */
-void CSourceAL::setAlpha(double a)
+void CSourceAL::setAlpha(double /* a */)
 {
 	// throw ESoundDriverNoManualRolloff();
 }

@@ -117,7 +117,7 @@ void CSourceFMod::reset()
 }
 
 /// Set the effect send for this source, NULL to disable.
-void CSourceFMod::setEffect(IEffect *effect)
+void CSourceFMod::setEffect(IEffect * /* effect */)
 {
 	throw ESoundDriverNoEnvironmentEffects();
 }
@@ -156,7 +156,7 @@ IBuffer *CSourceFMod::getStaticBuffer()
 
 /// Add a buffer to the streaming queue.  A buffer of 100ms length is optimal for streaming.
 /// Should be called by a thread which checks countStreamingBuffers every 100ms.
-void CSourceFMod::submitStreamingBuffer(IBuffer *buffer)
+void CSourceFMod::submitStreamingBuffer(IBuffer * /* buffer */)
 {
 	throw ESoundDriverNoBufferStreaming();
 }

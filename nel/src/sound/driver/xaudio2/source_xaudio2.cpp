@@ -646,7 +646,7 @@ uint32 CSourceXAudio2::getTime()
  * 3D mode -> 3D position
  * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
  */
-void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool deffered) // note: deferred with a different spelling
+void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool /* deffered */) // note: deferred with a different spelling
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setPos %f %f %f", pos.x, pos.y, pos.z);
 
@@ -665,7 +665,7 @@ const NLMISC::CVector &CSourceXAudio2::getPos() const
 }
 
 /// Set the velocity vector (3D mode only, ignored in stereo mode) (default: (0,0,0))
-void CSourceXAudio2::setVelocity(const NLMISC::CVector& vel, bool deferred)
+void CSourceXAudio2::setVelocity(const NLMISC::CVector& vel, bool /* deferred */)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setVelocity %f %f %f", vel.x, vel.y, vel.z);
 
@@ -750,7 +750,7 @@ bool CSourceXAudio2::getSourceRelativeMode() const
 }
 
 /// Set the min and max distances (default: 1, MAX_FLOAT) (3D mode only)
-void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool deferred)
+void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool /* deferred */)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setMinMaxDistances %f, %f", mindist, maxdist);
 

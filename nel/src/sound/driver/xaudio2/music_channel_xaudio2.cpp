@@ -245,22 +245,22 @@ void CMusicChannelXAudio2::OnStreamEnd()
 	
 }
 
-void CMusicChannelXAudio2::OnBufferStart(void *pBufferContext)
+void CMusicChannelXAudio2::OnBufferStart(void * /* pBufferContext */)
 {	
 	
 }
 
-void CMusicChannelXAudio2::OnBufferEnd(void *pBufferContext)
+void CMusicChannelXAudio2::OnBufferEnd(void * /* pBufferContext */)
 { 
 	
 }
 
-void CMusicChannelXAudio2::OnLoopEnd(void *pBufferContext)
+void CMusicChannelXAudio2::OnLoopEnd(void * /* pBufferContext */)
 {	
 	
 }
 
-void CMusicChannelXAudio2::OnVoiceError(void *pBufferContext, HRESULT Error)
+void CMusicChannelXAudio2::OnVoiceError(void * /* pBufferContext */, HRESULT /*  Error */)
 { 
 	
 }

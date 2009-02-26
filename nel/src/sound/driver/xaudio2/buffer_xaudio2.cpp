@@ -97,7 +97,7 @@ uint8 *CBufferXAudio2::openWritable(uint size, TBufferFormat bufferFormat, uint8
 /// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
 /// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
 /// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
-void CBufferXAudio2::lockWritable(bool keepLocal)
+void CBufferXAudio2::lockWritable(bool /* keepLocal */)
 {
 	// does nothing in this driver
 }

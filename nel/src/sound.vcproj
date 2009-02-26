@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="sound"
 	ProjectGUID="{4AF7ADB2-DAF8-4F04-9793-F92010001470}"
+	RootNamespace="sound"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -53,6 +54,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std$(ProjectName).h"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -129,7 +131,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std$(ProjectName).h"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -325,6 +327,10 @@
 				RelativePath="sound\source_common.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="stream"
+			>
 		</Filter>
 		<File
 			RelativePath="sound\async_file_manager_sound.cpp"

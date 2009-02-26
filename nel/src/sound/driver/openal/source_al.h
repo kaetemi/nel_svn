@@ -27,6 +27,8 @@
 #include <queue>
 
 namespace NLSOUND {
+	class IBuffer;
+	class CBufferAL;
 
 /**
  * OpenAL sound source
@@ -48,8 +50,8 @@ class CSourceAL : public ISource
 {
 private:
 	// assigned buffer object
-	IBuffer *_Buffer;
-	std::queue<IBuffer *> _QueuedBuffers;
+	CBufferAL *_Buffer;
+	std::queue<CBufferAL *> _QueuedBuffers;
 	
 	// Source name
 	ALuint _SourceName;

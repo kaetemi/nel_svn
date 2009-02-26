@@ -60,15 +60,15 @@ HINSTANCE CSoundDriverDllHandle = 0;
 
 // ******************************************************************
 // The main entry of the DLL. It's used to get a hold of the hModule handle.
-BOOL WINAPI DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL WINAPI DllMain(HANDLE hModule, DWORD /* ul_reason_for_call */, LPVOID /* lpReserved */)
 {
   CSoundDriverDllHandle = (HINSTANCE) hModule;
   return TRUE;
 }
 
 class CSoundDriverDSoundNelLibrary : public NLMISC::INelLibrary {
-	void onLibraryLoaded(bool firstTime) { }
-	void onLibraryUnloaded(bool lastTime) { }
+	void onLibraryLoaded(bool /* firstTime */) { }
+	void onLibraryUnloaded(bool /* lastTime */) { }
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverDSoundNelLibrary)
 
@@ -339,7 +339,7 @@ public:
 CDeviceDescription* CDeviceDescription::_List = 0;
 
 
-BOOL CALLBACK CSoundDriverDSoundEnumCallback(LPGUID guid, LPCSTR description, PCSTR module, LPVOID context)
+BOOL CALLBACK CSoundDriverDSoundEnumCallback(LPGUID guid, LPCSTR description, PCSTR /* module */, LPVOID /* context */)
 {
     new CDeviceDescription(guid, description);
     return TRUE;
@@ -404,12 +404,24 @@ CSoundDriverDSound::~CSoundDriverDSound()
 /// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
 void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions options)
 {
-	// set the options: disable effects if no eax, always local copy
-	_Options = options;
-	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
-#if !EAX_AVAILABLE
-	_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
+	// list of supported options in this driver
+	// disable effects if no eax, no buffer streaming
+	const sint supportedOptions = 
+		OptionAllowADPCM
+#if EAX_AVAILABLE
+		| OptionEnvironmentEffects
 #endif
+		| OptionSoftwareBuffer
+		| OptionManualRolloff
+		| OptionLocalBufferCopy;
+
+	// list of forced options in this driver
+	// always have local copy
+	const sint forcedOptions = 
+		OptionLocalBufferCopy;
+
+	// set the options
+	_Options = (TSoundOptions)(((sint)options & supportedOptions) | forcedOptions);
 
     if (FAILED(DirectSoundEnumerate(CSoundDriverDSoundEnumCallback, this)))
     {
@@ -715,7 +727,7 @@ void CSoundDriverDSound::writeProfile(string& out)
 }
 
 
-void CALLBACK CSoundDriverDSound::TimerCallback(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
+void CALLBACK CSoundDriverDSound::TimerCallback(UINT /* uID */, UINT /* uMsg */, DWORD dwUser, DWORD /* dw1 */, DWORD /* dw2 */)
 {
 	// a little speed check
 	static NLMISC::TTime lastUpdate = NLMISC::CTime::getLocalTime();
@@ -869,7 +881,7 @@ IBuffer *CSoundDriverDSound::createBuffer()
 
 // ******************************************************************
 
-void CSoundDriverDSound::removeBuffer(IBuffer *buffer)
+void CSoundDriverDSound::removeBuffer(IBuffer * /* buffer */)
 {
 }
 

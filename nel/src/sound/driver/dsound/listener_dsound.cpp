@@ -333,9 +333,9 @@ void CListenerDSound::commit3DChanges()
 /*
  * Set DSPROPERTY_EAXLISTENER_ENVIRONMENT and DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE if EAX available (see EAX listener properties)
  */
-void CListenerDSound::setEnvironment( uint env, float size )
-{
 #if EAX_AVAILABLE == 1
+void CListenerDSound::setEnvironment(uint env, float size)
+{
 	if (_EAXListener == NULL)
 	{
 		_EAXListener = CSoundDriverDSound::instance()->createPropertySet(NULL);
@@ -349,6 +349,9 @@ void CListenerDSound::setEnvironment( uint env, float size )
 		if (res != S_OK)
 			nlwarning("Setting EAX environment size %f fail : %x", size, res);
 	}
+#else
+void CListenerDSound::setEnvironment(uint /* env */, float /* size */)
+{
 #endif
 }
 
@@ -356,9 +359,9 @@ void CListenerDSound::setEnvironment( uint env, float size )
 /*
  * Set any EAX listener property if EAX available
  */
-void CListenerDSound::setEAXProperty( uint prop, void *value, uint valuesize )
-{
 #if EAX_AVAILABLE
+void CListenerDSound::setEAXProperty(uint prop, void *value, uint valuesize)
+{
 	if (_EAXListener == NULL)
 	{
 		_EAXListener = CSoundDriverDSound::instance()->createPropertySet(NULL);
@@ -369,6 +372,9 @@ void CListenerDSound::setEAXProperty( uint prop, void *value, uint valuesize )
 		if (res != S_OK)
 			nlwarning("Setting EAX listener prop #%d fail : %x", prop, res);
 	}
+#else
+void CListenerDSound::setEAXProperty(uint /* prop */, void * /* value */, uint /* valuesize */)
+{
 #endif
 }
 

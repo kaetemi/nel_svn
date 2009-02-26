@@ -151,7 +151,7 @@ void CAdpcmXAudio2::processBuffers()
 	}
 }
 
-void CAdpcmXAudio2::OnVoiceProcessingPassStart(UINT32 BytesRequired)
+void CAdpcmXAudio2::OnVoiceProcessingPassStart(UINT32 /* BytesRequired */)
 {	
 	
 }
@@ -198,12 +198,12 @@ ProcessBuffers:
 	_Mutex.leave();
 }
 
-void CAdpcmXAudio2::OnLoopEnd(void *pBufferContext)
+void CAdpcmXAudio2::OnLoopEnd(void * /* pBufferContext */)
 {
 	
 }
 
-void CAdpcmXAudio2::OnVoiceError(void *pBufferContext, HRESULT Error)
+void CAdpcmXAudio2::OnVoiceError(void * /* pBufferContext */, HRESULT /* Error */)
 { 
 	
 }

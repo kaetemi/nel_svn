@@ -51,8 +51,8 @@ void alExtInit(ALCdevice *device)
 #endif
 	
 	// EAX-RAM
-	if (AlExtXRam = ((alIsExtensionPresent("EAX-RAM") == AL_TRUE)
-		|| (alIsExtensionPresent("EAX_RAM") == AL_TRUE)))
+	if ((AlExtXRam = ((alIsExtensionPresent("EAX-RAM") == AL_TRUE)
+		|| (alIsExtensionPresent("EAX_RAM") == AL_TRUE))) == true)
 	{
 		eaxSetBufferMode = (EAXSetBufferMode)alGetProcAddress("EAXSetBufferMode");
 		eaxGetBufferMode = (EAXGetBufferMode)alGetProcAddress("EAXGetBufferMode");
@@ -64,7 +64,7 @@ void alExtInit(ALCdevice *device)
 	}
 	
 	// EFX
-	if (AlExtEfx = (alcIsExtensionPresent(device, "ALC_EXT_EFX") == ALC_TRUE))
+	if ((AlExtEfx = (alcIsExtensionPresent(device, "ALC_EXT_EFX") == ALC_TRUE)) == true)
 	{
 		// effect objects
 		alGenEffects = (LPALGENEFXOBJECTS)alGetProcAddress("alGenEffects");

@@ -62,13 +62,13 @@ namespace NLSOUND {
 
 #ifndef NL_STATIC
 class CSoundDriverXAudio2NelLibrary : public NLMISC::INelLibrary { 
-	void onLibraryLoaded(bool firstTime) { } 
-	void onLibraryUnloaded(bool lastTime) { }  
+	void onLibraryLoaded(bool /* firstTime */) { } 
+	void onLibraryUnloaded(bool /* lastTime */) { }  
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverXAudio2NelLibrary)
 
 HINSTANCE CSoundDriverXAudio2DllHandle = NULL;
-BOOL WINAPI DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL WINAPI DllMain(HANDLE hModule, DWORD /* ul_reason_for_call */, LPVOID /* lpReserved */)
 {
 	CSoundDriverXAudio2DllHandle = (HINSTANCE)hModule;
 	return TRUE;
@@ -131,16 +131,18 @@ static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED 
 
 NLMISC_CATEGORISED_COMMAND(nel, xa2DebugDisable, "", "")
 {
+	human; quiet; log; args; rawCommandString;
 	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_DISABLED);
 	return true;
 }
 
 static XAUDIO2_DEBUG_CONFIGURATION NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY = {
-  ~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY, 0, true, true, true, true
+	(UINT32)(~XAUDIO2_LOG_FUNC_CALLS & ~XAUDIO2_LOG_LOCKS & ~XAUDIO2_LOG_MEMORY), 0, true, true, true, true
 };
 
 NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 {
+	human; quiet; log; args; rawCommandString;
 	CSoundDriverXAudio2::getInstance()->getXAudio2()->SetDebugConfiguration(&NLSOUND_XAUDIO2_DEBUG_CONFIGURATION_HEAVY);
 	return true;
 }
@@ -180,7 +182,7 @@ CSoundDriverXAudio2::CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider *st
 	// Windows
 #ifdef NL_OS_WINDOWS // CoInitializeEx not on xbox, lol
 	if (FAILED(hr = CoInitializeEx(NULL, COINIT_MULTITHREADED)))
-		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED))"); return; }
+		{ release(); return; }
 	_CoInitOk = true;
 #endif
 }
@@ -197,7 +199,7 @@ CSoundDriverXAudio2::~CSoundDriverXAudio2()
 	nlassert(!_CoInitOk);
 #endif
 
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSoundDriverXAudio2");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "Destroying CSoundDriverXAudio2");
 }
 
 #define NLSOUND_XAUDIO2_RELEASE(pointer) if (_SoundDriverOk) nlassert(pointer) \
@@ -206,7 +208,7 @@ CSoundDriverXAudio2::~CSoundDriverXAudio2()
 	if (pointer) { command; pointer = NULL; }
 void CSoundDriverXAudio2::release()
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CSoundDriverXAudio2");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "Releasing CSoundDriverXAudio2");
 
 	// WARNING: Only internal resources are released here, 
 	// the created instances must still be released by the user!
@@ -253,12 +255,30 @@ void CSoundDriverXAudio2::release()
 /// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
 void CSoundDriverXAudio2::init(std::string device, TSoundOptions options)
 {
-	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
+	nlinfo(NLSOUND_XAUDIO2_PREFIX "Initializing CSoundDriverXAudio2");
 
-	// set the options: always use software buffer, always have local copy
-	_Options = options;
-	_Options = (TSoundOptions)((uint)_Options | OptionSoftwareBuffer);
-	_Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
+	// list of supported options in this driver
+	const sint supportedOptions = 
+		OptionEnvironmentEffects
+		| OptionAllowADPCM
+		| OptionSoftwareBuffer
+		| OptionManualRolloff
+		| OptionLocalBufferCopy
+		| OptionHasBufferStreaming;
+
+	// list of forced options in this driver
+	// always use software buffer, always have local copy
+	const sint forcedOptions = 
+		OptionSoftwareBuffer
+		| OptionManualRolloff
+		| OptionLocalBufferCopy;
+
+	// set the options
+	_Options = (TSoundOptions)(((sint)options & supportedOptions) | forcedOptions);
+
+#ifdef NL_OS_WINDOWS // CoInitializeEx not on xbox, lol
+	if (!_CoInitOk) { throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED))"); return; }
+#endif
 
 	HRESULT hr;
 
@@ -527,12 +547,6 @@ void CSoundDriverXAudio2::removeEffect(CEffectXAudio2 *effect)
 {
 	if (_Effects.find(effect) != _Effects.end()) _Effects.erase(effect);
 	else nlwarning("removeEffect already called");
-}
-
-/// Get audio/container extensions that are supported natively by the driver implementation.
-void CSoundDriverXAudio2::getMusicExtensions(std::vector<std::string> &extensions)
-{
-	extensions.push_back("ogg");
 }
 
 } /* namespace NLSOUND */

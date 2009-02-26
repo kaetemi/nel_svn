@@ -108,7 +108,7 @@ void CBufferAL::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPer
 		case AL_FORMAT_MONO16: sampleFormat = Mono16; break;
 		case AL_FORMAT_STEREO8: sampleFormat = Stereo8; break;
 		case AL_FORMAT_STEREO16: sampleFormat = Stereo16; break;
-		default: nlstop;
+		default: sampleFormat = (TSampleFormat)~0; nlstop;
 	}
 	sampleFormatToBufferFormat(sampleFormat, format, channels, bitsPerSample);
 	frequency = _Frequency;

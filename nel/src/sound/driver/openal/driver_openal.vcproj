@@ -55,6 +55,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdopenal.h"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -140,7 +141,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdopenal.h"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

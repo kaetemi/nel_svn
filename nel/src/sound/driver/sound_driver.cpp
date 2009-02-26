@@ -59,7 +59,7 @@ namespace NLSOUND
 /// Interface version, increase when any part of sound_lowlevel is changed.
 /// Put your name in comment to make sure you don't commit with
 /// the same interface version number as someone else.
-const uint32 ISoundDriver::InterfaceVersion = 0x11; // Kaetemi
+const uint32 ISoundDriver::InterfaceVersion = 0x12; // Kaetemi
 
 #ifdef NL_STATIC
 

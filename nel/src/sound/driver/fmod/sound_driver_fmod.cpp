@@ -45,8 +45,8 @@ namespace NLSOUND {
 #ifndef NL_STATIC
 
 class CSoundDriverFModNelLibrary : public NLMISC::INelLibrary {
-	void onLibraryLoaded(bool firstTime) { }
-	void onLibraryUnloaded(bool lastTime) { }
+	void onLibraryLoaded(bool /* firstTime */) { }
+	void onLibraryUnloaded(bool /* lastTime */) { }
 };
 NLMISC_DECL_PURE_LIB(CSoundDriverFModNelLibrary)
 
@@ -59,7 +59,7 @@ HINSTANCE CSoundDriverDllHandle = 0;
 
 // ******************************************************************
 // The main entry of the DLL. It's used to get a hold of the hModule handle.
-BOOL WINAPI DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL WINAPI DllMain(HANDLE hModule, DWORD /* ul_reason_for_call */, LPVOID /* lpReserved */)
 {
   CSoundDriverDllHandle = (HINSTANCE) hModule;
   return TRUE;
@@ -182,11 +182,18 @@ CSoundDriverFMod::~CSoundDriverFMod()
 /// Initialize the driver with a user selected device. If device.empty(), the default or most appropriate device is used.
 void CSoundDriverFMod::init(std::string device, TSoundOptions options)
 {
-	// set the options: no adpcm, no effects
-	_Options = options;
-	// _Options = (TSoundOptions)((uint)_Options | OptionLocalBufferCopy);
-	_Options = (TSoundOptions)((uint)_Options & ~OptionAllowADPCM);
-	_Options = (TSoundOptions)((uint)_Options & ~OptionEnvironmentEffects);
+	// list of supported options in this driver
+	// no adpcm, no effects, no buffer streaming
+	const sint supportedOptions = 
+		OptionSoftwareBuffer
+		| OptionManualRolloff
+		| OptionLocalBufferCopy;
+
+	// list of forced options in this driver
+	const sint forcedOptions = 0;
+
+	// set the options
+	_Options = (TSoundOptions)(((sint)options & supportedOptions) | forcedOptions);
 
 	uint initFlags = 0;
 #ifdef NL_OS_WINDOWS
@@ -554,7 +561,7 @@ void CSoundDriverFMod::markMusicChannelEnded(void *stream, CMusicChannelFMod *mu
 }
 
 /// Get audio/container extensions that are supported natively by the driver implementation.
-void CSoundDriverFMod::getMusicExtensions(std::vector<std::string> &extensions)
+void CSoundDriverFMod::getMusicExtensions(std::vector<std::string> &extensions) const
 {
 	extensions.push_back("ogg");
 	extensions.push_back("mp3");
@@ -562,6 +569,16 @@ void CSoundDriverFMod::getMusicExtensions(std::vector<std::string> &extensions)
 	extensions.push_back("mp1");
 	extensions.push_back("wav");
 	extensions.push_back("raw");
+}
+/// Return if a music extension is supported by the driver's music channel.
+bool CSoundDriverFMod::isMusicExtensionSupported(const std::string &extension) const
+{
+	return (extension == "ogg")
+		|| (extension == "mp3")
+		|| (extension == "mp2")
+		|| (extension == "mp1")
+		|| (extension == "wav")
+		|| (extension == "raw");
 }
 
 } // NLSOUND

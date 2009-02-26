@@ -351,7 +351,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			string driverDevice = "";
 			
 			// the options to init the driver
-			uint driverOptions = 0;
+			sint driverOptions = ISoundDriver::OptionHasBufferStreaming;
 			if (_UseEax) driverOptions |= ISoundDriver::OptionEnvironmentEffects;
 			if (_UseADPCM) driverOptions |= ISoundDriver::OptionAllowADPCM;
 			if (forceSoftwareBuffer) driverOptions |= ISoundDriver::OptionSoftwareBuffer;
@@ -361,7 +361,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 			// init the driver with selected device and needed options
 			_SoundDriver->init(driverDevice, (ISoundDriver::TSoundOptions)driverOptions);
 			
-			// verify the options
+			// verify the options, OptionHasBufferStreaming not checked
 			if (_UseEax && !_SoundDriver->getOption(ISoundDriver::OptionEnvironmentEffects))
 			{
 				nlwarning("AM: OptionEnvironmentEffects not available, _UseEax = false");

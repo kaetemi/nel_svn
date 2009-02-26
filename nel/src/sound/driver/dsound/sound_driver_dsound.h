@@ -121,7 +121,7 @@ public:
 	virtual IMusicChannel *createMusicChannel() { return NULL; }
 
 	/// Destroy a music channel
-	virtual void destroyMusicChannel(IMusicChannel *musicChannel) { }
+	virtual void destroyMusicChannel(IMusicChannel * /* musicChannel */) { nlassert(false); }
 	
 	/** Get music info. Returns false if the song is not found or the function is not implemented. 
 	 *  If the song has no name, result is filled with the filename.
@@ -129,7 +129,7 @@ public:
 	 *  \param artist returns the song artist (empty if not available)
 	 *  \param title returns the title (empty if not available)
 	 */
-	virtual bool getMusicInfo(const std::string &filepath, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
+	virtual bool getMusicInfo(const std::string & /* filepath */, std::string &artist, std::string &title) { artist.clear(); title.clear(); return false; }
 
 private:
 
@@ -155,11 +155,14 @@ private:
 	virtual void	startBench();
 	virtual void	endBench();
 	virtual void	displayBench(NLMISC::CLog *log);
-
+	
+	
 	/// Get audio/container extensions that are supported natively by the driver implementation.
-	virtual void getMusicExtensions(std::vector<std::string> &extensions) { }
-
-
+	virtual void getMusicExtensions(std::vector<std::string> & /* extensions */) const { }
+	/// Return if a music extension is supported by the driver's music channel.
+	virtual bool isMusicExtensionSupported(const std::string & /* extension */) const { return false; }
+	
+	
 	// The DirectSound object
     LPDIRECTSOUND8			_DirectSound;
 

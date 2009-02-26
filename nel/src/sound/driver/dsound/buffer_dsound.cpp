@@ -155,7 +155,7 @@ void CBufferDSound::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPe
 	_Freq = frequency;
 }
 
-bool CBufferDSound::fillBuffer(const void *src, uint bufsize)
+bool CBufferDSound::fillBuffer(const void * /* src */, uint /* bufsize */)
 {
     return false;
 }
