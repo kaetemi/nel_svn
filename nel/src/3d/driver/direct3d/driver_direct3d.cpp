@@ -3717,10 +3717,7 @@ void CDriverD3D::getZBufferPart (std::vector<float>  &/* zbuffer */, NLMISC::CRe
 }
 
 
-
-} // NL3D
-
-void NL3D::CDriverD3D::findNearestFullscreenVideoMode()
+void CDriverD3D::findNearestFullscreenVideoMode()
 {
 	if(_CurrentMode.Windowed)
 		return;
@@ -3757,3 +3754,5 @@ void NL3D::CDriverD3D::findNearestFullscreenVideoMode()
 		}
 	}
 }
+
+} // NL3D
