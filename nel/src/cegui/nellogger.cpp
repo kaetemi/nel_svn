@@ -64,7 +64,7 @@ void NeLLogger::logEvent(const String& message, LoggingLevel level)
 	case Standard:
 		nlinfo("%s", message.c_str());
 		break;
-#if ((CEGUI_VERSION_MAJOR >= 0) || ((CEGUI_VERSION_MAJOR >= 0) && (CEGUI_VERSION_MINOR >= 6)))
+#if ((CEGUI_VERSION_MAJOR > 0) || ((CEGUI_VERSION_MAJOR >= 0) && (CEGUI_VERSION_MINOR >= 6)))
 	case Warnings:
 #endif
 	case Errors:
