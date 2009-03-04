@@ -101,18 +101,18 @@ public:
 	// Get the current load proxy
 	static ILoadProxy *getLoadProxy() { return _LoadProxy; }
 
-
 	/// Return a vector with all language available. The vector contains the name of the language.
 	/// The index in the vector is used in \c load() function
 	static const std::vector<ucstring> &getLanguageNames();
+
 	/** Return a vector with all language code available.
 	 *	Code are ISO 639-2 compliant.
 	 *	As in getLanguageNames(), the index in the vector can be used to call load()
 	 */
 	static const std::vector<std::string> &getLanguageCodes();
-	/// Load a language file depending of the language
-//	static void load (uint32 lid);
-	static void load (const std::string &languageCode);
+ 
+	/// Load a language file depending of the language code("en", "fr", ...). Code are ISO 639-2 compliant.
+	static void load (const std::string &languageCode, const std::string &fallbackLanguageCode="");
 
 	/** Load a language file from its filename
 	  * \param filename name of the language file to load, with its extension
@@ -122,6 +122,9 @@ public:
 
 	/// Returns the name of the language in the language name (English, Français, ...)
 	static ucstring getCurrentLanguageName ();
+
+	/// Returns the code of the language ("fr", "en", ...)
+	static std::string getCurrentLanguageCode ();
 
 	/// Find a string in the selected language and return his association.
 	static const ucstring &get (const std::string &label);
@@ -163,7 +166,7 @@ public:
 
 	/** Remove any C style comment from the passed string.
 	 */
-	static void remove_C_Comment(ucstring &commentedString);
+	static void removeCComment(ucstring &commentedString);
 
 	/** Encode a Unicode string into a string using UTF-8 encoding.
 	*/
@@ -219,12 +222,15 @@ private:
 	static StrMapContainer										_StrMap;
 	static bool													_StrMapLoaded;
 
+	// the alternative language that will be used if the sentence is not found in the original language
+	static StrMapContainer										_StrMapFallback;
+
 	static const std::string									_LanguageCodes[];
 	static const uint											_NbLanguages;
 
 	static bool													 _LanguagesNamesLoaded;
 
-	static sint32												 _SelectedLanguage;
+	static std::string											_SelectedLanguageCode;
 	static const ucstring										_NotTranslatedValue;
 
 	/** Structure to hold contextual info during
