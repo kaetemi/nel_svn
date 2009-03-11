@@ -62,9 +62,12 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   ###
   # Drivers Support
   ###
-  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver"                           ON )
-  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver"                           ON )
-  OPTION(WITH_DRIVER_DIRECT3D     "Build Direct3D Driver"                         OFF)
+  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver (3D)"                      ON )
+  OPTION(WITH_DRIVER_DIRECT3D     "Build Direct3D Driver (3D)"                    OFF)
+  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver (Sound)"                   ON )
+  OPTION(WITH_DRIVER_FMOD         "Build FMOD Driver (Sound)"                     OFF)
+  OPTION(WITH_DRIVER_DSOUND       "Build DirectSound Driver (Sound)"              OFF)
+  OPTION(WITH_DRIVER_XAUDIO2      "Build XAudio2 Driver (Sound)"                  OFF)
 
   ###
   # Optional support

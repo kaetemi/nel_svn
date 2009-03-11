@@ -39,6 +39,12 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
 #-----------------------------------------------------------------------------
+# Set CMake 2.6 Policies.
+IF(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+ENDIF(COMMAND cmake_policy)
+
+#-----------------------------------------------------------------------------
 # Set default config options
 #
 NL_SETUP_DEFAULT_OPTIONS()
@@ -70,6 +76,10 @@ IF(WITH_SOUND)
   IF(WITH_DRIVER_OPENAL)
     FIND_PACKAGE(OpenAL)
   ENDIF(WITH_DRIVER_OPENAL)
+
+  IF(WITH_DRIVER_FMOD)
+    FIND_PACKAGE(FMOD)
+  ENDIF(WITH_DRIVER_FMOD)
 ENDIF(WITH_SOUND)
 
 IF(WITH_GTK)
