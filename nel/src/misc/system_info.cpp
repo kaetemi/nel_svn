@@ -26,6 +26,7 @@
 #ifdef NL_OS_WINDOWS
 #	define NOMINMAX
 #	include <windows.h>
+#include <WinNT.h>
 #	include <tchar.h>
 #else
 #	include <sys/types.h>
@@ -247,78 +248,126 @@ string CSystemInfo::getOS()
 			// Test for the specific product family.
 			switch( dwType )
 			{
+#ifdef PRODUCT_UNLICENSED
 			case PRODUCT_UNLICENSED:
 				OSString += " Unlicensed";
 				break;
+#endif
+#ifdef PRODUCT_ULTIMATE
 			case PRODUCT_ULTIMATE:
 				OSString += " Ultimate Edition";
 				break;
+#endif
+#ifdef PRODUCT_HOME_BASIC
 			case PRODUCT_HOME_BASIC:
 				OSString += " Home Basic Edition";
 				break;
+#endif
+#ifdef PRODUCT_HOME_PREMIUM
 			case PRODUCT_HOME_PREMIUM:
 				OSString += " Home Premium Edition";
 				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE
 			case PRODUCT_ENTERPRISE:
 				OSString += " Enterprise Edition";
 				break;
+#endif
+#ifdef PRODUCT_HOME_BASIC_N
 			case PRODUCT_HOME_BASIC_N:
 				OSString += " Home Basic N Edition";
 				break;
+#endif
+#ifdef PRODUCT_BUSINESS
 			case PRODUCT_BUSINESS:
 				OSString += " Business Edition";
 				break;
+#endif
+#ifdef PRODUCT_STANDARD_SERVER
 			case PRODUCT_STANDARD_SERVER:
 				OSString += " Standard Edition";
 				break;
+#endif
+#ifdef PRODUCT_DATACENTER_SERVER
 			case PRODUCT_DATACENTER_SERVER:
 				OSString += " Datacenter Edition";
 				break;
+#endif
+#ifdef PRODUCT_SMALLBUSINESS_SERVER
 			case PRODUCT_SMALLBUSINESS_SERVER:
 				OSString += " Small Business Server";
 				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_SERVER
 			case PRODUCT_ENTERPRISE_SERVER:
 				OSString += " Enterprise Edition";
 				break;
+#endif
+#ifdef PRODUCT_STARTER
 			case PRODUCT_STARTER:
 				OSString += " Starter Edition";
 				break;
+#endif
+#ifdef PRODUCT_DATACENTER_SERVER_CORE
 			case PRODUCT_DATACENTER_SERVER_CORE:
 				OSString += " Datacenter Edition (core installation)";
 				break;
+#endif
+#ifdef PRODUCT_STANDARD_SERVER_CORE
 			case PRODUCT_STANDARD_SERVER_CORE:
 				OSString += " Standard Edition (core installation)";
 				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_SERVER_CORE
 			case PRODUCT_ENTERPRISE_SERVER_CORE:
 				OSString += " Enterprise Edition (core installation)";
 				break;
+#endif
+#ifdef PRODUCT_ENTERPRISE_SERVER_IA64
 			case PRODUCT_ENTERPRISE_SERVER_IA64:
 				OSString += " Enterprise Edition for Itanium-based Systems";
 				break;
+#endif
+#ifdef PRODUCT_BUSINESS_N
 			case PRODUCT_BUSINESS_N:
 				OSString += " Business N Edition";
 				break;
+#endif
+#ifdef PRODUCT_WEB_SERVER
 			case PRODUCT_WEB_SERVER:
 				OSString += " Web Server Edition";
 				break;
+#endif
+#ifdef PRODUCT_CLUSTER_SERVER
 			case PRODUCT_CLUSTER_SERVER:
 				OSString += " Cluster Server Edition";
 				break;
+#endif
+#ifdef PRODUCT_HOME_SERVER
 			case PRODUCT_HOME_SERVER:
 				OSString += " Home Server Edition";
 				break;
+#endif
+#ifdef PRODUCT_STORAGE_EXPRESS_SERVER
 			case PRODUCT_STORAGE_EXPRESS_SERVER:
 				OSString += " Storage Server Express Edition";
 				break;
+#endif
+#ifdef PRODUCT_STORAGE_STANDARD_SERVER
 			case PRODUCT_STORAGE_STANDARD_SERVER:
 				OSString += " Storage Server Standard Edition";
 				break;
+#endif
+#ifdef PRODUCT_STORAGE_WORKGROUP_SERVER
 			case PRODUCT_STORAGE_WORKGROUP_SERVER:
 				OSString += " Storage Server Workgroup Edition";
 				break;
+#endif
+#ifdef PRODUCT_STORAGE_ENTERPRISE_SERVER
 			case PRODUCT_STORAGE_ENTERPRISE_SERVER:
 				OSString += " Storage Server Enterprise Edition";
 				break;
+#endif
 #ifdef PRODUCT_SERVER_FOR_SMALLBUSINESS
 			case PRODUCT_SERVER_FOR_SMALLBUSINESS:
 				OSString += " Essential Server Solutions Edition";
