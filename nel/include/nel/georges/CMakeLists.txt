@@ -1,3 +1,3 @@
 FILE(GLOB HEADERS *.h)
 
-INSTALL(FILES ${HEADERS} DESTINATION include/nel/georges)
+INSTALL(FILES ${HEADERS} DESTINATION include/nel/georges COMPONENT headers)
