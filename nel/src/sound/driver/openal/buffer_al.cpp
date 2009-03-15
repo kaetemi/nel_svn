@@ -46,7 +46,7 @@ CBufferAL::~CBufferAL()
 {
 	// delete local copy
 	if (_Data != NULL)
-		delete _Data;
+		delete [] _Data;
 
 	// delete OpenAL copy
 	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
@@ -88,6 +88,10 @@ bool CBufferAL::fillBuffer(const void *src, uint bufsize)
 
 	// Fill buffer (OpenAL one)
 	alBufferData(_BufferName, _SampleFormat, src, bufsize, _Frequency);
+
+	// delete local copy
+	if (_Data != NULL)
+		delete [] _Data;
 
 	// Fill buffer (local copy)
 	_Size = bufsize;
