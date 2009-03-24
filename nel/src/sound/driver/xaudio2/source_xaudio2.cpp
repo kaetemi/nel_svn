@@ -263,12 +263,25 @@ void CSourceXAudio2::setEffect(IEffect *effect)
 		_EffectVoice = dynamic_cast<CEffectXAudio2 *>(effect)->getVoice();
 		if (_SourceVoice)
 		{
-			IXAudio2Voice *voice[2] = { 
+			// fixme: duplicate code !!! (see lower)
+			// might want a generic bit of code to set this up
+
+			XAUDIO2_VOICE_SENDS voice_sends;
+#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
+			XAUDIO2_SEND_DESCRIPTOR send_descriptors[2];
+			send_descriptors[0].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff, and see how we need to set up the filter with the data we have
+			send_descriptors[0].pOutputVoice = _ListenerVoice; // direct output (filtered by occl and filtered by obstr, todo: double check this)
+			send_descriptors[1].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff
+			send_descriptors[1].pOutputVoice = _EffectVoice; // reverb output (filtered by occl, todo: double check this)
+			voice_sends.SendCount = 2;
+			voice_sends.pSends = send_descriptors;
+#else // for now we support compiling with older versions
+			IXAudio2Voice *output_voices[2] = { 
 				_ListenerVoice,
 				_EffectVoice };
-			XAUDIO2_VOICE_SENDS voice_sends;
 			voice_sends.OutputCount = 2;
-			voice_sends.pOutputVoices = voice;
+			voice_sends.pOutputVoices = output_voices;
+#endif
 			_SourceVoice->SetOutputVoices(&voice_sends);
 		}
 	}
@@ -277,9 +290,19 @@ void CSourceXAudio2::setEffect(IEffect *effect)
 		_EffectVoice = NULL;
 		if (_SourceVoice)
 		{
+			// fixme: duplicate code !!! (see lower)
+
 			XAUDIO2_VOICE_SENDS voice_sends;
+#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
+			XAUDIO2_SEND_DESCRIPTOR send_descriptor;
+			send_descriptor.Flags = 0; // no effect so no filter either (or see if any different behaviour is expected)
+			send_descriptor.pOutputVoice = _ListenerVoice;
+			voice_sends.SendCount = 1;
+			voice_sends.pSends = &send_descriptor;
+#else // for now we support compiling with older versions
 			voice_sends.OutputCount = 1;
 			voice_sends.pOutputVoices = &_ListenerVoice;
+#endif
 			_SourceVoice->SetOutputVoices(&voice_sends);
 		}
 	}
@@ -452,19 +475,39 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 	_SourceVoice->SetVolume(_Gain);
 	if (_EffectVoice)
 	{
-		IXAudio2Voice *voice[2] = { 
+		// fixme: duplicate code !!! (see higher)
+
+		XAUDIO2_VOICE_SENDS voice_sends;
+#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
+		XAUDIO2_SEND_DESCRIPTOR send_descriptors[2];
+		send_descriptors[0].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff, and see how we need to set up the filter with the data we have
+		send_descriptors[0].pOutputVoice = _ListenerVoice; // direct output (filtered by occl and filtered by obstr, todo: double check this)
+		send_descriptors[1].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff
+		send_descriptors[1].pOutputVoice = _EffectVoice; // reverb output (filtered by occl, todo: double check this)
+		voice_sends.SendCount = 2;
+		voice_sends.pSends = send_descriptors;
+#else // for now we support compiling with older versions
+		IXAudio2Voice *output_voices[2] = { 
 			_ListenerVoice,
 			_EffectVoice };
-		XAUDIO2_VOICE_SENDS voice_sends;
 		voice_sends.OutputCount = 2;
-		voice_sends.pOutputVoices = voice;
+		voice_sends.pOutputVoices = output_voices;
+#endif
 		_SourceVoice->SetOutputVoices(&voice_sends);
 	}
 	else
 	{
 		XAUDIO2_VOICE_SENDS voice_sends;
+#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
+		XAUDIO2_SEND_DESCRIPTOR send_descriptor;
+		send_descriptor.Flags = 0; // no effect so no filter either (or see if any different behaviour is expected)
+		send_descriptor.pOutputVoice = _ListenerVoice;
+		voice_sends.SendCount = 1;
+		voice_sends.pSends = &send_descriptor;
+#else // for now we support compiling with older versions
 		voice_sends.OutputCount = 1;
 		voice_sends.pOutputVoices = &_ListenerVoice;
+#endif
 		_SourceVoice->SetOutputVoices(&voice_sends);
 	}
 	return true;
