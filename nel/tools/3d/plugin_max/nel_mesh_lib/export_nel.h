@@ -1,7 +1,7 @@
 /** \file export_nel.h
  * Export from 3dsmax to NeL
  *
- * $Id: export_nel.h,v 1.74 2007/03/19 09:55:27 boucher Exp $
+ * $Id$
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -105,6 +105,7 @@ namespace NL3D
 	class CShapeBank;
 	class IDriver;
 	class CLandscape;
+	class CTextureCube;
 };
 
 
@@ -292,7 +293,7 @@ public:
 	CExportNel (bool errorInDialog, bool view, bool absolutePath, Interface *ip, std::string errorTitle, CExportNelOptions *opt);
 
 	// *********************
-	// *** Ëxport mesh
+	// *** Export mesh
 	// *********************
 
 	/**
@@ -521,14 +522,14 @@ public:
 		float threshold);
 	
 	// **************
-	// *** Ëxport Lod
+	// *** Export Lod
 	// **************
 
 	void							addChildLodNode (std::set<INode*> &lodListToExclude, INode *current = NULL);
 	void							addParentLodNode (INode &node, std::set<INode*> &lodListToExclude, INode *current = NULL);
 
 	// *********************
-	// *** Ëxport collision
+	// *** Export collision
 	// *********************
 
 	/** Export a CCollisionMeshBuild from a list of node.
@@ -564,7 +565,7 @@ public:
 	bool							buildPrimitiveBlock (TimeValue time, std::vector<INode*> objects, NLPACS::CPrimitiveBlock &primitiveBlock);
 
 	// *********************
-	// *** Ëxport misc
+	// *** Export misc
 	// *********************
 
 	// Transforme a 3dsmax view matrix to camera matrix.
@@ -838,7 +839,7 @@ private:
 	};
 
 	// *********************
-	// *** Ëxport mesh
+	// *** Export mesh
 	// *********************
 
 	// Get 3ds UVs channel used by a texmap and make a good index channel
@@ -912,7 +913,7 @@ private:
 
 
 	// *********************
-	// *** Ëxport material
+	// *** Export material
 	// *********************
 
 	/** Test wether the given max node has a water material. A water object should only have one material, and must have planar, convex geometry.
@@ -929,6 +930,15 @@ private:
 
 	// Build a NeL texture corresponding with a max Texmap.
 	NL3D::ITexture*					buildATexture (Texmap& texmap, CMaterialDesc& remap3dsTexChannel, TimeValue time, bool forceCubic=false);
+
+	/// Build a NeL texture cube from a Reflect/refract map containing 6 textures.
+	NL3D::CTextureCube				*buildTextureCubeFromReflectRefract(Texmap &texmap, TimeValue time);
+
+	/// Build a NeL texture cube from a Composite map containing 6 textures. (note: no re-ordering is done, because it didn't reorder composite cube in previous version either).
+	NL3D::CTextureCube				*buildTextureCubeFromComposite(Texmap &texmap, TimeValue time);
+
+	/// Build a NeL texture cube from a single texture.
+	NL3D::CTextureCube				*buildTextureCubeFromTexture(Texmap &texmap, TimeValue time);
 
 public:
 	 /** Return true if a mesh has a material whose shader requires a specific vertex shader to work (for example, per-pixel lighting).

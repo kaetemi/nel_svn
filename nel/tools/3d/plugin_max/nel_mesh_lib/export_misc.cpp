@@ -1,7 +1,7 @@
 /** \file export_misc.cpp
  * Export from 3dsmax to NeL
  *
- * $Id: export_misc.cpp,v 1.36 2007/03/19 09:55:27 boucher Exp $
+ * $Id$
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -332,7 +332,23 @@ bool getValueByNameUsingParamBlock2Internal (Animatable& node, const char* sName
 			if (strcmp (paramDef.int_name, sName)==0)
 			{
 				// Check this value is good type
-				if (param->GetParameterType(id)==type)
+				ParamType2 paramType = param->GetParameterType(id);
+				bool typeOk;
+				switch (type)
+				{
+					case TYPE_FILENAME:
+					case TYPE_STRING:
+						typeOk = (paramType == TYPE_FILENAME) || (paramType == TYPE_STRING);
+						break;
+					case TYPE_FILENAME_TAB:
+					case TYPE_STRING_TAB:
+						typeOk = (paramType == TYPE_FILENAME_TAB) || (paramType == TYPE_STRING_TAB);
+						break;
+					default:
+						typeOk = (paramType == type);
+						break;
+				}
+				if (typeOk)
 				{
 					// Get the value
 					Interval ivalid=FOREVER;
@@ -351,10 +367,12 @@ bool getValueByNameUsingParamBlock2Internal (Animatable& node, const char* sName
 						case TYPE_POINT3:
 							bRes=param->GetValue(id, tvTime, *(Point3*)pValue, ivalid);
 						break;
+						case TYPE_FILENAME:
 						case TYPE_STRING:
 							*(std::string*)pValue = param->GetStr (id, tvTime);
 							bRes = TRUE;
 						break;
+						case TYPE_FILENAME_TAB:
 						case TYPE_STRING_TAB:
 						{
 							std::vector<std::string> &rTab = *(std::vector<std::string>*)pValue;
@@ -362,6 +380,7 @@ bool getValueByNameUsingParamBlock2Internal (Animatable& node, const char* sName
 							rTab.resize(total);
 							for( uint i = 0; i < total; ++i )
 								rTab[i] = param->GetStr (id, tvTime, i);
+							bRes = TRUE;
 						}
 						break;
 						case TYPE_BOOL_TAB:
@@ -371,6 +390,7 @@ bool getValueByNameUsingParamBlock2Internal (Animatable& node, const char* sName
 							rTab.resize(total);
 							for( uint i = 0; i < total; ++i )
 								rTab[i] = param->GetInt(id, tvTime, i) ? true : false;
+							bRes = TRUE;
 						}
 						break;
 						case TYPE_TEXMAP:

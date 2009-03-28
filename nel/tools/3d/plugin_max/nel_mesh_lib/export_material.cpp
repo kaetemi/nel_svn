@@ -1,7 +1,7 @@
 /** \file export_material.cpp
  * Export from 3dsmax to NeL
  *
- * $Id: export_material.cpp,v 1.44 2007/03/19 09:55:26 boucher Exp $
+ * $Id$
  */
 
 /* Copyright, 2000 Nevrax Ltd.
@@ -913,74 +913,20 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 
 		if (pSpeTexmap)
 		{
-			// Pointer on the  diffuse texture
-			static ITexture* pTexture=NULL;
-			static CTextureCube* pTextureCube=NULL;
+			// Pointer to the specular reflection texture
+			CTextureCube* pTextureCube = NULL;
 
-			pTextureCube = new CTextureCube;
-			pTextureCube->setWrapS( ITexture::Clamp );
-			pTextureCube->setWrapT( ITexture::Clamp );
-			pTextureCube->setFilterMode(ITexture::Linear,ITexture::LinearMipMapOff);
-
-			if( isClassIdCompatible(*pSpeTexmap, Class_ID (ACUBIC_CLASS_ID,0)) )
+			if (isClassIdCompatible(*pSpeTexmap, Class_ID(ACUBIC_CLASS_ID, 0)))
 			{
-				CTextureCube::TFace tfNewOrder[6] = {	CTextureCube::positive_z, CTextureCube::negative_z,
-														CTextureCube::negative_x, CTextureCube::positive_x,
-														CTextureCube::positive_y, CTextureCube::negative_y	};
-				vector<string> names;
-				CExportNel::getValueByNameUsingParamBlock2 (mtl, "bitmapName", (ParamType2)TYPE_STRING_TAB, &names, time, false);
-				for( int i = 0; i< (int)names.size(); ++i )
-				{
-					CTextureFile *pT = new CTextureFile;
-
-					char sFileName[512];
-					strcpy(sFileName, names[i].c_str());
-					if (!_AbsolutePath)
-					{
-						// Decompose bitmap file name
-						char sName[256];
-						char sExt[256];
-						_splitpath (sFileName, NULL, NULL, sName, sExt);
-						// Make the final path
-						_makepath (sFileName, NULL, NULL, sName, sExt);
-					}
-
-					// Set the file name
-					pT->setFileName(sFileName);
-
-					pTextureCube->setTexture(tfNewOrder[i], pT);
-				}
+				pTextureCube = buildTextureCubeFromReflectRefract(*pSpeTexmap, time);
 			}
-			else
-			if( isClassIdCompatible(*pSpeTexmap, Class_ID (COMPOSITE_CLASS_ID,0)) )
+			else if (isClassIdCompatible(*pSpeTexmap, Class_ID(COMPOSITE_CLASS_ID, 0)))
 			{
-				int nNbSubMap = pSpeTexmap->NumSubTexmaps();
-				if( nNbSubMap > 6 )
-					nNbSubMap = 6;	
-				for( int i = 0; i < nNbSubMap; ++i )
-				{
-					std::vector<CMaterialDesc> _3dsTexChannel;
-					Texmap *pSubMap = pSpeTexmap->GetSubTexmap(i);
-
-					if( pSubMap != NULL )
-					if (isClassIdCompatible(*pSubMap, Class_ID (BMTEX_CLASS_ID,0)))
-					{					
-						CMaterialDesc _3dsTexChannel;
-						pTexture = buildATexture (*pSubMap, _3dsTexChannel, time);
-						pTextureCube->setTexture((CTextureCube::TFace)i, pTexture);
-					}
-				}
+				pTextureCube = buildTextureCubeFromComposite(*pSpeTexmap, time);
 			}
-			else
-			// Is it a simple file ?
-			if (isClassIdCompatible(*pSpeTexmap, Class_ID (BMTEX_CLASS_ID,0)))
+			else if (isClassIdCompatible(*pSpeTexmap, Class_ID(BMTEX_CLASS_ID, 0)))
 			{
-				// List of channels used by this texture
-				CMaterialDesc _3dsTexChannel;
-				
-				// Ok export the texture in NeL format
-				pTexture = buildATexture (*pSpeTexmap, _3dsTexChannel, time);
-				pTextureCube->setTexture(CTextureCube::positive_x, pTexture);
+				pTextureCube = buildTextureCubeFromTexture(*pSpeTexmap, time);
 			}
 			// Add the texture if it exist
 			material.setTexture(1, pTextureCube);
@@ -1355,36 +1301,13 @@ ITexture* CExportNel::buildATexture (Texmap& texmap, CMaterialDesc &remap3dsTexC
 			pTexture = srcTex;			
 		}
 	}
-	else if( isClassIdCompatible(texmap, Class_ID (ACUBIC_CLASS_ID,0)) )
+	else if (isClassIdCompatible(texmap, Class_ID(ACUBIC_CLASS_ID, 0)))
 	{
-		// Pointer on the  diffuse texture
-		CTextureCube* pTextureCube=NULL;
-
-		// Texture cube
-		pTextureCube = new CTextureCube;
-		pTexture = pTextureCube;
-
-		// Face order
-		const static CTextureCube::TFace tfNewOrder[6] = {	CTextureCube::positive_z, CTextureCube::negative_z,
-													CTextureCube::negative_x, CTextureCube::positive_x,
-													CTextureCube::positive_y, CTextureCube::negative_y	};
-
-		// Vector of bitmap names
-		vector<string> names;
-		CExportNel::getValueByNameUsingParamBlock2 (texmap, "bitmapName", (ParamType2)TYPE_STRING_TAB, &names, time);
-
-		// For each textures
-		for( int i = 0; i< (int)names.size(); ++i )
-		{			
-			// Create a texture file
-			CTextureFile *pT = new CTextureFile;
-			
-			// Set the file name
-			pT->setFileName(ConvertTexFileName(names[i].c_str(), _AbsolutePath));
-
-			// Set the texture
-			pTextureCube->setTexture(tfNewOrder[i], pT);
-		}
+		pTexture = buildTextureCubeFromReflectRefract(texmap, time);
+	}
+	else if (isClassIdCompatible(texmap, Class_ID(COMPOSITE_CLASS_ID, 0)))
+	{
+		pTexture = buildTextureCubeFromComposite(texmap, time);
 	}
 
 	// Get the UVs channel and the channel matrix
@@ -1396,11 +1319,115 @@ ITexture* CExportNel::buildATexture (Texmap& texmap, CMaterialDesc &remap3dsTexC
 	remap3dsTexChannel._UVMatrix=channelMatrix;
 
 	// check for tiling
-	if (!(texmap.GetTextureTiling() & U_WRAP)) pTexture->setWrapS(ITexture::Clamp);
-	if (!(texmap.GetTextureTiling() & V_WRAP)) pTexture->setWrapT(ITexture::Clamp);
+	if (pTexture != NULL) // avoid possible crash
+	{
+		if (!(texmap.GetTextureTiling() & U_WRAP)) pTexture->setWrapS(ITexture::Clamp);
+		if (!(texmap.GetTextureTiling() & V_WRAP)) pTexture->setWrapT(ITexture::Clamp);
+	}
 
 	// Return the texture pointer
 	return pTexture;
+}
+
+/// Build a NeL texture cube from a Reflect/refract map containing 6 textures.
+NL3D::CTextureCube *CExportNel::buildTextureCubeFromReflectRefract(Texmap &texmap, TimeValue time)
+{
+	if (isClassIdCompatible(texmap, Class_ID(ACUBIC_CLASS_ID, 0)))
+	{
+		// texture cube
+		CTextureCube *pTextureCube = new CTextureCube();
+
+		// set settings
+		pTextureCube->setWrapS(ITexture::Clamp);
+		pTextureCube->setWrapT(ITexture::Clamp);
+		pTextureCube->setFilterMode(ITexture::Linear, ITexture::LinearMipMapOff);
+
+		// face order
+		const static CTextureCube::TFace tfNewOrder[6] = 
+			{ CTextureCube::positive_z, CTextureCube::negative_z, // up dn
+			CTextureCube::negative_x, CTextureCube::positive_x, // lf rt
+			// CTextureCube::positive_y, CTextureCube::negative_y };
+			CTextureCube::negative_y, CTextureCube::positive_y }; // fr bk
+
+		// vector of bitmap names
+		vector<string> names;
+		CExportNel::getValueByNameUsingParamBlock2(texmap, "bitmapName", (ParamType2)TYPE_STRING_TAB, &names, time);
+
+		uint nNbSubMap = std::min<uint>((uint)names.size(), 6);
+		for (uint i = 0; i < nNbSubMap; ++i)
+		{			
+			// Create a texture file
+			CTextureFile *pT = new CTextureFile();
+			
+			// Set the file name
+			pT->setFileName(ConvertTexFileName(names[i].c_str(), _AbsolutePath));
+
+			// Set the texture
+			pTextureCube->setTexture(tfNewOrder[i], pT);
+		}
+
+		// return the texture cube
+		return pTextureCube;
+	}
+	else return NULL;
+}
+
+/// Build a NeL texture cube from a Composite map containing 6 textures (note: no re-ordering is done, because it didn't reorder composite cube in previous version either).
+NL3D::CTextureCube *CExportNel::buildTextureCubeFromComposite(Texmap &texmap, TimeValue time)
+{
+	if (isClassIdCompatible(texmap, Class_ID(COMPOSITE_CLASS_ID, 0)))
+	{
+		// texture cube
+		CTextureCube *pTextureCube = new CTextureCube();
+
+		// set settings
+		pTextureCube->setWrapS(ITexture::Clamp);
+		pTextureCube->setWrapT(ITexture::Clamp);
+		pTextureCube->setFilterMode(ITexture::Linear, ITexture::LinearMipMapOff);
+		
+		// get number of maps
+		uint nNbSubMap = std::min<uint>((uint)texmap.NumSubTexmaps(), 6);
+		for (uint i = 0; i < nNbSubMap; ++i)
+		{
+			std::vector<CMaterialDesc> _3dsTexChannel;
+			Texmap *pSubMap = texmap.GetSubTexmap(i);
+
+			if (pSubMap != NULL && isClassIdCompatible(*pSubMap, Class_ID(BMTEX_CLASS_ID, 0)))
+			{
+				CMaterialDesc _3dsTexChannel;
+				ITexture *pTexture = buildATexture(*pSubMap, _3dsTexChannel, time);
+				pTextureCube->setTexture((CTextureCube::TFace)i, pTexture);
+			}
+		}
+
+		// return the texture cube
+		return pTextureCube;
+	}
+	else return NULL;
+}
+
+/// Build a NeL texture cube from a single texture.
+NL3D::CTextureCube *CExportNel::buildTextureCubeFromTexture(Texmap &texmap, TimeValue time)
+{
+	if (isClassIdCompatible(texmap, Class_ID(BMTEX_CLASS_ID, 0)))
+	{
+		// texture cube
+		CTextureCube *pTextureCube = new CTextureCube();
+
+		// set settings
+		pTextureCube->setWrapS(ITexture::Clamp);
+		pTextureCube->setWrapT(ITexture::Clamp);
+		pTextureCube->setFilterMode(ITexture::Linear, ITexture::LinearMipMapOff);
+
+		// List of channels used by this texture
+		CMaterialDesc _3dsTexChannel;
+		
+		// Ok export the texture in NeL format
+		ITexture *pTexture = buildATexture(texmap, _3dsTexChannel, time);
+		pTextureCube->setTexture(CTextureCube::positive_x, pTexture);
+		return pTextureCube;
+	}
+	else return NULL;
 }
 
 #pragma optimize("", on)
