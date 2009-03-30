@@ -23,6 +23,10 @@ SUBDIRS(	build_coarse_mesh
 		zone_dump
 		zviewer)
 
+IF(QT4_FOUND)
+  ADD_SUBDIRECTORY(tile_edit_qt)
+ENDIF(QT4_FOUND)
+
 # These use WIndows-specific things that need to be fixed.
 #ig_elevation
 #lightmap_optimizer
