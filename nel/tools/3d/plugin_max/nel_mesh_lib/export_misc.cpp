@@ -404,6 +404,11 @@ bool getValueByNameUsingParamBlock2Internal (Animatable& node, const char* sName
 					if (bRes)
 						return true;
 				}
+				else
+				{
+					nldebug("Invalid type specified for pblock2 value with name '%s', given type '%u', found '%u'", 
+						sName, (uint32)type, (uint32)paramType);
+				}
 			}
 		}
 	}

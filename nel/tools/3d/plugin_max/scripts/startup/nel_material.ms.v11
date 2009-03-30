@@ -327,28 +327,14 @@ plugin material NelMaterial
     name:"NeL Material"
     classID:#(0x64c75fec, 0x222b9eb9)
     extends:standard 
-	replaceUI:true
-	version:12.0
+	replaceUI:false 
+	version:11.0
 (
 	local loadShader
 	local globalUpdateUI
 	local updateTextureName
 
 	local updateToVersion4 = false
-	
-	parameters nlbp rollout:nelBasicParameters
-	(
-		bTwoSided type:#boolean ui:cbTwoSided
-		cAmbient type:#color ui:cpAmbient
-		cDiffuse type:#color ui:cpDiffuse
-		pOpacity type:#percent ui:spOpacity
-		cSpecular type:#color ui:cpSpecular
-		pSpecularLevel type:#percent ui:spSpecularLevel
-		pGlossiness type:#percent ui:spGlossiness
-		cSelfIllumColor type:#color ui:cpSelfIllumColor
-		pSelfIllumAmount type:#percent ui:spSelfIllumAmount
-		bUseSelfIllumColor type:#boolean ui:cbUseSelfIllumColor
-	)
 
     parameters main rollout:NelParams
     (
@@ -540,109 +526,14 @@ plugin material NelMaterial
     parameters slot6
     (
 	)
-	
-	rollout nelBasicParameters "NeL Basic Parameters" rolledUp:false
-	(
-		Label lblNlbpA "NeL Material" align:#center across:3
-		Label lblNlbpB "http://dev.ryzom.com/" align:#center
-		CheckBox cbTwoSided "2-Sided" checked:false align:#right
-		
-		group "Standard Lighting"
-		(
-			Label lblNlbpslA "Diffuse is the color in light, ambient in the dark." align:#right
-			Label lblNlbpslB "Ambient and diffuse multiply with the textures and global sun." align:#right
-			ColorPicker cpAmbient "Ambient" color:[63,63,63] align:#left across:3
-			ColorPicker cpDiffuse "Diffuse" color:[127,127,127] align:#left
-			Spinner spOpacity "Opacity" range:[0,100,100] type:#integer scale:1 align:#left
-		)
-		
-		group "Specular"
-		(
-			Label lblNlbpsA "Increase the specular level to see the specular color." align:#right
-			Label lblNlbpsB "Multiplies with sun. Glossiness changes the size of the specular." align:#right
-			ColorPicker cpSpecular "Specular" color:[255,255,255] align:#left across:3
-			Spinner spSpecularLevel "Level" range:[0,100,0] type:#integer scale:1 align:#left
-			Spinner spGlossiness "Glossiness"range:[0,80,10] type:#integer scale:1 align:#left
-		)
-		
-		group "Self Illumination"
-		(
-			Label lblNlbpsiA "Set the self illumination by color or by amount." align:#right
-			ColorPicker cpSelfIllumColor "Self Illum"color:[0,0,0] align:#left across:3
-			Spinner spSelfIllumAmount "Self Illum" range:[0,100,0] type:#integer scale:1 align:#left
-			CheckBox cbUseSelfIllumColor "Use Color" checked:false align:#right
-		)
-		
-		on cbTwoSided changed bval do
-			delegate.twoSided = bval
-		
-		on cpAmbient changed cval do
-			delegate.ambient = cval
-		
-		on cpDiffuse changed cval do
-			delegate.diffuse = cval
-		
-		on spOpacity changed pval do
-			delegate.opacity = pval
-		
-		on cpSpecular changed cval do
-			delegate.specular = cval
-		
-		on spSpecularLevel changed pval do
-			delegate.specularLevel = pval
-		
-		on spGlossiness changed pval do
-			delegate.glossiness = pval
-		
-		on cpSelfIllumColor changed cval do
-			delegate.selfIllumColor = cval
-		
-		on spSelfIllumAmount changed bval do
-			delegate.selfIllumAmount = bval
-		
-		on cbUseSelfIllumColor changed bval do
-		(
-			delegate.useSelfIllumColor = bval
-			spSelfIllumAmount.visible = not bval
-			cpSelfIllumColor.visible = bval
-		)
-		
-		Fn updateUI update =
-		(
-			cbTwoSided.checked = delegate.twoSided
-			cpAmbient.color = delegate.ambient
-			cpDiffuse.color = delegate.diffuse
-			spOpacity.value = delegate.opacity
-			cpSpecular.color = delegate.specular
-			spSpecularLevel.value = delegate.specularLevel
-			spGlossiness.value = delegate.glossiness
-			cpSelfIllumColor.color = delegate.selfIllumColor
-			spSelfIllumAmount.value = delegate.selfIllumAmount
-			cbUseSelfIllumColor.checked = delegate.useSelfIllumColor
-			
-			spSelfIllumAmount.visible = not delegate.useSelfIllumColor
-			cpSelfIllumColor.visible = delegate.useSelfIllumColor
-			delegate.adTextureLock = false
-			delegate.adLock = false
-			delegate.dsLock = false
-		)
-		
-		on nelBasicParameters open do
-		(
-			updateUI true
-		)
-	)
 
-    rollout NelParams "NeL Material" rolledUp:true
+    rollout NelParams "Nel Material" rolledUp:true
     (
 		-- UI update timer
 		timer pWatch interval:450
 		local activeMaterial = undefined
 
-		dropdownlist dlShaderType "Shaders Type" items:#( "Normal (simple multitexture material)", "Not Implemented (do not use, bump material not implemented)", 
-			"UserColor (display user color on texture inverse alpha)", "LightMap (material used for lightmapping)", 
-			"Specular (material with specular reflection cubemap)", "Water (shiny water shader)", 
-			"Per pixel lighting, require one texmap applied",  "Per pixel lighting, no specular, require one texmap applied")
+		dropdownlist dlShaderType "Shaders Type" items:#( "Normal", "Disable", "UserColor", "LightMap", "Specular", "Water", "Per pixel lighting, require one texmap applied",  "Per pixel lighting, no specular, require one texmap applied")
 		group "Light"
 		(
 			CheckBox cbUnlighted "Unlighted"
@@ -660,42 +551,48 @@ plugin material NelMaterial
 			dropdownlist dlBlendSrcFunc "Blend Source" items:#( "One", "Zero", "Source Alpha", "Inverse Source Alpha", "Source RGBA", "Inverse Source RGB", "Destination Alpha", "Inverse Destination Alpha", "Destination RGB", "Inverse Destination RGB" ) across:2
 			dropdownlist dlBlendDestFunc "Blend Destination" items:#( "One", "Zero", "Source Alpha", "Inverse Source Alpha", "Source RGBA", "Inverse Source RGB", "Destination Alpha", "Inverse Destination Alpha", "Destination RGB", "Inverse Destination RGB" ) 
 			CheckBox cbAlphaTest "Alpha Test"
-			CheckBox cbAlphaVertex "Alpha Vertex" across:2
-			Spinner   ciAlphaVertexChannel "Alpha Vertex Channel"  range:[0,99,0] type:#integer scale:1 align:#right
+			CheckBox cbAlphaVertex "Alpha Vertex"
+			Label lAlphaVertexChanelLabel "Alpha Vertex Channel" align:#left across:2
+			Spinner   ciAlphaVertexChannel ""  range:[0,99,0] type:#integer scale:1 align:#left width:50
 		)
 		group "Z buffer"
 		(
 			Label	cfZBiasLabel "ZBias :"  align:#left across:2
 			Spinner	cfZBias "" range:[-100,100,0] type:#float scale:0.001 align:#left width:70
-			CheckBox cbForceZWrite "Force ZWrite" across:2
+			CheckBox cbForceZWrite "Force ZWrite"
 			CheckBox cbForceNoZWrite "Force No ZWrite"
 		)
 		group "Water"
 		(
-			Label	lbWaterPoolID "Water pool ID"  align:#left across:2
+			Label	lbWaterPoolID "Water pool ID :"  align:#left across:2
 			Spinner	ciWaterPoolID     "" range:[0,3,1] type:#integer align:#left width:70
-			Label	 lbWaterHeightFactor "Water height factor" align:#left across:2
+			Label	 lbWaterHeightFactor "Water height factor :" align:#left across:2
 			Spinner	cfWaterHeightFactor   "" range:[0,1000,1] type:#integer align:#left width:70
 
-			CheckBox cbWaterUseSceneEnvMapAbove "Use scene envmap above water" across:2
-			CheckBox cbWaterUseSceneEnvMapUnder "under water" align:#right
+			CheckBox cbWaterUseSceneEnvMapAbove "Use scene envmap above water"
+			CheckBox cbWaterUseSceneEnvMapUnder "Use scene envmap under water"
 			
-			Label	cfBumpScaleLabel "BumpMap Scale"  align:#left across:3
-			Spinner	cfBumpUScale      "U" range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
-			Spinner	cfBumpVScale      "V" range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
-			Label	cfBumpSpeedLabel "BumpMap Speed" align:#left across:3 
-			Spinner	cfBumpUSpeed      "U" range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
-			Spinner	cfBumpVSpeed      "V" range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
+			Label	cfBumpUScaleLabel "BumpMap U Scale :"  align:#left across:2
+			Spinner	cfBumpUScale      "" range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
+			Label	cfBumpVScaleLabel "BumpMap V Scale :" align:#left across:2 
+			Spinner	cfBumpVScale      "" range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
+			Label	cfBumpUSpeedLabel "BumpMap U Speed :" align:#left across:2 
+			Spinner	cfBumpUSpeed      "" range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
+			Label	cfBumpVSpeedLabel "BumpMap V Speed :" align:#left across:2 
+			Spinner	cfBumpVSpeed      "" range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
 			
 		
-			Label	lbDisplaceMapScale "DisplaceMap Scale" align:#left across:3
-			Spinner   cfDisplaceMapUScale      "U"  range:[-10,10,0.005] type:#float scale:0.001 align:#right width:70
-			Spinner   cfDisplaceMapVScale      "V"  range:[-10,10,0.005] type:#float scale:0.001 align:#right width:70
-			Label	lbDisplaceMapSpeed "DisplaceMap Speed" align:#left across:3
-			Spinner   cfDisplaceMapUSpeed      "U"  range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
-			Spinner   cfDisplaceMapVSpeed      "V"  range:[-10,10,0.01] type:#float scale:0.001 align:#right width:70
+			Label	lbDisplaceMapUScale "DisplaceMap U Scale :" align:#left across:2
+			Spinner   cfDisplaceMapUScale      ""  range:[-10,10,0.005] type:#float scale:0.001 align:#left width:70
+			Label	lbDisplaceMapVScale "DisplaceMap V Scale :" align:#left across:2
+			Spinner   cfDisplaceMapVScale      ""  range:[-10,10,0.005] type:#float scale:0.001 align:#left width:70
+			Label	lbDisplaceMapUSpeed "DisplaceMap U Speed :" align:#left across:2
+			Spinner   cfDisplaceMapUSpeed      ""  range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
+			Label	lbDisplaceMapVSpeed "DisplaceMap V Speed :" align:#left across:2
+			Spinner   cfDisplaceMapVSpeed      ""  range:[-10,10,0.01] type:#float scale:0.001 align:#left width:70
 
-			CheckBox cbCalcWaterLightmap "Compute water lightmap" across:2
+			CheckBox cbCalcWaterLightmap "Compute water lightmap"
+
 			CheckBox cbEnableWaterSplash "Enable water splash"
 		)
 		group "Extended"
@@ -868,46 +765,43 @@ plugin material NelMaterial
 		)
 	)
 
-    rollout NelTexture "NeL Textures" rolledUp:true
+    rollout NelTexture "Nel Textures" rolledUp:true
     (
 		group "Textures"
 		(
-			Label lblNttA "Texture format must be TGA or DDS for ingame usage." align:#right
-			Label lblNttBl "Enabled" align:#left across:4
-			Label lblNttBcA "" align:#center
-			Label lblNttBcB "Texture    " align:#center
-			Label lblNttBr "EnvMap" align:#right
-			CheckBox cbEnableSlot_1 "Texture 1...................." width:110 align:#left across:3
-			MapButton mbTexture_1 "" toolTips:"Select the texture 1" width:160 align:#left
-			CheckBox cbTexGen_1 "" align:#right
-			CheckBox cbEnableSlot_2 "Texture 2...................." width:110 align:#left across:3
-			MapButton mbTexture_2 "" toolTips:"Select the texture 2" width:160 align:#left
-			CheckBox cbTexGen_2 "" align:#right
-			CheckBox cbEnableSlot_3 "Texture 3...................." width:110 align:#left across:3
-			MapButton mbTexture_3 "" toolTips:"Select the texture 3" width:160 align:#left
-			CheckBox cbTexGen_3 "" align:#right
-			CheckBox cbEnableSlot_4 "Texture 4...................." width:110 align:#left across:3
-			MapButton mbTexture_4 "" toolTips:"Select the texture 4" width:160 align:#left
-			CheckBox cbTexGen_4 "" align:#right
-			CheckBox cbEnableSlot_5 "Texture 5...................." width:110 align:#left across:3
-			MapButton mbTexture_5 "" toolTips:"Select the texture 5" width:160 align:#left
-			CheckBox cbTexGen_5 "" align:#right
-			CheckBox cbEnableSlot_6 "Texture 6...................." width:110 align:#left across:3
-			MapButton mbTexture_6 "" toolTips:"Select the texture 6" width:160 align:#left
-			CheckBox cbTexGen_6 "" align:#right
-			CheckBox cbEnableSlot_7 "Texture 7...................." width:110 align:#left across:3
-			MapButton mbTexture_7 "" toolTips:"Select the texture 7" width:160 align:#left
-			CheckBox cbTexGen_7 "" align:#right
-			CheckBox cbEnableSlot_8 "Texture 8...................." width:110 align:#left across:3
-			MapButton mbTexture_8 "" toolTips:"Select the texture 8" width:160 align:#left
-			CheckBox cbTexGen_8 "" align:#right
+			CheckBox cbEnableSlot_1 "" width:110 align:#left across:2
+			MapButton mbTexture_1 "" toolTips:"Select the texture 1" width:180 align:#right
+			CheckBox cbEnableSlot_2 "Texture 2...................." width:110 align:#left across:2
+			MapButton mbTexture_2 "" toolTips:"Select the texture 2" width:180 align:#right
+			CheckBox cbEnableSlot_3 "Texture 3...................." width:110 align:#left across:2
+			MapButton mbTexture_3 "" toolTips:"Select the texture 3" width:180 align:#right
+			CheckBox cbEnableSlot_4 "Texture 4...................." width:110 align:#left across:2
+			MapButton mbTexture_4 "" toolTips:"Select the texture 4" width:180 align:#right
+			CheckBox cbEnableSlot_5 "Texture 5...................." width:110 align:#left across:2
+			MapButton mbTexture_5 "" toolTips:"Select the texture 5" width:180 align:#right
+			CheckBox cbEnableSlot_6 "Texture 6...................." width:110 align:#left across:2
+			MapButton mbTexture_6 "" toolTips:"Select the texture 6" width:180 align:#right
+			CheckBox cbEnableSlot_7 "Texture 7...................." width:110 align:#left across:2
+			MapButton mbTexture_7 "" toolTips:"Select the texture 7" width:180 align:#right
+			CheckBox cbEnableSlot_8 "Texture 8...................." width:110 align:#left across:2
+			MapButton mbTexture_8 "" toolTips:"Select the texture 8" width:180 align:#right
+		)
+		group "Envmap"
+		(
+			CheckBox cbTexGen_1 "Texture 1 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_2 "Texture 2 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_3 "Texture 3 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_4 "Texture 4 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_5 "Texture 5 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_6 "Texture 6 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_7 "Texture 7 EnvMap" width:110 align:#left
+			CheckBox cbTexGen_8 "Texture 8 EnvMap" width:110 align:#left
 		)
 
 		group "Setup Stage"
 		(
-			Label lblNtssA "Automatic configuration of the texture slots with simple material." align:#right
-			dropdownlist dlShader "" items:#( "Single Texture (RGBA1) (A1)", "Addition Two Textures (RGB1+RGB2) (A2)", "Multiply Two Textures (RGB1*RGB2) (A2)", "Blend Two Textures (RGB1*(1-A1)+RGB2*A1) (A2)", "Blend Texture (RGB1)(A2)", "Mix Two Textures (RGB1*0.5+RGB2*0.5) (A1*0.5+A2*0.5)" ) 
-			Button btLoadShader "Setup Texture Slots" align:#left
+			dropdownlist dlShader	"Normal Shader" items:#( "Single Texture (RGBA1) (A1)", "Addition Two Textures (RGB1+RGB2) (A2)", "Multiply Two Textures (RGB1*RGB2) (A2)", "Blend Two Textures (RGB1*(1-A1)+RGB2*A1) (A2)", "Blend Texture (RGB1)(A2)", "Mix Two Textures (RGB1*0.5+RGB2*0.5) (A1*0.5+A2*0.5)" ) 
+			Button btLoadShader "Load Normal Shader" align:#left
 		)
 
 		fn updateUI update =
@@ -1083,7 +977,7 @@ plugin material NelMaterial
 		)
 	)
 
-    rollout NelMultitextureSlot1 "NeL Slot 1" rolledUp:true
+    rollout NelMultitextureSlot1 "Nel Slot 1" rolledUp:true
     (
 		group "RGB"
 		(
@@ -1279,7 +1173,7 @@ plugin material NelMaterial
 		)
 	)
     
-	rollout NelMultitextureSlot2 "NeL Slot 2" rolledUp:true
+	rollout NelMultitextureSlot2 "Nel Slot 2" rolledUp:true
     (
 		group "RGB"
 		(
@@ -1475,7 +1369,7 @@ plugin material NelMaterial
 		)
 	)
 
-	rollout NelMultitextureSlot3 "NeL Slot 3" rolledUp:true
+	rollout NelMultitextureSlot3 "Nel Slot 3" rolledUp:true
     (
 		group "RGB"
 		(
@@ -1671,7 +1565,7 @@ plugin material NelMaterial
 		)
 	)
 
-	rollout NelMultitextureSlot4 "NeL Slot 4" rolledUp:true
+	rollout NelMultitextureSlot4 "Nel Slot 4" rolledUp:true
     (
 		group "RGB"
 		(

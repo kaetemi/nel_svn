@@ -417,14 +417,16 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 		// Get from max
 		Point3 maxDiffuse;
 		CRGBA  nelDiffuse;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "diffuse", (ParamType2)TYPE_RGBA, &maxDiffuse, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "cDiffuse", (ParamType2)TYPE_RGBA, &maxDiffuse, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "diffuse", (ParamType2)TYPE_RGBA, &maxDiffuse, time);
 
 		// Convert to NeL color
 		convertColor (nelDiffuse, maxDiffuse);
 
 		// Set the opacity
 		float fOp = 0.0f;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "opacity", (ParamType2)TYPE_PCNT_FRAC, &fOp, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "pOpacity", (ParamType2)TYPE_PCNT_FRAC, &fOp, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "opacity", (ParamType2)TYPE_PCNT_FRAC, &fOp, time);
 
 		// Add alpha to the value
 		float fA=(fOp*255.f+0.5f);
@@ -451,14 +453,17 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 		int bSelfIllumColorOn;
 		Point3 maxSelfIllum;
 		float fTemp;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "useSelfIllumColor", (ParamType2)TYPE_BOOL, &bSelfIllumColorOn, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "bUseSelfIllumColor", (ParamType2)TYPE_BOOL, &bSelfIllumColorOn, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "useSelfIllumColor", (ParamType2)TYPE_BOOL, &bSelfIllumColorOn, time);
 		if( bSelfIllumColorOn )
 		{
-			CExportNel::getValueByNameUsingParamBlock2 (mtl, "selfIllumColor", (ParamType2)TYPE_RGBA, &maxSelfIllum, time);
+			CExportNel::getValueByNameUsingParamBlock2(mtl, "cSelfIllumColor", (ParamType2)TYPE_RGBA, &maxSelfIllum, time)
+				|| CExportNel::getValueByNameUsingParamBlock2(mtl, "selfIllumColor", (ParamType2)TYPE_RGBA, &maxSelfIllum, time);
 		}
 		else
 		{
-			CExportNel::getValueByNameUsingParamBlock2 (mtl, "selfIllumAmount", (ParamType2)TYPE_PCNT_FRAC, &fTemp, time);
+			CExportNel::getValueByNameUsingParamBlock2(mtl, "pSelfIllumAmount", (ParamType2)TYPE_PCNT_FRAC, &fTemp, time)
+				|| CExportNel::getValueByNameUsingParamBlock2(mtl, "selfIllumAmount", (ParamType2)TYPE_PCNT_FRAC, &fTemp, time);
 			maxSelfIllum = maxDiffuse * fTemp;
 		}
 		convertColor( nelEmissive, maxSelfIllum );
@@ -468,7 +473,8 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 
 		CRGBA nelAmbient;
 		Point3 maxAmbient;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "ambient", (ParamType2)TYPE_RGBA, &maxAmbient, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "cAmbient", (ParamType2)TYPE_RGBA, &maxAmbient, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "ambient", (ParamType2)TYPE_RGBA, &maxAmbient, time);
 		convertColor (nelAmbient, maxAmbient);
 		material.setAmbient (nelAmbient);
 
@@ -476,12 +482,14 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 
 		CRGBA nelSpecular;
 		Point3 maxSpecular;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "specular", (ParamType2)TYPE_RGBA, &maxSpecular, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "cSpecular", (ParamType2)TYPE_RGBA, &maxSpecular, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "specular", (ParamType2)TYPE_RGBA, &maxSpecular, time);
 		convertColor (nelSpecular, maxSpecular);
 
 		// Get specular level
 		float shininess;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "specularLevel", (ParamType2)TYPE_PCNT_FRAC, &shininess, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "pSpecularLevel", (ParamType2)TYPE_PCNT_FRAC, &shininess, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "specularLevel", (ParamType2)TYPE_PCNT_FRAC, &shininess, time);
 		clamp(shininess, 0.f, 1.f);
 		CRGBAF fColor = nelSpecular;
 		fColor *= shininess;
@@ -489,8 +497,8 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 		material.setSpecular (nelSpecular);
 
 		// * Get specular shininess
-
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "glossiness", (ParamType2)TYPE_PCNT_FRAC, &shininess, time);
+		CExportNel::getValueByNameUsingParamBlock2 (mtl, "pGlossiness", (ParamType2)TYPE_PCNT_FRAC, &shininess, time)
+			|| CExportNel::getValueByNameUsingParamBlock2 (mtl, "glossiness", (ParamType2)TYPE_PCNT_FRAC, &shininess, time);
 		shininess=(float)pow(2.0, shininess * 10.0) * 4.f;
 		material.setShininess (shininess);
 
@@ -507,7 +515,8 @@ void CExportNel::buildAMaterial (NL3D::CMaterial& material, CMaxMaterialInfo& ma
 
 		// * Double sided flag
 		int bDoubleSided;
-		CExportNel::getValueByNameUsingParamBlock2 (mtl, "twoSided", (ParamType2)TYPE_BOOL, &bDoubleSided, time);
+		CExportNel::getValueByNameUsingParamBlock2(mtl, "bTwoSided", (ParamType2)TYPE_BOOL, &bDoubleSided, time)
+			|| CExportNel::getValueByNameUsingParamBlock2(mtl, "twoSided", (ParamType2)TYPE_BOOL, &bDoubleSided, time);
 		material.setDoubleSided ( bDoubleSided!=0 );
 
 		// *** Textures
