@@ -19,5 +19,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_udpclient nl_sample_udpserver RUNTIME DESTINATION bin)
-INSTALL(FILES bench_service.cfg client.cfg readme.txt DESTINATION share/nel/nl_sample_udp)
+INSTALL(TARGETS nl_sample_udpclient nl_sample_udpserver RUNTIME DESTINATION bin COMPONENT samplesnet)
+INSTALL(FILES bench_service.cfg client.cfg readme.txt DESTINATION share/nel/nl_sample_udp COMPONENT samplesnet)

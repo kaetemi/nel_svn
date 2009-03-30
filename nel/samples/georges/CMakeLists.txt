@@ -12,6 +12,6 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_georges RUNTIME DESTINATION bin)
+INSTALL(TARGETS nl_sample_georges RUNTIME DESTINATION bin COMPONENT samplesgeorges)
 INSTALL(FILES boolean.typ coolfilesinfo.dfn default.sample_config int.typ positiondata.dfn sample_config.dfn string.typ
-	DESTINATION share/nel/nl_sample_georges/)
+	DESTINATION share/nel/nl_sample_georges/ COMPONENT samplesgeorges)

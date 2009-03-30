@@ -14,5 +14,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_ls_client nl_sample_ls_fes RUNTIME DESTINATION bin)
-INSTALL(FILES frontend_service.cfg client.cfg DESTINATION share/nel/nl_sample_login_system)
+INSTALL(TARGETS nl_sample_ls_client nl_sample_ls_fes RUNTIME DESTINATION bin COMPONENT samplesnet)
+INSTALL(FILES frontend_service.cfg client.cfg DESTINATION share/nel/nl_sample_login_system COMPONENT samplesnet)

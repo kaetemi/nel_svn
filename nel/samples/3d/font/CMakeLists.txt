@@ -14,5 +14,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_font RUNTIME DESTINATION bin)
-INSTALL(FILES beteckna.ttf DESTINATION share/nel/nl_sample_font)
+INSTALL(TARGETS nl_sample_font RUNTIME DESTINATION bin COMPONENT samples3d)
+INSTALL(FILES beteckna.ttf DESTINATION share/nel/nl_sample_font COMPONENT samples3d)

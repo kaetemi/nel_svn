@@ -14,25 +14,29 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_clusterview RUNTIME DESTINATION bin)
-INSTALL(FILES main.cvs readme.txt DESTINATION share/nel/nl_sample_clusterview)
+INSTALL(TARGETS nl_sample_clusterview RUNTIME DESTINATION bin COMPONENT samples3d)
+INSTALL(FILES main.cvs readme.txt DESTINATION share/nel/nl_sample_clusterview COMPONENT samples3d)
 INSTALL(DIRECTORY groups/ 
 	DESTINATION share/nel/nl_sample_clusterview/groups
+	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY fonts/ 
 	DESTINATION share/nel/nl_sample_clusterview/fonts
+	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY max/ 
 	DESTINATION share/nel/nl_sample_clusterview/max
+	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY shapes/ 
 	DESTINATION share/nel/nl_sample_clusterview/shapes
+	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)

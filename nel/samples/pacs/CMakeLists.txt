@@ -14,10 +14,11 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_pacs RUNTIME DESTINATION bin)
-INSTALL(FILES readme.txt DESTINATION share/nel/nl_sample_pacs)
+INSTALL(TARGETS nl_sample_pacs RUNTIME DESTINATION bin COMPONENT samplespacs)
+INSTALL(FILES readme.txt DESTINATION share/nel/nl_sample_pacs COMPONENT samplespacs)
 INSTALL(DIRECTORY shapes/ 
 	DESTINATION share/nel/nl_sample_pacs/shapes
+	COMPONENT samplespacs
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)

@@ -12,5 +12,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_configfile RUNTIME DESTINATION bin)
-INSTALL(FILES simpletest.txt DESTINATION share/nel/nl_sample_configfile)
+INSTALL(TARGETS nl_sample_configfile RUNTIME DESTINATION bin COMPONENT samplesmisc)
+INSTALL(FILES simpletest.txt DESTINATION share/nel/nl_sample_configfile COMPONENT samplesmisc)

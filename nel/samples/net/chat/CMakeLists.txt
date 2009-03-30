@@ -16,5 +16,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_chatclient nl_sample_chatserver RUNTIME DESTINATION bin)
-INSTALL(FILES chat_service.cfg client.cfg DESTINATION share/nel/nl_sample_chat)
+INSTALL(TARGETS nl_sample_chatclient nl_sample_chatserver RUNTIME DESTINATION bin COMPONENT samplesnet)
+INSTALL(FILES chat_service.cfg client.cfg DESTINATION share/nel/nl_sample_chat COMPONENT samplesnet)
