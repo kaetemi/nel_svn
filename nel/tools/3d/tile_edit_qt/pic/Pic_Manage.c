@@ -7,8 +7,19 @@ static PIC_PICTURE		*HeadPic=NULL;
 
 #ifdef __GNUC__
 #include <ctype.h> 
-#define strupr toupper
-#endif /* __GNUC__
+
+char *strupr(char *string)
+{
+      char *s;
+
+      if (string)
+      {
+            for (s = string; *s; ++s)
+                  *s = toupper(*s);
+      }
+      return string;
+}
+#endif /* __GNUC__ */
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -39,7 +50,8 @@ unsigned long PIC_Load(char* FileName, unsigned char Quantize)
 	unsigned long	w,h,Depth;
 	unsigned long	ret;
 
-	/* --- Init */ 
+	/* --- Init */
+ 
 	ret=0;
 	type=0;
 	id=0;
@@ -84,15 +96,16 @@ unsigned long PIC_Load(char* FileName, unsigned char Quantize)
 		if ( !strcmp(ext,"JPG") )
 		{
 			type=1;
-		}
-		if ( !strcmp(ext,"TGA") )
+		} 
+		else if ( !strcmp(ext,"TGA") )
 		{
 			type=2;
 		}
-		if ( !strcmp(ext,"BMP") )
+		else if ( !strcmp(ext,"BMP") )
 		{
 			type=3;
 		}
+
 		switch(type)
 		{
 		/* - JPG */
@@ -137,9 +150,7 @@ unsigned long PIC_Load(char* FileName, unsigned char Quantize)
 			return(0);
 		}
 	}
-	else
-	{
-	}
+	
 	/* --- Create and place new pic struct */
 	pic=Pic_calloc(1,sizeof(PIC_PICTURE));
 	if (!pic)
