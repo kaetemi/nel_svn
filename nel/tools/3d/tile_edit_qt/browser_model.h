@@ -49,6 +49,8 @@ public:
 	void setId(int i) 	{	id = i;	}
 	int getTileType() const	{	return tileType;	}
 
+	static std::string fixPath(const std::string &path);
+
 private:
 	int id;									//tile index (in the Browser)
 	TileType tileType;

@@ -55,7 +55,7 @@ void rotateBuffer (std::vector<NLMISC::CBGRA> &Buffer, uint &Width, uint &Height
 /////////////////////////////////////////////////////////////////////////////
 // Load a Pic and apply Alpha & Rotation
 int loadPixmapBuffer(const std::string& path, std::vector<NLMISC::CBGRA>& Buffer, std::vector<NLMISC::CBGRA>* Alpha, int rot)
-{
+{	
 	uint Width;
 	uint Height;
 	if (PIC_LoadPic(path, Buffer, Width, Height))
@@ -123,11 +123,14 @@ bool TileInfo::Load (int index, std::vector<NLMISC::CBGRA>* Alpha)
 	bool bRes=true;
 	if (!loaded && getRelativeFileName (Diffuse, index)!="")
 	{
-		path = tileBankBrowser.getAbsPath() + getRelativeFileName (Diffuse, index);
+		path = fixPath(tileBankBrowser.getAbsPath() + getRelativeFileName (Diffuse, index));
+		
+		
+	
 		if ( !loadPixmapBuffer( path, Bits, Alpha, 0))
 		{
 			bRes=false;
-			QMessageBox::information( NULL, "Can't load Diffuse file",  QString( (tileBankBrowser.getAbsPath() + getRelativeFileName (Diffuse, index)).c_str() ) );
+			QMessageBox::information( NULL, "Can't load Diffuse file",  QString( (path.c_str()) ));
 
 		}
 		else
@@ -135,22 +138,22 @@ bool TileInfo::Load (int index, std::vector<NLMISC::CBGRA>* Alpha)
 	}
 	if (!nightLoaded && getRelativeFileName (Additive, index)!="")
 	{
-		nightPath = tileBankBrowser.getAbsPath() + getRelativeFileName (Additive, index);
+		nightPath = fixPath(tileBankBrowser.getAbsPath() + getRelativeFileName (Additive, index));
 		if (!loadPixmapBuffer( nightPath, nightBits, Alpha, 0))
 		{
 			bRes=false;
-			QMessageBox::information( NULL, "Can't load Additive file",  QString( (tileBankBrowser.getAbsPath() + getRelativeFileName (Additive, index)).c_str() ) );
+			QMessageBox::information( NULL, "Can't load Additive file",  QString( nightPath.c_str() ) );
 		}
 		else
 			nightLoaded=1;
 	}
 	if (!alphaLoaded && getRelativeFileName (::Alpha, index)!="")
 	{
-		alphaPath = tileBankBrowser.getAbsPath() + getRelativeFileName (::Alpha, index);
+		alphaPath = fixPath(tileBankBrowser.getAbsPath() + getRelativeFileName (::Alpha, index));
 		if (!loadPixmapBuffer( alphaPath, alphaBits, NULL, tileBankBrowser.getTile (index)->getRotAlpha ()))
 		{
 			bRes=false;
-			QMessageBox::information( NULL, "Can't load Alpha file",  QString( (tileBankBrowser.getAbsPath() + getRelativeFileName (::Alpha, index)).c_str() ) );
+			QMessageBox::information( NULL, "Can't load Alpha file",  QString( alphaPath.c_str() ) );
 
 		}
 		else
@@ -160,7 +163,19 @@ bool TileInfo::Load (int index, std::vector<NLMISC::CBGRA>* Alpha)
 	return bRes;
 }
 
+std::string TileInfo::fixPath(const std::string &path) {
+	// Fix the Windows path issues for subpaths.
+	std::string searchStr("\\");
+	std::string replaceStr("/");
+	string::size_type pos = 0;
+	std::string pathStr = path;
 
+	while( (pos = pathStr.find(searchStr, pos)) != std::string::npos) {
+		pathStr.replace(pos, searchStr.size(), replaceStr);
+		pos++;
+	}
+	return pathStr;
+}
 
 void TileInfo::Delete ()
 {
