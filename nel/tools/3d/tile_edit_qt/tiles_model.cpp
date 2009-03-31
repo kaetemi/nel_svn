@@ -92,6 +92,9 @@ bool tiles_model::removeRows(int row, int count, const QModelIndex &parent)
     if (parent.isValid())
         return false;
 
+    if(!tiles.size())
+        return false;
+
     if (row >= tiles.size() || row + count <= 0)
         return false;
 
@@ -99,13 +102,13 @@ bool tiles_model::removeRows(int row, int count, const QModelIndex &parent)
     int endRow = qMin(row + count - 1, tiles.size() - 1);
 
     beginRemoveRows(parent, beginRow, endRow);
-
     while (beginRow <= endRow) {
         tiles.removeAt(beginRow);
         ++beginRow;
     }
 
     endRemoveRows();
+
     return true;
 }
 
@@ -121,7 +124,10 @@ int tiles_model::rowCount(const QModelIndex &parent) const
 
 void tiles_model::removeAllTiles()
 {
-    beginRemoveRows(QModelIndex(), 0, tiles.size() - 1);
-    tiles.clear();
-    endRemoveRows();
+    if(tiles.size())
+    {
+        beginRemoveRows(QModelIndex(), 0, tiles.size() - 1);
+        tiles.clear();
+        endRemoveRows();
+    }
 }
