@@ -40,7 +40,9 @@
 using namespace NLMISC;
 using namespace std;
 
-
+#ifndef NL_MK_SH_ID_CFG
+#define NL_MK_SH_ID_CFG ""
+#endif // NL_MK_SH_ID_CFG
 
 /**
  *	TFormId
@@ -430,6 +432,13 @@ int main( int argc, char ** argv )
 	// Create an application context.
 	NLMISC::CApplicationContext appContext;
 
+#ifdef NL_OS_UNIX
+        std::string homeDir = getenv("HOME");
+        NLMISC::CPath::addSearchPath( homeDir + "/.nel");
+#endif // NL_OS_UNIX
+
+        NLMISC::CPath::addSearchPath(NL_MK_SH_ID_CFG);
+
 	// read args
 	if( argc < 2 )
 	{
@@ -627,3 +636,4 @@ int main( int argc, char ** argv )
 	return EXIT_SUCCESS;
 
 } // main //
+
