@@ -54,6 +54,9 @@ using namespace NL3D;
 
 #define BANK_PAH_RELATIVE
 
+#ifndef NL_ZVIEWER_CFG
+#define NL_ZVIEWER_CFG
+#endif // NL_ZVIEWER_CFG
 
 /**
  * CViewerConfig
@@ -962,6 +965,13 @@ int main(int /* argc */, char ** /* argv */)
 	try
 	{
 		NLMISC::CApplicationContext myApplicationContext;
+
+#ifdef NL_OS_UNIX
+	        std::string homeDir = getenv("HOME");
+       		NLMISC::CPath::addSearchPath( homeDir + "/.nel");
+#endif // NL_OS_UNIX
+
+        	NLMISC::CPath::addSearchPath(NL_ZVIEWER_CFG);
 
 		initViewerConfig("zviewer.cfg");
 
