@@ -160,7 +160,7 @@ SET(CPACK_INSTALL_CMAKE_PROJECTS "${CMAKE_BINARY_DIR};NeL;ALL;/")
 SET(CPACK_PACKAGE_EXECUTABLES "nel${NL_VERSION}" "nel")
 
 ## Package component names
-SET(CPACK_COMPONENTS_ALL libraries drivers3d driverssound headers samplespacs samples3d samplesgeorges samplesmisc samplesnet)
+SET(CPACK_COMPONENTS_ALL libraries drivers3d driverssound headers samplespacs samples3d samplesgeorges samplesmisc samplesnet tools3d toolsmisc)
 set(CPACK_ALL_INSTALL_TYPES Full Developer Runtime)
 
 #set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "MyLib Application")
@@ -221,9 +221,18 @@ SET(CPACK_COMPONENT_SAMPLESNET_DESCRIPTION
 SET(CPACK_COMPONENT_SAMPLESNET_GROUP "Samples")
 SET(CPACK_COMPONENT_SAMPLESNET_INSTALL_TYPES Full)
 
-set(CPACK_COMPONENT_GROUP_DEVELOPMENT_DESCRIPTION
-   "All of the tools you'll ever need to develop software")
+SET(CPACK_COMPONENT_TOOLSMISC_DISPLAY_NAME "Misc Tools")
+SET(CPACK_COMPONENT_TOOLSMISC_DESCRIPTION
+   "Misc. NeL Tools")
+SET(CPACK_COMPONENT_TOOLSMISC_GROUP "Tools")
+SET(CPACK_COMPONENT_TOOLSMISC_INSTALL_TYPES Full Runtime)
 
+SET(CPACK_COMPONENT_TOOLS3D_DISPLAY_NAME "3D Tools")
+SET(CPACK_COMPONENT_TOOLS3D_DESCRIPTION
+   "Misc. NeL Tools")
+SET(CPACK_COMPONENT_TOOLS3D_GROUP "Tools")
+SET(CPACK_COMPONENT_TOOLS3D_INSTALL_TYPES Full Runtime)
+ 
 set(CPACK_COMPONENT_GROUP_DRIVERS_DESCRIPTION
    "The drivers needed to run NeL-based software.")
    
