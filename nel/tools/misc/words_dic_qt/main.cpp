@@ -20,12 +20,13 @@ int main(int argc, char *argv[])
 	// the specific initialization routines you do not need.
 	NLMISC::CApplicationContext myApplicationContext;
 
-	NLMISC::CPath::addSearchPath(NL_WORDS_DIC_CFG);
 
 #ifdef NL_OS_UNIX
 	std::string homeDir = getenv("HOME");
 	NLMISC::CPath::addSearchPath( homeDir + "/.nel");
 #endif // NL_OS_UNIX
+
+	NLMISC::CPath::addSearchPath(NL_WORDS_DIC_CFG);
 
 	Q_INIT_RESOURCE(words_dic_Qt);
 	QApplication app(argc, argv);
