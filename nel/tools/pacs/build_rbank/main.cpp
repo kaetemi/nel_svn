@@ -54,7 +54,7 @@ using namespace NLMISC;
 using namespace NL3D;
 
 #ifndef NL_BRB_CFG
-#define NL_BRB_CFG ""
+#define NL_BRB_CFG "."
 #endif // NL_BRB_CFG
 
 #define LOG_ALL_INFO_TO_FILE

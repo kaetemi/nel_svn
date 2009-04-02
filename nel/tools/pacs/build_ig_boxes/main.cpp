@@ -53,7 +53,7 @@ using namespace NLMISC;
 using namespace NL3D;
 
 #ifndef NL_BIB_CFG
-#define NL_BIB_CFG ""
+#define NL_BIB_CFG "."
 #endif // NL_BIB_CFG
 
 string												Output;

@@ -41,7 +41,7 @@ using namespace NLMISC;
 using namespace std;
 
 #ifndef NL_MK_SH_ID_CFG
-#define NL_MK_SH_ID_CFG ""
+#define NL_MK_SH_ID_CFG "."
 #endif // NL_MK_SH_ID_CFG
 
 /**

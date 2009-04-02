@@ -8,7 +8,7 @@
 #endif // NL_OS_UNIX
 
 #ifndef NL_WORDS_DIC_CFG
-#define NL_WORDS_DIC_CFG ""
+#define NL_WORDS_DIC_CFG "."
 #endif
 
 int main(int argc, char *argv[])

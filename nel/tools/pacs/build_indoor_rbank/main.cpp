@@ -47,7 +47,7 @@ using namespace NLPACS;
 using namespace NLMISC;
 
 #ifndef NL_BIRB_CFG
-#define NL_BIRB_CFG ""
+#define NL_BIRB_CFG "."
 #endif // NL_BIB_CFG
 
 bool			AddToRetriever = true;
