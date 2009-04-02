@@ -55,7 +55,7 @@ using namespace NL3D;
 #define BANK_PAH_RELATIVE
 
 #ifndef NL_ZVIEWER_CFG
-#define NL_ZVIEWER_CFG
+#define NL_ZVIEWER_CFG "."
 #endif // NL_ZVIEWER_CFG
 
 /**
