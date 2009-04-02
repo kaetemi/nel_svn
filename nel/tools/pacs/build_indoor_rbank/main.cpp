@@ -26,6 +26,8 @@
 
 #include <vector>
 
+#include <stdlib.h>
+
 #include "nel/misc/config_file.h"
 #include "nel/misc/time_nl.h"
 #include "nel/misc/file.h"
@@ -43,6 +45,10 @@
 using namespace std;
 using namespace NLPACS;
 using namespace NLMISC;
+
+#ifndef NL_BIRB_CFG
+#define NL_BIRB_CFG ""
+#endif // NL_BIB_CFG
 
 bool			AddToRetriever = true;
 bool			Merge = true;
@@ -124,6 +130,13 @@ void	initConfig()
 {
 	try
 	{
+#ifdef NL_OS_UNIX
+	        std::string homeDir = getenv("HOME");
+        	NLMISC::CPath::addSearchPath( homeDir + "/.nel");
+#endif // NL_OS_UNIX
+
+	        NLMISC::CPath::addSearchPath(NL_BIRB_CFG);
+
 		CConfigFile cf;
 	
 		cf.load("build_indoor_rbank.cfg");

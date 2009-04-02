@@ -6,6 +6,11 @@
 #
 # Notes:
 #   * Changing install location: add -DCMAKE_INSTALL_PREFIX:PATH=/my/new/path
+#   * Changing specific install location variables:
+#       * NL_ETC_PREFIX (default: $CMAKE_INSTALL_PREFIX/etc)
+#       * NL_SHARE_PREFIX (default: $CMAKE_INSTALL_PREFIX/share)
+#       * NL_BIN_PREFIX (default: $CMAKE_INSTALL_PREFIX/bin)
+#       * NL_SBIN_PREFIX  (default: $CMAKE_INSTALL_PREFIX/sbin)
 #   * Enable building of documentation: add -DBUILD_DOCUMENTATION:BOOL=ON - new make target: DoxygenDoc
 #   * Updating version: update header (above) but also update NL_VERSION below.
 #   * To build binary archive, use the 'package' target.
@@ -48,6 +53,7 @@ ENDIF(COMMAND cmake_policy)
 # Set default config options
 #
 NL_SETUP_DEFAULT_OPTIONS()
+NL_SETUP_PREFIX_PATHS()
 
 #-----------------------------------------------------------------------------
 #Platform specifics

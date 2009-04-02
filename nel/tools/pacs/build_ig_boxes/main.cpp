@@ -46,11 +46,15 @@
 #include <deque>
 #include <set>
 
+#include <stdlib.h>
+
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
 
-
+#ifndef NL_BIB_CFG
+#define NL_BIB_CFG ""
+#endif // NL_BIB_CFG
 
 string												Output;
 string												IGPath;
@@ -90,6 +94,13 @@ void	init()
 
 	try
 	{
+#ifdef NL_OS_UNIX
+	        std::string homeDir = getenv("HOME");
+        	NLMISC::CPath::addSearchPath( homeDir + "/.nel");
+#endif // NL_OS_UNIX
+
+	        NLMISC::CPath::addSearchPath(NL_BIB_CFG);
+
 		CConfigFile cf;
 		uint			i;
 	

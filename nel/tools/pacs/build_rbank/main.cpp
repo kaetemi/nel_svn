@@ -47,10 +47,15 @@
 #include <string>
 #include <deque>
 
+#include <stdlib.h>
+
 using namespace std;
 using namespace NLMISC;
 using namespace NL3D;
 
+#ifndef NL_BRB_CFG
+#define NL_BRB_CFG ""
+#endif // NL_BRB_CFG
 
 #define LOG_ALL_INFO_TO_FILE
 
@@ -156,6 +161,13 @@ void	initMoulinette()
 
 	try
 	{
+#ifdef NL_OS_UNIX
+	        std::string homeDir = getenv("HOME");
+        	NLMISC::CPath::addSearchPath( homeDir + "/.nel");
+#endif // NL_OS_UNIX
+
+	        NLMISC::CPath::addSearchPath(NL_BRB_CFG);
+
 		CConfigFile cf;
 		uint			i;
 
