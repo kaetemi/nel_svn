@@ -45,6 +45,7 @@ SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 # Set default config options
 #
 NL_SETUP_DEFAULT_OPTIONS()
+NL_SETUP_PREFIX_PATHS()
 
 #-----------------------------------------------------------------------------
 # Override default options
@@ -71,9 +72,11 @@ ENDIF(WIN32)
 NL_SETUP_BUILD_FLAGS()
 
 IF(UNIX)
-  SET(PKGDIR "${CMAKE_INSTALL_PREFIX}/share/nel/nelns")
-  SET(LOGDIR "${CMAKE_INSTALL_PREFIX}/var/log/nelns")
-  ADD_DEFINITIONS(-DNELNS_CONFIG="\\"${PKGDIR}\\"" -DNELNS_STATE="\\"${PKGDIR}\\"" -DNELNS_LOGS="\\"${LOGDIR}\\"")
+  SET(ETCDIR "${NL_ETC_PREFIX}/nelns")
+  SET(PKGDIR "${NL_SHARE_PREFIX}/nelns")
+  SET(LOGDIR "${NL_LOG_PREFIX}/nelns")
+  ADD_DEFINITIONS(-DNELNS_CONFIG="\\"${ETCDIR}\\"" -DNELNS_STATE="\\"${PKGDIR}\\"" -DNELNS_LOGS="\\"${LOGDIR}\\"")
+  INSTALL(CODE "FILE(MAKE_DIRECTORY ${LOGDIR})")
 ENDIF(UNIX)
 
 ADD_SUBDIRECTORY(admin_executor_service)
@@ -81,6 +84,8 @@ ADD_SUBDIRECTORY(admin_service)
 ADD_SUBDIRECTORY(naming_service)
 ADD_SUBDIRECTORY(login_service)
 ADD_SUBDIRECTORY(welcome_service)
+
+
 
 #-----------------------------------------------------------------------------
 #Packaging
