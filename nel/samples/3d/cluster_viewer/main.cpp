@@ -124,7 +124,7 @@ void LoadSceneScript (const char *ScriptName, CScene* pScene, vector<SDispCS> &D
 	float posx, posy, posz;
 	float roti, rotj, rotk;
 	
-	FILE *f = fopen (ScriptName,"rb");
+	FILE *f = fopen (CPath::lookup(ScriptName).c_str(),"rb");
 	fseek (f, 0, SEEK_END);
 	int file_size = ftell (f);
 	fseek (f, 0, SEEK_SET);
@@ -238,6 +238,7 @@ int main()
 	CNELU::Scene->enableLightingSystem(true);
 	CNELU::Scene->setAmbientGlobal(CRGBA(128,128,128));
 
+	CPath::addSearchPath(CV_DIR);
 	CPath::addSearchPath(CV_DIR"/shapes");
 	CPath::addSearchPath(CV_DIR"/groups");
 	CPath::addSearchPath(CV_DIR"/fonts");

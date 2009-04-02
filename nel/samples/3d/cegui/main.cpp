@@ -77,6 +77,10 @@ bool handleSlider(const CEGUI::EventArgs& e);
 bool handleRadio(const CEGUI::EventArgs& e);
 bool handleCheck(const CEGUI::EventArgs& e);
 
+#ifndef CEGUI_DATA_DIR
+#define CEGUI_DATA_DIR "datafiles"
+#endif // CEGUI_DATA_DIR
+
 #ifdef NL_OS_WINDOWS
 int WINAPI WinMain( HINSTANCE hInstance, 
 									 HINSTANCE hPrevInstance, 
@@ -91,7 +95,7 @@ int main(int argc, char **argv)
 	try {
 		gScreenWidth=800;
 		gScreenHeight=600;
-		NLMISC::CPath::addSearchPath("datafiles",true,false);
+		NLMISC::CPath::addSearchPath(CEGUI_DATA_DIR,true,false);
 
 		NL3D::UDriver *driver;
 
@@ -115,7 +119,7 @@ int main(int argc, char **argv)
 		// start up the Gui system.
 		gGuiLogger = new CEGUI::NeLLogger();
 		gGuiRenderer = new CEGUI::NeLRenderer(driver);
-		gGuiRenderer->addSearchPath("datafiles",true,false);
+		gGuiRenderer->addSearchPath(CEGUI_DATA_DIR,true,false);
 		gGuiSystem = new CEGUI::System(gGuiRenderer);
 		gGuiRenderer->activateInput();
 		gGuiRenderer->captureCursor(true);
