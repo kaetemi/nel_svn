@@ -30,11 +30,22 @@
 // contains all i18n features
 #include "nel/misc/i18n.h"
 
+// contains the path features
+#include "nel/misc/path.h"
+
+#ifndef NL_LANG_DATA
+#define NL_LANG_DATA ""
+#endif // NL_LANG_DATA
+
 using namespace NLMISC;
 
 int main (int argc, char **argv)
 {
 	createDebug();
+
+	// Add the language data path to the search path.
+	CPath::addSearchPath(NL_LANG_DATA);
+
 	InfoLog->displayRawNL("Please, choose 'en', 'fr' or 'de' and press <return>");
 
 	std::string langName;

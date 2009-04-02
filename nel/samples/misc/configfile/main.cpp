@@ -34,6 +34,13 @@
 // contains the config class
 #include "nel/misc/config_file.h"
 
+// contains the cpath class
+#include "nel/misc/path.h"
+
+#ifndef NL_SAMPLE_CFG
+#define NL_SAMPLE_CFG ""
+#endif // NL_SAMPLE_CFG
+
 using namespace std;
 using namespace NLMISC;
 
@@ -66,8 +73,11 @@ int main (int argc, char **argv)
 	// look at the debug example
 	createDebug();
 
+	// Add the data directory to the search path.
+	CPath::addSearchPath(NL_SAMPLE_CFG);
+
 	// load and parse the configfile
-	cf.load ("simpletest.txt");
+	cf.load (CPath::lookup("simpletest.txt"));
 
 	// CConfigFile checks if the config file has been modified by an external program.
 	// in this case, the configfile automatically reloads and reparses the file.
