@@ -501,7 +501,7 @@ bool			CLodCharacterManager::addRenderCharacterKey(CLodCharacterInstance &instan
 
 	// Fill the VB
 	//=============
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	// optimized version
 	if(CSystemInfo::hasMMX())
 	{

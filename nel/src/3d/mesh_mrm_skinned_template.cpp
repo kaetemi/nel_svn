@@ -46,7 +46,7 @@
 	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm
 	saves 27% of execution time in the applyRawSkinNormal*() loop (ie 1 ms)
 */
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 //#define	NL3D_RAWSKIN_PRECACHE
 #define	NL3D_RAWSKIN_ASM
 #endif

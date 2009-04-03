@@ -3600,7 +3600,7 @@ void CBitmap::blend(CBitmap &Bm0, CBitmap &Bm1, uint16 factor, bool inputBitmapI
 	uint8 *dest				= &(this->_Data[0][0]);
 
 
-	#ifdef NL_OS_WINDOWS
+	#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if (CSystemInfo::hasMMX())
 	{
 		// On a P4 2GHz, with a 256x256 texture, I got the following results :

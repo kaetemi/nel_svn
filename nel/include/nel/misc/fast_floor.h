@@ -33,7 +33,7 @@ namespace NLMISC
 // fastFloor function.
 // Actually, it seems to be bugged on VC7 (functions returns bad values)
 // TODO: fix that
-#if defined(NL_OS_WINDOWS)
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	// && defined(NL_COMP_VC6)
 
 #include <cfloat>

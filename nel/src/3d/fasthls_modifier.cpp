@@ -140,7 +140,7 @@ uint16		CFastHLSModifier::applyHLSMod(uint16 colorIn, uint8 dHue, uint dLum, uin
 
 	uint16	retVal;
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if(CSystemInfo::hasMMX())
 	{
 		__asm
@@ -319,7 +319,7 @@ void		CFastHLSModifier::convertDDSBitmapDXTC1Or1A(CBitmap &dst, const CBitmap &s
 				lut= bitLUT+4;
 
 			// for all bits, transpose with lut.
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 			__asm
 			{
 				mov		eax, srcBits
@@ -371,7 +371,7 @@ void		CFastHLSModifier::convertDDSBitmapDXTC1Or1A(CBitmap &dst, const CBitmap &s
 	}
 
 	// Must end MMX, for applyHLSMod()
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if(CSystemInfo::hasMMX())
 		_asm	emms;
 #endif
@@ -416,7 +416,7 @@ void		CFastHLSModifier::convertDDSBitmapDXTC3Or5(CBitmap &dst, const CBitmap &sr
 	}
 
 	// Must end MMX, for applyHLSMod()
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if(CSystemInfo::hasMMX())
 		_asm	emms;
 #endif

@@ -30,7 +30,7 @@
 namespace NLMISC
 {
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 
 
 // ***************************************************************************

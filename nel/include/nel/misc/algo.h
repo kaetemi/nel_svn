@@ -147,7 +147,7 @@ uint		searchLowerBound(const std::vector<T> &array, const T &key)
  */
 static inline	void fastClamp8(sint &v)
 {
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	// clamp v in 0..255 (no cond jmp)
 	__asm
 	{

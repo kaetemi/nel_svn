@@ -43,7 +43,7 @@ void computeGradient(const NLMISC::CRGBA *valueTab, uint32 numValues, uint32 nbS
 	float alpha;
 
 	NLMISC::CRGBA *dest = &grad[0];
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	float stepX127 = 127.f * step;
 	if (NLMISC::CSystemInfo::hasMMX())
 	{

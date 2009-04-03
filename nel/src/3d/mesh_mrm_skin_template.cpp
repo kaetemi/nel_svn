@@ -42,7 +42,7 @@ static void	applyArraySkinNormalT(uint numMatrixes, uint32 *infPtr, CMesh::CSkin
 {
 	/* Prefetch all vertex/normal before, it is to be faster.
 	*/
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	{
 		uint	nInfTmp= nInf;
 		uint32	*infTmpPtr= infPtr;
@@ -179,7 +179,7 @@ static void	applyArraySkinTangentSpaceT(uint numMatrixes, uint32 *infPtr, CMesh:
 {
 	/* Prefetch all vertex/normal/tgSpace before, it is faster.
 	*/
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	{
 		uint	nInfTmp= nInf;
 		uint32	*infTmpPtr= infPtr;
@@ -497,7 +497,7 @@ void	CMeshMRMGeom::applySkinWithTangentSpace(CLod &lod, const CSkeletonModel *sk
 	On a P4-2.4Ghz, for 40000 vertices skinned, both no precaching and asm
 	saves 27% of execution time in the applyRawSkinNormal*() loop (ie 1 ms)
 */
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 //#define	NL3D_RAWSKIN_PRECACHE
 #define	NL3D_RAWSKIN_ASM
 #endif

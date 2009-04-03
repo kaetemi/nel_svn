@@ -28,7 +28,7 @@
 
 namespace NLMISC {
 
-#if defined(NL_OS_WINDOWS)
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 
 double	OptFastFloorMagicConst = pow(2.0,52) + pow(2.0,51);
 float	OptFastFloorMagicConst24 = (float)pow(2.0,23);

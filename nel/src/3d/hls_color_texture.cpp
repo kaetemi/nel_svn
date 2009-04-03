@@ -480,7 +480,7 @@ void			CHLSColorTexture::buildColorVersion(const CHLSColorDelta *colDeltaList, N
 
 
 	// Since colorizeDXTCBlockRGB() use MMX, must end with emms.
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if(CSystemInfo::hasMMX())
 		_asm	emms;
 #endif
@@ -754,7 +754,7 @@ void			CHLSColorTexture::compressBlockRGB(CRGBA *srcRGBA, uint8* dstDXTC)
 	// result.
 	uint32	bits= 0;
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	if(CSystemInfo::hasMMX())
 	{
 		// preapre mmx
