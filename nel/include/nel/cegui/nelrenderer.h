@@ -71,6 +71,14 @@
 #include <nel/3d/u_text_context.h>
 #include <nel/3d/u_particle_system_instance.h>
 
+#ifdef NL_OS_WINDOWS
+#ifdef NEL_CEGUIRENDERER_EXPORTS
+#define DLLSPEC __declspec(dllexport)
+#else //NEL_CEGUI_RENDERER_EXPORTS
+#define DLLSPEC __declspec(dllimport)
+#endif // NEL_CEGUI_RENDERER_EXPORTS
+#endif // NL_OS_WINDOWS
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -81,7 +89,7 @@ namespace CEGUI
 	/**
 	 * \brief Class to interface with the NeL rendering engine.
 	 */
-	class NeLRenderer : public Renderer
+	class DLLSPEC NeLRenderer : public Renderer
 	{
 	public:
 		NeLRenderer(NL3D::UDriver *driver, bool withRP=true);

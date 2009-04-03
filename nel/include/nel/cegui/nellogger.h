@@ -40,6 +40,14 @@
 
 // Project includes
 
+#ifdef NL_OS_WINDOWS
+#ifdef NEL_CEGUIRENDERER_EXPORTS
+#define DLLSPEC __declspec(dllexport)
+#else //NEL_CEGUI_RENDERER_EXPORTS
+#define DLLSPEC __declspec(dllimport)
+#endif // NEL_CEGUI_RENDERER_EXPORTS
+#endif // NL_OS_WINDOWS
+
 namespace CEGUI {
 
 /**
@@ -48,7 +56,7 @@ namespace CEGUI {
  * \author Jan Boon (Kaetemi)
  * NeLLogger
  */
-class NeLLogger : public Logger
+class DLLSPEC NeLLogger : public Logger
 {
 protected:
 	// pointers

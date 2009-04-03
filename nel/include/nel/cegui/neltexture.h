@@ -71,7 +71,7 @@
 
 namespace CEGUI
 {
-	class NeLTexture : public Texture
+	class DLLSPEC NeLTexture : public Texture
 	{
 	private:
 		friend Texture *NeLRenderer::createTexture(void);
