@@ -774,7 +774,7 @@ void			CPatchDLMContext::addPointLightInfluence(const CPatchDLMPointLight &pl)
 #endif
 
 				// add to map.
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 				// Fast AddClamp.
 				__asm
 				{
@@ -853,7 +853,7 @@ void			CPatchDLMContext::addPointLightInfluence(const CPatchDLMPointLight &pl)
 				col.B= uint8(OptFastFloor24(b) & 0xff);
 #endif
 				// add to map.
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 				// Fast AddClamp.
 				__asm
 				{

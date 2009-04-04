@@ -784,7 +784,7 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 // ***************************************************************************
 // ***************************************************************************
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 
 
 // EMMS called not in __asm block.
@@ -1713,7 +1713,7 @@ extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap)
 // ***************************************************************************
 
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 
 
 // ***************************************************************************

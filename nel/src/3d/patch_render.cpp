@@ -487,7 +487,7 @@ static	inline	void	renderFaceVector(TLandscapeIndexType *fv)
 		// making lot of render() is slower than copy a block, and render it.
 		//CLandscapeGlobals::PatchCurrentDriver->renderSimpleTriangles(fv+1, *fv);
 		CHECK_IBA_RANGE(CLandscapeGlobals::PassTriArrayIBA, NL3D_LandscapeGlobals_PassTriCurPtr,  *fv*3 * sizeof(uint32));
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 		#ifndef NL_LANDSCAPE_INDEX16
 			__asm
 			{

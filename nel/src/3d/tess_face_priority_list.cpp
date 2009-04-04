@@ -213,7 +213,7 @@ uint		CTessFacePriorityList::selectQuadrant(const CVector &direction)
 
 	// select the quarter.
 	uint	quarterId;
-#ifdef	NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	__asm
 	{
 		mov		esi, direction

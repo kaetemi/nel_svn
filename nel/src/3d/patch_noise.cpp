@@ -44,7 +44,7 @@ namespace NL3D
 // ***************************************************************************
 
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 
 /* This floor works only for floor with noise, because floor/ceil are only made on decimal coordinates:
 	sTile =1.25 ....  NB: because of difference of mapping (rare case), we may have sometimes values with

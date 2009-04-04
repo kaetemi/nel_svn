@@ -625,7 +625,7 @@ void		CPatch::computeTileLightmapPixelAutomatic(uint ts, uint tt, uint s, uint t
 	c= max(c, 0.f);
 	sint	ic;
 
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	// FastFloor using fistp. Don't care convention.
 	float	fc= c*256;
 	_asm
