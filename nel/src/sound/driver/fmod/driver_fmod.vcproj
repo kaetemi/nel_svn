@@ -11,6 +11,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -46,7 +49,6 @@
 				AdditionalIncludeDirectories="../../../../include"
 				PreprocessorDefinitions="_USRDLL;_DEBUG;WIN32;LIBXML_STATIC"
 				StringPooling="true"
-				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
@@ -75,6 +77,93 @@
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				ModuleDefinitionFile=".\driver_fmod.def"
 				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../../../../include"
+				PreprocessorDefinitions="_USRDLL;_DEBUG;WIN32;LIBXML_STATIC"
+				StringPooling="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdfmod.h"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="fmod64.lib"
+				OutputFile="..\..\..\..\lib64\nel_drv_fmod_win_d.dll"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
+				ModuleDefinitionFile=".\driver_fmod.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -131,7 +220,6 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../../../../include"
 				PreprocessorDefinitions="_USRDLL;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
@@ -161,6 +249,99 @@
 				OutputFile="..\..\..\..\lib\nel_drv_fmod_win_r.dll"
 				ModuleDefinitionFile=".\driver_fmod.def"
 				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
+				AdditionalIncludeDirectories="../../../../include"
+				PreprocessorDefinitions="_USRDLL;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdfmod.h"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="fmod64.lib"
+				OutputFile="..\..\..\..\lib64\nel_drv_fmod_win_r.dll"
+				ModuleDefinitionFile=".\driver_fmod.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -208,7 +389,23 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="Debug|x64"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Release|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
 				ExcludedFromBuild="true"
 				>
 				<Tool
@@ -260,7 +457,23 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"

@@ -11,6 +11,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -89,6 +92,80 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../include"
+				PreprocessorDefinitions="_LIB;_DEBUG;WIN32;LIBXML_STATIC"
+				StringPooling="true"
+				MinimalRebuild="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std$(ProjectName).h"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				AdditionalDependencies="libxml2.lib zlib.lib libpng.lib"
+				OutputFile="..\lib64\nl$(ProjectName)_d.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
@@ -121,7 +198,6 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../include"
 				PreprocessorDefinitions="_LIB;LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
 				StringPooling="true"
@@ -148,6 +224,83 @@
 				Name="VCLibrarianTool"
 				AdditionalDependencies="libxml2.lib zlib.lib libpng.lib"
 				OutputFile="..\lib\nl$(ProjectName)_r.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
+				AdditionalIncludeDirectories="../include"
+				PreprocessorDefinitions="WIN32;_LIB;NDEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION;NL_NO_ASM"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="std$(ProjectName).h"
+				WarningLevel="4"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				AdditionalDependencies="libxml2.lib zlib.lib libpng.lib"
+				OutputFile="..\lib64\nl$(ProjectName)_r.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -260,7 +413,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -284,7 +453,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -304,7 +489,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -324,7 +525,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -344,7 +561,23 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1325,7 +1558,23 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"

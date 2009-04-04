@@ -11,6 +11,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -87,6 +90,78 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="4"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="../../../include"
+				PreprocessorDefinitions="_LIB;_DEBUG;WIN32"
+				StringPooling="true"
+				MinimalRebuild="true"
+				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
+				RuntimeLibrary="3"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\..\..\lib64\nl$(ProjectName)_d.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
@@ -144,6 +219,82 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\..\lib\nl$(ProjectName)_r.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\..\..\obj64\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="../../../include"
+				PreprocessorDefinitions="_LIB;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\..\..\lib64\nl$(ProjectName)_r.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
