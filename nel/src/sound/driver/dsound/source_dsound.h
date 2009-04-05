@@ -100,7 +100,7 @@ public:
 	void init(LPDIRECTSOUND8 directSound, bool useEax);
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect *effect);
+	virtual void setEffect(IReverbEffect *reverbEffect);
 	
 	/// \name Initialization
 	//@{

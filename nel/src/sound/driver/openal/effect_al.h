@@ -50,11 +50,11 @@ class CEffectAL
 protected:
 	// outside pointers
 	CSoundDriverAL *_SoundDriver;
-
+	
 	// instances
 	ALuint _AlEffect;
 	ALuint _AlAuxEffectSlot;
-
+	
 public:
 	CEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
 	virtual ~CEffectAL();
@@ -75,13 +75,9 @@ class CStandardReverbEffectAL : public IReverbEffect, public CEffectAL
 public:
 	CStandardReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
 	virtual ~CStandardReverbEffectAL();
-
-	// IReverbEffect
+	
 	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
-
-	virtual IEffect::TEffectType getType();
-
-	virtual void setGain(float gain);
+	
 }; /* class CReverbEffectAL */
 
 #if EFX_CREATIVE_AVAILABLE
@@ -97,13 +93,9 @@ class CCreativeReverbEffectAL : public IReverbEffect, public CEffectAL
 public:
 	CCreativeReverbEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
 	virtual ~CCreativeReverbEffectAL();
-
-	// IReverbEffect
+	
 	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
-
-	virtual IEffect::TEffectType getType();
-
-	virtual void setGain(float gain);
+	
 }; /* class CReverbEffectAL */
 
 #endif /* #if EFX_CREATIVE_AVAILABLE */

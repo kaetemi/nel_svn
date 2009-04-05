@@ -420,7 +420,7 @@ void CAudioMixerUser::init(uint maxTrack, bool useEax, bool useADPCM, IProgressC
 	// Init environment reverb effects
 	if (_UseEax)
 	{
-		_ReverbEffect = static_cast<IReverbEffect *>(_SoundDriver->createEffect(IEffect::Reverb));
+		_ReverbEffect = _SoundDriver->createReverbEffect();
 
 		if (!_ReverbEffect)
 			{ _UseEax = false; }

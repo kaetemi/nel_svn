@@ -57,13 +57,18 @@ CSourceAL::~CSourceAL()
 	sdal->removeSource(this);
 }
 
-void CSourceAL::setEffect(IEffect *effect)
+void CSourceAL::setEffect(CEffectAL *effect)
 {
 	// no filter stuff yet
 	// only allow one submix send for now -----------------------------------------------> 0
-	if (effect) { /*nldebug("AL: Setting effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, dynamic_cast<CEffectAL *>(effect)->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
+	if (effect) { /*nldebug("AL: Setting effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, effect->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
 	else { /*nldebug("AL: Removing effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
 	alTestError();
+}
+
+void CSourceAL::setEffect(IReverbEffect *reverbEffect)
+{
+	setEffect(reverbEffect ? dynamic_cast<CEffectAL *>(reverbEffect) : NULL);
 }
 
 /// Enable or disable streaming mode. Source must be stopped to call this.

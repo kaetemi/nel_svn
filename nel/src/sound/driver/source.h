@@ -61,7 +61,7 @@ public:
 	virtual ~ISource() { }
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect *effect) = 0;
+	virtual void setEffect(IReverbEffect *reverbEffect) = 0;
 	
 	/// \name Initialization
 	//@{

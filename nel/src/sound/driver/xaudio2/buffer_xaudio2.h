@@ -56,13 +56,14 @@ protected:
 	// pointers
 	/// The sample data in this buffer.
 	uint8 *_Data;
-	
 	// instances
 	// XAudio2 buffer structure, could have one pre-configured 
 	// here for optimization (looping state unknown).
 	// XAUDIO2_BUFFER _Buffer;
 
-	/// The size of the data in this buffer
+	/// The capacity of the buffer
+	uint _Capacity;
+	/// The size of the data in the buffer
 	uint _Size;
 	/// The name of the buffer
 	NLMISC::TStringId _Name;
@@ -90,14 +91,6 @@ public:
 	/// Returns the sample rate.
 	inline uint getFrequency() { return _Frequency; }
 	
-	/// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
-	/// May return NULL if the format or frequency is not supported by the driver.
-	uint8 *openWritable(uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency);
-	/// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
-	/// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
-	/// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
-	void lockWritable(bool keepLocal);
-	
 	/// Read the audio data from a WAV format buffer.
 	bool readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize);
 	bool readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency);
@@ -107,14 +100,18 @@ public:
 	 *	If the name after loading of the buffer doesn't match the preset name,
 	 *	the load will assert.
 	 */
-	virtual void presetName(const NLMISC::TStringId &bufferName);
+	virtual void presetName(NLMISC::TStringId bufferName);
 	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency);
-	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
-	virtual bool fillBuffer(const void *src, uint bufsize);
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency);
+	/// Get a writable pointer to the buffer of specified size. Use capacity to specify the required bytes. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the size specified in the last lock. Call setStorageMode() and setFormat() first.
+	virtual uint8 *lock(uint capacity);
+	/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Set size to the number of bytes actually written to the buffer. Returns true if ok.
+	virtual bool unlock(uint size);
+	/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+	virtual bool fill(const uint8 *src, uint size);
 	
 	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const;
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const;
 	/// Return the size of the buffer, in bytes.
 	virtual uint getSize() const;
 	/// Return the duration (in ms) of the sample in the buffer.

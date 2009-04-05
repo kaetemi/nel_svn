@@ -26,6 +26,7 @@
 
 #include <nel/misc/path.h>
 #include <nel/misc/dynloadlib.h>
+#include <nel/misc/fast_mem.h>
 
 #include "buffer_al.h"
 #include "listener_al.h"
@@ -371,11 +372,11 @@ ISource *CSoundDriverAL::createSource()
 }
 
 /// Create a reverb effect
-IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
+IReverbEffect *CSoundDriverAL::createReverbEffect()
 {
-	IEffect *ieffect = NULL;
+	IReverbEffect *ieffect = NULL;
 	CEffectAL *effectal = NULL;
-
+	
 	ALuint slot = AL_NONE;
 	alGenAuxiliaryEffectSlots(1, &slot);
 	if (alGetError() != AL_NO_ERROR)
@@ -383,7 +384,7 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 		nlwarning("AL: alGenAuxiliaryEffectSlots failed");
 		return NULL;
 	}
-
+	
 	ALuint effect = AL_NONE;
 	alGenEffects(1, &effect);
 	if (alGetError() != AL_NO_ERROR)
@@ -393,53 +394,44 @@ IEffect *CSoundDriverAL::createEffect(IEffect::TEffectType effectType)
 		return NULL; /* createEffect */
 	}
 
-	switch (effectType)
-	{
-	case IEffect::Reverb:
 #if EFX_CREATIVE_AVAILABLE
-		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
-		if (alGetError() != AL_NO_ERROR)
-		{
-			nlinfo("AL: Creative Reverb Effect not supported, falling back to standard Reverb Effect");
-		}
-		else
-		{
-			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
-			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
-			CCreativeReverbEffectAL *eff = new CCreativeReverbEffectAL(this, effect, slot);
-			ieffect = static_cast<IEffect *>(eff);
-			effectal = static_cast<CEffectAL *>(eff);
-			break; /* switch (effectType) */
-		}
+	alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		nlinfo("AL: Creative Reverb Effect not supported, falling back to standard Reverb Effect");
+	}
+	else
+	{
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
+		CCreativeReverbEffectAL *eff = new CCreativeReverbEffectAL(this, effect, slot);
+		ieffect = static_cast<IReverbEffect *>(eff);
+		effectal = static_cast<CEffectAL *>(eff);
+		nlassert(ieffect); nlassert(effectal);
+		_Effects.insert(effectal);
+		return ieffect;
+	}
 #endif		
-		alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
-		if (alGetError() != AL_NO_ERROR)
-		{
-			nlwarning("AL: Reverb Effect not supported");
-			alDeleteAuxiliaryEffectSlots(1, &slot);
-			alDeleteEffects(1, &effect);
-			return NULL; /* createEffect */
-		}
-		else
-		{
-			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
-			alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
-			CStandardReverbEffectAL *eff = new CStandardReverbEffectAL(this, effect, slot);
-			ieffect = static_cast<IEffect *>(eff);
-			effectal = static_cast<CEffectAL *>(eff);
-			break; /* switch (effectType) */
-		}
-		break; /* switch (effectType) */
-	default:
-		nlwarning("AL: Invalid effectType");
+
+	alEffecti(effect, AL_EFFECT_TYPE, AL_EFFECT_REVERB);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		nlwarning("AL: Reverb Effect not supported");
 		alDeleteAuxiliaryEffectSlots(1, &slot);
 		alDeleteEffects(1, &effect);
 		return NULL; /* createEffect */
 	}
-	nlassert(ieffect);
-	nlassert(effectal);
-	_Effects.insert(effectal);
-	return ieffect; /* createEffect */
+	else
+	{
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_EFFECT, effect); alTestError();
+		alAuxiliaryEffectSloti(slot, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE); alTestError(); // auto only for reverb!
+		CStandardReverbEffectAL *eff = new CStandardReverbEffectAL(this, effect, slot);
+		ieffect = static_cast<IReverbEffect *>(eff);
+		effectal = static_cast<CEffectAL *>(eff);
+		nlassert(ieffect); nlassert(effectal);
+		_Effects.insert(effectal);
+		return ieffect;
+	}
 }
 
 /// Return the maximum number of sources that can created
@@ -667,7 +659,7 @@ bool CSoundDriverAL::readRawBuffer(IBuffer *destbuffer, const std::string & /* n
 	}
 	// FIXME check for correct buffer name
 	destbuffer->setFormat(format, (uint)frequency);
-	destbuffer->fillBuffer(rawData, dataSize);
+	destbuffer->fill(rawData, dataSize);
 	return true;
 }
 

@@ -55,14 +55,18 @@ public:
 	 *	If the name after loading of the buffer doesn't match the preset name,
 	 *	the load will assert.
 	 */
-	virtual void presetName(const NLMISC::TStringId &bufferName) = 0;
+	virtual void presetName(NLMISC::TStringId bufferName) = 0;
 	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency) = 0;
-	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
-	virtual bool fillBuffer(const void *src, uint bufsize) = 0;
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency) = 0;
+	/// Get a writable pointer to the buffer of specified size. Use capacity to specify the required bytes. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the size specified in the last lock. Call setStorageMode() and setFormat() first.
+	virtual uint8 *lock(uint capacity) = 0;
+	/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Set size to the number of bytes actually written to the buffer. Returns true if ok.
+	virtual bool unlock(uint size) = 0;
+	/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+	virtual bool fill(const uint8 *src, uint size) = 0;
 
 	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const = 0;
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const = 0;
 	/// Return the size of the buffer, in bytes.
 	virtual uint getSize() const = 0;
 	/// Return the duration (in ms) of the sample in the buffer.
@@ -83,12 +87,12 @@ public:
 	{
 		/// Put buffer in sound hardware memory if possible, else in machine ram.
 		StorageAuto, 
-		/// Put buffer in sound hardware memory (fails if not possible).
+		/// Put buffer in sound hardware memory (fails if not possible). It is recommended to use StorageAuto instead of StorageHardware.
 		StorageHardware, 
-		/// Put buffer in machine ram (used for streaming).
+		/// Put buffer in machine ram (used for streaming). It behaves as if OptionSoftwareBuffer and OptionLocalBufferCopy are both enabled.
 		StorageSoftware
 	};
-	/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
+	/// Set the storage mode of this buffer, call before filling this buffer. Can be overridden by OptionSoftwareBuffer and OptionLocalBufferCopy. Default is auto.
 	virtual void setStorageMode(TStorageMode storageMode = IBuffer::StorageAuto) = 0;
 	/// Get the storage mode of this buffer.
 	virtual TStorageMode getStorageMode() = 0;
@@ -109,9 +113,9 @@ public:
 	//@{
 	//\name Utility functions
 	/// Return pcm size in bytes from duration in seconds.
-	static uint getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint frequency);
+	static uint getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint32 frequency);
 	/// Return duration in seconds from pcm size in bytes.
-	static float getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint frequency);
+	static float getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint32 frequency);
 	//@}
 	
 	//@{

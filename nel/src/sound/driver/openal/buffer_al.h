@@ -54,14 +54,18 @@ public:
 	 *	If the name after loading of the buffer doesn't match the preset name,
 	 *	the load will assert.
 	 */
-	virtual void presetName(const NLMISC::TStringId &bufferName);
+	virtual void presetName(NLMISC::TStringId bufferName);
 	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency);
-	/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
-	virtual bool fillBuffer(const void *src, uint bufsize);
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency);
+	/// Get a writable pointer to the buffer of specified size. Use capacity to specify the required bytes. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the size specified in the last lock. Call setStorageMode() and setFormat() first.
+	virtual uint8 *lock(uint capacity);
+	/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Set size to the number of bytes actually written to the buffer. Returns true if ok.
+	virtual bool unlock(uint size);
+	/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+	virtual bool fill(const uint8 *src, uint size);
 	
 	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const;
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const;
 	/// Return the size of the buffer, in bytes.
 	virtual uint getSize() const;
 	/// Return the duration (in ms) of the sample in the buffer.
@@ -100,8 +104,12 @@ private:
 	ALuint _Frequency;
 	/// Buffer data (as OpenAL keeps it's own data and doesn't publish it back)
 	uint8 *_Data;
-	/// (original) buffer size
+	/// The capacity of the buffer
+	uint _Capacity;
+	/// The size of the data in the buffer
 	uint _Size;
+	/// Storage mode
+	IBuffer::TStorageMode _StorageMode;
 
 };
 

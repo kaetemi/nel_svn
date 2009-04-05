@@ -124,11 +124,9 @@ static const std::string	EmptyString;
 */
 
 
-CBufferDSound::CBufferDSound()
+CBufferDSound::CBufferDSound() : _Data(NULL), _Capacity(0), _Size(0)
 {
 	_Name = CSoundDriverDSound::instance()->getStringMapper()->map(EmptyString);
-    _Data = NULL;
-    _Size = 0;
     _Format = Mono16;
     _Freq = 0;
 }
@@ -137,31 +135,74 @@ CBufferDSound::~CBufferDSound()
 {
 //	nldebug("Destroying DirectSound buffer %s (%p)", CSoundDriverDSound::instance()->getStringMapper()->unmap(_Name).c_str(), this);
 
-    if (_Data != NULL)
-    {
-        delete[] _Data;
-    }
+	if (_Data)
+	{
+		delete[] _Data;
+		_Data = NULL;
+	}
 }
 
-void CBufferDSound::presetName(const NLMISC::TStringId &bufferName)
+void CBufferDSound::presetName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
 
 /// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-void CBufferDSound::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
+void CBufferDSound::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	bufferFormatToSampleFormat(format, channels, bitsPerSample, _Format);
 	_Freq = frequency;
 }
 
-bool CBufferDSound::fillBuffer(const void * /* src */, uint /* bufsize */)
+/// Get a writable pointer to the buffer of specified size. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the available data. Call setStorageMode() and setFormat() first.
+uint8 *CBufferDSound::lock(uint capacity)
 {
-    return false;
+	if (_Data)
+	{
+		if (capacity > _Capacity) 
+		{
+			delete[] _Data;
+			_Data = NULL;
+		}
+	}
+	
+	if (!_Data) 
+	{
+		_Data = new uint8[capacity];
+		_Capacity = capacity;
+		if (_Size > capacity) 
+			_Size = capacity;
+	}
+	
+	return _Data;
+}
+
+/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Returns true if ok.
+bool CBufferDSound::unlock(uint size)
+{
+	if (size > _Capacity) 
+	{
+		_Size = _Capacity;
+		return false;
+	}
+	else
+	{
+		_Size = size;
+		return true;
+	}
+}
+
+/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+bool CBufferDSound::fill(const uint8 *src, uint size)
+{
+	uint8 *dest = lock(size);
+	if (dest == NULL) return false;
+	CFastMem::memcpy(dest, src, size);
+	return unlock(size);
 }
 
 /// Return the sample format informations.
-void CBufferDSound::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+void CBufferDSound::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const
 {
 	sampleFormatToBufferFormat(_Format, format, channels, bitsPerSample);
 	frequency = _Freq;
@@ -219,14 +260,14 @@ bool CBufferDSound::isBufferLoaded() const
 /// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
 void CBufferDSound::setStorageMode(TStorageMode /* storageMode */)
 {
-	// not implemented
+	// software buffering, no hardware storage mode available
 }
 
 /// Get the storage mode of this buffer.
 IBuffer::TStorageMode CBufferDSound::getStorageMode()
 {
-	// not implemented
-	return IBuffer::StorageAuto;
+	// always uses software buffers
+	return IBuffer::StorageSoftware;
 }
 
 bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
@@ -238,13 +279,6 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
     MMCKINFO riff_chunk;
     MMCKINFO data_chunk;
     MMCKINFO chunk;
-
-
-    if (_Data != NULL)
-    {
-        delete [] _Data;
-        _Data = NULL;
-    }
 
 /*	NLMISC::CIFile	ifile(file);
 	uint size = ifile.getFileSize();
@@ -388,11 +422,9 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
 
     // Allocate the sample buffer
-    _Size = data_chunk.cksize;
+    uint8 *wbuffer = lock(data_chunk.cksize);
 
-    _Data = new uint8[_Size];
-
-    if (_Data == NULL)
+    if (wbuffer == NULL)
     {
         mmioClose(hmmio, 0);
         throw ESoundDriver("Out of memory");
@@ -405,15 +437,15 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
     if (num < 0)
     {
-		delete [] _Data;
-		_Data= NULL;
+		unlock(0);
         throw ESoundDriver("Failed to read the samples");
     }
     else if ((uint32) num < _Size)
     {
-        // FIXME: print warning or throw exception ???
-        char* p = (char*) _Data;
-        ZeroMemory(p + num, _Size - num);
+		unlock(num);
+        //// FIXME: print warning or throw exception ???
+        //char* p = (char*) _Data;
+        //ZeroMemory(p + num, _Size - num);
     }
 
 
@@ -434,20 +466,10 @@ bool CBufferDSound::readWavBuffer(const std::string &name, uint8 *wavData, uint 
 
 bool CBufferDSound::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
 {
-	// free any existing data
-    if (_Data != NULL)
-    {
-        delete [] _Data;
-        _Data = NULL;
-    }
-
 	_Format = format;
 	_Size = dataSize;
-    // Allocate the sample buffer
-	_Data = new uint8 [_Size];
 
-    // read in the format data
-	memcpy(_Data, rawData, dataSize);
+	fill(rawData, dataSize);
 
     _Freq = frequency;
 

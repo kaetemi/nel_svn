@@ -41,16 +41,6 @@ using namespace std;
 
 namespace NLSOUND {
 
-IEffect::IEffect()
-{
-	
-}
-
-IEffect::~IEffect()
-{
-	
-}
-
 IReverbEffect::IReverbEffect()
 {
 	

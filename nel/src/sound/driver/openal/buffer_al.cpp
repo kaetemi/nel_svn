@@ -24,29 +24,29 @@
 #include "stdopenal.h"
 #include "buffer_al.h"
 
+#include <nel/misc/fast_mem.h>
+
 #include "sound_driver_al.h"
+
+using namespace NLMISC;
 
 namespace NLSOUND {
 
-
-/*
- * Constructor
- */
-CBufferAL::CBufferAL( ALuint buffername ) :
+CBufferAL::CBufferAL(ALuint buffername) :
 	IBuffer(), _BufferName(buffername), _SampleFormat(AL_INVALID), _Frequency(0),
-	_Data(NULL), _Size(0)
+	_Data(NULL), _Size(0), _StorageMode(IBuffer::StorageAuto), _Capacity(0)
 {
+	
 }
 
-
-/*
- * Destructor
- */
 CBufferAL::~CBufferAL()
 {
 	// delete local copy
 	if (_Data != NULL)
-		delete [] _Data;
+	{
+		delete[] _Data;
+		_Data = NULL;
+	}
 
 	// delete OpenAL copy
 	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
@@ -59,13 +59,13 @@ CBufferAL::~CBufferAL()
  *	If the name after loading of the buffer doesn't match the preset name,
  *	the load will assert.
  */
-void CBufferAL::presetName(const NLMISC::TStringId &bufferName)
+void CBufferAL::presetName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
 
 /// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-void CBufferAL::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
+void CBufferAL::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	TSampleFormat sampleFormat;
 	bufferFormatToSampleFormat(format, channels, bitsPerSample, sampleFormat);
@@ -80,30 +80,90 @@ void CBufferAL::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSam
 	_Frequency = frequency;
 }
 
-/// Set the buffer size and fill the buffer. Return true if ok.
-bool CBufferAL::fillBuffer(const void *src, uint bufsize)
+/// Get a writable pointer to the buffer of specified size. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the available data. Call setStorageMode() and setFormat() first.
+uint8 *CBufferAL::lock(uint capacity)
 {
-	nlassert( src != NULL );
-	nlassert( (_SampleFormat != AL_INVALID) && (_Frequency != 0 ) );
+	nlassert((_SampleFormat != AL_INVALID) && (_Frequency != 0));
 
+	if (_Data)
+	{
+		if (capacity > _Capacity) 
+		{
+			delete[] _Data;
+			_Data = NULL;
+		}
+	}
+	
+	if (!_Data) _Data = new uint8[capacity];
+	if (_Size > capacity) _Size = capacity;
+	_Capacity = capacity;
+	
+	return _Data;
+}
+
+/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Returns true if ok.
+bool CBufferAL::unlock(uint size)
+{
+	if (size > _Capacity) 
+	{
+		_Size = _Capacity;
+		return false;
+	}
+	
 	// Fill buffer (OpenAL one)
-	alBufferData(_BufferName, _SampleFormat, src, bufsize, _Frequency);
+	_Size = size;
+	alBufferData(_BufferName, _SampleFormat, _Data, _Size, _Frequency);
+	
+	if (_StorageMode != IBuffer::StorageSoftware && !CSoundDriverAL::getInstance()->getOption(ISoundDriver::OptionLocalBufferCopy))
+	{
+		delete[] _Data;
+		_Data = NULL;
+		_Capacity = 0;
+	}
 
-	// delete local copy
-	if (_Data != NULL)
-		delete [] _Data;
+	// Error handling
+	return (alGetError() == AL_NO_ERROR);
+}
 
-	// Fill buffer (local copy)
-	_Size = bufsize;
-	_Data = new uint8[_Size];
-	memcpy(_Data, src, (size_t)_Size);
+/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+bool CBufferAL::fill(const uint8 *src, uint size)
+{
+	nlassert((_SampleFormat != AL_INVALID) && (_Frequency != 0));
+
+	bool localBufferCopy = CSoundDriverAL::getInstance()->getOption(ISoundDriver::OptionLocalBufferCopy);
+
+	if (_Data)
+	{
+		if ((!localBufferCopy) || (size > _Capacity)) 
+		{
+			delete[] _Data;
+			_Data = NULL;
+			_Capacity = 0;
+		}
+	}
+	
+	_Size = size;
+	
+	if (localBufferCopy)
+	{
+		// Force a local copy of the buffer
+		if (!_Data) 
+		{
+			_Data = new uint8[size];
+			_Capacity = size;
+		}
+		CFastMem::memcpy(_Data, src, size);
+	}
+	
+	// Fill buffer (OpenAL one)
+	alBufferData(_BufferName, _SampleFormat, src, size, _Frequency);
 
 	// Error handling
 	return (alGetError() == AL_NO_ERROR);
 }
 
 /// Return the sample format informations.
-void CBufferAL::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+void CBufferAL::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const
 {
 	TSampleFormat sampleFormat;
 	switch (_SampleFormat)
@@ -182,16 +242,15 @@ bool CBufferAL::isBufferLoaded() const
 
 	
 /// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
-void CBufferAL::setStorageMode(TStorageMode /* storageMode */)
+void CBufferAL::setStorageMode(TStorageMode storageMode)
 {
-	// not implemented yet
+	_StorageMode = storageMode;
 }
 
 /// Get the storage mode of this buffer.
 IBuffer::TStorageMode CBufferAL::getStorageMode()
 {
-	// not implemented yet
-	return IBuffer::StorageAuto;
+	return _StorageMode;
 }
 
 /**

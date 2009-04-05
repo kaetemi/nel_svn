@@ -29,6 +29,7 @@
 namespace NLSOUND {
 	class IBuffer;
 	class CBufferAL;
+	class CEffectAL;
 
 /**
  * OpenAL sound source
@@ -68,9 +69,11 @@ public:
 	
 	/// Return the OpenAL source name
 	inline ALuint sourceName() { return _SourceName; }
+
+	void setEffect(CEffectAL *effect);
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect *effect);
+	virtual void setEffect(IReverbEffect *reverbEffect);
 	
 	/// \name Initialization
 	//@{

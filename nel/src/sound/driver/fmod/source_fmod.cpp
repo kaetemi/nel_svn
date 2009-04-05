@@ -117,7 +117,7 @@ void CSourceFMod::reset()
 }
 
 /// Set the effect send for this source, NULL to disable.
-void CSourceFMod::setEffect(IEffect * /* effect */)
+void CSourceFMod::setEffect(IReverbEffect * /* effect */)
 {
 	throw ESoundDriverNoEnvironmentEffects();
 }

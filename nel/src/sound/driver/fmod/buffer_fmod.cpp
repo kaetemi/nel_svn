@@ -43,13 +43,13 @@ static const std::string	EmptyString;
 
 
 // ***************************************************************************
-CBufferFMod::CBufferFMod()
+CBufferFMod::CBufferFMod() : _LockedData(NULL)
 {
 	_Name = CSoundDriverFMod::getInstance()->getStringMapper()->map(EmptyString);
     _Size = 0;
     _Format = Mono16;
     _Freq = 0;
-	_FModSample= NULL;
+	_FModSample = NULL;
 }
 
 // ***************************************************************************
@@ -63,7 +63,7 @@ CBufferFMod::~CBufferFMod()
 }
 
 // ***************************************************************************
-void CBufferFMod::presetName(const NLMISC::TStringId &bufferName)
+void CBufferFMod::presetName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
@@ -77,10 +77,32 @@ void CBufferFMod::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerS
 	_Freq = frequency;
 }
 
-// ***************************************************************************
-bool CBufferFMod::fillBuffer(const void * /* src */, uint32 /* bufsize */)
+/// Get a writable pointer to the buffer of specified size. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the available data. Call setStorageMode() and setFormat() first.
+uint8 *CBufferFMod::lock(uint capacity)
 {
-    return false;
+	// not fully implemented in fmod driver
+	nlassert(!_LockedData);
+	if (capacity != _Size) return NULL;
+	else return (uint8 *)lock();
+}
+
+/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Returns true if ok.
+bool CBufferFMod::unlock(uint size)
+{
+	// not fully implemented in fmod driver
+	nlassert(_LockedData);
+	unlock(_LockedData);
+	_LockedData = NULL;
+	if (size != _Size) return false;
+	else return true;
+}
+
+/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+bool CBufferFMod::fill(const uint8 *src, uint size)
+{
+	_Size = size;
+	loadDataToFMod(src);
+	return _FModSample != NULL;
 }
 
 /// Return the sample format informations.
@@ -584,7 +606,7 @@ uint32 CBufferFMod::getBufferMono16(std::vector<sint16> &result)
 
 
 // ***************************************************************************
-void	CBufferFMod::loadDataToFMod(uint8 *data)
+void	CBufferFMod::loadDataToFMod(const uint8 *data)
 {
 	// Delete old one
 	if(_FModSample)
@@ -596,8 +618,8 @@ void	CBufferFMod::loadDataToFMod(uint8 *data)
 	// if some data, create new one
 	if(data)
 	{
-		uint8	*tmpData= NULL;
-		uint8	*uploadData= data;
+		uint8 *tmpData = NULL;
+		const uint8	*uploadData = data;
 
 		// if format is ADPCM, decode into Mono16
 		if(_Format==Mono16ADPCM)

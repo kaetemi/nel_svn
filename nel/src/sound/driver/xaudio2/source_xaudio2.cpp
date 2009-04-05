@@ -256,11 +256,11 @@ void CSourceXAudio2::submitBuffer(CBufferXAudio2 *ibuffer)
 }
 
 /// Set the effect send for this source, NULL to disable.
-void CSourceXAudio2::setEffect(IEffect *effect)
+void CSourceXAudio2::setEffect(CEffectXAudio2 *effect)
 {
 	if (effect)
 	{
-		_EffectVoice = dynamic_cast<CEffectXAudio2 *>(effect)->getVoice();
+		_EffectVoice = effect->getVoice();
 		if (_SourceVoice)
 		{
 			// fixme: duplicate code !!! (see lower)
@@ -308,6 +308,12 @@ void CSourceXAudio2::setEffect(IEffect *effect)
 	}
 }
 
+/// Set the effect send for this source, NULL to disable.
+void CSourceXAudio2::setEffect(IReverbEffect *reverbEffect)
+{
+	setEffect(reverbEffect ? static_cast<CEffectXAudio2 *>(static_cast<CReverbEffectXAudio2 *>(reverbEffect)) : NULL);
+}
+
 /// \name Initialization
 //@{
 /// Enable or disable streaming mode. Source must be stopped to call this.
@@ -350,7 +356,7 @@ void CSourceXAudio2::submitStreamingBuffer(IBuffer *buffer)
 	IBuffer::TBufferFormat bufferFormat;
 	uint8 channels;
 	uint8 bitsPerSample;
-	uint frequency;
+	uint32 frequency;
 	buffer->getFormat(bufferFormat, channels, bitsPerSample, frequency);
 	// allow to change the format if not playing
 	if (!_IsPlaying)
@@ -514,7 +520,7 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 }
 
 /// (Internal) Prepare to play. Stop the currently playing buffers, and set the correct voice settings.
-bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint frequency)
+bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	if (_IsPlaying)
 	{

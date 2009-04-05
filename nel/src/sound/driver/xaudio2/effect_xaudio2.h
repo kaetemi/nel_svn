@@ -84,15 +84,9 @@ public:
 	CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CReverbEffectXAudio2();
 	virtual void release();
-
-	/// Get the type of effect (reverb, etc)
-	virtual TEffectType getType();
-
+	
 	/// Set the environment (you have full control now, have fun)
 	virtual void setEnvironment(const CEnvironment &environment = CEnvironment(), float roomSize = 100.0f);
-
-	/// Set the volume of this submixer
-	void setGain(float gain);
 
 }; /* class CReverbEffectXAudio2 */
 

@@ -89,17 +89,6 @@ void CStandardReverbEffectAL::setEnvironment(const CEnvironment &environment, fl
 	alEffectf(_AlEffect, AL_REVERB_LATE_REVERB_DELAY, environment.LateReverbDelay); alTestWarning("AL_REVERB_LATE_REVERB_DELAY");
 }
 
-void CStandardReverbEffectAL::setGain(float gain)
-{
-	alAuxiliaryEffectSlotf(_AlAuxEffectSlot, AL_EFFECTSLOT_GAIN, gain);
-}
-
-/// Get the type of effect (reverb, etc)
-IEffect::TEffectType CStandardReverbEffectAL::getType()
-{
-	return Reverb;
-}
-
 // ******************************************************************
 
 #if EFX_CREATIVE_AVAILABLE
@@ -113,17 +102,6 @@ CCreativeReverbEffectAL::CCreativeReverbEffectAL(CSoundDriverAL *soundDriver, AL
 CCreativeReverbEffectAL::~CCreativeReverbEffectAL()
 {
 
-}
-
-void CCreativeReverbEffectAL::setGain(float gain)
-{
-	alAuxiliaryEffectSlotf(_AlAuxEffectSlot, AL_EFFECTSLOT_GAIN, gain);
-}
-
-/// Get the type of effect (reverb, etc)
-IEffect::TEffectType CCreativeReverbEffectAL::getType()
-{
-	return Reverb;
 }
 
 void CCreativeReverbEffectAL::setEnvironment(const CEnvironment &environment, float roomSize)

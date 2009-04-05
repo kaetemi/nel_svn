@@ -398,28 +398,20 @@ IBuffer *CSoundDriverXAudio2::createBuffer()
 	return static_cast<IBuffer *>(buffer);
 }
 
-/// Create an effect
-IEffect *CSoundDriverXAudio2::createEffect(IEffect::TEffectType effectType)
+/// Create a reverb effect
+IReverbEffect *CSoundDriverXAudio2::createReverbEffect()
 {
-	IEffect *effect = NULL;
-	switch (effectType)
+	CReverbEffectXAudio2 *reverb = new CReverbEffectXAudio2(this);
+	if (reverb->getEffect())
 	{
-		case IEffect::Reverb:
-		{
-			CReverbEffectXAudio2 *reverb = new CReverbEffectXAudio2(this);
-			if (reverb->getEffect()) { effect = static_cast<IEffect *>(reverb); }
-			else { delete reverb; return NULL; }
-			_Effects.insert(reverb); // !!
-			break;
-		}
-		default:
-		{
-			nlwarning(NLSOUND_XAUDIO2_PREFIX "Invalid effect type");
-			return NULL;
-		}
+		_Effects.insert(reverb);
+		return static_cast<IReverbEffect *>(reverb);
 	}
-	nlassert(effect);
-	return effect;
+	else 
+	{ 
+		delete reverb;
+		return NULL; 
+	}
 }
 
 /// Return the maximum number of sources that can created

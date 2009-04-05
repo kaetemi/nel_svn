@@ -47,7 +47,7 @@ namespace NLSOUND {
 CBufferXAudio2::CBufferXAudio2(CSoundDriverXAudio2 *soundDriver) 
 : _SoundDriver(soundDriver), _Data(NULL), 
 _Size(0), _Name(NULL), _Format((IBuffer::TBufferFormat)~0),
-_Channels(0), _BitsPerSample(0), _Frequency(0)
+_Channels(0), _BitsPerSample(0), _Frequency(0), _Capacity(0)
 {
 	
 }
@@ -68,50 +68,73 @@ void CBufferXAudio2::release()
 		_SoundDriver = NULL;
 	}
 	// Release possible _Data
-	delete[] _Data; _Data = NULL;
+	if (_Data)
+	{
+		delete[] _Data;
+		_Data = NULL;
+	}
 }
 
-/// Allocate a new writable buffer. If this buffer was already allocated, the previous data is released.
-/// May return NULL if the format or frequency is not supported by the driver.
-uint8 *CBufferXAudio2::openWritable(uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency)
+/// Get a writable pointer to the buffer of specified size. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the available data. Call setStorageMode() and setFormat() first.
+uint8 *CBufferXAudio2::lock(uint capacity)
 {
 	if (_Data)
 	{
 		_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
-		if (size > _Size) delete[] _Data; _Data = NULL;
+		if (capacity > _Capacity) 
+		{
+			delete[] _Data;
+			_Data = NULL;
+		}
 	}
 	
-	if (!_Data) _Data = new uint8[size];
-	
-	_Format = bufferFormat;
-	_Channels = channels;
-	_BitsPerSample = bitsPerSample;
-	_Frequency = frequency;
-	_Size = size;
-	
+	if (!_Data) 
+	{
+		_Data = new uint8[capacity];
+		_Capacity = capacity;
+		if (_Size > capacity) 
+			_Size = capacity;
+	}
 	_SoundDriver->performanceRegisterBuffer(_Format, _Size);
 	
 	return _Data;
 }
 
-/// Tell that you are done writing to this buffer, so it can be copied over to hardware if needed.
-/// If keepLocal is true, a local copy of the buffer will be kept (so allocation can be re-used later).
-/// keepLocal overrides the OptionLocalBufferCopy flag. The buffer can use this function internally.
-void CBufferXAudio2::lockWritable(bool /* keepLocal */)
+/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Returns true if ok.
+bool CBufferXAudio2::unlock(uint size)
 {
-	// does nothing in this driver
+	_SoundDriver->performanceUnregisterBuffer(_Format, _Size);
+	if (size > _Capacity) 
+	{
+		_Size = _Capacity;
+		_SoundDriver->performanceRegisterBuffer(_Format, _Size);
+		return false;
+	}
+	else
+	{
+		_Size = size;
+		_SoundDriver->performanceRegisterBuffer(_Format, _Size);
+		return true;
+	}
+}
+
+/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+bool CBufferXAudio2::fill(const uint8 *src, uint size)
+{
+	uint8 *dest = lock(size);
+	if (dest == NULL) return false;
+	CFastMem::memcpy(dest, src, size);
+	return unlock(size);
 }
 
 bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
 {
-	TSampleFormat format = (TSampleFormat)~0;
-
 	// If name has been preset, it must match.
 	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
 	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
 	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
 	_Name = nameId;
-
+	
 	// Create mmio stuff
 	MMIOINFO mmioinfo;
 	memset(&mmioinfo, 0, sizeof(MMIOINFO));
@@ -120,13 +143,13 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	mmioinfo.cchBuffer = dataSize;
 	HMMIO hmmio = mmioOpen(NULL, &mmioinfo, MMIO_READ | MMIO_DENYWRITE);
 	if (!hmmio) { throw ESoundDriver("Failed to open the file"); }
-
+	
 	// Find wave
 	MMCKINFO mmckinforiff;
 	memset(&mmckinforiff, 0, sizeof(MMCKINFO));
 	mmckinforiff.fccType = mmioFOURCC('W', 'A', 'V', 'E');
 	if (mmioDescend(hmmio, &mmckinforiff, NULL, MMIO_FINDRIFF) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend WAVE failed"); }
-
+	
 	// Find fmt
 	MMCKINFO mmckinfofmt;
 	memset(&mmckinfofmt, 0, sizeof(MMCKINFO));
@@ -134,7 +157,7 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	if (mmioDescend(hmmio, &mmckinfofmt, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend fmt failed"); }
 	WAVEFORMATEX *wavefmt = (WAVEFORMATEX *)(&wavData[mmckinfofmt.dwDataOffset]);
 	if (mmioAscend(hmmio, &mmckinfofmt, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend fmt failed"); }
-
+	
 	// Find data
 	MMCKINFO mmckinfodata;
 	memset(&mmckinfodata, 0, sizeof(MMCKINFO));
@@ -142,75 +165,25 @@ bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint
 	if (mmioDescend(hmmio, &mmckinfodata, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend data failed"); }
 	BYTE *wavedata = (BYTE *)(&wavData[mmckinfodata.dwDataOffset]);
 	if (mmioAscend(hmmio, &mmckinfodata, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend data failed"); }
-
+	
 	// Close mmio
 	mmioClose(hmmio, 0);
-
+	
 	// Get format
-	switch (wavefmt->nChannels)
+	TBufferFormat format = (TBufferFormat)~0;
+	switch (wavefmt->wFormatTag)
 	{
-	case 1:
-		switch (wavefmt->wFormatTag)
-		{
-		case WAVE_FORMAT_PCM:
-			switch (wavefmt->wBitsPerSample)
-			{
-			case 8:
-				format = Mono8;
-				break;
-			case 16:
-				format = Mono16;
-				break;
-			default:
-				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
-			}
-			break;
-		case WAVE_FORMAT_ADPCM:
-			switch (wavefmt->wBitsPerSample)
-			{
-			case 16:
-				format = Mono16ADPCM;
-				break;
-			default:
-				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
-			}
-			break;
-		default:
-			throw ESoundDriver(toString("wFormatTag invalid (%i)", (sint32)wavefmt->wFormatTag));
-		}
-		break;
-	case 2:
-		switch (wavefmt->wFormatTag)
-		{
-		case WAVE_FORMAT_PCM:
-			switch (wavefmt->wBitsPerSample)
-			{
-			case 8:
-				format = Stereo8;
-				break;
-			case 16:
-				format = Stereo16;
-				break;
-			default:
-				throw ESoundDriver(toString("wBitsPerSample invalid (%i)", (sint32)wavefmt->wBitsPerSample));
-			}
-			break;
-		default:
-			throw ESoundDriver(toString("wFormatTag invalid (%i)", (sint32)wavefmt->wFormatTag));
-		}
-		break;
-	default:
-		throw ESoundDriver(toString("nChannels invalid (%i)", (sint32)wavefmt->nChannels));
+	case WAVE_FORMAT_PCM: format = FormatPCM; break;
+	case WAVE_FORMAT_ADPCM: format = FormatADPCM; break;
+	default: throw ESoundDriver(toString("wFormatTag invalid (%u)", (uint32)wavefmt->wFormatTag));
 	}
-
+	
 	// Copy stuff
-	TBufferFormat bufferFormat;
-	uint8 channels;
-	uint8 bitsPerSample;
-	sampleFormatToBufferFormat(format, bufferFormat, channels, bitsPerSample);
-	uint8 *wbuffer = openWritable(mmckinfodata.cksize, bufferFormat, channels, bitsPerSample, wavefmt->nSamplesPerSec);
+	setFormat(format, (uint8)wavefmt->nChannels, (uint8)wavefmt->wBitsPerSample, wavefmt->nSamplesPerSec);
+	uint8 *wbuffer = lock(mmckinfodata.cksize);
+	if (wbuffer == NULL) throw ESoundDriver("Out of memory");
 	CFastMem::memcpy(wbuffer, wavedata, mmckinfodata.cksize);
-	lockWritable(true);
+	unlock(mmckinfodata.cksize);
 	return true;
 }
 
@@ -227,9 +200,11 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
 	uint8 channels;
 	uint8 bitsPerSample;
 	sampleFormatToBufferFormat(sampleFormat, bufferFormat, channels, bitsPerSample);
-	uint8 *wbuffer = openWritable(dataSize, bufferFormat, channels, bitsPerSample, frequency);
+	setFormat(bufferFormat, channels, bitsPerSample, frequency);
+	uint8 *wbuffer = lock(dataSize);
+	if (wbuffer == NULL) return false;
 	CFastMem::memcpy(wbuffer, rawData, dataSize);
-	lockWritable(true);
+	unlock(dataSize);
 	return true;
 }
 
@@ -238,12 +213,12 @@ bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint
  *	If the name after loading of the buffer doesn't match the preset name,
  *	the load will assert.
  */
-void CBufferXAudio2::presetName(const NLMISC::TStringId &bufferName)
+void CBufferXAudio2::presetName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
 
-void CBufferXAudio2::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint frequency)
+void CBufferXAudio2::setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	_Format = format;
 	_Channels = channels;
@@ -251,17 +226,8 @@ void CBufferXAudio2::setFormat(TBufferFormat format, uint8 channels, uint8 bitsP
 	_BitsPerSample = bitsPerSample;
 }
 
-/// Set the buffer size and fill the buffer.  Return true if ok. Call setStorageMode() and setFormat() first.
-bool CBufferXAudio2::fillBuffer(const void *src, uint bufsize)
-{
-	uint8* wbuffer = openWritable(bufsize, _Format, _Channels, _BitsPerSample, _Frequency);
-	CFastMem::memcpy(wbuffer, src, bufsize);
-	lockWritable(true);
-	return true;
-}
-
 /// Return the sample format informations.
-void CBufferXAudio2::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint &frequency) const
+void CBufferXAudio2::getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const
 {
 	format = _Format;
 	channels = _Channels;
@@ -312,12 +278,13 @@ bool CBufferXAudio2::isBufferLoaded() const
 /// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
 void CBufferXAudio2::setStorageMode(IBuffer::TStorageMode /* storageMode */)
 {
-	// software sound, no hardware storage mode
+	// software buffering, no hardware storage mode available
 }
 
 /// Get the storage mode of this buffer.
 IBuffer::TStorageMode CBufferXAudio2::getStorageMode()
 {
+	// always uses software buffers
 	return IBuffer::StorageSoftware;
 }
 

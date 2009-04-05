@@ -117,7 +117,7 @@ void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 chann
 	}
 }
 
-uint IBuffer::getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint frequency)
+uint IBuffer::getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	return (uint)(duration
 		* ((float)frequency)
@@ -125,7 +125,7 @@ uint IBuffer::getPCMSizeFromDuration(float duration, uint8 channels, uint8 bitsP
 		* ((float)channels));
 }
 
-float IBuffer::getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint frequency)
+float IBuffer::getDurationFromPCMSize(uint size, uint8 channels, uint8 bitsPerSample, uint32 frequency)
 {
 	return ((float)size) 
 		/ ((float)channels)

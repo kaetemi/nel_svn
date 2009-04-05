@@ -104,17 +104,6 @@ void CReverbEffectXAudio2::release()
 	_release();
 	if (_Effect) { _Effect->Release(); _Effect = NULL; }
 }
-/// Get the type of effect (reverb, etc)
-IEffect::TEffectType CReverbEffectXAudio2::getType()
-{
-	return Reverb;
-}
-
-/// Set the gain
-void CReverbEffectXAudio2::setGain(float gain)
-{
-	_Voice->SetVolume(gain);
-}
 
 /// Set the environment (you have full control now, have fun)
 void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment, float roomSize)

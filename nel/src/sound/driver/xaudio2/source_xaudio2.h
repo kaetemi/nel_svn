@@ -43,6 +43,7 @@ namespace NLSOUND {
 	class CSoundDriverXAudio2;
 	class CBufferXAudio2;
 	class CAdpcmXAudio2;
+	class CEffectXAudio2;
 
 /**
  * \brief CSourceXAudio2
@@ -135,10 +136,12 @@ public:
 	/// (Internal) Submit a buffer to the XAudio2 source voice.
 	void submitBuffer(CBufferXAudio2 *ibuffer);
 	/// (Internal) Prepare to play. Stop the currently playing buffers, and set the correct voice settings.
-	bool preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint frequency);
+	bool preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency);
+	/// (Internal) Set the effect send for this source, NULL to disable.
+	void setEffect(CEffectXAudio2 *effect);
 	
 	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IEffect *effect);
+	virtual void setEffect(IReverbEffect *reverbEffect);
 	
 	/// \name Initialization
 	//@{

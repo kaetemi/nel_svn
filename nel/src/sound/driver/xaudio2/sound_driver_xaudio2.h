@@ -177,8 +177,8 @@ public:
 	virtual	ISource *createSource();
 	/// Create a sound buffer, destroy with delete
 	virtual	IBuffer *createBuffer();
-	/// Create an effect
-	virtual IEffect *createEffect(IEffect::TEffectType effectType);
+	/// Create a reverb effect
+	virtual IReverbEffect *createReverbEffect();
 	/// Return the maximum number of sources that can created
 	virtual uint countMaxSources();
 	/// Return the maximum number of effects that can be created
