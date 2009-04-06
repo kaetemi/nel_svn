@@ -60,14 +60,18 @@ namespace	NLMISC
 inline uint64 rdtsc()
 {
 	uint64 ticks;
-#	ifndef NL_OS_WINDOWS
-		__asm__ volatile(".byte 0x0f, 0x31" : "=a" (ticks.low), "=d" (ticks.high));
+#	ifdef NL_OS_WINDOWS
+#	ifdef NL_NO_ASM
+		ticks = uint64(__rdtsc());
 #	else
 		// We should use the intrinsic code now. ticks = uint64(__rdtsc());
 		__asm	rdtsc
 		__asm	mov		DWORD PTR [ticks], eax
 		__asm	mov		DWORD PTR [ticks + 4], edx
-#	endif
+#	endif // NL_NO_ASM
+#	else
+		__asm__ volatile(".byte 0x0f, 0x31" : "=a" (ticks.low), "=d" (ticks.high));
+#	endif // NL_OS_WINDOWS
 	return ticks;
 }
 

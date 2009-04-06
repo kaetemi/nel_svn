@@ -215,6 +215,9 @@ public:
 	{
 		uint32 result;
 #ifdef NL_OS_WINDOWS
+#	ifdef NL_NO_ASM
+		result = _InterlockedExchange(reinterpret_cast<volatile long *>(lockPtr), 1);
+#	else
 #	ifdef NL_DEBUG
 		// Workaround for dumb inlining bug (returning of function goes into the choux): push/pop registers
 		__asm
@@ -236,7 +239,8 @@ public:
 			xchg [ecx],eax
 			mov [result],eax
 		}
-#	endif
+#	endif // NL_DEBUG
+#	endif // NL_NO_ASM
 #else
 		ASM_ASWAP_FOR_GCC_XCHG
 #endif // NL_OS_WINDOWS

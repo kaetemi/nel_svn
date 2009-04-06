@@ -100,6 +100,13 @@
 #	else
 #		error "Don't know the compilation mode"
 #	endif
+#	ifdef _WIN64
+#		define NL_OS_WIN64
+#		ifndef NL_NO_ASM
+			// Windows 64bits platform SDK compilers doesn't support inline assemblers
+#			define NL_NO_ASM
+#		endif
+#	endif
 	// define NOMINMAX to be sure that windows includes will not define min max macros, but instead, use the stl template
 #	define NOMINMAX
 #else
