@@ -1,3 +1,3 @@
 ADD_SUBDIRECTORY(src)
 
-INSTALL(FILES collision_service.cfg DESTINATION ${PKGDIR})
+INSTALL(FILES collision_service.cfg DESTINATION ${SNOWBALLS_CONFIG_FILE} COMPONENT collisionservice)

@@ -43,6 +43,9 @@ using namespace NLSOUND;
 
 #include <stdio.h>
 
+#ifndef NL_SOUND_DATA
+#define NL_SOUND_DATA "."
+#endif // NL_SOUND_DATA
 
 // Pointer to the audio mixer object
 UAudioMixer	*AudioMixer = NULL;
@@ -56,7 +59,7 @@ void Init()
 	try
 	{
 
-		CPath::addSearchPath("data", true, false);
+		CPath::addSearchPath(NL_SOUND_DATA"/data", true, false);
 
 		/*
 		 * 1. Create the audio mixer object and init it.

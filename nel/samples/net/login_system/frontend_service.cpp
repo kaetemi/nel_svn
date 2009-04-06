@@ -46,6 +46,10 @@ using namespace std;
 using namespace NLNET;
 using namespace NLMISC;
 
+#ifndef NL_LS_CFG
+#define NL_LS_CFG ""
+#endif // NL_LS_CFG
+
 //#define USE_UDP
 #undef USE_UDP
 
@@ -208,4 +212,4 @@ public:
  * Declare a service with the class CFrontEndService, the names "FS" (short) and "frontend_service" (long).
  * The port is dynamically find and there s no callback array.
  */
-NLNET_SERVICE_MAIN (CFrontEndService, "FS", "frontend_service", 0, EmptyCallbackArray, "", "")
+NLNET_SERVICE_MAIN (CFrontEndService, "FS", "frontend_service", 0, EmptyCallbackArray, NL_LS_CFG, "")

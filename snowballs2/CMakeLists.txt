@@ -45,13 +45,16 @@ SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 # Set default config options
 #
 NL_SETUP_DEFAULT_OPTIONS()
+NL_SETUP_PREFIX_PATHS()
 
 #-----------------------------------------------------------------------------
 # Override default options
 OPTION(BUILD_CLIENT "Build the Snowballs Client" ON)
 OPTION(BUILD_SERVER "Build the Snowballs Servers" ON)
-SET(SNOWBALLS_CONFIG_FILE "${CMAKE_INSTALL_PREFIX}/share/nel/snowballs" CACHE FILEPATH "Snowballs config file location")
-SET(SNOWBALLS_LOG_FILE "${CMAKE_INSTALL_PREFIX}/var/log/snowballs" CACHE FILEPATH "Snowballs log file location")
+SET(SNOWBALLS_CONFIG_FILE "${NL_ETC_PREFIX}/snowballs" CACHE FILEPATH "Snowballs config file location")
+SET(SNOWBALLS_DATA_FILE "${NL_ETC_PREFIX}/snowballs" CACHE FILEPATH "Snowballs data file location")
+SET(SNOWBALLS_LOG_FILE "${NL_LOG_PREFIX}/snowballs" CACHE FILEPATH "Snowballs log file location")
+INSTALL(CODE "FILE(MAKE_DIRECTORY ${SNOWBALLS_LOG_FILE})")
 
 #-----------------------------------------------------------------------------
 #Platform specifics
@@ -88,14 +91,7 @@ ENDIF(WIN32)
 
 NL_SETUP_BUILD_FLAGS()
 
-#IF(UNIX)
-  #SET(PKGDIR "${CMAKE_INSTALL_PREFIX}/share/nel/snowballs/")
-  #SET(LOGDIR "${CMAKE_INSTALL_PREFIX}/var/log/snowballs/")
-  SET(PKGDIR "share/nel/snowballs")
-  SET(LOGDIR "var/log/snowballs")
-  #ADD_DEFINITIONS(-DSNOWBALLS_CONFIG="\\"${CMAKE_INSTALL_PREFIX}/${PKGDIR}/\\"" -DSNOWBALLS_STATE="\\"${CMAKE_INSTALL_PREFIX}/${PKGDIR}/\\"" -DSNOWBALLS_LOGS="\\"${CMAKE_INSTALL_PREFIX}/${LOGDIR}/\\"")
-  ADD_DEFINITIONS(-DSNOWBALLS_CONFIG="\\"${SNOWBALLS_CONFIG_FILE}/\\"" -DSNOWBALLS_STATE="\\"${SNOWBALLS_LOG_FILE}/\\"" -DSNOWBALLS_LOGS="\\"${CMAKE_INSTALL_PREFIX}/${LOGDIR}/\\"")
-#ENDIF(UNIX)
+ADD_DEFINITIONS(-DSNOWBALLS_CONFIG="\\"${SNOWBALLS_CONFIG_FILE}/\\"" -DSNOWBALLS_STATE="\\"${SNOWBALLS_LOG_FILE}/\\"" -DSNOWBALLS_LOGS="\\"${SNOWBALLS_LOG_FILE}/\\"")
 
 IF(BUILD_CLIENT)
   ADD_SUBDIRECTORY(client)

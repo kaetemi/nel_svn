@@ -36,6 +36,10 @@ using namespace std;
 using namespace NLMISC;
 using namespace NLNET;
 
+#ifndef CHAT_DIR
+#	define CHAT_DIR ""
+#endif
+
 // THE SERVER
 
 // Must be a pointer to control when to start listening socket and when stop it
@@ -123,4 +127,4 @@ public:
 // the second one is the name of the service used to register and find the service
 // using the naming service. the third one is the port where the listen socket will
 // be created. If you put 0, the system automatically finds a port.
-NLNET_SERVICE_MAIN (CChatService, "CS", "chat_service", 0, EmptyCallbackArray, "", "");
+NLNET_SERVICE_MAIN (CChatService, "CS", "chat_service", 0, EmptyCallbackArray, CHAT_DIR, "");

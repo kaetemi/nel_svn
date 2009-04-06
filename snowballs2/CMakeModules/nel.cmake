@@ -62,9 +62,12 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   ###
   # Drivers Support
   ###
-  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver"                           ON )
-  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver"                           ON )
-  OPTION(WITH_DRIVER_DIRECT3D     "Build Direct3D Driver"                         OFF)
+  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver (3D)"                      ON )
+  OPTION(WITH_DRIVER_DIRECT3D     "Build Direct3D Driver (3D)"                    OFF)
+  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver (Sound)"                   ON )
+  OPTION(WITH_DRIVER_FMOD         "Build FMOD Driver (Sound)"                     OFF)
+  OPTION(WITH_DRIVER_DSOUND       "Build DirectSound Driver (Sound)"              OFF)
+  OPTION(WITH_DRIVER_XAUDIO2      "Build XAudio2 Driver (Sound)"                  OFF)
 
   ###
   # Optional support
@@ -160,3 +163,31 @@ MACRO(NL_SETUP_BUILD_FLAGS)
   SET(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} ${NL_RELEASEDEBUG_CFLAGS} ${PLATFORM_CFLAGS} ")
   SET(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} ${NL_RELEASEDEBUG_CFLAGS} ${PLATFORM_CFLAGS} ")
 ENDMACRO(NL_SETUP_BUILD_FLAGS)
+
+MACRO(NL_SETUP_PREFIX_PATHS)
+  ## Allow override of install_prefix/etc path.
+  IF(NOT NL_ETC_PREFIX)
+    SET(NL_ETC_PREFIX "${CMAKE_INSTALL_PREFIX}/etc/nel" CACHE PATH "Installation path for configurations")
+  ENDIF(NOT NL_ETC_PREFIX)
+
+  ## Allow override of install_prefix/share path.
+  IF(NOT NL_SHARE_PREFIX)
+    SET(NL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share/nel" CACHE PATH "Installation path for data.")
+  ENDIF(NOT NL_SHARE_PREFIX)
+
+  ## Allow override of install_prefix/sbin path.
+  IF(NOT NL_SBIN_PREFIX)
+    SET(NL_SBIN_PREFIX "${CMAKE_INSTALL_PREFIX}/sbin" CACHE PATH "Installation path for admin tools and services.")
+  ENDIF(NOT NL_SBIN_PREFIX)
+
+  ## Allow override of install_prefix/bin path.
+  IF(NOT NL_BIN_PREFIX)
+    SET(NL_BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation path for tools and applications.")
+  ENDIF(NOT NL_BIN_PREFIX)
+
+  ## Allow override of install_prefix/bin path.
+  IF(NOT NL_LOG_PREFIX)
+    SET(NL_LOG_PREFIX "${CMAKE_INSTALL_PREFIX}/var/log" CACHE PATH "Installation path for tools and applications.")
+  ENDIF(NOT NL_LOG_PREFIX)
+
+ENDMACRO(NL_SETUP_PREFIX_PATHS)

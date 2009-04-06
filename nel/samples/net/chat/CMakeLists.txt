@@ -6,6 +6,10 @@ ADD_EXECUTABLE(nl_sample_chatclient client.cpp kbhit.cpp kbhit.h)
 
 ADD_EXECUTABLE(nl_sample_chatserver server.cpp)
 
+IF(UNIX)
+  ADD_DEFINITIONS(-DCHAT_DIR="\\"${NL_SHARE_PREFIX}/nl_sample_chat/\\"")
+ENDIF(UNIX)
+
 INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(nl_sample_chatclient ${PLATFORM_LINKFLAGS} ${NLNET_LIB})
 TARGET_LINK_LIBRARIES(nl_sample_chatserver ${PLATFORM_LINKFLAGS} ${NLNET_LIB})
@@ -16,5 +20,5 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_chatclient nl_sample_chatserver RUNTIME DESTINATION bin COMPONENT samplesnet)
-INSTALL(FILES chat_service.cfg client.cfg DESTINATION share/nel/nl_sample_chat COMPONENT samplesnet)
+INSTALL(TARGETS nl_sample_chatclient nl_sample_chatserver RUNTIME DESTINATION ${NL_BIN_PREFIX} COMPONENT samplesnet)
+INSTALL(FILES chat_service.cfg client.cfg DESTINATION ${NL_SHARE_PREFIX}/nl_sample_chat COMPONENT samplesnet)

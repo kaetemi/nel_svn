@@ -45,6 +45,10 @@
 
 #include "nel/net/transport_class.h"
 
+#ifndef NL_CT_CFG
+#define NL_CT_CFG ""
+#endif // NL_CT_CFG
+
 //
 // Namespace
 //
@@ -134,4 +138,4 @@ struct CAIService : public IService
  * Declare a service with the class IService, the names "AIS" (short) and "ai_service" (long).
  * The port is automatically allocated (0) and the main callback array is empty.
  */
-NLNET_SERVICE_MAIN( CAIService, "AIS", "ai_service", 0, EmptyCallbackArray, "", "" )
+NLNET_SERVICE_MAIN( CAIService, "AIS", "ai_service", 0, EmptyCallbackArray, NL_CT_CFG, "" )

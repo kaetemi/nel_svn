@@ -51,6 +51,10 @@
 
 #include "receive_task.h"
 
+#ifndef UDP_DIR
+#define UDP_DIR ""
+#endif // UDP_DIR
+
 //
 // Namespaces
 //
@@ -778,4 +782,4 @@ public:
 };
 
  
-NLNET_SERVICE_MAIN (CBenchService, "BS", "bench_service", 45459, EmptyCallbackArray, "", "")
+NLNET_SERVICE_MAIN (CBenchService, "BS", "bench_service", 45459, EmptyCallbackArray, UDP_DIR, "")

@@ -34,7 +34,7 @@
 #include "nel/misc/path.h"
 
 #ifndef NL_LANG_DATA
-#define NL_LANG_DATA ""
+#define NL_LANG_DATA "."
 #endif // NL_LANG_DATA
 
 using namespace NLMISC;

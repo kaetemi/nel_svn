@@ -61,6 +61,10 @@ DEL: remove a primitive
 #	include <windows.h>
 #endif // NL_OS_WINDOWS
 
+#ifndef NL_PACS_DATA
+#define NL_PACS_DATA "."
+#endif // NL_PACS_DATA
+
 using namespace NLMISC;
 using namespace NL3D;
 using namespace NLPACS;
@@ -144,7 +148,7 @@ int main ()
 	try
 	{
 		// Init search paths
-		CPath::addSearchPath ("shapes");
+		CPath::addSearchPath (NL_PACS_DATA"/shapes");
 		
 		// Create a driver
 		UDriver	*pDriver=UDriver::createDriver(0);

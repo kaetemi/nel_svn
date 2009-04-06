@@ -38,7 +38,7 @@
 #include "nel/misc/path.h"
 
 #ifndef NL_SAMPLE_CFG
-#define NL_SAMPLE_CFG ""
+#define NL_SAMPLE_CFG "."
 #endif // NL_SAMPLE_CFG
 
 using namespace std;

@@ -58,7 +58,9 @@
 using namespace NL3D;
 #endif
 
-
+#ifndef UDP_DIR
+#define UDP_DIR "."
+#endif // UDP_DIR
 
 //
 // Namespaces
@@ -276,6 +278,8 @@ int main( int argc, char **argv )
 	
 	InfoLog->displayRawNL ("\nNevrax UDP benchmark client\n\nPress <CTRL-C> to exit");
 
+	CPath::addSearchPath(UDP_DIR);
+
 	loadConfigFile ();
 
 	CCallbackClient *cc = new CCallbackClient;
@@ -311,7 +315,7 @@ int main( int argc, char **argv )
 	UScene *Scene= Driver->createScene(false);
 	UCamera Camera= Scene->getCam();
 	Camera.setTransformMode(UTransform::DirectMatrix);
-	UTextContext *TextContext= Driver->createTextContext("n019003l.pfb");
+	UTextContext *TextContext= Driver->createTextContext(CPath::lookup("n019003l.pfb"));
 	TextContext->setFontSize(18);
 
 	Camera.setPerspective(80*Pi/180, 1.33, 0.15, 1000);

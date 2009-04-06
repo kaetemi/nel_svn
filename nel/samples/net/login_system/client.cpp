@@ -57,6 +57,9 @@
 #	include "nel/net/udp_sock.h"
 #endif
 
+#ifndef NL_LS_CFG
+#define NL_LS_CFG "."
+#endif // NL_LS_CFG
 
 //
 // Namespaces
@@ -76,6 +79,8 @@ int main (int argc, char **argv)
 	string result;
 	
 	CApplicationContext myApplicationContext;
+
+	CPath::addSearchPath(NL_LS_CFG);
 
 	CConfigFile ConfigFile;
 	
