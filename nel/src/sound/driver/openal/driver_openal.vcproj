@@ -74,7 +74,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib\nel_drv_openal_win_d.dll"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
+				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -157,9 +157,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenAL64.lib EFX-Util.lib"
+				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib64\nel_drv_openal_win_d.dll"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
+				IgnoreDefaultLibraryNames="msvcrt.lib;libcmt.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -246,7 +246,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib\nel_drv_openal_win_r.dll"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -333,9 +333,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenAL64.lib EFX-Util.lib"
+				AdditionalDependencies="OpenAL32.lib EFX-Util.lib"
 				OutputFile="..\..\..\..\lib64\nel_drv_openal_win_r.dll"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
