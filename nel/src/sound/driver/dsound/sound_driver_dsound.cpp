@@ -78,7 +78,7 @@ NLMISC_DECL_PURE_LIB(CSoundDriverDSoundNelLibrary)
 // ******************************************************************
 // The event handling procedure of the invisible window created below.
 
-long FAR PASCAL CSoundDriverCreateWindowProc(HWND hWnd, unsigned message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK CSoundDriverCreateWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
@@ -643,7 +643,7 @@ void CSoundDriverDSound::init(std::string device, ISoundDriver::TSoundOptions op
     _TimerDate = CTime::getPerformanceTime();
 #endif
 	
-    _TimerID = timeSetEvent(_TimerPeriod, 0, &CSoundDriverDSound::TimerCallback, (DWORD)this, TIME_CALLBACK_FUNCTION | TIME_PERIODIC);
+    _TimerID = timeSetEvent(_TimerPeriod, 0, &CSoundDriverDSound::TimerCallback, (DWORD_PTR)this, TIME_CALLBACK_FUNCTION | TIME_PERIODIC);
 
     if (_TimerID == NULL)
     {
@@ -727,7 +727,7 @@ void CSoundDriverDSound::writeProfile(string& out)
 }
 
 
-void CALLBACK CSoundDriverDSound::TimerCallback(UINT /* uID */, UINT /* uMsg */, DWORD dwUser, DWORD /* dw1 */, DWORD /* dw2 */)
+void CALLBACK CSoundDriverDSound::TimerCallback(UINT /* uID */, UINT /* uMsg */, DWORD_PTR dwUser, DWORD_PTR /* dw1 */, DWORD_PTR /* dw2 */)
 {
 	// a little speed check
 	static NLMISC::TTime lastUpdate = NLMISC::CTime::getLocalTime();
