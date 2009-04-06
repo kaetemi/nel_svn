@@ -129,10 +129,6 @@ public:
 	/// Return the maximum number of effects that can be created
 	virtual uint countMaxEffects();
 	
-	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
-	
-	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
-	
 	virtual void startBench() { /* todo */ }
 	virtual void endBench() { /* todo */ }
 	virtual void displayBench(NLMISC::CLog * /* log */) { /* TODO */ }
@@ -140,9 +136,6 @@ public:
 
 	/// Change the rolloff factor and apply to all sources
 	void applyRolloffFactor(float f);
-
-	/// Temp
-	virtual bool loadWavFile(IBuffer *destbuffer, const char *filename);
 
 	/// Commit all the changes made to 3D settings of listener and sources
 	virtual void commit3DChanges() { }

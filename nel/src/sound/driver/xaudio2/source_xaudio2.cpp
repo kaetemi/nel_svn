@@ -467,7 +467,7 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 
 	nlassert(!_SourceVoice); nlassert(!_AdpcmUtility);
 	// create adpcm utility callback if needed
-	if (bufferFormat == IBuffer::FormatADPCM) _AdpcmUtility = new CAdpcmXAudio2(_IsLooping);
+	if (bufferFormat == IBuffer::FormatDviAdpcm) _AdpcmUtility = new CAdpcmXAudio2(_IsLooping);
 	// create voice with adpcm utility callback or NULL callback
 	_SourceVoice = _SoundDriver->createSourceVoice(bufferFormat, channels, bitsPerSample, _AdpcmUtility);
 	if (_AdpcmUtility) _AdpcmUtility->setSourceVoice(_SourceVoice);

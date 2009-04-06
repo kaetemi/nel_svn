@@ -26,7 +26,7 @@
 #include "nel/misc/path.h"
 #include "async_file_manager_sound.h"
 #include "nel/misc/async_file_manager.h"
-#include "driver/sound_driver.h"
+#include "driver/buffer.h"
 #include "audio_mixer_user.h"
 
 using namespace NLMISC;
@@ -176,12 +176,35 @@ void CAsyncFileManagerSound::CLoadWavFile::run (void)
 	}
 	try
 	{
-		NLMISC::CIFile	ifile(NLMISC::CPath::lookup(_Filename));
+		static NLMISC::TStringId empty(CStringMapper::map(""));
+		NLMISC::TStringId nameId = CStringMapper::map(CFile::getFilenameWithoutExtension(_Filename));
+		if (nameId != empty) nlassertex(nameId == _pDestbuffer->getName(), ("The preset buffer name doesn't match!"));
+		_pDestbuffer->setName(nameId);
+
+		NLMISC::CIFile ifile(NLMISC::CPath::lookup(_Filename));
 		uint size = ifile.getFileSize();
-		uint8 *buffer = new uint8[ifile.getFileSize()];
-		ifile.serialBuffer(buffer, size);
-		sndDrv->readWavBuffer(_pDestbuffer, _Filename, buffer, size);
-		delete [] buffer;
+		std::vector<uint8> buffer;
+		buffer.resize(size);
+		ifile.serialBuffer(&buffer[0], size);
+
+		std::vector<uint8> result;
+		IBuffer::TBufferFormat bufferFormat;
+		uint8 channels;
+		uint8 bitsPerSample;
+		uint32 frequency;
+
+		if (!IBuffer::readWav(&buffer[0], size, result, bufferFormat, channels, bitsPerSample, frequency))
+		{
+			nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : IBuffer::readWav returned false !");
+			return;
+		}
+
+		_pDestbuffer->setFormat(bufferFormat, channels, bitsPerSample, frequency);
+		if (!_pDestbuffer->fill(&result[0], result.size()))
+		{
+			nlwarning("CAsyncFileManagerSound::CLoadWavFile::run : _pDestbuffer->fill returned false !");
+			return;
+		}
 	}
 	catch(...)
 	{

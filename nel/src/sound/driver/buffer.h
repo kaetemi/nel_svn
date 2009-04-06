@@ -43,46 +43,15 @@ public:
 	/// Compression format of the sample.
 	enum TBufferFormat
 	{
-		/// Standard PCM format. Todo: specify endianness.
-		FormatPCM, 
-		/// ADPCM format, only available for 1 channel at 16 bits per sample.
+		/// Unknown format.
+		FormatUnknown = 0, 
+		/// Standard PCM format.
+		FormatPcm = 1, 
+		/// Intel/DVI ADPCM format, only available for 1 channel at 16 bits per sample, encoded at 4 bits per sample.
 		/// This is only implemented in the DSound and XAudio2 driver.
-		FormatADPCM
+		FormatDviAdpcm = 11, 
 	};
-	
-	/** Preset the name of the buffer. Used for async loading to give a name
-	 *	before the buffer is effectivly loaded.
-	 *	If the name after loading of the buffer doesn't match the preset name,
-	 *	the load will assert.
-	 */
-	virtual void presetName(NLMISC::TStringId bufferName) = 0;
-	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
-	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency) = 0;
-	/// Get a writable pointer to the buffer of specified size. Use capacity to specify the required bytes. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the size specified in the last lock. Call setStorageMode() and setFormat() first.
-	virtual uint8 *lock(uint capacity) = 0;
-	/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Set size to the number of bytes actually written to the buffer. Returns true if ok.
-	virtual bool unlock(uint size) = 0;
-	/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
-	virtual bool fill(const uint8 *src, uint size) = 0;
-
-	/// Return the sample format informations.
-	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const = 0;
-	/// Return the size of the buffer, in bytes.
-	virtual uint getSize() const = 0;
-	/// Return the duration (in ms) of the sample in the buffer.
-	virtual float getDuration() const = 0;
-	/// Return true if the buffer is stereo (multi-channel), false if mono.
-	virtual bool isStereo() const = 0;
-
-	/// Return the name of this buffer
-	virtual NLMISC::TStringId getName() const = 0;
-
-	/// Return true if the buffer is loaded. Used for async load/unload.
-	virtual bool isBufferLoaded() const = 0;
-	
-	//@{
-	//\name Functions for controlling X-RAM extension of OpenAL *** TODO ***
-	/// The storage mode of this buffer
+	/// The storage mode of this buffer. Also controls the X-RAM extension of OpenAL.
 	enum TStorageMode
 	{
 		/// Put buffer in sound hardware memory if possible, else in machine ram.
@@ -92,12 +61,41 @@ public:
 		/// Put buffer in machine ram (used for streaming). It behaves as if OptionSoftwareBuffer and OptionLocalBufferCopy are both enabled.
 		StorageSoftware
 	};
-	/// Set the storage mode of this buffer, call before filling this buffer. Can be overridden by OptionSoftwareBuffer and OptionLocalBufferCopy. Default is auto.
+	
+	/** Preset the name of the buffer. Used for async loading to give a name
+	 *	before the buffer is effectivly loaded.
+	 *	If the name after loading of the buffer doesn't match the preset name,
+	 *	the load will assert.
+	 */
+	virtual void setName(NLMISC::TStringId bufferName) = 0;
+	/// Return the name of this buffer
+	virtual NLMISC::TStringId getName() const = 0;
+
+	/// Set the sample format. (channels = 1, 2, ...; bitsPerSample = 8, 16; frequency = samples per second, 44100, ...)
+	virtual void setFormat(TBufferFormat format, uint8 channels, uint8 bitsPerSample, uint32 frequency) = 0;
+	/// Return the sample format informations.
+	virtual void getFormat(TBufferFormat &format, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency) const = 0;
+		/// Set the storage mode of this buffer, call before filling this buffer. Storage mode is always software if OptionSoftwareBuffer is enabled. Default is auto.
 	virtual void setStorageMode(TStorageMode storageMode = IBuffer::StorageAuto) = 0;
 	/// Get the storage mode of this buffer.
 	virtual TStorageMode getStorageMode() = 0;
-	//@}
 
+	/// Get a writable pointer to the buffer of specified size. Use capacity to specify the required bytes. Returns NULL in case of failure. It is only guaranteed that the original data is still available when using StorageSoftware and the specified size is not larger than the size specified in the last lock. Call setStorageMode() and setFormat() first.
+	virtual uint8 *lock(uint capacity) = 0;
+	/// Notify that you are done writing to this buffer, so it can be copied over to hardware if needed. Set size to the number of bytes actually written to the buffer. Returns true if ok.
+	virtual bool unlock(uint size) = 0;
+	/// Copy the data with specified size into the buffer. A readable local copy is only guaranteed when OptionLocalBufferCopy is set. Returns true if ok.
+	virtual bool fill(const uint8 *src, uint size) = 0;
+	
+	/// Return the size of the buffer, in bytes.
+	virtual uint getSize() const = 0;
+	/// Return the duration (in ms) of the sample in the buffer.
+	virtual float getDuration() const = 0;
+	/// Return true if the buffer is stereo (multi-channel), false if mono.
+	virtual bool isStereo() const = 0;	
+	/// Return true if the buffer is loaded. Used for async load/unload.
+	virtual bool isBufferLoaded() const = 0;
+	
 	//@{
 	//\name ***deprecated***
 	/// Set the sample format. Example: freq=44100. ***deprecated***
@@ -119,7 +117,7 @@ public:
 	//@}
 	
 	//@{
-	//\name ADPCM utility methods
+	//\name ADPCM and sample bank building utility methods
 	struct TADPCMState
 	{
 		/// Previous output sample
@@ -127,17 +125,17 @@ public:
 		/// Stepsize table index
 		uint8	StepIndex;
 	};
-	// Encode 16 wav buffer into ADPCM
+	/// Encode 16bit Mono PCM buffer into Mono ADPCM.
 	static void encodeADPCM(const sint16 *indata, uint8 *outdata, uint nbSample, TADPCMState &state);
+	/// Decode Mono ADPCM into 16bit Mono PCM.
 	static void decodeADPCM(const uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state);	
-	/** Unoptimized utility function designed to build ADPCM encoded sample bank file.
-	 *	Return the number of sample in the buffer.
-	 */
-	virtual uint32 getBufferADPCMEncoded(std::vector<uint8> &result) = 0;
-	/** Unoptimized utility function designed to build Mono 16 bits encoded sample bank file.
-	 *	Return the number of sample in the buffer.
-	 */
-	virtual uint32 getBufferMono16(std::vector<sint16> &result) = 0;
+	/// Read a wav file. Data type uint8 is used as unspecified buffer format.
+	static bool readWav(const uint8 *wav, uint size, std::vector<uint8> &result, TBufferFormat &bufferFormat, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency);
+	/// Convert buffer data to 16bit Mono PCM. Resulting vector size is in samples.
+	static bool convertToMono16PCM(const uint8 *buffer, uint size, std::vector<sint16> &result, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample);
+	/// Convert 16bit Mono PCM buffer data to ADPCM.
+	static bool convertMono16PCMToMonoADPCM(const sint16 *buffer, uint samples, std::vector<uint8> &result);
+	//@}
 	
 private:
 	static const sint _IndexTable[16];

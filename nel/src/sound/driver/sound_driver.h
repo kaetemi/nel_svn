@@ -176,15 +176,9 @@ public:
 	/// Return the maximum number of effects that can be created
 	virtual uint countMaxEffects() { return 0; }
 	
-	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
-	virtual bool readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize) = 0;
-	/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16)
-	virtual bool readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency) = 0;
-
-
 	/// Write information about the driver to the output stream.
 	virtual void writeProfile(std::string& out) = 0;
-
+	
 	/// Stuff
 	virtual void startBench() = 0;
 	virtual void endBench() = 0;

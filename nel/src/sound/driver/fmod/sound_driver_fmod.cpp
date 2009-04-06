@@ -317,18 +317,6 @@ void CSoundDriverFMod::removeBuffer(CBufferFMod * /* buffer */)
 {
 }
 
-// ***************************************************************************
-bool CSoundDriverFMod::readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize)
-{
-	return ((CBufferFMod*) destbuffer)->readWavBuffer(name, wavData, dataSize);
-}
-
-bool CSoundDriverFMod::readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
-{
-	return ((CBufferFMod*) destbuffer)->readRawBuffer(name, rawData, dataSize, format, frequency);
-}
-
-
 // ******************************************************************
 
 ISource *CSoundDriverFMod::createSource()

@@ -22,7 +22,7 @@
  */
 
 #include "buffer.h"
-
+#include <nel/misc/fast_mem.h>
 
 namespace NLSOUND {
 	
@@ -33,7 +33,7 @@ void IBuffer::setFormat(TSampleFormat format, uint freq)
 	uint8 channels;
 	uint8 bitsPerSample;
 	sampleFormatToBufferFormat(format, bufferFormat, channels, bitsPerSample);
-	setFormat(bufferFormat, channels, bitsPerSample, freq);
+	setFormat(bufferFormat, channels, bitsPerSample, (uint32)freq);
 }
 
 // for compatibility, very lazy checks (assume it's set by old setFormat)
@@ -42,7 +42,9 @@ void IBuffer::getFormat(TSampleFormat& format, uint& freq) const
 	TBufferFormat bufferFormat;
 	uint8 channels;
 	uint8 bitsPerSample;
-	getFormat(bufferFormat, channels, bitsPerSample, freq);
+	uint32 frequency;
+	getFormat(bufferFormat, channels, bitsPerSample, frequency);
+	freq = (uint)frequency;
 	bufferFormatToSampleFormat(bufferFormat, channels, bitsPerSample, format);
 }
 
@@ -52,29 +54,34 @@ void IBuffer::sampleFormatToBufferFormat(TSampleFormat sampleFormat, TBufferForm
 	switch (sampleFormat)
 	{
 	case Mono8:
-		bufferFormat = FormatPCM;
+		bufferFormat = FormatPcm;
 		channels = 1;
 		bitsPerSample = 8;
 		break;
 	case Mono16ADPCM:
-		bufferFormat = FormatADPCM;
+		bufferFormat = FormatDviAdpcm;
 		channels = 1;
 		bitsPerSample = 16;
 		break;
 	case Mono16:
-		bufferFormat = FormatPCM;
+		bufferFormat = FormatPcm;
 		channels = 1;
 		bitsPerSample = 16;
 		break;
 	case Stereo8:
-		bufferFormat = FormatPCM;
+		bufferFormat = FormatPcm;
 		channels = 2;
 		bitsPerSample = 8;
 		break;
 	case Stereo16:
-		bufferFormat = FormatPCM;
+		bufferFormat = FormatPcm;
 		channels = 2;
 		bitsPerSample = 16;
+		break;
+	default:		
+		bufferFormat = FormatUnknown;
+		channels = 0;
+		bitsPerSample = 0;
 		break;
 	}
 }
@@ -84,7 +91,7 @@ void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 chann
 {
 	switch (bufferFormat)
 	{
-	case FormatPCM:
+	case FormatPcm:
 		switch (channels)
 		{
 		case 1:
@@ -111,7 +118,7 @@ void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 chann
 			break;
 		}
 		break;
-	case FormatADPCM:
+	case FormatDviAdpcm:
 		sampleFormat = Mono16ADPCM;
 		break;
 	}
@@ -331,6 +338,244 @@ void IBuffer::decodeADPCM(const uint8 *indata, sint16 *outdata, uint nbSample, T
     state.StepIndex = uint8(index);
 }
 
+static bool checkFourCC(const uint8 *left, const char *right)
+{
+	return (left[0] == right[0] && left[1] == right[1] && left[2] == right[2] && left[3] == right[3]);
+}
 
+static bool readHeader(const uint8 *header, const char *fourcc, uint32 &size, const uint8 *&data)
+{
+	memcpy(&size, header + 4, sizeof(uint32));
+	data = header + 8;
+	return (header[0] == fourcc[0] && header[1] == fourcc[1] && header[2] == fourcc[2] && header[3] == fourcc[3]);
+}
+
+static bool findChunk(const uint8 *src, uint32 srcSize, const char *fourcc, uint32 &size, const uint8 *&data)
+{
+	uint32 offset = 0;
+	while (offset + 8 < srcSize)
+	{
+		bool found = readHeader(src + offset, fourcc, size, data);
+		if (found) return true;
+		offset += 8 + size;
+	}
+	return false;
+}
+
+/// Read a wav file. Data type uint8 is used as unspecified buffer format.
+bool IBuffer::readWav(const uint8 *wav, uint size, std::vector<uint8> &result, TBufferFormat &bufferFormat, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency)
+{
+#if 0
+	// Create mmio stuff
+	MMIOINFO mmioinfo;
+	memset(&mmioinfo, 0, sizeof(MMIOINFO));
+	mmioinfo.fccIOProc = FOURCC_MEM;
+	mmioinfo.pchBuffer = (HPSTR)wav;
+	mmioinfo.cchBuffer = size;
+	HMMIO hmmio = mmioOpen(NULL, &mmioinfo, MMIO_READ | MMIO_DENYWRITE);
+	if (!hmmio) { throw ESoundDriver("Failed to open the file"); }
+	
+	// Find wave
+	MMCKINFO mmckinforiff;
+	memset(&mmckinforiff, 0, sizeof(MMCKINFO));
+	mmckinforiff.fccType = mmioFOURCC('W', 'A', 'V', 'E');
+	if (mmioDescend(hmmio, &mmckinforiff, NULL, MMIO_FINDRIFF) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend WAVE failed"); }
+	
+	// Find fmt
+	MMCKINFO mmckinfofmt;
+	memset(&mmckinfofmt, 0, sizeof(MMCKINFO));
+	mmckinfofmt.ckid = mmioFOURCC('f', 'm', 't', ' '); 
+	if (mmioDescend(hmmio, &mmckinfofmt, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend fmt failed"); }
+	WAVEFORMATEX *wavefmt = (WAVEFORMATEX *)(&wav[mmckinfofmt.dwDataOffset]);
+	if (mmioAscend(hmmio, &mmckinfofmt, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend fmt failed"); }
+	
+	// Find data
+	MMCKINFO mmckinfodata;
+	memset(&mmckinfodata, 0, sizeof(MMCKINFO));
+	mmckinfodata.ckid = mmioFOURCC('d', 'a', 't', 'a');
+	if (mmioDescend(hmmio, &mmckinfodata, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend data failed"); }
+	BYTE *wavedata = (BYTE *)(&wav[mmckinfodata.dwDataOffset]);
+	if (mmioAscend(hmmio, &mmckinfodata, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend data failed"); }
+	
+	// Close mmio
+	mmioClose(hmmio, 0);
+	
+	// Copy stuff
+	bufferFormat = (TBufferFormat)wavefmt->wFormatTag;
+	channels = (uint8)wavefmt->nChannels;
+	bitsPerSample = (uint8)wavefmt->wBitsPerSample;
+	frequency = wavefmt->nSamplesPerSec;
+	result.resize(mmckinfodata.cksize);
+	NLMISC::CFastMem::memcpy(&result[0], wavedata, mmckinfodata.cksize);
+	return true;
+
+#else
+	// read the RIFF header and check if it contains WAVE data
+	const uint8 *riffHeader = wav;
+	uint32 riffSize;
+	const uint8 *riffData;
+	if (!readHeader(riffHeader, "RIFF", riffSize, riffData))
+	{
+		nlwarning("WAV: Cannot find RIFF identifier");
+		return false;
+	}
+	if (riffSize == 0)
+	{
+		nlwarning("WAV: Empty RIFF file");
+		return false;
+	}
+	if (!checkFourCC(riffData, "WAVE"))
+	{
+		nlwarning("WAV: RIFF file does not contain WAVE data");
+		return false;
+	}
+	uint32 waveSize = riffSize - 4;
+	const uint8 *waveData = riffData + 4;
+	
+	// find the 'fmt ' chunk
+	uint32 fmtSize;
+	const uint8 *fmtData;
+	if (!findChunk(waveData, waveSize, "fmt ", fmtSize, fmtData))
+	{
+		nlwarning("WAV: Cannot find 'fmt ' chunk");
+		return false;
+	}
+	if (fmtSize < 16)
+	{
+		nlwarning("WAV: The 'fmt ' chunk is incomplete");
+		return false;
+	}
+	
+	// find the 'data' chunk
+	uint32 dataSize;
+	const uint8 *dataData;
+	if (!findChunk(waveData, waveSize, "data", dataSize, dataData))
+	{
+		nlwarning("WAV: Cannot find 'data' chunk");
+		return false;
+	}
+	
+	// read the 'fmt ' chunk
+	uint16 fmtFormatTag; // 0-1
+	memcpy(&fmtFormatTag, fmtData + 0, sizeof(uint16));
+	uint16 fmtChannels; // 2-3
+	memcpy(&fmtChannels, fmtData + 2, sizeof(uint16));
+	uint32 fmtSamplesPerSec; // 4-7
+	memcpy(&fmtSamplesPerSec, fmtData + 4, sizeof(uint32));
+	//uint32 fmtAvgBytesPerSec; // 8-11
+	//uint16 fmtBlockAlign; // 12-13
+	uint16 fmtBitsPerSample; // 14-15
+	memcpy(&fmtBitsPerSample, fmtData + 14, sizeof(uint16));
+	//uint16 fmtExSize; // 15-16 // only if fmtSize > 16
+
+	bufferFormat = (TBufferFormat)fmtFormatTag;
+	channels = (uint8)fmtChannels;
+	bitsPerSample = (uint8)fmtBitsPerSample;
+	frequency = fmtSamplesPerSec;
+	result.resize(dataSize);
+	NLMISC::CFastMem::memcpy(&result[0], dataData, dataSize);
+	
+	return true;
+	
+#endif
+}
+
+/// Convert buffer data to 16bit Mono PCM.
+bool IBuffer::convertToMono16PCM(const uint8 *buffer, uint size, std::vector<sint16> &result, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample)
+{
+	if (size == 0 || channels == 0 || bitsPerSample == 0) return false;
+	
+	switch (bufferFormat)
+	{
+	case FormatPcm:
+		{
+			result.resize((std::vector<sint16>::size_type)(((uint64)size / (uint64)channels) * 8UL / (uint64)bitsPerSample));
+			uint samples = (uint)result.size();
+			switch (bitsPerSample)
+			{
+			case 8:
+				{
+					const sint8 *src8 = (const sint8 *)(const void *)buffer;
+					uint j = 0;
+					for (uint i = 0; i < samples; ++i)
+					{
+						sint32 sample = 0;
+						for (uint k = 0; k < channels; ++k)
+							sample += (sint32)src8[j + k];
+						j += channels;
+						sample *= 256;
+						sample /= channels;
+						result[i] = (sint16)sample;
+					}
+				}
+				return true;
+			case 16:
+				{
+					const sint16 *src16 = (const sint16 *)(const void *)buffer;
+					uint j = 0;
+					for (uint i = 0; i < samples; ++i)
+					{
+						sint32 sample = 0;
+						for (uint k = 0; k < channels; ++k)
+							sample += (sint32)src16[j + k];
+						j += channels;
+						sample /= channels;
+						result[i] = (sint16)sample;
+					}
+				}
+				return true;
+			case 32:
+				{
+					const sint32 *src32 = (const sint32 *)(const void *)buffer;
+					uint j = 0;
+					for (uint i = 0; i < samples; ++i)
+					{
+						sint64 sample = 0;
+						for (uint k = 0; k < channels; ++k)
+							sample += (sint64)src32[j + k];
+						j += channels;
+						sample /= 65536;
+						sample /= channels;
+						result[i] = (sint16)sample;
+					}
+				}
+				return true;
+			default:
+				return false;
+			}
+		}
+		return true;
+	case FormatDviAdpcm:
+		{
+			uint samples = size * 2;
+			result.resize(samples);
+			TADPCMState	state;
+			state.PreviousSample = 0;
+			state.StepIndex = 0;
+			decodeADPCM(buffer, &result[0], samples, state);
+		}
+		return true;
+	default:
+		return false;
+	}
+}
+
+/// Convert 16bit Mono PCM buffer data to ADPCM.
+bool IBuffer::convertMono16PCMToMonoADPCM(const sint16 *buffer, uint samples, std::vector<uint8> &result)
+{
+	if (samples == 0) return false;
+
+	// Allocate ADPCM dest
+	samples &= 0xfffffffe;
+	result.resize(samples / 2);
+
+	// Encode
+	TADPCMState	state;
+	state.PreviousSample = 0;
+	state.StepIndex = 0;
+	encodeADPCM(buffer, &result[0], samples, state);
+
+	return true;
+}
 
 } // NLSOUND

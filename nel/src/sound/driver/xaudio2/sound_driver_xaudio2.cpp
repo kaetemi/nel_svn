@@ -336,10 +336,10 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(IBuffer::TBufferForm
 	WAVEFORMATEX wfe;
 	wfe.cbSize = 0;
 
-	if (bufferFormat == IBuffer::FormatADPCM)
+	if (bufferFormat == IBuffer::FormatDviAdpcm)
 		nlassert(channels == 1 && bitsPerSample == 16);
 
-	wfe.wFormatTag = WAVE_FORMAT_PCM; // ADPCM is converted in the driver
+	wfe.wFormatTag = WAVE_FORMAT_PCM; // DVI_ADPCM is converted in the driver
 
 	wfe.nChannels = channels;
 	wfe.wBitsPerSample = bitsPerSample;
@@ -428,18 +428,6 @@ uint CSoundDriverXAudio2::countMaxEffects()
 	// the only limit is the user's cpu
 	// openal only allows 1 in software ...
 	return 32;
-}
-
-/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8)
-bool CSoundDriverXAudio2::readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize)
-{
-	return ((CBufferXAudio2 *)destbuffer)->readWavBuffer(name, wavData, dataSize);
-}
-
-/// FMod driver Note: ADPCM format are converted and stored internally in Mono16 format (hence IBuffer::getFormat() return Mono16)
-bool CSoundDriverXAudio2::readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency)
-{
-	return ((CBufferXAudio2 *)destbuffer)->readRawBuffer(name, rawData, dataSize, sampleFormat, frequency);
 }
 
 /// Commit all the changes made to 3D settings of listener and sources

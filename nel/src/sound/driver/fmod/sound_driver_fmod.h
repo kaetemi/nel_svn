@@ -82,11 +82,6 @@ public:
 	/// Create a sound buffer
 	virtual	IBuffer *createBuffer();
 
-	virtual bool readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
-
-	virtual bool readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency);
-
-
     // Source management
 
 	/// Create a source

@@ -116,8 +116,8 @@ public:
 	{ 
 		switch (bufferFormat)
 		{
-		case IBuffer::FormatPCM: _PerformancePCMBufferSize += size; break;
-		case IBuffer::FormatADPCM: _PerformanceADPCMBufferSize += size; break;
+		case IBuffer::FormatPcm: _PerformancePCMBufferSize += size; break;
+		case IBuffer::FormatDviAdpcm: _PerformanceADPCMBufferSize += size; break;
 		}
 	}
 	/// (Internal) Remove a data buffer from the performance counters.
@@ -125,8 +125,8 @@ public:
 	{ 
 		switch (bufferFormat)
 		{
-		case IBuffer::FormatPCM: _PerformancePCMBufferSize -= size; break;
-		case IBuffer::FormatADPCM: _PerformanceADPCMBufferSize -= size; break;
+		case IBuffer::FormatPcm: _PerformancePCMBufferSize -= size; break;
+		case IBuffer::FormatDviAdpcm: _PerformanceADPCMBufferSize -= size; break;
 		}
 	}
 	/// (Internal) Increase the source play counter by one.
@@ -183,11 +183,6 @@ public:
 	virtual uint countMaxSources();
 	/// Return the maximum number of effects that can be created
 	virtual uint countMaxEffects();
-	
-	/// Read a WAV data in a buffer (format supported: Mono16, Mono8, Stereo16, Stereo8).
-	virtual bool readWavBuffer(IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize);
-	/// Read data from the data block. All supported formats are implemented.
-	virtual bool readRawBuffer(IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency);
 	
 	/// Commit all the changes made to 3D settings of listener and sources.
 	virtual void commit3DChanges();

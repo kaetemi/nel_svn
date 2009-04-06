@@ -127,93 +127,12 @@ bool CBufferXAudio2::fill(const uint8 *src, uint size)
 	return unlock(size);
 }
 
-bool CBufferXAudio2::readWavBuffer(const std::string &name, uint8 *wavData, uint dataSize)
-{
-	// If name has been preset, it must match.
-	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
-	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
-	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
-	_Name = nameId;
-	
-	// Create mmio stuff
-	MMIOINFO mmioinfo;
-	memset(&mmioinfo, 0, sizeof(MMIOINFO));
-	mmioinfo.fccIOProc = FOURCC_MEM;
-	mmioinfo.pchBuffer = (HPSTR)wavData;
-	mmioinfo.cchBuffer = dataSize;
-	HMMIO hmmio = mmioOpen(NULL, &mmioinfo, MMIO_READ | MMIO_DENYWRITE);
-	if (!hmmio) { throw ESoundDriver("Failed to open the file"); }
-	
-	// Find wave
-	MMCKINFO mmckinforiff;
-	memset(&mmckinforiff, 0, sizeof(MMCKINFO));
-	mmckinforiff.fccType = mmioFOURCC('W', 'A', 'V', 'E');
-	if (mmioDescend(hmmio, &mmckinforiff, NULL, MMIO_FINDRIFF) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend WAVE failed"); }
-	
-	// Find fmt
-	MMCKINFO mmckinfofmt;
-	memset(&mmckinfofmt, 0, sizeof(MMCKINFO));
-	mmckinfofmt.ckid = mmioFOURCC('f', 'm', 't', ' '); 
-	if (mmioDescend(hmmio, &mmckinfofmt, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend fmt failed"); }
-	WAVEFORMATEX *wavefmt = (WAVEFORMATEX *)(&wavData[mmckinfofmt.dwDataOffset]);
-	if (mmioAscend(hmmio, &mmckinfofmt, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend fmt failed"); }
-	
-	// Find data
-	MMCKINFO mmckinfodata;
-	memset(&mmckinfodata, 0, sizeof(MMCKINFO));
-	mmckinfodata.ckid = mmioFOURCC('d', 'a', 't', 'a');
-	if (mmioDescend(hmmio, &mmckinfodata, &mmckinforiff, MMIO_FINDCHUNK) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioDescend data failed"); }
-	BYTE *wavedata = (BYTE *)(&wavData[mmckinfodata.dwDataOffset]);
-	if (mmioAscend(hmmio, &mmckinfodata, 0) != MMSYSERR_NOERROR) { mmioClose(hmmio, 0); throw ESoundDriver("mmioAscend data failed"); }
-	
-	// Close mmio
-	mmioClose(hmmio, 0);
-	
-	// Get format
-	TBufferFormat format = (TBufferFormat)~0;
-	switch (wavefmt->wFormatTag)
-	{
-	case WAVE_FORMAT_PCM: format = FormatPCM; break;
-	case WAVE_FORMAT_ADPCM: format = FormatADPCM; break;
-	default: throw ESoundDriver(toString("wFormatTag invalid (%u)", (uint32)wavefmt->wFormatTag));
-	}
-	
-	// Copy stuff
-	setFormat(format, (uint8)wavefmt->nChannels, (uint8)wavefmt->wBitsPerSample, wavefmt->nSamplesPerSec);
-	uint8 *wbuffer = lock(mmckinfodata.cksize);
-	if (wbuffer == NULL) throw ESoundDriver("Out of memory");
-	CFastMem::memcpy(wbuffer, wavedata, mmckinfodata.cksize);
-	unlock(mmckinfodata.cksize);
-	return true;
-}
-
-bool CBufferXAudio2::readRawBuffer(const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat sampleFormat, uint32 frequency)
-{
-	// If name has been preset, it must match.
-	static NLMISC::TStringId empty(CSoundDriverXAudio2::getInstance()->getStringMapper()->map(""));
-	NLMISC::TStringId nameId = CSoundDriverXAudio2::getInstance()->getStringMapper()->map(CFile::getFilenameWithoutExtension(name));
-	if (nameId != empty) nlassertex(nameId == _Name, ("The preset buffer name doesn't match!"));
-	_Name = nameId;
-
-	// Copy stuff from params
-	TBufferFormat bufferFormat;
-	uint8 channels;
-	uint8 bitsPerSample;
-	sampleFormatToBufferFormat(sampleFormat, bufferFormat, channels, bitsPerSample);
-	setFormat(bufferFormat, channels, bitsPerSample, frequency);
-	uint8 *wbuffer = lock(dataSize);
-	if (wbuffer == NULL) return false;
-	CFastMem::memcpy(wbuffer, rawData, dataSize);
-	unlock(dataSize);
-	return true;
-}
-
 /** Preset the name of the buffer. Used for async loading to give a name
  *	before the buffer is effectivly loaded.
  *	If the name after loading of the buffer doesn't match the preset name,
  *	the load will assert.
  */
-void CBufferXAudio2::presetName(NLMISC::TStringId bufferName)
+void CBufferXAudio2::setName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
@@ -246,11 +165,11 @@ float CBufferXAudio2::getDuration() const
 {
 	switch (_Format) 
 	{
-	case FormatADPCM:
+	case FormatDviAdpcm:
 		nlassert(_Channels == 1 && _BitsPerSample == 16);
 		return 1000.0f * ((float)_Size * 2.0f) / (float)_Frequency;
 		break;
-	case FormatPCM:
+	case FormatPcm:
 		return 1000.0f * getDurationFromPCMSize(_Size, _Channels, _BitsPerSample, _Frequency);
 		break;
 	}
@@ -286,80 +205,6 @@ IBuffer::TStorageMode CBufferXAudio2::getStorageMode()
 {
 	// always uses software buffers
 	return IBuffer::StorageSoftware;
-}
-
-/** Unoptimized utility function designed to build ADPCM encoded sample bank file.
- *	Return the number of sample in the buffer.
- */
-uint32 CBufferXAudio2::getBufferADPCMEncoded(std::vector<uint8> &result)
-{
-	// from NLSOUND DSound Driver, Copyright (C)  2001 Nevrax Ltd.
-	// from NLSOUND FMod Driver, Copyright (C)  2001 Nevrax Ltd.
-
-	// Prepare empty result
-	result.clear();
-
-	// Verify Buffer
-	if (!_Data) return 0;
-	if (_Format != Mono16) return 0;
-
-	// Allocate ADPCM dest
-	uint32 nbSample = _Size / 2;
-	nbSample &= 0xfffffffe;
-	result.resize(nbSample / 2);
-
-	// Encode
-	TADPCMState	state;
-	state.PreviousSample = 0;
-	state.StepIndex = 0;
-	encodeADPCM((sint16*)_Data, &result[0], nbSample, state);
-
-	// Return result
-	return nbSample;
-}
-
-/** Unoptimized utility function designed to build Mono 16 bits encoded sample bank file.
- *	Return the number of sample in the buffer.
- */
-uint32 CBufferXAudio2::getBufferMono16(std::vector<sint16> &result)
-{
-	// from NLSOUND DSound Driver, Copyright (C)  2001 Nevrax Ltd.
-
-	result.clear();
-
-	if (!_Data) return 0;
-
-	if (_Format == Mono16)
-	{
-		uint nbSample = _Size / 2;
-		nbSample &= 0xfffffffe;
-
-		result.reserve(nbSample);
-		result.insert(result.begin(), (sint16*)_Data, ((sint16*)_Data) + nbSample);
-
-		return nbSample;
-	}
-	else if (_Format == Stereo16)
-	{
-		uint nbSample = _Size/4;
-		nbSample &= 0xfffffffe;
-
-		struct TFrame
-		{
-			sint16	Channel1;
-			sint16	Channel2;
-		};
-		result.reserve(nbSample);
-		TFrame *frame = (TFrame *)_Data;
-		for (uint i=0; i<nbSample; ++i)
-		{
-			result[i] = (sint16)(((sint32)frame->Channel1 + (sint32)frame->Channel2) / 2);
-		}
-
-		return nbSample;
-	}
-	else
-		return 0;
 }
 
 } /* namespace NLSOUND */

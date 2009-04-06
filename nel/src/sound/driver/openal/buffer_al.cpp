@@ -59,7 +59,7 @@ CBufferAL::~CBufferAL()
  *	If the name after loading of the buffer doesn't match the preset name,
  *	the load will assert.
  */
-void CBufferAL::presetName(NLMISC::TStringId bufferName)
+void CBufferAL::setName(NLMISC::TStringId bufferName)
 {
 	_Name = bufferName;
 }
@@ -252,105 +252,5 @@ IBuffer::TStorageMode CBufferAL::getStorageMode()
 {
 	return _StorageMode;
 }
-
-/**
- * Made after CBufferFMod, with a few changes and additional
- * support for the 8bit data stuff.
- */
-uint32 CBufferAL::getBufferMono16(std::vector<sint16> &result)
-{
-	// don't do anything if the current buffer has no format
-	if (_SampleFormat == AL_INVALID)
-		return 0;
-
-	if (_Data == NULL || _Size == 0)
-		return 0;
-
-	// clear result buffer
-	result.clear();
-
-	// and fill it with data depending on the _SampleFormat
-	uint nbSample = 0;
-	switch (_SampleFormat) {
-
-		case AL_FORMAT_MONO16:
-
-			nbSample = _Size / 2;
-
-			result.reserve(nbSample);
-			result.insert(result.begin(), (sint16*)_Data, ((sint16*)_Data)+nbSample);
-
-			return nbSample;
-
-		case AL_FORMAT_STEREO16:
-			{
-				nbSample = _Size / 4;
-
-				result.reserve(nbSample);
-				TFrameStereo<sint16> *frame = (TFrameStereo<sint16> *)_Data;
-				for (uint i = 0; i < nbSample; i++) {
-					sint32 tmp = (sint32)frame[i].Channel1 + (sint32)frame[i].Channel2;
-					// round up in case lowest bit is 1
-					tmp = tmp + (tmp & 1);
-					// make the final result 16bit wide again
-					result[i] = (sint16)(tmp >> 1);
-				}
-
-				return nbSample;
-			}
-
-		case AL_FORMAT_MONO8:
-
-			nbSample = _Size;
-
-			result.reserve(nbSample);
-			for (uint i = 0; i < nbSample; i++)
-				result[i] = ((sint16)_Data[i]) << 8;
-
-			return nbSample;
-
-		case AL_FORMAT_STEREO8:
-			{
-				nbSample = _Size / 2;
-
-				result.reserve(nbSample);
-				TFrameStereo<sint8> *frame = (TFrameStereo<sint8> *)_Data;
-				for (uint i = 0; i < nbSample; i++) {
-					sint16 tmp = (sint16)frame[i].Channel1 + (sint16)frame[i].Channel2;
-					result[i] = tmp << 7;
-				}
-
-				return nbSample;
-			}
-	}
-
-	// Failure
-	return 0;
-}
-
-uint32 CBufferAL::getBufferADPCMEncoded(std::vector<uint8> &result)
-{
-	if (_SampleFormat != AL_FORMAT_MONO16)
-		return 0;
-
-	if (_Data == NULL || _Size == 0)
-		return 0;
-
-	result.clear();
-
-	// Allocate ADPCM dest
-	uint32 nbSample = _Size / 2;
-	nbSample &= 0xfffffffe; // make it even, may miss one sample, though
-	result.resize(nbSample / 2);
-
-	// encode
-	TADPCMState	state;
-	state.PreviousSample = 0;
-	state.StepIndex = 0;
-	encodeADPCM((sint16*)_Data, &result[0], nbSample, state);
-
-	return nbSample;
-}
-
 
 } // NLSOUND

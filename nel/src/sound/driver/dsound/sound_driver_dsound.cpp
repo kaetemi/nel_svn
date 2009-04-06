@@ -885,16 +885,16 @@ void CSoundDriverDSound::removeBuffer(IBuffer * /* buffer */)
 {
 }
 
-// ******************************************************************
-bool CSoundDriverDSound::readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize)
-{
-	return ((CBufferDSound*) destbuffer)->readWavBuffer(name, wavData, dataSize);
-}
-
-bool CSoundDriverDSound::readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
-{
-	return ((CBufferDSound*) destbuffer)->readRawBuffer(name, rawData, dataSize, format, frequency);
-}
+//// ******************************************************************
+//bool CSoundDriverDSound::readWavBuffer( IBuffer *destbuffer, const std::string &name, uint8 *wavData, uint dataSize)
+//{
+//	return ((CBufferDSound*) destbuffer)->readWavBuffer(name, wavData, dataSize);
+//}
+//
+//bool CSoundDriverDSound::readRawBuffer( IBuffer *destbuffer, const std::string &name, uint8 *rawData, uint dataSize, TSampleFormat format, uint32 frequency)
+//{
+//	return ((CBufferDSound*) destbuffer)->readRawBuffer(name, rawData, dataSize, format, frequency);
+//}
 
 
 // ******************************************************************

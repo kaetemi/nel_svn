@@ -694,29 +694,47 @@ void CAudioMixerUser::buildSampleBankList()
 			for (j=0; j<sampleList.size(); ++j)
 			{
 				nldebug("  Adding sample [%s] into bank", CFile::getFilename(sampleList[j]).c_str());
-				CIFile sample (sampleList[j]);
-				uint8 *data = new uint8[sample.getFileSize()];
-				sample.serialBuffer(data, sample.getFileSize());
-				IBuffer *buffer = _SoundDriver->createBuffer();
-				buffer->presetName(CStringMapper::map(CFile::getFilenameWithoutExtension(sampleList[j])));
-				_SoundDriver->readWavBuffer(buffer, CFile::getFilenameWithoutExtension(sampleList[j]), data, sample.getFileSize());
-				vector<uint8>	adpcmData;
-				uint32 nbSample = buffer->getBufferADPCMEncoded(adpcmData);
-				vector<sint16>	mono16Data;
-				buffer->getBufferMono16(mono16Data);
+
+				CIFile sample(sampleList[j]);
+				uint size = sample.getFileSize();
+				std::vector<uint8> buffer;
+				buffer.resize(size);
+				sample.serialBuffer(&buffer[0], sample.getFileSize());
+				
+				std::vector<uint8> result;
+				IBuffer::TBufferFormat bufferFormat;
+				uint8 channels;
+				uint8 bitsPerSample;
+				uint32 frequency;
+
+				if (!IBuffer::readWav(&buffer[0], size, result, bufferFormat, channels, bitsPerSample, frequency))
+				{
+					nlwarning("    IBuffer::readWav returned false");
+					continue;
+				}
+
+				vector<sint16> mono16Data;
+				if (!IBuffer::convertToMono16PCM(&result[0], result.size(), mono16Data, bufferFormat, channels, bitsPerSample))
+				{
+					nlwarning("    IBuffer::convertToMono16PCM returned false");
+					continue;
+				}
+
+				vector<uint8> adpcmData;
+				if (!IBuffer::convertMono16PCMToMonoADPCM(&mono16Data[0], mono16Data.size(), adpcmData))
+				{
+					nlwarning("    IBuffer::convertMono16PCMToMonoADPCM returned false");
+					continue;
+				}
+
 				// Sample number MUST be even
-				nlassert(nbSample == (nbSample & 0xfffffffe));
-				nlassert(adpcmData.size() == nbSample/2);
+				nlassert(mono16Data.size() == (mono16Data.size() & 0xfffffffe));
+				nlassert(adpcmData.size() == mono16Data.size() / 2);
+				
 				adpcmBuffers[j].swap(adpcmData);
 				mono16Buffers[j].swap(mono16Data);
-
-				TSampleFormat sf;
-				uint		freq;
-				buffer->getFormat(sf, freq);
-
-//			hdrAdpcm.addSample(CFile::getFilename(sampleList[j]), freq, nbSample, );
-				hdr.addSample(CFile::getFilename(sampleList[j]), freq, nbSample, mono16Buffers[j].size()*2, adpcmBuffers[j].size());
-				delete [] data;
+				
+				hdr.addSample(CFile::getFilename(sampleList[j]), frequency, mono16Data.size(), mono16Buffers[j].size() * 2, adpcmBuffers[j].size());
 			}
 
 			// write the sample bank (if any sample available)

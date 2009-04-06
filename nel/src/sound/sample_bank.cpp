@@ -287,7 +287,7 @@ void				CSampleBank::load(bool async)
 			nlassert(ibuffer);
 
 			TStringId	nameId = CStringMapper::map(CFile::getFilenameWithoutExtension(sbh.Name[i]));
-			ibuffer->presetName(nameId);
+			ibuffer->setName(nameId);
 
 	/*		{
 				sint16 *data16 = new sint16[sbh.NbSample[i]];
@@ -325,14 +325,18 @@ void				CSampleBank::load(bool async)
 				data = (uint8*) realloc(data, sbh.SizeAdpcm[i]);
 				sampleBank.seek(seekStart + sbh.OffsetAdpcm[i], CIFile::begin);
 				sampleBank.serialBuffer(data, sbh.SizeAdpcm[i]);
-				_SoundDriver->readRawBuffer(ibuffer, sbh.Name[i], data, sbh.SizeAdpcm[i], Mono16ADPCM, sbh.Freq[i]);
+				ibuffer->setFormat(IBuffer::FormatDviAdpcm, 1, 16, sbh.Freq[i]);
+				if (!ibuffer->fill(data, sbh.SizeAdpcm[i]))
+					nlwarning("AM: ibuffer->fill returned false with FormatADPCM");
 			}
 			else
 			{
 				data = (uint8*) realloc(data, sbh.SizeMono16[i]);
 				sampleBank.seek(seekStart + sbh.OffsetMono16[i], CIFile::begin);
 				sampleBank.serialBuffer(data, sbh.SizeMono16[i]);
-				_SoundDriver->readRawBuffer(ibuffer, sbh.Name[i], data, sbh.SizeMono16[i], Mono16, sbh.Freq[i]);
+				ibuffer->setFormat(IBuffer::FormatPcm, 1, 16, sbh.Freq[i]);
+				if (!ibuffer->fill(data, sbh.SizeMono16[i]))
+					nlwarning("AM: ibuffer->fill returned false with FormatPCM");
 			}
 
 			_ByteSize += ibuffer->getSize();
