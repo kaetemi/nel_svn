@@ -1,5 +1,5 @@
 /** \file connection_client.cpp
-* 
+*
 *
 * $Id: connection_client.cpp,v 1.12 2007-06-11 12:53:21 boucher Exp $
 *
@@ -105,7 +105,7 @@ static void cbClientVerifyLoginPassword(CMessage &msgin, TSockId from, CCallback
 		CMysqlResult result;
 		MYSQL_ROW row;
 		sint32 nbrow;
-		const CInetAddress &ia = netbase.hostAddress (from);
+		//const CInetAddress &ia = netbase.hostAddress (from);
 retry:
 		reason = sqlQuery("select * from user where Login='"+login.toUtf8()+"'", nbrow, row, result);
 		if(!reason.empty()) break;
@@ -172,7 +172,7 @@ retry:
 		CMessage msgout ("VLP");
 		msgout.serial(reason);
 		msgout.serial(nbrow);
-		
+
 		// send address and name of all online shards
 		while(row != 0)
 		{
@@ -234,7 +234,7 @@ static void cbClientChooseShard(CMessage &msgin, TSockId from, CCallbackNetBase 
 			}
 			row = mysql_fetch_row(result);
 		}
-	
+
 		if(!ok)
 		{
 			reason = "You are not authorized to select a shard";
@@ -317,18 +317,18 @@ static void cbClientDisconnection (TSockId from, void *arg)
 	nldebug("new client disconnection: %s", ia.asString ().c_str ());
 
 	string reason;
-	
+
 	CMysqlResult result;
 	MYSQL_ROW row;
 	sint32 nbrow;
 	reason = sqlQuery("select UId, State, Cookie from user where State!='Offline'", nbrow, row, result);
 	if(!reason.empty()) return;
-		
+
 	if(nbrow == 0)
 	{
 		return;
 	}
-	
+
 	while(row != 0)
 	{
 		CLoginCookie lc;
@@ -425,7 +425,7 @@ static const TUnifiedCallbackItem WSCallbackArray[] =
 void connectionClientInit ()
 {
 	nlassert(ClientsServer == 0);
-	
+
 	ClientsServer = new CCallbackServer();
 	nlassert(ClientsServer != 0);
 
@@ -457,7 +457,7 @@ void connectionClientUpdate ()
 void connectionClientRelease ()
 {
 	nlassert(ClientsServer != 0);
-	
+
 	delete ClientsServer;
 	ClientsServer = 0;
 }

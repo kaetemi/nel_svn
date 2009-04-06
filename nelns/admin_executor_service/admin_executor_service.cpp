@@ -78,7 +78,7 @@
 //
 // Namespaces
 //
- 
+
 using namespace std;
 using namespace NLMISC;
 using namespace NLNET;
@@ -238,7 +238,7 @@ void sendAdminEmail(const char *format, ...)
 {
 	char *text;
 	NLMISC_CONVERT_VARGS(text, format, 4096);
-	
+
 	CMessage msgout("ADMIN_EMAIL");
 	string str = text;
 	msgout.serial(str);
@@ -420,10 +420,10 @@ bool startService(const string &unifiedName)
 	// make sure the alias, command, etc were setup ok
 	if (!ok) return false;
 	nlinfo("Starting the service alias '%s'", alias.c_str());
-	
+
 	bool dontLaunchServicesDirectly= IService::getInstance()->ConfigFile.exists("DontLaunchServicesDirectly")? IService::getInstance()->ConfigFile.getVar("DontLaunchServicesDirectly").asBool(): false;
 	if (!dontLaunchServicesDirectly)
-	{	
+	{
 		// give the service alias to the service to forward it back when it will connected to the aes.
 		arg += " -N";
 		arg += alias;
@@ -431,7 +431,7 @@ bool startService(const string &unifiedName)
 		// set the path for running
 		arg += " -A";
 		arg += path;
-		
+
 		// suppress output to stdout
 		#ifdef NL_OS_WINDOWS
 			arg += " >NUL:";
@@ -441,11 +441,11 @@ bool startService(const string &unifiedName)
 
 		// launch the service
 		bool res = launchProgram(command, arg);
-		
+
 		// if launching ok, leave 1 second to the new launching service before lauching next one
 		if (res)
 			nlSleep(1000);
-		
+
 		return res;
 	}
 	else
@@ -524,7 +524,7 @@ static void checkPingPong()
 
 	bool allPonged = true;
 	bool haveService = false;
-	
+
 	for(uint i = 0; i < Services.size(); i++)
 	{
 		if(Services[i].Ready)
@@ -682,7 +682,7 @@ void aesAddRequestAnswer(uint32 rid, TAdminViewVarNames& varNames, const TAdminV
 
 			Requests[i].NbReceived++;
 			nldebug("REQUEST: ++ i %d rid %d NbWaiting %d NbReceived+ %d", i, Requests[i].Id, Requests[i].NbWaiting, Requests[i].NbReceived);
-			
+
 			return;
 		}
 	}
@@ -715,7 +715,7 @@ void cleanRequests()
 			}
 		}
 		nlinfo("REQUEST: Waiting request %d: NbRef %d NbWaiting %d NbReceived %d", Requests[t].Id, NbRef, NbWaiting, NbReceived);
-		
+
 		if (NbRef != NbWaiting - NbReceived)
 		{
 			nlwarning("REQUEST: **** i %d rid %d -> NbRef(%d) != NbWaiting(%d) - NbReceived(%d) ", t, Requests[t].Id, NbRef, NbWaiting, NbReceived);
@@ -731,7 +731,7 @@ void cleanRequests()
 
 			TAdminViewVarNames varNames;
 			TAdminViewValues values;
-			
+
 			varNames.push_back("service");
 			for (uint j = 0; j < Services.size(); j++)
 			{
@@ -748,7 +748,7 @@ void cleanRequests()
 							else
 								s = Services[j].AliasName;
 							s += "-"+toString(Services[j].ServiceId);
-							s += "((TIMEOUT))"; 
+							s += "((TIMEOUT))";
 							values.clear();
 							values.push_back(s);
 							aesAddRequestAnswer(Requests[i].Id, varNames, values);
@@ -798,7 +798,7 @@ void cleanRequests()
 					}
 					InfoLog->displayRawNL("");
 					InfoLog->displayRawNL("----------------------------------------------");
-				}	
+				}
 			}
 			else
 				CUnifiedNetwork::getInstance()->send(Requests[i].SId, msgout);
@@ -847,7 +847,7 @@ void findServices(const string &name, vector<TServices::iterator> &services)
 	// not found in alias, try with short name
 	for (sit = Services.begin(); sit != Services.end(); sit++)
 	{
-		if ((*sit).ShortName == shortName) 
+		if ((*sit).ShortName == shortName)
 		{
 			services.push_back(sit);
 		}
@@ -944,7 +944,7 @@ void treatRequestOneself(uint32 rid, const string& viewStr)
 	serviceGetView(rid, viewStr, answer);
 	aesAddRequestAnswer(rid, answer);
 	nlinfo("REQUEST: Treated view myself directly: '%s'", viewStr.c_str());
-}	
+}
 
 void treatRequestForOfflineService(uint32 rid, const string& serviceName, const string& viewStr)
 {
@@ -954,11 +954,11 @@ void treatRequestForOfflineService(uint32 rid, const string& serviceName, const 
 
 	TAdminViewVarNames varNames;
 	TAdminViewValues values;
-	
+
 	// add default row
 	varNames.push_back("service");
 	values.push_back(serviceName);
-	
+
 	for (uint k = 0; k < subvarpath.Destination.size(); k++)
 	{
 		size_t pos = subvarpath.Destination[k].first.find("=");
@@ -1004,7 +1004,7 @@ void treatRequestForOfflineService(uint32 rid, const string& serviceName, const 
 	aesAddRequestAnswer(rid, varNames, values);
 	nlinfo("REQUEST: Sent and received view '%s' to offline service '%s'", viewStr.c_str(), serviceName.c_str());
 }
-	
+
 void addRequestForOnlineServices(uint32 rid, const string& viewStr)
 {
 	// add services that I manage
@@ -1018,7 +1018,7 @@ void addRequestForOnlineServices(uint32 rid, const string& viewStr)
 
 	// add myself
 	treatRequestOneself(rid,viewStr);
-}							
+}
 
 void addRequestForAllServices(uint32 rid, const string& viewStr)
 {
@@ -1039,7 +1039,7 @@ void addRequestForAllServices(uint32 rid, const string& viewStr)
 
 	// add all running services (and for oneself)
 	addRequestForOnlineServices(rid,viewStr);
-}							
+}
 
 void addRequestForNamedService(uint32 rid, const string& service, const string& viewStr)
 {
@@ -1074,7 +1074,7 @@ void addRequestForNamedService(uint32 rid, const string& service, const string& 
 			}
 		}
 	}
-}							
+}
 
 void addRequest(uint32 rid, const string &rawvarpath, TServiceId sid)
 {
@@ -1097,7 +1097,7 @@ void addRequest(uint32 rid, const string &rawvarpath, TServiceId sid)
 		for (uint t = 0; t < vp.Destination.size(); t++)
 		{
 			string service = vp.Destination[t].first;
-			
+
 			if (service == "*")
 			{
 				addRequestForOnlineServices(rid,varpath.Destination[i].second);
@@ -1196,7 +1196,7 @@ static void cbAESInfo(CMessage &msgin, const std::string &serviceName, TServiceI
 	//
 	msgin.serialCont(AllAdminAlarms);
 	msgin.serialCont(AllGraphUpdates);
-	
+
 	// set our own alarms for this service
 	setInformations(AllAdminAlarms, AllGraphUpdates);
 
@@ -1245,7 +1245,7 @@ static void cbView(CMessage &msgin, const std::string &serviceName, TServiceId s
 {
 	// receive an view answer from the service
 	TServices::iterator sit = findService(sid);
-	
+
 	uint32 rid;
 	msgin.serial(rid);
 
@@ -1257,19 +1257,19 @@ static void cbView(CMessage &msgin, const std::string &serviceName, TServiceId s
 	{
 		varNames.clear();
 		values.clear();
-		
+
 		// adding default row
-		
+
 		uint32 i, nb;
 		string var, val;
-		
+
 		msgin.serial(nb);
 		for (i = 0; i < nb; i++)
 		{
 			msgin.serial(var);
 			varNames.push_back(var);
 		}
-		
+
 		msgin.serial(nb);
 		for (i = 0; i < nb; i++)
 		{
@@ -1279,7 +1279,7 @@ static void cbView(CMessage &msgin, const std::string &serviceName, TServiceId s
 		answer.push_back(SAdminViewRow(varNames,values));
 	}
 	aesAddRequestAnswer(rid, answer);
-	
+
 	// remove the waiting request
 	for (uint i = 0; i < (*sit).WaitingRequestId.size();)
 	{
@@ -1497,7 +1497,7 @@ NLMISC_COMMAND(getViewAES, "send a view and receive an array as result", "<varpa
 		if (i != 0) cmd += " ";
 		cmd += args[i];
 	}
-	
+
 	static uint32 requestId=0;
 	addRequest(requestId++, cmd, TServiceId(0));
 
@@ -1539,14 +1539,14 @@ NLMISC_COMMAND(sendAdminEmail, "Send an email to admin", "<text>")
 {
 	if(args.size() <= 0)
 		return false;
-	
+
 	string text;
 	for (uint i =0; i < args.size(); i++)
 	{
 		text += args[i]+" ";
 	}
 	sendAdminEmail(text.c_str());
-	
+
 	return true;
 }
 
@@ -1623,13 +1623,13 @@ NLMISC_COMMAND(aesSystem, "Execute a system() call", "<command>")
 {
 	if(args.size() <= 0)
 		return false;
-	
+
 	string cmd;
 	for (uint i =0; i < args.size(); i++)
 	{
 		cmd += args[i]+" ";
 	}
-	
+
 	string path;
 #ifdef NL_OS_UNIX
 	path = "/tmp/";
@@ -1637,13 +1637,13 @@ NLMISC_COMMAND(aesSystem, "Execute a system() call", "<command>")
 
 	string fn = path+CFile::findNewFile("aessys.tmp");
 	string fne = path+CFile::findNewFile("aessyse.tmp");
-	
+
 	cmd += " >" + fn + " 2>" + fne;
-	
+
 	log.displayNL("Executing: '%s' in directory '%s'", cmd.c_str(), CPath::getCurrentPath().c_str());
 
 	system(cmd.c_str());
-	
+
 	char str[1024];
 
 	FILE *fp = fopen(fn.c_str(), "rt");
@@ -1656,14 +1656,14 @@ NLMISC_COMMAND(aesSystem, "Execute a system() call", "<command>")
 				break;
 			log.displayRaw(res);
 		}
-		
+
 		fclose(fp);
 	}
 	else
 	{
 		log.displayNL("No stdout");
 	}
-	
+
 	fp = fopen(fne.c_str(), "rt");
 	if (fp != NULL)
 	{
@@ -1674,7 +1674,7 @@ NLMISC_COMMAND(aesSystem, "Execute a system() call", "<command>")
 				break;
 			log.displayRaw(res);
 		}
-		
+
 		fclose(fp);
 	}
 	else
@@ -1731,7 +1731,7 @@ NLMISC_COMMAND( makeLogReport, "Build a report of logs produced on the machine",
 		}
 		else
 			log.displayNL( "Task is not running" );
-	} 
+	}
 
 	return true;
 }
@@ -1761,7 +1761,7 @@ NLMISC_COMMAND( displayLogReport, "Display summary of a part of the log report b
 			log.displayNL( "Page number missing" );
 			return false;
 		}
-		uint pageNum = atoi( args[1].substr( 1 ).c_str() );
+		//uint pageNum = atoi( args[1].substr( 1 ).c_str() );
 		//MainLogReport.reportPage( pageNum, &log );
 	}
 	else
