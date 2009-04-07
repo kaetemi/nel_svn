@@ -558,7 +558,9 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 			_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
 		}
 	}
+#if _DXSDK_BUILD_MAJOR >= 1590
 	_SourceVoice->SetSourceSampleRate(frequency);
+#endif
 	commit3DChanges(); // sets pitch etc
 	return true;
 }
