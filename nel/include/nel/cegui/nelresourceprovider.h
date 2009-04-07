@@ -74,6 +74,8 @@
 #else //NEL_CEGUI_RENDERER_EXPORTS
 #define DLLSPEC __declspec(dllimport)
 #endif // NEL_CEGUI_RENDERER_EXPORTS
+#else // NL_OS_WINDOWS
+#define DLLSPEC 
 #endif // NL_OS_WINDOWS
 
 // Start of CEGUI namespace section
