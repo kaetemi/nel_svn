@@ -55,7 +55,7 @@ namespace NLSOUND {
 
 CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver) 
 : _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), 
-_Format((IBuffer::TBufferFormat)~0), _FreqVoice(44100.0f), _FreqRatio(1.0f), _PlayStart(0), 
+_Format(IBuffer::FormatUnknown), _Frequency(0), _PlayStart(0), 
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
@@ -134,7 +134,7 @@ void CSourceXAudio2::commit3DChanges()
 		// 1 result in matrix, use with setvolume
 		// todo: some more stuff...
 		// this isn't really used anyways
-		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
+		_SourceVoice->SetFrequencyRatio(_Pitch);
 		// nlerror(NLSOUND_XAUDIO2_PREFIX "Stereo16 and Stereo8 not fully implemented, have fun! :)");
 	}
 	else
@@ -187,7 +187,7 @@ void CSourceXAudio2::commit3DChanges()
 
 		// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
 		_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
-		_SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
+		_SourceVoice->SetFrequencyRatio(_Pitch * _Doppler);
 	}
 	// todo: delay?
 }
@@ -477,7 +477,6 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 	_BitsPerSample = bitsPerSample;
 	XAUDIO2_VOICE_DETAILS voice_details;
 	_SourceVoice->GetVoiceDetails(&voice_details);
-	_FreqVoice = (float)voice_details.InputSampleRate;
 	_SourceVoice->SetVolume(_Gain);
 	if (_EffectVoice)
 	{
@@ -541,7 +540,7 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 		_Format = (IBuffer::TBufferFormat)~0;
 		_Channels = 0;
 		_BitsPerSample = 0;
-		_FreqVoice = 0.0f;
+		_Frequency = 0;
 	}
 	if (!_SourceVoice)
 	{
@@ -559,7 +558,7 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 			_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
 		}
 	}
-	_FreqRatio = (float)frequency / _FreqVoice;
+	_SourceVoice->SetSourceSampleRate(frequency);
 	commit3DChanges(); // sets pitch etc
 	return true;
 }
@@ -773,8 +772,8 @@ void CSourceXAudio2::setPitch(float pitch)
 	_Pitch = pitch;
 	if (_SourceVoice)
 	{
-		if (_Channels > 1) _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch);
-		else _SourceVoice->SetFrequencyRatio(_FreqRatio * _Pitch * _Doppler);
+		if (_Channels > 1) _SourceVoice->SetFrequencyRatio(_Pitch);
+		else _SourceVoice->SetFrequencyRatio(_Pitch * _Doppler);
 	}
 }
 

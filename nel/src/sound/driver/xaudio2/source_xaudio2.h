@@ -77,10 +77,8 @@ private:
 	uint8 _Channels;
 	/// Bits per sample in the current format
 	uint8 _BitsPerSample;
-	/// Frequency of voice (should usually be 44100).
-	float _FreqVoice;
-	/// Rate of sample over rate of voice.
-	float _FreqRatio;
+	/// Frequency of the current sample format
+	uint32 _Frequency;
 	/// Time when source started playing.
 	NLMISC::TTime _PlayStart;
 	/// Buffer loading system

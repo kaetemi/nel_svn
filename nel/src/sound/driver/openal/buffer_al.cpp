@@ -34,7 +34,7 @@ namespace NLSOUND {
 
 CBufferAL::CBufferAL(ALuint buffername) :
 	IBuffer(), _BufferName(buffername), _SampleFormat(AL_INVALID), _Frequency(0),
-	_Data(NULL), _Size(0), _StorageMode(IBuffer::StorageAuto), _Capacity(0)
+	_Data(NULL), _Capacity(0), _Size(0), _StorageMode(IBuffer::StorageAuto)
 {
 	
 }

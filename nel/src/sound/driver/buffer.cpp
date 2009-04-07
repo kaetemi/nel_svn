@@ -419,7 +419,7 @@ bool IBuffer::readWav(const uint8 *wav, uint size, std::vector<uint8> &result, T
 		nlwarning("WAV: Cannot find RIFF identifier");
 		return false;
 	}
-	if (riffSize == 0)
+	if (riffSize <= 4)
 	{
 		nlwarning("WAV: Empty RIFF file");
 		return false;
@@ -466,8 +466,8 @@ bool IBuffer::readWav(const uint8 *wav, uint size, std::vector<uint8> &result, T
 	//uint16 fmtBlockAlign; // 12-13
 	uint16 fmtBitsPerSample; // 14-15
 	memcpy(&fmtBitsPerSample, fmtData + 14, sizeof(uint16));
-	//uint16 fmtExSize; // 15-16 // only if fmtSize > 16
-
+	//uint16 fmtExSize; // 16-17 // only if fmtSize > 16
+	
 	bufferFormat = (TBufferFormat)fmtFormatTag;
 	channels = (uint8)fmtChannels;
 	bitsPerSample = (uint8)fmtBitsPerSample;
@@ -555,6 +555,7 @@ bool IBuffer::convertToMono16PCM(const uint8 *buffer, uint size, std::vector<sin
 			decodeADPCM(buffer, &result[0], samples, state);
 		}
 		return true;
+	case FormatUnknown:
 	default:
 		return false;
 	}

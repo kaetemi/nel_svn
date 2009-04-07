@@ -60,8 +60,22 @@ public:
 	/// Destructor
 	virtual ~ISource() { }
 	
-	/// Set the effect send for this source, NULL to disable.
+	/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
 	virtual void setEffect(IReverbEffect *reverbEffect) = 0;
+	/// Get the effect send for this source
+	// virtual IEffect *getEffect() = 0;
+	/// Set the gain level of the effect send [0.0, 1.0], default: 1.0
+	// virtual void setEffectGain(float gain) = 0;
+	/// Get the gain level of the effect send
+	// virtual float getEffectGain() = 0;
+	/// Enable or disable direct output [true/false], default: true
+	// virtual void setDirect(float enabled) = 0;
+	/// Return if the direct output is enabled
+	// virtual bool getDirect() = 0;
+	/// Set the gain level of the direct output [0.0, 1.0], default: 1.0
+	// virtual void setDirectGain(float gain) = 0;
+	/// Get the gain level of the direct output
+	// virtual float getDirectGain() = 0;
 	
 	/// \name Initialization
 	//@{
