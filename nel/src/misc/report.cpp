@@ -36,6 +36,9 @@
 #	include <windows.h>
 #	include <windowsx.h>
 #	include <winuser.h>
+#	ifdef NL_OS_WIN64
+#		define GWL_HINSTANCE GWLP_HINSTANCE
+#	endif // NL_OS_WIN64
 #endif // NL_OS_WINDOWS
 
 using namespace std;

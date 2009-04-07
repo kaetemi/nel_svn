@@ -32,6 +32,9 @@
 #	include <windows.h>
 #	include <windowsx.h>
 #	include <string>
+#	ifdef NL_OS_WIN64
+#		define GWL_USERDATA GWLP_USERDATA
+#	endif // NL_OS_WIN64
 #else // NL_OS_UNIX
 #	include <GL/glx.h>
 #endif // NL_OS_UNIX

@@ -49,6 +49,11 @@
 
 #include "nel/misc/win_displayer.h"
 
+#ifdef NL_OS_WIN64
+#define GWL_HINSTANCE GWLP_HINSTANCE
+#define GWL_USERDATA GWLP_USERDATA
+#endif
+
 using namespace std;
 
 namespace NLMISC {
@@ -123,7 +128,7 @@ LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 							nlassert (!access.value()[i].Value.empty());
 							nlassert (access.value()[i].Value[0] == '@');
 
-							int pos = access.value()[i].Value.find ("|");
+							string::size_type pos = access.value()[i].Value.find ("|");
 							if (pos != string::npos)
 							{
 								str = access.value()[i].Value.substr(pos+1);
@@ -285,7 +290,7 @@ void CWinDisplayer::updateLabels ()
 					n = access.value()[i].Value + "                                                 ";
 				else
 				{
-					int pos = access.value()[i].Value.find ('|');
+					string::size_type pos = access.value()[i].Value.find ('|');
 					if (pos != string::npos)
 					{
 						n = access.value()[i].Value.substr (1, pos - 1);

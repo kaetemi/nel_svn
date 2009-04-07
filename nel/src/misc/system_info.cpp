@@ -26,8 +26,10 @@
 #ifdef NL_OS_WINDOWS
 #	define NOMINMAX
 #	include <windows.h>
-#include <WinNT.h>
+#	include <WinNT.h>
 #	include <tchar.h>
+#	include <intrin.h>
+#	define nlcpuid(regs, idx) __cpuid(regs, idx)
 #else
 #	include <sys/types.h>
 #	include <sys/stat.h>
@@ -35,6 +37,10 @@
 #	include <fcntl.h>
 #	include <unistd.h>
 #	include <cerrno>
+#	ifdef NL_CPU_INTEL
+#		include <cpuid.h>
+#		define nlcpuid(regs, idx) __cpuid(idx, regs[0], regs[1], regs[2], regs[3])
+#	endif // NL_CPU_INTEL
 #endif // NL_OS_WINDOWS
 
 #include "nel/misc/system_info.h"
@@ -878,37 +884,13 @@ static bool DetectMMX()
 	#ifdef NL_CPU_INTEL
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
-		uint32 result = 0;
-		#ifdef NL_OS_WINDOWS
-		__asm
-		{
-			 mov  eax,1
-			 cpuid
-			 test edx,0x800000  // bit 23 = MMX instruction set
-			 je   noMMX
-			 mov result, 1
-			noMMX:
-		}
-		#elif NL_OS_UNIX
-			__asm__ __volatile__ (
-				"movl   $1, %%eax;"
-				"cpuid;"
-				"movl   $0, %0;"
-				"testl  $0x800000, %%edx;"
-				"je     NoMMX;"
-				"movl   $1, %0;"
-              		"NoMMX:;"
-				:"=b"(result)
-			);
-		#endif // NL_OS_UNIX
-
-		return result == 1;
-
-		// printf("mmx detected\n");
-
-	#else // NL_CPU_INTEL
-		return false;
+		sint32 CPUInfo[4];
+		nlcpuid(CPUInfo, 1);
+		// check for bit 23 = MMX instruction set
+		if (CPUInfo[3] & 0x800000) return true;
 	#endif // NL_CPU_INTEL
+
+	return false;
 }
 
 
@@ -917,40 +899,24 @@ static bool DetectSSE()
 	#ifdef NL_CPU_INTEL
 		if (!CSystemInfo::hasCPUID()) return false; // cpuid not supported ...
 
-		uint32 result = 0;
-		#ifdef NL_OS_WINDOWS
-		__asm
-		{
-			mov eax, 1   // request for feature flags
-			cpuid
-			test EDX, 002000000h   // bit 25 in feature flags equal to 1
-			je noSSE
-			mov result, 1  // sse detected
-		noSSE:
-		}
-		#elif NL_OS_UNIX // NL_OS_WINDOWS
-			__asm__ __volatile__ (
-				"movl   $1, %%eax;"
-				"cpuid;"
-				"movl   $0, %0;"
-				"test   $0x002000000, %%edx;"
-				"je     NoSSE;"
-				"mov    $1, %0;"
-        		"NoSSE:;"
-				:"=b"(result)
-			);
-		#endif // NL_OS_UNIX
+		sint32 CPUInfo[4];
+		nlcpuid(CPUInfo, 1);
 
-		if (result)
+		if (CPUInfo[3]  & 0x2000000)
 		{
 			// check OS support for SSE
 			try
 			{
 				#ifdef NL_OS_WINDOWS
+				#ifdef NL_NO_ASM
+				unsigned int tmp = _mm_getcsr();
+				nlunreferenced(tmp);
+				#else
 				__asm
 				{
 					xorps xmm0, xmm0  // Streaming SIMD Extension
 				}
+				#endif // NL_NO_ASM
 				#elif NL_OS_UNIX
 					__asm__ __volatile__ ("xorps %xmm0, %xmm0;");
 				#endif // NL_OS_UNIX
@@ -964,13 +930,9 @@ static bool DetectSSE()
 
 			return true;
 		}
-		else
-		{
-			return false;
-		}
-	#else // NL_CPU_INTEL
-		return false;
 	#endif // NL_CPU_INTEL
+
+	return false;
 }
 
 bool CSystemInfo::_HaveMMX = DetectMMX ();
@@ -979,8 +941,13 @@ bool CSystemInfo::_HaveSSE = DetectSSE ();
 bool CSystemInfo::hasCPUID ()
 {
 	#ifdef NL_CPU_INTEL
-		 uint32 result;
+		 uint32 result = 0;
 		#ifdef NL_OS_WINDOWS
+		#ifdef NL_NO_ASM
+			sint32 CPUInfo[4] = {-1};
+			nlcpuid(CPUInfo, 0);
+			if (CPUInfo[3] != -1) result = 1;
+		#else
 		 __asm
 		 {
 			 pushad
@@ -1008,6 +975,7 @@ bool CSystemInfo::hasCPUID ()
 			 mov result, 0
 			CPUIDPresent:
 		 }
+		#endif // NL_NO_ASM
 		#elif NL_OS_UNIX // NL_OS_WINDOWS
 			__asm__ __volatile__ (
 				/* Save Register */
@@ -1054,26 +1022,13 @@ uint32 CSystemInfo::getCPUID()
 	if(hasCPUID())
 	{
 		uint32 result = 0;
-		#ifdef NL_OS_WINDOWS
-		__asm
-		{
-			mov  eax,1
-			cpuid
-			mov result, edx
-		}
-		#elif NL_OS_UNIX // NL_OS_WINDOWS
-			__asm__ __volatile__ (
-				"movl   $0, %0;"
-				"movl   $1, %%eax;"
-				"cpuid;"
-				:"=d"(result)
-			);
-		#endif // NL_OS_UNIX
-		return result;
+		sint32 CPUInfo[4];
+		nlcpuid(CPUInfo, 1);
+		return CPUInfo[3];
 	}
-	else
 #endif // NL_CPU_INTEL
-		return 0;
+
+	return 0;
 }
 
 /*
@@ -1085,32 +1040,27 @@ bool CSystemInfo::hasHyperThreading()
 #ifdef NL_OS_WINDOWS
 	if(hasCPUID())
 	{
-		unsigned int reg_eax = 0;
-		unsigned int reg_edx = 0;
-		unsigned int vendor_id[3] = {0, 0, 0};
-		__asm
-		{
-			xor eax, eax
-			cpuid
-			mov vendor_id, ebx
-			mov vendor_id + 4, edx
-			mov vendor_id + 8, ecx
-			mov eax, 1
-			cpuid
-			mov reg_eax, eax
-			mov reg_edx, edx
-		}
+		sint32 CPUInfo[4];
+
+		// get vendor string from cpuid
+		char vendor_id[32];
+		memset(vendor_id, 0, sizeof(vendor_id));
+		nlcpuid(CPUInfo, 0);
+		memcpy(vendor_id, &CPUInfo[1], sizeof(sint32));
+		memcpy(vendor_id+4, &CPUInfo[3], sizeof(sint32));
+		memcpy(vendor_id+8, &CPUInfo[2], sizeof(sint32));
+
+		// get cpuid flags
+		nlcpuid(CPUInfo, 1);
 
 		// pentium 4 or later processor?
-		if ( (((reg_eax & 0x0f00) == 0x0f00) || (reg_eax & 0x0f00000)) &&
-			(vendor_id[0] == 'uneG') && (vendor_id[1] == 'Ieni') && (vendor_id[2] == 'letn') )
-			return (reg_edx & 0x10000000)!=0; // Intel Processor Hyper-Threading
-
-		return false;
+		if ((((CPUInfo[0] & 0xf00) == 0xf00) || (CPUInfo[0] & 0xf00000)) &&
+			strcmp(vendor_id, "GenuineIntel") == 0)
+			return (CPUInfo[3] & 0x10000000)!=0; // Intel Processor Hyper-Threading
 	}
-	else
 #endif
-		return false;
+
+	return false;
 }
 
 bool CSystemInfo::isNT()
@@ -1340,11 +1290,6 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 	 * Follow the recommendations in the news group comp.os.ms-windows.programmer.nt.kernel-mode : "Get Video Driver ... Need Version"
 	 */
 
-	bool debug = false;
-#ifdef NL_DEBUG
-	debug = true;
-#endif
-
 	HMODULE hm = GetModuleHandle(TEXT("USER32"));
 	if (hm)
 	{
@@ -1386,7 +1331,7 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 					{
 						if (winXP)
 						{
-							int pos = keyPath.rfind ('\\');
+							string::size_type pos = keyPath.rfind ('\\');
 							if (pos != string::npos)
 								keyPath = keyPath.substr (0, pos+1);
 							keyPath += "Video";
@@ -1394,7 +1339,7 @@ bool CSystemInfo::getVideoInfo (std::string &deviceName, uint64 &driverVersion)
 						}
 						else
 						{
-							int pos = toLower(keyPath).find ("\\device");
+							string::size_type pos = toLower(keyPath).find ("\\device");
 							if (pos != string::npos)
 								keyPath = keyPath.substr (0, pos+1);
 							keyName = "ImagePath";

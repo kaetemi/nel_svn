@@ -330,8 +330,8 @@ bool CDriverD3D::activeVertexProgram (CVertexProgram *program)
 			dump(parsedProgram, dest);
 #ifdef NL_DEBUG_D3D
 			nlinfo("Assemble Vertex Shader : ");
-			int lineBegin = 0;
-			int lineEnd;
+			string::size_type lineBegin = 0;
+			string::size_type lineEnd;
 			while ((lineEnd = dest.find('\n', lineBegin)) != string::npos)
 			{
 				nlinfo(dest.substr (lineBegin, lineEnd-lineBegin).c_str());

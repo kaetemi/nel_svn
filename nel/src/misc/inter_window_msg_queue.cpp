@@ -7,6 +7,10 @@
 #include "nel/misc/mem_stream.h"
 #include "nel/misc/shared_memory.h"
 
+#ifdef NL_OS_WIN64
+	#define GWL_WNDPROC GWLP_WNDPROC
+#endif // NL_OS_WIN64
+
 namespace NLMISC
 {
 
@@ -178,7 +182,7 @@ namespace NLMISC
 					cds.lpData = (PVOID) msgOut.buffer();
 					for(;;)
 					{
-						HRESULT result = ::SendMessage(targetWindow, WM_COPYDATA, (WPARAM) _Parent->_LocalWindow.getWnd(), (LPARAM) &cds);
+						LRESULT result = ::SendMessage(targetWindow, WM_COPYDATA, (WPARAM) _Parent->_LocalWindow.getWnd(), (LPARAM) &cds);
 						if (result) break;
 						// retry ...
 						Sleep(30);

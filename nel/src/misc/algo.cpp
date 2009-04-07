@@ -139,8 +139,8 @@ void		splitString(const std::string &str, const std::string &separator, std::vec
 // ***************************************************************************
 void		splitUCString(const ucstring &ucstr, const ucstring &separator, std::vector<ucstring> &retList)
 {
-	string::size_type pos=0;
-	string::size_type newPos=0;
+	ucstring::size_type pos=0;
+	ucstring::size_type newPos=0;
 	retList.clear();
 	while( (newPos= ucstr.find(separator,pos)) != ucstring::npos)
 	{

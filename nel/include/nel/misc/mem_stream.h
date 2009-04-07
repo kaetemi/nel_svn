@@ -863,7 +863,7 @@ inline	void		CMemStream::serial(std::string &b)
 		}
 		else
 		{
-			len= b.size();
+			len= (uint32)b.size();
 			if (len>1000000)
 				throw NLMISC::EInvalidDataStream( "CMemStream/str: Trying to write a string of %u bytes", len );
 			serial(len);
@@ -928,7 +928,7 @@ inline	void		CMemStream::serial(ucstring &b)
 		}
 		else
 		{
-			len= b.size();
+			len= (uint32)b.size();
 			if (len>1000000)
 				throw NLMISC::EInvalidDataStream( "CMemStream/str: Trying to write an ucstring of %u bytes", len );
 			serial(len);
@@ -963,7 +963,7 @@ inline	void	CMemStream::serialHex(uint32 &b)
 		{
 			writenumber( b, "%x", 10 );
 		}
-		}
+	}
 	else
 	{
 		IStream::serial( b );

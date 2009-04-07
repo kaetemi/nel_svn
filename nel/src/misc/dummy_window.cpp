@@ -27,6 +27,10 @@
 
 #ifdef NL_OS_WINDOWS
 
+#ifdef NL_OS_WIN64
+	#define GWL_WNDPROC GWLP_WNDPROC
+#endif // NL_OS_WIN64
+
 namespace NLMISC
 {
 

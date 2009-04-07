@@ -45,6 +45,11 @@
 #	include <imagehlp.h>
 #	pragma comment(lib, "imagehlp.lib")
 #	define getcwd(_a, _b) (_getcwd(_a,_b))
+#	ifdef NL_OS_WIN64
+#		define DWORD_TYPE DWORD64
+#	else
+#		define DWORD_TYPE DWORD
+#	endif // NL_OS_WIN64
 #elif defined NL_OS_UNIX
 #	include <unistd.h>
 #	include <cstdio>
@@ -293,7 +298,7 @@ bool _assert_stop(bool &ignoreNextTime, sint line, const char *file, const char 
 
 #ifdef NL_OS_WINDOWS
 
-
+/*
 // ***************************************************************************
 static DWORD __stdcall GetModuleBase(HANDLE hProcess, DWORD dwReturnAddress)
 {
@@ -362,6 +367,7 @@ LPVOID __stdcall FunctionTableAccess (HANDLE hProcess, DWORD AddrBase)
 	hr = GetLastError ();
 	return temp;
 }
+*/
 
 /* can't include dbghelp.h */
 typedef struct _NEL_MINIDUMP_EXCEPTION_INFORMATION {  DWORD ThreadId;  PEXCEPTION_POINTERS ExceptionPointers;  BOOL ClientPointers;
@@ -652,7 +658,7 @@ public:
 // 		}
 	}
 
-	string getSourceInfo (DWORD addr)
+	string getSourceInfo (DWORD_TYPE addr)
 	{
 		string str;
 
@@ -757,7 +763,7 @@ public:
 	// return true if found
 	bool findAndErase(string &str, const char *token, const char *replace = NULL)
 	{
-		int pos;
+		string::size_type pos;
 		if ((pos = str.find(token)) != string::npos)
 		{
 			str.erase (pos,strlen(token));
@@ -803,7 +809,7 @@ public:
 		sym->SizeOfStruct = symSize;
 		sym->MaxNameLength = symSize - sizeof(IMAGEHLP_SYMBOL);
 
-		DWORD disp = 0;
+		DWORD_TYPE disp = 0;
 		if (SymGetSymFromAddr (getProcessHandle(), funcAddr, &disp, sym) == FALSE)
 		{
 			return str;
@@ -828,7 +834,7 @@ public:
 
 		string type;
 
-		uint i = parse.find ("(");
+		string::size_type i = parse.find ("(");
 
 		// copy the function name
 		str = parse.substr(0, i);
@@ -1019,7 +1025,7 @@ void getCallStack(std::string &result, sint skipNFirst)
 	{
 		WORKAROUND_VCPP_SYNCHRONOUS_EXCEPTION // force to install a exception frame
 
-		DWORD array[1];
+		DWORD_PTR array[1];
 		array[0] = skipNFirst;
 		RaiseException (0xACE0ACE, 0, 1, array);
 	}

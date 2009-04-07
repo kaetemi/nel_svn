@@ -669,7 +669,7 @@ void CMsgBoxDisplayer::doDisplay ( const CLog::TDisplayInfo& args, const char *m
 		}
 		else
 		{
-			sint pos2 = args.ProcessName.find ("-", pos+1);
+			string::size_type pos2 = args.ProcessName.find ("-", pos+1);
 			if (pos2 == string::npos)
 			{
 				procname =  args.ProcessName.substr (pos+1);

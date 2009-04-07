@@ -251,7 +251,7 @@ uint16		CFastHLSModifier::applyHLSMod(uint16 colorIn, uint8 dHue, uint dLum, uin
 	{
 		CHLSA	hls= _Color16ToHLS[colorIn];
 		// apply (C version) Dhue, dLum and dSat
-		hls.H= (uint8)(hls.H + dHue);
+		hls.H= uint8((hls.H + dHue) & 0xFF);
 		sint	v= (sint)hls.L + (sint)(dLum-0xFFFFFF00);
 		fastClamp8(v);
 		hls.L= v;

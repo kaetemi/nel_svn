@@ -43,6 +43,11 @@
 #	include <windows.h>
 #	include <imagehlp.h>
 #	pragma comment(lib, "imagehlp.lib")
+#	ifdef NL_OS_WIN64
+#		define DWORD_TYPE DWORD64
+#	else
+#		define DWORD_TYPE DWORD
+#	endif // NL_OS_WIN64
 #endif // NL_OS_WINDOWS
 
 using namespace std;
@@ -57,7 +62,7 @@ namespace NLMISC {
 
 static const uint32 stringSize = 1024;
 
-static string getFuncInfo (DWORD funcAddr, DWORD stackAddr)
+static string getFuncInfo (DWORD_TYPE funcAddr, DWORD_TYPE stackAddr)
 {
 	string str ("NoSymbol");
 
@@ -67,7 +72,7 @@ static string getFuncInfo (DWORD funcAddr, DWORD stackAddr)
 	sym->SizeOfStruct = symSize;
 	sym->MaxNameLength = symSize - sizeof(IMAGEHLP_SYMBOL);
 
-	DWORD disp = 0;
+	DWORD_TYPE disp = 0;
 	if (SymGetSymFromAddr (GetCurrentProcess(), funcAddr, &disp, sym) == FALSE)
 	{
 		return str;
@@ -117,7 +122,7 @@ static string getFuncInfo (DWORD funcAddr, DWORD stackAddr)
 	return str;
 }
 
-static string getSourceInfo (DWORD addr)
+static string getSourceInfo (DWORD_TYPE addr)
 {
 	string str;
 
@@ -154,7 +159,7 @@ static string getSourceInfo (DWORD addr)
 	return str;
 }
 
-static DWORD __stdcall GetModuleBase(HANDLE hProcess, DWORD dwReturnAddress)
+static DWORD_TYPE __stdcall GetModuleBase(HANDLE hProcess, DWORD_TYPE dwReturnAddress)
 {
 	IMAGEHLP_MODULE moduleInfo;
 
@@ -256,11 +261,19 @@ static void displayCallStack (CLog *log)
 		return;
 	}
 
+#ifdef NL_OS_WIN64
+	WOW64_CONTEXT context;
+#else
 	CONTEXT context;
+#endif
 	::ZeroMemory (&context, sizeof(context));
 	context.ContextFlags = CONTEXT_FULL;
 
+#ifdef NL_OS_WIN64
+	if (Wow64GetThreadContext (GetCurrentThread(), &context) == FALSE)
+#else
 	if (GetThreadContext (GetCurrentThread(), &context) == FALSE)
+#endif
 	{
 		nlwarning ("DISP: GetThreadContext(%p) failed", GetCurrentThread());
 		return;
@@ -277,9 +290,13 @@ static void displayCallStack (CLog *log)
 
 	for (uint32 i = 0; ; i++)
 	{
+#ifdef NL_OS_WIN64
+		BOOL res = StackWalk (IMAGE_FILE_MACHINE_AMD64, GetCurrentProcess(), GetCurrentThread(), &callStack,
+			NULL, NULL, SymFunctionTableAccess, GetModuleBase, NULL);
+#else
 		BOOL res = StackWalk (IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &callStack,
 			NULL, NULL, SymFunctionTableAccess, GetModuleBase, NULL);
-
+#endif
 /*		if (res == FALSE)
 		{
 			DWORD r = GetLastError ();

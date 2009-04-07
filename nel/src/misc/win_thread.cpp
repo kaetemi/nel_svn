@@ -290,8 +290,8 @@ CWinProcess::CWinProcess (void *handle)
 uint64 CWinProcess::getCPUMask()
 {
 	// Ask the system for number of processor available for this process
-	DWORD processAffinityMask;
-	DWORD systemAffinityMask;
+	DWORD_PTR processAffinityMask;
+	DWORD_PTR systemAffinityMask;
 	if (GetProcessAffinityMask((HANDLE)_ProcessHandle, &processAffinityMask, &systemAffinityMask))
 	{
 		// Return the CPU mask

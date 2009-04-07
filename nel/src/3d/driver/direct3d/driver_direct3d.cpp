@@ -42,6 +42,10 @@
 using namespace std;
 using namespace NLMISC;
 
+#ifdef NL_OS_WIN64
+#	define GWL_USERDATA GWLP_USERDATA
+#	define GWL_WNDPROC GWLP_WNDPROC
+#endif // NL_OS_WIN64
 
 #define RASTERIZER D3DDEVTYPE_HAL
 //#define RASTERIZER D3DDEVTYPE_REF

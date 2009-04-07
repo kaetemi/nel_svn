@@ -1911,8 +1911,8 @@ IDirect3DPixelShader9	*CDriverD3D::buildPixelShader (const CNormalShaderDesc &no
 	// Dump the pixel shader
 #ifdef NL_DEBUG_D3D
 	nlinfo("Assemble Pixel Shader : ");
-	int lineBegin = 0;
-	int lineEnd;
+	string::size_type lineBegin = 0;
+	string::size_type lineEnd;
 	while ((lineEnd = shaderText.find('\n', lineBegin)) != string::npos)
 	{
 		nlinfo(shaderText.substr (lineBegin, lineEnd-lineBegin).c_str());

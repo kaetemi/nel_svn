@@ -130,7 +130,7 @@ void	CBitSet::resizeNoReset(uint numBits, bool value)
 }
 void	CBitSet::setAll()
 {
-	const uint s = Array.size();
+	const vector<uint32>::size_type s = Array.size();
 	fill_n(Array.begin(), s, ~((uint)0));
 
 	if (s)
@@ -193,11 +193,11 @@ CBitSet	&CBitSet::operator&=(const CBitSet &bs)
 	if(NumBits==0)
 		return *this;
 
-	sint	minSize= min(Array.size(), bs.Array.size());
-        sint	i;
+	vector<uint32>::size_type minSize = min(Array.size(), bs.Array.size());
+	vector<uint32>::size_type i;
 	for(i=0;i<minSize;i++)
 		Array[i]= Array[i] & bs.Array[i];
-	for(i=minSize;i<(sint)Array.size();i++)
+	for(i=minSize;i<Array.size();i++)
 		Array[i]=0;
 
 	Array[Array.size()-1]&= MaskLast;
@@ -209,8 +209,9 @@ CBitSet	&CBitSet::operator|=(const CBitSet &bs)
 	if(NumBits==0)
 		return *this;
 
-	sint	minSize= min(Array.size(), bs.Array.size());
-	for(sint i=0;i<minSize;i++)
+	vector<uint32>::size_type minSize = min(Array.size(), bs.Array.size());
+	vector<uint32>::size_type i;
+	for(i=0;i<minSize;i++)
 		Array[i]= Array[i] | bs.Array[i];
 	// Do nothing for bits word from minSize to Array.size().
 
@@ -223,8 +224,9 @@ CBitSet	&CBitSet::operator^=(const CBitSet &bs)
 	if(NumBits==0)
 		return *this;
 
-	sint	minSize= min(Array.size(), bs.Array.size());
-	for(sint i=0;i<minSize;i++)
+	vector<uint32>::size_type minSize= min(Array.size(), bs.Array.size());
+	vector<uint32>::size_type i;
+	for(i=0;i<minSize;i++)
 		Array[i]= Array[i] ^ bs.Array[i];
 	// Do nothing for bits word from minSize to Array.size().
 
