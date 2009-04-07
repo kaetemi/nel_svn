@@ -28,7 +28,9 @@
 namespace NLMISC
 {
 
-
-
+void dummyToAvoidStupidCompilerWarning_game_device_events_cpp()
+{
+	
+}
 
 } // NLMISC

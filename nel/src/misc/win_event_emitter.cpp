@@ -137,7 +137,7 @@ bool CWinEventEmitter::processMessage (uint32 hWnd, uint32 msg, uint32 wParam, u
 
 			// Post the message
 			if (wParam < KeyCount)
-				server->postEvent (new CEventKeyDown ((NLMISC::TKey)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), (((int) wParam)&(1<<30))==0, this));
+				server->postEvent (new CEventKeyDown ((NLMISC::TKey)wParam, getKeyButton(_AltButton, _ShiftButton, _CtrlButton), (((int) lParam)&(1<<30))==0, this));
 		}
 		break;
 
