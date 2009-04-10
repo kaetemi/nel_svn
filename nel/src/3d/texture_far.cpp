@@ -553,7 +553,7 @@ void CTextureFar::rebuildPatch (const CVector2s texturePos, const CPatchIdent &p
 	// ** Fill the struct for the tile fill method for each layers
 	NL3D_CComputeTileFar TileFar;
 	TileFar.AsmMMX= false;
-#ifdef NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	TileFar.AsmMMX= NLMISC::CSystemInfo::hasMMX();
 #endif
 
@@ -1356,7 +1356,7 @@ static void		NL3D_asmAssembleShading4x4(const uint8 *lumels, const CRGBA *colorM
 extern "C" void NL3D_expandLightmap (const NL3D_CExpandLightmap* pLightmap)
 {
 	bool	asmMMX= false;
-#ifdef	NL_OS_WINDOWS
+#if defined(NL_OS_WINDOWS) && !defined(NL_NO_ASM)
 	asmMMX= CSystemInfo::hasMMX();
 	// A CTileColor must be a 565 only.
 	nlassert(sizeof(CTileColor)==2);
@@ -2052,7 +2052,7 @@ void NL3D_drawFarTileInFarTextureAdditiveAlpha (const NL3D_CComputeTileFar* pTil
 	// Pointer of the Src pixels
 	const CRGBA* pSrcAddPixels=pTileFar->SrcAdditivePixels;
 
-	// Pointer of the Dst pixels
+	// Pointer of the Src pixels
 	const CRGBA* pSrcLightPixels=pTileFar->SrcLightingPixels;
 
 	// Pointer of the Dst pixels
