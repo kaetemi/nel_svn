@@ -57,17 +57,21 @@ CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver)
 : _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), 
 _Format(IBuffer::FormatUnknown), _Frequency(0), _PlayStart(0), 
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
+_DirectDryVoice(NULL), _DirectFilterVoice(NULL), _EffectDryVoice(NULL), _EffectFilterVoice(NULL), 
+_DirectDryEnabled(false), _DirectFilterEnabled(false), _EffectDryEnabled(false), _EffectFilterEnabled(false), 
+_DirectGain(1.0f), _DirectFilterGain(1.0f), _EffectGain(1.0f), _EffectFilterGain(1.0f), 
+_DirectFilterFrequency(1000.0f), _EffectFilterFrequency(1000.0f), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
-_AdpcmUtility(NULL), _ListenerVoice(NULL), _EffectVoice(NULL), 
-_Channels(0), _BitsPerSample(0), _BufferStreaming(false)
+_AdpcmUtility(NULL), _Channels(0), _BitsPerSample(0), _BufferStreaming(false)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Inititializing CSourceXAudio2");
 	nlassert(_SoundDriver->getListener());
-	_ListenerVoice = _SoundDriver->getListener()->getOutputVoice();
 
 	memset(&_Emitter, 0, sizeof(_Emitter));
 	memset(&_Cone, 0, sizeof(_Cone));
+	memset(&_DirectFilter, 0, sizeof(_DirectFilter));
+	memset(&_EffectFilter, 0, sizeof(_EffectFilter));
 
 	_Cone.InnerAngle = X3DAUDIO_2PI;
 	_Cone.OuterAngle = X3DAUDIO_2PI;
@@ -96,6 +100,19 @@ _Channels(0), _BitsPerSample(0), _BufferStreaming(false)
 	_Emitter.ChannelRadius = 0.0f;
 	_Emitter.CurveDistanceScaler = 1.0f;
 	_Emitter.DopplerScaler = 1.0f;
+
+	_DirectFilter.Frequency = 1.0f;
+	_DirectFilter.OneOverQ = 1.0f;
+	_DirectFilter.Type = LowPassFilter;
+
+	_EffectFilter.Frequency = 1.0f;
+	_EffectFilter.OneOverQ = 1.0f;
+	_EffectFilter.Type = LowPassFilter;
+
+	_DirectDryVoice = _SoundDriver->getListener()->getDryVoice();
+	_DirectDryEnabled = true;
+	_DirectFilterVoice = _SoundDriver->getListener()->getFilterVoice();
+	_DirectFilterEnabled = false;
 }
 
 CSourceXAudio2::~CSourceXAudio2()
@@ -103,17 +120,13 @@ CSourceXAudio2::~CSourceXAudio2()
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSourceXAudio2");
 
 	release();
+	if (_SoundDriver) { _SoundDriver->removeSource(this); _SoundDriver = NULL; }
 }
 
 void CSourceXAudio2::release() // called by driver :)
 {
 	if (_AdpcmUtility) _AdpcmUtility->flushSourceBuffers();
-	if (_SoundDriver)
-	{
-		_SoundDriver->removeSource(this);
-		_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
-	} 
-	_SoundDriver = NULL;
+	if (_SoundDriver) {_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL; }
 	nlassert(!_SourceVoice);
 	delete _AdpcmUtility; _AdpcmUtility = NULL;
 	stop();
@@ -170,19 +183,39 @@ void CSourceXAudio2::commit3DChanges()
 			&_Emitter, 
 			X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER, 
 			_SoundDriver->getDSPSettings());
-		
-		_SourceVoice->SetOutputMatrix(
-			_ListenerVoice, 
-			_SoundDriver->getDSPSettings()->SrcChannelCount, 
-			_SoundDriver->getDSPSettings()->DstChannelCount, 
-			_SoundDriver->getDSPSettings()->pMatrixCoefficients);
-		if (_EffectVoice) 
+
+		float outputMatrix[2];
+
+		if (_DirectDryEnabled)
 		{
-			_SourceVoice->SetOutputMatrix(
-				_EffectVoice, 
-				_SoundDriver->getDSPSettings()->SrcChannelCount, 
-				_SoundDriver->getDSPSettings()->DstChannelCount, 
-				_SoundDriver->getDSPSettings()->pMatrixCoefficients);
+			float directDryGain = _DirectFilterEnabled
+				? ((1.0f - _DirectFilterGain) * _DirectGain)
+				: _DirectGain;
+			outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * directDryGain;
+			outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * directDryGain;
+			_SourceVoice->SetOutputMatrix(_DirectDryVoice, 1, 2, outputMatrix);
+			if (_DirectFilterEnabled)
+			{
+				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * _DirectFilterGain * _DirectGain;
+				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * _DirectFilterGain * _DirectGain;
+				_SourceVoice->SetOutputMatrix(_DirectFilterVoice, 1, 2, outputMatrix);
+			}
+		}
+
+		if (_EffectDryEnabled)
+		{
+			float effectDryGain = _EffectFilterEnabled
+				? ((1.0f - _EffectFilterGain) * _EffectGain)
+				: _EffectGain;
+			outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * effectDryGain;
+			outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * effectDryGain;
+			_SourceVoice->SetOutputMatrix(_EffectDryVoice, 1, 2, outputMatrix);
+			if (_EffectFilterEnabled)
+			{
+				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * _EffectFilterGain * _EffectGain;
+				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * _EffectFilterGain * _EffectGain;
+				_SourceVoice->SetOutputMatrix(_EffectFilterVoice, 1, 2, outputMatrix);
+			}
 		}
 
 		// nldebug(NLSOUND_XAUDIO2_PREFIX "left: %f, right %f", _SoundDriver->getDSPSettings()->pMatrixCoefficients[0], _SoundDriver->getDSPSettings()->pMatrixCoefficients[1]);
@@ -242,7 +275,7 @@ void CSourceXAudio2::submitBuffer(CBufferXAudio2 *ibuffer)
 	{
 		XAUDIO2_BUFFER buffer;
 		buffer.AudioBytes = ibuffer->getSize();
-		buffer.Flags = 0;
+		buffer.Flags = _IsLooping || _BufferStreaming ? 0 : XAUDIO2_END_OF_STREAM;
 		buffer.LoopBegin = 0;
 		buffer.LoopCount = _IsLooping ? XAUDIO2_LOOP_INFINITE : 0;
 		buffer.LoopLength = 0;
@@ -255,57 +288,236 @@ void CSourceXAudio2::submitBuffer(CBufferXAudio2 *ibuffer)
 	}
 }
 
-/// Set the effect send for this source, NULL to disable.
+/// (Internal) Update the send descriptor
+void CSourceXAudio2::setupVoiceSends()
+{	
+	XAUDIO2_SEND_DESCRIPTOR sendDescriptors[4];
+	XAUDIO2_VOICE_SENDS voiceSends;
+	voiceSends.pSends = sendDescriptors;
+	voiceSends.SendCount = 0;
+
+	if (_DirectDryEnabled)
+	{
+		sendDescriptors[0].Flags = 0;
+		sendDescriptors[0].pOutputVoice = _DirectDryVoice;
+		if (_DirectFilterEnabled)
+		{
+			sendDescriptors[1].Flags = XAUDIO2_SEND_USEFILTER;
+			sendDescriptors[1].pOutputVoice = _DirectFilterVoice;
+			voiceSends.SendCount = 2;
+		}
+		else voiceSends.SendCount = 1;
+	}
+
+	if (_EffectDryEnabled)
+	{
+		sendDescriptors[voiceSends.SendCount].Flags = 0;
+		sendDescriptors[voiceSends.SendCount].pOutputVoice = _EffectDryVoice;
+		++voiceSends.SendCount;
+		if (_EffectFilterEnabled)
+		{
+			sendDescriptors[voiceSends.SendCount].Flags = XAUDIO2_SEND_USEFILTER;
+			sendDescriptors[voiceSends.SendCount].pOutputVoice = _EffectFilterVoice;
+			++voiceSends.SendCount;
+		}
+	}
+
+	_SourceVoice->SetOutputVoices(&voiceSends);
+	
+	if (_DirectDryEnabled && _DirectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_DirectFilterVoice, &_DirectFilter);
+	if (_EffectDryEnabled && _EffectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_EffectFilterVoice, &_EffectFilter);
+}
+
+/// Enable or disable direct output [true/false], default: true
+void CSourceXAudio2::setDirect(bool enable)
+{
+	if (_DirectDryEnabled != enable)
+	{
+		_DirectDryEnabled = enable;
+		if (_SourceVoice) setupVoiceSends();
+	}
+}
+
+/// Return if the direct output is enabled
+bool CSourceXAudio2::getDirect() const
+{
+	return _DirectDryEnabled;
+}
+
+void CSourceXAudio2::setDirectGain(float gain)
+{
+	_DirectGain = gain;
+}
+
+float CSourceXAudio2::getDirectGain() const
+{
+	return _DirectGain;
+}
+
+void CSourceXAudio2::enableDirectFilter(bool enable)
+{
+	if (_DirectFilterEnabled != enable)
+	{
+		_DirectFilterEnabled = enable;
+		if (enable) _DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterFrequency, _Frequency);
+		if (_SourceVoice && _DirectDryEnabled)
+			setupVoiceSends();
+	}
+}
+
+bool CSourceXAudio2::isDirectFilterEnabled() const
+{
+	return _DirectFilterEnabled;
+}
+
+void CSourceXAudio2::setDirectFilter(TFilter filter, float cutoffFrequency)
+{
+	switch (filter)
+	{
+	case ISource::FilterLowPass:
+		_DirectFilter.Type = LowPassFilter;
+		break;
+	case ISource::FilterBandPass:
+		_DirectFilter.Type = BandPassFilter;
+		break;
+	case ISource::FilterHighPass:
+		_DirectFilter.Type = HighPassFilter;
+		break;
+	default:
+		_DirectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+		break;
+	}
+	_DirectFilterFrequency = cutoffFrequency;
+	if (_DirectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_DirectFilterVoice, &_DirectFilter);
+}
+
+void CSourceXAudio2::getDirectFilter(TFilter &filter, float &cutoffFrequency) const
+{
+	switch (_DirectFilter.Type)
+	{
+	case LowPassFilter:
+		filter = ISource::FilterLowPass;
+		break;
+	case BandPassFilter:
+		filter = ISource::FilterBandPass;
+		break;
+	case HighPassFilter:
+		filter = ISource::FilterHighPass;
+		break;
+	default:
+		filter = (TFilter)~0;
+		break;
+	}
+	cutoffFrequency = _DirectFilterFrequency;
+}
+
+void CSourceXAudio2::setDirectFilterGain(float gain)
+{
+	_DirectFilterGain = gain;
+	clamp(_DirectFilterGain, 0.0f, 1.0f);
+}
+
+float CSourceXAudio2::getDirectFilterGain() const
+{
+	return _DirectFilterGain;
+}
+
 void CSourceXAudio2::setEffect(CEffectXAudio2 *effect)
 {
-	if (effect)
+	// if (_Effect != effect)
 	{
-		_EffectVoice = effect->getVoice();
-		if (_SourceVoice)
+		if (effect)
 		{
-			// fixme: duplicate code !!! (see lower)
-			// might want a generic bit of code to set this up
-
-			XAUDIO2_VOICE_SENDS voice_sends;
-#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
-			XAUDIO2_SEND_DESCRIPTOR send_descriptors[2];
-			send_descriptors[0].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff, and see how we need to set up the filter with the data we have
-			send_descriptors[0].pOutputVoice = _ListenerVoice; // direct output (filtered by occl and filtered by obstr, todo: double check this)
-			send_descriptors[1].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff
-			send_descriptors[1].pOutputVoice = _EffectVoice; // reverb output (filtered by occl, todo: double check this)
-			voice_sends.SendCount = 2;
-			voice_sends.pSends = send_descriptors;
-#else // for now we support compiling with older versions
-			IXAudio2Voice *output_voices[2] = { 
-				_ListenerVoice,
-				_EffectVoice };
-			voice_sends.OutputCount = 2;
-			voice_sends.pOutputVoices = output_voices;
-#endif
-			_SourceVoice->SetOutputVoices(&voice_sends);
+			_EffectDryEnabled = true;
+			_EffectDryVoice = effect->getDryVoice();
+			_EffectFilterVoice = effect->getFilterVoice();
 		}
+		else
+		{
+			_EffectDryEnabled = false;
+			_EffectDryVoice = NULL;
+			_EffectFilterVoice = NULL;
+		}
+		if (_SourceVoice) setupVoiceSends();
 	}
-	else
+}
+
+void CSourceXAudio2::setEffectGain(float gain)
+{
+	_EffectGain = gain;
+}
+
+float CSourceXAudio2::getEffectGain() const
+{
+	return _EffectGain;
+}
+
+void CSourceXAudio2::enableEffectFilter(bool enable)
+{
+	if (_EffectFilterEnabled != enable)
 	{
-		_EffectVoice = NULL;
-		if (_SourceVoice)
-		{
-			// fixme: duplicate code !!! (see lower)
-
-			XAUDIO2_VOICE_SENDS voice_sends;
-#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
-			XAUDIO2_SEND_DESCRIPTOR send_descriptor;
-			send_descriptor.Flags = 0; // no effect so no filter either (or see if any different behaviour is expected)
-			send_descriptor.pOutputVoice = _ListenerVoice;
-			voice_sends.SendCount = 1;
-			voice_sends.pSends = &send_descriptor;
-#else // for now we support compiling with older versions
-			voice_sends.OutputCount = 1;
-			voice_sends.pOutputVoices = &_ListenerVoice;
-#endif
-			_SourceVoice->SetOutputVoices(&voice_sends);
-		}
+		_EffectFilterEnabled = enable;
+		if (enable) _EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterFrequency, _Frequency);
+		if (_SourceVoice && _EffectDryEnabled)
+			setupVoiceSends();
 	}
+}
+
+bool CSourceXAudio2::isEffectFilterEnabled() const
+{
+	return _EffectFilterEnabled;
+}
+
+void CSourceXAudio2::setEffectFilter(TFilter filter, float cutoffFrequency)
+{
+	switch (filter)
+	{
+	case ISource::FilterLowPass:
+		_EffectFilter.Type = LowPassFilter;
+		break;
+	case ISource::FilterBandPass:
+		_EffectFilter.Type = BandPassFilter;
+		break;
+	case ISource::FilterHighPass:
+		_EffectFilter.Type = HighPassFilter;
+		break;
+	default:
+		_EffectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+		break;
+	}
+	_EffectFilterFrequency = cutoffFrequency;
+	if (_EffectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_EffectFilterVoice, &_EffectFilter);
+}
+
+void CSourceXAudio2::getEffectFilter(TFilter &filter, float &cutoffFrequency) const
+{
+	switch (_EffectFilter.Type)
+	{
+	case LowPassFilter:
+		filter = ISource::FilterLowPass;
+		break;
+	case BandPassFilter:
+		filter = ISource::FilterBandPass;
+		break;
+	case HighPassFilter:
+		filter = ISource::FilterHighPass;
+		break;
+	default:
+		filter = (TFilter)~0;
+		break;
+	}
+	cutoffFrequency = _EffectFilterFrequency;
+}
+
+void CSourceXAudio2::setEffectFilterGain(float gain)
+{
+	_EffectFilterGain = gain;
+	clamp(_EffectFilterGain, 0.0f, 1.0f);
+}
+
+float CSourceXAudio2::getEffectFilterGain() const
+{
+	return _EffectFilterGain;
 }
 
 /// Set the effect send for this source, NULL to disable.
@@ -421,18 +633,29 @@ void CSourceXAudio2::setLooping(bool l)
 		{
 			_AdpcmUtility->setLooping(l);
 		}
-		else if (!l)
+		else
 		{
 			if (_SourceVoice)
 			{
 				if (_IsPlaying)
 				{
-					// flush any queued buffers, keep playing current buffer
-					if (FAILED(_SourceVoice->FlushSourceBuffers())) 
-						nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
-					// exit loop of current buffer
-					if (FAILED(_SourceVoice->ExitLoop()))
-						nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED ExitLoop");
+					if (l)
+					{
+						// loop requested while already playing, flush any trash
+						if (FAILED(_SourceVoice->FlushSourceBuffers())) 
+							nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
+						// resubmit with updated looping settings
+						submitBuffer(_StaticBuffer);
+					}
+					else
+					{
+						// flush any queued buffers, keep playing current buffer
+						if (FAILED(_SourceVoice->FlushSourceBuffers())) 
+							nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED FlushSourceBuffers");
+						// exit loop of current buffer
+						if (FAILED(_SourceVoice->ExitLoop()))
+							nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED ExitLoop");
+					}
 				}
 				else
 				{
@@ -475,46 +698,26 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 	_Format = bufferFormat;
 	_Channels = channels;
 	_BitsPerSample = bitsPerSample;
-	XAUDIO2_VOICE_DETAILS voice_details;
-	_SourceVoice->GetVoiceDetails(&voice_details);
 	_SourceVoice->SetVolume(_Gain);
-	if (_EffectVoice)
-	{
-		// fixme: duplicate code !!! (see higher)
+	setupVoiceSends();
 
-		XAUDIO2_VOICE_SENDS voice_sends;
-#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
-		XAUDIO2_SEND_DESCRIPTOR send_descriptors[2];
-		send_descriptors[0].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff, and see how we need to set up the filter with the data we have
-		send_descriptors[0].pOutputVoice = _ListenerVoice; // direct output (filtered by occl and filtered by obstr, todo: double check this)
-		send_descriptors[1].Flags = 0; // todo: XAUDIO2_SEND_USEFILTER stuff
-		send_descriptors[1].pOutputVoice = _EffectVoice; // reverb output (filtered by occl, todo: double check this)
-		voice_sends.SendCount = 2;
-		voice_sends.pSends = send_descriptors;
-#else // for now we support compiling with older versions
-		IXAudio2Voice *output_voices[2] = { 
-			_ListenerVoice,
-			_EffectVoice };
-		voice_sends.OutputCount = 2;
-		voice_sends.pOutputVoices = output_voices;
-#endif
-		_SourceVoice->SetOutputVoices(&voice_sends);
-	}
-	else
-	{
-		XAUDIO2_VOICE_SENDS voice_sends;
-#if defined (XAUDIO2_SEND_USEFILTER) // check for March 2009 SDK
-		XAUDIO2_SEND_DESCRIPTOR send_descriptor;
-		send_descriptor.Flags = 0; // no effect so no filter either (or see if any different behaviour is expected)
-		send_descriptor.pOutputVoice = _ListenerVoice;
-		voice_sends.SendCount = 1;
-		voice_sends.pSends = &send_descriptor;
-#else // for now we support compiling with older versions
-		voice_sends.OutputCount = 1;
-		voice_sends.pOutputVoices = &_ListenerVoice;
-#endif
-		_SourceVoice->SetOutputVoices(&voice_sends);
-	}
+
+	// test
+	//XAUDIO2_VOICE_DETAILS voice_details;
+	//_SourceVoice->GetVoiceDetails(&voice_details);
+	//_SendDescriptors[0].Flags = XAUDIO2_SEND_USEFILTER;
+	//_SourceVoice->SetOutputVoices(&_VoiceSends);
+	//XAUDIO2_FILTER_PARAMETERS _FilterParameters[2];
+	//_FilterParameters[0].Type = LowPassFilter;
+	//nlinfo("voice_details.InputSampleRate: '%u'", voice_details.InputSampleRate);
+	//_FilterParameters[0].Frequency = XAudio2CutoffFrequencyToRadians(5000, voice_details.InputSampleRate);
+	//nlinfo("_FilterParameters[0].Frequency: '%f'", _FilterParameters[0].Frequency);
+	//_FilterParameters[0].OneOverQ = 1.0f;
+	//nlinfo("_FilterParameters[0].OneOverQ: '%f'", _FilterParameters[0].OneOverQ);
+	//_SourceVoice->SetOutputFilterParameters(_SendDescriptors[0].pOutputVoice, &_FilterParameters[0]);
+	// test
+
+
 	return true;
 }
 
@@ -540,7 +743,13 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 		_Format = (IBuffer::TBufferFormat)~0;
 		_Channels = 0;
 		_BitsPerSample = 0;
-		_Frequency = 0;
+	}
+	if (frequency != _Frequency)
+	{
+		if (_DirectFilterEnabled) _DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterFrequency, frequency);
+		if (_EffectFilterEnabled) _EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterFrequency, frequency);
+		if (_SourceVoice) _SourceVoice->SetSourceSampleRate(frequency);
+		_Frequency = frequency;
 	}
 	if (!_SourceVoice)
 	{
@@ -550,6 +759,7 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "Fail to init voice!");
 			return false;
 		}
+		_SourceVoice->SetSourceSampleRate(frequency);
 		if (!_BufferStreaming)
 		{
 			// notify other sources about this format, so they can make a voice in advance
@@ -558,10 +768,14 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 			_SoundDriver->initSourcesFormat(_Format, _Channels, _BitsPerSample);
 		}
 	}
-#if _DXSDK_BUILD_MAJOR >= 1590
-	_SourceVoice->SetSourceSampleRate(frequency);
-#endif
 	commit3DChanges(); // sets pitch etc
+
+	// test
+	//XAUDIO2_VOICE_DETAILS voice_details;
+	//_SourceVoice->GetVoiceDetails(&voice_details);
+	//nlinfo("voice_details.InputSampleRate: '%u'", voice_details.InputSampleRate);
+	// test
+
 	return true;
 }
 

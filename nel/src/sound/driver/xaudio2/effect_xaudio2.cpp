@@ -43,31 +43,43 @@ using namespace NLMISC;
 
 namespace NLSOUND {
 
-CEffectXAudio2::CEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _Voice(NULL), _Effect(NULL)
+CEffectXAudio2::CEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : _SoundDriver(soundDriver), _DryVoice(NULL), _FilterVoice(NULL), _Effect(NULL)
 {
 	HRESULT hr;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
-	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_Voice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4500, NULL, NULL)))
-		{ _release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _Voice!"); return; }
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_DryVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4510, NULL, NULL)))
+		{ release(); _SoundDriver = NULL; nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _DryVoice!"); return; }
+
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_FilterVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 4500, NULL, NULL)))
+		{ release(); _SoundDriver = NULL; nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _FilterVoice!"); return; }
+
+	XAUDIO2_VOICE_SENDS voiceSends;
+	XAUDIO2_SEND_DESCRIPTOR sendDescriptor;
+	voiceSends.pSends = &sendDescriptor;
+	voiceSends.SendCount = 1;
+	sendDescriptor.Flags = 0;
+	sendDescriptor.pOutputVoice = _DryVoice;
+	_FilterVoice->SetOutputVoices(&voiceSends);
 }
 
 CEffectXAudio2::~CEffectXAudio2()
 {
-	// _release called by inheriting release
+	release();
+	if (_SoundDriver) { _SoundDriver->removeEffect(this); _SoundDriver = NULL; }
 }
 
-void CEffectXAudio2::_release()
+void CEffectXAudio2::release()
 {
-	if (_SoundDriver) { _SoundDriver->removeEffect(this); _SoundDriver = NULL; }
-	if (_Voice) { _Voice->DestroyVoice(); _Voice = NULL; }
+	if (_FilterVoice) { _FilterVoice->DestroyVoice(); _FilterVoice = NULL; }
+	if (_DryVoice) { _DryVoice->DestroyVoice(); _DryVoice = NULL; }
 }
 
 CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : CEffectXAudio2(soundDriver)
 {
-	if (_Voice)
+	if (_DryVoice)
 	{
 		HRESULT hr;
 
@@ -79,7 +91,7 @@ CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : C
 			{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "XAudio2CreateReverb FAILED"); return; }
 
 		XAUDIO2_VOICE_DETAILS voice_details;
-		_Voice->GetVoiceDetails(&voice_details);
+		_DryVoice->GetVoiceDetails(&voice_details);
 		XAUDIO2_EFFECT_DESCRIPTOR effect_descriptor;
 		effect_descriptor.InitialState = TRUE;
 		effect_descriptor.OutputChannels = voice_details.InputChannels;
@@ -87,7 +99,7 @@ CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : C
 		XAUDIO2_EFFECT_CHAIN effect_chain;
 		effect_chain.EffectCount = 1;
 		effect_chain.pEffectDescriptors = &effect_descriptor;
-		if (FAILED(hr = _Voice->SetEffectChain(&effect_chain)))
+		if (FAILED(hr = _DryVoice->SetEffectChain(&effect_chain)))
 			{ release(); nlwarning(NLSOUND_XAUDIO2_PREFIX "SetEffectChain FAILED"); return; }
 		
 		setEnvironment();
@@ -96,12 +108,12 @@ CReverbEffectXAudio2::CReverbEffectXAudio2(CSoundDriverXAudio2 *soundDriver) : C
 
 CReverbEffectXAudio2::~CReverbEffectXAudio2()
 {
-	release();
+	
 }
 
 void CReverbEffectXAudio2::release()
 {
-	_release();
+	CEffectXAudio2::release();
 	if (_Effect) { _Effect->Release(); _Effect = NULL; }
 }
 
@@ -156,7 +168,7 @@ void CReverbEffectXAudio2::setEnvironment(const CEnvironment &environment, float
 	_ReverbParams.EarlyDiffusion = (BYTE)(environment.Diffusion * 0.15f);
 	_ReverbParams.LateDiffusion = _ReverbParams.EarlyDiffusion;
 
-	_Voice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0);
+	_DryVoice->SetEffectParameters(0, &_ReverbParams, sizeof(_ReverbParams), 0);
 }
 
 } /* namespace NLSOUND */

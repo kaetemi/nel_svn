@@ -57,7 +57,9 @@ protected:
 
 	// pointers
 	/// Submix voice for volume change, also direct sample input.
-	IXAudio2SubmixVoice *_OutputVoice;
+	IXAudio2SubmixVoice *_DryVoice;
+	/// Dummy passtrough submix voice for the setting up the filtered send
+	IXAudio2SubmixVoice *_FilterVoice;
 	
 	// instances
 	/// X3DAudio data for listener position in space.
@@ -79,7 +81,8 @@ public:
 
 	inline CSoundDriverXAudio2 *getSoundDriver() { return _SoundDriver; }
 	inline X3DAUDIO_LISTENER *getListener() { return &_Listener; }
-	inline IXAudio2SubmixVoice *getOutputVoice() { return _OutputVoice; }
+	inline IXAudio2SubmixVoice *getDryVoice() { return _DryVoice; }
+	inline IXAudio2SubmixVoice *getFilterVoice() { return _FilterVoice; }
 	inline float getDopplerScaler() { return _DopplerScaler; }
 	inline float getRolloffScaler() { return _RolloffScaler; }
 

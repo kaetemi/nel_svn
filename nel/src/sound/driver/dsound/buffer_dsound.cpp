@@ -126,7 +126,7 @@ static const std::string	EmptyString;
 
 CBufferDSound::CBufferDSound() : _Data(NULL), _Capacity(0), _Size(0)
 {
-	_Name = CSoundDriverDSound::instance()->getStringMapper()->map(EmptyString);
+	_Name = CStringMapper::map(EmptyString);
     _Format = Mono16;
     _Freq = 0;
 }

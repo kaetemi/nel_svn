@@ -52,18 +52,18 @@ protected:
 	CSoundDriverXAudio2 *_SoundDriver;
 
 	// pointers
-	IXAudio2SubmixVoice *_Voice;
+	IXAudio2SubmixVoice *_DryVoice;
+	IXAudio2SubmixVoice *_FilterVoice;
 	IUnknown *_Effect; // set by subclass
-
-	void _release();
 
 public:
 	CEffectXAudio2(CSoundDriverXAudio2 *soundDriver);
 	virtual ~CEffectXAudio2();
-	virtual void release() = 0;
+	virtual void release();
 
 	inline IUnknown *getEffect() { return _Effect; }
-	inline IXAudio2Voice * getVoice() { return _Voice; }
+	inline IXAudio2Voice *getDryVoice() { return _DryVoice; }
+	inline IXAudio2Voice *getFilterVoice() { return _FilterVoice; }
 
 }; /* class CEffectXAudio2 */
 

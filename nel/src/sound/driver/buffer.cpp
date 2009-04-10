@@ -121,6 +121,10 @@ void IBuffer::bufferFormatToSampleFormat(TBufferFormat bufferFormat, uint8 chann
 	case FormatDviAdpcm:
 		sampleFormat = Mono16ADPCM;
 		break;
+	case FormatUnknown:
+	default:
+		sampleFormat = (TSampleFormat)~0;
+		break;
 	}
 }
 
@@ -453,6 +457,12 @@ bool IBuffer::readWav(const uint8 *wav, uint size, std::vector<uint8> &result, T
 	{
 		nlwarning("WAV: Cannot find 'data' chunk");
 		return false;
+	}
+	if (dataData + dataSize > wav + size)
+	{
+		uint32 cut = (uint32)((dataData + dataSize) - (wav + size));
+		nlwarning("WAV: Oversize 'data' chunk with dataSize %u and wav size %u, cutting %u bytes", (uint32)dataSize, (uint32)size, (uint32)cut);
+		dataSize -= cut;
 	}
 	
 	// read the 'fmt ' chunk

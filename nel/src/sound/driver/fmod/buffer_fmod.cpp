@@ -45,7 +45,7 @@ static const std::string	EmptyString;
 // ***************************************************************************
 CBufferFMod::CBufferFMod() : _LockedData(NULL)
 {
-	_Name = CSoundDriverFMod::getInstance()->getStringMapper()->map(EmptyString);
+	_Name = CStringMapper::map(EmptyString);
     _Size = 0;
     _Format = Mono16;
     _Freq = 0;

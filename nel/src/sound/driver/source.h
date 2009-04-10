@@ -31,6 +31,7 @@
 namespace NLSOUND {
 	class IBuffer;
 	class ILoader;
+	class IEffect;
 
 /**
  * Sound source interface (implemented in sound driver dynamic library)
@@ -55,27 +56,67 @@ namespace NLSOUND {
 class ISource
 {
 public:
+	enum TFilter
+	{
+		FilterLowPass, 
+		FilterBandPass, 
+		FilterHighPass, 
+	};
+	
 	/// Constructor
 	ISource() { }
 	/// Destructor
 	virtual ~ISource() { }
+
+	/// \name Direct output
+	//@{
+	/// Enable or disable direct output [true/false], default: true
+	virtual void setDirect(bool enable = true) { enable; }
+	/// Return if the direct output is enabled
+	virtual bool getDirect() const { return true; }
+	/// Set the gain level of the direct output [0.0, 1.0], default: 1.0
+	virtual void setDirectGain(float gain = 1.0f) { gain; }
+	/// Get the gain level of the direct output
+	virtual float getDirectGain() const { return 1.0f; }
+	/// Enable or disable the filter for the direct channel
+
+	virtual void enableDirectFilter(bool enable = true) { enable; }
+	/// Check if the filter on the direct channel is enabled
+	virtual bool isDirectFilterEnabled() const { return false; }
+	/// Set the filter parameters for the direct channel
+	virtual void setDirectFilter(TFilter filter, float cutoffFrequency) { filter; cutoffFrequency; }
+	/// Get the filter parameters for the direct channel
+	virtual void getDirectFilter(TFilter &filter, float &cutoffFrequency) const { filter = FilterLowPass; cutoffFrequency = 5000.0f; }
+	/// Set the direct filter gain
+	virtual void setDirectFilterGain(float gain = 1.0f) { gain; }
+	/// Get the direct filter gain
+	virtual float getDirectFilterGain() const { return 1.0f; }
+	//@}
 	
+	/// \name Effect output
+	//@{
 	/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
 	virtual void setEffect(IReverbEffect *reverbEffect) = 0;
 	/// Get the effect send for this source
-	// virtual IEffect *getEffect() = 0;
+	virtual IEffect *getEffect() const { return NULL; }
 	/// Set the gain level of the effect send [0.0, 1.0], default: 1.0
-	// virtual void setEffectGain(float gain) = 0;
+	virtual void setEffectGain(float gain = 1.0f) { gain; }
 	/// Get the gain level of the effect send
-	// virtual float getEffectGain() = 0;
-	/// Enable or disable direct output [true/false], default: true
-	// virtual void setDirect(float enabled) = 0;
-	/// Return if the direct output is enabled
-	// virtual bool getDirect() = 0;
-	/// Set the gain level of the direct output [0.0, 1.0], default: 1.0
-	// virtual void setDirectGain(float gain) = 0;
-	/// Get the gain level of the direct output
-	// virtual float getDirectGain() = 0;
+	virtual float getEffectGain() const { return 1.0f; }
+
+	/// Enable or disable the filter for the effect channel
+	virtual void enableEffectFilter(bool enable = true) { enable; }
+	/// Check if the filter on the effect channel is enabled
+	virtual bool isEffectFilterEnabled() const { return false; }
+	/// Set the filter parameters for the effect channel
+	virtual void setEffectFilter(TFilter filter, float cutoffFrequency) { filter; cutoffFrequency; }
+	/// Get the filter parameters for the effect channel
+	virtual void getEffectFilter(TFilter &filter, float &cutoffFrequency) const { filter = FilterLowPass; cutoffFrequency = 5000.0f; }
+	/// Set the effect filter gain
+	virtual void setEffectFilterGain(float gain = 1.0f) { gain; }
+	/// Get the effect filter gain
+	virtual float getEffectFilterGain() const { return 1.0f; }
+	//@}
 	
 	/// \name Initialization
 	//@{

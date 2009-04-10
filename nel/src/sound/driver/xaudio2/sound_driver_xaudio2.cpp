@@ -214,31 +214,39 @@ void CSoundDriverXAudio2::release()
 	// the created instances must still be released by the user!
 
 	// Release internal resources of all remaining IMusicChannel instances
+	if (_MusicChannels.size())
 	{
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "_MusicChannels.size(): '%u'", (uint32)_MusicChannels.size());
 		set<CMusicChannelXAudio2 *>::iterator it(_MusicChannels.begin()), end(_MusicChannels.end());
 		for (; it != end; ++it) (*it)->release();
 		_MusicChannels.clear();
 	}
 	// Release internal resources of all remaining ISource instances
+	if (_Sources.size())
 	{
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "_Sources.size(): '%u'", (uint32)_Sources.size());
 		set<CSourceXAudio2 *>::iterator it(_Sources.begin()), end(_Sources.end());
 		for (; it != end; ++it) (*it)->release();
 		_Sources.clear();
 	}
 	// Release internal resources of all remaining IBuffer instances
+	if (_Buffers.size())
 	{
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "_Buffers.size(): '%u'", (uint32)_Buffers.size());
 		set<CBufferXAudio2 *>::iterator it(_Buffers.begin()), end(_Buffers.end());
 		for (; it != end; ++it) (*it)->release();
 		_Buffers.clear();
 	}
 	// Release internal resources of all remaining IEffect instances
+	if (_Effects.size())
 	{
+		nlwarning(NLSOUND_XAUDIO2_PREFIX "_Effects.size(): '%u'", (uint32)_Effects.size());
 		set<CEffectXAudio2 *>::iterator it(_Effects.begin()), end(_Effects.end());
 		for (; it != end; ++it) (*it)->release();
 		_Effects.clear();
 	}
 	// Release internal resources of the IListener instance
-	if (_Listener) { _Listener->release(); _Listener = NULL; }
+	if (_Listener) { nlwarning(NLSOUND_XAUDIO2_PREFIX "_Listener: !NULL"); _Listener->release(); _Listener = NULL; }
 
 	// X3DAudio
 	NLSOUND_XAUDIO2_RELEASE(_DSPSettings.pMatrixCoefficients);
@@ -345,7 +353,7 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(IBuffer::TBufferForm
 	wfe.wBitsPerSample = bitsPerSample;
 
 	XAUDIO2_VOICE_DETAILS voice_details;
-	_Listener->getOutputVoice()->GetVoiceDetails(&voice_details);
+	_Listener->getDryVoice()->GetVoiceDetails(&voice_details);
 	wfe.nSamplesPerSec = voice_details.InputSampleRate;
 
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;

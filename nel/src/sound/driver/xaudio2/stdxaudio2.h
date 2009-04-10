@@ -34,6 +34,7 @@
 #include <iostream>
 
 // 3rd Party Includes
+#define XAUDIO2_HELPER_FUNCTIONS
 #include <xaudio2.h>
 #include <xaudio2fx.h>
 #include <x3daudio.h>

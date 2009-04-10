@@ -44,7 +44,7 @@ using namespace NLMISC;
 namespace NLSOUND {
 
 CListenerXAudio2::CListenerXAudio2(CSoundDriverXAudio2 *soundDriver)
-: _OutputVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), 
+: _DryVoice(NULL), _FilterVoice(NULL), _ListenerOk(false), _SoundDriver(soundDriver), 
 _DopplerScaler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _RolloffScaler(1.0f)
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Initializing CListenerXAudio2");
@@ -68,8 +68,19 @@ _DopplerScaler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _RolloffScaler(1.0f)
 	XAUDIO2_VOICE_DETAILS voice_details;
 	soundDriver->getMasteringVoice()->GetVoiceDetails(&voice_details);
 
-	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_OutputVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 9000, NULL, NULL)))
-		{ release(); throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _OutputVoice!"); return; }
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_DryVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 9010, NULL, NULL)))
+		{ release(); _SoundDriver = NULL; throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _DryVoice!"); return; }
+
+	if (FAILED(hr = soundDriver->getXAudio2()->CreateSubmixVoice(&_FilterVoice, voice_details.InputChannels, voice_details.InputSampleRate, 0, 9000, NULL, NULL)))
+		{ release(); _SoundDriver = NULL; throw ESoundDriver(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSubmixVoice _FilterVoice!"); return; }
+
+	XAUDIO2_VOICE_SENDS voiceSends;
+	XAUDIO2_SEND_DESCRIPTOR sendDescriptor;
+	voiceSends.pSends = &sendDescriptor;
+	voiceSends.SendCount = 1;
+	sendDescriptor.Flags = 0;
+	sendDescriptor.pOutputVoice = _DryVoice;
+	_FilterVoice->SetOutputVoices(&voiceSends);
 	
 	_ListenerOk = true;
 }
@@ -78,19 +89,16 @@ CListenerXAudio2::~CListenerXAudio2()
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CListenerXAudio2");
 	
-	release();	
+	release();
+	if (_SoundDriver) { _SoundDriver->removeListener(this); _SoundDriver = NULL; }
 }
 
-#define NLSOUND_XAUDIO2_RELEASE(pointer) if (_ListenerOk) nlassert(pointer) \
-	/*if (pointer) {*/ delete pointer; pointer = NULL; /*}*/
-#define NLSOUND_XAUDIO2_RELEASE_AR(pointer) if (_ListenerOk) nlassert(pointer) \
-	/*if (pointer) {*/ delete[] pointer; pointer = NULL; /*}*/
 #define NLSOUND_XAUDIO2_RELEASE_EX(pointer, command) if (_ListenerOk) nlassert(pointer) \
 	if (pointer) { command; pointer = NULL; }
 void CListenerXAudio2::release()
 {
-	NLSOUND_XAUDIO2_RELEASE_EX(_OutputVoice, _OutputVoice->DestroyVoice())
-	if (_SoundDriver) { _SoundDriver->removeListener(this); _SoundDriver = NULL; }
+	NLSOUND_XAUDIO2_RELEASE_EX(_FilterVoice, _FilterVoice->DestroyVoice())
+	NLSOUND_XAUDIO2_RELEASE_EX(_DryVoice, _DryVoice->DestroyVoice())
 
 	_ListenerOk = false;
 }
@@ -148,14 +156,14 @@ void CListenerXAudio2::getOrientation(NLMISC::CVector& front, NLMISC::CVector& u
  */
 void CListenerXAudio2::setGain(float gain)
 {
-	_OutputVoice->SetVolume(gain);
+	_DryVoice->SetVolume(gain);
 }
 
 /// Get the gain
 float CListenerXAudio2::getGain() const
 {
 	float gain;
-	_OutputVoice->GetVolume(&gain);
+	_DryVoice->GetVolume(&gain);
 	return gain;
 }
 

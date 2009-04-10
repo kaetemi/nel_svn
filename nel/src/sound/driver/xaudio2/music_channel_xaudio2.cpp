@@ -58,6 +58,7 @@ CMusicChannelXAudio2::CMusicChannelXAudio2(CSoundDriverXAudio2 *soundDriver)
 CMusicChannelXAudio2::~CMusicChannelXAudio2()
 {
 	release();
+	if (_SoundDriver) { _SoundDriver->removeMusicChannel(this); _SoundDriver = NULL; }
 	
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CMusicChannelXAudio2");
 }
@@ -67,7 +68,6 @@ void CMusicChannelXAudio2::release()
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Releasing CMusicChannelXAudio2");
 	
 	stop();
-	if (_SoundDriver) { _SoundDriver->removeMusicChannel(this); _SoundDriver = NULL; }
 }
 
 /** Play some music (.ogg etc...)
