@@ -1,9 +1,11 @@
 /**
+ * This is the precompiled header for the NeLSound XAudio2 Driver.
+ * It should only contain '#include's for files that are not part of this library,
+ * as well as '#define's that are critical to the compilation consistency.
  * \file stdxaudio2.h
- * \brief STDXAudio2
+ * \brief Precompiled header for the NeLSound XAudio2 Driver
  * \date 2008-08-20 12:32GMT
  * \author Jan Boon (Kaetemi)
- * STDXAudio2
  */
 
 /* 
@@ -55,7 +57,7 @@
 #include "../effect.h"
 
 // Defines
-#define NLSOUND_XAUDIO2_NAME "NLSOUND XAudio2 Driver"
+#define NLSOUND_XAUDIO2_NAME "NeLSound XAudio2 Driver"
 // prefix for warnings and debug messages
 #define NLSOUND_XAUDIO2_PREFIX "XA2: "
 // swap y and z
