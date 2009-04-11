@@ -27,10 +27,6 @@
 
 #ifdef NL_OS_WINDOWS
 
-#ifdef NL_OS_WIN64
-	#define GWL_WNDPROC GWLP_WNDPROC
-#endif // NL_OS_WIN64
-
 namespace NLMISC
 {
 
@@ -76,7 +72,7 @@ bool CDummyWindow::init(HINSTANCE hInstance, WNDPROC winProc)
                          hInstance, 0);
 	if (_HWnd)
 	{
-		if (winProc) SetWindowLong(_HWnd, GWL_WNDPROC, (LONG) winProc);
+		if (winProc) SetWindowLongPtr(_HWnd, GWLP_WNDPROC, (LONG_PTR) winProc);
 		return true;
 	}
 	return false;

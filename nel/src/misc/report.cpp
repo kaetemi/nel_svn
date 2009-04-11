@@ -36,9 +36,6 @@
 #	include <windows.h>
 #	include <windowsx.h>
 #	include <winuser.h>
-#	ifdef NL_OS_WIN64
-#		define GWL_HINSTANCE GWLP_HINSTANCE
-#	endif // NL_OS_WIN64
 #endif // NL_OS_WINDOWS
 
 using namespace std;
@@ -233,7 +230,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	AttachedFile = attachedFile;
 
 	// create the edit control
-	HWND edit = CreateWindowW (L"EDIT", NULL, WS_BORDER | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | ES_READONLY | ES_LEFT | ES_MULTILINE, 7, 70, 429, 212, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	HWND edit = CreateWindowW (L"EDIT", NULL, WS_BORDER | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | ES_READONLY | ES_LEFT | ES_MULTILINE, 7, 70, 429, 212, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (edit, WM_SETFONT, (LONG) font, TRUE);
 
 	// set the edit text limit to lot of :)
@@ -247,7 +244,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	if (enableCheckIgnore)
 	{
 		// create the combo box control
-		checkIgnore = CreateWindowW (L"BUTTON", L"Don't display this report again", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CHECKBOX, 7, 290, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+		checkIgnore = CreateWindowW (L"BUTTON", L"Don't display this report again", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX | BS_CHECKBOX, 7, 290, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 		SendMessage (checkIgnore, WM_SETFONT, (LONG) font, TRUE);
 
 		if(ignoreNextTime)
@@ -257,28 +254,28 @@ TReportResult report (const std::string &title, const std::string &header, const
 	}
 
 	// create the debug button control
-	debug = CreateWindowW (L"BUTTON", L"Debug", WS_CHILD | WS_VISIBLE, 7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	debug = CreateWindowW (L"BUTTON", L"Debug", WS_CHILD | WS_VISIBLE, 7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (debug, WM_SETFONT, (LONG) font, TRUE);
 
 	if (debugButton == 0)
 		EnableWindow(debug, FALSE);
 
 	// create the ignore button control
-	ignore = CreateWindowW (L"BUTTON", L"Ignore", WS_CHILD | WS_VISIBLE, 75+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	ignore = CreateWindowW (L"BUTTON", L"Ignore", WS_CHILD | WS_VISIBLE, 75+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (ignore, WM_SETFONT, (LONG) font, TRUE);
 
 	if (ignoreButton == 0)
 		EnableWindow(ignore, FALSE);
 
 	// create the quit button control
-	quit = CreateWindowW (L"BUTTON", L"Quit", WS_CHILD | WS_VISIBLE, 75+75+7+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	quit = CreateWindowW (L"BUTTON", L"Quit", WS_CHILD | WS_VISIBLE, 75+75+7+7+7, 315, 75, 25, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (quit, WM_SETFONT, (LONG) font, TRUE);
 
 	if (quitButton == 0)
 		EnableWindow(quit, FALSE);
 
 	// create the debug button control
-	sendReport = CreateWindowW (L"BUTTON", L"Don't send the report", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 7, 315+32, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	sendReport = CreateWindowW (L"BUTTON", L"Don't send the report", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 7, 315+32, 429, 18, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (sendReport, WM_SETFONT, (LONG) font, TRUE);
 
 	string formatedHeader;
@@ -303,7 +300,7 @@ TReportResult report (const std::string &title, const std::string &header, const
 	ucstring uc = ucstring::makeFromUtf8(formatedHeader);
 
 	// create the label control
-	HWND label = CreateWindowW (L"STATIC", (LPCWSTR)uc.c_str(), WS_CHILD | WS_VISIBLE /*| SS_WHITERECT*/, 7, 7, 429, 51, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLong(dialog, GWL_HINSTANCE), NULL);
+	HWND label = CreateWindowW (L"STATIC", (LPCWSTR)uc.c_str(), WS_CHILD | WS_VISIBLE /*| SS_WHITERECT*/, 7, 7, 429, 51, dialog, (HMENU) NULL, (HINSTANCE) GetWindowLongPtr(dialog, GWLP_HINSTANCE), NULL);
 	SendMessage (label, WM_SETFONT, (LONG) font, TRUE);
 
 

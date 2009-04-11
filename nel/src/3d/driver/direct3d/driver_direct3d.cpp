@@ -42,11 +42,6 @@
 using namespace std;
 using namespace NLMISC;
 
-#ifdef NL_OS_WIN64
-#	define GWL_USERDATA GWLP_USERDATA
-#	define GWL_WNDPROC GWLP_WNDPROC
-#endif // NL_OS_WIN64
-
 #define RASTERIZER D3DDEVTYPE_HAL
 //#define RASTERIZER D3DDEVTYPE_REF
 
@@ -1183,7 +1178,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 {
 	H_AUTO_D3D(WndProc);
 	// Get the driver pointer..
-	CDriverD3D *pDriver=(CDriverD3D*)GetWindowLongW (hWnd, GWL_USERDATA);
+	CDriverD3D *pDriver=(CDriverD3D*)GetWindowLongPtrW (hWnd, GWLP_USERDATA);
 	if (pDriver != NULL)
 	{
 		D3DWndProc (pDriver, hWnd, message, wParam, lParam);
@@ -1390,7 +1385,7 @@ bool CDriverD3D::setDisplay(void* wnd, const GfxMode& mode, bool show, bool resi
 		}
 
 		// Set the window long integer
-		SetWindowLongW (_HWnd, GWL_USERDATA, (LONG)this);
+		SetWindowLongPtrW (_HWnd, GWLP_USERDATA, (LONG_PTR)this);
 
 		// Show the window
 		if (show || !_CurrentMode.Windowed)
@@ -2306,17 +2301,17 @@ bool CDriverD3D::setMode (const GfxMode& mode)
 	if( mode.Windowed )
 	{
 		// Set windowed-mode style
-		SetWindowLongW( _HWnd, GWL_STYLE, D3D_WINDOWED_STYLE|WS_VISIBLE);
+		SetWindowLongPtrW( _HWnd, GWL_STYLE, D3D_WINDOWED_STYLE|WS_VISIBLE);
 		_FullScreen = false;
 	}
 	else
 	{
 		// Set fullscreen-mode style
-		SetWindowLongW( _HWnd, GWL_STYLE, D3D_FULLSCREEN_STYLE|WS_VISIBLE);
+		SetWindowLongPtrW( _HWnd, GWL_STYLE, D3D_FULLSCREEN_STYLE|WS_VISIBLE);
 		_FullScreen = true;
 	}
 
-	SetWindowLongW(_HWnd, GWL_WNDPROC, GetWindowLong(_HWnd, GWL_WNDPROC));
+	SetWindowLongPtrW(_HWnd, GWLP_WNDPROC, GetWindowLongPtr(_HWnd, GWLP_WNDPROC));
 
 	// Reset the driver
 	if (reset (mode))
@@ -2330,7 +2325,7 @@ bool CDriverD3D::setMode (const GfxMode& mode)
 			WndRect.top=_WindowY;
 			WndRect.right=_WindowX+_CurrentMode.Width;
 			WndRect.bottom=_WindowY+_CurrentMode.Height;
-			AdjustWindowRect(&WndRect, GetWindowLongW (_HWnd, GWL_STYLE), FALSE);
+			AdjustWindowRect(&WndRect, GetWindowLongPtrW (_HWnd, GWL_STYLE), FALSE);
 
 			SetWindowPos( _HWnd, HWND_NOTOPMOST,
 				std::max ((int)WndRect.left, 0), std::max ((int)WndRect.top, 0),

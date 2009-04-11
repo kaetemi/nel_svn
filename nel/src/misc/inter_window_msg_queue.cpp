@@ -7,10 +7,6 @@
 #include "nel/misc/mem_stream.h"
 #include "nel/misc/shared_memory.h"
 
-#ifdef NL_OS_WIN64
-	#define GWL_WNDPROC GWLP_WNDPROC
-#endif // NL_OS_WIN64
-
 namespace NLMISC
 {
 
@@ -264,13 +260,13 @@ namespace NLMISC
 			if (ownerWindow != _DummyWindow.getWnd())
 			{
 				// subclass window
-				WNDPROC oldWinProc = (WNDPROC) GetWindowLong(ownerWindow, GWL_WNDPROC);
+				WNDPROC oldWinProc = (WNDPROC) GetWindowLongPtr(ownerWindow, GWLP_WNDPROC);
 				uint &refCount = _OldWinProcMap[ownerWindow].RefCount;
 				++ refCount;
 				if (refCount == 1)
 				{
 					nlassert(oldWinProc != listenerProc); // first registration so the winproc must be different
-					SetWindowLong(ownerWindow, GWL_WNDPROC, (LONG) listenerProc);
+					SetWindowLongPtr(ownerWindow, GWLP_WNDPROC, (LONG_PTR) listenerProc);
 					_OldWinProcMap[ownerWindow].OldWinProc = oldWinProc;
 				}
 				else
@@ -307,7 +303,7 @@ namespace NLMISC
 
 				if (_LocalWindow.getWnd() != _DummyWindow.getWnd())
 				{
-					WNDPROC currWinProc = (WNDPROC) GetWindowLong(_LocalWindow.getWnd(), GWL_WNDPROC);
+					WNDPROC currWinProc = (WNDPROC) GetWindowLongPtr(_LocalWindow.getWnd(), GWLP_WNDPROC);
 					if (currWinProc != listenerProc)
 					{
 						nlassert(0); // IF THIS ASSERT FIRES :
@@ -330,7 +326,7 @@ namespace NLMISC
 				{
 					if (IsWindow(_LocalWindow.getWnd()))
 					{
-						SetWindowLong(_LocalWindow.getWnd(), GWL_WNDPROC, (LONG) it->second.OldWinProc);
+						SetWindowLongPtr(_LocalWindow.getWnd(), GWLP_WNDPROC, (LONG_PTR) it->second.OldWinProc);
 					}
 					_OldWinProcMap.erase(it);
 				}

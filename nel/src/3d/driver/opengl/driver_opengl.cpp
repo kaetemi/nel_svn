@@ -32,9 +32,6 @@
 #	include <windows.h>
 #	include <windowsx.h>
 #	include <string>
-#	ifdef NL_OS_WIN64
-#		define GWL_USERDATA GWLP_USERDATA
-#	endif // NL_OS_WIN64
 #else // NL_OS_UNIX
 #	include <GL/glx.h>
 #endif // NL_OS_UNIX
@@ -191,7 +188,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 {
 	H_AUTO_OGL(DriverGL_WndProc)
 	// Get the driver pointer..
-	CDriverGL *pDriver=(CDriverGL*)GetWindowLong (hWnd, GWL_USERDATA);
+	CDriverGL *pDriver=(CDriverGL*)GetWindowLongPtr (hWnd, GWLP_USERDATA);
 	bool trapMessage = false;
 	if (pDriver != NULL)
 	{
@@ -923,7 +920,7 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 				return false;
 			}
 
-			SetWindowLong (_hWnd, GWL_USERDATA, (LONG)this);
+			SetWindowLongPtr (_hWnd, GWLP_USERDATA, (LONG_PTR)this);
 
 			// resize the window
 			RECT rc;
@@ -1474,15 +1471,15 @@ bool CDriverGL::setDisplay(void *wnd, const GfxMode &mode, bool show, bool resiz
 #ifdef NL_OS_WINDOWS
 // --------------------------------------------------
 // This code comes from MFC
-static void modifyStyle (HWND hWnd, int nStyleOffset, DWORD dwRemove, DWORD dwAdd)
+static void modifyStyle (HWND hWnd, int nStyleOffset, LONG_PTR dwRemove, LONG_PTR dwAdd)
 {
 	H_AUTO_OGL(modifyStyle)
-	DWORD dwStyle = ::GetWindowLong(hWnd, nStyleOffset);
-	DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
+	LONG_PTR dwStyle = ::GetWindowLongPtr(hWnd, nStyleOffset);
+	LONG_PTR dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
 	if (dwStyle == dwNewStyle)
 		return;
 
-	::SetWindowLong(hWnd, nStyleOffset, dwNewStyle);
+	::SetWindowLongPtr(hWnd, nStyleOffset, dwNewStyle);
 }
 #endif
 
