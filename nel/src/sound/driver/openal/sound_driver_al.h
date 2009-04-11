@@ -83,7 +83,7 @@ private:
 	// Allocated buffers
 	std::vector<ALuint> _Buffers;
 	// Allocated sources
-	std::vector<ALuint> _Sources;
+	std::set<CSourceAL *> _Sources;
 	// Allocated effects
 	std::set<CEffectAL *> _Effects;
 	// Number of exported buffers (including any deleted buffers)
@@ -105,6 +105,7 @@ public:
 
 	inline ALCdevice *getAlDevice() { return _AlDevice; }
 	inline ALCcontext *getAlContext() { return _AlContext; }
+	inline float getRolloffFactor() { return _RolloffFactor; }
 
 	/// Return a list of available devices for the user. If the result is empty, you should use the default device.
 	// ***todo*** virtual void getDevices(std::vector<std::string> &devices);

@@ -45,13 +45,16 @@ CEffectAL::CEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxE
 
 CEffectAL::~CEffectAL()
 {
-	if (_SoundDriver)
-	{
-		_SoundDriver->removeEffect(this);
-		_SoundDriver = NULL;
-		_AlEffect = AL_NONE;
-		_AlAuxEffectSlot = AL_NONE;
-	}
+	CSoundDriverAL *soundDriver = _SoundDriver;
+	release();
+	if (soundDriver) soundDriver->removeEffect(this);
+}
+
+void CEffectAL::release()
+{
+	if (_AlAuxEffectSlot != AL_EFFECTSLOT_NULL) { alDeleteAuxiliaryEffectSlots(1, &_AlAuxEffectSlot); _AlAuxEffectSlot = AL_EFFECTSLOT_NULL; }
+	if (_AlEffect != AL_EFFECT_NULL) { alDeleteEffects(1, &_AlEffect); _AlEffect = AL_EFFECT_NULL; }
+	_SoundDriver = NULL;
 }
 
 // ******************************************************************

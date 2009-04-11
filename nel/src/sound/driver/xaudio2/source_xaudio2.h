@@ -67,6 +67,8 @@ private:
 	CAdpcmXAudio2 *_AdpcmUtility;
 	
 	// -- System vars 2d --
+	/// Unique operation set
+	uint32 _OperationSet;
 	/// Format of the current source voice.
 	IBuffer::TBufferFormat _Format;
 	/// Number of channels in the current format
@@ -103,9 +105,12 @@ private:
 	/// Path enabled settings
 	bool _DirectDryEnabled, _DirectFilterEnabled, _EffectDryEnabled, _EffectFilterEnabled;
 	/// Gain settings
-	float _DirectGain, _DirectFilterGain, _EffectGain, _EffectFilterGain;
+	float _DirectGain, _EffectGain;
+	float _DirectFilterPassGain, _EffectFilterPassGain;
 	/// Filter cutoff frequencies
-	float _DirectFilterFrequency, _EffectFilterFrequency;
+	float _DirectFilterLowFrequency, _DirectFilterHighFrequency;
+	/// Filter cutoff frequencies
+	float _EffectFilterLowFrequency, _EffectFilterHighFrequency;
 	/// Filter settings
 	XAUDIO2_FILTER_PARAMETERS _DirectFilter, _EffectFilter;
 	
@@ -147,56 +152,10 @@ public:
 	void setEffect(CEffectXAudio2 *effect);
 	/// (Internal) Update the send descriptor
 	void setupVoiceSends();
-
-	/// \name Direct output
-	//@{
-	/// Enable or disable direct output [true/false], default: true
-	virtual void setDirect(bool enable);
-	/// Return if the direct output is enabled
-	virtual bool getDirect() const;
-	/// Set the gain level of the direct output [0.0, 1.0], default: 1.0
-	virtual void setDirectGain(float gain);
-	/// Get the gain level of the direct output
-	virtual float getDirectGain() const;
-	
-	/// Enable or disable the filter for the direct channel
-	virtual void enableDirectFilter(bool enable);
-	/// Check if the filter on the direct channel is enabled
-	virtual bool isDirectFilterEnabled() const;
-	/// Set the filter parameters for the direct channel
-	virtual void setDirectFilter(TFilter filter, float cutoffFrequency);
-	/// Get the filter parameters for the direct channel
-	virtual void getDirectFilter(TFilter &filter, float &cutoffFrequency) const;
-	/// Set the direct filter gain
-	virtual void setDirectFilterGain(float gain);
-	/// Get the direct filter gain
-	virtual float getDirectFilterGain() const;
-	//@}
-	
-	/// \name Effect output
-	//@{
-	/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
-	virtual void setEffect(IReverbEffect *reverbEffect);
-	/// Get the effect send for this source
-	// virtual IReverbEffect *getEffect() const; // virtual IEffect *getEffect();
-	/// Set the gain level of the effect send [0.0, 1.0], default: 1.0
-	virtual void setEffectGain(float gain);
-	/// Get the gain level of the effect send
-	virtual float getEffectGain() const;
-	
-	/// Enable or disable the filter for the effect channel
-	virtual void enableEffectFilter(bool enable);
-	/// Check if the filter on the effect channel is enabled
-	virtual bool isEffectFilterEnabled() const;
-	/// Set the filter parameters for the effect channel
-	virtual void setEffectFilter(TFilter filter, float cutoffFrequency);
-	/// Get the filter parameters for the effect channel
-	virtual void getEffectFilter(TFilter &filter, float &cutoffFrequency) const;
-	/// Set the effect filter gain
-	virtual void setEffectFilterGain(float gain);
-	/// Get the effect filter gain
-	virtual float getEffectFilterGain() const;
-	//@}
+	/// (Internal) Setup the direct send filter.
+	void setupDirectFilter();
+	/// (Internal) Setup the effect send filter.
+	void setupEffectFilter();
 	
 	/// \name Initialization
 	//@{
@@ -301,6 +260,56 @@ public:
 	 *  the linear dB curve and the linear amplitude curve.
 	 */
 	virtual void setAlpha(double a);
+	//@}
+	
+	/// \name Direct output
+	//@{
+	/// Enable or disable direct output [true/false], default: true
+	virtual void setDirect(bool enable = true);
+	/// Return if the direct output is enabled
+	virtual bool getDirect() const;
+	/// Set the gain for the direct path
+	virtual void setDirectGain(float gain);
+	/// Get the gain for the direct path
+	virtual float getDirectGain() const;
+	
+	/// Enable or disable the filter for the direct channel
+	virtual void enableDirectFilter(bool enable = true);
+	/// Check if the filter on the direct channel is enabled
+	virtual bool isDirectFilterEnabled() const;
+	/// Set the filter parameters for the direct channel
+	virtual void setDirectFilter(TFilter filter, float lowFrequency, float highFrequency, float passGain);
+	/// Get the filter parameters for the direct channel
+	virtual void getDirectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const;
+	/// Set the direct filter gain
+	virtual void setDirectFilterPassGain(float passGain);
+	/// Get the direct filter gain
+	virtual float getDirectFilterPassGain() const;
+	//@}
+	
+	/// \name Effect output
+	//@{
+	/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+	virtual void setEffect(IReverbEffect *reverbEffect);
+	/// Get the effect send for this source
+	virtual IEffect *getEffect() const;
+	/// Set the gain for the effect path
+	virtual void setEffectGain(float gain);
+	/// Get the gain for the effect path
+	virtual float getEffectGain() const;
+	
+	/// Enable or disable the filter for the effect channel
+	virtual void enableEffectFilter(bool enable = true);
+	/// Check if the filter on the effect channel is enabled
+	virtual bool isEffectFilterEnabled() const;
+	/// Set the filter parameters for the effect channel
+	virtual void setEffectFilter(TFilter filter, float lowFrequency, float highFrequency, float passGain);
+	/// Get the filter parameters for the effect channel
+	virtual void getEffectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const;
+	/// Set the effect filter gain
+	virtual void setEffectFilterPassGain(float passGain);
+	/// Get the effect filter gain
+	virtual float getEffectFilterPassGain() const;
 	//@}
 	
 }; /* class CSourceXAudio2 */

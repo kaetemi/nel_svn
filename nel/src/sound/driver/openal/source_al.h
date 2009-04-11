@@ -29,6 +29,7 @@
 namespace NLSOUND {
 	class IBuffer;
 	class CBufferAL;
+	class CSoundDriverAL;
 	class CEffectAL;
 
 /**
@@ -50,30 +51,50 @@ namespace NLSOUND {
 class CSourceAL : public ISource
 {
 private:
-	// assigned buffer object
+	/// Sound driver
+	CSoundDriverAL *_SoundDriver;
+
+	/// Assigned buffer object
 	CBufferAL *_Buffer;
 	std::queue<CBufferAL *> _QueuedBuffers;
 	
-	// Source name
-	ALuint _SourceName;
+	/// AL Handles
+	ALuint _Source;
+	ALuint _DirectFilter, _EffectFilter;
 	
+	/// Playing status
 	bool _IsPlaying;
 	bool _IsPaused;
 	NLMISC::CVector _Pos;
-public:
 	
+	/// Send paths
+	CEffectAL *_Effect;
+	bool _Direct;
+	float _DirectGain, _EffectGain;
+
+	/// Send filters
+	TFilter _DirectFilterType, _EffectFilterType;
+	bool _DirectFilterEnabled, _EffectFilterEnabled;
+	float _DirectFilterPassGain, _EffectFilterPassGain;
+	
+public:	
 	/// Constructor
-	CSourceAL(ALuint sourcename = AL_NONE);
+	CSourceAL(CSoundDriverAL *soundDriver);
 	/// Destructor
 	virtual	~CSourceAL();
+
+	/// Release called by the driver to release internal AL handles.
+	void release();
 	
 	/// Return the OpenAL source name
-	inline ALuint sourceName() { return _SourceName; }
-
-	void setEffect(CEffectAL *effect);
+	inline ALuint getSource() const { return _Source; }
 	
-	/// Set the effect send for this source, NULL to disable.
-	virtual void setEffect(IReverbEffect *reverbEffect);
+	/// (Internal) Set the effect send for this source, NULL to disable.
+	void setEffect(CEffectAL *effect);
+	/// (Internal) Setup the direct send filter.
+	void setupDirectFilter();
+	/// (Internal) Setup the effect send filter.
+	void setupEffectFilter();
 	
 	/// \name Initialization
 	//@{
@@ -178,6 +199,56 @@ public:
 	 *  the linear dB curve and the linear amplitude curve.
 	 */
 	virtual void setAlpha(double a);
+	//@}
+	
+	/// \name Direct output
+	//@{
+	/// Enable or disable direct output [true/false], default: true
+	virtual void setDirect(bool enable = true);
+	/// Return if the direct output is enabled
+	virtual bool getDirect() const;
+	/// Set the gain for the direct path
+	virtual void setDirectGain(float gain);
+	/// Get the gain for the direct path
+	virtual float getDirectGain() const;
+	
+	/// Enable or disable the filter for the direct channel
+	virtual void enableDirectFilter(bool enable = true);
+	/// Check if the filter on the direct channel is enabled
+	virtual bool isDirectFilterEnabled() const;
+	/// Set the filter parameters for the direct channel
+	virtual void setDirectFilter(TFilter filter, float lowFrequency, float highFrequency, float passGain);
+	/// Get the filter parameters for the direct channel
+	virtual void getDirectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const;
+	/// Set the direct filter gain
+	virtual void setDirectFilterPassGain(float passGain);
+	/// Get the direct filter gain
+	virtual float getDirectFilterPassGain() const;
+	//@}
+	
+	/// \name Effect output
+	//@{
+	/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+	virtual void setEffect(IReverbEffect *reverbEffect);
+	/// Get the effect send for this source
+	virtual IEffect *getEffect() const;
+	/// Set the gain for the effect path
+	virtual void setEffectGain(float gain);
+	/// Get the gain for the effect path
+	virtual float getEffectGain() const;
+	
+	/// Enable or disable the filter for the effect channel
+	virtual void enableEffectFilter(bool enable = true);
+	/// Check if the filter on the effect channel is enabled
+	virtual bool isEffectFilterEnabled() const;
+	/// Set the filter parameters for the effect channel
+	virtual void setEffectFilter(TFilter filter, float lowFrequency, float highFrequency, float passGain);
+	/// Get the filter parameters for the effect channel
+	virtual void getEffectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const;
+	/// Set the effect filter gain
+	virtual void setEffectFilterPassGain(float passGain);
+	/// Get the effect filter gain
+	virtual float getEffectFilterPassGain() const;
 	//@}
 	
 };

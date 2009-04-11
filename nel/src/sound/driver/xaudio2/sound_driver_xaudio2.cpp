@@ -151,9 +151,9 @@ NLMISC_CATEGORISED_COMMAND(nel, xa2DebugHeavy, "", "")
 
 // ******************************************************************
 
-CSoundDriverXAudio2::CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider *stringMapper) 
-	: _StringMapper(stringMapper), _XAudio2(NULL), _MasteringVoice(NULL), 
-	_SoundDriverOk(false), _CoInitOk(false), _Listener(NULL), 
+CSoundDriverXAudio2::CSoundDriverXAudio2(ISoundDriver::IStringMapperProvider * /* stringMapper */) 
+	: _XAudio2(NULL), _MasteringVoice(NULL), _Listener(NULL), 
+	_SoundDriverOk(false), _CoInitOk(false), _OperationSetCounter(65536), 
 	_PerformanceCommit3DCounter(0), _PerformanceADPCMBufferSize(0), 
 	_PerformancePCMBufferSize(0), _PerformanceMusicPlayCounter(0), 
 	_PerformanceSourcePlayCounter(0)
@@ -358,12 +358,11 @@ IXAudio2SourceVoice *CSoundDriverXAudio2::createSourceVoice(IBuffer::TBufferForm
 
 	wfe.nBlockAlign = wfe.nChannels * wfe.wBitsPerSample / 8;
 	wfe.nAvgBytesPerSec = wfe.nSamplesPerSec * wfe.nBlockAlign;
-
-	// NOTE: 2.0f allows at most NLSOUND_XAUDIO2_MASTER_SAMPLE_RATE*2 audio sample rate, increase if you need higher bitrate (or higher pitch).
+	
 	// TODO: Set callback (in CSourceXAudio2 maybe) for when error happens on voice, so we can restart it!
 	IXAudio2SourceVoice *source_voice = NULL;
 
-	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, 2.0f, callback, NULL, NULL)))
+	if (FAILED(hr = _XAudio2->CreateSourceVoice(&source_voice, &wfe, 0, NLSOUND_MAX_PITCH, callback, NULL, NULL)))
 	{ if (source_voice) source_voice->DestroyVoice(); nlerror(NLSOUND_XAUDIO2_PREFIX "FAILED CreateSourceVoice"); return NULL; }
 
 	return source_voice;

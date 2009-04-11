@@ -182,13 +182,22 @@ _NbExpBuffers(0), _NbExpSources(0), _RolloffFactor(1.f)
  */
 CSoundDriverAL::~CSoundDriverAL()
 {
-	// Remove the allocated (but not exported) source and buffer names
-	if (!_Sources.empty()) alDeleteSources(compactAliveNames(_Sources, alIsSource), &*_Sources.begin());
-	if (!_Buffers.empty()) alDeleteBuffers(compactAliveNames(_Buffers, alIsBuffer), &*_Buffers.begin());
-	// Release internal resources of all remaining IEffect instances
+	// Remove the allocated (but not exported) source and buffer names-
+	// Release internal resources of all remaining ISource instances
+	if (_Sources.size())
 	{
+		nlwarning("AL: _Sources.size(): '%u'", (uint32)_Sources.size());
+		set<CSourceAL *>::iterator it(_Sources.begin()), end(_Sources.end());
+		for (; it != end; ++it) (*it)->release();
+		_Sources.clear();
+	}
+	if (!_Buffers.empty()) alDeleteBuffers(compactAliveNames(_Buffers, alIsBuffer), &*_Buffers.begin());	
+	// Release internal resources of all remaining IEffect instances
+	if (_Effects.size())
+	{
+		nlwarning("AL: _Effects.size(): '%u'", (uint32)_Effects.size());
 		set<CEffectAL *>::iterator it(_Effects.begin()), end(_Effects.end());
-		for (; it != end; ++it) removeEffect(*it);
+		for (; it != end; ++it) (*it)->release();
 		_Effects.clear();
 	}
 
@@ -280,7 +289,6 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 
 	// Initial buffers and sources allocation
 	allocateNewItems(alGenBuffers, alIsBuffer, _Buffers, _NbExpBuffers, INITIAL_BUFFERS);
-	allocateNewItems(alGenSources, alIsSource, _Sources, _NbExpSources, INITIAL_SOURCES);
 	alTestError();
 }
 
@@ -363,12 +371,9 @@ IBuffer *CSoundDriverAL::createBuffer()
  */
 ISource *CSoundDriverAL::createSource()
 {
-	CSourceAL *sourceal = new CSourceAL(createItem(alGenSources, alIsSource, _Sources, _NbExpSources, SOURCE_ALLOC_RATE));
-	if ( _RolloffFactor != ROLLOFF_FACTOR_DEFAULT )
-	{
-		alSourcef(sourceal->sourceName(), AL_ROLLOFF_FACTOR, _RolloffFactor);
-	}
-	return sourceal;
+	CSourceAL *sourceAl = new CSourceAL(this);
+	_Sources.insert(sourceAl);
+	return sourceAl;
 }
 
 /// Create a reverb effect
@@ -521,31 +526,18 @@ void CSoundDriverAL::removeBuffer(CBufferAL *buffer)
 /// Remove a source
 void CSoundDriverAL::removeSource(CSourceAL *source)
 {
-	nlassert(source != NULL);
-	if (!deleteItem( source->sourceName(), alDeleteSources, _Sources))
-		nlwarning("AL: Deleting source: name not found");
+	if (_Sources.find(source) != _Sources.end()) _Sources.erase(source);
+	else nlwarning("AL: removeSource already called");
 }
 
 /// Remove an effect
 void CSoundDriverAL::removeEffect(CEffectAL *effect)
 {
-	nlassert(effect != NULL);
-
-	set<CEffectAL *>::iterator it = _Effects.find(effect);
-	if (it == _Effects.end()) 
-		{ nlwarning("AL: Deleting effect: name not found"); return; }
-
-	ALuint slotname = effect->getAuxEffectSlot();
-	ALuint effectname = effect->getAlEffect();
-	alDeleteAuxiliaryEffectSlots(1, &slotname);
-	alDeleteEffects(1, &effectname);
-	_Effects.erase(it);
+	if (_Effects.find(effect) != _Effects.end()) _Effects.erase(effect);
+	else nlwarning("AL: removeEffect already called");
 }
 
-
-/*
- * Delete a buffer or a source
- */
+/// Delete a buffer or a source
 bool CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, vector<ALuint>& names )
 {
 	vector<ALuint>::iterator ibn = find( names.begin(), names.end(), name );
@@ -559,35 +551,26 @@ bool CSoundDriverAL::deleteItem( ALuint name, TDeleteFunctionAL aldeletefunc, ve
 	return true;
 }
 
-
-/*
- * Create the listener instance
- */
-IListener		*CSoundDriverAL::createListener()
+/// Create the listener instance
+IListener *CSoundDriverAL::createListener()
 {
 	nlassert(!CListenerAL::isInitialized());
 	return new CListenerAL();
 }
 
-
-/*
- * Apply changes of rolloff factor to all sources
- */
-void			CSoundDriverAL::applyRolloffFactor( float f )
+/// Apply changes of rolloff factor to all sources
+void CSoundDriverAL::applyRolloffFactor( float f )
 {
 	_RolloffFactor = f;
-	vector<ALuint>::iterator ibn;
-	for ( ibn=_Sources.begin(); ibn!=_Sources.end(); ++ibn )
+	if (!getOption(OptionManualRolloff))
 	{
-		alSourcef( *ibn, AL_ROLLOFF_FACTOR, _RolloffFactor );
+		set<CSourceAL *>::iterator it(_Sources.begin()), end(_Sources.end());
+		for (; it != end; ++it) alSourcef((*it)->getSource(), AL_ROLLOFF_FACTOR, _RolloffFactor);
+		alTestError();
 	}
-	alTestError();
 }
 
-
-/*
- * Helper for loadWavFile()
- */
+/// Helper for loadWavFile()
 TSampleFormat ALtoNLSoundFormat( ALenum alformat )
 {
 	switch ( alformat )

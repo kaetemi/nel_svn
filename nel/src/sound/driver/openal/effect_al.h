@@ -58,6 +58,7 @@ protected:
 public:
 	CEffectAL(CSoundDriverAL *soundDriver, ALuint alEffect, ALuint alAuxEffectSlot);
 	virtual ~CEffectAL();
+	virtual void release();
 	
 	inline ALuint getAlEffect() { return _AlEffect; }
 	inline ALuint getAuxEffectSlot() { return _AlAuxEffectSlot; }

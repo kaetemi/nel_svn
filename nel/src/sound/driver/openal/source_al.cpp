@@ -28,47 +28,69 @@
 #include "effect_al.h"
 #include "buffer_al.h"
 
+using namespace std;
 using namespace NLMISC;
-
 
 namespace NLSOUND {
 
-
-/*
- * Constructor
- */
-CSourceAL::CSourceAL(ALuint sourcename) :
-	_Buffer(NULL), _SourceName(sourcename), 
-	_IsPlaying(false), _IsPaused(false), 
-	_Pos(0.0f, 0.0f, 0.0f)
+CSourceAL::CSourceAL(CSoundDriverAL *soundDriver) :
+_SoundDriver(NULL), _Buffer(NULL), _Source(AL_NONE),
+_DirectFilter(AL_FILTER_NULL), _EffectFilter(AL_FILTER_NULL), 
+_IsPlaying(false), _IsPaused(false), 
+_Pos(0.0f, 0.0f, 0.0f), 
+_Effect(NULL), _Direct(true), 
+_DirectGain(NLSOUND_DEFAULT_DIRECT_GAIN), _EffectGain(NLSOUND_DEFAULT_EFFECT_GAIN), 
+_DirectFilterType(ISource::FilterLowPass), _EffectFilterType(ISource::FilterLowPass), 
+_DirectFilterEnabled(false), _EffectFilterEnabled(false), 
+_DirectFilterPassGain(NLSOUND_DEFAULT_FILTER_PASS_GAIN), _EffectFilterPassGain(NLSOUND_DEFAULT_FILTER_PASS_GAIN)
 {
+	// create the al source
+	alGenSources(1, &_Source);
+	alTestError();
 	
+	// configure rolloff
+	if (soundDriver->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		// todo
+	}
+	else
+	{
+		alSourcef(_Source, AL_ROLLOFF_FACTOR, soundDriver->getRolloffFactor());
+		alTestError();
+	}
+	
+	// create filters
+	if (soundDriver->getOption(ISoundDriver::OptionEnvironmentEffects))
+	{
+		alGenFilters(1, &_DirectFilter);
+		alFilteri(_DirectFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+		alFilterf(_DirectFilter, AL_LOWPASS_GAIN, NLSOUND_DEFAULT_DIRECT_GAIN);
+		alFilterf(_DirectFilter, AL_LOWPASS_GAINHF, NLSOUND_DEFAULT_FILTER_PASS_GAIN);
+		alTestError();
+		alGenFilters(1, &_EffectFilter);
+		alFilteri(_EffectFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+		alFilterf(_EffectFilter, AL_LOWPASS_GAIN, NLSOUND_DEFAULT_EFFECT_GAIN);
+		alFilterf(_EffectFilter, AL_LOWPASS_GAINHF, NLSOUND_DEFAULT_FILTER_PASS_GAIN);
+		alTestError();
+	}
+	
+	// if everything went well, the source will be added in the sounddriver
+	_SoundDriver = soundDriver;
 }
 
-
-/*
- * Destructor
- */
 CSourceAL::~CSourceAL()
 {
-	CSoundDriverAL *sdal = CSoundDriverAL::getInstance();
-	//if (_Buffer != NULL)
-	//	sdal->removeBuffer(_Buffer);
-	sdal->removeSource(this);
+	CSoundDriverAL *soundDriver = _SoundDriver;
+	release();
+	if (soundDriver) soundDriver->removeSource(this);
 }
 
-void CSourceAL::setEffect(CEffectAL *effect)
+void CSourceAL::release()
 {
-	// no filter stuff yet
-	// only allow one submix send for now -----------------------------------------------> 0
-	if (effect) { /*nldebug("AL: Setting effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, effect->getAuxEffectSlot(), 0, AL_FILTER_NULL); }
-	else { /*nldebug("AL: Removing effect");*/ alSource3i(_SourceName, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL); }
-	alTestError();
-}
-
-void CSourceAL::setEffect(IReverbEffect *reverbEffect)
-{
-	setEffect(reverbEffect ? dynamic_cast<CEffectAL *>(reverbEffect) : NULL);
+	if (_Source != AL_NONE) { alDeleteSources(1, &_Source); _Source = AL_NONE; }
+	if (_DirectFilter != AL_FILTER_NULL) { alDeleteFilters(1, &_DirectFilter); _DirectFilter = AL_FILTER_NULL; }
+	if (_EffectFilter != AL_FILTER_NULL) { alDeleteFilters(1, &_EffectFilter); _EffectFilter = AL_FILTER_NULL; }
+	_SoundDriver = NULL;
 }
 
 /// Enable or disable streaming mode. Source must be stopped to call this.
@@ -77,7 +99,7 @@ void CSourceAL::setStreaming(bool /* streaming */)
 	nlassert(isStopped());
 
 	// bring the source type to AL_UNDETERMINED
-	alSourcei(_SourceName, AL_BUFFER, AL_NONE);
+	alSourcei(_Source, AL_BUFFER, AL_NONE);
 	alTestError();
 	_Buffer = NULL;
 }
@@ -89,20 +111,20 @@ void CSourceAL::setStreaming(bool /* streaming */)
 void CSourceAL::setStaticBuffer( IBuffer *buffer )
 {
 	// Stop source
-	alSourceStop( _SourceName );
+	alSourceStop(_Source);
 	alTestError();
 
 	// Set buffer
 	if ( buffer == NULL )
 	{
-		alSourcei( _SourceName, AL_BUFFER, AL_NONE );
+		alSourcei(_Source, AL_BUFFER, AL_NONE );
 		alTestError();
 		_Buffer = NULL;
 	}
 	else
 	{
 		CBufferAL *bufferAL = dynamic_cast<CBufferAL *>(buffer);
-		alSourcei( _SourceName, AL_BUFFER, bufferAL->bufferName() );
+		alSourcei(_Source, AL_BUFFER, bufferAL->bufferName() );
 		alTestError();
 
 		// Set relative mode if the buffer is stereo
@@ -125,7 +147,7 @@ void CSourceAL::submitStreamingBuffer(IBuffer *buffer)
 	CBufferAL *bufferAL = static_cast<CBufferAL *>(buffer);
 	ALuint bufferName = bufferAL->bufferName();
 	nlassert(bufferName);
-	alSourceQueueBuffers(_SourceName, 1, &bufferName);
+	alSourceQueueBuffers(_Source, 1, &bufferName);
 	alTestError();
 	_QueuedBuffers.push(bufferAL);
 }
@@ -135,11 +157,11 @@ uint CSourceAL::countStreamingBuffers() const
 {
 	// a bit ugly here, but makes a much easier/simpler implementation on both drivers
 	ALint buffersProcessed;
-	alGetSourcei(_SourceName, AL_BUFFERS_PROCESSED, &buffersProcessed);
+	alGetSourcei(_Source, AL_BUFFERS_PROCESSED, &buffersProcessed);
 	while (buffersProcessed)
 	{
 		ALuint bufferName = _QueuedBuffers.front()->bufferName();
-		alSourceUnqueueBuffers(_SourceName, 1, &bufferName);
+		alSourceUnqueueBuffers(_Source, 1, &bufferName);
 		alTestError();
 		const_cast<std::queue<CBufferAL *> &>(_QueuedBuffers).pop();
 		--buffersProcessed;
@@ -152,31 +174,23 @@ uint CSourceAL::countStreamingBuffers() const
 	return (uint)_QueuedBuffers.size();
 }
 
-/*
- * Set looping on/off for future playbacks (default: off)
- */
+/// Set looping on/off for future playbacks (default: off)
 void CSourceAL::setLooping( bool l )
 {
-	alSourcei( _SourceName, AL_LOOPING, l?AL_TRUE:AL_FALSE );
+	alSourcei(_Source, AL_LOOPING, l?AL_TRUE:AL_FALSE );
 	alTestError();
 }
 
-
-/*
- * Return the looping state
- */
+/// Return the looping state
 bool CSourceAL::getLooping() const
 {
 	ALint b;
-	alGetSourcei( _SourceName, AL_LOOPING, &b );
+	alGetSourcei(_Source, AL_LOOPING, &b );
 	alTestError();
 	return ( b == AL_TRUE );
 }
 
-
-/*
- * Play the static buffer (or stream in and play)
- */
+/// Play the static buffer (or stream in and play)
 bool CSourceAL::play()
 {
 	if ( _Buffer != NULL )
@@ -184,7 +198,7 @@ bool CSourceAL::play()
 		// Static playing mode
 		_IsPlaying = true;
 		_IsPaused = false;
-		alSourcePlay(_SourceName);
+		alSourcePlay(_Source);
 		return alGetError() == AL_NO_ERROR;
 	}
 	else
@@ -192,7 +206,7 @@ bool CSourceAL::play()
 		// TODO: Verify streaming mode?
 		_IsPlaying = true;
 		_IsPaused = false;
-		alSourcePlay(_SourceName);
+		alSourcePlay(_Source);
 		return alGetError() == AL_NO_ERROR;
 		// Streaming mode
 		//nlwarning("AL: Cannot play null buffer; streaming not implemented" );
@@ -200,10 +214,7 @@ bool CSourceAL::play()
 	}
 }
 
-
-/*
- * Stop playing
- */
+/// Stop playing
 void CSourceAL::stop()
 {
 	if ( _Buffer != NULL )
@@ -211,7 +222,7 @@ void CSourceAL::stop()
 		// Static playing mode
 		_IsPlaying = false;
 		_IsPaused = false;
-		alSourceStop(_SourceName);
+		alSourceStop(_Source);
 		alTestError();
 	}
 	else
@@ -219,13 +230,13 @@ void CSourceAL::stop()
 		// TODO: Verify streaming mode?
 		_IsPlaying = false;
 		_IsPaused = false;
-		alSourceStop(_SourceName);
+		alSourceStop(_Source);
 		alTestError();
 		// unqueue buffers
 		while (_QueuedBuffers.size())
 		{
 			ALuint bufferName = _QueuedBuffers.front()->bufferName();
-			alSourceUnqueueBuffers(_SourceName, 1, &bufferName);
+			alSourceUnqueueBuffers(_Source, 1, &bufferName);
 			_QueuedBuffers.pop();
 			alTestError();
 		}
@@ -235,10 +246,7 @@ void CSourceAL::stop()
 	}
 }
 
-
-/*
- * Pause. Call play() to resume.
- */
+/// Pause. Call play() to resume.
 void CSourceAL::pause()
 {
 	if ( _Buffer != NULL )
@@ -249,7 +257,7 @@ void CSourceAL::pause()
 		if (!isStopped())
 		{
 			_IsPaused = true;
-			alSourcePause( _SourceName );
+			alSourcePause(_Source);
 			alTestError();
 		}
 	}
@@ -257,7 +265,7 @@ void CSourceAL::pause()
 	{
 		// TODO: Verify streaming mode?
 		_IsPaused = true;
-		alSourcePause( _SourceName );
+		alSourcePause(_Source);
 		alTestError();
 		// Streaming mode
 		//nlwarning("AL: Cannot pause null buffer; streaming not implemented" );
@@ -270,7 +278,7 @@ bool CSourceAL::isPlaying() const
 {
 	//return !isStopped() && !_IsPaused;
 	ALint srcstate;
-	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
+	alGetSourcei(_Source, AL_SOURCE_STATE, &srcstate);
 	alTestError();
 	return (srcstate == AL_PLAYING || srcstate == AL_PAUSED);
 }
@@ -283,7 +291,7 @@ bool CSourceAL::isStopped() const
 	//	if (!_IsPaused)
 	//	{
 	ALint srcstate;
-	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
+	alGetSourcei(_Source, AL_SOURCE_STATE, &srcstate);
 	alTestError();
 	return (srcstate == AL_STOPPED || srcstate == AL_INITIAL);
 	//	}
@@ -296,7 +304,7 @@ bool CSourceAL::isStopped() const
 bool CSourceAL::isPaused() const
 {
 	ALint srcstate;
-	alGetSourcei(_SourceName, AL_SOURCE_STATE, &srcstate);
+	alGetSourcei(_Source, AL_SOURCE_STATE, &srcstate);
 	alTestError();
 	return (srcstate == AL_PAUSED);
 }
@@ -308,194 +316,141 @@ uint32 CSourceAL::getTime()
 	return 0;
 }
 
-/* Set the position vector.
- * 3D mode -> 3D position
- * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
- */
+/// Set the position vector.
 void CSourceAL::setPos(const NLMISC::CVector& pos, bool /* deffered */)
 {
 	_Pos = pos;
 	// Coordinate system: conversion from NeL to OpenAL/GL:
-	alSource3f( _SourceName, AL_POSITION, pos.x, pos.z, -pos.y );
+	alSource3f(_Source, AL_POSITION, pos.x, pos.z, -pos.y );
 	alTestError();
 }
 
-
-/* Get the position vector.
- * See setPos() for details.
- */
+/// Get the position vector.
 const NLMISC::CVector &CSourceAL::getPos() const
 {
 	return _Pos;
 }
 
-
-/*
- * Set the velocity vector (3D mode only)
- */
+/// Set the velocity vector (3D mode only)
 void CSourceAL::setVelocity( const NLMISC::CVector& vel, bool /* deferred */)
 {
 	// Coordsys conversion
-	alSource3f( _SourceName, AL_VELOCITY, vel.x, vel.z, -vel.y );
+	alSource3f(_Source, AL_VELOCITY, vel.x, vel.z, -vel.y );
 	alTestError();
 }
 
-
-/*
- * Get the velocity vector
- */
+/// Get the velocity vector
 void CSourceAL::getVelocity( NLMISC::CVector& vel ) const
 {
 	ALfloat v[3];
-	alGetSourcefv( _SourceName, AL_VELOCITY, v );
+	alGetSourcefv(_Source, AL_VELOCITY, v );
 	alTestError();
 	// Coordsys conversion
 	vel.set( v[0], -v[2], v[1] );
 }
 
-
-/*
- * Set the direction vector (3D mode only)
- */
+/// Set the direction vector (3D mode only)
 void CSourceAL::setDirection( const NLMISC::CVector& dir )
 {
 	// Coordsys conversion
-	alSource3f( _SourceName, AL_DIRECTION, dir.x, dir.z, -dir.y );
+	alSource3f(_Source, AL_DIRECTION, dir.x, dir.z, -dir.y );
 	alTestError();
 }
 
-
-/*
- * Get the direction vector
- */
+/// Get the direction vector
 void CSourceAL::getDirection( NLMISC::CVector& dir ) const
 {
 	ALfloat v[3];
-	alGetSourcefv( _SourceName, AL_DIRECTION, v );
+	alGetSourcefv(_Source, AL_DIRECTION, v );
 	alTestError();
 	// Coordsys conversion
 	dir.set( v[0], -v[2], v[1] );
 }
 
-
-/* Set the gain (volume value inside [0 , 1]).
- * 0.0 -> silence
- * 0.5 -> -6dB
- * 1.0 -> no attenuation
- * values > 1 (amplification) not supported by most drivers
- */
-void CSourceAL::setGain( float gain )
+/// Set the gain (volume value inside [0 , 1]).
+void CSourceAL::setGain(float gain)
 {
-	clamp(gain, 0.0f, 1.0f);
-	alSourcef( _SourceName, AL_GAIN, gain );
+	alSourcef(_Source, AL_GAIN, std::min(std::max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN));
 	alTestError();
 }
 
-
-/*
- * Get the gain
- */
+/// Get the gain
 float CSourceAL::getGain() const
 {
 	ALfloat gain;
-	alGetSourcef( _SourceName, AL_GAIN, &gain );
+	alGetSourcef(_Source, AL_GAIN, &gain);
 	alTestError();
 	return gain;
 }
 
-
-/* Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
- * of one octave. 0 is not a legal value.
- */
-void CSourceAL::setPitch( float pitch )
+/// Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
+void CSourceAL::setPitch(float pitch)
 {
-	nlassert(pitch > 0);
-	alSourcef(_SourceName, AL_PITCH, pitch);
+	alSourcef(_Source, AL_PITCH, std::min(std::max(pitch, NLSOUND_MIN_PITCH), NLSOUND_MAX_PITCH));
 	alTestError();
 }
 
-
-/*
- * Get the pitch
- */
+/// Get the pitch
 float CSourceAL::getPitch() const
 {
 	ALfloat pitch;
-	alGetSourcef( _SourceName, AL_PITCH, &pitch );
+	alGetSourcef(_Source, AL_PITCH, &pitch);
 	alTestError();
 	return pitch;
 }
 
-
-/*
- * Set the source relative mode. If true, positions are interpreted relative to the listener position.
- */
+/// Set the source relative mode. If true, positions are interpreted relative to the listener position.
 void CSourceAL::setSourceRelativeMode( bool mode )
 {
-	alSourcei( _SourceName, AL_SOURCE_RELATIVE, mode?AL_TRUE:AL_FALSE );
+	alSourcei(_Source, AL_SOURCE_RELATIVE, mode?AL_TRUE:AL_FALSE );
 	alTestError();
 }
 
-
-/*
- * Get the source relative mode (3D mode only)
- */
+/// Get the source relative mode (3D mode only)
 bool CSourceAL::getSourceRelativeMode() const
 {
 	ALint b;
-	alGetSourcei( _SourceName, AL_SOURCE_RELATIVE, &b );
+	alGetSourcei(_Source, AL_SOURCE_RELATIVE, &b );
 	alTestError();
 	return (b==AL_TRUE);
 }
 
-
-/*
- * Set the min and max distances (3D mode only)
- */
+/// Set the min and max distances (3D mode only)
 void CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool /* deferred */)
 {
 	nlassert( (mindist >= 0.0f) && (maxdist >= 0.0f) );
-	alSourcef( _SourceName, AL_REFERENCE_DISTANCE, mindist );
-	alSourcef( _SourceName, AL_MAX_DISTANCE, maxdist );
+	alSourcef(_Source, AL_REFERENCE_DISTANCE, mindist );
+	alSourcef(_Source, AL_MAX_DISTANCE, maxdist );
 	alTestError();
 }
 
-
-/*
- * Get the min and max distances
- */
+/// Get the min and max distances
 void CSourceAL::getMinMaxDistances( float& mindist, float& maxdist ) const
 {
-	alGetSourcef( _SourceName, AL_REFERENCE_DISTANCE, &mindist );
-	alGetSourcef( _SourceName, AL_MAX_DISTANCE, &maxdist );
+	alGetSourcef(_Source, AL_REFERENCE_DISTANCE, &mindist );
+	alGetSourcef(_Source, AL_MAX_DISTANCE, &maxdist );
 	alTestError();
 }
 
-
-/*
- * Set the cone angles (in radian) and gain (in [0 , 1]) (3D mode only)
- */
+/// Set the cone angles (in radian) and gain (in [0 , 1]) (3D mode only)
 void CSourceAL::setCone( float innerAngle, float outerAngle, float outerGain )
 {
 	nlassert( (outerGain >= 0.0f) && (outerGain <= 1.0f ) );
-	alSourcef( _SourceName, AL_CONE_INNER_ANGLE, radToDeg(innerAngle) );
-	alSourcef( _SourceName, AL_CONE_OUTER_ANGLE, radToDeg(outerAngle) );
-	alSourcef( _SourceName, AL_CONE_OUTER_GAIN, outerGain );
+	alSourcef(_Source, AL_CONE_INNER_ANGLE, radToDeg(innerAngle) );
+	alSourcef(_Source, AL_CONE_OUTER_ANGLE, radToDeg(outerAngle) );
+	alSourcef(_Source, AL_CONE_OUTER_GAIN, outerGain );
 	alTestError();
 }
 
-
-/*
- * Get the cone angles (in radian)
- */
+/// Get the cone angles (in radian)
 void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain ) const
 {
 	float ina, outa;
-	alGetSourcef( _SourceName, AL_CONE_INNER_ANGLE, &ina );
+	alGetSourcef(_Source, AL_CONE_INNER_ANGLE, &ina );
 	innerAngle = degToRad(ina);
-	alGetSourcef( _SourceName, AL_CONE_OUTER_ANGLE, &outa );
+	alGetSourcef(_Source, AL_CONE_OUTER_ANGLE, &outa );
 	outerAngle = degToRad(outa);
-	alGetSourcef( _SourceName, AL_CONE_OUTER_GAIN, &outerGain );
+	alGetSourcef(_Source, AL_CONE_OUTER_GAIN, &outerGain );
 	alTestError();
 }
 
@@ -517,19 +472,248 @@ void CSourceAL::setAlpha(double /* a */)
 	// throw ESoundDriverNoManualRolloff();
 }
 
+/// (Internal) Setup the effect send filter.
+void CSourceAL::setupDirectFilter()
+{
+	if (_Direct && _DirectGain > 0)
+	{
+		if (_DirectGain < 1 || (_DirectFilterPassGain < 1 && _DirectFilterEnabled))
+		{
+			// direct gain is lowered or a filter is applied
+			alFilterf(_DirectFilter, AL_BANDPASS_GAIN, _DirectGain);
+			if (_DirectFilterEnabled)
+			{
+				alFilterf(_DirectFilter, AL_BANDPASS_GAINLF, _DirectFilterPassGain);
+				if (_DirectFilterType == FilterBandPass)
+					alFilterf(_DirectFilter, AL_BANDPASS_GAINHF, _DirectFilterPassGain);
+			}
+			else
+			{
+				alFilterf(_DirectFilter, AL_BANDPASS_GAINLF, 1.0f);
+				if (_DirectFilterType == FilterBandPass)
+					alFilterf(_DirectFilter, AL_BANDPASS_GAINHF, 1.0f);
+			}
+			alSourcei(_Source, AL_DIRECT_FILTER, _DirectFilter);
+		}
+		else
+		{
+			// no filtering
+			alSourcei(_Source, AL_DIRECT_FILTER, AL_FILTER_NULL);
+		}
+	}
+	else
+	{
+		// mute
+		alFilterf(_DirectFilter, AL_BANDPASS_GAIN, 0.0f);
+		alSourcei(_Source, AL_DIRECT_FILTER, _DirectFilter);
+	}
+	alTestError();
+}
 
-///*
-// * Set any EAX source property if EAX available
-// */
-//void CSourceAL::setEAXProperty( uint prop, void *value, uint valuesize )
-//{
-//#if EAX_AVAILABLE == 1
-//	if (AlExtEax)
-//	{
-//		eaxSet( &DSPROPSETID_EAX_SourceProperties, prop, _SourceName, value, valuesize );
-//	}
-//#endif
-//}
+/// Enable or disable direct output [true/false], default: true
+void CSourceAL::setDirect(bool enable)
+{
+	_Direct = enable;
+	setupDirectFilter();
+}
 
+/// Return if the direct output is enabled
+bool CSourceAL::getDirect() const
+{
+	return _Direct;
+}
+
+/// Set the gain for the direct path
+void CSourceAL::setDirectGain(float gain)
+{
+	_DirectGain = min(max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	setupDirectFilter();
+}
+
+/// Get the gain for the direct path
+float CSourceAL::getDirectGain() const
+{
+	return _DirectGain;
+}
+
+/// Enable or disable the filter for the direct channel
+void CSourceAL::enableDirectFilter(bool enable)
+{
+	_DirectFilterEnabled = enable;
+	setupDirectFilter();
+}
+
+/// Check if the filter on the direct channel is enabled
+bool CSourceAL::isDirectFilterEnabled() const
+{
+	return _DirectFilterEnabled;
+}
+
+/// Set the filter parameters for the direct channel
+void CSourceAL::setDirectFilter(TFilter filterType, float /* lowFrequency */, float /* highFrequency */, float passGain)
+{
+	_DirectFilterType = filterType;
+	_DirectFilterPassGain = passGain;
+	switch (filterType)
+	{
+	case FilterHighPass:
+		alFilteri(_DirectFilter, AL_FILTER_TYPE, AL_FILTER_HIGHPASS);
+		break;
+	case FilterLowPass:
+		alFilteri(_DirectFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+		break;
+	case FilterBandPass:
+		alFilteri(_DirectFilter, AL_FILTER_TYPE, AL_FILTER_BANDPASS);
+		break;
+	}
+	setupDirectFilter();
+}
+
+/// Get the filter parameters for the direct channel
+void CSourceAL::getDirectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	filterType = _DirectFilterType;
+	lowFrequency = NLSOUND_DEFAULT_FILTER_PASS_LF;
+	highFrequency = NLSOUND_DEFAULT_FILTER_PASS_HF;
+	passGain = _DirectFilterPassGain;
+}
+
+/// Set the direct filter gain
+void CSourceAL::setDirectFilterPassGain(float passGain)
+{
+	_DirectFilterPassGain = min(max(passGain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	setupDirectFilter();
+}
+
+/// Get the direct filter gain
+float CSourceAL::getDirectFilterPassGain() const
+{
+	return _DirectFilterPassGain;
+}
+
+/// (Internal) Setup the effect send filter.
+void CSourceAL::setupEffectFilter()
+{
+	if (_Effect && _EffectGain > 0)
+	{
+		if (_EffectGain < 1 || (_EffectFilterPassGain < 1 && _EffectFilterEnabled))
+		{
+			// effect gain is lowered or a filter is applied
+			alFilterf(_EffectFilter, AL_BANDPASS_GAIN, _EffectGain);
+			if (_EffectFilterEnabled)
+			{
+				alFilterf(_EffectFilter, AL_BANDPASS_GAINLF, _EffectFilterPassGain);
+				if (_EffectFilterType == FilterBandPass)
+					alFilterf(_EffectFilter, AL_BANDPASS_GAINHF, _EffectFilterPassGain);
+			}
+			else
+			{
+				alFilterf(_EffectFilter, AL_BANDPASS_GAINLF, 1.0f);
+				if (_EffectFilterType == FilterBandPass)
+					alFilterf(_EffectFilter, AL_BANDPASS_GAINHF, 1.0f);
+			}
+			alSource3i(_Source, AL_AUXILIARY_SEND_FILTER, _Effect->getAuxEffectSlot(), 0, _EffectFilter);
+		}
+		else
+		{
+			// no filtering
+			alSource3i(_Source, AL_AUXILIARY_SEND_FILTER, _Effect->getAuxEffectSlot(), 0, AL_FILTER_NULL);
+		}
+	}
+	else
+	{
+		// mute
+		alSource3i(_Source, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
+	}
+	alTestError();
+}
+
+/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+void CSourceAL::setEffect(CEffectAL *effect)
+{
+	_Effect = effect;
+	setupEffectFilter();
+}
+
+/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+void CSourceAL::setEffect(IReverbEffect *reverbEffect)
+{
+	setEffect(reverbEffect ? dynamic_cast<CEffectAL *>(reverbEffect) : NULL);
+}
+
+/// Get the effect send for this source
+IEffect *CSourceAL::getEffect() const
+{
+	// return _Effect ? NLMISC::safe_cast<IEffect *>(_Effect) : NULL;
+	return NULL;
+}
+
+/// Set the gain for the effect path
+void CSourceAL::setEffectGain(float gain)
+{
+	_EffectGain = min(max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	setupEffectFilter();
+}
+
+/// Get the gain for the effect path
+float CSourceAL::getEffectGain() const
+{
+	return _EffectGain;
+}
+
+/// Enable or disable the filter for the effect channel
+void CSourceAL::enableEffectFilter(bool enable)
+{
+	_EffectFilterEnabled = enable;
+	setupEffectFilter();
+}
+
+/// Check if the filter on the effect channel is enabled
+bool CSourceAL::isEffectFilterEnabled() const
+{
+	return _EffectFilterEnabled;
+}
+
+/// Set the filter parameters for the effect channel
+void CSourceAL::setEffectFilter(TFilter filterType, float /* lowFrequency */, float /* highFrequency */, float passGain)
+{
+	_EffectFilterType = filterType;
+	_EffectFilterPassGain = passGain;
+	switch (filterType)
+	{
+	case FilterHighPass:
+		alFilteri(_EffectFilter, AL_FILTER_TYPE, AL_FILTER_HIGHPASS);
+		break;
+	case FilterLowPass:
+		alFilteri(_EffectFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+		break;
+	case FilterBandPass:
+		alFilteri(_EffectFilter, AL_FILTER_TYPE, AL_FILTER_BANDPASS);
+		break;
+	}
+	setupEffectFilter();
+}
+
+/// Get the filter parameters for the effect channel
+void CSourceAL::getEffectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	filterType = _EffectFilterType;
+	lowFrequency = NLSOUND_DEFAULT_FILTER_PASS_LF;
+	highFrequency = NLSOUND_DEFAULT_FILTER_PASS_HF;
+	passGain = _EffectFilterPassGain;
+}
+
+/// Set the effect filter gain
+void CSourceAL::setEffectFilterPassGain(float passGain)
+{
+	_EffectFilterPassGain = min(max(passGain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	setupEffectFilter();
+}
+
+/// Get the effect filter gain
+float CSourceAL::getEffectFilterPassGain() const
+{
+	return _EffectFilterPassGain;
+}
 
 } // NLSOUND

@@ -116,12 +116,6 @@ void CSourceFMod::reset()
 	setGain(1.0f);
 }
 
-/// Set the effect send for this source, NULL to disable.
-void CSourceFMod::setEffect(IReverbEffect * /* effect */)
-{
-	throw ESoundDriverNoEnvironmentEffects();
-}
-
 /// Enable or disable streaming mode. Source must be stopped to call this.
 void CSourceFMod::setStreaming(bool streaming)
 {
@@ -555,5 +549,130 @@ void CSourceFMod::updateFModPosIfRelative()
 		updateFModPos();
 }
 
+/// Enable or disable direct output [true/false], default: true
+void CSourceFMod::setDirect(bool /* enable */)
+{
+	
+}
+
+/// Return if the direct output is enabled
+bool CSourceFMod::getDirect() const
+{
+	return true;
+}
+
+/// Set the gain for the direct path
+void CSourceFMod::setDirectGain(float /* gain */)
+{
+	
+}
+
+/// Get the gain for the direct path
+float CSourceFMod::getDirectGain() const
+{
+	return NLSOUND_DEFAULT_DIRECT_GAIN;
+}
+
+/// Enable or disable the filter for the direct channel
+void CSourceFMod::enableDirectFilter(bool /* enable */)
+{
+	
+}
+
+/// Check if the filter on the direct channel is enabled
+bool CSourceFMod::isDirectFilterEnabled() const
+{
+	return false;
+}
+
+/// Set the filter parameters for the direct channel
+void CSourceFMod::setDirectFilter(TFilter /*filterType*/, float /*lowFrequency*/, float /*highFrequency*/, float /*passGain*/)
+{
+	
+}
+
+/// Get the filter parameters for the direct channel
+void CSourceFMod::getDirectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	filterType = FilterLowPass;
+	lowFrequency = NLSOUND_DEFAULT_FILTER_PASS_LF; 
+	highFrequency = NLSOUND_DEFAULT_FILTER_PASS_HF; 
+	passGain = NLSOUND_DEFAULT_FILTER_PASS_GAIN;
+}
+
+/// Set the direct filter gain
+void CSourceFMod::setDirectFilterPassGain(float /*passGain*/)
+{
+	
+}
+
+/// Get the direct filter gain
+float CSourceFMod::getDirectFilterPassGain() const
+{
+	return 0.0f;
+}
+
+/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+void CSourceFMod::setEffect(IReverbEffect * /* reverbEffect */)
+{
+	
+}
+
+/// Get the effect send for this source
+IEffect *CSourceFMod::getEffect() const
+{
+	return NULL;
+}
+
+/// Set the gain for the effect path
+void CSourceFMod::setEffectGain(float /* gain */)
+{
+	
+}
+
+/// Get the gain for the effect path
+float CSourceFMod::getEffectGain() const
+{
+	return NLSOUND_DEFAULT_EFFECT_GAIN;
+}
+
+/// Enable or disable the filter for the effect channel
+void CSourceFMod::enableEffectFilter(bool /* enable */)
+{
+	
+}
+
+/// Check if the filter on the effect channel is enabled
+bool CSourceFMod::isEffectFilterEnabled() const
+{
+	return false;
+}
+
+/// Set the filter parameters for the effect channel
+void CSourceFMod::setEffectFilter(TFilter /*filterType*/, float /*lowFrequency*/, float /*highFrequency*/, float /*passGain*/)
+{
+	
+}
+
+/// Get the filter parameters for the effect channel
+void CSourceFMod::getEffectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	filterType = FilterLowPass;
+	lowFrequency = NLSOUND_DEFAULT_FILTER_PASS_LF; 
+	highFrequency = NLSOUND_DEFAULT_FILTER_PASS_HF; 
+	passGain = NLSOUND_DEFAULT_FILTER_PASS_GAIN;
+}
+
+/// Set the effect filter gain
+void CSourceFMod::setEffectFilterPassGain(float /*passGain*/)
+{
+	
+}
+
+/// Get the effect filter gain
+float CSourceFMod::getEffectFilterPassGain() const
+{
+	return 0.0f;
+}
 
 } // NLSOUND

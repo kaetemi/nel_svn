@@ -54,13 +54,15 @@ using namespace NLMISC;
 namespace NLSOUND {
 
 CSourceXAudio2::CSourceXAudio2(CSoundDriverXAudio2 *soundDriver) 
-: _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), 
+: _SoundDriver(soundDriver), _SourceVoice(NULL), _StaticBuffer(NULL), _OperationSet(soundDriver->getUniqueOperationSet()), 
 _Format(IBuffer::FormatUnknown), _Frequency(0), _PlayStart(0), 
 _Doppler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _Relative(false), _Alpha(1.0), 
 _DirectDryVoice(NULL), _DirectFilterVoice(NULL), _EffectDryVoice(NULL), _EffectFilterVoice(NULL), 
 _DirectDryEnabled(false), _DirectFilterEnabled(false), _EffectDryEnabled(false), _EffectFilterEnabled(false), 
-_DirectGain(1.0f), _DirectFilterGain(1.0f), _EffectGain(1.0f), _EffectFilterGain(1.0f), 
-_DirectFilterFrequency(1000.0f), _EffectFilterFrequency(1000.0f), 
+_DirectGain(NLSOUND_DEFAULT_DIRECT_GAIN), _EffectGain(NLSOUND_DEFAULT_EFFECT_GAIN), 
+_DirectFilterPassGain(NLSOUND_DEFAULT_FILTER_PASS_GAIN), _EffectFilterPassGain(NLSOUND_DEFAULT_FILTER_PASS_GAIN), 
+_DirectFilterLowFrequency(NLSOUND_DEFAULT_FILTER_PASS_LF), _DirectFilterHighFrequency(NLSOUND_DEFAULT_FILTER_PASS_HF), 
+_EffectFilterLowFrequency(NLSOUND_DEFAULT_FILTER_PASS_LF), _EffectFilterHighFrequency(NLSOUND_DEFAULT_FILTER_PASS_HF), 
 _IsPlaying(false), _IsPaused(false), _IsLooping(false), _Pitch(1.0f), 
 _Gain(1.0f), _MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()),
 _AdpcmUtility(NULL), _Channels(0), _BitsPerSample(0), _BufferStreaming(false)
@@ -118,18 +120,22 @@ _AdpcmUtility(NULL), _Channels(0), _BitsPerSample(0), _BufferStreaming(false)
 CSourceXAudio2::~CSourceXAudio2()
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CSourceXAudio2");
-
+	CSoundDriverXAudio2 *soundDriver = _SoundDriver;
 	release();
-	if (_SoundDriver) { _SoundDriver->removeSource(this); _SoundDriver = NULL; }
+	if (soundDriver) soundDriver->removeSource(this);
 }
 
-void CSourceXAudio2::release() // called by driver :)
+void CSourceXAudio2::release() // called by driver or destructor, whichever is first
 {
-	if (_AdpcmUtility) _AdpcmUtility->flushSourceBuffers();
-	if (_SoundDriver) {_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL; }
-	nlassert(!_SourceVoice);
-	delete _AdpcmUtility; _AdpcmUtility = NULL;
+	if (_AdpcmUtility) { _AdpcmUtility->flushSourceBuffers(); }
+	if (_SoundDriver) 
+	{
+		_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
+		if (_SourceVoice) { _SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL; }
+	}
+	if (_AdpcmUtility) { delete _AdpcmUtility; _AdpcmUtility = NULL; }
 	stop();
+	_SoundDriver = NULL;
 }
 
 /// Commit all the changes made to 3D settings of listener and sources
@@ -147,7 +153,7 @@ void CSourceXAudio2::commit3DChanges()
 		// 1 result in matrix, use with setvolume
 		// todo: some more stuff...
 		// this isn't really used anyways
-		_SourceVoice->SetFrequencyRatio(_Pitch);
+		_SourceVoice->SetFrequencyRatio(_Pitch, _OperationSet);
 		// nlerror(NLSOUND_XAUDIO2_PREFIX "Stereo16 and Stereo8 not fully implemented, have fun! :)");
 	}
 	else
@@ -189,32 +195,34 @@ void CSourceXAudio2::commit3DChanges()
 		if (_DirectDryEnabled)
 		{
 			float directDryGain = _DirectFilterEnabled
-				? ((1.0f - _DirectFilterGain) * _DirectGain)
+				? _DirectFilterPassGain * _DirectGain
 				: _DirectGain;
 			outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * directDryGain;
 			outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * directDryGain;
-			_SourceVoice->SetOutputMatrix(_DirectDryVoice, 1, 2, outputMatrix);
+			_SourceVoice->SetOutputMatrix(_DirectDryVoice, 1, 2, outputMatrix, _OperationSet);
 			if (_DirectFilterEnabled)
 			{
-				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * _DirectFilterGain * _DirectGain;
-				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * _DirectFilterGain * _DirectGain;
-				_SourceVoice->SetOutputMatrix(_DirectFilterVoice, 1, 2, outputMatrix);
+				float directFilterGain = _DirectGain - directDryGain;
+				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * directFilterGain;
+				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * directFilterGain;
+				_SourceVoice->SetOutputMatrix(_DirectFilterVoice, 1, 2, outputMatrix, _OperationSet);
 			}
 		}
 
 		if (_EffectDryEnabled)
 		{
 			float effectDryGain = _EffectFilterEnabled
-				? ((1.0f - _EffectFilterGain) * _EffectGain)
+				? _EffectFilterPassGain  * _EffectGain
 				: _EffectGain;
 			outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * effectDryGain;
 			outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * effectDryGain;
-			_SourceVoice->SetOutputMatrix(_EffectDryVoice, 1, 2, outputMatrix);
+			_SourceVoice->SetOutputMatrix(_EffectDryVoice, 1, 2, outputMatrix, _OperationSet);
 			if (_EffectFilterEnabled)
 			{
-				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * _EffectFilterGain * _EffectGain;
-				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * _EffectFilterGain * _EffectGain;
-				_SourceVoice->SetOutputMatrix(_EffectFilterVoice, 1, 2, outputMatrix);
+				float effectFilterGain = _EffectGain - effectDryGain;
+				outputMatrix[0] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[0] * effectFilterGain;
+				outputMatrix[1] = _SoundDriver->getDSPSettings()->pMatrixCoefficients[1] * effectFilterGain;
+				_SourceVoice->SetOutputMatrix(_EffectFilterVoice, 1, 2, outputMatrix, _OperationSet);
 			}
 		}
 
@@ -222,6 +230,7 @@ void CSourceXAudio2::commit3DChanges()
 		_Doppler = _SoundDriver->getDSPSettings()->DopplerFactor;
 		_SourceVoice->SetFrequencyRatio(_Pitch * _Doppler);
 	}
+	_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 	// todo: delay?
 }
 
@@ -241,6 +250,7 @@ void CSourceXAudio2::updateState()
 		{
 			if (!_AdpcmUtility->getSourceData())
 			{
+				_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 				if (FAILED(_SourceVoice->Stop(0))) 
 					nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
 				_IsPlaying = false;
@@ -252,6 +262,7 @@ void CSourceXAudio2::updateState()
 			_SourceVoice->GetState(&voice_state);
 			if (!voice_state.BuffersQueued)
 			{
+				_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 				if (FAILED(_SourceVoice->Stop(0))) 
 					nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
 				_IsPlaying = false;
@@ -260,6 +271,7 @@ void CSourceXAudio2::updateState()
 	}
 }
 
+/// (Internal) Submit a buffer to the XAudio2 source voice.
 void CSourceXAudio2::submitBuffer(CBufferXAudio2 *ibuffer)
 {
 	nlassert(_SourceVoice);
@@ -295,7 +307,7 @@ void CSourceXAudio2::setupVoiceSends()
 	XAUDIO2_VOICE_SENDS voiceSends;
 	voiceSends.pSends = sendDescriptors;
 	voiceSends.SendCount = 0;
-
+	
 	if (_DirectDryEnabled)
 	{
 		sendDescriptors[0].Flags = 0;
@@ -308,7 +320,7 @@ void CSourceXAudio2::setupVoiceSends()
 		}
 		else voiceSends.SendCount = 1;
 	}
-
+	
 	if (_EffectDryEnabled)
 	{
 		sendDescriptors[voiceSends.SendCount].Flags = 0;
@@ -321,213 +333,14 @@ void CSourceXAudio2::setupVoiceSends()
 			++voiceSends.SendCount;
 		}
 	}
-
-	_SourceVoice->SetOutputVoices(&voiceSends);
 	
-	if (_DirectDryEnabled && _DirectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_DirectFilterVoice, &_DirectFilter);
-	if (_EffectDryEnabled && _EffectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_EffectFilterVoice, &_EffectFilter);
+	_SoundDriver->getXAudio2()->CommitChanges(_OperationSet); // SetOutputVoices does not support OperationSet
+	_SourceVoice->SetOutputVoices(&voiceSends); // SetOutputVoices does not support OperationSet
+	setupDirectFilter();
+	setupEffectFilter();
+	_SoundDriver->getXAudio2()->CommitChanges(_OperationSet); // SetOutputVoices does not support OperationSet
 }
 
-/// Enable or disable direct output [true/false], default: true
-void CSourceXAudio2::setDirect(bool enable)
-{
-	if (_DirectDryEnabled != enable)
-	{
-		_DirectDryEnabled = enable;
-		if (_SourceVoice) setupVoiceSends();
-	}
-}
-
-/// Return if the direct output is enabled
-bool CSourceXAudio2::getDirect() const
-{
-	return _DirectDryEnabled;
-}
-
-void CSourceXAudio2::setDirectGain(float gain)
-{
-	_DirectGain = gain;
-}
-
-float CSourceXAudio2::getDirectGain() const
-{
-	return _DirectGain;
-}
-
-void CSourceXAudio2::enableDirectFilter(bool enable)
-{
-	if (_DirectFilterEnabled != enable)
-	{
-		_DirectFilterEnabled = enable;
-		if (enable) _DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterFrequency, _Frequency);
-		if (_SourceVoice && _DirectDryEnabled)
-			setupVoiceSends();
-	}
-}
-
-bool CSourceXAudio2::isDirectFilterEnabled() const
-{
-	return _DirectFilterEnabled;
-}
-
-void CSourceXAudio2::setDirectFilter(TFilter filter, float cutoffFrequency)
-{
-	switch (filter)
-	{
-	case ISource::FilterLowPass:
-		_DirectFilter.Type = LowPassFilter;
-		break;
-	case ISource::FilterBandPass:
-		_DirectFilter.Type = BandPassFilter;
-		break;
-	case ISource::FilterHighPass:
-		_DirectFilter.Type = HighPassFilter;
-		break;
-	default:
-		_DirectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
-		break;
-	}
-	_DirectFilterFrequency = cutoffFrequency;
-	if (_DirectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_DirectFilterVoice, &_DirectFilter);
-}
-
-void CSourceXAudio2::getDirectFilter(TFilter &filter, float &cutoffFrequency) const
-{
-	switch (_DirectFilter.Type)
-	{
-	case LowPassFilter:
-		filter = ISource::FilterLowPass;
-		break;
-	case BandPassFilter:
-		filter = ISource::FilterBandPass;
-		break;
-	case HighPassFilter:
-		filter = ISource::FilterHighPass;
-		break;
-	default:
-		filter = (TFilter)~0;
-		break;
-	}
-	cutoffFrequency = _DirectFilterFrequency;
-}
-
-void CSourceXAudio2::setDirectFilterGain(float gain)
-{
-	_DirectFilterGain = gain;
-	clamp(_DirectFilterGain, 0.0f, 1.0f);
-}
-
-float CSourceXAudio2::getDirectFilterGain() const
-{
-	return _DirectFilterGain;
-}
-
-void CSourceXAudio2::setEffect(CEffectXAudio2 *effect)
-{
-	// if (_Effect != effect)
-	{
-		if (effect)
-		{
-			_EffectDryEnabled = true;
-			_EffectDryVoice = effect->getDryVoice();
-			_EffectFilterVoice = effect->getFilterVoice();
-		}
-		else
-		{
-			_EffectDryEnabled = false;
-			_EffectDryVoice = NULL;
-			_EffectFilterVoice = NULL;
-		}
-		if (_SourceVoice) setupVoiceSends();
-	}
-}
-
-void CSourceXAudio2::setEffectGain(float gain)
-{
-	_EffectGain = gain;
-}
-
-float CSourceXAudio2::getEffectGain() const
-{
-	return _EffectGain;
-}
-
-void CSourceXAudio2::enableEffectFilter(bool enable)
-{
-	if (_EffectFilterEnabled != enable)
-	{
-		_EffectFilterEnabled = enable;
-		if (enable) _EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterFrequency, _Frequency);
-		if (_SourceVoice && _EffectDryEnabled)
-			setupVoiceSends();
-	}
-}
-
-bool CSourceXAudio2::isEffectFilterEnabled() const
-{
-	return _EffectFilterEnabled;
-}
-
-void CSourceXAudio2::setEffectFilter(TFilter filter, float cutoffFrequency)
-{
-	switch (filter)
-	{
-	case ISource::FilterLowPass:
-		_EffectFilter.Type = LowPassFilter;
-		break;
-	case ISource::FilterBandPass:
-		_EffectFilter.Type = BandPassFilter;
-		break;
-	case ISource::FilterHighPass:
-		_EffectFilter.Type = HighPassFilter;
-		break;
-	default:
-		_EffectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
-		break;
-	}
-	_EffectFilterFrequency = cutoffFrequency;
-	if (_EffectFilterEnabled) _SourceVoice->SetOutputFilterParameters(_EffectFilterVoice, &_EffectFilter);
-}
-
-void CSourceXAudio2::getEffectFilter(TFilter &filter, float &cutoffFrequency) const
-{
-	switch (_EffectFilter.Type)
-	{
-	case LowPassFilter:
-		filter = ISource::FilterLowPass;
-		break;
-	case BandPassFilter:
-		filter = ISource::FilterBandPass;
-		break;
-	case HighPassFilter:
-		filter = ISource::FilterHighPass;
-		break;
-	default:
-		filter = (TFilter)~0;
-		break;
-	}
-	cutoffFrequency = _EffectFilterFrequency;
-}
-
-void CSourceXAudio2::setEffectFilterGain(float gain)
-{
-	_EffectFilterGain = gain;
-	clamp(_EffectFilterGain, 0.0f, 1.0f);
-}
-
-float CSourceXAudio2::getEffectFilterGain() const
-{
-	return _EffectFilterGain;
-}
-
-/// Set the effect send for this source, NULL to disable.
-void CSourceXAudio2::setEffect(IReverbEffect *reverbEffect)
-{
-	setEffect(reverbEffect ? static_cast<CEffectXAudio2 *>(static_cast<CReverbEffectXAudio2 *>(reverbEffect)) : NULL);
-}
-
-/// \name Initialization
-//@{
 /// Enable or disable streaming mode. Source must be stopped to call this.
 void CSourceXAudio2::setStreaming(bool streaming)
 {
@@ -535,10 +348,7 @@ void CSourceXAudio2::setStreaming(bool streaming)
 	_BufferStreaming = streaming;
 }
 
-/** Set the buffer that will be played (no streaming)
- * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
- * otherwise the source is considered as a 3D source.
- */
+/// Set the buffer that will be played (no streaming)
 void CSourceXAudio2::setStaticBuffer(IBuffer *buffer)
 {
 	nlassert(!_BufferStreaming);
@@ -610,16 +420,6 @@ uint CSourceXAudio2::countStreamingBuffers() const
 	}
 }
 
-///** Set the sound loader that will be used to stream in the data to play
-// * If the buffer is stereo, the source mode becomes stereo and the source relative mode is on,
-// * otherwise the source is considered as a 3D source.
-// */
-//void CSourceXAudio2::setStreamLoader(ILoader *loader) { _Loader = loader; }
-//@}
-
-
-/// \name Playback control
-//@{
 /// Set looping on/off for future playbacks (default: off)
 void CSourceXAudio2::setLooping(bool l)
 {
@@ -684,6 +484,7 @@ bool CSourceXAudio2::getLooping() const
 	return _IsLooping;
 }
 
+/// (Internal) Initialize voice with this format, if no voice has been created yet.
 bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample)
 {
 	// nlwarning(NLSOUND_XAUDIO2_PREFIX "New voice with format %u!", (uint32)_StaticBuffer->getFormat());
@@ -698,8 +499,9 @@ bool CSourceXAudio2::initFormat(IBuffer::TBufferFormat bufferFormat, uint8 chann
 	_Format = bufferFormat;
 	_Channels = channels;
 	_BitsPerSample = bitsPerSample;
-	_SourceVoice->SetVolume(_Gain);
+	_SourceVoice->SetVolume(_Gain, _OperationSet);
 	setupVoiceSends();
+	_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 
 
 	// test
@@ -736,6 +538,7 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 	{
 		nlwarning(NLSOUND_XAUDIO2_PREFIX "Switching format %u to %u!", (uint32)_Format, (uint32)bufferFormat);
 		// destroy existing voice
+		_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 		_SoundDriver->destroySourceVoice(_SourceVoice); _SourceVoice = NULL;
 		// destroy adpcm utility (if it exists)
 		delete _AdpcmUtility; _AdpcmUtility = NULL;
@@ -746,9 +549,12 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 	}
 	if (frequency != _Frequency)
 	{
-		if (_DirectFilterEnabled) _DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterFrequency, frequency);
-		if (_EffectFilterEnabled) _EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterFrequency, frequency);
-		if (_SourceVoice) _SourceVoice->SetSourceSampleRate(frequency);
+		if (_SourceVoice) 
+		{
+			setupDirectFilter();
+			setupEffectFilter();
+			_SourceVoice->SetSourceSampleRate(frequency);
+		}
 		_Frequency = frequency;
 	}
 	if (!_SourceVoice)
@@ -779,9 +585,7 @@ bool CSourceXAudio2::preparePlay(IBuffer::TBufferFormat bufferFormat, uint8 chan
 	return true;
 }
 
-/** Play the static buffer (or stream in and play).
- *	This method can return false if the sample for this sound is unloaded.
- */
+/// Play the static buffer (or stream in and play).
 bool CSourceXAudio2::play()
 {	
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "play");
@@ -840,6 +644,7 @@ void CSourceXAudio2::stop()
 		if (_AdpcmUtility) _AdpcmUtility->flushSourceBuffers();
 
 		// stop source voice and remove pending buffers
+		_SoundDriver->getXAudio2()->CommitChanges(_OperationSet);
 		if (FAILED(_SourceVoice->Stop(0))) 
 			nlwarning(NLSOUND_XAUDIO2_PREFIX "FAILED Stop");
 		if (FAILED(_SourceVoice->FlushSourceBuffers())) 
@@ -887,12 +692,6 @@ bool CSourceXAudio2::isPaused() const
 	return _IsPaused;
 }
 
-///// Update the source (e.g. continue to stream the data in)
-//bool CSourceXAudio2::update()
-//{
-//	return true;
-//}
-
 /// Returns the number of milliseconds the source has been playing
 uint32 CSourceXAudio2::getTime()
 {
@@ -902,14 +701,8 @@ uint32 CSourceXAudio2::getTime()
 
 	return _IsPlaying ? (uint32)(CTime::getLocalTime() - _PlayStart) : 0;
 }
-//@}
 
-/// \name Source properties
-//@{
-/** Set the position vector (default: (0,0,0)).
- * 3D mode -> 3D position
- * st mode -> x is the pan value (from left (-1) to right (1)), set y and z to 0
- */
+/// Set the position vector (default: (0,0,0)).
 void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool /* deffered */) // note: deferred with a different spelling
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setPos %f %f %f", pos.x, pos.y, pos.z);
@@ -920,9 +713,7 @@ void CSourceXAudio2::setPos(const NLMISC::CVector& pos, bool /* deffered */) // 
 	// !! todo if threaded: if (!deffered) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deffered"); */ commit3DChanges(); }
 }
 
-/** Get the position vector.
- * See setPos() for details.
- */
+/// Get the position vector.
 const NLMISC::CVector &CSourceXAudio2::getPos() const
 {
 	return _Pos;
@@ -958,18 +749,13 @@ void CSourceXAudio2::getDirection(NLMISC::CVector& dir) const
 	NLSOUND_XAUDIO2_VECTOR_FROM_X3DAUDIO_VECTOR(dir, _Emitter.OrientFront);
 }
 
-/** Set the gain (volume value inside [0 , 1]). (default: 1)
- * 0.0 -> silence
- * 0.5 -> -6dB
- * 1.0 -> no attenuation
- * values > 1 (amplification) not supported by most drivers
- */
+/// Set the gain (volume value inside [0 , 1]). (default: 1)
 void CSourceXAudio2::setGain(float gain)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setGain %f", gain);
 
-	_Gain = gain;
-	if (_SourceVoice) _SourceVoice->SetVolume(gain);
+	_Gain = std::min(std::max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	if (_SourceVoice) _SourceVoice->SetVolume(_Gain, _OperationSet);
 }
 
 /// Get the gain
@@ -978,18 +764,16 @@ float CSourceXAudio2::getGain() const
 	return _Gain;
 }
 
-/** Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
- * of one octave. 0 is not a legal value.
- */
+/// Shift the frequency.
 void CSourceXAudio2::setPitch(float pitch)
 {
 	// nldebug(NLSOUND_XAUDIO2_PREFIX "setPitch %f", pitch);
 
-	_Pitch = pitch;
+	_Pitch = std::min(std::max(pitch, NLSOUND_MIN_PITCH), NLSOUND_MAX_PITCH);
 	if (_SourceVoice)
 	{
-		if (_Channels > 1) _SourceVoice->SetFrequencyRatio(_Pitch);
-		else _SourceVoice->SetFrequencyRatio(_Pitch * _Doppler);
+		if (_Channels > 1) _SourceVoice->SetFrequencyRatio(_Pitch, _OperationSet);
+		else _SourceVoice->SetFrequencyRatio(_Pitch * _Doppler, _OperationSet);
 	}
 }
 
@@ -1021,8 +805,6 @@ void CSourceXAudio2::setMinMaxDistances(float mindist, float maxdist, bool /* de
 	_Emitter.InnerRadius = mindist;
 	_MinDistance = mindist;
 	_MaxDistance = maxdist;
-
-	// !! todo if threaded: if (!deferred) { /* nlwarning(NLSOUND_XAUDIO2_PREFIX "!deferred"); */ commit3DChanges(); }
 }
 
 /// Get the min and max distances
@@ -1058,26 +840,291 @@ void CSourceXAudio2::getCone(float& innerAngle, float& outerAngle, float& outerG
 	outerGain = _Cone.OuterVolume;
 }
 
-///** Set the alpha value for the volume-distance curve
-// *
-// *	Useful only with OptionManualRolloff. value from -1 to 1 (default 0)
-// * 
-// *  alpha.0: the volume will decrease linearly between 0dB and -100 dB
-// *  alpha = 1.0: the volume will decrease linearly between 1.0 and 0.0 (linear scale)
-// *  alpha = -1.0: the volume will decrease inversely with the distance (1/dist). This
-// *				is the default used by DirectSound/OpenAL
-// * 
-// *  For any other value of alpha, an interpolation is be done between the two
-// *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
-// *  the linear dB curve and the linear amplitude curve.
-// */
-///// 
+/// Set the alpha value for the volume-distance curve
 void CSourceXAudio2::setAlpha(double a) 
 {  
 	nlassert(_SoundDriver->getOption(ISoundDriver::OptionManualRolloff));
 		
 	// if (a != 1.0) // nldebug(NLSOUND_XAUDIO2_PREFIX "setAlpha %f", (float)a);
 	_Alpha = a;
+}
+
+/// Enable or disable direct output [true/false], default: true
+void CSourceXAudio2::setDirect(bool enable)
+{
+	if (_DirectDryEnabled != enable)
+	{
+		_DirectDryEnabled = enable;
+		if (_SourceVoice) setupVoiceSends();
+	}
+}
+
+/// Return if the direct output is enabled
+bool CSourceXAudio2::getDirect() const
+{
+	return _DirectDryEnabled;
+}
+
+/// Set the gain for the direct path
+void CSourceXAudio2::setDirectGain(float gain)
+{
+	_DirectGain = min(max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+}
+
+/// Get the gain for the direct path
+float CSourceXAudio2::getDirectGain() const
+{
+	return _DirectGain;
+}
+
+/// Enable or disable the filter for the direct channel
+void CSourceXAudio2::enableDirectFilter(bool enable)
+{
+	if (_DirectFilterEnabled != enable)
+	{
+		_DirectFilterEnabled = enable;
+		if (_SourceVoice) setupVoiceSends();
+	}
+}
+
+/// Check if the filter on the direct channel is enabled
+bool CSourceXAudio2::isDirectFilterEnabled() const
+{
+	return _DirectFilterEnabled;
+}
+
+/// (Internal) Setup the direct send filter.
+void CSourceXAudio2::setupDirectFilter()
+{
+	// todo: this sort of works and sounds sort of similar to the openal way, but still needs work
+	if (_DirectDryEnabled && _DirectFilterEnabled)
+	{
+		switch (_DirectFilter.Type)
+		{
+		case LowPassFilter:
+			_DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterHighFrequency / 10.0f, _Frequency);
+			_DirectFilter.OneOverQ = 1.0f;
+			break;
+		case BandPassFilter:
+			_DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(((_DirectFilterLowFrequency * 10.0f) + (_DirectFilterHighFrequency / 10.0f)) / 2.0f, _Frequency);
+			_DirectFilter.OneOverQ = 1.5f; // todo: calculate OneOverQ from range between low and high frequency
+			break;
+		case HighPassFilter:
+			_DirectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_DirectFilterLowFrequency * 10.0f, _Frequency);
+			_DirectFilter.OneOverQ = 1.0f;
+			break;
+		default:
+			_DirectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+			break;
+		}
+		_SourceVoice->SetOutputFilterParameters(_DirectFilterVoice, &_DirectFilter, _OperationSet);
+	}
+}
+
+/// Set the filter parameters for the direct channel
+void CSourceXAudio2::setDirectFilter(TFilter filterType, float lowFrequency, float highFrequency, float passGain)
+{
+	switch (filterType)
+	{
+	case ISource::FilterLowPass:
+		_DirectFilter.Type = LowPassFilter;
+		break;
+	case ISource::FilterBandPass:
+		_DirectFilter.Type = BandPassFilter;
+		break;
+	case ISource::FilterHighPass:
+		_DirectFilter.Type = HighPassFilter;
+		break;
+	default:
+		_DirectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+		break;
+	}
+	_DirectFilterLowFrequency = lowFrequency;
+	_DirectFilterHighFrequency = highFrequency;
+	_DirectFilterPassGain = passGain;
+	if (_SourceVoice) setupDirectFilter();
+}
+
+/// Get the filter parameters for the direct channel
+void CSourceXAudio2::getDirectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	switch (_DirectFilter.Type)
+	{
+	case LowPassFilter:
+		filterType = ISource::FilterLowPass;
+		break;
+	case BandPassFilter:
+		filterType = ISource::FilterBandPass;
+		break;
+	case HighPassFilter:
+		filterType = ISource::FilterHighPass;
+		break;
+	default:
+		filterType = (TFilter)~0;
+		break;
+	}
+	lowFrequency = _DirectFilterLowFrequency;
+	highFrequency = _DirectFilterHighFrequency;
+	passGain = _DirectFilterPassGain;
+}
+
+/// Set the direct filter gain
+void CSourceXAudio2::setDirectFilterPassGain(float passGain)
+{
+	_DirectFilterPassGain = min(max(passGain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+}
+
+/// Get the direct filter gain
+float CSourceXAudio2::getDirectFilterPassGain() const
+{
+	return _DirectFilterPassGain;
+}
+
+/// Set the effect send for this source, NULL to disable. [IEffect], default: NULL
+void CSourceXAudio2::setEffect(CEffectXAudio2 *effect)
+{
+	// if (_Effect != effect)
+	{
+		if (effect)
+		{
+			_EffectDryEnabled = true;
+			_EffectDryVoice = effect->getDryVoice();
+			_EffectFilterVoice = effect->getFilterVoice();
+		}
+		else
+		{
+			_EffectDryEnabled = false;
+			_EffectDryVoice = NULL;
+			_EffectFilterVoice = NULL;
+		}
+		if (_SourceVoice) setupVoiceSends();
+	}
+}
+
+/// Set the effect send for this source, NULL to disable.
+void CSourceXAudio2::setEffect(IReverbEffect *reverbEffect)
+{
+	setEffect(reverbEffect ? static_cast<CEffectXAudio2 *>(static_cast<CReverbEffectXAudio2 *>(reverbEffect)) : NULL);
+}
+
+/// Get the effect send for this source
+IEffect *CSourceXAudio2::getEffect() const
+{
+	return NULL;
+}
+
+/// Set the gain for the direct path
+void CSourceXAudio2::setEffectGain(float gain)
+{
+	_EffectGain = min(max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+}
+
+/// Get the gain for the direct path
+float CSourceXAudio2::getEffectGain() const
+{
+	return _EffectGain;
+}
+
+/// Enable or disable the filter for the effect channel
+void CSourceXAudio2::enableEffectFilter(bool enable)
+{
+	if (_EffectFilterEnabled != enable)
+	{
+		_EffectFilterEnabled = enable;
+		if (_SourceVoice) setupVoiceSends();
+	}
+}
+
+/// Check if the filter on the effect channel is enabled
+bool CSourceXAudio2::isEffectFilterEnabled() const
+{
+	return _EffectFilterEnabled;
+}
+
+/// (Internal) Setup the direct send filter.
+void CSourceXAudio2::setupEffectFilter()
+{
+	// todo: this sort of works and sounds sort of similar to the openal way, but still needs work
+	if (_EffectDryEnabled && _EffectFilterEnabled)
+	{
+		switch (_EffectFilter.Type)
+		{
+		case LowPassFilter:
+			_EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterHighFrequency / 10.0f, _Frequency);
+			_EffectFilter.OneOverQ = 1.0f;
+			break;
+		case BandPassFilter:
+			_EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(((_EffectFilterLowFrequency * 10.0f) + (_EffectFilterHighFrequency / 10.0f)) / 2.0f, _Frequency);
+			_EffectFilter.OneOverQ = 1.5f; // todo: calculate OneOverQ from range between low and high frequency
+			break;
+		case HighPassFilter:
+			_EffectFilter.Frequency = XAudio2CutoffFrequencyToRadians(_EffectFilterLowFrequency * 10.0f, _Frequency);
+			_EffectFilter.OneOverQ = 1.0f;
+		default:
+			_EffectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+			break;
+		}
+		_SourceVoice->SetOutputFilterParameters(_EffectFilterVoice, &_EffectFilter, _OperationSet);
+	}
+}
+
+/// Set the filter parameters for the direct channel
+void CSourceXAudio2::setEffectFilter(TFilter filterType, float lowFrequency, float highFrequency, float passGain)
+{
+	switch (filterType)
+	{
+	case ISource::FilterLowPass:
+		_EffectFilter.Type = LowPassFilter;
+		break;
+	case ISource::FilterBandPass:
+		_EffectFilter.Type = BandPassFilter;
+		break;
+	case ISource::FilterHighPass:
+		_EffectFilter.Type = HighPassFilter;
+		break;
+	default:
+		_EffectFilter.Type = (XAUDIO2_FILTER_TYPE)~0;
+		break;
+	}
+	_EffectFilterLowFrequency = lowFrequency;
+	_EffectFilterHighFrequency = highFrequency;
+	_EffectFilterPassGain = passGain;
+	if (_SourceVoice) setupEffectFilter();
+}
+
+/// Get the filter parameters for the direct channel
+void CSourceXAudio2::getEffectFilter(TFilter &filterType, float &lowFrequency, float &highFrequency, float &passGain) const
+{
+	switch (_EffectFilter.Type)
+	{
+	case LowPassFilter:
+		filterType = ISource::FilterLowPass;
+		break;
+	case BandPassFilter:
+		filterType = ISource::FilterBandPass;
+		break;
+	case HighPassFilter:
+		filterType = ISource::FilterHighPass;
+		break;
+	default:
+		filterType = (TFilter)~0;
+		break;
+	}
+	lowFrequency = _EffectFilterLowFrequency;
+	highFrequency = _EffectFilterHighFrequency;
+	passGain = _EffectFilterPassGain;
+}
+
+/// Set the effect filter gain
+void CSourceXAudio2::setEffectFilterPassGain(float passGain)
+{
+	_EffectFilterPassGain = min(max(passGain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+}
+
+/// Get the effect filter gain
+float CSourceXAudio2::getEffectFilterPassGain() const
+{
+	return _EffectFilterPassGain;
 }
 
 } /* namespace NLSOUND */

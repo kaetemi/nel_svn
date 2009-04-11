@@ -60,12 +60,6 @@ namespace NLSOUND {
 class CSoundDriverXAudio2 : public ISoundDriver, public NLMISC::CManualSingleton<CSoundDriverXAudio2>
 {
 protected:
-	// outside pointers
-	/// The string mapper provided by client code.
-	IStringMapperProvider *_StringMapper;
-	/// Listener, created by client code.
-	CListenerXAudio2 *_Listener;
-	
 	// pointers
 	/// Pointer to XAudio2.
 	IXAudio2 *_XAudio2;
@@ -79,18 +73,22 @@ protected:
 	bool _CoInitOk;
 	/// Empty 3D Listener.
 	X3DAUDIO_LISTENER _EmptyListener;
-	/// Array with the allocated buffers.
+	/// Listener created by client code.
+	CListenerXAudio2 *_Listener;
+	/// Array with the allocated buffers created by client code.
 	std::set<CBufferXAudio2 *> _Buffers;
-	/// Array with the allocated sources.
+	/// Array with the allocated sources created by client code.
 	std::set<CSourceXAudio2 *> _Sources;
-	/// Array with the allocated effects.
+	/// Array with the allocated effects created by client code.
 	std::set<CEffectXAudio2 *> _Effects;
-	/// Array with the allocated music channels.
+	/// Array with the allocated music channels created by client code.
 	std::set<CMusicChannelXAudio2 *> _MusicChannels;
 	/// Initialization Handle of X3DAudio.
 	X3DAUDIO_HANDLE _X3DAudioHandle; //I
 	/// X3DAudio DSP Settings structure for 1 channel to all channels.
 	X3DAUDIO_DSP_SETTINGS _DSPSettings;
+	/// Operation set counter
+	uint32 _OperationSetCounter;
 
 	// performance stats
 	uint _PerformancePCMBufferSize;
@@ -145,8 +143,6 @@ public:
 	inline IXAudio2 *getXAudio2() { return _XAudio2; }
 	/// (Internal) Returns the XAudio2 Mastering Voice interface.
 	inline IXAudio2MasteringVoice *getMasteringVoice() { return _MasteringVoice; }
-	/// (Internal) Returns the string mapper provided by client code.
-	inline IStringMapperProvider *getStringMapper() { return _StringMapper; }
 	/// (Internal) Returns the handle to X3DAudio.
 	inline X3DAUDIO_HANDLE &getX3DAudio() { return _X3DAudioHandle; }
 	/// (Internal) Returns the structure to receive X3DAudio calculations.
@@ -155,6 +151,8 @@ public:
 	inline X3DAUDIO_LISTENER *getEmptyListener() { return &_EmptyListener; }
 	/// (Internal) Returns if EAX is enabled.
 	inline bool useEax() { return getOption(OptionEnvironmentEffects); }
+	/// (Internal) Returns a unique operation set id.
+	inline uint32 getUniqueOperationSet() { return ++_OperationSetCounter; }
 	
 	/// (Internal) Create an XAudio2 source voice of the specified format.
 	IXAudio2SourceVoice *createSourceVoice(IBuffer::TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, IXAudio2VoiceCallback *callback);
