@@ -196,7 +196,7 @@ public:
 	 * with a multichannel buffer, instead you must manually split 
 	 * the sound data into multiple channels and use multiple sources.
 	 * You cannot use this function in streaming mode, where you must 
-	 * use 'submitStreamingBuffer' instead.
+	 * use submitStreamingBuffer() instead.
 	 * A buffer can be attached to more than once source.
 	 * Before destroying a buffer, it must be detached from all 
 	 * sources it's attached to, which can be done by calling this 
@@ -209,7 +209,7 @@ public:
 	virtual void setStaticBuffer(IBuffer *buffer) = 0;
 	/**
 	 * Returns the buffer that was attached to this source. A buffer 
-	 * can by attached to this source by calling 'setStaticBuffer'.
+	 * can by attached to this source by calling setStaticBuffer().
 	 * If no static buffer is set, or if the source is in streaming 
 	 * mode, this function will return NULL.
 	 * \brief Get the buffer that is attached to this source.
@@ -241,24 +241,133 @@ public:
 	
 	/// \name Playback control
 	//@{
-	/// Set looping on/off for future playbacks (default: off), not available for streaming
-	virtual void setLooping(bool l) = 0;
-	/// Return the looping state
+	/**
+	 * This function is used to enable or disable looping this source.
+	 * By default, looping is off. The current looping status can be 
+	 * obtained by calling getLooping().
+	 * It is possible to call this function either before the source 
+	 * has started playing, or while it is already playing.
+	 * To cleanly exit a loop, you can call setLooping(false) instead 
+	 * of using stop(). Calling stop() on a source that is looping will 
+	 * immediately stop the source, which may suffer sound clicks.
+	 * The looping state is useful on static buffers only. Setting this 
+	 * while in streaming mode will have no effect, however, the loop
+	 * setting will be remembered when switching back to static mode.
+	 * \brief Enable or disable looping this source.
+	 * \param l Set to true to enable, false to disable looping or to 
+	 * exit the current loop.
+	 */
+	virtual void setLooping(bool l = true) = 0;
+	/**
+	 * Returns the looping status that was last set by setLooping().
+	 * This function will always return the last set looping option.
+	 * If you call this while in streaming mode, the result will be the 
+	 * setting that will be used when you go back to static buffer mode.
+	 * Looping has no effect on streaming.
+	 * \brief Get the currently set looping status.
+	 * \return Returns true if looping is enabled, false if disabled.
+	 */
 	virtual bool getLooping() const = 0;
 	
-	/// Play the static buffer (or stream in and play). This method can return false if the sample for this sound is unloaded.
+	/**
+	 * This function is used to enter playing mode. It will return 
+	 * true in case of success. The playing status can also be verified 
+	 * by calling isPlaying() on this source.
+	 * If the source is stopped, or has not started playing yet, the 
+	 * source will start playing from the beginning from the currently 
+	 * attached static buffer when in static mode. If no static buffer 
+	 * was set, the source will remain in stopped mode, and this 
+	 * will return false. A buffer can be attached to this source by 
+	 * calling the setStaticBuffer() method.
+	 * When the source is stopped and in streaming mode, this function 
+	 * will always enter playing state. If no buffers were queued yet, 
+	 * it will effectively start playing this source once the first 
+	 * buffer has been submitted. It is recommended to queue up the 
+	 * first few buffers before calling play() to avoid running out of 
+	 * buffers early. In streaming mode, buffers can be submitted to 
+ 	 * the queue by calling the submitStreamingBuffer() method.
+	 * If the source is in paused mode, it will simply resume. 
+	 * In case it was already in playing mode, the source will be 
+	 * automatically stopped before re-entering playing status. In 
+	 * static buffer mode this is essentially the same as restarting 
+	 * the source from the beginning, while doing this in streaming 
+	 * mode will result in the streaming queue being cleared.
+	 * \brief Start or resume playback.
+	 * \return Returns true in case of success.
+	 */
 	virtual bool play() = 0;
-	/// Stop playing
+	/**
+	 * This function stops playing the source immediately. If the 
+	 * source is already stopped, it does nothing. If the source was 
+	 * paused, this will do the same as if it was playing.
+	 * When the source is in static mode, the attached buffer will 
+	 * remain attached for later usage. To exit a loop, it is 
+	 * recommended to call setLooping(false) instead of stop(), 
+	 * to avoid sound clicks. The source will enter stopped state 
+	 * automatically when it has finished playing.
+	 * If this source uses streaming buffers, calling this function 
+	 * will immediately stop output, and clear the buffer queue, which 
+	 * means that any queued buffers that have not played yet are lost.
+	 * \brief Stop playback.
+	 */
 	virtual void stop() = 0;
-	/// Pause. Call play() to resume.
+	/**
+	 * This function pauses playback of this source at it's current 
+	 * position. If the source is stopped or already paused, this 
+	 * function does nothing. You can verify if the source is paused 
+	 * by calling isPaused(). To resume playback, you must call play().
+	 * \brief Pause playback.
+	 */
 	virtual void pause() = 0;
-	/// Return true if play() or pause(), false if stop().
+	/**
+	 * Returns if the source is currently playing.
+	 * In streaming mode this will return true, even if no buffers are 
+	 * available for playback when in playing status.
+	 * This will return false if the source is paused. To know if the 
+	 * source has been stopped, or if it has finished playback, you 
+	 * should use isStopped() instead.
+	 * \brief Get the playing state.
+	 * \return Returns the playing state.
+	 */
 	virtual bool isPlaying() const = 0;
-	/// Return true if playing is finished or stop() has been called.
+	/**
+	 * Returns true if the source has not started playing yet, when it 
+	 * has been stopped using the stop() method, or when the static 
+	 * buffer has finished playback.
+	 * If the source is playing or paused, this returns false.
+	 * \brief Get the stopped state.
+	 * \return Returns the stopped state.
+	 */
 	virtual bool isStopped() const = 0;
-	/// Return true if the playing source is paused
+	/**
+	 * Returns true if the source has been paused by calling pause().
+	 * If the source is playing, stopped, or has finished playback 
+	 * this returns false.
+	 * \brief Get the paused state.
+	 * \return Returns the paused state.
+	 */
 	virtual bool isPaused() const = 0;
-	/// Returns the number of milliseconds the source has been playing
+	/**
+	 * Returns the number of milliseconds the current static buffer or 
+	 * streaming queue has effectively been playing.
+	 * In streaming mode, the time spent during buffer outruns is not 
+	 * counted towards the playback time, and the playback time is 
+	 * be the current time position in the entire submitted queue.
+	 * When using static buffers, the result is the tot time that the 
+	 * attached buffer has been playing. If the source is looping, the 
+	 * time will be the total of all playbacks of the buffer.
+	 * When the source is stopped, this will return the time where the 
+	 * source was stopped. The value is reset to 0 when re-entering 
+	 * playing status.
+	 * A buffer that is played at a higher pitch will result in a lower 
+	 * playback time. The result is not the buffer's playback position, 
+	 * but the actual time that has passed playing.
+	 * It is not guaranteed that this function returns an accurate 
+	 * value, or that it even works. If it is not implemented, the result 
+	 * will always be 0.
+	 * \brief Get the current playback time in milliseconds.
+	 * \return Returns the current playback time in milliseconds.
+	 */
 	virtual uint32 getTime() = 0;
 	//@}
 	
@@ -277,15 +386,15 @@ public:
 	/// Get the direction vector
 	virtual void getDirection(NLMISC::CVector& dir) const = 0;
 	/// Set the gain (volume value inside [0 , 1]). (default: 1)
-	virtual void setGain(float gain) = 0;
+	virtual void setGain(float gain = NLSOUND_DEFAULT_GAIN) = 0;
 	/// Get the gain
 	virtual float getGain() const = 0;
 	/// Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift of one octave.
-	virtual void setPitch(float pitch) = 0;
+	virtual void setPitch(float pitch = NLSOUND_DEFAULT_PITCH) = 0;
 	/// Get the pitch
 	virtual float getPitch() const = 0;
 	/// Set the source relative mode. If true, positions are interpreted relative to the listener position
-	virtual void setSourceRelativeMode(bool mode) = 0;
+	virtual void setSourceRelativeMode(bool mode = true) = 0;
 	/// Get the source relative mode
 	virtual bool getSourceRelativeMode() const = 0;
 	/// Set the min and max distances (default: 1, MAX_FLOAT) (3D mode only)
