@@ -48,7 +48,14 @@ using namespace NL3D;
 using namespace NLMISC;
 
 
-int main (int argc, char **argv)
+#ifdef NL_OS_WINDOWS
+int WINAPI WinMain( HINSTANCE hInstance, 
+									 HINSTANCE hPrevInstance, 
+									 LPSTR lpCmdLine, 
+									 int nCmdShow )
+#else
+int main(int argc, char **argv)
+#endif
 {
 	// look at 3dinit example
 	CNELU::init (800, 600, CViewport(), 32, true, 0, false, false); 

@@ -7,9 +7,8 @@ SET(NL3D_LIB ${LIBNAME})
 
 ADD_EXECUTABLE(nl_sample_clusterview ${SRC})
 
-IF(UNIX)
-  ADD_DEFINITIONS(-DCV_DIR="\\"${NL_SHARE_PREFIX}/nl_sample_clusterview/\\"")
-ENDIF(UNIX)
+ADD_DEFINITIONS(-DCV_DIR="\\"${NL_SHARE_PREFIX}/nl_sample_clusterview/\\"")
+
 
 
 INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIR})
@@ -19,28 +18,28 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_clusterview RUNTIME DESTINATION ${NL_BIN_PREFIX} COMPONENT samples3d)
-INSTALL(FILES main.cvs readme.txt DESTINATION ${NL_SHARE_PREFIX}/nl_sample_clusterview COMPONENT samples3d)
+INSTALL(TARGETS nl_sample_clusterview RUNTIME DESTINATION bin COMPONENT samples3d)
+INSTALL(FILES main.cvs readme.txt DESTINATION share/nel/nl_sample_clusterview COMPONENT samples3d)
 INSTALL(DIRECTORY groups/ 
-	DESTINATION ${NL_SHARE_PREFIX}/nl_sample_clusterview/groups
+	DESTINATION share/nel/nl_sample_clusterview/groups
 	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY fonts/ 
-	DESTINATION ${NL_SHARE_PREFIX}/nl_sample_clusterview/fonts
+	DESTINATION share/nel/nl_sample_clusterview/fonts
 	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY max/ 
-	DESTINATION ${NL_SHARE_PREFIX}/nl_sample_clusterview/max
+	DESTINATION share/nel/nl_sample_clusterview/max
 	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE
 	PATTERN "Makefile*" EXCLUDE)
 INSTALL(DIRECTORY shapes/ 
-	DESTINATION ${NL_SHARE_PREFIX}/nl_sample_clusterview/shapes
+	DESTINATION share/nel/nl_sample_clusterview/shapes
 	COMPONENT samples3d
 	PATTERN "CVS" EXCLUDE
 	PATTERN ".svn" EXCLUDE

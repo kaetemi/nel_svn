@@ -11,9 +11,7 @@ ELSE(WIN32)
   ADD_EXECUTABLE(nl_sample_udpserver bench_service.cpp receive_task.cpp receive_task.h)
 ENDIF(WIN32)
 
-IF(UNIX)
-  ADD_DEFINITIONS(-DUDP_DIR="\\"${NL_SHARE_PREFIX}/nl_sample_udp/\\"")
-ENDIF(UNIX)
+ADD_DEFINITIONS(-DUDP_DIR="\\"${NL_SHARE_PREFIX}/nl_sample_udp/\\"")
 
 IF(WITH_3D)
   ADD_DEFINITIONS(-DUSE_3D)
@@ -32,9 +30,9 @@ IF(WIN32)
 ENDIF(WIN32)
 ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 
-INSTALL(TARGETS nl_sample_udpclient nl_sample_udpserver RUNTIME DESTINATION ${NL_BIN_PREFIX} COMPONENT samplesnet)
-INSTALL(FILES bench_service.cfg client.cfg readme.txt DESTINATION ${NL_SHARE_PREFIX}/nl_sample_udp COMPONENT samplesnet)
+INSTALL(TARGETS nl_sample_udpclient nl_sample_udpserver RUNTIME DESTINATION bin COMPONENT samplesnet)
+INSTALL(FILES bench_service.cfg client.cfg readme.txt DESTINATION share/nel/nl_sample_udp COMPONENT samplesnet)
 
 IF(WITH_3D)
-  INSTALL(FILES n019003l.pfb DESTINATION ${NL_SHARE_PREFIX}/nl_sample_udp COMPONENT samplesnet)
+  INSTALL(FILES n019003l.pfb DESTINATION share/nel/nl_sample_udp COMPONENT samplesnet)
 ENDIF(WITH_3D)
