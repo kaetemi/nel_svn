@@ -3,8 +3,8 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="nel_patch_edit"
-	ProjectGUID="{0AB2E479-1226-46BA-84E1-52669F5BBAB3}"
-	RootNamespace="nel_patch_edit"
+	ProjectGUID="{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}"
+	RootNamespace="neleditpatch"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -17,11 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,91 +39,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;LIBXML_STATIC"
-				StringPooling="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="true"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_d.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
-				ModuleDefinitionFile="$(RootNamespace).def"
-				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_d.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugFast|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="4"
 				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;LIBXML_STATIC"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;_DEBUG;_USRDLL"
 				StringPooling="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -139,90 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_df.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
-				ModuleDefinitionFile="$(RootNamespace).def"
+				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
+				OutputFile="..\plugins\$(RootNamespace)_d.dlm"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrt"
+				ModuleDefinitionFile="$(ProjectName).def"
 				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_df.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugStatic|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;_DEBUG;LIBXML_STATIC"
-				StringPooling="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="true"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_ds.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrt"
-				ModuleDefinitionFile="$(RootNamespace).def"
-				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_ds.lib"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				ImportLibrary="$(RootNamespace)_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -249,11 +98,9 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
 			<Tool
@@ -273,99 +120,19 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
+				Optimization="4"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="true"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION;FINAL_VERSION"
-				StringPooling="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="0"
-				BufferSecurityCheck="false"
-				WarningLevel="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_r.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
-				ModuleDefinitionFile="$(RootNamespace).def"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_r.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebug|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION"
+				PreprocessorDefinitions="LIBXML_STATIC;WIN32;NDEBUG;ASSERT_THROW_EXCEPTION;_USRDLL"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
+				DisableLanguageExtensions="false"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -378,95 +145,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_rd.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
-				ModuleDefinitionFile="$(RootNamespace).def"
+				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
+				OutputFile="..\plugins\$(RootNamespace)_r.dlm"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;msvcrtd"
+				ModuleDefinitionFile="$(ProjectName).def"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_rd.lib"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseDebugStatic|Win32"
-			OutputDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				PreprocessorDefinitions="_USRDLL;_WINDOWS;WIN32;NDEBUG;LIBXML_STATIC;ASSERT_THROW_EXCEPTION"
-				StringPooling="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="maxscrpt.lib helpsys.lib winmm.lib libxml2_a.lib comctl32.lib delayimp.lib bmm.lib core.lib edmodel.lib geom.lib gfx.lib mesh.lib mnmath.lib paramblk2.lib maxutil.lib acap.lib version.lib freetype.lib ws2_32.lib"
-				OutputFile="..\lib\$(RootNamespace)_rds.dlm"
-				IgnoreDefaultLibraryNames="libcmt;libcmtd;msvcrtd"
-				ModuleDefinitionFile="$(RootNamespace).def"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="1"
-				RandomizedBaseAddress="1"
-				ImportLibrary="..\lib\$(RootNamespace)_rds.lib"
+				ImportLibrary="$(RootNamespace)_r.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -496,195 +183,428 @@
 	</References>
 	<Files>
 		<Filter
-			Name="images"
-			>
-			<File
-				RelativePath=".\code\modifiers\editpatch\addvertc.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\attach.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\bevel.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\bmp00001.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\bmp00002.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\booleant.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\boolinte.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\boolsubt.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\boolunio.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\chamfer.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\copy_tan.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\createwe.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\cross_se.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\crosshr.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\crossins.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\extrudec.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\fillet.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\mask_boo.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\outline.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\paste_tan.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\patselm.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\patselt.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\segbreak.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\segrefin.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\splinese.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\splselm.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\thselcur.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\trim.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\vertconn.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\code\modifiers\editpatch\vinsert.cur"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="resources"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath=".\code\modifiers\editpatch\editpatch.rc"
+				RelativePath=".\addvertc.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\editpatch_vizR.rc"
+				RelativePath=".\attach.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\nel_patch_edit.def"
+				RelativePath=".\bevel.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\resource.h"
+				RelativePath=".\bin00001.tga"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\resourceOverride.h"
+				RelativePath=".\bmp00001.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\bmp00002.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\bmp00003.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\booleant.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\boolinte.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\boolsubt.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\boolunio.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\bulbmask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\bulbs.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\chamfer.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\crosshr.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\crossins.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\cur00001.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\cur00002.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\cursor1.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\echamfer.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\extrudec.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\faceselt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\fillet.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\icon1.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\icon2.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\icon3.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\magnify.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\mask_boo.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\mask_fac.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\mask_unw.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\mods.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\modsres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\move_x.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\move_y.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\outline.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\panhand.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\patselm.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\patselt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\pick_color.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\region.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\scale_x.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\scale_y.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\segbreak.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\segrefin.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\selmask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\splinese.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\splselm.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\thselcur.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\trim.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_option.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_option_mask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_transform.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_transform_mask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_verts.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_verts_mask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_view.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrap_view_mask.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\unwrapto.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\vchamfer.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\vertconn.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\vinsert.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\weld.cur"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="max"
+			Name="bitmaps"
 			>
 			<File
-				RelativePath=".\code\EditableModifierCommon\CreateFaceMouseProcTemplate.cpp"
+				RelativePath=".\large.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\code\EditableModifierCommon\CreateFaceMouseProcTemplate.h"
+				RelativePath=".\large.tga"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\editpat.cpp"
+				RelativePath=".\light.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\editpat.h"
+				RelativePath=".\light.tga"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\editpops.cpp"
+				RelativePath=".\medium.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\code\modifiers\editpatch\veroverrides.h"
+				RelativePath=".\medium.tga"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\dll_entry.cpp"
+			RelativePath=".\editpat.h"
 			>
 		</File>
 		<File
-			RelativePath=".\dll_entry.h"
+			RelativePath=".\mods.h"
 			>
 		</File>
 		<File
-			RelativePath=".\edit_temp_data.cpp"
+			RelativePath=".\nel_patch_edit.def"
 			>
 		</File>
 		<File
-			RelativePath=".\edit_temp_data.h"
+			RelativePath=".\np.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_edit_patch_data.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_edit_patch_mod.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_editpops.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_ep_vert_mapper.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_add_patches.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_attach.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_bevel.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_del.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_detach.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_extrude.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_file.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_gui.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_hide.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_hook.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_material.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_remember.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_selection.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_subdivide.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_surface.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_epm_tess.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_gui_bind.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_mods.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_patch_point_tab.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_patch_restore.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_patch_sel_restore.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_patch_vertex_delta.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_pick_patch_attach.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_record.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\np_rollup.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\stdafx.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\stdafx.h"
 			>
 		</File>
 	</Files>

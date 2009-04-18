@@ -146,6 +146,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver_xaudio2", "..\..\..\
 		{89064E9B-14E9-4FB2-8536-A9151DF55C68} = {89064E9B-14E9-4FB2-8536-A9151DF55C68}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nel_patch_edit", "nel_patch_edit\nel_patch_edit.vcproj", "{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44B21233-EFCC-4825-B5E5-3A3BD6CC5516} = {44B21233-EFCC-4825-B5E5-3A3BD6CC5516}
+		{6184F873-7BED-4096-A592-C7AA577B4480} = {6184F873-7BED-4096-A592-C7AA577B4480}
+		{2B48BE83-108B-4E8E-8A55-6627CF09AC5A} = {2B48BE83-108B-4E8E-8A55-6627CF09AC5A}
+		{CDFC60B0-9D01-4822-ACAD-B66F7130FCAD} = {CDFC60B0-9D01-4822-ACAD-B66F7130FCAD}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -244,6 +252,10 @@ Global
 		{23DCF574-1CEB-4DF4-9C59-D614580AC0C0}.Debug|Win32.Build.0 = Debug|Win32
 		{23DCF574-1CEB-4DF4-9C59-D614580AC0C0}.Release|Win32.ActiveCfg = Release|Win32
 		{23DCF574-1CEB-4DF4-9C59-D614580AC0C0}.Release|Win32.Build.0 = Release|Win32
+		{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}.Debug|Win32.Build.0 = Debug|Win32
+		{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}.Release|Win32.ActiveCfg = Release|Win32
+		{53B9D9A1-AE6B-4E39-82B2-E8EE01075EEC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
