@@ -344,14 +344,15 @@ int CheckBind (int nVert, int nSeg, int& v0, int& v1, int& v2, int& v3, const CV
 				if (bAssert)
 					nlassert (0);
 			}
+			else
 #else // (MAX_RELEASE < 4000)
 			if ((patch.edges[nSeg].patches.Count()>1)&&bCreate)
 			{
 				if (bAssert)
 					nlassert (0);
 			}
+			else if (patch.edges[nSeg].patches.Count() > 0)
 #endif // (MAX_RELEASE < 4000)
-			else
 			{
 				// config 1?
 				
@@ -707,8 +708,8 @@ void RPatchMesh::UpdateBindingPos (PatchMesh& patch)
 			patch.vecs[pVertex->Binding.nT].p += patch.verts[nV].p-vOld;
 		}
 	}
-	patch.InvalidateGeomCache();
 	patch.computeInteriors();
+	patch.InvalidateGeomCache();
 }
 
 // Build internal binding info
@@ -1288,20 +1289,17 @@ void RPatchMesh::AddHook (int nVert, int nSeg, PatchMesh& patch)
 #if (MAX_RELEASE < 4000)
 	// Une side of the edge must be cleared
 	nlassert (patch.edges[nSeg].patch2==-1);
-
-	int nEdge=WhereIsTheEdge (patch.edges[nSeg].patch1, nSeg, patch);
-	nlassert (patch.patches[patch.edges[nSeg].patch1].edge[nEdge]==nSeg);
-
-	BindingVertex (nVert, patch.edges[nSeg].patch1, nEdge, nVert, BIND_SINGLE);
+	int patch1 = patch.edges[nSeg].patch1;
 #else // (MAX_RELEASE < 4000)
 	// Une side of the edge must be cleared
 	nlassert (patch.edges[nSeg].patches.Count()<2);
-
-	int nEdge=WhereIsTheEdge (patch.edges[nSeg].patches[0], nSeg, patch);
-	nlassert (patch.patches[patch.edges[nSeg].patches[0]].edge[nEdge]==nSeg);
-
-	BindingVertex (nVert, patch.edges[nSeg].patches[0], nEdge, nVert, BIND_SINGLE);
+	int patch1 = patch.edges[nSeg].patches.Count()>0?patch.edges[nSeg].patches[0]:-1;
 #endif // (MAX_RELEASE < 4000)
+
+	int nEdge=WhereIsTheEdge(patch1, nSeg, patch);
+	nlassert(patch.patches[patch1].edge[nEdge]==nSeg);
+
+	BindingVertex(nVert, patch1, nEdge, nVert, BIND_SINGLE);
 
 	InvalidateBindingInfo ();
 }
@@ -1312,22 +1310,18 @@ void RPatchMesh::AddHook (int nVert0, int nVert1, int nVert2, int nSeg, PatchMes
 #if (MAX_RELEASE < 4000)
 	// Une side of the edge must be cleared
 	nlassert (patch.edges[nSeg].patch2==-1);
-
-	int nEdge=WhereIsTheEdge (patch.edges[nSeg].patch1, nSeg, patch);
-
-	BindingVertex (nVert0, patch.edges[nSeg].patch1, nEdge, nVert1, BIND_25);
-	BindingVertex (nVert1, patch.edges[nSeg].patch1, nEdge, nVert1, BIND_50);
-	BindingVertex (nVert2, patch.edges[nSeg].patch1, nEdge, nVert1, BIND_75);
+	int patch1 = patch.edges[nSeg].patch1;
 #else // (MAX_RELEASE < 4000)
 	// Une side of the edge must be cleared
 	nlassert (patch.edges[nSeg].patches.Count()<2);
-
-	int nEdge=WhereIsTheEdge (patch.edges[nSeg].patches[0], nSeg, patch);
-
-	BindingVertex (nVert0, patch.edges[nSeg].patches[0], nEdge, nVert1, BIND_25);
-	BindingVertex (nVert1, patch.edges[nSeg].patches[0], nEdge, nVert1, BIND_50);
-	BindingVertex (nVert2, patch.edges[nSeg].patches[0], nEdge, nVert1, BIND_75);
+	int patch1 = patch.edges[nSeg].patches.Count()>0?patch.edges[nSeg].patches[0]:-1;
 #endif // (MAX_RELEASE < 4000)
+
+	int nEdge = WhereIsTheEdge(patch1, nSeg, patch);
+
+	BindingVertex(nVert0, patch1, nEdge, nVert1, BIND_25);
+	BindingVertex(nVert1, patch1, nEdge, nVert1, BIND_50);
+	BindingVertex(nVert2, patch1, nEdge, nVert1, BIND_75);
 
 	InvalidateBindingInfo ();
 }
@@ -1385,12 +1379,12 @@ int GetAdjacent (int nMe, int nedge, PatchMesh *pMesh)
 		return pMesh->edges[nEdge].patch1;
 	}
 #else // (MAX_RELEASE < 4000)
-	if (pMesh->edges[nEdge].patches[0]==nMe)
-		return pMesh->edges[nEdge].patches[1];
+	if ((pMesh->edges[nEdge].patches.Count()>0?pMesh->edges[nEdge].patches[0]:-1)==nMe)
+		return (pMesh->edges[nEdge].patches.Count()>1?pMesh->edges[nEdge].patches[1]:-1);
 	else
 	{
-		nlassert (pMesh->edges[nEdge].patches[1]==nMe);
-		return pMesh->edges[nEdge].patches[0];
+		nlassert ((pMesh->edges[nEdge].patches.Count()>1?pMesh->edges[nEdge].patches[1]:-1)==nMe);
+		return (pMesh->edges[nEdge].patches.Count()>0?pMesh->edges[nEdge].patches[0]:-1);
 	}
 #endif // (MAX_RELEASE < 4000)
 }
@@ -2313,11 +2307,11 @@ int GetAdjacentPatch (int nPatch, int nEdge, PatchMesh *patch)
 	else
 		return (pEdge->patch1!=-1)?pEdge->patch1:nPatch;
 #else // (MAX_RELEASE < 4000)
-	nlassert ((pEdge->patches[0]==nPatch)||(pEdge->patches[1]==nPatch));
+	nlassert ((pEdge->patches.Count()>0&&pEdge->patches[0]==nPatch)||(pEdge->patches.Count()>1&&pEdge->patches[1]==nPatch));
 	if (pEdge->patches[0]==nPatch)
-		return (pEdge->patches[1]!=-1)?pEdge->patches[1]:nPatch;
+		return (pEdge->patches.Count()>1&&pEdge->patches[1]!=-1)?pEdge->patches[1]:nPatch;
 	else
-		return (pEdge->patches[0]!=-1)?pEdge->patches[0]:nPatch;
+		return (pEdge->patches.Count()>0&&pEdge->patches[0]!=-1)?pEdge->patches[0]:nPatch;
 #endif // (MAX_RELEASE < 4000)
 }
 
