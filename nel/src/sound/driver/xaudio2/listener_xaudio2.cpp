@@ -88,9 +88,9 @@ _DopplerScaler(1.0f), _Pos(0.0f, 0.0f, 0.0f), _RolloffScaler(1.0f)
 CListenerXAudio2::~CListenerXAudio2()
 {
 	nlwarning(NLSOUND_XAUDIO2_PREFIX "Destroying CListenerXAudio2");
-	
+	CSoundDriverXAudio2 *soundDriver = _SoundDriver;
 	release();
-	if (_SoundDriver) { _SoundDriver->removeListener(this); _SoundDriver = NULL; }
+	if (soundDriver) soundDriver->removeListener(this);
 }
 
 #define NLSOUND_XAUDIO2_RELEASE_EX(pointer, command) if (_ListenerOk) nlassert(pointer) \
@@ -99,7 +99,7 @@ void CListenerXAudio2::release()
 {
 	NLSOUND_XAUDIO2_RELEASE_EX(_FilterVoice, _FilterVoice->DestroyVoice())
 	NLSOUND_XAUDIO2_RELEASE_EX(_DryVoice, _DryVoice->DestroyVoice())
-
+	_SoundDriver = NULL;
 	_ListenerOk = false;
 }
 

@@ -201,6 +201,9 @@ public:
 	 * Before destroying a buffer, it must be detached from all 
 	 * sources it's attached to, which can be done by calling this 
 	 * function with a NULL parameter as buffer on all relevant sources.
+	 * If you set the buffer while the source is already playing or in
+	 * paused status, this function does nothing. You must stop() the 
+	 * source, or wait until it isStopped() before changing the buffer.
 	 * \brief Attach a buffer to this source.
 	 * \param buffer The buffer to be attached on this source. It must 
 	 * be created on the same sound driver instance as this source. Set 

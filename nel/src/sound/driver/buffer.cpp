@@ -23,6 +23,7 @@
 
 #include "buffer.h"
 #include <nel/misc/fast_mem.h>
+#include <nel/misc/stream.h>
 
 namespace NLSOUND {
 	
@@ -488,6 +489,64 @@ bool IBuffer::readWav(const uint8 *wav, uint size, std::vector<uint8> &result, T
 	return true;
 	
 #endif
+}
+
+/// Write a wav file. Data type uint8 does not imply a buffer of any format.
+bool IBuffer::writeWav(const uint8 *buffer, uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency, NLMISC::IStream &out)
+{
+	nlassert(!out.isReading());
+	
+	const uint32 headerSize = 8; // 32 TAG + 32 SIZE
+	uint32 fmtSize = 16;
+	uint32 dataSize = (uint32)size;
+	
+	// create riff header
+	const char *riffFourCC = "RIFF"; // Chunk FourCC
+	uint32 riffSize = 4 // Type FourCC
+		+ headerSize + fmtSize // fmt Chunk
+		+ headerSize + dataSize; // data Chunk
+	// create riff data
+	const char *waveFourCC = "WAVE"; // Type FourCC
+	
+	// write riff chunk header
+	out.serialBuffer(const_cast<uint8 *>(static_cast<const uint8 *>(static_cast<const void *>(riffFourCC))), 4);
+	out.serial(riffSize);
+	// write riff chunk data
+	out.serialBuffer(const_cast<uint8 *>(static_cast<const uint8 *>(static_cast<const void *>(waveFourCC))), 4);
+	
+	// riff subchunks
+	// create format header
+	const char *fmtFourCC = "fmt ";
+	// create format data
+	uint16 fmtFormatTag = (uint16)bufferFormat; // 0-1
+	uint16 fmtChannels = (uint16)channels; // 2-3
+	uint32 fmtSamplesPerSec = (uint32)frequency; // 4-7
+	uint16 fmtBitsPerSample = (uint16)bitsPerSample; // 14-15
+	uint16 fmtBlockAlign = fmtChannels * fmtBitsPerSample / 8; // 12-13
+	uint32 fmtAvgBytesPerSec = fmtSamplesPerSec * fmtBlockAlign; // 8-11
+	// uint16 fmtExSize; // 16-17 // only if fmtSize > 16
+
+	// write format chunk header
+	out.serialBuffer(const_cast<uint8 *>(static_cast<const uint8 *>(static_cast<const void *>(fmtFourCC))), 4);
+	out.serial(fmtSize);
+	// write format chunk data
+	out.serial(fmtFormatTag);
+	out.serial(fmtChannels);
+	out.serial(fmtSamplesPerSec);
+	out.serial(fmtAvgBytesPerSec);
+	out.serial(fmtBlockAlign);
+	out.serial(fmtBitsPerSample);
+	
+	// create data header
+	const char *dataFourCC = "data";
+	
+	// write data chunk header
+	out.serialBuffer(const_cast<uint8 *>(static_cast<const uint8 *>(static_cast<const void *>(dataFourCC))), 4);
+	out.serial(dataSize);
+	// write data chunk data
+	out.serialBuffer(const_cast<uint8 *>(buffer), size);
+
+	return true;
 }
 
 /// Convert buffer data to 16bit Mono PCM.

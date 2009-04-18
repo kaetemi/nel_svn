@@ -28,6 +28,9 @@
 #include "nel/misc/string_mapper.h"
 #include "sound_driver.h"
 
+namespace NLMISC {
+	class IStream;
+}
 
 namespace NLSOUND {
 
@@ -131,6 +134,8 @@ public:
 	static void decodeADPCM(const uint8 *indata, sint16 *outdata, uint nbSample, TADPCMState &state);	
 	/// Read a wav file. Data type uint8 is used as unspecified buffer format.
 	static bool readWav(const uint8 *wav, uint size, std::vector<uint8> &result, TBufferFormat &bufferFormat, uint8 &channels, uint8 &bitsPerSample, uint32 &frequency);
+	/// Write a wav file. Data type uint8 does not imply a buffer of any format.
+	static bool writeWav(const uint8 *buffer, uint size, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample, uint32 frequency, NLMISC::IStream &out);
 	/// Convert buffer data to 16bit Mono PCM. Resulting vector size is in samples.
 	static bool convertToMono16PCM(const uint8 *buffer, uint size, std::vector<sint16> &result, TBufferFormat bufferFormat, uint8 channels, uint8 bitsPerSample);
 	/// Convert 16bit Mono PCM buffer data to ADPCM.
