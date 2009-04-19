@@ -76,8 +76,8 @@ CLandscapeIGManager::CLandscapeIGManager()
 CLandscapeIGManager::~CLandscapeIGManager()
 {
 	// reset should have been called.
-	if(_Scene!=NULL)
-		throw Exception("CLandscapeIGManager not reseted");
+	if(_Scene != NULL)
+		nlwarning ("CLandscapeIGManager not reseted");
 }
 // ***************************************************************************
 void	CLandscapeIGManager::initIG(UScene *scene, const std::string &igDesc, UDriver *driver, uint selectedTexture,
