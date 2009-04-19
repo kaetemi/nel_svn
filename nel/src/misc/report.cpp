@@ -159,7 +159,15 @@ static LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 			if (QuitDefaultBehavior)
 			{
-				exit(EXIT_SUCCESS);
+				// ace: we cannot call exit() because it's call the static object dtor and can crash the application
+				// if the dtor call order is not good.
+				//exit(EXIT_SUCCESS);
+#ifdef NL_OS_WINDOWS
+				// disable the Windows popup telling that the application aborted and disable the dr watson report.
+				_set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
+#endif
+				// quit without calling atexit or static object dtors.
+				abort();
 			}
 		}
 		/*else if ((HWND) lParam == sendReport)
