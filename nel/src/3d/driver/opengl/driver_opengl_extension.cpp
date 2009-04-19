@@ -458,7 +458,7 @@ namespace	NL3D
 // It means that it can crash if nel calls this extension but at least we have a warning to know why the extension is available but not the procaddr
 #define CHECK_ADDRESS(type, ext) \
 	n##ext=(type)nglGetProcAddress(#ext); \
-	if(!n##ext) { nlwarning("3D: GetProcAddress(\"%s\") returns NULL", #ext); return false; } else { nldebug("3D: GetProcAddress(\"%s\") succeed", #ext); }
+	if(!n##ext) { nlwarning("3D: GetProcAddress(\"%s\") returns NULL", #ext); return false; } else { /*nldebug("3D: GetProcAddress(\"%s\") succeed", #ext);*/ }
 
 // ***************************************************************************
 // Extensions registrations, and Windows function Registration.
