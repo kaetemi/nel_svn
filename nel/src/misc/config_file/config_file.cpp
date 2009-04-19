@@ -601,6 +601,13 @@ void CConfigFile::save () const
 		return;
 	}
 
+	// write the UTF-8 bom in order to be able to re-read a config file with 
+	// unicode content.
+	/* ace: we need to test this before commit it
+	static char utf8Header[] = {char(0xef), char(0xbb), char(0xbf), 0};
+	fprintf(fp, utf8Header);
+	*/
+
 	for(int i = 0; i < (int)_Vars.size(); i++)
 	{
 		// Not a root value

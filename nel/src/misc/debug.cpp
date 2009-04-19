@@ -93,7 +93,7 @@ static const bool TrapCrashInDebugger = false;
 namespace NLMISC
 {
 
-	//
+//
 // Globals
 //
 
@@ -993,12 +993,12 @@ static void exceptionTranslator(unsigned, EXCEPTION_POINTERS *pexp)
 	}
 #if FINAL_VERSION
 	// In final version, throw EDebug to display a smart dialog box with callstack & log when crashing
-#pragma message ( "Smart crash enabled" )
+#	pragma message ( "Smart crash enabled" )
 	DumpMiniDump(pexp);
 	throw EDebug (pexp);
 #else
 	// In debug version, let the program crash and use a debugger (clicking "Cancel")
-	// Ace: 'if' not activated because we can't debug if enabled: keeping only 0xACEACE for nlstop...
+	// Ace: 'if' not activated because we can't debug if enabled: keeping only 0xACE0ACE for nlstop...
 	//if (!TrapCrashInDebugger && IsDebuggerPresent ())
 	{
 		if (pexp->ExceptionRecord->ExceptionCode == 0xACE0ACE)

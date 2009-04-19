@@ -1627,45 +1627,45 @@ void CBitmap::resample(sint32 nNewWidth, sint32 nNewHeight)
 	bool needRebuild = false;
 
 	// Deleting mipmaps
-	logResample("Resample: 10");
+	//logResample("Resample: 10");
 	if(_MipMapCount>1)
 		needRebuild = true;
 	releaseMipMaps();
-	logResample("Resample: 20");
+	//logResample("Resample: 20");
 
 	if(nNewWidth==0 || nNewHeight==0)
 	{
 		_Width = _Height = 0;
-		logResample("Resample: 25");
+		//logResample("Resample: 25");
 		return;
 	}
 
-	logResample("Resample: 30");
+	//logResample("Resample: 30");
 	CObjectVector<uint8> pDestui;
 	pDestui.resize(nNewWidth*nNewHeight*4);
-	logResample("Resample: 40");
+	//logResample("Resample: 40");
 	NLMISC::CRGBA *pDestRgba = (NLMISC::CRGBA*)&pDestui[0];
-	logResample("Resample: 50");
+	//logResample("Resample: 50");
 
 	resamplePicture32 ((NLMISC::CRGBA*)&_Data[0][0], pDestRgba, _Width, _Height, nNewWidth, nNewHeight);
-	logResample("Resample: 60");
+	//logResample("Resample: 60");
 
 	NLMISC::contReset(_Data[0]); // free memory
-	logResample("Resample: 70");
+	//logResample("Resample: 70");
 
 	_Data[0] =  pDestui;
-	logResample("Resample: 80");
+	//logResample("Resample: 80");
 	_Width= nNewWidth;
 	_Height= nNewHeight;
 
 	// Rebuilding mipmaps
-	logResample("Resample: 90");
+	//logResample("Resample: 90");
 	if(needRebuild)
 	{
 		buildMipMaps();
-		logResample("Resample: 95");
+		//logResample("Resample: 95");
 	}
-	logResample("Resample: 100");
+	//logResample("Resample: 100");
 }
 
 
@@ -1749,7 +1749,7 @@ void CBitmap::resamplePicture32 (const NLMISC::CRGBA *pSrc, NLMISC::CRGBA *pDest
 								 sint32 nSrcWidth, sint32 nSrcHeight,
 								 sint32 nDestWidth, sint32 nDestHeight)
 {
-	logResample("RP32: 0 pSrc=%p pDest=%p, Src=%d x %d Dest=%d x %d", pSrc, pDest, nSrcWidth, nSrcHeight, nDestWidth, nDestHeight);
+	//logResample("RP32: 0 pSrc=%p pDest=%p, Src=%d x %d Dest=%d x %d", pSrc, pDest, nSrcWidth, nSrcHeight, nDestWidth, nDestHeight);
 	if ((nSrcWidth<=0)||(nSrcHeight<=0)||(nDestHeight<=0)||(nDestHeight<=0))
 		return;
 
