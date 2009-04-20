@@ -34,7 +34,7 @@
 namespace NLMISC
 {
 	class CMatrix;
-	class NLMISC::CVector;
+	class CVector;
 };
 
 namespace NL3D

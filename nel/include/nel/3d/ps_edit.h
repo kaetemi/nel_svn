@@ -30,8 +30,8 @@
 
 namespace NLMISC
 {
-	class NLMISC::CMatrix ;
-	class NLMISC::CVector ;
+	class CMatrix ;
+	class CVector ;
 } ;
 
 
