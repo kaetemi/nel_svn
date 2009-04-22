@@ -46,7 +46,13 @@ SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 #-----------------------------------------------------------------------------
 # Set CMake 2.6 Policies.
 IF(COMMAND cmake_policy)
+  # Works around warnings libraries linked against that don't
+  # have absolute paths (e.g. -lpthreads)
   cmake_policy(SET CMP0003 NEW)
+
+  # Works around warnings about escaped quotes in ADD_DEFINITIONS
+  # statements
+  cmake_policy(SET CMP0005 OLD)
 ENDIF(COMMAND cmake_policy)
 
 #-----------------------------------------------------------------------------
@@ -165,13 +171,31 @@ SET(CPACK_PACKAGE_VERSION_PATCH "${NL_VERSION_PATCH}")
 SET(CPACK_INSTALL_CMAKE_PROJECTS "${CMAKE_BINARY_DIR};NeL;ALL;/")
 SET(CPACK_PACKAGE_EXECUTABLES "nel${NL_VERSION}" "nel")
 
-## Package component names
-SET(CPACK_COMPONENTS_ALL libraries drivers3d driverssound headers samplespacs samples3d samplesgeorges samplesmisc samplesnet tools3d toolsmisc)
-set(CPACK_ALL_INSTALL_TYPES Full Developer Runtime)
+# NSIS Specific Packing Setup
+SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "NeL")
+SET(CPACK_NSIS_MODIFY_PATH "ON")
+SET(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/resources/nevraxpill.ico)
+SET(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/resources/nevraxpill.ico)
+SET(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/resources\\\\nel.bmp)
+SET(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} NeL")
+SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\dev.ryzom.com")
+SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\dev.ryzom.com\\\\projects\\\\nel\\\\wiki")
+SET(CPACK_NSIS_CONTACT "matt.raykowski@gmail.com")
 
-#set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "MyLib Application")
-#set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "An extremely useful application that makes use of MyLib")
-#set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+## Package component names
+SET(CPACK_COMPONENTS_ALL	libraries
+							drivers3d
+							driverssound 
+							headers 
+							samplespacs 
+							samples3d 
+							samplesgeorges 
+							samplesmisc 
+							samplesnet 
+							tools3d 
+							toolsmisc)
+							
+set(CPACK_ALL_INSTALL_TYPES Full Developer Runtime)
 
 SET(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "Libraries")
 SET(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
@@ -245,12 +269,8 @@ set(CPACK_COMPONENT_GROUP_DRIVERS_DESCRIPTION
 set(CPACK_COMPONENT_GROUP_SAMPLES_DESCRIPTION
    "Sample applications and configurations demonstrating NeL.")
  
-  
- 
- set(CPACK_COMPONENT_APPLICATIONS_INSTALL_TYPES Full)
-
-
-
+set(CPACK_COMPONENT_GROUP_TOOLS_DESCRIPTION
+   "Tools for NeL development and media creation.")  
 
 ## Source Packages
 SET(CPACK_PACKAGE_FILE_NAME "nel-${NL_VERSION}")

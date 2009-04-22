@@ -167,22 +167,38 @@ ENDMACRO(NL_SETUP_BUILD_FLAGS)
 MACRO(NL_SETUP_PREFIX_PATHS)
   ## Allow override of install_prefix/etc path.
   IF(NOT NL_ETC_PREFIX)
-    SET(NL_ETC_PREFIX "${CMAKE_INSTALL_PREFIX}/etc/nel" CACHE PATH "Installation path for configurations")
+    IF(WIN32)
+      SET(NL_ETC_PREFIX "../etc/nel" CACHE PATH "Installation path for configurations")
+    ELSE(WIN32)
+      SET(NL_ETC_PREFIX "${CMAKE_INSTALL_PREFIX}/etc/nel" CACHE PATH "Installation path for configurations")
+    ENDIF(WIN32)
   ENDIF(NOT NL_ETC_PREFIX)
 
   ## Allow override of install_prefix/share path.
   IF(NOT NL_SHARE_PREFIX)
-    SET(NL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share/nel" CACHE PATH "Installation path for data.")
+    IF(WIN32)
+	  SET(NL_SHARE_PREFIX "../share/nel" CACHE PATH "Installation path for data.")
+	ELSE(WIN32)
+	  SET(NL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share/nel" CACHE PATH "Installation path for data.")
+	ENDIF(WIN32)
   ENDIF(NOT NL_SHARE_PREFIX)
 
   ## Allow override of install_prefix/sbin path.
   IF(NOT NL_SBIN_PREFIX)
-    SET(NL_SBIN_PREFIX "${CMAKE_INSTALL_PREFIX}/sbin" CACHE PATH "Installation path for admin tools and services.")
+	IF(WIN32)
+	  SET(NL_SBIN_PREFIX "../sbin" CACHE PATH "Installation path for admin tools and services.")
+	ELSE(WIN32)
+	  SET(NL_SBIN_PREFIX "${CMAKE_INSTALL_PREFIX}/sbin" CACHE PATH "Installation path for admin tools and services.")
+	ENDIF(WIN32)
   ENDIF(NOT NL_SBIN_PREFIX)
 
   ## Allow override of install_prefix/bin path.
   IF(NOT NL_BIN_PREFIX)
-    SET(NL_BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation path for tools and applications.")
+    IF(WIN32)
+		SET(NL_BIN_PREFIX "../bin" CACHE PATH "Installation path for tools and applications.")
+    ELSE(WIN32)
+		SET(NL_BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation path for tools and applications.")
+    ENDIF(WIN32)
   ENDIF(NOT NL_BIN_PREFIX)
 
 ENDMACRO(NL_SETUP_PREFIX_PATHS)
