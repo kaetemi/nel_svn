@@ -104,6 +104,7 @@ IF(WITH_TESTS)
   FIND_PACKAGE(CppTest)
   ENABLE_TESTING()
   ADD_TEST(nel_unit_test ${EXECUTABLE_OUTPUT_PATH}/nel_unit_test --html)
+  INCLUDE(Dart)
 ENDIF(WITH_TESTS)
 
 IF(UNIX)

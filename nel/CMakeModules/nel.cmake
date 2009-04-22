@@ -73,9 +73,9 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   # Optional support
   ###
   OPTION(WITH_CEGUI       "Build CEGUI Renderer"                                  OFF)
-  OPTION(WITH_TOOLS       "Build NeL Tools"                                       OFF)
+  OPTION(WITH_TOOLS       "Build NeL Tools"                                       ON )
   OPTION(WITH_SAMPLES     "Build NeL Samples"                                     ON )
-  OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  OFF)
+  OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  ON )
   OPTION(WITH_GTK         "With GTK Support"                                      OFF)
 
 ENDMACRO(NL_SETUP_DEFAULT_OPTIONS)
