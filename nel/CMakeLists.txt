@@ -102,9 +102,16 @@ ENDIF(WITH_GTK)
 IF(WITH_TESTS)
 #  FIND_PACKAGE(CppUnit)
   FIND_PACKAGE(CppTest)
+
+
   ENABLE_TESTING()
   ADD_TEST(nel_unit_test ${EXECUTABLE_OUTPUT_PATH}/nel_unit_test --html)
-  INCLUDE(Dart)
+  IF(BUILD_DASHBOARD)
+    INCLUDE(Dart)
+    SET(SVNCOMMAND svn)
+    SET(SVNSOURCEDIR http://dev.ryzom.com/svn/trunk/nel) 
+    SET(GENERATELOGS svn2cl) 
+  ENDIF(BUILD_DASHBOARD)
 ENDIF(WITH_TESTS)
 
 IF(UNIX)

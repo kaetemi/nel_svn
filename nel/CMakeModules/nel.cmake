@@ -77,7 +77,7 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   OPTION(WITH_SAMPLES     "Build NeL Samples"                                     ON )
   OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  ON )
   OPTION(WITH_GTK         "With GTK Support"                                      OFF)
-
+  OPTION(BUILD_DASHBOARD  "Build to the CDash dashboard"                          OFF)
 ENDMACRO(NL_SETUP_DEFAULT_OPTIONS)
 
 MACRO(NL_SETUP_BUILD)
