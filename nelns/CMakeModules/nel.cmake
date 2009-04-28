@@ -62,9 +62,9 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   ###
   # Drivers Support
   ###
-  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver (3D)"                      ON )
+  OPTION(WITH_DRIVER_OPENGL       "Build OpenGL Driver (3D)"                      OFF)
   OPTION(WITH_DRIVER_DIRECT3D     "Build Direct3D Driver (3D)"                    OFF)
-  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver (Sound)"                   ON )
+  OPTION(WITH_DRIVER_OPENAL       "Build OpenAL Driver (Sound)"                   OFF)
   OPTION(WITH_DRIVER_FMOD         "Build FMOD Driver (Sound)"                     OFF)
   OPTION(WITH_DRIVER_DSOUND       "Build DirectSound Driver (Sound)"              OFF)
   OPTION(WITH_DRIVER_XAUDIO2      "Build XAudio2 Driver (Sound)"                  OFF)
@@ -74,7 +74,7 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   ###
   OPTION(WITH_CEGUI       "Build CEGUI Renderer"                                  OFF)
   OPTION(WITH_TOOLS       "Build NeL Tools"                                       OFF)
-  OPTION(WITH_SAMPLES     "Build NeL Samples"                                     ON )
+  OPTION(WITH_SAMPLES     "Build NeL Samples"                                     OFF)
   OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  OFF)
   OPTION(WITH_GTK         "With GTK Support"                                      OFF)
 
@@ -115,6 +115,9 @@ MACRO(NL_SETUP_BUILD)
     SET(NL_RELEASEDEBUG_CFLAGS "/DNL_RELEASE_DEBUG /Ob2 /GF")
   ELSE(WIN32)
     SET(PLATFORM_CFLAGS "-ftemplate-depth-24 -D_REENTRANT -Wall -ansi -W -Wpointer-arith -Wsign-compare -Wno-deprecated-declarations -Wno-multichar -Wno-long-long -Wno-unused")
+    IF(WITH_COVERAGE)
+      SET(PLATFORM_CFLAGS "-fprofile-arcs -ftest-coverage ${PLATFORM_CFLAGS}")
+    ENDIF(WITH_COVERAGE)
     SET(PLATFORM_LINKFLAGS "${CMAKE_THREAD_LIBS_INIT} -lc -lm -lstdc++ -lrt")
     SET(NL_DEBUG_CFLAGS "-DNL_DEBUG -g")
     SET(NL_RELEASE_CFLAGS "-DNL_RELEASE -O6")
@@ -167,27 +170,38 @@ ENDMACRO(NL_SETUP_BUILD_FLAGS)
 MACRO(NL_SETUP_PREFIX_PATHS)
   ## Allow override of install_prefix/etc path.
   IF(NOT NL_ETC_PREFIX)
-    SET(NL_ETC_PREFIX "${CMAKE_INSTALL_PREFIX}/etc/nel" CACHE PATH "Installation path for configurations")
+    IF(WIN32)
+      SET(NL_ETC_PREFIX "../etc/nel" CACHE PATH "Installation path for configurations")
+    ELSE(WIN32)
+      SET(NL_ETC_PREFIX "${CMAKE_INSTALL_PREFIX}/etc/nel" CACHE PATH "Installation path for configurations")
+    ENDIF(WIN32)
   ENDIF(NOT NL_ETC_PREFIX)
 
   ## Allow override of install_prefix/share path.
   IF(NOT NL_SHARE_PREFIX)
-    SET(NL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share/nel" CACHE PATH "Installation path for data.")
+    IF(WIN32)
+	  SET(NL_SHARE_PREFIX "../share/nel" CACHE PATH "Installation path for data.")
+	ELSE(WIN32)
+	  SET(NL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share/nel" CACHE PATH "Installation path for data.")
+	ENDIF(WIN32)
   ENDIF(NOT NL_SHARE_PREFIX)
 
   ## Allow override of install_prefix/sbin path.
   IF(NOT NL_SBIN_PREFIX)
-    SET(NL_SBIN_PREFIX "${CMAKE_INSTALL_PREFIX}/sbin" CACHE PATH "Installation path for admin tools and services.")
+	IF(WIN32)
+	  SET(NL_SBIN_PREFIX "../sbin" CACHE PATH "Installation path for admin tools and services.")
+	ELSE(WIN32)
+	  SET(NL_SBIN_PREFIX "${CMAKE_INSTALL_PREFIX}/sbin" CACHE PATH "Installation path for admin tools and services.")
+	ENDIF(WIN32)
   ENDIF(NOT NL_SBIN_PREFIX)
 
   ## Allow override of install_prefix/bin path.
   IF(NOT NL_BIN_PREFIX)
-    SET(NL_BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation path for tools and applications.")
+    IF(WIN32)
+		SET(NL_BIN_PREFIX "../bin" CACHE PATH "Installation path for tools and applications.")
+    ELSE(WIN32)
+		SET(NL_BIN_PREFIX "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation path for tools and applications.")
+    ENDIF(WIN32)
   ENDIF(NOT NL_BIN_PREFIX)
-
-  ## Allow override of install_prefix/bin path.
-  IF(NOT NL_LOG_PREFIX)
-    SET(NL_LOG_PREFIX "${CMAKE_INSTALL_PREFIX}/var/log" CACHE PATH "Installation path for tools and applications.")
-  ENDIF(NOT NL_LOG_PREFIX)
 
 ENDMACRO(NL_SETUP_PREFIX_PATHS)

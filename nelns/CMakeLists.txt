@@ -6,6 +6,14 @@
 # Notes:
 #   * Changing install location: add -DCMAKE_INSTALL_PREFIX:PATH=/my/new/path
 #   * Changing NeL prefix: add -DNEL_PREFIX_PATH:PATH=/my/nel/install
+#   * Changing specific install location variables:
+#       * NL_ETC_PREFIX (default: $CMAKE_INSTALL_PREFIX/etc)
+#       * NL_SHARE_PREFIX (default: $CMAKE_INSTALL_PREFIX/share)
+#       * NL_BIN_PREFIX (default: $CMAKE_INSTALL_PREFIX/bin)
+#       * NL_SBIN_PREFIX  (default: $CMAKE_INSTALL_PREFIX/sbin)
+#   * Updating version: update header (above) but also update NL_VERSION below.
+#   * To build binary archive, use the 'package' target.
+#     To build source archive, use the 'package_source' target.
 #
 #-----------------------------------------------------------------------------
 
@@ -42,6 +50,18 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
 #-----------------------------------------------------------------------------
+# Set CMake 2.6 Policies.
+IF(COMMAND cmake_policy)
+  # Works around warnings libraries linked against that don't
+  # have absolute paths (e.g. -lpthreads)
+  cmake_policy(SET CMP0003 NEW)
+
+  # Works around warnings about escaped quotes in ADD_DEFINITIONS
+  # statements
+  cmake_policy(SET CMP0005 OLD)
+ENDIF(COMMAND cmake_policy)
+
+#-----------------------------------------------------------------------------
 # Set default config options
 #
 NL_SETUP_DEFAULT_OPTIONS()
@@ -71,13 +91,11 @@ ENDIF(WIN32)
 
 NL_SETUP_BUILD_FLAGS()
 
-IF(UNIX)
-  SET(ETCDIR "${NL_ETC_PREFIX}/nelns")
-  SET(PKGDIR "${NL_SHARE_PREFIX}/nelns")
-  SET(LOGDIR "${NL_LOG_PREFIX}/nelns")
-  ADD_DEFINITIONS(-DNELNS_CONFIG="\\"${ETCDIR}\\"" -DNELNS_STATE="\\"${PKGDIR}\\"" -DNELNS_LOGS="\\"${LOGDIR}\\"")
-  INSTALL(CODE "FILE(MAKE_DIRECTORY ${LOGDIR})")
-ENDIF(UNIX)
+SET(ETCDIR "${NL_ETC_PREFIX}/nelns")
+SET(PKGDIR "${NL_SHARE_PREFIX}/nelns")
+SET(LOGDIR "${NL_LOG_PREFIX}/nelns")
+ADD_DEFINITIONS(-DNELNS_CONFIG="\\"${ETCDIR}\\"" -DNELNS_STATE="\\"${PKGDIR}\\"" -DNELNS_LOGS="\\"${LOGDIR}\\"")
+INSTALL(CODE "FILE(MAKE_DIRECTORY ${LOGDIR})")
 
 ADD_SUBDIRECTORY(admin_executor_service)
 ADD_SUBDIRECTORY(admin_service)
@@ -89,31 +107,5 @@ ADD_SUBDIRECTORY(welcome_service)
 
 #-----------------------------------------------------------------------------
 #Packaging
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "NeL MMORPG Framework - Networking Services")
-SET(CPACK_PACKAGE_VENDOR "OpenNeL")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README)
-SET(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
-SET(CPACK_PACKAGE_VERSION_MAJOR "${NL_VERSION_MAJOR}")
-SET(CPACK_PACKAGE_VERSION_MINOR "${NL_VERSION_MINOR}")
-SET(CPACK_PACKAGE_VERSION_PATCH "${NL_VERSION_PATCH}")
-SET(CPACK_INSTALL_CMAKE_PROJECTS "${CMAKE_BINARY_DIR};NeLNS;ALL;/")
-SET(CPACK_PACKAGE_EXECUTABLES "nelns-${NL_VERSION}" "nelns")
+INCLUDE(CMakePackaging.txt)
 
-## Source Packages
-SET(CPACK_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
-SET(CPACK_SOURCE_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
-IF(WIN32)
-  SET(CPACK_GENERATOR "ZIP")
-  SET(CPACK_SOURCE_GENERATOR "ZIP")
-ELSE(WIN32)
-  SET(CPACK_GENERATOR "TGZ")
-  SET(CPACK_SOURCE_GENERATOR "TGZ")
-ENDIF(WIN32)
-set(CPACK_SOURCE_IGNORE_FILES
-        "~$"
-        "\\\\.cvsignore$"
-        "^${CMAKE_SOURCE_DIR}.*/CVS/"
-        "^${CMAKE_SOURCE_DIR}.*/\\\\.svn/"
-        "^${CMAKE_SOURCE_DIR}/debian/"
-        "^${CMAKE_SOURCE_DIR}/old/")
-INCLUDE(${CMAKE_ROOT}/Modules/CPack.cmake)

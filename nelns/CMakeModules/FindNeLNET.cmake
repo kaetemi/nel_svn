@@ -12,6 +12,7 @@ ENDIF(NELNET_LIBRARY AND NELNET_INCLUDE_DIRS)
 FIND_PATH(NELNET_INCLUDE_DIRS
   nel/net/service.h
   PATHS
+  [HKEY_LOCAL_MACHINE\\SOFTWARE\\NeL\\NeL;]/include
   $ENV{NELNET_DIR}/include
   /usr/local/include
   /usr/include
@@ -22,8 +23,9 @@ FIND_PATH(NELNET_INCLUDE_DIRS
 )
 
 FIND_LIBRARY(NELNET_LIBRARY
-  NAMES nelnet
+  NAMES nelnet nelnet_r nelnet_d
   PATHS
+  [HKEY_LOCAL_MACHINE\\SOFTWARE\\NeL\\NeL;]/lib
   $ENV{NELNET_DIR}/lib
   /usr/local/lib
   /usr/lib

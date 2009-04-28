@@ -1,0 +1,93 @@
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "NeL MMORPG Framework - Networking Services")
+SET(CPACK_PACKAGE_VENDOR "NeL")
+SET(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README)
+SET(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
+SET(CPACK_PACKAGE_VERSION_MAJOR "${NL_VERSION_MAJOR}")
+SET(CPACK_PACKAGE_VERSION_MINOR "${NL_VERSION_MINOR}")
+SET(CPACK_PACKAGE_VERSION_PATCH "${NL_VERSION_PATCH}")
+SET(CPACK_INSTALL_CMAKE_PROJECTS "${CMAKE_BINARY_DIR};NeLNS;ALL;/")
+SET(CPACK_PACKAGE_EXECUTABLES "nelns-${NL_VERSION}" "nelns")
+
+# NSIS Specific Packing Setup
+SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "NeLNS")
+SET(CPACK_NSIS_MODIFY_PATH "ON")
+SET(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/resources/nevraxpill.ico)
+SET(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/resources/nevraxpill.ico)
+SET(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/resources\\\\nel.bmp)
+SET(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} NeLNS")
+SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\dev.ryzom.com")
+SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\dev.ryzom.com\\\\projects\\\\nel\\\\wiki")
+SET(CPACK_NSIS_CONTACT "matt.raykowski@gmail.com")
+SET(CPACK_NSIS_MENU_LINKS 
+	"bin\\\\naming_service.exe" "Naming Service"
+	"bin\\\\login_service.exe" "Login Service"
+	"bin\\\\welcome_service.exe" "Welcome Service"
+	"bin\\\\admin_executor_service.exe" "Admin Executor Service"
+	"bin\\\\admin_service.exe" "Admin Service"
+	"etc\\\\nel\\\\nelns\\\\naming_service.cfg" "Configs\\\\Naming Service Config"
+	"http://dev.ryzom.com/projects/nel" "NeL Web Site"
+)
+
+## Package component names
+SET(CPACK_COMPONENTS_ALL	aes
+							as
+							ls 
+							ns 
+							ws)
+
+set(CPACK_ALL_INSTALL_TYPES Full Simple)
+
+SET(CPACK_COMPONENT_AES_DISPLAY_NAME "Admin Executor Service")
+SET(CPACK_COMPONENT_AES_DESCRIPTION
+   "Admin Executor Service - starts shard servers on a machine.")
+SET(CPACK_COMPONENT_AES_GROUP "Admin Services")
+SET(CPACK_COMPONENT_AES_INSTALL_TYPES Full)
+
+SET(CPACK_COMPONENT_AS_DISPLAY_NAME "Admin Service")
+SET(CPACK_COMPONENT_AS_DESCRIPTION
+   "Admin Service - performs high level shard management.")
+SET(CPACK_COMPONENT_AS_GROUP "Admin Services")
+SET(CPACK_COMPONENT_AS_INSTALL_TYPES Full)
+
+SET(CPACK_COMPONENT_LS_DISPLAY_NAME "Login Service")
+SET(CPACK_COMPONENT_LS_DESCRIPTION
+   "Login Service - performs player/client login authentication.")
+SET(CPACK_COMPONENT_LS_GROUP "Shard Services")
+SET(CPACK_COMPONENT_LS_INSTALL_TYPES Full Simple)
+
+SET(CPACK_COMPONENT_NS_DISPLAY_NAME "Naming Service")
+SET(CPACK_COMPONENT_NS_DESCRIPTION
+   "Naming Service - performs naming lookup for unified networking.")
+SET(CPACK_COMPONENT_NS_GROUP "Shard Services")
+SET(CPACK_COMPONENT_NS_INSTALL_TYPES Full Simple)
+
+SET(CPACK_COMPONENT_WS_DISPLAY_NAME "Welcome Service")
+SET(CPACK_COMPONENT_WS_DESCRIPTION
+   "Welcome Service - performs the task of identifying available front-ends for a given shard.")
+SET(CPACK_COMPONENT_WS_GROUP "Shard Services")
+SET(CPACK_COMPONENT_WS_INSTALL_TYPES Full Simple)
+
+set(CPACK_COMPONENT_GROUP_ADMIN_SERVICES_DESCRIPTION
+   "The services necessary for shard administration.")
+   
+set(CPACK_COMPONENT_GROUP_SHARD_SERVICES_DESCRIPTION
+   "The services necessary for running a shard.")
+
+## Source Packages
+SET(CPACK_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
+IF(WIN32)
+  SET(CPACK_GENERATOR "NSIS")
+  SET(CPACK_SOURCE_GENERATOR "ZIP")
+ELSE(WIN32)
+  SET(CPACK_GENERATOR "TGZ")
+  SET(CPACK_SOURCE_GENERATOR "TGZ")
+ENDIF(WIN32)
+set(CPACK_SOURCE_IGNORE_FILES
+        "~$"
+        "\\\\.cvsignore$"
+        "^${CMAKE_SOURCE_DIR}.*/CVS/"
+        "^${CMAKE_SOURCE_DIR}.*/\\\\.svn/"
+        "^${CMAKE_SOURCE_DIR}/debian/"
+        "^${CMAKE_SOURCE_DIR}/old/")
+INCLUDE(${CMAKE_ROOT}/Modules/CPack.cmake)
