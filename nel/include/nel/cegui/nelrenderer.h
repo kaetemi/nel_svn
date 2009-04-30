@@ -61,6 +61,7 @@
 #include <nel/misc/config_file.h>
 #include <nel/misc/system_info.h>
 #include <nel/misc/mem_displayer.h>
+#include <nel/misc/dynloadlib.h>
 
 #include <nel/3d/u_scene.h>
 #include <nel/3d/u_camera.h>
@@ -71,15 +72,7 @@
 #include <nel/3d/u_text_context.h>
 #include <nel/3d/u_particle_system_instance.h>
 
-#ifdef NL_OS_WINDOWS
-#ifdef NEL_CEGUIRENDERER_EXPORTS
-#define DLLSPEC __declspec(dllexport)
-#else //NEL_CEGUI_RENDERER_EXPORTS
-#define DLLSPEC __declspec(dllimport)
-#endif // NEL_CEGUI_RENDERER_EXPORTS
-#else // NL_OS_WINDOWS
-#define DLLSPEC 
-#endif // NL_OS_WINDOWS
+#include <nel/cegui/inelrenderer.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -91,7 +84,7 @@ namespace CEGUI
 	/**
 	 * \brief Class to interface with the NeL rendering engine.
 	 */
-	class DLLSPEC NeLRenderer : public Renderer
+	class NeLRenderer : public INeLRenderer
 	{
 	public:
 		NeLRenderer(NL3D::UDriver *driver, bool withRP=true);
@@ -414,6 +407,5 @@ namespace CEGUI
 		bool						m_NelProvider;
 	};
 } // END CEGUI namespace.
-
 
 #endif // __NELRENDERER_H__

@@ -44,12 +44,13 @@
 //
 // CEGUI Includes
 //
-#include <nel/cegui/nelrenderer.h>
-#include <nel/cegui/nellogger.h>
+#include <nel/cegui/inellibrary.h>
+//#include <nel/cegui/nellogger.h>
 #include <CEGUI.h>
 #include "NeLDriver.h"
 
 #include <nel/misc/hierarchical_timer.h>
+#include <nel/misc/dynloadlib.h>
 //
 // Namespaces
 //
@@ -65,9 +66,9 @@ uint16 gScreenHeight;
 //
 // CEGUI GLOBALS
 //
-CEGUI::NeLLogger *gGuiLogger;
+//CEGUI::NeLLogger *gGuiLogger;
 CEGUI::System *gGuiSystem;
-CEGUI::NeLRenderer *gGuiRenderer;
+CEGUI::INeLRenderer *gGuiRenderer;
 bool gStopDemo;
 
 void createDemoWindows();
@@ -97,6 +98,15 @@ int main(int argc, char **argv)
 		gScreenHeight=600;
 		NLMISC::CPath::addSearchPath(CEGUI_DATA_DIR,true,false);
 
+		// Load the CEGUI renderer and get a handle to the library.
+		NLMISC::CLibrary driverLib;
+		if(!driverLib.loadLibrary("nelceguirenderer", true, true , true)) {
+			nlerror("Failed to load NeL CEGUI Renderer library.");
+		}
+		NELRENDERER_CREATE_PROC createNelRenderer = reinterpret_cast<NELRENDERER_CREATE_PROC>(driverLib.getSymbolAddress(NELRENDERER_CREATE_PROC_NAME));
+
+//		CCeguiRendererNelLibrary *nelCeguiDriverLib = dynamic_cast<CCeguiRendererNelLibrary *>(driverLib.getNelLibraryInterface());
+		
 		NL3D::UDriver *driver;
 
 		// Create a driver
@@ -117,9 +127,11 @@ int main(int argc, char **argv)
 		gDriver->init();
 
 		// start up the Gui system.
-		gGuiLogger = new CEGUI::NeLLogger();
-		gGuiRenderer = new CEGUI::NeLRenderer(driver);
-		gGuiRenderer->addSearchPath(CEGUI_DATA_DIR,true,false);
+		//gGuiLogger = nelCeguiDriverLib->createNelLogger();
+		//gGuiRenderer = new CEGUI::NeLRenderer(driver);
+		
+		gGuiRenderer = createNelRenderer(driver, true);
+		//gGuiRenderer->addSearchPath(CEGUI_DATA_DIR,true,false);
 		gGuiSystem = new CEGUI::System(gGuiRenderer);
 		gGuiRenderer->activateInput();
 		gGuiRenderer->captureCursor(true);

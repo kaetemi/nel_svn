@@ -55,7 +55,7 @@ namespace CEGUI
 {
 	NeLTexture::NeLTexture(Renderer *owner) : Texture(owner)
 	{
-		m_Owner=static_cast<NeLRenderer *>(owner);
+		m_Owner=dynamic_cast<NeLRenderer *>(owner);
 		m_Material = m_Owner->getNeLDriver().createMaterial();
 		m_TextureFile=NULL;
 		m_TextureMem=NULL;

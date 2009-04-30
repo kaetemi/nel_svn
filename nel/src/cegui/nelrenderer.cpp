@@ -39,6 +39,9 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 
+#include <nel/misc/dynloadlib.h>
+
+//#include <nel/cegui/inelrenderer.h>
 #include <nel/cegui/nelrenderer.h>
 #include <nel/cegui/neltexture.h>
 #include <nel/cegui/nelresourceprovider.h>
@@ -46,12 +49,55 @@
 #include <nel/3d/u_material.h>
 #include <nel/3d/u_driver.h>
 
+#include <nel/cegui/inellibrary.h>
+
 #include <algorithm>
 
 #ifdef NL_OS_WINDOWS
 #	define NOMINMAX
 #	include <windows.h>
 #endif
+
+#ifndef NL_STATIC
+
+//class CCeguiRendererNelLibrary : public NLMISC::INelLibrary {
+//        void onLibraryLoaded(bool /* firstTime */) { }
+//        void onLibraryUnloaded(bool /* lastTime */) { }
+//};
+NLMISC_DECL_PURE_LIB(CCeguiRendererNelLibrary)
+
+#endif /* #ifndef NL_STATIC */
+
+/*
+ * Sound driver instance creation
+ */
+#ifdef NL_OS_WINDOWS
+
+// ******************************************************************
+
+#ifdef NL_STATIC
+INeLRenderer* createNeLRendererInstance
+#else
+__declspec(dllexport) INeLRenderer *createNeLRendererInstance
+#endif
+        (NL3D::UDriver *driver, bool withRP=true)
+{
+        return new NeLRenderer(driver, withRP);
+}
+
+// ******************************************************************
+
+#elif defined (NL_OS_UNIX)
+
+extern "C"
+{
+	CEGUI::INeLRenderer *createNeLRendererInstance(NL3D::UDriver *driver, bool withRP=true)
+	{
+		return new CEGUI::NeLRenderer(driver, withRP);
+	}
+} // extern "C"
+
+#endif // NL_OS_UNIX
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -90,9 +136,9 @@ namespace CEGUI
 		NLMISC::CHTimer::clear();
 	}
 
-	void NeLRenderer::addSearchPath(const std::string &path, bool recurse, bool alternative, class NLMISC::IProgressCallback *progressCallBack) {
-		NLMISC::CPath::addSearchPath(path.c_str(),recurse,alternative,progressCallBack);
-	}
+//	void NeLRenderer::addSearchPath(const std::string &path, bool recurse, bool alternative, class NLMISC::IProgressCallback *progressCallBack) {
+//		NLMISC::CPath::addSearchPath(path.c_str(),recurse,alternative,progressCallBack);
+//	}
 
 	void NeLRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 	{
