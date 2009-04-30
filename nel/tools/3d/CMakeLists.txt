@@ -23,9 +23,9 @@ SUBDIRS(	build_coarse_mesh
 		zone_dump
 		zviewer)
 
-IF(QT4_FOUND)
+IF(WITH_QT)
   ADD_SUBDIRECTORY(tile_edit_qt)
-ENDIF(QT4_FOUND)
+ENDIF(WITH_QT)
 
 # These use WIndows-specific things that need to be fixed.
 #ig_elevation
