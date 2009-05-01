@@ -1,5 +1,5 @@
 #include "connection.h"
-
+#include <iostream>
 #include <nel/misc/ucstring.h>
 #include <nel/misc/md5.h>
 #include <nel/net/sock.h>
@@ -90,7 +90,10 @@ bool CNelLauncherConnection::receive(std::string &res)
 			break;
 		}
 	}
-	//nlinfo("all received '%s'", res.c_str());
+
+	// trim off whitespace.
+	res = NLMISC::trim(res);
+	nlinfo("all received '%s'", res.c_str());
 	return true;
 }
 
@@ -156,7 +159,7 @@ std::string CNelLauncherConnection::checkLogin(const std::string &login, const s
 
 	//	if(VerboseLog)
 	//	{
-			nlinfo ("Exploded, with nl, %d res", lines.size());
+			//nlinfo ("Exploded, with nl, %d res", lines.size());
 /*		      for (uint i = 0; i < lines.size(); i++)
 			{
 				nlinfo (" > '%s'", lines[i].c_str());
