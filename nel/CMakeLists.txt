@@ -21,7 +21,6 @@
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 INCLUDE(${CMAKE_SOURCE_DIR}/CMakeModules/nel.cmake)
 INCLUDE(${CMAKE_ROOT}/Modules/Documentation.cmake OPTIONAL)
-INCLUDE(InstallRequiredSystemLibraries)
 
 # Force out of source builds.
 CHECK_OUT_OF_SOURCE()
@@ -191,98 +190,8 @@ SET(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/resources\\\\nel.bmp)
 SET(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} NeL")
 SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\dev.ryzom.com")
 SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\dev.ryzom.com\\\\projects\\\\nel\\\\wiki")
-SET(CPACK_NSIS_CONTACT "matt.raykowski@gmail.com")
-
-## Package component names
-SET(CPACK_COMPONENTS_ALL	libraries
-							drivers3d
-							driverssound 
-							headers 
-							samplespacs 
-							samples3d 
-							samplesgeorges 
-							samplesmisc 
-							samplesnet 
-							tools3d 
-							toolsmisc)
-							
-set(CPACK_ALL_INSTALL_TYPES Full Developer Runtime)
-
-SET(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "Libraries")
-SET(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
-   "Libraries used to build programs with NeL")
-SET(CPACK_COMPONENT_LIBRARIES_GROUP "Development")
-SET(CPACK_COMPONENT_LIBRARIES_INSTALL_TYPES Developer Full)
-   
-SET(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ Headers")
-SET(CPACK_COMPONENT_HEADERS_DESCRIPTION
-   "C++ headers used to build programs with NeL")
-SET(CPACK_COMPONENT_HEADERS_GROUP "Development")
-SET(CPACK_COMPONENT_HEADERS_INSTALL_TYPES Developer Full)   
-   
-SET(CPACK_COMPONENT_DRIVERS3D_DISPLAY_NAME "3D Drivers")
-SET(CPACK_COMPONENT_DRIVERS3D_DESCRIPTION
-   "3D Drivers for running NeL based applications.")
-SET(CPACK_COMPONENT_DRIVERS3D_GROUP "Drivers")
-set(CPACK_COMPONENT_DRIVERS3D_INSTALL_TYPES Runtime Full)
-   
-SET(CPACK_COMPONENT_DRIVERSSOUND_DISPLAY_NAME "Sound Drivers")
-SET(CPACK_COMPONENT_DRIVERSSOUND_DESCRIPTION
-   "Sound Drivers for running NeL based applications.")
-SET(CPACK_COMPONENT_DRIVERSSOUND_GROUP "Drivers")
-set(CPACK_COMPONENT_DRIVERSSOUND_INSTALL_TYPES Runtime Full)
-
-SET(CPACK_COMPONENT_SAMPLESPACS_DISPLAY_NAME "PACS Samples")
-SET(CPACK_COMPONENT_SAMPLESPACS_DESCRIPTION
-   "Sample applications demonstrating the PACS collision library.")
-SET(CPACK_COMPONENT_SAMPLESPACS_GROUP "Samples")
-SET(CPACK_COMPONENT_SAMPLESPACS_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_SAMPLES3D_DISPLAY_NAME "3D Samples")
-SET(CPACK_COMPONENT_SAMPLES3D_DESCRIPTION
-   "Sample applications demonstrating the NeL 3D library.")
-SET(CPACK_COMPONENT_SAMPLES3D_GROUP "Samples")
-SET(CPACK_COMPONENT_SAMPLES3D_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_SAMPLESGEORGES_DISPLAY_NAME "Georges Samples")
-SET(CPACK_COMPONENT_SAMPLESGEORGES_DESCRIPTION
-   "Sample applications demonstrating the Georges data loading module.")
-SET(CPACK_COMPONENT_SAMPLESGEORGES_GROUP "Samples")
-SET(CPACK_COMPONENT_SAMPLESGEORGES_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_SAMPLESMISC_DISPLAY_NAME "Misc Samples")
-SET(CPACK_COMPONENT_SAMPLESMISC_DESCRIPTION
-   "Sample applications demonstrating the core NeL functionality module.")
-SET(CPACK_COMPONENT_SAMPLESMISC_GROUP "Samples")
-SET(CPACK_COMPONENT_SAMPLESMISC_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_SAMPLESNET_DISPLAY_NAME "Net Samples")
-SET(CPACK_COMPONENT_SAMPLESNET_DESCRIPTION
-   "Sample applications demonstrating the NeL Network functionality.")
-SET(CPACK_COMPONENT_SAMPLESNET_GROUP "Samples")
-SET(CPACK_COMPONENT_SAMPLESNET_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_TOOLSMISC_DISPLAY_NAME "Misc Tools")
-SET(CPACK_COMPONENT_TOOLSMISC_DESCRIPTION
-   "Misc. NeL Tools")
-SET(CPACK_COMPONENT_TOOLSMISC_GROUP "Tools")
-SET(CPACK_COMPONENT_TOOLSMISC_INSTALL_TYPES Full Runtime)
-
-SET(CPACK_COMPONENT_TOOLS3D_DISPLAY_NAME "3D Tools")
-SET(CPACK_COMPONENT_TOOLS3D_DESCRIPTION
-   "Misc. NeL Tools")
-SET(CPACK_COMPONENT_TOOLS3D_GROUP "Tools")
-SET(CPACK_COMPONENT_TOOLS3D_INSTALL_TYPES Full Runtime)
+SET(CPACK_NSIS_CONTACT "matt.raykowski@gmail.com")  
  
-set(CPACK_COMPONENT_GROUP_DRIVERS_DESCRIPTION
-   "The drivers needed to run NeL-based software.")
-   
-set(CPACK_COMPONENT_GROUP_SAMPLES_DESCRIPTION
-   "Sample applications and configurations demonstrating NeL.")
- 
-set(CPACK_COMPONENT_GROUP_TOOLS_DESCRIPTION
-   "Tools for NeL development and media creation.")  
-
 ## Source Packages
 SET(CPACK_PACKAGE_FILE_NAME "nel-${NL_VERSION}")
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "nel-${NL_VERSION}")
@@ -301,7 +210,10 @@ set(CPACK_SOURCE_IGNORE_FILES
 	"^${CMAKE_SOURCE_DIR}.*/\\\\.svn/"
 	"^${CMAKE_SOURCE_DIR}/debian/"
 	"^${CMAKE_SOURCE_DIR}/old/")
-INCLUDE(${CMAKE_ROOT}/Modules/CPack.cmake)
+INCLUDE(InstallRequiredSystemLibraries)
+INCLUDE(CPack)
+
+INCLUDE(CMakePackaging.txt)
 
 ## Debian Packages
 #INCLUDE(UseDebian)
