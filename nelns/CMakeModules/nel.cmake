@@ -77,6 +77,7 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   OPTION(WITH_SAMPLES     "Build NeL Samples"                                     OFF)
   OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  OFF)
   OPTION(WITH_GTK         "With GTK Support"                                      OFF)
+  OPTION(WITH_QT          "With QT Support"                                       OFF)
 
 ENDMACRO(NL_SETUP_DEFAULT_OPTIONS)
 

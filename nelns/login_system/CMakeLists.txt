@@ -1,3 +1,7 @@
 IF(WIN32)
   ADD_SUBDIRECTORY(nel_launcher_windows_ext2)
 ENDIF(WIN32)
+
+IF(WITH_QT)
+  ADD_SUBDIRECTORY(nel_launcher_qt)
+ENDIF(WITH_QT)
