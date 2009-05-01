@@ -28,51 +28,6 @@ SET(CPACK_NSIS_MENU_LINKS
 	"http://dev.ryzom.com/projects/nel" "NeL Web Site"
 )
 
-## Package component names
-SET(CPACK_COMPONENTS_ALL	aes
-							as
-							ls 
-							ns 
-							ws)
-
-set(CPACK_ALL_INSTALL_TYPES Full Simple)
-
-SET(CPACK_COMPONENT_AES_DISPLAY_NAME "Admin Executor Service")
-SET(CPACK_COMPONENT_AES_DESCRIPTION
-   "Admin Executor Service - starts shard servers on a machine.")
-SET(CPACK_COMPONENT_AES_GROUP "Admin Services")
-SET(CPACK_COMPONENT_AES_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_AS_DISPLAY_NAME "Admin Service")
-SET(CPACK_COMPONENT_AS_DESCRIPTION
-   "Admin Service - performs high level shard management.")
-SET(CPACK_COMPONENT_AS_GROUP "Admin Services")
-SET(CPACK_COMPONENT_AS_INSTALL_TYPES Full)
-
-SET(CPACK_COMPONENT_LS_DISPLAY_NAME "Login Service")
-SET(CPACK_COMPONENT_LS_DESCRIPTION
-   "Login Service - performs player/client login authentication.")
-SET(CPACK_COMPONENT_LS_GROUP "Shard Services")
-SET(CPACK_COMPONENT_LS_INSTALL_TYPES Full Simple)
-
-SET(CPACK_COMPONENT_NS_DISPLAY_NAME "Naming Service")
-SET(CPACK_COMPONENT_NS_DESCRIPTION
-   "Naming Service - performs naming lookup for unified networking.")
-SET(CPACK_COMPONENT_NS_GROUP "Shard Services")
-SET(CPACK_COMPONENT_NS_INSTALL_TYPES Full Simple)
-
-SET(CPACK_COMPONENT_WS_DISPLAY_NAME "Welcome Service")
-SET(CPACK_COMPONENT_WS_DESCRIPTION
-   "Welcome Service - performs the task of identifying available front-ends for a given shard.")
-SET(CPACK_COMPONENT_WS_GROUP "Shard Services")
-SET(CPACK_COMPONENT_WS_INSTALL_TYPES Full Simple)
-
-set(CPACK_COMPONENT_GROUP_ADMIN_SERVICES_DESCRIPTION
-   "The services necessary for shard administration.")
-   
-set(CPACK_COMPONENT_GROUP_SHARD_SERVICES_DESCRIPTION
-   "The services necessary for running a shard.")
-
 ## Source Packages
 SET(CPACK_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "nelns-${NL_VERSION}")
@@ -90,4 +45,50 @@ set(CPACK_SOURCE_IGNORE_FILES
         "^${CMAKE_SOURCE_DIR}.*/\\\\.svn/"
         "^${CMAKE_SOURCE_DIR}/debian/"
         "^${CMAKE_SOURCE_DIR}/old/")
-INCLUDE(${CMAKE_ROOT}/Modules/CPack.cmake)
+INCLUDE(CPack)
+
+cpack_add_install_type(Full DISPLAY_NAME "Full Install")
+cpack_add_install_type(Simple DISPLAY_NAME "Essential Services Install")
+
+cpack_add_component_group("Admin Services" 
+  EXPANDED 
+  DESCRPTION "The services necessary for shard administration.")
+cpack_add_component_group("Shard Servces"
+  EXPANDED 
+  DESCRPTION "The services necessary for running a shard.")
+cpack_add_component_group("Client Tools"
+  EXPANDED 
+  DESCRPTION "Client tools, such as launchers.")
+    
+cpack_add_component(aes
+  DISPLAY_NAME "Admin Executor Service"
+  DESCRIPTION "Admin Executor Service - starts shard servers on a machine."
+  GROUP "Admin Services"
+  INSTALL_TYPES Full)
+cpack_add_component(as
+  DISPLAY_NAME "Admin Service"
+  DESCRIPTION "Admin Service - performs high level shard management."
+  GROUP "Admin Services"
+  INSTALL_TYPES Full)
+
+cpack_add_component(ls
+  DISPLAY_NAME "Login Service"
+  DESCRIPTION "Login Service - performs player/client login authentication."
+  GROUP "Shard Services"
+  INSTALL_TYPES Full Simple)
+cpack_add_component(ns
+  DISPLAY_NAME "Naming Service"
+  DESCRIPTION "Naming Service - performs naming lookup for unified networking."
+  GROUP "Shard Services"
+  INSTALL_TYPES Full Simple)
+cpack_add_component(ws
+  DISPLAY_NAME "Welcome Service"
+  DESCRIPTION "Welcome Service - performs the task of identifying available front-ends for a given shard."
+  GROUP "Shard Services"
+  INSTALL_TYPES Full Simple)
+
+cpack_add_component(launcher
+  DISPLAY_NAME "Client Launcher"
+  DESCRIPTION "Client Launcher - connects to the web service and login service to find a shard."
+  GROUP "Client Tools"
+  INSTALL_TYPES Full Simple)

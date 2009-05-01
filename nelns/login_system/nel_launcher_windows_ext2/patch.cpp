@@ -28,7 +28,7 @@
 
 #include "std_afx.h"
 
-#define USE_CURL
+//#define USE_CURL
 
 #ifdef USE_CURL
 #include <curl/curl.h>

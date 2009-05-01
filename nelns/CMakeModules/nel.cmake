@@ -111,7 +111,7 @@ MACRO(NL_SETUP_BUILD)
 
   IF(WIN32)
     SET(NL_DEBUG_CFLAGS "/ZI /Gy /GS-")
-    SET(NL_RELEASE_CFLAGS "/Ox /Ob2 /Oi /Ot /Oy /GT /GL /GF")
+    SET(NL_RELEASE_CFLAGS "/Ox /Ob2 /Oi /Ot /Oy /GT /GF")
     SET(NL_RELEASEDEBUG_CFLAGS "/DNL_RELEASE_DEBUG /Ob2 /GF")
   ELSE(WIN32)
     SET(PLATFORM_CFLAGS "-ftemplate-depth-24 -D_REENTRANT -Wall -ansi -W -Wpointer-arith -Wsign-compare -Wno-deprecated-declarations -Wno-multichar -Wno-long-long -Wno-unused")
