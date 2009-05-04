@@ -8,6 +8,8 @@
 
 #include "shard.h"
 
+typedef std::vector<CShard> TShardList;
+
 class CNelLauncherConnection
 {
 public:
@@ -16,12 +18,15 @@ public:
 	bool receive(std::string &res);
 	std::string checkLogin(const std::string &login, const std::string &password, const std::string &clientApp);
 	std::string selectShard(uint32 shardId, std::string &cookie, std::string &addr);
+
+	TShardList getShards() { return m_Shards; }
+
 protected:
 	std::string		m_Login;
 	std::string		m_Password;
 	std::string		m_ClientApp;
 
-	std::vector<CShard>	m_Shards;
+	TShardList		m_Shards;
 
 	NLNET::CTcpSock		m_Sock;
 };

@@ -5,6 +5,8 @@
 
 #include "ui_nel_launcher_dlg.h"
 
+#include "connection.h"
+
 extern NLMISC::CConfigFile ConfigFile;
 
 class CNelLauncherDlg : public QDialog, private Ui_NelLauncherDlg
@@ -23,11 +25,14 @@ public:
 public slots:
 	void clickedSignUp();
 	void clickedLogin();
+	void clickedConnect();
+	void doubleClickedShard(int row, int column);
 
 protected:
 	uint32 selectedShardId;
 	std::string username;
 	std::string password;
+	CNelLauncherConnection m_Connection;
 };
 
 #endif // NL_NEL_LAUNCHER_DLG_H
