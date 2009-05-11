@@ -1494,7 +1494,7 @@ NLMISC_CATEGORISED_COMMAND(nel, displayMemlog, "displays the last N line of the 
 	uint nbLines;
 
 	if (args.size() == 0) nbLines = 100;
-	else if (args.size() == 1) nbLines = atoi(args[0].c_str());
+	else if (args.size() == 1) NLMISC::fromString(args[0], nbLines);
 	else return false;
 
 	if (DefaultMemDisplayer == NULL) return false;

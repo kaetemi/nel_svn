@@ -148,7 +148,7 @@ void CLogicVariable::read (xmlNodePtr node)
 
 	_Name = getXMLProp (node, "Name");
 	_Value = atoiInt64 (getXMLProp (node, "Value").c_str());
-	_Verbose = atoi(getXMLProp (node, "Verbose").c_str()) == 1;
+	NLMISC::fromString(getXMLProp(node, "Verbose"), _Verbose);
 }
 
 //---------------------------------------------------

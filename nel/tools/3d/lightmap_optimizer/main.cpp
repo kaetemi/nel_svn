@@ -171,7 +171,8 @@ uint8 getLayerNb (const string &fullname)
 	for (int j = beg+1; j < end; ++j)
 		sTmp2 += fullname[j];
 
-	return atoi(sTmp2.c_str());
+	NLMISC::fromString(sTmp2, nRet);
+	return nRet;
 }
 
 // Flag all vertices linked to face with material m

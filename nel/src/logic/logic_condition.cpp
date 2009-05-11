@@ -263,8 +263,9 @@ void CLogicConditionLogicBlock::write (xmlNodePtr node) const
 void CLogicConditionLogicBlock::read (xmlNodePtr node)
 {
 	xmlCheckNodeName (node, "CONDITION_LOGIC_NODE");
-
-	Type = (TLogicConditionLogicBlockType)atoi(getXMLProp (node, "Type").c_str());
+	uint32 uType;
+	NLMISC::fromString(getXMLProp(node, "Type"), uType);
+	Type = (TLogicConditionLogicBlockType)uType;
 	switch( Type )
 	{
 		case NOT : break;
@@ -468,8 +469,9 @@ void CLogicConditionNode::write (xmlNodePtr node) const
 void CLogicConditionNode::read (xmlNodePtr node)
 {
 	xmlCheckNodeName (node, "CONDITION_NODE");
-
-	Type = (TConditionNodeType )atoi(getXMLProp (node, "Type").c_str());
+	uint32 uType;
+	NLMISC::fromString(getXMLProp(node, "Type"), uType);
+	Type = (TConditionNodeType )uType;
 	switch( Type )
 	{
 		case TERMINATOR : break;

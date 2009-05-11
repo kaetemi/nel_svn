@@ -131,7 +131,7 @@ void CLogicEventAction::read (xmlNodePtr node)
 {
 	xmlCheckNodeName (node, "EVENT_ACTION");
 
-	IsStateChange = atoi(getXMLProp (node, "IsStateChange").c_str()) == 1;
+	NLMISC::fromString(getXMLProp(node, "IsStateChange"), IsStateChange);
 	if (IsStateChange)
 	{
 		StateChange = getXMLProp (node, "StateChange");

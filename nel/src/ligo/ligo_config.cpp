@@ -114,7 +114,9 @@ bool CLigoConfig::readPrimitiveClass (const char *_fileName, bool parsePrimitive
 					string bits;
 					if (getPropertyString (bits, filename.c_str(), aliasBits, "BIT_COUNT"))
 					{
-						_DynamicAliasBitCount = std::min(32, ::atoi(bits.c_str()));
+						uint32 uBits;
+						NLMISC::fromString(bits, uBits);
+						_DynamicAliasBitCount = std::min((uint32)32, uBits);
 					}
 					else
 						return false;

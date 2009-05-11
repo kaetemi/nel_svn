@@ -43,11 +43,11 @@ NLMISC_COMMAND(setWaterPool, "Setup a pool of water in the water pool manager",
 	if (numArgs == 0) return false;
 	if (numArgs == 1)
 	{
-		whmb.ID = ::atoi(args[0].c_str());
+		NLMISC::fromString(args[0], whmb.ID);
 	}
 	if (numArgs == 2)
 	{
-		whmb.Size = ::atoi(args[1].c_str());
+		NLMISC::fromString(args[1], whmb.Size);
 	}
 	if (numArgs == 3)
 	{

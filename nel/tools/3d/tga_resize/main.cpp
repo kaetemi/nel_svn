@@ -31,7 +31,8 @@ int main(int argc, char *argv[])
 		CIFile		inFile;
 		COFile		outFile;
 
-		uint	divideRatio= atoi(argv[3]);
+		uint	divideRatio;
+		NLMISC::fromString(argv[3], divideRatio);
 		if(divideRatio==0 || !isPowerOf2(divideRatio))
 		{
 			printf("divideRatio must be a powerOf2 (1, 2, 4, 8 ...) \n");
