@@ -24,7 +24,12 @@
 #include "stdopenal.h"
 #include "source_al.h"
 
+#include <cfloat>
+#include <algorithm>
+#include <limits>
+
 #include "sound_driver_al.h"
+#include "listener_al.h"
 #include "effect_al.h"
 #include "buffer_al.h"
 
@@ -37,7 +42,8 @@ CSourceAL::CSourceAL(CSoundDriverAL *soundDriver) :
 _SoundDriver(NULL), _Buffer(NULL), _Source(AL_NONE),
 _DirectFilter(AL_FILTER_NULL), _EffectFilter(AL_FILTER_NULL), 
 _IsPlaying(false), _IsPaused(false), 
-_Pos(0.0f, 0.0f, 0.0f), 
+_Pos(0.0f, 0.0f, 0.0f), _Gain(NLSOUND_DEFAULT_GAIN), _Alpha(1.0), 
+_MinDistance(1.0f), _MaxDistance(numeric_limits<float>::max()), 
 _Effect(NULL), _Direct(true), 
 _DirectGain(NLSOUND_DEFAULT_DIRECT_GAIN), _EffectGain(NLSOUND_DEFAULT_EFFECT_GAIN), 
 _DirectFilterType(ISource::FilterLowPass), _EffectFilterType(ISource::FilterLowPass), 
@@ -51,7 +57,8 @@ _DirectFilterPassGain(NLSOUND_DEFAULT_FILTER_PASS_GAIN), _EffectFilterPassGain(N
 	// configure rolloff
 	if (soundDriver->getOption(ISoundDriver::OptionManualRolloff))
 	{
-		// todo
+		alSourcef(_Source, AL_ROLLOFF_FACTOR, 0);
+		alTestError();
 	}
 	else
 	{
@@ -91,6 +98,16 @@ void CSourceAL::release()
 	if (_DirectFilter != AL_FILTER_NULL) { alDeleteFilters(1, &_DirectFilter); _DirectFilter = AL_FILTER_NULL; }
 	if (_EffectFilter != AL_FILTER_NULL) { alDeleteFilters(1, &_EffectFilter); _EffectFilter = AL_FILTER_NULL; }
 	_SoundDriver = NULL;
+}
+
+/// (Internal) Update the 3d changes.
+void CSourceAL::updateManualRolloff()
+{
+	CVector distanceVector = _Pos - CListenerAL::getInstance()->getPos();
+	float distanceSquare = distanceVector.sqrnorm();
+	float rolloff = ISource::computeManualRolloff(_Alpha, distanceSquare, _MinDistance, _MaxDistance);
+	alSourcef(_Source, AL_GAIN, _Gain * rolloff);
+	alTestError();
 }
 
 /// Enable or disable streaming mode. Source must be stopped to call this.
@@ -370,17 +387,22 @@ void CSourceAL::getDirection( NLMISC::CVector& dir ) const
 /// Set the gain (volume value inside [0 , 1]).
 void CSourceAL::setGain(float gain)
 {
-	alSourcef(_Source, AL_GAIN, std::min(std::max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN));
-	alTestError();
+	_Gain = std::min(std::max(gain, NLSOUND_MIN_GAIN), NLSOUND_MAX_GAIN);
+	if (!_SoundDriver->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		alSourcef(_Source, AL_GAIN, _Gain);
+		alTestError();
+	}
 }
 
 /// Get the gain
 float CSourceAL::getGain() const
 {
-	ALfloat gain;
-	alGetSourcef(_Source, AL_GAIN, &gain);
-	alTestError();
-	return gain;
+	//ALfloat gain;
+	//alGetSourcef(_Source, AL_GAIN, &gain);
+	//alTestError();
+	//return gain;
+	return _Gain;
 }
 
 /// Shift the frequency. 1.0f equals identity, each reduction of 50% equals a pitch shift
@@ -419,17 +441,24 @@ bool CSourceAL::getSourceRelativeMode() const
 void CSourceAL::setMinMaxDistances( float mindist, float maxdist, bool /* deferred */)
 {
 	nlassert( (mindist >= 0.0f) && (maxdist >= 0.0f) );
-	alSourcef(_Source, AL_REFERENCE_DISTANCE, mindist );
-	alSourcef(_Source, AL_MAX_DISTANCE, maxdist );
-	alTestError();
+	_MinDistance = mindist;
+	_MaxDistance = maxdist;
+	if (!_SoundDriver->getOption(ISoundDriver::OptionManualRolloff))
+	{
+		alSourcef(_Source, AL_REFERENCE_DISTANCE, mindist);
+		alSourcef(_Source, AL_MAX_DISTANCE, maxdist);
+		alTestError();
+	}
 }
 
 /// Get the min and max distances
 void CSourceAL::getMinMaxDistances( float& mindist, float& maxdist ) const
 {
-	alGetSourcef(_Source, AL_REFERENCE_DISTANCE, &mindist );
+	/*alGetSourcef(_Source, AL_REFERENCE_DISTANCE, &mindist );
 	alGetSourcef(_Source, AL_MAX_DISTANCE, &maxdist );
-	alTestError();
+	alTestError();*/
+	mindist = _MinDistance;
+	maxdist = _MaxDistance;
 }
 
 /// Set the cone angles (in radian) and gain (in [0 , 1]) (3D mode only)
@@ -467,9 +496,9 @@ void CSourceAL::getCone( float& innerAngle, float& outerAngle, float& outerGain 
  *  adjacent curves. For example, if alpha equals 0.5, the volume will be halfway between
  *  the linear dB curve and the linear amplitude curve.
  */
-void CSourceAL::setAlpha(double /* a */)
+void CSourceAL::setAlpha(double a)
 {
-	// throw ESoundDriverNoManualRolloff();
+	_Alpha = a;
 }
 
 /// (Internal) Setup the effect send filter.

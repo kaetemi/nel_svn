@@ -139,7 +139,7 @@ public:
 	void applyRolloffFactor(float f);
 
 	/// Commit all the changes made to 3D settings of listener and sources
-	virtual void commit3DChanges() { }
+	virtual void commit3DChanges();
 
 	/// Write information about the driver to the output stream.
 	virtual void writeProfile(std::string& /* out */) { }

@@ -66,6 +66,12 @@ private:
 	bool _IsPlaying;
 	bool _IsPaused;
 	NLMISC::CVector _Pos;
+	float _Gain;
+	double _Alpha;
+	/// Minimum distance of sound at max volume.
+	float _MinDistance;
+	/// Maximum distance of sound.
+	float _MaxDistance;
 	
 	/// Send paths
 	CEffectAL *_Effect;
@@ -95,6 +101,8 @@ public:
 	void setupDirectFilter();
 	/// (Internal) Setup the effect send filter.
 	void setupEffectFilter();
+	/// (Internal) Update the manual rolloff, only called when using manual rolloff.
+	void updateManualRolloff();
 	
 	/// \name Initialization
 	//@{

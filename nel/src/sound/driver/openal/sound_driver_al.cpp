@@ -217,6 +217,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 	const sint supportedOptions = 
 		OptionEnvironmentEffects
 		| OptionSoftwareBuffer
+		| OptionManualRolloff
 		| OptionLocalBufferCopy
 		| OptionHasBufferStreaming;
 
@@ -225,8 +226,7 @@ void CSoundDriverAL::init(std::string device, ISoundDriver::TSoundOptions option
 
 	// set the options
 	_Options = (TSoundOptions)(((sint)options & supportedOptions) | forcedOptions);
-
-	/* TODO: manual rolloff */
+	
 	/* TODO: multichannel */
 	/* TODO: driver selection */
 
@@ -514,6 +514,18 @@ uint CSoundDriverAL::compactAliveNames( vector<ALuint>& names, TTestFunctionAL a
 	return ibcompacted - names.begin();
 }
 
+
+void CSoundDriverAL::commit3DChanges()
+{
+	// Sync up sources & listener 3d position.
+	if (getOption(OptionManualRolloff))
+	{
+		for (std::set<CSourceAL *>::iterator it(_Sources.begin()), end(_Sources.end()); it != end; ++it)
+		{
+			(*it)->updateManualRolloff();
+		}
+	}
+}
 
 /// Remove a buffer
 void CSoundDriverAL::removeBuffer(CBufferAL *buffer)
