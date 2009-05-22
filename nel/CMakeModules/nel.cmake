@@ -74,6 +74,7 @@ MACRO(NL_SETUP_DEFAULT_OPTIONS)
   ###
   OPTION(WITH_CEGUI       "Build CEGUI Renderer"                                  OFF)
   OPTION(WITH_TOOLS       "Build NeL Tools"                                       ON )
+  OPTION(WITH_MAXPLUGIN   "Build NeL 3dsMax Plugin"                               ON )
   OPTION(WITH_SAMPLES     "Build NeL Samples"                                     ON )
   OPTION(WITH_TESTS       "Build NeL Unit Tests"                                  ON )
   OPTION(WITH_GTK         "With GTK Support"                                      OFF)
