@@ -78,11 +78,11 @@ NLMISC_DECL_PURE_LIB(CCeguiRendererNelLibrary)
 #ifdef NL_STATIC
 INeLRenderer* createNeLRendererInstance
 #else
-__declspec(dllexport) INeLRenderer *createNeLRendererInstance
+__declspec(dllexport) CEGUI::INeLRenderer *createNeLRendererInstance
 #endif
         (NL3D::UDriver *driver, bool withRP=true)
 {
-        return new NeLRenderer(driver, withRP);
+        return new CEGUI::NeLRenderer(driver, withRP);
 }
 
 // ******************************************************************
