@@ -1,0 +1,8 @@
+ADD_SUBDIRECTORY(nel_patch_lib)
+ADD_SUBDIRECTORY(nel_mesh_lib)
+ADD_SUBDIRECTORY(nel_patch_converter)
+ADD_SUBDIRECTORY(nel_3dsmax_shared)
+ADD_SUBDIRECTORY(nel_export)
+ADD_SUBDIRECTORY(nel_patch_edit)
+ADD_SUBDIRECTORY(nel_patch_paint)
+ADD_SUBDIRECTORY(tile_utility)

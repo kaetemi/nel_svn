@@ -21,11 +21,19 @@ SUBDIRS(	build_coarse_mesh
 		tga_resize
 		zone_check_bind
 		zone_dump
-		zviewer)
+		zviewer
+		object_viewer)
 
 IF(WITH_QT)
   ADD_SUBDIRECTORY(tile_edit_qt)
 ENDIF(WITH_QT)
+
+IF(WITH_MAXPLUGIN)
+  IF(MAXSDK_FOUND)
+    ADD_SUBDIRECTORY(plugin_max)
+    ADD_SUBDIRECTORY(ligo)
+  ENDIF(MAXSDK_FOUND)
+ENDIF(WITH_MAXPLUGIN)
 
 # These use WIndows-specific things that need to be fixed.
 #ig_elevation
