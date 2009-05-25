@@ -317,7 +317,7 @@
 				BufferSecurityCheck="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stddirect3d.h"
-				WarningLevel="3"
+				WarningLevel="2"
 				DebugInformationFormat="3"
 			/>
 			<Tool

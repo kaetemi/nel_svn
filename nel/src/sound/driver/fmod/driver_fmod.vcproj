@@ -317,7 +317,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdfmod.h"
-				WarningLevel="3"
+				WarningLevel="2"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>

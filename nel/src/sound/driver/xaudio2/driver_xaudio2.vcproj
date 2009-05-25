@@ -312,7 +312,7 @@
 				DisableLanguageExtensions="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std$(RootNamespace).h"
-				WarningLevel="3"
+				WarningLevel="2"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -330,7 +330,7 @@
 				AdditionalDependencies="libogg.lib libvorbis.lib libvorbisfile.lib x3daudio.lib"
 				OutputFile="..\..\..\..\lib64\nel_drv_$(RootNamespace)_win_r.dll"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ModuleDefinitionFile="$(ProjectName).def"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				OptimizeReferences="2"

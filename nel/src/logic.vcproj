@@ -272,7 +272,7 @@
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
-				WarningLevel="3"
+				WarningLevel="2"
 				DebugInformationFormat="3"
 			/>
 			<Tool

@@ -277,7 +277,7 @@
 				BufferSecurityCheck="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="std$(ProjectName).h"
-				WarningLevel="3"
+				WarningLevel="2"
 				DebugInformationFormat="3"
 			/>
 			<Tool
