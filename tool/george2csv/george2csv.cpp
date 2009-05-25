@@ -19,7 +19,7 @@
 #include "nel/misc/smart_ptr.h"
 #include "nel/misc/command.h"
 #include "nel/misc/path.h"
-#include "nel/memory/memory_manager.h"
+//#include "nel/memory/memory_manager.h"
 #include "nel/misc/i18n.h"
 #include "nel/misc/sstring.h"
 #include "nel/misc/algo.h"
@@ -34,7 +34,7 @@
 #include "georges/form.h"
 
 // Basic C++
-#include <iostream.h>
+#include <iostream>
 #include <conio.h>
 #include <stdio.h>
 #include <io.h>
@@ -471,7 +471,7 @@ void executeScriptBuf(const string &text)
 	CVectorSString	lines;
 
 	vector<string>	tmpLines;
-	NLMISC::explode(buf, "\n", tmpLines, true);
+	NLMISC::explode(std::string(buf.c_str()), std::string("\n"), tmpLines, true);
 	lines.resize(tmpLines.size());
 	for (uint i=0; i<tmpLines.size();i++)
 	{
@@ -558,7 +558,7 @@ void	loadSheetPath()
 	vector<string> pathsToAdd;
 	for (uint i=0; i<inputSheetPaths.size(); ++i)
 	{
-		explode( inputSheetPaths[i], "*", pathsToAdd );
+		explode( inputSheetPaths[i], std::string("*"), pathsToAdd );
 		for ( vector<string>::const_iterator ip=pathsToAdd.begin(); ip!=pathsToAdd.end(); ++ip )
 		{
 			CPath::addSearchPath( *ip, true, false );
@@ -689,7 +689,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 
 
 	fgets(lineBuffer, BUFFER_SIZE, s);
-	explode(lineBuffer, SEPARATOR, fields);
+	explode(std::string(lineBuffer), std::string(SEPARATOR), fields);
 
 	vector<bool> activeFields( fields.size(), true );
 
@@ -836,7 +836,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 	{
 		lineBuffer[0] = '\0';
 		fgets(lineBuffer, BUFFER_SIZE, s);
-		explode(lineBuffer, SEPARATOR, args);
+		explode(std::string(lineBuffer), std::string(SEPARATOR), args);
 
 		if (args.size() < 1)
 			continue;
@@ -963,7 +963,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 			if	(var == "parent") // already case-lowered
 			{
 				vector<string> parentVals;
-				explode( val, ARRAY_SEPARATOR, parentVals );
+				explode( val, std::string(ARRAY_SEPARATOR), parentVals );
 				if ( (parentVals.size() == 1) && (parentVals[0].empty()) )
 					parentVals.clear();
 
@@ -1006,7 +1006,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 				nlassert(dfnForm);
 								
 				vector<string> memberVals;
-				explode( val, ARRAY_SEPARATOR, memberVals );
+				explode( val, std::string(ARRAY_SEPARATOR), memberVals );
 				uint32	memberIndex=0;
 				
 				while (memberIndex<memberVals.size())
