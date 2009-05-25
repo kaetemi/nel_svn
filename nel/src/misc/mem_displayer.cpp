@@ -290,13 +290,17 @@ static void displayCallStack (CLog *log)
 
 	for (uint32 i = 0; ; i++)
 	{
+		DWORD MachineType;
+
 #ifdef NL_OS_WIN64
-		BOOL res = StackWalk (IMAGE_FILE_MACHINE_AMD64, GetCurrentProcess(), GetCurrentThread(), &callStack,
-			NULL, NULL, SymFunctionTableAccess, GetModuleBase, NULL);
+		MachineType = IMAGE_FILE_MACHINE_AMD64;
 #else
-		BOOL res = StackWalk (IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &callStack,
-			NULL, NULL, SymFunctionTableAccess, GetModuleBase, NULL);
+		MachineType = IMAGE_FILE_MACHINE_I386;
 #endif
+
+		BOOL res = StackWalk (MachineType, GetCurrentProcess(), GetCurrentThread(), &callStack,
+			NULL, NULL, SymFunctionTableAccess, GetModuleBase, NULL);
+
 /*		if (res == FALSE)
 		{
 			DWORD r = GetLastError ();

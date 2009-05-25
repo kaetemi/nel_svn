@@ -38,6 +38,9 @@
 #elif defined(NL_OS_WINDOWS)
 #	define NOMINMAX
 #	include <windows.h>
+#	ifdef NL_NO_ASM
+#		include <intrin.h>
+#	endif
 #endif
 
 #undef MUTEX_DEBUG
