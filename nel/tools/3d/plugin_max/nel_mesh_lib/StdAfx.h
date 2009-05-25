@@ -34,6 +34,8 @@
 
 //#include "nel/misc/types_nl.h"
 // Max SDK includes
+#define NOMINMAX
+#include <algorithm>
 #include <max.h>
 #include <stdmat.h>
 #include <shaders.h>
@@ -44,12 +46,6 @@
 // Character Studio SDK include
 #include <bipexp.h>
 #include <phyexp.h>
-#ifdef min
-#undef min
-#endif
-#ifdef max
-#undef max
-#endif
 
 #include <string>
 #include <vector>
