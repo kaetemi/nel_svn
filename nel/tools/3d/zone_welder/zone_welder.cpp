@@ -920,8 +920,7 @@ void weldZones(const char *center)
 
 			adjZones[i].build(adjZonesId[i], adjZonePatchs, adjZoneBorderVertices);
 	#if WELD_LOG
-			// FIXME what was supposed to be printed out for %d?
-			fprintf(fdbg,"[%d] binds :\n");
+			fprintf(fdbg,"[%d] binds :\n", i);
 			adjZones[i].debugBinds(fdbg);
 	#endif
 			std::string strtmp;
