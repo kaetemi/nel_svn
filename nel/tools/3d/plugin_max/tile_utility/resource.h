@@ -2,6 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by tile_utility.rc
 //
+#define IDC_STATIC                      -1
 #define IDS_LIBDESCRIPTION              1
 #define IDS_CATEGORY                    2
 #define IDS_CLASS_NAME                  3
