@@ -21,8 +21,10 @@ SUBDIRS(	build_coarse_mesh
 		tga_resize
 		zone_check_bind
 		zone_dump
-		zviewer
-		object_viewer)
+		zviewer)
+IF(WIN32) 
+  ADD_SUBDIRECTORY(object_viewer)
+ENDIF(WIN32)
 
 IF(WITH_QT)
   ADD_SUBDIRECTORY(tile_edit_qt)
@@ -39,7 +41,6 @@ ENDIF(WITH_MAXPLUGIN)
 #ig_elevation
 #lightmap_optimizer
 #ligo
-#object_viewer
 #object_viewer_exe
 #panoply_maker
 #hls_bank_maker
