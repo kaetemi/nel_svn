@@ -41,6 +41,13 @@ SET(SB_VERSION "${SB_VERSION_MAJOR}.${SB_VERSION_MINOR}.${SB_VERSION_PATCH}")
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
+#-----------------------------------------------------------------------------^M
+# Set CMake 2.6 Policies.
+IF(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+ENDIF(COMMAND cmake_policy)
+
+
 #-----------------------------------------------------------------------------
 # Set default config options
 #

@@ -7,20 +7,20 @@
  * Snowballs 2 main file
  */
 
-/* 
+/*
  * Copyright (C) 2008  by authors
- * 
+ *
  * This file is part of NEVRAX SNOWBALLS.
  * NEVRAX SNOWBALLS is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * NEVRAX SNOWBALLS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NEVRAX SNOWBALLS; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -143,7 +143,7 @@ static string FSAddr, Cookie;
  *******************************************************************/
 
 static CFileDisplayer *_FileDisplayer = NULL;
-static const uint8 GameStateLoad = 0, GameStateUnload = 1, GameStateReset = 2, GameStateExit = 3, 
+static const uint8 GameStateLoad = 0, GameStateUnload = 1, GameStateReset = 2, GameStateExit = 3,
 GameStateLogin = 4, GameStateOnline = 5, GameStateOffline = 6;
 
 // true if the commands(chat) interface must be display. This variable is set automatically with the config file
@@ -290,7 +290,7 @@ SwitchNextGameState:
 	case GameStateOffline: // loop ingame
 		loopIngame(); // must loop by itself
 		break;
-	}	
+	}
 	goto SwitchNextGameState;
 }
 
@@ -309,17 +309,17 @@ void initCore()
 		CGameTime::init();
 		// Set the ShowCommands with the value set in the client config file
 		ShowCommands = ConfigFile->getVar("ShowCommands").asInt() == 1;
-		// Create a driver	
+		// Create a driver
 		Driver = UDriver::createDriver(0, ConfigFile->getVar("OpenGL").asInt() == 0);
 		// Create the window with config file values
-		Driver->setDisplay(UDriver::CMode(ConfigFile->getVar("ScreenWidth").asInt(), 
+		Driver->setDisplay(UDriver::CMode(ConfigFile->getVar("ScreenWidth").asInt(),
 			ConfigFile->getVar("ScreenHeight").asInt(),
 			ConfigFile->getVar("ScreenDepth").asInt(),
 			ConfigFile->getVar("ScreenFull").asInt()==0));
 		// Set the cache size for the font manager(in bytes)
 		Driver->setFontManagerMaxMemory(2097152);
 		// Create a Text context for later text rendering
-		displayLoadingState("Initialize Text"); 
+		displayLoadingState("Initialize Text");
 		TextContext = Driver->createTextContext(CPath::lookup(ConfigFile->getVar("FontName").asString()));
 		TextContext->setShaded(true);
 		TextContext->setKeep800x600Ratio(false);
@@ -435,9 +435,9 @@ void initOnline()
 //#ifdef NL_OS_WINDOWS
 //	playMusic(SBCLIENT_MUSIC_WAIT);
 //#endif
-	
+
 	displayLoadingState("Connecting");
-	
+
 	// connect to the server
 	nlinfo("Try to connect to FS addr '%s' and identify with the cookie '%s'", FSAddr.c_str(), Cookie.c_str());
 	initNetwork(Cookie, FSAddr);
@@ -481,7 +481,7 @@ void initOffline()
 		addLine(">>>>> Press SHIFT-ESC to exit the game.");
 
 		displayLoadingState("Ready!");
-	
+
 //#ifdef NL_OS_WINDOWS
 //		playMusic(SBCLIENT_MUSIC_BACKGROUND);
 //#endif
@@ -606,59 +606,62 @@ void loopLogin()
 	displayLoadingState("Login");
 	if (ConfigFile->getVar("Local").asInt() == 0)
 	{
-		if (ConfigFile->getVar("UseDirectClient").asInt() == 1)
-		{
-			string result;
-			string LSHost(ConfigFile->getVar("LSHost").asString());
-			Login = ConfigFile->getVar("Login").asString();
-			string Password = ConfigFile->getVar("Password").asString();
-			CHashKeyMD5 hk = getMD5((uint8 *)Password.c_str(), Password.size());
-			string CPassword = hk.toString();
-			nlinfo("The crypted password is %s", CPassword.c_str());
-			string Application = ConfigFile->getVar("ClientApplication").asString();
-			sint32 sid = ConfigFile->getVar("ShardId").asInt();
+	    // Only attempt to directly log in if we haven't been passed a cookie already.
+	    if(Cookie.empty() || FSAddr.empty()) {
+            if (ConfigFile->getVar("UseDirectClient").asInt() == 1)
+            {
+                string result;
+                string LSHost(ConfigFile->getVar("LSHost").asString());
+                Login = ConfigFile->getVar("Login").asString();
+                string Password = ConfigFile->getVar("Password").asString();
+                CHashKeyMD5 hk = getMD5((uint8 *)Password.c_str(), Password.size());
+                string CPassword = hk.toString();
+                nlinfo("The crypted password is %s", CPassword.c_str());
+                string Application = ConfigFile->getVar("ClientApplication").asString();
+                sint32 sid = ConfigFile->getVar("ShardId").asInt();
 
-			// 1/ Authenticate
-			updateLoadingState(ucstring("Authenticate"), false, false);
-			result = CLoginClient::authenticateBegin(LSHost, Login, CPassword, Application);
-			if (!result.empty()) goto AuthenticateFail;
-			while (CLoginClient::authenticateUpdate(result))
-				updateLoadingState(ucstring("Authenticate"), false, false);
-			if (!result.empty()) goto AuthenticateFail;
-			goto AuthenticateSuccess;
+                // 1/ Authenticate
+                updateLoadingState(ucstring("Authenticate"), false, false);
+                result = CLoginClient::authenticateBegin(LSHost, Login, CPassword, Application);
+                if (!result.empty()) goto AuthenticateFail;
+                while (CLoginClient::authenticateUpdate(result))
+                    updateLoadingState(ucstring("Authenticate"), false, false);
+                if (!result.empty()) goto AuthenticateFail;
+                goto AuthenticateSuccess;
 
 AuthenticateFail:
-			nlinfo("*** Authenticate failed '%s' ***", result.c_str());
-			for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
-				updateLoadingState(ucstring("Authenticate failed: ") + ucstring(result), false, false);
-			NextGameState = GameStateOffline;
-			return;
+                nlinfo("*** Authenticate failed '%s' ***", result.c_str());
+                for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
+                    updateLoadingState(ucstring("Authenticate failed: ") + ucstring(result), false, false);
+                NextGameState = GameStateOffline;
+                return;
 
 AuthenticateSuccess:
-			nlinfo("%d Shards are available:", CLoginClient::ShardList.size());
-			for (uint i = 0; i < CLoginClient::ShardList.size(); i++)
-			{
-				nlinfo("    ShardId %3d: %s(%d online players)", CLoginClient::ShardList[i].Id, CLoginClient::ShardList[i].Name.toUtf8().c_str(), CLoginClient::ShardList[i].NbPlayers);
-			}
+                nlinfo("%d Shards are available:", CLoginClient::ShardList.size());
+                for (uint i = 0; i < CLoginClient::ShardList.size(); i++)
+                {
+                    nlinfo("    ShardId %3d: %s(%d online players)", CLoginClient::ShardList[i].Id, CLoginClient::ShardList[i].Name.toUtf8().c_str(), CLoginClient::ShardList[i].NbPlayers);
+                }
 
-			// 2/ Select shard
-			updateLoadingState(ucstring("Select shard"), false, false);
-			result = CLoginClient::selectShardBegin(sid);
-			if (!result.empty()) goto SelectFail;
-			while (CLoginClient::selectShardUpdate(result, FSAddr, Cookie))
-				updateLoadingState(ucstring("Select shard"), false, false);
-			if (!result.empty()) goto SelectFail;
-			goto SelectSuccess;
+                // 2/ Select shard
+                updateLoadingState(ucstring("Select shard"), false, false);
+                result = CLoginClient::selectShardBegin(sid);
+                if (!result.empty()) goto SelectFail;
+                while (CLoginClient::selectShardUpdate(result, FSAddr, Cookie))
+                    updateLoadingState(ucstring("Select shard"), false, false);
+                if (!result.empty()) goto SelectFail;
+                goto SelectSuccess;
 
 SelectFail:
-			nlinfo("*** Connection to the shard failed '%s' ***", result.c_str());
-			for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
-				updateLoadingState(ucstring("Select shard failed: ") + ucstring(result), false, false);
-			NextGameState = GameStateOffline;
-			return;
+                nlinfo("*** Connection to the shard failed '%s' ***", result.c_str());
+                for (TLocalTime t = 0; t < 5.000; t += LocalTimeDelta)
+                    updateLoadingState(ucstring("Select shard failed: ") + ucstring(result), false, false);
+                NextGameState = GameStateOffline;
+                return;
 
 SelectSuccess:;
-		}
+            }
+	    }
 		NextGameState = GameStateOnline;
 		return;
 	}
@@ -678,36 +681,36 @@ void loopIngame()
 
 		// 02. Update Time (deltas)
 		CGameTime::updateTime();
-		
+
 		// 03. Update Input (keyboard controls, etc)
 		Driver->EventServer.pump(); // Pump user input messages
 		MouseListener->update();
 		MouseListener->updateCamera();
 
 		// 04. Update Incoming (network, receive messages)
-		updateNetwork(); 
-		
+		updateNetwork();
+
 		// 05. Update Weather (sky, snow, wind, fog, sun)
 		animateSky(LocalTimeDelta);
-		
+
 		// 06. Update Landscape (async zone loading near entity)
 		updateLandscape(); // Update the landscape
-		
+
 		// ... Update Animations (TEST)
 		// ...
-		
+
 		// 07. Update Entities (collisions and actions)
 		//                           - Move Other Entities (move//, animations, etc)
 		//                           - Update Self Collision (move)
 		//                           - Update Self Entity (animations//, etc)
 		updateEntities(); // Update network messages FIXME_NETWORK_OUTGOING
-		
+
 		// 08. Update Animations (playlists)
 		Scene->animate(AnimationTime); // Set new animation date
-		
+
 		// 09. Update Camera (depends on entities)
 		updateCamera();
-		
+
 		// 10. Update Interface (login, ui, etc)
 		// ...
 
@@ -715,13 +718,13 @@ void loopIngame()
 //#ifdef NL_OS_WINDOWS
 //		updateSound(); // Update the sound
 //#endif
-		
+
 		// 12. Update Outgoing (network, send new position etc)
 		// ...
-		
+
 		// 13. Update Debug (stuff for dev)
 		// ...
-		
+
 		// if driver is lost (d3d) do nothing for a while
 		if (Driver->isLost()) nlSleep(10);
 		else
@@ -735,20 +738,20 @@ void loopIngame()
 				_StereoRender->getCamera(cameraId, Camera.getObjectPtr()); // get the matrix details for this camera
 #endif /* #if SBCLIENT_DEV_STEREO */
 
-				// 01. Render Driver (background color)			
+				// 01. Render Driver (background color)
 				CBloomEffect::instance().initBloom(); // start bloom effect (just before the first scene element render)
 				Driver->clearBuffers(CRGBA(0, 0, 127)); // clear all buffers, if you see this blue there's a problem with scene rendering
-				
+
 				// 02. Render Sky (sky scene)
 				updateSky(); // Render the sky scene before the main scene
-				
+
 				// 04. Render Scene (entity scene)
 				Scene->render(); // Render
-				
+
 				// 05. Render Effects (flare)
 				updateLensFlare(); // Render the lens flare
 				CBloomEffect::instance().endBloom(); // end the actual bloom effect visible in the scene
-				
+
 				// 06. Render Interface 3D (player names)
 				CBloomEffect::instance().endInterfacesDisplayBloom(); // end bloom effect system after drawing the 3d interface (z buffer related)
 
@@ -760,23 +763,23 @@ void loopIngame()
 #endif /* #if SBCLIENT_DEV_STEREO */
 
 			// 07. Render Interface 2D (chatboxes etc, optionally does have 3d)
-			updateCompass(); // Update the compass		
+			updateCompass(); // Update the compass
 			updateRadar(); // Update the radar
-			updateGraph(); // Update the radar		
+			updateGraph(); // Update the radar
 			if (ShowCommands) updateCommands(); // Update the commands panel
-			updateAnimation();		
-			renderEntitiesNames(); // Render the name on top of the other players		
+			updateAnimation();
+			renderEntitiesNames(); // Render the name on top of the other players
 			updateInterface(); // Update interface
 			renderInformation();
 			update3dLogo();
-			
+
 			// 08. Render Debug (stuff for dev)
 			// ...
-			
+
 			// 09. Render Buffer
 			Driver->swapBuffers();
 		}
-		
+
 		// begin various extra keys stuff ...
 
 		if (Driver->AsyncListener.isKeyDown(KeySHIFT) && Driver->AsyncListener.isKeyPushed(KeyESCAPE))
@@ -879,9 +882,9 @@ void renderInformation()
 	SpfGraph.addOneValue((float)LocalTimeDelta);
 }
 
-// 
+//
 // Configuration callbacks
-// 
+//
 
 void cbGraphicsDriver(CConfigFile::CVar &var)
 {
@@ -954,10 +957,10 @@ void renderLoadingState(ucstring state, bool logo3d)
 
 	TextContext->setFontSize(40);
 	TextContext->printAt(0.5f, 0.5f, ucstring("Welcome to Snowballs!"));
-	
+
 	TextContext->setFontSize(30);
 	TextContext->printAt(0.5f, 0.2f, state);
-	
+
 	TextContext->setHotSpot(UTextContext::BottomRight);
 	TextContext->setFontSize(15);
 #if (FINAL_VERSION == 1)
@@ -1061,6 +1064,49 @@ sint main(int argc, char **argv)
 	// must do this to allow deallocation when closing with X
 	atexit(end);
 
+#ifdef NL_OS_WINDOWS
+
+	// extract the 2 first param (argv[1] and argv[2]) it must be cookie and addr
+
+	string cmd = cmdline;
+	int pos1 = cmd.find_first_not_of (' ');
+	int pos2;
+	if (pos1 != string::npos)
+	{
+		pos2 = cmd.find (' ', pos1);
+		if(pos2 != string::npos)
+		{
+			SBCLIENT::Cookie = cmd.substr (pos1, pos2-pos1);
+
+			pos1 = cmd.find_first_not_of (' ', pos2);
+			if (pos1 != string::npos)
+			{
+				pos2 = cmd.find (' ', pos1);
+				if(pos2 == string::npos)
+				{
+					SBCLIENT::FSAddr = cmd.substr (pos1);
+				}
+				else if (pos1 != pos2)
+				{
+					SBCLIENT::FSAddr = cmd.substr (pos1, pos2-pos1);
+				}
+			}
+		}
+	}
+
+#else
+
+	if (argc>=3)
+	{
+		SBCLIENT::Cookie = argv[1];
+		SBCLIENT::FSAddr = argv[2];
+	}
+
+#endif
+
+	nlinfo ("cookie '%s' addr '%s'", SBCLIENT::Cookie.c_str (), SBCLIENT::FSAddr.c_str());
+
+
 #if defined(NL_OS_WINDOWS) && !FINAL_VERSION
 	// ensure paths are ok before powering up nel
 	{
@@ -1109,11 +1155,11 @@ sint main(int argc, char **argv)
 		WarningLog->addDisplayer(SBCLIENT::_FileDisplayer);
 		AssertLog->addDisplayer(SBCLIENT::_FileDisplayer);
 		ErrorLog->addDisplayer(SBCLIENT::_FileDisplayer);
-	#endif	
-		
+	#endif
+
 		nlinfo("Welcome to NeL!");
 	}
-	
+
 	SBCLIENT::CSnowballsClient::init();
 	exit(SBCLIENT::CSnowballsClient::run() ? EXIT_SUCCESS : EXIT_FAILURE);
 	return EXIT_FAILURE;
@@ -1179,8 +1225,8 @@ NLMISC_COMMAND(sb_login, "go to the login screen", "")
 #define DEBUG_ALLOC_HOOK
 #if defined(NL_OS_WINDOWS) && defined(NL_DEBUG)
 #if defined(DEBUG_ALLOC_HOOK)
-int debugAllocHook(int allocType, void *userData, size_t size, int 
-	blockType, long requestNumber, const unsigned char *filename, int 
+int debugAllocHook(int allocType, void *userData, size_t size, int
+	blockType, long requestNumber, const unsigned char *filename, int
 	lineNumber);
 #endif
 class CEnableCrtDebug
@@ -1201,8 +1247,8 @@ public:
 };
 static CEnableCrtDebug _EnableCrtDebug;
 #if defined(DEBUG_ALLOC_HOOK)
-int debugAllocHook(int allocType, void *userData, size_t size, int 
-	blockType, long requestNumber, const unsigned char *filename, int 
+int debugAllocHook(int allocType, void *userData, size_t size, int
+	blockType, long requestNumber, const unsigned char *filename, int
 	lineNumber)
 {
 	if (allocType == _HOOK_ALLOC)
@@ -1236,7 +1282,7 @@ BOOL CALLBACK EnumerateLoadedModulesProc(PCSTR ModuleName, ULONG ModuleBase, ULO
 {
 	// free nel libraries (cannot call nlwarning etc here, so nlGetProcAddress etc does not work)
     HMODULE hModule = GetModuleHandle(ModuleName);
-	if (GetProcAddress(hModule, NL_MACRO_TO_STR(NLMISC_PURE_LIB_ENTRY_POINT)))	
+	if (GetProcAddress(hModule, NL_MACRO_TO_STR(NLMISC_PURE_LIB_ENTRY_POINT)))
 		FreeLibrary(hModule);
 	return TRUE;
 }
