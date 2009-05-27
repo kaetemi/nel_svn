@@ -205,4 +205,12 @@ MACRO(NL_SETUP_PREFIX_PATHS)
     ENDIF(WIN32)
   ENDIF(NOT NL_BIN_PREFIX)
 
+  ## Allow override of install_prefix/var/log path.
+  IF(NOT NL_LOG_PREFIX)
+    IF(WIN32)
+		SET(NL_LOG_PREFIX "../var/log" CACHE PATH "Installation path for tools and applications.")
+    ELSE(WIN32)
+		SET(NL_LOG_PREFIX "${CMAKE_INSTALL_PREFIX}/var/log" CACHE PATH "Installation path for tools and applications.")
+    ENDIF(WIN32)
+  ENDIF(NOT NL_LOG_PREFIX)
 ENDMACRO(NL_SETUP_PREFIX_PATHS)

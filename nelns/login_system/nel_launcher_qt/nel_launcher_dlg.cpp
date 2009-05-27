@@ -166,6 +166,7 @@ void CNelLauncherDlg::clickedConnect()
 
 		std::vector<std::string> vargs;
 		//const char *args[50];
+		vargs.push_back(rapp);
 		vargs.push_back(cookie);
 		vargs.push_back(addr);
 
