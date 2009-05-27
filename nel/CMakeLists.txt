@@ -18,18 +18,18 @@
 
 #-----------------------------------------------------------------------------
 # Load some macros.
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-INCLUDE(${CMAKE_SOURCE_DIR}/CMakeModules/nel.cmake)
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
+INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/nel.cmake)
 INCLUDE(${CMAKE_ROOT}/Modules/Documentation.cmake OPTIONAL)
 
 # Force out of source builds.
 CHECK_OUT_OF_SOURCE()
 
 IF(WIN32)
-  SET(CMAKE_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/../3rdParty/include;${CMAKE_INCLUDE_PATH}")
+  SET(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/include;${CMAKE_INCLUDE_PATH}")
   # Stupid hack for FindOpenAL.cmake
-    SET(CMAKE_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/../3rdParty;${CMAKE_INCLUDE_PATH}")
-  SET(CMAKE_LIBRARY_PATH "${CMAKE_SOURCE_DIR}/../3rdParty/lib;${CMAKE_LIBRARY_PATH}")
+  SET(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty;${CMAKE_INCLUDE_PATH}")
+  SET(CMAKE_LIBRARY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/lib;${CMAKE_LIBRARY_PATH}")
   IF(NOT DEFINED ENV{QTDIR})
     SET(ENV{QTDIR} "c:/qt/4.5.0")
   ENDIF(NOT DEFINED ENV{QTDIR})
@@ -158,7 +158,7 @@ IF(WIN32)
   
 ENDIF(WIN32)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 NL_SETUP_BUILD_FLAGS()
 
@@ -183,7 +183,7 @@ IF(BUILD_DOCUMENTATION)
     ENDIF(DOT)
     # This processes our Doxyfile.in and substitutes paths to generate
     # a final Doxyfile
-    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/doc/Doxyfile.cmake.in ${CMAKE_BINARY_DIR}/doc/Doxyfile)
+    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/doc/nel.dox.in ${CMAKE_BINARY_DIR}/doc/Doxyfile)
 
     ADD_CUSTOM_TARGET(DoxygenDoc ${DOXYGEN} ${CMAKE_BINARY_DIR}/doc/Doxyfile)
 ENDIF(BUILD_DOCUMENTATION)
