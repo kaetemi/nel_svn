@@ -45,6 +45,7 @@
 // CEGUI Includes
 //
 #include <nel/cegui/inellibrary.h>
+#include <nel/cegui/nelrenderer.h>
 //#include <nel/cegui/nellogger.h>
 #include <CEGUI.h>
 #include "NeLDriver.h"
@@ -68,7 +69,7 @@ uint16 gScreenHeight;
 //
 //CEGUI::NeLLogger *gGuiLogger;
 CEGUI::System *gGuiSystem;
-CEGUI::INeLRenderer *gGuiRenderer;
+CEGUI::Renderer *gGuiRenderer;
 bool gStopDemo;
 
 void createDemoWindows();
@@ -131,10 +132,10 @@ int main(int argc, char **argv)
 		//gGuiRenderer = new CEGUI::NeLRenderer(driver);
 		
 		gGuiRenderer = createNelRenderer(driver, true);
-		//gGuiRenderer->addSearchPath(CEGUI_DATA_DIR,true,false);
 		gGuiSystem = new CEGUI::System(gGuiRenderer);
-		gGuiRenderer->activateInput();
-		gGuiRenderer->captureCursor(true);
+		CEGUI::NeLRenderer *rndr = (CEGUI::NeLRenderer *)gGuiRenderer;
+		rndr->activateInput();
+		rndr->captureCursor(true);
 
 		// load some GUI stuff for demo.
 		nlinfo("Start up and configure the GUI system.");

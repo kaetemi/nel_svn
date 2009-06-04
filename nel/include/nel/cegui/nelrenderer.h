@@ -72,7 +72,24 @@
 #include <nel/3d/u_text_context.h>
 #include <nel/3d/u_particle_system_instance.h>
 
-#include <nel/cegui/inelrenderer.h>
+#include <sstream>
+
+//Include the default codec for static builds
+#if defined(CEGUI_STATIC)
+#	if defined(CEGUI_CODEC_SILLY)
+#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+#	elif defined(CEGUI_CODEC_TGA)
+#		include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
+#	elif defined(CEGUI_CODEC_CORONA)
+#		include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
+#	elif defined(CEGUI_CODEC_DEVIL)
+#		include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
+#	elif defined(CEGUI_CODEC_FREEIMAGE)
+#		include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
+#	else //Make Silly the default
+#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+#	endif
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -81,13 +98,17 @@ namespace CEGUI
 	class NeLTexture;
 	class NeLResourceProvider;
 
+	// CEGUI forward declarations.
+	class ImageCodec;
+	class DynamicModule;
+
 	/**
 	 * \brief Class to interface with the NeL rendering engine.
 	 */
-	class NeLRenderer : public INeLRenderer
+	class NeLRenderer : public Renderer
 	{
 	public:
-		NeLRenderer(NL3D::UDriver *driver, bool withRP=true);
+		NeLRenderer(NL3D::UDriver *driver, bool withRP=true, ImageCodec* codec  = 0);
 		virtual ~NeLRenderer(void);
 		virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 		virtual	void	doRender(void);
@@ -97,8 +118,8 @@ namespace CEGUI
 		virtual	Texture	*createTexture(float size);
 		virtual	void	destroyTexture(Texture* texture);
 		virtual void	destroyAllTextures(void);
-		virtual void	setQueueingEnabled(bool setting)		{d_queueing = setting;}
-		virtual bool	isQueueingEnabled(void) const	{return d_queueing;}
+		virtual void	setQueueingEnabled(bool setting);
+		virtual bool	isQueueingEnabled(void) const;
 		virtual void	sortQuads(void);
 		virtual float	getWidth(void) const		{return d_display_area.getWidth();}
 		virtual float	getHeight(void) const		{return d_display_area.getHeight();}
@@ -108,15 +129,17 @@ namespace CEGUI
 		virtual	uint	getHorzScreenDPI(void) const	{return 96;}
 		virtual	uint	getVertScreenDPI(void) const	{return 96;}
 		ResourceProvider *createResourceProvider(void);
+		ImageCodec& getImageCodec(void);
+		void setImageCodec(const String& codecName);
+		void setImageCodec(ImageCodec* codec);
+		//static void setDefaultImageCodecName(const String& codecName) {
+		//static const String& getDefaultImageCodecName();
 
 		// Some NeL stuff.
 		NL3D::UDriver &getNeLDriver() { return *m_Driver; }
 		Texture*	createTexture(NL3D::UMaterial *texture);
 		NLMISC::CRGBA colorToNeL(CEGUI::colour color);
 		void renderQuad(NLMISC::CQuadColorUV quad, NL3D::UMaterial mat);
-
-		/// This ugly hack exists because of DLL namespace issues.
-		void addSearchPath(const std::string &path, bool recurse, bool alternative, class NLMISC::IProgressCallback *progressCallBack=NULL);
 
 		void captureCursor(bool capture) {
 			m_Captured=capture;
@@ -133,11 +156,24 @@ namespace CEGUI
 		void activateInput() { m_InputDriver.activate(); }
 		void deactivateInput() { m_InputDriver.deactivate(); }
 		bool isInputActive() { return m_InputDriver.isActive(); }
+                // This is some new BS to 0.5.0
+                static void setDefaultImageCodecName(const String& codecName) { m_DefaultImageCodecName = codecName; }
+                static const String& getDefaultImageCodecName() { return m_DefaultImageCodecName; }
 
 	private:
 		static const int			VERTEX_PER_QUAD;							//!< number of vertices per quad
 		static const int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
 		static const int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
+
+        ImageCodec* m_ImageCodec;           //!< Holds a pointer to the image codec to use.
+        DynamicModule* m_ImageCodecModule; //!< Holds a pointer to the image codec module. If d_imageCodecModule is 0 we are not owner of the image codec object
+
+        //static String d_defaultImageCodecName;
+
+        void setupImageCodec(const String& codecName);
+        void cleanupImageCodec();
+        static String m_DefaultImageCodecName;
+
 
 		// input handler class
 		class NeLInputDriver : public NLMISC::IEventListener

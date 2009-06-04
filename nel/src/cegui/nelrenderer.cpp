@@ -38,6 +38,9 @@
 #include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
+#include "CEGUIEventArgs.h"
+#include "CEGUIImageCodec.h"
+#include "CEGUIDynamicModule.h"
 
 #include <nel/misc/dynloadlib.h>
 
@@ -58,6 +61,9 @@
 #	include <windows.h>
 #endif
 
+#define S_(X) #X
+#define STRINGIZE(X) S_(X)
+
 #ifndef NL_STATIC
 
 //class CCeguiRendererNelLibrary : public NLMISC::INelLibrary {
@@ -76,9 +82,9 @@ NLMISC_DECL_PURE_LIB(CCeguiRendererNelLibrary)
 // ******************************************************************
 
 #ifdef NL_STATIC
-INeLRenderer* createNeLRendererInstance
+Renderer* createNeLRendererInstance
 #else
-__declspec(dllexport) CEGUI::INeLRenderer *createNeLRendererInstance
+__declspec(dllexport) CEGUI::Renderer *createNeLRendererInstance
 #endif
         (NL3D::UDriver *driver, bool withRP=true)
 {
@@ -91,7 +97,7 @@ __declspec(dllexport) CEGUI::INeLRenderer *createNeLRendererInstance
 
 extern "C"
 {
-	CEGUI::INeLRenderer *createNeLRendererInstance(NL3D::UDriver *driver, bool withRP=true)
+	CEGUI::Renderer *createNeLRendererInstance(NL3D::UDriver *driver, bool withRP=true)
 	{
 		return new CEGUI::NeLRenderer(driver, withRP);
 	}
@@ -111,7 +117,7 @@ namespace CEGUI
 	const int	NeLRenderer::VERTEX_PER_TRIANGLE		= 3;
 	const int	NeLRenderer::VERTEXBUFFER_CAPACITY		= 4096;
 
-	NeLRenderer::NeLRenderer(NL3D::UDriver *driver, bool withRP)
+	NeLRenderer::NeLRenderer(NL3D::UDriver *driver, bool withRP, ImageCodec* codec)
 	{
 		m_Driver=driver;
 		d_queueing=true;
@@ -127,11 +133,17 @@ namespace CEGUI
 		NLMISC::CHTimer::startBench();
 		m_NelProvider=withRP;
 		m_FrameCount=0;
+		m_ImageCodec = codec;
+		m_ImageCodecModule = NULL;
+
+		if(!m_ImageCodec)
+            setupImageCodec("");
 	}
 
 	NeLRenderer::~NeLRenderer(void)
 	{
 		destroyAllTextures();
+		cleanupImageCodec();
 		m_InputDriver.removeFromServer(m_Driver->EventServer);
 		NLMISC::CHTimer::clear();
 	}
@@ -228,7 +240,7 @@ namespace CEGUI
 
 	Texture *NeLRenderer::createTexture(void)
 	{
-		
+
 		NeLTexture *tex=new NeLTexture(this);
 		d_texturelist.push_back((NeLTexture *const)tex);
 		return tex;
@@ -268,8 +280,16 @@ namespace CEGUI
 
 	void NeLRenderer::sortQuads(void)
 	{
-		nlinfo("Received a request to sort quads.");
+		;
 	}
+
+    void	NeLRenderer::setQueueingEnabled(bool setting) {
+        d_queueing = setting;
+    }
+
+    bool	NeLRenderer::isQueueingEnabled(void) const {
+        return d_queueing;
+    }
 
 	NLMISC::CRGBA NeLRenderer::colorToNeL(CEGUI::colour color) {
 		NLMISC::CRGBA ctmp;
@@ -288,4 +308,48 @@ namespace CEGUI
 		}
 		return d_resourceProvider;
 	}
+
+	ImageCodec &NeLRenderer::getImageCodec(void) {
+        return *m_ImageCodec;
+	}
+
+	void NeLRenderer::setImageCodec(const String &codecName) {
+	    setupImageCodec(codecName);
+	}
+
+	void NeLRenderer::setImageCodec(ImageCodec *codec) {
+        if(codec) {
+            cleanupImageCodec();
+            m_ImageCodec = codec;
+            m_ImageCodecModule = 0;
+        }
+	}
+
+	void NeLRenderer::setupImageCodec(const String& codecName) {
+        // Cleanup the old image codec
+        if(m_ImageCodec)
+            cleanupImageCodec();
+
+        // Test whether we should use the default codec or not
+        if(codecName.empty())
+            m_ImageCodecModule = new DynamicModule(String("CEGUI") + m_DefaultImageCodecName);
+        else
+            m_ImageCodecModule = new DynamicModule(String("CEGUI") + codecName);
+
+        // Create the codec object itself
+        ImageCodec* (*createFunc)(void) = (ImageCodec* (*)(void))m_ImageCodecModule->getSymbolAddress("createImageCodec");
+        m_ImageCodec = createFunc();
+    }
+
+    void NeLRenderer::cleanupImageCodec() {
+        if (m_ImageCodec && m_ImageCodecModule) {
+            void(*deleteFunc)(ImageCodec*) = (void(*)(ImageCodec*))m_ImageCodecModule->getSymbolAddress("destroyImageCodec");
+            deleteFunc(m_ImageCodec);
+            m_ImageCodec = 0;
+            delete m_ImageCodecModule;
+            m_ImageCodecModule = 0;
+        }
+    }
+
+    String NeLRenderer::m_DefaultImageCodecName("DevILImageCodec");
 } // end namespace CEGUI
