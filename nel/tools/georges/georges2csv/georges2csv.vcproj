@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="george2csv"
+	Name="georges2csv"
 	ProjectGUID="{885542B1-BE3C-401A-A2A4-DA49E48DF0AB}"
 	TargetFrameworkVersion="0"
 	>
@@ -177,7 +177,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\george2csv.cpp"
+			RelativePath=".\georges2csv.cpp"
 			>
 		</File>
 	</Files>
