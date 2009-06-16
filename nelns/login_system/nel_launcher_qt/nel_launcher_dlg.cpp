@@ -6,6 +6,8 @@
 #ifndef NL_OS_WINDOWS
 #define _chdir chdir
 #define _execvp execvp
+#else // NL_OS_WINDOWS
+#include <direct.h>
 #endif // NL_OS_WINDOWS
 
 NLMISC::CConfigFile ConfigFile;
