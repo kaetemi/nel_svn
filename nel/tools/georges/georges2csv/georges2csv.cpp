@@ -35,9 +35,9 @@
 
 // Basic C++
 #include <iostream>
-#include <conio.h>
+//#include <conio.h>
 #include <stdio.h>
-#include <io.h>
+//#include <io.h>
 
 // stl
 #include <map>
@@ -167,7 +167,7 @@ void setOutputFile(const CSString &filename)
 	if (Outf == NULL)
 	{
 		fprintf(stderr, "Can't open output file '%s' ! aborting.", filename.c_str());
-		getch();
+		getchar();
 		exit(1);
 	}
 	fields.clear();
@@ -208,7 +208,7 @@ void buildFileVector(std::vector<std::string> &filenames, const std::string &fil
 		default:
 			fprintf(stderr,"Error in '%s' : filter must start with '+' or '-'\n",
 				filter.c_str());
-			getch(); 
+			getchar(); 
 			exit(1);
 		}
 	}
@@ -223,7 +223,7 @@ void buildFileVector(std::vector<std::string> &filenames, const std::string &fil
 		case '-': 
 			out.push_back(filespec.substr(i+1,j-i-1)); break;
 		default: 
-			fprintf(stderr,"Filter must start with '+' or '-'\n",&(filespec[i])); getch(); exit(1);
+			fprintf(stderr,"Filter must start with '+' or '-'\n",&(filespec[i])); getchar(); exit(1);
 		}
 		i=j;
 		while (i<filespec.size() && (filespec[i]==' ' || filespec[i]=='\t')) i++; // skip white space
@@ -359,7 +359,7 @@ void scanFiles(const CSString &filespec)
 		{
 			// the form was found so read the true values from George
 //			std::string s;
-			fprintf(Outf,"%s",CFile::getFilenameWithoutExtension(filenames[j]));
+			fprintf(Outf,"%s",CFile::getFilenameWithoutExtension(filenames[j]).c_str());
 			for	(unsigned i=0;i<fields.size();i++)
 			{
 				UFormElm::TWhereIsValue where;
@@ -402,7 +402,7 @@ void scanFiles(const CSString &filespec)
 
 				replaceTrueAndFalseTagToCsv(valueString);
 
-				fprintf(Outf,"%s%s", SEPARATOR, valueString);
+				fprintf(Outf,"%s%s", SEPARATOR, valueString.c_str());
 				
 //				UFormElm::TWhereIsValue where;
 //
@@ -538,7 +538,7 @@ void executeScriptFile(const string &filename)
 
 	if (temp.empty())
 	{
-		fprintf(stderr, "the field '%s' is empty.\n", filename);
+		fprintf(stderr, "the field '%s' is empty.\n", filename.c_str());
 		return;
 	}
 	string buf = temp.toString();
@@ -571,7 +571,7 @@ void	loadSheetPath()
 	{
 		string& filename = files[i];
 //		string& filebase = CFile::getFilenameWithoutExtension(filename);
-		string& filebase = CFile::getFilename(filename);
+		const string& filebase = CFile::getFilename(filename);
 		inputSheetPathContent[filebase] = filename;
 	}
 
@@ -772,7 +772,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 				dirmapLetterBackward = (letterWay && (letterWay->asInt() == 1));
 				
 				CConfigFile::CVar dirs = dirmapcfg.getVar( "Directories" );
-				for ( sint idm=0; idm!=dirs.size(); ++idm )
+				for ( uint idm=0; idm!=dirs.size(); ++idm )
 				{
 					dirmapDirs.push_back( dirs.asString( idm ) );
 					nlinfo( "Directory: %s", dirmapDirs.back().c_str() );
@@ -823,7 +823,7 @@ void	convertCsvFile( const string &file, bool generate, const string& sheetType 
 
 		nlinfo( "Using output path: %s", OutputPath.c_str() );
 		nlinfo( "Press a key to generate *.%s", sheetType.c_str() );
-		getch();
+		getchar();
 		nlinfo( "Generating...." );
 
 	}
@@ -1297,7 +1297,7 @@ int main(int argc, char* argv[])
 		convertCsvFile(inputCsvFiles[i], generate, sheetType);
 
 	fprintf(stderr,"\nDone.\n");
-	getch();
+	getchar();
 	return 0;
 }
 
