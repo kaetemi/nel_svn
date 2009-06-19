@@ -1440,7 +1440,7 @@ group "Projects management"
 
 					-- Add a modifer to convert it
 					max modify mode
-					modPanel.addModToSelection (NeLConvert ())
+					modPanel.addModToSelection (PatchObjectToNelPatchObject ())
 
 					-- Collapse the node
 					collapseStack $
